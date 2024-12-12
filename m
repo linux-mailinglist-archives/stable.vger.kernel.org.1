@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-100910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6712C9EE749
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:00:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7149EE74A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:00:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 546451888301
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:00:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EC2C1888390
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D67211A1B;
-	Thu, 12 Dec 2024 13:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804BF211A1B;
+	Thu, 12 Dec 2024 13:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2zsM21U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXtt9XJo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369A520E6F5
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 13:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF93209F5F
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 13:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734008430; cv=none; b=L2B8ET9rJxHErWA7Ov+WhXFBNbzkozKLk4regicJJ3xEODL+lp9i19RNJKXro3p1sR5rrGQpLnXGi6gVGlQuJAsRhuCdKManhPey2qnS1Muu6j/gSYqE/9GE48adqLO0V3Hla0QhQ/XtzIzgmWQAPFyeP4x1AU6PY8czbQ6bhBM=
+	t=1734008439; cv=none; b=lKWvLymzGdrzHEJmSrtf7yjDrdAzX2T/9fw8Y3AesI09po6/kNDwgsQ1paZ5Hu9S+O64pVdjLKYn3u5Lov8+WP3dqnQCgEqhW6yQAcru2QeVTixRf/7GmpXdN8Jz9nV5+aZuRI0B9L6ymRMTn7vqEn4Imu+9XaDC2R0/EBQTapk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734008430; c=relaxed/simple;
-	bh=p8q64kOvVivYagYdVaAVxxZOo2beMcbxc91Ia5V1Swc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NQ3Gzzn4/g3imNn2tKfBl/ynguL1Ny28gL1h8ZCjuxYejFF2yYlRfZ7ZMkHwub2bRpHw7LMV9GNDB0F22ulEx9ISPaxOarWikQx648E6k3Usm4WKRKcKOqc3HTMZzkXgZWzELfO1SObRis2/IUOooZSDgWdljMY+UR6bfNdNbXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2zsM21U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8D0C4CECE;
-	Thu, 12 Dec 2024 13:00:29 +0000 (UTC)
+	s=arc-20240116; t=1734008439; c=relaxed/simple;
+	bh=5ydIfAr4bt+a1c1Y1cS4g/WZy+CIq1U4LXuEcqPaW6A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CNiwysP/XyH4qbDWc3fbxvj6RRhI0hequ2Tc4gutLY3Xo+WRKbRBikvRAEdukSE1fFI9SKBEOR73rqaUFtkg95bIqg4PXa4LfbJPEK3VxrQeX/1XqK7OezP4pum1uDFTPtyb8TusdAtZK02EfelggV06coAfKCBcn6OJCgfXpiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXtt9XJo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88ECCC4CECE;
+	Thu, 12 Dec 2024 13:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734008429;
-	bh=p8q64kOvVivYagYdVaAVxxZOo2beMcbxc91Ia5V1Swc=;
+	s=korg; t=1734008439;
+	bh=5ydIfAr4bt+a1c1Y1cS4g/WZy+CIq1U4LXuEcqPaW6A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Z2zsM21UIvQVhO+Nu1d85vjqVPlbN/30jcnuF+G99MhDL+Gv9/YxvK8gHY1PtbC3Z
-	 u40wk8ctx0vimHxb/3LsEvUDno9pYngxRkl5tSlMLDYf/b6QT70gPtm2L2OB6kfgKl
-	 WkmPL+HPJibuSk1VFdgwK133J20gwzWl2PFDrw0w=
-Subject: FAILED: patch "[PATCH] clocksource: Make negative motion detection more robust" failed to apply to 5.4-stable tree
+	b=BXtt9XJox9borOroIpBGUferTbU4IPyuvv68AjQVlGxaHCmhp8gBz9/iBCGtB4e0m
+	 4DdND1egxyjsY4pw1m3CMVNaHlsZTweKVzaX3dEMZJnaOuqSmdFYJGSHemrvcf9LBI
+	 nafiZhATHGkB3gFRjKoy+rWh3tJa/YWc4M9CLHUQ=
+Subject: FAILED: patch "[PATCH] clocksource: Make negative motion detection more robust" failed to apply to 5.10-stable tree
 To: tglx@linutronix.de,linux@roeck-us.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 12 Dec 2024 14:00:26 +0100
-Message-ID: <2024121226-cathedral-decimeter-88cb@gregkh>
+Date: Thu, 12 Dec 2024 14:00:27 +0100
+Message-ID: <2024121227-undermine-effort-1e7c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 76031d9536a076bf023bedbdb1b4317fc801dd67
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121226-cathedral-decimeter-88cb@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121227-undermine-effort-1e7c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
