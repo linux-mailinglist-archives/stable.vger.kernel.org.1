@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E35049EF231
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8FAA9EED82
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F09E189973A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA23C16AAE3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE5822A7FF;
-	Thu, 12 Dec 2024 16:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1912210F1;
+	Thu, 12 Dec 2024 15:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9thQQJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FFW+QzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0654C222D5F;
-	Thu, 12 Dec 2024 16:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FD92185A8;
+	Thu, 12 Dec 2024 15:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020809; cv=none; b=fHx+xkfOyJTSF2PMlDD8mTS6S8+TA1JUkMvlBHwx/Xf/wG0Nssb3+Oko9qHu3R3WZBcfRKCyOVNlihXmNWGslNvpnwiUsAsY0Vpcr5FZGoX8KA7IvTjlk2vsnUOrqLn1TwxtYWFqffTY7eDFIPWzYQ0qLW6GYQRT6x3k3kdj68I=
+	t=1734018194; cv=none; b=MNVlWSGlVTMlmBeuQCffCwCyXLF5DhHzwafyXvuMpXQrLZiRWYkPfyTfI0LBpCGq8tLL8YPLPHh2EGYEoDjDOrUd6LbwmJZ1PVYDyQnZ67/qBqtds+C4CmXU5tTWVSVE52hp17pUxmWau3sRpWsf5HMZ5KcXqSabb0UH8Z6VxAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020809; c=relaxed/simple;
-	bh=ApT8FOJ3u4Bw0C/Cd8T/erv98IXDU2AFteIUc94Gl8Q=;
+	s=arc-20240116; t=1734018194; c=relaxed/simple;
+	bh=VeBRzS9U5gG18xq0fd22iubXWyH46cFprk9ZtIulTXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJyfkc77XMkH8Iyyo1h9GJ1jWAUkJgs2kCBaSW3l8NrXqv/yVZXoMXanSszfjXpjg+fC4lfYeeCzCneRoWBaTBV7pg8P+6ufVFNzMONN4aivPO7zZoN0LkQJn+7qcVYuiOtOCKMHvIMFkd9bJh6UI+uRACNO0+aiyE4Vi+otf0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9thQQJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690ECC4CECE;
-	Thu, 12 Dec 2024 16:26:48 +0000 (UTC)
+	 MIME-Version; b=O04JwH63MgqghE97yG4m4/itFDa0dZMTxOY58CCi/0lh3WlRSXKD+Ugzy42QWsI9O0gwt4B3Y9r3WxKf66ANSUOh00jj1RKjlChSzhOVKBaeUgbJu4xqEHsYPSbH+i1lnC6g1Rp6MIOTkIUgmRQKyHeOmPRqrkXF/OHIL/GFxn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FFW+QzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFB5C4CECE;
+	Thu, 12 Dec 2024 15:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020808;
-	bh=ApT8FOJ3u4Bw0C/Cd8T/erv98IXDU2AFteIUc94Gl8Q=;
+	s=korg; t=1734018194;
+	bh=VeBRzS9U5gG18xq0fd22iubXWyH46cFprk9ZtIulTXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9thQQJfkKAtlpkhjxC0mF1A7B9GX5ZW9BqNqJE1/EBP5w3vpQ7dJ0c5Inwycexe+
-	 uGFZYAa8bnU2aeZWjhiF0btEIY0mfh5aj5G7lfk0Cc2KRm06h3pdFT6mZ3idgWeKdN
-	 +yhMriwmSWO+8yas28yxSgc3698+PLmUkV5+Xyls=
+	b=1FFW+QzRXqGwXusk6yBX8Kccm2xEHLZuXRlJSRuwnbWmb1jmTcnsEL//ClzQncp0o
+	 Q6jAdyYIntkobbrr9bU20JVAV3iiGo3idl/+yeoKLYSv+ev1fT658mms21Z1FgKyl4
+	 +pP9ceY25QOMotgMTV2g1q4qgSXO6sglbrogh79Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	stable <stable@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 566/772] driver core: fw_devlink: Stop trying to optimize cycle detection logic
-Date: Thu, 12 Dec 2024 15:58:31 +0100
-Message-ID: <20241212144413.345290890@linuxfoundation.org>
+Subject: [PATCH 6.6 193/356] ACPI: x86: Make UART skip quirks work on PCI UARTs without an UID
+Date: Thu, 12 Dec 2024 15:58:32 +0100
+Message-ID: <20241212144252.254166899@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit bac3b10b78e54b7da3cede397258f75a2180609b ]
+[ Upstream commit 7f261203d7c2e0c06e668b25dfaaee091a79ab25 ]
 
-In attempting to optimize fw_devlink runtime, I introduced numerous cycle
-detection bugs by foregoing cycle detection logic under specific
-conditions. Each fix has further narrowed the conditions for optimization.
+The Vexia EDU ATLA 10 tablet (9V version) which shipped with Android 4.2
+as factory OS has the usual broken DSDT issues for x86 Android tablets.
 
-It's time to give up on these optimization attempts and just run the cycle
-detection logic every time fw_devlink tries to create a device link.
+On top of that this tablet is special because all its LPSS island
+peripherals are enumerated as PCI devices rather then as ACPI devices as
+they typically are.
 
-The specific bug report that triggered this fix involved a supplier fwnode
-that never gets a device created for it. Instead, the supplier fwnode is
-represented by the device that corresponds to an ancestor fwnode.
+For the x86-android-tablets kmod to be able to instantiate a serdev client
+for the Bluetooth HCI on this tablet, an ACPI_QUIRK_UART1_SKIP quirk is
+necessary.
 
-In this case, fw_devlink didn't do any cycle detection because the cycle
-detection logic is only run when a device link is created between the
-devices that correspond to the actual consumer and supplier fwnodes.
+Modify acpi_dmi_skip_serdev_enumeration() to work with PCI enumerated
+UARTs without an UID, such as the UARTs on this tablet.
 
-With this change, fw_devlink will run cycle detection logic even when
-creating SYNC_STATE_ONLY proxy device links from a device that is an
-ancestor of a consumer fwnode.
+Also make acpi_dmi_skip_serdev_enumeration() exit early if there are no
+quirks, since there is nothing to do then.
 
-Reported-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Closes: https://lore.kernel.org/all/1a1ab663-d068-40fb-8c94-f0715403d276@ideasonboard.com/
-Fixes: 6442d79d880c ("driver core: fw_devlink: Improve detection of overlapping cycles")
-Cc: stable <stable@kernel.org>
-Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Link: https://lore.kernel.org/r/20241030171009.1853340-1-saravanak@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+And add the necessary quirks for the Vexia EDU ATLA 10 tablet.
+
+This should compile with CONFIG_PCI being unset without issues because
+dev_is_pci() is defined as "(false)" then.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241109215936.83004-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c | 55 ++++++++++++++++++++-------------------------
- 1 file changed, 24 insertions(+), 31 deletions(-)
+ drivers/acpi/x86/utils.c | 47 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 39 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index e1436e351826c..f21ceb93e50ef 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -1933,10 +1933,10 @@ static bool fwnode_ancestor_init_without_drv(struct fwnode_handle *fwnode)
-  *
-  * Return true if one or more cycles were found. Otherwise, return false.
-  */
--static bool __fw_devlink_relax_cycles(struct device *con,
-+static bool __fw_devlink_relax_cycles(struct fwnode_handle *con_handle,
- 				 struct fwnode_handle *sup_handle)
- {
--	struct device *sup_dev = NULL, *par_dev = NULL;
-+	struct device *sup_dev = NULL, *par_dev = NULL, *con_dev = NULL;
- 	struct fwnode_link *link;
- 	struct device_link *dev_link;
- 	bool ret = false;
-@@ -1953,22 +1953,22 @@ static bool __fw_devlink_relax_cycles(struct device *con,
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index e035cec614dc8..33d200cfc2fe1 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -12,6 +12,7 @@
  
- 	sup_handle->flags |= FWNODE_FLAG_VISITED;
+ #include <linux/acpi.h>
+ #include <linux/dmi.h>
++#include <linux/pci.h>
+ #include <linux/platform_device.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/intel-family.h>
+@@ -384,6 +385,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
++	{
++		/* Vexia Edu Atla 10 tablet 9V version */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
++		},
++		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_UART1_SKIP |
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
++					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
++	},
+ 	{
+ 		/* Whitelabel (sold as various brands) TM800A550L */
+ 		.matches = {
+@@ -432,18 +446,35 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
+ 	struct acpi_device *adev = ACPI_COMPANION(controller_parent);
+ 	const struct dmi_system_id *dmi_id;
+ 	long quirks = 0;
+-	u64 uid;
+-	int ret;
++	u64 uid = 0;
  
--	sup_dev = get_dev_from_fwnode(sup_handle);
--
- 	/* Termination condition. */
--	if (sup_dev == con) {
-+	if (sup_handle == con_handle) {
- 		pr_debug("----- cycle: start -----\n");
- 		ret = true;
- 		goto out;
- 	}
- 
-+	sup_dev = get_dev_from_fwnode(sup_handle);
-+	con_dev = get_dev_from_fwnode(con_handle);
- 	/*
- 	 * If sup_dev is bound to a driver and @con hasn't started binding to a
- 	 * driver, sup_dev can't be a consumer of @con. So, no need to check
- 	 * further.
- 	 */
- 	if (sup_dev && sup_dev->links.status ==  DL_DEV_DRIVER_BOUND &&
--	    con->links.status == DL_DEV_NO_DRIVER) {
-+	    con_dev && con_dev->links.status == DL_DEV_NO_DRIVER) {
- 		ret = false;
- 		goto out;
- 	}
-@@ -1977,7 +1977,7 @@ static bool __fw_devlink_relax_cycles(struct device *con,
- 		if (link->flags & FWLINK_FLAG_IGNORE)
- 			continue;
- 
--		if (__fw_devlink_relax_cycles(con, link->supplier)) {
-+		if (__fw_devlink_relax_cycles(con_handle, link->supplier)) {
- 			__fwnode_link_cycle(link);
- 			ret = true;
- 		}
-@@ -1992,7 +1992,7 @@ static bool __fw_devlink_relax_cycles(struct device *con,
- 	else
- 		par_dev = fwnode_get_next_parent_dev(sup_handle);
- 
--	if (par_dev && __fw_devlink_relax_cycles(con, par_dev->fwnode)) {
-+	if (par_dev && __fw_devlink_relax_cycles(con_handle, par_dev->fwnode)) {
- 		pr_debug("%pfwf: cycle: child of %pfwf\n", sup_handle,
- 			 par_dev->fwnode);
- 		ret = true;
-@@ -2010,7 +2010,7 @@ static bool __fw_devlink_relax_cycles(struct device *con,
- 		    !(dev_link->flags & DL_FLAG_CYCLE))
- 			continue;
- 
--		if (__fw_devlink_relax_cycles(con,
-+		if (__fw_devlink_relax_cycles(con_handle,
- 					      dev_link->supplier->fwnode)) {
- 			pr_debug("%pfwf: cycle: depends on %pfwf\n", sup_handle,
- 				 dev_link->supplier->fwnode);
-@@ -2058,11 +2058,6 @@ static int fw_devlink_create_devlink(struct device *con,
- 	if (link->flags & FWLINK_FLAG_IGNORE)
+-	ret = acpi_dev_uid_to_integer(adev, &uid);
+-	if (ret)
++	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
++	if (!dmi_id)
  		return 0;
  
--	if (con->fwnode == link->consumer)
--		flags = fw_devlink_get_flags(link->flags);
--	else
--		flags = FW_DEVLINK_FLAGS_PERMISSIVE;
--
- 	/*
- 	 * In some cases, a device P might also be a supplier to its child node
- 	 * C. However, this would defer the probe of C until the probe of P
-@@ -2083,25 +2078,23 @@ static int fw_devlink_create_devlink(struct device *con,
- 		return -EINVAL;
- 
- 	/*
--	 * SYNC_STATE_ONLY device links don't block probing and supports cycles.
--	 * So, one might expect that cycle detection isn't necessary for them.
--	 * However, if the device link was marked as SYNC_STATE_ONLY because
--	 * it's part of a cycle, then we still need to do cycle detection. This
--	 * is because the consumer and supplier might be part of multiple cycles
--	 * and we need to detect all those cycles.
-+	 * Don't try to optimize by not calling the cycle detection logic under
-+	 * certain conditions. There's always some corner case that won't get
-+	 * detected.
- 	 */
--	if (!device_link_flag_is_sync_state_only(flags) ||
--	    flags & DL_FLAG_CYCLE) {
--		device_links_write_lock();
--		if (__fw_devlink_relax_cycles(con, sup_handle)) {
--			__fwnode_link_cycle(link);
--			flags = fw_devlink_get_flags(link->flags);
--			pr_debug("----- cycle: end -----\n");
--			dev_info(con, "Fixed dependency cycle(s) with %pfwf\n",
--				 sup_handle);
--		}
--		device_links_write_unlock();
-+	device_links_write_lock();
-+	if (__fw_devlink_relax_cycles(link->consumer, sup_handle)) {
-+		__fwnode_link_cycle(link);
-+		pr_debug("----- cycle: end -----\n");
-+		pr_info("%pfwf: Fixed dependency cycle(s) with %pfwf\n",
-+			link->consumer, sup_handle);
- 	}
-+	device_links_write_unlock();
+-	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
+-	if (dmi_id)
+-		quirks = (unsigned long)dmi_id->driver_data;
++	quirks = (unsigned long)dmi_id->driver_data;
 +
-+	if (con->fwnode == link->consumer)
-+		flags = fw_devlink_get_flags(link->flags);
-+	else
-+		flags = FW_DEVLINK_FLAGS_PERMISSIVE;
++	/* uid is left at 0 on errors and 0 is not a valid UART UID */
++	acpi_dev_uid_to_integer(adev, &uid);
++
++	/* For PCI UARTs without an UID */
++	if (!uid && dev_is_pci(controller_parent)) {
++		struct pci_dev *pdev = to_pci_dev(controller_parent);
++
++		/*
++		 * Devfn values for PCI UARTs on Bay Trail SoCs, which are
++		 * the only devices where this fallback is necessary.
++		 */
++		if (pdev->devfn == PCI_DEVFN(0x1e, 3))
++			uid = 1;
++		else if (pdev->devfn == PCI_DEVFN(0x1e, 4))
++			uid = 2;
++	}
++
++	if (!uid)
++		return 0;
  
- 	if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
- 		sup_dev = fwnode_get_next_parent_dev(sup_handle);
+-	if (!dev_is_platform(controller_parent)) {
++	if (!dev_is_platform(controller_parent) && !dev_is_pci(controller_parent)) {
+ 		/* PNP enumerated UARTs */
+ 		if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid == 1)
+ 			*skip = true;
 -- 
 2.43.0
 
