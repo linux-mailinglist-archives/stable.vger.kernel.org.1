@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D629EEC67
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788ED9EF14F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97D10168D9F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF77A189ACE2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCBD215777;
-	Thu, 12 Dec 2024 15:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293A0223C43;
+	Thu, 12 Dec 2024 16:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0MQ9GKk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thqkB8m4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD713212D6A;
-	Thu, 12 Dec 2024 15:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA75D2236FC;
+	Thu, 12 Dec 2024 16:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017551; cv=none; b=hcHaG+7npAz6y9J8W1k0ox1yAuUQeJAIP+ntaY2jTAATxLFj1J7FBHlYtBaKaDfsP10SNLKFa6a0knMPnxHEcVEwyeupOuB3t9VIc+feyBdAfAn+THYJ7afCBS+6MEaqmHceuZ4+lbOfG4zf/23z1VFJvB0Oxar9DYdBAo1/lpw=
+	t=1734020191; cv=none; b=K2wCESEaiQy7GCS1ScpoSJ410jcvYN+fl/FqH1KOll1EOj3dXWRRY8CSHVRcev0rTd4Nnru631ZWUGytAITij0IuaPlPirzsGgDCBeN8LnqZbzWkcQsdntabUzv57s8g0qklvzmi7JgCFbi/YxC2qp+swWElCLkKPfz/4qKW2/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017551; c=relaxed/simple;
-	bh=4nOxgON3Xy/eZO+QOWfy/fPre+lLZq6+fRkYQYd7yVY=;
+	s=arc-20240116; t=1734020191; c=relaxed/simple;
+	bh=MdEdgCnwqW/NRT9XKR7pyi0lls/N26JC71kKjx1Z4n0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OE7YpATpYzK94G390my7NwQVODF7u2ctDF7520juqS/K4D6FxybpfGVQdEDg40hPW49+6/pegdZUqXKV2JcuMwbxbWs5gL7RfcLqNUTZOpoBBziacmI1dmpLDDSC05N5ckRUgxas++bEX1eejx63LjeDWmCt8ayck/U5nCZO77s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0MQ9GKk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532E0C4CECE;
-	Thu, 12 Dec 2024 15:32:31 +0000 (UTC)
+	 MIME-Version; b=Q9jtrFAKgIHTgtJmyc276L3L2lXUlkHaR1axIW3aKwvDKFF8Tk0va8a8KUoWV9UdL4Thfyll5Lck3wjke82YumJ8XG+VJMgMsx9BAvo+8hoTNbSpZJqljCCP3/OdWoxqICyJzprD6GQ5yoROwLppKWv5P0YnD5ne5ml7zEyonyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thqkB8m4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7942C4CECE;
+	Thu, 12 Dec 2024 16:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017551;
-	bh=4nOxgON3Xy/eZO+QOWfy/fPre+lLZq6+fRkYQYd7yVY=;
+	s=korg; t=1734020191;
+	bh=MdEdgCnwqW/NRT9XKR7pyi0lls/N26JC71kKjx1Z4n0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0MQ9GKk39xak8P6iSZZyk7TsWzhSFp3/TOCQFJDrZXcjdrjw4exBszkErzE+/B7m
-	 T7QOnKWiXY/cdj6jmiNY/XdlTsj5ke77fSGEFLEjIpQUg4TsI4Wva1O9D27oyNkeGi
-	 OmhKtEeuMgc/uSsfoSFXCOzLJ2jLiZxnwyAzoR6k=
+	b=thqkB8m41Wz5b/zF7LtxZXaL2/V8vEysfCnEoN02J9kPdfON1sHDeenC1lTkPYRda
+	 +Vy5YGj48euIYj5g9EiD54YuUabcA/pHPJqVJINe+REoaua0BGNNrSvQ+bByM5+m3K
+	 xmvkg3IAklKpyYGxapzu7AOyOjZuVZfZyX97ffBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	auslands-kv@gmx.de,
-	Armin Wolf <W_Armin@gmx.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/356] platform/x86: asus-wmi: Ignore return value when writing thermal policy
+	Bin Liu <b-liu@ti.com>,
+	Judith Mendez <jm@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 6.1 402/772] serial: 8250: omap: Move pm_runtime_get_sync
 Date: Thu, 12 Dec 2024 15:55:47 +0100
-Message-ID: <20241212144245.739417738@linuxfoundation.org>
+Message-ID: <20241212144406.531174683@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Bin Liu <b-liu@ti.com>
 
-[ Upstream commit 25fb5f47f34d90aceda2c47a4230315536e97fa8 ]
+commit bcc7ba668818dcadd2f1db66b39ed860a63ecf97 upstream.
 
-On some machines like the ASUS Vivobook S14 writing the thermal policy
-returns the currently writen thermal policy instead of an error code.
+Currently in omap_8250_shutdown, the dma->rx_running flag is
+set to zero in omap_8250_rx_dma_flush. Next pm_runtime_get_sync
+is called, which is a runtime resume call stack which can
+re-set the flag. When the call omap_8250_shutdown returns, the
+flag is expected to be UN-SET, but this is not the case. This
+is causing issues the next time UART is re-opened and
+omap_8250_rx_dma is called. Fix by moving pm_runtime_get_sync
+before the omap_8250_rx_dma_flush.
 
-Ignore the return code to avoid falsely returning an error when the
-thermal policy was written successfully.
-
-Reported-by: auslands-kv@gmx.de
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219517
-Fixes: 2daa86e78c49 ("platform/x86: asus_wmi: Support throttle thermal policy")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241124171941.29789-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cc: stable@vger.kernel.org
+Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
+Signed-off-by: Bin Liu <b-liu@ti.com>
+[Judith: Add commit message]
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Tested-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20241031172315.453750-1-jm@ti.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/asus-wmi.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/tty/serial/8250/8250_omap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index e36c299dcfb17..1bf6178a3a105 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -3386,7 +3386,6 @@ static int asus_wmi_custom_fan_curve_init(struct asus_wmi *asus)
- /* Throttle thermal policy ****************************************************/
- static int throttle_thermal_policy_write(struct asus_wmi *asus)
- {
--	u32 retval;
- 	u8 value;
- 	int err;
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -749,12 +749,12 @@ static void omap_8250_shutdown(struct ua
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	struct omap8250_priv *priv = port->private_data;
  
-@@ -3408,8 +3407,8 @@ static int throttle_thermal_policy_write(struct asus_wmi *asus)
- 		value = asus->throttle_thermal_policy_mode;
- 	}
++	pm_runtime_get_sync(port->dev);
++
+ 	flush_work(&priv->qos_work);
+ 	if (up->dma)
+ 		omap_8250_rx_dma_flush(up);
  
--	err = asus_wmi_set_devstate(asus->throttle_thermal_policy_dev,
--				    value, &retval);
-+	/* Some machines do not return an error code as a result, so we ignore it */
-+	err = asus_wmi_set_devstate(asus->throttle_thermal_policy_dev, value, NULL);
- 
- 	sysfs_notify(&asus->platform_device->dev.kobj, NULL,
- 			"throttle_thermal_policy");
-@@ -3419,12 +3418,6 @@ static int throttle_thermal_policy_write(struct asus_wmi *asus)
- 		return err;
- 	}
- 
--	if (retval != 1) {
--		pr_warn("Failed to set throttle thermal policy (retval): 0x%x\n",
--			retval);
--		return -EIO;
--	}
+-	pm_runtime_get_sync(port->dev);
 -
- 	/* Must set to disabled if mode is toggled */
- 	if (asus->cpu_fan_curve_available)
- 		asus->custom_fan_curves[FAN_CURVE_DEV_CPU].enabled = false;
--- 
-2.43.0
-
+ 	serial_out(up, UART_OMAP_WER, 0);
+ 	if (priv->habit & UART_HAS_EFR2)
+ 		serial_out(up, UART_OMAP_EFR2, 0x0);
 
 
 
