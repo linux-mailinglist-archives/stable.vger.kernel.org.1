@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-103113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B019EF66F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1CB9EF57A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D861753A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3156117C340
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E89222D63;
-	Thu, 12 Dec 2024 17:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC9C22E9EF;
+	Thu, 12 Dec 2024 16:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zK2Ezijg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItFPBKRT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0246B222D4E;
-	Thu, 12 Dec 2024 17:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541C322E9E3;
+	Thu, 12 Dec 2024 16:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023586; cv=none; b=b/uUaL7uBpXEkclP9Wgg4BqswXjXUvDR5uNmnd1JIsbFy1XdOxme41k76YOh+vRd0MorM0621rXg2gGwDbsrKvQoiXNQLh/cqMh+hf87qtEAV3hpvuU7jQSQO5HLvviezxLXcmL18vz6dg+CrIdWsvw0vq09bPivvvFaEske+XA=
+	t=1734022256; cv=none; b=p2doo+4Szja1XrQdT0zSs1pX7lRF1aEzqvLm8S2dxNx5rndMtDWZFWKkkGN7dWvXT9CIpJKa8u2wrgAS+UjOt2rGKm4UBMoh4lN9HDc3bUH+AoEmEEtleWnFVOJgvURlbZuWCkaNdlmxJ5Uk3j+9lQnb5Qb7oD31aKH3ksMRY8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023586; c=relaxed/simple;
-	bh=EufI7uL5sRL00LnyESYpDXeOsmpuTKxBw/AzZi8OmvM=;
+	s=arc-20240116; t=1734022256; c=relaxed/simple;
+	bh=XHx6d46ESTGpCLYRsbYTTOL6ZEWgu4Y321dWKALOL1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQ3CzH2PVb5w3hTeRGMtJT85VJxCXn6qKw/tywnEuGqfY/KWkjBYTzlQUB9bDE/DRV9W4V+XG7grHj9y07P40wtfbvbcwbmAgrhPy2oDIfyswfpzZBbBEqPxf7MgypzKAFKTqBw65y0bZ+/seS8VCZN98WHEPZOx+aMAVsTcxrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zK2Ezijg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89D1C4CEDF;
-	Thu, 12 Dec 2024 17:13:04 +0000 (UTC)
+	 MIME-Version; b=gzisv+Nh2GVGwGa4g5bh0zDTrZ4O6YjHxA8WCDutfSC5Dcjyyi0eMSosDKE+W8I0s/MGsdGOrFiKjTDwUcdFYVIKiBwK3JJQ4iYaq6f8qoT7yc8YEE1GOouGDDdZ5bz5kkLtcmlmkPM3prwXAfcOhcFDaJqxP573CajI4gaqDWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItFPBKRT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72557C4AF1A;
+	Thu, 12 Dec 2024 16:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023585;
-	bh=EufI7uL5sRL00LnyESYpDXeOsmpuTKxBw/AzZi8OmvM=;
+	s=korg; t=1734022255;
+	bh=XHx6d46ESTGpCLYRsbYTTOL6ZEWgu4Y321dWKALOL1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zK2Ezijgs9aZ4VEsphHxEvQ0QCrjBTQFZMJ0N83/E9zJDnkLXpUR4Qs0y+WtO/yYL
-	 rY3HryqVXAlTQslSQ+ZEcmoKEMVwccqlmxX3mMBSnrZaZSEbtCW1eQcEXkLZgL5NfM
-	 a+CDh+FhFWnySBx8QlUYVjqVO5iLvjgfAmwONXgU=
+	b=ItFPBKRTWYcEADul+Q8t8zbueKefvXG0JiTVXEcpK/NhAA8KwP9tx8iM1HbNOBPix
+	 CyTi4RW+oFhkzfmmjocEEQ+AwUD9D/vM1HOUtb9rcl71fNmYvjZKGun+MEWQACwKln
+	 5+FjOiEz9Dee67cgOw43rAPh1QQcP6PNtiJnJLD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Mark Fasheh <mark@fasheh.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 016/459] ocfs2: uncache inode which has failed entering the group
-Date: Thu, 12 Dec 2024 15:55:54 +0100
-Message-ID: <20241212144254.170894256@linuxfoundation.org>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 160/565] ASoC: fsl_micfil: use GENMASK to define register bit fields
+Date: Thu, 12 Dec 2024 15:55:55 +0100
+Message-ID: <20241212144317.801366125@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +63,387 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 737f34137844d6572ab7d473c998c7f977ff30eb upstream.
+[ Upstream commit 17f2142bae4b6f2e27f19ce57d79fc42ba5ef659 ]
 
-Syzbot has reported the following BUG:
+Use GENMASK along with FIELD_PREP and FIELD_GET to access bitfields in
+registers to straighten register access and to drop a lot of defines.
 
-kernel BUG at fs/ocfs2/uptodate.c:509!
-...
-Call Trace:
- <TASK>
- ? __die_body+0x5f/0xb0
- ? die+0x9e/0xc0
- ? do_trap+0x15a/0x3a0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? do_error_trap+0x1dc/0x2c0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? __pfx_do_error_trap+0x10/0x10
- ? handle_invalid_op+0x34/0x40
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? exc_invalid_op+0x38/0x50
- ? asm_exc_invalid_op+0x1a/0x20
- ? ocfs2_set_new_buffer_uptodate+0x2e/0x160
- ? ocfs2_set_new_buffer_uptodate+0x144/0x160
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ocfs2_group_add+0x39f/0x15a0
- ? __pfx_ocfs2_group_add+0x10/0x10
- ? __pfx_lock_acquire+0x10/0x10
- ? mnt_get_write_access+0x68/0x2b0
- ? __pfx_lock_release+0x10/0x10
- ? rcu_read_lock_any_held+0xb7/0x160
- ? __pfx_rcu_read_lock_any_held+0x10/0x10
- ? smack_log+0x123/0x540
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x226/0x2b0
- ocfs2_ioctl+0x65e/0x7d0
- ? __pfx_ocfs2_ioctl+0x10/0x10
- ? smack_file_ioctl+0x29e/0x3a0
- ? __pfx_smack_file_ioctl+0x10/0x10
- ? lockdep_hardirqs_on_prepare+0x43d/0x780
- ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
- ? __pfx_ocfs2_ioctl+0x10/0x10
- __se_sys_ioctl+0xfb/0x170
- do_syscall_64+0xf3/0x230
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
- </TASK>
-
-When 'ioctl(OCFS2_IOC_GROUP_ADD, ...)' has failed for the particular
-inode in 'ocfs2_verify_group_and_input()', corresponding buffer head
-remains cached and subsequent call to the same 'ioctl()' for the same
-inode issues the BUG() in 'ocfs2_set_new_buffer_uptodate()' (trying
-to cache the same buffer head of that inode). Fix this by uncaching
-the buffer head with 'ocfs2_remove_from_cache()' on error path in
-'ocfs2_group_add()'.
-
-Link: https://lkml.kernel.org/r/20241114043844.111847-1-dmantipov@yandex.ru
-Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=453873f1588c2d75b447
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://lore.kernel.org/r/20220414162249.3934543-6-s.hauer@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 06df673d2023 ("ASoC: fsl_micfil: fix regmap_write_bits usage")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/resize.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/fsl/fsl_micfil.c |  52 ++++++-------
+ sound/soc/fsl/fsl_micfil.h | 147 ++++++++-----------------------------
+ 2 files changed, 58 insertions(+), 141 deletions(-)
 
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -568,6 +568,8 @@ out_commit:
- 	ocfs2_commit_trans(osb, handle);
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 787335df96a4d..6e5025b15ac63 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ // Copyright 2018 NXP
  
- out_free_group_bh:
-+	if (ret < 0)
-+		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
- 	brelse(group_bh);
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/device.h>
+ #include <linux/interrupt.h>
+@@ -116,23 +117,22 @@ static inline int get_pdm_clk(struct fsl_micfil *micfil,
+ 	int bclk;
  
- out_unlock:
+ 	regmap_read(micfil->regmap, REG_MICFIL_CTRL2, &ctrl2_reg);
+-	osr = 16 - ((ctrl2_reg & MICFIL_CTRL2_CICOSR_MASK)
+-		    >> MICFIL_CTRL2_CICOSR_SHIFT);
+-	qsel = ctrl2_reg & MICFIL_CTRL2_QSEL_MASK;
++	osr = 16 - FIELD_GET(MICFIL_CTRL2_CICOSR, ctrl2_reg);
++	qsel = FIELD_GET(MICFIL_CTRL2_QSEL, ctrl2_reg);
+ 
+ 	switch (qsel) {
+-	case MICFIL_HIGH_QUALITY:
++	case MICFIL_QSEL_HIGH_QUALITY:
+ 		bclk = rate * 8 * osr / 2; /* kfactor = 0.5 */
+ 		break;
+-	case MICFIL_MEDIUM_QUALITY:
+-	case MICFIL_VLOW0_QUALITY:
++	case MICFIL_QSEL_MEDIUM_QUALITY:
++	case MICFIL_QSEL_VLOW0_QUALITY:
+ 		bclk = rate * 4 * osr * 1; /* kfactor = 1 */
+ 		break;
+-	case MICFIL_LOW_QUALITY:
+-	case MICFIL_VLOW1_QUALITY:
++	case MICFIL_QSEL_LOW_QUALITY:
++	case MICFIL_QSEL_VLOW1_QUALITY:
+ 		bclk = rate * 2 * osr * 2; /* kfactor = 2 */
+ 		break;
+-	case MICFIL_VLOW2_QUALITY:
++	case MICFIL_QSEL_VLOW2_QUALITY:
+ 		bclk = rate * osr * 4; /* kfactor = 4 */
+ 		break;
+ 	default:
+@@ -266,8 +266,8 @@ static int fsl_micfil_trigger(struct snd_pcm_substream *substream, int cmd,
+ 		 * 11 - reserved
+ 		 */
+ 		ret = regmap_update_bits(micfil->regmap, REG_MICFIL_CTRL1,
+-					 MICFIL_CTRL1_DISEL_MASK,
+-					 (1 << MICFIL_CTRL1_DISEL_SHIFT));
++				MICFIL_CTRL1_DISEL,
++				FIELD_PREP(MICFIL_CTRL1_DISEL, MICFIL_CTRL1_DISEL_DMA));
+ 		if (ret) {
+ 			dev_err(dev, "failed to update DISEL bits\n");
+ 			return ret;
+@@ -296,8 +296,8 @@ static int fsl_micfil_trigger(struct snd_pcm_substream *substream, int cmd,
+ 		}
+ 
+ 		ret = regmap_update_bits(micfil->regmap, REG_MICFIL_CTRL1,
+-					 MICFIL_CTRL1_DISEL_MASK,
+-					 (0 << MICFIL_CTRL1_DISEL_SHIFT));
++				MICFIL_CTRL1_DISEL,
++				FIELD_PREP(MICFIL_CTRL1_DISEL, MICFIL_CTRL1_DISEL_DISABLE));
+ 		if (ret) {
+ 			dev_err(dev, "failed to update DISEL bits\n");
+ 			return ret;
+@@ -322,8 +322,8 @@ static int fsl_set_clock_params(struct device *dev, unsigned int rate)
+ 
+ 	/* set CICOSR */
+ 	ret |= regmap_update_bits(micfil->regmap, REG_MICFIL_CTRL2,
+-				 MICFIL_CTRL2_CICOSR_MASK,
+-				 MICFIL_CTRL2_OSR_DEFAULT);
++				 MICFIL_CTRL2_CICOSR,
++				 FIELD_PREP(MICFIL_CTRL2_CICOSR, MICFIL_CTRL2_CICOSR_DEFAULT));
+ 	if (ret)
+ 		dev_err(dev, "failed to set CICOSR in reg 0x%X\n",
+ 			REG_MICFIL_CTRL2);
+@@ -334,7 +334,8 @@ static int fsl_set_clock_params(struct device *dev, unsigned int rate)
+ 		ret = -EINVAL;
+ 
+ 	ret |= regmap_update_bits(micfil->regmap, REG_MICFIL_CTRL2,
+-				 MICFIL_CTRL2_CLKDIV_MASK, clk_div);
++				 MICFIL_CTRL2_CLKDIV,
++				 FIELD_PREP(MICFIL_CTRL2_CLKDIV, clk_div));
+ 	if (ret)
+ 		dev_err(dev, "failed to set CLKDIV in reg 0x%X\n",
+ 			REG_MICFIL_CTRL2);
+@@ -410,13 +411,13 @@ static int fsl_micfil_dai_probe(struct snd_soc_dai *cpu_dai)
+ {
+ 	struct fsl_micfil *micfil = dev_get_drvdata(cpu_dai->dev);
+ 	struct device *dev = cpu_dai->dev;
+-	unsigned int val;
+ 	int ret;
+ 	int i;
+ 
+ 	/* set qsel to medium */
+ 	ret = regmap_update_bits(micfil->regmap, REG_MICFIL_CTRL2,
+-				 MICFIL_CTRL2_QSEL_MASK, MICFIL_MEDIUM_QUALITY);
++			MICFIL_CTRL2_QSEL,
++			FIELD_PREP(MICFIL_CTRL2_QSEL, MICFIL_QSEL_MEDIUM_QUALITY));
+ 	if (ret) {
+ 		dev_err(dev, "failed to set quality mode bits, reg 0x%X\n",
+ 			REG_MICFIL_CTRL2);
+@@ -432,10 +433,9 @@ static int fsl_micfil_dai_probe(struct snd_soc_dai *cpu_dai)
+ 				  &micfil->dma_params_rx);
+ 
+ 	/* FIFO Watermark Control - FIFOWMK*/
+-	val = MICFIL_FIFO_CTRL_FIFOWMK(micfil->soc->fifo_depth) - 1;
+ 	ret = regmap_update_bits(micfil->regmap, REG_MICFIL_FIFO_CTRL,
+-				 MICFIL_FIFO_CTRL_FIFOWMK_MASK,
+-				 val);
++			MICFIL_FIFO_CTRL_FIFOWMK,
++			FIELD_PREP(MICFIL_FIFO_CTRL_FIFOWMK, micfil->soc->fifo_depth - 1));
+ 	if (ret) {
+ 		dev_err(dev, "failed to set FIFOWMK\n");
+ 		return ret;
+@@ -595,11 +595,11 @@ static irqreturn_t micfil_isr(int irq, void *devid)
+ 	regmap_read(micfil->regmap, REG_MICFIL_CTRL1, &ctrl1_reg);
+ 	regmap_read(micfil->regmap, REG_MICFIL_FIFO_STAT, &fifo_stat_reg);
+ 
+-	dma_enabled = MICFIL_DMA_ENABLED(ctrl1_reg);
++	dma_enabled = FIELD_GET(MICFIL_CTRL1_DISEL, ctrl1_reg) == MICFIL_CTRL1_DISEL_DMA;
+ 
+ 	/* Channel 0-7 Output Data Flags */
+ 	for (i = 0; i < MICFIL_OUTPUT_CHANNELS; i++) {
+-		if (stat_reg & MICFIL_STAT_CHXF_MASK(i))
++		if (stat_reg & MICFIL_STAT_CHXF(i))
+ 			dev_dbg(&pdev->dev,
+ 				"Data available in Data Channel %d\n", i);
+ 		/* if DMA is not enabled, field must be written with 1
+@@ -608,17 +608,17 @@ static irqreturn_t micfil_isr(int irq, void *devid)
+ 		if (!dma_enabled)
+ 			regmap_write_bits(micfil->regmap,
+ 					  REG_MICFIL_STAT,
+-					  MICFIL_STAT_CHXF_MASK(i),
++					  MICFIL_STAT_CHXF(i),
+ 					  1);
+ 	}
+ 
+ 	for (i = 0; i < MICFIL_FIFO_NUM; i++) {
+-		if (fifo_stat_reg & MICFIL_FIFO_STAT_FIFOX_OVER_MASK(i))
++		if (fifo_stat_reg & MICFIL_FIFO_STAT_FIFOX_OVER(i))
+ 			dev_dbg(&pdev->dev,
+ 				"FIFO Overflow Exception flag for channel %d\n",
+ 				i);
+ 
+-		if (fifo_stat_reg & MICFIL_FIFO_STAT_FIFOX_UNDER_MASK(i))
++		if (fifo_stat_reg & MICFIL_FIFO_STAT_FIFOX_UNDER(i))
+ 			dev_dbg(&pdev->dev,
+ 				"FIFO Underflow Exception flag for channel %d\n",
+ 				i);
+diff --git a/sound/soc/fsl/fsl_micfil.h b/sound/soc/fsl/fsl_micfil.h
+index 11ccc08523b2e..5cecae2519795 100644
+--- a/sound/soc/fsl/fsl_micfil.h
++++ b/sound/soc/fsl/fsl_micfil.h
+@@ -39,82 +39,45 @@
+ #define MICFIL_CTRL1_DBG		BIT(28)
+ #define MICFIL_CTRL1_SRES		BIT(27)
+ #define MICFIL_CTRL1_DBGE		BIT(26)
+-#define MICFIL_CTRL1_DISEL_SHIFT	24
+-#define MICFIL_CTRL1_DISEL_WIDTH	2
+-#define MICFIL_CTRL1_DISEL_MASK		((BIT(MICFIL_CTRL1_DISEL_WIDTH) - 1) \
+-					 << MICFIL_CTRL1_DISEL_SHIFT)
++
++#define MICFIL_CTRL1_DISEL_DISABLE	0
++#define MICFIL_CTRL1_DISEL_DMA		1
++#define MICFIL_CTRL1_DISEL_IRQ		2
++#define MICFIL_CTRL1_DISEL		GENMASK(25, 24)
+ #define MICFIL_CTRL1_ERREN		BIT(23)
+-#define MICFIL_CTRL1_CHEN_SHIFT		0
+-#define MICFIL_CTRL1_CHEN_WIDTH		8
+-#define MICFIL_CTRL1_CHEN_MASK(x)	(BIT(x) << MICFIL_CTRL1_CHEN_SHIFT)
+-#define MICFIL_CTRL1_CHEN(x)		(MICFIL_CTRL1_CHEN_MASK(x))
++#define MICFIL_CTRL1_CHEN(ch)		BIT(ch)
+ 
+ /* MICFIL Control Register 2 -- REG_MICFILL_CTRL2 0x04 */
+ #define MICFIL_CTRL2_QSEL_SHIFT		25
+-#define MICFIL_CTRL2_QSEL_WIDTH		3
+-#define MICFIL_CTRL2_QSEL_MASK		((BIT(MICFIL_CTRL2_QSEL_WIDTH) - 1) \
+-					 << MICFIL_CTRL2_QSEL_SHIFT)
+-#define MICFIL_HIGH_QUALITY		BIT(MICFIL_CTRL2_QSEL_SHIFT)
+-#define MICFIL_MEDIUM_QUALITY		(0 << MICFIL_CTRL2_QSEL_SHIFT)
+-#define MICFIL_LOW_QUALITY		(7 << MICFIL_CTRL2_QSEL_SHIFT)
+-#define MICFIL_VLOW0_QUALITY		(6 << MICFIL_CTRL2_QSEL_SHIFT)
+-#define MICFIL_VLOW1_QUALITY		(5 << MICFIL_CTRL2_QSEL_SHIFT)
+-#define MICFIL_VLOW2_QUALITY		(4 << MICFIL_CTRL2_QSEL_SHIFT)
+-
+-#define MICFIL_CTRL2_CICOSR_SHIFT	16
+-#define MICFIL_CTRL2_CICOSR_WIDTH	4
+-#define MICFIL_CTRL2_CICOSR_MASK	((BIT(MICFIL_CTRL2_CICOSR_WIDTH) - 1) \
+-					 << MICFIL_CTRL2_CICOSR_SHIFT)
+-#define MICFIL_CTRL2_CICOSR(v)		(((v) << MICFIL_CTRL2_CICOSR_SHIFT) \
+-					 & MICFIL_CTRL2_CICOSR_MASK)
+-#define MICFIL_CTRL2_CLKDIV_SHIFT	0
+-#define MICFIL_CTRL2_CLKDIV_WIDTH	8
+-#define MICFIL_CTRL2_CLKDIV_MASK	((BIT(MICFIL_CTRL2_CLKDIV_WIDTH) - 1) \
+-					 << MICFIL_CTRL2_CLKDIV_SHIFT)
+-#define MICFIL_CTRL2_CLKDIV(v)		(((v) << MICFIL_CTRL2_CLKDIV_SHIFT) \
+-					 & MICFIL_CTRL2_CLKDIV_MASK)
++#define MICFIL_CTRL2_QSEL		GENMASK(27, 25)
++#define MICFIL_QSEL_MEDIUM_QUALITY	0
++#define MICFIL_QSEL_HIGH_QUALITY	1
++#define MICFIL_QSEL_LOW_QUALITY		7
++#define MICFIL_QSEL_VLOW0_QUALITY	6
++#define MICFIL_QSEL_VLOW1_QUALITY	5
++#define MICFIL_QSEL_VLOW2_QUALITY	4
++
++#define MICFIL_CTRL2_CICOSR		GENMASK(19, 16)
++#define MICFIL_CTRL2_CICOSR_DEFAULT	0
++#define MICFIL_CTRL2_CLKDIV		GENMASK(7, 0)
+ 
+ /* MICFIL Status Register -- REG_MICFIL_STAT 0x08 */
+ #define MICFIL_STAT_BSY_FIL		BIT(31)
+ #define MICFIL_STAT_FIR_RDY		BIT(30)
+ #define MICFIL_STAT_LOWFREQF		BIT(29)
+-#define MICFIL_STAT_CHXF_SHIFT(v)	(v)
+-#define MICFIL_STAT_CHXF_MASK(v)	BIT(MICFIL_STAT_CHXF_SHIFT(v))
+-#define MICFIL_STAT_CHXF(v)		BIT(MICFIL_STAT_CHXF_SHIFT(v))
++#define MICFIL_STAT_CHXF(ch)		BIT(ch)
+ 
+ /* MICFIL FIFO Control Register -- REG_MICFIL_FIFO_CTRL 0x10 */
+-#define MICFIL_FIFO_CTRL_FIFOWMK_SHIFT	0
+-#define MICFIL_FIFO_CTRL_FIFOWMK_WIDTH	3
+-#define MICFIL_FIFO_CTRL_FIFOWMK_MASK	((BIT(MICFIL_FIFO_CTRL_FIFOWMK_WIDTH) - 1) \
+-					 << MICFIL_FIFO_CTRL_FIFOWMK_SHIFT)
+-#define MICFIL_FIFO_CTRL_FIFOWMK(v)	(((v) << MICFIL_FIFO_CTRL_FIFOWMK_SHIFT) \
+-					 & MICFIL_FIFO_CTRL_FIFOWMK_MASK)
++#define MICFIL_FIFO_CTRL_FIFOWMK	GENMASK(2, 0)
+ 
+ /* MICFIL FIFO Status Register -- REG_MICFIL_FIFO_STAT 0x14 */
+-#define MICFIL_FIFO_STAT_FIFOX_OVER_SHIFT(v)	(v)
+-#define MICFIL_FIFO_STAT_FIFOX_OVER_MASK(v)	BIT(MICFIL_FIFO_STAT_FIFOX_OVER_SHIFT(v))
+-#define MICFIL_FIFO_STAT_FIFOX_UNDER_SHIFT(v)	((v) + 8)
+-#define MICFIL_FIFO_STAT_FIFOX_UNDER_MASK(v)	BIT(MICFIL_FIFO_STAT_FIFOX_UNDER_SHIFT(v))
++#define MICFIL_FIFO_STAT_FIFOX_OVER(ch)	BIT(ch)
++#define MICFIL_FIFO_STAT_FIFOX_UNDER(ch)	BIT((ch) + 8)
+ 
+ /* MICFIL HWVAD0 Control 1 Register -- REG_MICFIL_VAD0_CTRL1*/
+-#define MICFIL_VAD0_CTRL1_CHSEL_SHIFT	24
+-#define MICFIL_VAD0_CTRL1_CHSEL_WIDTH	3
+-#define MICFIL_VAD0_CTRL1_CHSEL_MASK	((BIT(MICFIL_VAD0_CTRL1_CHSEL_WIDTH) - 1) \
+-					 << MICFIL_VAD0_CTRL1_CHSEL_SHIFT)
+-#define MICFIL_VAD0_CTRL1_CHSEL(v)	(((v) << MICFIL_VAD0_CTRL1_CHSEL_SHIFT) \
+-					 & MICFIL_VAD0_CTRL1_CHSEL_MASK)
+-#define MICFIL_VAD0_CTRL1_CICOSR_SHIFT	16
+-#define MICFIL_VAD0_CTRL1_CICOSR_WIDTH	4
+-#define MICFIL_VAD0_CTRL1_CICOSR_MASK	((BIT(MICFIL_VAD0_CTRL1_CICOSR_WIDTH) - 1) \
+-					 << MICFIL_VAD0_CTRL1_CICOSR_SHIFT)
+-#define MICFIL_VAD0_CTRL1_CICOSR(v)	(((v) << MICFIL_VAD0_CTRL1_CICOSR_SHIFT) \
+-					 & MICFIL_VAD0_CTRL1_CICOSR_MASK)
+-#define MICFIL_VAD0_CTRL1_INITT_SHIFT	8
+-#define MICFIL_VAD0_CTRL1_INITT_WIDTH	5
+-#define MICFIL_VAD0_CTRL1_INITT_MASK	((BIT(MICFIL_VAD0_CTRL1_INITT_WIDTH) - 1) \
+-					 << MICFIL_VAD0_CTRL1_INITT_SHIFT)
+-#define MICFIL_VAD0_CTRL1_INITT(v)	(((v) << MICFIL_VAD0_CTRL1_INITT_SHIFT) \
+-					 & MICFIL_VAD0_CTRL1_INITT_MASK)
++#define MICFIL_VAD0_CTRL1_CHSEL_SHIFT	GENMASK(26, 24)
++#define MICFIL_VAD0_CTRL1_CICOSR_SHIFT	GENMASK(19, 16)
++#define MICFIL_VAD0_CTRL1_INITT_SHIFT	GENMASK(12, 8)
+ #define MICFIL_VAD0_CTRL1_ST10		BIT(4)
+ #define MICFIL_VAD0_CTRL1_ERIE		BIT(3)
+ #define MICFIL_VAD0_CTRL1_IE		BIT(2)
+@@ -125,66 +88,26 @@
+ #define MICFIL_VAD0_CTRL2_FRENDIS	BIT(31)
+ #define MICFIL_VAD0_CTRL2_PREFEN	BIT(30)
+ #define MICFIL_VAD0_CTRL2_FOUTDIS	BIT(28)
+-#define MICFIL_VAD0_CTRL2_FRAMET_SHIFT	16
+-#define MICFIL_VAD0_CTRL2_FRAMET_WIDTH	6
+-#define MICFIL_VAD0_CTRL2_FRAMET_MASK	((BIT(MICFIL_VAD0_CTRL2_FRAMET_WIDTH) - 1) \
+-					 << MICFIL_VAD0_CTRL2_FRAMET_SHIFT)
+-#define MICFIL_VAD0_CTRL2_FRAMET(v)	(((v) << MICFIL_VAD0_CTRL2_FRAMET_SHIFT) \
+-					 & MICFIL_VAD0_CTRL2_FRAMET_MASK)
+-#define MICFIL_VAD0_CTRL2_INPGAIN_SHIFT	8
+-#define MICFIL_VAD0_CTRL2_INPGAIN_WIDTH	4
+-#define MICFIL_VAD0_CTRL2_INPGAIN_MASK	((BIT(MICFIL_VAD0_CTRL2_INPGAIN_WIDTH) - 1) \
+-					 << MICFIL_VAD0_CTRL2_INPGAIN_SHIFT)
+-#define MICFIL_VAD0_CTRL2_INPGAIN(v)	(((v) << MICFIL_VAD0_CTRL2_INPGAIN_SHIFT) \
+-					& MICFIL_VAD0_CTRL2_INPGAIN_MASK)
+-#define MICFIL_VAD0_CTRL2_HPF_SHIFT	0
+-#define MICFIL_VAD0_CTRL2_HPF_WIDTH	2
+-#define MICFIL_VAD0_CTRL2_HPF_MASK	((BIT(MICFIL_VAD0_CTRL2_HPF_WIDTH) - 1) \
+-					 << MICFIL_VAD0_CTRL2_HPF_SHIFT)
+-#define MICFIL_VAD0_CTRL2_HPF(v)	(((v) << MICFIL_VAD0_CTRL2_HPF_SHIFT) \
+-					 & MICFIL_VAD0_CTRL2_HPF_MASK)
++#define MICFIL_VAD0_CTRL2_FRAMET	GENMASK(21, 16)
++#define MICFIL_VAD0_CTRL2_INPGAIN	GENMASK(11, 8)
++#define MICFIL_VAD0_CTRL2_HPF		GENMASK(1, 0)
+ 
+ /* MICFIL HWVAD0 Signal CONFIG Register -- REG_MICFIL_VAD0_SCONFIG */
+ #define MICFIL_VAD0_SCONFIG_SFILEN		BIT(31)
+ #define MICFIL_VAD0_SCONFIG_SMAXEN		BIT(30)
+-#define MICFIL_VAD0_SCONFIG_SGAIN_SHIFT		0
+-#define MICFIL_VAD0_SCONFIG_SGAIN_WIDTH		4
+-#define MICFIL_VAD0_SCONFIG_SGAIN_MASK		((BIT(MICFIL_VAD0_SCONFIG_SGAIN_WIDTH) - 1) \
+-						<< MICFIL_VAD0_SCONFIG_SGAIN_SHIFT)
+-#define MICFIL_VAD0_SCONFIG_SGAIN(v)		(((v) << MICFIL_VAD0_SCONFIG_SGAIN_SHIFT) \
+-						 & MICFIL_VAD0_SCONFIG_SGAIN_MASK)
++#define MICFIL_VAD0_SCONFIG_SGAIN		GENMASK(3, 0)
+ 
+ /* MICFIL HWVAD0 Noise CONFIG Register -- REG_MICFIL_VAD0_NCONFIG */
+ #define MICFIL_VAD0_NCONFIG_NFILAUT		BIT(31)
+ #define MICFIL_VAD0_NCONFIG_NMINEN		BIT(30)
+ #define MICFIL_VAD0_NCONFIG_NDECEN		BIT(29)
+ #define MICFIL_VAD0_NCONFIG_NOREN		BIT(28)
+-#define MICFIL_VAD0_NCONFIG_NFILADJ_SHIFT	8
+-#define MICFIL_VAD0_NCONFIG_NFILADJ_WIDTH	5
+-#define MICFIL_VAD0_NCONFIG_NFILADJ_MASK	((BIT(MICFIL_VAD0_NCONFIG_NFILADJ_WIDTH) - 1) \
+-						 << MICFIL_VAD0_NCONFIG_NFILADJ_SHIFT)
+-#define MICFIL_VAD0_NCONFIG_NFILADJ(v)		(((v) << MICFIL_VAD0_NCONFIG_NFILADJ_SHIFT) \
+-						 & MICFIL_VAD0_NCONFIG_NFILADJ_MASK)
+-#define MICFIL_VAD0_NCONFIG_NGAIN_SHIFT		0
+-#define MICFIL_VAD0_NCONFIG_NGAIN_WIDTH		4
+-#define MICFIL_VAD0_NCONFIG_NGAIN_MASK		((BIT(MICFIL_VAD0_NCONFIG_NGAIN_WIDTH) - 1) \
+-						 << MICFIL_VAD0_NCONFIG_NGAIN_SHIFT)
+-#define MICFIL_VAD0_NCONFIG_NGAIN(v)		(((v) << MICFIL_VAD0_NCONFIG_NGAIN_SHIFT) \
+-						 & MICFIL_VAD0_NCONFIG_NGAIN_MASK)
++#define MICFIL_VAD0_NCONFIG_NFILADJ		GENMASK(12, 8)
++#define MICFIL_VAD0_NCONFIG_NGAIN		GENMASK(3, 0)
+ 
+ /* MICFIL HWVAD0 Zero-Crossing Detector - REG_MICFIL_VAD0_ZCD */
+-#define MICFIL_VAD0_ZCD_ZCDTH_SHIFT	16
+-#define MICFIL_VAD0_ZCD_ZCDTH_WIDTH	10
+-#define MICFIL_VAD0_ZCD_ZCDTH_MASK	((BIT(MICFIL_VAD0_ZCD_ZCDTH_WIDTH) - 1) \
+-					 << MICFIL_VAD0_ZCD_ZCDTH_SHIFT)
+-#define MICFIL_VAD0_ZCD_ZCDTH(v)	(((v) << MICFIL_VAD0_ZCD_ZCDTH_SHIFT)\
+-					 & MICFIL_VAD0_ZCD_ZCDTH_MASK)
+-#define MICFIL_VAD0_ZCD_ZCDADJ_SHIFT	8
+-#define MICFIL_VAD0_ZCD_ZCDADJ_WIDTH	4
+-#define MICFIL_VAD0_ZCD_ZCDADJ_MASK	((BIT(MICFIL_VAD0_ZCD_ZCDADJ_WIDTH) - 1)\
+-					 << MICFIL_VAD0_ZCD_ZCDADJ_SHIFT)
+-#define MICFIL_VAD0_ZCD_ZCDADJ(v)	(((v) << MICFIL_VAD0_ZCD_ZCDADJ_SHIFT)\
+-					 & MICFIL_VAD0_ZCD_ZCDADJ_MASK)
++#define MICFIL_VAD0_ZCD_ZCDTH		GENMASK(25, 16)
++#define MICFIL_VAD0_ZCD_ZCDADJ_SHIFT	GENMASK(11, 8)
+ #define MICFIL_VAD0_ZCD_ZCDAND		BIT(4)
+ #define MICFIL_VAD0_ZCD_ZCDAUT		BIT(2)
+ #define MICFIL_VAD0_ZCD_ZCDEN		BIT(0)
+@@ -199,11 +122,6 @@
+ #define MICFIL_OUTGAIN_CHX_SHIFT(v)	(4 * (v))
+ 
+ /* Constants */
+-#define MICFIL_DMA_IRQ_DISABLED(v)	((v) & MICFIL_CTRL1_DISEL_MASK)
+-#define MICFIL_DMA_ENABLED(v)		((0x1 << MICFIL_CTRL1_DISEL_SHIFT) \
+-					 == ((v) & MICFIL_CTRL1_DISEL_MASK))
+-#define MICFIL_IRQ_ENABLED(v)		((0x2 << MICFIL_CTRL1_DISEL_SHIFT) \
+-					 == ((v) & MICFIL_CTRL1_DISEL_MASK))
+ #define MICFIL_OUTPUT_CHANNELS		8
+ #define MICFIL_FIFO_NUM			8
+ 
+@@ -215,6 +133,5 @@
+ #define MICFIL_SLEEP_MIN		90000 /* in us */
+ #define MICFIL_SLEEP_MAX		100000 /* in us */
+ #define MICFIL_DMA_MAXBURST_RX		6
+-#define MICFIL_CTRL2_OSR_DEFAULT	(0 << MICFIL_CTRL2_CICOSR_SHIFT)
+ 
+ #endif /* _FSL_MICFIL_H */
+-- 
+2.43.0
+
 
 
 
