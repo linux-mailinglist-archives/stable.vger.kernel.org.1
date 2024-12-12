@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D299EF77C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0BA9EF4DC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4218616FAB4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE98928C6C3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8BA222D7C;
-	Thu, 12 Dec 2024 17:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E96A223E97;
+	Thu, 12 Dec 2024 17:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utQxmqUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGzQ2GZo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA53222D6D;
-	Thu, 12 Dec 2024 17:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF9F223E8C;
+	Thu, 12 Dec 2024 17:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024575; cv=none; b=vE93FYIpajVTjJusnw3LAU9fRginbs5ZLbbpoNdwr1nqgOs4kyR38kbZyz4ztEJt1ibPO2pyIf7+QYeD4fRVb4mV6pMWwK00kEOG9QmrTiX8a++3NMIcJFjVYrXTLA52edr8//zKsXG98K+ogUeUBWieOb5V1n3lWDC+PvzBz48=
+	t=1734023378; cv=none; b=RHff08uDpLAV3+eU+LzuEaH1XblYHGav+El4w9W0Tvg1iIbVgGXD8NQMq9VMo8+u97uYRcRpgr8xxzmyJK/6NMca92b3O77d8eZ8Mpf01zeMJb+frjzmObP+mM/V9eSOtiYDH/kPo/w8hnwh+ztnDLNmfApLbCBXd20Oe+EBz/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024575; c=relaxed/simple;
-	bh=Qd1Lep1pqSXxwS5V3qKJQAdKmV1w5eNp9UyKQC8YE80=;
+	s=arc-20240116; t=1734023378; c=relaxed/simple;
+	bh=gDfekximopHIHt4emmNudw1k4b5uKqW/LZHDI50k5Os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSRHU9A7M70oA8im4Gn1gyL7UU4NbwoUGZ1LZ17UCtE6hqpf/xUo16CpU2uzWC13lCA6ESaTdfG/06MvcHIGgNDNAhPaUCx3phY8sLbaSPxDS0f0TyYzt/lIYwZfB4HkFvTncZT7kI8hsY1kGhQdXJFhoqprzVHJILF91zZAjeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utQxmqUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70657C4CED0;
-	Thu, 12 Dec 2024 17:29:34 +0000 (UTC)
+	 MIME-Version; b=JXuozDZhKNaJxRvf8zxJYm6IOHFdYcA4BYCZgsXAnTjgLtlvcADnGTlr4GZLY+qiAJmo2sSEjWnDsVF0X4rMXKxTLAL8En9fJrWOFdKki5qvOM4tELSC85gTB3AbfDouHvOp+9MxBG/e4p3p+EPdhyMg1etwq8mbATfo6TOiL3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGzQ2GZo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F07C4CEDF;
+	Thu, 12 Dec 2024 17:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024574;
-	bh=Qd1Lep1pqSXxwS5V3qKJQAdKmV1w5eNp9UyKQC8YE80=;
+	s=korg; t=1734023378;
+	bh=gDfekximopHIHt4emmNudw1k4b5uKqW/LZHDI50k5Os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utQxmqUKzOg5IrJq6NT0d/KvcYO1lrZ2bJRuVH3BbmJ5LRl9cD6AK2RejKITWFZtr
-	 iKFEPUCwZIKFjLJMoOo/DcXZXN8x+L2AEAnMA6pHKw/xmScSwL0EuRdmNkWrZofl5w
-	 Ir84rI2CT2dw5518PIbGJc216wG2ufvoheTPp+w4=
+	b=dGzQ2GZoz24jG1llZo1z+CetsD4kI9bmrQCaF6hM5A10m7v5g5ukPWllnhTuJ7Th0
+	 yH6SevKAwIyIwy/Xjp8PHgmfXQpuEJVYncpBR+e3gFGC1Ev+AZPmGNt3hhL0t4aDC+
+	 MCjFfvQLKaoKJBnIrerVIFMRYzAGYf1r32Gfxq20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 341/459] netfilter: ipset: Hold module reference while requesting a module
+Subject: [PATCH 5.15 484/565] net: ethernet: fs_enet: Use %pa to format resource_size_t
 Date: Thu, 12 Dec 2024 16:01:19 +0100
-Message-ID: <20241212144307.132975507@linuxfoundation.org>
+Message-ID: <20241212144330.892483654@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 456f010bfaefde84d3390c755eedb1b0a5857c3c ]
+[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
 
-User space may unload ip_set.ko while it is itself requesting a set type
-backend module, leading to a kernel crash. The race condition may be
-provoked by inserting an mdelay() right after the nfnl_unlock() call.
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
 
-Fixes: a7b4f989a629 ("netfilter: ipset: IP set core support")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+
+Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+
+Flagged by gcc-14 as:
+
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+      |                                             ~^   ~~~~~~~~~
+      |                                              |      |
+      |                                              |      resource_size_t {aka long long unsigned int}
+      |                                              unsigned int
+      |                                             %llx
+
+No functional change intended.
+Compile tested only.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index bac92369a5436..a265efd31ba96 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -104,14 +104,19 @@ find_set_type(const char *name, u8 family, u8 revision)
- static bool
- load_settype(const char *name)
- {
-+	if (!try_module_get(THIS_MODULE))
-+		return false;
-+
- 	nfnl_unlock(NFNL_SUBSYS_IPSET);
- 	pr_debug("try to load ip_set_%s\n", name);
- 	if (request_module("ip_set_%s", name) < 0) {
- 		pr_warn("Can't find ip_set type %s\n", name);
- 		nfnl_lock(NFNL_SUBSYS_IPSET);
-+		module_put(THIS_MODULE);
- 		return false;
- 	}
- 	nfnl_lock(NFNL_SUBSYS_IPSET);
-+	module_put(THIS_MODULE);
- 	return true;
- }
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+index 21de56345503f..f743112730194 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+@@ -126,7 +126,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
+ 	 * we get is an int, and the odds of multiple bitbang mdio buses
+ 	 * is low enough that it's not worth going too crazy.
+ 	 */
+-	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
  
+ 	data = of_get_property(np, "fsl,mdio-pin", &len);
+ 	if (!data || len != 4)
 -- 
 2.43.0
 
