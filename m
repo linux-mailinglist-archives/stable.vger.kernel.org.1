@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AAE39EF0E3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E015D9EEABF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80CAA189BDDA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD6E7168C60
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52AC223C47;
-	Thu, 12 Dec 2024 16:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27DD21639F;
+	Thu, 12 Dec 2024 15:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcSpbxDO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOjjkmBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A75211A34;
-	Thu, 12 Dec 2024 16:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E67F21171A;
+	Thu, 12 Dec 2024 15:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020202; cv=none; b=ZO+eewuBNyMOAH0qcMZahXZ3Kpv/fJ0WJqx5n87X+ZqGbgauSyApRjvdinu7JL5h/IufiOczf0EFs0chcJLuX7NuWWdkoMxcmMUV9V8w7dL0nvEW1jGSIXYVUWN3+Qx6GnYVBv/o/ZTCYUE86W+bmWFmQ2yv5b8Q35JdnpLSypw=
+	t=1734016376; cv=none; b=NzCKTarcFDSxNkrk4xu88t/U9vy1KlHTFA2I2Xc6IHlXZskmJl2KjMVB9NJNwaBVPvPzaHvPkw2cOfIoa6NJxbsCxZqjY9St2g4ig0iTXxaOyXJytMwJqoUggpY/yC9XsBOnhEhkNq49SM0w4lLqoErPw832sPsNF2NQ3dt9URw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020202; c=relaxed/simple;
-	bh=rd56mwIlO2VdkmOpyU8RRa4SZG7uPoYj9lsPtQUQ15w=;
+	s=arc-20240116; t=1734016376; c=relaxed/simple;
+	bh=cO47pyqaWym4Ef55F/95+K3BxeH5YDPQI08Ae39D1ZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRUwJKs9i3JofvQSWxvrlhH2kDGpriZ0Ly7M0hAJnH9HkRxVuO3BfvGLWRyu4vX7P3CIQitVn4r2cYPnaz81BlsiP4YE0BjVviVCKBfgAKyaY6uWSQzIIlWaA1pIADe+gLkaIY1aiJXabsglCUbK07kUgt75yvQoyL68sYaoP14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcSpbxDO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58C1C4CECE;
-	Thu, 12 Dec 2024 16:16:41 +0000 (UTC)
+	 MIME-Version; b=AGg12ty3ygPf8i+H+NVtg53MsAANoSkdwL5W528CfQ9ugzA0MeUoTgy66JmzIQWaEkm39+Ms9GjI5B6/Kc+XvKQ1wRTNRhz0ppZ+jFGoeV6iXy60XQRI6we3myjkNDEM+NxErTGdnefN4lFfN7xRihz+LK1NnZ8E19HXFsIdWMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOjjkmBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21F5C4CED0;
+	Thu, 12 Dec 2024 15:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020202;
-	bh=rd56mwIlO2VdkmOpyU8RRa4SZG7uPoYj9lsPtQUQ15w=;
+	s=korg; t=1734016376;
+	bh=cO47pyqaWym4Ef55F/95+K3BxeH5YDPQI08Ae39D1ZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wcSpbxDOXeQQ9z+CVUS7UKDNF/zIz1p062Z4LHY3CLH5WNL4t7IZ9pYSbbjl7EGA/
-	 uIXrACZ51yybzpDfy9pPY0SXCJNHI456JZOlq6kVZZGMX7R04mlNVz5AhGI1sWnRbY
-	 yIE8mFUuMZi0v62J/NgL4N8x0AA+NtPN+cMxkTB0=
+	b=BOjjkmBKcquNBn1gMaRYc2VXooSBw+JwxKfQ963EA96H64H1jwpjKsUmalool7d3+
+	 ayxBpdq5tMDVET4bobRhaC6sMuEgDNz5MrgY+pE+dLwj2S7WZp46vQPRi8DxgBE5x/
+	 KofkbngWYJmoQu1KjqOUl0jlGzwNIj1foQuGe7+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 405/772] ublk: fix ublk_ch_mmap() for 64K page size
+	David Belanger <david.belanger@amd.com>,
+	Frank Min <frank.min@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 181/466] drm/amdgpu/hdp5.2: do a posting read when flushing HDP
 Date: Thu, 12 Dec 2024 15:55:50 +0100
-Message-ID: <20241212144406.659624218@linuxfoundation.org>
+Message-ID: <20241212144313.943157847@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit d369735e02ef122d19d4c3d093028da0eb400636 upstream.
+commit f756dbac1ce1d5f9a2b35e3b55fa429cf6336437 upstream.
 
-In ublk_ch_mmap(), queue id is calculated in the following way:
+Need to read back to make sure the write goes through.
 
-	(vma->vm_pgoff << PAGE_SHIFT) / `max_cmd_buf_size`
-
-'max_cmd_buf_size' is equal to
-
-	`UBLK_MAX_QUEUE_DEPTH * sizeof(struct ublksrv_io_desc)`
-
-and UBLK_MAX_QUEUE_DEPTH is 4096 and part of UAPI, so 'max_cmd_buf_size'
-is always page aligned in 4K page size kernel. However, it isn't true in
-64K page size kernel.
-
-Fixes the issue by always rounding up 'max_cmd_buf_size' with PAGE_SIZE.
-
+Cc: David Belanger <david.belanger@amd.com>
+Reviewed-by: Frank Min <frank.min@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241111110718.1394001-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/ublk_drv.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -325,12 +325,21 @@ static inline char *ublk_queue_cmd_buf(s
- 	return ublk_get_queue(ub, q_id)->io_cmd_buf;
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
+@@ -31,13 +31,15 @@
+ static void hdp_v5_2_flush_hdp(struct amdgpu_device *adev,
+ 				struct amdgpu_ring *ring)
+ {
+-	if (!ring || !ring->funcs->emit_wreg)
++	if (!ring || !ring->funcs->emit_wreg) {
+ 		WREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
+ 			0);
+-	else
++		RREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
++	} else {
+ 		amdgpu_ring_emit_wreg(ring,
+ 			(adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
+ 			0);
++	}
  }
  
-+static inline int __ublk_queue_cmd_buf_size(int depth)
-+{
-+	return round_up(depth * sizeof(struct ublksrv_io_desc), PAGE_SIZE);
-+}
-+
- static inline int ublk_queue_cmd_buf_size(struct ublk_device *ub, int q_id)
- {
- 	struct ublk_queue *ubq = ublk_get_queue(ub, q_id);
- 
--	return round_up(ubq->q_depth * sizeof(struct ublksrv_io_desc),
--			PAGE_SIZE);
-+	return __ublk_queue_cmd_buf_size(ubq->q_depth);
-+}
-+
-+static int ublk_max_cmd_buf_size(void)
-+{
-+	return __ublk_queue_cmd_buf_size(UBLK_MAX_QUEUE_DEPTH);
- }
- 
- static inline bool ublk_queue_can_use_recovery_reissue(
-@@ -930,7 +939,7 @@ static int ublk_ch_mmap(struct file *fil
- {
- 	struct ublk_device *ub = filp->private_data;
- 	size_t sz = vma->vm_end - vma->vm_start;
--	unsigned max_sz = UBLK_MAX_QUEUE_DEPTH * sizeof(struct ublksrv_io_desc);
-+	unsigned max_sz = ublk_max_cmd_buf_size();
- 	unsigned long pfn, end, phys_off = vma->vm_pgoff << PAGE_SHIFT;
- 	int q_id, ret = 0;
- 
+ static void hdp_v5_2_update_mem_power_gating(struct amdgpu_device *adev,
 
 
 
