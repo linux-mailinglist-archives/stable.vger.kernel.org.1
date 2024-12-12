@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560709EEC78
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100439EF435
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FB0F162A86
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9ECB18869BA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B2D2153DF;
-	Thu, 12 Dec 2024 15:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E8C21CFEA;
+	Thu, 12 Dec 2024 16:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HotvUTcx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9F+9x2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D441813CA93;
-	Thu, 12 Dec 2024 15:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D0E21639E;
+	Thu, 12 Dec 2024 16:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017577; cv=none; b=XCsW6CvyHD/C3eIHsQO+xxNxBEd4xgDCeB0sCrcXYuZdlvcYDb7PCmK3a7/rYKPgVXZO4oxqjQjR4RwpKW+Cj8zWvCSgLNYyk2780WwDJXClAgGtGifls+ImLckbk3NLLU48HYkjQBTYMO4j1Wif0xuLIRWieqUaVlAcnp0KoeY=
+	t=1734022212; cv=none; b=cfM17efpI66k3lqm7vpa6sZNByllOp1um4WJabg76Zgnwfzh/iDsDVZkZ6a4MF+u5OXrDIQyXMacxf6/KcyOUGEa+kWxqTsx0+H96lWLnqBcvZAgbMNWpBFbclNInEhea1O4kkNfyrzRKJB+ughhPqm7KXsX/riYXlgfdJLbU/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017577; c=relaxed/simple;
-	bh=cYmzr7sKdPIf/V3BPvS5EbdaaKu50YEGr2kqjJwGIGs=;
+	s=arc-20240116; t=1734022212; c=relaxed/simple;
+	bh=8UhF/6x0FtJMt8oq/wWzaJ/cZ4U5ujSAnzI1HVp0ABA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlSFcyqJvRHq8/kUfTgR+Zqizd4FCS/tCj9bZeY+/WPhycoPrUIkm9p1NGj38U5t1AJoUE1btecPaHEIP/nAsiFRPYrHOSR5wHEFWFYnIgAxwNJPUZ4Ly249kQSN+MbIPmPDGNux/LSovtvnyI8z9+xY4xTMFF7v28vA1caElrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HotvUTcx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B1EC4CECE;
-	Thu, 12 Dec 2024 15:32:57 +0000 (UTC)
+	 MIME-Version; b=pFt7bEFsgvGCt4ZE2eoiwk6z+VRVzMnE+XNh2YQHWlNHze4dlRFjVhqSDqUxC1CJebp0tJ3TUuA2AqzL+VNgeP+RuwGkK39Y5vf4Lxy5MR8hjdOxyg0Dp+JctVaVSxNA2A14wMP75p2xgbaAa7r8VQ2SckNIYCHCLUgyQmhpOuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9F+9x2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2B1C4CECE;
+	Thu, 12 Dec 2024 16:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017577;
-	bh=cYmzr7sKdPIf/V3BPvS5EbdaaKu50YEGr2kqjJwGIGs=;
+	s=korg; t=1734022211;
+	bh=8UhF/6x0FtJMt8oq/wWzaJ/cZ4U5ujSAnzI1HVp0ABA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HotvUTcxiz5IbLPos4ZsXWGvVPQ0UFu48rozQoPY1yTEKB94SrNgsr+RemTtYP6Cr
-	 HSmBX11+nCfLmMh6cmadIDE1AXV8BI3SOxU/cD2QZdMf7nRM7oQg9kEwYRdgZbqCrv
-	 SaSImI/1erAgmVNuqQQSdvqrLJe2TgqcGg8AEIac=
+	b=V9F+9x2+jkUoVUJkMGx1FVGEA2b+1Q62i8r2VS0whsrWnDlpGajdomw8o4k1s2eYR
+	 o4czmg6WvY3aiaLdDXoQP4k7lpQTb73pJepkTB+dNFE86YEANygrBb3YsS8ZjSeG02
+	 TI24uNBW7kMJcBPby5AgN+X3YJKNl9jNxaH+ymfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dipendra Khadka <kdipendra88@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/356] ethtool: Fix wrong mod state in case of verbose and no_mask bitset
-Date: Thu, 12 Dec 2024 15:56:12 +0100
-Message-ID: <20241212144246.726323497@linuxfoundation.org>
+Subject: [PATCH 5.15 178/565] octeontx2-pf: handle otx2_mbox_get_rsp errors in cn10k.c
+Date: Thu, 12 Dec 2024 15:56:13 +0100
+Message-ID: <20241212144318.512280115@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit 910c4788d6155b2202ec88273376cd7ecdc24f0a ]
+[ Upstream commit ac9183023b6a9c09467516abd8aab04f9a2f9564 ]
 
-A bitset without mask in a _SET request means we want exactly the bits in
-the bitset to be set. This works correctly for compact format but when
-verbose format is parsed, ethnl_update_bitset32_verbose() only sets the
-bits present in the request bitset but does not clear the rest. The commit
-6699170376ab ("ethtool: fix application of verbose no_mask bitset") fixes
-this issue by clearing the whole target bitmap before we start iterating.
-The solution proposed brought an issue with the behavior of the mod
-variable. As the bitset is always cleared the old value will always
-differ to the new value.
+Add error pointer check after calling otx2_mbox_get_rsp().
 
-Fix it by adding a new function to compare bitmaps and a temporary variable
-which save the state of the old bitmap.
-
-Fixes: 6699170376ab ("ethtool: fix application of verbose no_mask bitset")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20241202153358.1142095-1-kory.maincent@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2ca89a2c3752 ("octeontx2-pf: TC_MATCHALL ingress ratelimiting offload")
+Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/bitset.c | 48 ++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 44 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
-index 0515d6604b3b9..f0883357d12e5 100644
---- a/net/ethtool/bitset.c
-+++ b/net/ethtool/bitset.c
-@@ -425,12 +425,32 @@ static int ethnl_parse_bit(unsigned int *index, bool *val, unsigned int nbits,
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
+index 95f21dfdba483..942ec8f394559 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
+@@ -202,6 +202,11 @@ int cn10k_alloc_leaf_profile(struct otx2_nic *pfvf, u16 *leaf)
  
-+/**
-+ * ethnl_bitmap32_equal() - Compare two bitmaps
-+ * @map1:  first bitmap
-+ * @map2:  second bitmap
-+ * @nbits: bit size to compare
-+ *
-+ * Return: true if first @nbits are equal, false if not
-+ */
-+static bool ethnl_bitmap32_equal(const u32 *map1, const u32 *map2,
-+				 unsigned int nbits)
-+{
-+	if (memcmp(map1, map2, nbits / 32 * sizeof(u32)))
-+		return false;
-+	if (nbits % 32 == 0)
-+		return true;
-+	return !((map1[nbits / 32] ^ map2[nbits / 32]) &
-+		 ethnl_lower_bits(nbits % 32));
-+}
-+
- static int
- ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 			      const struct nlattr *attr, struct nlattr **tb,
- 			      ethnl_string_array_t names,
- 			      struct netlink_ext_ack *extack, bool *mod)
- {
-+	u32 *saved_bitmap = NULL;
- 	struct nlattr *bit_attr;
- 	bool no_mask;
- 	int rem;
-@@ -448,8 +468,20 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 	}
- 
- 	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
--	if (no_mask)
--		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
-+	if (no_mask) {
-+		unsigned int nwords = DIV_ROUND_UP(nbits, 32);
-+		unsigned int nbytes = nwords * sizeof(u32);
-+		bool dummy;
-+
-+		/* The bitmap size is only the size of the map part without
-+		 * its mask part.
-+		 */
-+		saved_bitmap = kcalloc(nwords, sizeof(u32), GFP_KERNEL);
-+		if (!saved_bitmap)
-+			return -ENOMEM;
-+		memcpy(saved_bitmap, bitmap, nbytes);
-+		ethnl_bitmap32_clear(bitmap, 0, nbits, &dummy);
+ 	rsp = (struct  nix_bandprof_alloc_rsp *)
+ 	       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
++	if (IS_ERR(rsp)) {
++		rc = PTR_ERR(rsp);
++		goto out;
 +	}
- 
- 	nla_for_each_nested(bit_attr, tb[ETHTOOL_A_BITSET_BITS], rem) {
- 		bool old_val, new_val;
-@@ -458,22 +490,30 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 		if (nla_type(bit_attr) != ETHTOOL_A_BITSET_BITS_BIT) {
- 			NL_SET_ERR_MSG_ATTR(extack, bit_attr,
- 					    "only ETHTOOL_A_BITSET_BITS_BIT allowed in ETHTOOL_A_BITSET_BITS");
-+			kfree(saved_bitmap);
- 			return -EINVAL;
- 		}
- 		ret = ethnl_parse_bit(&idx, &new_val, nbits, bit_attr, no_mask,
- 				      names, extack);
--		if (ret < 0)
-+		if (ret < 0) {
-+			kfree(saved_bitmap);
- 			return ret;
-+		}
- 		old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
- 		if (new_val != old_val) {
- 			if (new_val)
- 				bitmap[idx / 32] |= ((u32)1 << (idx % 32));
- 			else
- 				bitmap[idx / 32] &= ~((u32)1 << (idx % 32));
--			*mod = true;
-+			if (!no_mask)
-+				*mod = true;
- 		}
- 	}
- 
-+	if (no_mask && !ethnl_bitmap32_equal(saved_bitmap, bitmap, nbits))
-+		*mod = true;
 +
-+	kfree(saved_bitmap);
- 	return 0;
- }
- 
+ 	if (!rsp->prof_count[BAND_PROF_LEAF_LAYER]) {
+ 		rc = -EIO;
+ 		goto out;
 -- 
 2.43.0
 
