@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-102796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E749EF395
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 991659EEAFB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4516C28C4B4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DE86282DFE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B002358B8;
-	Thu, 12 Dec 2024 16:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77161537C8;
+	Thu, 12 Dec 2024 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIAlyecH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8YhrPMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C0222969E;
-	Thu, 12 Dec 2024 16:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650F52AF0E;
+	Thu, 12 Dec 2024 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022523; cv=none; b=HnY50GOrijiKSyPUW1DheAh0aU46QSZtE441MRGyrQFhCs6Yi5xvgdUK/Xu+CM9hWQGMwcvMNgqAJ3FY5Hlp5iTTwLQuFRDBWpMUO9DRJAo9hjFA60oWqP5EI0WWbBsu6wEaqJl4ARjt138h+TRtB7slkTbYwE+6rwnXkbZlH0w=
+	t=1734016795; cv=none; b=agPcZ6Yvs7PcMtyyeybkK/79TMWsUOQmoX9BxqfxaQyc/Th5p5Mik2nMXRGBgwlg6yPG/fFNzvJdxjrGQm5zOBJiWkqR8DvdRFzanY1VTOHoE7k+Aqhm9LCjvW0sOlaa+CRbFLTlvexXjFitLA+TFQ4oHtrAPH4dWea1Z20N+pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022523; c=relaxed/simple;
-	bh=N7o0i0QyGuHNIOQFoRUnaC/yr9/5viZgsjfg9zxxwk8=;
+	s=arc-20240116; t=1734016795; c=relaxed/simple;
+	bh=ElIgnmesERrN/qD/0/4zFDiASQBZ/8vudOBHkqJ+qSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4M05qr+fnajrxH7ksgSSlJeiOBRBVdV3fGEEKShb3ii+h/wzmTYSJnQIKOWXia7lovUNnwYgsbjNmBJadXZReTXXNOiMlc49lPJzLwDxAkNMeBbzZUpWOPZ0zj7YvGbi1ZCxjKe1ZOWLmBOAyk/GRfIa1wR4gbp9fgZM7kTgG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIAlyecH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DFCC4CECE;
-	Thu, 12 Dec 2024 16:55:22 +0000 (UTC)
+	 MIME-Version; b=OToqXGFELoiZqPLImikmIW+2cYHdyucQsvBnfUCfYXugohKAXUaV1z1ETO2XNUC8RZyKlKEcEa/YNhAOBJdkwxBV8WbYMtPFEwnTmY/Z/lP+iy0GLpmTGjbQAfJhv6Gs7DyBxWZKw3TT4E5UK9riRWj2yJoIzQMSICCpF5gOEko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8YhrPMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA73EC4CECE;
+	Thu, 12 Dec 2024 15:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022523;
-	bh=N7o0i0QyGuHNIOQFoRUnaC/yr9/5viZgsjfg9zxxwk8=;
+	s=korg; t=1734016795;
+	bh=ElIgnmesERrN/qD/0/4zFDiASQBZ/8vudOBHkqJ+qSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIAlyecHvoqxq6UlJt965O8Dcsjpvvm1OYNdI2Tz9wTb9FkEYUcd0hTC2Dp8MyD1b
-	 /UCbdXW1pdim2A4Qn60Gcz7m5JGz/MNqHxk9wrFTc3q7oHFmK9yTMJvJv/jNG36h+n
-	 ova+9Da1kH+e4sMHXk8/yLV5UwEjqr+qLLR7CdWA=
+	b=i8YhrPMNh0Gyt3J2ngJqNVlKSexXG4878DygR1DtQVOnt+2JbvZkpLBvUobwpfMuK
+	 E3mL4sAFwWPM0jrOugREJnqnOa+e/PLL/gtBRK95tzMSY2bFHYa9KJmN51y0r/IizI
+	 fS+db32nFygYZqgZ/GkfqsYY0R5Da5hV6olIgpm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 265/565] sunrpc: simplify two-level sysctl registration for svcrdma_parm_table
+Subject: [PATCH 6.12 291/466] net: ieee802154: do not leave a dangling sk pointer in ieee802154_create()
 Date: Thu, 12 Dec 2024 15:57:40 +0100
-Message-ID: <20241212144321.940792702@linuxfoundation.org>
+Message-ID: <20241212144318.284324355@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 376bcd9b37632cf191711a68aa25ab42f0048c2e ]
+[ Upstream commit b4fcd63f6ef79c73cafae8cf4a114def5fc3d80d ]
 
-There is no need to declare two tables to just create directories,
-this can be easily be done with a prefix path with register_sysctl().
+sock_init_data() attaches the allocated sk object to the provided sock
+object. If ieee802154_create() fails later, the allocated sk object is
+freed, but the dangling pointer remains in the provided sock object, which
+may allow use-after-free.
 
-Simplify this registration.
+Clear the sk pointer in the sock object on error.
 
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: ce89e742a4c1 ("svcrdma: fix miss destroy percpu_counter in svc_rdma_proc_init()")
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-6-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma.c | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ net/ieee802154/socket.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma.c b/net/sunrpc/xprtrdma/svc_rdma.c
-index 5bc20e9d09cd8..f0d5eeed4c886 100644
---- a/net/sunrpc/xprtrdma/svc_rdma.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma.c
-@@ -212,24 +212,6 @@ static struct ctl_table svcrdma_parm_table[] = {
- 	{ },
- };
+diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
+index 990a83455dcfb..18d267921bb53 100644
+--- a/net/ieee802154/socket.c
++++ b/net/ieee802154/socket.c
+@@ -1043,19 +1043,21 @@ static int ieee802154_create(struct net *net, struct socket *sock,
  
--static struct ctl_table svcrdma_table[] = {
--	{
--		.procname	= "svc_rdma",
--		.mode		= 0555,
--		.child		= svcrdma_parm_table
--	},
--	{ },
--};
--
--static struct ctl_table svcrdma_root_table[] = {
--	{
--		.procname	= "sunrpc",
--		.mode		= 0555,
--		.child		= svcrdma_table
--	},
--	{ },
--};
--
- static void svc_rdma_proc_cleanup(void)
- {
- 	if (!svcrdma_table_header)
-@@ -263,7 +245,8 @@ static int svc_rdma_proc_init(void)
- 	if (rc)
- 		goto out_err;
+ 	if (sk->sk_prot->hash) {
+ 		rc = sk->sk_prot->hash(sk);
+-		if (rc) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (rc)
++			goto out_sk_release;
+ 	}
  
--	svcrdma_table_header = register_sysctl_table(svcrdma_root_table);
-+	svcrdma_table_header = register_sysctl("sunrpc/svc_rdma",
-+					       svcrdma_parm_table);
- 	return 0;
+ 	if (sk->sk_prot->init) {
+ 		rc = sk->sk_prot->init(sk);
+ 		if (rc)
+-			sk_common_release(sk);
++			goto out_sk_release;
+ 	}
+ out:
+ 	return rc;
++out_sk_release:
++	sk_common_release(sk);
++	sock->sk = NULL;
++	goto out;
+ }
  
- out_err:
+ static const struct net_proto_family ieee802154_family_ops = {
 -- 
 2.43.0
 
