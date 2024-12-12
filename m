@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-103585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5F89EF880
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 673A89EF4CC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD476188431E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17BF21750BF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38DC222D68;
-	Thu, 12 Dec 2024 17:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7330223C74;
+	Thu, 12 Dec 2024 17:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hChK5284"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pd7ieuFw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60175221D93;
-	Thu, 12 Dec 2024 17:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6440C2153DD;
+	Thu, 12 Dec 2024 17:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025009; cv=none; b=VI0n2h8UBC9mAmVJ0kxqRJF17+GK1oR0qqT9qod6w0v35VrdZfF+B6y9IuXB64F8ASaeBZObZFN0TzteOFOWU4lCPJ3JLlt2dqtE5WEwzjvbgDM/mJFEAS6fh4w9xj5ef6rjaqRo/Hqd3YiAIP5Smn68kibsmaombhfGeWBqhyc=
+	t=1734022990; cv=none; b=U3X8bcPrwVRKDf0XJBXupRWSifLIkU6TovYY7uP66ezZn2joqhhAVElNSzfoMdQd7O3UaWw0nfUmcA2XnppRVh4BrTPDDnENey9kWZwkW+ooVjSZURSp9ljihT1dg/PQ9jFFrnTKsxL+SBmEGi49BUDDU3gRApDbsXxFXkKPWAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025009; c=relaxed/simple;
-	bh=JpeSKqi5dqsLA3+kpy2a1JqHZOXogP35oekri1220Rc=;
+	s=arc-20240116; t=1734022990; c=relaxed/simple;
+	bh=oNSZH93A/W3E3tc9VYuB5sT041okwoYIhF/aXn/TiWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nWQRvyERdVedZo9d5LeMNgJ2+fGAZD8WWyn9Z9aAK5ecYjkWrSyZ/B9kEZibp4WlaUP/VzTk3c40dYaOutPVLtvYKVLQnLVDIMHaTFToXZ4EZczbQeN5oWiPe3z0tJb5/VjG/n8JrclskcEgnVA4HI2jBWzx/q6CN46u6jnNF3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hChK5284; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F4FC4CED3;
-	Thu, 12 Dec 2024 17:36:48 +0000 (UTC)
+	 MIME-Version; b=LT05hNEXeci/1t+I6W4Scv3t3snxTGi84x9eWK2+vFfblVxR5eGHoFNZw1faEwQMicqBuxxAU8fGrG+fZM7Fl8pjI8eEfDwd+TDkidySK4yuWNP9dxu4HZPlFaIhs7RUiU1J4WsAWH2wrHvue2Fo8ISywKuuMypqf50A4MnIt1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pd7ieuFw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C93C4CECE;
+	Thu, 12 Dec 2024 17:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025009;
-	bh=JpeSKqi5dqsLA3+kpy2a1JqHZOXogP35oekri1220Rc=;
+	s=korg; t=1734022990;
+	bh=oNSZH93A/W3E3tc9VYuB5sT041okwoYIhF/aXn/TiWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hChK5284Wro5WQNRlq+VmInXzwGSt//62MSfys3mORR2yW6tQEGM+bb2hCKxFaxTx
-	 P7b5H7A3U6S04J3UuQtJRzBdvIJtC9BJ7OhfV03bL1wH6TLldgdE/HGTsye3RaUKjM
-	 avbhx4MorNpcn1AZOx2GsY4blWIxgAX9tsB7vBhM=
+	b=pd7ieuFwA8WZ8QAj53n2AMbc1sRXulCqWUuNn/UilpljFxo49oFHO/ENCHwabe9pk
+	 SGBbhahhSGDADJ+QNfejlVV6GRBe0kpU86YN4ZrI2Ka9IdPB4ThxzfHUYvy09yoIcR
+	 yeL1SpsxiAejPwLBTceqasUsl+I7XTDygJ3WyuM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 026/321] NFSD: Force all NFSv4.2 COPY requests to be synchronous
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.15 349/565] usb: dwc3: gadget: Fix looping of queued SG entries
 Date: Thu, 12 Dec 2024 15:59:04 +0100
-Message-ID: <20241212144231.036049453@linuxfoundation.org>
+Message-ID: <20241212144325.394497437@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 8d915bbf39266bb66082c1e4980e123883f19830 ]
+commit b7fc65f5141c24785dc8c19249ca4efcf71b3524 upstream.
 
-We've discovered that delivering a CB_OFFLOAD operation can be
-unreliable in some pretty unremarkable situations. Examples
-include:
+The dwc3_request->num_queued_sgs is decremented on completion. If a
+partially completed request is handled, then the
+dwc3_request->num_queued_sgs no longer reflects the total number of
+num_queued_sgs (it would be cleared).
 
- - The server dropped the connection because it lost a forechannel
-   NFSv4 request and wishes to force the client to retransmit
- - The GSS sequence number window under-flowed
- - A network partition occurred
+Correctly check the number of request SG entries remained to be prepare
+and queued. Failure to do this may cause null pointer dereference when
+accessing non-existent SG entry.
 
-When that happens, all pending callback operations, including
-CB_OFFLOAD, are lost. NFSD does not retransmit them.
-
-Moreover, the Linux NFS client does not yet support sending an
-OFFLOAD_STATUS operation to probe whether an asynchronous COPY
-operation has finished. Thus, on Linux NFS clients, when a
-CB_OFFLOAD is lost, asynchronous COPY can hang until manually
-interrupted.
-
-I've tried a couple of remedies, but so far the side-effects are
-worse than the disease and they have had to be reverted. So
-temporarily force COPY operations to be synchronous so that the use
-of CB_OFFLOAD is avoided entirely. This is a fix that can easily be
-backported to LTS kernels. I am working on client patches that
-introduce an implementation of OFFLOAD_STATUS.
-
-Note that NFSD arbitrarily limits the size of a copy_file_range
-to 4MB to avoid indefinitely blocking an nfsd thread. A short
-COPY result is returned in that case, and the client can present
-a fresh COPY request for the remainder.
-
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-49974
-[ cel: adjusted to apply to origin/linux-5.4.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c96e6725db9d ("usb: dwc3: gadget: Correct the logic for queuing sgs")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/d07a7c4aa0fcf746cdca0515150dbe5c52000af7.1731545781.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/dwc3/gadget.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index e38f873f98a7f..27e9754ad3b9d 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1262,6 +1262,13 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	__be32 status;
- 	struct nfsd4_copy *async_copy = NULL;
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -1403,8 +1403,8 @@ static int dwc3_prepare_trbs_sg(struct d
+ 	struct scatterlist *s;
+ 	int		i;
+ 	unsigned int length = req->request.length;
+-	unsigned int remaining = req->request.num_mapped_sgs
+-		- req->num_queued_sgs;
++	unsigned int remaining = req->num_pending_sgs;
++	unsigned int num_queued_sgs = req->request.num_mapped_sgs - remaining;
+ 	unsigned int num_trbs = req->num_trbs;
+ 	bool needs_extra_trb = dwc3_needs_extra_trb(dep, req);
  
-+	/*
-+	 * Currently, async COPY is not reliable. Force all COPY
-+	 * requests to be synchronous to avoid client application
-+	 * hangs waiting for COPY completion.
-+	 */
-+	copy->cp_synchronous = 1;
-+
- 	status = nfsd4_verify_copy(rqstp, cstate, &copy->cp_src_stateid,
- 				   &copy->nf_src, &copy->cp_dst_stateid,
- 				   &copy->nf_dst);
--- 
-2.43.0
-
+@@ -1412,7 +1412,7 @@ static int dwc3_prepare_trbs_sg(struct d
+ 	 * If we resume preparing the request, then get the remaining length of
+ 	 * the request and resume where we left off.
+ 	 */
+-	for_each_sg(req->request.sg, s, req->num_queued_sgs, i)
++	for_each_sg(req->request.sg, s, num_queued_sgs, i)
+ 		length -= sg_dma_len(s);
+ 
+ 	for_each_sg(sg, s, remaining, i) {
 
 
 
