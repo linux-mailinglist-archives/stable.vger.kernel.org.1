@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF0F9EF125
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7789EF414
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03BE3189CED5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9511A1728CA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFF722912B;
-	Thu, 12 Dec 2024 16:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370B2239BAB;
+	Thu, 12 Dec 2024 16:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuU5NkMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6Ax7Hoi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C4F228C8D;
-	Thu, 12 Dec 2024 16:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E715F239BA8;
+	Thu, 12 Dec 2024 16:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020055; cv=none; b=sVaq45t4Rwen2qOOM19PkfhyAsBkzx9H6JNrne5d9KiQd7LefAfT1KqoXMBXoHhXrkA78qAEcU11vP14GhoaOqWNU3Tw6zUmi4CKhsjSx3WX8Ahj2qaayW8HoJv00zfyn2QXzxUTsK7LnHRf1glQTyJGV5dwigdYVKNbVPvgu54=
+	t=1734022000; cv=none; b=qwfbhUND4hjK+9zTw78mnsRSd5K6Ht360H1FR69bZHZiBglX7cYGLd0SmmuSHhzDRVdoXYtXI1jDFBY8Xg+SfHgHuqmi4USiPxz4AhhLs4kU3Y2SdgQbXQ7vZfkSE50gVtPNcgwTfHRCfeQMQUftEcqesDdDqbqVdB/OKeYRPIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020055; c=relaxed/simple;
-	bh=ec93GFlDsbt31TqmzwfACkmC8tGxYENL3B+cXF/W4wc=;
+	s=arc-20240116; t=1734022000; c=relaxed/simple;
+	bh=Kzph2Ai97nC+190nLtzVOD2t20lx/22iYpnprRlb27w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xs45l0DNvPQk3oFNug3anT2wUJpUvKVmAg+NwXm4o5yo1FoMDFfAB5YterKiKApuAu3SaKJRb5uR+gsSnPxZ+RvH+H/06cBmzz0JRdPpwV95jmTyiE2W5ivSPejSaswqP69gV/9SUdzLinan71SJ2U1ZdKnDIGWq4xZZl+usVlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GuU5NkMQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18B1C4CECE;
-	Thu, 12 Dec 2024 16:14:14 +0000 (UTC)
+	 MIME-Version; b=nDWomScyM/+yIEB/8MVBPU+slkpnf+lgyUB+AKQDt8hk6bf2PM0qwgUhZOSXWYtZW7UmgUyZB+O5MNd81Pa8cOW84nz77yx54islTC1taCDAIWxNKJQ8hvFOySw5F0Zac2YAUWF/nQ7KAUBb3VdeuuATFMVdetHtJkI8VyeU/aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6Ax7Hoi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E44FC4CECE;
+	Thu, 12 Dec 2024 16:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020055;
-	bh=ec93GFlDsbt31TqmzwfACkmC8tGxYENL3B+cXF/W4wc=;
+	s=korg; t=1734021999;
+	bh=Kzph2Ai97nC+190nLtzVOD2t20lx/22iYpnprRlb27w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GuU5NkMQnvKp/91zfNhRgUhbvtk748F9oWpRprGvvWoeHqTX030xiO3IZmZM12f5C
-	 15K2HjzKfBKA0nABqQz438yG/kT5s6UNe/ZGZnhTEWCFiA9Qi5yVpnIS7XxTIpAkgm
-	 nFdj7wCy5G90L6gc7hHYq5asedPlhWgkf4Zyvvv0=
+	b=t6Ax7HoiT255kkvulETzJYo/L60DHQ0LFQc4pS+4q9ZHO6s+enIGDT+x5jXjl9FAx
+	 Ka7Z2fuWEIbbFyQ9/+9241Il1PGEtpwQmdWXXIb2s28zHL5QpPVGBYQ/MrCabuaHiH
+	 JD/0lQncIs4+KBwkAS84c+H/39zAVr2LSMsvz7m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 367/772] perf/x86/intel/pt: Fix buffer full but size is 0 case
-Date: Thu, 12 Dec 2024 15:55:12 +0100
-Message-ID: <20241212144405.072120273@linuxfoundation.org>
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 118/565] arm64: dts: mediatek: mt8173-elm-hana: Add vdd-supply to second source trackpad
+Date: Thu, 12 Dec 2024 15:55:13 +0100
+Message-ID: <20241212144316.150461714@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit 5b590160d2cf776b304eb054afafea2bd55e3620 upstream.
+[ Upstream commit f766fae08f6a2eaeb45d8d2c053724c91526835c ]
 
-If the trace data buffer becomes full, a truncated flag [T] is reported
-in PERF_RECORD_AUX.  In some cases, the size reported is 0, even though
-data must have been added to make the buffer full.
+The Hana device has a second source option trackpad, but it is missing
+its regulator supply. It only works because the regulator is marked as
+always-on.
 
-That happens when the buffer fills up from empty to full before the
-Intel PT driver has updated the buffer position.  Then the driver
-calculates the new buffer position before calculating the data size.
-If the old and new positions are the same, the data size is reported
-as 0, even though it is really the whole buffer size.
+Add the regulator supply, but leave out the post-power-on delay. Instead,
+document the post-power-on delay along with the reason for not adding
+it in a comment.
 
-Fix by detecting when the buffer position is wrapped, and adjust the
-data size calculation accordingly.
-
-Example
-
-  Use a very small buffer size (8K) and observe the size of truncated [T]
-  data. Before the fix, it is possible to see records of 0 size.
-
-  Before:
-
-    $ perf record -m,8K -e intel_pt// uname
-    Linux
-    [ perf record: Woken up 2 times to write data ]
-    [ perf record: Captured and wrote 0.105 MB perf.data ]
-    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
-    Warning:
-    AUX data lost 2 times out of 3!
-
-    5 19462712368111 0x19710 [0x40]: PERF_RECORD_AUX offset: 0 size: 0 flags: 0x1 [T]
-    5 19462712700046 0x19ba8 [0x40]: PERF_RECORD_AUX offset: 0x170 size: 0xe90 flags: 0x1 [T]
-
- After:
-
-    $ perf record -m,8K -e intel_pt// uname
-    Linux
-    [ perf record: Woken up 3 times to write data ]
-    [ perf record: Captured and wrote 0.040 MB perf.data ]
-    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
-    Warning:
-    AUX data lost 2 times out of 3!
-
-    1 113720802995 0x4948 [0x40]: PERF_RECORD_AUX offset: 0 size: 0x2000 flags: 0x1 [T]
-    1 113720979812 0x6b10 [0x40]: PERF_RECORD_AUX offset: 0x2000 size: 0x2000 flags: 0x1 [T]
-
-Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20241022155920.17511-2-adrian.hunter@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 689b937bedde ("arm64: dts: mediatek: add mt8173 elm and hana board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241018082001.1296963-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c |   11 ++++++++---
- arch/x86/events/intel/pt.h |    2 ++
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -827,11 +827,13 @@ static void pt_buffer_advance(struct pt_
- 	buf->cur_idx++;
- 
- 	if (buf->cur_idx == buf->cur->last) {
--		if (buf->cur == buf->last)
-+		if (buf->cur == buf->last) {
- 			buf->cur = buf->first;
--		else
-+			buf->wrapped = true;
-+		} else {
- 			buf->cur = list_entry(buf->cur->list.next, struct topa,
- 					      list);
-+		}
- 		buf->cur_idx = 0;
- 	}
- }
-@@ -845,8 +847,11 @@ static void pt_buffer_advance(struct pt_
- static void pt_update_head(struct pt *pt)
- {
- 	struct pt_buffer *buf = perf_get_aux(&pt->handle);
-+	bool wrapped = buf->wrapped;
- 	u64 topa_idx, base, old;
- 
-+	buf->wrapped = false;
-+
- 	if (buf->single) {
- 		local_set(&buf->data_size, buf->output_off);
- 		return;
-@@ -864,7 +869,7 @@ static void pt_update_head(struct pt *pt
- 	} else {
- 		old = (local64_xchg(&buf->head, base) &
- 		       ((buf->nr_pages << PAGE_SHIFT) - 1));
--		if (base < old)
-+		if (base < old || (base == old && wrapped))
- 			base += buf->nr_pages << PAGE_SHIFT;
- 
- 		local_add(base - old, &buf->data_size);
---- a/arch/x86/events/intel/pt.h
-+++ b/arch/x86/events/intel/pt.h
-@@ -65,6 +65,7 @@ struct pt_pmu {
-  * @head:	logical write offset inside the buffer
-  * @snapshot:	if this is for a snapshot/overwrite counter
-  * @single:	use Single Range Output instead of ToPA
-+ * @wrapped:	buffer advance wrapped back to the first topa table
-  * @stop_pos:	STOP topa entry index
-  * @intr_pos:	INT topa entry index
-  * @stop_te:	STOP topa entry pointer
-@@ -82,6 +83,7 @@ struct pt_buffer {
- 	local64_t		head;
- 	bool			snapshot;
- 	bool			single;
-+	bool			wrapped;
- 	long			stop_pos, intr_pos;
- 	struct topa_entry	*stop_te, *intr_te;
- 	void			**data_pages;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi b/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi
+index bdcd35cecad90..fd6230352f4fd 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi
+@@ -43,6 +43,14 @@ trackpad2: trackpad@2c {
+ 		interrupts = <117 IRQ_TYPE_LEVEL_LOW>;
+ 		reg = <0x2c>;
+ 		hid-descr-addr = <0x0020>;
++		/*
++		 * The trackpad needs a post-power-on delay of 100ms,
++		 * but at time of writing, the power supply for it on
++		 * this board is always on. The delay is therefore not
++		 * added to avoid impacting the readiness of the
++		 * trackpad.
++		 */
++		vdd-supply = <&mt6397_vgp6_reg>;
+ 		wakeup-source;
+ 	};
+ };
+-- 
+2.43.0
+
 
 
 
