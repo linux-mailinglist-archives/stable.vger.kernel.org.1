@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6A89EEA2B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A439EF0EA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA37E188CCE6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9FD6176004
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C503216E28;
-	Thu, 12 Dec 2024 15:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6936D205501;
+	Thu, 12 Dec 2024 16:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdCD7X6L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLwDyfYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A3B215F5A;
-	Thu, 12 Dec 2024 15:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27298239BAF;
+	Thu, 12 Dec 2024 16:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016014; cv=none; b=DDNyC8T2LNgHL64lK51VD6qXrzpG9QghJysPmTFa0bwy1MFlpXcB5U9vRza+4vAVtculbgXKEj67z9X4GHTFdV7dIP9I5p82OjNtIRIwL5weRITsTsjgz0Iza7vF3lO87tiSEoAztICu5lRHbj+XBDTPnm1xTGzQYCkXwBZRWE8=
+	t=1734019922; cv=none; b=sMWbYkIvPVI+EGjpw8X9iQHhykpQ4IXuzYh33+Onf8y+O0ZJZez2DbgDz/G8uDOAKw4+z6J2yMVNO8rB8vnXyCTRYziinMEfAy8lAdBECpWO1CQbYIbpwYrHakxmwMHhXVP7VHjjUfDqumLX9YPAFtcmJ9lwzFkA/SnZ0jOzu/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016014; c=relaxed/simple;
-	bh=I/141KjWyUzlpdRZHgNSWfMGeerL4ZE2udK2uRjW54U=;
+	s=arc-20240116; t=1734019922; c=relaxed/simple;
+	bh=lnavotHII/t9r0PzFQShZTCgsDa61o+CIck04NK1bn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZngVvvPOerz7FwlnXa6JwSbWsF3I659IvBHSLRe/qxO/5yry86grzKXyykRXxDeHOpvHqb/ymwtn3bkT/F/LiMxKMWfDVra65L1Frtdo5II6Cpipu8ajxlzSmmvwvMd0h1AE+86h0q59BYg4UCzg3IacBrWX24Otyyrg7dsFug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdCD7X6L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBF7C4CED0;
-	Thu, 12 Dec 2024 15:06:53 +0000 (UTC)
+	 MIME-Version; b=UJx5/rZZ1b4OgdBKwWW3lC3Emt0scqDVm+N/tg1+mDi1TLa8T/8UTkfbIt1MYfmgirRRESJ61CODTuHSzszZwG4+KV+hANDcNndc6V6gFhdbn1unkUuiUV650YKw0Lhh+VUJODVS0Ro/KnIP6kh8hlCao/o7p/f4EwyczzbW1I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLwDyfYa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F797C4CECE;
+	Thu, 12 Dec 2024 16:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016013;
-	bh=I/141KjWyUzlpdRZHgNSWfMGeerL4ZE2udK2uRjW54U=;
+	s=korg; t=1734019922;
+	bh=lnavotHII/t9r0PzFQShZTCgsDa61o+CIck04NK1bn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdCD7X6LfblNdZ436v5Xcx57n3dCjdADR+QLHYDpWfNSPDoBUZZFBn8dl4A/gxvwm
-	 GOlqUBLdQPV3/YVVmreWvggx9KHuOdO7rxJVcDoIIV+lU4EFXTNBNFMByXEt85asio
-	 ZFHkmy74nA1A2JsxSrdXgrfZ75nTE8ta7xsiBWto=
+	b=rLwDyfYaC31G6mfGUMUK3ILyNWNGT6tXiWwxGJ/Shl4nRE1ALqJasWOXcH08uUsQl
+	 JjPtkABBgZprcEEQRBFpvXgz4fiO54bACe9F0J82puPp8sjo3BM0QXmbtmntAlGV8U
+	 u1TMalZOzS0RagkRsukxeUL5JFExelM30WPnqIx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com,
-	Suraj Sonawane <surajsonawane0215@gmail.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/466] scsi: sg: Fix slab-use-after-free read in sg_release()
+Subject: [PATCH 6.1 332/772] counter: stm32-timer-cnt: Add check for clk_enable()
 Date: Thu, 12 Dec 2024 15:54:37 +0100
-Message-ID: <20241212144311.086141528@linuxfoundation.org>
+Message-ID: <20241212144403.620681393@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Sonawane <surajsonawane0215@gmail.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit f10593ad9bc36921f623361c9e3dd96bd52d85ee ]
+[ Upstream commit 842c3755a6bfbfcafa4a1438078d2485a9eb1d87 ]
 
-Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN:
+Add check for the return value of clk_enable() in order to catch the
+potential exception.
 
-BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30
-kernel/locking/lockdep.c:5838
-__mutex_unlock_slowpath+0xe2/0x750 kernel/locking/mutex.c:912
-sg_release+0x1f4/0x2e0 drivers/scsi/sg.c:407
-
-In sg_release(), the function kref_put(&sfp->f_ref, sg_remove_sfp) is
-called before releasing the open_rel_lock mutex. The kref_put() call may
-decrement the reference count of sfp to zero, triggering its cleanup
-through sg_remove_sfp(). This cleanup includes scheduling deferred work
-via sg_remove_sfp_usercontext(), which ultimately frees sfp.
-
-After kref_put(), sg_release() continues to unlock open_rel_lock and may
-reference sfp or sdp. If sfp has already been freed, this results in a
-slab-use-after-free error.
-
-Move the kref_put(&sfp->f_ref, sg_remove_sfp) call after unlocking the
-open_rel_lock mutex. This ensures:
-
- - No references to sfp or sdp occur after the reference count is
-   decremented.
-
- - Cleanup functions such as sg_remove_sfp() and
-   sg_remove_sfp_usercontext() can safely execute without impacting the
-   mutex handling in sg_release().
-
-The fix has been tested and validated by syzbot. This patch closes the
-bug reported at the following syzkaller link and ensures proper
-sequencing of resource cleanup and mutex operations, eliminating the
-risk of use-after-free errors in sg_release().
-
-Reported-by: syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7efb5850a17ba6ce098b
-Tested-by: syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com
-Fixes: cc833acbee9d ("sg: O_EXCL and other lock handling")
-Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
-Link: https://lore.kernel.org/r/20241120125944.88095-1-surajsonawane0215@gmail.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: c5b8425514da ("counter: stm32-timer-cnt: add power management support")
+Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20241104191825.40155-1-jiashengjiangcool@gmail.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/counter/stm32-timer-cnt.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 84334ab39c810..94127868bedf8 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -386,7 +386,6 @@ sg_release(struct inode *inode, struct file *filp)
- 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp, "sg_release\n"));
+diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+index 9bf20a5d6bda8..e752fc8cb190a 100644
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -195,11 +195,17 @@ static int stm32_count_enable_write(struct counter_device *counter,
+ {
+ 	struct stm32_timer_cnt *const priv = counter_priv(counter);
+ 	u32 cr1;
++	int ret;
  
- 	mutex_lock(&sdp->open_rel_lock);
--	kref_put(&sfp->f_ref, sg_remove_sfp);
- 	sdp->open_cnt--;
+ 	if (enable) {
+ 		regmap_read(priv->regmap, TIM_CR1, &cr1);
+-		if (!(cr1 & TIM_CR1_CEN))
+-			clk_enable(priv->clk);
++		if (!(cr1 & TIM_CR1_CEN)) {
++			ret = clk_enable(priv->clk);
++			if (ret) {
++				dev_err(counter->parent, "Cannot enable clock %d\n", ret);
++				return ret;
++			}
++		}
  
- 	/* possibly many open()s waiting on exlude clearing, start many;
-@@ -398,6 +397,7 @@ sg_release(struct inode *inode, struct file *filp)
- 		wake_up_interruptible(&sdp->open_wait);
- 	}
- 	mutex_unlock(&sdp->open_rel_lock);
-+	kref_put(&sfp->f_ref, sg_remove_sfp);
- 	return 0;
- }
+ 		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+ 				   TIM_CR1_CEN);
+@@ -380,7 +386,11 @@ static int __maybe_unused stm32_timer_cnt_resume(struct device *dev)
+ 		return ret;
  
+ 	if (priv->enabled) {
+-		clk_enable(priv->clk);
++		ret = clk_enable(priv->clk);
++		if (ret) {
++			dev_err(dev, "Cannot enable clock %d\n", ret);
++			return ret;
++		}
+ 
+ 		/* Restore registers that may have been lost */
+ 		regmap_write(priv->regmap, TIM_SMCR, priv->bak.smcr);
 -- 
 2.43.0
 
