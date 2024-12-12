@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06A69EF8F9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E919EF77F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 656F5175C7F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57F20179E14
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD314216E2D;
-	Thu, 12 Dec 2024 17:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88997221D93;
+	Thu, 12 Dec 2024 17:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLmvHYUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUJj0nXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A25F6F2FE;
-	Thu, 12 Dec 2024 17:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C9F21660B;
+	Thu, 12 Dec 2024 17:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025311; cv=none; b=s2p+Rc1j0/s26tr3l60nX4oxlQEL8ixzR/XdWBFPAR9DSfvN/9FFEwVdo36DnyzF2M5w9Fze65HLCVVlZZ3aK15iBrn4Na8Qy+iTa/Tukv1moPVkDWNcAnkY6qbAdZ82GUfn0v9tBXvs9NfIM+5uS5R8Slfu8SD1VirARqCpbzM=
+	t=1734024472; cv=none; b=BNp/ZUEq+R/89Q82/l2wr6riSuVV8kSGJfmU/CuG4F+Oqas/srGbQUaSXSiteJI+0nsKQweOW/3pKw9Lb1QcfVWaOcN0BSZGaqvyVkZ+TmkFlWriKGVJg4R6grDQD1WWQkaejzd4sX5AqOXXLuLNQRbJQRFmRM4ZFyEI+YjB6tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025311; c=relaxed/simple;
-	bh=nEJymkZUE5X1oq9AJIJwFMU+LTvQmoMlUMrnzDu3joU=;
+	s=arc-20240116; t=1734024472; c=relaxed/simple;
+	bh=FP0GY/1ncDyN2pzC6h4pDUuqwCiE8O5rGg7YoLaK8hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LikNa58Fr8Ckrx/nC/zhOKI9/tygm2+E/20uO75YRCbJs3TXFpii4OxyFSto4De89t9GVefGXLARydzPFDlDqwdM75qNKA8u9ia+xJGjw9rlnDr7DDSxmbAsup/rrxSpO5BCn0X+Dj9HRIFB6qXT7UwM8LpZB8/k7lO1PkSAQ+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLmvHYUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC3FC4CED0;
-	Thu, 12 Dec 2024 17:41:50 +0000 (UTC)
+	 MIME-Version; b=tph8KYbf/CrPtSLt6MWDGY3SFzA6FtWA51CYb9O5HiJAzn/2kyAUscIVuXFHw9QAziJdTzZshgOx9crNIggZFQMvTucfklfCm6eAJodjZxuv5E+KXUAHAx/I5dUR96f/GnSDBmcsSp5ZDfAGfRVZcrVoW/FKDQC7cK7gXFAzw6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUJj0nXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8FCC4CECE;
+	Thu, 12 Dec 2024 17:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025311;
-	bh=nEJymkZUE5X1oq9AJIJwFMU+LTvQmoMlUMrnzDu3joU=;
+	s=korg; t=1734024472;
+	bh=FP0GY/1ncDyN2pzC6h4pDUuqwCiE8O5rGg7YoLaK8hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLmvHYUhOaMSU+2sED11bs22O7H8Powa4WH6GPA5cc8soMOdORFK1g5p6u6k250Py
-	 PoAVD5Q29L5gUBsAYR6ujuAJzwsKAppEkot6Pe20IQBNp6zx1JbZct1tGuyMwmIBxb
-	 0aDqQa1ckfhtpMkicgRc3hw0pk02t/YbHFxKEWKU=
+	b=oUJj0nXmEP7wp9WPybnS3tH0hzg0Cpn/Z1VAJ2UPNM/Mam1MsZsga1VBnYuwSSGi8
+	 B1wWtuob8uBn0nZaHseeice9H+/5iq2DpwYrJgzVlSB+G9h8WoSIsbZaamxMnQ8hNu
+	 Imkg4a6hEvAmF5Vo3M7IgGYy+yd50IvQMCRHcrjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghuram Chary J <raghuramchary.jallipalli@microchip.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thiago Rafael Becker <trbecker@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 127/321] net: usb: lan78xx: Fix memory leak on device unplug by freeing PHY device
+Subject: [PATCH 5.10 307/459] sunrpc: remove unnecessary test in rpc_task_set_client()
 Date: Thu, 12 Dec 2024 16:00:45 +0100
-Message-ID: <20241212144234.992077221@linuxfoundation.org>
+Message-ID: <20241212144305.772346876@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Thiago Rafael Becker <trbecker@gmail.com>
 
-[ Upstream commit ae7370e61c5d8f5bcefc2d4fca724bd4e9bbf789 ]
+[ Upstream commit 023859ce6f88f7cfc223752fb56ec453a147b852 ]
 
-Add calls to `phy_device_free` after `fixed_phy_unregister` to fix a
-memory leak that occurs when the device is unplugged. This ensures
-proper cleanup of pseudo fixed-link PHYs.
+In rpc_task_set_client(), testing for a NULL clnt is not necessary, as
+clnt should always be a valid pointer to a rpc_client.
 
-Fixes: 89b36fb5e532 ("lan78xx: Lan7801 Support for Fixed PHY")
-Cc: Raghuram Chary J <raghuramchary.jallipalli@microchip.com>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241116130558.1352230-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Thiago Rafael Becker <trbecker@gmail.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/sunrpc/clnt.c | 33 +++++++++++++++------------------
+ 1 file changed, 15 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index b0efaf56d78f3..0ca3ffeb4983c 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2165,6 +2165,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 		if (dev->chipid == ID_REV_CHIP_ID_7801_) {
- 			if (phy_is_pseudo_fixed_link(phydev)) {
- 				fixed_phy_unregister(phydev);
-+				phy_device_free(phydev);
- 			} else {
- 				phy_unregister_fixup_for_uid(PHY_KSZ9031RNX,
- 							     0xfffffff0);
-@@ -3843,8 +3844,10 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 457042b653bba..7ec5b0bc48ebf 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -1077,24 +1077,21 @@ void rpc_task_set_transport(struct rpc_task *task, struct rpc_clnt *clnt)
+ static
+ void rpc_task_set_client(struct rpc_task *task, struct rpc_clnt *clnt)
+ {
+-
+-	if (clnt != NULL) {
+-		rpc_task_set_transport(task, clnt);
+-		task->tk_client = clnt;
+-		refcount_inc(&clnt->cl_count);
+-		if (clnt->cl_softrtry)
+-			task->tk_flags |= RPC_TASK_SOFT;
+-		if (clnt->cl_softerr)
+-			task->tk_flags |= RPC_TASK_TIMEOUT;
+-		if (clnt->cl_noretranstimeo)
+-			task->tk_flags |= RPC_TASK_NO_RETRANS_TIMEOUT;
+-		if (atomic_read(&clnt->cl_swapper))
+-			task->tk_flags |= RPC_TASK_SWAPPER;
+-		/* Add to the client's list of all tasks */
+-		spin_lock(&clnt->cl_lock);
+-		list_add_tail(&task->tk_task, &clnt->cl_tasks);
+-		spin_unlock(&clnt->cl_lock);
+-	}
++	rpc_task_set_transport(task, clnt);
++	task->tk_client = clnt;
++	refcount_inc(&clnt->cl_count);
++	if (clnt->cl_softrtry)
++		task->tk_flags |= RPC_TASK_SOFT;
++	if (clnt->cl_softerr)
++		task->tk_flags |= RPC_TASK_TIMEOUT;
++	if (clnt->cl_noretranstimeo)
++		task->tk_flags |= RPC_TASK_NO_RETRANS_TIMEOUT;
++	if (atomic_read(&clnt->cl_swapper))
++		task->tk_flags |= RPC_TASK_SWAPPER;
++	/* Add to the client's list of all tasks */
++	spin_lock(&clnt->cl_lock);
++	list_add_tail(&task->tk_task, &clnt->cl_tasks);
++	spin_unlock(&clnt->cl_lock);
+ }
  
- 	phy_disconnect(net->phydev);
- 
--	if (phy_is_pseudo_fixed_link(phydev))
-+	if (phy_is_pseudo_fixed_link(phydev)) {
- 		fixed_phy_unregister(phydev);
-+		phy_device_free(phydev);
-+	}
- 
- 	unregister_netdev(net);
- 
+ static void
 -- 
 2.43.0
 
