@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F6E9EF8B1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:44:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228E29EF939
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 006AE189CC53
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEF2628E82B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAC2223C6A;
-	Thu, 12 Dec 2024 17:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4A922687A;
+	Thu, 12 Dec 2024 17:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsuQdWPp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0gRjWOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261B4223C62;
-	Thu, 12 Dec 2024 17:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDB1223C41;
+	Thu, 12 Dec 2024 17:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024882; cv=none; b=GxOu47z+IqtQttGrXk7sty6LqujfGWJRrJdK3VGf0MscYYeO5c+d47930KYEdpJh4MYST07b+tbZXvWZVQgJY8UbhuZwyZup/0gLNdiU9aPJPv3kitjtDj+VWqUY+Vqaaf+0EEJKuPFxX7BKcgfRPXxIulIQNhTiIqmYXTF5KsQ=
+	t=1734025631; cv=none; b=rlwt8dXAuAg69OuwamClcWbLUi9KRMesdLxaLai4VO8n7usvJzvVTpGn5ZrYmjKqhxl3bOAqNepprDnC4Acpztjso3Oi5reA0c8jJBzaEoPoFf/pG7S9wOHoOXRmWmX4JlPyZk5k7eduV+aSDCS8upde2hsOV2BuMm/8i7e190Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024882; c=relaxed/simple;
-	bh=oTufG3HVmMeXVMBrrsV6heRySGUl/raDpWD3vQvllC8=;
+	s=arc-20240116; t=1734025631; c=relaxed/simple;
+	bh=/Zm0tJyXRW555mobqwIqe+ap9qTx076FvNDyR6BprCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jh6KpmeBwcKhCa8dKgbTH8inEhh2X13vu2XwldjFRIomEFjCjmS7mtQWO0w2D2NGB0b4pYiOv5COCg7AaPOOw2/o/uX+UkZwZUm5FSGmgroD/XUvDZJx6FVYdH8VjQP/FZVrnjmlx8DF7YXvkZy/ESdQtqoXxybxuKsA7aiKKEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rsuQdWPp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943A7C4CED0;
-	Thu, 12 Dec 2024 17:34:41 +0000 (UTC)
+	 MIME-Version; b=VbsY3h3UAZiIToc50kUk7sCbQ9MboX5zxwkq8krUGY6yqJpY/Sc2/g0rCPl5phN0faT+82VPO5N5mMdgl4+S9HoatohmfwYDE/l4JIM7C7eIvOFM89R0eso0MOBCjpgyeNDjd1zV2GBZRaWlFqFaeEKPC++bhiCNtwoaNr7a6Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0gRjWOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46599C4CECE;
+	Thu, 12 Dec 2024 17:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024882;
-	bh=oTufG3HVmMeXVMBrrsV6heRySGUl/raDpWD3vQvllC8=;
+	s=korg; t=1734025631;
+	bh=/Zm0tJyXRW555mobqwIqe+ap9qTx076FvNDyR6BprCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rsuQdWPpjZLi7vy9OSx8Kzm0WeigNb2Md9QjrUUITeTo+xY1KbCxMj3wU7hrAV/w/
-	 ejhrDEhrY6NRbCYR90yllBGL1P9Fi/2iGvjjtTXCQIjhtL3CtROqyaIodwbQi3rV4/
-	 cCpgY6O94CxkYhmogM+wAolvnaJJ8L7cWXA8GcpE=
+	b=E0gRjWOOiDSVoDRJCPViHPPiH8T4nx3kQbw+hjDn9lSD6aGfbp0ZtWQrKccajCoq9
+	 4aUE8TnmR9XYFBHNvFLiL1qcjJnxRC4LtMWwPPFt4W4JKknugM8hdOu+twVh6B/01W
+	 9C3sup8iiQsX3ss0AliPPcxAu5sn9e0gUeiiGv9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 413/459] ASoC: hdmi-codec: reorder channel allocation list
-Date: Thu, 12 Dec 2024 16:02:31 +0100
-Message-ID: <20241212144310.075720571@linuxfoundation.org>
+	Yuan Can <yuancan@huawei.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.4 234/321] igb: Fix potential invalid memory access in igb_init_module()
+Date: Thu, 12 Dec 2024 16:02:32 +0100
+Message-ID: <20241212144239.215505650@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,212 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 82ff5abc2edcfba0c0f1a1be807795e2876f46e9 ]
+[ Upstream commit 0566f83d206c7a864abcd741fe39d6e0ae5eef29 ]
 
-The ordering in hdmi_codec_get_ch_alloc_table_idx() results in
-wrong channel allocation for a number of cases, e.g. when ELD
-reports FL|FR|LFE|FC|RL|RR or FL|FR|LFE|FC|RL|RR|RC|RLC|RRC:
+The pci_register_driver() can fail and when this happened, the dca_notifier
+needs to be unregistered, otherwise the dca_notifier can be called when
+igb fails to install, resulting to invalid memory access.
 
-ca_id 0x01 with speaker mask FL|FR|LFE is selected instead of
-ca_id 0x03 with speaker mask FL|FR|LFE|FC for 4 channels
-
-and
-
-ca_id 0x04 with speaker mask FL|FR|RC gets selected instead of
-ca_id 0x0b with speaker mask FL|FR|LFE|FC|RL|RR for 6 channels
-
-Fix this by reordering the channel allocation list with most
-specific speaker masks at the top.
-
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-Link: https://patch.msgid.link/20241115044344.3510979-1-christianshewitt@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bbd98fe48a43 ("igb: Fix DCA errors and do not use context index for 82576")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/hdmi-codec.c | 140 +++++++++++++++++++---------------
- 1 file changed, 77 insertions(+), 63 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
-index 403d4c6a49a80..522bfec892d5b 100644
---- a/sound/soc/codecs/hdmi-codec.c
-+++ b/sound/soc/codecs/hdmi-codec.c
-@@ -189,84 +189,97 @@ static const struct snd_pcm_chmap_elem hdmi_codec_8ch_chmaps[] = {
- /*
-  * hdmi_codec_channel_alloc: speaker configuration available for CEA
-  *
-- * This is an ordered list that must match with hdmi_codec_8ch_chmaps struct
-+ * This is an ordered list where ca_id must exist in hdmi_codec_8ch_chmaps
-  * The preceding ones have better chances to be selected by
-  * hdmi_codec_get_ch_alloc_table_idx().
-  */
- static const struct hdmi_codec_cea_spk_alloc hdmi_codec_channel_alloc[] = {
- 	{ .ca_id = 0x00, .n_ch = 2,
--	  .mask = FL | FR},
--	/* 2.1 */
--	{ .ca_id = 0x01, .n_ch = 4,
--	  .mask = FL | FR | LFE},
--	/* Dolby Surround */
-+	  .mask = FL | FR },
-+	{ .ca_id = 0x03, .n_ch = 4,
-+	  .mask = FL | FR | LFE | FC },
- 	{ .ca_id = 0x02, .n_ch = 4,
- 	  .mask = FL | FR | FC },
--	/* surround51 */
-+	{ .ca_id = 0x01, .n_ch = 4,
-+	  .mask = FL | FR | LFE },
- 	{ .ca_id = 0x0b, .n_ch = 6,
--	  .mask = FL | FR | LFE | FC | RL | RR},
--	/* surround40 */
--	{ .ca_id = 0x08, .n_ch = 6,
--	  .mask = FL | FR | RL | RR },
--	/* surround41 */
--	{ .ca_id = 0x09, .n_ch = 6,
--	  .mask = FL | FR | LFE | RL | RR },
--	/* surround50 */
-+	  .mask = FL | FR | LFE | FC | RL | RR },
- 	{ .ca_id = 0x0a, .n_ch = 6,
- 	  .mask = FL | FR | FC | RL | RR },
--	/* 6.1 */
--	{ .ca_id = 0x0f, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | RL | RR | RC },
--	/* surround71 */
-+	{ .ca_id = 0x09, .n_ch = 6,
-+	  .mask = FL | FR | LFE | RL | RR },
-+	{ .ca_id = 0x08, .n_ch = 6,
-+	  .mask = FL | FR | RL | RR },
-+	{ .ca_id = 0x07, .n_ch = 6,
-+	  .mask = FL | FR | LFE | FC | RC },
-+	{ .ca_id = 0x06, .n_ch = 6,
-+	  .mask = FL | FR | FC | RC },
-+	{ .ca_id = 0x05, .n_ch = 6,
-+	  .mask = FL | FR | LFE | RC },
-+	{ .ca_id = 0x04, .n_ch = 6,
-+	  .mask = FL | FR | RC },
- 	{ .ca_id = 0x13, .n_ch = 8,
- 	  .mask = FL | FR | LFE | FC | RL | RR | RLC | RRC },
--	/* others */
--	{ .ca_id = 0x03, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC },
--	{ .ca_id = 0x04, .n_ch = 8,
--	  .mask = FL | FR | RC},
--	{ .ca_id = 0x05, .n_ch = 8,
--	  .mask = FL | FR | LFE | RC },
--	{ .ca_id = 0x06, .n_ch = 8,
--	  .mask = FL | FR | FC | RC },
--	{ .ca_id = 0x07, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | RC },
--	{ .ca_id = 0x0c, .n_ch = 8,
--	  .mask = FL | FR | RC | RL | RR },
--	{ .ca_id = 0x0d, .n_ch = 8,
--	  .mask = FL | FR | LFE | RL | RR | RC },
--	{ .ca_id = 0x0e, .n_ch = 8,
--	  .mask = FL | FR | FC | RL | RR | RC },
--	{ .ca_id = 0x10, .n_ch = 8,
--	  .mask = FL | FR | RL | RR | RLC | RRC },
--	{ .ca_id = 0x11, .n_ch = 8,
--	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
-+	{ .ca_id = 0x1f, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
- 	{ .ca_id = 0x12, .n_ch = 8,
- 	  .mask = FL | FR | FC | RL | RR | RLC | RRC },
--	{ .ca_id = 0x14, .n_ch = 8,
--	  .mask = FL | FR | FLC | FRC },
--	{ .ca_id = 0x15, .n_ch = 8,
--	  .mask = FL | FR | LFE | FLC | FRC },
--	{ .ca_id = 0x16, .n_ch = 8,
--	  .mask = FL | FR | FC | FLC | FRC },
--	{ .ca_id = 0x17, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | FLC | FRC },
--	{ .ca_id = 0x18, .n_ch = 8,
--	  .mask = FL | FR | RC | FLC | FRC },
--	{ .ca_id = 0x19, .n_ch = 8,
--	  .mask = FL | FR | LFE | RC | FLC | FRC },
--	{ .ca_id = 0x1a, .n_ch = 8,
--	  .mask = FL | FR | RC | FC | FLC | FRC },
--	{ .ca_id = 0x1b, .n_ch = 8,
--	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
--	{ .ca_id = 0x1c, .n_ch = 8,
--	  .mask = FL | FR | RL | RR | FLC | FRC },
--	{ .ca_id = 0x1d, .n_ch = 8,
--	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
- 	{ .ca_id = 0x1e, .n_ch = 8,
- 	  .mask = FL | FR | FC | RL | RR | FLC | FRC },
--	{ .ca_id = 0x1f, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
-+	{ .ca_id = 0x11, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
-+	{ .ca_id = 0x1d, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
-+	{ .ca_id = 0x10, .n_ch = 8,
-+	  .mask = FL | FR | RL | RR | RLC | RRC },
-+	{ .ca_id = 0x1c, .n_ch = 8,
-+	  .mask = FL | FR | RL | RR | FLC | FRC },
-+	{ .ca_id = 0x0f, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RL | RR | RC },
-+	{ .ca_id = 0x1b, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
-+	{ .ca_id = 0x0e, .n_ch = 8,
-+	  .mask = FL | FR | FC | RL | RR | RC },
-+	{ .ca_id = 0x1a, .n_ch = 8,
-+	  .mask = FL | FR | RC | FC | FLC | FRC },
-+	{ .ca_id = 0x0d, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR | RC },
-+	{ .ca_id = 0x19, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RC | FLC | FRC },
-+	{ .ca_id = 0x0c, .n_ch = 8,
-+	  .mask = FL | FR | RC | RL | RR },
-+	{ .ca_id = 0x18, .n_ch = 8,
-+	  .mask = FL | FR | RC | FLC | FRC },
-+	{ .ca_id = 0x17, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | FLC | FRC },
-+	{ .ca_id = 0x16, .n_ch = 8,
-+	  .mask = FL | FR | FC | FLC | FRC },
-+	{ .ca_id = 0x15, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FLC | FRC },
-+	{ .ca_id = 0x14, .n_ch = 8,
-+	  .mask = FL | FR | FLC | FRC },
-+	{ .ca_id = 0x0b, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RL | RR },
-+	{ .ca_id = 0x0a, .n_ch = 8,
-+	  .mask = FL | FR | FC | RL | RR },
-+	{ .ca_id = 0x09, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR },
-+	{ .ca_id = 0x08, .n_ch = 8,
-+	  .mask = FL | FR | RL | RR },
-+	{ .ca_id = 0x07, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RC },
-+	{ .ca_id = 0x06, .n_ch = 8,
-+	  .mask = FL | FR | FC | RC },
-+	{ .ca_id = 0x05, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RC },
-+	{ .ca_id = 0x04, .n_ch = 8,
-+	  .mask = FL | FR | RC },
-+	{ .ca_id = 0x03, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC },
-+	{ .ca_id = 0x02, .n_ch = 8,
-+	  .mask = FL | FR | FC },
-+	{ .ca_id = 0x01, .n_ch = 8,
-+	  .mask = FL | FR | LFE },
- };
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 1e9967657248a..84de6bbace090 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -674,6 +674,10 @@ static int __init igb_init_module(void)
+ 	dca_register_notify(&dca_notifier);
+ #endif
+ 	ret = pci_register_driver(&igb_driver);
++#ifdef CONFIG_IGB_DCA
++	if (ret)
++		dca_unregister_notify(&dca_notifier);
++#endif
+ 	return ret;
+ }
  
- struct hdmi_codec_priv {
-@@ -373,7 +386,8 @@ static int hdmi_codec_chmap_ctl_get(struct snd_kcontrol *kcontrol,
- 	struct snd_pcm_chmap *info = snd_kcontrol_chip(kcontrol);
- 	struct hdmi_codec_priv *hcp = info->private_data;
- 
--	map = info->chmap[hcp->chmap_idx].map;
-+	if (hcp->chmap_idx != HDMI_CODEC_CHMAP_IDX_UNKNOWN)
-+		map = info->chmap[hcp->chmap_idx].map;
- 
- 	for (i = 0; i < info->max_channels; i++) {
- 		if (hcp->chmap_idx == HDMI_CODEC_CHMAP_IDX_UNKNOWN)
 -- 
 2.43.0
 
