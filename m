@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8259EF0E8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FA69EECCD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34BF729DBDB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F4901887DDA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C74723694F;
-	Thu, 12 Dec 2024 16:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B972121C172;
+	Thu, 12 Dec 2024 15:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwLiCVII"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVNjlQyx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFD32F44;
-	Thu, 12 Dec 2024 16:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BEC21578B;
+	Thu, 12 Dec 2024 15:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020480; cv=none; b=lCMyzxEKi8kQE4vRrHSs1zNaDU9eSBMCcVQjs0trmPkAbVDDPcNxzLp7U2X4otfhHx2KiyCNDBs5vMC0KXleM9923seFyopRFuejJyzQcKxIRKGMPLXQmxGsPZoluR/NRgQmhlDOTKNWbqLCTMV2oKcs1nVrkO6/7Eau0hv9fJk=
+	t=1734017758; cv=none; b=k87JKJ3ttb7PNuhm7OxgeTvbH/WJL2d5oo3EH+vxSfCZTPpt8cdkhYq22Zne+mTZQSPlmP63UQKU5BuT+cazQ9RSZYXhVZP1j0tAxqem71d9sGdk6qe+CZZ7cDS05VR/ohcvVinPghU5VAI6HU++GDhhcLLZK0fsMLUtahFnvZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020480; c=relaxed/simple;
-	bh=XLMP0JOIqMjOGH0NDYVN6YtcG8wVzqUU4deMwGRes6Q=;
+	s=arc-20240116; t=1734017758; c=relaxed/simple;
+	bh=KPxi4ZGvUKyq5/Y40SDBDgECRgfzBUpk7uxYaB13noA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GlpLyChvaSjKoUowYQg+sYVxp+fV7hAR5Xq1V5wh2zhEqLw/3Vf/93eU7fgVAhh3qx/zVIeI0PXS7YR7H/vRee2CZS0Xy9ZXCIOiQOzsc41CASpcgLhOg0bITOKvJXeisjDmmFNEoRPBngxYLxI71bYkQzVzFNZv2Gx6IsXZhkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwLiCVII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B199DC4CECE;
-	Thu, 12 Dec 2024 16:21:19 +0000 (UTC)
+	 MIME-Version; b=fTce1Lqg+FyZem4hD74efgPo+1+Ax0oQ/VZ0f6g8YG466LXhHbC55QnRVkk0083b8RugW2UbpzHihX5At6AtD3RiFUgR/j8pI2YreNlWsPoIHgdXERukxoVqb9BVtyXxMwrw6KDjWnL3SrjzaOnnB0WClQjS11le9iXxjqyuLo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVNjlQyx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA236C4CECE;
+	Thu, 12 Dec 2024 15:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020480;
-	bh=XLMP0JOIqMjOGH0NDYVN6YtcG8wVzqUU4deMwGRes6Q=;
+	s=korg; t=1734017758;
+	bh=KPxi4ZGvUKyq5/Y40SDBDgECRgfzBUpk7uxYaB13noA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TwLiCVIItLfh+duvfy3IXlxNEi4ka0vNJpAK6uhQI+eSDN0JAazTU7BUmgK+EKMzS
-	 qSoIxswQYhhdBaZLeInSjluIMfOakCPlfCJaNxBYVykuyGQ8YkqzA6pp2uGgO5G7B5
-	 /3rT1vuZm52ySW+gUdrz/9A/wTN8V4yypeJvwhf8=
+	b=xVNjlQyxEyziLl+9Ja8R6Cv6f3aSl/OJbBhWtah1OdSbr4+6neIX2nmq6qVX/Gx4s
+	 qhpnehUEjOHGqtfYdRdw6dlcHrUWR65xmUklQoUzp+bqcFWFxNdsVi2tCxquVep3qd
+	 iI+mDuCWJVSy6eAOq5eYmmGOl/+hJ+G0oEHchf2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 477/772] clk: qcom: gcc-qcs404: fix initial rate of GPLL3
-Date: Thu, 12 Dec 2024 15:57:02 +0100
-Message-ID: <20241212144409.640955442@linuxfoundation.org>
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 104/356] i3c: master: Replace hard code 2 with macro I3C_ADDR_SLOT_STATUS_BITS
+Date: Thu, 12 Dec 2024 15:57:03 +0100
+Message-ID: <20241212144248.749006275@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 36d202241d234fa4ac50743510d098ad52bd193a upstream.
+[ Upstream commit 16aed0a6520ba01b7d22c32e193fc1ec674f92d4 ]
 
-The comment before the config of the GPLL3 PLL says that the
-PLL should run at 930 MHz. In contrary to this, calculating
-the frequency from the current configuration values by using
-19.2 MHz as input frequency defined in 'qcs404.dtsi', it gives
-921.6 MHz:
+Replace the hardcoded value 2, which indicates 2 bits for I3C address
+status, with the predefined macro I3C_ADDR_SLOT_STATUS_BITS.
 
-  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x0
-  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
-  921600000.00000000000000000000
+Improve maintainability and extensibility of the code.
 
-Set 'alpha_hi' in the configuration to a value used in downstream
-kernels [1][2] in order to get the correct output rate:
-
-  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x70
-  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
-  930000000.00000000000000000000
-
-The change is based on static code analysis, compile tested only.
-
-[1] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/kernel.lnx.5.4.r56-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L335
-[2} https://git.codelinaro.org/clo/la/kernel/msm-5.15/-/blob/kernel.lnx.5.15.r49-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L127
-
-Cc: stable@vger.kernel.org
-Fixes: 652f1813c113 ("clk: qcom: gcc: Add global clock controller driver for QCS404")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/r/20241022-fix-gcc-qcs404-gpll3-v1-1-c4d30d634d19@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241021-i3c_dts_assign-v8-1-4098b8bde01e@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Stable-dep-of: 851bd21cdb55 ("i3c: master: Fix dynamic address leak when 'assigned-address' is present")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-qcs404.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i3c/master.c       | 4 ++--
+ include/linux/i3c/master.h | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/qcom/gcc-qcs404.c
-+++ b/drivers/clk/qcom/gcc-qcs404.c
-@@ -353,6 +353,7 @@ static struct clk_alpha_pll gpll1_out_ma
- /* 930MHz configuration */
- static const struct alpha_pll_config gpll3_config = {
- 	.l = 48,
-+	.alpha_hi = 0x70,
- 	.alpha = 0x0,
- 	.alpha_en_mask = BIT(24),
- 	.post_div_mask = 0xf << 8,
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 78171a754a3f8..2b6bc03652139 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -345,7 +345,7 @@ static enum i3c_addr_slot_status
+ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+ {
+ 	unsigned long status;
+-	int bitpos = addr * 2;
++	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
+ 
+ 	if (addr > I2C_MAX_ADDR)
+ 		return I3C_ADDR_SLOT_RSVD;
+@@ -359,7 +359,7 @@ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+ static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
+ 					 enum i3c_addr_slot_status status)
+ {
+-	int bitpos = addr * 2;
++	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
+ 	unsigned long *ptr;
+ 
+ 	if (addr > I2C_MAX_ADDR)
+diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+index f0aa4c549aa7f..ed6b153481021 100644
+--- a/include/linux/i3c/master.h
++++ b/include/linux/i3c/master.h
+@@ -305,6 +305,8 @@ enum i3c_addr_slot_status {
+ 	I3C_ADDR_SLOT_STATUS_MASK = 3,
+ };
+ 
++#define I3C_ADDR_SLOT_STATUS_BITS 2
++
+ /**
+  * struct i3c_bus - I3C bus object
+  * @cur_master: I3C master currently driving the bus. Since I3C is multi-master
+@@ -346,7 +348,7 @@ enum i3c_addr_slot_status {
+ struct i3c_bus {
+ 	struct i3c_dev_desc *cur_master;
+ 	int id;
+-	unsigned long addrslots[((I2C_MAX_ADDR + 1) * 2) / BITS_PER_LONG];
++	unsigned long addrslots[((I2C_MAX_ADDR + 1) * I3C_ADDR_SLOT_STATUS_BITS) / BITS_PER_LONG];
+ 	enum i3c_bus_mode mode;
+ 	struct {
+ 		unsigned long i3c;
+-- 
+2.43.0
+
 
 
 
