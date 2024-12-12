@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896489EF753
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8868A9EF46E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0069417AFB3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819CD16CA4D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FF32210E3;
-	Thu, 12 Dec 2024 17:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA822210DB;
+	Thu, 12 Dec 2024 16:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaGqORPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftl3SvGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA7121766D;
-	Thu, 12 Dec 2024 17:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883312210E3;
+	Thu, 12 Dec 2024 16:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024054; cv=none; b=Is2I55IIe2p8q81/ba73q/hrxFkEV2MDu4NVvd/ofIytIQMePU3kd7aZ2k5TAWGv7OaBzYlTYJ0inpTfwQZ0NZp0u7YIHxj7gOnXHZs7lpjSQbRVhAOm801PiiFzdho169FCDqqI1Jmw8r/71JQqmYegXYkF0Msqk47CPKbnx0Q=
+	t=1734022703; cv=none; b=sVgLJRwrI0HLHS+PXUenh/7sLJDyeIL9g3emATvN+fobetTEntU1I6stgLldup52w2eAIM6xZOVJWdBVkOEGGLN1U/4+bkiwByztflJso+9Knvw2wFILv7wh9S/6rSIwOAoOLGjHX+ls+Zl2N4PR7kH4RMzksLvyDJJ0Aa8hKjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024054; c=relaxed/simple;
-	bh=mSbS1C7GHYRfzeZEBnAAG7po/FA6/7sv9nvR1X55yK4=;
+	s=arc-20240116; t=1734022703; c=relaxed/simple;
+	bh=jbkNRr247k4/uXyo74cMburn1Uih6Qo3B/6MkQpox30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3hUmd5HaA5W5lR+AIwiIdeii26BvgSQigAwwMJAz1twM4StISMDRhrtVZdY9j53jhInv8W/NadlIHNKz72BIsrfH2Wxr/NHNcw6QAF3d2LKI0xEqRmJ5XvP+GgloHwXGlMnsfNZFDmbktofCrilHTOjRe7wvBF5HOxAfLcevL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaGqORPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE9AC4CECE;
-	Thu, 12 Dec 2024 17:20:53 +0000 (UTC)
+	 MIME-Version; b=hw/oopdCpBN9FC04NZQ1v6hXIvrSaNwzJUcUMMwq8RntpWxMjLwfZlrt9r45NjGWfANZjA0bR9bZl4ItXCSVP2+X3EvtuyNE8yvSMswj3uob8GJ9qwOODmX3PuvRJK9gKvDSfG5R9Zd5W1DTiHoxkMiKQIwv/Wl/ZJbFY4cybKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftl3SvGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB75C4CECE;
+	Thu, 12 Dec 2024 16:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024054;
-	bh=mSbS1C7GHYRfzeZEBnAAG7po/FA6/7sv9nvR1X55yK4=;
+	s=korg; t=1734022703;
+	bh=jbkNRr247k4/uXyo74cMburn1Uih6Qo3B/6MkQpox30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MaGqORPUHjlseXKXdk5DkT6BOQqFyaYHmweyg4STfoBA9E+sh4Jp22gXSArbiLFVy
-	 L/HHpuVyMiX6fxo/KCdV40E389GxmtHLP8FIYfHOb/j33kQwpKq/ScUYm6aO9yE0PG
-	 zzQ2XlozsxlLeeIBLEDZs9D90GMHw6BBqwy9RYIk=
+	b=ftl3SvGqFOEVxk3V5LfAdg2gPkQRaBccTSkKthBTY8Q+iepIaGNuy8Kp953xRzOSy
+	 CCvfqjZYWXEg8xWNRfj8ep8wzoGWEt5D9tuuVMBwYlVs2ccwKFqcZ8ePAHCu0SsWSr
+	 cdBc+lizLnApH6ybczggcWk9LTp5Wd25y5GF+JEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Ning <zhangn1985@outlook.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 170/459] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for PMIC devices
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 313/565] fsnotify: fix sending inotify event with unexpected filename
 Date: Thu, 12 Dec 2024 15:58:28 +0100
-Message-ID: <20241212144300.227024642@linuxfoundation.org>
+Message-ID: <20241212144323.980153697@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 0350d783ab888cb1cb48ced36cc28b372723f1a4 ]
+commit aa52c54da40d9eee3ba87c05cdcb0cd07c04fa13 upstream.
 
-While design wise the idea of converting the driver to use
-the hierarchy of the IRQ chips is correct, the implementation
-has (inherited) flaws. This was unveiled when platform_get_irq()
-had started WARN() on IRQ 0 that is supposed to be a Linux
-IRQ number (also known as vIRQ).
+We got a report that adding a fanotify filsystem watch prevents tail -f
+from receiving events.
 
-Rework the driver to respect IRQ domain when creating each MFD
-device separately, as the domain is not the same for all of them.
+Reproducer:
 
-Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
-Tested-by: Zhang Ning <zhangn1985@outlook.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241005193029.1929139-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. Create 3 windows / login sessions. Become root in each session.
+2. Choose a mounted filesystem that is pretty quiet; I picked /boot.
+3. In the first window, run: fsnotifywait -S -m /boot
+4. In the second window, run: echo data >> /boot/foo
+5. In the third window, run: tail -f /boot/foo
+6. Go back to the second window and run: echo more data >> /boot/foo
+7. Observe that the tail command doesn't show the new data.
+8. In the first window, hit control-C to interrupt fsnotifywait.
+9. In the second window, run: echo still more data >> /boot/foo
+10. Observe that the tail command in the third window has now printed
+the missing data.
+
+When stracing tail, we observed that when fanotify filesystem mark is
+set, tail does get the inotify event, but the event is receieved with
+the filename:
+
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\20\0\0\0foo\0\0\0\0\0\0\0\0\0\0\0\0\0",
+50) = 32
+
+This is unexpected, because tail is watching the file itself and not its
+parent and is inconsistent with the inotify event received by tail when
+fanotify filesystem mark is not set:
+
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0", 50) = 16
+
+The inteference between different fsnotify groups was caused by the fact
+that the mark on the sb requires the filename, so the filename is passed
+to fsnotify().  Later on, fsnotify_handle_event() tries to take care of
+not passing the filename to groups (such as inotify) that are interested
+in the filename only when the parent is watching.
+
+But the logic was incorrect for the case that no group is watching the
+parent, some groups are watching the sb and some watching the inode.
+
+Reported-by: Miklos Szeredi <miklos@szeredi.hu>
+Fixes: 7372e79c9eb9 ("fanotify: fix logic of reporting name info with watched parent")
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/intel_soc_pmic_bxtwc.c | 54 +++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 24 deletions(-)
+ fs/notify/fsnotify.c |   23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
-index 8b55f839a946b..6d708d6f7281a 100644
---- a/drivers/mfd/intel_soc_pmic_bxtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
-@@ -230,21 +230,11 @@ static struct resource tmu_resources[] = {
- };
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -310,16 +310,19 @@ static int fsnotify_handle_event(struct
+ 	if (!inode_mark)
+ 		return 0;
  
- static struct mfd_cell bxt_wc_dev[] = {
--	{
--		.name = "bxt_wcove_gpadc",
--		.num_resources = ARRAY_SIZE(adc_resources),
--		.resources = adc_resources,
--	},
- 	{
- 		.name = "bxt_wcove_thermal",
- 		.num_resources = ARRAY_SIZE(thermal_resources),
- 		.resources = thermal_resources,
- 	},
--	{
--		.name = "bxt_wcove_bcu",
--		.num_resources = ARRAY_SIZE(bcu_resources),
--		.resources = bcu_resources,
--	},
- 	{
- 		.name = "bxt_wcove_gpio",
- 		.num_resources = ARRAY_SIZE(gpio_resources),
-@@ -263,6 +253,22 @@ static const struct mfd_cell bxt_wc_tmu_dev[] = {
- 	},
- };
- 
-+static const struct mfd_cell bxt_wc_bcu_dev[] = {
-+	{
-+		.name = "bxt_wcove_bcu",
-+		.num_resources = ARRAY_SIZE(bcu_resources),
-+		.resources = bcu_resources,
-+	},
-+};
-+
-+static const struct mfd_cell bxt_wc_adc_dev[] = {
-+	{
-+		.name = "bxt_wcove_gpadc",
-+		.num_resources = ARRAY_SIZE(adc_resources),
-+		.resources = adc_resources,
-+	},
-+};
-+
- static struct mfd_cell bxt_wc_chgr_dev[] = {
- 	{
- 		.name = "bxt_wcove_usbc",
-@@ -504,23 +510,23 @@ static int bxtwc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
- 
--	/* Add chained IRQ handler for BCU IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_BCU_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_bcu,
--					 &pmic->irq_chip_data_bcu);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_bcu_dev, ARRAY_SIZE(bxt_wc_bcu_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_BCU_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_bcu,
-+					&pmic->irq_chip_data_bcu);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add BUC IRQ chip\n");
-+		return ret;
- 
--	/* Add chained IRQ handler for ADC IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_ADC_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_adc,
--					 &pmic->irq_chip_data_adc);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_adc_dev, ARRAY_SIZE(bxt_wc_adc_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_ADC_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_adc,
-+					&pmic->irq_chip_data_adc);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
-+		return ret;
- 
- 	ret = bxtwc_add_chained_devices(pmic, bxt_wc_chgr_dev, ARRAY_SIZE(bxt_wc_chgr_dev),
- 					pmic->irq_chip_data,
--- 
-2.43.0
-
+-	if (mask & FS_EVENT_ON_CHILD) {
+-		/*
+-		 * Some events can be sent on both parent dir and child marks
+-		 * (e.g. FS_ATTRIB).  If both parent dir and child are
+-		 * watching, report the event once to parent dir with name (if
+-		 * interested) and once to child without name (if interested).
+-		 * The child watcher is expecting an event without a file name
+-		 * and without the FS_EVENT_ON_CHILD flag.
+-		 */
+-		mask &= ~FS_EVENT_ON_CHILD;
++	/*
++	 * Some events can be sent on both parent dir and child marks (e.g.
++	 * FS_ATTRIB).  If both parent dir and child are watching, report the
++	 * event once to parent dir with name (if interested) and once to child
++	 * without name (if interested).
++	 *
++	 * In any case regardless whether the parent is watching or not, the
++	 * child watcher is expecting an event without the FS_EVENT_ON_CHILD
++	 * flag. The file name is expected if and only if this is a directory
++	 * event.
++	 */
++	mask &= ~FS_EVENT_ON_CHILD;
++	if (!(mask & ALL_FSNOTIFY_DIRENT_EVENTS)) {
+ 		dir = NULL;
+ 		name = NULL;
+ 	}
 
 
 
