@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324549EF15D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6F69EEAE6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 027281891C38
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75B7A169AD1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C7922F381;
-	Thu, 12 Dec 2024 16:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD38321661F;
+	Thu, 12 Dec 2024 15:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUtClEFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMfx8LuW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4099822EA18;
-	Thu, 12 Dec 2024 16:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6E521578A;
+	Thu, 12 Dec 2024 15:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020293; cv=none; b=raT5Pa0QmlTNHcqcT1TSPig19a/hdtvHSs5w1MuP00q68Z1WiASwFKJw6uvgDhAEy5GWjPCM6VQknePQU3zNwRTQnKIL3U4sYDvj//6TQqxJHTBWur11oo0OPDUx8yiowXqnQyfm3BP6H4hKRy65QYmztFECbvURPY7vJ+nSuq8=
+	t=1734016462; cv=none; b=MCekFJd8SVBuEpMRbjt1xdv4YMTr+aTn3ExDKTuUOjzVEcZaapvGg3aH3/zhmg6IRGkDzG5KZkFPLR+EWVNEHml0VrbRJt1CAudbf2rcfL06yUx4AFsBvd9gc0WVP9Iwx+gep3C2v4WmI0sy+m+Mrs0DC8ClJF55kn6w3UWJ/IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020293; c=relaxed/simple;
-	bh=BVrhhoM+3Cbt7uCu13ekRlugmrVrtppJnSKbsviMEsY=;
+	s=arc-20240116; t=1734016462; c=relaxed/simple;
+	bh=zi8WT2vabOuRNRm1boKTAJgyRzDaBU3gDzjk8reKEZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KuZqM4IJsIFv3KrpeJ6oOnIE55vrANCSgNkanNJKj/SdP2k5T5yoIvv1DQZwEeURRlu6SLf6QWtAFkExAjS2W0f5cYvIZyzkxL9eTdsVtU8AuD0uHBSnGeZ7VlCyATAsjxRk3GtgocIrFFfK3XtvULrDxjV9zuYbulYXztIwz0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUtClEFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986F3C4CECE;
-	Thu, 12 Dec 2024 16:18:12 +0000 (UTC)
+	 MIME-Version; b=PjzPo7XwhuhIY4qSg2l4fdStSwYkQqeQC7pz8+bznBjg6NrT2KDBTXC+uqQjBj46FstdMudQyU/NM2NEuvNyorIEDcPA6M+dfSXoCLKhXGG5QvdDPYwamcpeGkNQcE8Ovf7qMkn5IDb4LmsS6evo7d8VLJIGXm9yTdBatx4IPw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMfx8LuW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC682C4CED4;
+	Thu, 12 Dec 2024 15:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020293;
-	bh=BVrhhoM+3Cbt7uCu13ekRlugmrVrtppJnSKbsviMEsY=;
+	s=korg; t=1734016462;
+	bh=zi8WT2vabOuRNRm1boKTAJgyRzDaBU3gDzjk8reKEZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DUtClEFxw2sG7lX7+YzHnlKHMVm5fSzPzpM3TvRo2zGnXDc2azi89RRfDaJEnKydg
-	 OebFd9LdoNs/4BkxkgtcZP3rF3cgN2mW485fYMCaTQcwgiot+ynDo1MPeaPzB9p/bm
-	 fixqJlT9C6oGIxXWH+7Vsw+7jWOdu+IxxLfzo76E=
+	b=bMfx8LuWRi58n0S1uxqVJcIGPbuoAGm/++U5RY5WgrX6gxsodPsWgVrLRUBVs6GNm
+	 FDoSxF1721CJIOM4N0DVWYYakQzH4n50zf20beZsFSz9y1nzpYFyZtwifh3JoJq657
+	 bhIuotFQzookHi8jSiiQlTy72lafuubyax7S5XUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 430/772] rtc: st-lpc: Use IRQF_NO_AUTOEN flag in request_irq()
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 206/466] mm: open-code page_folio() in dump_page()
 Date: Thu, 12 Dec 2024 15:56:15 +0100
-Message-ID: <20241212144407.697403030@linuxfoundation.org>
+Message-ID: <20241212144314.926072325@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit b6cd7adec0cf03f0aefc55676e71dd721cbc71a8 ]
+commit 6a7de1bf218d75f27f68d6a3f5ae1eb7332b941e upstream.
 
-If request_irq() fails in st_rtc_probe(), there is no need to enable
-the irq, and if it succeeds, disable_irq() after request_irq() still has
-a time gap in which interrupts can come.
+page_folio() calls page_fixed_fake_head() which will misidentify this page
+as being a fake head and load off the end of 'precise'.  We may have a
+pointer to a fake head, but that's OK because it contains the right
+information for dump_page().
 
-request_irq() with IRQF_NO_AUTOEN flag will disable IRQ auto-enable when
-request IRQ.
+gcc-15 is smart enough to catch this with -Warray-bounds:
 
-Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240912033727.3013951-1-ruanjinjie@huawei.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In function 'page_fixed_fake_head',
+    inlined from '_compound_head' at ../include/linux/page-flags.h:251:24,
+    inlined from '__dump_page' at ../mm/debug.c:123:11:
+../include/asm-generic/rwonce.h:44:26: warning: array subscript 9 is outside
++array bounds of 'struct page[1]' [-Warray-bounds=]
+
+Link: https://lkml.kernel.org/r/20241125201721.2963278-2-willy@infradead.org
+Fixes: fae7d834c43c ("mm: add __dump_folio()")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reported-by: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-st-lpc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ mm/debug.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
-index d04d46f9cc65a..23fbe25edeff1 100644
---- a/drivers/rtc/rtc-st-lpc.c
-+++ b/drivers/rtc/rtc-st-lpc.c
-@@ -218,15 +218,14 @@ static int st_rtc_probe(struct platform_device *pdev)
- 		return -EINVAL;
+--- a/mm/debug.c
++++ b/mm/debug.c
+@@ -124,19 +124,22 @@ static void __dump_page(const struct pag
+ {
+ 	struct folio *foliop, folio;
+ 	struct page precise;
++	unsigned long head;
+ 	unsigned long pfn = page_to_pfn(page);
+ 	unsigned long idx, nr_pages = 1;
+ 	int loops = 5;
+ 
+ again:
+ 	memcpy(&precise, page, sizeof(*page));
+-	foliop = page_folio(&precise);
+-	if (foliop == (struct folio *)&precise) {
++	head = precise.compound_head;
++	if ((head & 1) == 0) {
++		foliop = (struct folio *)&precise;
+ 		idx = 0;
+ 		if (!folio_test_large(foliop))
+ 			goto dump;
+ 		foliop = (struct folio *)page;
+ 	} else {
++		foliop = (struct folio *)(head - 1);
+ 		idx = folio_page_idx(foliop, page);
  	}
  
--	ret = devm_request_irq(&pdev->dev, rtc->irq, st_rtc_handler, 0,
--			       pdev->name, rtc);
-+	ret = devm_request_irq(&pdev->dev, rtc->irq, st_rtc_handler,
-+			       IRQF_NO_AUTOEN, pdev->name, rtc);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to request irq %i\n", rtc->irq);
- 		return ret;
- 	}
- 
- 	enable_irq_wake(rtc->irq);
--	disable_irq(rtc->irq);
- 
- 	rtc->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(rtc->clk)) {
--- 
-2.43.0
-
 
 
 
