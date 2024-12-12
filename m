@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-102669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1A39EF308
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9399EEC3E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F1D284600
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C95D81884F44
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551AD23A1BF;
-	Thu, 12 Dec 2024 16:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F97421B8E1;
+	Thu, 12 Dec 2024 15:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKRhW6BV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FErsF+hA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0852A22969B;
-	Thu, 12 Dec 2024 16:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3E72185A0;
+	Thu, 12 Dec 2024 15:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022065; cv=none; b=O92mu5QHGCjBG7rtGEgp0Ygsx+02pMprLXiUFqXRcyuymfwkW/YWbmyh79UlSd3mFKxyZi3jpEbdYTZ9RRbeXzgyH7iOSH8rZy/qLqfxFZPU8KMI6a8GxDvl2jqgyuNBPnHxQ/Ms4XwNHSnb/pNoNwwAK5dIvQf0lOxvOTpT658=
+	t=1734017441; cv=none; b=BtpT999d52dmpbxVygP/Iucn7SLm3qESoo7sw+2WtBwR1r1p6HAXyC1zoGr7mWPpC/jLrSxzV1mQEHxkCNteDk+Nak1ET0/CSMjR6g8nk9OIx99V5Mj56YdZnt9EYT67uHkYxTTH8N/wXh05qj04ELgNdGgkfSbbJ3jXM7gjA1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022065; c=relaxed/simple;
-	bh=n65otuL08phRPcqScI7XVO53vN6TK02IoreN1T+I210=;
+	s=arc-20240116; t=1734017441; c=relaxed/simple;
+	bh=wD90aT/GNT/MNMaEgyxVvwYJFXZym95hjfz2B+17aAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aziWq8za82P1xNQ8kgXBP7+bA7m01U6YqiMCMrajK1P78dv63Zc4NIP1C7kW2fMGQrEltsBiBiJmHbWij0Z4OP1DyzKtJcr6bRwfhl/uJ/GhXyW7xkschyvBFNYxfW1pm0xMpuHJ19Hgzvk1FVWF7Z6XoH6SJsFbMI7dzG0FYEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKRhW6BV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD14C4CED3;
-	Thu, 12 Dec 2024 16:47:44 +0000 (UTC)
+	 MIME-Version; b=brb9xkoxFsL2abeHkGrrgmAhuLmVCZC2qlAZqoB45OZLEDYk9ja/DDiutGOv09TM1Q+RU2e3u235hpoyvyF5V1wseGQwtPncDjkxtMvoaVLohNZNc4+mfwRYkP5V/IxKOigmyczKaGfNe85IEDyB2eLFxQNxAy0rr1Obtz75Q9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FErsF+hA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA15C4CED7;
+	Thu, 12 Dec 2024 15:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022064;
-	bh=n65otuL08phRPcqScI7XVO53vN6TK02IoreN1T+I210=;
+	s=korg; t=1734017440;
+	bh=wD90aT/GNT/MNMaEgyxVvwYJFXZym95hjfz2B+17aAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kKRhW6BVvd3iJZVpqAk8d4cAmVHOfFNNXaNBXJzWjnQuV+4VKdwl24SPJ612uAh0l
-	 MixAlRzhj/K/OzN0yig1PJDDxzH26R436yAeOuppWSxbghuJBQJqEQlzZm1VspNKkw
-	 gkaoncYL4VSZxBQkvTprQ0iKLBHFdyYRsUNvPpyQ=
+	b=FErsF+hAR90U7oNGAr5oFwq/RExxuEMXY4gwidnpWPkUQLJ1JOyhds5b3x7DOByWj
+	 jJcQqVZZgTnv5NOOcu0lSStmY3xgvB4wGp4nl1/rWK7A0xas0tPMOiwkrZEos2ef4R
+	 tIuL44X/zj5y7+fEpZV9pHtnczNIvQb6QvaPMEAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viswanath Boma <quic_vboma@quicinc.com>,
-	Vikash Garodia <vgarodia@qti.qualcomm.com>,
-	Dikshita Agarwal <dikshita@codeaurora.org>,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/565] media: venus : Addition of EOS Event support for Encoder
+Subject: [PATCH 6.6 014/356] can: sun4i_can: sun4i_can_err(): fix {rx,tx}_errors statistics
 Date: Thu, 12 Dec 2024 15:55:33 +0100
-Message-ID: <20241212144316.935152168@linuxfoundation.org>
+Message-ID: <20241212144245.183427050@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viswanath Boma <quic_vboma@quicinc.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit 70b2a5463dcdc18cd94d41f6dc170aa29cfcb922 ]
+[ Upstream commit 595a81988a6fe06eb5849e972c8b9cb21c4e0d54 ]
 
-V4l2 encoder compliance expecting End of stream Event registration
-support for Encoder.
+The sun4i_can_err() function only incremented the receive error counter
+and never the transmit error counter, even if the STA_ERR_DIR flag
+reported that an error had occurred during transmission.
 
-Signed-off-by: Viswanath Boma <quic_vboma@quicinc.com>
-Signed-off-by: Vikash Garodia <vgarodia@qti.qualcomm.com>
-Signed-off-by: Dikshita Agarwal <dikshita@codeaurora.org>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: 6c9934c5a00a ("media: venus: fix enc/dec destruction order")
+Increment the receive/transmit error counter based on the value of the
+STA_ERR_DIR flag.
+
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-11-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/venc.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/can/sun4i_can.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/venc.c b/drivers/media/platform/qcom/venus/venc.c
-index 8720606cdd95a..2c23d83273a85 100644
---- a/drivers/media/platform/qcom/venus/venc.c
-+++ b/drivers/media/platform/qcom/venus/venc.c
-@@ -509,6 +509,19 @@ static int venc_enum_frameintervals(struct file *file, void *fh,
- 	return 0;
- }
+diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
+index 80f7aa2531dc0..283fbf59e66d5 100644
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -579,11 +579,9 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
+ 		/* bus error interrupt */
+ 		netdev_dbg(dev, "bus error interrupt\n");
+ 		priv->can.can_stats.bus_error++;
+-		stats->rx_errors++;
++		ecc = readl(priv->base + SUN4I_REG_STA_ADDR);
  
-+static int venc_subscribe_event(struct v4l2_fh *fh,
-+				const struct v4l2_event_subscription *sub)
-+{
-+	switch (sub->type) {
-+	case V4L2_EVENT_EOS:
-+		return v4l2_event_subscribe(fh, sub, 2, NULL);
-+	case V4L2_EVENT_CTRL:
-+		return v4l2_ctrl_subscribe_event(fh, sub);
-+	default:
-+		return -EINVAL;
-+	}
-+}
+ 		if (likely(skb)) {
+-			ecc = readl(priv->base + SUN4I_REG_STA_ADDR);
+-
+ 			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+ 
+ 			switch (ecc & SUN4I_STA_MASK_ERR) {
+@@ -601,9 +599,15 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
+ 					       >> 16;
+ 				break;
+ 			}
+-			/* error occurred during transmission? */
+-			if ((ecc & SUN4I_STA_ERR_DIR) == 0)
++		}
 +
- static const struct v4l2_ioctl_ops venc_ioctl_ops = {
- 	.vidioc_querycap = venc_querycap,
- 	.vidioc_enum_fmt_vid_cap = venc_enum_fmt,
-@@ -534,7 +547,7 @@ static const struct v4l2_ioctl_ops venc_ioctl_ops = {
- 	.vidioc_g_parm = venc_g_parm,
- 	.vidioc_enum_framesizes = venc_enum_framesizes,
- 	.vidioc_enum_frameintervals = venc_enum_frameintervals,
--	.vidioc_subscribe_event = v4l2_ctrl_subscribe_event,
-+	.vidioc_subscribe_event = venc_subscribe_event,
- 	.vidioc_unsubscribe_event = v4l2_event_unsubscribe,
- };
- 
++		/* error occurred during transmission? */
++		if ((ecc & SUN4I_STA_ERR_DIR) == 0) {
++			if (likely(skb))
+ 				cf->data[2] |= CAN_ERR_PROT_TX;
++			stats->tx_errors++;
++		} else {
++			stats->rx_errors++;
+ 		}
+ 	}
+ 	if (isrc & SUN4I_INT_ERR_PASSIVE) {
 -- 
 2.43.0
 
