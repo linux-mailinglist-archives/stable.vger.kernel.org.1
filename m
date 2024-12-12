@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214A19EF57E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207C39EF9A5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17EF917AC56
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E97DA16A4AE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB13223E71;
-	Thu, 12 Dec 2024 17:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BE2229673;
+	Thu, 12 Dec 2024 17:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7q98cTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcytlbuh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDDF223E69;
-	Thu, 12 Dec 2024 17:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48B52236F0;
+	Thu, 12 Dec 2024 17:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023356; cv=none; b=EduhbYliOiQQ5sHFWNuewDEPwJL9Ld+a51OzuazbYksU5odhlBeQhNq7RGLmzWCzrR/dLWdSgz+FznK4O74nU864SsmuqGcyK8rhwZhvXgnVijnbJMBwJX62u0nj4l+fza1Ge1PR6ErUu5rTYUWtxuWb2Va6WQCjE/cLVWaEPv8=
+	t=1734025479; cv=none; b=bkRSmm5VZgQePfu7JoOY9gCMKnJZFE72p9liT7pZsQ8/8gIza1Ll1Rtc5A80xC2zB5+TspX3e5+3vU/QdJW8WV6AHdwpLZFIEuCwiXoAlAV8F34+ijiF+HsbH2T5NrVuM3xTvbpU5c8uV9kZcNBMuWPmnDbTdRcoZRr0vLTeNfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023356; c=relaxed/simple;
-	bh=JHqdMTP68qDUsCSDbKY7yHKdKO8tyAYdnbToAZlyFqA=;
+	s=arc-20240116; t=1734025479; c=relaxed/simple;
+	bh=YtNpmElHklEtwLwWQqpkBzObkAwPDbCKEbF+4WAUkLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dd/VW87hb8/V8D2qSQQ6G93dBYHE7Ln69KDH3VDuKK8FgW+FYcvGP2rVPYmm/BKNJWOJK/wQPNVSbRlkPBoHNSNMcY2dQgwZ8uOLc/fnn2sAZhSE6cb1rIxPMjKrzKd7RFso/fGYM4V4hXAicAPfgLGKvXLaQyFH2C7RoBNp8pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7q98cTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79127C4CECE;
-	Thu, 12 Dec 2024 17:09:15 +0000 (UTC)
+	 MIME-Version; b=niNIUnAL0AoeJMdydBA1h4WYPL0n9PHxIkNFoXbGPjcakBYnYIK+xjnJH+fNRzanwqK9rw59WVmLtISDTXZMX7Jn0JHTetkrDvPaJjrON8yRvi7k5QLb5jX36j4LtgJBRNjRFjFGrX3btSrz/wrfj1T1IQSBH0T0zYhJe28TCpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcytlbuh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346ACC4CECE;
+	Thu, 12 Dec 2024 17:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023355;
-	bh=JHqdMTP68qDUsCSDbKY7yHKdKO8tyAYdnbToAZlyFqA=;
+	s=korg; t=1734025479;
+	bh=YtNpmElHklEtwLwWQqpkBzObkAwPDbCKEbF+4WAUkLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7q98cTnrUrxIrp424XXNH2LkLOO1FqXmwZNQQW0nxvQGGKwrQTrVxJQroQx+9LHv
-	 kcqRCaYogM7yv98hZkdG7ph553EgvZzzcAgF1BzsgQilswabRpKq1f2cjTvNE/kq08
-	 msVsIQKREueXp6rL4ZVe4873B6K1ls2ROrfTKIug=
+	b=jcytlbuhBFTwm97wkCBcS+7ErUCDUtUEy9p0f/gpO7niIdk8guO7R4LbxDsNfp2ZQ
+	 ivofW2Hw8gNj80dY8BSZlpqFE83i8IVAM6LxkEcwyrmAt542poPSULcdf9a/D+g+Q/
+	 Zqd9Q7ejTWG8j1qjrFIINLJi8EWT3A5mB1dhgP9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 507/565] Bluetooth: hci_core: Fix not checking skb length on hci_acldata_packet
+Subject: [PATCH 5.4 184/321] NFSv4.0: Fix a use-after-free problem in the asynchronous open()
 Date: Thu, 12 Dec 2024 16:01:42 +0100
-Message-ID: <20241212144331.811553964@linuxfoundation.org>
+Message-ID: <20241212144237.256422395@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 3fe288a8214e7dd784d1f9b7c9e448244d316b47 ]
+[ Upstream commit 2fdb05dc0931250574f0cb0ebeb5ed8e20f4a889 ]
 
-This fixes not checking if skb really contains an ACL header otherwise
-the code may attempt to access some uninitilized/invalid memory past the
-valid skb->data.
+Yang Erkun reports that when two threads are opening files at the same
+time, and are forced to abort before a reply is seen, then the call to
+nfs_release_seqid() in nfs4_opendata_free() can result in a
+use-after-free of the pointer to the defunct rpc task of the other
+thread.
+The fix is to ensure that if the RPC call is aborted before the call to
+nfs_wait_on_sequence() is complete, then we must call nfs_release_seqid()
+in nfs4_open_release() before the rpc_task is freed.
 
-Reported-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
-Tested-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6ea290ba76d8c1eb1ac2
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Yang Erkun <yangerkun@huawei.com>
+Fixes: 24ac23ab88df ("NFSv4: Convert open() into an asynchronous RPC call")
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/nfs/nfs4proc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 7dff3f1a2a9eb..7ed5d6e47e4f3 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4943,18 +4943,22 @@ static void hci_tx_work(struct work_struct *work)
- /* ACL data packet */
- static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
- {
--	struct hci_acl_hdr *hdr = (void *) skb->data;
-+	struct hci_acl_hdr *hdr;
- 	struct hci_conn *conn;
- 	__u16 handle, flags;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 31503bade3358..632cea3fb91da 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -2477,12 +2477,14 @@ static void nfs4_open_release(void *calldata)
+ 	struct nfs4_opendata *data = calldata;
+ 	struct nfs4_state *state = NULL;
  
--	skb_pull(skb, HCI_ACL_HDR_SIZE);
-+	hdr = skb_pull_data(skb, sizeof(*hdr));
-+	if (!hdr) {
-+		bt_dev_err(hdev, "ACL packet too small");
-+		goto drop;
++	/* In case of error, no cleanup! */
++	if (data->rpc_status != 0 || !data->rpc_done) {
++		nfs_release_seqid(data->o_arg.seqid);
++		goto out_free;
 +	}
- 
- 	handle = __le16_to_cpu(hdr->handle);
- 	flags  = hci_flags(handle);
- 	handle = hci_handle(handle);
- 
--	BT_DBG("%s len %d handle 0x%4.4x flags 0x%4.4x", hdev->name, skb->len,
--	       handle, flags);
-+	bt_dev_dbg(hdev, "len %d handle 0x%4.4x flags 0x%4.4x", skb->len,
-+		   handle, flags);
- 
- 	hdev->stat.acl_rx++;
- 
-@@ -4973,6 +4977,7 @@ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
- 			   handle);
- 	}
- 
-+drop:
- 	kfree_skb(skb);
- }
- 
+ 	/* If this request hasn't been cancelled, do nothing */
+ 	if (!data->cancelled)
+ 		goto out_free;
+-	/* In case of error, no cleanup! */
+-	if (data->rpc_status != 0 || !data->rpc_done)
+-		goto out_free;
+ 	/* In case we need an open_confirm, no cleanup! */
+ 	if (data->o_res.rflags & NFS4_OPEN_RESULT_CONFIRM)
+ 		goto out_free;
 -- 
 2.43.0
 
