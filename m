@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99E59EF533
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:14:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308579EF75B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65AD417E495
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4783189E935
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4A6223316;
-	Thu, 12 Dec 2024 17:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAB321660C;
+	Thu, 12 Dec 2024 17:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGGZxse0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1oGxy+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC71B13792B;
-	Thu, 12 Dec 2024 17:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA6E215762;
+	Thu, 12 Dec 2024 17:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022951; cv=none; b=rxHy4LdbXRgJ8J9sGZ2ndRHEG9QJbR/UgEpE9tEsbELhuiDuCjZfKhY3anJsiJsmF1A2eIFcFuKFJO8S4xzBisLhtvB4N6bpusIKLKMeHVK/ccpa16+yolZHdqBXQbBVkToSM6xgjPrl3wv6nc2FzOJel9UE76CB5gquCHJ7Frs=
+	t=1734024250; cv=none; b=NNofwh4AFNt6mRsE8VGmTq5PHpU1LuQFhTwnEfTOfsU8uSwz2nm37qTfIzQvGzB32ebOVtI6Kjzjp/TjjesB8hoND4fcZov553+Greg0pIa/W4YkPG1/tAbErWdrkZTKTUaa7hBx1VyGBldcSsleMq2k+1tRwJvJN4Qb0l32y08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022951; c=relaxed/simple;
-	bh=YxyH301M1I4eGGU0ViY5Nh96A38eEPIUy6P6E3BLSkM=;
+	s=arc-20240116; t=1734024250; c=relaxed/simple;
+	bh=xBjqdF7ATqdEdc+nTD5Ctew7brlR2L5PMeFryXaT5xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKbf662Y5chLTUlw0n6fXnu+iCPgfZa14XvL1QqfHSnh1GO3awb0x4/Wsk6H0h26QsTxaRusVsCz+KW5LfkHmQPNgKZg6mLzH2UI/Noaaq6eVlv2tzMQ7RuEJ8x4nUb7GtKsAkgsFfmOK7Dq2sT+4HFMqdsafuYppGPjMOYWEr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGGZxse0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE0EC4CECE;
-	Thu, 12 Dec 2024 17:02:29 +0000 (UTC)
+	 MIME-Version; b=Za7cvs1/PM2+svNubB5SO5pxytqN0hk5cc9vpbjg5jerA5RGFZgTusSkb0r1bbJGU5bkQIzFNoU6Xf7ApPYyHmd7GyEXsjRTjp6QK+AnmJ0Cs4ILXkktkv4Gpb/Jk2+dPxLnFhyEbsCZIOSITQCJbpz4RNqZ393LkEqe1lSm+wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1oGxy+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3040CC4CECE;
+	Thu, 12 Dec 2024 17:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022950;
-	bh=YxyH301M1I4eGGU0ViY5Nh96A38eEPIUy6P6E3BLSkM=;
+	s=korg; t=1734024250;
+	bh=xBjqdF7ATqdEdc+nTD5Ctew7brlR2L5PMeFryXaT5xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGGZxse0V/YsHyuPORaLfFWIHcXZ1DUBBjdFCk5CX++3zyk8ZgJBjk9LUzICXIbQE
-	 GqRS5Kb3mOx/gnqSM58thLHHSAKqeej/79fxzvJyWgJMU54Pih9OdsTRojeTmGxIxa
-	 vkpmpA10WCndzNl13LGjj3NvjMVqiNb+h1CTl8oY=
+	b=K1oGxy+nwjHJ0m/IcO0AcApwMOEnFmAC5iCrOXbARPyiUXNN4DPfe37PKi7C48ioW
+	 7A7QmoL4AVZQ5uSiSLCf7p42kIwGfK0A1xP1nEU3pApIKu8lLxdKTN2ROXtYmgr4VE
+	 qoYF/CczcsXqGHcOt7kNy7hGvRgpNtEdIvtthx28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	syzbot+422188bce66e76020e55@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 377/565] xfs: remove unknown compat feature check in superblock write validation
+Subject: [PATCH 5.10 234/459] USB: chaoskey: fail open after removal
 Date: Thu, 12 Dec 2024 15:59:32 +0100
-Message-ID: <20241212144326.530483878@linuxfoundation.org>
+Message-ID: <20241212144302.814148945@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 652f03db897ba24f9c4b269e254ccc6cc01ff1b7 ]
+[ Upstream commit 422dc0a4d12d0b80dd3aab3fe5943f665ba8f041 ]
 
-Compat features are new features that older kernels can safely ignore,
-allowing read-write mounts without issues. The current sb write validation
-implementation returns -EFSCORRUPTED for unknown compat features,
-preventing filesystem write operations and contradicting the feature's
-definition.
+chaoskey_open() takes the lock only to increase the
+counter of openings. That means that the mutual exclusion
+with chaoskey_disconnect() cannot prevent an increase
+of the counter and chaoskey_open() returning a success.
 
-Additionally, if the mounted image is unclean, the log recovery may need
-to write to the superblock. Returning an error for unknown compat features
-during sb write validation can cause mount failures.
+If that race is hit, chaoskey_disconnect() will happily
+free all resources associated with the device after
+it has dropped the lock, as it has read the counter
+as zero.
 
-Although XFS currently does not use compat feature flags, this issue
-affects current kernels' ability to mount images that may use compat
-feature flags in the future.
+To prevent this race chaoskey_open() has to check
+the presence of the device under the lock.
+However, the current per device lock cannot be used,
+because it is a part of the data structure to be
+freed. Hence an additional global mutex is needed.
+The issue is as old as the driver.
 
-Since superblock read validation already warns about unknown compat
-features, it's unnecessary to repeat this warning during write validation.
-Therefore, the relevant code in write validation is being removed.
-
-Fixes: 9e037cb7972f ("xfs: check for unknown v5 feature bits in superblock write verifier")
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Reported-by: syzbot+422188bce66e76020e55@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=422188bce66e76020e55
+Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
+Rule: add
+Link: https://lore.kernel.org/stable/20241002132201.552578-1-oneukum%40suse.com
+Link: https://lore.kernel.org/r/20241002132201.552578-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_sb.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/usb/misc/chaoskey.c | 35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/fs/xfs/libxfs/xfs_sb.c b/fs/xfs/libxfs/xfs_sb.c
-index f867da8128ca6..3175e3620a418 100644
---- a/fs/xfs/libxfs/xfs_sb.c
-+++ b/fs/xfs/libxfs/xfs_sb.c
-@@ -256,13 +256,6 @@ xfs_validate_sb_write(
- 	 * the kernel cannot support since we checked for unsupported bits in
- 	 * the read verifier, which means that memory is corrupt.
- 	 */
--	if (xfs_sb_has_compat_feature(sbp, XFS_SB_FEAT_COMPAT_UNKNOWN)) {
--		xfs_warn(mp,
--"Corruption detected in superblock compatible features (0x%x)!",
--			(sbp->sb_features_compat & XFS_SB_FEAT_COMPAT_UNKNOWN));
--		return -EFSCORRUPTED;
--	}
+diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
+index 87067c3d6109b..32fa7fd50c380 100644
+--- a/drivers/usb/misc/chaoskey.c
++++ b/drivers/usb/misc/chaoskey.c
+@@ -27,6 +27,8 @@ static struct usb_class_driver chaoskey_class;
+ static int chaoskey_rng_read(struct hwrng *rng, void *data,
+ 			     size_t max, bool wait);
+ 
++static DEFINE_MUTEX(chaoskey_list_lock);
++
+ #define usb_dbg(usb_if, format, arg...) \
+ 	dev_dbg(&(usb_if)->dev, format, ## arg)
+ 
+@@ -231,6 +233,7 @@ static void chaoskey_disconnect(struct usb_interface *interface)
+ 	if (dev->hwrng_registered)
+ 		hwrng_unregister(&dev->hwrng);
+ 
++	mutex_lock(&chaoskey_list_lock);
+ 	usb_deregister_dev(interface, &chaoskey_class);
+ 
+ 	usb_set_intfdata(interface, NULL);
+@@ -245,6 +248,7 @@ static void chaoskey_disconnect(struct usb_interface *interface)
+ 	} else
+ 		mutex_unlock(&dev->lock);
+ 
++	mutex_unlock(&chaoskey_list_lock);
+ 	usb_dbg(interface, "disconnect done");
+ }
+ 
+@@ -252,6 +256,7 @@ static int chaoskey_open(struct inode *inode, struct file *file)
+ {
+ 	struct chaoskey *dev;
+ 	struct usb_interface *interface;
++	int rv = 0;
+ 
+ 	/* get the interface from minor number and driver information */
+ 	interface = usb_find_interface(&chaoskey_driver, iminor(inode));
+@@ -267,18 +272,23 @@ static int chaoskey_open(struct inode *inode, struct file *file)
+ 	}
+ 
+ 	file->private_data = dev;
++	mutex_lock(&chaoskey_list_lock);
+ 	mutex_lock(&dev->lock);
+-	++dev->open;
++	if (dev->present)
++		++dev->open;
++	else
++		rv = -ENODEV;
+ 	mutex_unlock(&dev->lock);
++	mutex_unlock(&chaoskey_list_lock);
+ 
+-	usb_dbg(interface, "open success");
+-	return 0;
++	return rv;
+ }
+ 
+ static int chaoskey_release(struct inode *inode, struct file *file)
+ {
+ 	struct chaoskey *dev = file->private_data;
+ 	struct usb_interface *interface;
++	int rv = 0;
+ 
+ 	if (dev == NULL)
+ 		return -ENODEV;
+@@ -287,14 +297,15 @@ static int chaoskey_release(struct inode *inode, struct file *file)
+ 
+ 	usb_dbg(interface, "release");
+ 
++	mutex_lock(&chaoskey_list_lock);
+ 	mutex_lock(&dev->lock);
+ 
+ 	usb_dbg(interface, "open count at release is %d", dev->open);
+ 
+ 	if (dev->open <= 0) {
+ 		usb_dbg(interface, "invalid open count (%d)", dev->open);
+-		mutex_unlock(&dev->lock);
+-		return -ENODEV;
++		rv = -ENODEV;
++		goto bail;
+ 	}
+ 
+ 	--dev->open;
+@@ -303,13 +314,15 @@ static int chaoskey_release(struct inode *inode, struct file *file)
+ 		if (dev->open == 0) {
+ 			mutex_unlock(&dev->lock);
+ 			chaoskey_free(dev);
+-		} else
+-			mutex_unlock(&dev->lock);
+-	} else
+-		mutex_unlock(&dev->lock);
 -
- 	if (!xfs_is_readonly(mp) &&
- 	    xfs_sb_has_ro_compat_feature(sbp, XFS_SB_FEAT_RO_COMPAT_UNKNOWN)) {
- 		xfs_alert(mp,
++			goto destruction;
++		}
++	}
++bail:
++	mutex_unlock(&dev->lock);
++destruction:
++	mutex_lock(&chaoskey_list_lock);
+ 	usb_dbg(interface, "release success");
+-	return 0;
++	return rv;
+ }
+ 
+ static void chaos_read_callback(struct urb *urb)
 -- 
 2.43.0
 
