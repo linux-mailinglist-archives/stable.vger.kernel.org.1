@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5779EF8EF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F079EF7A7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2875D28E37F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BF4716B330
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6653522914D;
-	Thu, 12 Dec 2024 17:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C8921CFF0;
+	Thu, 12 Dec 2024 17:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWfBNmWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BmrV6lOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234C12253FD;
-	Thu, 12 Dec 2024 17:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794F4217F34;
+	Thu, 12 Dec 2024 17:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025462; cv=none; b=fPXgX0t7kFUIgCMmszpHylyYgkWpIP8VQ2cJJyLfh5/ThvhcudocC2o2eTIXt/ksTrBfJAcUT/pibWJBrqbF0+tmCUmusmZlve4BrKPeQ24tC8EXpt6RGQUAmGW0SnlXRcvq2eHE1Jd8hDtuoMn72MSMc0K/f652dkqwKG0YYIA=
+	t=1734024529; cv=none; b=cPb0+rf7qIn3TFMSz3fjUWbsnPW6xVwTx+HmmWor8/qSVr5xsI0KxopH8ciscH2NxNkI+F887oLTjs6CvO97Ep92k1u+j5J4Q2fOKwoSOg7x0o7Bpaja0Ydcrz0iMsP5JsHAzk+fxBrEsv27mdz3venDScIAePL2nyqJ1cDfNYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025462; c=relaxed/simple;
-	bh=LWAw4zKhtk4lMD2PXUUUjq40MxAhQKbC7i7pl5cFX6I=;
+	s=arc-20240116; t=1734024529; c=relaxed/simple;
+	bh=l0TDv4NGktI5EQlLvbYIhubjOj5Z/RwOJY3FiI3STu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+hFH66mhmFSl/AiqDErbODc0RG6oGIfH/WucA1NqeVB6vCttXf25h29Vxzc8pTnNvPmaMLc2NEavPuNo3Pz8e4p7orl7uWdapjdfsiR7aKxOCurhKEEUr5ncA0xdTrnX+WGSthmkxFXz3EwsxWVlnGVDaSAyqQ6IO0W6n+be9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWfBNmWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4EDC4CED0;
-	Thu, 12 Dec 2024 17:44:21 +0000 (UTC)
+	 MIME-Version; b=WDUntiveknuXNCqrK1cEMC8uDV3JpT9GJDp4EqcvDM3ISHtUMZFNE9poICqrEwxHDS6Nft3rsvKjEfo+yYXLEIemTguBC5rUzQtIebzs0SG+6c6cmgcT4udjyVnwtLVhhPspY0VgBnu82vDGRSGcdN0/mcgv8Qirn3+92IaVfO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmrV6lOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03EDC4CED0;
+	Thu, 12 Dec 2024 17:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025461;
-	bh=LWAw4zKhtk4lMD2PXUUUjq40MxAhQKbC7i7pl5cFX6I=;
+	s=korg; t=1734024529;
+	bh=l0TDv4NGktI5EQlLvbYIhubjOj5Z/RwOJY3FiI3STu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWfBNmWlGVVJ0fqYNNA8JsyTqfZyWX79qLeT1qL+jO0AQNnMH5OMZ+S2dLd3cqv4y
-	 67QvGtNvRu1aS0s+bnqblPhrJRZAc+1gCCWLH5jOERcARJXON+/FBavZNDV0boMTx7
-	 xv2rVQA7W9PPnvA8Zp2boqZ4DFqtMkXZwJfECp3s=
+	b=BmrV6lOj10KrFos6cAiPQwuFFnwQVICNemTPPaL56qQgspyBjipr0wYShLScnwaS4
+	 pYirzsculkkr6bk1Mqytc4tavbK8G3LU287RQcdHM/CB8JqKHIktLDUfOVs/rMVwiw
+	 c4CF/pisvaeJ05yFLtGxOqk5x77wvHGTHl7n8az4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 146/321] ext4: supress data-race warnings in ext4_free_inodes_{count,set}()
-Date: Thu, 12 Dec 2024 16:01:04 +0100
-Message-ID: <20241212144235.745905876@linuxfoundation.org>
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 327/459] can: sun4i_can: sun4i_can_err(): call can_change_state() even if cf is NULL
+Date: Thu, 12 Dec 2024 16:01:05 +0100
+Message-ID: <20241212144306.578918316@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-commit 902cc179c931a033cd7f4242353aa2733bf8524c upstream.
+[ Upstream commit ee6bf3677ae03569d833795064e17f605c2163c7 ]
 
-find_group_other() and find_group_orlov() read *_lo, *_hi with
-ext4_free_inodes_count without additional locking. This can cause
-data-race warning, but since the lock is held for most writes and free
-inodes value is generally not a problem even if it is incorrect, it is
-more appropriate to use READ_ONCE()/WRITE_ONCE() than to add locking.
+Call the function can_change_state() if the allocation of the skb
+fails, as it handles the cf parameter when it is null.
 
-==================================================================
-BUG: KCSAN: data-race in ext4_free_inodes_count / ext4_free_inodes_set
+Additionally, this ensures that the statistics related to state error
+counters (i. e. warning, passive, and bus-off) are updated.
 
-write to 0xffff88810404300e of 2 bytes by task 6254 on cpu 1:
- ext4_free_inodes_set+0x1f/0x80 fs/ext4/super.c:405
- __ext4_new_inode+0x15ca/0x2200 fs/ext4/ialloc.c:1216
- ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
- vfs_symlink+0xca/0x1d0 fs/namei.c:4615
- do_symlinkat+0xe3/0x340 fs/namei.c:4641
- __do_sys_symlinkat fs/namei.c:4657 [inline]
- __se_sys_symlinkat fs/namei.c:4654 [inline]
- __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
- x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-read to 0xffff88810404300e of 2 bytes by task 6257 on cpu 0:
- ext4_free_inodes_count+0x1c/0x80 fs/ext4/super.c:349
- find_group_other fs/ext4/ialloc.c:594 [inline]
- __ext4_new_inode+0x6ec/0x2200 fs/ext4/ialloc.c:1017
- ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
- vfs_symlink+0xca/0x1d0 fs/namei.c:4615
- do_symlinkat+0xe3/0x340 fs/namei.c:4641
- __do_sys_symlinkat fs/namei.c:4657 [inline]
- __se_sys_symlinkat fs/namei.c:4654 [inline]
- __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
- x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Link: https://patch.msgid.link/20241003125337.47283-1-aha310510@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-3-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |    8 ++++----
+ drivers/net/can/sun4i_can.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -259,9 +259,9 @@ __u32 ext4_free_group_clusters(struct su
- __u32 ext4_free_inodes_count(struct super_block *sb,
- 			      struct ext4_group_desc *bg)
- {
--	return le16_to_cpu(bg->bg_free_inodes_count_lo) |
-+	return le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_lo)) |
- 		(EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT ?
--		 (__u32)le16_to_cpu(bg->bg_free_inodes_count_hi) << 16 : 0);
-+		 (__u32)le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_hi)) << 16 : 0);
- }
+diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
+index 39ddb3d849dd8..e9fa3921efbed 100644
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -613,10 +613,10 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
+ 		tx_state = txerr >= rxerr ? state : 0;
+ 		rx_state = txerr <= rxerr ? state : 0;
  
- __u32 ext4_used_dirs_count(struct super_block *sb,
-@@ -315,9 +315,9 @@ void ext4_free_group_clusters_set(struct
- void ext4_free_inodes_set(struct super_block *sb,
- 			  struct ext4_group_desc *bg, __u32 count)
- {
--	bg->bg_free_inodes_count_lo = cpu_to_le16((__u16)count);
-+	WRITE_ONCE(bg->bg_free_inodes_count_lo, cpu_to_le16((__u16)count));
- 	if (EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT)
--		bg->bg_free_inodes_count_hi = cpu_to_le16(count >> 16);
-+		WRITE_ONCE(bg->bg_free_inodes_count_hi, cpu_to_le16(count >> 16));
- }
- 
- void ext4_used_dirs_set(struct super_block *sb,
+-		if (likely(skb))
+-			can_change_state(dev, cf, tx_state, rx_state);
+-		else
+-			priv->can.state = state;
++		/* The skb allocation might fail, but can_change_state()
++		 * handles cf == NULL.
++		 */
++		can_change_state(dev, cf, tx_state, rx_state);
+ 		if (state == CAN_STATE_BUS_OFF)
+ 			can_bus_off(dev);
+ 	}
+-- 
+2.43.0
+
 
 
 
