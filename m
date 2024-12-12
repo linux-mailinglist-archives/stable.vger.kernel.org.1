@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-103281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430459EF79D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 714399EF898
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BA721941A25
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF0C81657AF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F78222D58;
-	Thu, 12 Dec 2024 17:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC6F223C42;
+	Thu, 12 Dec 2024 17:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odVm6Ww6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUnrtLma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52092165F0;
-	Thu, 12 Dec 2024 17:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C0B22333F;
+	Thu, 12 Dec 2024 17:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024091; cv=none; b=ru6sTb1VhtkfNRpQJ9IlXM4c4ewWpr7I/WRoI34iY4TyvZQXpgpUvKSL747bI4uDJLtl0eR4JdJbbNidVybPnDnbffE4Kz/J+/4JQJdz6FKClodMnsRpT3CIvrLnoB45kQcwrPXAWtZXC7Y1IFkjlohQE7/t4aYxu6BHhH7VeU8=
+	t=1734024958; cv=none; b=k25jhjuw6YxqkqAKpGiXodZEcoScyqj60+0jSKKx91lev/HeMzYQtmPmWLbF8g4JbTUsOsek+V/MoFTqJfg2+N7Mif443+oaHLMuuZaZ4+SQ4E2cFDOu7RXUs94I2RPC/M1TsrWVOWD1i06R63f2pCtbhHWrEjMDMdt29nAtPSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024091; c=relaxed/simple;
-	bh=hyPxrviH1QVBTSBAOu90TCf5g4sz6I0ghfQIMXYAZEg=;
+	s=arc-20240116; t=1734024958; c=relaxed/simple;
+	bh=8LiWcANfiGLIxk1rsbqMhOWk4gjPCpI5R4tg7E74R0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThueMZGaIar+VCEIPlJageP2Aw5464aCLzKFzYOuSYjB7UftmtfJWIYtYltG90iMqr3CpNjGSjQE9FdhI0sh8j/2yZedizbRZBQjhPXwjTwmP3/TG8uQg22NSMkHLwSY28G8yaBOSaseD7nZ1sO2Na8OWTs1P4J2PfgHRXjzWNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odVm6Ww6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303A5C4CECE;
-	Thu, 12 Dec 2024 17:21:30 +0000 (UTC)
+	 MIME-Version; b=pa20NSRba7B+h6a+7kFx+7ANYM6stUpGuZG3u4Yw3j+ccLgroTx0d+cg0nYkh+2uP7URUm5BBAG+8krzhWVQx6izRHjk/kC4yguFBtTKFHiQu1zCTVNWTEGVf9lq/Hl1IUTNuzY/RjMenM0UcqrYWNnBl2eC0ACw1P6OZ0rS8vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUnrtLma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33CBC4CECE;
+	Thu, 12 Dec 2024 17:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024090;
-	bh=hyPxrviH1QVBTSBAOu90TCf5g4sz6I0ghfQIMXYAZEg=;
+	s=korg; t=1734024958;
+	bh=8LiWcANfiGLIxk1rsbqMhOWk4gjPCpI5R4tg7E74R0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=odVm6Ww6yn4NhMEb22XvCn6fat7wJpivYJk4m6O08PHHRUiIGv4se0rN0J5iU1qg7
-	 ErCYlRxRTpo1TiaY444Lh6g/2YSjmcm6mV2ZenrJyw6jvdjwKUWapCH02bPopFAqZ7
-	 lw1h4JtjXeRNy5jPZkha5b0ltSU6245GwaKkPNjo=
+	b=wUnrtLmaeEE8g+83E8/SJVN9vOv4NpDDs/rXgQWhYRH/Zeoo6TgDrv0ayxWn7qs1m
+	 WOOClG29jozjbYK3pe/SVwxrLMv2u4yGwGmMdF/GyqknCZwa90+/AFbFxmmLIsEoVA
+	 nBEYBuWK0B51JQnrOoApCyWQnZNnYpr+SoFFytHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+a73e253cca4f0230a5a5@syzkaller.appspotmail.com,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/459] ocfs2: fix uninitialized value in ocfs2_file_read_iter()
+Subject: [PATCH 5.4 001/321] netlink: terminate outstanding dump on socket close
 Date: Thu, 12 Dec 2024 15:58:39 +0100
-Message-ID: <20241212144300.707848936@linuxfoundation.org>
+Message-ID: <20241212144229.368838967@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +64,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit adc77b19f62d7e80f98400b2fca9d700d2afdd6f ]
+[ Upstream commit 1904fb9ebf911441f90a68e96b22aa73e4410505 ]
 
-Syzbot has reported the following KMSAN splat:
+Netlink supports iterative dumping of data. It provides the families
+the following ops:
+ - start - (optional) kicks off the dumping process
+ - dump  - actual dump helper, keeps getting called until it returns 0
+ - done  - (optional) pairs with .start, can be used for cleanup
+The whole process is asynchronous and the repeated calls to .dump
+don't actually happen in a tight loop, but rather are triggered
+in response to recvmsg() on the socket.
 
-BUG: KMSAN: uninit-value in ocfs2_file_read_iter+0x9a4/0xf80
- ocfs2_file_read_iter+0x9a4/0xf80
- __io_read+0x8d4/0x20f0
- io_read+0x3e/0xf0
- io_issue_sqe+0x42b/0x22c0
- io_wq_submit_work+0xaf9/0xdc0
- io_worker_handle_work+0xd13/0x2110
- io_wq_worker+0x447/0x1410
- ret_from_fork+0x6f/0x90
- ret_from_fork_asm+0x1a/0x30
+This gives the user full control over the dump, but also means that
+the user can close the socket without getting to the end of the dump.
+To make sure .start is always paired with .done we check if there
+is an ongoing dump before freeing the socket, and if so call .done.
 
-Uninit was created at:
- __alloc_pages_noprof+0x9a7/0xe00
- alloc_pages_mpol_noprof+0x299/0x990
- alloc_pages_noprof+0x1bf/0x1e0
- allocate_slab+0x33a/0x1250
- ___slab_alloc+0x12ef/0x35e0
- kmem_cache_alloc_bulk_noprof+0x486/0x1330
- __io_alloc_req_refill+0x84/0x560
- io_submit_sqes+0x172f/0x2f30
- __se_sys_io_uring_enter+0x406/0x41c0
- __x64_sys_io_uring_enter+0x11f/0x1a0
- x64_sys_call+0x2b54/0x3ba0
- do_syscall_64+0xcd/0x1e0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+The complication is that sockets can get freed from BH and .done
+is allowed to sleep. So we use a workqueue to defer the call, when
+needed.
 
-Since an instance of 'struct kiocb' may be passed from the block layer
-with 'private' field uninitialized, introduce 'ocfs2_iocb_init_rw_locked()'
-and use it from where 'ocfs2_dio_end_io()' might take care, i.e. in
-'ocfs2_file_read_iter()' and 'ocfs2_file_write_iter()'.
+Unfortunately this does not work correctly. What we defer is not
+the cleanup but rather releasing a reference on the socket.
+We have no guarantee that we own the last reference, if someone
+else holds the socket they may release it in BH and we're back
+to square one.
 
-Link: https://lkml.kernel.org/r/20241029091736.1501946-1-dmantipov@yandex.ru
-Fixes: 7cdfc3a1c397 ("ocfs2: Remember rw lock level during direct io")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+a73e253cca4f0230a5a5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a73e253cca4f0230a5a5
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The whole dance, however, appears to be unnecessary. Only the user
+can interact with dumps, so we can clean up when socket is closed.
+And close always happens in process context. Some async code may
+still access the socket after close, queue notification skbs to it etc.
+but no dumps can start, end or otherwise make progress.
+
+Delete the workqueue and flush the dump state directly from the release
+handler. Note that further cleanup is possible in -next, for instance
+we now always call .done before releasing the main module reference,
+so dump doesn't have to take a reference of its own.
+
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Fixes: ed5d7788a934 ("netlink: Do not schedule work from sk_destruct")
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241106015235.2458807-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/aops.h | 2 ++
- fs/ocfs2/file.c | 4 ++++
- 2 files changed, 6 insertions(+)
+ net/netlink/af_netlink.c | 31 ++++++++-----------------------
+ net/netlink/af_netlink.h |  2 --
+ 2 files changed, 8 insertions(+), 25 deletions(-)
 
-diff --git a/fs/ocfs2/aops.h b/fs/ocfs2/aops.h
-index 70ed4382750d5..5b129ae9c3d22 100644
---- a/fs/ocfs2/aops.h
-+++ b/fs/ocfs2/aops.h
-@@ -72,6 +72,8 @@ enum ocfs2_iocb_lock_bits {
- 	OCFS2_IOCB_NUM_LOCKS
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 719af25cd4d11..17d86eee8bd8b 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -384,15 +384,6 @@ static void netlink_skb_set_owner_r(struct sk_buff *skb, struct sock *sk)
+ 
+ static void netlink_sock_destruct(struct sock *sk)
+ {
+-	struct netlink_sock *nlk = nlk_sk(sk);
+-
+-	if (nlk->cb_running) {
+-		if (nlk->cb.done)
+-			nlk->cb.done(&nlk->cb);
+-		module_put(nlk->cb.module);
+-		kfree_skb(nlk->cb.skb);
+-	}
+-
+ 	skb_queue_purge(&sk->sk_receive_queue);
+ 
+ 	if (!sock_flag(sk, SOCK_DEAD)) {
+@@ -405,14 +396,6 @@ static void netlink_sock_destruct(struct sock *sk)
+ 	WARN_ON(nlk_sk(sk)->groups);
+ }
+ 
+-static void netlink_sock_destruct_work(struct work_struct *work)
+-{
+-	struct netlink_sock *nlk = container_of(work, struct netlink_sock,
+-						work);
+-
+-	sk_free(&nlk->sk);
+-}
+-
+ /* This lock without WQ_FLAG_EXCLUSIVE is good on UP and it is _very_ bad on
+  * SMP. Look, when several writers sleep and reader wakes them up, all but one
+  * immediately hit write lock and grab all the cpus. Exclusive sleep solves
+@@ -729,12 +712,6 @@ static void deferred_put_nlk_sk(struct rcu_head *head)
+ 	if (!refcount_dec_and_test(&sk->sk_refcnt))
+ 		return;
+ 
+-	if (nlk->cb_running && nlk->cb.done) {
+-		INIT_WORK(&nlk->work, netlink_sock_destruct_work);
+-		schedule_work(&nlk->work);
+-		return;
+-	}
+-
+ 	sk_free(sk);
+ }
+ 
+@@ -784,6 +761,14 @@ static int netlink_release(struct socket *sock)
+ 				NETLINK_URELEASE, &n);
+ 	}
+ 
++	/* Terminate any outstanding dump */
++	if (nlk->cb_running) {
++		if (nlk->cb.done)
++			nlk->cb.done(&nlk->cb);
++		module_put(nlk->cb.module);
++		kfree_skb(nlk->cb.skb);
++	}
++
+ 	module_put(nlk->module);
+ 
+ 	if (netlink_is_kernel(sk)) {
+diff --git a/net/netlink/af_netlink.h b/net/netlink/af_netlink.h
+index 5f454c8de6a4d..fca9556848885 100644
+--- a/net/netlink/af_netlink.h
++++ b/net/netlink/af_netlink.h
+@@ -4,7 +4,6 @@
+ 
+ #include <linux/rhashtable.h>
+ #include <linux/atomic.h>
+-#include <linux/workqueue.h>
+ #include <net/sock.h>
+ 
+ /* flags */
+@@ -46,7 +45,6 @@ struct netlink_sock {
+ 
+ 	struct rhash_head	node;
+ 	struct rcu_head		rcu;
+-	struct work_struct	work;
  };
  
-+#define ocfs2_iocb_init_rw_locked(iocb) \
-+	(iocb->private = NULL)
- #define ocfs2_iocb_clear_rw_locked(iocb) \
- 	clear_bit(OCFS2_IOCB_RW_LOCK, (unsigned long *)&iocb->private)
- #define ocfs2_iocb_rw_locked_level(iocb) \
-diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
-index 224ced997d64b..3ce7606f5dbe8 100644
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -2401,6 +2401,8 @@ static ssize_t ocfs2_file_write_iter(struct kiocb *iocb,
- 	} else
- 		inode_lock(inode);
- 
-+	ocfs2_iocb_init_rw_locked(iocb);
-+
- 	/*
- 	 * Concurrent O_DIRECT writes are allowed with
- 	 * mount_option "coherency=buffered".
-@@ -2547,6 +2549,8 @@ static ssize_t ocfs2_file_read_iter(struct kiocb *iocb,
- 	if (!direct_io && nowait)
- 		return -EOPNOTSUPP;
- 
-+	ocfs2_iocb_init_rw_locked(iocb);
-+
- 	/*
- 	 * buffered reads protect themselves in ->readpage().  O_DIRECT reads
- 	 * need locks to protect pending reads from racing with truncate.
+ static inline struct netlink_sock *nlk_sk(struct sock *sk)
 -- 
 2.43.0
 
