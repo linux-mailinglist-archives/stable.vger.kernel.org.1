@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-101205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5269EEB59
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5759EED23
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DDED188283D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B2411888BFD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DCD2080FC;
-	Thu, 12 Dec 2024 15:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678152185A0;
+	Thu, 12 Dec 2024 15:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDMJriMH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+EkrFqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DB52AF0E;
-	Thu, 12 Dec 2024 15:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2213D2210DA;
+	Thu, 12 Dec 2024 15:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016723; cv=none; b=KK//HVMO/E7GfR6lALmAixpDPUtYIkRdqlFwZyWJj/Grb6FUEin5aqpqyvB/v5FqWSp+z9oK61JKMF+JzBAH7LFbBkotAa8tZrJVw0xiWMyk6nfQfdFHdAem3E/Iv9S3Yx5K/pNcaMUkvdLJAQIK40nxYXvN8cxqjJGco+hwrLU=
+	t=1734017965; cv=none; b=D6XOuhI9yOWos4G4Ostx26/bLkugv/Y0cREVljzM4rJXWJFOizd5SG9LnpDI+i/FnpKgQkiVuZ8hY6jcJn/ljcRxVJy4furIjO65DUBmvnJ2YQf5KbhXOY6KsZ1GMzYtyic1f1JIVCJhSwFbKfQypYk5VE3fkWORcKati3FwFGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016723; c=relaxed/simple;
-	bh=ZJ7aAhoabp1Dgw024hBL7oaoe4BxXzlPNZtIgilfeVg=;
+	s=arc-20240116; t=1734017965; c=relaxed/simple;
+	bh=ex33IXlBmEN1ay6BL9UppMK7TPnXpWLz2F6e9nHJiyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCWsdqH2svr9WcF7AeXcYp4AxFMF2AU4pF2CPm0g0/RtMUrzI5XTF+lUjACzceaalXsexc/z7hrDA3houekeZ3HLxA4jwl+xEZdliXv+kj4rQAimWDMkiMbV/o4K7RtASQBe3tbKJRfZcUVya/MPxNyHJUauHyq31DhJNtmIhbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDMJriMH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D887C4CED4;
-	Thu, 12 Dec 2024 15:18:42 +0000 (UTC)
+	 MIME-Version; b=XYTqrXsvhATNHwFRzXJSXj/97yvycMvHfngFRhUnwre8fM52+lhR/HKhFbciB9txYiOoFeczyDTGXdnbayppo0/2HBLkcBA6ynqJ6hWYWNFr2DEax/mJfNF+AsEBEIwVsOuPdM2n4PXRfNlF2H3L6qfOmte/dsDB681A7Uky/3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+EkrFqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B3CC4CECE;
+	Thu, 12 Dec 2024 15:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016723;
-	bh=ZJ7aAhoabp1Dgw024hBL7oaoe4BxXzlPNZtIgilfeVg=;
+	s=korg; t=1734017965;
+	bh=ex33IXlBmEN1ay6BL9UppMK7TPnXpWLz2F6e9nHJiyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDMJriMHjiWoV9EVaS5Ga7MvoyBdItMGC2XYx/Igwt2/WxzpAgvWGoBgE4o5kQXIg
-	 Bhb3tKvI+42T00AZGIJdXC1VUAed7tnzzXLEQ0SiNptzBXJIBoTPQ2CdvSaYdTIdzs
-	 COz+uVT6puqz4msEuPCXsLh57oUStAhyM5HQ/Z9w=
+	b=q+EkrFqiz2GesyFIK8gIoVziG/zlvYBQSHcFes1Figz8/xkGljMj5olpsi6jJY5oY
+	 N/O93hucK3Jdtbc+3mxqGkXNGhEuXUWxYdPZbFwswWfTXGamcP0GUA9WywSPwOK6ob
+	 cowYRxxbQmxJJaWgne0NPFacefq/hdPB12NWbJnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 280/466] samples/bpf: Fix a resource leak
+Subject: [PATCH 6.6 130/356] ocfs2: free inode when ocfs2_get_init_inode() fails
 Date: Thu, 12 Dec 2024 15:57:29 +0100
-Message-ID: <20241212144317.845067087@linuxfoundation.org>
+Message-ID: <20241212144249.788559708@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +69,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit f3ef53174b23246fe9bc2bbc2542f3a3856fa1e2 ]
+[ Upstream commit 965b5dd1894f4525f38c1b5f99b0106a07dbb5db ]
 
-The opened file should be closed in show_sockopts(), otherwise resource
-leak will occur that this problem was discovered by reading code
+syzbot is reporting busy inodes after unmount, for commit 9c89fe0af826
+("ocfs2: Handle error from dquot_initialize()") forgot to call iput() when
+new_inode() succeeded and dquot_initialize() failed.
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241010014126.2573-1-zhujun2@cmss.chinamobile.com
+Link: https://lkml.kernel.org/r/e68c0224-b7c6-4784-b4fa-a9fc8c675525@I-love.SAKURA.ne.jp
+Fixes: 9c89fe0af826 ("ocfs2: Handle error from dquot_initialize()")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reported-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0af00f6a2cba2058b5db
+Tested-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/test_cgrp2_sock.c | 4 +++-
+ fs/ocfs2/namei.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/samples/bpf/test_cgrp2_sock.c b/samples/bpf/test_cgrp2_sock.c
-index a0811df888f45..8ca2a445ffa15 100644
---- a/samples/bpf/test_cgrp2_sock.c
-+++ b/samples/bpf/test_cgrp2_sock.c
-@@ -178,8 +178,10 @@ static int show_sockopts(int family)
- 		return 1;
- 	}
- 
--	if (get_bind_to_device(sd, name, sizeof(name)) < 0)
-+	if (get_bind_to_device(sd, name, sizeof(name)) < 0) {
-+		close(sd);
- 		return 1;
+diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
+index 21b3d5b9be603..4e6d8a3f727df 100644
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -200,8 +200,10 @@ static struct inode *ocfs2_get_init_inode(struct inode *dir, umode_t mode)
+ 	mode = mode_strip_sgid(&nop_mnt_idmap, dir, mode);
+ 	inode_init_owner(&nop_mnt_idmap, inode, dir, mode);
+ 	status = dquot_initialize(inode);
+-	if (status)
++	if (status) {
++		iput(inode);
+ 		return ERR_PTR(status);
 +	}
  
- 	mark = get_somark(sd);
- 	prio = get_priority(sd);
+ 	return inode;
+ }
 -- 
 2.43.0
 
