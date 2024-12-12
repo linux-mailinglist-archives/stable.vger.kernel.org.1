@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0B49EF1CC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287179EEE20
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 044B928B7AB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE6A318878B0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A848225417;
-	Thu, 12 Dec 2024 16:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC40221D93;
+	Thu, 12 Dec 2024 15:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ooUpQxCp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GC/53cF+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB51E4F218;
-	Thu, 12 Dec 2024 16:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF25215764;
+	Thu, 12 Dec 2024 15:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021205; cv=none; b=m7HCqTVMa403n28rv2D7ir5TDl3Pbm38uSQm+znVZAyHvPohhlKp+Ge4fkT6a9Z45+mopLm6LeX7HXEnChVhIMzkvfy+c5CXF1nyNNTAK47ZyO4pXAorsz+h6lCe/XwGtMtlqc/jSULP2SJ1GYl0rcoz/Qzpucktwm7q8wTQGpQ=
+	t=1734018462; cv=none; b=qy4C4WAm6oVEtDX/tHLxFzZcuwJz9pN/a2+trUMlK+zwtourPFrCdXoa2YpxOJJRjCOBG+EpN4pejAS/rJPLeW4HxEeQJAPbDCwA7oYXZ4yoTmMOEqu68cfbwaHDenAfxqfm6nKcS1h4IuCGbOsCs1fyzN40/xC+uPluV1GKpeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021205; c=relaxed/simple;
-	bh=EWXD5Un2AiPuYqbeUpdvJQ5A6O4LSqEZc+cOxmBakTk=;
+	s=arc-20240116; t=1734018462; c=relaxed/simple;
+	bh=035heQSHLEs19YIPOxOEqLupQsZpIrjOpcfW1W+vKnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F60tCGFOwY9Oi6BLIbcWIW1SrMn0ZYuqzW8ZxOeD5DgL13eUfGEIsW+96bITMmhd6KX6VVbYbdsMLEg7SY95jgcpb6JSjHBgjBd75fa02u3JyVfnHKVngzc9d4BHFTnQjYmSGeD7E/HtfxvcZaK+yvDIUh/XznSElqPnmvtyrTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ooUpQxCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C928C4CECE;
-	Thu, 12 Dec 2024 16:33:24 +0000 (UTC)
+	 MIME-Version; b=g9HqwTzqQD+fBcf9UTA8oZxVYP2pUdE7fVdKZr/e9JY8sC2AW9J7Ei0PvFY16Er95X0flHrhst4i+Qir3hWzvS0BvKlf5si8i52N1n9xUyBadHZUw+JDHRCTI51tLPTIUnWOk2VLurcJVHPOYy7YrBV4KaTkHqz2pq3G8rOYT0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GC/53cF+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93348C4CECE;
+	Thu, 12 Dec 2024 15:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021204;
-	bh=EWXD5Un2AiPuYqbeUpdvJQ5A6O4LSqEZc+cOxmBakTk=;
+	s=korg; t=1734018462;
+	bh=035heQSHLEs19YIPOxOEqLupQsZpIrjOpcfW1W+vKnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ooUpQxCpHwSepx9f1pHFLg3kahpDDT3LNR2I92DaWQPako5hDfmfZefij7XMpZrzV
-	 Ao5rgy1fJaXyxpfOpsV0Kc+WC4O9H6mVFJ+FN26+cGwjakCLWwTqvznrh99OjXdzru
-	 3nPtZN7hOasVAsuyWaD9s4rZyjaNFe+W549U7Agg=
+	b=GC/53cF+uEHcqUJ/l5WEFwKv+FA3EXq4iCjGt36KsvI7us9PvRKX4ucW/AqoMI+9m
+	 AmFoRDi3f9Xhs4N7WPhLe2y7LuBIEuJUVLH+YRneZ5jw/QMVEW+7wILHsnGW7EI6kf
+	 YRCgJc4YsBdTNDDUAoS7DdcOZPB6p/tfwkSsJBEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 674/772] wifi: ath5k: add PCI ID for SX76X
+Subject: [PATCH 6.6 300/356] ACPI: x86: Clean up Asus entries in acpi_quirk_skip_dmi_ids[]
 Date: Thu, 12 Dec 2024 16:00:19 +0100
-Message-ID: <20241212144417.768768979@linuxfoundation.org>
+Message-ID: <20241212144256.417303791@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit da0474012402d4729b98799d71a54c35dc5c5de3 ]
+[ Upstream commit bd8aa15848f5f21951cd0b0d01510b3ad1f777d4 ]
 
-This is in two devices made by Gigaset, SX762 and SX763.
+The Asus entries in the acpi_quirk_skip_dmi_ids[] table are the only
+entries without a comment which model they apply to. Add these comments.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20240930180716.139894-2-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+The Asus TF103C entry also is in the wrong place for what is supposed to
+be an alphabetically sorted list. Move it up so that the list is properly
+sorted and add a comment that the list is alphabetically sorted.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241116095825.11660-2-hdegoede@redhat.com
+[ rjw: Changelog and subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath5k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/x86/utils.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-index 86b8cb975b1ac..35a6a7b1047a3 100644
---- a/drivers/net/wireless/ath/ath5k/pci.c
-+++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -46,6 +46,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
- 	{ PCI_VDEVICE(ATHEROS, 0x001b) }, /* 5413 Eagle */
- 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
- 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
-+	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
- 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
- 	{ 0 }
- };
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 5fa37e4fecc55..fdfc88e09986e 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -288,6 +288,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 	/*
+ 	 * 2. Devices which also have the skip i2c/serdev quirks and which
+ 	 *    need the x86-android-tablets module to properly work.
++	 *    Sorted alphabetically.
+ 	 */
+ #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
+ 	{
+@@ -313,6 +314,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
+ 	{
++		/* Asus ME176C tablet */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ME176C"),
+@@ -323,23 +325,24 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
+ 	{
+-		/* Lenovo Yoga Book X90F/L */
++		/* Asus TF103C transformer 2-in-1 */
+ 		.matches = {
+-			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
+ 		},
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+-					ACPI_QUIRK_UART1_SKIP |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
+ 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
+ 	{
++		/* Lenovo Yoga Book X90F/L */
+ 		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
+ 		},
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_UART1_SKIP |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
+ 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
+ 	},
 -- 
 2.43.0
 
