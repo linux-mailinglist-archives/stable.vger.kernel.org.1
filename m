@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075069EEB36
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 232F39EECA5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 584C41889A5D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CBE416A957
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA262156FF;
-	Thu, 12 Dec 2024 15:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B32221B8E1;
+	Thu, 12 Dec 2024 15:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHvzL+XW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wS4wN4FT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E591537C8;
-	Thu, 12 Dec 2024 15:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8F74F218;
+	Thu, 12 Dec 2024 15:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016650; cv=none; b=EVrHgaXytdkb5fCopiEJU6I1WhDcp+YnccY/XS6O0GEnlkCkJT4WOkrzlReKdJn3QOJPYdI9y21NJDeatW/GAtvkAhwceYZJd11JfrrSotpAJH2Ox5LFG8iapgjkNEGeQ+v+S0QIvD4Ari1hQzx9PJv9F1GkWbXuCC1oSz5hgxY=
+	t=1734017668; cv=none; b=CbH1+ily3akQIjcgdmSMAFQOGVNB80wfpz0q5yU3kcANYHZkImodLIjWf/dpT/iBCAg1C4QBztucA2R82JMUo9v3ZHqI6yBQbNX6LA/qAoCioHF6JhnshFpMm6di7fRfrdah6+ewvU0GHK33JI+ZP/UONrLezYocqguieuu+BM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016650; c=relaxed/simple;
-	bh=YHPTOyT7R9nCA19R6vdFgWhIJVUSmHqgZmrbWWk5jZ0=;
+	s=arc-20240116; t=1734017668; c=relaxed/simple;
+	bh=MNDEOSLm6RPmu5rsa8IP8lXLv9icFZqp6habJQP3nO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEwguudKGEziQYrpy0sSgSN281WfIrfddptegM1NgCYXQxxm5ZQzvT7xKwoxzrN/OHYbdMpa4GAfJCBUxfZhW+bqrbtdZXXeUprXMmWH01Jzdqv96MxGJwYHgbDVBoNDyzHttgx4gx5QF+SdluGJ5K2CxeiSaWlyVseo1Ph3vEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHvzL+XW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBD2C4CECE;
-	Thu, 12 Dec 2024 15:17:29 +0000 (UTC)
+	 MIME-Version; b=DNHgFmtS9C/5jNAzL3sMT23UGStSfZlzy93S8DqUri5MPXz2Rs4640aZ3BHnnNKeSPY2y0SCi8Vl+rXPI33hRGqJ0FSW8KBMaB3YoGCXEYkJK9qv6Xi8zSxp5VBe6Exi16b6KRBkUTWdTMqkfbl+nSuOxyBfSvF1iuDGxeuVJHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wS4wN4FT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE8BC4CECE;
+	Thu, 12 Dec 2024 15:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016650;
-	bh=YHPTOyT7R9nCA19R6vdFgWhIJVUSmHqgZmrbWWk5jZ0=;
+	s=korg; t=1734017668;
+	bh=MNDEOSLm6RPmu5rsa8IP8lXLv9icFZqp6habJQP3nO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nHvzL+XWiax4IASOfIDQf3nV9MMH+UbmhylNglcnhKdW2gLWYdaTIZaaxGr+s3e24
-	 vzrSgzKxuisBo70VL8mVm5Fh0DjhjV1Y4QF1UdGd165VhtzmUi83d/N46DWh/CN+m7
-	 hWc6r4JuNKC4SbRd1eoGjf3aU7kLN1lS55EbzVj0=
+	b=wS4wN4FTOVsqikK03zZK1M9wBRhgJZk5adgtyN5yah9yK1s9XudrTnEK4NOahOSRG
+	 mRaHATkByfFT1meMZfVXR+UmJk+NWYz3f42wHe9Jrxs4u/haKBelGE3w9NJlHzcyL4
+	 A+sPPUfgNOXHs3bD0EcBF1KdF8Sh6chD2IE0U/3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 228/466] ACPI: x86: Make UART skip quirks work on PCI UARTs without an UID
+Subject: [PATCH 6.6 078/356] soc: fsl: cpm1: qmc: Introduce qmc_{init,exit}_xcc() and their CPM1 version
 Date: Thu, 12 Dec 2024 15:56:37 +0100
-Message-ID: <20241212144315.781827871@linuxfoundation.org>
+Message-ID: <20241212144247.707447945@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 7f261203d7c2e0c06e668b25dfaaee091a79ab25 ]
+[ Upstream commit de5fdb7d14b34f7fea930f2d72cf0241ec679e72 ]
 
-The Vexia EDU ATLA 10 tablet (9V version) which shipped with Android 4.2
-as factory OS has the usual broken DSDT issues for x86 Android tablets.
+Current code handles the CPM1 version of QMC and initialize the QMC used
+SCC. The QUICC Engine (QE) version uses an UCC (Unified Communication
+Controllers) instead of the SCC (Serial Communication Controllers) used
+in the CPM1 version. These controllers serve the same purpose and are
+used in the same way but their inializations are slightly different.
 
-On top of that this tablet is special because all its LPSS island
-peripherals are enumerated as PCI devices rather then as ACPI devices as
-they typically are.
+In order to prepare the support for QE version of QMC, introduce
+qmc_init_xcc() to initialize theses controllers (UCC in QE and SCC in
+CPM1) and isolate the CPM1 specific SCC initialization in a specific
+function.
 
-For the x86-android-tablets kmod to be able to instantiate a serdev client
-for the Bluetooth HCI on this tablet, an ACPI_QUIRK_UART1_SKIP quirk is
-necessary.
+Also introduce qmc_exit_xcc() for consistency to revert operations done
+in qmc_init_xcc().
 
-Modify acpi_dmi_skip_serdev_enumeration() to work with PCI enumerated
-UARTs without an UID, such as the UARTs on this tablet.
-
-Also make acpi_dmi_skip_serdev_enumeration() exit early if there are no
-quirks, since there is nothing to do then.
-
-And add the necessary quirks for the Vexia EDU ATLA 10 tablet.
-
-This should compile with CONFIG_PCI being unset without issues because
-dev_is_pci() is defined as "(false)" then.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241109215936.83004-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20240808071132.149251-28-herve.codina@bootlin.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Stable-dep-of: cb3daa51db81 ("soc: fsl: cpm1: qmc: Set the ret error code on platform_get_irq() failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 47 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 39 insertions(+), 8 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 66 +++++++++++++++++++++++++++-------------
+ 1 file changed, 45 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 6af546b21574f..3eec889d4f5f8 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -12,6 +12,7 @@
+diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+index f2bda8658e034..9fa75effcfc06 100644
+--- a/drivers/soc/fsl/qe/qmc.c
++++ b/drivers/soc/fsl/qe/qmc.c
+@@ -1293,6 +1293,41 @@ static int qmc_init_resources(struct qmc *qmc, struct platform_device *pdev)
+ 	return qmc_cpm1_init_resources(qmc, pdev);
+ }
  
- #include <linux/acpi.h>
- #include <linux/dmi.h>
-+#include <linux/pci.h>
- #include <linux/platform_device.h>
- #include <asm/cpu_device_id.h>
- #include <asm/intel-family.h>
-@@ -391,6 +392,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
- 	},
-+	{
-+		/* Vexia Edu Atla 10 tablet 9V version */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
-+		},
-+		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_UART1_SKIP |
-+					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
-+					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
-+	},
- 	{
- 		/* Whitelabel (sold as various brands) TM800A550L */
- 		.matches = {
-@@ -439,18 +453,35 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
- 	struct acpi_device *adev = ACPI_COMPANION(controller_parent);
- 	const struct dmi_system_id *dmi_id;
- 	long quirks = 0;
--	u64 uid;
--	int ret;
-+	u64 uid = 0;
++static int qmc_cpm1_init_scc(struct qmc *qmc)
++{
++	u32 val;
++	int ret;
++
++	/* Connect the serial (SCC) to TSA */
++	ret = tsa_serial_connect(qmc->tsa_serial);
++	if (ret)
++		return dev_err_probe(qmc->dev, ret, "Failed to connect TSA serial\n");
++
++	/* Init GMSR_H and GMSR_L registers */
++	val = SCC_GSMRH_CDS | SCC_GSMRH_CTSS | SCC_GSMRH_CDP | SCC_GSMRH_CTSP;
++	qmc_write32(qmc->scc_regs + SCC_GSMRH, val);
++
++	/* enable QMC mode */
++	qmc_write32(qmc->scc_regs + SCC_GSMRL, SCC_GSMRL_MODE_QMC);
++
++	/* Disable and clear interrupts */
++	qmc_write16(qmc->scc_regs + SCC_SCCM, 0x0000);
++	qmc_write16(qmc->scc_regs + SCC_SCCE, 0x000F);
++
++	return 0;
++}
++
++static int qmc_init_xcc(struct qmc *qmc)
++{
++	return qmc_cpm1_init_scc(qmc);
++}
++
++static void qmc_exit_xcc(struct qmc *qmc)
++{
++	/* Disconnect the serial from TSA */
++	tsa_serial_disconnect(qmc->tsa_serial);
++}
++
+ static int qmc_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -1378,29 +1413,18 @@ static int qmc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
--	ret = acpi_dev_uid_to_integer(adev, &uid);
--	if (ret)
-+	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
-+	if (!dmi_id)
- 		return 0;
+-	/* Connect the serial (SCC) to TSA */
+-	ret = tsa_serial_connect(qmc->tsa_serial);
+-	if (ret) {
+-		dev_err(qmc->dev, "Failed to connect TSA serial\n");
++	/* Init SCC */
++	ret = qmc_init_xcc(qmc);
++	if (ret)
+ 		return ret;
+-	}
  
--	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
--	if (dmi_id)
--		quirks = (unsigned long)dmi_id->driver_data;
-+	quirks = (unsigned long)dmi_id->driver_data;
-+
-+	/* uid is left at 0 on errors and 0 is not a valid UART UID */
-+	acpi_dev_uid_to_integer(adev, &uid);
-+
-+	/* For PCI UARTs without an UID */
-+	if (!uid && dev_is_pci(controller_parent)) {
-+		struct pci_dev *pdev = to_pci_dev(controller_parent);
-+
-+		/*
-+		 * Devfn values for PCI UARTs on Bay Trail SoCs, which are
-+		 * the only devices where this fallback is necessary.
-+		 */
-+		if (pdev->devfn == PCI_DEVFN(0x1e, 3))
-+			uid = 1;
-+		else if (pdev->devfn == PCI_DEVFN(0x1e, 4))
-+			uid = 2;
-+	}
-+
-+	if (!uid)
-+		return 0;
+-	/* Init GMSR_H and GMSR_L registers */
+-	qmc_write32(qmc->scc_regs + SCC_GSMRH,
+-		    SCC_GSMRH_CDS | SCC_GSMRH_CTSS | SCC_GSMRH_CDP | SCC_GSMRH_CTSP);
+-
+-	/* enable QMC mode */
+-	qmc_write32(qmc->scc_regs + SCC_GSMRL, SCC_GSMRL_MODE_QMC);
+-
+-	/* Disable and clear interrupts,  set the irq handler */
+-	qmc_write16(qmc->scc_regs + SCC_SCCM, 0x0000);
+-	qmc_write16(qmc->scc_regs + SCC_SCCE, 0x000F);
++	/* Set the irq handler */
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+-		goto err_tsa_serial_disconnect;
++		goto err_exit_xcc;
+ 	ret = devm_request_irq(qmc->dev, irq, qmc_irq_handler, 0, "qmc", qmc);
+ 	if (ret < 0)
+-		goto err_tsa_serial_disconnect;
++		goto err_exit_xcc;
  
--	if (!dev_is_platform(controller_parent)) {
-+	if (!dev_is_platform(controller_parent) && !dev_is_pci(controller_parent)) {
- 		/* PNP enumerated UARTs */
- 		if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid == 1)
- 			*skip = true;
+ 	/* Enable interrupts */
+ 	qmc_write16(qmc->scc_regs + SCC_SCCM,
+@@ -1420,8 +1444,8 @@ static int qmc_probe(struct platform_device *pdev)
+ err_disable_intr:
+ 	qmc_write16(qmc->scc_regs + SCC_SCCM, 0);
+ 
+-err_tsa_serial_disconnect:
+-	tsa_serial_disconnect(qmc->tsa_serial);
++err_exit_xcc:
++	qmc_exit_xcc(qmc);
+ 	return ret;
+ }
+ 
+@@ -1435,8 +1459,8 @@ static void qmc_remove(struct platform_device *pdev)
+ 	/* Disable interrupts */
+ 	qmc_write16(qmc->scc_regs + SCC_SCCM, 0);
+ 
+-	/* Disconnect the serial from TSA */
+-	tsa_serial_disconnect(qmc->tsa_serial);
++	/* Exit SCC */
++	qmc_exit_xcc(qmc);
+ }
+ 
+ static const struct of_device_id qmc_id_table[] = {
 -- 
 2.43.0
 
