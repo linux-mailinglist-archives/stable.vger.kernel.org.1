@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E769EF502
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D92C9EF99A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BA1829166A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B57C4179EF3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F037222D64;
-	Thu, 12 Dec 2024 17:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0568622A803;
+	Thu, 12 Dec 2024 17:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfefeyaQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EE0BFV/z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7B81487CD;
-	Thu, 12 Dec 2024 17:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72272236EB;
+	Thu, 12 Dec 2024 17:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023483; cv=none; b=C+3aJsp6VVxBgMDlRwaj8Y8j5Onp8rFn0zOQ2OHsHscrjAgS3WXA2Jv4gn8jtbv5JgkE08QZsUtZ9A0hWuO1ZUHN99Sug83yI8nEpSH5C1Ilfpu6/RG3sSdM30TFyZlI/QftJGF2eDbkLHFiFQbaxtTTkuN65jx56fANxAy/u5c=
+	t=1734025516; cv=none; b=DBY/Un6q79pt+kbWFb7Jyom7ZU+BsXoil8KMO2QuauVeomJSGB2JImFRnOVl0LRHSW/yd9A3Ph1/uwSv3M/I4WqpGQs4YzMnd+DZjqySfCAN4ja1M+/E1G6nsKRQsJSk1KcNdVCWT6l/quDhQ2WoTOATxGItNuTVf8DHs08xbmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023483; c=relaxed/simple;
-	bh=L/Z2Icr8/DoFwmf6WAGG0MBT2frV89OSiUZJoe+TRUU=;
+	s=arc-20240116; t=1734025516; c=relaxed/simple;
+	bh=bgHN0nwzEpQ+YA+aRGr9A37VtU5cvCqzoa/gQRAgPXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CQuRK7It7nMS4jjrVysD0keByZ0ijhACwj8RZTSy+8H54IWN8IjAZgpUOrR7cg4CWFvB37NF3DKgFnf6jrCvI1aj6yPCoPcIkxyAuWlqP2uJcpdpiQ8onRi59nFHC3/zVMAUC6cXTvBLY6KwVYcMRZfzUJaGkco59/hsFgYM618=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfefeyaQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FF4C4CECE;
-	Thu, 12 Dec 2024 17:11:22 +0000 (UTC)
+	 MIME-Version; b=ExCOf6EmMEkHkUw9buoznyJq3gPB53y9xNU6bkTcZEaqN82BXdc7ZLQozxDsoVcuJCnH4oeXXVVXsj0HH9w/LarqvGzkr0qCAb1w7H9kpBQKqabzn3Tp7p2qoNDNLTnlCnHpTVwLtc+LegzCoLxRDsW0j+JRJoi6g7fB6ddfHl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EE0BFV/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3292FC4CECE;
+	Thu, 12 Dec 2024 17:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023483;
-	bh=L/Z2Icr8/DoFwmf6WAGG0MBT2frV89OSiUZJoe+TRUU=;
+	s=korg; t=1734025516;
+	bh=bgHN0nwzEpQ+YA+aRGr9A37VtU5cvCqzoa/gQRAgPXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfefeyaQD2YUmKDe7WjvwJagM8wOlqJkUnXB9Be0xixCIiAjRIZIzi+/X8j65pOXX
-	 rnpAsVxZu5WT2GN3m8MeXt8Ny4nHUgdkl1Ak8RCRdiW3U1AxzYqvHzpdGb0HWH8Ild
-	 fyPbC1CJFkVj42PXl2PDQx8WrUjm6uY1Gr0sKrxM=
+	b=EE0BFV/z2w4+cFzUGucIhi6SzPA2AzPgc8COfIzLN8SEPI4uib6lD3fvALYUqtr6l
+	 PKKreg5cZPUDzPv2266S33yBR+ligdwo/+N4asLrvwvYfohCOr32yzmu/PMKjdlVKW
+	 Jk7FB9WlK76aAmWcu0q9kAEcNZDaCGtT5vXvWXIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 518/565] pinctrl: qcom-pmic-gpio: add support for PM8937
+Subject: [PATCH 5.4 195/321] rtc: ab-eoz9: dont fail temperature reads on undervoltage notification
 Date: Thu, 12 Dec 2024 16:01:53 +0100
-Message-ID: <20241212144332.268252828@linuxfoundation.org>
+Message-ID: <20241212144237.683478442@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit 89265a58ff24e3885c2c9ca722bc3aaa47018be9 ]
+[ Upstream commit e0779a0dcf41a6452ac0a169cd96863feb5787c7 ]
 
-PM8937 has 8 GPIO-s with holes on GPIO3, GPIO4 and GPIO6.
+The undervoltage flags reported by the RTC are useful to know if the
+time and date are reliable after a reboot. Although the threshold VLOW1
+indicates that the thermometer has been shutdown and time compensation
+is off, it doesn't mean that the temperature readout is currently
+impossible.
 
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/20241031-msm8917-v2-2-8a075faa89b1@mainlining.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+As the system is running, the RTC voltage is now fully established and
+we can read the temperature.
+
+Fixes: 67075b63cce2 ("rtc: add AB-RTCMC-32.768kHz-EOZ9 RTC support")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://lore.kernel.org/r/20241122101031.68916-3-maxime.chevallier@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/rtc/rtc-ab-eoz9.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-index b2562e8931397..42f8b661f19c0 100644
---- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-@@ -1156,6 +1156,8 @@ static const struct of_device_id pmic_gpio_of_match[] = {
- 	{ .compatible = "qcom,pm8350b-gpio", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8350c-gpio", .data = (void *) 9 },
- 	{ .compatible = "qcom,pm8916-gpio", .data = (void *) 4 },
-+	/* pm8937 has 8 GPIOs with holes on 3, 4 and 6 */
-+	{ .compatible = "qcom,pm8937-gpio", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8941-gpio", .data = (void *) 36 },
- 	/* pm8950 has 8 GPIOs with holes on 3 */
- 	{ .compatible = "qcom,pm8950-gpio", .data = (void *) 8 },
+diff --git a/drivers/rtc/rtc-ab-eoz9.c b/drivers/rtc/rtc-ab-eoz9.c
+index d690985caa4cf..1d6a626fdf933 100644
+--- a/drivers/rtc/rtc-ab-eoz9.c
++++ b/drivers/rtc/rtc-ab-eoz9.c
+@@ -281,13 +281,6 @@ static int abeoz9z3_temp_read(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	if ((val & ABEOZ9_REG_CTRL_STATUS_V1F) ||
+-	    (val & ABEOZ9_REG_CTRL_STATUS_V2F)) {
+-		dev_err(dev,
+-			"thermometer might be disabled due to low voltage\n");
+-		return -EINVAL;
+-	}
+-
+ 	switch (attr) {
+ 	case hwmon_temp_input:
+ 		ret = regmap_read(regmap, ABEOZ9_REG_REG_TEMP, &val);
 -- 
 2.43.0
 
