@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FAA9EF4DD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848A79EF9C0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1173128DA87
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9EF717A797
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4B622488E;
-	Thu, 12 Dec 2024 17:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4BD223C54;
+	Thu, 12 Dec 2024 17:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcxUUsNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTFh5HZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA1E222D7B;
-	Thu, 12 Dec 2024 17:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB60B22332E;
+	Thu, 12 Dec 2024 17:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023381; cv=none; b=RTilETfdElfVGh3fOeHL/+eKOr6D6yjcR9hFL9CTjJiHsWCct0QmpHWQSFK2RHrKe8E8e/aIKftah1gi5IFtqfHbTxDl1m1rNnI6XEqDEXDWQ93PpYqOC5L8vo5nMCFRGCzm+0pBVRocGjTxxTvUw/QuweCdvU1BLxmWQIc18no=
+	t=1734025417; cv=none; b=pw+gS/un/sgoeJ076RiMbiLi0MthP5ATYfZhWFeCQBM0ud7yUpCCE9k1FHhJH+3MunKwhAijXBsZXcYH1/qKbZAT4s5xINhuEFqp7MISMNcZdrj1px5cdZXjK9AHovDAXW5I4sDdLeVYDB7YY8g2GttbaR0sbvXC+WsHm5JrBKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023381; c=relaxed/simple;
-	bh=lU2ffF1nUosYALtsXbYvA/3vPZdGhTR3R2YybfOOtAM=;
+	s=arc-20240116; t=1734025417; c=relaxed/simple;
+	bh=YCP3ytjAIG9Vjksd+mQd6Br4jRtxsjKBwpxfjSHG398=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EsT+FvhzTYqkPX2Ttc0b0HdV6zXu5v6h8tDaYU6v+4blhGU2EN+JcMhNaMIyoZl/1W5ovVFwfPeXs/J9hYxgYKuX5QS8PwTRlepi0pidx14icKLAzZ7Z3z8plRjbszGugrdXtS5HEG6ynKFA7lx5hxj2H0bpTD+LDCe7/UUhMgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcxUUsNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EB8C4CED3;
-	Thu, 12 Dec 2024 17:09:40 +0000 (UTC)
+	 MIME-Version; b=lCtBhf9REEoLzAVaNr9inK7oMGn/Rg4Zsw2LDJBvDBLr47yNQGnWACXAe8xd47aTMD03PtUzQez4UCFODDw+y5ZQg6ovSxd7BBbCqle8ANXG3ZxUsv9wpkysdMsN5pECHpEyDr6FEjDYIRlp3fBLWefzAxYV6arvLwsIgfMyMpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTFh5HZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC35C4CECE;
+	Thu, 12 Dec 2024 17:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023381;
-	bh=lU2ffF1nUosYALtsXbYvA/3vPZdGhTR3R2YybfOOtAM=;
+	s=korg; t=1734025416;
+	bh=YCP3ytjAIG9Vjksd+mQd6Br4jRtxsjKBwpxfjSHG398=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcxUUsNIpZMLZsxVR26uPOqIxrzCg37G1+TCbEKUBeCc6fNJNuUsGX0RV0T5KjDgT
-	 0Xy3p0HIyQcV69ro0+wizrXwAFKSLSRHi88WW3iBDrLtZ1IRoDoQcacTohzs16883k
-	 wQbtHtUVI8ZogCEH727wMVySTvKsXDzbgMbox+jE=
+	b=GTFh5HZTzKoVKwlv0dEckhwIUq/VLWQ7o6vsHJH/FGZHDvS1pJP9hAPg5zmdKNKj7
+	 JtOKs9xL+6pEhriIxEVfH0L3UWR+FHPa+dbUZJsXa8yj5dVRbDkI1ZyGxbtZlBYej3
+	 JK1dLG8NoUyDZzD8JS+dCBGMHfeEO7HMsT/4tT9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elena Salomatkina <esalomatkina@ispras.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 485/565] net/sched: cbs: Fix integer overflow in cbs_set_port_rate()
+	Bin Liu <b-liu@ti.com>,
+	Judith Mendez <jm@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 5.4 162/321] serial: 8250: omap: Move pm_runtime_get_sync
 Date: Thu, 12 Dec 2024 16:01:20 +0100
-Message-ID: <20241212144330.933246285@linuxfoundation.org>
+Message-ID: <20241212144236.380998792@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elena Salomatkina <esalomatkina@ispras.ru>
+From: Bin Liu <b-liu@ti.com>
 
-[ Upstream commit 397006ba5d918f9b74e734867e8fddbc36dc2282 ]
+commit bcc7ba668818dcadd2f1db66b39ed860a63ecf97 upstream.
 
-The subsequent calculation of port_rate = speed * 1000 * BYTES_PER_KBIT,
-where the BYTES_PER_KBIT is of type LL, may cause an overflow.
-At least when speed = SPEED_20000, the expression to the left of port_rate
-will be greater than INT_MAX.
+Currently in omap_8250_shutdown, the dma->rx_running flag is
+set to zero in omap_8250_rx_dma_flush. Next pm_runtime_get_sync
+is called, which is a runtime resume call stack which can
+re-set the flag. When the call omap_8250_shutdown returns, the
+flag is expected to be UN-SET, but this is not the case. This
+is causing issues the next time UART is re-opened and
+omap_8250_rx_dma is called. Fix by moving pm_runtime_get_sync
+before the omap_8250_rx_dma_flush.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Elena Salomatkina <esalomatkina@ispras.ru>
-Link: https://patch.msgid.link/20241013124529.1043-1-esalomatkina@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cc: stable@vger.kernel.org
+Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
+Signed-off-by: Bin Liu <b-liu@ti.com>
+[Judith: Add commit message]
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Tested-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20241031172315.453750-1-jm@ti.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_cbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_cbs.c b/net/sched/sch_cbs.c
-index 459cc240eda9c..e0ced550808a5 100644
---- a/net/sched/sch_cbs.c
-+++ b/net/sched/sch_cbs.c
-@@ -310,7 +310,7 @@ static void cbs_set_port_rate(struct net_device *dev, struct cbs_sched_data *q)
- {
- 	struct ethtool_link_ksettings ecmd;
- 	int speed = SPEED_10;
--	int port_rate;
-+	s64 port_rate;
- 	int err;
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -652,12 +652,12 @@ static void omap_8250_shutdown(struct ua
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	struct omap8250_priv *priv = port->private_data;
  
- 	err = __ethtool_get_link_ksettings(dev, &ecmd);
--- 
-2.43.0
-
++	pm_runtime_get_sync(port->dev);
++
+ 	flush_work(&priv->qos_work);
+ 	if (up->dma)
+ 		omap_8250_rx_dma_flush(up);
+ 
+-	pm_runtime_get_sync(port->dev);
+-
+ 	serial_out(up, UART_OMAP_WER, 0);
+ 
+ 	up->ier = 0;
 
 
 
