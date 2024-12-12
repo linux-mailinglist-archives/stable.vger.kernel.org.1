@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6339EF8F2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740FB9EF6E7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD4328ED83
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20D372893AB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5202253FD;
-	Thu, 12 Dec 2024 17:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2DA222D67;
+	Thu, 12 Dec 2024 17:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iip6SGQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xphbmjuE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAE8215041;
-	Thu, 12 Dec 2024 17:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0F1217F34;
+	Thu, 12 Dec 2024 17:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025471; cv=none; b=KfgOiG80QgZ2wlUa0U02ejfd/OgiEgIAV22GcQdq5ATj/WcgCnNBH5sW4bBB8BrslDtoh6936sBakaW1Ddr7owX5CvaeWEEgM9Qf2zNv+PsQp0C9Ljkoex3I19TxDO6qcvcUymHmMPKWT8M1QSCBKPKCvXyG10N9t0GO7JGHJqc=
+	t=1734024599; cv=none; b=GPPYXm2HQXqAlPIS5Gul+dE8q5cOP8KgIaRF1s/2ppDs4ODmz6qYIctMk7dRCFCd+CE/abDkI6mJQO1asIZc70xhLbGxgv5ULI8FH5Qq0xqPuy9l8zqxk0KBs8FIQqnGg9EFj9A2IzeQdv2FBKJqP7HOEEREr3vqtBa0uGHCzo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025471; c=relaxed/simple;
-	bh=CCwzZ5lyGnP1rLLJ8CnVuCiBkWlmtT+x9pe+iO0LoYQ=;
+	s=arc-20240116; t=1734024599; c=relaxed/simple;
+	bh=w+ry4ld+l/4SuNkE63omLby853KIoA7+Gq3uYZVHP68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAZupP0C9wbHCElwUGHLthR6ReGsJst1QKP9okE7J8v7vhMpCGqF8+fjNpiF7Db7Y4+P1JNssdAPelWUfp1BB1kl5GP6wXwZT1dxF6DFFdm/X6KoiSP0c+l0s10gdmZOzpmoIkIYYRKiHiSqmCg4rSw1LgUGiM7k9XnlsI+/Q9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iip6SGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D958C4CECE;
-	Thu, 12 Dec 2024 17:44:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i3cubQvqJIq9z+aI4x9KV/dyAUXz/HLoFjH+VNnImTY/8p3PmOVrHBWrFwEfMf7vD/c+uFy2vVt+RUC2zOiPkM7dUW6lF5Z8JMupDRcX0/hF1VwBRWjJKPLSI7BGzbo6o4Kyp0ZM7rifIIslVotmAJdcKMOvGRr2s8aUCA3kgnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xphbmjuE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7413CC4CECE;
+	Thu, 12 Dec 2024 17:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025470;
-	bh=CCwzZ5lyGnP1rLLJ8CnVuCiBkWlmtT+x9pe+iO0LoYQ=;
+	s=korg; t=1734024598;
+	bh=w+ry4ld+l/4SuNkE63omLby853KIoA7+Gq3uYZVHP68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1iip6SGQNIEHQbW9Ym4RD31UlthJPqvPqlZhtRNJYydFWSbPCocWccjKlFRP1MH9m
-	 07rLdtwkcfr2TFieFb3a9oFa/SuJ8ObemafRqMYph7SqoQYwlyWN7EJt262OKXYo8P
-	 IffjXy0kcscfmivPCSptsgMN+QmT8wpOPFvp3Zss=
+	b=xphbmjuEGrSKn8CQgccJ/PhJFk7SvmMaWDMe43sqWfGw9iQQLC6bhg/IyaLCW1+zI
+	 /zBtNFbUslo6on4POQCQyEWgnZnLXRSNgoTTRvcKAx0N3xIVQVE+52HGwlCgma1EJq
+	 Tc/04ivENQdF4t5mdNHueLKQFJa6otR9Ny2feDfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 139/321] staging: greybus: uart: clean up TIOCGSERIAL
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 5.10 319/459] PCI: keystone: Add link up check to ks_pcie_other_map_bus()
 Date: Thu, 12 Dec 2024 16:00:57 +0100
-Message-ID: <20241212144235.470358291@linuxfoundation.org>
+Message-ID: <20241212144306.256505029@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-[ Upstream commit d38be702452137fa82a56ff7cc577d829add1637 ]
+commit 9e9ec8d8692a6f64d81ef67d4fb6255af6be684b upstream.
 
-TIOCSSERIAL is a horrid, underspecified, legacy interface which for most
-serial devices is only useful for setting the close_delay and
-closing_wait parameters.
+K2G forwards the error triggered by a link-down state (e.g., no connected
+endpoint device) on the system bus for PCI configuration transactions;
+these errors are reported as an SError at system level, which is fatal and
+hangs the system.
 
-The xmit_fifo_size parameter could be used to set the hardware transmit
-fifo size of a legacy UART when it could not be detected, but the
-interface is limited to eight bits and should be left unset when not
-used.
+So, apply fix similar to how it was done in the DesignWare Core driver
+commit 15b23906347c ("PCI: dwc: Add link up check in dw_child_pcie_ops.map_bus()").
 
-Similarly, baud_base could be used to set the UART base clock when it
-could not be detected but might as well be left unset when it is not
-known.
-
-The type parameter could be used to set the UART type, but is
-better left unspecified (type unknown) when it isn't used.
-
-Note that some applications have historically expected TIOCGSERIAL to be
-implemented, but judging from the Debian sources, the port type not
-being PORT_UNKNOWN is only used to check for the existence of legacy
-serial ports (ttySn). Notably USB serial drivers like ftdi_sio have been
-using PORT_UNKNOWN for twenty years without any problems.
-
-Drop the bogus values provided by the greybus implementation.
-
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20210407102334.32361-8-johan@kernel.org
+Fixes: 10a797c6e54a ("PCI: dwc: keystone: Use pci_ops for config space accessors")
+Link: https://lore.kernel.org/r/20240524105714.191642-3-s-vadapalli@ti.com
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+[kwilczynski: commit log, added tag for stable releases]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: fe0ebeafc3b7 ("staging: greybus: uart: Fix atomicity violation in get_serial_info()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/greybus/uart.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/staging/greybus/uart.c b/drivers/staging/greybus/uart.c
-index 0e6bebc20695d..b8da6dc5d4d4d 100644
---- a/drivers/staging/greybus/uart.c
-+++ b/drivers/staging/greybus/uart.c
-@@ -621,10 +621,7 @@ static int get_serial_info(struct tty_struct *tty,
- {
- 	struct gb_tty *gb_tty = tty->driver_data;
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -446,6 +446,17 @@ static void __iomem *ks_pcie_other_map_b
+ 	struct keystone_pcie *ks_pcie = to_keystone_pcie(pci);
+ 	u32 reg;
  
--	ss->type = PORT_16550A;
- 	ss->line = gb_tty->minor;
--	ss->xmit_fifo_size = 16;
--	ss->baud_base = 9600;
- 	ss->close_delay = jiffies_to_msecs(gb_tty->port.close_delay) / 10;
- 	ss->closing_wait =
- 		gb_tty->port.closing_wait == ASYNC_CLOSING_WAIT_NONE ?
--- 
-2.43.0
-
++	/*
++	 * Checking whether the link is up here is a last line of defense
++	 * against platforms that forward errors on the system bus as
++	 * SError upon PCI configuration transactions issued when the link
++	 * is down. This check is racy by definition and does not stop
++	 * the system from triggering an SError if the link goes down
++	 * after this check is performed.
++	 */
++	if (!dw_pcie_link_up(pci))
++		return NULL;
++
+ 	reg = CFG_BUS(bus->number) | CFG_DEVICE(PCI_SLOT(devfn)) |
+ 		CFG_FUNC(PCI_FUNC(devfn));
+ 	if (!pci_is_root_bus(bus->parent))
 
 
 
