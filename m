@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-101452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49BD69EEC4B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 010CE9EEA77
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00D4428265E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:33:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5C8E280D48
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E38215774;
-	Thu, 12 Dec 2024 15:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096AE216E1D;
+	Thu, 12 Dec 2024 15:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17tXQUiV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I704p4G9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06FA212F9E;
-	Thu, 12 Dec 2024 15:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF80215795;
+	Thu, 12 Dec 2024 15:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017598; cv=none; b=Hu1OVPHcE3YRBC/EJTJfCA1Ft6sdM6+VeslLeiE/1qlrjCsYyvqGZT0B9e3s6GuVkig+BY3xAa5xJC/VU1SjEvX4WSb/3tNTGLHY1YaZMEuDGEiMY3+4e5NuzMV7ygLuchYonXqgK9P4QiYJdWStOpU8Vc/bM6lJPyj+DoRpihM=
+	t=1734016469; cv=none; b=aymnomhaNmchG8Mwqej+mgsJahcPBk90T/hJGxXyAac8/L8nnZ0YT4LSZMp4dC3WOaeRkz92j9a0lH01Dt61EUrSI/h5XwmtDm+vYVVhsVT8eidtye7O4H2AbOfxHdjuJIzbKkb82FJcoUO9N8FInZiserI0JitiQOii66X9xbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017598; c=relaxed/simple;
-	bh=efHjuzkxLyk+a6++07Z7WgBMLwtd2XnhNIi8vas7mX4=;
+	s=arc-20240116; t=1734016469; c=relaxed/simple;
+	bh=WtP09eks2fxyBdJDIzIUVaWc+2zzbFd0N4vuxretJnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=De3t4hD9jMFA8SbsEWoF7/32BixgxYHzwyTABsnsLHbJQPnz4G/OGva4LomFRhXt9mevGUo9vOY5FR3dJa1Z9rEuLi6sb/+w08UL6QtP0lexK012xyWjv3LEqO8KSS5gVqGQfY8gwm+zEAO8m4r6+27rx+IjN0BK0mvF8GS7v84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17tXQUiV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DAEC4CECE;
-	Thu, 12 Dec 2024 15:33:18 +0000 (UTC)
+	 MIME-Version; b=JDYOxLEcfZEhSWW1AdpnidwtvNYv1G4a+XhNu+JZpwtVi/rFyJlo/NyygWkMgDLkwivrcKroApljSP3+DoOzy/yh1vNDFkFUOCamPzxv3/urOGMyF/tl+NezO8W+8T2/plqd0+ERzB+BcfItzT5XhP97XG1bvhplO7CQYusfDww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I704p4G9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45F0C4CECE;
+	Thu, 12 Dec 2024 15:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017598;
-	bh=efHjuzkxLyk+a6++07Z7WgBMLwtd2XnhNIi8vas7mX4=;
+	s=korg; t=1734016469;
+	bh=WtP09eks2fxyBdJDIzIUVaWc+2zzbFd0N4vuxretJnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17tXQUiVaZ80qW+BnrG5j/u/nbLvhVDryJyRFYgvwvufnnSpb4XBhntuHT853GW6H
-	 BPDfUv43e78E32GNQzALgg/jOyO8+dyKLjODq80IGFF3A4qmVp70GkgKDBKeuHnGBQ
-	 3hV7gVudynHddEs7e33JdYnviatf8s23hRsMlQjg=
+	b=I704p4G909Xty5DUqQVAUHVUQKqpe96OGDzi6MC2kz4244bD8MCTR6Hh1NH8RiN4t
+	 2CwgDDIlQcugE33YqePHeZe1jRbRnsKakN2/JG5gaj1oWqBQtovDLOXUem4Ip/Ui51
+	 OnZO48YlnfLC+sEQZmU+5QzYhwe4BfXBYFhFQqWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/356] mlxsw: Mark high entropy key blocks
-Date: Thu, 12 Dec 2024 15:56:16 +0100
-Message-ID: <20241212144246.883236644@linuxfoundation.org>
+	Kalesh Singh <kaleshsingh@google.com>,
+	Rik van Riel <riel@surriel.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Hans Boehm <hboehm@google.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 208/466] mm: respect mmap hint address when aligning for THP
+Date: Thu, 12 Dec 2024 15:56:17 +0100
+Message-ID: <20241212144315.005037555@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +71,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Kalesh Singh <kaleshsingh@google.com>
 
-[ Upstream commit cad6431b867507779c41b00baaf18382467ef0a0 ]
+commit 249608ee47132cab3b1adacd9e463548f57bd316 upstream.
 
-For 12 key blocks in the A-TCAM, rules are split into two records, which
-constitute two lookups. The two records are linked using a
-"large entry key ID".
+Commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+boundaries") updated __get_unmapped_area() to align the start address for
+the VMA to a PMD boundary if CONFIG_TRANSPARENT_HUGEPAGE=y.
 
-Due to a Spectrum-4 hardware issue, KVD entries that correspond to key
-blocks 0 to 5 of 12 key blocks A-TCAM entries will be placed in the same
-KVD pipe if they only differ in their "large entry key ID", as it is
-ignored. This results in a reduced scale. To reduce the probability of this
-issue, we can place key blocks with high entropy in blocks 0 to 5. The idea
-is to place blocks that are changed often in blocks 0 to 5, for
-example, key blocks that match on IPv4 addresses or the LSBs of IPv6
-addresses. Such placement will reduce the probability of these blocks to be
-same.
+It does this by effectively looking up a region that is of size,
+request_size + PMD_SIZE, and aligning up the start to a PMD boundary.
 
-Mark several blocks with 'high_entropy' flag, so later we will take into
-account this flag and place them in blocks 0 to 5.
+Commit 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment on
+32 bit") opted out of this for 32bit due to regressions in mmap base
+randomization.
 
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 217bbf156f93 ("mlxsw: spectrum_acl_flex_keys: Use correct key block on Spectrum-4")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit d4148aeab412 ("mm, mmap: limit THP alignment of anonymous mappings
+to PMD-aligned sizes") restricted this to only mmap sizes that are
+multiples of the PMD_SIZE due to reported regressions in some performance
+benchmarks -- which seemed mostly due to the reduced spatial locality of
+related mappings due to the forced PMD-alignment.
+
+Another unintended side effect has emerged: When a user specifies an mmap
+hint address, the THP alignment logic modifies the behavior, potentially
+ignoring the hint even if a sufficiently large gap exists at the requested
+hint location.
+
+Example Scenario:
+
+Consider the following simplified virtual address (VA) space:
+
+    ...
+
+    0x200000-0x400000 --- VMA A
+    0x400000-0x600000 --- Hole
+    0x600000-0x800000 --- VMA B
+
+    ...
+
+A call to mmap() with hint=0x400000 and len=0x200000 behaves differently:
+
+  - Before THP alignment: The requested region (size 0x200000) fits into
+    the gap at 0x400000, so the hint is respected.
+
+  - After alignment: The logic searches for a region of size
+    0x400000 (len + PMD_SIZE) starting at 0x400000.
+    This search fails due to the mapping at 0x600000 (VMA B), and the hint
+    is ignored, falling back to arch_get_unmapped_area[_topdown]().
+
+In general the hint is effectively ignored, if there is any existing
+mapping in the below range:
+
+     [mmap_hint + mmap_size, mmap_hint + mmap_size + PMD_SIZE)
+
+This changes the semantics of mmap hint; from ""Respect the hint if a
+sufficiently large gap exists at the requested location" to "Respect the
+hint only if an additional PMD-sized gap exists beyond the requested
+size".
+
+This has performance implications for allocators that allocate their heap
+using mmap but try to keep it "as contiguous as possible" by using the end
+of the exisiting heap as the address hint.  With the new behavior it's
+more likely to get a much less contiguous heap, adding extra fragmentation
+and performance overhead.
+
+To restore the expected behavior; don't use
+thp_get_unmapped_area_vmflags() when the user provided a hint address, for
+anonymous mappings.
+
+Note: As Yang Shi pointed out: the issue still remains for filesystems
+which are using thp_get_unmapped_area() for their get_unmapped_area() op.
+It is unclear what worklaods will regress for if we ignore THP alignment
+when the hint address is provided for such file backed mappings -- so this
+fix will be handled separately.
+
+Link: https://lkml.kernel.org/r/20241118214650.3667577-1-kaleshsingh@google.com
+Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yang Shi <yang@os.amperecomputing.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Hans Boehm <hboehm@google.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlxsw/core_acl_flex_keys.h |  9 +++++++++
- .../ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c | 12 ++++++------
- 2 files changed, 15 insertions(+), 6 deletions(-)
+ mm/mmap.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.h b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.h
-index 1c76aa3ffab72..98a05598178b3 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.h
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.h
-@@ -119,6 +119,7 @@ struct mlxsw_afk_block {
- 	u16 encoding; /* block ID */
- 	struct mlxsw_afk_element_inst *instances;
- 	unsigned int instances_count;
-+	bool high_entropy;
- };
- 
- #define MLXSW_AFK_BLOCK(_encoding, _instances)					\
-@@ -128,6 +129,14 @@ struct mlxsw_afk_block {
- 		.instances_count = ARRAY_SIZE(_instances),			\
- 	}
- 
-+#define MLXSW_AFK_BLOCK_HIGH_ENTROPY(_encoding, _instances)			\
-+	{									\
-+		.encoding = _encoding,						\
-+		.instances = _instances,					\
-+		.instances_count = ARRAY_SIZE(_instances),			\
-+		.high_entropy = true,						\
-+	}
-+
- struct mlxsw_afk_element_usage {
- 	DECLARE_BITMAP(usage, MLXSW_AFK_ELEMENT_MAX);
- };
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-index 4b3564f5fd652..eaad786056027 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-@@ -334,14 +334,14 @@ static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv6_2b[] = {
- };
- 
- static const struct mlxsw_afk_block mlxsw_sp4_afk_blocks[] = {
--	MLXSW_AFK_BLOCK(0x10, mlxsw_sp_afk_element_info_mac_0),
--	MLXSW_AFK_BLOCK(0x11, mlxsw_sp_afk_element_info_mac_1),
-+	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x10, mlxsw_sp_afk_element_info_mac_0),
-+	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x11, mlxsw_sp_afk_element_info_mac_1),
- 	MLXSW_AFK_BLOCK(0x12, mlxsw_sp_afk_element_info_mac_2),
- 	MLXSW_AFK_BLOCK(0x13, mlxsw_sp_afk_element_info_mac_3),
- 	MLXSW_AFK_BLOCK(0x14, mlxsw_sp_afk_element_info_mac_4),
--	MLXSW_AFK_BLOCK(0x1A, mlxsw_sp_afk_element_info_mac_5b),
--	MLXSW_AFK_BLOCK(0x38, mlxsw_sp_afk_element_info_ipv4_0),
--	MLXSW_AFK_BLOCK(0x39, mlxsw_sp_afk_element_info_ipv4_1),
-+	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x1A, mlxsw_sp_afk_element_info_mac_5b),
-+	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x38, mlxsw_sp_afk_element_info_ipv4_0),
-+	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x39, mlxsw_sp_afk_element_info_ipv4_1),
- 	MLXSW_AFK_BLOCK(0x3A, mlxsw_sp_afk_element_info_ipv4_2),
- 	MLXSW_AFK_BLOCK(0x36, mlxsw_sp_afk_element_info_ipv4_5b),
- 	MLXSW_AFK_BLOCK(0x40, mlxsw_sp_afk_element_info_ipv6_0),
-@@ -350,7 +350,7 @@ static const struct mlxsw_afk_block mlxsw_sp4_afk_blocks[] = {
- 	MLXSW_AFK_BLOCK(0x43, mlxsw_sp_afk_element_info_ipv6_3),
- 	MLXSW_AFK_BLOCK(0x44, mlxsw_sp_afk_element_info_ipv6_4),
- 	MLXSW_AFK_BLOCK(0x45, mlxsw_sp_afk_element_info_ipv6_5),
--	MLXSW_AFK_BLOCK(0x90, mlxsw_sp_afk_element_info_l4_0),
-+	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x90, mlxsw_sp_afk_element_info_l4_0),
- 	MLXSW_AFK_BLOCK(0x92, mlxsw_sp_afk_element_info_l4_2),
- };
- 
--- 
-2.43.0
-
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -901,6 +901,7 @@ __get_unmapped_area(struct file *file, u
+ 	if (get_area) {
+ 		addr = get_area(file, addr, len, pgoff, flags);
+ 	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
++		   && !addr /* no hint */
+ 		   && IS_ALIGNED(len, PMD_SIZE)) {
+ 		/* Ensures that larger anonymous mappings are THP aligned. */
+ 		addr = thp_get_unmapped_area_vmflags(file, addr, len,
 
 
 
