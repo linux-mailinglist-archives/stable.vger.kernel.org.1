@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-101394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126EC9EEBF7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A809EEE2B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3341283C36
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:30:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166581882739
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DAC21764F;
-	Thu, 12 Dec 2024 15:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230592236EB;
+	Thu, 12 Dec 2024 15:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2YzAxX7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqxapzuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A08213E6F;
-	Thu, 12 Dec 2024 15:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F522206A5;
+	Thu, 12 Dec 2024 15:48:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017403; cv=none; b=l8Htpg9k6+O73zDEkYlVde1f8Wr5Lx7DZs90sfKLCYy5vGbRxFDUmooqa8xIKQQy2/uZS5iZx8VSFSppNaazDsSm0tHDl1S8l2+Y1jCiEz/LAWL8zCPvjqDzeLKHGMMk9j7HxdFiKmWzqRNugtM7wXcbq7bblrI1EEzeXtNIhkk=
+	t=1734018489; cv=none; b=E+5TXc+oLC6Br4mmyx+eD/k6IPEWrpUoQyeTQiGdzq/z9gY43f6MGXv7DRoXPfXHin7QCYk1CpV8i7fJcQwTTMgImPmDbKUI7PDD35RUV3zOULAoeFd6WvpZu8KCLUMC5sGY83Vo69XvsyZqDC+B045r8Zu/nZvCcn2Mh2yOY/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017403; c=relaxed/simple;
-	bh=m+RocDDbSm1K26ye/al3CwIfz4qV3hWfPhFVZojQ2c4=;
+	s=arc-20240116; t=1734018489; c=relaxed/simple;
+	bh=+UXuSw8QGolWP8dVFndUCnkg3seDLb4Orinn/2Cv19Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWqML7SQj2AnDm6sQ787NVhedF1O/d5l4zAsu70d23WZuQqXbSI/wUQIeDfOHSBlkMyj+nYHMsvzuYDF9qduiLMVjE7BX1D1w444/28pJcurZYjoZ1+FROthAs4x/tE6G4LaAPuFr2Q+YhUiWU7L5vclKwZFp56JDB3ibTNLECM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2YzAxX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45C4C4CED0;
-	Thu, 12 Dec 2024 15:30:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q8kF6PMX8ZU1LMqJjiWXBVerSrEkX4+bUKdnndYp3huSgNp9rMZRyC5MaYfF0EILtcw3eAAhfOuAjVeMrcKv9d7TB4jXqnsDr4+g/Wun530haEu31Zh26Fy7QkOmOWjaZ6tozVC8Sbf1VyZsHCcoCwMRDzt4zGs6daLCB0yJFpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqxapzuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBAAC4CECE;
+	Thu, 12 Dec 2024 15:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017403;
-	bh=m+RocDDbSm1K26ye/al3CwIfz4qV3hWfPhFVZojQ2c4=;
+	s=korg; t=1734018489;
+	bh=+UXuSw8QGolWP8dVFndUCnkg3seDLb4Orinn/2Cv19Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2YzAxX7oGLHSvkXqwwM4c2rrDDU4Ea3hYQozRbRn7zqW6lmJD9zSFjXewewD7oSE
-	 WJsNErr2CweHpYkf913b9FcskWLQ+cP+6oWQP/+beKHMBvWZCBI7R6QDR7T3JPZqpo
-	 wIe6Mwd6yWr+QuGvlOL4B9ZVaiVjFlmPFQmidhqs=
+	b=mqxapzuT3/TajBiGmSm/cP+nSd5OwigXigOKof5uoSwT+JGh/9sLggE/9atMRefvT
+	 SGsG0+lqyS101ab90EXfCc5KfD7b7bJsW5NDS6P/Xi/fKtR9DIUjRISVRPyCkSRsc9
+	 qYUP27JQnfu/nOr3TtBA0PB3ow6b4CwAO/jgfls4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>
-Subject: [PATCH 6.12 458/466] ocfs2: Revert "ocfs2: fix the la space leak when unmounting an ocfs2 volume"
+	Tova <blueaddagio@laposte.net>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 308/356] ASoC: amd: yc: Add quirk for microphone on Lenovo Thinkpad T14s Gen 6 21M1CTO1WW
 Date: Thu, 12 Dec 2024 16:00:27 +0100
-Message-ID: <20241212144324.961885564@linuxfoundation.org>
+Message-ID: <20241212144256.729637285@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,62 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Uwe Kleine-König <ukleinek@debian.org>
 
-This reverts commit dfe6c5692fb5 ("ocfs2: fix the la space leak when
-unmounting an ocfs2 volume").
+[ Upstream commit cbc86dd0a4fe9f8c41075328c2e740b68419d639 ]
 
-In commit dfe6c5692fb5, the commit log "This bug has existed since the
-initial OCFS2 code." is wrong. The correct introduction commit is
-30dd3478c3cd ("ocfs2: correctly use ocfs2_find_next_zero_bit()").
+Add a quirk for Tova's Lenovo Thinkpad T14s with product name 21M1.
 
-The influence of commit dfe6c5692fb5 is that it provides a correct
-fix for the latest kernel. however, it shouldn't be pushed to stable
-branches. Let's use this commit to revert all branches that include
-dfe6c5692fb5 and use a new fix method to fix commit 30dd3478c3cd.
-
-Fixes: dfe6c5692fb5 ("ocfs2: fix the la space leak when unmounting an ocfs2 volume")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Tova <blueaddagio@laposte.net>
+Link: https://bugs.debian.org/1087673
+Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
+Link: https://patch.msgid.link/20241122075606.213132-2-ukleinek@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/localalloc.c |   19 -------------------
- 1 file changed, 19 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/ocfs2/localalloc.c
-+++ b/fs/ocfs2/localalloc.c
-@@ -1002,25 +1002,6 @@ static int ocfs2_sync_local_to_main(stru
- 		start = bit_off + 1;
- 	}
- 
--	/* clear the contiguous bits until the end boundary */
--	if (count) {
--		blkno = la_start_blk +
--			ocfs2_clusters_to_blocks(osb->sb,
--					start - count);
--
--		trace_ocfs2_sync_local_to_main_free(
--				count, start - count,
--				(unsigned long long)la_start_blk,
--				(unsigned long long)blkno);
--
--		status = ocfs2_release_clusters(handle,
--				main_bm_inode,
--				main_bm_bh, blkno,
--				count);
--		if (status < 0)
--			mlog_errno(status);
--	}
--
- bail:
- 	if (status)
- 		mlog_errno(status);
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 8a99ba5394b4a..39f151d073a6c 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -220,6 +220,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21M1"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+-- 
+2.43.0
+
 
 
 
