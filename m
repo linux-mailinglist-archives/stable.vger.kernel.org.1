@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-103494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2939EF727
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6C79EF92A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CCB6288E8F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5119628AC41
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF312210F1;
-	Thu, 12 Dec 2024 17:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044832236EA;
+	Thu, 12 Dec 2024 17:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxzIKjE8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEq7kMqx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC36213E6F;
-	Thu, 12 Dec 2024 17:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D2122D4D5;
+	Thu, 12 Dec 2024 17:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024738; cv=none; b=OBZZuPyTW035++8H4nKwX0G691jLCsBMAy0BiOlfDNWkpmaymYQWXmOH3u9cczBcVklFygREVVzWFDjNzqqd6yAz7G6a8dofvyUEc5KWlCu30rLvYT6qouPBW4YD6KYeGIojBYnH555nEMHnj9kJprCvVpS+tUs72ZFBAM10ljs=
+	t=1734025576; cv=none; b=M69RMx6Y2m3cJt6z9ilmzF0RUQy4V8A8v6vIee4rKqEknV/ThM4Nl1CBAt/YbsxorCLqv6vMnj7pkytmVkjUOUKFv/EyliBK2+6Ykup0XJ63UasAnKemvFk9O9VVV+vS9jDWiCgG3HxbuTjRMgfp7NDl0ivExs4kFI76uElqRIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024738; c=relaxed/simple;
-	bh=QzmlyQ+sIlatfFgy5H1f1PkNLmEcrD72h4sJpqTZslE=;
+	s=arc-20240116; t=1734025576; c=relaxed/simple;
+	bh=FbaKsw368hf49xRtaKgZNoY9C8ZwHfdqiVfyBFHHzPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgcbHu2/8+19zL3KaSfPQifc2zRfUFzuzsQ9LULORgZXQj58Lu8HAWMTqCsekdCrweV+WgxAij0pC+2GOqC0XApAYUkPB5exqUvgVXm1phFqXV5UTfweN4//S5mseNw2CQ0Xx0d8oWVkO5nhquq/6rSL+d7aBsLv1lZeF7vqqas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxzIKjE8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3C7C4CECE;
-	Thu, 12 Dec 2024 17:32:17 +0000 (UTC)
+	 MIME-Version; b=L64Q7tgYypHEh15B2lfOQzW5LMctmcHeIX2F+ERQWX8ZBOx9ZBkmHTY+7ApBPEOpYFuXRyh3nHO2WbSm9d8BrqEHmH9Toy7miW/oIw524wDHVHzJg2LzTF7XqQ7L+2EY5miWF00hw9pL9TMLFaUgSoY6t6ekYAPuxwUaBlit294=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEq7kMqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C496C4CECE;
+	Thu, 12 Dec 2024 17:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024738;
-	bh=QzmlyQ+sIlatfFgy5H1f1PkNLmEcrD72h4sJpqTZslE=;
+	s=korg; t=1734025576;
+	bh=FbaKsw368hf49xRtaKgZNoY9C8ZwHfdqiVfyBFHHzPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GxzIKjE8S9sjKvQpqvGaPKOLIsNcht4pSHQMMTMzfHvggvJ+11j/a9GFARYmi/IBt
-	 1J/EQx0gp6PEltQ3rd29u27wo+4CTXFrrfXeyUryZFvMDzy8tMMCwbX+mTMsuOwrid
-	 msWXFPkTgq2c1lgUsuU19CzKctkYZXsGdK+k95gc=
+	b=JEq7kMqxRbQFrUu85/7NdNg0w348ixbBub6ZFiLW5ZPiYpXnCFzaqvMfru+YgTIFS
+	 gbCObFYte7x/3DchQis5kr9MncRLOJ2yW8Md2c7ayMpZIuVYXbfOZm3MPY9745zxI4
+	 kGD6iTdDCTRaREeeIpkB7pEPGCp7E9sQNuKvOuuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 396/459] net: af_can: do not leave a dangling sk pointer in can_create()
+	Yang Erkun <yangerkun@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.4 216/321] nfsd: make sure exp active before svc_export_show
 Date: Thu, 12 Dec 2024 16:02:14 +0100
-Message-ID: <20241212144309.406505337@linuxfoundation.org>
+Message-ID: <20241212144238.509916618@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 811a7ca7320c062e15d0f5b171fe6ad8592d1434 ]
+commit be8f982c369c965faffa198b46060f8853e0f1f0 upstream.
 
-On error can_create() frees the allocated sk object, but sock_init_data()
-has already attached it to the provided sock object. This will leave a
-dangling sk pointer in the sock object and may cause use-after-free later.
+The function `e_show` was called with protection from RCU. This only
+ensures that `exp` will not be freed. Therefore, the reference count for
+`exp` can drop to zero, which will trigger a refcount use-after-free
+warning when `exp_get` is called. To resolve this issue, use
+`cache_get_rcu` to ensure that `exp` remains active.
 
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://patch.msgid.link/20241014153808.51894-5-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 3 PID: 819 at lib/refcount.c:25
+refcount_warn_saturate+0xb1/0x120
+CPU: 3 UID: 0 PID: 819 Comm: cat Not tainted 6.12.0-rc3+ #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.16.1-2.fc37 04/01/2014
+RIP: 0010:refcount_warn_saturate+0xb1/0x120
+...
+Call Trace:
+ <TASK>
+ e_show+0x20b/0x230 [nfsd]
+ seq_read_iter+0x589/0x770
+ seq_read+0x1e5/0x270
+ vfs_read+0x125/0x530
+ ksys_read+0xc1/0x160
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: bf18f163e89c ("NFSD: Using exp_get for export getting")
+Cc: stable@vger.kernel.org # 4.20+
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/af_can.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/export.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index 79f24c6f43c8c..de47c16b134bf 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -171,6 +171,7 @@ static int can_create(struct net *net, struct socket *sock, int protocol,
- 		/* release sk on errors */
- 		sock_orphan(sk);
- 		sock_put(sk);
-+		sock->sk = NULL;
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1223,9 +1223,12 @@ static int e_show(struct seq_file *m, vo
+ 		return 0;
  	}
  
-  errout:
--- 
-2.43.0
-
+-	exp_get(exp);
++	if (!cache_get_rcu(&exp->h))
++		return 0;
++
+ 	if (cache_check(cd, &exp->h, NULL))
+ 		return 0;
++
+ 	exp_put(exp);
+ 	return svc_export_show(m, cd, cp);
+ }
 
 
 
