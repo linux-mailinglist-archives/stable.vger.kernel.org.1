@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8089EED40
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C73939EF186
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004F428582A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8898F290164
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40DC222D4C;
-	Thu, 12 Dec 2024 15:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E79022D4FA;
+	Thu, 12 Dec 2024 16:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjtIP3c1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgYfCl9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91242221D93;
-	Thu, 12 Dec 2024 15:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF2220967D;
+	Thu, 12 Dec 2024 16:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018180; cv=none; b=O0ejdbpzzBc3SFchDt9quaE7wlF3nbVndVgxPu8hqlFK+bT6OlCrS77GIfRPerEpP5T+JB6yuw5wqc/626DRqFwuxRR6/80Kq3pzee7yao+R7U/moqR4RWp4U/Hymvw1ju+o16m520ESEs2AwiX20PaVLoL2rc4GkMasHrCj2m4=
+	t=1734020906; cv=none; b=m55gbeww4n0Mn3SDG/bvgmFe9XM9+FVFXe1p2Uz9Pe0TuAST5ZCFslasOwbyCutIEwcedQpcrg5/VMefDbbmZNJV5MgRyJxItU5EDxydcpFT0ITMOvAjRQL25dJrthe4cU4ckhKyHMZfmvtndsbNuYJXmZ+2ITPJQK+t28MHGHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018180; c=relaxed/simple;
-	bh=0fSlRO3GV7lnWJ+MaHCiSBrE3kC21jq83RJurqxGbak=;
+	s=arc-20240116; t=1734020906; c=relaxed/simple;
+	bh=yqAfXRkUiASummIQQJ3ktqL2SdArnUnz6BuFEWLbMzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYFwsX9nK+XKtu8y34vI63EwDxK4J3NSVWnovZ9I+mPOLs6J/K1oPjGkoEoMOs8/oAgydLVb7xmJjZhbddmy1zsCz/pUGIEPW88hol6Nqa4NuUKdOdlgszimfWfG4itkzSPs+NSG5ZoInpChLWiTeWSLD5EJtfVnUF3uEOkk684=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjtIP3c1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB317C4CECE;
-	Thu, 12 Dec 2024 15:42:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JwmAltflcW4Ofm66E1k70tLmX5HL0PrLIt+DGSgQljAaB8mXCOC6nofnC9R6q7uEesTRfskih375brxASd3W2671qFH2/lyyOGr9DSaD3nq8gHnkNdj5QPsWRfdF4hkVfttXeJIYgl8ElKi/sFyhkbqQDELTWiSVoQnNSdLjFyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgYfCl9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA8CC4CED0;
+	Thu, 12 Dec 2024 16:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018180;
-	bh=0fSlRO3GV7lnWJ+MaHCiSBrE3kC21jq83RJurqxGbak=;
+	s=korg; t=1734020906;
+	bh=yqAfXRkUiASummIQQJ3ktqL2SdArnUnz6BuFEWLbMzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjtIP3c1mVjCImDKDPumf+DDLYhAiQBnq9t9wS+Tr1HsgUrtZWY8a+lccp6T4R8UG
-	 ysT4XN+aMf2X8eO2pS6Mn1PUWcY01db6bwX98iLnpu54NGIMZ6SA1UTaz1WAyXweEC
-	 O5ccers+XGUoNjYiPHZ6VeNTkpMgGc6+yDhlV9FA=
+	b=bgYfCl9wDgtxBWib29p3ni9KjD6Ssn2ynmeiFeRcIDDTaR740bMsferlMSecKXhI9
+	 1in6h+zYF8Lbd0GPB0+kCv4TBUBbrSRBWyWB9ziCYHDP1UR8L6CdqJYVEWhg0aPUnM
+	 Ztdc5xjyh/XijkStETONNcCs0xy5VL7RsMnX3+sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 219/356] r8169: dont apply UDP padding quirk on RTL8126A
-Date: Thu, 12 Dec 2024 15:58:58 +0100
-Message-ID: <20241212144253.270378286@linuxfoundation.org>
+Subject: [PATCH 6.1 594/772] drm/v3d: Enable Performance Counters before clearing them
+Date: Thu, 12 Dec 2024 15:58:59 +0100
+Message-ID: <20241212144414.474306352@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 87e26448dbda4523b73a894d96f0f788506d3795 ]
+[ Upstream commit c98b10496b2f3c4f576af3482c71aadcfcbf765e ]
 
-Vendor drivers r8125/r8126 indicate that this quirk isn't needed
-any longer for RTL8126A. Mimic this in r8169.
+On the Raspberry Pi 5, performance counters are not being cleared
+when `v3d_perfmon_start()` is called, even though we write to the
+CLR register. As a result, their values accumulate until they
+overflow.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/d1317187-aa81-4a69-b831-678436e4de62@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The expected behavior is for performance counters to reset to zero
+at the start of a job. When the job finishes and the perfmon is
+stopped, the counters should accurately reflect the values for that
+specific job.
+
+To ensure this behavior, the performance counters are now enabled
+before being cleared. This allows the CLR register to function as
+intended, zeroing the counter values when the job begins.
+
+Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241204122831.17015-1-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/v3d/v3d_perfmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 6856eb602f826..7e5258b2c4290 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4126,8 +4126,8 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
- {
- 	unsigned int padto = 0, len = skb->len;
+diff --git a/drivers/gpu/drm/v3d/v3d_perfmon.c b/drivers/gpu/drm/v3d/v3d_perfmon.c
+index cb56627328bb0..101332775b6a7 100644
+--- a/drivers/gpu/drm/v3d/v3d_perfmon.c
++++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
+@@ -49,9 +49,9 @@ void v3d_perfmon_start(struct v3d_dev *v3d, struct v3d_perfmon *perfmon)
+ 		V3D_CORE_WRITE(0, V3D_V4_PCTR_0_SRC_X(source), channel);
+ 	}
  
--	if (rtl_is_8125(tp) && len < 128 + RTL_MIN_PATCH_LEN &&
--	    rtl_skb_is_udp(skb) && skb_transport_header_was_set(skb)) {
-+	if (len < 128 + RTL_MIN_PATCH_LEN && rtl_skb_is_udp(skb) &&
-+	    skb_transport_header_was_set(skb)) {
- 		unsigned int trans_data_len = skb_tail_pointer(skb) -
- 					      skb_transport_header(skb);
++	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_EN, mask);
+ 	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_CLR, mask);
+ 	V3D_CORE_WRITE(0, V3D_PCTR_0_OVERFLOW, mask);
+-	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_EN, mask);
  
-@@ -4151,9 +4151,15 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
- static unsigned int rtl_quirk_packet_padto(struct rtl8169_private *tp,
- 					   struct sk_buff *skb)
- {
--	unsigned int padto;
-+	unsigned int padto = 0;
- 
--	padto = rtl8125_quirk_udp_padto(tp, skb);
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+		padto = rtl8125_quirk_udp_padto(tp, skb);
-+		break;
-+	default:
-+		break;
-+	}
- 
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_34:
+ 	v3d->active_perfmon = perfmon;
+ }
 -- 
 2.43.0
 
