@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9439EF4E9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4259EF72E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B15617FBF0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D0251897AF1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700982253E7;
-	Thu, 12 Dec 2024 16:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084452206A5;
+	Thu, 12 Dec 2024 17:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lord/dbP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUp78jn+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9AB223E93;
-	Thu, 12 Dec 2024 16:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B620221E085;
+	Thu, 12 Dec 2024 17:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022715; cv=none; b=gjKFjuhMNAWvcUJzOI6Xl8/uxbuNw7HKZVmCSdg4z1vkGRvyR0VVljWOzHdferppOUndgZ2fW1H4/Hxeb+rWJf+6SmWbz+11OcSs3XR1n87TwVrKxInu05NeCo8MSz2OPDUBWxH3QXMS+9J2DjJZm4lNAB+XZfWCE+9aDu3wQBY=
+	t=1734024063; cv=none; b=fXx5exlm4G0Uy50NJQIqZ8hPSp/QzsK9THff6kag5RUKHr4CL65KoquDt9Y10LF5ymB6YgSBNevb4a5Kz6M90kVXZwpeilX0des7+cQqEhtBXZcjTtqivkVa4LiiGV79crP8qCxopAPxhyBLiGQQDy2eWGQUKKPZmTKeWdyatsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022715; c=relaxed/simple;
-	bh=ZCnhgm5oERN8gTLDZCcQk1/mewhibCIxn5a/6S9OnH4=;
+	s=arc-20240116; t=1734024063; c=relaxed/simple;
+	bh=2NqoK/t11uxSjGYJPhsJgnytfG/pq+xPL8vB1ID/syw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ct9BKVf3xQkJ9Mkp1YKUj5kDgzQxQrZbtrc4OJw5I2pWrKu4EEwGxttCXOC9GLjiw4+L3oHkRLbqr3VG5C+b56SzAhszRyMFYuy+rXSrIHAtp8+ZWMkN9Eb0d+PgokVQthogcVidtvFt+DiUDPekFzChkzCPh8RpP7LB3tZlTNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lord/dbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC42C4CED3;
-	Thu, 12 Dec 2024 16:58:32 +0000 (UTC)
+	 MIME-Version; b=YXFPwnF5oJEVHjavOgBVsDiaUGNMpijPmdbEVIMcvxIuqvjVaWFelJEW/zbtg1Pfm5FXMJomuvtRp4DDrwq9TwiAnw8kFzeplLj5t4qfQFogWV5uguQi6Gkx8MpPbkgWdwmeU5fW77sjIvgBLx7yzaBnXu8mxl1GC4iUnGWDkzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUp78jn+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327B2C4CECE;
+	Thu, 12 Dec 2024 17:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022713;
-	bh=ZCnhgm5oERN8gTLDZCcQk1/mewhibCIxn5a/6S9OnH4=;
+	s=korg; t=1734024063;
+	bh=2NqoK/t11uxSjGYJPhsJgnytfG/pq+xPL8vB1ID/syw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lord/dbPhsfXV+tMWGqyo4yXDIWK1AkrdjTz1K0b0iaeQw//j4ZrzU0qGxtU0G++4
-	 8uJKzx+T78uNFqcR6fApmy+J28ooskLBEiUKNABhN+UXFMdeMV/2gfIAlh/7em67z6
-	 GTrg2AOPiZs1q3SEd567TxNb19GvyMkL3yPYEIVA=
+	b=XUp78jn+sobEGmsRGNuRHpTWeJ+e8vkcXW1N56iEL4Jzayg9SBltg5V6cq9F8PDSF
+	 0514GNBHkMZjG6/56W85q0vBCRTXVQEGeg9avcQZhf3GdmXz97WhWorIv9RLNjKMk2
+	 01alpzPZIrIV9e9Ev3PHbvDZe6hmq2I04vuZmrP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 5.15 315/565] apparmor: test: Fix memory leak for aa_unpack_strdup()
-Date: Thu, 12 Dec 2024 15:58:30 +0100
-Message-ID: <20241212144324.057462208@linuxfoundation.org>
+	Kajol Jain <kjain@linux.ibm.com>,
+	"Nysal Jan K.A" <nysal@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 173/459] powerpc/pseries: Fix dtl_access_lock to be a rw_semaphore
+Date: Thu, 12 Dec 2024 15:58:31 +0100
+Message-ID: <20241212144300.355000550@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 7290f59231910ccba427d441a6e8b8c6f6112448 upstream.
+[ Upstream commit cadae3a45d23aa4f6485938a67cbc47aaaa25e38 ]
 
-The string allocated by kmemdup() in aa_unpack_strdup() is not
-freed and cause following memory leaks, free them to fix it.
+The dtl_access_lock needs to be a rw_sempahore, a sleeping lock, because
+the code calls kmalloc() while holding it, which can sleep:
 
-	unreferenced object 0xffffff80c6af8a50 (size 8):
-	  comm "kunit_try_catch", pid 225, jiffies 4294894407
-	  hex dump (first 8 bytes):
-	    74 65 73 74 69 6e 67 00                          testing.
-	  backtrace (crc 5eab668b):
-	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
-	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
-	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
-	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
-	    [<000000008ecde918>] policy_unpack_test_unpack_strdup_with_null_name+0xf8/0x3ec
-	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<00000000adf936cf>] kthread+0x2e8/0x374
-	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
-	unreferenced object 0xffffff80c2a29090 (size 8):
-	  comm "kunit_try_catch", pid 227, jiffies 4294894409
-	  hex dump (first 8 bytes):
-	    74 65 73 74 69 6e 67 00                          testing.
-	  backtrace (crc 5eab668b):
-	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
-	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
-	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
-	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
-	    [<0000000046a45c1a>] policy_unpack_test_unpack_strdup_with_name+0xd0/0x3c4
-	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<00000000adf936cf>] kthread+0x2e8/0x374
-	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
+  # echo 1 > /proc/powerpc/vcpudispatch_stats
+  BUG: sleeping function called from invalid context at include/linux/sched/mm.h:337
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 199, name: sh
+  preempt_count: 1, expected: 0
+  3 locks held by sh/199:
+   #0: c00000000a0743f8 (sb_writers#3){.+.+}-{0:0}, at: vfs_write+0x324/0x438
+   #1: c0000000028c7058 (dtl_enable_mutex){+.+.}-{3:3}, at: vcpudispatch_stats_write+0xd4/0x5f4
+   #2: c0000000028c70b8 (dtl_access_lock){+.+.}-{2:2}, at: vcpudispatch_stats_write+0x220/0x5f4
+  CPU: 0 PID: 199 Comm: sh Not tainted 6.10.0-rc4 #152
+  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
+  Call Trace:
+    dump_stack_lvl+0x130/0x148 (unreliable)
+    __might_resched+0x174/0x410
+    kmem_cache_alloc_noprof+0x340/0x3d0
+    alloc_dtl_buffers+0x124/0x1ac
+    vcpudispatch_stats_write+0x2a8/0x5f4
+    proc_reg_write+0xf4/0x150
+    vfs_write+0xfc/0x438
+    ksys_write+0x88/0x148
+    system_call_exception+0x1c4/0x5a0
+    system_call_common+0xf4/0x258
 
-Cc: stable@vger.kernel.org
-Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 06220d78f24a ("powerpc/pseries: Introduce rwlock to gatekeep DTLB usage")
+Tested-by: Kajol Jain <kjain@linux.ibm.com>
+Reviewed-by: Nysal Jan K.A <nysal@linux.ibm.com>
+Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20240819122401.513203-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack_test.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/powerpc/include/asm/dtl.h        | 4 ++--
+ arch/powerpc/platforms/pseries/dtl.c  | 8 ++++----
+ arch/powerpc/platforms/pseries/lpar.c | 8 ++++----
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
---- a/security/apparmor/policy_unpack_test.c
-+++ b/security/apparmor/policy_unpack_test.c
-@@ -283,6 +283,8 @@ static void policy_unpack_test_unpack_st
- 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
- 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
- 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
-+
-+	kfree(string);
+diff --git a/arch/powerpc/include/asm/dtl.h b/arch/powerpc/include/asm/dtl.h
+index 1625888f27ef6..5e40f27aa76e5 100644
+--- a/arch/powerpc/include/asm/dtl.h
++++ b/arch/powerpc/include/asm/dtl.h
+@@ -1,8 +1,8 @@
+ #ifndef _ASM_POWERPC_DTL_H
+ #define _ASM_POWERPC_DTL_H
+ 
++#include <linux/rwsem.h>
+ #include <asm/lppaca.h>
+-#include <linux/spinlock_types.h>
+ 
+ /*
+  * Layout of entries in the hypervisor's dispatch trace log buffer.
+@@ -35,7 +35,7 @@ struct dtl_entry {
+ #define DTL_LOG_ALL		(DTL_LOG_CEDE | DTL_LOG_PREEMPT | DTL_LOG_FAULT)
+ 
+ extern struct kmem_cache *dtl_cache;
+-extern rwlock_t dtl_access_lock;
++extern struct rw_semaphore dtl_access_lock;
+ 
+ /*
+  * When CONFIG_VIRT_CPU_ACCOUNTING_NATIVE = y, the cpu accounting code controls
+diff --git a/arch/powerpc/platforms/pseries/dtl.c b/arch/powerpc/platforms/pseries/dtl.c
+index 982f069e4c318..36a2eb23dbdc4 100644
+--- a/arch/powerpc/platforms/pseries/dtl.c
++++ b/arch/powerpc/platforms/pseries/dtl.c
+@@ -181,7 +181,7 @@ static int dtl_enable(struct dtl *dtl)
+ 		return -EBUSY;
+ 
+ 	/* ensure there are no other conflicting dtl users */
+-	if (!read_trylock(&dtl_access_lock))
++	if (!down_read_trylock(&dtl_access_lock))
+ 		return -EBUSY;
+ 
+ 	n_entries = dtl_buf_entries;
+@@ -189,7 +189,7 @@ static int dtl_enable(struct dtl *dtl)
+ 	if (!buf) {
+ 		printk(KERN_WARNING "%s: buffer alloc failed for cpu %d\n",
+ 				__func__, dtl->cpu);
+-		read_unlock(&dtl_access_lock);
++		up_read(&dtl_access_lock);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -207,7 +207,7 @@ static int dtl_enable(struct dtl *dtl)
+ 	spin_unlock(&dtl->lock);
+ 
+ 	if (rc) {
+-		read_unlock(&dtl_access_lock);
++		up_read(&dtl_access_lock);
+ 		kmem_cache_free(dtl_cache, buf);
+ 	}
+ 
+@@ -222,7 +222,7 @@ static void dtl_disable(struct dtl *dtl)
+ 	dtl->buf = NULL;
+ 	dtl->buf_entries = 0;
+ 	spin_unlock(&dtl->lock);
+-	read_unlock(&dtl_access_lock);
++	up_read(&dtl_access_lock);
  }
  
- static void policy_unpack_test_unpack_strdup_with_name(struct kunit *test)
-@@ -298,6 +300,8 @@ static void policy_unpack_test_unpack_st
- 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
- 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
- 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
-+
-+	kfree(string);
+ /* file interface */
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index aed67f1a1bc56..b19de0faf913c 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -166,7 +166,7 @@ struct vcpu_dispatch_data {
+  */
+ #define NR_CPUS_H	NR_CPUS
+ 
+-DEFINE_RWLOCK(dtl_access_lock);
++DECLARE_RWSEM(dtl_access_lock);
+ static DEFINE_PER_CPU(struct vcpu_dispatch_data, vcpu_disp_data);
+ static DEFINE_PER_CPU(u64, dtl_entry_ridx);
+ static DEFINE_PER_CPU(struct dtl_worker, dtl_workers);
+@@ -460,7 +460,7 @@ static int dtl_worker_enable(unsigned long *time_limit)
+ {
+ 	int rc = 0, state;
+ 
+-	if (!write_trylock(&dtl_access_lock)) {
++	if (!down_write_trylock(&dtl_access_lock)) {
+ 		rc = -EBUSY;
+ 		goto out;
+ 	}
+@@ -476,7 +476,7 @@ static int dtl_worker_enable(unsigned long *time_limit)
+ 		pr_err("vcpudispatch_stats: unable to setup workqueue for DTL processing\n");
+ 		free_dtl_buffers(time_limit);
+ 		reset_global_dtl_mask();
+-		write_unlock(&dtl_access_lock);
++		up_write(&dtl_access_lock);
+ 		rc = -EINVAL;
+ 		goto out;
+ 	}
+@@ -491,7 +491,7 @@ static void dtl_worker_disable(unsigned long *time_limit)
+ 	cpuhp_remove_state(dtl_worker_state);
+ 	free_dtl_buffers(time_limit);
+ 	reset_global_dtl_mask();
+-	write_unlock(&dtl_access_lock);
++	up_write(&dtl_access_lock);
  }
  
- static void policy_unpack_test_unpack_strdup_out_of_bounds(struct kunit *test)
-@@ -315,6 +319,8 @@ static void policy_unpack_test_unpack_st
- 	KUNIT_EXPECT_EQ(test, size, 0);
- 	KUNIT_EXPECT_PTR_EQ(test, string, (char *)NULL);
- 	KUNIT_EXPECT_PTR_EQ(test, puf->e->pos, start);
-+
-+	kfree(string);
- }
- 
- static void policy_unpack_test_unpack_nameX_with_null_name(struct kunit *test)
+ static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
+-- 
+2.43.0
+
 
 
 
