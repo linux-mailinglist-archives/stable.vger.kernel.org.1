@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-102775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837489EF511
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 166DE9EF57D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DB6A1890F4F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFC53287E52
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278AB22914B;
-	Thu, 12 Dec 2024 16:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB79205501;
+	Thu, 12 Dec 2024 17:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5xwBrVK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RYFIE8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AED216E14;
-	Thu, 12 Dec 2024 16:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9B04F218;
+	Thu, 12 Dec 2024 17:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022447; cv=none; b=l3Qw+J7TMZDW1K+KtMv8KT4/q6AGOL8SofeyziyLk9x/sfG+RvJeOut8LFmHYs8ejXHEIp3JnyLNYg/TC1WtzMs+vneduMk8XG85ERHHJfhhWAUd1mHNcOaBmlM37N6iVTHp7aEqEePTzGSPtK1UX62CQtOnxiih6oNlap1IWg4=
+	t=1734023839; cv=none; b=RPIm3ZvWWtMG6/M0MT20UNREo9RAka7BHiKm+HW99J3JNdgKCYr57MjWTRAmZDah+6IQDf/240QuJBbWZXBYKgNDsszWjuJYf7Tf8qUfLk9KlRGwWc3EqFLqzj9UZXLlboQR4tsGvT7MPChORvufCuRdTcBsKSYvugjZrazUdJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022447; c=relaxed/simple;
-	bh=evQ5CjMV8/CAV6hLpnZd7h9JUku/UHScOywszyjYBBo=;
+	s=arc-20240116; t=1734023839; c=relaxed/simple;
+	bh=y6jynlx/iO+i2CxH7JGpAwrJ0zaZUxQ8F56JRkxyRB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwClVno06Ol4A/bYxki/eirbitaq2kNg/ouxpa2XSSBbZDoFozl30o1Q0UBVE5pEMuPzeZdVTFhxYgkkx8o6r7VjRMrl6xnfJkPAXJmQdhfeK0xlPl0Rd+DauBalwAAi3o6QAavjJEaIA6AjPP0mUPuToP/YAwvDKCf8b3HMifc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5xwBrVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5273C4CED3;
-	Thu, 12 Dec 2024 16:54:06 +0000 (UTC)
+	 MIME-Version; b=dBuqi19m85Ev2HmzO2fvms8unJyqO4JQG1JDMSJMcO2YVP8liI8PNRVNnNRTnX4mv4ZKtTmOqhy0jjJuAZeXBoK38OiqQlOG5yEhanUAiKU5NrqA9Juqkr/ULOaTwKpg2xTjIld4Cx1h0hQrT1Be5cbrgWquh5f5WteBJnuFi7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RYFIE8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45804C4CECE;
+	Thu, 12 Dec 2024 17:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022447;
-	bh=evQ5CjMV8/CAV6hLpnZd7h9JUku/UHScOywszyjYBBo=;
+	s=korg; t=1734023839;
+	bh=y6jynlx/iO+i2CxH7JGpAwrJ0zaZUxQ8F56JRkxyRB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5xwBrVK4AvhOiZITTqvuFpF68+ijuS3l8bAriayITX1FPk/v5nZl8oTMOjzBr2UV
-	 oFXXe54Qtf5Ys27Moj9YiDuZQOo/gOtH6wUyOjK0hUfxl6q8gPjj55AKjirWI9fHev
-	 hCI58CXNSoXL6rZXpGCc8A5GOJUG2YmBCPkrfbUY=
+	b=0RYFIE8PtSC6+r9OSJ7PtMvoAn1xacK9geQMyF/gd6HEuaXUV9FxQ8qBqSy8NOQsB
+	 xFXcQZ+OBqTAMXAWSX8n6PdkER+wguUJhxuVNBOD5lZrtiNo/h7bGT00VTxLG/CZrd
+	 s1DP5lnGOV/OGDvQtR1Z8DR49hBnpkhGnEwIFCAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Steinar H. Gunderson" <sesse@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Hemant Kumar <hemant@linux.vnet.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 243/565] perf probe: Fix libdw memory leak
+Subject: [PATCH 5.10 100/459] drm/omap: Fix locking in omap_gem_new_dmabuf()
 Date: Thu, 12 Dec 2024 15:57:18 +0100
-Message-ID: <20241212144321.083866334@linuxfoundation.org>
+Message-ID: <20241212144257.459741366@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 4585038b8e186252141ef86e9f0d8e97f11dce8d ]
+[ Upstream commit e6a1c4037227539373c8cf484ace83833e2ad6a2 ]
 
-Add missing dwarf_cfi_end to free memory associated with probe_finder
-cfi_eh which is allocated and owned via a call to
-dwarf_getcfi_elf. Confusingly cfi_dbg shouldn't be freed as its memory
-is owned by the passed in debuginfo struct. Add comments to highlight
-this.
+omap_gem_new_dmabuf() creates the new gem object, and then takes and
+holds the omap_obj->lock for the rest of the function. This has two
+issues:
 
-This addresses leak sanitizer issues seen in:
-tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+- omap_gem_free_object(), which is called in the error paths, also takes
+  the same lock, leading to deadlock
+- Even if the above wouldn't happen, in the error cases
+  omap_gem_new_dmabuf() still unlocks omap_obj->lock, even after the
+  omap_obj has already been freed.
 
-Fixes: 270bde1e76f4 ("perf probe: Search both .eh_frame and .debug_frame sections for probe location")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Steinar H. Gunderson <sesse@google.com>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Hemant Kumar <hemant@linux.vnet.ibm.com>
-Link: https://lore.kernel.org/r/20241016235622.52166-3-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Furthermore, I don't think there's any reason to take the lock at all,
+as the object was just created and not yet shared with anyone else.
+
+To fix all this, drop taking the lock.
+
+Fixes: 3cbd0c587b12 ("drm/omap: gem: Replace struct_mutex usage with omap_obj private lock")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/511b99d7-aade-4f92-bd3e-63163a13d617@stanley.mountain/
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240806-omapdrm-misc-fixes-v1-3-15d31aea0831@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/probe-finder.c | 4 ++++
- tools/perf/util/probe-finder.h | 4 ++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/omapdrm/omap_gem.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index 50d861a80f572..2f86103761ab2 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -1490,6 +1490,10 @@ int debuginfo__find_trace_events(struct debuginfo *dbg,
- 	if (ret >= 0 && tf.pf.skip_empty_arg)
- 		ret = fill_empty_trace_arg(pev, tf.tevs, tf.ntevs);
+diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
+index f67f223c6479f..662062cdba9d4 100644
+--- a/drivers/gpu/drm/omapdrm/omap_gem.c
++++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+@@ -1289,8 +1289,6 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
  
-+#if _ELFUTILS_PREREQ(0, 142)
-+	dwarf_cfi_end(tf.pf.cfi_eh);
-+#endif
-+
- 	if (ret < 0 || tf.ntevs == 0) {
- 		for (i = 0; i < tf.ntevs; i++)
- 			clear_probe_trace_event(&tf.tevs[i]);
-diff --git a/tools/perf/util/probe-finder.h b/tools/perf/util/probe-finder.h
-index 8bc1c80d3c1c0..1f4650b955094 100644
---- a/tools/perf/util/probe-finder.h
-+++ b/tools/perf/util/probe-finder.h
-@@ -81,9 +81,9 @@ struct probe_finder {
+ 	omap_obj = to_omap_bo(obj);
  
- 	/* For variable searching */
- #if _ELFUTILS_PREREQ(0, 142)
--	/* Call Frame Information from .eh_frame */
-+	/* Call Frame Information from .eh_frame. Owned by this struct. */
- 	Dwarf_CFI		*cfi_eh;
--	/* Call Frame Information from .debug_frame */
-+	/* Call Frame Information from .debug_frame. Not owned. */
- 	Dwarf_CFI		*cfi_dbg;
- #endif
- 	Dwarf_Op		*fb_ops;	/* Frame base attribute */
+-	mutex_lock(&omap_obj->lock);
+-
+ 	omap_obj->sgt = sgt;
+ 
+ 	if (sgt->orig_nents == 1) {
+@@ -1305,8 +1303,7 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
+ 		pages = kcalloc(npages, sizeof(*pages), GFP_KERNEL);
+ 		if (!pages) {
+ 			omap_gem_free_object(obj);
+-			obj = ERR_PTR(-ENOMEM);
+-			goto done;
++			return ERR_PTR(-ENOMEM);
+ 		}
+ 
+ 		omap_obj->pages = pages;
+@@ -1314,13 +1311,10 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
+ 						       npages);
+ 		if (ret) {
+ 			omap_gem_free_object(obj);
+-			obj = ERR_PTR(-ENOMEM);
+-			goto done;
++			return ERR_PTR(-ENOMEM);
+ 		}
+ 	}
+ 
+-done:
+-	mutex_unlock(&omap_obj->lock);
+ 	return obj;
+ }
+ 
 -- 
 2.43.0
 
