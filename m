@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90CAA9EF8A1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:44:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C49409EF731
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B99C1897B07
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 835B1189B883
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE9C216E2D;
-	Thu, 12 Dec 2024 17:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACA02165F0;
+	Thu, 12 Dec 2024 17:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LS+ly5wn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKB8nfrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E142820A5EE;
-	Thu, 12 Dec 2024 17:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDB8215762;
+	Thu, 12 Dec 2024 17:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025137; cv=none; b=M+/Wp1UeG5EXpMSGIFCZNRWybrmFQD8RfWzGjr5bOdf2HhKH+ei8VkuqflocSHvvyXo2Xtlo3y/xygVpLQA6zLKfQzF8XM8krNR7+8AkoNlUilE74fL71ToenC68RYEDlbAbI45SfgnW76DTRNAVrI7LdaRTczPcviWcSZtqEHc=
+	t=1734024315; cv=none; b=Yfn4ZER9ZN9uYMle40fnbi35Lq0dRZTmw5Gpa/DThSRLiP6IpDpvHCPm4YGsvhhN7nkfXkfxa3ixv+JbW8AZKWYcZZ79tGzMUxJKrYNKvsdZdkrVh9uWmLx2m1OJ5+wn8Wbo0XdUQGIBmfLcsaPQ/AGlpzfNlSmHSSJMUTmBX2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025137; c=relaxed/simple;
-	bh=nktHyDt0hVA4qDZhgRI2+b0QEmjQOvZPhrDc0wg+TOI=;
+	s=arc-20240116; t=1734024315; c=relaxed/simple;
+	bh=FRKy2WK+HMIUTx6aDH4REPjj0EcJ/UXubcj/DFRA9dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6usztI9spGUz4BqVP58PLeixk9nwG1Cg6FgCZ+vltDxGHFDNGo1l8VzNCnjuv+L9Zf8qAub7WdZIdzJnB/6Vxbul+xOB7TOIOzNKtHRQ5R8/QJDu1StWL5rKwwc+I71YvC+70JRxtbzgzdANEM4bzNdsTFmFiiJ5Vff5PP7fD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LS+ly5wn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68343C4CED3;
-	Thu, 12 Dec 2024 17:38:56 +0000 (UTC)
+	 MIME-Version; b=CTEn6ExjvtCTUJcUCLTyZAg/NeJXzvjeKNPhBQH52W1r9wOFRHWRdTdzzZHpxnwXWxPn5Q+EdEuKpRrIuDY5AyunlPxVfVohJftfuP8CFQVB2h5IikUPZjLXAoX9v7XPBQthtrEOXieyiml8Yq5d3Ei88WqLkRULh2kXsL6tLaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKB8nfrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7B1C4CECE;
+	Thu, 12 Dec 2024 17:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025136;
-	bh=nktHyDt0hVA4qDZhgRI2+b0QEmjQOvZPhrDc0wg+TOI=;
+	s=korg; t=1734024314;
+	bh=FRKy2WK+HMIUTx6aDH4REPjj0EcJ/UXubcj/DFRA9dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LS+ly5wnawV9h8Yui6dMTIH9dqDpziZWFzXbXFdKI+DJGYOV3SfvGL/TnXhG6vhD5
-	 OtD4IXJIPC+N9lpp+Z/UdcGio7xd6ZwZRS3jHmVsIU2wQyxRnf6/RT2RaChvTYx5WA
-	 uE5IL0fhpDp9vDLtPmg1wxJ1hgRuANcoxcGRDwe8=
+	b=oKB8nfrzZrdB9oSkDenAs/7xQNv2CG15qaAmhyIrM6rJ8jpFq0OdrmN5o6j3f/9tU
+	 nHHFwgyzbyHBFDAUzBQXXWlS0OYowzgi3+5FXUjncicStipNrbTyZWVfJUXe2rU1e9
+	 A52VNCfv4lmXf1c1yYy+N34FsuUXDXDsk937AqSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Emil Velikov <emil.velikov@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/321] drm/fsl-dcu: Use GEM CMA object functions
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 248/459] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
 Date: Thu, 12 Dec 2024 15:59:46 +0100
-Message-ID: <20241212144232.677744948@linuxfoundation.org>
+Message-ID: <20241212144303.385771312@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit 929027087f527ef1d9e906e4ebeca7eb3a36042e ]
+commit 1157733344651ca505e259d6554591ff156922fa upstream.
 
-Create GEM objects with drm_gem_cma_create_object_default_funcs(), which
-allocates the object and sets CMA's default object functions. Corresponding
-callbacks in struct drm_driver are cleared. No functional changes are made.
+An atomicity violation occurs when the validity of the variables
+da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
+assessment is not protected by a lock, the da7219 variable might still be
+in flux during the assessment, rendering this check invalid.
 
-Driver and object-function instances use the same callback functions, with
-the exception of vunmap. The implementation of vunmap is empty and left out
-in CMA's default object functions.
+To fix this issue, we recommend adding a lock before the block
+if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
+the legitimacy check for da7219->clk_src and da7219->mclk_rate is
+protected by the lock, ensuring the validity of the check.
 
-v3:
-	* convert to DRIVER_OPS macro in a separate patch
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20200605073247.4057-11-tzimmermann@suse.de
-Stable-dep-of: ffcde9e44d3e ("drm: fsl-dcu: enable PIXCLK on LS1021A")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6d817c0e9fd7 ("ASoC: codecs: Add da7219 codec driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Link: https://patch.msgid.link/20240930101216.23723-1-chenqiuji666@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ sound/soc/codecs/da7219.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-index f15d2e7967a3e..113d2e30cf952 100644
---- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-+++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-@@ -141,14 +141,10 @@ static struct drm_driver fsl_dcu_drm_driver = {
- 	.irq_handler		= fsl_dcu_drm_irq,
- 	.irq_preinstall		= fsl_dcu_irq_uninstall,
- 	.irq_uninstall		= fsl_dcu_irq_uninstall,
--	.gem_free_object_unlocked = drm_gem_cma_free_object,
--	.gem_vm_ops		= &drm_gem_cma_vm_ops,
-+	.gem_create_object	= drm_gem_cma_create_object_default_funcs,
- 	.prime_handle_to_fd	= drm_gem_prime_handle_to_fd,
- 	.prime_fd_to_handle	= drm_gem_prime_fd_to_handle,
--	.gem_prime_get_sg_table	= drm_gem_cma_prime_get_sg_table,
- 	.gem_prime_import_sg_table = drm_gem_cma_prime_import_sg_table,
--	.gem_prime_vmap		= drm_gem_cma_prime_vmap,
--	.gem_prime_vunmap	= drm_gem_cma_prime_vunmap,
- 	.gem_prime_mmap		= drm_gem_cma_prime_mmap,
- 	.dumb_create		= drm_gem_cma_dumb_create,
- 	.fops			= &fsl_dcu_drm_fops,
--- 
-2.43.0
-
+--- a/sound/soc/codecs/da7219.c
++++ b/sound/soc/codecs/da7219.c
+@@ -1167,17 +1167,20 @@ static int da7219_set_dai_sysclk(struct
+ 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
+ 	int ret = 0;
+ 
+-	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq))
++	mutex_lock(&da7219->pll_lock);
++
++	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) {
++		mutex_unlock(&da7219->pll_lock);
+ 		return 0;
++	}
+ 
+ 	if ((freq < 2000000) || (freq > 54000000)) {
++		mutex_unlock(&da7219->pll_lock);
+ 		dev_err(codec_dai->dev, "Unsupported MCLK value %d\n",
+ 			freq);
+ 		return -EINVAL;
+ 	}
+ 
+-	mutex_lock(&da7219->pll_lock);
+-
+ 	switch (clk_id) {
+ 	case DA7219_CLKSRC_MCLK_SQR:
+ 		snd_soc_component_update_bits(component, DA7219_PLL_CTRL,
 
 
 
