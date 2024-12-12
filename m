@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43EAF9EF6D1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 991E09EF8D5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA4472879FF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 588782861C7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D95D222D44;
-	Thu, 12 Dec 2024 17:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7C1223C4E;
+	Thu, 12 Dec 2024 17:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQ5mP4zp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wip0vEcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5429C21CFEA;
-	Thu, 12 Dec 2024 17:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEAA222D45;
+	Thu, 12 Dec 2024 17:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024572; cv=none; b=rgr3bFs8VoZF5waEN3roNf+9RbNERbqnxequzzgHPlu+u9FQmv5fpufhR9OU5WDb2zagpFqAHQmSzru5OkPWP20Zyn7s1Wt60XM/2Ao5kjPqcTY5Bua1XEw7PeAvf8jDhAwdHE7DzffSdbts3U+zifOLqQdLraexbgyoVlBQNlk=
+	t=1734025413; cv=none; b=oH1kLnQoLH58wEmbeLaIl7ZJD7X1GsIZzPq/occjvhWq1ev71d/4e4zckemaQb9UZZazRQbM86Su8BGskXDzfdxAWSW32KAp/7pOIRiiIJHIikXfqoLFpe1v11sTnSbowXaY2byGV9XDI1LyJUU85KdmIwI8i0oCLs1ieyKPtNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024572; c=relaxed/simple;
-	bh=eYhqQrj0bxxbsA14QKvrBNUxq1Pggvaem0qxGfW3e8s=;
+	s=arc-20240116; t=1734025413; c=relaxed/simple;
+	bh=iox5SnPu8W1djuCrRixarrZr1n+rxhIqeCoFt927ofQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UccPBEokC9PVVZekBvYbcXgiDOkcKNoLPzAuW2CoW2w0mMj0CHyAI+uGrYxAyd/R6meWUOHqa9COLuZ1QHdWVPWzGRlGkO8xV02k5Zz4cRIkaFL4o8gFwdgIOFfG442vWMzF65SvQqgs3tKwaO07HGahqbKpQpTchLeiBDvcWx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQ5mP4zp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801E9C4CED3;
-	Thu, 12 Dec 2024 17:29:31 +0000 (UTC)
+	 MIME-Version; b=NFdTBiYwZmOaFFgwtPLXhp+V8ceBrZlkWlLgnCmzXnYEvbqpcL/7yt3wlAfx90POIMTgQZh4jne/KUCtCBQhnax5mx5YfO4dRvrWNSshAzP7f/c7RsqeP58DsFztB9+dJgXC7Q17CKQS2I4SNgGNux9yAN0aZyD1KCQaeYv9QEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wip0vEcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F6EC4CEDE;
+	Thu, 12 Dec 2024 17:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024571;
-	bh=eYhqQrj0bxxbsA14QKvrBNUxq1Pggvaem0qxGfW3e8s=;
+	s=korg; t=1734025413;
+	bh=iox5SnPu8W1djuCrRixarrZr1n+rxhIqeCoFt927ofQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQ5mP4zpOgzqDsT08nUgT6/+evPhSP+m8wvJz8f1B7sduz0p8LYDaoKF2QLys7XK4
-	 Jvv/y7EesT03aiQcl023tMlatZ/Fopi3OEo/miG/62uVMsIbnJctxv6LdovuDOYBTb
-	 yKn2ugFaKlimW5OQ++j0XcMtDsLt8VLYimxaJRzs=
+	b=wip0vEcukxYzZi767PgobPvEaDwv6erPyg5I8Pfl+HCWpCRVJr6+nOUBqxlBCpGFl
+	 4IqTGMPkhTQwsjzoS3mNIgn0mpovy+emRyNg4R2hGXzMa2GpzINmxsVFhuPdx69681
+	 TONzhV50HtHwD0lLW8Dp9Ol3M0DxEVQLsKmaCPLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Cong Wang <cong.wang@bytedance.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 340/459] net: sched: fix erspan_opt settings in cls_flower
-Date: Thu, 12 Dec 2024 16:01:18 +0100
-Message-ID: <20241212144307.094651900@linuxfoundation.org>
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4 161/321] um: net: Do not use drvdata in release
+Date: Thu, 12 Dec 2024 16:01:19 +0100
+Message-ID: <20241212144236.338404482@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 292207809486d99c78068d3f459cbbbffde88415 ]
+commit d1db692a9be3b4bd3473b64fcae996afaffe8438 upstream.
 
-When matching erspan_opt in cls_flower, only the (version, dir, hwid)
-fields are relevant. However, in fl_set_erspan_opt() it initializes
-all bits of erspan_opt and its mask to 1. This inadvertently requires
-packets to match not only the (version, dir, hwid) fields but also the
-other fields that are unexpectedly set to 1.
+The drvdata is not available in release. Let's just use container_of()
+to get the uml_net instance. Otherwise, removing a network device will
+result in a crash:
 
-This patch resolves the issue by ensuring that only the (version, dir,
-hwid) fields are configured in fl_set_erspan_opt(), leaving the other
-fields to 0 in erspan_opt.
+RIP: 0033:net_device_release+0x10/0x6f
+RSP: 00000000e20c7c40  EFLAGS: 00010206
+RAX: 000000006002e4e7 RBX: 00000000600f1baf RCX: 00000000624074e0
+RDX: 0000000062778000 RSI: 0000000060551c80 RDI: 00000000627af028
+RBP: 00000000e20c7c50 R08: 00000000603ad594 R09: 00000000e20c7b70
+R10: 000000000000135a R11: 00000000603ad422 R12: 0000000000000000
+R13: 0000000062c7af00 R14: 0000000062406d60 R15: 00000000627700b6
+Kernel panic - not syncing: Segfault with no mm
+CPU: 0 UID: 0 PID: 29 Comm: kworker/0:2 Not tainted 6.12.0-rc6-g59b723cd2adb #1
+Workqueue: events mc_work_proc
+Stack:
+ 627af028 62c7af00 e20c7c80 60276fcd
+ 62778000 603f5820 627af028 00000000
+ e20c7cb0 603a2bcd 627af000 62770010
+Call Trace:
+ [<60276fcd>] device_release+0x70/0xba
+ [<603a2bcd>] kobject_put+0xba/0xe7
+ [<60277265>] put_device+0x19/0x1c
+ [<60281266>] platform_device_put+0x26/0x29
+ [<60281e5f>] platform_device_unregister+0x2c/0x2e
+ [<6002ec9c>] net_remove+0x63/0x69
+ [<60031316>] ? mconsole_reply+0x0/0x50
+ [<600310c8>] mconsole_remove+0x160/0x1cc
+ [<60087d40>] ? __remove_hrtimer+0x38/0x74
+ [<60087ff8>] ? hrtimer_try_to_cancel+0x8c/0x98
+ [<6006b3cf>] ? dl_server_stop+0x3f/0x48
+ [<6006b390>] ? dl_server_stop+0x0/0x48
+ [<600672e8>] ? dequeue_entities+0x327/0x390
+ [<60038fa6>] ? um_set_signals+0x0/0x43
+ [<6003070c>] mc_work_proc+0x77/0x91
+ [<60057664>] process_scheduled_works+0x1b3/0x2dd
+ [<60055f32>] ? assign_work+0x0/0x58
+ [<60057f0a>] worker_thread+0x1e9/0x293
+ [<6005406f>] ? set_pf_worker+0x0/0x64
+ [<6005d65d>] ? arch_local_irq_save+0x0/0x2d
+ [<6005d748>] ? kthread_exit+0x0/0x3a
+ [<60057d21>] ? worker_thread+0x0/0x293
+ [<6005dbf1>] kthread+0x126/0x12b
+ [<600219c5>] new_thread_handler+0x85/0xb6
 
-Fixes: 79b1011cb33d ("net: sched: allow flower to match erspan options")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://patch.msgid.link/20241104163203.435515-4-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_flower.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/um/drivers/net_kern.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index dcf21d99f132c..10d3dde238c6c 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -1218,7 +1218,6 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 	int err;
+--- a/arch/um/drivers/net_kern.c
++++ b/arch/um/drivers/net_kern.c
+@@ -347,7 +347,7 @@ static struct platform_driver uml_net_dr
  
- 	md = (struct erspan_metadata *)&key->enc_opts.data[key->enc_opts.len];
--	memset(md, 0xff, sizeof(*md));
- 	md->version = 1;
+ static void net_device_release(struct device *dev)
+ {
+-	struct uml_net *device = dev_get_drvdata(dev);
++	struct uml_net *device = container_of(dev, struct uml_net, pdev.dev);
+ 	struct net_device *netdev = device->dev;
+ 	struct uml_net_private *lp = netdev_priv(netdev);
  
- 	if (!depth)
-@@ -1247,9 +1246,9 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 			NL_SET_ERR_MSG(extack, "Missing tunnel key erspan option index");
- 			return -EINVAL;
- 		}
-+		memset(&md->u.index, 0xff, sizeof(md->u.index));
- 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX]) {
- 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX];
--			memset(&md->u, 0x00, sizeof(md->u));
- 			md->u.index = nla_get_be32(nla);
- 		}
- 	} else if (md->version == 2) {
-@@ -1258,10 +1257,12 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 			NL_SET_ERR_MSG(extack, "Missing tunnel key erspan option dir or hwid");
- 			return -EINVAL;
- 		}
-+		md->u.md2.dir = 1;
- 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_DIR]) {
- 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_DIR];
- 			md->u.md2.dir = nla_get_u8(nla);
- 		}
-+		set_hwid(&md->u.md2, 0xff);
- 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_HWID]) {
- 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_HWID];
- 			set_hwid(&md->u.md2, nla_get_u8(nla));
--- 
-2.43.0
-
 
 
 
