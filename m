@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B259EF421
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092A69EF138
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6A4B17ED76
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F124189E049
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6095023026B;
-	Thu, 12 Dec 2024 16:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59BF24037A;
+	Thu, 12 Dec 2024 16:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StVjnA9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avQy6AEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D41422CBC9;
-	Thu, 12 Dec 2024 16:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C66324036B;
+	Thu, 12 Dec 2024 16:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022271; cv=none; b=atvTmjAsiFFJ/lRgucJKZA5yf2g+ap5dAhFwSttfzzEgbS1rpK+OMdFnqwJtkCQwMxOsjNSiBs/e9mk6/7F6+Dj+mAO5+DLGrI49Tp+SH77a0xBhoiCSYJp6OWf4DSqnlbnMYvzHAMMe635x2cp/lJn2/SSuzS7rJ23TBHQGidY=
+	t=1734020353; cv=none; b=u52134jdJWGL+bsb5hu9q09vBbPJiiii7ouyzb7vDXMbQ99Hf6W7czDJqml9hqW2Rz4bty8484QMvcpYlikNsIsXIfD+Ehz16D6hlEuH640zXnYOUrgaVnwSpDtn42dy1x6vDYUl3kaOnqwtq80Tn6N5RlLJeatO66qs5gpY+k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022271; c=relaxed/simple;
-	bh=bQKI6urU6wmcik/flpzq8LGmisR87l/sT/UUuodbhbs=;
+	s=arc-20240116; t=1734020353; c=relaxed/simple;
+	bh=0g29gXdjvGu1ia6J1arjaipSfOAPjG1WZtNlkvK2lYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBjzNqrjOnNj5RwXsxQm3zK+//Lqk8Z3O7Q6adyf0ruXo1WuQSJ6v7PgtCngz9KyPtESdL1wRiKmfZfrtvQtafhwGmEqdzvNZ3ZyXFYNqF2GhcaxqjYGzFM/6Uy460sROuLgf/T8qO0z+GtnOzz9F4ig/SDoeCUoQTxT/5SWEVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StVjnA9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3341AC4CECE;
-	Thu, 12 Dec 2024 16:51:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DmF3kIc0ITPzSpRPATGxmfRMbkGhcW+oI8WSgMDmTr6Ot+H72w/0BgThrb3+fYt4DrS5jOwAeEZ4yAI/rcYZ8K3HuLtRe0zK+W3NUBHYO6WfJ4Q4Vsk9D2pFWuoEXxOWPAzKTD3w2r+AwWN1IUxsxdUznrPBluvqO6s/8ZSUnjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avQy6AEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06800C4CEE5;
+	Thu, 12 Dec 2024 16:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022270;
-	bh=bQKI6urU6wmcik/flpzq8LGmisR87l/sT/UUuodbhbs=;
+	s=korg; t=1734020352;
+	bh=0g29gXdjvGu1ia6J1arjaipSfOAPjG1WZtNlkvK2lYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StVjnA9pg+XaIRnV8+NMSaxYaST3oPGsF3Azc9v6/CK9UgpWS3n+TefhCKMhcDN62
-	 mvlIflCunSCgWO9JK4zqiGECNf0pMgbwW5Hop4cy1ks6F8CH1uTrLMkVHEntHyd0+L
-	 /a/eF1wlTKAup8dxwrqbTmd4VSLA8vfqonRBsQG8=
+	b=avQy6AEKXRmIurMEhlKX8/P+qo3GVQdx2gHtMEcmuzIkTR4gChtHad7GPst/BZd3k
+	 wsijoJlAf+EDvg/OfTzy/MBprOXmeOFrGhibMMLEpzm0QJ1NVNlLTDTqaVyJt7w3dT
+	 ele8/ai3G4bFk2mClBk8zollaXvGwUD2AQU7orhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 195/565] bpf, sockmap: Several fixes to bpf_msg_pop_data
+Subject: [PATCH 6.1 445/772] modpost: remove incorrect code in do_eisa_entry()
 Date: Thu, 12 Dec 2024 15:56:30 +0100
-Message-ID: <20241212144319.192295337@linuxfoundation.org>
+Message-ID: <20241212144408.311566379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +59,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 5d609ba262475db450ba69b8e8a557bd768ac07a ]
+[ Upstream commit 0c3e091319e4748cb36ac9a50848903dc6f54054 ]
 
-Several fixes to bpf_msg_pop_data,
-1. In sk_msg_shift_left, we should put_page
-2. if (len == 0), return early is better
-3. pop the entire sk_msg (last == msg->sg.size) should be supported
-4. Fix for the value of variable "a"
-5. In sk_msg_shift_left, after shifting, i has already pointed to the next
-element. Addtional sk_msg_iter_var_next may result in BUG.
+This function contains multiple bugs after the following commits:
 
-Fixes: 7246d8ed4dcc ("bpf: helper to pop data from messages")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-8-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+ - ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+ - 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+
+Commit ac551828993e inserted the following code to do_eisa_entry():
+
+    else
+            strcat(alias, "*");
+
+This is incorrect because 'alias' is uninitialized. If it is not
+NULL-terminated, strcat() could cause a buffer overrun.
+
+Even if 'alias' happens to be zero-filled, it would output:
+
+    MODULE_ALIAS("*");
+
+This would match anything. As a result, the module could be loaded by
+any unrelated uevent from an unrelated subsystem.
+
+Commit ac551828993e introduced another bug.            
+
+Prior to that commit, the conditional check was:
+
+    if (eisa->sig[0])
+
+This checked if the first character of eisa_device_id::sig was not '\0'.
+
+However, commit ac551828993e changed it as follows:
+
+    if (sig[0])
+
+sig[0] is NOT the first character of the eisa_device_id::sig. The
+type of 'sig' is 'char (*)[8]', meaning that the type of 'sig[0]' is
+'char [8]' instead of 'char'. 'sig[0]' and 'symval' refer to the same
+address, which never becomes NULL.
+
+The correct conversion would have been:
+
+    if ((*sig)[0])
+
+However, this if-conditional was meaningless because the earlier change
+in commit ac551828993e was incorrect.
+
+This commit removes the entire incorrect code, which should never have
+been executed.
+
+Fixes: ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+Fixes: 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ scripts/mod/file2alias.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index c5d15fceee6da..8b51f57aaa251 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2883,8 +2883,10 @@ static const struct bpf_func_proto bpf_msg_push_data_proto = {
- 
- static void sk_msg_shift_left(struct sk_msg *msg, int i)
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 39e2c8883ddd4..c08beab14a2e0 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -808,10 +808,7 @@ static int do_eisa_entry(const char *filename, void *symval,
+ 		char *alias)
  {
-+	struct scatterlist *sge = sk_msg_elem(msg, i);
- 	int prev;
+ 	DEF_FIELD_ADDR(symval, eisa_device_id, sig);
+-	if (sig[0])
+-		sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+-	else
+-		strcat(alias, "*");
++	sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+ 	return 1;
+ }
  
-+	put_page(sg_page(sge));
- 	do {
- 		prev = i;
- 		sk_msg_iter_var_next(i);
-@@ -2921,6 +2923,9 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	if (unlikely(flags))
- 		return -EINVAL;
- 
-+	if (unlikely(len == 0))
-+		return 0;
-+
- 	/* First find the starting scatterlist element */
- 	i = msg->sg.start;
- 	do {
-@@ -2933,7 +2938,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	} while (i != msg->sg.end);
- 
- 	/* Bounds checks: start and pop must be inside message */
--	if (start >= offset + l || last >= msg->sg.size)
-+	if (start >= offset + l || last > msg->sg.size)
- 		return -EINVAL;
- 
- 	space = MAX_MSG_FRAGS - sk_msg_elem_used(msg);
-@@ -2962,12 +2967,12 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	 */
- 	if (start != offset) {
- 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
--		int a = start;
-+		int a = start - offset;
- 		int b = sge->length - pop - a;
- 
- 		sk_msg_iter_var_next(i);
- 
--		if (pop < sge->length - a) {
-+		if (b > 0) {
- 			if (space) {
- 				sge->length = a;
- 				sk_msg_shift_right(msg, i);
-@@ -2986,7 +2991,6 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 				if (unlikely(!page))
- 					return -ENOMEM;
- 
--				sge->length = a;
- 				orig = sg_page(sge);
- 				from = sg_virt(sge);
- 				to = page_address(page);
-@@ -2996,7 +3000,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 				put_page(orig);
- 			}
- 			pop = 0;
--		} else if (pop >= sge->length - a) {
-+		} else {
- 			pop -= (sge->length - a);
- 			sge->length = a;
- 		}
-@@ -3030,7 +3034,6 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 			pop -= sge->length;
- 			sk_msg_shift_left(msg, i);
- 		}
--		sk_msg_iter_var_next(i);
- 	}
- 
- 	sk_mem_uncharge(msg->sk, len - pop);
 -- 
 2.43.0
 
