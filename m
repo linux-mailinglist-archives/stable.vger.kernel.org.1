@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F399EF602
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 412B89EF668
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3DF28B74C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9D01764E8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1733222D46;
-	Thu, 12 Dec 2024 17:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B3122A7E2;
+	Thu, 12 Dec 2024 17:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T79U8RAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwgeMowR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB6C21766D;
-	Thu, 12 Dec 2024 17:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBEB2253E0;
+	Thu, 12 Dec 2024 17:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024078; cv=none; b=AAaqwbpHYFQosWYbu1FCqr5UgRp182vMyBOFXL4rVeudV9HMwm7p5smZbEGTrLWDDojhriYIR25eH5AHTlcmuStuberBCtz1RnBVV/zngh94Nmm5Upoti64t2x24cnDaqVTGGXF/tDhb09ex28UPrXiKhoGH+TR3Z3aLfYuchb8=
+	t=1734022850; cv=none; b=J1Yz923YNO9g9FTHgzQlRocO3/LFrWvq2cx0EqJvt62Ng6Bfq3c6IhPPdFm0tLo8uQpD6+0arbpNYzTPHq1K7WAfGCvDVdYmaRDAcFHbGv3daqDp2WyXeXwkOIkWgd8xTRQ5I4jDQBmNE2E/hkturyCdosu8Xe6XtQZIgGHHNNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024078; c=relaxed/simple;
-	bh=m08BxRAvU9PXpUWu0LxhTJWIjBJT2N/6kDTP3d7Rzt0=;
+	s=arc-20240116; t=1734022850; c=relaxed/simple;
+	bh=CVJ8fBMmFb1Y3ORSkw/jd0nCIG83rI9O30oq09VS5eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=luHZOd0iBcIPsp54Z3HuRxcutX9gEpvGNpnbqZ0Eo21jlEC/wHxdSHyDYcN/1w3lGjXGeR1ChNmD+ONK1Q7C++gCTkRqJ8jGBetJ5oRYt+6vI+nAhid7fpx0Q6cQBBoKtWdDjDs1spvm8rsts9gNgmK1n3LWsHd+g3UXPwDrIds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T79U8RAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30430C4CECE;
-	Thu, 12 Dec 2024 17:21:18 +0000 (UTC)
+	 MIME-Version; b=ivIqgw8Nsthr4/PexpwaE/EOYhUdvMI8geewpj61rvq+uhy0ypMoIPeRTqsUIOThmxXobTtIIWpI92UuEdrilbwvtf7FgwOzkz6Ttc1tfIoTgiZYOvFAnekkRw0Te5oHBOrryQ0y9DqMn/8NUfkAPHWOswn2aJRAKldvRI6DY2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwgeMowR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB06BC4CED0;
+	Thu, 12 Dec 2024 17:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024078;
-	bh=m08BxRAvU9PXpUWu0LxhTJWIjBJT2N/6kDTP3d7Rzt0=;
+	s=korg; t=1734022850;
+	bh=CVJ8fBMmFb1Y3ORSkw/jd0nCIG83rI9O30oq09VS5eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T79U8RAywEFOGpXoRnU2jXUFDnmUR/R39Mu0g6GGAChogw4vQxtkvGSw/njLB980c
-	 Ek+yBChhUz7Vuvdo8gL/Rs39bHyYMzpliDuiRICAIpbIeOwbnD/6ruazC40fsdOZwu
-	 1oOSPMQsfoIu4z54c2pzPcgr7KwtEGlgCgfcBpXM=
+	b=UwgeMowRiHeg2wokdDzCAFvtJuJ7raf1R9LVYhsibe37h4vWhHDJHcgKqQs0Bh/hS
+	 Yj5bfOempc7L2FLdbBfrUasNT7mA6AQO58Uev2RRI5v8pvtzZ71x5R+StgjBz5xcqW
+	 6Lf6b1oMl2rvK9VloqAI4N1Ax3CrjM9kG+Q7QYec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 178/459] scsi: qedf: Fix a possible memory leak in qedf_alloc_and_init_sb()
-Date: Thu, 12 Dec 2024 15:58:36 +0100
-Message-ID: <20241212144300.560344077@linuxfoundation.org>
+	Michal Vrastil <michal.vrastil@hidglobal.com>,
+	Elson Roy Serrao <quic_eserrao@quicinc.com>,
+	Peter korsgaard <peter@korsgaard.com>
+Subject: [PATCH 5.15 322/565] Revert "usb: gadget: composite: fix OS descriptors w_value logic"
+Date: Thu, 12 Dec 2024 15:58:37 +0100
+Message-ID: <20241212144324.329399368@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Michal Vrastil <michal.vrastil@hidglobal.com>
 
-[ Upstream commit c62c30429db3eb4ced35c7fcf6f04a61ce3a01bb ]
+commit 51cdd69d6a857f527d6d0697a2e1f0fa8bca1005 upstream.
 
-Hook "qed_ops->common->sb_init = qed_sb_init" does not release the DMA
-memory sb_virt when it fails. Add dma_free_coherent() to free it. This
-is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
+This reverts commit ec6ce7075ef879b91a8710829016005dc8170f17.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/r/20241026125711.484-2-thunder.leizhen@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix installation of WinUSB driver using OS descriptors. Without the
+fix the drivers are not installed correctly and the property
+'DeviceInterfaceGUID' is missing on host side.
+
+The original change was based on the assumption that the interface
+number is in the high byte of wValue but it is in the low byte,
+instead. Unfortunately, the fix is based on MS documentation which is
+also wrong.
+
+The actual USB request for OS descriptors (using USB analyzer) looks
+like:
+
+Offset  0   1   2   3   4   5   6   7
+0x000   C1  A1  02  00  05  00  0A  00
+
+C1: bmRequestType (device to host, vendor, interface)
+A1: nas magic number
+0002: wValue (2: nas interface)
+0005: wIndex (5: get extended property i.e. nas interface GUID)
+008E: wLength (142)
+
+The fix was tested on Windows 10 and Windows 11.
+
+Cc: stable@vger.kernel.org
+Fixes: ec6ce7075ef8 ("usb: gadget: composite: fix OS descriptors w_value logic")
+Signed-off-by: Michal Vrastil <michal.vrastil@hidglobal.com>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Acked-by: Peter korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/20241113235433.20244-1-quic_eserrao@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/composite.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index 2536da96130ea..912845415d9b4 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -2725,6 +2725,7 @@ static int qedf_alloc_and_init_sb(struct qedf_ctx *qedf,
- 	    sb_id, QED_SB_TYPE_STORAGE);
- 
- 	if (ret) {
-+		dma_free_coherent(&qedf->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
- 		QEDF_ERR(&qedf->dbg_ctx,
- 			 "Status block initialization failed (0x%x) for id = %d.\n",
- 			 ret, sb_id);
--- 
-2.43.0
-
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -2017,8 +2017,20 @@ unknown:
+ 			memset(buf, 0, w_length);
+ 			buf[5] = 0x01;
+ 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
++			/*
++			 * The Microsoft CompatID OS Descriptor Spec(w_index = 0x4) and
++			 * Extended Prop OS Desc Spec(w_index = 0x5) state that the
++			 * HighByte of wValue is the InterfaceNumber and the LowByte is
++			 * the PageNumber. This high/low byte ordering is incorrectly
++			 * documented in the Spec. USB analyzer output on the below
++			 * request packets show the high/low byte inverted i.e LowByte
++			 * is the InterfaceNumber and the HighByte is the PageNumber.
++			 * Since we dont support >64KB CompatID/ExtendedProp descriptors,
++			 * PageNumber is set to 0. Hence verify that the HighByte is 0
++			 * for below two cases.
++			 */
+ 			case USB_RECIP_DEVICE:
+-				if (w_index != 0x4 || (w_value & 0xff))
++				if (w_index != 0x4 || (w_value >> 8))
+ 					break;
+ 				buf[6] = w_index;
+ 				/* Number of ext compat interfaces */
+@@ -2034,9 +2046,9 @@ unknown:
+ 				}
+ 				break;
+ 			case USB_RECIP_INTERFACE:
+-				if (w_index != 0x5 || (w_value & 0xff))
++				if (w_index != 0x5 || (w_value >> 8))
+ 					break;
+-				interface = w_value >> 8;
++				interface = w_value & 0xFF;
+ 				if (interface >= MAX_CONFIG_INTERFACES ||
+ 				    !os_desc_cfg->interface[interface])
+ 					break;
 
 
 
