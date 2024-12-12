@@ -1,130 +1,84 @@
-Return-Path: <stable+bounces-100867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2BE9EE29B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 10:20:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD019EE2D0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 10:25:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5240A188B2D0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:20:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65B0A162181
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026B121018D;
-	Thu, 12 Dec 2024 09:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909B221146D;
+	Thu, 12 Dec 2024 09:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="OGAWSXJP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pmnv7M3G"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F6620E30D;
-	Thu, 12 Dec 2024 09:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCF020E6EE;
+	Thu, 12 Dec 2024 09:23:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733995232; cv=none; b=M2dvEN1kFPEUpU1WJwqERJ+gLvqwpfOt7PLQHI8CjR8PM0WZ1ucS+TxEyiHz/GxUCcEOgv0y7+B3jZns0KEOvFdVKGDZEWoXsDIjPjKBeU+OoZvMxLbHPapMXU3gWFCe7AIqaJVNkbjlPfN731wIVhx9aC4lTWpdCTrT6wESGxY=
+	t=1733995401; cv=none; b=K8rycriPhiTwK0hhEqI8iWI3+/FpAiERDoSiK5hsOWz4nvf7uLF0Pxo5BkdCG7Zle7Z563pmEFTfzBLHKi8R1qyUiAMfNZyAB9MaAidvgSaHjH3O+NZ82/fEvC3zYIohPis1uoelIHdDJvmK0Df9DwcZLbsm6bfnolz029R0P1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733995232; c=relaxed/simple;
-	bh=Hy4xVd0q8VZBex6lb4wolGlM9Q1VHgdGjYRrcksox3U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=aYdOrb+6VY0ogeSZr1LvTmRJO4arM4JpQnXMQMurDf8ERCEtQOZHOPk6sUjWDb+SZVXWKnTsbEtdmNYob/5dHE1uQeUG6h0C+NHoLuCTdRVjoSiF+bYykcLleRwmKdYqBB0Yu3XP+yPIgKTsRjCqJvQ83twtmlc+Y5S/HLNcaLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=OGAWSXJP; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BC6EtqI008813;
-	Thu, 12 Dec 2024 10:20:15 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	Xjd7vWQukySXVtZz30aOKRMNU15a6ozHZs4d8l17K7I=; b=OGAWSXJP64RXpjkq
-	CJUTm0xnEcPNROw7VtGW6eqnR6Z2EclZArx6WnZ0DYoKy19408Y6QqagmeZ5/gDo
-	U9HK3LfFqtA7dW+MIRqTCxyZ6kE65bfdZ+LZHv0c6xg43bOJGrz6gKkBpcfrtFmh
-	ekFOuSmQ9eKyStpwNfrFUA1jVUxikQcTJZ1sWsXrgPqxhiB9qlaEr+Cl22Al1CjH
-	x1eBil9s460xFNG8VpS8EPSvNlwA4O27Qu2itIph5AKe/uufoi6pHt3BBDcPtp3t
-	wnrkLGFLbIrxJXrq1FkAkpORx9P+zJDgLGw86PAGn+0ao75WC1FcbxcUVM5c7RZb
-	RDHTBw==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 43ffwc2m04-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Dec 2024 10:20:15 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 28D9240050;
-	Thu, 12 Dec 2024 10:18:58 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 73FF625025B;
-	Thu, 12 Dec 2024 10:18:03 +0100 (CET)
-Received: from localhost (10.129.178.65) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Thu, 12 Dec
- 2024 10:18:03 +0100
-From: Alain Volmat <alain.volmat@foss.st.com>
-Date: Thu, 12 Dec 2024 10:17:25 +0100
-Subject: [PATCH v4 01/15] media: stm32: dcmipp: correct
- dma_set_mask_and_coherent mask value
+	s=arc-20240116; t=1733995401; c=relaxed/simple;
+	bh=g/1CaSp5CRV7wrXGjzqPiCWUX7Xl4YjfX/R9byJjNyw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=umxzw3XaH0+g9PqREVzypQMnQoIGYo7/Y8nSJe1VKVWlJ04iyg3p4+4d58KtRDO3mEi0K1vM4mF0jcmUk5tr0QXIFj/lgtphtXORlJ4WBQxu9QfMhzm23NDeECTgTRO/n7NkMm3DefNrwj579/NID1Rx9QQ7ciNAzueGyKKontM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pmnv7M3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B93AC4CECE;
+	Thu, 12 Dec 2024 09:23:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733995399;
+	bh=g/1CaSp5CRV7wrXGjzqPiCWUX7Xl4YjfX/R9byJjNyw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=Pmnv7M3GGAwXlXEZK1nTdpIliamYzNCWj6fVD1WqrxRNUc00Tu+JGI6jaPnex2oxw
+	 TVf+v6aP0RgNiQBa3HwOVsxSQ/cSPtR50yAgglibMAi8c8xH0/HV1Dl8vpAu0LOf5e
+	 jvVUNVksIvlByax+iUri3ZQA9dNcNvlBbnESvZ26J2wkGnCCCcQJajGofiP8eXu6cF
+	 I+hQFcuPHyPxzDOAb1zTjSBEfAsqsrYT8PLTSQ1Rk0WEerTtBXIxrOs/gY3CaAxlPP
+	 /t7CoKlHRduXcDSEmfeKG89boeEUYVH4s64Ymw675OG+arKzBqxENQ5EN1t+qMA+G3
+	 AcaQBWegD9iGg==
+Date: Thu, 12 Dec 2024 10:23:16 +0100 (CET)
+From: Jiri Kosina <jikos@kernel.org>
+To: =?ISO-8859-15?Q?Ulrich_M=FCller?= <ulm@gentoo.org>
+cc: WangYuli <wangyuli@uniontech.com>, helugang@uniontech.com, 
+    regressions@lists.linux.dev, stable@vger.kernel.org, 
+    regressions@leemhuis.info, bentiss@kernel.org, jeffbai@aosc.io, 
+    zhanjun@uniontech.com, guanwentao@uniontech.com, 
+    Dmitry Savin <envelsavinds@gmail.com>
+Subject: Re: "[REGRESSION] ThinkPad L15 Gen 4 touchpad no longer works"
+In-Reply-To: <ucyhxs1oh@gentoo.org>
+Message-ID: <ops2o03r-ss88-nr02-qqq1-09p50s93sr8p@xreary.bet>
+References: <uikt4wwpw@gentoo.org> <7DAFE6DAA470985D+20241210030448.83908-1-wangyuli@uniontech.com> <687qoq24-o1p4-519q-1r8p-s59680noorq3@xreary.bet> <ucyhxs1oh@gentoo.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20241212-csi_dcmipp_mp25-v4-1-fbeb55a05ed7@foss.st.com>
-References: <20241212-csi_dcmipp_mp25-v4-0-fbeb55a05ed7@foss.st.com>
-In-Reply-To: <20241212-csi_dcmipp_mp25-v4-0-fbeb55a05ed7@foss.st.com>
-To: Hugues Fruchet <hugues.fruchet@foss.st.com>,
-        Mauro Carvalho Chehab
-	<mchehab@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre
- Torgue <alexandre.torgue@foss.st.com>,
-        Sakari Ailus
-	<sakari.ailus@linux.intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof
- Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Philipp
- Zabel <p.zabel@pengutronix.de>,
-        Hans Verkuil <hverkuil@xs4all.nl>, Hans
- Verkuil <hverkuil@xs4all.nl>
-CC: <linux-media@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Alain Volmat <alain.volmat@foss.st.com>,
-        <stable@vger.kernel.org>
-X-Mailer: b4 0.14.1
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-Correct the call to dma_set_mask_and_coherent which should be set
-to DMA_BIT_MASK(32).
+On Thu, 12 Dec 2024, Ulrich M=C3=BCller wrote:
 
-Fixes: 28e0f3772296 ("media: stm32-dcmipp: STM32 DCMIPP camera interface driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
----
- drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> After the revert, there are now duplicate entries in hid-multitouch.c
+> lines 2082-2048 and 2085-2087 ("Goodix GT7868Q devices").
+>=20
+> Maybe this should be fixed in a follow-up commit? It looks like a
+> copy/paste error in commit c8000deb68365b461b324d68c7ea89d730f0bb85.
+> CCing its author.
 
-diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
-index 7edd49bfe7e5..7f9fa79402df 100644
---- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-bytecap.c
-@@ -887,7 +887,7 @@ struct dcmipp_ent_device *dcmipp_bytecap_ent_init(struct device *dev,
- 	q->dev = dev;
- 
- 	/* DCMIPP requires 16 bytes aligned buffers */
--	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32) & ~0x0f);
-+	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
- 	if (ret) {
- 		dev_err(dev, "Failed to set DMA mask\n");
- 		goto err_mutex_destroy;
+Yeah, WangYuli also noticed that earlier in this thread. Should be fixed=20
+now by [1].
 
--- 
-2.34.1
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git/commit/?h=
+=3Dfor-6.13/upstream-fixes&id=3D8ade5e05bd094485ce370fad66a6a3fb6f50bfbc
+
+--=20
+Jiri Kosina
+SUSE Labs
 
 
