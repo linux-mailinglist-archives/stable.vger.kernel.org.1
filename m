@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-103709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00259EF91D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ECCC9EF8D4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 725BC189CFD2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:43:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E96428B1B0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30922248B8;
-	Thu, 12 Dec 2024 17:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFD2222D7C;
+	Thu, 12 Dec 2024 17:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijd9DpZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veZJRNYb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FA7222D7C;
-	Thu, 12 Dec 2024 17:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CA2222D67;
+	Thu, 12 Dec 2024 17:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025370; cv=none; b=ArCpG5GJZ5b9qfCS3L1Wyru5d3Nh6MGCNmfFoENV9k4smJdZ6Mls98pEmgl01w5+bCTdrB9mqV6za5CHw3SyP6xLwcNJpvFR32D1j8MvuMdwFGT9sDRfYhQgLhLFaauJP9hr/botICUvHl4yAdHqrSeJv0o0Mpi1ELEXiyPVloc=
+	t=1734025405; cv=none; b=DGWKALPDmKkfkr+QqHJ8A0bf6Tz/mPJ5NIpm0HsrKaZL+fYVompYL1FEvND8RswOKddCYW+928Ww+CAo449bLxfcv7u5ov7dPlINIGRR/DsLRne63WEyR5hte6juVQe4glkNZahuLCTXe170nffa1FoKyr9xX/5zLVX3KXXu7Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025370; c=relaxed/simple;
-	bh=5BPWmb3fKRByaaRgCUKenxInYLPv0LBnGUy886yJe1U=;
+	s=arc-20240116; t=1734025405; c=relaxed/simple;
+	bh=mGxeKq6U6L7heB7rVdeMDiSNCxPr/x5R7Xbn7kL1C6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PAiLUx8awOBCd/gaj5/TVq7L18Z1Bh31LHff5Dn1nEmKijt3iNw/9GY+0YsRqY+JMUTTR6l85WEggQ860je5RYKgWwsK7Dn7k43cGipG7amrDTTO3IPK1jQayeWDHslSaCJg/allvy/e5ym+m3iwW1RPaumYiVMTaMtuT6UQOKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijd9DpZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7F2C4CEF9;
-	Thu, 12 Dec 2024 17:42:49 +0000 (UTC)
+	 MIME-Version; b=sMzF/fJnNI0VBKvXy9U6/+RE9RcJ3ruKpRNrfvQvxYl7YprNalsEtPr5/3DEicDgupPSZJ8Up5PxfDdJ++sTa6I+Ww+fW/VoIS5ww65EZ1tmrmNJoNIkzczJZYqbzFDp2pVftXEdZsv62YbMzT7duzLzYLQ4sZZx9NWreSbiTk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veZJRNYb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E354C4CED0;
+	Thu, 12 Dec 2024 17:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025370;
-	bh=5BPWmb3fKRByaaRgCUKenxInYLPv0LBnGUy886yJe1U=;
+	s=korg; t=1734025404;
+	bh=mGxeKq6U6L7heB7rVdeMDiSNCxPr/x5R7Xbn7kL1C6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijd9DpZsEeMIuyezk80cmtkKR0+MSmptcMDwh3To1rS4Cu29rfpUg9y3A6MMh9NXK
-	 TBVmxNnMDc6dTWxuqeyDKPZ9G1idW2VYy/+T8+WiysYk8KS9sw7xkqTmCDgiOe78E0
-	 YyNharCp4ziJOChsn/SLsqIjoW/JrnD5omn1/+l4=
+	b=veZJRNYbv35lYJPzSUNQoUVyxziTecY9xCoeH+Fv5ZRZuZNq3E7DjL7txmUlToyDf
+	 eWux5VlM5GS7oEZOSgC+LJrtVmOGbXWtpxWoqclQ8Ce/wYupjRR9QdY6eFdHQiADoY
+	 lbGyemvDjvUGgTQlPySLoQ7txuzvZGM5h20ElWe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chao liu <liuzgyid@outlook.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 140/321] apparmor: fix Do simple duplicate message elimination
-Date: Thu, 12 Dec 2024 16:00:58 +0100
-Message-ID: <20241212144235.510860534@linuxfoundation.org>
+	Vitalii Mordan <mordan@ispras.ru>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.4 141/321] usb: ehci-spear: fix call balance of sehci clk handling routines
+Date: Thu, 12 Dec 2024 16:00:59 +0100
+Message-ID: <20241212144235.549724338@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -66,36 +65,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: chao liu <liuzgyid@outlook.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit 9b897132424fe76bf6c61f22f9cf12af7f1d1e6a ]
+commit 40c974826734836402abfd44efbf04f63a2cc1c1 upstream.
 
-Multiple profiles shared 'ent->caps', so some logs missed.
+If the clock sehci->clk was not enabled in spear_ehci_hcd_drv_probe,
+it should not be disabled in any path.
 
-Fixes: 0ed3b28ab8bf ("AppArmor: mediation of non file objects")
-Signed-off-by: chao liu <liuzgyid@outlook.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Conversely, if it was enabled in spear_ehci_hcd_drv_probe, it must be disabled
+in all error paths to ensure proper cleanup.
+
+Found by Linux Verification Center (linuxtesting.org) with Klever.
+
+Fixes: 7675d6ba436f ("USB: EHCI: make ehci-spear a separate driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20241114230310.432213-1-mordan@ispras.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/capability.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/ehci-spear.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/security/apparmor/capability.c b/security/apparmor/capability.c
-index deccea8654ad8..1b13fd89d5a9f 100644
---- a/security/apparmor/capability.c
-+++ b/security/apparmor/capability.c
-@@ -94,6 +94,8 @@ static int audit_caps(struct common_audit_data *sa, struct aa_profile *profile,
- 		return error;
- 	} else {
- 		aa_put_profile(ent->profile);
-+		if (profile != ent->profile)
-+			cap_clear(ent->caps);
- 		ent->profile = aa_get_profile(profile);
- 		cap_raise(ent->caps, cap);
- 	}
--- 
-2.43.0
-
+--- a/drivers/usb/host/ehci-spear.c
++++ b/drivers/usb/host/ehci-spear.c
+@@ -110,7 +110,9 @@ static int spear_ehci_hcd_drv_probe(stru
+ 	/* registers start at offset 0x0 */
+ 	hcd_to_ehci(hcd)->caps = hcd->regs;
+ 
+-	clk_prepare_enable(sehci->clk);
++	retval = clk_prepare_enable(sehci->clk);
++	if (retval)
++		goto err_put_hcd;
+ 	retval = usb_add_hcd(hcd, irq, IRQF_SHARED);
+ 	if (retval)
+ 		goto err_stop_ehci;
+@@ -135,8 +137,7 @@ static int spear_ehci_hcd_drv_remove(str
+ 
+ 	usb_remove_hcd(hcd);
+ 
+-	if (sehci->clk)
+-		clk_disable_unprepare(sehci->clk);
++	clk_disable_unprepare(sehci->clk);
+ 	usb_put_hcd(hcd);
+ 
+ 	return 0;
 
 
 
