@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7112F9EF845
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 563E89EF8D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5291B17BDA1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C5E328D332
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F77215710;
-	Thu, 12 Dec 2024 17:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE022223E89;
+	Thu, 12 Dec 2024 17:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulqLbT0h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmYEUjy+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906E0213E6F;
-	Thu, 12 Dec 2024 17:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0AF223E77;
+	Thu, 12 Dec 2024 17:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024611; cv=none; b=EMLq6k1TxkP9Lc0DWYXVBynbJHrNiVQcgQqgirZgKKaFi8j775pkf0Ggn2ugMnfsLm2ChBpL5XlutkXy4OnPC2WP3JF3H9OaXY7USl3KbFdjItNFSrgCHkODRiHUIwezl7DZmxpkzkG/W9k7kAJxheMq6DbB1cWGZa/2IHNz2Nc=
+	t=1734025431; cv=none; b=Vla5h5EBeCh4kCdcp2n6qf0Olf4WXooV2LdFkDA0XfnHJ1LeZrc5enQCOy1IeynENBvkYzF9DtmQ8Ni3Hnyt7aajuPBJViagqjrH2AG0Hw6jJKUscXXdR/qqNecreSrBO0+SxhID3zsTI1Mnjr20FIIIbA32lLTUDBTHxK7kR7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024611; c=relaxed/simple;
-	bh=patnt3JB/x3iWzA+1QLzOn7w6QV/Qzt12K1OYvQznBs=;
+	s=arc-20240116; t=1734025431; c=relaxed/simple;
+	bh=eq2E/Vps1O0CL0pyDU54obhV6Z3Z4gUreU3y+oJiUs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmi8KHdLC+Qq3204m2zl18tbdjXBGsYjavuSe3AQ9ZzLeVZq/uu715IJndy6JVJpWpHfnjYgEmBzrrRXjg1oQvgR5z+cIh5rqeTCWYz2u3l3ER/ct8tCukNLCv0YI8TOMSuCHPqmyAbo5HgTjKVIF8YkAOYaa9kwRxpFKzN1fJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulqLbT0h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFB4C4CECE;
-	Thu, 12 Dec 2024 17:30:10 +0000 (UTC)
+	 MIME-Version; b=AlSRIQT3Jq6ZHzjCzygL/uY/iy5PTJtXaTuc9+bO93jY0YNCTkLk2cugnH1WVRRk2H5GbO40tkcIHGN0sEi4uibWiPTWLm/PNcuDFjC9koggyQUI+FlLG9k6a9NisoW/CvO0WfWUAC06+UPxjKJvHOmV5xWZ6Oc/l6AH/2ScecQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmYEUjy+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D124C4CECE;
+	Thu, 12 Dec 2024 17:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024611;
-	bh=patnt3JB/x3iWzA+1QLzOn7w6QV/Qzt12K1OYvQznBs=;
+	s=korg; t=1734025431;
+	bh=eq2E/Vps1O0CL0pyDU54obhV6Z3Z4gUreU3y+oJiUs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulqLbT0hBci21QyIojvqrwmYJ4RIyzYnR3jScoCCXrss14L7XBN3BWsg2d6ZjwTBD
-	 FluaqM0UbW4ZIw5Ya/Xk+hPPkPS5aVU6U1fhtJ5BQISCjrHHbsGqXBQHnpPTZVU2Zp
-	 YEZ8ifn3MehIFhzIJSiX1u7kGttI5jA85A/cdZL4=
+	b=MmYEUjy+4VncxmzmUDJ0zMv3k6ny3IpZvuH3mLWwFGk84JagacY/Z1K9Owf3q54YX
+	 wKQlUnSMddLQaeHWDA9tVNA3S1A2Y/hQYsd2044QNM2Tf84qs8yJdcwUyGdo8/qT+c
+	 Fah+YHA/8Ci8a/7VvLdFdx9JC0FEM4f3ylEQJfz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 346/459] gpio: grgpio: Add NULL check in grgpio_probe
-Date: Thu, 12 Dec 2024 16:01:24 +0100
-Message-ID: <20241212144307.329936250@linuxfoundation.org>
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.4 167/321] HID: wacom: Interpret tilt data from Intuos Pro BT as signed values
+Date: Thu, 12 Dec 2024 16:01:25 +0100
+Message-ID: <20241212144236.574564357@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-[ Upstream commit 050b23d081da0f29474de043e9538c1f7a351b3b ]
+commit 49a397ad24ee5e2c53a59dada2780d7e71bd3f77 upstream.
 
-devm_kasprintf() can return a NULL pointer on failure,but this
-returned value in grgpio_probe is not checked.
-Add NULL check in grgpio_probe, to handle kernel NULL
-pointer dereference error.
+The tilt data contained in the Bluetooth packets of an Intuos Pro are
+supposed to be interpreted as signed values. Simply casting the values
+to type `char` is not guaranteed to work since it is implementation-
+defined whether it is signed or unsigned. At least one user has noticed
+the data being reported incorrectly on their system. To ensure that the
+data is interpreted properly, we specifically cast to `signed char`
+instead.
 
-Cc: stable@vger.kernel.org
-Fixes: 7eb6ce2f2723 ("gpio: Convert to using %pOF instead of full_name")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20241114091822.78199-1-hanchunchao@inspur.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/linuxwacom/input-wacom/issues/445
+Fixes: 4922cd26f03c ("HID: wacom: Support 2nd-gen Intuos Pro's Bluetooth classic interface")
+CC: stable@vger.kernel.org # 4.11+
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-grgpio.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/wacom_wac.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-grgpio.c b/drivers/gpio/gpio-grgpio.c
-index ca3bf8d51d5aa..506891115bb3e 100644
---- a/drivers/gpio/gpio-grgpio.c
-+++ b/drivers/gpio/gpio-grgpio.c
-@@ -363,6 +363,9 @@ static int grgpio_probe(struct platform_device *ofdev)
- 	gc->owner = THIS_MODULE;
- 	gc->to_irq = grgpio_to_irq;
- 	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
-+	if (!gc->label)
-+		return -ENOMEM;
-+
- 	gc->base = -1;
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1394,9 +1394,9 @@ static void wacom_intuos_pro2_bt_pen(str
+ 					rotation -= 1800;
  
- 	err = of_property_read_u32(np, "nbits", &prop);
--- 
-2.43.0
-
+ 				input_report_abs(pen_input, ABS_TILT_X,
+-						 (char)frame[7]);
++						 (signed char)frame[7]);
+ 				input_report_abs(pen_input, ABS_TILT_Y,
+-						 (char)frame[8]);
++						 (signed char)frame[8]);
+ 				input_report_abs(pen_input, ABS_Z, rotation);
+ 				input_report_abs(pen_input, ABS_WHEEL,
+ 						 get_unaligned_le16(&frame[11]));
 
 
 
