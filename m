@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC909EF83D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9A19EF53A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:14:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF31F293ECF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57817189CD45
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D28220A5EE;
-	Thu, 12 Dec 2024 17:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196F0215799;
+	Thu, 12 Dec 2024 17:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XxsBWXR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNSZ5d5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5512210F1;
-	Thu, 12 Dec 2024 17:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C948D53365;
+	Thu, 12 Dec 2024 17:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025235; cv=none; b=lfMZ4RzSZIMYNfbKC0xXk+Heh1aM8FPWQaaKBciy8MzysyWiHkmj9+OkHyge2HFaK91ChHaAndh79SStLNqjOuGNfkyxOqxvo+svLIdnvQ6LMb0+Jd5vYV1p+9qy7ANbDyHytaN2VEbw4JN7TX2Pt9DK85V1X5A9ta5xqxZe0co=
+	t=1734023099; cv=none; b=ASd3vwPPEBTPetYqP8bCmkIAUiihi4IG6dK7+zfIWl0bxw3o+haNy84wl8w6DEdR/oLYzx7Xn6xmtsuabmbVkrjgMTAdkO27se4bqAbQXNEWge1+KcwRi4OAVOTKlxvXgHsalJ2x8fFfLf1qYMRfduL6BUUZ+JaxTcQUFC1cggg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025235; c=relaxed/simple;
-	bh=tDP7HQIBMy9K7z6rTXwN5Ut05L9r5aa5FOK3o6V7YCY=;
+	s=arc-20240116; t=1734023099; c=relaxed/simple;
+	bh=c0f3a0cVZWOygKU0PTReB5rk4iUxNsycTWEkWAHobws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUqi7eF/avrLIug4+4Cf9btxKSj7BV3dXIPt3QSw8qOKmX+t/cqPAg6yEOT1pMGDkW3EvrEGKACxd9WvS7mtxGyPNT5Heh5pUbBG3gIWuYMJSjVOp2uDrI4oKyPL+r8pX7EKkCnZEp1Gh7YZEdjBjRVQlArSyQQLllikyuzzXBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxsBWXR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A563DC4CECE;
-	Thu, 12 Dec 2024 17:40:34 +0000 (UTC)
+	 MIME-Version; b=tSivoUVMx0DfuN919VziHcF7gyiUv3DxUh0nSBa+mKTCmtUhH72NTt60hTBu/9r0WJRlZOran8n8Px9dkLSc6FxnqQJCEoODrTQAtMj987s69mApVbeebrV42e04/peXQqUQ03VEpXOAHZMmkoMoW9kiMSva9bbRXOJ4nFtdNzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNSZ5d5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE23C4CED4;
+	Thu, 12 Dec 2024 17:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025235;
-	bh=tDP7HQIBMy9K7z6rTXwN5Ut05L9r5aa5FOK3o6V7YCY=;
+	s=korg; t=1734023099;
+	bh=c0f3a0cVZWOygKU0PTReB5rk4iUxNsycTWEkWAHobws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XxsBWXR8zyib0F0CTkCKc7zIZDtJ687nJiKOGg8FtXwhKBjRAtp6pieDgcQHsJZ8D
-	 jhVKno+Mf5OoGsYcQYJakZi8LDEvkUDVnaF0OM56qiYHYBB61krCQhNA7sTZVpgMQT
-	 xPWOhTL2LQEC1XHkX9yCkAunC9fs9MYdoK92gWBs=
+	b=uNSZ5d5AZ9CWESGjr1PKD5qA9VWbUREf+XZ1NtcHvXo9gKUJ93oeIxRAEfg/bk7xe
+	 cpnvQF/YTfiafDaOtODbSdlfcXVTdCyVZKnYd2GadAF3eGwCyp2psZOBiDaf7Oamnn
+	 Drd4Ug5HMvuO4Us/VMXy8+U/wqrkUfOUfguIYvfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/321] scsi: qedi: Fix a possible memory leak in qedi_alloc_and_init_sb()
+Subject: [PATCH 5.15 424/565] ethtool: Fix wrong mod state in case of verbose and no_mask bitset
 Date: Thu, 12 Dec 2024 16:00:19 +0100
-Message-ID: <20241212144233.981015442@linuxfoundation.org>
+Message-ID: <20241212144328.430243062@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit 95bbdca4999bc59a72ebab01663d421d6ce5775d ]
+[ Upstream commit 910c4788d6155b2202ec88273376cd7ecdc24f0a ]
 
-Hook "qedi_ops->common->sb_init = qed_sb_init" does not release the DMA
-memory sb_virt when it fails. Add dma_free_coherent() to free it. This
-is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
+A bitset without mask in a _SET request means we want exactly the bits in
+the bitset to be set. This works correctly for compact format but when
+verbose format is parsed, ethnl_update_bitset32_verbose() only sets the
+bits present in the request bitset but does not clear the rest. The commit
+6699170376ab ("ethtool: fix application of verbose no_mask bitset") fixes
+this issue by clearing the whole target bitmap before we start iterating.
+The solution proposed brought an issue with the behavior of the mod
+variable. As the bitset is always cleared the old value will always
+differ to the new value.
 
-Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/r/20241026125711.484-3-thunder.leizhen@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fix it by adding a new function to compare bitmaps and a temporary variable
+which save the state of the old bitmap.
+
+Fixes: 6699170376ab ("ethtool: fix application of verbose no_mask bitset")
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20241202153358.1142095-1-kory.maincent@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ethtool/bitset.c | 48 ++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 44 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index 6b47921202eba..67d2d66d8e731 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -359,6 +359,7 @@ static int qedi_alloc_and_init_sb(struct qedi_ctx *qedi,
- 	ret = qedi_ops->common->sb_init(qedi->cdev, sb_info, sb_virt, sb_phys,
- 				       sb_id, QED_SB_TYPE_STORAGE);
- 	if (ret) {
-+		dma_free_coherent(&qedi->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
- 		QEDI_ERR(&qedi->dbg_ctx,
- 			 "Status block initialization failed for id = %d.\n",
- 			  sb_id);
+diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
+index 0515d6604b3b9..f0883357d12e5 100644
+--- a/net/ethtool/bitset.c
++++ b/net/ethtool/bitset.c
+@@ -425,12 +425,32 @@ static int ethnl_parse_bit(unsigned int *index, bool *val, unsigned int nbits,
+ 	return 0;
+ }
+ 
++/**
++ * ethnl_bitmap32_equal() - Compare two bitmaps
++ * @map1:  first bitmap
++ * @map2:  second bitmap
++ * @nbits: bit size to compare
++ *
++ * Return: true if first @nbits are equal, false if not
++ */
++static bool ethnl_bitmap32_equal(const u32 *map1, const u32 *map2,
++				 unsigned int nbits)
++{
++	if (memcmp(map1, map2, nbits / 32 * sizeof(u32)))
++		return false;
++	if (nbits % 32 == 0)
++		return true;
++	return !((map1[nbits / 32] ^ map2[nbits / 32]) &
++		 ethnl_lower_bits(nbits % 32));
++}
++
+ static int
+ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 			      const struct nlattr *attr, struct nlattr **tb,
+ 			      ethnl_string_array_t names,
+ 			      struct netlink_ext_ack *extack, bool *mod)
+ {
++	u32 *saved_bitmap = NULL;
+ 	struct nlattr *bit_attr;
+ 	bool no_mask;
+ 	int rem;
+@@ -448,8 +468,20 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 	}
+ 
+ 	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
+-	if (no_mask)
+-		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
++	if (no_mask) {
++		unsigned int nwords = DIV_ROUND_UP(nbits, 32);
++		unsigned int nbytes = nwords * sizeof(u32);
++		bool dummy;
++
++		/* The bitmap size is only the size of the map part without
++		 * its mask part.
++		 */
++		saved_bitmap = kcalloc(nwords, sizeof(u32), GFP_KERNEL);
++		if (!saved_bitmap)
++			return -ENOMEM;
++		memcpy(saved_bitmap, bitmap, nbytes);
++		ethnl_bitmap32_clear(bitmap, 0, nbits, &dummy);
++	}
+ 
+ 	nla_for_each_nested(bit_attr, tb[ETHTOOL_A_BITSET_BITS], rem) {
+ 		bool old_val, new_val;
+@@ -458,22 +490,30 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 		if (nla_type(bit_attr) != ETHTOOL_A_BITSET_BITS_BIT) {
+ 			NL_SET_ERR_MSG_ATTR(extack, bit_attr,
+ 					    "only ETHTOOL_A_BITSET_BITS_BIT allowed in ETHTOOL_A_BITSET_BITS");
++			kfree(saved_bitmap);
+ 			return -EINVAL;
+ 		}
+ 		ret = ethnl_parse_bit(&idx, &new_val, nbits, bit_attr, no_mask,
+ 				      names, extack);
+-		if (ret < 0)
++		if (ret < 0) {
++			kfree(saved_bitmap);
+ 			return ret;
++		}
+ 		old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
+ 		if (new_val != old_val) {
+ 			if (new_val)
+ 				bitmap[idx / 32] |= ((u32)1 << (idx % 32));
+ 			else
+ 				bitmap[idx / 32] &= ~((u32)1 << (idx % 32));
+-			*mod = true;
++			if (!no_mask)
++				*mod = true;
+ 		}
+ 	}
+ 
++	if (no_mask && !ethnl_bitmap32_equal(saved_bitmap, bitmap, nbits))
++		*mod = true;
++
++	kfree(saved_bitmap);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
