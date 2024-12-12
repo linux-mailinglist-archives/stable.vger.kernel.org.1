@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4EF9EF564
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E899EF456
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5098228F883
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 065FD17F73A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDBF216E2D;
-	Thu, 12 Dec 2024 17:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FCE23236B;
+	Thu, 12 Dec 2024 16:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpRfPa0m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1KHEmBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D7A1487CD;
-	Thu, 12 Dec 2024 17:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDA5231A45;
+	Thu, 12 Dec 2024 16:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023782; cv=none; b=ktQhKrOgbXSJ+PtTHQFg5lxIDMdZDdKzn2EmGFraMBAvNc0ekCJYzn+XbaKVgakTD95RUsj2kFQq8/90odai/bafVhQV/MrMPeLanEN7WVWZH/1qrOPl+yGmnFUg2PiiApiwZLHLnAGiqPGulrF+2mlgCRnpUAFFxXbyovyc6Ao=
+	t=1734022490; cv=none; b=hXGGC6BQyK4M3wmXBlUZCa+O4OrCoGnA2J0y3F1fm6JE/0RSBoFj7cxWpQct2ZyvET0AuvxmdfBJ8Ex3Jybo9EByLWCoaAPLvCihResKTKa59uQ8TsoGZSl9RjWn3U9lKxtD/C1xNe+GWbdkXVMb0IPEEqGq/1ZrlUf5Sre7avg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023782; c=relaxed/simple;
-	bh=VCeUuX9eoKOUeIzNqzIKVh718WTsy28cCT/u65FXIpY=;
+	s=arc-20240116; t=1734022490; c=relaxed/simple;
+	bh=Niy6NUFoFaX5cvUVKlNiibDHp8zWRP9j21344Gn3/Ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdxHi5RB8K58b8awoxl9XbFbf6wSjNU5WaYuz/MUNFiGO1Q4DIPVR1T2leg+4ZGPvvakW1sLujLQw2EOjNOda61q7EjBLQmI+Fl0QsLtGHzxTSi4EwaftxK2yzzx7VPtEu4lIGj8TzfQxSxbUx0V3YJ99a1kp0VxsNBK8rxK638=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpRfPa0m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF7EC4CECE;
-	Thu, 12 Dec 2024 17:16:21 +0000 (UTC)
+	 MIME-Version; b=E62wPB56mZ5aktWM9CS346xLGJHWXyONYOQoDSkNPHtkvTsmDljd3bWSTaGQgfXV2wWX8k+PXrVITMka4wLBfowzMkMkFHrIcqY8tu4WK+nFFQiU1tvMqucoe407c/NYXkJxtvLDmikTUcMaNV54kqQQjhhpmwtg4eWriLCTCOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1KHEmBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864ECC4CED0;
+	Thu, 12 Dec 2024 16:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023782;
-	bh=VCeUuX9eoKOUeIzNqzIKVh718WTsy28cCT/u65FXIpY=;
+	s=korg; t=1734022490;
+	bh=Niy6NUFoFaX5cvUVKlNiibDHp8zWRP9j21344Gn3/Ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jpRfPa0mgn8/tSrayge8au24h1uCexi0HMw4j0QAKv8Gk6NAA/pCuFOV6EGfxC+44
-	 KMRUybidtJCb3YmTeRxn/wiCzGZd2a9/8C4ZtZmMtT2twC7I3bSPLzlcNCJJbnT6TH
-	 kekUF9HTNJ+qwcQhlN9+KuqS9JmC2HlxJM00/OpM=
+	b=u1KHEmBQ/jLjS4SJgOHJl8w6f+8cW8MZhBT4ngjunrkcZP72cbiVxlIvzkil5jLxs
+	 iWmmon4tJslRTjvW6A0GxoQnsDqzuHxCuunhENmbayJWvVeXGMDFHQgmlbjedK+9Et
+	 Dv3hFicA2L/51jBIbyi6JWgCLaXC79e+ibTARg9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Mark Brown <broonie@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/459] spi: spi-fsl-lpspi: downgrade log level for pio mode
-Date: Thu, 12 Dec 2024 15:56:58 +0100
-Message-ID: <20241212144256.680788296@linuxfoundation.org>
+Subject: [PATCH 5.15 224/565] clk: imx: clk-scu: fix clk enable state save and restore
+Date: Thu, 12 Dec 2024 15:56:59 +0100
+Message-ID: <20241212144320.344428231@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Dong Aisheng <aisheng.dong@nxp.com>
 
-[ Upstream commit d5786c88cacbb859f465e8e93c26154585c1008d ]
+[ Upstream commit e81361f6cf9bf4a1848b0813bc4becb2250870b8 ]
 
-Having no DMA is not an error. The simplest reason is not having it
-configured. SPI will still be usable, so raise a warning instead to
-get still some attention.
+The scu clk_ops only inplements prepare() and unprepare() callback.
+Saving the clock state during suspend by checking clk_hw_is_enabled()
+is not safe as it's possible that some device drivers may only
+disable the clocks without unprepare. Then the state retention will not
+work for such clocks.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20230531072850.739021-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 003c7e01916c ("spi: spi-fsl-lpspi: Use IRQF_NO_AUTOEN flag in request_irq()")
+Fixing it by checking clk_hw_is_prepared() which is more reasonable
+and safe.
+
+Fixes: d0409631f466 ("clk: imx: scu: add suspend/resume support")
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Tested-by: Carlos Song <carlos.song@nxp.com>
+Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+Link: https://lore.kernel.org/r/20241027-imx-clk-v1-v3-4-89152574d1d7@nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
+ drivers/clk/imx/clk-scu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 8ab3105ae8c07..efd2a9b6a9b26 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -909,7 +909,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
- 	if (ret == -EPROBE_DEFER)
- 		goto out_pm_get;
- 	if (ret < 0)
--		dev_err(&pdev->dev, "dma setup error %d, use pio\n", ret);
-+		dev_warn(&pdev->dev, "dma setup error %d, use pio\n", ret);
+diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
+index 89a914a15d62d..7e2b09f7bbc50 100644
+--- a/drivers/clk/imx/clk-scu.c
++++ b/drivers/clk/imx/clk-scu.c
+@@ -577,7 +577,7 @@ static int __maybe_unused imx_clk_scu_suspend(struct device *dev)
+ 		clk->rate = clk_scu_recalc_rate(&clk->hw, 0);
  	else
- 		/*
- 		 * disable LPSPI module IRQ when enable DMA mode successfully,
+ 		clk->rate = clk_hw_get_rate(&clk->hw);
+-	clk->is_enabled = clk_hw_is_enabled(&clk->hw);
++	clk->is_enabled = clk_hw_is_prepared(&clk->hw);
+ 
+ 	if (clk->parent)
+ 		dev_dbg(dev, "save parent %s idx %u\n", clk_hw_get_name(clk->parent),
 -- 
 2.43.0
 
