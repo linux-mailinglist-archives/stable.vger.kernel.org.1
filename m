@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42FD9EEABA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BAE9EF224
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 638612825A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B45B61712FC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69F21537C8;
-	Thu, 12 Dec 2024 15:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D1F226520;
+	Thu, 12 Dec 2024 16:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXyWTz/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Svznatio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A172121577D;
-	Thu, 12 Dec 2024 15:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F67E2F44;
+	Thu, 12 Dec 2024 16:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016622; cv=none; b=dp0v5Kgaau2w0t8YsamlxhpYR0kWxmRjdgbdxRrAF0+0Eafgvdo9achxP9TH2PwUU0WlUd1AHuObOpO8T5ZazsZIL4bF7sS43KrUGJ2vAShikMvyOahSMVOWkdvBS184NV0eCXNwq3/FBuNQJBJYp0Y349+WchB+qOL97tqgA28=
+	t=1734020469; cv=none; b=irP+JzoG8rW6BlHXEPXApvwEeaCkEFQOZ4PinGyl95foJhXOk5DI8T8ICrS14QpnVoz0QiMyjTqYUM7lTIMGykPH4NIXCOSGa7mfTj/K4O2PubE+4xLnLd+FqPV6QpKkOthlCrH1+O+RJBUIyfXYe/Jyi0KQJmkKrjPyZgQkPNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016622; c=relaxed/simple;
-	bh=7T/nTgNkvQRaDDTad6N2deyvrMYodeWNE6dpqSR9FMI=;
+	s=arc-20240116; t=1734020469; c=relaxed/simple;
+	bh=uEDOHpqFAqPHkV/lqkrwpdiJA8McsSj23gz+5K8GLLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k/0d3b3nqHbOVVf+6DEy7o9f4IJHvjgxF0HDavnqpW0YOeM9TkLgiAwvfzU0LZlIKffjgMxrnD5qi1HqdQZOW1Y3qwo6K+8hsyZBG5wVdl+KHNJpJawvEZWP0D9N9+AcZbWLR/OyjBhRIexQlx2mrtLMZ6Nbbq/uqAngJwVgdTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXyWTz/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E014C4CECE;
-	Thu, 12 Dec 2024 15:17:01 +0000 (UTC)
+	 MIME-Version; b=UUZeO4sZkjNXxS+7dj28K8CDLQh0k7mod1IWXC84KBYf27JXliEfJlUXdXQxIqVCf61Xtx4p8d1uqaz+pffYBGSLe6GcP+ydQiNiiS17GS+zexABZL1GXfa3LexdWYXrlwDbx1+GzjkI7ooWT8JlMqYITE4WO0yO/YyQlZlnVTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Svznatio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1088C4CECE;
+	Thu, 12 Dec 2024 16:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016622;
-	bh=7T/nTgNkvQRaDDTad6N2deyvrMYodeWNE6dpqSR9FMI=;
+	s=korg; t=1734020469;
+	bh=uEDOHpqFAqPHkV/lqkrwpdiJA8McsSj23gz+5K8GLLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GXyWTz/fU18FgrVna55TA2ig+YuLoQBABpYE/n87+hZAEzmH9lk8VkXKUdwiuQzYP
-	 GUpnRLEtHnxgG9UwbafdljmIvF757JMbOXffzsbJcRRzDJAsygLYSwqYQ/7CFVDGaq
-	 QvyDLsqsU7d/WZHtZAzEQL9y7Tn+KdDPLiW0PtgE=
+	b=SvznatiomX2Uk474C6rFJQxeBKivScZQPbcC39ezUtf00/AwJY++mjeVOPfAWyO4O
+	 eRGzgjATw+HOemIaqxHgxGKvJfTYS2croRBkuV5NdBCgmkuZzw+nGReMFxrHtBlXo1
+	 U4dD3rf/LRpDCBC8MPiczWfhFhMEpKD6nGP0DJ9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 250/466] selftests/resctrl: Protect against array overflow when reading strings
+	MengEn Sun <mengensun@tencent.com>,
+	JinLiang Zheng <alexjlzheng@tencent.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 474/772] vmstat: call fold_vm_zone_numa_events() before show per zone NUMA event
 Date: Thu, 12 Dec 2024 15:56:59 +0100
-Message-ID: <20241212144316.663522986@linuxfoundation.org>
+Message-ID: <20241212144409.521240989@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinette Chatre <reinette.chatre@intel.com>
+From: MengEn Sun <mengensun@tencent.com>
 
-[ Upstream commit 46058430fc5d39c114f7e1b9c6ff14c9f41bd531 ]
+commit 2ea80b039b9af0b71c00378523b71c254fb99c23 upstream.
 
-resctrl selftests discover system properties via a variety of sysfs files.
-The MBM and MBA tests need to discover the event and umask with which to
-configure the performance event used to measure read memory bandwidth.
-This is done by parsing the contents of
-/sys/bus/event_source/devices/uncore_imc_<imc instance>/events/cas_count_read
-Similarly, the resctrl selftests discover the cache size via
-/sys/bus/cpu/devices/cpu<id>/cache/index<index>/size.
+Since 5.14-rc1, NUMA events will only be folded from per-CPU statistics to
+per zone and global statistics when the user actually needs it.
 
-Take care to do bounds checking when using fscanf() to read the
-contents of files into a string buffer because by default fscanf() assumes
-arbitrarily long strings. If the file contains more bytes than the array
-can accommodate then an overflow will occur.
+Currently, the kernel has performs the fold operation when reading
+/proc/vmstat, but does not perform the fold operation in /proc/zoneinfo.
+This can lead to inaccuracies in the following statistics in zoneinfo:
+- numa_hit
+- numa_miss
+- numa_foreign
+- numa_interleave
+- numa_local
+- numa_other
 
-Provide a maximum field width to the conversion specifier to protect
-against array overflow. The maximum is one less than the array size because
-string input stores a terminating null byte that is not covered by the
-maximum field width.
+Therefore, before printing per-zone vm_numa_event when reading
+/proc/zoneinfo, we should also perform the fold operation.
 
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/1730433998-10461-1-git-send-email-mengensun@tencent.com
+Fixes: f19298b9516c ("mm/vmstat: convert NUMA statistics to basic NUMA counters")
+Signed-off-by: MengEn Sun <mengensun@tencent.com>
+Reviewed-by: JinLiang Zheng <alexjlzheng@tencent.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/resctrl/resctrl_val.c | 4 ++--
- tools/testing/selftests/resctrl/resctrlfs.c   | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ mm/vmstat.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
-index f118f659e8960..e92e4f463f37b 100644
---- a/tools/testing/selftests/resctrl/resctrl_val.c
-+++ b/tools/testing/selftests/resctrl/resctrl_val.c
-@@ -159,7 +159,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1711,6 +1711,7 @@ static void zoneinfo_show_print(struct s
+ 			   zone_page_state(zone, i));
  
- 		return -1;
- 	}
--	if (fscanf(fp, "%s", cas_count_cfg) <= 0) {
-+	if (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
- 		ksft_perror("Could not get iMC cas count read");
- 		fclose(fp);
- 
-@@ -177,7 +177,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
- 
- 		return -1;
- 	}
--	if  (fscanf(fp, "%s", cas_count_cfg) <= 0) {
-+	if  (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
- 		ksft_perror("Could not get iMC cas count write");
- 		fclose(fp);
- 
-diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
-index 250c320349a78..a53cd1cb6e0c6 100644
---- a/tools/testing/selftests/resctrl/resctrlfs.c
-+++ b/tools/testing/selftests/resctrl/resctrlfs.c
-@@ -182,7 +182,7 @@ int get_cache_size(int cpu_no, const char *cache_type, unsigned long *cache_size
- 
- 		return -1;
- 	}
--	if (fscanf(fp, "%s", cache_str) <= 0) {
-+	if (fscanf(fp, "%63s", cache_str) <= 0) {
- 		ksft_perror("Could not get cache_size");
- 		fclose(fp);
- 
--- 
-2.43.0
-
+ #ifdef CONFIG_NUMA
++	fold_vm_zone_numa_events(zone);
+ 	for (i = 0; i < NR_VM_NUMA_EVENT_ITEMS; i++)
+ 		seq_printf(m, "\n      %-12s %lu", numa_stat_name(i),
+ 			   zone_numa_event_state(zone, i));
 
 
 
