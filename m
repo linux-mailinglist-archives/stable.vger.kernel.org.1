@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-102671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36B99EF404
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A69B9EF30F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5DA517C5D8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8AB32905D3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C24F23A57D;
-	Thu, 12 Dec 2024 16:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C714723A593;
+	Thu, 12 Dec 2024 16:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZODYhSoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXzYKoK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5615B22969D;
-	Thu, 12 Dec 2024 16:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BEA1F2381;
+	Thu, 12 Dec 2024 16:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022072; cv=none; b=XcKBDKbsmHxdQCdU9N6Hm/rryQfCSUdDWt5qIiVwbtWohcC9CXWO/gaUtPs+rSuaxMq8c3qXyGo5MODEG4ipupmjMwhJNgYg7YV2nwBbCi7nob4APiHq3P7auA8p991Z+thyvMJpIgcRevlG96Sh5k2DQZcWiBULMnBqmN1T/YE=
+	t=1734022110; cv=none; b=gayPZZqkfGHbhqWkBsfN9Zkx72zYinsLMO7oJ9XuGMiW1vW8nqy2XO2hQxUsF1dv3dsr2XUzopSeIFy4fxX2MgzvUJJ1SRr8m+VRe1HSvqwrbOMI0L2Isjz7I8gzr9Pl1C2XD9Z/3xL2VkI/LHqyAEwAU+88dsz0ke4A8KWJvR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022072; c=relaxed/simple;
-	bh=qaJgUDCaj7T1ntOGe+coG2rKWa+EOvYAjMGbLe54KxM=;
+	s=arc-20240116; t=1734022110; c=relaxed/simple;
+	bh=T93IiUiNXVdtTUYTbtnLLBaBYtnBrSIoiQEHvyo3f5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDOQ213NAwzoI4Yg/NQ29OVgTq579g+E25oLK962ytm6Bfdz2TPCfTp9syMeKBEOZRVO0m7JnA5fid2Fg7UW5NPaUULVWYuAl+I9oeS9dZ2FIP0lecM5t1h4xVbabKsF/0FZKJbIBx+pE/+PwcO+8cSwbnBNtYPB55pK0v7/Gw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZODYhSoW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B970DC4CECE;
-	Thu, 12 Dec 2024 16:47:51 +0000 (UTC)
+	 MIME-Version; b=JD8ALud7y422Q6strLsriIHbTrG1zNLXseohbh51oqqjU+yEZ7ufTIj7uo3guSaQflPhP63ALsoRhHa8hjFrVVIhA/qVIDppl7J2vsvkRHiCjXTiOh5ghQWCkSVQE9/hDBzDylywxllqtdzmmkjvu4EaWRmNlIcqc4HAXKF6Hms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXzYKoK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA78C4CECE;
+	Thu, 12 Dec 2024 16:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022072;
-	bh=qaJgUDCaj7T1ntOGe+coG2rKWa+EOvYAjMGbLe54KxM=;
+	s=korg; t=1734022110;
+	bh=T93IiUiNXVdtTUYTbtnLLBaBYtnBrSIoiQEHvyo3f5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZODYhSoW8tA2zH1XZC4RbSMkqTI+jE8uqLWqjb4AQwDosEAGzrMRaLlfXIHHh6vGM
-	 qer7pyd+/cqeDa4vVYtCTa9rnh8sgnmkWkCpklrvCwsgyPqs+amjsnKubXW8vLwUzW
-	 jSAC2Jq4DeHzkDpF8HO1Ee3Es2zhnUu5gi4J2O0A=
+	b=VXzYKoK739FCBVCyuESblebL8rwcVqzXgNGIhgtejPluRPpVvwAviHHh4zjC9mIqD
+	 kDm+b+2TClMwDp+GQegAeYdQgerIQdfmsgNMIJtm8LSjw3paioVdql4J/aExeKfQPB
+	 esBiU6hNDwwnMblExS4Fvu8+bdavRAvtaJeEV8Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>,
 	Hsin-Te Yuan <yuanhsinte@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 122/565] arm64: dts: mt8183: burnet: add i2c2s i2c-scl-internal-delay-ns
-Date: Thu, 12 Dec 2024 15:55:17 +0100
-Message-ID: <20241212144316.306625846@linuxfoundation.org>
+Subject: [PATCH 5.15 123/565] arm64: dts: mt8183: Damu: add i2c2s i2c-scl-internal-delay-ns
+Date: Thu, 12 Dec 2024 15:55:18 +0100
+Message-ID: <20241212144316.347873994@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
 References: <20241212144311.432886635@linuxfoundation.org>
@@ -70,32 +70,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>
 
-[ Upstream commit 85af64983889c621e8868b744c8ca03bd5038c02 ]
+[ Upstream commit 6ff2d45f2121c698a57c959ae21885a048615908 ]
 
 Add i2c2's i2c-scl-internal-delay-ns.
 
-Fixes: dd6e3b06214f ("arm64: dts: mt8183: Add kukui-jacuzzi-burnet board")
+Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
 Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>
 Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://lore.kernel.org/r/20241025-i2c-delay-v2-2-9be1bcaf35e0@chromium.org
+Link: https://lore.kernel.org/r/20241025-i2c-delay-v2-4-9be1bcaf35e0@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-burnet.dts | 3 +++
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-burnet.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-burnet.dts
-index a8d6f32ade8d9..0a1b79077bc45 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-burnet.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-burnet.dts
-@@ -28,3 +28,6 @@ touchscreen@2c {
- 	};
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
+index 42ba9c00866cd..8e0cba4d23726 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
+@@ -29,3 +29,6 @@ &qca_wifi {
+ 	qcom,ath10k-calibration-variant = "GO_DAMU";
  };
  
 +&i2c2 {
-+	i2c-scl-internal-delay-ns = <4100>;
++	i2c-scl-internal-delay-ns = <20000>;
 +};
 -- 
 2.43.0
