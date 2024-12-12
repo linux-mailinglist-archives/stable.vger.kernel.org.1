@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8147D9EEBD9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A809EF237
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E134E18899C2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69E7F1751FD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765CE20969B;
-	Thu, 12 Dec 2024 15:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CAC213E99;
+	Thu, 12 Dec 2024 16:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igGsxJvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9uJlQt8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3517213792B;
-	Thu, 12 Dec 2024 15:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CA7223E71;
+	Thu, 12 Dec 2024 16:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017153; cv=none; b=Pem4irtkF+Q2ibU9aurU6Dtm4tivf79eBfb3RHc7Xbp+ZGnQ7gAkgyFcbyayzUtlZPp2qPx2ZH31Ngh5IO7j4PkqQ8y7Qc82e6pVVJmFjqBU0uw7SGwgZef0q7VmgnZ3i5PwUdkTwJY0wdATz5J+6OE0PT7F+7b5edonh7LEWLQ=
+	t=1734021123; cv=none; b=KPjdjkCrCRQPrqmg40kC+GxqNolytLHvgKt/ZHmbhSwslQc4US3z2ktLjbr+jsqRpOTJL8qa+bKpoXt+HEzBDMgBhdnL8PBdxy2mJOQXLmrmzyz/QXrlcZKdjravmy4AOJqbd6nbFQF37MVQbAFxhVvt6M9UL3qlH5HE1a5TH+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017153; c=relaxed/simple;
-	bh=8Xig4ZtKgtvzl06w8O1ubjeJQ6PFhry+a0znc8bbVW8=;
+	s=arc-20240116; t=1734021123; c=relaxed/simple;
+	bh=8dh86p+n19Sn8DuE/1iwYskYSjywWZt1sHT5RJT0G9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGlKqC4ExGV3MTHPtzzJmlo0fL/C/dI6+LVIcPHY79aC5Lx5qtln8X9GKfs0uKdZHxyw/ZPwCkDdiV8h1NvXRQHYXrOTCHZe3l9v/3BoIb8vuDekOKdLubWQjgVt1aDzQ3f6rEhFa1mvt7yHGBrI2/S5ehTE+lhzGwwgLUpXbY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igGsxJvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795B7C4CECE;
-	Thu, 12 Dec 2024 15:25:52 +0000 (UTC)
+	 MIME-Version; b=dVS5OljfevqUhkoQpVOLcjpwgHe1x7sqmwoDlJnCObeOiK8PYS44w2Oc6Uc82zruOSdoxmtrQ9BO4DNl8iGXfgEG9DiHh28onLDqbu4v1lkrjxlnDrUP2vebWebh/YUxooqzHmbyx7GR3QDDq0jpoHg0opsoO9COBuG7hG8gYJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9uJlQt8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326E6C4CECE;
+	Thu, 12 Dec 2024 16:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017153;
-	bh=8Xig4ZtKgtvzl06w8O1ubjeJQ6PFhry+a0znc8bbVW8=;
+	s=korg; t=1734021123;
+	bh=8dh86p+n19Sn8DuE/1iwYskYSjywWZt1sHT5RJT0G9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igGsxJvgdkcyoVI+PSgVahSjjYRPiq8+REVX98sMejJj4cqLtWqazbgjP0t6ANkik
-	 lfbUtydDdtILLaBtUtdH2flyXXzX9JP0cpwPlDxvlNgJ0cmERQQZewIxKOs4Wj+RZ4
-	 sW7hcL1DbD7OrusLUetzb3y2OehcoiUkBHCJ6tRI=
+	b=x9uJlQt8IysNajXnBTYJwoxWzwCyrbManVJLYyaji2WqRAN5A6texJPblnDtvEm/I
+	 27zQ+0JiiZiQb4WUsWIbGf83EOtJn5DCPLOjMLBlD+lFDVzQsErVbh1NTWiXGcZV02
+	 v8VXQCXSY5eeAUMwfw9vzPw0TZr0Xbm2Bk5DbL7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 398/466] remoteproc: qcom: pas: enable SAR2130P audio DSP support
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 622/772] scsi: ufs: core: Add missing post notify for power mode change
 Date: Thu, 12 Dec 2024 15:59:27 +0100
-Message-ID: <20241212144322.486754088@linuxfoundation.org>
+Message-ID: <20241212144415.626148624@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 009e288c989b3fe548a45c82da407d7bd00418a9 ]
+commit 7f45ed5f0cd5ccbbec79adc6c48a67d6a85fba56 upstream.
 
-Enable support for the Audio DSP on the Qualcomm SAR2130P platform,
-reusing the SM8350 resources.
+When the power mode change is successful but the power mode hasn't
+actually changed, the post notification was missed.  Similar to the
+approach with hibernate/clock scale/hce enable, having pre/post
+notifications in the same function will make it easier to maintain.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241027-sar2130p-adsp-v1-3-bd204e39d24e@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Additionally, supplement the description of power parameters for the
+pwr_change_notify callback.
+
+Fixes: 7eb584db73be ("ufs: refactor configuring power mode")
+Cc: stable@vger.kernel.org #6.11.x
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20241122024943.30589-1-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ufs/core/ufshcd.c |    7 ++++---
+ include/ufs/ufshcd.h      |   10 ++++++----
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 793b1d274be33..1a2d08ec9de9e 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -1433,6 +1433,7 @@ static const struct of_device_id adsp_of_match[] = {
- 	{ .compatible = "qcom,sa8775p-cdsp1-pas", .data = &sa8775p_cdsp1_resource},
- 	{ .compatible = "qcom,sa8775p-gpdsp0-pas", .data = &sa8775p_gpdsp0_resource},
- 	{ .compatible = "qcom,sa8775p-gpdsp1-pas", .data = &sa8775p_gpdsp1_resource},
-+	{ .compatible = "qcom,sar2130p-adsp-pas", .data = &sm8350_adsp_resource},
- 	{ .compatible = "qcom,sc7180-adsp-pas", .data = &sm8250_adsp_resource},
- 	{ .compatible = "qcom,sc7180-mpss-pas", .data = &mpss_resource_init},
- 	{ .compatible = "qcom,sc7280-adsp-pas", .data = &sm8350_adsp_resource},
--- 
-2.43.0
-
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -4449,9 +4449,6 @@ static int ufshcd_change_power_mode(stru
+ 		dev_err(hba->dev,
+ 			"%s: power mode change failed %d\n", __func__, ret);
+ 	} else {
+-		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
+-								pwr_mode);
+-
+ 		memcpy(&hba->pwr_info, pwr_mode,
+ 			sizeof(struct ufs_pa_layer_attr));
+ 	}
+@@ -4478,6 +4475,10 @@ int ufshcd_config_pwr_mode(struct ufs_hb
+ 
+ 	ret = ufshcd_change_power_mode(hba, &final_params);
+ 
++	if (!ret)
++		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
++					&final_params);
++
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(ufshcd_config_pwr_mode);
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -281,7 +281,9 @@ struct ufs_pwr_mode_info {
+  *                       to allow variant specific Uni-Pro initialization.
+  * @pwr_change_notify: called before and after a power mode change
+  *			is carried out to allow vendor spesific capabilities
+- *			to be set.
++ *			to be set. PRE_CHANGE can modify final_params based
++ *			on desired_pwr_mode, but POST_CHANGE must not alter
++ *			the final_params parameter
+  * @setup_xfer_req: called before any transfer request is issued
+  *                  to set some things
+  * @setup_task_mgmt: called before any task management request is issued
+@@ -312,9 +314,9 @@ struct ufs_hba_variant_ops {
+ 	int	(*link_startup_notify)(struct ufs_hba *,
+ 				       enum ufs_notify_change_status);
+ 	int	(*pwr_change_notify)(struct ufs_hba *,
+-					enum ufs_notify_change_status status,
+-					struct ufs_pa_layer_attr *,
+-					struct ufs_pa_layer_attr *);
++				enum ufs_notify_change_status status,
++				struct ufs_pa_layer_attr *desired_pwr_mode,
++				struct ufs_pa_layer_attr *final_params);
+ 	void	(*setup_xfer_req)(struct ufs_hba *hba, int tag,
+ 				  bool is_scsi_cmd);
+ 	void	(*setup_task_mgmt)(struct ufs_hba *, int, u8);
 
 
 
