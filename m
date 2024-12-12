@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB36A9EED7E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DA19EEBC9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A69BB1886008
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 465D5161771
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6757C223C67;
-	Thu, 12 Dec 2024 15:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0287212B0F;
+	Thu, 12 Dec 2024 15:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSyEdSLr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6WQKU8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E66321E085;
-	Thu, 12 Dec 2024 15:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF3F2054F8;
+	Thu, 12 Dec 2024 15:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018142; cv=none; b=ELu8EBVvDzvf3000JUf0KBidtZ9iUjZxM5qAXZCmWY7by3fNp0p7Ec4yv5shdSP4L2J1ZI12CXWOBoCZdKt/j8ZVEzUqMe5EK3KCut8WZdf8Uw7ZlVrSsBcC7IQTu+1eWm+gKGCbYWMudT+/jVmbMICbI4sa6EaBVs1Uc60slM4=
+	t=1734017124; cv=none; b=tUSZkQTmVzzk/1/u2hB5/hi76eafMI5dp28/gMeKZqUc3SfuMy+JYXunKj10X7gWbLnWWYmCJiAVvYOa7GdgFtMXmxkOo1R2PuiIELaE9fW9PdH88edIVptjGGemmndv4emSqoa42AUuppXJzCCHitA1ypHz4OgFAb/VZPJDguM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018142; c=relaxed/simple;
-	bh=sqK/uZLpUIpThxFmvPrx+IzXkdu8916rp/Nu3mbc34U=;
+	s=arc-20240116; t=1734017124; c=relaxed/simple;
+	bh=UX2n90SaQvJakUquo5R/KHgXgFusCtjPjcu0bGoEuQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jI/PtDmmTMslxEKKgw18JoW9xL7dqiSRQIwtMpFQn6Jc36fOiQLB/oYVdUtWUWvCxzsrw67wOZy/6yyeCMUGkYK5shnHlSQ8uz1LX4yecILLartB1ap7VFDLJzAYr8VMQDJNprSYc5BhScCH1WaH7faen//JuJ+OFjLXRbvTwqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSyEdSLr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC69C4CECE;
-	Thu, 12 Dec 2024 15:42:21 +0000 (UTC)
+	 MIME-Version; b=qEhip4vLoJay4Odo3f3iCGwdeqCliyfxGnrsLO8flspJsMJCPdit9gNvRTV7Syp8dLftdPAKH8MBbuLkis4g4MqaVs7osBemyvWa4qAAw1bv3GtSX7wX0Np4GWOyhwi5NTnJQ+xBxbuzNqAsj+9Anxrr/pdVSkelSKgiQGjbo3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6WQKU8I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12C9C4CECE;
+	Thu, 12 Dec 2024 15:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018142;
-	bh=sqK/uZLpUIpThxFmvPrx+IzXkdu8916rp/Nu3mbc34U=;
+	s=korg; t=1734017124;
+	bh=UX2n90SaQvJakUquo5R/KHgXgFusCtjPjcu0bGoEuQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KSyEdSLrqLvlq+DgMPIiSWQgJ9AjyFHSTSs5yikQ4GGhIgzMjKFCGYUR6qOE5qo8c
-	 3MDEWTrwH7O7h9a7Db0G0IdKmEgq71KQhE0+vjDgdbFXfsPlH2W+RpyplB4jNOyWk+
-	 HdG6SSVmF4it6Db5x3n7hVxrBE2GL34UMfyklJgM=
+	b=P6WQKU8IRNVaL2fdin9DS7bUwxm/U+i8AHb/IVgjx/pe8dsNt4V0DN7Ns02kbHiLe
+	 hpqgeiVe/V0Mdmn0h9P3mt3i/ydlvLG6f0uE8cttXqmM20HgPLapCZFU7wg8aM0wxQ
+	 76i+bvRZRYW7cURWt/ud/h4YJB6fwq8/UIbupYv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
-	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Attila Fazekas <afazekas@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/356] drm: panel-orientation-quirks: Add quirk for AYA NEO Founder edition
-Date: Thu, 12 Dec 2024 15:58:48 +0100
-Message-ID: <20241212144252.872006970@linuxfoundation.org>
+Subject: [PATCH 6.12 360/466] rtla/timerlat: Make timerlat_hist_cpu->*_count unsigned long long
+Date: Thu, 12 Dec 2024 15:58:49 +0100
+Message-ID: <20241212144321.003515853@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-[ Upstream commit d7972d735ca80a40a571bf753c138263981a5698 ]
+[ Upstream commit 76b3102148135945b013797fac9b206273f0f777 ]
 
-Add quirk orientation for AYA NEO Founder. The name appears with spaces in
-DMI strings as other devices of the brand. The panel is the same as the
-NEXT and 2021 models. Those could not be reused as the former has VENDOR
-name as "AYANEO" without spaces and the latter has "AYADEVICE".
+Do the same fix as in previous commit also for timerlat-hist.
 
-Tested by the JELOS team that has been patching their own kernel for a
-while now and confirmed by users in the AYA NEO and ChimeraOS discord
-servers.
-
-Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
-Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/f71889a0b39f13f4b78481bd030377ca15035680.1726492131.git.tjakobi@math.uni-bielefeld.de
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/20241011121015.2868751-2-tglozar@redhat.com
+Reported-by: Attila Fazekas <afazekas@redhat.com>
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/tracing/rtla/src/timerlat_hist.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 55635c7bfcefc..2ee14c6b6fd62 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -202,6 +202,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_PRODUCT_NAME, "AIR"),
- 		},
- 		.driver_data = (void *)&lcd1080x1920_leftside_up,
-+	}, {	/* AYA NEO Founder */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYA NEO"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "AYA NEO Founder"),
-+		},
-+		.driver_data = (void *)&lcd800x1280_rightside_up,
- 	}, {	/* AYA NEO NEXT */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
+diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
+index f6aa83ff15659..ae55cd7912833 100644
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -62,9 +62,9 @@ struct timerlat_hist_cpu {
+ 	int			*thread;
+ 	int			*user;
+ 
+-	int			irq_count;
+-	int			thread_count;
+-	int			user_count;
++	unsigned long long	irq_count;
++	unsigned long long	thread_count;
++	unsigned long long	user_count;
+ 
+ 	unsigned long long	min_irq;
+ 	unsigned long long	sum_irq;
+@@ -304,15 +304,15 @@ timerlat_print_summary(struct timerlat_hist_params *params,
+ 			continue;
+ 
+ 		if (!params->no_irq)
+-			trace_seq_printf(trace->seq, "%9d ",
++			trace_seq_printf(trace->seq, "%9llu ",
+ 					data->hist[cpu].irq_count);
+ 
+ 		if (!params->no_thread)
+-			trace_seq_printf(trace->seq, "%9d ",
++			trace_seq_printf(trace->seq, "%9llu ",
+ 					data->hist[cpu].thread_count);
+ 
+ 		if (params->user_hist)
+-			trace_seq_printf(trace->seq, "%9d ",
++			trace_seq_printf(trace->seq, "%9llu ",
+ 					 data->hist[cpu].user_count);
+ 	}
+ 	trace_seq_printf(trace->seq, "\n");
+@@ -488,15 +488,15 @@ timerlat_print_stats_all(struct timerlat_hist_params *params,
+ 		trace_seq_printf(trace->seq, "count:");
+ 
+ 	if (!params->no_irq)
+-		trace_seq_printf(trace->seq, "%9d ",
++		trace_seq_printf(trace->seq, "%9llu ",
+ 				 sum.irq_count);
+ 
+ 	if (!params->no_thread)
+-		trace_seq_printf(trace->seq, "%9d ",
++		trace_seq_printf(trace->seq, "%9llu ",
+ 				 sum.thread_count);
+ 
+ 	if (params->user_hist)
+-		trace_seq_printf(trace->seq, "%9d ",
++		trace_seq_printf(trace->seq, "%9llu ",
+ 				 sum.user_count);
+ 
+ 	trace_seq_printf(trace->seq, "\n");
 -- 
 2.43.0
 
