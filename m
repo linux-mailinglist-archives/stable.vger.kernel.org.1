@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C0A9EF2FF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3331E9EF0C2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B33FE287933
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B22FF1891CBD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B94239BC0;
-	Thu, 12 Dec 2024 16:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFDF23ED45;
+	Thu, 12 Dec 2024 16:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K04n86/Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsY57tR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830892253E0;
-	Thu, 12 Dec 2024 16:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F375521CFF0;
+	Thu, 12 Dec 2024 16:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022024; cv=none; b=WeC1Rq8JdSfp6N++gY7Bq1i026dILtwygNU2qx8PyWclGdFWTlQ3ItDFyj0U6bNfxfchM6pPx81b08LU4j55KtjqzRdE1vfek6rLCSbp3/12EZD9XU22Bsr6H0Qngll720bEOtXPkbzoMNbIRaJivVcBf+Jn/7ODCaBn5HSgB3Q=
+	t=1734019976; cv=none; b=hZmK1B3d52IaBLmRuzgpQj8ipPSfEku8X3lq33FCTuFZW1B2UIyh8XF5/EH0+NoRHz2GikRgTHlA3uACx1zsaVDdCplt4EQVnWPcRyE42Jtea9TMuSW6Qy+xwvnVjlOcwVL3I1WBdGn82z7yT51xAvvqh2woECLPePv2k3L++60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022024; c=relaxed/simple;
-	bh=BRH5H580Ylx0+68g3GEW8QZnUcH+LfNywdjrQoJvcyA=;
+	s=arc-20240116; t=1734019976; c=relaxed/simple;
+	bh=0twdHZYYEV400CHqB2ib/oOYE9io30l83OHySeivKoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBqsEBAN/wBqj/AO+CuAFncOOddfzK/o89B9VioFh4hiXRU6VPnYHzGRvWXS+U/rwxepVlITzv9JZjwTsFLPg7d1MdALPaSkAWgERiu5TcAASIbAUlU9m/c82fkyoFgqspad0qNd4+NIIusrrTcGjXxOY+AbsoLO3HPGqfpUkFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K04n86/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E439EC4CECE;
-	Thu, 12 Dec 2024 16:47:03 +0000 (UTC)
+	 MIME-Version; b=CCnk49D+fJBMTy2sRD2nUxSejKa2/5KL/rdKETAKbtTX6l2jRLrRYnVN2LVMM3/p7F5wxD1X8AaNzVxdWu+qckLadBjQTdefWYXvWdJ2kCbGLcXEAeqVWQNoDId/2AapFyl4ULEH88Vdk4ClWnYA/VD9vyxtsXAibTQLbr5UrAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsY57tR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47643C4CED0;
+	Thu, 12 Dec 2024 16:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022024;
-	bh=BRH5H580Ylx0+68g3GEW8QZnUcH+LfNywdjrQoJvcyA=;
+	s=korg; t=1734019975;
+	bh=0twdHZYYEV400CHqB2ib/oOYE9io30l83OHySeivKoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K04n86/Qloir4HD3DBjOCzlPwqRvjap0G4h/RWhO+MaOG0tS7j6I6mc7nCAX/FDSi
-	 uBYmAVYmu4zGTxJu4irIN/p7EqPs3vb4tfFA9N0bUh2aggvD2Hw38Csg/53ZktNfGL
-	 eZ4DqZ4wDffEFiKudTLE3HdMbtTg2xg4wCHa5oi8=
+	b=qsY57tR9FiSAz9rwczbHbwN1NqUC4eQ8synFnkyOaZCB9TlMAsQND/XDaqT+jXhOR
+	 ZAupbkqMps4x4SQIQMf+PisNwnAyibhoERjH3ssEU0oWsYQelHm9xQqD7SVbkNCwF6
+	 lUbzwv+l4DFaFjKKf5UISvPInB+Oz8zdluvtyd2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Priyanka Singh <priyanka.singh@nxp.com>,
-	Li Yang <leoyang.li@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/565] EDAC/fsl_ddr: Fix bad bit shift operations
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>
+Subject: [PATCH 6.1 346/772] wifi: iwlwifi: mvm: avoid NULL pointer dereference
 Date: Thu, 12 Dec 2024 15:54:51 +0100
-Message-ID: <20241212144315.281042608@linuxfoundation.org>
+Message-ID: <20241212144404.208141457@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Priyanka Singh <priyanka.singh@nxp.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 9ec22ac4fe766c6abba845290d5139a3fbe0153b ]
+commit 557a6cd847645e667f3b362560bd7e7c09aac284 upstream.
 
-Fix undefined behavior caused by left-shifting a negative value in the
-expression:
+iwl_mvm_tx_skb_sta() and iwl_mvm_tx_mpdu() verify that the mvmvsta
+pointer is not NULL.
+It retrieves this pointer using iwl_mvm_sta_from_mac80211, which is
+dereferencing the ieee80211_sta pointer.
+If sta is NULL, iwl_mvm_sta_from_mac80211 will dereference a NULL
+pointer.
+Fix this by checking the sta pointer before retrieving the mvmsta
+from it. If sta is not NULL, then mvmsta isn't either.
 
-    cap_high ^ (1 << (bad_data_bit - 32))
-
-The variable bad_data_bit ranges from 0 to 63. When it is less than 32,
-bad_data_bit - 32 becomes negative, and left-shifting by a negative
-value in C is undefined behavior.
-
-Fix this by combining cap_high and cap_low into a 64-bit variable.
-
-  [ bp: Massage commit message, simplify error bits handling. ]
-
-Fixes: ea2eb9a8b620 ("EDAC, fsl-ddr: Separate FSL DDR driver from MPC85xx")
-Signed-off-by: Priyanka Singh <priyanka.singh@nxp.com>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241016-imx95_edac-v3-3-86ae6fc2756a@nxp.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20240825191257.880921ce23b7.I340052d70ab6d3410724ce955eb00da10e08188f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/fsl_ddr_edac.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
-index 6d8ea226010d2..61e59341a41f9 100644
---- a/drivers/edac/fsl_ddr_edac.c
-+++ b/drivers/edac/fsl_ddr_edac.c
-@@ -331,21 +331,25 @@ static void fsl_mc_check(struct mem_ctl_info *mci)
- 	 * TODO: Add support for 32-bit wide buses
- 	 */
- 	if ((err_detect & DDR_EDE_SBE) && (bus_width == 64)) {
-+		u64 cap = (u64)cap_high << 32 | cap_low;
-+		u32 s = syndrome;
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -1105,6 +1105,9 @@ static int iwl_mvm_tx_mpdu(struct iwl_mv
+ 	bool is_ampdu = false;
+ 	int hdrlen;
+ 
++	if (WARN_ON_ONCE(!sta))
++		return -1;
 +
- 		sbe_ecc_decode(cap_high, cap_low, syndrome,
- 				&bad_data_bit, &bad_ecc_bit);
+ 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 	fc = hdr->frame_control;
+ 	hdrlen = ieee80211_hdrlen(fc);
+@@ -1112,9 +1115,6 @@ static int iwl_mvm_tx_mpdu(struct iwl_mv
+ 	if (IWL_MVM_NON_TRANSMITTING_AP && ieee80211_is_probe_resp(fc))
+ 		return -1;
  
--		if (bad_data_bit != -1)
--			fsl_mc_printk(mci, KERN_ERR,
--				"Faulty Data bit: %d\n", bad_data_bit);
--		if (bad_ecc_bit != -1)
--			fsl_mc_printk(mci, KERN_ERR,
--				"Faulty ECC bit: %d\n", bad_ecc_bit);
-+		if (bad_data_bit >= 0) {
-+			fsl_mc_printk(mci, KERN_ERR, "Faulty Data bit: %d\n", bad_data_bit);
-+			cap ^= 1ULL << bad_data_bit;
-+		}
+-	if (WARN_ON_ONCE(!mvmsta))
+-		return -1;
+-
+ 	if (WARN_ON_ONCE(mvmsta->sta_id == IWL_MVM_INVALID_STA))
+ 		return -1;
+ 
+@@ -1242,16 +1242,18 @@ drop:
+ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 		       struct ieee80211_sta *sta)
+ {
+-	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
++	struct iwl_mvm_sta *mvmsta;
+ 	struct ieee80211_tx_info info;
+ 	struct sk_buff_head mpdus_skbs;
+ 	unsigned int payload_len;
+ 	int ret;
+ 	struct sk_buff *orig_skb = skb;
+ 
+-	if (WARN_ON_ONCE(!mvmsta))
++	if (WARN_ON_ONCE(!sta))
+ 		return -1;
+ 
++	mvmsta = iwl_mvm_sta_from_mac80211(sta);
 +
-+		if (bad_ecc_bit >= 0) {
-+			fsl_mc_printk(mci, KERN_ERR, "Faulty ECC bit: %d\n", bad_ecc_bit);
-+			s ^= 1 << bad_ecc_bit;
-+		}
+ 	if (WARN_ON_ONCE(mvmsta->sta_id == IWL_MVM_INVALID_STA))
+ 		return -1;
  
- 		fsl_mc_printk(mci, KERN_ERR,
- 			"Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
--			cap_high ^ (1 << (bad_data_bit - 32)),
--			cap_low ^ (1 << bad_data_bit),
--			syndrome ^ (1 << bad_ecc_bit));
-+			upper_32_bits(cap), lower_32_bits(cap), s);
- 	}
- 
- 	fsl_mc_printk(mci, KERN_ERR,
--- 
-2.43.0
-
 
 
 
