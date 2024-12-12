@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B5C9EF4D0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1569EF913
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E93028C988
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB6F328A9ED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5E8223320;
-	Thu, 12 Dec 2024 17:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEE4223C67;
+	Thu, 12 Dec 2024 17:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kE77HZnS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvS853qv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B0C22330D;
-	Thu, 12 Dec 2024 17:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C56813C918;
+	Thu, 12 Dec 2024 17:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023338; cv=none; b=tQ2F8K9AbUpCdE3MwZRTpc58HfeeU0mSaRAz+44K44BtcgrdE9eJ2GwVbuU4RSF5f93KccUvVdZfecYLNUdTOtGr976eugDHkGrz+aptitr+V1NauNwhyebi6kbCdEkq/kgAobqoGS4fRuJTtStZWzWv91iP1h+08UVibOMqsPU=
+	t=1734025556; cv=none; b=TyuWhphmuv+wZHfjC+auSaM0wCe5JnZ3e8qmbdtr5vR1y4tSGOea7wm+7oZ4f3az5/MsSWH6+Wvm1LffDvui0ejC/qG2ICF7FtFMQni+qkgYJxBu4+1K1EzmTzjzw7JURh+DtvZMiPRXm50f+FXiEHxHcaJ8V42SaPYLudkKqpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023338; c=relaxed/simple;
-	bh=Q6N6TR1UmqktXwnPrMjmjH4RDJR/LRhpyZ+cY+Ytjz0=;
+	s=arc-20240116; t=1734025556; c=relaxed/simple;
+	bh=6Q3ryqNQ8xyy2giDrcwLSITSlr0SmS+qa5+M9kDMN4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfegzBMrPQ26QxdyCJe2AqV9T1Au57GWmVN/6lSjm17H8zSrBvubFRONGYj7Su798Owo9I/e0B+wAudnst0MJ4T5+JErMuIX4PilnaE7I4uiRVxmr2MuuH/N6FNXzfIWvUWPe673gIYqbtBrSUlgoaBOPQL78RVvOU65JgmmI1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kE77HZnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CB4C4CECE;
-	Thu, 12 Dec 2024 17:08:57 +0000 (UTC)
+	 MIME-Version; b=D4Qeb8+Bg/WI1xhiAea63yRFlWj+lwEFHeJUlxEec+tnFGxypLFKhSEfy95LuXxN1xiq7Ebv71UUTtB6AkrWxJDf+1HdGI3kG28PWT2FJbyz5NTGPTtC0BSruqx/ozyfR26tJYpiqr/f5Usk9G5rBUBaehfy68LWVZB7UecoJDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvS853qv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 949BAC4CECE;
+	Thu, 12 Dec 2024 17:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023337;
-	bh=Q6N6TR1UmqktXwnPrMjmjH4RDJR/LRhpyZ+cY+Ytjz0=;
+	s=korg; t=1734025556;
+	bh=6Q3ryqNQ8xyy2giDrcwLSITSlr0SmS+qa5+M9kDMN4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kE77HZnSNqr2HoE0KebPi0HEesowhcQN18Lt8ACKXXv+cwTX/qB0t7/AEKKCzmN54
-	 0znfuXAgxLcMgoIBN/STCChGrBs92hS3OsjMi2ht9SmeUwZxUSnXyHxLO0HsMnxyNZ
-	 hfyvPNJal9pDdcne3vaNaaE/v4AHZN/ePHmVOv7Q=
+	b=BvS853qvAGGBM/F2qDCqPNSy+5wsi3DTBRjtbheK1T9Rt8jhhxNuhTys/To6D36Lt
+	 GWLPalucoOAajVmntkVbFxX0AKPpdztbbAokKFlQzc7CjxeM83tUdnmKzOWtGyroqe
+	 la/mYqfxZzPHH9XiFPyXU+RgdavIUTMCEBJacajs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 501/565] jfs: fix array-index-out-of-bounds in jfs_readdir
+Subject: [PATCH 5.4 178/321] um: Fix potential integer overflow during physmem setup
 Date: Thu, 12 Dec 2024 16:01:36 +0100
-Message-ID: <20241212144331.568916482@linuxfoundation.org>
+Message-ID: <20241212144237.020243101@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 839f102efb168f02dfdd46717b7c6dddb26b015e ]
+[ Upstream commit a98b7761f697e590ed5d610d87fa12be66f23419 ]
 
-The stbl might contain some invalid values. Added a check to
-return error code in that case.
+This issue happens when the real map size is greater than LONG_MAX,
+which can be easily triggered on UML/i386.
 
-Reported-by: syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0315f8fe99120601ba88
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: fe205bdd1321 ("um: Print minimum physical memory requirement")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20240916045950.508910-3-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dtree.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/um/kernel/physmem.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 8f7ce1bea44c5..a3d1d560f4c86 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -3187,6 +3187,14 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
- 		stbl = DT_GETSTBL(p);
+diff --git a/arch/um/kernel/physmem.c b/arch/um/kernel/physmem.c
+index e7c7b53a1435b..87b51089b0616 100644
+--- a/arch/um/kernel/physmem.c
++++ b/arch/um/kernel/physmem.c
+@@ -80,10 +80,10 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
+ 			  unsigned long len, unsigned long long highmem)
+ {
+ 	unsigned long reserve = reserve_end - start;
+-	long map_size = len - reserve;
++	unsigned long map_size = len - reserve;
+ 	int err;
  
- 		for (i = index; i < p->header.nextindex; i++) {
-+			if (stbl[i] < 0 || stbl[i] > 127) {
-+				jfs_err("JFS: Invalid stbl[%d] = %d for inode %ld, block = %lld",
-+					i, stbl[i], (long)ip->i_ino, (long long)bn);
-+				free_page(dirent_buf);
-+				DT_PUTPAGE(mp);
-+				return -EIO;
-+			}
-+
- 			d = (struct ldtentry *) & p->slot[stbl[i]];
- 
- 			if (((long) jfs_dirent + d->namlen + 1) >
+-	if(map_size <= 0) {
++	if (len <= reserve) {
+ 		os_warn("Too few physical memory! Needed=%lu, given=%lu\n",
+ 			reserve, len);
+ 		exit(1);
+@@ -94,7 +94,7 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
+ 	err = os_map_memory((void *) reserve_end, physmem_fd, reserve,
+ 			    map_size, 1, 1, 1);
+ 	if (err < 0) {
+-		os_warn("setup_physmem - mapping %ld bytes of memory at 0x%p "
++		os_warn("setup_physmem - mapping %lu bytes of memory at 0x%p "
+ 			"failed - errno = %d\n", map_size,
+ 			(void *) reserve_end, err);
+ 		exit(1);
 -- 
 2.43.0
 
