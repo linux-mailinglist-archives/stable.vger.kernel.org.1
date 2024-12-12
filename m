@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-101119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D209EEAC9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52C19EEC43
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3D63188C5C1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3564F169FAD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6D621661F;
-	Thu, 12 Dec 2024 15:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD912185A0;
+	Thu, 12 Dec 2024 15:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTrbmyYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEysucQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA0421578A;
-	Thu, 12 Dec 2024 15:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB5E217707;
+	Thu, 12 Dec 2024 15:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016426; cv=none; b=t/ONMnDokuGRmjgZdXko7jYwugvS3dC/4Tt0IPh4xK9aOUqJB3TKrjb6VTvHgiG+wQPMr2e8ygn+Q75r5k6JdEMGYMSy1X11pmciPcvlKV7riGn+gEShJnlzxVA/euxtLxcbjvY13DgiinsdFwb1bJ2XmBgh6fccyZmxHrVPZEw=
+	t=1734017444; cv=none; b=lMM4JTpNiMOJZKTU8BUqfvzOQ1QME1/gJYJKYAl/a6W1K5mdZlMOltt/c1EKURgn5h+fu1fKtqQ3kA7XdHOHceRPUZYzQ1p6y/V9DR6QLsueJvfOFzPQ5UE0yb9l5/leLqRdWYR7d/4sAIf97LaAzJvD7ysEwp26843HqPDzcIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016426; c=relaxed/simple;
-	bh=LseStpOer+cB7feGNVTlEPB0OtUlzKjDsQZTxbBMjPI=;
+	s=arc-20240116; t=1734017444; c=relaxed/simple;
+	bh=7npvb1wlaNZHOR7TarpoeURaYJew7mnwWPKFjbYK4Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYOl0kV8RD1a3XvGDjFvCIheDONKSEfALpXqD++AxjIAPvsuyC3pmqLGQL2xMYUUup7SLZWABBKw4+DCuYDkWYqCAgLHWu0dEo7X18riBCZSEoKCaljLraqFxoaKGbJHBJF3ON9u+Stxvah2JK6p/T8W/I++mRgWAfHjy5PBXs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTrbmyYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08470C4CED0;
-	Thu, 12 Dec 2024 15:13:44 +0000 (UTC)
+	 MIME-Version; b=d+yOc1SK8FcTb8IjqXAAtP5hh7OtQcB8Kmhb9IBVO2vHaEhB/31AHIuoE9sdJR2A1h/pedmA/R0gSgpMK/U3sp/N8fe+oL9d9sNOVBWqtzUIa83ybh0ypUM7c4ba57PUddO1UT81l1iL+CIfelGdsH3x8OVwVo0qSaXab9Ds8EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEysucQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03761C4CECE;
+	Thu, 12 Dec 2024 15:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016425;
-	bh=LseStpOer+cB7feGNVTlEPB0OtUlzKjDsQZTxbBMjPI=;
+	s=korg; t=1734017444;
+	bh=7npvb1wlaNZHOR7TarpoeURaYJew7mnwWPKFjbYK4Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTrbmyYTvwQoAFKNmx3w1QkYPJw6sQ3L8ojkVxrgtZVuS370IPyxl+q0onZ+vW0xO
-	 rSCqDaiRNGxBuq55Z9Rs8If9MtRCyJ8xEJC6XvGKDEH7Od6r9qP0hacSRqbpHfOU9c
-	 hNJrEXNXbDZqDI0S5VwJWyPz30ns6wIYVcsfGkus=
+	b=tEysucQ56zciPmvGvyQcCmMW0QMEPiOsLVHHedW2mmu6ywctnJbjcAph74g0aB4nb
+	 QPiGVkAa/e2DpH0R8SC88kKtnYgklEiqNoRvdmHvMVrT272ZiJ3hIRHKTWsWqjUC2s
+	 L0Ac65KTI4UZuso5rnajHoojeYE3DJR56E+ToJnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 165/466] selftest: hugetlb_dio: fix test naming
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 015/356] can: ems_usb: ems_usb_rx_err(): fix {rx,tx}_errors statistics
 Date: Thu, 12 Dec 2024 15:55:34 +0100
-Message-ID: <20241212144313.322376604@linuxfoundation.org>
+Message-ID: <20241212144245.223728164@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-commit 4ae132c693896b0713db572676c90ffd855a4246 upstream.
+[ Upstream commit 72a7e2e74b3075959f05e622bae09b115957dffe ]
 
-The string logged when a test passes or fails is used by the selftest
-framework to identify which test is being reported.  The hugetlb_dio test
-not only uses the same strings for every test that is run but it also uses
-different strings for test passes and failures which means that test
-automation is unable to follow what the test is doing at all.
+The ems_usb_rx_err() function only incremented the receive error counter
+and never the transmit error counter, even if the ECC_DIR flag reported
+that an error had occurred during transmission.
 
-Pull the existing duplicated logging of the number of free huge pages
-before and after the test out of the conditional and replace that and the
-logging of the result with a single ksft_print_result() which incorporates
-the parameters passed into the test into the output.
+Increment the receive/transmit error counter based on the value of the
+ECC_DIR flag.
 
-Link: https://lkml.kernel.org/r/20241127-kselftest-mm-hugetlb-dio-names-v1-1-22aab01bf550@kernel.org
-Fixes: fae1980347bf ("selftests: hugetlb_dio: fixup check for initial conditions to skip in the start")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Donet Tom <donettom@linux.ibm.com>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-12-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/hugetlb_dio.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/net/can/usb/ems_usb.c | 58 ++++++++++++++++++++---------------
+ 1 file changed, 33 insertions(+), 25 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
-index 432d5af15e66..db63abe5ee5e 100644
---- a/tools/testing/selftests/mm/hugetlb_dio.c
-+++ b/tools/testing/selftests/mm/hugetlb_dio.c
-@@ -76,19 +76,15 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
- 	/* Get the free huge pages after unmap*/
- 	free_hpage_a = get_free_hugepages();
+diff --git a/drivers/net/can/usb/ems_usb.c b/drivers/net/can/usb/ems_usb.c
+index 050c0b49938a4..5355bac4dccbe 100644
+--- a/drivers/net/can/usb/ems_usb.c
++++ b/drivers/net/can/usb/ems_usb.c
+@@ -335,15 +335,14 @@ static void ems_usb_rx_err(struct ems_usb *dev, struct ems_cpc_msg *msg)
+ 	struct net_device_stats *stats = &dev->netdev->stats;
  
-+	ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
-+	ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
-+
- 	/*
- 	 * If the no. of free hugepages before allocation and after unmap does
- 	 * not match - that means there could still be a page which is pinned.
- 	 */
--	if (free_hpage_a != free_hpage_b) {
--		ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
--		ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
--		ksft_test_result_fail(": Huge pages not freed!\n");
--	} else {
--		ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
--		ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
--		ksft_test_result_pass(": Huge pages freed successfully !\n");
--	}
-+	ksft_test_result(free_hpage_a == free_hpage_b,
-+			 "free huge pages from %u-%u\n", start_off, end_off);
+ 	skb = alloc_can_err_skb(dev->netdev, &cf);
+-	if (skb == NULL)
+-		return;
+ 
+ 	if (msg->type == CPC_MSG_TYPE_CAN_STATE) {
+ 		u8 state = msg->msg.can_state;
+ 
+ 		if (state & SJA1000_SR_BS) {
+ 			dev->can.state = CAN_STATE_BUS_OFF;
+-			cf->can_id |= CAN_ERR_BUSOFF;
++			if (skb)
++				cf->can_id |= CAN_ERR_BUSOFF;
+ 
+ 			dev->can.can_stats.bus_off++;
+ 			can_bus_off(dev->netdev);
+@@ -361,44 +360,53 @@ static void ems_usb_rx_err(struct ems_usb *dev, struct ems_cpc_msg *msg)
+ 
+ 		/* bus error interrupt */
+ 		dev->can.can_stats.bus_error++;
+-		stats->rx_errors++;
+ 
+-		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
++		if (skb) {
++			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+ 
+-		switch (ecc & SJA1000_ECC_MASK) {
+-		case SJA1000_ECC_BIT:
+-			cf->data[2] |= CAN_ERR_PROT_BIT;
+-			break;
+-		case SJA1000_ECC_FORM:
+-			cf->data[2] |= CAN_ERR_PROT_FORM;
+-			break;
+-		case SJA1000_ECC_STUFF:
+-			cf->data[2] |= CAN_ERR_PROT_STUFF;
+-			break;
+-		default:
+-			cf->data[3] = ecc & SJA1000_ECC_SEG;
+-			break;
++			switch (ecc & SJA1000_ECC_MASK) {
++			case SJA1000_ECC_BIT:
++				cf->data[2] |= CAN_ERR_PROT_BIT;
++				break;
++			case SJA1000_ECC_FORM:
++				cf->data[2] |= CAN_ERR_PROT_FORM;
++				break;
++			case SJA1000_ECC_STUFF:
++				cf->data[2] |= CAN_ERR_PROT_STUFF;
++				break;
++			default:
++				cf->data[3] = ecc & SJA1000_ECC_SEG;
++				break;
++			}
+ 		}
+ 
+ 		/* Error occurred during transmission? */
+-		if ((ecc & SJA1000_ECC_DIR) == 0)
+-			cf->data[2] |= CAN_ERR_PROT_TX;
++		if ((ecc & SJA1000_ECC_DIR) == 0) {
++			stats->tx_errors++;
++			if (skb)
++				cf->data[2] |= CAN_ERR_PROT_TX;
++		} else {
++			stats->rx_errors++;
++		}
+ 
+-		if (dev->can.state == CAN_STATE_ERROR_WARNING ||
+-		    dev->can.state == CAN_STATE_ERROR_PASSIVE) {
++		if (skb && (dev->can.state == CAN_STATE_ERROR_WARNING ||
++			    dev->can.state == CAN_STATE_ERROR_PASSIVE)) {
+ 			cf->can_id |= CAN_ERR_CRTL;
+ 			cf->data[1] = (txerr > rxerr) ?
+ 			    CAN_ERR_CRTL_TX_PASSIVE : CAN_ERR_CRTL_RX_PASSIVE;
+ 		}
+ 	} else if (msg->type == CPC_MSG_TYPE_OVERRUN) {
+-		cf->can_id |= CAN_ERR_CRTL;
+-		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
++		if (skb) {
++			cf->can_id |= CAN_ERR_CRTL;
++			cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
++		}
+ 
+ 		stats->rx_over_errors++;
+ 		stats->rx_errors++;
+ 	}
+ 
+-	netif_rx(skb);
++	if (skb)
++		netif_rx(skb);
  }
  
- int main(void)
+ /*
 -- 
-2.47.1
+2.43.0
 
 
 
