@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3143D9EEB0C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECCA9EEC9E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BD6F188E410
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDEF7168C29
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7102217670;
-	Thu, 12 Dec 2024 15:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF508217F29;
+	Thu, 12 Dec 2024 15:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXepV0Sj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRM8oPt1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522EA21CFF0;
-	Thu, 12 Dec 2024 15:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DBB217679;
+	Thu, 12 Dec 2024 15:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016521; cv=none; b=flTZOcQpwHlJL3oCjzhdEjMCo/U0axBoSqvecR4AyubYL1Y8OFCK/0/Ms82i8mkIBAFiOGTJ+aNwNWUg/KlFEwBzWCdWOKFPfek3X5Xkl+Nny7I6IsvcCD5fLlJQGkBNbzx/6nwyzt7Xz2Hv693FYjto8hkVFNoFQDH0kxkNLq4=
+	t=1734017647; cv=none; b=o7y+BEQ8LHISUcTI6NiKyDZUl5LxvIxca20lOUX3c8g41JJor8IjP9D/NAG9adM3I550l89P+wrj7tH+3rzFBjnRMPfCI3dBzFIL98JiFx98rwGQd2P5ydPVQ6k8vI1T0cGZ/SQRFla97l+Gbfg+X5gB9VnLCmqm/3C9iSqlcew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016521; c=relaxed/simple;
-	bh=xUw9BMKU61PSD0hloi0/GuTEMOZoPuC4cf+Y7iS5GY0=;
+	s=arc-20240116; t=1734017647; c=relaxed/simple;
+	bh=42YyYMwqORXGQPwGFL8A4R5LGLCBATbF0EYN/W4Hygw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8SmjCKnrGmxgpwB0sVWKBpTEW8b6FRdso1i9Ctj8k7a3NSI0xLnyNEQ6jlQn3odmmUPrFGuiBGmRwxufbMSKy3KzX1d/t2OvPNM7VOVOjpWduv8nj6HbLcF4AYJB1rT8PlSZC8h/EnqdlfeSY4LfZFCbUsAxyaEGLuz4bWyqFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXepV0Sj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF698C4CECE;
-	Thu, 12 Dec 2024 15:15:20 +0000 (UTC)
+	 MIME-Version; b=LWODxOs4gGRYDfyuSfWn05NhgRJeHPSVWd1Cvz9pXqEVgV8BtrIe8HBB4flaa1ccj3d/7udP07CmI1S/T+xnJo/GZfDdNDYqiE5CZy/oLPkMiqIH/WZH91wcDGA2ZRXf/bgYWhFbk4ompgdAnvu+WXDYpwdYuLDYzI82BxGhhx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRM8oPt1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7951C4CED0;
+	Thu, 12 Dec 2024 15:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016521;
-	bh=xUw9BMKU61PSD0hloi0/GuTEMOZoPuC4cf+Y7iS5GY0=;
+	s=korg; t=1734017647;
+	bh=42YyYMwqORXGQPwGFL8A4R5LGLCBATbF0EYN/W4Hygw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXepV0SjNswEbSyx8ZGDcVpFuqxqf4I/93UzcDHyQO3c1dd4GmtXd8JtypUUYe6V6
-	 SXViS3Uq/rsbDuz/aKyohCZS574MVp5WPtSKuO4a4xrsJGwWKFB2JSMgLZNQrpp94T
-	 L/mN1JJyrc8nkf7CoarGIK6bPIeDKYYs/W0W1NV8=
+	b=mRM8oPt1d9YVR6BLBNqQSElP/+Lg+2Ycp7Wfh4r3156cTGXmM4fh2FIpmwpNkqpNr
+	 ZoIMwIVCoQmN5iVJqB/QiG6qN+rvqiC+z6dmcMNc5XwcVsiRWigM8Z8ZzLlerIDgcw
+	 5k9Z3POiqo6XYAn+UB48/RSaA5pFDRx9Oghix+wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Fabian Vogt <fvogt@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	John Ogness <john.ogness@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 221/466] btrfs: canonicalize the device path before adding it
-Date: Thu, 12 Dec 2024 15:56:30 +0100
-Message-ID: <20241212144315.516231970@linuxfoundation.org>
+Subject: [PATCH 6.6 072/356] serial: amba-pl011: Use port lock wrappers
+Date: Thu, 12 Dec 2024 15:56:31 +0100
+Message-ID: <20241212144247.474153181@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,201 +62,339 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 7e06de7c83a746e58d4701e013182af133395188 ]
+[ Upstream commit 68ca3e72d7463d79d29b6e4961d6028df2a88e25 ]
 
-[PROBLEM]
-Currently btrfs accepts any file path for its device, resulting some
-weird situation:
+When a serial port is used for kernel console output, then all
+modifications to the UART registers which are done from other contexts,
+e.g. getty, termios, are interference points for the kernel console.
 
- # ./mount_by_fd /dev/test/scratch1  /mnt/btrfs/
+So far this has been ignored and the printk output is based on the
+principle of hope. The rework of the console infrastructure which aims to
+support threaded and atomic consoles, requires to mark sections which
+modify the UART registers as unsafe. This allows the atomic write function
+to make informed decisions and eventually to restore operational state. It
+also allows to prevent the regular UART code from modifying UART registers
+while printk output is in progress.
 
-The program has the following source code:
+All modifications of UART registers are guarded by the UART port lock,
+which provides an obvious synchronization point with the console
+infrastructure.
 
- #include <fcntl.h>
- #include <stdio.h>
- #include <sys/mount.h>
+To avoid adding this functionality to all UART drivers, wrap the
+spin_[un]lock*() invocations for uart_port::lock into helper functions
+which just contain the spin_[un]lock*() invocations for now. In a
+subsequent step these helpers will gain the console synchronization
+mechanisms.
 
- int main(int argc, char *argv[]) {
-	int fd = open(argv[1], O_RDWR);
-	char path[256];
-	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-	return mount(path, argv[2], "btrfs", 0, NULL);
- }
+Converted with coccinelle. No functional change.
 
-Then we can have the following weird device path:
-
- BTRFS: device fsid 2378be81-fe12-46d2-a9e8-68cf08dd98d5 devid 1 transid 7 /proc/self/fd/3 (253:2) scanned by mount_by_fd (18440)
-
-Normally it's not a big deal, and later udev can trigger a device path
-rename. But if udev didn't trigger, the device path "/proc/self/fd/3"
-will show up in mtab.
-
-[CAUSE]
-For filename "/proc/self/fd/3", it means the opened file descriptor 3.
-In above case, it's exactly the device we want to open, aka points to
-"/dev/test/scratch1" which is another symlink pointing to "/dev/dm-2".
-
-Inside kernel we solve the mount source using LOOKUP_FOLLOW, which
-follows the symbolic link and grab the proper block device.
-
-But inside btrfs we also save the filename into btrfs_device::name, and
-utilize that member to report our mount source, which leads to the above
-situation.
-
-[FIX]
-Instead of unconditionally trust the path, check if the original file
-(not following the symbolic link) is inside "/dev/", if not, then
-manually lookup the path to its final destination, and use that as our
-device path.
-
-This allows us to still use symbolic links, like
-"/dev/mapper/test-scratch" from LVM2, which is required for fstests runs
-with LVM2 setup.
-
-And for really weird names, like the above case, we solve it to
-"/dev/dm-2" instead.
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1230641
-Reported-by: Fabian Vogt <fvogt@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20230914183831.587273-18-john.ogness@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2bcacc1c87ac ("serial: amba-pl011: Fix RX stall when DMA is used")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c | 87 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 86 insertions(+), 1 deletion(-)
+ drivers/tty/serial/amba-pl011.c | 72 ++++++++++++++++-----------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 5e75a4e3a5be5..5895397364aac 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -732,6 +732,78 @@ const u8 *btrfs_sb_fsid_ptr(const struct btrfs_super_block *sb)
- 	return has_metadata_uuid ? sb->metadata_uuid : sb->fsid;
- }
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index 362bbcdece0d7..16c7703110694 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -347,9 +347,9 @@ static int pl011_fifo_to_tty(struct uart_amba_port *uap)
+ 				flag = TTY_FRAME;
+ 		}
  
-+/*
-+ * We can have very weird soft links passed in.
-+ * One example is "/proc/self/fd/<fd>", which can be a soft link to
-+ * a block device.
-+ *
-+ * But it's never a good idea to use those weird names.
-+ * Here we check if the path (not following symlinks) is a good one inside
-+ * "/dev/".
-+ */
-+static bool is_good_dev_path(const char *dev_path)
-+{
-+	struct path path = { .mnt = NULL, .dentry = NULL };
-+	char *path_buf = NULL;
-+	char *resolved_path;
-+	bool is_good = false;
-+	int ret;
-+
-+	if (!dev_path)
-+		goto out;
-+
-+	path_buf = kmalloc(PATH_MAX, GFP_KERNEL);
-+	if (!path_buf)
-+		goto out;
-+
-+	/*
-+	 * Do not follow soft link, just check if the original path is inside
-+	 * "/dev/".
-+	 */
-+	ret = kern_path(dev_path, 0, &path);
-+	if (ret)
-+		goto out;
-+	resolved_path = d_path(&path, path_buf, PATH_MAX);
-+	if (IS_ERR(resolved_path))
-+		goto out;
-+	if (strncmp(resolved_path, "/dev/", strlen("/dev/")))
-+		goto out;
-+	is_good = true;
-+out:
-+	kfree(path_buf);
-+	path_put(&path);
-+	return is_good;
-+}
-+
-+static int get_canonical_dev_path(const char *dev_path, char *canonical)
-+{
-+	struct path path = { .mnt = NULL, .dentry = NULL };
-+	char *path_buf = NULL;
-+	char *resolved_path;
-+	int ret;
-+
-+	if (!dev_path) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	path_buf = kmalloc(PATH_MAX, GFP_KERNEL);
-+	if (!path_buf) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	ret = kern_path(dev_path, LOOKUP_FOLLOW, &path);
-+	if (ret)
-+		goto out;
-+	resolved_path = d_path(&path, path_buf, PATH_MAX);
-+	ret = strscpy(canonical, resolved_path, PATH_MAX);
-+out:
-+	kfree(path_buf);
-+	path_put(&path);
-+	return ret;
-+}
-+
- static bool is_same_device(struct btrfs_device *device, const char *new_path)
- {
- 	struct path old = { .mnt = NULL, .dentry = NULL };
-@@ -1419,12 +1491,23 @@ struct btrfs_device *btrfs_scan_one_device(const char *path, blk_mode_t flags,
- 	bool new_device_added = false;
- 	struct btrfs_device *device = NULL;
- 	struct file *bdev_file;
-+	char *canonical_path = NULL;
- 	u64 bytenr;
- 	dev_t devt;
- 	int ret;
+-		spin_unlock(&uap->port.lock);
++		uart_port_unlock(&uap->port);
+ 		sysrq = uart_handle_sysrq_char(&uap->port, ch & 255);
+-		spin_lock(&uap->port.lock);
++		uart_port_lock(&uap->port);
  
- 	lockdep_assert_held(&uuid_mutex);
+ 		if (!sysrq)
+ 			uart_insert_char(&uap->port, ch, UART011_DR_OE, ch, flag);
+@@ -544,7 +544,7 @@ static void pl011_dma_tx_callback(void *data)
+ 	unsigned long flags;
+ 	u16 dmacr;
  
-+	if (!is_good_dev_path(path)) {
-+		canonical_path = kmalloc(PATH_MAX, GFP_KERNEL);
-+		if (canonical_path) {
-+			ret = get_canonical_dev_path(path, canonical_path);
-+			if (ret < 0) {
-+				kfree(canonical_path);
-+				canonical_path = NULL;
-+			}
-+		}
-+	}
- 	/*
- 	 * Avoid an exclusive open here, as the systemd-udev may initiate the
- 	 * device scan which may race with the user's mount or mkfs command,
-@@ -1469,7 +1552,8 @@ struct btrfs_device *btrfs_scan_one_device(const char *path, blk_mode_t flags,
- 		goto free_disk_super;
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 	if (uap->dmatx.queued)
+ 		dma_unmap_single(dmatx->chan->device->dev, dmatx->dma,
+ 				dmatx->len, DMA_TO_DEVICE);
+@@ -565,7 +565,7 @@ static void pl011_dma_tx_callback(void *data)
+ 	if (!(dmacr & UART011_TXDMAE) || uart_tx_stopped(&uap->port) ||
+ 	    uart_circ_empty(&uap->port.state->xmit)) {
+ 		uap->dmatx.queued = false;
+-		spin_unlock_irqrestore(&uap->port.lock, flags);
++		uart_port_unlock_irqrestore(&uap->port, flags);
+ 		return;
  	}
  
--	device = device_list_add(path, disk_super, &new_device_added);
-+	device = device_list_add(canonical_path ? : path, disk_super,
-+				 &new_device_added);
- 	if (!IS_ERR(device) && new_device_added)
- 		btrfs_free_stale_devices(device->devt, device);
+@@ -576,7 +576,7 @@ static void pl011_dma_tx_callback(void *data)
+ 		 */
+ 		pl011_start_tx_pio(uap);
  
-@@ -1478,6 +1562,7 @@ struct btrfs_device *btrfs_scan_one_device(const char *path, blk_mode_t flags,
- 
- error_bdev_put:
- 	fput(bdev_file);
-+	kfree(canonical_path);
- 
- 	return device;
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
  }
+ 
+ /*
+@@ -1004,7 +1004,7 @@ static void pl011_dma_rx_callback(void *data)
+ 	 * routine to flush out the secondary DMA buffer while
+ 	 * we immediately trigger the next DMA job.
+ 	 */
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 	/*
+ 	 * Rx data can be taken by the UART interrupts during
+ 	 * the DMA irq handler. So we check the residue here.
+@@ -1020,7 +1020,7 @@ static void pl011_dma_rx_callback(void *data)
+ 	ret = pl011_dma_rx_trigger_dma(uap);
+ 
+ 	pl011_dma_rx_chars(uap, pending, lastbuf, false);
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ 	/*
+ 	 * Do this check after we picked the DMA chars so we don't
+ 	 * get some IRQ immediately from RX.
+@@ -1086,11 +1086,11 @@ static void pl011_dma_rx_poll(struct timer_list *t)
+ 	if (jiffies_to_msecs(jiffies - dmarx->last_jiffies)
+ 			> uap->dmarx.poll_timeout) {
+ 
+-		spin_lock_irqsave(&uap->port.lock, flags);
++		uart_port_lock_irqsave(&uap->port, &flags);
+ 		pl011_dma_rx_stop(uap);
+ 		uap->im |= UART011_RXIM;
+ 		pl011_write(uap->im, uap, REG_IMSC);
+-		spin_unlock_irqrestore(&uap->port.lock, flags);
++		uart_port_unlock_irqrestore(&uap->port, flags);
+ 
+ 		uap->dmarx.running = false;
+ 		dmaengine_terminate_all(rxchan);
+@@ -1186,10 +1186,10 @@ static void pl011_dma_shutdown(struct uart_amba_port *uap)
+ 	while (pl011_read(uap, REG_FR) & uap->vendor->fr_busy)
+ 		cpu_relax();
+ 
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 	uap->dmacr &= ~(UART011_DMAONERR | UART011_RXDMAE | UART011_TXDMAE);
+ 	pl011_write(uap->dmacr, uap, REG_DMACR);
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ 
+ 	if (uap->using_tx_dma) {
+ 		/* In theory, this should already be done by pl011_dma_flush_buffer */
+@@ -1400,9 +1400,9 @@ static void pl011_throttle_rx(struct uart_port *port)
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	pl011_stop_rx(port);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void pl011_enable_ms(struct uart_port *port)
+@@ -1420,7 +1420,7 @@ __acquires(&uap->port.lock)
+ {
+ 	pl011_fifo_to_tty(uap);
+ 
+-	spin_unlock(&uap->port.lock);
++	uart_port_unlock(&uap->port);
+ 	tty_flip_buffer_push(&uap->port.state->port);
+ 	/*
+ 	 * If we were temporarily out of DMA mode for a while,
+@@ -1445,7 +1445,7 @@ __acquires(&uap->port.lock)
+ #endif
+ 		}
+ 	}
+-	spin_lock(&uap->port.lock);
++	uart_port_lock(&uap->port);
+ }
+ 
+ static bool pl011_tx_char(struct uart_amba_port *uap, unsigned char c,
+@@ -1551,7 +1551,7 @@ static irqreturn_t pl011_int(int irq, void *dev_id)
+ 	unsigned int status, pass_counter = AMBA_ISR_PASS_LIMIT;
+ 	int handled = 0;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 	status = pl011_read(uap, REG_RIS) & uap->im;
+ 	if (status) {
+ 		do {
+@@ -1581,7 +1581,7 @@ static irqreturn_t pl011_int(int irq, void *dev_id)
+ 		handled = 1;
+ 	}
+ 
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ 
+ 	return IRQ_RETVAL(handled);
+ }
+@@ -1653,14 +1653,14 @@ static void pl011_break_ctl(struct uart_port *port, int break_state)
+ 	unsigned long flags;
+ 	unsigned int lcr_h;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 	lcr_h = pl011_read(uap, REG_LCRH_TX);
+ 	if (break_state == -1)
+ 		lcr_h |= UART01x_LCRH_BRK;
+ 	else
+ 		lcr_h &= ~UART01x_LCRH_BRK;
+ 	pl011_write(lcr_h, uap, REG_LCRH_TX);
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
+ #ifdef CONFIG_CONSOLE_POLL
+@@ -1799,7 +1799,7 @@ static void pl011_enable_interrupts(struct uart_amba_port *uap)
+ 	unsigned long flags;
+ 	unsigned int i;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 
+ 	/* Clear out any spuriously appearing RX interrupts */
+ 	pl011_write(UART011_RTIS | UART011_RXIS, uap, REG_ICR);
+@@ -1821,7 +1821,7 @@ static void pl011_enable_interrupts(struct uart_amba_port *uap)
+ 	if (!pl011_dma_rx_running(uap))
+ 		uap->im |= UART011_RXIM;
+ 	pl011_write(uap->im, uap, REG_IMSC);
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
+ static void pl011_unthrottle_rx(struct uart_port *port)
+@@ -1829,7 +1829,7 @@ static void pl011_unthrottle_rx(struct uart_port *port)
+ 	struct uart_amba_port *uap = container_of(port, struct uart_amba_port, port);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 
+ 	uap->im = UART011_RTIM;
+ 	if (!pl011_dma_rx_running(uap))
+@@ -1837,7 +1837,7 @@ static void pl011_unthrottle_rx(struct uart_port *port)
+ 
+ 	pl011_write(uap->im, uap, REG_IMSC);
+ 
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
+ static int pl011_startup(struct uart_port *port)
+@@ -1857,7 +1857,7 @@ static int pl011_startup(struct uart_port *port)
+ 
+ 	pl011_write(uap->vendor->ifls, uap, REG_IFLS);
+ 
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 
+ 	cr = pl011_read(uap, REG_CR);
+ 	cr &= UART011_CR_RTS | UART011_CR_DTR;
+@@ -1868,7 +1868,7 @@ static int pl011_startup(struct uart_port *port)
+ 
+ 	pl011_write(cr, uap, REG_CR);
+ 
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ 
+ 	/*
+ 	 * initialise the old status of the modem signals
+@@ -1929,12 +1929,12 @@ static void pl011_disable_uart(struct uart_amba_port *uap)
+ 	unsigned int cr;
+ 
+ 	uap->port.status &= ~(UPSTAT_AUTOCTS | UPSTAT_AUTORTS);
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 	cr = pl011_read(uap, REG_CR);
+ 	cr &= UART011_CR_RTS | UART011_CR_DTR;
+ 	cr |= UART01x_CR_UARTEN | UART011_CR_TXE;
+ 	pl011_write(cr, uap, REG_CR);
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ 
+ 	/*
+ 	 * disable break condition and fifos
+@@ -1946,14 +1946,14 @@ static void pl011_disable_uart(struct uart_amba_port *uap)
+ 
+ static void pl011_disable_interrupts(struct uart_amba_port *uap)
+ {
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 
+ 	/* mask all interrupts and clear all pending ones */
+ 	uap->im = 0;
+ 	pl011_write(uap->im, uap, REG_IMSC);
+ 	pl011_write(0xffff, uap, REG_ICR);
+ 
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ }
+ 
+ static void pl011_shutdown(struct uart_port *port)
+@@ -2098,7 +2098,7 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
+ 
+ 	bits = tty_get_frame_size(termios->c_cflag);
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	/*
+ 	 * Update the per-port timeout.
+@@ -2172,7 +2172,7 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
+ 	old_cr |= UART011_CR_RXE;
+ 	pl011_write(old_cr, uap, REG_CR);
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void
+@@ -2190,10 +2190,10 @@ sbsa_uart_set_termios(struct uart_port *port, struct ktermios *termios,
+ 	termios->c_cflag &= ~(CMSPAR | CRTSCTS);
+ 	termios->c_cflag |= CS8 | CLOCAL;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	uart_update_timeout(port, CS8, uap->fixed_baud);
+ 	pl011_setup_status_masks(port, termios);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static const char *pl011_type(struct uart_port *port)
+@@ -2332,9 +2332,9 @@ pl011_console_write(struct console *co, const char *s, unsigned int count)
+ 	if (uap->port.sysrq)
+ 		locked = 0;
+ 	else if (oops_in_progress)
+-		locked = spin_trylock(&uap->port.lock);
++		locked = uart_port_trylock(&uap->port);
+ 	else
+-		spin_lock(&uap->port.lock);
++		uart_port_lock(&uap->port);
+ 
+ 	/*
+ 	 *	First save the CR then disable the interrupts
+@@ -2360,7 +2360,7 @@ pl011_console_write(struct console *co, const char *s, unsigned int count)
+ 		pl011_write(old_cr, uap, REG_CR);
+ 
+ 	if (locked)
+-		spin_unlock(&uap->port.lock);
++		uart_port_unlock(&uap->port);
+ 	local_irq_restore(flags);
+ 
+ 	clk_disable(uap->clk);
 -- 
 2.43.0
 
