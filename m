@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-101022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEAE9EE9E7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:06:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD589EE9F6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:07:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E4AD283AD0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6622849AD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A73215F48;
-	Thu, 12 Dec 2024 15:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7A82156FF;
+	Thu, 12 Dec 2024 15:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZU85yPH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nrc0RuPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E732F20E034;
-	Thu, 12 Dec 2024 15:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6951F211476;
+	Thu, 12 Dec 2024 15:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015986; cv=none; b=AVWVhUew0kXbYni35FHaK0C+8mmWT1CZ91pRKKToJh7WCFlbwY3KhARQzNMawGut9GgMfBUvI0kIM/RSfw0Hfs2gxGY5DeASDhkL6TcGQx8aH9aoaAy6uJCB7KmYrld+vo59vn0uJCl2fth57aURSa0awtwn+fpeHqD9jAQ8vcc=
+	t=1734016024; cv=none; b=XnVCP8NVE2jYCfe00RT8Qmfog/oND6Qql6bZTmFYIjaEWSFsU4vDh6vu++DQsNPGYHd6ZPJDS5RxurL9URSaDIACyKdOGbvxbTilkMTS1q1lS/0/O6q5n7SBmX3B3+1NPyW6gQFfxLh8wwnVxIpN6WzxvD9dKDtL2l0nndhSgW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015986; c=relaxed/simple;
-	bh=ROBPTureRdXr9MelmfEQOD+IDjTPgOToocXmar7EFvs=;
+	s=arc-20240116; t=1734016024; c=relaxed/simple;
+	bh=mDvPE5ftZ6qlq6TMnmH51pv+6O3vdnJ8HvLOcuGQp2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgrJOvtFcPF8xtHeKUvGOqj+5YkBZONldGpk3MCWg6VInzhMFQJj+wmIrFz9oH8tlX7iA1kQ9/ivhXVkXyJ46xpvzX+xZ4K5WBTFcD0SG68iiw9sBmkPKrT3L7yGWZ01JbXzEgnHyt8myNsjXfwJwqodBGL3tV0vu1Eflm3nq/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZU85yPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8EAC4CECE;
-	Thu, 12 Dec 2024 15:06:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q6/3t+wWJ22WGa2M2maQY2J7bnqBfowEgiKY1zGtwFOyfvqGTG0B9o5PNPbJ/IokB+8KCxWvmck/Te9S3CL2+H9hLI0zuJyJzNRyZyT49xSIb89C5ZCQQ0Cs/gErK9c+9kBblVPB8QqGuiobjjD2JVkE/UeMVbm56eYhvOCbopE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nrc0RuPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A8DC4CECE;
+	Thu, 12 Dec 2024 15:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015985;
-	bh=ROBPTureRdXr9MelmfEQOD+IDjTPgOToocXmar7EFvs=;
+	s=korg; t=1734016024;
+	bh=mDvPE5ftZ6qlq6TMnmH51pv+6O3vdnJ8HvLOcuGQp2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZU85yPH0a0Aqjs4r9Zu/oQWyjGyelyk+4e0daMYzBWhQI7OOHpnuTAvRtYQ2yNjq
-	 2Zsmoh7P3fsn036jVaZDYKGtBKKl6lfE675ePIxc1RT+d16qxLLN4b43WliBfQXV5S
-	 g7fmTAE3nCJkUvBrswOAR5Ou6JLaZr3RcdUfAmvE=
+	b=Nrc0RuPDqAmCQZUJI2PadP4JkSoC8eUy+iVbSds5SS3nj+t/VF4qk+GIKOGhAPIix
+	 0dqMB+ctBGYgRdvEfkFduek7CmEvLK42+7pk00vBKxH0Fo0izmRpWBnu6lElYuDW2T
+	 7HRDLd3YAFchQocRemjhU3/662644uSrh5MxI5/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/466] spi: mpc52xx: Add cancel_work_sync before module remove
-Date: Thu, 12 Dec 2024 15:54:21 +0100
-Message-ID: <20241212144310.451476807@linuxfoundation.org>
+Subject: [PATCH 6.12 093/466] ASoC: SOF: ipc3-topology: Convert the topology pin index to ALH dai index
+Date: Thu, 12 Dec 2024 15:54:22 +0100
+Message-ID: <20241212144310.490616079@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -60,45 +64,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 984836621aad98802d92c4a3047114cf518074c8 ]
+[ Upstream commit e9db1b551774037ebe39dde4a658d89ba95e260b ]
 
-If we remove the module which will call mpc52xx_spi_remove
-it will free 'ms' through spi_unregister_controller.
-while the work ms->work will be used. The sequence of operations
-that may lead to a UAF bug.
+Intel SoundWire machine driver always uses Pin number 2 and above.
+Currently, the pin number is used as the FW DAI index directly. As a
+result, FW DAI 0 and 1 are never used. That worked fine because we use
+up to 2 DAIs in a SDW link. Convert the topology pin index to ALH dai
+index, the mapping is using 2-off indexing, iow, pin #2 is ALH dai #0.
 
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in mpc52xx_spi_remove.
+The issue exists since beginning. And the Fixes tag is the first commit
+that this commit can be applied.
 
-Fixes: ca632f556697 ("spi: reorganize drivers")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/1f16f8ae0e50ca9adb1dc849bf2ac65a40c9ceb9.1732783000.git.xiaopei01@kylinos.cn
+Fixes: b66bfc3a9810 ("ASoC: SOF: sof-audio: Fix broken early bclk feature for SSP")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://patch.msgid.link/20241127092955.20026-1-yung-chuan.liao@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 6d544ea21d36 ("ASoC: SOF: ipc3-topology: fix resource leaks in sof_ipc3_widget_setup_comp_dai()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mpc52xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/sof/ipc3-topology.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index d5ac60c135c20..159f359d7501a 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -520,6 +520,7 @@ static void mpc52xx_spi_remove(struct platform_device *op)
- 	struct mpc52xx_spi *ms = spi_controller_get_devdata(host);
- 	int i;
+diff --git a/sound/soc/sof/ipc3-topology.c b/sound/soc/sof/ipc3-topology.c
+index be61e377e59e0..c2fce554a674b 100644
+--- a/sound/soc/sof/ipc3-topology.c
++++ b/sound/soc/sof/ipc3-topology.c
+@@ -20,6 +20,9 @@
+ /* size of tplg ABI in bytes */
+ #define SOF_IPC3_TPLG_ABI_SIZE 3
  
-+	cancel_work_sync(&ms->work);
- 	free_irq(ms->irq0, ms);
- 	free_irq(ms->irq1, ms);
++/* Base of SOF_DAI_INTEL_ALH, this should be aligned with SOC_SDW_INTEL_BIDIR_PDI_BASE */
++#define INTEL_ALH_DAI_INDEX_BASE 2
++
+ struct sof_widget_data {
+ 	int ctrl_type;
+ 	int ipc_cmd;
+@@ -1594,6 +1597,17 @@ static int sof_ipc3_widget_setup_comp_dai(struct snd_sof_widget *swidget)
+ 	if (ret < 0)
+ 		goto free;
  
++	/* Subtract the base to match the FW dai index. */
++	if (comp_dai->type == SOF_DAI_INTEL_ALH) {
++		if (comp_dai->dai_index < INTEL_ALH_DAI_INDEX_BASE) {
++			dev_err(sdev->dev,
++				"Invalid ALH dai index %d, only Pin numbers >= %d can be used\n",
++				comp_dai->dai_index, INTEL_ALH_DAI_INDEX_BASE);
++			return -EINVAL;
++		}
++		comp_dai->dai_index -= INTEL_ALH_DAI_INDEX_BASE;
++	}
++
+ 	dev_dbg(scomp->dev, "dai %s: type %d index %d\n",
+ 		swidget->widget->name, comp_dai->type, comp_dai->dai_index);
+ 	sof_dbg_comp_config(scomp, &comp_dai->config);
+@@ -2167,8 +2181,16 @@ static int sof_ipc3_dai_config(struct snd_sof_dev *sdev, struct snd_sof_widget *
+ 	case SOF_DAI_INTEL_ALH:
+ 		if (data) {
+ 			/* save the dai_index during hw_params and reuse it for hw_free */
+-			if (flags & SOF_DAI_CONFIG_FLAGS_HW_PARAMS)
+-				config->dai_index = data->dai_index;
++			if (flags & SOF_DAI_CONFIG_FLAGS_HW_PARAMS) {
++				/* Subtract the base to match the FW dai index. */
++				if (data->dai_index < INTEL_ALH_DAI_INDEX_BASE) {
++					dev_err(sdev->dev,
++						"Invalid ALH dai index %d, only Pin numbers >= %d can be used\n",
++						config->dai_index, INTEL_ALH_DAI_INDEX_BASE);
++					return -EINVAL;
++				}
++				config->dai_index = data->dai_index - INTEL_ALH_DAI_INDEX_BASE;
++			}
+ 			config->alh.stream_id = data->dai_data;
+ 		}
+ 		break;
 -- 
 2.43.0
 
