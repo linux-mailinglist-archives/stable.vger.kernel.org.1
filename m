@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C119EF522
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6339EF8F2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EF36170E36
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:08:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD4328ED83
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E56A20969B;
-	Thu, 12 Dec 2024 17:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5202253FD;
+	Thu, 12 Dec 2024 17:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZoxPK0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iip6SGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE88A4F218;
-	Thu, 12 Dec 2024 17:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAE8215041;
+	Thu, 12 Dec 2024 17:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023216; cv=none; b=Hkjbip6hJoDZIkS5eyRYovaE266mp2i1B+ybMW9UGTs98klVheLD/wvyjfiV1JEcs5xvug/LzAfCIheZyy4pisd8K8ZBxmxbGsmCxStpTOva0FI0OLHQoy1gQbgWqgDoPDccSVAOJR+QDCjX46VqBb2L/VucXovWtCsc4sbdcXY=
+	t=1734025471; cv=none; b=KfgOiG80QgZ2wlUa0U02ejfd/OgiEgIAV22GcQdq5ATj/WcgCnNBH5sW4bBB8BrslDtoh6936sBakaW1Ddr7owX5CvaeWEEgM9Qf2zNv+PsQp0C9Ljkoex3I19TxDO6qcvcUymHmMPKWT8M1QSCBKPKCvXyG10N9t0GO7JGHJqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023216; c=relaxed/simple;
-	bh=eixiTGO69aJeAg9z3nJfvM+zKEAfo2itO0/DfXANuXc=;
+	s=arc-20240116; t=1734025471; c=relaxed/simple;
+	bh=CCwzZ5lyGnP1rLLJ8CnVuCiBkWlmtT+x9pe+iO0LoYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=emg3JOBytMhr1R0ORArK5wTGUGyVL1C9kei5wVpRLPGX8ucGgIBy3kNXYHB4qDpgMB1hgi9xMAe5Q9G+GFgXy1LiqW/xq+t2nBI4xLp7znOoksMMXomS3WjiVI55U8/3K4VFa5adOCpc5MsmlW1eQqrz/Zqj4CjAE6sSc6+c2Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZoxPK0k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40285C4CECE;
-	Thu, 12 Dec 2024 17:06:56 +0000 (UTC)
+	 MIME-Version; b=jAZupP0C9wbHCElwUGHLthR6ReGsJst1QKP9okE7J8v7vhMpCGqF8+fjNpiF7Db7Y4+P1JNssdAPelWUfp1BB1kl5GP6wXwZT1dxF6DFFdm/X6KoiSP0c+l0s10gdmZOzpmoIkIYYRKiHiSqmCg4rSw1LgUGiM7k9XnlsI+/Q9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iip6SGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D958C4CECE;
+	Thu, 12 Dec 2024 17:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023216;
-	bh=eixiTGO69aJeAg9z3nJfvM+zKEAfo2itO0/DfXANuXc=;
+	s=korg; t=1734025470;
+	bh=CCwzZ5lyGnP1rLLJ8CnVuCiBkWlmtT+x9pe+iO0LoYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZoxPK0kbAiHEmyOXLpUYGFJu6Nmsqmo/eNtD+oimqNjXQbodaWrdQWItqUNJyfaM
-	 UZl4/KWmNK01X64WDDqPcm0PjninDHiyzhWH6hJZsD3xl6RMjjyYucHiJS+rlC0Gm4
-	 dcvBlGhc7F0qPAW7Oll5/OuKcnHd8fk0SgBA8F3Q=
+	b=1iip6SGQNIEHQbW9Ym4RD31UlthJPqvPqlZhtRNJYydFWSbPCocWccjKlFRP1MH9m
+	 07rLdtwkcfr2TFieFb3a9oFa/SuJ8ObemafRqMYph7SqoQYwlyWN7EJt262OKXYo8P
+	 IffjXy0kcscfmivPCSptsgMN+QmT8wpOPFvp3Zss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 5.15 462/565] dma-buf: fix dma_fence_array_signaled v4
+	Johan Hovold <johan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 139/321] staging: greybus: uart: clean up TIOCGSERIAL
 Date: Thu, 12 Dec 2024 16:00:57 +0100
-Message-ID: <20241212144329.992695767@linuxfoundation.org>
+Message-ID: <20241212144235.470358291@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +59,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 78ac1c3558810486d90aa533b0039aa70487a3da upstream.
+[ Upstream commit d38be702452137fa82a56ff7cc577d829add1637 ]
 
-The function silently assumed that signaling was already enabled for the
-dma_fence_array. This meant that without enabling signaling first we would
-never see forward progress.
+TIOCSSERIAL is a horrid, underspecified, legacy interface which for most
+serial devices is only useful for setting the close_delay and
+closing_wait parameters.
 
-Fix that by falling back to testing each individual fence when signaling
-isn't enabled yet.
+The xmit_fifo_size parameter could be used to set the hardware transmit
+fifo size of a legacy UART when it could not be detected, but the
+interface is limited to eight bits and should be left unset when not
+used.
 
-v2: add the comment suggested by Boris why this is done this way
-v3: fix the underflow pointed out by Tvrtko
-v4: atomic_read_acquire() as suggested by Tvrtko
+Similarly, baud_base could be used to set the UART base clock when it
+could not be detected but might as well be left unset when it is not
+known.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Tested-by: Chia-I Wu <olvaffe@gmail.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12094
-Cc: <stable@vger.kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241112121925.18464-1-christian.koenig@amd.com
+The type parameter could be used to set the UART type, but is
+better left unspecified (type unknown) when it isn't used.
+
+Note that some applications have historically expected TIOCGSERIAL to be
+implemented, but judging from the Debian sources, the port type not
+being PORT_UNKNOWN is only used to check for the existence of legacy
+serial ports (ttySn). Notably USB serial drivers like ftdi_sio have been
+using PORT_UNKNOWN for twenty years without any problems.
+
+Drop the bogus values provided by the greybus implementation.
+
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20210407102334.32361-8-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: fe0ebeafc3b7 ("staging: greybus: uart: Fix atomicity violation in get_serial_info()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/dma-fence-array.c |   28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ drivers/staging/greybus/uart.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/dma-buf/dma-fence-array.c
-+++ b/drivers/dma-buf/dma-fence-array.c
-@@ -103,10 +103,36 @@ static bool dma_fence_array_enable_signa
- static bool dma_fence_array_signaled(struct dma_fence *fence)
+diff --git a/drivers/staging/greybus/uart.c b/drivers/staging/greybus/uart.c
+index 0e6bebc20695d..b8da6dc5d4d4d 100644
+--- a/drivers/staging/greybus/uart.c
++++ b/drivers/staging/greybus/uart.c
+@@ -621,10 +621,7 @@ static int get_serial_info(struct tty_struct *tty,
  {
- 	struct dma_fence_array *array = to_dma_fence_array(fence);
-+	int num_pending;
-+	unsigned int i;
+ 	struct gb_tty *gb_tty = tty->driver_data;
  
--	if (atomic_read(&array->num_pending) > 0)
-+	/*
-+	 * We need to read num_pending before checking the enable_signal bit
-+	 * to avoid racing with the enable_signaling() implementation, which
-+	 * might decrement the counter, and cause a partial check.
-+	 * atomic_read_acquire() pairs with atomic_dec_and_test() in
-+	 * dma_fence_array_enable_signaling()
-+	 *
-+	 * The !--num_pending check is here to account for the any_signaled case
-+	 * if we race with enable_signaling(), that means the !num_pending check
-+	 * in the is_signalling_enabled branch might be outdated (num_pending
-+	 * might have been decremented), but that's fine. The user will get the
-+	 * right value when testing again later.
-+	 */
-+	num_pending = atomic_read_acquire(&array->num_pending);
-+	if (test_bit(DMA_FENCE_FLAG_ENABLE_SIGNAL_BIT, &array->base.flags)) {
-+		if (num_pending <= 0)
-+			goto signal;
- 		return false;
-+	}
- 
-+	for (i = 0; i < array->num_fences; ++i) {
-+		if (dma_fence_is_signaled(array->fences[i]) && !--num_pending)
-+			goto signal;
-+	}
-+	return false;
-+
-+signal:
- 	dma_fence_array_clear_pending_error(array);
- 	return true;
- }
+-	ss->type = PORT_16550A;
+ 	ss->line = gb_tty->minor;
+-	ss->xmit_fifo_size = 16;
+-	ss->baud_base = 9600;
+ 	ss->close_delay = jiffies_to_msecs(gb_tty->port.close_delay) / 10;
+ 	ss->closing_wait =
+ 		gb_tty->port.closing_wait == ASYNC_CLOSING_WAIT_NONE ?
+-- 
+2.43.0
+
 
 
 
