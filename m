@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-101120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E299EEA68
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F5D9EF07F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20A17281128
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49DC29353E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787CC216E29;
-	Thu, 12 Dec 2024 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E24521E086;
+	Thu, 12 Dec 2024 16:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGkWZ5QF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7TJbZ8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3609721504F;
-	Thu, 12 Dec 2024 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF8520969B;
+	Thu, 12 Dec 2024 16:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016429; cv=none; b=KZCynmbEw+KCFcU26/+paxYXe+YETMp1YhKnx8eSq9y16QJCQtIFqFdQ7tm5U3hSvBoFLnoELAkNmCWCNnQbdt75UA+bcDaW023YDV7QgnRFkqSoOMlgXHBzzZtgwkpND1aqkj2hX2PAAP8xCUMO1yNOdN9EpqEhPJv91as2tgw=
+	t=1734020262; cv=none; b=Cqdskyg1j1wjWyOGgW6EZKkLsqctcGDI4olAk1IXVrRicnzN9uTZXfvLXiHabxtYtrtm28qmf0l+ck7GNkg3MMqgmglaLaWI8NDyTnQctmrK6Mojqt+DkFykIelEVEnPP1fSd/tV3WydHdoXSiDuawStcEKkEDpeWqks1nANMVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016429; c=relaxed/simple;
-	bh=UXtYjpkSQIedFY2Nn21bINHNkJxKk6po8mHy5oKGO3c=;
+	s=arc-20240116; t=1734020262; c=relaxed/simple;
+	bh=3/zsq5+YcGEnbWBsovkix6w458X3zCmb7SjXTtqOyxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WjSIb+HleWSMdAvAFguJ4+MdVCBgDHXV/vMkrk6pJB/AOBIoZNBdM3XGEPjq5TjLw1yxTV2bH58KFxCek3Onaew6S2fdZqIhDxS5F6dsF99oIxcrlI7C/2qhy4eJrZq/3/dTMT0MClXLBi7wdQ/QedLAbl4/iBmED6jKmH4iTBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGkWZ5QF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80835C4CEE3;
-	Thu, 12 Dec 2024 15:13:48 +0000 (UTC)
+	 MIME-Version; b=pdO4mQHabtWP1PGLvwOXuezLa6q+XQDGMlAaX/kV+/gq85G6UnMwMviC9FxqL8wotRg1ot21n3cfcjYlQWhZZcoHQrqv416sypalTUtKSjbCGX7k72OVq9gkRKMr5BtCWfIDHh38bFKdSz+bDp6UXpJPluIIcjT3wjF1jeyAMRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7TJbZ8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD0EC4CECE;
+	Thu, 12 Dec 2024 16:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016429;
-	bh=UXtYjpkSQIedFY2Nn21bINHNkJxKk6po8mHy5oKGO3c=;
+	s=korg; t=1734020262;
+	bh=3/zsq5+YcGEnbWBsovkix6w458X3zCmb7SjXTtqOyxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGkWZ5QFsmJfnBPIGk/go8LIRff+J7+Iqt3VGdR5O/rPFYDyej44+4PWMfS69CAip
-	 1glX+uUPQQ0QJITAcin7gR2HQNl+oTPbOr2vhWrdyJL7Xlq5691qQEWEFbh97nmty4
-	 ZVX5eOenJPW6IhsPapydtjeDj2NL9Lj2VH1wgsKE=
+	b=p7TJbZ8vdVBKCB6akt4+oR+FyQV/zLHVzQFDQp9QskYt8KZWvSEW5FRFCR1JP/U6a
+	 Qwy4qjzhZ63/gQRaONi6Lil/KEoGIfaFpA4BSVlzjeIjKvXeFNsWq90w6ohVvr5H41
+	 9qktag91ZRNCzai7Isz+FWJT5E1hSCKDGEPLNODE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Radu Rendec <rrendec@redhat.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Andreas Herrmann <aherrmann@suse.de>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.12 166/466] cacheinfo: Allocate memory during CPU hotplug if not done from the primary CPU
+	Matthew McClain <mmcclain@noprivs.com>,
+	Sai Kumar Cholleti <skmr537@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.1 390/772] gpio: exar: set value when external pull-up or pull-down is present
 Date: Thu, 12 Dec 2024 15:55:35 +0100
-Message-ID: <20241212144313.361489037@linuxfoundation.org>
+Message-ID: <20241212144406.021713835@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+From: Sai Kumar Cholleti <skmr537@gmail.com>
 
-commit b3fce429a1e030b50c1c91351d69b8667eef627b upstream.
+commit 72cef64180de04a7b055b4773c138d78f4ebdb77 upstream.
 
-Commit
+Setting GPIO direction = high, sometimes results in GPIO value = 0.
 
-  5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU")
+If a GPIO is pulled high, the following construction results in the
+value being 0 when the desired value is 1:
 
-adds functionality that architectures can use to optionally allocate and
-build cacheinfo early during boot. Commit
+$ echo "high" > /sys/class/gpio/gpio336/direction
+$ cat /sys/class/gpio/gpio336/value
+0
 
-  6539cffa9495 ("cacheinfo: Add arch specific early level initializer")
+Before the GPIO direction is changed from an input to an output,
+exar_set_value() is called with value = 1, but since the GPIO is an
+input when exar_set_value() is called, _regmap_update_bits() reads a 1
+due to an external pull-up.  regmap_set_bits() sets force_write =
+false, so the value (1) is not written.  When the direction is then
+changed, the GPIO becomes an output with the value of 0 (the hardware
+default).
 
-lets secondary CPUs correct (and reallocate memory) cacheinfo data if
-needed.
+regmap_write_bits() sets force_write = true, so the value is always
+written by exar_set_value() and an external pull-up doesn't affect the
+outcome of setting direction = high.
 
-If the early build functionality is not used and cacheinfo does not need
-correction, memory for cacheinfo is never allocated. x86 does not use
-the early build functionality. Consequently, during the cacheinfo CPU
-hotplug callback, last_level_cache_is_valid() attempts to dereference
-a NULL pointer:
+The same can happen when a GPIO is pulled low, but the scenario is a
+little more complicated.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000100
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEPMT SMP NOPTI
-  CPU: 0 PID 19 Comm: cpuhp/0 Not tainted 6.4.0-rc2 #1
-  RIP: 0010: last_level_cache_is_valid+0x95/0xe0a
+$ echo high > /sys/class/gpio/gpio351/direction
+$ cat /sys/class/gpio/gpio351/value
+1
 
-Allocate memory for cacheinfo during the cacheinfo CPU hotplug callback
-if not done earlier.
+$ echo in > /sys/class/gpio/gpio351/direction
+$ cat /sys/class/gpio/gpio351/value
+0
 
-Moreover, before determining the validity of the last-level cache info,
-ensure that it has been allocated. Simply checking for non-zero
-cache_leaves() is not sufficient, as some architectures (e.g., Intel
-processors) have non-zero cache_leaves() before allocation.
+$ echo low > /sys/class/gpio/gpio351/direction
+$ cat /sys/class/gpio/gpio351/value
+1
 
-Dereferencing NULL cacheinfo can occur in update_per_cpu_data_slice_size().
-This function iterates over all online CPUs. However, a CPU may have come
-online recently, but its cacheinfo may not have been allocated yet.
-
-While here, remove an unnecessary indentation in allocate_cache_info().
-
-  [ bp: Massage. ]
-
-Fixes: 6539cffa9495 ("cacheinfo: Add arch specific early level initializer")
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Radu Rendec <rrendec@redhat.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Reviewed-by: Andreas Herrmann <aherrmann@suse.de>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Cc: stable@vger.kernel.org # 6.3+
-Link: https://lore.kernel.org/r/20241128002247.26726-2-ricardo.neri-calderon@linux.intel.com
+Fixes: 36fb7218e878 ("gpio: exar: switch to using regmap")
+Co-developed-by: Matthew McClain <mmcclain@noprivs.com>
+Signed-off-by: Matthew McClain <mmcclain@noprivs.com>
+Signed-off-by: Sai Kumar Cholleti <skmr537@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20241105071523.2372032-1-skmr537@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/cacheinfo.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpio/gpio-exar.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -58,7 +58,7 @@ bool last_level_cache_is_valid(unsigned
- {
- 	struct cacheinfo *llc;
+--- a/drivers/gpio/gpio-exar.c
++++ b/drivers/gpio/gpio-exar.c
+@@ -99,11 +99,13 @@ static void exar_set_value(struct gpio_c
+ 	struct exar_gpio_chip *exar_gpio = gpiochip_get_data(chip);
+ 	unsigned int addr = exar_offset_to_lvl_addr(exar_gpio, offset);
+ 	unsigned int bit = exar_offset_to_bit(exar_gpio, offset);
++	unsigned int bit_value = value ? BIT(bit) : 0;
  
--	if (!cache_leaves(cpu))
-+	if (!cache_leaves(cpu) || !per_cpu_cacheinfo(cpu))
- 		return false;
- 
- 	llc = per_cpu_cacheinfo_idx(cpu, cache_leaves(cpu) - 1);
-@@ -463,11 +463,9 @@ int __weak populate_cache_leaves(unsigne
- 	return -ENOENT;
+-	if (value)
+-		regmap_set_bits(exar_gpio->regmap, addr, BIT(bit));
+-	else
+-		regmap_clear_bits(exar_gpio->regmap, addr, BIT(bit));
++	/*
++	 * regmap_write_bits() forces value to be written when an external
++	 * pull up/down might otherwise indicate value was already set.
++	 */
++	regmap_write_bits(exar_gpio->regmap, addr, BIT(bit), bit_value);
  }
  
--static inline
--int allocate_cache_info(int cpu)
-+static inline int allocate_cache_info(int cpu)
- {
--	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),
--					 sizeof(struct cacheinfo), GFP_ATOMIC);
-+	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu), sizeof(struct cacheinfo), GFP_ATOMIC);
- 	if (!per_cpu_cacheinfo(cpu)) {
- 		cache_leaves(cpu) = 0;
- 		return -ENOMEM;
-@@ -539,7 +537,11 @@ static inline int init_level_allocate_ci
- 	 */
- 	ci_cacheinfo(cpu)->early_ci_levels = false;
- 
--	if (cache_leaves(cpu) <= early_leaves)
-+	/*
-+	 * Some architectures (e.g., x86) do not use early initialization.
-+	 * Allocate memory now in such case.
-+	 */
-+	if (cache_leaves(cpu) <= early_leaves && per_cpu_cacheinfo(cpu))
- 		return 0;
- 
- 	kfree(per_cpu_cacheinfo(cpu));
+ static int exar_direction_output(struct gpio_chip *chip, unsigned int offset,
 
 
 
