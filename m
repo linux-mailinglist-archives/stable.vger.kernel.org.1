@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F299EF81E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833D29EF9E1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52D4A17CB9F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24BE11899F77
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2D822333B;
-	Thu, 12 Dec 2024 17:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A81222333B;
+	Thu, 12 Dec 2024 17:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrSuIacJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTcfTRQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85F5222D75;
-	Thu, 12 Dec 2024 17:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3D9221D93;
+	Thu, 12 Dec 2024 17:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024809; cv=none; b=hFRYD/6hUNxVsv+eL3by7R0z2WwmDFO9VBcOkFuVswU9yJ+PATuBDe9eTI5dlfywmXdIOLAg7+V+bz0BY996EYgQ/xQXoXvE/WgJbNV5Niu/Q5NdY4weeIeH2B/eCF6KpgYtH5mN/yl9eRBVNyjdcoxo6SpWkFhJEo9LxWRtk+c=
+	t=1734025763; cv=none; b=NjZXe1bYRJi6VGPNmK/5Z0Poyj+CR+WVJflA81+fymCV4sCXyRE/NXSYZVD7cM3kxh7b5HB/ssJDAVusVlULInnV3xRt3OGIBryegIKvN9/CgMZH+fgD/eyHtymNFr1P1FeSD52xOVFK5zLRL74bYTJ1FA4dr0RsX/NQKEeLZjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024809; c=relaxed/simple;
-	bh=fE3VQ0effqA/rDHrQC3wR4os9ANHP5GXyq9J/8ekGiQ=;
+	s=arc-20240116; t=1734025763; c=relaxed/simple;
+	bh=DJOitZEV/tEAL2dlk3MsD/UFTDz158h1yQXg0SF/0Xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGysBmPOkgAlEyFfE6MfzbX7T8pO2U4ZTXrVscEJ8OftlJexkeM1SZlC8scCFFfdShAODByuD84TASG3EiVE9rdEakuqfqpe1iwpg64K7Ddb4nagThZUGXnYcjfGtX3RGwcpEhqDmuaOdBo8VRHzF2PE6o5CpA5SZ16NrImML9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrSuIacJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA43C4CECE;
-	Thu, 12 Dec 2024 17:33:27 +0000 (UTC)
+	 MIME-Version; b=kx0MnUrieW+s4pJ1P/N41jCL2fIC8WQ98bkTOFfYftuA5gpk8EbdyF/o2Pbg3vTTa0j4uUlIUA54j7/KDElmN4Tq52EcNhG4Lv1M7sHNZY1Jdo61MycOoagugFsbZnRmbD/QPwUTxPa6OQ9xO/It8ah8g9pTm5e7LtPsf/Fchpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTcfTRQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73452C4CECE;
+	Thu, 12 Dec 2024 17:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024808;
-	bh=fE3VQ0effqA/rDHrQC3wR4os9ANHP5GXyq9J/8ekGiQ=;
+	s=korg; t=1734025762;
+	bh=DJOitZEV/tEAL2dlk3MsD/UFTDz158h1yQXg0SF/0Xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrSuIacJm0z3E5cNuPxyAKwv/JafAbeEF3FrNYp1WwCqlDsBnsZIi13uIffPUEjhU
-	 36/NDX+igPH/VLseNZJzkZS4y0w4MxWy9btHs9ktyEOwqTCwoEXAA9pQMeUFCwSLba
-	 YKwnux6GY/1smcc+HRgg1XlED9mrC5+WEt2O9xeA=
+	b=TTcfTRQAbRIUkq7lJeu0UG1gLMaUPlRKls13LETV9/GGOd+ttBwHECILTJOvF4eEX
+	 b2E8+6efK0L5OF8EXFh465YwGRRV70bDqt12XoMXklu9GH4JOWnOGfisJNqWZGstXt
+	 z/fc1ci6CaYjcqt5u6fE/a0keQpsdr/RvQXRZ4kE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Juergen Gross <jgross@suse.com>,
+	SeongJae Park <sjpark@amazon.de>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 419/459] scsi: hisi_sas: Add cond_resched() for no forced preemption model
+Subject: [PATCH 5.4 239/321] xenbus/backend: Protect xenbus callback with lock
 Date: Thu, 12 Dec 2024 16:02:37 +0100
-Message-ID: <20241212144310.314261340@linuxfoundation.org>
+Message-ID: <20241212144239.417053092@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: SeongJae Park <sjpark@amazon.de>
 
-[ Upstream commit 2233c4a0b948211743659b24c13d6bd059fa75fc ]
+[ Upstream commit 060eabe8fbe726aca341b518366da4d79e338100 ]
 
-For no forced preemption model kernel, in the scenario where the
-expander is connected to 12 high performance SAS SSDs, the following
-call trace may occur:
+A driver's 'reclaim_memory' callback can race with 'probe' or 'remove'
+because it will be called whenever memory pressure is detected.  To
+avoid such race, this commit embeds a spinlock in each 'xenbus_device'
+and make 'xenbus' to hold the lock while the corresponded callbacks are
+running.
 
-[  214.409199][  C240] watchdog: BUG: soft lockup - CPU#240 stuck for 22s! [irq/149-hisi_sa:3211]
-[  214.568533][  C240] pstate: 60400009 (nZCv daif +PAN -UAO -TCO BTYPE=--)
-[  214.575224][  C240] pc : fput_many+0x8c/0xdc
-[  214.579480][  C240] lr : fput+0x1c/0xf0
-[  214.583302][  C240] sp : ffff80002de2b900
-[  214.587298][  C240] x29: ffff80002de2b900 x28: ffff1082aa412000
-[  214.593291][  C240] x27: ffff3062a0348c08 x26: ffff80003a9f6000
-[  214.599284][  C240] x25: ffff1062bbac5c40 x24: 0000000000001000
-[  214.605277][  C240] x23: 000000000000000a x22: 0000000000000001
-[  214.611270][  C240] x21: 0000000000001000 x20: 0000000000000000
-[  214.617262][  C240] x19: ffff3062a41ae580 x18: 0000000000010000
-[  214.623255][  C240] x17: 0000000000000001 x16: ffffdb3a6efe5fc0
-[  214.629248][  C240] x15: ffffffffffffffff x14: 0000000003ffffff
-[  214.635241][  C240] x13: 000000000000ffff x12: 000000000000029c
-[  214.641234][  C240] x11: 0000000000000006 x10: ffff80003a9f7fd0
-[  214.647226][  C240] x9 : ffffdb3a6f0482fc x8 : 0000000000000001
-[  214.653219][  C240] x7 : 0000000000000002 x6 : 0000000000000080
-[  214.659212][  C240] x5 : ffff55480ee9b000 x4 : fffffde7f94c6554
-[  214.665205][  C240] x3 : 0000000000000002 x2 : 0000000000000020
-[  214.671198][  C240] x1 : 0000000000000021 x0 : ffff3062a41ae5b8
-[  214.677191][  C240] Call trace:
-[  214.680320][  C240]  fput_many+0x8c/0xdc
-[  214.684230][  C240]  fput+0x1c/0xf0
-[  214.687707][  C240]  aio_complete_rw+0xd8/0x1fc
-[  214.692225][  C240]  blkdev_bio_end_io+0x98/0x140
-[  214.696917][  C240]  bio_endio+0x160/0x1bc
-[  214.701001][  C240]  blk_update_request+0x1c8/0x3bc
-[  214.705867][  C240]  scsi_end_request+0x3c/0x1f0
-[  214.710471][  C240]  scsi_io_completion+0x7c/0x1a0
-[  214.715249][  C240]  scsi_finish_command+0x104/0x140
-[  214.720200][  C240]  scsi_softirq_done+0x90/0x180
-[  214.724892][  C240]  blk_mq_complete_request+0x5c/0x70
-[  214.730016][  C240]  scsi_mq_done+0x48/0xac
-[  214.734194][  C240]  sas_scsi_task_done+0xbc/0x16c [libsas]
-[  214.739758][  C240]  slot_complete_v3_hw+0x260/0x760 [hisi_sas_v3_hw]
-[  214.746185][  C240]  cq_thread_v3_hw+0xbc/0x190 [hisi_sas_v3_hw]
-[  214.752179][  C240]  irq_thread_fn+0x34/0xa4
-[  214.756435][  C240]  irq_thread+0xc4/0x130
-[  214.760520][  C240]  kthread+0x108/0x13c
-[  214.764430][  C240]  ret_from_fork+0x10/0x18
-
-This is because in the hisi_sas driver, both the hardware interrupt
-handler and the interrupt thread are executed on the same CPU. In the
-performance test scenario, function irq_wait_for_interrupt() will always
-return 0 if lots of interrupts occurs and the CPU will be continuously
-consumed. As a result, the CPU cannot run the watchdog thread. When the
-watchdog time exceeds the specified time, call trace occurs.
-
-To fix it, add cond_resched() to execute the watchdog thread.
-
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20241008021822.2617339-8-liyihang9@huawei.com
-Reviewed-by: Xiang Chen <chenxiang66@hisilicon.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: SeongJae Park <sjpark@amazon.de>
+Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Stable-dep-of: afc545da381b ("xen: Fix the issue of resource not being properly released in xenbus_dev_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/xen/xenbus/xenbus_probe.c         |  8 +++++++-
+ drivers/xen/xenbus/xenbus_probe_backend.c | 10 ++++++++--
+ include/xen/xenbus.h                      |  1 +
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index f03a09c9e865e..fdd765d41f190 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -2381,6 +2381,7 @@ static irqreturn_t  cq_thread_v3_hw(int irq_no, void *p)
- 	/* update rd_point */
- 	cq->rd_point = rd_point;
- 	hisi_sas_write32(hisi_hba, COMPL_Q_0_RD_PTR + (0x14 * queue), rd_point);
-+	cond_resched();
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 9215099caad61..1ad5bc9dd6cc4 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -240,7 +240,9 @@ int xenbus_dev_probe(struct device *_dev)
+ 		goto fail;
+ 	}
  
- 	return IRQ_HANDLED;
++	spin_lock(&dev->reclaim_lock);
+ 	err = drv->probe(dev, id);
++	spin_unlock(&dev->reclaim_lock);
+ 	if (err)
+ 		goto fail_put;
+ 
+@@ -270,8 +272,11 @@ int xenbus_dev_remove(struct device *_dev)
+ 
+ 	free_otherend_watch(dev);
+ 
+-	if (drv->remove)
++	if (drv->remove) {
++		spin_lock(&dev->reclaim_lock);
+ 		drv->remove(dev);
++		spin_unlock(&dev->reclaim_lock);
++	}
+ 
+ 	module_put(drv->driver.owner);
+ 
+@@ -484,6 +489,7 @@ int xenbus_probe_node(struct xen_bus_type *bus,
+ 		goto fail;
+ 
+ 	dev_set_name(&xendev->dev, "%s", devname);
++	spin_lock_init(&xendev->reclaim_lock);
+ 
+ 	/* Register with generic device framework. */
+ 	err = device_register(&xendev->dev);
+diff --git a/drivers/xen/xenbus/xenbus_probe_backend.c b/drivers/xen/xenbus/xenbus_probe_backend.c
+index 386a1348694a7..54aefbbbbff9e 100644
+--- a/drivers/xen/xenbus/xenbus_probe_backend.c
++++ b/drivers/xen/xenbus/xenbus_probe_backend.c
+@@ -258,12 +258,18 @@ static int backend_probe_and_watch(struct notifier_block *notifier,
+ static int backend_reclaim_memory(struct device *dev, void *data)
+ {
+ 	const struct xenbus_driver *drv;
++	struct xenbus_device *xdev;
+ 
+ 	if (!dev->driver)
+ 		return 0;
+ 	drv = to_xenbus_driver(dev->driver);
+-	if (drv && drv->reclaim_memory)
+-		drv->reclaim_memory(to_xenbus_device(dev));
++	if (drv && drv->reclaim_memory) {
++		xdev = to_xenbus_device(dev);
++		if (!spin_trylock(&xdev->reclaim_lock))
++			return 0;
++		drv->reclaim_memory(xdev);
++		spin_unlock(&xdev->reclaim_lock);
++	}
+ 	return 0;
  }
+ 
+diff --git a/include/xen/xenbus.h b/include/xen/xenbus.h
+index cf37b2d93560f..0d166dfe48334 100644
+--- a/include/xen/xenbus.h
++++ b/include/xen/xenbus.h
+@@ -85,6 +85,7 @@ struct xenbus_device {
+ 	enum xenbus_state state;
+ 	struct completion down;
+ 	struct work_struct work;
++	spinlock_t reclaim_lock;
+ };
+ 
+ static inline struct xenbus_device *to_xenbus_device(struct device *dev)
 -- 
 2.43.0
 
