@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-102670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71A79EF42B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF2F9EF187
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D4E617CF16
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B4081890C19
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5977B23A574;
-	Thu, 12 Dec 2024 16:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A892210CD;
+	Thu, 12 Dec 2024 16:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4z+g/SE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qcujszdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BE022969D;
-	Thu, 12 Dec 2024 16:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915E120969B;
+	Thu, 12 Dec 2024 16:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022069; cv=none; b=pCPTaSAqtIyWn8afgK80sapPAHtts7aXSqBtas2XvEGflvaGJsHc/FDbbwVNqBTLNgf262eWJKCe4ZPvQ5HgPROLppmwPl2eYAY3oSLl3vvWjznMQej9B/1B6bYsIDWITAbYa2EuCWLNPTv3hdKeXDqf2sL3yR2RvpKs3guI/OA=
+	t=1734020248; cv=none; b=Zu48AY0y8fSUVTV/2nqK4YqMUF25lb4aHbkf7Z2vu7eYgiRFyDKRVNTb8oz+PdXrFKnGZfQLr1kgN1KBNM83ALV6h3TlZYqW87AySj6WqdcL+bjyzG2Ohnc6VQ1+gyP6soiq0hA8+lDuUKf0iallxDJ3RX19/vW5bPlZBZ8p2g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022069; c=relaxed/simple;
-	bh=GBPzlYY79WhNrVWGgD4U1xwOOEUEfe9Kjj2E8IvKfp8=;
+	s=arc-20240116; t=1734020248; c=relaxed/simple;
+	bh=KWnqwK5IGJOf38hHWNQGTs2O46JvLDarOBRNoB43KPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zoir4PtAuB14kvINyjLp0SDSNFZ8dvWOJS2Feia+CLnYKYx9LpgjklF2FypX2rUAWiYU7nm9SMLKkhe4q3paPZM8BXSzbQBlpMsk8TcEUyZW5BS5fS6oeR9zMBrOtTX69KC6hdBFNVYXlM4pgvfWbdVIjjA9roO5eoohf806OYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4z+g/SE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4340EC4CECE;
-	Thu, 12 Dec 2024 16:47:48 +0000 (UTC)
+	 MIME-Version; b=KAWH4B33zreiEO3hCxq1O1G9TUQQ3PWwSrP8spADf6pJonfLXeFSgxd/BDfX7yMlQyuGCGVttGdCAer2iHZUdYv1UAiA9ytQapz7nRYrSPur/x9Gn4J9X5idMf9aTQC3l++bd5HBvgxhsW06zzAMAW3I55WjXIbATGC0CXxkxNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qcujszdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AA0C4CECE;
+	Thu, 12 Dec 2024 16:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022068;
-	bh=GBPzlYY79WhNrVWGgD4U1xwOOEUEfe9Kjj2E8IvKfp8=;
+	s=korg; t=1734020248;
+	bh=KWnqwK5IGJOf38hHWNQGTs2O46JvLDarOBRNoB43KPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4z+g/SEtrthKpA1OZphvIL9bmym77dFwOvBgch0d2moL80HusUhyrj1Wsq8MwJoj
-	 oNEbJ+2cAs6YCzzTB2YH/JHuuLQaPQ4u0amloGpoy0Kt4WO0Iq2EvCvoNoSugMtprl
-	 8YesprN3+jPtedlbgdkgLsYvYq0z+T0hjWutAh1U=
+	b=QcujszdlDNfU7CCNlno0uRvZ9OZ/L1T8MxTHsl+ilpwFnWHmanFK4o0TsMY2K4asm
+	 QOrw8JLRMqwKsR5b9CdmsGI/TGTpzfY0HO9lmCTHDuNStZa85zoWLU4X71ssd1H1C4
+	 NW0oFthcIaXVtmnUWNgrTez7+yY1utdBeGEaxNc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viswanath Boma <quic_vboma@quicinc.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/565] media: venus : Addition of support for VIDIOC_TRY_ENCODER_CMD
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	stable <stable@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.1 389/772] Revert "serial: sh-sci: Clean sci_ports[0] after at earlycon exit"
 Date: Thu, 12 Dec 2024 15:55:34 +0100
-Message-ID: <20241212144316.975277044@linuxfoundation.org>
+Message-ID: <20241212144405.981234171@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 2f2d6fe83d0346923f0247e15dd51f3257e65edd ]
+commit 718632467d88e98816fa01ab12681ef1c2aa56f8 upstream.
 
-v4l2 compliance expecting support for vidioc_try_encoder_cmd .
+This reverts commit 3791ea69a4858b81e0277f695ca40f5aae40f312.
 
-error details : test VIDIOC_(TRY_)ENCODER_CMD: FAIL
+It was reported to cause boot-time issues, so revert it for now.
 
-Signed-off-by: Viswanath Boma <quic_vboma@quicinc.com>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: 6c9934c5a00a ("media: venus: fix enc/dec destruction order")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 3791ea69a485 ("serial: sh-sci: Clean sci_ports[0] after at earlycon exit")
+Cc: stable <stable@kernel.org>
+Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/venc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/sh-sci.c |   28 ----------------------------
+ 1 file changed, 28 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/venc.c b/drivers/media/platform/qcom/venus/venc.c
-index 2c23d83273a85..52a7366d7a5fc 100644
---- a/drivers/media/platform/qcom/venus/venc.c
-+++ b/drivers/media/platform/qcom/venus/venc.c
-@@ -549,6 +549,7 @@ static const struct v4l2_ioctl_ops venc_ioctl_ops = {
- 	.vidioc_enum_frameintervals = venc_enum_frameintervals,
- 	.vidioc_subscribe_event = venc_subscribe_event,
- 	.vidioc_unsubscribe_event = v4l2_event_unsubscribe,
-+	.vidioc_try_encoder_cmd = v4l2_m2m_ioctl_try_encoder_cmd,
- };
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3432,32 +3432,6 @@ sh_early_platform_init_buffer("earlyprin
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+ static struct plat_sci_port port_cfg __initdata;
  
- static int venc_pm_get(struct venus_inst *inst)
--- 
-2.43.0
-
+-static int early_console_exit(struct console *co)
+-{
+-	struct sci_port *sci_port = &sci_ports[0];
+-	struct uart_port *port = &sci_port->port;
+-	unsigned long flags;
+-	int locked = 1;
+-
+-	if (port->sysrq)
+-		locked = 0;
+-	else if (oops_in_progress)
+-		locked = uart_port_trylock_irqsave(port, &flags);
+-	else
+-		uart_port_lock_irqsave(port, &flags);
+-
+-	/*
+-	 * Clean the slot used by earlycon. A new SCI device might
+-	 * map to this slot.
+-	 */
+-	memset(sci_ports, 0, sizeof(*sci_port));
+-
+-	if (locked)
+-		uart_port_unlock_irqrestore(port, flags);
+-
+-	return 0;
+-}
+-
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
+ {
+@@ -3476,8 +3450,6 @@ static int __init early_console_setup(st
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
+ 
+ 	device->con->write = serial_console_write;
+-	device->con->exit = early_console_exit;
+-
+ 	return 0;
+ }
+ static int __init sci_early_console_setup(struct earlycon_device *device,
 
 
 
