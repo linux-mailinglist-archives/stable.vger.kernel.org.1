@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756339EEDC5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0528A9EF431
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3616D28B66A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AED5E28D847
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAA421E086;
-	Thu, 12 Dec 2024 15:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5172221DA4;
+	Thu, 12 Dec 2024 17:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bR4uX0th"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stMipUg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1014F218;
-	Thu, 12 Dec 2024 15:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7090D176AA1;
+	Thu, 12 Dec 2024 17:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018573; cv=none; b=iMJ65SUchCTB5aMctJ24B8THCdxZwg8/pdLeKyd28+KQhldBpk7x0J+1zk/AD1KQcQo88w4MzXcplisPpdrRdnk1QZfYvsIOgNMOsSwPrKpp1jPXy0S7BEO7I5pE9SYK1fLS5fhLGeSvh1ZqI2i4NWXJ9/76FGTJbn0DkZBdFJI=
+	t=1734023072; cv=none; b=YipUYV/gG5Kt/mDdU/bjeU2WeOQbJsMK2IRltifJ3Q8iEffM3qZeicTrsEPSHskur5cEagz+D2TSyqRlmolJltg/d+8Xy2ks11w4ClAiamGHX9esEuaQVRfuNX6qDNX7u0Ft8fdlxa4onn/yAc2EcBlSpvRC5eEoIIMqr7V3iw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018573; c=relaxed/simple;
-	bh=glfjdQ2DKpSnLZn85NI2P0QPQiyW/TYM5XeSg42p3X8=;
+	s=arc-20240116; t=1734023072; c=relaxed/simple;
+	bh=gTh58Kze4jEof2mmLAfgRxQaJ+2jWMaGAlGjMfti7t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lTcZLqOZcIxZKpD63iraMtHFLT5uTLdCjdnk+tsnVzx42BhtcWTJqGg+KAPQSk9rtfPA5bykB2r1Mj7h7uZUMFgb9F2YDjCpUf7sZzzhKStodX/bA3bGvKN5jeyb6t+ZAbcajca/Z1UCvrsQHVRj7zqKQ00RvV1w1HNfI1sy5jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bR4uX0th; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B23C4CECE;
-	Thu, 12 Dec 2024 15:49:32 +0000 (UTC)
+	 MIME-Version; b=qd/XbvlrB6abui6RPqshwTRfNpoDGZLdhOqcurN2XHZMNE4yq0ktDsxfKfup/mYwoadCEUg56ma0UfM7m3Xypex/6NPgH/7RvnIOeG8vLkqgnNqJbps3Li3re6vobztOuXg5/RYLv59po9Va534jkuQJVhxOAUm190sQNCfHW+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stMipUg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA98EC4CECE;
+	Thu, 12 Dec 2024 17:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018573;
-	bh=glfjdQ2DKpSnLZn85NI2P0QPQiyW/TYM5XeSg42p3X8=;
+	s=korg; t=1734023072;
+	bh=gTh58Kze4jEof2mmLAfgRxQaJ+2jWMaGAlGjMfti7t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bR4uX0thf/OcgSpGywy1OyKZ+LLdECx/RrQrp1IC5aWYdhbweS2dHnMDQiFRRrNOC
-	 foxmpqMyD9DQXL+BzKfAk8HsG/wr72mJgW4GUu/212HGu+m4HdcjXXCVz3No3l/G2A
-	 qETbslsROui1jB3Owr1mK4FveZIbK5UeYhu5eClI=
+	b=stMipUg8MKrTNhjDkv8qys0w9lP9a8ydpnOhojmJd5PMZ8g/TYn2h6ZGVGY9FO+YQ
+	 XluGlMaj3DFTNP749cLfb61+wlbKR/K7DOa/3gniFPvScOW4SBnBCjOpx5wRSlDfk2
+	 DqIVKAOEZ77XtT1vhJqNbkQDLR53+jMVkNQv7IPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 289/356] i3c: mipi-i3c-hci: Mask ring interrupts before ring stop request
+Subject: [PATCH 5.15 413/565] can: j1939: j1939_session_new(): fix skb reference counting
 Date: Thu, 12 Dec 2024 16:00:08 +0100
-Message-ID: <20241212144255.992360880@linuxfoundation.org>
+Message-ID: <20241212144327.982974356@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 6ca2738174e4ee44edb2ab2d86ce74f015a0cc32 ]
+[ Upstream commit a8c695005bfe6569acd73d777ca298ddddd66105 ]
 
-Bus cleanup path in DMA mode may trigger a RING_OP_STAT interrupt when
-the ring is being stopped. Depending on timing between ring stop request
-completion, interrupt handler removal and code execution this may lead
-to a NULL pointer dereference in hci_dma_irq_handler() if it gets to run
-after the io_data pointer is set to NULL in hci_dma_cleanup().
+Since j1939_session_skb_queue() does an extra skb_get() for each new
+skb, do the same for the initial one in j1939_session_new() to avoid
+refcount underflow.
 
-Prevent this my masking the ring interrupts before ring stop request.
-
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20240920144432.62370-2-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reported-by: syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d4e8dc385d9258220c31
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20241105094823.2403806-1-dmantipov@yandex.ru
+[mkl: clean up commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c | 2 +-
+ net/can/j1939/transport.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index edc3a69bfe31f..bcc0c7d4131f2 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -174,10 +174,10 @@ static void hci_dma_cleanup(struct i3c_hci *hci)
- 	for (i = 0; i < rings->total; i++) {
- 		rh = &rings->headers[i];
+diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
+index 5d2097e5ca3a8..a58f6f5dfcf8e 100644
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1505,7 +1505,7 @@ static struct j1939_session *j1939_session_new(struct j1939_priv *priv,
+ 	session->state = J1939_SESSION_NEW;
  
-+		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
- 		rh_reg_write(RING_CONTROL, 0);
- 		rh_reg_write(CR_SETUP, 0);
- 		rh_reg_write(IBI_SETUP, 0);
--		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
+ 	skb_queue_head_init(&session->skb_queue);
+-	skb_queue_tail(&session->skb_queue, skb);
++	skb_queue_tail(&session->skb_queue, skb_get(skb));
  
- 		if (rh->xfer)
- 			dma_free_coherent(&hci->master.dev,
+ 	skcb = j1939_skb_to_cb(skb);
+ 	memcpy(&session->skcb, skcb, sizeof(session->skcb));
 -- 
 2.43.0
 
