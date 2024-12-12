@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F0B9EF5F0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B4B9EF70C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE22019425D0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25ED4286D89
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60992222D58;
-	Thu, 12 Dec 2024 17:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37E520A5EE;
+	Thu, 12 Dec 2024 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfEroq61"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNGiqrTO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD8C222D4C;
-	Thu, 12 Dec 2024 17:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E062153EC;
+	Thu, 12 Dec 2024 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023480; cv=none; b=VJzvojFgTwdy94kkaB6LDPL4e/0VPgZ9OemsXlr9FDWO5eQI9YPJZ7Hs1t3aJPpkJVCPl2OhNbsIGAP7+xQlW6cf6SMS/orc8oIBXUFKY9aq/0Hwh8+SGrKZC4PNkXA4kXMk/+nl2pw+HTWHy9zRkEPbkrQe2ym/D2cKNiDKczQ=
+	t=1734024675; cv=none; b=YiagEVeApk4oObyDdZbrlqDLlKrMjooufa2tyQX6h8geRk1nDVSqhLGYAntqUDcAS3+qeyHQpXJHtqhMGdLeU/ktBKeUgXQZQeA5ikBOtDPl5e1sTtXtX0MIbu8/VKEn7XjlPNfWzFDuWYpK7KibmUTThFVWUuInloDAh5WIfTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023480; c=relaxed/simple;
-	bh=LJyTdlAi2Imbgwlz8Jfk9EZ/7G+FXyQ5LuOm/w7ZGOg=;
+	s=arc-20240116; t=1734024675; c=relaxed/simple;
+	bh=Wu+dEgErI5I/+UvWafkas6WmE6fZ3I3+BncZXwjRmVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oaBlHgcqGIZlWpGrfe2lIEV0XcxL4YnPLb80qZU/ttT8beP6vDDwhLPbMs1trKb5JXze8LWAdzB7TOBP3FFa3my1ovZEmB3i3BtHRXLs/Av/ZTu0cxcpNVcPUxVoyiwTCjWm8UD0pGRhwLjmXPuAh7wuN9dr+qPhrADYmhIEP+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfEroq61; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90432C4CED3;
-	Thu, 12 Dec 2024 17:11:19 +0000 (UTC)
+	 MIME-Version; b=T13qrUQt/Qg4env1zbO5IC+Ht0uM+mc5LxBsBfUVnUn6ZCKu1Dmd7m5FLea2rVvIgC6Pq17VSMtsF5umAP30txXEBuwDaZjH/vJwmDLYST+SxylaMRphInFchHD/zRwMGldU3db/zCLq7mYhLH26H063sS59+9dkqypE7DaRWGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNGiqrTO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC27FC4CECE;
+	Thu, 12 Dec 2024 17:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023480;
-	bh=LJyTdlAi2Imbgwlz8Jfk9EZ/7G+FXyQ5LuOm/w7ZGOg=;
+	s=korg; t=1734024675;
+	bh=Wu+dEgErI5I/+UvWafkas6WmE6fZ3I3+BncZXwjRmVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZfEroq61vNCC/P9K1h1QGPkFIrkrTeDzoZQTS0sEmV3t8GoQBnrKfL9KkasITN2MF
-	 LhBFFTM1CBgZ4hndkWsQYl1aoU3Cg9qc3l5W1r6Nuqm787XmjwH6UtmKkTOmO+qMoN
-	 PDODsK3RpaiAgjBgoiL2Z34wLJPEjQUBtfcUnJL8=
+	b=fNGiqrTO8rG/sGis89Ld/6F82mX7ZKn1nAZE83HwcaM57eEsv5a25z7mxEwJ5dVje
+	 7mAcqLRyjV3KDYLqK0lPqHrgmKSYtMtjJFSuo81rx1Si0geNYzKVGpfIDnqXf04wKV
+	 TrAna7yMzMdn/AlCfC/2Y9vDQPNGQaZbCv6q5CU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 517/565] scsi: st: Add MTIOCGET and MTLOAD to ioctls allowed after device reset
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 374/459] regmap: detach regmap from dev on regmap_exit
 Date: Thu, 12 Dec 2024 16:01:52 +0100
-Message-ID: <20241212144332.229772491@linuxfoundation.org>
+Message-ID: <20241212144308.443624627@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-[ Upstream commit 0b120edb37dc9dd8ca82893d386922eb6b16f860 ]
+commit 3061e170381af96d1e66799d34264e6414d428a7 upstream.
 
-Most drives rewind the tape when the device is reset. Reading and writing
-are not allowed until something is done to make the tape position match the
-user's expectation (e.g., rewind the tape). Add MTIOCGET and MTLOAD to
-operations allowed after reset. MTIOCGET is modified to not touch the tape
-if pos_unknown is non-zero. The tape location is known after MTLOAD.
+At the end of __regmap_init(), if dev is not NULL, regmap_attach_dev()
+is called, which adds a devres reference to the regmap, to be able to
+retrieve a dev's regmap by name using dev_get_regmap().
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219419#c14
-Link: https://lore.kernel.org/r/20241106095723.63254-3-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When calling regmap_exit, the opposite does not happen, and the
+reference is kept until the dev is detached.
+
+Add a regmap_detach_dev() function and call it in regmap_exit() to make
+sure that the devres reference is not kept.
+
+Cc: stable@vger.kernel.org
+Fixes: 72b39f6f2b5a ("regmap: Implement dev_get_regmap()")
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20241128130554.362486-1-demonsingur%40gmail.com
+Link: https://patch.msgid.link/20241128131625.363835-1-demonsingur@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/st.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ drivers/base/regmap/regmap.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 861038a1cbd48..1551d533c7196 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -3501,6 +3501,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 	int i, cmd_nr, cmd_type, bt;
- 	int retval = 0;
- 	unsigned int blk;
-+	bool cmd_mtiocget;
- 	struct scsi_tape *STp = file->private_data;
- 	struct st_modedef *STm;
- 	struct st_partstat *STps;
-@@ -3614,6 +3615,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 			 */
- 			if (mtc.mt_op != MTREW &&
- 			    mtc.mt_op != MTOFFL &&
-+			    mtc.mt_op != MTLOAD &&
- 			    mtc.mt_op != MTRETEN &&
- 			    mtc.mt_op != MTERASE &&
- 			    mtc.mt_op != MTSEEK &&
-@@ -3727,17 +3729,28 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 		goto out;
- 	}
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -636,6 +636,17 @@ int regmap_attach_dev(struct device *dev
+ }
+ EXPORT_SYMBOL_GPL(regmap_attach_dev);
  
-+	cmd_mtiocget = cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET);
++static int dev_get_regmap_match(struct device *dev, void *res, void *data);
 +
- 	if ((i = flush_buffer(STp, 0)) < 0) {
--		retval = i;
--		goto out;
--	}
--	if (STp->can_partitions &&
--	    (i = switch_partition(STp)) < 0) {
--		retval = i;
--		goto out;
-+		if (cmd_mtiocget && STp->pos_unknown) {
-+			/* flush fails -> modify status accordingly */
-+			reset_state(STp);
-+			STp->pos_unknown = 1;
-+		} else { /* return error */
-+			retval = i;
-+			goto out;
-+		}
-+	} else { /* flush_buffer succeeds */
-+		if (STp->can_partitions) {
-+			i = switch_partition(STp);
-+			if (i < 0) {
-+				retval = i;
-+				goto out;
-+			}
-+		}
- 	}
++static int regmap_detach_dev(struct device *dev, struct regmap *map)
++{
++	if (!dev)
++		return 0;
++
++	return devres_release(dev, dev_get_regmap_release,
++			      dev_get_regmap_match, (void *)map->name);
++}
++
+ static enum regmap_endian regmap_get_reg_endian(const struct regmap_bus *bus,
+ 					const struct regmap_config *config)
+ {
+@@ -1493,6 +1504,7 @@ void regmap_exit(struct regmap *map)
+ {
+ 	struct regmap_async *async;
  
--	if (cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET)) {
-+	if (cmd_mtiocget) {
- 		struct mtget mt_status;
- 
- 		if (_IOC_SIZE(cmd_in) != sizeof(struct mtget)) {
--- 
-2.43.0
-
++	regmap_detach_dev(map->dev, map);
+ 	regcache_exit(map);
+ 	regmap_debugfs_exit(map);
+ 	regmap_range_exit(map);
 
 
 
