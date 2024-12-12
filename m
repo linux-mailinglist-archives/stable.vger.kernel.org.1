@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-103157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B429EF6D6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E3B9EF4D8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD90C17F245
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22898194153B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0D3223C63;
-	Thu, 12 Dec 2024 17:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C87223C63;
+	Thu, 12 Dec 2024 16:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/gL2BQp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="De1Xs8zC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875EF2144AD;
-	Thu, 12 Dec 2024 17:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D87F20967D;
+	Thu, 12 Dec 2024 16:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023716; cv=none; b=g4mgWiv4rxuUpDnn31ckMnFrRAFQt3PbEIVoC39LCDvJTUWhAAauTwFqeRT/iyJO+TD4WvUrwcVHeQQShSqUvb+cVt9m4BEsSUI7dHW1tbyes7MPepeU52MRWLBS88bL0v5yr2VEnLFcJgU9fYdocEPujl1zzJpQSvf32SNl/nA=
+	t=1734022190; cv=none; b=EP2YhOSM7WDGkwvB2bPOvmMz7tNyVmMGVM3qxZZ78/nOH6azYduThSt52Ffy3yry5saqUsMooRrMiynLZ7d7QNNaq0AbFwOqyM6ckc3P1zVyPmanGNcbVLt+iKI/Yhwg86H0GT0dfvFy/OBDBqk9QuyGt6gUgTOE4jQR3LFD+CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023716; c=relaxed/simple;
-	bh=cNk/gkZQKFv8bAovE0+HSOUmoOrUVVhx5rOmNXItm0Y=;
+	s=arc-20240116; t=1734022190; c=relaxed/simple;
+	bh=39YDM7htdoFmQtE8f8USdEAn0A5D108Ql4WzdKAc018=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxseN8WavasSCJlXCSJ47ZJMx7hrKcls/HdqVngqBYXatfbwO4bzS1BR+uS9ALOjNtdZUAOQZcYMIh/rJPW0fUsBe4trZfA7Wd4T1/qgeFjWMs6WP4j8uCLilit37zPhKe3ckw0eV+QPlQ7SZPhifWmLLDjKU+dmCabd/4/GxY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/gL2BQp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD54EC4CECE;
-	Thu, 12 Dec 2024 17:15:15 +0000 (UTC)
+	 MIME-Version; b=i4LFNDQte/eQolydsY+YyzoGOZGSjqHsq194SwPksAhjatilvl4RkSYzfo40Nf9nNjFnMM931Wb2xy4RboYuyTMzBtXJ4GUVtaeiIplxziVoaHKcHgGlPE4P5lsbUaWem3D3ylHZYvxiApo819HRu0LXfSYR9/a3RGpW6UlZges=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=De1Xs8zC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA065C4CECE;
+	Thu, 12 Dec 2024 16:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023716;
-	bh=cNk/gkZQKFv8bAovE0+HSOUmoOrUVVhx5rOmNXItm0Y=;
+	s=korg; t=1734022190;
+	bh=39YDM7htdoFmQtE8f8USdEAn0A5D108Ql4WzdKAc018=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x/gL2BQp0sp6+zJ+LfOVpThO5td5LjC1aRa0XqdRcMLSJv+S7VY752hlx9ufSzh/0
-	 pqtksYzUi2NXcJDlR/TY3GLYLkHVOsjCZLq2z3jke6MpK5n40YairDoEWxrpe5eOJ1
-	 na6ONJ1MBWUQTuPAopDF0c0/gpOkZpQGNy5DeeNo=
+	b=De1Xs8zCL957bVEZ4G0ILJrbQ0gyqqk7Gj3c1RmUk/MoQfYsZwxTbJSTtbk8+4Ep+
+	 EePHp6wQaXqqDtHZcWZsHmHYpwt59tMOqr2XBHaD6kHqf2C20q1M/peNrK3zC9rvdI
+	 odBs8GO2MyXubKpwQfWU1UvqSgFOiaDCD3V9/ONY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 028/459] NFSD: Limit the number of concurrent async COPY operations
-Date: Thu, 12 Dec 2024 15:56:06 +0100
-Message-ID: <20241212144254.634388523@linuxfoundation.org>
+	John Fastabend <john.fastabend@gmail.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 172/565] selftests/bpf: Fix msg_verify_data in test_sockmap
+Date: Thu, 12 Dec 2024 15:56:07 +0100
+Message-ID: <20241212144318.273995552@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +63,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit aadc3bbea163b6caaaebfdd2b6c4667fbc726752 ]
+[ Upstream commit ee9b352ce4650ffc0d8ca0ac373d7c009c7e561e ]
 
-Nothing appears to limit the number of concurrent async COPY
-operations that clients can start. In addition, AFAICT each async
-COPY can copy an unlimited number of 4MB chunks, so can run for a
-long time. Thus IMO async COPY can become a DoS vector.
+Function msg_verify_data should have context of bytes_cnt and k instead of
+assuming they are zero. Otherwise, test_sockmap with data integrity test
+will report some errors. I also fix the logic related to size and index j
 
-Add a restriction mechanism that bounds the number of concurrent
-background COPY operations. Start simple and try to be fair -- this
-patch implements a per-namespace limit.
+1/ 6  sockmap::txmsg test passthrough:FAIL
+2/ 6  sockmap::txmsg test redirect:FAIL
+7/12  sockmap::txmsg test apply:FAIL
+10/11  sockmap::txmsg test push_data:FAIL
+11/17  sockmap::txmsg test pull-data:FAIL
+12/ 9  sockmap::txmsg test pop-data:FAIL
+13/ 1  sockmap::txmsg test push/pop data:FAIL
+...
+Pass: 24 Fail: 52
 
-An async COPY request that occurs while this limit is exceeded gets
-NFS4ERR_DELAY. The requesting client can choose to send the request
-again after a delay or fall back to a traditional read/write style
-copy.
+After applying this patch, some of the errors are solved, but for push,
+pull and pop, we may need more fixes to msg_verify_data, added a TODO
 
-If there is need to make the mechanism more sophisticated, we can
-visit that in future patches.
+10/11  sockmap::txmsg test push_data:FAIL
+11/17  sockmap::txmsg test pull-data:FAIL
+12/ 9  sockmap::txmsg test pop-data:FAIL
+...
+Pass: 37 Fail: 15
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-49974
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Besides, added a custom errno EDATAINTEGRITY for msg_verify_data, we
+shall not ignore the error in txmsg_cork case.
+
+Fixes: 753fb2ee0934 ("bpf: sockmap, add msg_peek tests to test_sockmap")
+Fixes: 16edddfe3c5d ("selftests/bpf: test_sockmap, check test failure")
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Link: https://lore.kernel.org/r/20241012203731.1248619-2-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/netns.h     |    1 +
- fs/nfsd/nfs4proc.c  |   11 +++++++++--
- fs/nfsd/nfs4state.c |    1 +
- fs/nfsd/xdr4.h      |    1 +
- 4 files changed, 12 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 30 ++++++++++++++--------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -152,6 +152,7 @@ struct nfsd_net {
- 	u32		s2s_cp_cl_id;
- 	struct idr	s2s_cp_stateids;
- 	spinlock_t	s2s_cp_lock;
-+	atomic_t	pending_async_copies;
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 230ca335a9919..8404f09cb1e35 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -58,6 +58,8 @@ static void running_handler(int a);
+ #define BPF_SOCKHASH_FILENAME "test_sockhash_kern.o"
+ #define CG_PATH "/sockmap"
  
- 	/*
- 	 * Version information
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1244,6 +1244,7 @@ static void nfs4_put_copy(struct nfsd4_c
++#define EDATAINTEGRITY 2001
++
+ /* global sockets */
+ int s1, s2, c1, c2, p1, p2;
+ int test_cnt;
+@@ -509,23 +511,25 @@ static int msg_alloc_iov(struct msghdr *msg,
+ 	return -ENOMEM;
+ }
+ 
+-static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz)
++/* TODO: Add verification logic for push, pull and pop data */
++static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz,
++				 unsigned char *k_p, int *bytes_cnt_p)
  {
- 	if (!refcount_dec_and_test(&copy->refcount))
- 		return;
-+	atomic_dec(&copy->cp_nn->pending_async_copies);
- 	kfree(copy->cp_src);
- 	kfree(copy);
- }
-@@ -1782,10 +1783,16 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
- 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
- 		sizeof(struct knfsd_fh));
- 	if (nfsd4_copy_is_async(copy)) {
--		status = nfserrno(-ENOMEM);
- 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
- 		if (!async_copy)
- 			goto out_err;
-+		async_copy->cp_nn = nn;
-+		/* Arbitrary cap on number of pending async copy operations */
-+		if (atomic_inc_return(&nn->pending_async_copies) >
-+				(int)rqstp->rq_pool->sp_nrthreads) {
-+			atomic_dec(&nn->pending_async_copies);
-+			goto out_err;
-+		}
- 		INIT_LIST_HEAD(&async_copy->copies);
- 		refcount_set(&async_copy->refcount, 1);
- 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
-@@ -1824,7 +1831,7 @@ out_err:
+-	int i, j = 0, bytes_cnt = 0;
+-	unsigned char k = 0;
++	int i, j, bytes_cnt = *bytes_cnt_p;
++	unsigned char k = *k_p;
+ 
+-	for (i = 0; i < msg->msg_iovlen; i++) {
++	for (i = 0, j = 0; i < msg->msg_iovlen && size; i++, j = 0) {
+ 		unsigned char *d = msg->msg_iov[i].iov_base;
+ 
+ 		/* Special case test for skb ingress + ktls */
+ 		if (i == 0 && txmsg_ktls_skb) {
+ 			if (msg->msg_iov[i].iov_len < 4)
+-				return -EIO;
++				return -EDATAINTEGRITY;
+ 			if (memcmp(d, "PASS", 4) != 0) {
+ 				fprintf(stderr,
+ 					"detected skb data error with skb ingress update @iov[%i]:%i \"%02x %02x %02x %02x\" != \"PASS\"\n",
+ 					i, 0, d[0], d[1], d[2], d[3]);
+-				return -EIO;
++				return -EDATAINTEGRITY;
+ 			}
+ 			j = 4; /* advance index past PASS header */
+ 		}
+@@ -535,7 +539,7 @@ static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz)
+ 				fprintf(stderr,
+ 					"detected data corruption @iov[%i]:%i %02x != %02x, %02x ?= %02x\n",
+ 					i, j, d[j], k - 1, d[j+1], k);
+-				return -EIO;
++				return -EDATAINTEGRITY;
+ 			}
+ 			bytes_cnt++;
+ 			if (bytes_cnt == chunk_sz) {
+@@ -545,6 +549,8 @@ static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz)
+ 			size--;
+ 		}
  	}
- 	if (async_copy)
- 		cleanup_async_copy(async_copy);
--	status = nfserrno(-ENOMEM);
-+	status = nfserr_jukebox;
- 	goto out;
++	*k_p = k;
++	*bytes_cnt_p = bytes_cnt;
+ 	return 0;
  }
  
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8088,6 +8088,7 @@ static int nfs4_state_create_net(struct
- 	spin_lock_init(&nn->client_lock);
- 	spin_lock_init(&nn->s2s_cp_lock);
- 	idr_init(&nn->s2s_cp_stateids);
-+	atomic_set(&nn->pending_async_copies, 0);
+@@ -593,6 +599,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 		float total_bytes, txmsg_pop_total;
+ 		int fd_flags = O_NONBLOCK;
+ 		struct timeval timeout;
++		unsigned char k = 0;
++		int bytes_cnt = 0;
+ 		fd_set w;
  
- 	spin_lock_init(&nn->blocked_locks_lock);
- 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -574,6 +574,7 @@ struct nfsd4_copy {
- 	struct nfsd4_ssc_umount_item *ss_nsui;
- 	struct nfs_fh		c_fh;
- 	nfs4_stateid		stateid;
-+	struct nfsd_net		*cp_nn;
- };
+ 		fcntl(fd, fd_flags);
+@@ -671,7 +679,7 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 						iov_length * cnt :
+ 						iov_length * iov_count;
  
- static inline void nfsd4_copy_set_sync(struct nfsd4_copy *copy, bool sync)
+-				errno = msg_verify_data(&msg, recv, chunk_sz);
++				errno = msg_verify_data(&msg, recv, chunk_sz, &k, &bytes_cnt);
+ 				if (errno) {
+ 					perror("data verify msg failed");
+ 					goto out_errno;
+@@ -679,7 +687,9 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 				if (recvp) {
+ 					errno = msg_verify_data(&msg_peek,
+ 								recvp,
+-								chunk_sz);
++								chunk_sz,
++								&k,
++								&bytes_cnt);
+ 					if (errno) {
+ 						perror("data verify msg_peek failed");
+ 						goto out_errno;
+@@ -770,7 +780,7 @@ static int sendmsg_test(struct sockmap_options *opt)
+ 				s.bytes_sent, sent_Bps, sent_Bps/giga,
+ 				s.bytes_recvd, recvd_Bps, recvd_Bps/giga,
+ 				peek_flag ? "(peek_msg)" : "");
+-		if (err && txmsg_cork)
++		if (err && err != -EDATAINTEGRITY && txmsg_cork)
+ 			err = 0;
+ 		exit(err ? 1 : 0);
+ 	} else if (rxpid == -1) {
+-- 
+2.43.0
+
 
 
 
