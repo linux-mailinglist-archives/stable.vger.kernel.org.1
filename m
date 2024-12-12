@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-101361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F03E9EEC01
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF839EF2F4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFE401882F55
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C658C189DF01
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25A21487CD;
-	Thu, 12 Dec 2024 15:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D229D235C21;
+	Thu, 12 Dec 2024 16:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1lQ9NJX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cr/Ck72g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E244748A;
-	Thu, 12 Dec 2024 15:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C77A2358BE;
+	Thu, 12 Dec 2024 16:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017288; cv=none; b=nRk8SVQmBZHZexpvRl+1cAeNURTbZkfe2O2jpdcL43z5+1W7ZaltW0b+saf+sMCTpQS8LYG/bTttkbRif3oL41DjfRQ2ayUxhtgt0Zv7ntquaBOz9CLPz/iyLkPTE6k80KJmpYEMXX7Op3AE5sM4iPu0Wx+MUM2YUzm8cYMa89s=
+	t=1734021156; cv=none; b=RNOY5gm9kYUBJ/plBlF7wNcM1vxxLmnvKAWXF8pb5mQaZmmBwjvuUfD6icB+aMxHCwSZMxNRo8DYNx6kFe11JH0nDuqGX13c3ak3PEJd/wJkDAXvoUyiHR05OnlngRd+uJ/AymCW4fV+WzdUtdPun+zTBAll60CpZYzbPcwJAnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017288; c=relaxed/simple;
-	bh=o2YQ1BEBRm60sOhcOzB6iHVF47GXYVBStDHtGlByxIg=;
+	s=arc-20240116; t=1734021156; c=relaxed/simple;
+	bh=LbyrZke7N84bR50kwa/3Kv74mn7skVbsQbyODq11HDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/vUbq2dj3gnKpR5I3z/gfGqDYAh5IK8gn1dB1SS7AWnMVMSx2h+C5DDCnFbb8vIZaLfqPdrhSLdJloEeMLyxrjh57qPy1CONva9xONmNZAG9UlEnflinA3P8cJeHudmwg4Kq+pMYlSYmO9ZjrIUpYzmHxA48UTGoWeqAm8qwvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1lQ9NJX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11519C4CECE;
-	Thu, 12 Dec 2024 15:28:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PlGiRYf8qWzLRwt3WgUll6l7wRQvROF07Qb4sU/dcWC0wQfw5b/Sj7rBAXbgxWiFxTGiQC/RlsdjhKfiPPtfTROYYTKMnOgRetxUPKOtkQzuZZM73jJQ25EzD++e2qdYpPT15CAcAFrzHDstxe30mVpmCNzKCJ0af4pJvgAP0zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cr/Ck72g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE9BC4CED3;
+	Thu, 12 Dec 2024 16:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017288;
-	bh=o2YQ1BEBRm60sOhcOzB6iHVF47GXYVBStDHtGlByxIg=;
+	s=korg; t=1734021156;
+	bh=LbyrZke7N84bR50kwa/3Kv74mn7skVbsQbyODq11HDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1lQ9NJX8kSL8Um9Xh2ZeXzAgTNnqvceUAzdWA+7KqxxY2bkb5JUJ4NIzh+4koOvW
-	 5ezkImq4H7tnwbf5buQeE4BOeWbLullBUUuiaoJ3q5ba4ZMFpCH2cGbQXxhQtHxGVN
-	 DHdLLtsHZY5wIWbLzHlLZAlOCxK5ozd8o9Y3ScX0=
+	b=cr/Ck72g6+iAU0oMqvhzkp9qAMJH2rrPP6NDC53K/mroUFJezD36s8C+DMw/kTIPY
+	 1FDY7rOvLBQ/brF+5//z4hmCaeZLh7Js/JBZOIIv0kkmJ0OL3wqAMukHPNestFOqzk
+	 o7gB7MfSESwTmlIbzMtamWz1eN8h15p5+W1yPMn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>,
-	Austin Zheng <Austin.Zheng@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 437/466] drm/amd/display: Update Interface to Check UCLK DPM
+Subject: [PATCH 6.1 661/772] drm/display: Fix building with GCC 15
 Date: Thu, 12 Dec 2024 16:00:06 +0100
-Message-ID: <20241212144324.128679509@linuxfoundation.org>
+Message-ID: <20241212144417.233402321@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Austin Zheng <Austin.Zheng@amd.com>
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
 
-[ Upstream commit b8d046985c2dc41a0e264a391da4606099f8d44f ]
+[ Upstream commit a500f3751d3c861be7e4463c933cf467240cca5d ]
 
-[Why]
-Videos using YUV420 format may result in high power being used.
-Disabling MPO may result in lower power usage.
-Update interface that can be used to check power profile of a dc_state.
+GCC 15 enables -Werror=unterminated-string-initialization by default.
+This results in the following build error
 
-[How]
-Allow pstate switching in VBlank as last entry in strategy candidates.
-Add helper functions that can be used to determine power level:
--get power profile after a dc_state has undergone full validation
+drivers/gpu/drm/display/drm_dp_dual_mode_helper.c: In function ‘is_hdmi_adaptor’:
+drivers/gpu/drm/display/drm_dp_dual_mode_helper.c:164:17: error: initializer-string for array of
+ ‘char’ is too long [-Werror=unterminated-string-initialization]
+  164 |                 "DP-HDMI ADAPTOR\x04";
+      |                 ^~~~~~~~~~~~~~~~~~~~~
 
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 6a7fd76b949e ("drm/amd/display: Add option to retrieve detile buffer size")
+After discussion with Ville, the fix was to increase the size of
+dp_dual_mode_hdmi_id array by one, so that it can accommodate the NULL
+line character. This should let us build the kernel with GCC 15.
+
+Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241002092311.942822-1-brahmajit.xyz@gmail.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c        |  9 ++++++++-
- .../dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c    |  1 +
- drivers/gpu/drm/amd/display/dc/inc/core_types.h |  4 ++++
- .../dc/resource/dcn315/dcn315_resource.c        |  6 ++++++
- .../dc/resource/dcn401/dcn401_resource.c        | 17 +++++++++++++++++
- 5 files changed, 36 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/display/drm_dp_dual_mode_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index a6911bb2cf0c6..1d99ab233765f 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -6001,8 +6001,15 @@ void dc_set_edp_power(const struct dc *dc, struct dc_link *edp_link,
- struct dc_power_profile dc_get_power_profile_for_dc_state(const struct dc_state *context)
+diff --git a/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c b/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
+index bd61e20770a5b..719da3610310f 100644
+--- a/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
+@@ -160,11 +160,11 @@ EXPORT_SYMBOL(drm_dp_dual_mode_write);
+ 
+ static bool is_hdmi_adaptor(const char hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN])
  {
- 	struct dc_power_profile profile = { 0 };
-+	struct dc *dc = NULL;
+-	static const char dp_dual_mode_hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN] =
++	static const char dp_dual_mode_hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN + 1] =
+ 		"DP-HDMI ADAPTOR\x04";
  
--	profile.power_level += !context->bw_ctx.bw.dcn.clk.p_state_change_support;
-+	if (!context || !context->clk_mgr || !context->clk_mgr->ctx || !context->clk_mgr->ctx->dc)
-+		return profile;
-+
-+	dc = context->clk_mgr->ctx->dc;
-+
-+	if (dc->res_pool->funcs->get_power_profile)
-+		profile.power_level = dc->res_pool->funcs->get_power_profile(context);
- 
- 	return profile;
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c
-index dd9971867f749..720ecede3a4c0 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c
-@@ -1799,6 +1799,7 @@ bool pmo_dcn4_fams2_init_for_pstate_support(struct dml2_pmo_init_for_pstate_supp
- 	}
- 
- 	if (s->pmo_dcn4.num_pstate_candidates > 0) {
-+		s->pmo_dcn4.pstate_strategy_candidates[s->pmo_dcn4.num_pstate_candidates-1].allow_state_increase = true;
- 		s->pmo_dcn4.cur_pstate_candidate = -1;
- 		return true;
- 	} else {
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-index bfb8b8502d202..8597e866bfe6b 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-@@ -215,6 +215,10 @@ struct resource_funcs {
- 
- 	void (*get_panel_config_defaults)(struct dc_panel_config *panel_config);
- 	void (*build_pipe_pix_clk_params)(struct pipe_ctx *pipe_ctx);
-+	/*
-+	 * Get indicator of power from a context that went through full validation
-+	 */
-+	int (*get_power_profile)(const struct dc_state *context);
- };
- 
- struct audio_support{
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-index 3f4b9dba41124..f6b840f046a5d 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-@@ -1812,6 +1812,11 @@ static void dcn315_get_panel_config_defaults(struct dc_panel_config *panel_confi
- 	*panel_config = panel_config_defaults;
+ 	return memcmp(hdmi_id, dp_dual_mode_hdmi_id,
+-		      sizeof(dp_dual_mode_hdmi_id)) == 0;
++		      DP_DUAL_MODE_HDMI_ID_LEN) == 0;
  }
  
-+static int dcn315_get_power_profile(const struct dc_state *context)
-+{
-+	return !context->bw_ctx.bw.dcn.clk.p_state_change_support;
-+}
-+
- static struct dc_cap_funcs cap_funcs = {
- 	.get_dcc_compression_cap = dcn20_get_dcc_compression_cap
- };
-@@ -1840,6 +1845,7 @@ static struct resource_funcs dcn315_res_pool_funcs = {
- 	.update_bw_bounding_box = dcn315_update_bw_bounding_box,
- 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
- 	.get_panel_config_defaults = dcn315_get_panel_config_defaults,
-+	.get_power_profile = dcn315_get_power_profile,
- };
- 
- static bool dcn315_resource_construct(
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-index 4aa975418fb18..6bcc6c400b386 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-@@ -1688,6 +1688,22 @@ static void dcn401_build_pipe_pix_clk_params(struct pipe_ctx *pipe_ctx)
- 	}
- }
- 
-+static int dcn401_get_power_profile(const struct dc_state *context)
-+{
-+	int uclk_mhz = context->bw_ctx.bw.dcn.clk.dramclk_khz / 1000;
-+	int dpm_level = 0;
-+
-+	for (int i = 0; i < context->clk_mgr->bw_params->clk_table.num_entries_per_clk.num_memclk_levels; i++) {
-+		if (context->clk_mgr->bw_params->clk_table.entries[i].memclk_mhz == 0 ||
-+			uclk_mhz < context->clk_mgr->bw_params->clk_table.entries[i].memclk_mhz)
-+			break;
-+		if (uclk_mhz > context->clk_mgr->bw_params->clk_table.entries[i].memclk_mhz)
-+			dpm_level++;
-+	}
-+
-+	return dpm_level;
-+}
-+
- static struct resource_funcs dcn401_res_pool_funcs = {
- 	.destroy = dcn401_destroy_resource_pool,
- 	.link_enc_create = dcn401_link_encoder_create,
-@@ -1714,6 +1730,7 @@ static struct resource_funcs dcn401_res_pool_funcs = {
- 	.prepare_mcache_programming = dcn401_prepare_mcache_programming,
- 	.build_pipe_pix_clk_params = dcn401_build_pipe_pix_clk_params,
- 	.calculate_mall_ways_from_bytes = dcn32_calculate_mall_ways_from_bytes,
-+	.get_power_profile = dcn401_get_power_profile,
- };
- 
- static uint32_t read_pipe_fuses(struct dc_context *ctx)
+ static bool is_type1_adaptor(uint8_t adaptor_id)
 -- 
 2.43.0
 
