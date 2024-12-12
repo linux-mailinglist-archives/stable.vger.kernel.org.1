@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB08F9EF360
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4150C9EEFC1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52451179168
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 025B8297AFA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DA9235C4F;
-	Thu, 12 Dec 2024 16:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2A72253F8;
+	Thu, 12 Dec 2024 16:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLIxKczX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW7bHG3R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0912235C49;
-	Thu, 12 Dec 2024 16:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA421225A5B;
+	Thu, 12 Dec 2024 16:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021898; cv=none; b=SInTsMmzH4mcLp/ZDtVLHTg8JtKI6WFHzAWdHTUKmD2sHiudXQFbdY3s9ZI56jIIFcWGowCnZt8JzJb+bCOOYfG7oRsoUowZZdEiCw790dm48tyUBYkHsJ4hy7DNquymHjfTUYzoaHUAdSQ82dbz4anNAndTbJbMXWaTyYW/SxE=
+	t=1734019846; cv=none; b=hgQ4JwXu9jruiSR3ftAK3Fep1yEqne/8KIFeeNzcKUQR38OBY4FBJ8XNXpvhRYWofGCxCcKC4k/BExssYVNdMv4mbtHmi6rGiYuPexmwdFcm1awBnoZJ3ayJKYWXfJpV88rZ4pHWnSTFjT+BMgeg/PWVshpH/oQUzIW6akrA28I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021898; c=relaxed/simple;
-	bh=NBTfg6EqvofPKAG9yImO5NedmN6aR7x0w81QAw04xtw=;
+	s=arc-20240116; t=1734019846; c=relaxed/simple;
+	bh=vkeLqT+B129WB3dSsou6fafe7DnMx7nJI9DDOVgRS5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n+J+CvJpCxhbX+0oVjGsMQ70UJbtccPJy1jwun64VlmhgSbMLv+dKwXA/kgUH94PdLz6jsYsqNb1eevVgAX5fgU8s7dN2UxPmotourVLH/EAlcirbknq30u2F88c6khaIIZI76t09PzeT6a6/hrI+RjOMDeEb3ymhkWLqG7jIzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLIxKczX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B738C4CECE;
-	Thu, 12 Dec 2024 16:44:57 +0000 (UTC)
+	 MIME-Version; b=KOJ+AFLvEviB1EtZxlbB3ZpZh1MKxg8gngjl0HidVU2dMyvNePMGiZpvvVU1NTvGopfW7y4XZaUzRQTxrzO0eelDPUIqXrl+Qv1qOhHdB1NyUdc3NzFu9EIvNZBSgMQbiHX7NbepMoa5WmS0Qwon8ji5yuSolm/qD0r6fnsw7vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW7bHG3R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AAEC4CED0;
+	Thu, 12 Dec 2024 16:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021898;
-	bh=NBTfg6EqvofPKAG9yImO5NedmN6aR7x0w81QAw04xtw=;
+	s=korg; t=1734019846;
+	bh=vkeLqT+B129WB3dSsou6fafe7DnMx7nJI9DDOVgRS5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lLIxKczXjvBSH/IijyAARmhB5GyfaiZWDILAOH1m37cNhZMoP/WDY5YM54XXIK9vU
-	 vWsjBa6P9ECqNuJJA55kzI+7aFe3KzIT9KOIFycnRiJfpRunB+HQ7ryTe4/70Pw/vG
-	 gOycrHTBoovYU0l30I9c5kUxMbF0aRcGILpHKYeY=
+	b=WW7bHG3RlHXcOqwpGfiCFphHMPrS6xui2hyKnXfNFtlAehMMQ4NdpQb3L+BDJZX8T
+	 xWf9SVXkl2DzH8sZb6tcTb7S0Xrsf/7T09F9LQiVDzzJ5/eQCwh6pkqNvxOLNJkQUl
+	 QIzwfByDLQpyrEwLw6MW3My+ndTkBs1f848o6oFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 063/565] platform/x86: dell-smbios-base: Extends support to Alienware products
+Subject: [PATCH 6.1 313/772] net: stmmac: dwmac-socfpga: Set RX watchdog interrupt as broken
 Date: Thu, 12 Dec 2024 15:54:18 +0100
-Message-ID: <20241212144313.983788799@linuxfoundation.org>
+Message-ID: <20241212144402.824351812@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit a36b8b84ac4327b90ef5a22bc97cc96a92073330 ]
+[ Upstream commit 407618d66dba55e7db1278872e8be106808bbe91 ]
 
-Fixes the following error:
+On DWMAC3 and later, there's a RX Watchdog interrupt that's used for
+interrupt coalescing. It's known to be buggy on some platforms, and
+dwmac-socfpga appears to be one of them. Changing the interrupt
+coalescing from ethtool doesn't appear to have any effect here.
 
-dell_smbios: Unable to run on non-Dell system
+Without disabling RIWT (Received Interrupt Watchdog Timer, I
+believe...), we observe latencies while receiving traffic that amount to
+around ~0.4ms. This was discovered with NTP but can be easily reproduced
+with a simple ping. Without this patch :
 
-Which is triggered after dell-wmi driver fails to initialize on
-Alienware systems, as it depends on dell-smbios.
+64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.657 ms
 
-This effectively extends dell-wmi, dell-smbios and dcdbas support to
-Alienware devices, that might share some features of the SMBIOS intereface
-calling interface with other Dell products.
+With this patch :
 
-Tested on an Alienware X15 R1.
+64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.254 ms
 
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Pali Rohár <pali@kernel.org>
-Link: https://lore.kernel.org/r/20241031154023.6149-2-kuurtb@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 801d233b7302 ("net: stmmac: Add SOCFPGA glue driver")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20241122141256.764578-1-maxime.chevallier@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-smbios-base.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
-index b19c5ff31a703..5b8783a7b0455 100644
---- a/drivers/platform/x86/dell/dell-smbios-base.c
-+++ b/drivers/platform/x86/dell/dell-smbios-base.c
-@@ -543,6 +543,7 @@ static int __init dell_smbios_init(void)
- 	int ret, wmi, smm;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+index 6b447d8f0bd8a..9c726fe40acdf 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+@@ -426,6 +426,8 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
+ 	plat_dat->bsp_priv = dwmac;
+ 	plat_dat->fix_mac_speed = socfpga_dwmac_fix_mac_speed;
  
- 	if (!dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Dell System", NULL) &&
-+	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Alienware", NULL) &&
- 	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "www.dell.com", NULL)) {
- 		pr_err("Unable to run on non-Dell system\n");
- 		return -ENODEV;
++	plat_dat->riwt_off = 1;
++
+ 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
+ 	if (ret)
+ 		goto err_remove_config_dt;
 -- 
 2.43.0
 
