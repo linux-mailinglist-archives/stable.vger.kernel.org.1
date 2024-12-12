@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E049EF2C2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4089EF05D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0E3285443
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 502F21898E00
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064FF222D4A;
-	Thu, 12 Dec 2024 16:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD47237FF2;
+	Thu, 12 Dec 2024 16:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0jIOG9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqJXYtYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B9E6F2FE;
-	Thu, 12 Dec 2024 16:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F6D217F40;
+	Thu, 12 Dec 2024 16:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021794; cv=none; b=r7GdspmjHHWBOhN7ohGieqnpsUgy1BfdV79cTcQpxB35tZ6hS9OM+gvrlyfCiDnelpYZBbhrVEKp7x+lFp5Mby2YmTfPdUbw3g/rPVO45xmZSBI3Q150m7ZScomKboh43VPmQnUNSEdJ4AKEBPiecRacmxxX2RaukqvO4VGupVU=
+	t=1734019857; cv=none; b=VkUz8KCnBaNfx5vum+wW24PXUT8IjBTS2a4sS8h6dvXu7SSLHo/tnjUdfBEW3eTdhgBl79UkhGg0mxO+0nd1yT4kVlnlyw8M8ZorX8DbGoK7RCk5ZaKxa3U/HSsrrKHvkwkTaxBDMUli3b+PydUzk9+zuCK9gmC2+UQOEEIKqGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021794; c=relaxed/simple;
-	bh=fBGt7jhlTq/uiF3DhN68OqTvCH8ZDXGxOxyOr+78J3o=;
+	s=arc-20240116; t=1734019857; c=relaxed/simple;
+	bh=rURyyc5/oVTqEHObFCAqCWazZAUwF+PXKF6Vxj+kZDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=apU+89nmuLGB19l1NK7AlGgu5svowadhRtaFeNaWXMaSDgr+JvlfZJEAlL5+Felb8WOZMGOKY65TRKzhbkibReSVDwVfkzuCw1K/bJ8sSyNeApqltMsp1tr9dZtERlXyEkZGy/efwhy0sFj2WwhADRZ8eZX4h5xTIKjdhGqipyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0jIOG9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C30BC4CECE;
-	Thu, 12 Dec 2024 16:43:13 +0000 (UTC)
+	 MIME-Version; b=EFId0T6LucB0NiVpoBfzQW/Klm9PuuPQBdT9Eb97PESU/hrll27qtpAbn+Uwi07nxnmE6h3BFqxVg6CQ4GX1GxNNtpDYgW7ysfrnXxrk3ye/quRdMKn5Sieh0jD3KiULIkh90S+COFbA3ThO5aR6SrwFbSUSmAQtYFN3jgvBH1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqJXYtYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73C6C4CECE;
+	Thu, 12 Dec 2024 16:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021794;
-	bh=fBGt7jhlTq/uiF3DhN68OqTvCH8ZDXGxOxyOr+78J3o=;
+	s=korg; t=1734019857;
+	bh=rURyyc5/oVTqEHObFCAqCWazZAUwF+PXKF6Vxj+kZDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0jIOG9L4X0znHBKvBSZGdXG///i+rBMAd0mQgZSF0mo8wi3r+BIxG1Al7nZW53p8
-	 KvccBBRfOx7AdA5WMxmLvYy5Hg8lryrcRJC3uGAJFrTtsfk0T77peuuQXPS6zzFna7
-	 FeWM4mD339Bo0D1JaUArdhE3y8tNGCY9c7PpnRuo=
+	b=lqJXYtYPc1/5LeBXDg/+iGc1m9k04NhlEKd5W5W5MmVvVL7dKIOPHWPdzTCXkAkUi
+	 eMF+T66In0CD/WQTjmeJUUketBgveYKeCUSFIjasHj7Wk9UdoCHVdaXMPImr+rAqhU
+	 mME3LAAIuJYB4XvnQjfUuMmGsgC9CvBqNqwMJtSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Eric Dumazet <edumazet@google.com>,
+	George McCollister <george.mccollister@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/565] can: j1939: fix error in J1939 documentation.
-Date: Thu, 12 Dec 2024 15:54:20 +0100
-Message-ID: <20241212144314.063500894@linuxfoundation.org>
+Subject: [PATCH 6.1 316/772] net: hsr: fix hsr_init_sk() vs network/transport headers.
+Date: Thu, 12 Dec 2024 15:54:21 +0100
+Message-ID: <20241212144402.946511779@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Hölzl <alexander.hoelzl@gmx.net>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b6ec62e01aa4229bc9d3861d1073806767ea7838 ]
+[ Upstream commit 9cfb5e7f0ded2bfaabc270ceb5f91d13f0e805b9 ]
 
-The description of PDU1 format usage mistakenly referred to PDU2 format.
+Following sequence in hsr_init_sk() is invalid :
 
-Signed-off-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20241023145257.82709-1-alexander.hoelzl@gmx.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+    skb_reset_mac_header(skb);
+    skb_reset_mac_len(skb);
+    skb_reset_network_header(skb);
+    skb_reset_transport_header(skb);
+
+It is invalid because skb_reset_mac_len() needs the correct
+network header, which should be after the mac header.
+
+This patch moves the skb_reset_network_header()
+and skb_reset_transport_header() before
+the call to dev_hard_header().
+
+As a result skb->mac_len is no longer set to a value
+close to 65535.
+
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: George McCollister <george.mccollister@gmail.com>
+Link: https://patch.msgid.link/20241122171343.897551-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/j1939.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/hsr/hsr_device.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/networking/j1939.rst b/Documentation/networking/j1939.rst
-index b705d2801e9c3..80b1c5e19fd53 100644
---- a/Documentation/networking/j1939.rst
-+++ b/Documentation/networking/j1939.rst
-@@ -121,7 +121,7 @@ format, the Group Extension is set in the PS-field.
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index ad75724b69adf..6e434af189bc0 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -253,6 +253,8 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
+ 	skb->dev = master->dev;
+ 	skb->priority = TC_PRIO_CONTROL;
  
- On the other hand, when using PDU1 format, the PS-field contains a so-called
- Destination Address, which is _not_ part of the PGN. When communicating a PGN
--from user space to kernel (or vice versa) and PDU2 format is used, the PS-field
-+from user space to kernel (or vice versa) and PDU1 format is used, the PS-field
- of the PGN shall be set to zero. The Destination Address shall be set
- elsewhere.
++	skb_reset_network_header(skb);
++	skb_reset_transport_header(skb);
+ 	if (dev_hard_header(skb, skb->dev, ETH_P_PRP,
+ 			    hsr->sup_multicast_addr,
+ 			    skb->dev->dev_addr, skb->len) <= 0)
+@@ -260,8 +262,6 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
  
+ 	skb_reset_mac_header(skb);
+ 	skb_reset_mac_len(skb);
+-	skb_reset_network_header(skb);
+-	skb_reset_transport_header(skb);
+ 
+ 	return skb;
+ out:
 -- 
 2.43.0
 
