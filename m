@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525839EEADB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B54479EF31F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13596188516C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D0BD28DC2B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B97216E1D;
-	Thu, 12 Dec 2024 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FF6223C67;
+	Thu, 12 Dec 2024 16:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFEJl3Ea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkEG1DdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823C421504F;
-	Thu, 12 Dec 2024 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA857223C59;
+	Thu, 12 Dec 2024 16:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016476; cv=none; b=Xfi4PCNZPnvccBAu2ZQLyHiKidX0VNsuv/BlXP9F712pWYSZ8wHf8xGXB7jn0V9soAHOw05ST5ueY7d566Dg6mORjNL+2esZcu/sCnu5KYHtbrAwplkREqoRkqA+rqocPC5ta4L9hC0GpeQq7XQSVSKrHAbUijmgt8P9LH34314=
+	t=1734022163; cv=none; b=CvrbK22O40dQHf1UesGIo0a6wXWxeS5ZOHHemTAk525PXtB12NacXG5mIuKrRwUOCv0JJnl9aRSm/klNyepTYtCC2PFeVcMdRy6x9M7sPOEYqg28s4et1akABl/x2G1P31KVNV3TuH8iDFJGCE9cf1EDUsoySUlU1NySOI4S7WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016476; c=relaxed/simple;
-	bh=xmNaQLO4dNmkgcve64rsYLfQT7A2tiYUCekv505DV54=;
+	s=arc-20240116; t=1734022163; c=relaxed/simple;
+	bh=h5IUFbt7LgXX1xIjewV4zoia7WkB29L9Wv9qHL/ONVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6jHceuvaJ4/nHTKxbTlJ8cI5G/OCUV2uVqt+OiGVSNFvflVIw3N5eIw6YE1jihHkBTv2OapVKCV2/6KmMZ3x209d7QJvd/E0VJiuEm+073eDRKP7pXkhhM9l8ekne4L7pkYrXYUgSzK8iBWMwt3UZfBdqcRUNmY1EXTwq1Z/I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFEJl3Ea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38AEC4CED4;
-	Thu, 12 Dec 2024 15:14:35 +0000 (UTC)
+	 MIME-Version; b=QiWyD28z/rog6+l5HoJh6zyLbhbMquSJi4I4qAr4qu70jy6CMJ2jnJP0ThDQr5epeURsa8yOAnfWF4dhXXlcujl0g2mUSMlGX7EMFIp7hMu+gWLDL99bZtg+ZY28N+YgWQrcOtztZF4bCuPw8RwdbbNFplOHmdTg7t1xx3cRv1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkEG1DdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8D2C4CECE;
+	Thu, 12 Dec 2024 16:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016476;
-	bh=xmNaQLO4dNmkgcve64rsYLfQT7A2tiYUCekv505DV54=;
+	s=korg; t=1734022163;
+	bh=h5IUFbt7LgXX1xIjewV4zoia7WkB29L9Wv9qHL/ONVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uFEJl3EaEieB8cN3A2S+9Zcac8m6G13C4HmUsr62VDMfsdLuj4pY9+A2w/4vs7hzS
-	 2jCNKJlkjZE04Hv+nSDoTciSsq4NrzgM30QqS8EdvydwYlMmzzZlts7uUKtfPs/d9R
-	 54WfvkUmmSr/UBPfwUJeSCPgmxDBgzgLlAFe3j+Q=
+	b=NkEG1DdHcmhpBSccj588gykrv/fKD51an8sfJoo54SVxkfyOdI+5DCZpfXO6JloRT
+	 zDsnNdcTKTSC7VkrwURpUHrMScY8NxXAJNZdR4E62FAClzU66rN64twzxieUoFhlnT
+	 j5gWgTCFGL5LSfdZQGTS5TN0A7A9KfD9ZOCd9ve0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>
-Subject: [PATCH 6.12 192/466] mmc: core: Further prevent card detect during shutdown
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 166/565] libbpf: fix sym_is_subprog() logic for weak global subprogs
 Date: Thu, 12 Dec 2024 15:56:01 +0100
-Message-ID: <20241212144314.381321011@linuxfoundation.org>
+Message-ID: <20241212144318.040192753@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 87a0d90fcd31c0f36da0332428c9e1a1e0f97432 upstream.
+[ Upstream commit 4073213488be542f563eb4b2457ab4cbcfc2b738 ]
 
-Disabling card detect from the host's ->shutdown_pre() callback turned out
-to not be the complete solution. More precisely, beyond the point when the
-mmc_bus->shutdown() has been called, to gracefully power off the card, we
-need to prevent card detect. Otherwise the mmc_rescan work may poll for the
-card with a CMD13, to see if it's still alive, which then will fail and
-hang as the card has already been powered off.
+sym_is_subprog() is incorrectly rejecting relocations against *weak*
+global subprogs. Fix that by realizing that STB_WEAK is also a global
+function.
 
-To fix this problem, let's disable mmc_rescan prior to power off the card
-during shutdown.
+While it seems like verifier doesn't support taking an address of
+non-static subprog right now, it's still best to fix support for it on
+libbpf side, otherwise users will get a very confusing error during BPF
+skeleton generation or static linking due to misinterpreted relocation:
 
-Reported-by: Anthony Pighin <anthony.pighin@nokia.com>
-Fixes: 66c915d09b94 ("mmc: core: Disable card detect during shutdown")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Closes: https://lore.kernel.org/all/BN0PR08MB695133000AF116F04C3A9FFE83212@BN0PR08MB6951.namprd08.prod.outlook.com/
-Tested-by: Anthony Pighin <anthony.pighin@nokia.com>
-Message-ID: <20241125122446.18684-1-ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  libbpf: prog 'handle_tp': bad map relo against 'foo' in section '.text'
+  Error: failed to open BPF object file: Relocation failed
+
+It's clearly not a map relocation, but is treated and reported as such
+without this fix.
+
+Fixes: 53eddb5e04ac ("libbpf: Support subprog address relocation")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20241009011554.880168-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/bus.c  |    2 ++
- drivers/mmc/core/core.c |    3 +++
- 2 files changed, 5 insertions(+)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/core/bus.c
-+++ b/drivers/mmc/core/bus.c
-@@ -149,6 +149,8 @@ static void mmc_bus_shutdown(struct devi
- 	if (dev->driver && drv->shutdown)
- 		drv->shutdown(card);
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index d201a7356fad6..294fdba9c76f7 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -3129,7 +3129,7 @@ static bool sym_is_subprog(const GElf_Sym *sym, int text_shndx)
+ 		return true;
  
-+	__mmc_stop_host(host);
-+
- 	if (host->bus_ops->shutdown) {
- 		ret = host->bus_ops->shutdown(host);
- 		if (ret)
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -2296,6 +2296,9 @@ void mmc_start_host(struct mmc_host *hos
+ 	/* global function */
+-	return bind == STB_GLOBAL && type == STT_FUNC;
++	return (bind == STB_GLOBAL || bind == STB_WEAK) && type == STT_FUNC;
+ }
  
- void __mmc_stop_host(struct mmc_host *host)
- {
-+	if (host->rescan_disable)
-+		return;
-+
- 	if (host->slot.cd_irq >= 0) {
- 		mmc_gpio_set_cd_wake(host, false);
- 		disable_irq(host->slot.cd_irq);
+ static int find_extern_btf_id(const struct btf *btf, const char *ext_name)
+-- 
+2.43.0
+
 
 
 
