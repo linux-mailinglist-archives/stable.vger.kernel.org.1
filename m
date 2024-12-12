@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF839EF2F4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379019EEE10
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C658C189DF01
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1031A166C3A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D229D235C21;
-	Thu, 12 Dec 2024 16:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D74213E6B;
+	Thu, 12 Dec 2024 15:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cr/Ck72g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITsYlIyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C77A2358BE;
-	Thu, 12 Dec 2024 16:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4A66F2FE;
+	Thu, 12 Dec 2024 15:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021156; cv=none; b=RNOY5gm9kYUBJ/plBlF7wNcM1vxxLmnvKAWXF8pb5mQaZmmBwjvuUfD6icB+aMxHCwSZMxNRo8DYNx6kFe11JH0nDuqGX13c3ak3PEJd/wJkDAXvoUyiHR05OnlngRd+uJ/AymCW4fV+WzdUtdPun+zTBAll60CpZYzbPcwJAnM=
+	t=1734018422; cv=none; b=Qrmqe+LVnlp42/hZ5js97JRVBwdWIcjjEvK2So5201yDIfnPjYDkDkubA9tmehM3fdW0m1+dAGBCL7x5EPipUH3sg+IJNApvwO6p9nIp5ZRCnfrt6jxzLEMGx74ifX32eNhU5MZVnbWAklghGpTr5wJV+yfm9f1G/DrtBbC09jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021156; c=relaxed/simple;
-	bh=LbyrZke7N84bR50kwa/3Kv74mn7skVbsQbyODq11HDs=;
+	s=arc-20240116; t=1734018422; c=relaxed/simple;
+	bh=w/sLeYgMa6GBHheOaMvfVrDC7N7vp9jsLGaedIMo5HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PlGiRYf8qWzLRwt3WgUll6l7wRQvROF07Qb4sU/dcWC0wQfw5b/Sj7rBAXbgxWiFxTGiQC/RlsdjhKfiPPtfTROYYTKMnOgRetxUPKOtkQzuZZM73jJQ25EzD++e2qdYpPT15CAcAFrzHDstxe30mVpmCNzKCJ0af4pJvgAP0zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cr/Ck72g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE9BC4CED3;
-	Thu, 12 Dec 2024 16:32:35 +0000 (UTC)
+	 MIME-Version; b=lVLSlh64VwtUjIoy3bAiV79G7B/yeRvpKbip5I1Lh2hU7RH2VF3oK/JElJRMPsyBNeguTaAKF78o3KhqIErdp//aJRz+NuFVx1D0qelBykYf/QaSSbrATHaH8bDzePgTtD8XApE5QOnyMb/IVluHGTJ/HWGtw1VWBwEWdCdupxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITsYlIyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A440C4CECE;
+	Thu, 12 Dec 2024 15:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021156;
-	bh=LbyrZke7N84bR50kwa/3Kv74mn7skVbsQbyODq11HDs=;
+	s=korg; t=1734018422;
+	bh=w/sLeYgMa6GBHheOaMvfVrDC7N7vp9jsLGaedIMo5HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cr/Ck72g6+iAU0oMqvhzkp9qAMJH2rrPP6NDC53K/mroUFJezD36s8C+DMw/kTIPY
-	 1FDY7rOvLBQ/brF+5//z4hmCaeZLh7Js/JBZOIIv0kkmJ0OL3wqAMukHPNestFOqzk
-	 o7gB7MfSESwTmlIbzMtamWz1eN8h15p5+W1yPMn8=
+	b=ITsYlIyF0ObpXlR3sYqMGcybEgfpzs7Qsscaf0452HqJECnj5DHkm/KyohgTP0SBF
+	 sNMyj4lY5L5aKHvHmXUqJotAPpBk5A1nMb8BagVzrGVtGtEULn939JuNfS0fuQqwZ2
+	 J93vfY6il3MLUFTS4NIa0cAlbtE3AeybS0vNK2MU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Qi Han <hanqi@vivo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 661/772] drm/display: Fix building with GCC 15
+Subject: [PATCH 6.6 287/356] f2fs: fix f2fs_bug_on when uninstalling filesystem call f2fs_evict_inode.
 Date: Thu, 12 Dec 2024 16:00:06 +0100
-Message-ID: <20241212144417.233402321@linuxfoundation.org>
+Message-ID: <20241212144255.915451527@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
+From: Qi Han <hanqi@vivo.com>
 
-[ Upstream commit a500f3751d3c861be7e4463c933cf467240cca5d ]
+[ Upstream commit d5c367ef8287fb4d235c46a2f8c8d68715f3a0ca ]
 
-GCC 15 enables -Werror=unterminated-string-initialization by default.
-This results in the following build error
+creating a large files during checkpoint disable until it runs out of
+space and then delete it, then remount to enable checkpoint again, and
+then unmount the filesystem triggers the f2fs_bug_on as below:
 
-drivers/gpu/drm/display/drm_dp_dual_mode_helper.c: In function ‘is_hdmi_adaptor’:
-drivers/gpu/drm/display/drm_dp_dual_mode_helper.c:164:17: error: initializer-string for array of
- ‘char’ is too long [-Werror=unterminated-string-initialization]
-  164 |                 "DP-HDMI ADAPTOR\x04";
-      |                 ^~~~~~~~~~~~~~~~~~~~~
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/inode.c:896!
+CPU: 2 UID: 0 PID: 1286 Comm: umount Not tainted 6.11.0-rc7-dirty #360
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+RIP: 0010:f2fs_evict_inode+0x58c/0x610
+Call Trace:
+ __die_body+0x15/0x60
+ die+0x33/0x50
+ do_trap+0x10a/0x120
+ f2fs_evict_inode+0x58c/0x610
+ do_error_trap+0x60/0x80
+ f2fs_evict_inode+0x58c/0x610
+ exc_invalid_op+0x53/0x60
+ f2fs_evict_inode+0x58c/0x610
+ asm_exc_invalid_op+0x16/0x20
+ f2fs_evict_inode+0x58c/0x610
+ evict+0x101/0x260
+ dispose_list+0x30/0x50
+ evict_inodes+0x140/0x190
+ generic_shutdown_super+0x2f/0x150
+ kill_block_super+0x11/0x40
+ kill_f2fs_super+0x7d/0x140
+ deactivate_locked_super+0x2a/0x70
+ cleanup_mnt+0xb3/0x140
+ task_work_run+0x61/0x90
 
-After discussion with Ville, the fix was to increase the size of
-dp_dual_mode_hdmi_id array by one, so that it can accommodate the NULL
-line character. This should let us build the kernel with GCC 15.
+The root cause is: creating large files during disable checkpoint
+period results in not enough free segments, so when writing back root
+inode will failed in f2fs_enable_checkpoint. When umount the file
+system after enabling checkpoint, the root inode is dirty in
+f2fs_evict_inode function, which triggers BUG_ON. The steps to
+reproduce are as follows:
 
-Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241002092311.942822-1-brahmajit.xyz@gmail.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+dd if=/dev/zero of=f2fs.img bs=1M count=55
+mount f2fs.img f2fs_dir -o checkpoint=disable:10%
+dd if=/dev/zero of=big bs=1M count=50
+sync
+rm big
+mount -o remount,checkpoint=enable f2fs_dir
+umount f2fs_dir
+
+Let's redirty inode when there is not free segments during checkpoint
+is disable.
+
+Signed-off-by: Qi Han <hanqi@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_dual_mode_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c b/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
-index bd61e20770a5b..719da3610310f 100644
---- a/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
-@@ -160,11 +160,11 @@ EXPORT_SYMBOL(drm_dp_dual_mode_write);
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index a3e0c92735433..7ad4a92417591 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -788,8 +788,10 @@ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 		!is_inode_flag_set(inode, FI_DIRTY_INODE))
+ 		return 0;
  
- static bool is_hdmi_adaptor(const char hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN])
- {
--	static const char dp_dual_mode_hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN] =
-+	static const char dp_dual_mode_hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN + 1] =
- 		"DP-HDMI ADAPTOR\x04";
+-	if (!f2fs_is_checkpoint_ready(sbi))
++	if (!f2fs_is_checkpoint_ready(sbi)) {
++		f2fs_mark_inode_dirty_sync(inode, true);
+ 		return -ENOSPC;
++	}
  
- 	return memcmp(hdmi_id, dp_dual_mode_hdmi_id,
--		      sizeof(dp_dual_mode_hdmi_id)) == 0;
-+		      DP_DUAL_MODE_HDMI_ID_LEN) == 0;
- }
- 
- static bool is_type1_adaptor(uint8_t adaptor_id)
+ 	/*
+ 	 * We need to balance fs here to prevent from producing dirty node pages
 -- 
 2.43.0
 
