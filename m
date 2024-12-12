@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E43E9EF304
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834E49EED9D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:49:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54CC216A881
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A22D28B472
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C3E235C23;
-	Thu, 12 Dec 2024 16:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4DC2210DA;
+	Thu, 12 Dec 2024 15:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgsB3B8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0V7gsE2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8256223C49;
-	Thu, 12 Dec 2024 16:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4CD2135B0;
+	Thu, 12 Dec 2024 15:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021159; cv=none; b=i9ShYrcZiLiz2gEQNawbOnBnCQeIY3akDSYJGNcNAv2/LLhz3V5ecFkaL/CunoA3wJTnhB3zCWu6M0eiJtAdKA6zhS78k2y0WYCrlaWcuK8O4ANJ5LsQ7O2IAjmXCbrNgQCsU75q3MiMqD0nYCq5spq8AHqFcgeUMxR9bOeygKg=
+	t=1734018426; cv=none; b=lr01rR06UXbiIX3frIcVcBLbvIJyTxLABDJHJLeKePZMWkVA+cxxgMBireFVtwSaP9XUZiOX21wLPH3rXBLJ6r50zh6T4/avCh9znQQr3Wkon7uTtM4WFtlBsJLfL1qFDZt66GfYatkzoYrcPLqbUNzMSdjJnUxMFUiGWp6rWa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021159; c=relaxed/simple;
-	bh=elWaj7ZYSS0zBIfwZN/ArimQJ1UsZuPcwuw8+h3se1w=;
+	s=arc-20240116; t=1734018426; c=relaxed/simple;
+	bh=Z6KLf2tSCwTi/DbUlj9cz49k8UoVoe6zumr3I8NUtA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6X9nSziNAkwwGgpxjAmejoG0x0vcGl+2vt/Ypq+DEfR/F9GTciIfIqVLvd84OuSe9mQ+3NmkzCPQziqnvsji7fVW+Of6FTYxV7IsMy3ruHL/+OHJWmdhr8aFoGOiPbZc7wmKoNHPllYmIk5HbpqvxiJrqKLEtBzRXYEOMDQRRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgsB3B8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573FFC4CECE;
-	Thu, 12 Dec 2024 16:32:39 +0000 (UTC)
+	 MIME-Version; b=MwUmSROT0URmyPFHRrRRAvFdVTP6l/eG0/G90bMB4X03HO5EtwmhOvPGuLrI+4/kYeTuXxKMbBBIH1RDIFw9KGOAlrt68nO5WGlwcD8uuPu0E01Hmo23uW61+UDMbA2fVZ8t8xlMdbzhTbdD32LBQr3fBYmcWoYhocxsYPewZ18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0V7gsE2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BD2C4CECE;
+	Thu, 12 Dec 2024 15:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021159;
-	bh=elWaj7ZYSS0zBIfwZN/ArimQJ1UsZuPcwuw8+h3se1w=;
+	s=korg; t=1734018426;
+	bh=Z6KLf2tSCwTi/DbUlj9cz49k8UoVoe6zumr3I8NUtA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgsB3B8Due9Q0spBIXKX9Ex89MvgL8LdEyLswUaRK3p+DKiXhvZsMWoVNs35u4jYG
-	 Q0fFG4Lz59qyWvkmPvslsbZIeBWLkfP73KWCuZM0OHgahf7NMFdTrv78nhNueq2Z2R
-	 xxgWttlchpbSW4QBbg2S84V0a/r0YQg1uwELi1dk=
+	b=0V7gsE2UuhR6JKKVSXXqteqTnv2metVsS3ZvW6+1BRHSPYeKU80Ref+r6u96VNzJL
+	 LhkVXFT55zpXXEMFToZVL58Vr2bZXP3FVnkOb+JoFXjnH8x0yjWAVi1JDi+DxApdit
+	 UFVA/EKVo/UGIX5lgFSAiQfGkgN6wIfFK5seSkgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+aa0730b0a42646eb1359@syzkaller.appspotmail.com,
+	Qianqiang Liu <qianqiang.liu@163.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 662/772] r8169: dont apply UDP padding quirk on RTL8126A
+Subject: [PATCH 6.6 288/356] KMSAN: uninit-value in inode_go_dump (5)
 Date: Thu, 12 Dec 2024 16:00:07 +0100
-Message-ID: <20241212144417.271073623@linuxfoundation.org>
+Message-ID: <20241212144255.953817504@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Qianqiang Liu <qianqiang.liu@163.com>
 
-[ Upstream commit 87e26448dbda4523b73a894d96f0f788506d3795 ]
+[ Upstream commit f9417fcfca3c5e30a0b961e7250fab92cfa5d123 ]
 
-Vendor drivers r8125/r8126 indicate that this quirk isn't needed
-any longer for RTL8126A. Mimic this in r8169.
+When mounting of a corrupted disk image fails, the error message printed
+can reference uninitialized inode fields.  To prevent that from happening,
+always initialize those fields.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/d1317187-aa81-4a69-b831-678436e4de62@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+aa0730b0a42646eb1359@syzkaller.appspotmail.com
+Signed-off-by: Qianqiang Liu <qianqiang.liu@163.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/gfs2/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index a74e33bf0302e..4b461e93ffe9d 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4139,8 +4139,8 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
- {
- 	unsigned int padto = 0, len = skb->len;
- 
--	if (rtl_is_8125(tp) && len < 128 + RTL_MIN_PATCH_LEN &&
--	    rtl_skb_is_udp(skb) && skb_transport_header_was_set(skb)) {
-+	if (len < 128 + RTL_MIN_PATCH_LEN && rtl_skb_is_udp(skb) &&
-+	    skb_transport_header_was_set(skb)) {
- 		unsigned int trans_data_len = skb_tail_pointer(skb) -
- 					      skb_transport_header(skb);
- 
-@@ -4164,9 +4164,15 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
- static unsigned int rtl_quirk_packet_padto(struct rtl8169_private *tp,
- 					   struct sk_buff *skb)
- {
--	unsigned int padto;
-+	unsigned int padto = 0;
- 
--	padto = rtl8125_quirk_udp_padto(tp, skb);
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+		padto = rtl8125_quirk_udp_padto(tp, skb);
-+		break;
-+	default:
-+		break;
-+	}
- 
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_34:
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 09285dc782cf8..49684bc82dc16 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1567,11 +1567,13 @@ static struct inode *gfs2_alloc_inode(struct super_block *sb)
+ 	if (!ip)
+ 		return NULL;
+ 	ip->i_no_addr = 0;
++	ip->i_no_formal_ino = 0;
+ 	ip->i_flags = 0;
+ 	ip->i_gl = NULL;
+ 	gfs2_holder_mark_uninitialized(&ip->i_iopen_gh);
+ 	memset(&ip->i_res, 0, sizeof(ip->i_res));
+ 	RB_CLEAR_NODE(&ip->i_res.rs_node);
++	ip->i_diskflags = 0;
+ 	ip->i_rahead = 0;
+ 	return &ip->i_inode;
+ }
 -- 
 2.43.0
 
