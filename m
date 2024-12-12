@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F699EF3C6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E35049EF231
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:58 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76BA128D16A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F09E189973A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91C22253F1;
-	Thu, 12 Dec 2024 16:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE5822A7FF;
+	Thu, 12 Dec 2024 16:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGyewx1E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9thQQJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9532C223E93;
-	Thu, 12 Dec 2024 16:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0654C222D5F;
+	Thu, 12 Dec 2024 16:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022717; cv=none; b=uLiScJRZGBQo7wsV7pBPVEFntC0Z/RdywJXOrZRJNALEH6EfQFMCCh7C6JGBPOhnGUAcKJNh72KOuIWurAIuKQEuSYDMhUYhN3yvN9iQXdoeydSkji0PpR14Qb/QVLWDhcgQZm1be6yneaGyqEpps6Jnqp+Uy0POANeU/KvDxE8=
+	t=1734020809; cv=none; b=fHx+xkfOyJTSF2PMlDD8mTS6S8+TA1JUkMvlBHwx/Xf/wG0Nssb3+Oko9qHu3R3WZBcfRKCyOVNlihXmNWGslNvpnwiUsAsY0Vpcr5FZGoX8KA7IvTjlk2vsnUOrqLn1TwxtYWFqffTY7eDFIPWzYQ0qLW6GYQRT6x3k3kdj68I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022717; c=relaxed/simple;
-	bh=bK7UdaxlLJo9/5RDa81g56TGLho7ZuWF1jegWkBpA8k=;
+	s=arc-20240116; t=1734020809; c=relaxed/simple;
+	bh=ApT8FOJ3u4Bw0C/Cd8T/erv98IXDU2AFteIUc94Gl8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dp3Kgq/px+niro6s8N+0U8/wTjkBwIC17PHuuPjTH4yp/ReodTGk2KegRQEoAoOYdyQYqC/H4DiOKVTdHedjis4LmrOoGOX9BJ3dH6ksukWQX9hHZbiH6LbsKH0dK3ZDUW6qkF04XnD/rSAXShVlUkYEeaxSLwZoJpKX9E8ETc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGyewx1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C66C4CED4;
-	Thu, 12 Dec 2024 16:58:36 +0000 (UTC)
+	 MIME-Version; b=pJyfkc77XMkH8Iyyo1h9GJ1jWAUkJgs2kCBaSW3l8NrXqv/yVZXoMXanSszfjXpjg+fC4lfYeeCzCneRoWBaTBV7pg8P+6ufVFNzMONN4aivPO7zZoN0LkQJn+7qcVYuiOtOCKMHvIMFkd9bJh6UI+uRACNO0+aiyE4Vi+otf0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9thQQJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690ECC4CECE;
+	Thu, 12 Dec 2024 16:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022717;
-	bh=bK7UdaxlLJo9/5RDa81g56TGLho7ZuWF1jegWkBpA8k=;
+	s=korg; t=1734020808;
+	bh=ApT8FOJ3u4Bw0C/Cd8T/erv98IXDU2AFteIUc94Gl8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGyewx1En9Wz4eHBbUapcFtqueh2XBnPh8x5qDatKYJlGbtKCM7r1TK5w3Su3E9ze
-	 kv/3d/uaiQYMLxs7MSMBmxsZK+zSzHPyfZDAcXBHhrOvYnsnNaGKgVDaJ/nFe7BGsl
-	 fN7TuuLkxgwjU3HUm4l204Kp9RvS4JbSM1uGQvlI=
+	b=Y9thQQJfkKAtlpkhjxC0mF1A7B9GX5ZW9BqNqJE1/EBP5w3vpQ7dJ0c5Inwycexe+
+	 uGFZYAa8bnU2aeZWjhiF0btEIY0mfh5aj5G7lfk0Cc2KRm06h3pdFT6mZ3idgWeKdN
+	 +yhMriwmSWO+8yas28yxSgc3698+PLmUkV5+Xyls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	stable <stable@kernel.org>,
-	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
-	Lin Feng <linf@wangsu.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 5.15 316/565] tty: ldsic: fix tty_ldisc_autoload sysctls proc_handler
+	Saravana Kannan <saravanak@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 566/772] driver core: fw_devlink: Stop trying to optimize cycle detection logic
 Date: Thu, 12 Dec 2024 15:58:31 +0100
-Message-ID: <20241212144324.095634186@linuxfoundation.org>
+Message-ID: <20241212144413.345290890@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+From: Saravana Kannan <saravanak@google.com>
 
-commit 635a9fca54f4f4148be1ae1c7c6bd37af80f5773 upstream.
+[ Upstream commit bac3b10b78e54b7da3cede397258f75a2180609b ]
 
-Commit 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of
-ldiscs") introduces the tty_ldisc_autoload sysctl with the wrong
-proc_handler. .extra1 and .extra2 parameters are set to avoid other values
-thant SYSCTL_ZERO or SYSCTL_ONE to be set but proc_dointvec do not uses
-them.
+In attempting to optimize fw_devlink runtime, I introduced numerous cycle
+detection bugs by foregoing cycle detection logic under specific
+conditions. Each fix has further narrowed the conditions for optimization.
 
-This commit fixes this by using proc_dointvec_minmax instead of
-proc_dointvec.
+It's time to give up on these optimization attempts and just run the cycle
+detection logic every time fw_devlink tries to create a device link.
 
-Fixes: 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of ldiscs")
+The specific bug report that triggered this fix involved a supplier fwnode
+that never gets a device created for it. Instead, the supplier fwnode is
+represented by the device that corresponds to an ancestor fwnode.
+
+In this case, fw_devlink didn't do any cycle detection because the cycle
+detection logic is only run when a device link is created between the
+devices that correspond to the actual consumer and supplier fwnodes.
+
+With this change, fw_devlink will run cycle detection logic even when
+creating SYNC_STATE_ONLY proxy device links from a device that is an
+ancestor of a consumer fwnode.
+
+Reported-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Closes: https://lore.kernel.org/all/1a1ab663-d068-40fb-8c94-f0715403d276@ideasonboard.com/
+Fixes: 6442d79d880c ("driver core: fw_devlink: Improve detection of overlapping cycles")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
-Reviewed-by: Lin Feng <linf@wangsu.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20241112131357.49582-4-nicolas.bouchinet@clip-os.org
+Tested-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Link: https://lore.kernel.org/r/20241030171009.1853340-1-saravanak@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_ldisc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/core.c | 55 ++++++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 31 deletions(-)
 
---- a/drivers/tty/tty_ldisc.c
-+++ b/drivers/tty/tty_ldisc.c
-@@ -852,7 +852,7 @@ static struct ctl_table tty_table[] = {
- 		.data		= &tty_ldisc_autoload,
- 		.maxlen		= sizeof(tty_ldisc_autoload),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
- 		.extra1		= SYSCTL_ZERO,
- 		.extra2		= SYSCTL_ONE,
- 	},
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index e1436e351826c..f21ceb93e50ef 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -1933,10 +1933,10 @@ static bool fwnode_ancestor_init_without_drv(struct fwnode_handle *fwnode)
+  *
+  * Return true if one or more cycles were found. Otherwise, return false.
+  */
+-static bool __fw_devlink_relax_cycles(struct device *con,
++static bool __fw_devlink_relax_cycles(struct fwnode_handle *con_handle,
+ 				 struct fwnode_handle *sup_handle)
+ {
+-	struct device *sup_dev = NULL, *par_dev = NULL;
++	struct device *sup_dev = NULL, *par_dev = NULL, *con_dev = NULL;
+ 	struct fwnode_link *link;
+ 	struct device_link *dev_link;
+ 	bool ret = false;
+@@ -1953,22 +1953,22 @@ static bool __fw_devlink_relax_cycles(struct device *con,
+ 
+ 	sup_handle->flags |= FWNODE_FLAG_VISITED;
+ 
+-	sup_dev = get_dev_from_fwnode(sup_handle);
+-
+ 	/* Termination condition. */
+-	if (sup_dev == con) {
++	if (sup_handle == con_handle) {
+ 		pr_debug("----- cycle: start -----\n");
+ 		ret = true;
+ 		goto out;
+ 	}
+ 
++	sup_dev = get_dev_from_fwnode(sup_handle);
++	con_dev = get_dev_from_fwnode(con_handle);
+ 	/*
+ 	 * If sup_dev is bound to a driver and @con hasn't started binding to a
+ 	 * driver, sup_dev can't be a consumer of @con. So, no need to check
+ 	 * further.
+ 	 */
+ 	if (sup_dev && sup_dev->links.status ==  DL_DEV_DRIVER_BOUND &&
+-	    con->links.status == DL_DEV_NO_DRIVER) {
++	    con_dev && con_dev->links.status == DL_DEV_NO_DRIVER) {
+ 		ret = false;
+ 		goto out;
+ 	}
+@@ -1977,7 +1977,7 @@ static bool __fw_devlink_relax_cycles(struct device *con,
+ 		if (link->flags & FWLINK_FLAG_IGNORE)
+ 			continue;
+ 
+-		if (__fw_devlink_relax_cycles(con, link->supplier)) {
++		if (__fw_devlink_relax_cycles(con_handle, link->supplier)) {
+ 			__fwnode_link_cycle(link);
+ 			ret = true;
+ 		}
+@@ -1992,7 +1992,7 @@ static bool __fw_devlink_relax_cycles(struct device *con,
+ 	else
+ 		par_dev = fwnode_get_next_parent_dev(sup_handle);
+ 
+-	if (par_dev && __fw_devlink_relax_cycles(con, par_dev->fwnode)) {
++	if (par_dev && __fw_devlink_relax_cycles(con_handle, par_dev->fwnode)) {
+ 		pr_debug("%pfwf: cycle: child of %pfwf\n", sup_handle,
+ 			 par_dev->fwnode);
+ 		ret = true;
+@@ -2010,7 +2010,7 @@ static bool __fw_devlink_relax_cycles(struct device *con,
+ 		    !(dev_link->flags & DL_FLAG_CYCLE))
+ 			continue;
+ 
+-		if (__fw_devlink_relax_cycles(con,
++		if (__fw_devlink_relax_cycles(con_handle,
+ 					      dev_link->supplier->fwnode)) {
+ 			pr_debug("%pfwf: cycle: depends on %pfwf\n", sup_handle,
+ 				 dev_link->supplier->fwnode);
+@@ -2058,11 +2058,6 @@ static int fw_devlink_create_devlink(struct device *con,
+ 	if (link->flags & FWLINK_FLAG_IGNORE)
+ 		return 0;
+ 
+-	if (con->fwnode == link->consumer)
+-		flags = fw_devlink_get_flags(link->flags);
+-	else
+-		flags = FW_DEVLINK_FLAGS_PERMISSIVE;
+-
+ 	/*
+ 	 * In some cases, a device P might also be a supplier to its child node
+ 	 * C. However, this would defer the probe of C until the probe of P
+@@ -2083,25 +2078,23 @@ static int fw_devlink_create_devlink(struct device *con,
+ 		return -EINVAL;
+ 
+ 	/*
+-	 * SYNC_STATE_ONLY device links don't block probing and supports cycles.
+-	 * So, one might expect that cycle detection isn't necessary for them.
+-	 * However, if the device link was marked as SYNC_STATE_ONLY because
+-	 * it's part of a cycle, then we still need to do cycle detection. This
+-	 * is because the consumer and supplier might be part of multiple cycles
+-	 * and we need to detect all those cycles.
++	 * Don't try to optimize by not calling the cycle detection logic under
++	 * certain conditions. There's always some corner case that won't get
++	 * detected.
+ 	 */
+-	if (!device_link_flag_is_sync_state_only(flags) ||
+-	    flags & DL_FLAG_CYCLE) {
+-		device_links_write_lock();
+-		if (__fw_devlink_relax_cycles(con, sup_handle)) {
+-			__fwnode_link_cycle(link);
+-			flags = fw_devlink_get_flags(link->flags);
+-			pr_debug("----- cycle: end -----\n");
+-			dev_info(con, "Fixed dependency cycle(s) with %pfwf\n",
+-				 sup_handle);
+-		}
+-		device_links_write_unlock();
++	device_links_write_lock();
++	if (__fw_devlink_relax_cycles(link->consumer, sup_handle)) {
++		__fwnode_link_cycle(link);
++		pr_debug("----- cycle: end -----\n");
++		pr_info("%pfwf: Fixed dependency cycle(s) with %pfwf\n",
++			link->consumer, sup_handle);
+ 	}
++	device_links_write_unlock();
++
++	if (con->fwnode == link->consumer)
++		flags = fw_devlink_get_flags(link->flags);
++	else
++		flags = FW_DEVLINK_FLAGS_PERMISSIVE;
+ 
+ 	if (sup_handle->flags & FWNODE_FLAG_NOT_DEVICE)
+ 		sup_dev = fwnode_get_next_parent_dev(sup_handle);
+-- 
+2.43.0
+
 
 
 
