@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D549EEB3E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 053A09EF393
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4135D166EAE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBA9F2925BC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8769D215048;
-	Thu, 12 Dec 2024 15:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1075C2358A9;
+	Thu, 12 Dec 2024 16:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jp2ZuSoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIxuPHwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4224A2EAE5;
-	Thu, 12 Dec 2024 15:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03C92358A4;
+	Thu, 12 Dec 2024 16:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016636; cv=none; b=urnXe0YTXpaHY0vqhvk1eKZNdxJI0wgtHhL2uwWSbwfqzlawFNsn3GpqJTAcqAOPecTAStsSHyNFHP9WVB3sofUtj2k3MNF5ee3PrnTXRML6Cmk1aFU35oS1xu9vuMb4xhhWNNMEi+akAsXnAH7J+9Pl3Engmaa4/rYi1aDVl2c=
+	t=1734022500; cv=none; b=uPsOpjpPPjorGyLVC/yoHU7AahR1WWS7VOdhTPtzQMviqiyOvdAc9moI04Im5RDGJV/Fbp388Cdnkf3VM+GlZGrymitYS6NSX8Wnbl53es+pbn4Qo40flrurOlig6eULbQqXQj3AMGoXgP2NILZ6WcwXt/arXuM5AUKlMvwcZ/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016636; c=relaxed/simple;
-	bh=7NaYJI/lDZfD/AydWhKwYxb9TOiv02TOhgV5dBzBi74=;
+	s=arc-20240116; t=1734022500; c=relaxed/simple;
+	bh=fbCblDGm96sPLwoU3BDKFhOciotNZxvt3D9g96Yd+jY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmlOOSr0L/fMbH22Q9EWwQmjJVIDMWygo91UzRH9uXniQC8agTpp9NPKkmGg4O6qvTwB1LJF7hLiI5HAktYBelCz8PyvOSfOv0AUnegkZWxakaQjXupJ0GnenCrxR7O4r6wejZmacC/vFl4AieGucRhzI2+/MJFgS0Zotv+ioV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jp2ZuSoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A461CC4CECE;
-	Thu, 12 Dec 2024 15:17:15 +0000 (UTC)
+	 MIME-Version; b=Cx8tCrhhtefC9eVn2r/1DwfokujRuz+aMyuOiqkG3Uf09dpPnNhy145f5Np8ys4dViKHD6tRA0WIxrT2Ec7cwd2loudIQEszEcidEVSNYmpeT1NF323gflbAHFctMx9V9ChYR53mxXPKRAUirohk+lvoznPWBTH1HNYYqDpvKJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIxuPHwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322CDC4CECE;
+	Thu, 12 Dec 2024 16:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016636;
-	bh=7NaYJI/lDZfD/AydWhKwYxb9TOiv02TOhgV5dBzBi74=;
+	s=korg; t=1734022500;
+	bh=fbCblDGm96sPLwoU3BDKFhOciotNZxvt3D9g96Yd+jY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jp2ZuSoQBdy922y/llEQhKD5boziYrbxQfcSwjXX/H3+NWdY3CsjK4cCRppe0QTCC
-	 onJCeXv9ig3MTLLQYOAl4FHEwE3WuHJjrtN88Z4iGqxm5fTNJgvtHzB11q+NtmZP6O
-	 MlUrTek2bnjQlRCcP32Hkn5rtRMuOt9TKNNtNRCE=
+	b=xIxuPHwai/yXmaHAfiqkD57urdNIZujgPG9bUBmtPlHHSMwSMOQgIv2afTcyMroi7
+	 xafrRDMWZvFhLcyyjasCdMC1en6t+0p46ejO8OUNMTT5viu/xPNsczCpxP1NTvc7bq
+	 w4jWC5lOqtOZNBSBI5UtvwMfr7OkOtvIk+Nz8ZqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Zeng Heng <zengheng4@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 253/466] drm/xe/pciids: separate RPL-U and RPL-P PCI IDs
+Subject: [PATCH 5.15 227/565] scsi: fusion: Remove unused variable rc
 Date: Thu, 12 Dec 2024 15:57:02 +0100
-Message-ID: <20241212144316.781763437@linuxfoundation.org>
+Message-ID: <20241212144320.460465908@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Zeng Heng <zengheng4@huawei.com>
 
-[ Upstream commit d454902a690db47f1880f963514bbf0fc7a129a8 ]
+[ Upstream commit bd65694223f7ad11c790ab63ad1af87a771192ee ]
 
-Avoid including PCI IDs for one platform to the PCI IDs of another. It's
-more clear to deal with them completely separately at the PCI ID macro
-level.
+The return value of scsi_device_reprobe() is currently ignored in
+_scsih_reprobe_lun(). Fixing the calling code to deal with the potential
+error is non-trivial, so for now just WARN_ON().
 
-Reviewed-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/4868d36fbfa8c38ea2d490bca82cf6370b8d65dd.1725443121.git.jani.nikula@intel.com
+The handling of scsi_device_reprobe()'s return value refers to
+_scsih_reprobe_lun() and the following link:
+
+https://lore.kernel.org/all/094fdbf57487af4f395238c0525b2a560c8f68f0.1469766027.git.calvinowens@fb.com/
+
+Fixes: f99be43b3024 ("[SCSI] fusion: power pc and miscellaneous bug fixs")
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Link: https://lore.kernel.org/r/20241024084417.154655-1-zengheng4@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pci.c   | 1 +
- include/drm/intel/xe_pciids.h | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/message/fusion/mptsas.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
-index 5e962e72c97ea..8563206f643e6 100644
---- a/drivers/gpu/drm/xe/xe_pci.c
-+++ b/drivers/gpu/drm/xe/xe_pci.c
-@@ -383,6 +383,7 @@ static const struct pci_device_id pciidlist[] = {
- 	XE_ADLS_IDS(INTEL_VGA_DEVICE, &adl_s_desc),
- 	XE_ADLP_IDS(INTEL_VGA_DEVICE, &adl_p_desc),
- 	XE_ADLN_IDS(INTEL_VGA_DEVICE, &adl_n_desc),
-+	XE_RPLU_IDS(INTEL_VGA_DEVICE, &adl_p_desc),
- 	XE_RPLP_IDS(INTEL_VGA_DEVICE, &adl_p_desc),
- 	XE_RPLS_IDS(INTEL_VGA_DEVICE, &adl_s_desc),
- 	XE_DG1_IDS(INTEL_VGA_DEVICE, &dg1_desc),
-diff --git a/include/drm/intel/xe_pciids.h b/include/drm/intel/xe_pciids.h
-index 644872a35c352..7ee7524141f10 100644
---- a/include/drm/intel/xe_pciids.h
-+++ b/include/drm/intel/xe_pciids.h
-@@ -120,7 +120,6 @@
+diff --git a/drivers/message/fusion/mptsas.c b/drivers/message/fusion/mptsas.c
+index 85285ba8e8179..3241e998b2360 100644
+--- a/drivers/message/fusion/mptsas.c
++++ b/drivers/message/fusion/mptsas.c
+@@ -4232,10 +4232,8 @@ mptsas_find_phyinfo_by_phys_disk_num(MPT_ADAPTER *ioc, u8 phys_disk_num,
+ static void
+ mptsas_reprobe_lun(struct scsi_device *sdev, void *data)
+ {
+-	int rc;
+-
+ 	sdev->no_uld_attach = data ? 1 : 0;
+-	rc = scsi_device_reprobe(sdev);
++	WARN_ON(scsi_device_reprobe(sdev));
+ }
  
- /* RPL-P */
- #define XE_RPLP_IDS(MACRO__, ...)		\
--	XE_RPLU_IDS(MACRO__, ## __VA_ARGS__),	\
- 	MACRO__(0xA720, ## __VA_ARGS__),	\
- 	MACRO__(0xA7A0, ## __VA_ARGS__),	\
- 	MACRO__(0xA7A8, ## __VA_ARGS__),	\
+ static void
 -- 
 2.43.0
 
