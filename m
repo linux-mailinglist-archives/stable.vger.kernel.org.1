@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28DD9EEC8D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 720719EF33B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA7EB284641
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA159291294
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A50921578B;
-	Thu, 12 Dec 2024 15:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D069222B58A;
+	Thu, 12 Dec 2024 16:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jliIZMC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zhbe2rd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185926F2FE;
-	Thu, 12 Dec 2024 15:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0E5223E96;
+	Thu, 12 Dec 2024 16:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017741; cv=none; b=RIHuTcus5SAWdinMyqishOMgTZJBxvR16cAtUTV0eGjjRwIuKQdsijHB/o+0jKIGdN6cWevCgpD282ea6MSWMtj+6bWb/vrAoGoGQh0J+JaGXStObsVHNXqB7IV8pV7/zY6G5WJiAx+sOh5+8dotluV+7TGcNqM3ILydQUriPtc=
+	t=1734022234; cv=none; b=lC067NgfgJMPcArBXwB9DW26Pb3hygXfgX2JLEAf1teHliXlKdvtGc8eOEPyQ5OCy7Kz1jrtrxtpnY3T/ZpY/bAr3KECh1kdc3IBkEGOgzLs2+OAa89cJ50SKtlvBtlDeAvClJPj/ThrLLkORHcnjIQGmj80BbXcZGO+EmQfABQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017741; c=relaxed/simple;
-	bh=NecZ8Z4sk3TZJTIVipycj77hzLn4fpYufS3zwkGri3k=;
+	s=arc-20240116; t=1734022234; c=relaxed/simple;
+	bh=Ir/j1z/dPvDrRQ+ijvoTc45BI1gsW13qttpRaIvmnR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VT93aBp4RJz9utdRiy8DCiS155528wS0aciccH6GKQVW0zrXNl7Be1ioKvI6LTMWVEP/xCoNxpW1GgXGewufRM1viGf9tpj14lraK8TDNE1fOib+eycClVWAt8GS0nTqvfMCBMv1/6GsJj76LtTKrAbxv4AyxDUjTH5ozpCxkOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jliIZMC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F27C4CECE;
-	Thu, 12 Dec 2024 15:35:40 +0000 (UTC)
+	 MIME-Version; b=FnhS4E+R+8pm+neMLLgTiJxvtFkXsvie64ys6+u9rVj2oTdih4wpZ0XFoqeSHgjqXkIF3lR3dh0eW9007X+81BYWCuOSE8qc85fz5l8LfW5TuDAKUfiDIISytri3kCcWDL55GJqi0s7GyqwU1ypRmcaBEUhOx5FtJ3mOWXn1hjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zhbe2rd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D150C4CECE;
+	Thu, 12 Dec 2024 16:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017740;
-	bh=NecZ8Z4sk3TZJTIVipycj77hzLn4fpYufS3zwkGri3k=;
+	s=korg; t=1734022234;
+	bh=Ir/j1z/dPvDrRQ+ijvoTc45BI1gsW13qttpRaIvmnR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jliIZMC0CgE5gWyBVikjXJex/b6QREeyqe2LPI518PLIPCwBzyYAoOhkNuHXg7lVY
-	 ovKERrGF0x/jUxtKQxkFBqKkG+qaTabIg+MK0waw+vnSyR7wqotzFM506tx6OJTe1G
-	 dG355mgzlCtVh5zkg0ldjnLXHHhYFhIyL2ny5Ni4=
+	b=Zhbe2rd2NxM7mjBWqQAlJU453lJV+Cd5Nzyu8Xyv03DHjrwyLKA8uJNTzDE1SyJkI
+	 tme0jFMyO7VnrsBTU9pOmW/g/sNb9zEVqrOqqBRhoIGDg3C2+xzFntGeQ4oOjYtV1d
+	 vZakR89GW7IDxGl6rKzYIRKK75C1XDTFDxSsBN/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/356] mlxsw: spectrum_acl_flex_keys: Use correct key block on Spectrum-4
+Subject: [PATCH 5.15 183/565] drm/etnaviv: hold GPU lock across perfmon sampling
 Date: Thu, 12 Dec 2024 15:56:18 +0100
-Message-ID: <20241212144246.967728398@linuxfoundation.org>
+Message-ID: <20241212144318.706924853@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit 217bbf156f93ada86b91617489e7ba8a0904233c ]
+[ Upstream commit 37dc4737447a7667f8e9ec790dac251da057eb27 ]
 
-The driver is currently using an ACL key block that is not supported by
-Spectrum-4. This works because the driver is only using a single field
-from this key block which is located in the same offset in the
-equivalent Spectrum-4 key block.
+The perfmon sampling mutates shared GPU state (e.g. VIVS_HI_CLOCK_CONTROL
+to select the pipe for the perf counter reads). To avoid clashing with
+other functions mutating the same state (e.g. etnaviv_gpu_update_clock)
+the perfmon sampling needs to hold the GPU lock.
 
-The issue was discovered when the firmware started rejecting the use of
-the unsupported key block. The change has been reverted to avoid
-breaking users that only update their firmware.
-
-Nonetheless, fix the issue by using the correct key block.
-
-Fixes: 07ff135958dd ("mlxsw: Introduce flex key elements for Spectrum-4")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/35e72c97bdd3bc414fb8e4d747e5fb5d26c29658.1733237440.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 68dc0b295dcb ("drm/etnaviv: use 'sync points' for performance monitor requests")
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c    | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-index 6fe185ea6732c..1850a975b3804 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-@@ -324,6 +324,10 @@ static const struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_mac_5b[] =
- 	MLXSW_AFK_ELEMENT_INST_EXT_U32(SRC_SYS_PORT, 0x04, 0, 9, -1, true), /* RX_ACL_SYSTEM_PORT */
- };
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+index 9def75f04e5b6..0fff51dc97755 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+@@ -1292,6 +1292,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+ {
+ 	u32 val;
  
-+static const struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv4_1b[] = {
-+	MLXSW_AFK_ELEMENT_INST_BUF(SRC_IP_0_31, 0x04, 4),
-+};
++	mutex_lock(&gpu->lock);
 +
- static const struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv4_5b[] = {
- 	MLXSW_AFK_ELEMENT_INST_U32(VIRT_ROUTER, 0x04, 20, 12),
- };
-@@ -341,7 +345,7 @@ static const struct mlxsw_afk_block mlxsw_sp4_afk_blocks[] = {
- 	MLXSW_AFK_BLOCK(0x14, mlxsw_sp_afk_element_info_mac_4),
- 	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x1A, mlxsw_sp_afk_element_info_mac_5b),
- 	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x38, mlxsw_sp_afk_element_info_ipv4_0),
--	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x39, mlxsw_sp_afk_element_info_ipv4_1),
-+	MLXSW_AFK_BLOCK_HIGH_ENTROPY(0x3F, mlxsw_sp_afk_element_info_ipv4_1b),
- 	MLXSW_AFK_BLOCK(0x3A, mlxsw_sp_afk_element_info_ipv4_2),
- 	MLXSW_AFK_BLOCK(0x36, mlxsw_sp_afk_element_info_ipv4_5b),
- 	MLXSW_AFK_BLOCK(0x40, mlxsw_sp_afk_element_info_ipv6_0),
+ 	/* disable clock gating */
+ 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
+ 	val &= ~VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
+@@ -1303,6 +1305,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+ 	gpu_write(gpu, VIVS_HI_CLOCK_CONTROL, val);
+ 
+ 	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_PRE);
++
++	mutex_unlock(&gpu->lock);
+ }
+ 
+ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
+@@ -1312,13 +1316,9 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
+ 	unsigned int i;
+ 	u32 val;
+ 
+-	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
+-
+-	for (i = 0; i < submit->nr_pmrs; i++) {
+-		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
++	mutex_lock(&gpu->lock);
+ 
+-		*pmr->bo_vma = pmr->sequence;
+-	}
++	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
+ 
+ 	/* disable debug register */
+ 	val = gpu_read(gpu, VIVS_HI_CLOCK_CONTROL);
+@@ -1329,6 +1329,14 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
+ 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
+ 	val |= VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
+ 	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, val);
++
++	mutex_unlock(&gpu->lock);
++
++	for (i = 0; i < submit->nr_pmrs; i++) {
++		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
++
++		*pmr->bo_vma = pmr->sequence;
++	}
+ }
+ 
+ 
 -- 
 2.43.0
 
