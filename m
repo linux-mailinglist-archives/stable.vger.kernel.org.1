@@ -1,113 +1,111 @@
-Return-Path: <stable+bounces-100920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3349EE823
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:58:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E34939EE824
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77F7C283AD9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:58:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3FF283BE5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7552135BE;
-	Thu, 12 Dec 2024 13:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336B3211471;
+	Thu, 12 Dec 2024 14:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jxsn3K1X";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+p4DQoi5"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="ITVXryt5"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C7F748D
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 13:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0D66F2F3
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 14:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734011928; cv=none; b=b36arVEDIXmNvsVNR2DlNwVNYA8zC8vemf2HBO4FXVucmp8xIX5M8xOj5voeb3ZFdpQEv9owNnbDN+Iex/Uoo0p+oxxNyBC2DYpSUEmTlfeMj/9aMUz01KIOyCSQzT1ln7452dgfXLq9fLZ8jbqeKupKDnE0RvabyjhdCxMMekE=
+	t=1734012021; cv=none; b=Ua3HK4ABeBk+nabOWVfSspxHWl+2PHDWhYbI+9x0lIgZqBa3Z7Aa4vrtKIdrd11wP1fyBeGAHJKyxAw1AVU96f7hZi3Cp6ktR52KsM32LrWwWlRSfSAaW3YGm9iN9cTVnkZ/OspOCrGXZtTkgO+9VbiLiCReV5g+BYGTBEXICkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734011928; c=relaxed/simple;
-	bh=KL66DB43YprDjp7Jg/DVmS77JVj83TX68VeUapZJm2s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=A/1GBqqAhqUTWCqgEB7Gg+J/hwVlmlL9SINo9YnigFIGROR/UFSL2sVh1jvscg1gi8PWVqDoDUFPwOAVRiW3OvcL3LTiMFWRn7TWFrRhXXyJxczU+SH2y7vQR76OzRFLVOpiNjm9UQrAe+YPvSiz8hteD+K1RAulyrAt2PAbbEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jxsn3K1X; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+p4DQoi5; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1734011923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XHNwyv2ItsN+GcsZYjVbJW17PiPb6vbywReSf4sylTI=;
-	b=jxsn3K1XP/E3cv6DyHZDY9/pxAGC7UBwmllYw2tjsAwIWBg+30RDDeGwMBgRtDhfr3aU6h
-	IBhGMdqDcWztLwfqCI54ECjIe7ZwOlM7Y1KNUf+Yw6OBjWfHT6BgidQB+BvGqwp7XGhX/I
-	M3tjtuB7JJvHsXiYuMtt0u8nZoUnWJZ0OC05yv0chrU8oUooP+ZIpLoaF2jlP7SIdMuqwS
-	DjFCWa7rYpd6qQNu3/L7POCiYEfsh0o9h6dqfFCV0cZh4YbuXoT9hyKtF9v8uxwAxGl2ue
-	FekPhAOAgmNmQ5f5+MWwuXSvBB6hgopXDH5LjXe0W/m2PdFgqOyNx2S0pLf1MQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1734011923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XHNwyv2ItsN+GcsZYjVbJW17PiPb6vbywReSf4sylTI=;
-	b=+p4DQoi5EwNHJTYfoKulEOCllCpAxZtF+y2SVXmYZA2b9VsdTKjh2ZpOCP1CNEzNBHo6nN
-	ep1Mgxbn2xcnEqDQ==
-To: gregkh@linuxfoundation.org, linux@roeck-us.net
-Cc: stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] clocksource: Make negative motion
- detection more robust" failed to apply to 6.12-stable tree
-In-Reply-To: <2024121203-griminess-blah-4e97@gregkh>
-References: <2024121203-griminess-blah-4e97@gregkh>
-Date: Thu, 12 Dec 2024 14:58:42 +0100
-Message-ID: <87ikrp9f59.ffs@tglx>
+	s=arc-20240116; t=1734012021; c=relaxed/simple;
+	bh=lNCBRPoLNPpljo8RxnmpUh4q9jftwnwwb48Ww0eBwpY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pe3HWGlXngK+LQRGK3L+V+xFY7tcfV3uhei1ClzSSfcs+WFV3RL2Y6ukqh5KxQ2feBqo7Uo7PfjdBN5WaRPCY3FCJr1la7fxxO9/gaqpY2G1Z9gOQp7ZkEDfTvitDu99gNTpWoa4b7O4nTVF0mlQsTWpG2PROeVGpo3rPA7wcLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=ITVXryt5; arc=none smtp.client-ip=185.125.188.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from [192.168.5.25] (unknown [120.85.107.173])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 313793F1A5;
+	Thu, 12 Dec 2024 14:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1734012011;
+	bh=WZ58zHaR9lbhtQsKoQ/uFiPaFEgJveHhxAu+3tMJ0+o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type;
+	b=ITVXryt5a+2Luk2nW6ddnvR7nZjxTKrZmAASEv5+Omm9V0N/9REy3lyFf2LYor38W
+	 IgtnchBleIP4N5HT+kNo+Q9tJFsdhoU56FnuLC3uyPq4/GcAb3WR+VOx1bkhVMHS1N
+	 YfxBSH4IgWaO0cD+6N7iCRjVkEi6P/LbjdIluP5ZZ/T86uiGAvGy9EzPimv8ZiWqP6
+	 viyc0O8ndY+pTotCDMPV1TVCCYTsTKr+HTtkGRlzco2YbCPK7wLlfNBD5WQEXWTr1I
+	 qLx4Vsrow8EbjViQwmDAQVLN4IBlfGKSw6/aTKMjKNMlIp/q36AAAQkHo0AQ8OxGrm
+	 xeLDjd6U3kY5g==
+Message-ID: <900e507b-b3ec-4d2f-b210-8c06b2b64c26@canonical.com>
+Date: Thu, 12 Dec 2024 22:00:00 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [stable-kernel][5.15.y][PATCH 0/5] Fix a regression on sc16is7xx
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, sashal@kernel.org,
+ hvilleneuve@dimonoff.com
+References: <20241211042545.202482-1-hui.wang@canonical.com>
+ <2024121241-civil-diligence-dc09@gregkh>
+Content-Language: en-US
+From: Hui Wang <hui.wang@canonical.com>
+In-Reply-To: <2024121241-civil-diligence-dc09@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 12 2024 at 14:03, gregkh@linuxfoundation.org wrote:
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+
+On 12/12/24 21:44, Greg KH wrote:
+> On Wed, Dec 11, 2024 at 12:25:39PM +0800, Hui Wang wrote:
+>> Recently we found the fifo_read() and fifo_write() are broken in our
+>> 5.15 kernel after rebase to the latest 5.15.y, the 5.15.y integrated
+>> the commit e635f652696e ("serial: sc16is7xx: convert from _raw_ to
+>> _noinc_ regmap functions for FIFO"), but it forgot to integrate a
+>> prerequisite commit 3837a0379533 ("serial: sc16is7xx: improve regmap
+>> debugfs by using one regmap per port").
+>>
+>> And about the prerequisite commit, there are also 4 commits to fix it,
+>> So in total, I backported 5 patches to 5.15.y to fix this regression.
+>>
+>> 0002-xxx and 0004-xxx could be cleanly applied to 5.15.y, the remaining
+>> 3 patches need to resolve some conflict.
+>>
+>> Hugo Villeneuve (5):
+>>    serial: sc16is7xx: improve regmap debugfs by using one regmap per port
+>>    serial: sc16is7xx: remove wasteful static buffer in
+>>      sc16is7xx_regmap_name()
+>>    serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
+>>    serial: sc16is7xx: remove unused line structure member
+>>    serial: sc16is7xx: change EFR lock to operate on each channels
+>>
+>>   drivers/tty/serial/sc16is7xx.c | 185 +++++++++++++++++++--------------
+>>   1 file changed, 107 insertions(+), 78 deletions(-)
+> How well did you test this series?  It seems you forgot about commit
+> 133f4c00b8b2 ("serial: sc16is7xx: fix TX fifo corruption"), right?
 >
-> To reproduce the conflict and resubmit, you may use the following commands:
+> Please do better testing and resend a working set of patches.
+
+Okay, got it.
+
+Thanks.
+
 >
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 76031d9536a076bf023bedbdb1b4317fc801dd67
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121203-griminess-blah-4e97@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+> thanks,
 >
-> Possible dependencies:
->
-
-There clearly is a dependency:
-
-> From 76031d9536a076bf023bedbdb1b4317fc801dd67 Mon Sep 17 00:00:00 2001
-> From: Thomas Gleixner <tglx@linutronix.de>
-> Date: Tue, 3 Dec 2024 11:16:30 +0100
-> Subject: [PATCH] clocksource: Make negative motion detection more robust
-
-<snip>
-
-> Fixes: c163e40af9b2 ("timekeeping: Always check for negative motion")
-
-This was merged in the 6.13 merge window into Linus tree and not
-backported to 6.12.y according to my clone of the stable tree.
-
-AI went sideways?
-
-But I don't think these two commits are necessarily stable material,
-though I don't have a strong opinion on it. If c163e40af9b2 is
-backported, then it has it's own large dependency chain on pre 6.10
-kernels...
-
-Thanks,
-
-        tglx
+> greg k-h
 
