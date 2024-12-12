@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE5C9EF5D9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F41389EF84A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 495E51746B1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEB1B16BFDC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E07B21660C;
-	Thu, 12 Dec 2024 17:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C2221E086;
+	Thu, 12 Dec 2024 17:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeqtcTC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDgNdYJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3631B53365;
-	Thu, 12 Dec 2024 17:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F7C2153DD;
+	Thu, 12 Dec 2024 17:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023548; cv=none; b=e0h8Citk3FbCBSomme0oB1LYU8IiHNXRb0DfOsA1w9ViIxdAg8iQEdqq2z/96lvBRTJbwUl9tnINqF3Z47wPpnAYmbcsrqQkNNHZ5rIo43OXZH6Z9f5LRmnzbF5f6rMjOhLGsBjcuOdeZXUS9eVZbk7x9Gm8kTVNNHIEgc+1xzA=
+	t=1734024781; cv=none; b=mgfuPuUqWsYI/fPWdIw6X6B8g5atuhB0zdCGcOdTHGnKGTOomR+L66fbuiAeBuVOSthM+UeRzqDLSi+h6HG/7BJthF77grxWJd+zQN2aZhAWTSy/T2MQMmCLWVLDt8Muaz5Bf/q2+v0Q+UIYmw46aTP7ET2nygANqU40KGoO14Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023548; c=relaxed/simple;
-	bh=FSOxS61Jx4JQ07BupQcXEcxu7GqFv39bnjUIvvrR+5I=;
+	s=arc-20240116; t=1734024781; c=relaxed/simple;
+	bh=LQm3OYB8NbWcr2vfNOajd36tADvRcmbzNUCiX5T9JsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsFdpXYLAE+YVtKjWcsp5n/sJ63d+Ld+SkU+evlTxC0gWZ+zps9wURZ5ymjD47NlE3tGz1+7gffACRm8cWIYVRDNhZekhWtE9CRWQL/jXzpPcBYxLhMjHeBfIXA1AFf1nEo0k81le8AN2dpJhWZiHPYbOtQHg1rtQYUe0ZG1e64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeqtcTC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ED8C4CED0;
-	Thu, 12 Dec 2024 17:12:27 +0000 (UTC)
+	 MIME-Version; b=E/XTmBFgK24UX4wJr/ThLtMK6xWDXF3WxVOdsi0/qaRN5RKJA25qSfBzYSatu6b1U6va5QaiALeaxnssFK4MLLid/5pOQDkHR5f2Wiw5pwZJYg6ZYUwrPFoI2/C3n3jieyaNMbH6GVs48kPkTxKuyt0SROSn4qsH0SV63CvV3xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDgNdYJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB8FC4CECE;
+	Thu, 12 Dec 2024 17:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023548;
-	bh=FSOxS61Jx4JQ07BupQcXEcxu7GqFv39bnjUIvvrR+5I=;
+	s=korg; t=1734024781;
+	bh=LQm3OYB8NbWcr2vfNOajd36tADvRcmbzNUCiX5T9JsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeqtcTC2Z06a86n7twLnTIN3GSrspykJyH0YQykSAIXT7kv8iRc3x2N9RosIqwRU8
-	 q8UWMWKrFjTt+1Ih4tiKnVqkY+xZIdAYaJVVO+ZddkXgvlSQaNkSxH8JNAd/sUbDbN
-	 k3TBNUloYtnqN6p9LGkQ/JKIg3IBKqZKwKYVoGew=
+	b=vDgNdYJnSTiUmafG/sJI8HMSx3Ep6NdxvDgB9GvVUjRIOFq2ZS2lYycIp45y0qU8r
+	 SShGX6Q7MYDBfKdTfdOueLxrraZnQi55qXqM2Q7Zt2u1fpRMZ21BU+O0DSbo+Icib1
+	 rdOmHHASKKn6aYvEnvgBFagcFL/oZQFJtvBTzVHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Libo Chen <libo.chen.cn@windriver.com>
-Subject: [PATCH 5.15 551/565] ima: Fix use-after-free on a dentrys dname.name
+	Victor Zhao <Victor.Zhao@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 408/459] drm/amdgpu: skip amdgpu_device_cache_pci_state under sriov
 Date: Thu, 12 Dec 2024 16:02:26 +0100
-Message-ID: <20241212144333.638001631@linuxfoundation.org>
+Message-ID: <20241212144309.882529813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: Victor Zhao <Victor.Zhao@amd.com>
 
-commit be84f32bb2c981ca670922e047cdde1488b233de upstream.
+[ Upstream commit afe260df55ac280cd56306248cb6d8a6b0db095c ]
 
-->d_name.name can change on rename and the earlier value can be freed;
-there are conditions sufficient to stabilize it (->d_lock on dentry,
-->d_lock on its parent, ->i_rwsem exclusive on the parent's inode,
-rename_lock), but none of those are met at any of the sites. Take a stable
-snapshot of the name instead.
+Under sriov, host driver will save and restore vf pci cfg space during
+reset. And during device init, under sriov, pci_restore_state happens after
+fullaccess released, and it can have race condition with mmio protection
+enable from host side leading to missing interrupts.
 
-Link: https://lore.kernel.org/all/20240202182732.GE2087318@ZenIV/
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Libo Chen <libo.chen.cn@windriver.com>
+So skip amdgpu_device_cache_pci_state for sriov.
+
+Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
+Acked-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_api.c          |   16 ++++++++++++----
- security/integrity/ima/ima_template_lib.c |   17 ++++++++++++++---
- 2 files changed, 26 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/security/integrity/ima/ima_api.c
-+++ b/security/integrity/ima/ima_api.c
-@@ -217,7 +217,7 @@ int ima_collect_measurement(struct integ
- 	const char *audit_cause = "failed";
- 	struct inode *inode = file_inode(file);
- 	struct inode *real_inode = d_real_inode(file_dentry(file));
--	const char *filename = file->f_path.dentry->d_name.name;
-+	struct name_snapshot filename;
- 	int result = 0;
- 	int length;
- 	void *tmpbuf;
-@@ -280,9 +280,13 @@ out:
- 		if (file->f_flags & O_DIRECT)
- 			audit_cause = "failed(directio)";
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index e833c02fabff3..2f42471e578ad 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5088,6 +5088,9 @@ bool amdgpu_device_cache_pci_state(struct pci_dev *pdev)
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	int r;
  
-+		take_dentry_name_snapshot(&filename, file->f_path.dentry);
++	if (amdgpu_sriov_vf(adev))
++		return false;
 +
- 		integrity_audit_msg(AUDIT_INTEGRITY_DATA, inode,
--				    filename, "collect_data", audit_cause,
--				    result, 0);
-+				    filename.name.name, "collect_data",
-+				    audit_cause, result, 0);
-+
-+		release_dentry_name_snapshot(&filename);
- 	}
- 	return result;
- }
-@@ -395,6 +399,7 @@ out:
-  */
- const char *ima_d_path(const struct path *path, char **pathbuf, char *namebuf)
- {
-+	struct name_snapshot filename;
- 	char *pathname = NULL;
- 
- 	*pathbuf = __getname();
-@@ -408,7 +413,10 @@ const char *ima_d_path(const struct path
- 	}
- 
- 	if (!pathname) {
--		strlcpy(namebuf, path->dentry->d_name.name, NAME_MAX);
-+		take_dentry_name_snapshot(&filename, path->dentry);
-+		strscpy(namebuf, filename.name.name, NAME_MAX);
-+		release_dentry_name_snapshot(&filename);
-+
- 		pathname = namebuf;
- 	}
- 
---- a/security/integrity/ima/ima_template_lib.c
-+++ b/security/integrity/ima/ima_template_lib.c
-@@ -426,7 +426,10 @@ static int ima_eventname_init_common(str
- 				     bool size_limit)
- {
- 	const char *cur_filename = NULL;
-+	struct name_snapshot filename;
- 	u32 cur_filename_len = 0;
-+	bool snapshot = false;
-+	int ret;
- 
- 	BUG_ON(event_data->filename == NULL && event_data->file == NULL);
- 
-@@ -439,7 +442,10 @@ static int ima_eventname_init_common(str
- 	}
- 
- 	if (event_data->file) {
--		cur_filename = event_data->file->f_path.dentry->d_name.name;
-+		take_dentry_name_snapshot(&filename,
-+					  event_data->file->f_path.dentry);
-+		snapshot = true;
-+		cur_filename = filename.name.name;
- 		cur_filename_len = strlen(cur_filename);
- 	} else
- 		/*
-@@ -448,8 +454,13 @@ static int ima_eventname_init_common(str
- 		 */
- 		cur_filename_len = IMA_EVENT_NAME_LEN_MAX;
- out:
--	return ima_write_template_field_data(cur_filename, cur_filename_len,
--					     DATA_FMT_STRING, field_data);
-+	ret = ima_write_template_field_data(cur_filename, cur_filename_len,
-+					    DATA_FMT_STRING, field_data);
-+
-+	if (snapshot)
-+		release_dentry_name_snapshot(&filename);
-+
-+	return ret;
- }
- 
- /*
+ 	r = pci_save_state(pdev);
+ 	if (!r) {
+ 		kfree(adev->pci_state);
+-- 
+2.43.0
+
 
 
 
