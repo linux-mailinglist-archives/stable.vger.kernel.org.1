@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F9C9EF7CD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A279EF6F1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 695E5285588
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6B79189C550
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD9E213E6F;
-	Thu, 12 Dec 2024 17:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CDD217664;
+	Thu, 12 Dec 2024 17:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fERhfqUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bteCfoel"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F7D222D72;
-	Thu, 12 Dec 2024 17:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25663215762;
+	Thu, 12 Dec 2024 17:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025021; cv=none; b=DCAoU5xMgcACQ9MSz5oYpXacA9Q9FgjhW0hmsmAU1x7rMUIc3uiYBg2C57LFcSXKZ9KIK9HcCBz3qhOxIZ4wguahoLmCvVmc+6kw52zQKLRMsnUqsW4x+8Q9W716I4QMWH3qo8oFv51A2Ms48nMb03GgMsKXMSK75z1PcVSKQ2Y=
+	t=1734024172; cv=none; b=nJJ7l0q+TjaAYQtK450GN/TyJtRz723W6xqiPMhFMNJvZNFq6ssG1BUAmCFql8nZPBfjClyH9Y86iaNTGJZ6KE67PN7B4SAAJ2qOfA7HswUWHrVmYtTrqwg4bhwN0AH2oTQ1fzikv34K9Dx3AMLwWkROjHtGTiJa7P5fIKCehrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025021; c=relaxed/simple;
-	bh=Iu9XWtfayiAdw0CLfSQmtjX26CMm3ledKM+TPqf5csk=;
+	s=arc-20240116; t=1734024172; c=relaxed/simple;
+	bh=H1g5H4lbPzjxEuacGveUs/DoHEZTehPOBRIZinFSwHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pob8NUYB0ANIWDysLWqoZTOXnfI0KquWRUG0Fw0zibazZzzER7ci5gB1SzfvpXFUqZN7T/wAsRGqjtNo9d9K+TfexGpGsd5wDbYQzgwhhgUtKw3u8OpGtxgY1X/mq7j/aFr4WRfKGmYiW+J3LqshOnRaOL04lfMi2uHaeHAPShk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fERhfqUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00DCC4CECE;
-	Thu, 12 Dec 2024 17:37:00 +0000 (UTC)
+	 MIME-Version; b=gkTHhDtzsxOJ9doQAaT8KYKNa05MJtHn5/u3guXVlF6oEBHOCbyIUWSdFW2/Ja5e1eWoZlOO1z+WCAZBRtSWYUJwHn7IskdN4qsKZVsNKIZXW4W/kMVvDP7GrMBy3DyGC3MpanCXSu7TbUUYjrAPOf7A+1xZzmuyjFTDLaq0AlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bteCfoel; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CB1C4CED0;
+	Thu, 12 Dec 2024 17:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025021;
-	bh=Iu9XWtfayiAdw0CLfSQmtjX26CMm3ledKM+TPqf5csk=;
+	s=korg; t=1734024172;
+	bh=H1g5H4lbPzjxEuacGveUs/DoHEZTehPOBRIZinFSwHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fERhfqUAlN1/0Rv4jeaQ4x2ohKT096wm/w3n9OokVo53OY9FXau8DBuUN3H+rBC3J
-	 2gJYDO11hAWbpa61On2GKGBQ9l2Oi/lFZ+v8i4yTzQG5/UbrM+KEi+cUATZVGuSx7Z
-	 fO6dbvLQJ1pYlKvlVsELI+CQHQ3MdnW85guWqUJY=
+	b=bteCfoelR26+inK0+VIZwcamCWd6XDPh71tX41SdFS80LU9tIPYWKqxw0pM1VVI3E
+	 FpH4wkfdVcY9Yh23zlhq9im8Lr0CNkZcsYEp+iueaalRs/0U/KdlSZHS+kA6DHBy+l
+	 Pt9krmFyPyK7T/7FVoZwK3vf25CK38JiQpWQz0DM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Jonathan Marek <jonathan@marek.ca>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/321] mips: asm: fix warning when disabling MIPS_FP_SUPPORT
+Subject: [PATCH 5.10 209/459] rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length
 Date: Thu, 12 Dec 2024 15:59:07 +0100
-Message-ID: <20241212144231.154424873@linuxfoundation.org>
+Message-ID: <20241212144301.825765375@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Jonathan Marek <jonathan@marek.ca>
 
-[ Upstream commit da09935975c8f8c90d6f57be2422dee5557206cd ]
+[ Upstream commit 06c59d97f63c1b8af521fa5aef8a716fb988b285 ]
 
-When MIPS_FP_SUPPORT is disabled, __sanitize_fcr31() is defined as
-nothing, which triggers a gcc warning:
+The name len field of the CMD_OPEN packet is only 16-bits and the upper
+16-bits of "param2" are a different "prio" field, which can be nonzero in
+certain situations, and CMD_OPEN packets can be unexpectedly dropped
+because of this.
 
-    In file included from kernel/sched/core.c:79:
-    kernel/sched/core.c: In function 'context_switch':
-    ./arch/mips/include/asm/switch_to.h:114:39: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
-      114 |                 __sanitize_fcr31(next);                                 \
-          |                                       ^
-    kernel/sched/core.c:5316:9: note: in expansion of macro 'switch_to'
-     5316 |         switch_to(prev, next, prev);
-          |         ^~~~~~~~~
+Fix this by masking out the upper 16 bits of param2.
 
-Fix this by providing an empty body for __sanitize_fcr31() like one is
-defined for __mips_mt_fpaff_switch_to().
-
-Fixes: 36a498035bd2 ("MIPS: Avoid FCSR sanitization when CONFIG_MIPS_FP_SUPPORT=n")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: b4f8e52b89f6 ("rpmsg: Introduce Qualcomm RPM glink driver")
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241007235935.6216-1-jonathan@marek.ca
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/switch_to.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rpmsg/qcom_glink_native.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
-index 09cbe9042828f..531eb245fc575 100644
---- a/arch/mips/include/asm/switch_to.h
-+++ b/arch/mips/include/asm/switch_to.h
-@@ -97,7 +97,7 @@ do {									\
- 	}								\
- } while (0)
- #else
--# define __sanitize_fcr31(next)
-+# define __sanitize_fcr31(next) do { (void) (next); } while (0)
- #endif
- 
- /*
+diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
+index 831a5d1cd4806..82670cb063f5a 100644
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1045,7 +1045,8 @@ static irqreturn_t qcom_glink_native_intr(int irq, void *data)
+ 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
+ 			break;
+ 		case GLINK_CMD_OPEN:
+-			ret = qcom_glink_rx_defer(glink, param2);
++			/* upper 16 bits of param2 are the "prio" field */
++			ret = qcom_glink_rx_defer(glink, param2 & 0xffff);
+ 			break;
+ 		case GLINK_CMD_TX_DATA:
+ 		case GLINK_CMD_TX_DATA_CONT:
 -- 
 2.43.0
 
