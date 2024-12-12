@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC079EEC61
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF54A9EF3B1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48B10168BCA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9F40189EEAA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940B1217656;
-	Thu, 12 Dec 2024 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A88A22331F;
+	Thu, 12 Dec 2024 16:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEYAT7Z+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIPJHsXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524BC215777;
-	Thu, 12 Dec 2024 15:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9887223313;
+	Thu, 12 Dec 2024 16:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017528; cv=none; b=FUqCbUR7mGw3tA7SfutZZCyTDg66YuGWCHoxszz/g5bTRESpdHaLHJOCJu/AcG+GOoSKe0Uafc/wbjNqWtMuIG+loww90keCF37Bg1zuNqs9Hmv3s0r3SrkyuNc/sQjwFW4ehzMr0Q4v1yGImt0WFfh33B0C/E8dUOgGXwdlljA=
+	t=1734022153; cv=none; b=Yrcabl+hdYnvSd36jOYRHUmOYWnrjrg0n+QXVkJzAz+dasJT7R2aZ4oyrmZfScEYs7+tXS6T2+S+HopFAgjb3KKBCmFt4r9YcaJfHxY5blf5+z/KMol1vGj2sxHnXfHV9HAmw6fc58QBzOI7OIyohmn8yG60Iz0chocyB2xI+T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017528; c=relaxed/simple;
-	bh=HZagMqy40atOC7zuZrPeMmQkN1hTf/dxx6hKx6Ajt4k=;
+	s=arc-20240116; t=1734022153; c=relaxed/simple;
+	bh=Ab4B+AV8PLzW3+eS873XQXDRhRweaCVpcp6Gob89mFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STNf8VK3Wiv4Edy7W/Lzjv4SCDnieXUoSbOvFnwer2o2fPXCecE5CAfsbNnro0BmUoRus2BenDLf7Q+wJ/sZg+6HKMHzUEb6L14zKCItJPDJZTeimTm52QzlD+BY4I37Or+7fZ8vDxpLkczV1N7+yRRX48Ttqayc7rnqdtJxzpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEYAT7Z+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA5AC4CECE;
-	Thu, 12 Dec 2024 15:32:07 +0000 (UTC)
+	 MIME-Version; b=iKMrxr0jDrGVE3u3PQed/Fegzk0bWQfXzdwB3SxQOqwaeme82n6gyQnE0bHY4EMFrdM+bcJi7dPoakwt9cWzEDI/Gmc72u3PJNdQiWYlgHlVj5EmsC+8lijrib188jZK0fT3USyg4S0/gHbOQvQ8shbKfIJdyMyN+OIfeWXmaRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIPJHsXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5498AC4CECE;
+	Thu, 12 Dec 2024 16:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017527;
-	bh=HZagMqy40atOC7zuZrPeMmQkN1hTf/dxx6hKx6Ajt4k=;
+	s=korg; t=1734022152;
+	bh=Ab4B+AV8PLzW3+eS873XQXDRhRweaCVpcp6Gob89mFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEYAT7Z+IqOPWfqoPJZBa7j3jh8lJhY16utM37K1aMGl3enIkmYGHklZG2huyNPKi
-	 OhXPdpFMA3iQIjfZn23UUos+mS3iw7/8KkeMEiomKxtww3V5mmEnVybLki1arytdwh
-	 u1xw2v1t/3KeAhWDVAvyvpHRBcXX0qSZjwkS7UWU=
+	b=qIPJHsXl9RCeMXDnsXGdbkt9MvU0hXJIjrCJMtdFa3zQ286Kwpyzcn0wAFgJfPUFN
+	 ssS3/6RXTw+dHe1hwN+3N0+rAu67tU/l++807MbQC+0S3WPUBS39xhph/LI+RQ7O8U
+	 kF5Vw0qzQ1UBH42zAJ07pg9Oz9al2pQFPfrKJNrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Jan Karcher <jaka@linux.ibm.com>
-Subject: [PATCH 6.6 039/356] net/smc: mark optional smcd_ops and check for support when called
+	Pin-yen Lin <treapking@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 163/565] drm/bridge: anx7625: Drop EDID cache on bridge power off
 Date: Thu, 12 Dec 2024 15:55:58 +0100
-Message-ID: <20241212144246.173452379@linuxfoundation.org>
+Message-ID: <20241212144317.919231168@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit d1d8d0b6c7c68b0665456831fa779174ebd78f90 ]
+[ Upstream commit 00ae002116a14c2e6a342c4c9ae080cdbb9b4b21 ]
 
-Some operations are not supported by new introduced Emulated-ISM, so
-mark them as optional and check if the device supports them when called.
+The bridge might miss the display change events when it's powered off.
+This happens when a user changes the external monitor when the system
+is suspended and the embedded controller doesn't not wake AP up.
 
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Reviewed-and-tested-by: Jan Karcher <jaka@linux.ibm.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 0541db8ee32c ("net/smc: initialize close_work early to avoid warning")
+It's also observed that one DP-to-HDMI bridge doesn't work correctly
+when there is no EDID read after it is powered on.
+
+Drop the cache to force an EDID read after system resume to fix this.
+
+Fixes: 8bdfc5dae4e3 ("drm/bridge: anx7625: Add anx7625 MIPI DSI/DPI to DP")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240926092931.3870342-2-treapking@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/smc.h | 14 ++++++++------
- net/smc/smc_ism.c |  9 ++++++++-
- 2 files changed, 16 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/smc.h b/include/net/smc.h
-index a0dc1187e96ed..9dfe57f3e4f0b 100644
---- a/include/net/smc.h
-+++ b/include/net/smc.h
-@@ -63,12 +63,6 @@ struct smcd_ops {
- 	int (*register_dmb)(struct smcd_dev *dev, struct smcd_dmb *dmb,
- 			    struct ism_client *client);
- 	int (*unregister_dmb)(struct smcd_dev *dev, struct smcd_dmb *dmb);
--	int (*add_vlan_id)(struct smcd_dev *dev, u64 vlan_id);
--	int (*del_vlan_id)(struct smcd_dev *dev, u64 vlan_id);
--	int (*set_vlan_required)(struct smcd_dev *dev);
--	int (*reset_vlan_required)(struct smcd_dev *dev);
--	int (*signal_event)(struct smcd_dev *dev, struct smcd_gid *rgid,
--			    u32 trigger_irq, u32 event_code, u64 info);
- 	int (*move_data)(struct smcd_dev *dev, u64 dmb_tok, unsigned int idx,
- 			 bool sf, unsigned int offset, void *data,
- 			 unsigned int size);
-@@ -77,6 +71,14 @@ struct smcd_ops {
- 	void (*get_local_gid)(struct smcd_dev *dev, struct smcd_gid *gid);
- 	u16 (*get_chid)(struct smcd_dev *dev);
- 	struct device* (*get_dev)(struct smcd_dev *dev);
-+
-+	/* optional operations */
-+	int (*add_vlan_id)(struct smcd_dev *dev, u64 vlan_id);
-+	int (*del_vlan_id)(struct smcd_dev *dev, u64 vlan_id);
-+	int (*set_vlan_required)(struct smcd_dev *dev);
-+	int (*reset_vlan_required)(struct smcd_dev *dev);
-+	int (*signal_event)(struct smcd_dev *dev, struct smcd_gid *rgid,
-+			    u32 trigger_irq, u32 event_code, u64 info);
- };
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index f895ef1939fa0..01612d2c034af 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -1704,6 +1704,8 @@ static int __maybe_unused anx7625_runtime_pm_suspend(struct device *dev)
+ 	mutex_lock(&ctx->lock);
  
- struct smcd_dev {
-diff --git a/net/smc/smc_ism.c b/net/smc/smc_ism.c
-index a33f861cf7c19..3623df320de55 100644
---- a/net/smc/smc_ism.c
-+++ b/net/smc/smc_ism.c
-@@ -105,6 +105,8 @@ int smc_ism_get_vlan(struct smcd_dev *smcd, unsigned short vlanid)
+ 	anx7625_stop_dp_work(ctx);
++	if (!ctx->pdata.panel_bridge)
++		anx7625_remove_edid(ctx);
+ 	anx7625_power_standby(ctx);
  
- 	if (!vlanid)			/* No valid vlan id */
- 		return -EINVAL;
-+	if (!smcd->ops->add_vlan_id)
-+		return -EOPNOTSUPP;
- 
- 	/* create new vlan entry, in case we need it */
- 	new_vlan = kzalloc(sizeof(*new_vlan), GFP_KERNEL);
-@@ -150,6 +152,8 @@ int smc_ism_put_vlan(struct smcd_dev *smcd, unsigned short vlanid)
- 
- 	if (!vlanid)			/* No valid vlan id */
- 		return -EINVAL;
-+	if (!smcd->ops->del_vlan_id)
-+		return -EOPNOTSUPP;
- 
- 	spin_lock_irqsave(&smcd->lock, flags);
- 	list_for_each_entry(vlan, &smcd->vlan, list) {
-@@ -351,7 +355,8 @@ static void smcd_handle_sw_event(struct smc_ism_event_work *wrk)
- 		smc_smcd_terminate(wrk->smcd, &peer_gid, ev_info.vlan_id);
- 		break;
- 	case ISM_EVENT_CODE_TESTLINK:	/* Activity timer */
--		if (ev_info.code == ISM_EVENT_REQUEST) {
-+		if (ev_info.code == ISM_EVENT_REQUEST &&
-+		    wrk->smcd->ops->signal_event) {
- 			ev_info.code = ISM_EVENT_RESPONSE;
- 			wrk->smcd->ops->signal_event(wrk->smcd,
- 						     &peer_gid,
-@@ -526,6 +531,8 @@ int smc_ism_signal_shutdown(struct smc_link_group *lgr)
- 
- 	if (lgr->peer_shutdown)
- 		return 0;
-+	if (!lgr->smcd->ops->signal_event)
-+		return 0;
- 
- 	memcpy(ev_info.uid, lgr->id, SMC_LGR_ID_SIZE);
- 	ev_info.vlan_id = lgr->vlan_id;
+ 	mutex_unlock(&ctx->lock);
 -- 
 2.43.0
 
