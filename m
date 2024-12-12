@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-103536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EBA9EF777
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E78AB9EF947
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:49:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94BC1289800
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7DC528A028
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FDE221D93;
-	Thu, 12 Dec 2024 17:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAD3216E2D;
+	Thu, 12 Dec 2024 17:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZo7cwHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVkUcvaK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7391D20A5EE;
-	Thu, 12 Dec 2024 17:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767382153EC;
+	Thu, 12 Dec 2024 17:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024864; cv=none; b=XdgxJSmZdEZLK4UFL3BMlgVAdWfF3SY76CWW2pUMCdStrYBXJKfCypRE2XYUjhHL7HSl5Vvqr26acJzUd0ewsrLuWT4JlpKPnVAkbFyHoWWChWI1BAbkt+YWqjFsqfvDoZ7QVnGtKuESpQofHFo6mvteBoiyYzw0pE8F0h/Z6EY=
+	t=1734025698; cv=none; b=eXjw5bsKMdok3KoNiQi1H8loOFxmJV7IqgvE0kP+FdqCix7/+9PuX9ZC0uuN6VV/N7wNomwQ2icQ2xZdQeTSL4mwc4l8j9MbVqsKsic3NkDp4un+Fm2A4fuhSG/Nf2Omg+0YEWBPEK529aZaBaKQQcqvxQMa8ZeEaXrKsIPBKA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024864; c=relaxed/simple;
-	bh=TpUSddJXaFAp/Ql+9yeQQ5nPDw4uvh/lqXzMOIOI7ho=;
+	s=arc-20240116; t=1734025698; c=relaxed/simple;
+	bh=FeSpDvAcljI+gjk3UYIvU2mmMNNCrrbRUvxqKvlnaDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lMj+FltCbQoSo0FXASncXsLpTIydlJ1DhkenukGjJgoCuMlUz1sWQ5uWkf4qDtscw9xixQEry/GN9C2CbjQCtBEe10xAZV2UD+wzuH+18fYdzUA5ydXH7kt6LmmuRF+C5djUDmoqFx5nbiHTX/63Kn7oPe1LrsXmdsWV4GlIhPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZo7cwHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D250C4CECE;
-	Thu, 12 Dec 2024 17:34:23 +0000 (UTC)
+	 MIME-Version; b=ijo4UtTB4gC/mispKS48Ok5lfXO5Qy2u7iW6QGmF9yRI8hT1rdZgChmXSNPpCLXmSyTUgBIVFp+caata4J6HPxSUADDyOjrn987ozElY0CxfDwroTyBruRj2D+SChZdlE5uzYANk5wV8nEgmXLytXijnIBpAWY+1blliEgZ4TPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVkUcvaK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04EE6C4CED1;
+	Thu, 12 Dec 2024 17:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024863;
-	bh=TpUSddJXaFAp/Ql+9yeQQ5nPDw4uvh/lqXzMOIOI7ho=;
+	s=korg; t=1734025698;
+	bh=FeSpDvAcljI+gjk3UYIvU2mmMNNCrrbRUvxqKvlnaDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZo7cwHapHb2gd5hL33d6KfJFHu4vYkZufbN1ggngSey01OBrEgkfSlyHsuaIHOa3
-	 p/TnRZia8NEfhlfVyg9poMGUJebIdkBuui9roToKthhJGK9AKD0W1+dxANsXhtgaS5
-	 5ChBD1U8fEt/6+kVnnGFHfTtvsm2bSFOgXlXwznU=
+	b=vVkUcvaKx+5E8eTkmWgrDmIc2fN777PthyjPZah/ZdXXkl+44KnAFH7JSyMmA2hxv
+	 bKnL2BLsMmyEcn144s/e7I8z+xAhKorVySOMVIICfIiE8/MN4xvOhp1SV2KWL//UJr
+	 5rC5Ym8bxgS3ZGnYkSCDncY/sdqAOmOXuqmYAfns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Valentin Schneider <valentin.schneider@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 437/459] sched/fair: Trigger the update of blocked load on newly idle cpu
-Date: Thu, 12 Dec 2024 16:02:55 +0100
-Message-ID: <20241212144311.018420394@linuxfoundation.org>
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 258/321] scsi: qla2xxx: Remove check req_sg_cnt should be equal to rsp_sg_cnt
+Date: Thu, 12 Dec 2024 16:02:56 +0100
+Message-ID: <20241212144240.159308483@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-[ Upstream commit c6f886546cb8a38617cdbe755fe50d3acd2463e4 ]
+commit 833c70e212fc40d3e98da941796f4c7bcaecdf58 upstream.
 
-Instead of waking up a random and already idle CPU, we can take advantage
-of this_cpu being about to enter idle to run the ILB and update the
-blocked load.
+Firmware supports multiple sg_cnt for request and response for CT
+commands, so remove the redundant check. A check is there where sg_cnt
+for request and response should be same. This is not required as driver
+and FW have code to handle multiple and different sg_cnt on request and
+response.
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
-Link: https://lkml.kernel.org/r/20210224133007.28644-7-vincent.guittot@linaro.org
-Stable-dep-of: ff47a0acfcce ("sched/fair: Check idle_cpu() before need_resched() to detect ilb CPU turning busy")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-5-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c  |  2 +-
- kernel/sched/fair.c  | 24 +++++++++++++++++++++---
- kernel/sched/idle.c  |  6 ++++++
- kernel/sched/sched.h |  7 +++++++
- 4 files changed, 35 insertions(+), 4 deletions(-)
+ drivers/scsi/qla2xxx/qla_bsg.c |   10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 8e30041cecf94..1f4bf91c27d22 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -746,7 +746,7 @@ static void nohz_csd_func(void *info)
- 	/*
- 	 * Release the rq::nohz_csd.
- 	 */
--	flags = atomic_fetch_andnot(NOHZ_KICK_MASK, nohz_flags(cpu));
-+	flags = atomic_fetch_andnot(NOHZ_KICK_MASK | NOHZ_NEWILB_KICK, nohz_flags(cpu));
- 	WARN_ON(!(flags & NOHZ_KICK_MASK));
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -462,16 +462,6 @@ qla2x00_process_ct(struct bsg_job *bsg_j
+ 		goto done;
+ 	}
  
- 	rq->idle_balance = idle_cpu(cpu);
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index ab29666eb50ed..8121cfd60b8fb 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10747,6 +10747,24 @@ static bool nohz_idle_balance(struct rq *this_rq, enum cpu_idle_type idle)
- 	return true;
- }
- 
-+/*
-+ * Check if we need to run the ILB for updating blocked load before entering
-+ * idle state.
-+ */
-+void nohz_run_idle_balance(int cpu)
-+{
-+	unsigned int flags;
-+
-+	flags = atomic_fetch_andnot(NOHZ_NEWILB_KICK, nohz_flags(cpu));
-+
-+	/*
-+	 * Update the blocked load only if no SCHED_SOFTIRQ is about to happen
-+	 * (ie NOHZ_STATS_KICK set) and will do the same.
-+	 */
-+	if ((flags == NOHZ_NEWILB_KICK) && !need_resched())
-+		_nohz_idle_balance(cpu_rq(cpu), NOHZ_STATS_KICK, CPU_IDLE);
-+}
-+
- static void nohz_newidle_balance(struct rq *this_rq)
- {
- 	int this_cpu = this_rq->cpu;
-@@ -10768,10 +10786,10 @@ static void nohz_newidle_balance(struct rq *this_rq)
- 		return;
- 
- 	/*
--	 * Blocked load of idle CPUs need to be updated.
--	 * Kick an ILB to update statistics.
-+	 * Set the need to trigger ILB in order to update blocked load
-+	 * before entering idle state.
- 	 */
--	kick_ilb(NOHZ_STATS_KICK);
-+	atomic_or(NOHZ_NEWILB_KICK, nohz_flags(this_cpu));
- }
- 
- #else /* !CONFIG_NO_HZ_COMMON */
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 2593a733c0849..cdc3e690de714 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -261,6 +261,12 @@ static void cpuidle_idle_call(void)
- static void do_idle(void)
- {
- 	int cpu = smp_processor_id();
-+
-+	/*
-+	 * Check if we need to update blocked load
-+	 */
-+	nohz_run_idle_balance(cpu);
-+
- 	/*
- 	 * If the arch has a polling bit, we maintain an invariant:
- 	 *
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index df6cf8aa59f89..66e3ecb7c10e4 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2292,9 +2292,11 @@ extern void cfs_bandwidth_usage_dec(void);
- #ifdef CONFIG_NO_HZ_COMMON
- #define NOHZ_BALANCE_KICK_BIT	0
- #define NOHZ_STATS_KICK_BIT	1
-+#define NOHZ_NEWILB_KICK_BIT	2
- 
- #define NOHZ_BALANCE_KICK	BIT(NOHZ_BALANCE_KICK_BIT)
- #define NOHZ_STATS_KICK		BIT(NOHZ_STATS_KICK_BIT)
-+#define NOHZ_NEWILB_KICK	BIT(NOHZ_NEWILB_KICK_BIT)
- 
- #define NOHZ_KICK_MASK	(NOHZ_BALANCE_KICK | NOHZ_STATS_KICK)
- 
-@@ -2305,6 +2307,11 @@ extern void nohz_balance_exit_idle(struct rq *rq);
- static inline void nohz_balance_exit_idle(struct rq *rq) { }
- #endif
- 
-+#if defined(CONFIG_SMP) && defined(CONFIG_NO_HZ_COMMON)
-+extern void nohz_run_idle_balance(int cpu);
-+#else
-+static inline void nohz_run_idle_balance(int cpu) { }
-+#endif
- 
- #ifdef CONFIG_SMP
- static inline
--- 
-2.43.0
-
+-	if ((req_sg_cnt !=  bsg_job->request_payload.sg_cnt) ||
+-	    (rsp_sg_cnt != bsg_job->reply_payload.sg_cnt)) {
+-		ql_log(ql_log_warn, vha, 0x7011,
+-		    "request_sg_cnt: %x dma_request_sg_cnt: %x reply_sg_cnt:%x "
+-		    "dma_reply_sg_cnt: %x\n", bsg_job->request_payload.sg_cnt,
+-		    req_sg_cnt, bsg_job->reply_payload.sg_cnt, rsp_sg_cnt);
+-		rval = -EAGAIN;
+-		goto done_unmap_sg;
+-	}
+-
+ 	if (!vha->flags.online) {
+ 		ql_log(ql_log_warn, vha, 0x7012,
+ 		    "Host is not online.\n");
 
 
 
