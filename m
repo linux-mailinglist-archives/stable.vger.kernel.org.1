@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-103688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DAC9EF90E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06E59EF5FD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539ED189461D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2906C189C86F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F393C2153EC;
-	Thu, 12 Dec 2024 17:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29182226542;
+	Thu, 12 Dec 2024 17:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvZ5IlPT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjb3ukYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07776F2FE;
-	Thu, 12 Dec 2024 17:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D704D226529;
+	Thu, 12 Dec 2024 17:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025308; cv=none; b=Z+3X7meK8mx86HrdmVyXOPSNzMdymN9pjx9vbnBaVeyBRCKIKrDNQKRadPK7gftAPvDSco9ZzvWP5AC5quKhRWKfSspxixwXIEUIO3vgH1MVYDqQqiB8nsgWLkgXPtC8CmGDT3xXp79NcNfWYUPDR8axzZ0fi87B5bNJPzErAtM=
+	t=1734023231; cv=none; b=CIFiQMrsajw6AdUWscHjsND8FqVbXB+pm61G6ZIS/6c64RW10mMYMJqY+bBK/UVOZ93+UtT+/Is6dcwJ5tK2osE52N7EXwpBlAYmxH0diL3df07QxHINhVoM4Ydgj3nROkJ4qBU7bGXu35kqTP274GL0U2vZBpUSxd4ng15Y2WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025308; c=relaxed/simple;
-	bh=kDrsaTU66xr0BKEdPVTdBaQ6GwWrwsHJY+hEJ3fkjrE=;
+	s=arc-20240116; t=1734023231; c=relaxed/simple;
+	bh=SBjDsIjB4jYz61oVTYdqKwFm6/iSoR6F6hSUhBLKOXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PeYulj4fMnmBhFubSLu+JlNTPaJK/Hchi0fc5RvOn9+YndfRChcrYSRQrAOwIwT+Ma8fWBvkx2CgYcFHTZX2nEYWzbmXn8/lvV/MrKAuPnWPb85xqJxbqL5pL2rFblttQKiQFNUaWgRiWI7XpuOFSOfK3LdnIrWUgm2CcpG+FfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvZ5IlPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37472C4CECE;
-	Thu, 12 Dec 2024 17:41:48 +0000 (UTC)
+	 MIME-Version; b=C1Kxh/eKScLr0Nfz5DTee1HR69DLsSZmWiblatRIS+31JelfEGsIx9u3l4dcJT1TeTGq7JWDuQsHeYGcbyIMTL3QcMns/Bi8z7s8b88qB2kpkooD2IG1a9ABVQSkliukRVTlvKxuqOfI4kzk+vm+0oS0xFV3063gXFNEtlZJ1ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjb3ukYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F61DC4CECE;
+	Thu, 12 Dec 2024 17:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025308;
-	bh=kDrsaTU66xr0BKEdPVTdBaQ6GwWrwsHJY+hEJ3fkjrE=;
+	s=korg; t=1734023231;
+	bh=SBjDsIjB4jYz61oVTYdqKwFm6/iSoR6F6hSUhBLKOXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvZ5IlPTSLy+9cKXjZjgTXfh1yI/Db+Srd3CXndt7eZ32Zz+cI/a/TT0FomzMvAte
-	 Hpap1tGZ3/HKKdYiXJ+1PCC2k33pEkLDHz4bVwpgCLuO6wIvAQx5uDJJwfn33+Vyu0
-	 94GBH8p2piePsgLH5MbQ53vF7cJXY0K4QUKsst5c=
+	b=xjb3ukYPHZJeHYYRL9Nv5vj2WQe3ypdofdWHXZGTHxY2rAroZizAaInaLkWRUh854
+	 eu53DO7ZlIAQpza9O0sVohgVSkCpVP8jn5o0f+SM6WjovcVnKd9Eu31z1GXBIWqVXd
+	 f6Ycc/mxKZv6rNpRZ/plSJ3/2rISiEoYWxmtM6Ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Tso <kyletso@google.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 126/321] power: supply: core: Remove might_sleep() from power_supply_put()
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.15 449/565] arm64: ptrace: fix partial SETREGSET for NT_ARM_TAGGED_ADDR_CTRL
 Date: Thu, 12 Dec 2024 16:00:44 +0100
-Message-ID: <20241212144234.954673068@linuxfoundation.org>
+Message-ID: <20241212144329.466797149@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit f6da4553ff24a5d1c959c9627c965323adc3d307 ]
+commit ca62d90085f4af36de745883faab9f8a7cbb45d3 upstream.
 
-The put_device() call in power_supply_put() may call
-power_supply_dev_release(). The latter function does not sleep so
-power_supply_put() doesn't sleep either. Hence, remove the might_sleep()
-call from power_supply_put(). This patch suppresses false positive
-complaints about calling a sleeping function from atomic context if
-power_supply_put() is called from atomic context.
+Currently tagged_addr_ctrl_set() doesn't initialize the temporary 'ctrl'
+variable, and a SETREGSET call with a length of zero will leave this
+uninitialized. Consequently tagged_addr_ctrl_set() will consume an
+arbitrary value, potentially leaking up to 64 bits of memory from the
+kernel stack. The read is limited to a specific slot on the stack, and
+the issue does not provide a write mechanism.
 
-Cc: Kyle Tso <kyletso@google.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Fixes: 1a352462b537 ("power_supply: Add power_supply_put for decrementing device reference counter")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240917193914.47566-1-bvanassche@acm.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As set_tagged_addr_ctrl() only accepts values where bits [63:4] zero and
+rejects other values, a partial SETREGSET attempt will randomly succeed
+or fail depending on the value of the uninitialized value, and the
+exposure is significantly limited.
+
+Fix this by initializing the temporary value before copying the regset
+from userspace, as for other regsets (e.g. NT_PRSTATUS, NT_PRFPREG,
+NT_ARM_SYSTEM_CALL). In the case of a zero-length write, the existing
+value of the tagged address ctrl will be retained.
+
+The NT_ARM_TAGGED_ADDR_CTRL regset is only visible in the
+user_aarch64_view used by a native AArch64 task to manipulate another
+native AArch64 task. As get_tagged_addr_ctrl() only returns an error
+value when called for a compat task, tagged_addr_ctrl_get() and
+tagged_addr_ctrl_set() should never observe an error value from
+get_tagged_addr_ctrl(). Add a WARN_ON_ONCE() to both to indicate that
+such an error would be unexpected, and error handlnig is not missing in
+either case.
+
+Fixes: 2200aa7154cb ("arm64: mte: ptrace: Add NT_ARM_TAGGED_ADDR_CTRL regset")
+Cc: <stable@vger.kernel.org> # 5.10.x
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241205121655.1824269-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/power_supply_core.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/kernel/ptrace.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-index 2d6836b33da33..606e21fe599d2 100644
---- a/drivers/power/supply/power_supply_core.c
-+++ b/drivers/power/supply/power_supply_core.c
-@@ -479,8 +479,6 @@ EXPORT_SYMBOL_GPL(power_supply_get_by_name);
-  */
- void power_supply_put(struct power_supply *psy)
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -1075,7 +1075,7 @@ static int tagged_addr_ctrl_get(struct t
  {
--	might_sleep();
--
- 	atomic_dec(&psy->use_cnt);
- 	put_device(&psy->dev);
- }
--- 
-2.43.0
-
+ 	long ctrl = get_tagged_addr_ctrl(target);
+ 
+-	if (IS_ERR_VALUE(ctrl))
++	if (WARN_ON_ONCE(IS_ERR_VALUE(ctrl)))
+ 		return ctrl;
+ 
+ 	return membuf_write(&to, &ctrl, sizeof(ctrl));
+@@ -1089,6 +1089,10 @@ static int tagged_addr_ctrl_set(struct t
+ 	int ret;
+ 	long ctrl;
+ 
++	ctrl = get_tagged_addr_ctrl(target);
++	if (WARN_ON_ONCE(IS_ERR_VALUE(ctrl)))
++		return ctrl;
++
+ 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &ctrl, 0, -1);
+ 	if (ret)
+ 		return ret;
 
 
 
