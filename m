@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2196D9EF1D8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDAA9EEE6E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ACE52919A2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D63A16B466
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD1721CFF0;
-	Thu, 12 Dec 2024 16:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFA121B91D;
+	Thu, 12 Dec 2024 15:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZXfXIJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhYW5a/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DDF226542;
-	Thu, 12 Dec 2024 16:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18A714A82;
+	Thu, 12 Dec 2024 15:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021290; cv=none; b=BOkHDVR4NpXISWRtWRWVf7rxj4W7Ih5ZBb2DQgAeLYzWA3Z+qzM/t7oQyW1RtpRCvkB8hdNaFHZmwk/aRBunz6GVD+AqqCMKSxJF/BSPGtdkALlhMEOU01HQdUJcNYVS5FxTRfhv1ft+OShTdcYftd06HmA4ZwmRtyGRZBEBPkc=
+	t=1734018657; cv=none; b=dr6pkbo7MyYa9ACGH7dNkhwoQrlb5iPKbmHbdfQYu3fv3ETUkNpZbcBJBn71pnjxWm6a5RVZqV+psiEJx67gUwNeNSB5ha3JE/3YW0Ku7nC5Gb8lAfzbTpbpeU9ofRR97Jr66qKaP/1IB6cqVE6+osQw2vkHpsZnFVZZ1wRXHMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021290; c=relaxed/simple;
-	bh=8JGmcecF5Hgut53F4LrAuTtqpT2ap+FwRGIyugOTOu4=;
+	s=arc-20240116; t=1734018657; c=relaxed/simple;
+	bh=eYw8M/CjGCfo2TdsST8OUR4+Cq3uEwIkrdv15/NUxmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGRS7pVGtrS0hu4sgunwNaYLOfzB3F3R4VosTN0QGxwByMDVPfqwDaHaSAmEFzi9PF/UI2hcGs+rEwn6GnMsVcRm6ZsxPlleO1swNh5c87kQOWbUdtvt2KN6XDApJyucsaaPEoIxO+3J5G2jWTh/RZ3hvk8m44O/gdrL1VeDbi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZXfXIJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6B7C4CED3;
-	Thu, 12 Dec 2024 16:34:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pu4JL1jwLnUeEMeojoVNB7RcQm948zK8tzYzPUsi2dITop6ItTVYUaOniCB7uNvjUK9Ejhbv5DZd7ceZUUykxZi3JFMXizSf5cYSFPviIHk88K6uT0hAShoZeMnHPqwN8Ld1MtDkfNlxzJa5+uSn3keHf0fbQeEY0yb0DSMgsoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhYW5a/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BB8C4CECE;
+	Thu, 12 Dec 2024 15:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021290;
-	bh=8JGmcecF5Hgut53F4LrAuTtqpT2ap+FwRGIyugOTOu4=;
+	s=korg; t=1734018657;
+	bh=eYw8M/CjGCfo2TdsST8OUR4+Cq3uEwIkrdv15/NUxmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZXfXIJBhUIJQ6wq8GINxktprOLHit5Ul+fdR7gAYN94Sacj/Xm/2l/wR6ueIz/pX
-	 +z+dh520SeIdlXgcYj9p9+oflsgmuqSmW33y4yDIhPLS4IJ0gtOR3zVDCNP8wAmcNr
-	 SADP/f6NjqCmMamFQBmxxHVOJxwnxW08lINnTZC4=
+	b=MhYW5a/PCHYcU2GEMuU5E1eC3jAQpZUFdpKRJvYNdYtjwg/o8z282yY+mAT+t45Th
+	 u2TG+C5tCJy/thys7TqDWDzjPevlcev6XRkmiJ6Dm8WEy6Mb10v/efjBYx0Ewe/CNl
+	 GXWtoK62Rw/9DUpTZ71yJRAcSz8IyScXfqhzcd3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kir Kolyshkin <kolyshkin@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 698/772] netpoll: Use rcu_access_pointer() in __netpoll_setup
-Date: Thu, 12 Dec 2024 16:00:43 +0100
-Message-ID: <20241212144418.742540503@linuxfoundation.org>
+Subject: [PATCH 6.6 325/356] sched/headers: Move struct sched_param out of uapi, to work around glibc/musl breakage
+Date: Thu, 12 Dec 2024 16:00:44 +0100
+Message-ID: <20241212144257.396627562@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Kir Kolyshkin <kolyshkin@gmail.com>
 
-[ Upstream commit c69c5e10adb903ae2438d4f9c16eccf43d1fcbc1 ]
+[ Upstream commit d844fe65f0957024c3e1b0bf2a0615246184d9bc ]
 
-The ndev->npinfo pointer in __netpoll_setup() is RCU-protected but is being
-accessed directly for a NULL check. While no RCU read lock is held in this
-context, we should still use proper RCU primitives for consistency and
-correctness.
+Both glibc and musl define 'struct sched_param' in sched.h, while kernel
+has it in uapi/linux/sched/types.h, making it cumbersome to use
+sched_getattr(2) or sched_setattr(2) from userspace.
 
-Replace the direct NULL check with rcu_access_pointer(), which is the
-appropriate primitive when only checking for NULL without dereferencing
-the pointer. This function provides the necessary ordering guarantees
-without requiring RCU read-side protection.
+For example, something like this:
 
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20241118-netpoll_rcu-v1-1-a1888dcb4a02@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+	#include <sched.h>
+	#include <linux/sched/types.h>
+
+	struct sched_attr sa;
+
+will result in "error: redefinition of ‘struct sched_param’" (note the
+code doesn't need sched_param at all -- it needs struct sched_attr
+plus some stuff from sched.h).
+
+The situation is, glibc is not going to provide a wrapper for
+sched_{get,set}attr, thus the need to include linux/sched_types.h
+directly, which leads to the above problem.
+
+Thus, the userspace is left with a few sub-par choices when it wants to
+use e.g. sched_setattr(2), such as maintaining a copy of struct
+sched_attr definition, or using some other ugly tricks.
+
+OTOH, 'struct sched_param' is well known, defined in POSIX, and it won't
+be ever changed (as that would break backward compatibility).
+
+So, while 'struct sched_param' is indeed part of the kernel uapi,
+exposing it the way it's done now creates an issue, and hiding it
+(like this patch does) fixes that issue, hopefully without creating
+another one: common userspace software rely on libc headers, and as
+for "special" software (like libc), it looks like glibc and musl
+do not rely on kernel headers for 'struct sched_param' definition
+(but let's Cc their mailing lists in case it's otherwise).
+
+The alternative to this patch would be to move struct sched_attr to,
+say, linux/sched.h, or linux/sched/attr.h (the new file).
+
+Oh, and here is the previous attempt to fix the issue:
+
+  https://lore.kernel.org/all/20200528135552.GA87103@google.com/
+
+While I support Linus arguments, the issue is still here
+and needs to be fixed.
+
+[ mingo: Linus is right, this shouldn't be needed - but on the other
+         hand I agree that this header is not really helpful to
+	 user-space as-is. So let's pretend that
+	 <uapi/linux/sched/types.h> is only about sched_attr, and
+	 call this commit a workaround for user-space breakage
+	 that it in reality is ... Also, remove the Fixes tag. ]
+
+Signed-off-by: Kir Kolyshkin <kolyshkin@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230808030357.1213829-1-kolyshkin@gmail.com
+Stable-dep-of: 0664e2c311b9 ("sched/deadline: Fix warning in migrate_enable for boosted tasks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/sched.h            | 5 ++++-
+ include/uapi/linux/sched/types.h | 4 ----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index fd2195cfcb4aa..681eeb2b73992 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -636,7 +636,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 		goto out;
- 	}
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 3d83cc397eac1..323aa1aaaf91e 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -63,7 +63,6 @@ struct robust_list_head;
+ struct root_domain;
+ struct rq;
+ struct sched_attr;
+-struct sched_param;
+ struct seq_file;
+ struct sighand_struct;
+ struct signal_struct;
+@@ -370,6 +369,10 @@ extern struct root_domain def_root_domain;
+ extern struct mutex sched_domains_mutex;
+ #endif
  
--	if (!ndev->npinfo) {
-+	if (!rcu_access_pointer(ndev->npinfo)) {
- 		npinfo = kmalloc(sizeof(*npinfo), GFP_KERNEL);
- 		if (!npinfo) {
- 			err = -ENOMEM;
++struct sched_param {
++	int sched_priority;
++};
++
+ struct sched_info {
+ #ifdef CONFIG_SCHED_INFO
+ 	/* Cumulative counters: */
+diff --git a/include/uapi/linux/sched/types.h b/include/uapi/linux/sched/types.h
+index f2c4589d4dbfe..90662385689bb 100644
+--- a/include/uapi/linux/sched/types.h
++++ b/include/uapi/linux/sched/types.h
+@@ -4,10 +4,6 @@
+ 
+ #include <linux/types.h>
+ 
+-struct sched_param {
+-	int sched_priority;
+-};
+-
+ #define SCHED_ATTR_SIZE_VER0	48	/* sizeof first published struct */
+ #define SCHED_ATTR_SIZE_VER1	56	/* add: util_{min,max} */
+ 
 -- 
 2.43.0
 
