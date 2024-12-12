@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-103760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8A69EF908
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FBE9EF839
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8707228EFE0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1C12167F70
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F44C22969A;
-	Thu, 12 Dec 2024 17:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49B7222D73;
+	Thu, 12 Dec 2024 17:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3Z4YZ2b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pA0thmHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9E62236EB;
-	Thu, 12 Dec 2024 17:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F89A2153DD;
+	Thu, 12 Dec 2024 17:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025523; cv=none; b=XknbDQFe9DxjHPmbgnFAq4owr0cNrriHY6xibFg69R7o6Ue3zQAuMV6ah0OZaZn9c6txtaGHO8yrZzho51FF0CwXpzkZie/mrSI69VSeExwQsjbb+1bMvoCCazSd6vcr4eXR5Ddpmi2Y/aiBlsbmZ1ETA7DOSTsoB6hTLAgSzZk=
+	t=1734024802; cv=none; b=mzZqouk4EvPYQV6DSdm31789EEhr0ZEMy0L2OWLif7w+WcsTf/doHLUo43kKUQ8aZxATAau/nUlA9DO01l66VTVdykgZQ1c1VxLZLXMrP3cmKP43crlxSSloDZmRCiy9pVxIMvIfX1rIHKlpbFW4xJK58BnLauN1EUjPnaCNMGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025523; c=relaxed/simple;
-	bh=GE3N/0bVl7rmaBfzOkJdF8UIn/X6f3KqXIo0252gj+4=;
+	s=arc-20240116; t=1734024802; c=relaxed/simple;
+	bh=IUSdrSOHh0jj4njDf+n7yioFiqtpfUBBKnMLKwh+SJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpL+dGvgoSxyHaHMxLGmo43YgVxn8jFVbk6ADyi65nMFd5X8V7EJqizLjiQXFoDmUzao1/69xZre4RsKEwMdciwvcHXqDM45f63kjcQ5LSQYsjH8f3sdBBaYmYZWKj4cXRNhsgikqT9KD4CL8NrhG/BDB5Ltu8Dp31mNkPfJI54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3Z4YZ2b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3402EC4CED4;
-	Thu, 12 Dec 2024 17:45:22 +0000 (UTC)
+	 MIME-Version; b=pOKYy7TOAoTGJDtAff6O25I12AUjE4hmaphq2uXFR3SaGji5A3fCphWih/VV2r+QudDPPkQMJCmcTOdqgIg0iC5AWypYt0Om43z8EsC0IZj/Tr+X0Pd+mWDP124CvikMfYCSSeb/0VX1K5iqsHmJfY0USzSvKZi3NCwQGuSckRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pA0thmHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDB9C4CECE;
+	Thu, 12 Dec 2024 17:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025522;
-	bh=GE3N/0bVl7rmaBfzOkJdF8UIn/X6f3KqXIo0252gj+4=;
+	s=korg; t=1734024802;
+	bh=IUSdrSOHh0jj4njDf+n7yioFiqtpfUBBKnMLKwh+SJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f3Z4YZ2b+WJ0HGZ2z4haM/olPZ5e0fPrqAAODO/0Y/ZeB5Cf+6ardM/6QCN9I0lLl
-	 kFlQ2ueqGlVQfkQyBAEfV/ZcF50ZjUQGkraTXEXTGP8sNaNOwRM1h/ldEmBBipTl9Y
-	 7KgPiA3ILZnE1qKWdoLiuPUMbO9duDERscpvVCQw=
+	b=pA0thmHMFahJFZaqejpanXb7WfGVYyaBhWVtO+PfE4mzpj1W4YETqR3gaoVFxkdRp
+	 YUeTOl/MxsUjHDKokw+aW/4+JQLmAt/k3OWf7Fnw6lHLDlzPJDM6fcNaB0mbF/eU7E
+	 XC/m2I4AD/xddRQVzROZwhqoX7l9RHK1J+iTPlGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Calum Mackay <calum.mackay@oracle.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 197/321] SUNRPC: correct error code comment in xs_tcp_setup_socket()
+	Wengang Wang <wen.gang.wang@oracle.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 377/459] ocfs2: update seq_file index in ocfs2_dlm_seq_next
 Date: Thu, 12 Dec 2024 16:01:55 +0100
-Message-ID: <20241212144237.762108174@linuxfoundation.org>
+Message-ID: <20241212144308.560934665@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +67,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Calum Mackay <calum.mackay@oracle.com>
+From: Wengang Wang <wen.gang.wang@oracle.com>
 
-[ Upstream commit 8c71139d9f84c1963b0a416941244502a20a7e52 ]
+commit 914eec5e980171bc128e7e24f7a22aa1d803570e upstream.
 
-This comment was introduced by commit 6ea44adce915
-("SUNRPC: ensure correct error is reported by xs_tcp_setup_socket()").
+The following INFO level message was seen:
 
-I believe EIO was a typo at the time: it should have been EAGAIN.
+seq_file: buggy .next function ocfs2_dlm_seq_next [ocfs2] did not
+update position index
 
-Subsequently, commit 0445f92c5d53 ("SUNRPC: Fix disconnection races")
-changed that to ENOTCONN.
+Fix:
+Update *pos (so m->index) to make seq_read_iter happy though the index its
+self makes no sense to ocfs2_dlm_seq_next.
 
-Rather than trying to keep the comment here in sync with the code in
-xprt_force_disconnect(), make the point in a non-specific way.
-
-Fixes: 6ea44adce915 ("SUNRPC: ensure correct error is reported by xs_tcp_setup_socket()")
-Signed-off-by: Calum Mackay <calum.mackay@oracle.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241119174500.9198-1-wen.gang.wang@oracle.com
+Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtsock.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/ocfs2/dlmglue.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index e88b9e53dcb65..ffa9df8f16796 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -2455,10 +2455,8 @@ static void xs_tcp_setup_socket(struct work_struct *work)
- 	case -EHOSTUNREACH:
- 	case -EADDRINUSE:
- 	case -ENOBUFS:
--		/*
--		 * xs_tcp_force_close() wakes tasks with -EIO.
--		 * We need to wake them first to ensure the
--		 * correct error code.
-+		/* xs_tcp_force_close() wakes tasks with a fixed error code.
-+		 * We need to wake them first to ensure the correct error code.
- 		 */
- 		xprt_wake_pending_tasks(xprt, status);
- 		xs_tcp_force_close(xprt);
--- 
-2.43.0
-
+--- a/fs/ocfs2/dlmglue.c
++++ b/fs/ocfs2/dlmglue.c
+@@ -3101,6 +3101,7 @@ static void *ocfs2_dlm_seq_next(struct s
+ 	struct ocfs2_lock_res *iter = v;
+ 	struct ocfs2_lock_res *dummy = &priv->p_iter_res;
+ 
++	(*pos)++;
+ 	spin_lock(&ocfs2_dlm_tracking_lock);
+ 	iter = ocfs2_dlm_next_res(iter, priv);
+ 	list_del_init(&dummy->l_debug_list);
 
 
 
