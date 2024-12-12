@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-103690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C76A9EF92E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7359EF7D7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704BD1774D2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 191E41897CAF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB6022331C;
-	Thu, 12 Dec 2024 17:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABBE216E2D;
+	Thu, 12 Dec 2024 17:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDMcMAP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j47ILGNv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8908C222D73;
-	Thu, 12 Dec 2024 17:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F5C13CA81;
+	Thu, 12 Dec 2024 17:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025314; cv=none; b=ivSmIeh4V5n6qGrUq3pPLmO1rOfWIHid4JxGEUTtIoV/LBz//sOOplIltwLAlLqzpJ5a2Md+emDpenZzKmElxcLwdshvWmHpQgly3wvDhJdyLspQvauqfjAq6jiAhTer/nLbJmkMBTrlmmkJyV8jShAkLnzFmF9xpqrwkeuUu70=
+	t=1734024481; cv=none; b=aRq8470fX6eONfE0FBdTWmXqE9/iza/k3/a0+yoRO4UbRA6sSkWEKgZIBAs6214NVKBf2uHQ9v15PgRM69Gx02sjdzsy/VhrhF12gs5OXuEae0sy4061dQXuiHeOfbiQutZPBl6YRKT4WOIzO4XG+Dl94oifti+ACrLZOXhpX1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025314; c=relaxed/simple;
-	bh=UFEiyvnFP4tLwMCfC/rSwx9itOas1DMsiNSax8oXdgE=;
+	s=arc-20240116; t=1734024481; c=relaxed/simple;
+	bh=i9Kv5qs+1lGMfCu469MKkCDHgHKM8UwVee5bh/k1bTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LeqIJBbIQMKEvnUoJxh+QCPmyXKz502mlB3k1kE0x62XHm3Q7GYyn5o3Wa4e400L1u8AgAv+M7xxcZki6Hw/5ilXmKQbTKtPYfaNX6nuuifKE0fEQYNUQEC3lNOaL7+LnEjQJoQB9p+S8zenrfm56QEwJ5ULysELm4VcANd9Yq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDMcMAP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B58CC4CECE;
-	Thu, 12 Dec 2024 17:41:53 +0000 (UTC)
+	 MIME-Version; b=hufcVoOvqrbHPS+GK+uXpydOgZEIzuTQzv4Wm/7gP3NsAJKDvEGaQz8zl+BTovrVnWgRWNkh6eAcgsI4kvs6ekdiXi1UNjkADBO9r8PpkS4yVoXBJF1BH7TP3yUAUKeK5T63/J+KpEYdo+4VlUBPQ7P8qfrSjmLKLrEJj9UAmJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j47ILGNv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67AEC4CECE;
+	Thu, 12 Dec 2024 17:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025314;
-	bh=UFEiyvnFP4tLwMCfC/rSwx9itOas1DMsiNSax8oXdgE=;
+	s=korg; t=1734024481;
+	bh=i9Kv5qs+1lGMfCu469MKkCDHgHKM8UwVee5bh/k1bTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yDMcMAP9lRgorE+MBEr0tjLI635piuCvmY2o67cvdSdhpWsUk0ogMFIeHkuP6cjl7
-	 obprs5KdVtyYTy+3JubkuHIpwpj6OWp/sy/d2WVPLQwNsaCZo8UAKIFsl5y/B51AxE
-	 KZtw1A5EAaW+9DOw8C5Z9JK6IdcWEWzOKxFKFTJ0=
+	b=j47ILGNv9jjCmZmTNoIG2ngQrQrwRUAWOTduVIQsyRG4xJqfgw4FNnAiU6WXHBb3D
+	 lIokpQ2dNHg15JCdOrEujy0qjW3CiuQ46hKCTspyZI3qDxA2It6OcT2QHRS9jDPbvL
+	 oe8odsXsNZYWAwIMQ4wXH1OMI34flB6LYSqEA/LA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salam Noureddine <noureddine@arista.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Liu Jian <liujian56@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 128/321] tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets
-Date: Thu, 12 Dec 2024 16:00:46 +0100
-Message-ID: <20241212144235.031549501@linuxfoundation.org>
+Subject: [PATCH 5.10 309/459] sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport
+Date: Thu, 12 Dec 2024 16:00:47 +0100
+Message-ID: <20241212144305.852023542@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,63 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit 614f4d166eeeb9bd709b0ad29552f691c0f45776 ]
+[ Upstream commit 4db9ad82a6c823094da27de4825af693a3475d51 ]
 
-The hardware on Broadcom 1G chipsets have a known limitation
-where they cannot handle DMA addresses that cross over 4GB.
-When such an address is encountered, the hardware sets the
-address overflow error bit in the DMA status register and
-triggers a reset.
+Since transport->sock has been set to NULL during reset transport,
+XPRT_SOCK_UPD_TIMEOUT also needs to be cleared. Otherwise, the
+xs_tcp_set_socket_timeouts() may be triggered in xs_tcp_send_request()
+to dereference the transport->sock that has been set to NULL.
 
-However, BCM57766 hardware is setting the overflow bit and
-triggering a reset in some cases when there is no actual
-underlying address overflow. The hardware team analyzed the
-issue and concluded that it is happening when the status
-block update has an address with higher (b16 to b31) bits
-as 0xffff following a previous update that had lowest bits
-as 0xffff.
-
-To work around this bug in the BCM57766 hardware, set the
-coherent dma mask from the current 64b to 31b. This will
-ensure that upper bits of the status block DMA address are
-always at most 0x7fff, thus avoiding the improper overflow
-check described above. This work around is intended for only
-status block and ring memories and has no effect on TX and
-RX buffers as they do not require coherent memory.
-
-Fixes: 72f2afb8a685 ("[TG3]: Add DMA address workaround")
-Reported-by: Salam Noureddine <noureddine@arista.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Link: https://patch.msgid.link/20241119055741.147144-1-pavan.chebbi@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7196dbb02ea0 ("SUNRPC: Allow changing of the TCP timeout parameters on the fly")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sunrpc/xprtsock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 4847441cf161d..b060e1fe3bab4 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -17815,6 +17815,9 @@ static int tg3_init_one(struct pci_dev *pdev,
- 	} else
- 		persist_dma_mask = dma_mask = DMA_BIT_MASK(64);
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 278d044e1fd4a..79ce634017f9a 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -1129,6 +1129,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
+ 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
+ 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
+ 	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
++	clear_bit(XPRT_SOCK_UPD_TIMEOUT, &transport->sock_state);
+ }
  
-+	if (tg3_asic_rev(tp) == ASIC_REV_57766)
-+		persist_dma_mask = DMA_BIT_MASK(31);
-+
- 	/* Configure DMA attributes. */
- 	if (dma_mask > DMA_BIT_MASK(32)) {
- 		err = pci_set_dma_mask(pdev, dma_mask);
+ static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
 -- 
 2.43.0
 
