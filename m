@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-101996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBBA9EEF8C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA789EEF8D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D9D22961B9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5058297939
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EFC1232384;
-	Thu, 12 Dec 2024 16:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35FA232379;
+	Thu, 12 Dec 2024 16:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QrwdAvVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQjk0fyr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD13223E66;
-	Thu, 12 Dec 2024 16:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1E2223E62;
+	Thu, 12 Dec 2024 16:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019572; cv=none; b=SHQrl3Ywvti4Bo17Sg8MWNC1FmEjGeFQFnWMGn1yZoPekUZ2xvstDv92ZX+wmNfnIwqCnILqRFq7aGBoW9EFUQBBqxJc6XPNXBhD6zCYmwYK9NvmV0NUQn91AuXs3QdUiwAVJIi0yixYKGb9d12l8Aq/Wyhf0TtsDoUyJBrqObw=
+	t=1734019578; cv=none; b=pG/rL78nMqsqM7gqrStyJImAt5pEgAjE/AQLdQBYOeZTc3slOD6uH7Dp5ExrbXeAEGv3IOojM2Dk2+1sqPoMbkzgMFeMKJIECznhgUDo5Gwbjhn+BeFG+FEvCqU0263fFslz/y56WCei9hePO5ikS4PV/VRWjSAZtS9PMklv2LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019572; c=relaxed/simple;
-	bh=7xSYQHAnrDGzrV6zA2j2f623LF6p+Nm0O0FJtxQdATk=;
+	s=arc-20240116; t=1734019578; c=relaxed/simple;
+	bh=Zfh5x7ZyMbY/nhv1qxzh70HW9ntARDty9JlH1zUT78c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAPhG8fY3yAEfhoTa++6D3BAQPI7SRO7lokSBeY73UEKqXKgFajB1iOz2oJkuy3AGBzRykDHcAKjQSdqydsoDiKeTnziMeRSUMKRVxLVXw1U2CuOD/nvjnjVYsOcBFh/T7MBvW/wq1aWvHbVN7EC/g9sSRntbDvbhXxaOsHl90I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QrwdAvVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7CDC4CECE;
-	Thu, 12 Dec 2024 16:06:10 +0000 (UTC)
+	 MIME-Version; b=qpFbCquVPEhHchQYnqSNMWLf9MySdzkzFcbZRVvJRJiu/sJr5G4FhbZYc+vHPDYyUAn7x9OZ5Iu/yCvz95fwk4gr2z7GsaV+B+b22SmzYKDbI7HgN54hMlvly/J7YAAtTHAZ2wjCSJzkxbR6o7dZ3EeU+J2mUY3uwr75ajX40Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQjk0fyr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD537C4CECE;
+	Thu, 12 Dec 2024 16:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019571;
-	bh=7xSYQHAnrDGzrV6zA2j2f623LF6p+Nm0O0FJtxQdATk=;
+	s=korg; t=1734019578;
+	bh=Zfh5x7ZyMbY/nhv1qxzh70HW9ntARDty9JlH1zUT78c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QrwdAvVNbRtR222FTXW6dIHbHSsHWrufKhAEF/lCoNdHqD3YA265UNF0+Pr+HJbBR
-	 NZ+Ij87uKCQPiXSvOPJqeNyMT0La6vAp7efRpwukPIYOAGLzJdoAkoyXqvP94D25F8
-	 iWgtPhHdOenBCI4SimgnTlJi9qu7VOk4EIn8VC8Y=
+	b=lQjk0fyrcWb4dr4pPLS6hqav6qFZy7opHQtqhLyLqL+/3MVQF6sPOxnku8DjIx8m1
+	 DzDV/i0WN6KSDJxDinhPSlIMnLF6ClRMalGKYsvrKeq40XFYzpTbCDznjO3ztB33Ob
+	 XK3hLhie1QQs7nKZaw35dfTTKQj4qqs6WAqnHqxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 242/772] scsi: qedi: Fix a possible memory leak in qedi_alloc_and_init_sb()
-Date: Thu, 12 Dec 2024 15:53:07 +0100
-Message-ID: <20241212144359.908636678@linuxfoundation.org>
+Subject: [PATCH 6.1 243/772] RDMA/hns: Fix out-of-order issue of requester when setting FENCE
+Date: Thu, 12 Dec 2024 15:53:08 +0100
+Message-ID: <20241212144359.948507776@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,35 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 95bbdca4999bc59a72ebab01663d421d6ce5775d ]
+[ Upstream commit 5dbcb1c1900f45182b5651c89257c272f1f3ead7 ]
 
-Hook "qedi_ops->common->sb_init = qed_sb_init" does not release the DMA
-memory sb_virt when it fails. Add dma_free_coherent() to free it. This
-is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
+The FENCE indicator in hns WQE doesn't ensure that response data from
+a previous Read/Atomic operation has been written to the requester's
+memory before the subsequent Send/Write operation is processed. This
+may result in the subsequent Send/Write operation accessing the original
+data in memory instead of the expected response data.
 
-Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/r/20241026125711.484-3-thunder.leizhen@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Unlike FENCE, the SO (Strong Order) indicator blocks the subsequent
+operation until the previous response data is written to memory and a
+bresp is returned. Set the SO indicator instead of FENCE to maintain
+strict order.
+
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241108075743.2652258-2-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index 2ee109fb65616..825606c845e1a 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -369,6 +369,7 @@ static int qedi_alloc_and_init_sb(struct qedi_ctx *qedi,
- 	ret = qedi_ops->common->sb_init(qedi->cdev, sb_info, sb_virt, sb_phys,
- 				       sb_id, QED_SB_TYPE_STORAGE);
- 	if (ret) {
-+		dma_free_coherent(&qedi->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
- 		QEDI_ERR(&qedi->dbg_ctx,
- 			 "Status block initialization failed for id = %d.\n",
- 			  sb_id);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index d0846d2c97ccf..54df6c6e4cacb 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -578,7 +578,7 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
+ 	if (WARN_ON(ret))
+ 		return ret;
+ 
+-	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_FENCE,
++	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SO,
+ 		     (wr->send_flags & IB_SEND_FENCE) ? 1 : 0);
+ 
+ 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SE,
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index e24ddbcafe0fc..a9eff72f10c62 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -926,6 +926,7 @@ struct hns_roce_v2_rc_send_wqe {
+ #define RC_SEND_WQE_OWNER RC_SEND_WQE_FIELD_LOC(7, 7)
+ #define RC_SEND_WQE_CQE RC_SEND_WQE_FIELD_LOC(8, 8)
+ #define RC_SEND_WQE_FENCE RC_SEND_WQE_FIELD_LOC(9, 9)
++#define RC_SEND_WQE_SO RC_SEND_WQE_FIELD_LOC(10, 10)
+ #define RC_SEND_WQE_SE RC_SEND_WQE_FIELD_LOC(11, 11)
+ #define RC_SEND_WQE_INLINE RC_SEND_WQE_FIELD_LOC(12, 12)
+ #define RC_SEND_WQE_WQE_INDEX RC_SEND_WQE_FIELD_LOC(30, 15)
 -- 
 2.43.0
 
