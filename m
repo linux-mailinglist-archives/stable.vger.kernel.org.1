@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-102699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24D39EF324
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 733A49EEC37
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A120D28A36D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33D1F281AAF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA95F223C66;
-	Thu, 12 Dec 2024 16:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86590215774;
+	Thu, 12 Dec 2024 15:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9IOTv0s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ths9fhA4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7485D222D74;
-	Thu, 12 Dec 2024 16:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FB7212F9E;
+	Thu, 12 Dec 2024 15:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022171; cv=none; b=EUYjeQD0z4+lyDRXev3QSK/9MK1k6ax0Z5c9vUhinw7LwDUmeTBPv/xFWWNSZNPDGxs4c/Fnc/ZI13yyN8KFsYsOHwzGh/H1nliDr3/07VfiGFonTPzZQjOt0s/3GvPjINYpHrW/4fvVoDaNf/dySwgrs8mksSWQioKm0wXfYrc=
+	t=1734017545; cv=none; b=YUGQys95YAuEGuLHRa8knz3GoSomkQHS3I//0hSZ1jmYaaDkCYK3IBmnAqnTOxlQV0QLHL/Uvbx2rJcSKA2WKLkOqhjiYWXOEMMVywVMViKvwprEHLgLUCaFuuMoM58tKA2i4MCmWwD/hqszKuyRGUG5FZ/2s1DLIGhlbDRpOwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022171; c=relaxed/simple;
-	bh=KGvIG2dbeJ0qLzIgvUd72wwjSTUcLHuGaz9TGWnV0ZM=;
+	s=arc-20240116; t=1734017545; c=relaxed/simple;
+	bh=tmMomtUoKPjlEKbT/+N7/v1At5dHHDuu2yZuWNc1yTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0ueYpz8MI5Fkhdt8BmbhgcyutoMK/HnkNMmFFjf3plk+0HWeG505mFrsq3jhmoJTwwU0523w5YtjG87E8IOVGmwqlQ4ehdHwEX1XHbUEwmVz+ZEs7G7ALtjjKNr+JFci3OMYmfVFOwObrZcVMRfKElfBc6hREwRX1V2tLgVZOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9IOTv0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D753AC4CED3;
-	Thu, 12 Dec 2024 16:49:30 +0000 (UTC)
+	 MIME-Version; b=BjqTZYaSHEqTQyxOmtCzinUGkEGG1U3QkV3DpJYMRMxqewMuNGkfhIbqB/Rmmw+H+jv4ssivOunnDxIdHDEE9+a79nKQdOJXmsugIXz0NDCJRsyOKCHvgbcXISs3APbkJX06yywE5iHEqT9eVBHM+ZubFEv6Z5kx9vMuJwxPE9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ths9fhA4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E57C4CECE;
+	Thu, 12 Dec 2024 15:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022171;
-	bh=KGvIG2dbeJ0qLzIgvUd72wwjSTUcLHuGaz9TGWnV0ZM=;
+	s=korg; t=1734017545;
+	bh=tmMomtUoKPjlEKbT/+N7/v1At5dHHDuu2yZuWNc1yTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9IOTv0sjePA0bdby+xar3/nfPtJKYoPPly2bLEGVL/paBm3MF4eMZdCAyNKHISle
-	 BzE2cC0V10Emqcchrw0W4vE0Tl08zrqDDnzVkpGtlQfkSsb/GCIHKHscR/+5xc5BbY
-	 QEEkgclcuK7cMSFw5EoKabCx87cPElwlV+iQohP4=
+	b=ths9fhA4X3wyPl33Pp3LDJxpmxyFiLtQgYB5nlESgBg4mqPlF4ygcnZS8ZWptNz8O
+	 idhMZhND3h5gxJk/lPRnDT97i45qmNoGukIVzdIcjiyqnya6MhMo+bugn2KU9p1JK5
+	 dYY+W74upfXnENyvLJWsztRr3KUt41LysxdmvK44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raed Salem <raeds@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Kai <KaiShen@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 168/565] xfrm: store and rely on direction to construct offload flags
+Subject: [PATCH 6.6 044/356] net/smc: fix LGR and link use-after-free issue
 Date: Thu, 12 Dec 2024 15:56:03 +0100
-Message-ID: <20241212144318.116392420@linuxfoundation.org>
+Message-ID: <20241212144246.368393894@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Wen Gu <guwen@linux.alibaba.com>
 
-[ Upstream commit 482db2f1dd211f73ad9d71e33ae15c1df6379982 ]
+[ Upstream commit 2c7f14ed9c19ec0f149479d1c2842ec1f9bf76d7 ]
 
-XFRM state doesn't need anything from flags except to understand
-direction, so store it separately. For future patches, such change
-will allow us to reuse xfrm_dev_offload for policy offload too, which
-has three possible directions instead of two.
+We encountered a LGR/link use-after-free issue, which manifested as
+the LGR/link refcnt reaching 0 early and entering the clear process,
+making resource access unsafe.
 
-Reviewed-by: Raed Salem <raeds@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Stable-dep-of: 2cf567f421db ("netdevsim: copy addresses for both in and out paths")
+ refcount_t: addition on 0; use-after-free.
+ WARNING: CPU: 14 PID: 107447 at lib/refcount.c:25 refcount_warn_saturate+0x9c/0x140
+ Workqueue: events smc_lgr_terminate_work [smc]
+ Call trace:
+  refcount_warn_saturate+0x9c/0x140
+  __smc_lgr_terminate.part.45+0x2a8/0x370 [smc]
+  smc_lgr_terminate_work+0x28/0x30 [smc]
+  process_one_work+0x1b8/0x420
+  worker_thread+0x158/0x510
+  kthread+0x114/0x118
+
+or
+
+ refcount_t: underflow; use-after-free.
+ WARNING: CPU: 6 PID: 93140 at lib/refcount.c:28 refcount_warn_saturate+0xf0/0x140
+ Workqueue: smc_hs_wq smc_listen_work [smc]
+ Call trace:
+  refcount_warn_saturate+0xf0/0x140
+  smcr_link_put+0x1cc/0x1d8 [smc]
+  smc_conn_free+0x110/0x1b0 [smc]
+  smc_conn_abort+0x50/0x60 [smc]
+  smc_listen_find_device+0x75c/0x790 [smc]
+  smc_listen_work+0x368/0x8a0 [smc]
+  process_one_work+0x1b8/0x420
+  worker_thread+0x158/0x510
+  kthread+0x114/0x118
+
+It is caused by repeated release of LGR/link refcnt. One suspect is that
+smc_conn_free() is called repeatedly because some smc_conn_free() from
+server listening path are not protected by sock lock.
+
+e.g.
+
+Calls under socklock        | smc_listen_work
+-------------------------------------------------------
+lock_sock(sk)               | smc_conn_abort
+smc_conn_free               | \- smc_conn_free
+\- smcr_link_put            |    \- smcr_link_put (duplicated)
+release_sock(sk)
+
+So here add sock lock protection in smc_listen_work() path, making it
+exclusive with other connection operations.
+
+Fixes: 3b2dec2603d5 ("net/smc: restructure client and server code in af_smc")
+Co-developed-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Co-developed-by: Kai <KaiShen@linux.alibaba.com>
+Signed-off-by: Kai <KaiShen@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h     | 6 ++++++
- net/xfrm/xfrm_device.c | 8 +++++++-
- net/xfrm/xfrm_user.c   | 3 ++-
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ net/smc/af_smc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 395d85eeb5d88..3232cdf1b4ef4 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -126,12 +126,18 @@ struct xfrm_state_walk {
- 	struct xfrm_address_filter *filter;
- };
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 755659703a625..77c6c0dff069e 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -1907,6 +1907,7 @@ static void smc_listen_out(struct smc_sock *new_smc)
+ 	if (tcp_sk(new_smc->clcsock->sk)->syn_smc)
+ 		atomic_dec(&lsmc->queued_smc_hs);
  
-+enum {
-+	XFRM_DEV_OFFLOAD_IN = 1,
-+	XFRM_DEV_OFFLOAD_OUT,
-+};
-+
- struct xfrm_dev_offload {
- 	struct net_device	*dev;
- 	struct net_device	*real_dev;
- 	unsigned long		offload_handle;
- 	unsigned int		num_exthdrs;
- 	u8			flags;
-+	u8			dir : 2;
- };
++	release_sock(newsmcsk); /* lock in smc_listen_work() */
+ 	if (lsmc->sk.sk_state == SMC_LISTEN) {
+ 		lock_sock_nested(&lsmc->sk, SINGLE_DEPTH_NESTING);
+ 		smc_accept_enqueue(&lsmc->sk, newsmcsk);
+@@ -2428,6 +2429,7 @@ static void smc_listen_work(struct work_struct *work)
+ 	u8 accept_version;
+ 	int rc = 0;
  
- struct xfrm_mode {
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index 61aa0fd9d2a0c..7690d23bcf8bb 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -129,7 +129,7 @@ struct sk_buff *validate_xmit_xfrm(struct sk_buff *skb, netdev_features_t featur
++	lock_sock(&new_smc->sk); /* release in smc_listen_out() */
+ 	if (new_smc->listen_smc->sk.sk_state != SMC_LISTEN)
+ 		return smc_listen_out_err(new_smc);
  
- 	sp = skb_sec_path(skb);
- 	x = sp->xvec[sp->len - 1];
--	if (xo->flags & XFRM_GRO || x->xso.flags & XFRM_OFFLOAD_INBOUND)
-+	if (xo->flags & XFRM_GRO || x->xso.dir == XFRM_DEV_OFFLOAD_IN)
- 		return skb;
- 
- 	/* This skb was already validated on the upper/virtual dev */
-@@ -285,11 +285,17 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
- 	/* Don't forward bit that is not implemented */
- 	xso->flags = xuo->flags & ~XFRM_OFFLOAD_IPV6;
- 
-+	if (xuo->flags & XFRM_OFFLOAD_INBOUND)
-+		xso->dir = XFRM_DEV_OFFLOAD_IN;
-+	else
-+		xso->dir = XFRM_DEV_OFFLOAD_OUT;
-+
- 	err = dev->xfrmdev_ops->xdo_dev_state_add(x);
- 	if (err) {
- 		xso->num_exthdrs = 0;
- 		xso->flags = 0;
- 		xso->dev = NULL;
-+		xso->dir = 0;
- 		xso->real_dev = NULL;
- 		dev_put(dev);
- 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index bb63b0dab87bd..1aa05b608ccf0 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -855,7 +855,8 @@ static int copy_user_offload(struct xfrm_dev_offload *xso, struct sk_buff *skb)
- 	xuo = nla_data(attr);
- 	memset(xuo, 0, sizeof(*xuo));
- 	xuo->ifindex = xso->dev->ifindex;
--	xuo->flags = xso->flags;
-+	if (xso->dir == XFRM_DEV_OFFLOAD_IN)
-+		xuo->flags = XFRM_OFFLOAD_INBOUND;
- 
- 	return 0;
- }
 -- 
 2.43.0
 
