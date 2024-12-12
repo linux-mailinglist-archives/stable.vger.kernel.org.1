@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257D69EF5F2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B34169EF520
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F962189576D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0FE1891E86
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD37A211A34;
-	Thu, 12 Dec 2024 17:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E4813792B;
+	Thu, 12 Dec 2024 16:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqskVf6Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC35xOhm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F696F2FE;
-	Thu, 12 Dec 2024 17:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC2F2144C0;
+	Thu, 12 Dec 2024 16:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023650; cv=none; b=bNLtopq8ER5JPVQI7rbEYIpMgCBVGgNTygfmQDVJjZKZTSFrKChlWtgZTylAPldGozo+2t1xP5cAY9I23ismL6xPNveVTWAqBB6Gmxz9CyiEuw/1NwHY7ZbGBCdLmVbG5QRI1urNkYGf3se35rxbs3tMfBN9+njb2sq3coUnkMc=
+	t=1734022220; cv=none; b=YG4VUDCL6BmYcGRICVqB0F695veqR78hrCH1AcbNwq1155NruhY2NxXStDMmWlZV3qYjwB4/OsPwsDAA7Ady6LUNHn5hd3BSX2IM3ba2LvABQ4HA6vROMSRUjLAUKgP/ZNA+scoal5v8yEB6yo7EYmcNDGQU613hyaTNJQPi1Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023650; c=relaxed/simple;
-	bh=B7qybUifTJbwOyVKSVzgM4/kt+Y/kZJV1SOsNjYaskE=;
+	s=arc-20240116; t=1734022220; c=relaxed/simple;
+	bh=absL+8Quhk587pYSIqmRIVmq3APmsA3lBdBUfd8wLNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qI6Xo6bth2/aPgrFvNNYImCXp+1VSyhx63OqmACBGql19GMsjV6OLWx+d3vRF1+xc8TCEcMfTUUDe2oFytg88GoQfj6ZVYUoNK72MWzNsA+99dQbuk+6NMO0R3PkYidQiSW6+1y+bDSZVpP77L9Qlu4SwJ0VWhgDP9dTM7rr2y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OqskVf6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2328C4CECE;
-	Thu, 12 Dec 2024 17:14:09 +0000 (UTC)
+	 MIME-Version; b=V3II2Xr3QuP8oncPW/2VqVYKAvXtn64w2CLFSDPt7CNrlWBGHnk5ueCxltaGsyBncqhf63lzy9Jns7Rm+QqBgxDxN5PJM3xfHa7jDIxgByXhC39sq3U8ZpFzR0lbn8UDD7cuJp7eJIBf1X/mLCi9It2tpqtPNxG+F1ghVTNKgzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC35xOhm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982A0C4CECE;
+	Thu, 12 Dec 2024 16:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023650;
-	bh=B7qybUifTJbwOyVKSVzgM4/kt+Y/kZJV1SOsNjYaskE=;
+	s=korg; t=1734022220;
+	bh=absL+8Quhk587pYSIqmRIVmq3APmsA3lBdBUfd8wLNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OqskVf6ZQRs/m2uVKr43nxOS6OwEeUF0KhpuC3BW9GGcZwstgQWLXRytPVhDDQBdd
-	 0N77CGlMsaNw5zka7MvV+ii9y+un6WoKiEQJTu47RPqR2ZazsuwspDTNi0rC3IHp6Z
-	 RQX/b6ZOtAV1R0nidL+f5Ku2nwcP6KWwKwWa3P9Y=
+	b=IC35xOhmTGtbcYui1mnd/AMfxmvI3pLZL0+3GvafYGuIh5FONGyrUmANnyi2JGXPC
+	 dbok41AelunDxODcrbO+4Nzh2L5Jj1idVMftXUj2t6vWrGP9djMOnnPZsP4zZnsjNQ
+	 rJLqRmgy7JEYm/l/W5431MuafUlspeds+14uhW/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Greear <greearb@candelatech.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/459] mac80211: fix user-power when emulating chanctx
+Subject: [PATCH 5.15 180/565] drm/msm/adreno: Use IRQF_NO_AUTOEN flag in request_irq()
 Date: Thu, 12 Dec 2024 15:56:15 +0100
-Message-ID: <20241212144254.992760153@linuxfoundation.org>
+Message-ID: <20241212144318.589327057@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Greear <greearb@candelatech.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 9b15c6cf8d2e82c8427cd06f535d8de93b5b995c ]
+[ Upstream commit 394679f322649d06fea3c646ba65f5a0887f52c3 ]
 
-ieee80211_calc_hw_conf_chan was ignoring the configured
-user_txpower.  If it is set, use it to potentially decrease
-txpower as requested.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
-Link: https://patch.msgid.link/20241010203954.1219686-1-greearb@candelatech.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Patchwork: https://patchwork.freedesktop.org/patch/614075/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index ae90ac3be59aa..8b3eead8989dd 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -144,6 +144,8 @@ static u32 ieee80211_hw_conf_chan(struct ieee80211_local *local)
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 4347a104755a9..8b6fc1b26f049 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1432,15 +1432,13 @@ static int a6xx_gmu_get_irq(struct a6xx_gmu *gmu, struct platform_device *pdev,
+ 
+ 	irq = platform_get_irq_byname(pdev, name);
+ 
+-	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH, name, gmu);
++	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH | IRQF_NO_AUTOEN, name, gmu);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(&pdev->dev, "Unable to get interrupt %s %d\n",
+ 			      name, ret);
+ 		return ret;
  	}
  
- 	power = ieee80211_chandef_max_power(&chandef);
-+	if (local->user_power_level != IEEE80211_UNSET_POWER_LEVEL)
-+		power = min(local->user_power_level, power);
+-	disable_irq(irq);
+-
+ 	return irq;
+ }
  
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
 -- 
 2.43.0
 
