@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D8D9EF7F9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81EF59EF5EE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15CD81714CC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5468F1777CC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D16B222D45;
-	Thu, 12 Dec 2024 17:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1E02253FC;
+	Thu, 12 Dec 2024 17:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mngeG9TX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMDFgNXz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A1F20A5EE;
-	Thu, 12 Dec 2024 17:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA483222D62;
+	Thu, 12 Dec 2024 17:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024787; cv=none; b=vC20w8qA6iMMOxG3lel4DaW0Vx4Nhi9Y8RC4p+botSgqeEdUEcfILR8ITp2cioc0SRNGS0Fe0qrW5U8dwZtZ7u83fvLgWqukifiGcwrlELk6JcQ6c78ytg6/j0hkwvulKc3Le8bifu+KFPqEa1G+NuGH1jHWnWTm/DretYOku04=
+	t=1734023408; cv=none; b=AizflEtuxq3PdNivBhsrIPWjsajunTgzPbT3GiP7C8bPdSRrRbq6UO2aea9XuGAnxa9XihCzwLCh9ywgAu1uQTT86pUfN87npj6r3u2gxGo0INJKy/UHp0w5A071hjc/a+q6PBYQpbl4xng75N2bbDOXcwGM2liEVOUmDJsDjSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024787; c=relaxed/simple;
-	bh=YkSo0gtJFHEpPr32fx9W9RRTjoPEy9DEYVtSawiEuII=;
+	s=arc-20240116; t=1734023408; c=relaxed/simple;
+	bh=+xSPXC4PiC1DCELPZVMNWPZ2LSJW4995em7yCCSgswQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRlvvDWronV7eukmWfZENOpqg1QS+N+wNg+kdHARGh3vbf/QHYH2mS0uxyMmbOyR2+hgG+rHsw0wGgQDXWi66Y926rs3bsUIPPqQoYwlnu42iJ77XVeD29LgZ1cont1FydzSN9h79Gs8O1lWSTSaOQNeQMQweKAeC2eNTiU7PwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mngeG9TX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE18C4CECE;
-	Thu, 12 Dec 2024 17:33:06 +0000 (UTC)
+	 MIME-Version; b=HLY7kAsgHIMsn5rT0ikHzP7UJMPHZ2qxuLeyyAXNp9KIowNYqab8Wvy2rtLA3fc2W1p4aG51PFI4pIiVDdF1qLSCGYxqFEpDTTBx6o6AQnYOFBTRhFZZz8101IG4Tqi73S1FqXWtKJG+N0FTeKyTGBjXz1Wbj2n/aPP3FJSmI2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMDFgNXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DC3C4CECE;
+	Thu, 12 Dec 2024 17:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024787;
-	bh=YkSo0gtJFHEpPr32fx9W9RRTjoPEy9DEYVtSawiEuII=;
+	s=korg; t=1734023408;
+	bh=+xSPXC4PiC1DCELPZVMNWPZ2LSJW4995em7yCCSgswQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mngeG9TXUQWHcnTYgWXhWnoPk6tijIuroELl8BaO1skhPnZF6pDSrd9gxFFPpXPB8
-	 hkpKocjHnxkOTzI1J3heHX0BPVkvnIbn9Buw4PAOcyhDzyMC3eh4CiQ2a2j0yDi/9M
-	 KHHkhA8lTgvviTJmlCxwUZWZf0pmfLTfa/LZrq2o=
+	b=QMDFgNXz7PaPJ1MNceNR5jGpvQ0qal4xyYPCK/KjDny9nX6aEcGODfQ2Vv35uHaU0
+	 sIUat9fjKUXAaCIRXpkwvTp4nu1VKpBSd8xXFvqdh6xy37wu5dUQHIsyrbfYvwFByS
+	 sEnzcsP+/tK3co8xn85GN9aVxqdmuVRihSKeRgLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	Marco Elver <elver@google.com>,
+	Defa Li <defa.li@mediatek.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 382/459] kcsan: Turn report_filterlist_lock into a raw_spinlock
+Subject: [PATCH 5.15 525/565] i3c: Use i3cdev->desc->info instead of calling i3c_device_get_info() to avoid deadlock
 Date: Thu, 12 Dec 2024 16:02:00 +0100
-Message-ID: <20241212144308.863139865@linuxfoundation.org>
+Message-ID: <20241212144332.556237973@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,214 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Defa Li <defa.li@mediatek.com>
 
-[ Upstream commit 59458fa4ddb47e7891c61b4a928d13d5f5b00aa0 ]
+[ Upstream commit 6cf7b65f7029914dc0cd7db86fac9ee5159008c6 ]
 
-Ran Xiaokai reports that with a KCSAN-enabled PREEMPT_RT kernel, we can see
-splats like:
+A deadlock may happen since the i3c_master_register() acquires
+&i3cbus->lock twice. See the log below.
+Use i3cdev->desc->info instead of calling i3c_device_info() to
+avoid acquiring the lock twice.
 
-| BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-| in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-| preempt_count: 10002, expected: 0
-| RCU nest depth: 0, expected: 0
-| no locks held by swapper/1/0.
-| irq event stamp: 156674
-| hardirqs last  enabled at (156673): [<ffffffff81130bd9>] do_idle+0x1f9/0x240
-| hardirqs last disabled at (156674): [<ffffffff82254f84>] sysvec_apic_timer_interrupt+0x14/0xc0
-| softirqs last  enabled at (0): [<ffffffff81099f47>] copy_process+0xfc7/0x4b60
-| softirqs last disabled at (0): [<0000000000000000>] 0x0
-| Preemption disabled at:
-| [<ffffffff814a3e2a>] paint_ptr+0x2a/0x90
-| CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.11.0+ #3
-| Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-0-ga698c8995f-prebuilt.qemu.org 04/01/2014
-| Call Trace:
-|  <IRQ>
-|  dump_stack_lvl+0x7e/0xc0
-|  dump_stack+0x1d/0x30
-|  __might_resched+0x1a2/0x270
-|  rt_spin_lock+0x68/0x170
-|  kcsan_skip_report_debugfs+0x43/0xe0
-|  print_report+0xb5/0x590
-|  kcsan_report_known_origin+0x1b1/0x1d0
-|  kcsan_setup_watchpoint+0x348/0x650
-|  __tsan_unaligned_write1+0x16d/0x1d0
-|  hrtimer_interrupt+0x3d6/0x430
-|  __sysvec_apic_timer_interrupt+0xe8/0x3a0
-|  sysvec_apic_timer_interrupt+0x97/0xc0
-|  </IRQ>
+v2:
+  - Modified the title and commit message
 
-On a detected data race, KCSAN's reporting logic checks if it should
-filter the report. That list is protected by the report_filterlist_lock
-*non-raw* spinlock which may sleep on RT kernels.
+============================================
+WARNING: possible recursive locking detected
+6.11.0-mainline
+--------------------------------------------
+init/1 is trying to acquire lock:
+f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_bus_normaluse_lock
 
-Since KCSAN may report data races in any context, convert it to a
-raw_spinlock.
+but task is already holding lock:
+f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_master_register
 
-This requires being careful about when to allocate memory for the filter
-list itself which can be done via KCSAN's debugfs interface. Concurrent
-modification of the filter list via debugfs should be rare: the chosen
-strategy is to optimistically pre-allocate memory before the critical
-section and discard if unused.
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-Link: https://lore.kernel.org/all/20240925143154.2322926-1-ranxiaokai627@163.com/
-Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Tested-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Signed-off-by: Marco Elver <elver@google.com>
+       CPU0
+       ----
+  lock(&i3cbus->lock);
+  lock(&i3cbus->lock);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+2 locks held by init/1:
+ #0: fcffff809b6798f8 (&dev->mutex){....}-{3:3}, at: __driver_attach
+ #1: f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_master_register
+
+stack backtrace:
+CPU: 6 UID: 0 PID: 1 Comm: init
+Call trace:
+ dump_backtrace+0xfc/0x17c
+ show_stack+0x18/0x28
+ dump_stack_lvl+0x40/0xc0
+ dump_stack+0x18/0x24
+ print_deadlock_bug+0x388/0x390
+ __lock_acquire+0x18bc/0x32ec
+ lock_acquire+0x134/0x2b0
+ down_read+0x50/0x19c
+ i3c_bus_normaluse_lock+0x14/0x24
+ i3c_device_get_info+0x24/0x58
+ i3c_device_uevent+0x34/0xa4
+ dev_uevent+0x310/0x384
+ kobject_uevent_env+0x244/0x414
+ kobject_uevent+0x14/0x20
+ device_add+0x278/0x460
+ device_register+0x20/0x34
+ i3c_master_register_new_i3c_devs+0x78/0x154
+ i3c_master_register+0x6a0/0x6d4
+ mtk_i3c_master_probe+0x3b8/0x4d8
+ platform_probe+0xa0/0xe0
+ really_probe+0x114/0x454
+ __driver_probe_device+0xa0/0x15c
+ driver_probe_device+0x3c/0x1ac
+ __driver_attach+0xc4/0x1f0
+ bus_for_each_dev+0x104/0x160
+ driver_attach+0x24/0x34
+ bus_add_driver+0x14c/0x294
+ driver_register+0x68/0x104
+ __platform_driver_register+0x20/0x30
+ init_module+0x20/0xfe4
+ do_one_initcall+0x184/0x464
+ do_init_module+0x58/0x1ec
+ load_module+0xefc/0x10c8
+ __arm64_sys_finit_module+0x238/0x33c
+ invoke_syscall+0x58/0x10c
+ el0_svc_common+0xa8/0xdc
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x50/0xac
+ el0t_64_sync_handler+0x70/0xbc
+ el0t_64_sync+0x1a8/0x1ac
+
+Signed-off-by: Defa Li <defa.li@mediatek.com>
+Link: https://lore.kernel.org/r/20241107132549.25439-1-defa.li@mediatek.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kcsan/debugfs.c | 74 ++++++++++++++++++++----------------------
- 1 file changed, 36 insertions(+), 38 deletions(-)
+ drivers/i3c/master.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
-index 62a52be8f6ba9..6a4ecd1a6fa5b 100644
---- a/kernel/kcsan/debugfs.c
-+++ b/kernel/kcsan/debugfs.c
-@@ -41,14 +41,8 @@ static struct {
- 	int		used;		/* number of elements used */
- 	bool		sorted;		/* if elements are sorted */
- 	bool		whitelist;	/* if list is a blacklist or whitelist */
--} report_filterlist = {
--	.addrs		= NULL,
--	.size		= 8,		/* small initial size */
--	.used		= 0,
--	.sorted		= false,
--	.whitelist	= false,	/* default is blacklist */
--};
--static DEFINE_SPINLOCK(report_filterlist_lock);
-+} report_filterlist;
-+static DEFINE_RAW_SPINLOCK(report_filterlist_lock);
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 40d07a1fa6601..ef12fda68d27a 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -279,7 +279,8 @@ static int i3c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
+ 	struct i3c_device_info devinfo;
+ 	u16 manuf, part, ext;
  
- /*
-  * The microbenchmark allows benchmarking KCSAN core runtime only. To run
-@@ -105,7 +99,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
- 		return false;
- 	func_addr -= offset; /* Get function start */
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	if (report_filterlist.used == 0)
- 		goto out;
- 
-@@ -122,7 +116,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
- 		ret = !ret;
- 
- out:
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 	return ret;
- }
- 
-@@ -130,9 +124,9 @@ static void set_report_filterlist_whitelist(bool whitelist)
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	report_filterlist.whitelist = whitelist;
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- }
- 
- /* Returns 0 on success, error-code otherwise. */
-@@ -140,6 +134,9 @@ static ssize_t insert_report_filterlist(const char *func)
- {
- 	unsigned long flags;
- 	unsigned long addr = kallsyms_lookup_name(func);
-+	unsigned long *delay_free = NULL;
-+	unsigned long *new_addrs = NULL;
-+	size_t new_size = 0;
- 	ssize_t ret = 0;
- 
- 	if (!addr) {
-@@ -147,32 +144,33 @@ static ssize_t insert_report_filterlist(const char *func)
- 		return -ENOENT;
- 	}
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+retry_alloc:
-+	/*
-+	 * Check if we need an allocation, and re-validate under the lock. Since
-+	 * the report_filterlist_lock is a raw, cannot allocate under the lock.
-+	 */
-+	if (data_race(report_filterlist.used == report_filterlist.size)) {
-+		new_size = (report_filterlist.size ?: 4) * 2;
-+		delay_free = new_addrs = kmalloc_array(new_size, sizeof(unsigned long), GFP_KERNEL);
-+		if (!new_addrs)
-+			return -ENOMEM;
-+	}
- 
--	if (report_filterlist.addrs == NULL) {
--		/* initial allocation */
--		report_filterlist.addrs =
--			kmalloc_array(report_filterlist.size,
--				      sizeof(unsigned long), GFP_ATOMIC);
--		if (report_filterlist.addrs == NULL) {
--			ret = -ENOMEM;
--			goto out;
--		}
--	} else if (report_filterlist.used == report_filterlist.size) {
--		/* resize filterlist */
--		size_t new_size = report_filterlist.size * 2;
--		unsigned long *new_addrs =
--			krealloc(report_filterlist.addrs,
--				 new_size * sizeof(unsigned long), GFP_ATOMIC);
--
--		if (new_addrs == NULL) {
--			/* leave filterlist itself untouched */
--			ret = -ENOMEM;
--			goto out;
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
-+	if (report_filterlist.used == report_filterlist.size) {
-+		/* Check we pre-allocated enough, and retry if not. */
-+		if (report_filterlist.used >= new_size) {
-+			raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+			kfree(new_addrs); /* kfree(NULL) is safe */
-+			delay_free = new_addrs = NULL;
-+			goto retry_alloc;
- 		}
- 
-+		if (report_filterlist.used)
-+			memcpy(new_addrs, report_filterlist.addrs, report_filterlist.used * sizeof(unsigned long));
-+		delay_free = report_filterlist.addrs; /* free the old list */
-+		report_filterlist.addrs = new_addrs;  /* switch to the new list */
- 		report_filterlist.size = new_size;
--		report_filterlist.addrs = new_addrs;
- 	}
- 
- 	/* Note: deduplicating should be done in userspace. */
-@@ -180,9 +178,9 @@ static ssize_t insert_report_filterlist(const char *func)
- 		kallsyms_lookup_name(func);
- 	report_filterlist.sorted = false;
- 
--out:
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 
-+	kfree(delay_free);
- 	return ret;
- }
- 
-@@ -199,13 +197,13 @@ static int show_info(struct seq_file *file, void *v)
- 	}
- 
- 	/* show filter functions, and filter type */
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	seq_printf(file, "\n%s functions: %s\n",
- 		   report_filterlist.whitelist ? "whitelisted" : "blacklisted",
- 		   report_filterlist.used == 0 ? "none" : "");
- 	for (i = 0; i < report_filterlist.used; ++i)
- 		seq_printf(file, " %ps\n", (void *)report_filterlist.addrs[i]);
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 
- 	return 0;
- }
+-	i3c_device_get_info(i3cdev, &devinfo);
++	if (i3cdev->desc)
++		devinfo = i3cdev->desc->info;
+ 	manuf = I3C_PID_MANUF_ID(devinfo.pid);
+ 	part = I3C_PID_PART_ID(devinfo.pid);
+ 	ext = I3C_PID_EXTRA_INFO(devinfo.pid);
 -- 
 2.43.0
 
