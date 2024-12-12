@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAAB9EF2D4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D05E9EEC0B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5367317482B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35C9818834F3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F0C225407;
-	Thu, 12 Dec 2024 16:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B74A2153DF;
+	Thu, 12 Dec 2024 15:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlPo6Pxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="127QwXf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B16222D70;
-	Thu, 12 Dec 2024 16:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3981487CD;
+	Thu, 12 Dec 2024 15:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021183; cv=none; b=eXCvV+cPt62BqefOzC/wUBAaHYP4MV202tQZkbEQ4NT9aZ1ToR1ImmCvf4RVZGF6zbXgjhsyM7tt/BKTWDicn+qX82DHyHm5rD0XRGlbDPLPNrp83/2bToxRXv1la9oHRvu5JqeB6GtTcIdp3MV9GabXL3I6U2OSUFNOL3UQFpI=
+	t=1734017315; cv=none; b=qVF90UclCfEm3T91UirwTO4U6rGHcKpRt5dgNa3aGiNiQ7d88bg1QVHOXqLiikQc+FO4BSTcjSWt/cSoTUTd67NnuDalq46BGvXjhYEGTkJC8UlhL6Y+EY9lJZLMAsUEI4zVT7fYITTySTF3BeNF0auGgoTYuh0LOcM+dVSmFVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021183; c=relaxed/simple;
-	bh=wGUt6wBkJdYni3WtQQfGJeHtpivty55OuQ10LFzd3jE=;
+	s=arc-20240116; t=1734017315; c=relaxed/simple;
+	bh=saPzCIUse62pKiWlAmMzVbk2xK7R4z1dUsV+fdV6lqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csZFOGxmUjVRqQr2vZ7FHrZL2GvcZrqKCmEZN3N/QGlXOqkjAAzoD3XS9Sz5TgbTkJBXc20SLfcEj6JG7S9JXUB7DOmM+ZJ5V1cPolC1bd/eJkMUHDhmHtDSxj7N33C2oO7CXltoz6//FC8tPftJt13JX9KFqSspdk8rrL6YqYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlPo6Pxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A210C4CECE;
-	Thu, 12 Dec 2024 16:33:02 +0000 (UTC)
+	 MIME-Version; b=El6BrGR08nuZl8btsNqhH5KTCp7EehyNtjQlLqMvyQs2Oh2tJU44L9SmUhIdTO0nLExeX4zIUr96ya9h0Y5L8ZOOVa+8Bn9T6G+v116OQZKWuTr1Ikcs3JTM5EgjGjaD8z5sK1QxlULX1KvPwVZX/tEJppNpcq7/HJSGNpPfiAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=127QwXf3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47563C4CECE;
+	Thu, 12 Dec 2024 15:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021183;
-	bh=wGUt6wBkJdYni3WtQQfGJeHtpivty55OuQ10LFzd3jE=;
+	s=korg; t=1734017314;
+	bh=saPzCIUse62pKiWlAmMzVbk2xK7R4z1dUsV+fdV6lqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlPo6PxaDGkmJhD4AXzY5w0p8aYORwvl36Q1x+b2d8/3Mr2+uMiAGFFjBs/0sG82C
-	 SgYfUIUhQfp3936MU2p9bNIsrrx5FPFcHEZCQA6tGXfEjaO9aIRCyMPdyBtlRpSgQ1
-	 5QuugUCwr9LhvFVky7YJ1MYTatScXIUSxI+im184=
+	b=127QwXf3wzHCnNHj8KGUhVcaYLMHh1pgYdvpxIOkyw7dJ2cSR0kYvyx97Z9N/b0fs
+	 +wN/+uW6pUBO5p5VMTYeGHgsi8TnVcPw9vbk4qXQl7Ov3+q3VWLvZS0NzHXHaIsU8M
+	 zv4qMV8H/k55ZUM8Cur6fVh93I0cUXMYFJZujmDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 668/772] Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()
+Subject: [PATCH 6.12 444/466] btrfs: drop unused parameter options from open_ctree()
 Date: Thu, 12 Dec 2024 16:00:13 +0100
-Message-ID: <20241212144417.515525975@linuxfoundation.org>
+Message-ID: <20241212144324.397343530@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 7c4f78cdb8e7501e9f92d291a7d956591bf73be9 ]
+[ Upstream commit 87cbab86366e75dec52f787e0e0b17b2aea769ca ]
 
-bt_sock_alloc() allocates the sk object and attaches it to the provided
-sock object. On error l2cap_sock_alloc() frees the sk object, but the
-dangling pointer is still attached to the sock object, which may create
-use-after-free in other code.
+Since the new mount option parser in commit ad21f15b0f79 ("btrfs:
+switch to the new mount API") we don't pass the options like that
+anymore.
 
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-3-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 951a3f59d268 ("btrfs: fix mount failure due to remount races")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/disk-io.c | 3 +--
+ fs/btrfs/disk-io.h | 3 +--
+ fs/btrfs/super.c   | 2 +-
+ 3 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index b17782dc513b5..4e965916c17c1 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1920,6 +1920,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
- 	chan = l2cap_chan_create();
- 	if (!chan) {
- 		sk_free(sk);
-+		sock->sk = NULL;
- 		return NULL;
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index b11bfe68dd65f..43b7b331b2da3 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -3202,8 +3202,7 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
+ 	return 0;
+ }
+ 
+-int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_devices,
+-		      const char *options)
++int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_devices)
+ {
+ 	u32 sectorsize;
+ 	u32 nodesize;
+diff --git a/fs/btrfs/disk-io.h b/fs/btrfs/disk-io.h
+index 99af64d3f2778..127e31e083470 100644
+--- a/fs/btrfs/disk-io.h
++++ b/fs/btrfs/disk-io.h
+@@ -52,8 +52,7 @@ struct extent_buffer *btrfs_find_create_tree_block(
+ int btrfs_start_pre_rw_mount(struct btrfs_fs_info *fs_info);
+ int btrfs_check_super_csum(struct btrfs_fs_info *fs_info,
+ 			   const struct btrfs_super_block *disk_sb);
+-int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_devices,
+-		      const char *options);
++int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_devices);
+ void __cold close_ctree(struct btrfs_fs_info *fs_info);
+ int btrfs_validate_super(const struct btrfs_fs_info *fs_info,
+ 			 const struct btrfs_super_block *sb, int mirror_num);
+diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
+index c64d071341223..1a4225a1a2003 100644
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -971,7 +971,7 @@ static int btrfs_fill_super(struct super_block *sb,
+ 		return err;
  	}
  
+-	err = open_ctree(sb, fs_devices, (char *)data);
++	err = open_ctree(sb, fs_devices);
+ 	if (err) {
+ 		btrfs_err(fs_info, "open_ctree failed");
+ 		return err;
 -- 
 2.43.0
 
