@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-101689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B328D9EEE19
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B049EF1B6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89646188E263
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75FEE28FAFB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDDE221DA0;
-	Thu, 12 Dec 2024 15:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2720523236B;
+	Thu, 12 Dec 2024 16:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rs+7e7RX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3NHK7w+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4736A2210E8;
-	Thu, 12 Dec 2024 15:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7612223E71;
+	Thu, 12 Dec 2024 16:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018445; cv=none; b=K9fCWla87Oywy1ulgoCvRXeJX+WLC4npQ5hUR6ME1rO/+X6eWfIyFA6LCGDoUBo5Re2Xmppztjf1IqNXBrI4Kg9BlQRULHKNQGEQ+zMs6zMHCd+gGYJWU2kQsVk4OSncavnWgqJWn60T17hG9V8qaC6hlRIizwijjdQQp8HDCBI=
+	t=1734021075; cv=none; b=mHXFERBqHOQGQXmUN48LoeTxWPDg8uTRN1K1j64CyhSCkgLSDn0c8Vr3LxH0kZSaUKyM3BQ+oexSuvJNkQU+69g2NF+HaqxfT9izAPOdyA1ZlDM1D0aIuoWDPS9vTSsu3xycE1MUQWC7HariH1XkXwhVTxRLiqvUFoUfOevaPpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018445; c=relaxed/simple;
-	bh=Re/SSBAZfaxoZBmTa0fklRQPLyrkS51pxoLbnD2HsX0=;
+	s=arc-20240116; t=1734021075; c=relaxed/simple;
+	bh=6tQBPdLnzLEVE3OtmmEnh4AoyOh3rncfnA4SlkhFrsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Inqzmw8wz+Zv+9PBqtcYwj1cxMsGYsXiR1N8aYmaesE6XZfy7rJNij2PkZV09DA+Yp5Z7R8ehm2UZlEgsOeXTPlzb5by5OOJOKp3NQCp2fmH4DGydooYMFLX4vM4J85t9bx6LpY7LfieqSkQeXOaM4hABFOrvdHhs0mdvL/Qfdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rs+7e7RX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5DDC4CED7;
-	Thu, 12 Dec 2024 15:47:24 +0000 (UTC)
+	 MIME-Version; b=YePVQtOi0FBjrOD3I65uqVq4YQU1hX3eJjNNo53Xx1XTqAxkZ7BEvbKk2Px9J6SxM6wvP7MeAEE2HirM7CMtwGik78HICZWjIser14uvK5Sdw0VK5DVCB4VCR0mEDGKifAYU6k4Cfh9xvdack7HC1EH1qrdfESBvSVExAie9p/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3NHK7w+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454E4C4CECE;
+	Thu, 12 Dec 2024 16:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018445;
-	bh=Re/SSBAZfaxoZBmTa0fklRQPLyrkS51pxoLbnD2HsX0=;
+	s=korg; t=1734021075;
+	bh=6tQBPdLnzLEVE3OtmmEnh4AoyOh3rncfnA4SlkhFrsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rs+7e7RX1yFbE4JC76/wcq2Zu7AivlnJGTAnI88Vt7bUsOdh0v0smFWBS1WwxrQtn
-	 PfhLKHqg8hpq+M330D+aaoWGFDj1HSywgtzRAa8V0HCMhhHb7p9WwNNg2ZXhM6FGsf
-	 r2eYMJq/yLRt2JD9hZFuGLex+Ffzzz1WfU8SC8to=
+	b=H3NHK7w+fEB7Q3cukDBwJT+l5A8iCmgrEndHwwAPWqma0lpiqjvAigW/4U+FPTeZS
+	 vX+xncrsjeb3h03NUCPxUf314bmM7LX7aEsyOZy1DAS5DjG8rfmAZPd6VEHb9VJzOC
+	 Q6ONhPyMm8TqJonJIcWrKAvmzoQjHjkzMk/wyRfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/356] netpoll: Use rcu_access_pointer() in __netpoll_setup
+	Wengang Wang <wen.gang.wang@oracle.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 638/772] ocfs2: update seq_file index in ocfs2_dlm_seq_next
 Date: Thu, 12 Dec 2024 15:59:43 +0100
-Message-ID: <20241212144255.024827021@linuxfoundation.org>
+Message-ID: <20241212144416.296465704@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +67,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Wengang Wang <wen.gang.wang@oracle.com>
 
-[ Upstream commit c69c5e10adb903ae2438d4f9c16eccf43d1fcbc1 ]
+commit 914eec5e980171bc128e7e24f7a22aa1d803570e upstream.
 
-The ndev->npinfo pointer in __netpoll_setup() is RCU-protected but is being
-accessed directly for a NULL check. While no RCU read lock is held in this
-context, we should still use proper RCU primitives for consistency and
-correctness.
+The following INFO level message was seen:
 
-Replace the direct NULL check with rcu_access_pointer(), which is the
-appropriate primitive when only checking for NULL without dereferencing
-the pointer. This function provides the necessary ordering guarantees
-without requiring RCU read-side protection.
+seq_file: buggy .next function ocfs2_dlm_seq_next [ocfs2] did not
+update position index
 
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20241118-netpoll_rcu-v1-1-a1888dcb4a02@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix:
+Update *pos (so m->index) to make seq_read_iter happy though the index its
+self makes no sense to ocfs2_dlm_seq_next.
+
+Link: https://lkml.kernel.org/r/20241119174500.9198-1-wen.gang.wang@oracle.com
+Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/dlmglue.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index e082139004093..1791462f1600a 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -633,7 +633,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 		goto out;
- 	}
+--- a/fs/ocfs2/dlmglue.c
++++ b/fs/ocfs2/dlmglue.c
+@@ -3108,6 +3108,7 @@ static void *ocfs2_dlm_seq_next(struct s
+ 	struct ocfs2_lock_res *iter = v;
+ 	struct ocfs2_lock_res *dummy = &priv->p_iter_res;
  
--	if (!ndev->npinfo) {
-+	if (!rcu_access_pointer(ndev->npinfo)) {
- 		npinfo = kmalloc(sizeof(*npinfo), GFP_KERNEL);
- 		if (!npinfo) {
- 			err = -ENOMEM;
--- 
-2.43.0
-
++	(*pos)++;
+ 	spin_lock(&ocfs2_dlm_tracking_lock);
+ 	iter = ocfs2_dlm_next_res(iter, priv);
+ 	list_del_init(&dummy->l_debug_list);
 
 
 
