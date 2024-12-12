@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F13C9EF6E6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 957869EF876
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E963E284921
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56857294E17
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D034222D72;
-	Thu, 12 Dec 2024 17:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1385D211493;
+	Thu, 12 Dec 2024 17:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d28ZiawZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBx/MKJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD2D221D93;
-	Thu, 12 Dec 2024 17:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C446B6F2FE;
+	Thu, 12 Dec 2024 17:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024596; cv=none; b=aMZtrAaUDhr2eGrcbzvp17XIbZq227mxDfhyTZVYHO0iiGUBD4mWVXqgFFtKHNyKdXS6WL7mDJYdu2MLlDw33wFRzoEn2DgMRa2W1gLfSDsXUSLH1oYcGcN2/XQN5uqB4EEnbcelechz0r4NbZ6xCvWsIJhYzLU1k4UvCAtSihc=
+	t=1734025348; cv=none; b=qEOk2YTWXrMJwoYXdZ3vVJWit7I60zqY/zsinBE/9WMpaii1bNf9xfjQS/VA7X38tnkqfGpid3L7gZ6PCSlfxOdeHN1IAHJCzp7mxs3mYjI1Fd2zkaZwrkzNyR/PdadjZWa8JdSD/azn+pYeFRLapHwHzxBeqsGDccMZEa187lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024596; c=relaxed/simple;
-	bh=DIUdQ2cX/DSvB0Ng1j1dBhtxeuYzkYfEPTKchwRoLnE=;
+	s=arc-20240116; t=1734025348; c=relaxed/simple;
+	bh=gcigGEUOYpteJuTrJMqSzGxFP4GkVubsvsTMsJIMmvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zdm+WNMEL3FrQmH3rB2ZJZT1ndRhv0u55INhzfKJCzwpiNqEb0THgRUS1XJjFJyvHtcKHfkRWGMoeyH41kOQ+h+Xh9KOLOr+Ic7troF+Ltq+0mN0c0IeSttbh7KcbXDP02YKb/N+VDbkYlosumlXnYyIaAmfKC/0rO4BnKZP+i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d28ZiawZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81445C4CECE;
-	Thu, 12 Dec 2024 17:29:55 +0000 (UTC)
+	 MIME-Version; b=PVA40Z2O0cHezOlrRnsehPkILgw58yQjUEcvLDDKwWFtKulfDgn6gNz/qknGE6fTMNgC9OpPyCvkjm/wwdv9bv1hutprJhm447IwABkK57VFB2g+RCmIcY8/yotXR+SE1Kc7g/mWz40f1gO1Z9BzFUtB26etyoTAtgfO4NN30uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBx/MKJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39CEC4CECE;
+	Thu, 12 Dec 2024 17:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024595;
-	bh=DIUdQ2cX/DSvB0Ng1j1dBhtxeuYzkYfEPTKchwRoLnE=;
+	s=korg; t=1734025346;
+	bh=gcigGEUOYpteJuTrJMqSzGxFP4GkVubsvsTMsJIMmvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d28ZiawZIH4lKoHHfABAeDUiKbcyJvTU0rQDAs5QnJ8jBRyhiu76IpXI2Y/Hh6q+J
-	 cS7ua2cMxoOap/xqimytGDBrUBfqnByzmCZ4to81gT3Js9eXop8b7TLc9W2hmhshrM
-	 4ksg9/zgr5FcjR2Sz8aeLxvcqmwoB8njFWCHhU7E=
+	b=iBx/MKJRK/YTAIO4QA6s5KNWS6Ue4llXxl4Lzm/1FiZOH4JRFfxZ/EgG+igjSGWAW
+	 5axlgjeB7575ENd23YNXzgSMmJHPLJjS0x5ZIBsvhswUYL3bTfW+s08M8QKV8qxylX
+	 VCjAkEpqrbHP2hAM2KnC4jg8ExepOs59v1Qb80Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.10 318/459] i3c: master: Fix miss free init_dyn_addr at i3c_master_put_i3c_addrs()
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 138/321] misc: apds990x: Fix missing pm_runtime_disable()
 Date: Thu, 12 Dec 2024 16:00:56 +0100
-Message-ID: <20241212144306.216291603@linuxfoundation.org>
+Message-ID: <20241212144235.429359831@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 3082990592f7c6d7510a9133afa46e31bbe26533 upstream.
+[ Upstream commit 3c5d8b819d27012264edd17e6ae7fffda382fe44 ]
 
-if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
-                                      ^^^ here check "init_dyn_addr"
-	i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr, ...)
-						             ^^^^
-							free "dyn_addr"
-Fix copy/paste error "dyn_addr" by replacing it with "init_dyn_addr".
+The pm_runtime_disable() is missing in probe error path,
+so add it to fix it.
 
-Cc: stable@kernel.org
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241001162608.224039-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 92b1f84d46b2 ("drivers/misc: driver for APDS990X ALS and proximity sensors")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240923035556.3009105-1-ruanjinjie@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/apds990x.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1285,7 +1285,7 @@ static void i3c_master_put_i3c_addrs(str
- 					     I3C_ADDR_SLOT_FREE);
+diff --git a/drivers/misc/apds990x.c b/drivers/misc/apds990x.c
+index 45f5b997a0e10..5b17288ecc2f0 100644
+--- a/drivers/misc/apds990x.c
++++ b/drivers/misc/apds990x.c
+@@ -1148,7 +1148,7 @@ static int apds990x_probe(struct i2c_client *client,
+ 		err = chip->pdata->setup_resources();
+ 		if (err) {
+ 			err = -EINVAL;
+-			goto fail3;
++			goto fail4;
+ 		}
+ 	}
  
- 	if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
--		i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr,
-+		i3c_bus_set_addr_slot_status(&master->bus, dev->boardinfo->init_dyn_addr,
- 					     I3C_ADDR_SLOT_FREE);
- }
+@@ -1156,7 +1156,7 @@ static int apds990x_probe(struct i2c_client *client,
+ 				apds990x_attribute_group);
+ 	if (err < 0) {
+ 		dev_err(&chip->client->dev, "Sysfs registration failed\n");
+-		goto fail4;
++		goto fail5;
+ 	}
  
+ 	err = request_threaded_irq(client->irq, NULL,
+@@ -1167,15 +1167,17 @@ static int apds990x_probe(struct i2c_client *client,
+ 	if (err) {
+ 		dev_err(&client->dev, "could not get IRQ %d\n",
+ 			client->irq);
+-		goto fail5;
++		goto fail6;
+ 	}
+ 	return err;
+-fail5:
++fail6:
+ 	sysfs_remove_group(&chip->client->dev.kobj,
+ 			&apds990x_attribute_group[0]);
+-fail4:
++fail5:
+ 	if (chip->pdata && chip->pdata->release_resources)
+ 		chip->pdata->release_resources();
++fail4:
++	pm_runtime_disable(&client->dev);
+ fail3:
+ 	regulator_bulk_disable(ARRAY_SIZE(chip->regs), chip->regs);
+ fail2:
+-- 
+2.43.0
+
 
 
 
