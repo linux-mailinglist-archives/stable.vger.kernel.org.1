@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-101061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17869EEA67
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A559EF12D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A27188DB93
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29A211898D58
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF501217640;
-	Thu, 12 Dec 2024 15:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E35221DB0;
+	Thu, 12 Dec 2024 16:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kge9zgXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHqDuD2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9932139B2;
-	Thu, 12 Dec 2024 15:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055E9222D42;
+	Thu, 12 Dec 2024 16:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016120; cv=none; b=oqnvafTzlrVbGxbKzdhv1rJOFPVbcFixQz/jjd9ylbkP3qYu29I4Ogj+BEMJqDztSlR4AP+MUg9qvErygKLUnbBPYe8LIXYLd30ZCxNPWcj0Hg7xs6h441MCkOHPPqWcdabdt0druezOLNoISHGyxEQNAdGqwrrAjR4nCMMRrcA=
+	t=1734020040; cv=none; b=TTrxtXMaIlnD/fb8K6+1PAfJY+kesk6P6vwW4zqAEhG3FhyN1ZAWT3M+emRHgZfJ9q1/l0D6AWp3SogTeEI0zow7CN5VmKx/C8WSKOfNA6Ur2HYG4uYyuw0NR04Ym8GBBw97kHteLwEIKHhBLCsMc1QtGsO/N0yDWtOgoD739O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016120; c=relaxed/simple;
-	bh=VX6C67ibXUvWVzII7dYlyksddRhOgfwixC2UVQsr6SE=;
+	s=arc-20240116; t=1734020040; c=relaxed/simple;
+	bh=S+WYNvdmGrvDmzsSaP12wVt+daCmzW6wa+qretsCVTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYR3axH0jhsoG5imMM0DcXFZE6EZenwKk8IOdiFtoDjzvDwnGzvcHGo/CFdnQSt9WrUk2C9pJMDife0G40e2kn6+NyULaHdGL3Snw+bm7oTE7SluYkegeyRm2vMyFGu6625gL6SXYkS0fv+oU15nl5JANf4RmHgaloXscDkUbJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kge9zgXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCA7C4CECE;
-	Thu, 12 Dec 2024 15:08:39 +0000 (UTC)
+	 MIME-Version; b=my3UMAYmn2uYEIjtrXVtxFOFKhmOtC9xCjty1SLAl9fcpsebPvqAX90I/QpEHZ4XGJgFlWNkJ6TpttiB0b1B5N5BQ4BuSKFFhjLuo6BzDQoEbj6MIBXoN+lOGGFyggj9UuY2H4NoDv7R4dOg7os6l/+5I7Kx/959i0DOG9FoNr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHqDuD2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D77C4CECE;
+	Thu, 12 Dec 2024 16:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016120;
-	bh=VX6C67ibXUvWVzII7dYlyksddRhOgfwixC2UVQsr6SE=;
+	s=korg; t=1734020039;
+	bh=S+WYNvdmGrvDmzsSaP12wVt+daCmzW6wa+qretsCVTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kge9zgXW52bTeQM8Fyft5iNUbagV7tDrhhlWTwrtY5/hgNXpVGB/VliM0XobNy045
-	 NKeGCtGZupzGktZ228PUQ9IAjqacmi3xW0KIc7yYtH6+t2FWUAoqF2Nw4bGV6J8uH/
-	 EKdbeDqy0G+w6Vd350B+eXwZya5TkcgI2Kuz/leU=
+	b=pHqDuD2SeOFlIKTHBZsa7DogmelwS75IJd19ZE3t3R4phkItZV6wE617yTmslYtKZ
+	 thY50qEwQ5rqaseH7ml9m4sScUq5bCI+QQiWbCv5Pst2xCI2kP9L8RG2hxFLnVDhc7
+	 weC4zijaj0K1+FQMn14NxuWEvU8rQ9t3SwngHthI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 139/466] ALSA: usb-audio: Fix a DMA to stack memory bug
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 363/772] ext4: fix FS_IOC_GETFSMAP handling
 Date: Thu, 12 Dec 2024 15:55:08 +0100
-Message-ID: <20241212144312.292557085@linuxfoundation.org>
+Message-ID: <20241212144404.917886198@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,130 +60,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit f7d306b47a24367302bd4fe846854e07752ffcd9 upstream.
+commit 4a622e4d477bb12ad5ed4abbc7ad1365de1fa347 upstream.
 
-The usb_get_descriptor() function does DMA so we're not allowed
-to use a stack buffer for that.  Doing DMA to the stack is not portable
-all architectures.  Move the "new_device_descriptor" from being stored
-on the stack and allocate it with kmalloc() instead.
+The original implementation ext4's FS_IOC_GETFSMAP handling only
+worked when the range of queried blocks included at least one free
+(unallocated) block range.  This is because how the metadata blocks
+were emitted was as a side effect of ext4_mballoc_query_range()
+calling ext4_getfsmap_datadev_helper(), and that function was only
+called when a free block range was identified.  As a result, this
+caused generic/365 to fail.
 
-Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices")
-Cc: stable@kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix this by creating a new function ext4_getfsmap_meta_helper() which
+gets called so that blocks before the first free block range in a
+block group can get properly reported.
+
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |   42 +++++++++++++++++++++++++++---------------
- 1 file changed, 27 insertions(+), 15 deletions(-)
+ fs/ext4/fsmap.c   |   54 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ fs/ext4/mballoc.c |   18 ++++++++++++++----
+ fs/ext4/mballoc.h |    1 +
+ 3 files changed, 68 insertions(+), 5 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -555,7 +555,7 @@ int snd_usb_create_quirk(struct snd_usb_
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
- {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
- 	int err;
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -185,6 +185,56 @@ static inline ext4_fsblk_t ext4_fsmap_ne
+ 	return fmr->fmr_physical + fmr->fmr_length;
+ }
  
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
-@@ -566,15 +566,19 @@ static int snd_usb_extigy_boot_quirk(str
- 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
++static int ext4_getfsmap_meta_helper(struct super_block *sb,
++				     ext4_group_t agno, ext4_grpblk_t start,
++				     ext4_grpblk_t len, void *priv)
++{
++	struct ext4_getfsmap_info *info = priv;
++	struct ext4_fsmap *p;
++	struct ext4_fsmap *tmp;
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
++	ext4_fsblk_t fsb, fs_start, fs_end;
++	int error;
 +
-+		new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+		if (!new_device_descriptor)
-+			return -ENOMEM;
- 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&new_device_descriptor, sizeof(new_device_descriptor));
-+				new_device_descriptor, sizeof(*new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--				new_device_descriptor.bNumConfigurations);
-+				new_device_descriptor->bNumConfigurations);
- 		else
--			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
- 		err = usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -906,7 +910,7 @@ static void mbox2_setup_48_24_magic(stru
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -941,15 +945,19 @@ static int snd_usb_mbox2_boot_quirk(stru
- 
- 	dev_dbg(&dev->dev, "device initialised!\n");
- 
-+	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+	if (!new_device_descriptor)
-+		return -ENOMEM;
++	fs_start = fsb = (EXT4_C2B(sbi, start) +
++			  ext4_group_first_block_no(sb, agno));
++	fs_end = fs_start + EXT4_C2B(sbi, len);
 +
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&new_device_descriptor, sizeof(new_device_descriptor));
-+		new_device_descriptor, sizeof(*new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--			new_device_descriptor.bNumConfigurations);
-+			new_device_descriptor->bNumConfigurations);
- 	else
--		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
- 
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
-@@ -1259,7 +1267,7 @@ static void mbox3_setup_defaults(struct
- static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
- 	int err;
- 	int descriptor_size;
- 
-@@ -1272,15 +1280,19 @@ static int snd_usb_mbox3_boot_quirk(stru
- 
- 	dev_dbg(&dev->dev, "MBOX3: device initialised!\n");
- 
-+	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+	if (!new_device_descriptor)
-+		return -ENOMEM;
++	/* Return relevant extents from the meta_list */
++	list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
++		if (p->fmr_physical < info->gfi_next_fsblk) {
++			list_del(&p->fmr_list);
++			kfree(p);
++			continue;
++		}
++		if (p->fmr_physical <= fs_start ||
++		    p->fmr_physical + p->fmr_length <= fs_end) {
++			/* Emit the retained free extent record if present */
++			if (info->gfi_lastfree.fmr_owner) {
++				error = ext4_getfsmap_helper(sb, info,
++							&info->gfi_lastfree);
++				if (error)
++					return error;
++				info->gfi_lastfree.fmr_owner = 0;
++			}
++			error = ext4_getfsmap_helper(sb, info, p);
++			if (error)
++				return error;
++			fsb = p->fmr_physical + p->fmr_length;
++			if (info->gfi_next_fsblk < fsb)
++				info->gfi_next_fsblk = fsb;
++			list_del(&p->fmr_list);
++			kfree(p);
++			continue;
++		}
++	}
++	if (info->gfi_next_fsblk < fsb)
++		info->gfi_next_fsblk = fsb;
 +
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&new_device_descriptor, sizeof(new_device_descriptor));
-+		new_device_descriptor, sizeof(*new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "MBOX3: error usb_get_descriptor: %d\n", err);
--	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 		dev_dbg(&dev->dev, "MBOX3: error too large bNumConfigurations: %d\n",
--			new_device_descriptor.bNumConfigurations);
-+			new_device_descriptor->bNumConfigurations);
- 	else
--		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
++	return 0;
++}
++
++
+ /* Transform a blockgroup's free record into a fsmap */
+ static int ext4_getfsmap_datadev_helper(struct super_block *sb,
+ 					ext4_group_t agno, ext4_grpblk_t start,
+@@ -539,6 +589,7 @@ static int ext4_getfsmap_datadev(struct
+ 		error = ext4_mballoc_query_range(sb, info->gfi_agno,
+ 				EXT4_B2C(sbi, info->gfi_low.fmr_physical),
+ 				EXT4_B2C(sbi, info->gfi_high.fmr_physical),
++				ext4_getfsmap_meta_helper,
+ 				ext4_getfsmap_datadev_helper, info);
+ 		if (error)
+ 			goto err;
+@@ -560,7 +611,8 @@ static int ext4_getfsmap_datadev(struct
  
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
+ 	/* Report any gaps at the end of the bg */
+ 	info->gfi_last = true;
+-	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster, 0, info);
++	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
++					     0, info);
+ 	if (error)
+ 		goto err;
+ 
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -6685,13 +6685,14 @@ int
+ ext4_mballoc_query_range(
+ 	struct super_block		*sb,
+ 	ext4_group_t			group,
+-	ext4_grpblk_t			start,
++	ext4_grpblk_t			first,
+ 	ext4_grpblk_t			end,
++	ext4_mballoc_query_range_fn	meta_formatter,
+ 	ext4_mballoc_query_range_fn	formatter,
+ 	void				*priv)
+ {
+ 	void				*bitmap;
+-	ext4_grpblk_t			next;
++	ext4_grpblk_t			start, next;
+ 	struct ext4_buddy		e4b;
+ 	int				error;
+ 
+@@ -6702,10 +6703,19 @@ ext4_mballoc_query_range(
+ 
+ 	ext4_lock_group(sb, group);
+ 
+-	start = max(e4b.bd_info->bb_first_free, start);
++	start = max(e4b.bd_info->bb_first_free, first);
+ 	if (end >= EXT4_CLUSTERS_PER_GROUP(sb))
+ 		end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
+-
++	if (meta_formatter && start != first) {
++		if (start > end)
++			start = end;
++		ext4_unlock_group(sb, group);
++		error = meta_formatter(sb, group, first, start - first,
++				       priv);
++		if (error)
++			goto out_unload;
++		ext4_lock_group(sb, group);
++	}
+ 	while (start <= end) {
+ 		start = mb_find_next_zero_bit(bitmap, end + 1, start);
+ 		if (start > end)
+--- a/fs/ext4/mballoc.h
++++ b/fs/ext4/mballoc.h
+@@ -245,6 +245,7 @@ ext4_mballoc_query_range(
+ 	ext4_group_t			agno,
+ 	ext4_grpblk_t			start,
+ 	ext4_grpblk_t			end,
++	ext4_mballoc_query_range_fn	meta_formatter,
+ 	ext4_mballoc_query_range_fn	formatter,
+ 	void				*priv);
+ 
 
 
 
