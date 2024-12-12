@@ -1,128 +1,100 @@
-Return-Path: <stable+bounces-100874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A745D9EE370
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 10:51:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4AC9EE37A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 10:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BCD4188A80C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:51:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D776C162FDC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA4920E6F3;
-	Thu, 12 Dec 2024 09:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB8E20E712;
+	Thu, 12 Dec 2024 09:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z495krWB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQ9QqcWz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD04820E327;
-	Thu, 12 Dec 2024 09:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C2A13CF9C
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 09:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733997063; cv=none; b=CNhoNC48RQp6m68aqxd5XDSTmy2y1h5sOsSywdqNVaVPKYwC2rxKB9yOXT5udPDRLQqwG7Nl8L6EHsX2aPloUOk4Nfj9z6B7iVsivoUvVAokeZzNQKv0nVc8+kzivsacv5AAmNm2tfj6bH2tYehsdaJ5u3PLRy4lgskqKieO0Q4=
+	t=1733997176; cv=none; b=kp8HMEg/9p8i6GA70kZCjFIJBwGUjcaKr4d1YpUGRIK5TLlk0xZNYyPadWfBgdYobJpkpJIUkH7OzTNyITL23Oc7I8yBXtY9sc0NYCSvId/7Q7DXuO0CoiBAtddEZ4MSRQ9YSA5UiT5+g7cF2hL1BJs0XPQ6yehYRJbQ7CjLi9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733997063; c=relaxed/simple;
-	bh=tgwWCWfWL4TY8dfN9EN10EcWy058zgq9DmNzaaLKFnY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ndN4VeqPCqTfyuc14fEbn98lB2gZwzn8yKrgPNZCpacHJ0QpF6TmKqEq9q++oZ7eCd3FDWDuvc6cHwUcg46SbY/sUsgssbKpmHNhSYvKBeAvDMYTMEZ8uwt1O4CisBxPfRCJcRNQo9E4Yyvtip1aQBM+w8hlsR2fsoltJqafB20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z495krWB; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aa689a37dd4so67479166b.3;
-        Thu, 12 Dec 2024 01:51:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733997059; x=1734601859; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Lqlqa+yVzadnVCts+R28x1v55t3TnviPyK2Uw1lPbw=;
-        b=Z495krWBuo/HGyO5DRhkQOhVcofiQGIt44KjSQIIIGHHtlZGd2FM2xOJrnDl4BBZFD
-         GxGd3TsoedP+KT6JWwDi3huS8MpTGcGYHgleh+u5SEkZh8tU08cuE08/8aaRlwl6vAQb
-         LU5oKYkBFAJI4ThVYp0VEm0WJAAtXyKZ/iPrON1BtFJ/yH7H+yBtWrHPdfdrFMdiF2MA
-         IisjSpLhsJbuamMIG8K35zuOrQAufsD377RvdjhUUNQji5f8ZepD7Y8RSVD0XEUmD2SW
-         JDBDmm23OONE8npFBjhsXYHThCITGWUS3O2wiNrFQDB4/Qw+YT01wyy/6JRYVaBg9Cet
-         tjuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733997059; x=1734601859;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2Lqlqa+yVzadnVCts+R28x1v55t3TnviPyK2Uw1lPbw=;
-        b=EdN5vjSr/VB4A4VAFGqeb9HTb8RLSudpIo/5lx86PPo+0K1qCy+yfWI+eI6qwyf5QS
-         4XMGE0Ign09LxNOvPWm0arLFk8f7NHE9AgoOMNbXCYIh19tcp5Xjd4aZzW/AlHUJRUn+
-         wJMoqCZV6/OBf3t3H2aI+ppjoyI4sWrWl6ZM84h5QFkjVSGpP9Eq2HADlIDUH/Pt0Jmt
-         X8ECp6oKWFtF9c666LI3laRr2khqDvncBMW8FMCRGS4nBu4jAVGYOaU3bn9y7RdSi779
-         fyKjBcmJ9unrfEsKoGFjDOxEiK3MFLleI3Go3r4uStNFK6B5MoRXAl1pUNcEFygj3CcR
-         jPsw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4dFBMzU1kj2LJIylLpq8Xz28LMcVvAEJrZ8L1oW6D7/sWGwwiQ4n7pso0nLFefCw/ySSUQbII@vger.kernel.org, AJvYcCWR3xsmEGg1RYLWR6yyI5sjQ6OGDBH/lq3UxyEe7t/nEzK9gFvK20X6XWbD5ZHZjRnvo89zOFKm6Jv/hYc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfKF/Mi6OMvCc27NevXJ9v7sdAeH6CtE7/WhYPBYXeUehGFxfn
-	ewsX1Kb7nemmEg4iaALTmUQYEKm55/b/4wCDMd+s4xDoL6N4jEoo
-X-Gm-Gg: ASbGncvvPTCYAztFqll5X4WYE7jOgC8nsjIQgQb+RCLmDhVYgy8V5/rGotSTTxDRh36
-	VPUE0OH2UMuJ6mlSYH+G85Qx/BXJDhlkl2M31Emi2mZVTMzTGlHr6h9PFOiN0IRQ+j5kTi3hA+1
-	g7CBX8sFnF6uZnJBXrzXfSQwx6BVMDqyqlYkoKsPjJPRCgSZPAg59bowAPbl8Ek38j55RKnC+lS
-	GcZp0sXDK1jYfe8MFuYskixiOLhwC6t4DW5J1F6ANyYe0KwDcfO2Z3ywRSrQDfWnBg=
-X-Google-Smtp-Source: AGHT+IHIXf2ITezkzRXYqhyRdc3NGo7nV9HtTD9QcXe0iHTpQ2fk4AxkW5PqBr9zOQsKQHtffVHoOg==
-X-Received: by 2002:a17:906:18b1:b0:aa6:8676:3b3d with SMTP id a640c23a62f3a-aa6b11df74bmr563324966b.29.1733997059330;
-        Thu, 12 Dec 2024 01:50:59 -0800 (PST)
-Received: from localhost.localdomain ([83.168.79.145])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa6701b08c2sm714818766b.124.2024.12.12.01.50.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 01:50:58 -0800 (PST)
-From: Karol Przybylski <karprzy7@gmail.com>
-To: karprzy7@gmail.com,
-	laurent.pinchart@ideasonboard.com,
-	tomi.valkeinen@ideasonboard.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	michal.simek@amd.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCHv2] drm: zynqmp_dp: Fix integer overflow in zynqmp_dp_rate_get()
-Date: Thu, 12 Dec 2024 10:50:57 +0100
-Message-Id: <20241212095057.1015146-1-karprzy7@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1733997176; c=relaxed/simple;
+	bh=Z2m5/TwSIYTc/ivx0On8nWdm+GHqoAs8bzXWDjNa98E=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=p0Bhyi+rQFW82zNdqyTdFCKsbzqyPjfuX/Pyjfdh+PIM1Aon6cHP/Fux4TjTo3jErOP8hO8Ag8yGY/IANwTDk9jT+EXG/zzDw4iOhQH74d4KpSnn5x0nB110/6lRGmKg8MN0JvMqnAkuAcC7Yg9A6HbMuLTYB7+OZPFCj7hRfiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQ9QqcWz; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733997175; x=1765533175;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Z2m5/TwSIYTc/ivx0On8nWdm+GHqoAs8bzXWDjNa98E=;
+  b=NQ9QqcWzh3F2IVYthSJnfbrAOWzsQl7ibkL2XzTtEBzs7ujWmzftGAVg
+   t5UsXdLriMOxXesQHsMoRIMIaRhAhdDPK2OLLGqFwcp86A4HDWdQVrD7Q
+   umx+JFzrMq0SmdXsmvbtJ4U0sV9zTBEDvFj3lHOezlJ1v03wID9tI/gEK
+   f+3HxWbZLpdU8TvURddIhucL0Aku712hbceS9ldwEegqBgEm/qZxe5Agt
+   4mA+xLoOZIaEL59yAIeifgcZ/pAd76Ua67CYKxvMccoAKGYEpZbzrXkVN
+   tAdDw65oD6y/qo5ONG3qJExviwCT+x0eX6pmj2Z03EfDsp8t5nLAm4M/c
+   w==;
+X-CSE-ConnectionGUID: KQU11eXZSBapvyLpoxkypQ==
+X-CSE-MsgGUID: gHohOYKmTVqno+rbsYXgTA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="34133434"
+X-IronPort-AV: E=Sophos;i="6.12,228,1728975600"; 
+   d="scan'208";a="34133434"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 01:52:55 -0800
+X-CSE-ConnectionGUID: 2Tf/c2xfTceE0UCCTWTyuA==
+X-CSE-MsgGUID: 5tWBdDPqRR6M+atqSxQ+9Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="96979225"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 12 Dec 2024 01:52:53 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tLfsI-0007gd-37;
+	Thu, 12 Dec 2024 09:52:50 +0000
+Date: Thu, 12 Dec 2024 17:52:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Karol Przybylski <karprzy7@gmail.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCHv2] drm: zynqmp_dp: Fix integer overflow in
+ zynqmp_dp_rate_get()
+Message-ID: <Z1qyVwAS7diUYFd0@3b9f04db549b>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241212095057.1015146-1-karprzy7@gmail.com>
 
-This patch fixes a potential integer overflow in the zynqmp_dp_rate_get()
+Hi,
 
-The issue comes up when the expression
-drm_dp_bw_code_to_link_rate(dp->test.bw_code) * 10000 is evaluated using 32-bit
-Now the constant is a compatible 64-bit type.
+Thanks for your patch.
 
-Resolves coverity issues: CID 1636340 and CID 1635811
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
-Fixes: 28edaacb821c6 ("drm: zynqmp_dp: Add debugfs interface for compliance testing")
----
- drivers/gpu/drm/xlnx/zynqmp_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/drivers/gpu/drm/xlnx/zynqmp_dp.c b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-index 25c5dc61e..56a261a40 100644
---- a/drivers/gpu/drm/xlnx/zynqmp_dp.c
-+++ b/drivers/gpu/drm/xlnx/zynqmp_dp.c
-@@ -2190,7 +2190,7 @@ static int zynqmp_dp_rate_get(void *data, u64 *val)
- 	struct zynqmp_dp *dp = data;
- 
- 	mutex_lock(&dp->lock);
--	*val = drm_dp_bw_code_to_link_rate(dp->test.bw_code) * 10000;
-+	*val = drm_dp_bw_code_to_link_rate(dp->test.bw_code) * 10000ULL;
- 	mutex_unlock(&dp->lock);
- 	return 0;
- }
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCHv2] drm: zynqmp_dp: Fix integer overflow in zynqmp_dp_rate_get()
+Link: https://lore.kernel.org/stable/20241212095057.1015146-1-karprzy7%40gmail.com
+
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
