@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B122F9EF1D0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DE59EEE14
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D8EB28AB46
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9897216D4DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9834225A52;
-	Thu, 12 Dec 2024 16:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460BB222D5C;
+	Thu, 12 Dec 2024 15:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFFIfSlo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqdVu0ME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86143213E6B;
-	Thu, 12 Dec 2024 16:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00073222D55;
+	Thu, 12 Dec 2024 15:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021223; cv=none; b=taimKP5FMK5thlFJtdU44M0/H9iuZmZ/h74I/KS9Yj7dg4phuPpJphDs+pRozdbqFLrOoPvwFuQKZCNgn/27zC+UrdnuvGatdcxA7zyV3FXvfR8Qd6J311Cbg/dpSnvQqmcOJps8bN75UM9IV4os4WT68lxFAwIo8iXCRbUqL5c=
+	t=1734018476; cv=none; b=FbdMCnIXgj48e6PC1MWOHBIiHuVtzEkqj7/TScpp6uc61w6m5cyftM+BNZObDEsz3ohsfSnGjjkYcmLxXcLY08AsUebExL+pK/rquw5VMF78v+ptXfbAi+23T6F/22MHyXCndUhGrYjMFsm+yoFmaGwEwQf6UgknXitoX0SaHq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021223; c=relaxed/simple;
-	bh=Y4PDgWnkIWr/+ARIc0mbLWMgTM7UOUMhBN//Kyl3M5E=;
+	s=arc-20240116; t=1734018476; c=relaxed/simple;
+	bh=r8oplk/Oc9j7Oz/Dh+PcR7U7OugP2u8ofa7F0ek328Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oehopo9AVQ2iGR7o9nsfV0cwoDXESq57hiEN/ojlIpam81hlgleiuDXPPPH3hRLaXCsfBWmvl+B3oiSc/+C951fTLG6lAz+ti0IjrbbZ8QsvfZpMzCJN58Mc1d7DPQLQMmDh+pDGRy+x2UIeHJD8v3MWpAZrU/j92tbVCEAbou0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFFIfSlo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3F8C4CECE;
-	Thu, 12 Dec 2024 16:33:42 +0000 (UTC)
+	 MIME-Version; b=rFg1HAcUnwMaSzFOCKeyekVJ77NtqODarNlndQ8dTkGnE0DFEtdEtPaBvp6CxPgQ40yb9SBxtzA4wsgRZiVMOu/EE7RTcCqCN09Jt2Wdv2O+/nUOZ1BXyM49nXg6urjxduLb8VoruIB9kZtTdFGX+YgSCaDCQIRyPFChOQSKe9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqdVu0ME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A60C4CECE;
+	Thu, 12 Dec 2024 15:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021223;
-	bh=Y4PDgWnkIWr/+ARIc0mbLWMgTM7UOUMhBN//Kyl3M5E=;
+	s=korg; t=1734018475;
+	bh=r8oplk/Oc9j7Oz/Dh+PcR7U7OugP2u8ofa7F0ek328Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFFIfSloznaJp/g2CKdeXFsW0BEAtTdcxDzMpGn+cRxyd85T9NRXddIwH0WoHwXvC
-	 UmgpiFA8bimryna6rtmFYYIgtIooim5v4U9LG14klGOjscQKWxpL29pcz+61EN/FU3
-	 M0Yel8ZDocdBDA9IgP92lxok7pnPh2yRyXmNWjIc=
+	b=cqdVu0MEwROxcDY7+m+0M5mjeqk0c/mAP6UEEx4C1EcuFDbDkyYGRjtIsgBHWahiX
+	 0y5X2+WKGw02HUsjSmU6TYaN7utCQ3m0Q8G8rOFMJzEXDSCPigFqHZwKZeoU5T5rie
+	 4OU7ImcELHi3+rRabE9a1+0LWO3c37Fm+E1QTreQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Stanner <pstanner@redhat.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 678/772] drm/sched: memset() job in drm_sched_job_init()
+Subject: [PATCH 6.6 304/356] iio: light: ltr501: Add LTER0303 to the supported devices
 Date: Thu, 12 Dec 2024 16:00:23 +0100
-Message-ID: <20241212144417.936119248@linuxfoundation.org>
+Message-ID: <20241212144256.575174852@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <pstanner@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 2320c9e6a768d135c7b0039995182bb1a4e4fd22 ]
+[ Upstream commit c26acb09ccbef47d1fddaf0783c1392d0462122c ]
 
-drm_sched_job_init() has no control over how users allocate struct
-drm_sched_job. Unfortunately, the function can also not set some struct
-members such as job->sched.
+It has been found that the (non-vendor issued) ACPI ID for Lite-On
+LTR303 is present in Microsoft catalog. Add it to the list of the
+supported devices.
 
-This could theoretically lead to UB by users dereferencing the struct's
-pointer members too early.
-
-It is easier to debug such issues if these pointers are initialized to
-NULL, so dereferencing them causes a NULL pointer exception.
-Accordingly, drm_sched_entity_init() does precisely that and initializes
-its struct with memset().
-
-Initialize parameter "job" to 0 in drm_sched_job_init().
-
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021105028.19794-2-pstanner@redhat.com
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303
+Closes: https://lore.kernel.org/r/9cdda3e0-d56e-466f-911f-96ffd6f602c8@redhat.com
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20241024191200.229894-24-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/iio/light/ltr501.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-index f138b3be1646f..dbdd00c61315b 100644
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -595,6 +595,14 @@ int drm_sched_job_init(struct drm_sched_job *job,
- 	if (!entity->rq)
- 		return -ENOENT;
- 
-+	/*
-+	 * We don't know for sure how the user has allocated. Thus, zero the
-+	 * struct so that unallowed (i.e., too early) usage of pointers that
-+	 * this function does not set is guaranteed to lead to a NULL pointer
-+	 * exception instead of UB.
-+	 */
-+	memset(job, 0, sizeof(*job));
-+
- 	job->entity = entity;
- 	job->s_fence = drm_sched_fence_alloc(entity, owner);
- 	if (!job->s_fence)
+diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
+index 061c122fdc5e7..498cff9327132 100644
+--- a/drivers/iio/light/ltr501.c
++++ b/drivers/iio/light/ltr501.c
+@@ -1612,6 +1612,8 @@ static const struct acpi_device_id ltr_acpi_match[] = {
+ 	{ "LTER0501", ltr501 },
+ 	{ "LTER0559", ltr559 },
+ 	{ "LTER0301", ltr301 },
++	/* https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303 */
++	{ "LTER0303", ltr303 },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, ltr_acpi_match);
 -- 
 2.43.0
 
