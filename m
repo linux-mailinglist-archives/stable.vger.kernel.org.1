@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91BEC9EF64C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:24:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF78D9EF7F5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 574BE1943787
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3CCC17B323
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828FC2210DE;
-	Thu, 12 Dec 2024 17:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C354A21CFEA;
+	Thu, 12 Dec 2024 17:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blp2BJLm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rg2oQ9sK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3465522B58A;
-	Thu, 12 Dec 2024 17:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C2F216E3B;
+	Thu, 12 Dec 2024 17:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023238; cv=none; b=hbb0cLFLCTaI0MimqypuYtwWJQkY1EV1CXd2PxLkB99qTjiQEf71IOTlEtmHSfwUpIueVnm9wGL06fFCo2dkzPPVKaoen/z5Pr7gmne45RSreBbv9zp8w49Q7/tfs+BKbJmsWtvT4LRSxLh3xemZuiUzFKXXUI9aqtN1u7487dk=
+	t=1734024523; cv=none; b=nWJ/Vglm7V2l1ZJhf/zLbpnMXSmZ1iZyBTsD0dEakVVpzf16y4q9kjP9woMU2q72IbdbxlV3AcdxSLOUAW1fOGulUtukdzXF3mWWRAq77QCpt5VY+fJoiQvRXdJAYTpFdf69BD1aACGuPF+UmwKIhi67E9AJE7mx4tJ3KotELO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023238; c=relaxed/simple;
-	bh=ZI5OdUy1G8+fFSyvJ1+2Cc/A3IMvvaWkh3SnkDtI4RE=;
+	s=arc-20240116; t=1734024523; c=relaxed/simple;
+	bh=jjawJkUTeHLTc7VwnKKLcZsiWs/Dmjm7vGM0LBKxPio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXkuJWlNLMwqNdCrlYOFPZpHFLgihTm088PA62MkB+KAJBZBh4aM4zizi2KSIHL/6qZhsLXJi2vG8i/tRASNjY6sLZOPtXtLdObuPkFc+jFGDJf0uNSnVYW+/8fYgdNHW7S0lchNWudh38UsVG1vWj0teBWVFH4e9zEQT51Asmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blp2BJLm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7430FC4CED4;
-	Thu, 12 Dec 2024 17:07:17 +0000 (UTC)
+	 MIME-Version; b=E9uaKtPZAHAR9Wm32r4mwtBdhZHzQM5vZ6SRZcC3fAzS4dI6DG7WlnwWTS1w/2fp61XevLbZ6SJ9BBtIUMVmo1KdIp+u5evA2j1jKbBmPLDo5tiJ9We8Tt5zdwqJYH0eoJZi5K0NDYMOXyKxy33xp/rstMNnh/GQ/Dryx7mh9Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rg2oQ9sK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01108C4CED0;
+	Thu, 12 Dec 2024 17:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023237;
-	bh=ZI5OdUy1G8+fFSyvJ1+2Cc/A3IMvvaWkh3SnkDtI4RE=;
+	s=korg; t=1734024523;
+	bh=jjawJkUTeHLTc7VwnKKLcZsiWs/Dmjm7vGM0LBKxPio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blp2BJLmcWe8I+tYkVnTkEjz1XSItQD//XjvoPzdGfYClJqvn5Lm9LKiMNmrphlfe
-	 O3XPbB+X6xWAjklDVZaH1bFBnmKdTT8l93xztbO+DT1LPIJ9kx1FHBnpT/lT5hyPzM
-	 CuWjc640a2H9f8sil41gLELuLebL7gN24ewWk8rw=
+	b=rg2oQ9sKmrmfy6jCdbu0buHtTv9yQtX5rMSxQj6jALbUAb55keNFjJhqmo/NR7coI
+	 BUWVnsul7+UOSkQf2xSjL5kfypEYUTm4aAOZoIkcGxcz2k3Wjx+EM+t2RfvcCkjqL8
+	 j41+8qAq4RvU4phy5VhTtdNZHNCGbEraT82hEfvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prakash Gupta <quic_guptap@quicinc.com>,
-	Pratyush Brahma <quic_pbrahma@quicinc.com>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>
-Subject: [PATCH 5.15 468/565] iommu/arm-smmu: Defer probe of clients after smmu device bound
+	Oleksandr Ocheretnyi <oocheret@cisco.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 325/459] iTCO_wdt: mask NMI_NOW bit for update_no_reboot_bit() call
 Date: Thu, 12 Dec 2024 16:01:03 +0100
-Message-ID: <20241212144330.235117742@linuxfoundation.org>
+Message-ID: <20241212144306.499456188@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pratyush Brahma <quic_pbrahma@quicinc.com>
+From: Oleksandr Ocheretnyi <oocheret@cisco.com>
 
-commit 229e6ee43d2a160a1592b83aad620d6027084aad upstream.
+[ Upstream commit daa814d784ac034c62ab3fb0ef83daeafef527e2 ]
 
-Null pointer dereference occurs due to a race between smmu
-driver probe and client driver probe, when of_dma_configure()
-for client is called after the iommu_device_register() for smmu driver
-probe has executed but before the driver_bound() for smmu driver
-has been called.
+Commit da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake
+PCH iTCO") does not mask NMI_NOW bit during TCO1_CNT register's
+value comparison for update_no_reboot_bit() call causing following
+failure:
 
-Following is how the race occurs:
+   ...
+   iTCO_vendor_support: vendor-support=0
+   iTCO_wdt iTCO_wdt: unable to reset NO_REBOOT flag, device
+                                    disabled by hardware/BIOS
+   ...
 
-T1:Smmu device probe		T2: Client device probe
+and this can lead to unexpected NMIs later during regular
+crashkernel's workflow because of watchdog probe call failures.
 
-really_probe()
-arm_smmu_device_probe()
-iommu_device_register()
-					really_probe()
-					platform_dma_configure()
-					of_dma_configure()
-					of_dma_configure_id()
-					of_iommu_configure()
-					iommu_probe_device()
-					iommu_init_device()
-					arm_smmu_probe_device()
-					arm_smmu_get_by_fwnode()
-						driver_find_device_by_fwnode()
-						driver_find_device()
-						next_device()
-						klist_next()
-						    /* null ptr
-						       assigned to smmu */
-					/* null ptr dereference
-					   while smmu->streamid_mask */
-driver_bound()
-	klist_add_tail()
+This change masks NMI_NOW bit for TCO1_CNT register values to
+avoid unexpected NMI_NOW bit inversions.
 
-When this null smmu pointer is dereferenced later in
-arm_smmu_probe_device, the device crashes.
-
-Fix this by deferring the probe of the client device
-until the smmu device has bound to the arm smmu driver.
-
-Fixes: 021bb8420d44 ("iommu/arm-smmu: Wire up generic configuration support")
-Cc: stable@vger.kernel.org
-Co-developed-by: Prakash Gupta <quic_guptap@quicinc.com>
-Signed-off-by: Prakash Gupta <quic_guptap@quicinc.com>
-Signed-off-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
-Link: https://lore.kernel.org/r/20241004090428.2035-1-quic_pbrahma@quicinc.com
-[will: Add comment]
-Signed-off-by: Will Deacon <will@kernel.org>
-[rm: backport for context conflict prior to 6.8]
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake PCH iTCO")
+Signed-off-by: Oleksandr Ocheretnyi <oocheret@cisco.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/r/20240913191403.2560805-1-oocheret@cisco.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/watchdog/iTCO_wdt.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-@@ -1375,6 +1375,17 @@ static struct iommu_device *arm_smmu_pro
- 			goto out_free;
- 	} else if (fwspec && fwspec->ops == &arm_smmu_ops) {
- 		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
+diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
+index 50c874d488607..5f5586b0dd676 100644
+--- a/drivers/watchdog/iTCO_wdt.c
++++ b/drivers/watchdog/iTCO_wdt.c
+@@ -84,6 +84,13 @@
+ #define TCO2_CNT(p)	(TCOBASE(p) + 0x0a) /* TCO2 Control Register	*/
+ #define TCOv2_TMR(p)	(TCOBASE(p) + 0x12) /* TCOv2 Timer Initial Value*/
+ 
++/*
++ * NMI_NOW is bit 8 of TCO1_CNT register
++ * Read/Write
++ * This bit is implemented as RW but has no effect on HW.
++ */
++#define NMI_NOW		BIT(8)
 +
-+		/*
-+		 * Defer probe if the relevant SMMU instance hasn't finished
-+		 * probing yet. This is a fragile hack and we'd ideally
-+		 * avoid this race in the core code. Until that's ironed
-+		 * out, however, this is the most pragmatic option on the
-+		 * table.
-+		 */
-+		if (!smmu)
-+			return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER,
-+						"smmu dev has not bound yet\n"));
- 	} else {
- 		return ERR_PTR(-ENODEV);
- 	}
+ /* internal variables */
+ struct iTCO_wdt_private {
+ 	struct watchdog_device wddev;
+@@ -222,13 +229,23 @@ static int update_no_reboot_bit_cnt(void *priv, bool set)
+ 	struct iTCO_wdt_private *p = priv;
+ 	u16 val, newval;
+ 
+-	val = inw(TCO1_CNT(p));
++	/*
++	 * writing back 1b1 to NMI_NOW of TCO1_CNT register
++	 * causes NMI_NOW bit inversion what consequently does
++	 * not allow to perform the register's value comparison
++	 * properly.
++	 *
++	 * NMI_NOW bit masking for TCO1_CNT register values
++	 * helps to avoid possible NMI_NOW bit inversions on
++	 * following write operation.
++	 */
++	val = inw(TCO1_CNT(p)) & ~NMI_NOW;
+ 	if (set)
+ 		val |= BIT(0);
+ 	else
+ 		val &= ~BIT(0);
+ 	outw(val, TCO1_CNT(p));
+-	newval = inw(TCO1_CNT(p));
++	newval = inw(TCO1_CNT(p)) & ~NMI_NOW;
+ 
+ 	/* make sure the update is successful */
+ 	return val != newval ? -EIO : 0;
+-- 
+2.43.0
+
 
 
 
