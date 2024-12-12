@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5BA79EED84
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 051F49EEB43
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AF1716ACF4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9135282D19
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E041B222D6A;
-	Thu, 12 Dec 2024 15:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CDA2153F4;
+	Thu, 12 Dec 2024 15:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOa1n6bU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QX51lTsb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992FF222D65;
-	Thu, 12 Dec 2024 15:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22AB2AF0E;
+	Thu, 12 Dec 2024 15:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018207; cv=none; b=sYdq6qIme9SXYYZWaY6AgdsHwbQBOfDAdLEAV8d9CzjLm2RwByQhAlrgF9I5aIOqwoTu2oLwIG6EnOIQ1BcW3qQR+wdAq0k8um3p7cLdHaKouIkOPVh6ekhVB56Iz1O5G+TPffUlxEHix1Ft5QmwGZCc9g9rjCZifLOfq2NgdQo=
+	t=1734016979; cv=none; b=KXKt0tkb4I20XHztPfg4e30YE0DT3jAGWAElaJYMWRpBz74jTyQ7bwPiTQv4NSLnCOY9zxCe5yriC5HSGtE/Cd4OoBE367jeDLMy4sbQsO39bP08EC5/eQk7MfdieBMlHPlJB1rXxMsP8G1a6r2T3eQ4GYichbE+6wYvWvSo4ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018207; c=relaxed/simple;
-	bh=CNJvhRCi0JpVgZYknR90CACYTPsw2ObyzOBHQIrlzKw=;
+	s=arc-20240116; t=1734016979; c=relaxed/simple;
+	bh=+e4mDw3EHtOD1xqck3jQlV5BAC2GD17Hv4li+f/E2fU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gs+uJQtriSghQrTnDTugCI8rfrTFovTb/BdViIeWRra39ETIS68JTPx+bP+dDvhi/2X2mxtyEkBmU/4BbglREekIT/KNDT4oApl2J2QT1Qm4g8hNxg+mxlyAy90gmQhdXpUsPnTjZqASLWTYpygHxaeqY6zEXItPJiHck6VsSaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOa1n6bU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082CAC4CECE;
-	Thu, 12 Dec 2024 15:43:26 +0000 (UTC)
+	 MIME-Version; b=leKw1M03rIQuD/rtaY4X965PQ+m7qcsOEXtOm1SmQASxb5CgMfnJK2NoV0gi1laKQwCAMWjpB3W/HbFw2ubAZtacAu+roVFgEc7HmUH375ZkkyDTTPKPrZuc9LSgJaNq6Uqg34p9PuVfKGr5SPexRQ5dAosFr/rY/25AkYdB3VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QX51lTsb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65822C4CECE;
+	Thu, 12 Dec 2024 15:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018207;
-	bh=CNJvhRCi0JpVgZYknR90CACYTPsw2ObyzOBHQIrlzKw=;
+	s=korg; t=1734016978;
+	bh=+e4mDw3EHtOD1xqck3jQlV5BAC2GD17Hv4li+f/E2fU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOa1n6bUpPq1gyCJ7uHZNX9mMCqFhhuCpn8TrETpxJ7wiZxYExOd7gyjBby0gtjJX
-	 Tq8cdI9XcqItlP2eGhRsszARJwbLBSMGEbxehZSZu9aixUSK3IsMh/NPh85/gPQHT+
-	 oQAwuSWqeA+yBAmhAps9FkSiCVyQPpAqDk8mbuVk=
+	b=QX51lTsbq2mLzlAIhUCsvGOtyAnllwrMEf53AU6e+VtgkdCOytpj97qNyCuUqOHnz
+	 F6kOdcVB46axzjE0JIK4NL/zHAlIuyY53p+Cr4EbbPvcJsg3QxHRFvvxcOTu6gh7ko
+	 YA2SdRmZYPcwkhfGIobX+hl7bHFIFhw5Pa6PCh0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Perchanov <dmitry.perchanov@intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Hao Qin <hao.qin@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/356] media: uvcvideo: RealSense D421 Depth module metadata
+Subject: [PATCH 6.12 347/466] Bluetooth: btusb: Add new VID/PID 0489/e111 for MT7925
 Date: Thu, 12 Dec 2024 15:58:36 +0100
-Message-ID: <20241212144252.406613205@linuxfoundation.org>
+Message-ID: <20241212144320.497596294@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Perchanov <dmitry.perchanov@intel.com>
+From: Hao Qin <hao.qin@mediatek.com>
 
-[ Upstream commit c6104297c965a5ee9d4b9d0d5d9cdd224d8fd59e ]
+[ Upstream commit faa5fd605d2081b6c9fa2355b59582d4ccd24b16 ]
 
-RealSense(R) D421 Depth module is low cost solution for 3D-stereo
-vision. The module supports extended sensor metadata format D4XX.
+Add VID 0489 & PID e111 for MediaTek MT7925 USB Bluetooth chip.
 
-Signed-off-by: Dmitry Perchanov <dmitry.perchanov@intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/d1fbfbbff5c8247a3130499985a53218c5b55c61.camel@intel.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
+
+T:  Bus=02 Lev=02 Prnt=02 Port=04 Cnt=02 Dev#=  4 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e111 Rev= 1.00
+S:  Manufacturer=MediaTek Inc.
+S:  Product=Wireless_Device
+S:  SerialNumber=000000000
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
+A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
+I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
+E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+
+Signed-off-by: Hao Qin <hao.qin@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 1385cbf462d17..f85cbe56a679a 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -3229,6 +3229,15 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceSubClass	= 1,
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
-+	/* Intel D421 Depth Module */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x8086,
-+	  .idProduct		= 0x1155,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
- 	/* Generic USB Video Class */
- 	{ USB_INTERFACE_INFO(USB_CLASS_VIDEO, 1, UVC_PC_PROTOCOL_UNDEFINED) },
- 	{ USB_INTERFACE_INFO(USB_CLASS_VIDEO, 1, UVC_PC_PROTOCOL_15) },
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 2a8fe85371804..d922fa8e8b3ce 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -642,6 +642,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 
+ 	/* Additional MediaTek MT7925 Bluetooth devices */
++	{ USB_DEVICE(0x0489, 0xe111), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe113), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe118), .driver_info = BTUSB_MEDIATEK |
 -- 
 2.43.0
 
