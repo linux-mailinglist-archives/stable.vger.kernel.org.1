@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33339EF28F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EDB9EF04E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95168288A25
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E0DD188DF78
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D488D22E9F1;
-	Thu, 12 Dec 2024 16:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5C723690D;
+	Thu, 12 Dec 2024 16:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxVa/uXP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5zwXgU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FCF22E9EB;
-	Thu, 12 Dec 2024 16:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AEC2210E5;
+	Thu, 12 Dec 2024 16:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021609; cv=none; b=d4C3C06Rs7KarpOolADVR4nEF1LHvLe1x51pvbCD7s0XjMpdiHLeL9frAx9WIqDJ/BmNwpE3EKYFScb+PMLK7hvHmRDv9P1aETqc1/hMznROWDJcoOvC/kthhy/dz0qTyDOcn0vr5z1C7SNoInev/AVRvnR5ARNSJVBvMKMOLLs=
+	t=1734019774; cv=none; b=hrEMMVj/QJKkdFinSIbCxXGQV1WYdC5b6UDGyQ7UxF5dp6yL9Av4bXtqdmIVcsihmYGt9iA1WcR/ceceWBu5fM/0Dq42IuclHCN6nRcnO4zLfAahQc9C81SNHyc6rMeL67cd+odyczkzFYGoFGArxqIsOoCW0JmaytuAnSt7y5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021609; c=relaxed/simple;
-	bh=W58mrVLO8UulDpbopUik83t4dKXPPCFHBVLMTZ53PkE=;
+	s=arc-20240116; t=1734019774; c=relaxed/simple;
+	bh=wPqulbLo/mSNHOJdypAHehIlo46yi6/P/ofWvEGUxEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgW+aqjf1iNMOGEWnsGTJQYOEyabRUcCAcKecyQCRLcuJ4uqwNt/sK8VSRVWkwS67Fns6mP9/eUCnHGcjAGSLPJbbQMIMYAjp9QbHTifx0YBMWpou7YO5q9EaCDAxLkPhgjEeLW2Tt7/e8G4A/JIqeKu5OmfXMcJ7K/hzq+ekMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxVa/uXP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B4BC4CECE;
-	Thu, 12 Dec 2024 16:40:08 +0000 (UTC)
+	 MIME-Version; b=T9mGary+Url482VXa9as3bkVIzMkqo2jntGTKCwtuiOhnboMZYxP5pCnt4o3E5ZAP0MYqpOnnPCwP4kswY/+hPJeK2E0HerU2l9gMBWEz+R36fBYegyF8NTblWy+xvIAfyy6PFqNG+TR00tEe0wh7FumlpMlYKdzUsqZnO9Ta0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5zwXgU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF24FC4CECE;
+	Thu, 12 Dec 2024 16:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021609;
-	bh=W58mrVLO8UulDpbopUik83t4dKXPPCFHBVLMTZ53PkE=;
+	s=korg; t=1734019774;
+	bh=wPqulbLo/mSNHOJdypAHehIlo46yi6/P/ofWvEGUxEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UxVa/uXPA/e1+ALCmuysVBRTTaSbVWV1c5M3wh8/1YgM4124CYl7SVJSVXoCAvKoT
-	 VU1vV+ZY37xJwV1QbWB4DQW0bQC4TQNcUx3ijEDgtmmoS8NAMd9BcGv7xfJdHdu5d0
-	 XTgwEMXpKJdjWiM/mFRcp+jOw9nSXADf2tnN0Uzo=
+	b=T5zwXgU/4sYqaYym9b4rw2xngBWIwNnhkSlZ1bsci/4sYYuRxHHyVSazhSfMtzZqN
+	 eaJfMdZTcrpeV5iT2MIXvbZkgiooMewlPRs5HAjtdIj6yBoPiZUVAmUii9Jb40wBEv
+	 AbbGFPIMPWsEzMF5vzsjK8NpyVxy/zaV0K+iHhbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MengEn Sun <mengensun@tencent.com>,
-	JinLiang Zheng <alexjlzheng@tencent.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 013/565] vmstat: call fold_vm_zone_numa_events() before show per zone NUMA event
-Date: Thu, 12 Dec 2024 15:53:28 +0100
-Message-ID: <20241212144311.976105298@linuxfoundation.org>
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 264/772] perf stat: Fix affinity memory leaks on error path
+Date: Thu, 12 Dec 2024 15:53:29 +0100
+Message-ID: <20241212144400.822848943@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: MengEn Sun <mengensun@tencent.com>
+From: Ian Rogers <irogers@google.com>
 
-commit 2ea80b039b9af0b71c00378523b71c254fb99c23 upstream.
+[ Upstream commit 7f6ccb70e465bd8c9cf8973aee1c01224e4bdb3c ]
 
-Since 5.14-rc1, NUMA events will only be folded from per-CPU statistics to
-per zone and global statistics when the user actually needs it.
+Missed cleanup when an error occurs.
 
-Currently, the kernel has performs the fold operation when reading
-/proc/vmstat, but does not perform the fold operation in /proc/zoneinfo.
-This can lead to inaccuracies in the following statistics in zoneinfo:
-- numa_hit
-- numa_miss
-- numa_foreign
-- numa_interleave
-- numa_local
-- numa_other
-
-Therefore, before printing per-zone vm_numa_event when reading
-/proc/zoneinfo, we should also perform the fold operation.
-
-Link: https://lkml.kernel.org/r/1730433998-10461-1-git-send-email-mengensun@tencent.com
-Fixes: f19298b9516c ("mm/vmstat: convert NUMA statistics to basic NUMA counters")
-Signed-off-by: MengEn Sun <mengensun@tencent.com>
-Reviewed-by: JinLiang Zheng <alexjlzheng@tencent.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 49de179577e7 ("perf stat: No need to setup affinities when starting a workload")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20241001052327.7052-2-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmstat.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/builtin-stat.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1690,6 +1690,7 @@ static void zoneinfo_show_print(struct s
- 			   zone_page_state(zone, i));
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index 79e058ff8a33a..b243027bc22d8 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -865,6 +865,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 		}
+ 	}
+ 	affinity__cleanup(affinity);
++	affinity = NULL;
  
- #ifdef CONFIG_NUMA
-+	fold_vm_zone_numa_events(zone);
- 	for (i = 0; i < NR_VM_NUMA_EVENT_ITEMS; i++)
- 		seq_printf(m, "\n      %-12s %lu", numa_stat_name(i),
- 			   zone_numa_event_state(zone, i));
+ 	evlist__for_each_entry(evsel_list, counter) {
+ 		if (!counter->supported) {
+@@ -1005,6 +1006,7 @@ static int __run_perf_stat(int argc, const char **argv, int run_idx)
+ 	if (forks)
+ 		evlist__cancel_workload(evsel_list);
+ 
++	affinity__cleanup(affinity);
+ 	return err;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
