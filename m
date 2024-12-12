@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-103766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4D59EF90F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F3B9EF7B1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 207A028616A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 391BD189C057
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7809A22C355;
-	Thu, 12 Dec 2024 17:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6809221D93;
+	Thu, 12 Dec 2024 17:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmK3Hcy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sF+5vzi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B981223C55;
-	Thu, 12 Dec 2024 17:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94781213E6F;
+	Thu, 12 Dec 2024 17:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025541; cv=none; b=nXexwxJTACK0PK9rCu8M0Jgu5mAJYdfns0NA7iCy6Rsz1q2eL62wHgiU+ifJHevWClHxZdbNMBcWvofXrsVDIAVh7FS2mJN7f1tnuczSLtra07YaiNECXG8DxIVPCxy7xHOcgJ0S9fMbTeM4rHCBMW89tIYuHaYtzl4WVwzdzdk=
+	t=1734024619; cv=none; b=PVMek7MVmoKYdZQEldenAVggITr+ht9uy/9RVQfLhIdAZ35R8BiNJpexCLmdsPQHP6/EMLuYYzNV+rlTNE0I9FtWiEmspkSGdfNpG0OTdZ4zMTUxL5dW6+RGUAhZhYI5ed3yALbulmA9QeOmY5lP1yphJTv5sgX+pRdbZXlwxNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025541; c=relaxed/simple;
-	bh=Mz4hJ9/vn//XkkPuMt8R+25OeVCcEuNRu2y2YOHjOvI=;
+	s=arc-20240116; t=1734024619; c=relaxed/simple;
+	bh=VF6L01kejav4lpNjaRnXCzBxq1sdChALZ07zx5FhOXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=si8PI4MRjIVXg5MN6IAcvbT3rDUxaQYrWZq2A2pCD18pMZ01Zz61V+t/HXpADGrtMRpQEfpAqW9v5XBDZP9HZLRzo7NVvFUOs4acf4apFAm0kfc5xYhGExpxhkxSkLjdaOpnLVumtTQaEicTx/y5xEcN+sdXg4lT3/69SvIQAHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmK3Hcy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8973C4CECE;
-	Thu, 12 Dec 2024 17:45:40 +0000 (UTC)
+	 MIME-Version; b=bBpVMkdVlQFoibWxGPVTsPoRFuzU2Gc3scbczuHQqYNwh4ike2/pnttSQzycwrRrU7Nb9PzY6ChcopD3Jrlfhak84TFsVexAnzUzvW2G8A3muvc2Yb6vsmnU3DKhlHwu5qc5YHVuBoLbfGXq4YjsM/XhWALtPmBY9u/BLRfg+dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sF+5vzi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89859C4CECE;
+	Thu, 12 Dec 2024 17:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025541;
-	bh=Mz4hJ9/vn//XkkPuMt8R+25OeVCcEuNRu2y2YOHjOvI=;
+	s=korg; t=1734024617;
+	bh=VF6L01kejav4lpNjaRnXCzBxq1sdChALZ07zx5FhOXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmK3Hcy+MaUW3YSON5gQLTHGDwGn70K/UmOs4IaQ/1+cDL6EC9LfhW05LsFDk8f2S
-	 woHZz03+BFQilclaH4AJ69oA2xnA0W4azZB51tX1twVsTQncYBjcaF9C11pmx4NYfA
-	 EZPA0zaD+mytuASP+DfoXeYQAT3iZNVNfmxX0FDE=
+	b=2sF+5vzimF2PSnVKBImU6SJS6F0+ZlCu26Y1OabM3W3dbwBJRrgX/ZzdptXvhOejt
+	 m3OFrKzcTfxYrGrJurLjcy1nIITuEZbPxlZ9HpecSSNwSUxdvTUjSMCHgQAp9+FkRe
+	 rxrrJLzvbmAAtSdSkeIqx/CJxG0my81wuJkDyIqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.4 176/321] SUNRPC: make sure cache entry active before cache_show
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 356/459] ocfs2: free inode when ocfs2_get_init_inode() fails
 Date: Thu, 12 Dec 2024 16:01:34 +0100
-Message-ID: <20241212144236.935527289@linuxfoundation.org>
+Message-ID: <20241212144307.728989602@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +69,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 2862eee078a4d2d1f584e7f24fa50dddfa5f3471 upstream.
+[ Upstream commit 965b5dd1894f4525f38c1b5f99b0106a07dbb5db ]
 
-The function `c_show` was called with protection from RCU. This only
-ensures that `cp` will not be freed. Therefore, the reference count for
-`cp` can drop to zero, which will trigger a refcount use-after-free
-warning when `cache_get` is called. To resolve this issue, use
-`cache_get_rcu` to ensure that `cp` remains active.
+syzbot is reporting busy inodes after unmount, for commit 9c89fe0af826
+("ocfs2: Handle error from dquot_initialize()") forgot to call iput() when
+new_inode() succeeded and dquot_initialize() failed.
 
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 7 PID: 822 at lib/refcount.c:25
-refcount_warn_saturate+0xb1/0x120
-CPU: 7 UID: 0 PID: 822 Comm: cat Not tainted 6.12.0-rc3+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.16.1-2.fc37 04/01/2014
-RIP: 0010:refcount_warn_saturate+0xb1/0x120
-
-Call Trace:
- <TASK>
- c_show+0x2fc/0x380 [sunrpc]
- seq_read_iter+0x589/0x770
- seq_read+0x1e5/0x270
- proc_reg_read+0xe1/0x140
- vfs_read+0x125/0x530
- ksys_read+0xc1/0x160
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Cc: stable@vger.kernel.org # v4.20+
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/e68c0224-b7c6-4784-b4fa-a9fc8c675525@I-love.SAKURA.ne.jp
+Fixes: 9c89fe0af826 ("ocfs2: Handle error from dquot_initialize()")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reported-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0af00f6a2cba2058b5db
+Tested-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c |    4 +++-
+ fs/ocfs2/namei.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1407,7 +1407,9 @@ static int c_show(struct seq_file *m, vo
- 		seq_printf(m, "# expiry=%ld refcnt=%d flags=%lx\n",
- 			   convert_to_wallclock(cp->expiry_time),
- 			   kref_read(&cp->ref), cp->flags);
--	cache_get(cp);
-+	if (!cache_get_rcu(cp))
-+		return 0;
-+
- 	if (cache_check(cd, cp, NULL))
- 		/* cache_check does a cache_put on failure */
- 		seq_printf(m, "# ");
+diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
+index 7bdda635ca80e..0e0f844dcf7f4 100644
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -201,8 +201,10 @@ static struct inode *ocfs2_get_init_inode(struct inode *dir, umode_t mode)
+ 	mode = mode_strip_sgid(dir, mode);
+ 	inode_init_owner(inode, dir, mode);
+ 	status = dquot_initialize(inode);
+-	if (status)
++	if (status) {
++		iput(inode);
+ 		return ERR_PTR(status);
++	}
+ 
+ 	return inode;
+ }
+-- 
+2.43.0
+
 
 
 
