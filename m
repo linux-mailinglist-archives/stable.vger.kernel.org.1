@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AAC9EF3D3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 183EC9EEA51
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:12:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A64391899E87
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2B54169AD4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EE42288F6;
-	Thu, 12 Dec 2024 16:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F3D217F46;
+	Thu, 12 Dec 2024 15:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knzc2kw6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcLO1JEJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53CD2144C4;
-	Thu, 12 Dec 2024 16:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCBA217F26;
+	Thu, 12 Dec 2024 15:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021812; cv=none; b=lMhFNMpLoRUACDJ8fVrwelNuT1m2BmsiyP481q1YBPTPYwV1hY/bQZ1EAX2Z4HEcRtf+FAAlfDVpHMth2ZCPVpiZCu3GbzW8obYaZd7/sTL4GdkXx2O8CdZsDxV5H5et6nAJicbgwcJ5u8Ier+8jnElGHeAeke9O9m7SsnDK1V0=
+	t=1734016081; cv=none; b=X29Ww8rYTRQPVTlXjrGDLEOYPmUkTIcoCeeBfI3/PWJe3dHLeHQ2oYEAi6Y+kjPkkSYrw1QUSTCjHavfCtHeKj1h0NDsazTG2ffRmwFWt/WnLVfxRt1676xix13tjVNML/RLTjgQ6W7qMbxF0m8+lEmKVkaysHvUNoXgGmdmqKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021812; c=relaxed/simple;
-	bh=2OBjLaEMY59LuJ7JFA51SgNSfy3rpGqCSmoBN3KwJE4=;
+	s=arc-20240116; t=1734016081; c=relaxed/simple;
+	bh=IMYAPhrBHwVtW2QeybTLFIoTM9qqZB32gw5Vl1dX1zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hzt2gT4Uwe1VZ2Lax/UMmjMJahYZw00urDWfVIBrF6hWZYkF+2Xr5v94MJZWP0Si6BLHimO2O44o5HDdijnzYXIprjeiROVA/FZY1A8kRStGFvNZt58VZ/v/THepIHZGakBi/lBB5JMRHeDZsdEISn8/NjjjI4BvTHHAsXaYwcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knzc2kw6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3E2C4CECE;
-	Thu, 12 Dec 2024 16:43:31 +0000 (UTC)
+	 MIME-Version; b=lyb0HZEIgcnjAVqCgPnKhk07iLyUrdRwQApubzytAzgBxKcqgQkobuHfMln85kR0rmQm6lpaiNG+chcsBeSDDbjDVuOQ5ZAsG4jkFjkqEebidin06jaF6036d5MPmItIZWQ5oCSla5np7VOUkRLfopjsDFxnJ/xmp0B/20heAZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcLO1JEJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA578C4CED7;
+	Thu, 12 Dec 2024 15:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021812;
-	bh=2OBjLaEMY59LuJ7JFA51SgNSfy3rpGqCSmoBN3KwJE4=;
+	s=korg; t=1734016081;
+	bh=IMYAPhrBHwVtW2QeybTLFIoTM9qqZB32gw5Vl1dX1zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knzc2kw6YO78J9lIEnneQ3kun1qnqQOdlt+qCpG5ES6ZKSt+AHyALnJRqoPLpzlp6
-	 KX5rpGyge3nNgb+rtQPqOCst/7Fy8SA/JXXIlkivnQB/NsJq+XbfSFU72QW1IXuKjV
-	 ieDo8uBM8Si5ZXL9czm3QKPscCdp959W1SycIG0o=
+	b=QcLO1JEJMdX3GdYK8A8Ks2pb5BJ0QtZGp5JFzdJMXYeSls5mRRFlIKh2/blVBnx7m
+	 7lKa35TwfY39aJf1YPV13T3N4yO5Zh1fjiRwwqYNKNS778Z6x25NfUv+C6XPUh/m8q
+	 h+hmlmBFE2f9TRKn1qqXO0mS7StQlV56lstyv/hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harith George <harith.g@alifsemi.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/565] ARM: 9420/1: smp: Fix SMP for xip kernels
+Subject: [PATCH 6.12 096/466] pmdomain: core: Fix error path in pm_genpd_init() when ida alloc fails
 Date: Thu, 12 Dec 2024 15:54:25 +0100
-Message-ID: <20241212144314.256553673@linuxfoundation.org>
+Message-ID: <20241212144310.606798184@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harith G <harith.g@alifsemi.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 9e9b0cf9319b4db143014477b0bc4b39894248f1 ]
+[ Upstream commit 3e3b71d35a02cee4b2cc3d4255668a6609165518 ]
 
-Fix the physical address calculation of the following to get smp working
-on xip kernels.
-- secondary_data needed for secondary cpu bootup.
-- secondary_startup address passed through psci.
-- identity mapped code region needed for enabling mmu for secondary cpus.
+When the ida allocation fails we need to free up the previously allocated
+memory before returning the error code. Let's fix this and while at it,
+let's also move the ida allocation to genpd_alloc_data() and the freeing to
+genpd_free_data(), as it better belongs there.
 
-Signed-off-by: Harith George <harith.g@alifsemi.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 899f44531fe6 ("pmdomain: core: Add GENPD_FLAG_DEV_NAME_FW flag")
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Message-ID: <20241122134207.157283-3-ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/head.S     | 4 ++++
- arch/arm/kernel/psci_smp.c | 7 +++++++
- arch/arm/mm/idmap.c        | 7 +++++++
- 3 files changed, 18 insertions(+)
+ drivers/pmdomain/core.c | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm/kernel/head.S b/arch/arm/kernel/head.S
-index 0638d20061d8c..6b6fa86593dec 100644
---- a/arch/arm/kernel/head.S
-+++ b/arch/arm/kernel/head.S
-@@ -411,7 +411,11 @@ ENTRY(secondary_startup)
- 	/*
- 	 * Use the page tables supplied from  __cpu_up.
- 	 */
-+#ifdef CONFIG_XIP_KERNEL
-+	ldr	r3, =(secondary_data + PLAT_PHYS_OFFSET - PAGE_OFFSET)
-+#else
- 	adr_l	r3, secondary_data
-+#endif
- 	mov_l	r12, __secondary_switched
- 	ldrd	r4, r5, [r3, #0]		@ get secondary_data.pgdir
- ARM_BE8(eor	r4, r4, r5)			@ Swap r5 and r4 in BE:
-diff --git a/arch/arm/kernel/psci_smp.c b/arch/arm/kernel/psci_smp.c
-index d4392e1774848..3bb0c4dcfc5c9 100644
---- a/arch/arm/kernel/psci_smp.c
-+++ b/arch/arm/kernel/psci_smp.c
-@@ -45,8 +45,15 @@ extern void secondary_startup(void);
- static int psci_boot_secondary(unsigned int cpu, struct task_struct *idle)
+diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
+index e330490d8d7c8..778ff187ac59e 100644
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -2171,8 +2171,24 @@ static int genpd_alloc_data(struct generic_pm_domain *genpd)
+ 	}
+ 
+ 	genpd->gd = gd;
+-	return 0;
++	device_initialize(&genpd->dev);
++
++	if (!genpd_is_dev_name_fw(genpd)) {
++		dev_set_name(&genpd->dev, "%s", genpd->name);
++	} else {
++		ret = ida_alloc(&genpd_ida, GFP_KERNEL);
++		if (ret < 0)
++			goto put;
+ 
++		genpd->device_id = ret;
++		dev_set_name(&genpd->dev, "%s_%u", genpd->name, genpd->device_id);
++	}
++
++	return 0;
++put:
++	put_device(&genpd->dev);
++	if (genpd->free_states == genpd_free_default_power_state)
++		kfree(genpd->states);
+ free:
+ 	if (genpd_is_cpu_domain(genpd))
+ 		free_cpumask_var(genpd->cpus);
+@@ -2183,6 +2199,8 @@ static int genpd_alloc_data(struct generic_pm_domain *genpd)
+ static void genpd_free_data(struct generic_pm_domain *genpd)
  {
- 	if (psci_ops.cpu_on)
-+#ifdef CONFIG_XIP_KERNEL
-+		return psci_ops.cpu_on(cpu_logical_map(cpu),
-+			((phys_addr_t)(&secondary_startup)
-+			- XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
-+			+ CONFIG_XIP_PHYS_ADDR));
-+#else
- 		return psci_ops.cpu_on(cpu_logical_map(cpu),
- 					virt_to_idmap(&secondary_startup));
-+#endif
- 	return -ENODEV;
- }
+ 	put_device(&genpd->dev);
++	if (genpd->device_id != -ENXIO)
++		ida_free(&genpd_ida, genpd->device_id);
+ 	if (genpd_is_cpu_domain(genpd))
+ 		free_cpumask_var(genpd->cpus);
+ 	if (genpd->free_states)
+@@ -2271,20 +2289,6 @@ int pm_genpd_init(struct generic_pm_domain *genpd,
+ 	if (ret)
+ 		return ret;
  
-diff --git a/arch/arm/mm/idmap.c b/arch/arm/mm/idmap.c
-index 448e57c6f6534..4a833e89782aa 100644
---- a/arch/arm/mm/idmap.c
-+++ b/arch/arm/mm/idmap.c
-@@ -84,8 +84,15 @@ static void identity_mapping_add(pgd_t *pgd, const char *text_start,
- 	unsigned long addr, end;
- 	unsigned long next;
+-	device_initialize(&genpd->dev);
+-
+-	if (!genpd_is_dev_name_fw(genpd)) {
+-		dev_set_name(&genpd->dev, "%s", genpd->name);
+-	} else {
+-		ret = ida_alloc(&genpd_ida, GFP_KERNEL);
+-		if (ret < 0) {
+-			put_device(&genpd->dev);
+-			return ret;
+-		}
+-		genpd->device_id = ret;
+-		dev_set_name(&genpd->dev, "%s_%u", genpd->name, genpd->device_id);
+-	}
+-
+ 	mutex_lock(&gpd_list_lock);
+ 	list_add(&genpd->gpd_list_node, &gpd_list);
+ 	mutex_unlock(&gpd_list_lock);
+@@ -2325,8 +2329,6 @@ static int genpd_remove(struct generic_pm_domain *genpd)
+ 	genpd_unlock(genpd);
+ 	genpd_debug_remove(genpd);
+ 	cancel_work_sync(&genpd->power_off_work);
+-	if (genpd->device_id != -ENXIO)
+-		ida_free(&genpd_ida, genpd->device_id);
+ 	genpd_free_data(genpd);
  
-+#ifdef CONFIG_XIP_KERNEL
-+	addr = (phys_addr_t)(text_start) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
-+		+ CONFIG_XIP_PHYS_ADDR;
-+	end = (phys_addr_t)(text_end) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
-+		+ CONFIG_XIP_PHYS_ADDR;
-+#else
- 	addr = virt_to_idmap(text_start);
- 	end = virt_to_idmap(text_end);
-+#endif
- 	pr_info("Setting up static identity map for 0x%lx - 0x%lx\n", addr, end);
- 
- 	prot |= PMD_TYPE_SECT | PMD_SECT_AP_WRITE | PMD_SECT_AF;
+ 	pr_debug("%s: removed %s\n", __func__, dev_name(&genpd->dev));
 -- 
 2.43.0
 
