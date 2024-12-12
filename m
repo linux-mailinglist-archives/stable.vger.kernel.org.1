@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0004A9EF42E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7559EEE18
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F88328D2FD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52976188E07F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC8C226547;
-	Thu, 12 Dec 2024 17:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA682210F8;
+	Thu, 12 Dec 2024 15:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2Y0VagT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qz9U1vVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C0B176AA1;
-	Thu, 12 Dec 2024 17:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C1714A82;
+	Thu, 12 Dec 2024 15:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023066; cv=none; b=O7SDX7RRDFzT4c4l23BFAu3CY8F9LuurZbdT4WEacXtbBPqAFHLrw//PQcnc4c0n0HBtUaPlNC18s6O4B2ksFJC1Mm8E11ZSorTly/yF9jiCutS9b4b/0Ssr9Z7peX+R9SPTycVgU3It6elIM87Tz/ieNzJrdlRP+4/RmaNpxFo=
+	t=1734018437; cv=none; b=AWzZrvAPMjWgL/FDkB2MH8f0BtG6AdmCxx80DW8RdRZi9ChXzxOavjVBEsdHxoKYEzDoHTlyaETbmZpUPp/MQ6GyphDCruwD3mBgiP0nVxxzzGe03xjiLTCKvdSOg1dQNo7etBc3ky03YdmbaZJSYdTsNyfLI/gVubG3ZxfmQW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023066; c=relaxed/simple;
-	bh=Gdvb4BefB7JE5xp/wVxgH7BJEOmBAnGEKMGH3jtN6Gk=;
+	s=arc-20240116; t=1734018437; c=relaxed/simple;
+	bh=F7feWMxn04KGZ19NbihZtjq7aE3VA57RL6///siSXFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6+rTeQvJNrDlqxydxKyUC0emZmwA1RdxrM+/ghOLFGpouehcG3rC5xSby2toNqOKmPv1M2WWwnV+h3lzY/sQcGcvWkwCN3+WnQElhQcbnV62LqiJkxiEtnSNe2iMottLlqNcDLZt60T2IAflHQogjG+r/3CDq4t1muwFnoe5FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2Y0VagT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CD5C4CECE;
-	Thu, 12 Dec 2024 17:04:25 +0000 (UTC)
+	 MIME-Version; b=CP56JTN/X58PYzldMEBAPRkUNU2R6cRW8s+CxmsaRwCowFur+eT2k/vDVUcyoFdHLithtmEoKSTKNcZ/WXdhRcEutheqzoo9K7ZHO3QZA5+Chx6vYTKYFiFsYzuk0lawIvptHdZULG9IuwtOJVmGhVB+RIC5ksFulPcrMH5VWU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qz9U1vVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AACC4CECE;
+	Thu, 12 Dec 2024 15:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023066;
-	bh=Gdvb4BefB7JE5xp/wVxgH7BJEOmBAnGEKMGH3jtN6Gk=;
+	s=korg; t=1734018437;
+	bh=F7feWMxn04KGZ19NbihZtjq7aE3VA57RL6///siSXFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M2Y0VagTjcJMMcBAR6z5jOqpzkft+porveJigxbyQxAT3lNXCDG0YQAk7PwGgg3Ng
-	 oA4PVvpQjY6MRw5B6dgpTFKZ4Nw67rPY+WhGkpbC+E9fbqLqgwFqfjzDyXSOpN0ZQo
-	 rZH4cM054GhWGcIsTK62oQGBHF7BAGINe+8dwqDc=
+	b=Qz9U1vVf/en/hEJmsC8DIa5DI4/CXQP89ka3vcaxzL8lgBZgY7ESVEpJ5gn0sjq4F
+	 sVSIBFK7eOhKwbg5Gnl701p5rD1/kKRZwdDbzEB06p8brKG+o2Wm/TJh8gxTZ1IbbF
+	 QnJJ6z8QQk9bmsJhepVt7/a8Lqtc2euygAv7Z+0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 385/565] scsi: ufs: exynos: Fix hibern8 notify callbacks
-Date: Thu, 12 Dec 2024 15:59:40 +0100
-Message-ID: <20241212144326.856932419@linuxfoundation.org>
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 262/356] rocker: fix link status detection in rocker_carrier_init()
+Date: Thu, 12 Dec 2024 15:59:41 +0100
+Message-ID: <20241212144254.945949231@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit ceef938bbf8b93ba3a218b4adc244cde94b582aa upstream.
+[ Upstream commit e64285ff41bb7a934bd815bd38f31119be62ac37 ]
 
-v1 of the patch which introduced the ufshcd_vops_hibern8_notify()
-callback used a bool instead of an enum. In v2 this was updated to an
-enum based on the review feedback in [1].
+Since '1 << rocker_port->pport' may be undefined for port >= 32,
+cast the left operand to 'unsigned long long' like it's done in
+'rocker_port_set_enable()' above. Compile tested only.
 
-ufs-exynos hibernate calls have always been broken upstream as it
-follows the v1 bool implementation.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Link: https://patchwork.kernel.org/project/linux-scsi/patch/001f01d23994$719997c0$54ccc740$@samsung.com/ [1]
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20241031150033.3440894-13-peter.griffin@linaro.org
-Cc: stable@vger.kernel.org
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241114151946.519047-1-dmantipov@yandex.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ufs/ufs-exynos.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/rocker/rocker_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/ufs/ufs-exynos.c
-+++ b/drivers/scsi/ufs/ufs-exynos.c
-@@ -1038,12 +1038,12 @@ static void exynos_ufs_dev_hw_reset(stru
- 	hci_writel(ufs, 1 << 0, HCI_GPIO_OUT);
- }
+diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
+index 9e59669a93dd3..2e2826c901fcc 100644
+--- a/drivers/net/ethernet/rocker/rocker_main.c
++++ b/drivers/net/ethernet/rocker/rocker_main.c
+@@ -2504,7 +2504,7 @@ static void rocker_carrier_init(const struct rocker_port *rocker_port)
+ 	u64 link_status = rocker_read64(rocker, PORT_PHYS_LINK_STATUS);
+ 	bool link_up;
  
--static void exynos_ufs_pre_hibern8(struct ufs_hba *hba, u8 enter)
-+static void exynos_ufs_pre_hibern8(struct ufs_hba *hba, enum uic_cmd_dme cmd)
- {
- 	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
- 	struct exynos_ufs_uic_attr *attr = ufs->drv_data->uic_attr;
- 
--	if (!enter) {
-+	if (cmd == UIC_CMD_DME_HIBER_EXIT) {
- 		if (ufs->opts & EXYNOS_UFS_OPT_BROKEN_AUTO_CLK_CTRL)
- 			exynos_ufs_disable_auto_ctrl_hcc(ufs);
- 		exynos_ufs_ungate_clks(ufs);
-@@ -1071,11 +1071,11 @@ static void exynos_ufs_pre_hibern8(struc
- 	}
- }
- 
--static void exynos_ufs_post_hibern8(struct ufs_hba *hba, u8 enter)
-+static void exynos_ufs_post_hibern8(struct ufs_hba *hba, enum uic_cmd_dme cmd)
- {
- 	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
- 
--	if (!enter) {
-+	if (cmd == UIC_CMD_DME_HIBER_EXIT) {
- 		u32 cur_mode = 0;
- 		u32 pwrmode;
- 
-@@ -1094,7 +1094,7 @@ static void exynos_ufs_post_hibern8(stru
- 
- 		if (!(ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB))
- 			exynos_ufs_establish_connt(ufs);
--	} else {
-+	} else if (cmd == UIC_CMD_DME_HIBER_ENTER) {
- 		ufs->entry_hibern8_t = ktime_get();
- 		exynos_ufs_gate_clks(ufs);
- 		if (ufs->opts & EXYNOS_UFS_OPT_BROKEN_AUTO_CLK_CTRL)
-@@ -1163,15 +1163,15 @@ static int exynos_ufs_pwr_change_notify(
- }
- 
- static void exynos_ufs_hibern8_notify(struct ufs_hba *hba,
--				     enum uic_cmd_dme enter,
-+				     enum uic_cmd_dme cmd,
- 				     enum ufs_notify_change_status notify)
- {
- 	switch ((u8)notify) {
- 	case PRE_CHANGE:
--		exynos_ufs_pre_hibern8(hba, enter);
-+		exynos_ufs_pre_hibern8(hba, cmd);
- 		break;
- 	case POST_CHANGE:
--		exynos_ufs_post_hibern8(hba, enter);
-+		exynos_ufs_post_hibern8(hba, cmd);
- 		break;
- 	}
- }
+-	link_up = link_status & (1 << rocker_port->pport);
++	link_up = link_status & (1ULL << rocker_port->pport);
+ 	if (link_up)
+ 		netif_carrier_on(rocker_port->dev);
+ 	else
+-- 
+2.43.0
+
 
 
 
