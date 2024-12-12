@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EED09EEBC0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B526F9EEDCF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAB67161280
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32E2A189065F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7E313792B;
-	Thu, 12 Dec 2024 15:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55288223C4F;
+	Thu, 12 Dec 2024 15:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm8dvS1B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BN7HR/Qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE35B2054F8;
-	Thu, 12 Dec 2024 15:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1111E223336;
+	Thu, 12 Dec 2024 15:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017097; cv=none; b=P4f/boIIq6tm/7OnXLDYZSa65F/USNrP4sVYYscuPL5LJnPYOUeScKSJXa5S7rd41AyreTZFiNc3xn+IqM7qrDVYGzi+zp2U5/1YeNl5KHq+03rX1fPMH45gLcsbpDjfcXBTP6nL9nC6z+buyHcLaiPnJvj9gqn8oJ41XDpQoyI=
+	t=1734018329; cv=none; b=jS8meGXAQMum7MuRyxbrBcpegGw2Sw/R0DCTTJ5/fWfwS9tQrs+kCA0R4jlTHF9fvI/vOtPTO5y9fnvmwuPN3Tspx+dGzTkqRrctA9tGIU3MVcjRMT85g18lV2Mg9ZFhz7opkeJy6FpXua49d+Tg0aAhnbCpfKplY5lmAsBSumE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017097; c=relaxed/simple;
-	bh=UvLKZTrwAyuXkZSXSqPLDPxxQlsal/jHlT8Jt8r9CgM=;
+	s=arc-20240116; t=1734018329; c=relaxed/simple;
+	bh=imiBL3A3dkH5ENY+17xL305ozg5x5SjADJfBjpN3fdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zv338IdTrUDZnNKULOgq1vmeNnrvfJrFh80MYzNeAC2MjuWVfzbbl2PvrSiacavfL1BJPEOVOw8aDYsEAYBz3i20G+tIyUbBptuNoD4NQThAc19nyHKQQMY6A7+6kLJM6VnlCDF+KJaB36PbObj6gRfNNFvnUEobXtyxIex6NbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm8dvS1B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D426AC4CECE;
-	Thu, 12 Dec 2024 15:24:55 +0000 (UTC)
+	 MIME-Version; b=eBKGKNhIXMVL4i1sZp74UKZyWHLLIc2BTnnPQIWq+aAa/n0OpcjqogG4Yof9fHBtl3A3DK3A0sf9ERqyIHAPmMVmYqmP/0oC08oTeHZAUKAQ8eWB55dUliHdBpbbTCKCtVlPoE1h6UgDqXo6l5qtb1bEJVv/WLYIpG7kep9Tuz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BN7HR/Qf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737F8C4CECE;
+	Thu, 12 Dec 2024 15:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017096;
-	bh=UvLKZTrwAyuXkZSXSqPLDPxxQlsal/jHlT8Jt8r9CgM=;
+	s=korg; t=1734018328;
+	bh=imiBL3A3dkH5ENY+17xL305ozg5x5SjADJfBjpN3fdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dm8dvS1BIQueIAe8MFBaPSezKlBWXIM7uu2sPrr5djNWRr79VsfLwyerd3NEf1Nzn
-	 v/OefuMsjrPTUbOenA7AtkOsaZzLV8hFcE0BSdGOa8q4OADhK07EO11WA46NLWdpff
-	 l0Ir5zFdyIhH2ZSjyYGsAc4fcCCvPPsWW79GKKsA=
+	b=BN7HR/Qf063kBCx/+Do6tUhNmBoz/UnUfSelOZfEoEYJf4eeVIUKtbz6Ht9sR0Vgt
+	 kMVsQPMAcwxb5IfFwIjjUsoc+AtKt/QYQ2bP7bid5yjrp0qcC7+/KN8pN38s5WiWoU
+	 4QsIeUBdIetQ0A1lLovUlsD0daYHmUsLGs3TnMOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Rosen Penev <rosenp@gmail.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 381/466] thermal/drivers/qcom/tsens-v1: Add support for MSM8937 tsens
-Date: Thu, 12 Dec 2024 15:59:10 +0100
-Message-ID: <20241212144321.828470502@linuxfoundation.org>
+Subject: [PATCH 6.6 232/356] wifi: ath5k: add PCI ID for Arcadyan devices
+Date: Thu, 12 Dec 2024 15:59:11 +0100
+Message-ID: <20241212144253.786916934@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +60,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit e2ffb6c3a40ee714160e35e61f0a984028b5d550 ]
+[ Upstream commit f3ced9bb90b0a287a1fa6184d16b0f104a78fa90 ]
 
-Add support for tsens v1.4 block what can be found in
-MSM8937 and MSM8917.
+Arcadyan made routers with this PCI ID containing an AR2417.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20241113-msm8917-v6-5-c348fb599fef@mainlining.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20240930180716.139894-3-rosenp@gmail.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/tsens-v1.c | 21 ++++++++++++++-------
- drivers/thermal/qcom/tsens.c    |  3 +++
- drivers/thermal/qcom/tsens.h    |  2 +-
- 3 files changed, 18 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ath/ath5k/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thermal/qcom/tsens-v1.c b/drivers/thermal/qcom/tsens-v1.c
-index dc1c4ae2d8b01..1a7874676f68e 100644
---- a/drivers/thermal/qcom/tsens-v1.c
-+++ b/drivers/thermal/qcom/tsens-v1.c
-@@ -162,28 +162,35 @@ struct tsens_plat_data data_tsens_v1 = {
- 	.fields	= tsens_v1_regfields,
+diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
+index 35a6a7b1047a3..f583e0f3932b8 100644
+--- a/drivers/net/wireless/ath/ath5k/pci.c
++++ b/drivers/net/wireless/ath/ath5k/pci.c
+@@ -47,6 +47,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
+ 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
+ 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
++	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
+ 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
+ 	{ 0 }
  };
- 
--static const struct tsens_ops ops_8956 = {
--	.init		= init_8956,
-+static const struct tsens_ops ops_common = {
-+	.init		= init_common,
- 	.calibrate	= tsens_calibrate_common,
- 	.get_temp	= get_temp_tsens_valid,
- };
- 
--struct tsens_plat_data data_8956 = {
-+struct tsens_plat_data data_8937 = {
- 	.num_sensors	= 11,
--	.ops		= &ops_8956,
-+	.ops		= &ops_common,
- 	.feat		= &tsens_v1_feat,
- 	.fields		= tsens_v1_regfields,
- };
- 
--static const struct tsens_ops ops_8976 = {
--	.init		= init_common,
-+static const struct tsens_ops ops_8956 = {
-+	.init		= init_8956,
- 	.calibrate	= tsens_calibrate_common,
- 	.get_temp	= get_temp_tsens_valid,
- };
- 
-+struct tsens_plat_data data_8956 = {
-+	.num_sensors	= 11,
-+	.ops		= &ops_8956,
-+	.feat		= &tsens_v1_feat,
-+	.fields		= tsens_v1_regfields,
-+};
-+
- struct tsens_plat_data data_8976 = {
- 	.num_sensors	= 11,
--	.ops		= &ops_8976,
-+	.ops		= &ops_common,
- 	.feat		= &tsens_v1_feat,
- 	.fields		= tsens_v1_regfields,
- };
-diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
-index 0b4421bf47854..d2db804692f01 100644
---- a/drivers/thermal/qcom/tsens.c
-+++ b/drivers/thermal/qcom/tsens.c
-@@ -1119,6 +1119,9 @@ static const struct of_device_id tsens_table[] = {
- 	}, {
- 		.compatible = "qcom,msm8916-tsens",
- 		.data = &data_8916,
-+	}, {
-+		.compatible = "qcom,msm8937-tsens",
-+		.data = &data_8937,
- 	}, {
- 		.compatible = "qcom,msm8939-tsens",
- 		.data = &data_8939,
-diff --git a/drivers/thermal/qcom/tsens.h b/drivers/thermal/qcom/tsens.h
-index cab39de045b10..7b36a0318fa6a 100644
---- a/drivers/thermal/qcom/tsens.h
-+++ b/drivers/thermal/qcom/tsens.h
-@@ -647,7 +647,7 @@ extern struct tsens_plat_data data_8960;
- extern struct tsens_plat_data data_8226, data_8909, data_8916, data_8939, data_8974, data_9607;
- 
- /* TSENS v1 targets */
--extern struct tsens_plat_data data_tsens_v1, data_8976, data_8956;
-+extern struct tsens_plat_data data_tsens_v1, data_8937, data_8976, data_8956;
- 
- /* TSENS v2 targets */
- extern struct tsens_plat_data data_8996, data_ipq8074, data_tsens_v2;
 -- 
 2.43.0
 
