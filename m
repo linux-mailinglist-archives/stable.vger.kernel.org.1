@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-102285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73449EF11A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9838A9EEB76
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78E5229F23A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA1C71641E7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D621239BC5;
-	Thu, 12 Dec 2024 16:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403971537C8;
+	Thu, 12 Dec 2024 15:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpd8A60N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUfKkcth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0862E2210C2;
-	Thu, 12 Dec 2024 16:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17BA2EAE5;
+	Thu, 12 Dec 2024 15:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020672; cv=none; b=CRjpLy9LwltNe4P8RSQ2J75TUcUL5OGMuzIclvFHh0LSltwKII+4sL7oaQH5kskrSETPkz6pacGcjMinLNNXY9AuoZQ5UI1bLQ0v+yGZbZNQBWZfefr2SvAFpxnVXIKFhHZEES5IWnip8J63uxTX/kou7D0L8HcFwyPeON6Gxec=
+	t=1734016820; cv=none; b=XKxBWARpU2HYK/G2fnzurryR4v9gyyS6Is+kwk7XlPhriFI7a5Tad0w9oteGutItWTwXcL9ZDUCeXm7XNHCDx5bYXS+2g0zseEo/1VbFKAt3fvWdBuGvQBtYMVPHdW/5+rRA8GQrsJj9eKk+Qtnl48bDLGGDytRC9owYGP/2lmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020672; c=relaxed/simple;
-	bh=V+Hrk+uPgNAKC74R5gLBZ+KwcH7szeTpHlqzHEqMLlI=;
+	s=arc-20240116; t=1734016820; c=relaxed/simple;
+	bh=Se8twBznq/C5rNdD0WyBuKCh5bW1dkJbzo29kyBLSVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHTJg/HqLgdqCKpnERX5duA5wEThgGrHZ5y3+6qJ1FBFO7fQSEf29rZolL7UJk/JbWty+DLtKv8peUo8IQjP7OghMrx4y3ECPhjJpnUK7t6CIOrNW/HjhnhkF3hANbCdYYEfUC9eKcxrb4uBp06wGNiLU5dO0iPNGBtE56G39CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpd8A60N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3F7C4CECE;
-	Thu, 12 Dec 2024 16:24:30 +0000 (UTC)
+	 MIME-Version; b=KqIZRMvHyuABw1MzRs5lTcp7NtJFuEbeCfnLHLE+lHbxy87dWhjI83FgV1b92LzvmMWvLHhuOEIgNTegBxjvNXaPajCTbwgQpWYCrHX+yWbFdNTgV2QtJdIEet4o+ZjnkArVj5E37LQdWn7KeqjPzU0O1BGSv9azp3GJbkr4QAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUfKkcth; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DEB8C4CECE;
+	Thu, 12 Dec 2024 15:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020671;
-	bh=V+Hrk+uPgNAKC74R5gLBZ+KwcH7szeTpHlqzHEqMLlI=;
+	s=korg; t=1734016819;
+	bh=Se8twBznq/C5rNdD0WyBuKCh5bW1dkJbzo29kyBLSVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpd8A60NoVQl769pGlHiQCmBZaS8Yw0nOmITTIxPJeDZrSY6JyjrgCjwCDfz/twWw
-	 LeRYdzlC1bDBCI0Y4fI+SXtlr6MSHxoCuASZsNJI9Ve3IWcgR672RUFwbyBxPsuTeB
-	 qenwHJ0J0jZQ/dGZ7BFFGdd/gv3QFHjRzm3SHVE0=
+	b=EUfKkcthJAe8XaqDX4UtYIlHGlJgG6bz/IpJ9cC64ki6vdSfbtz3LiWcqtzK3/UT1
+	 vH03ZmC9bQwzUD678ajBzsZboqqL2m3SABUo8cwh5u2KIslgNCBefiS7oZSpBqsgVE
+	 iitYYPAKPNKAWa0qkOIAIkz6cqAeblp0KPu+dsHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+671e2853f9851d039551@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	WingMan Kwok <w-kwok2@ti.com>,
-	Murali Karicheri <m-karicheri2@ti.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	George McCollister <george.mccollister@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Abhishek Chauhan <quic_abchauha@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 530/772] net: hsr: avoid potential out-of-bound access in fill_frame_info()
+Subject: [PATCH 6.12 306/466] net: stmmac: Programming sequence for VLAN packets with split header
 Date: Thu, 12 Dec 2024 15:57:55 +0100
-Message-ID: <20241212144411.871833514@linuxfoundation.org>
+Message-ID: <20241212144318.873240508@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,97 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Abhishek Chauhan <quic_abchauha@quicinc.com>
 
-[ Upstream commit b9653d19e556c6afd035602927a93d100a0d7644 ]
+[ Upstream commit d10f1a4e44c3bf874701f86f8cc43490e1956acf ]
 
-syzbot is able to feed a packet with 14 bytes, pretending
-it is a vlan one.
+Currently reset state configuration of split header works fine for
+non-tagged packets and we see no corruption in payload of any size
 
-Since fill_frame_info() is relying on skb->mac_len already,
-extend the check to cover this case.
+We need additional programming sequence with reset configuration to
+handle VLAN tagged packets to avoid corruption in payload for packets
+of size greater than 256 bytes.
 
-BUG: KMSAN: uninit-value in fill_frame_info net/hsr/hsr_forward.c:709 [inline]
- BUG: KMSAN: uninit-value in hsr_forward_skb+0x9ee/0x3b10 net/hsr/hsr_forward.c:724
-  fill_frame_info net/hsr/hsr_forward.c:709 [inline]
-  hsr_forward_skb+0x9ee/0x3b10 net/hsr/hsr_forward.c:724
-  hsr_dev_xmit+0x2f0/0x350 net/hsr/hsr_device.c:235
-  __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
-  netdev_start_xmit include/linux/netdevice.h:5011 [inline]
-  xmit_one net/core/dev.c:3590 [inline]
-  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3606
-  __dev_queue_xmit+0x366a/0x57d0 net/core/dev.c:4434
-  dev_queue_xmit include/linux/netdevice.h:3168 [inline]
-  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
-  packet_snd net/packet/af_packet.c:3146 [inline]
-  packet_sendmsg+0x91ae/0xa6f0 net/packet/af_packet.c:3178
-  sock_sendmsg_nosec net/socket.c:711 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:726
-  __sys_sendto+0x594/0x750 net/socket.c:2197
-  __do_sys_sendto net/socket.c:2204 [inline]
-  __se_sys_sendto net/socket.c:2200 [inline]
-  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2200
-  x64_sys_call+0x346a/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:45
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Without this change ping application complains about corruption
+in payload when the size of the VLAN packet exceeds 256 bytes.
 
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:4091 [inline]
-  slab_alloc_node mm/slub.c:4134 [inline]
-  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4186
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:587
-  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:678
-  alloc_skb include/linux/skbuff.h:1323 [inline]
-  alloc_skb_with_frags+0xc8/0xd00 net/core/skbuff.c:6612
-  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2881
-  packet_alloc_skb net/packet/af_packet.c:2995 [inline]
-  packet_snd net/packet/af_packet.c:3089 [inline]
-  packet_sendmsg+0x74c6/0xa6f0 net/packet/af_packet.c:3178
-  sock_sendmsg_nosec net/socket.c:711 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:726
-  __sys_sendto+0x594/0x750 net/socket.c:2197
-  __do_sys_sendto net/socket.c:2204 [inline]
-  __se_sys_sendto net/socket.c:2200 [inline]
-  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2200
-  x64_sys_call+0x346a/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:45
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+With this change tagged and non-tagged packets of any size works fine
+and there is no corruption seen.
 
-Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
-Reported-by: syzbot+671e2853f9851d039551@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6745dc7f.050a0220.21d33d.0018.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: WingMan Kwok <w-kwok2@ti.com>
-Cc: Murali Karicheri <m-karicheri2@ti.com>
-Cc: MD Danish Anwar <danishanwar@ti.com>
-Cc: Jiri Pirko <jiri@nvidia.com>
-Cc: George McCollister <george.mccollister@gmail.com>
-Link: https://patch.msgid.link/20241126144344.4177332-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Current configuration which has the issue for VLAN packet
+----------------------------------------------------------
+
+Split happens at the position at Layer 3 header
+|MAC-DA|MAC-SA|Vlan Tag|Ether type|IP header|IP data|Rest of the payload|
+                         2 bytes            ^
+                                            |
+
+With the fix we are making sure that the split happens now at
+Layer 2 which is end of ethernet header and start of IP payload
+
+Ip traffic split
+-----------------
+
+Bits which take care of this are SPLM and SPLOFST
+SPLM = Split mode is set to Layer 2
+SPLOFST = These bits indicate the value of offset from the beginning
+of Length/Type field at which header split should take place when the
+appropriate SPLM is selected. Reset value is 2bytes.
+
+Un-tagged data (without VLAN)
+|MAC-DA|MAC-SA|Ether type|IP header|IP data|Rest of the payload|
+                  2bytes ^
+			 |
+
+Tagged data (with VLAN)
+|MAC-DA|MAC-SA|VLAN Tag|Ether type|IP header|IP data|Rest of the payload|
+                          2bytes  ^
+				  |
+
+Non-IP traffic split such AV packet
+------------------------------------
+
+Bits which take care of this are
+SAVE = Split AV Enable
+SAVO = Split AV Offset, similar to SPLOFST but this is for AVTP
+packets.
+
+|Preamble|MAC-DA|MAC-SA|VLAN tag|Ether type|IEEE 1722 payload|CRC|
+				    2bytes ^
+					   |
+
+Signed-off-by: Abhishek Chauhan <quic_abchauha@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241016234313.3992214-1-quic_abchauha@quicinc.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_forward.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/dwmac4.h     | 5 +++++
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c | 5 +++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 0323ab5023c69..2790f3964d6bd 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -588,6 +588,8 @@ static int fill_frame_info(struct hsr_frame_info *frame,
- 		frame->is_vlan = true;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
+index 93a78fd0737b6..28fff6cab812e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
+@@ -44,6 +44,7 @@
+ #define GMAC_MDIO_DATA			0x00000204
+ #define GMAC_GPIO_STATUS		0x0000020C
+ #define GMAC_ARP_ADDR			0x00000210
++#define GMAC_EXT_CFG1			0x00000238
+ #define GMAC_ADDR_HIGH(reg)		(0x300 + reg * 8)
+ #define GMAC_ADDR_LOW(reg)		(0x304 + reg * 8)
+ #define GMAC_L3L4_CTRL(reg)		(0x900 + (reg) * 0x30)
+@@ -284,6 +285,10 @@ enum power_event {
+ #define GMAC_HW_FEAT_DVLAN		BIT(5)
+ #define GMAC_HW_FEAT_NRVF		GENMASK(2, 0)
  
- 	if (frame->is_vlan) {
-+		if (skb->mac_len < offsetofend(struct hsr_vlan_ethhdr, vlanhdr))
-+			return -EINVAL;
- 		vlan_hdr = (struct hsr_vlan_ethhdr *)ethhdr;
- 		proto = vlan_hdr->vlanhdr.h_vlan_encapsulated_proto;
- 		/* FIXME: */
++/* MAC extended config 1 */
++#define GMAC_CONFIG1_SAVE_EN		BIT(24)
++#define GMAC_CONFIG1_SPLM(v)		FIELD_PREP(GENMASK(9, 8), v)
++
+ /* GMAC GPIO Status reg */
+ #define GMAC_GPO0			BIT(16)
+ #define GMAC_GPO1			BIT(17)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+index 77b35abc6f6fa..22a044d93e172 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+@@ -534,6 +534,11 @@ static void dwmac4_enable_sph(struct stmmac_priv *priv, void __iomem *ioaddr,
+ 	value |= GMAC_CONFIG_HDSMS_256; /* Segment max 256 bytes */
+ 	writel(value, ioaddr + GMAC_EXT_CONFIG);
+ 
++	value = readl(ioaddr + GMAC_EXT_CFG1);
++	value |= GMAC_CONFIG1_SPLM(1); /* Split mode set to L2OFST */
++	value |= GMAC_CONFIG1_SAVE_EN; /* Enable Split AV mode */
++	writel(value, ioaddr + GMAC_EXT_CFG1);
++
+ 	value = readl(ioaddr + DMA_CHAN_CONTROL(dwmac4_addrs, chan));
+ 	if (en)
+ 		value |= DMA_CONTROL_SPH;
 -- 
 2.43.0
 
