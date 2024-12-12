@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DDE89EF687
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F034D9EF8C9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF22A2894BB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 625A3179055
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240B821660B;
-	Thu, 12 Dec 2024 17:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17370223C41;
+	Thu, 12 Dec 2024 17:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfNv9XoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDJqw1qt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D98215764;
-	Thu, 12 Dec 2024 17:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2B02236EB;
+	Thu, 12 Dec 2024 17:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024390; cv=none; b=itrMDiyNL5iCdzA2JHUUyaSUVPG9E4zjFjeiFp4k60kBMiSpklGW1ptXQixdT42vkl/TJSndVlI2Ta2Dxxgka+wtbr2cssVQF8ST/VggymfdSYUwHm5sAW6Fg4I7KpmzJE/Lh2myKUGlbpL8Dlv18XwN88fuJhwwkOAc4Jywy0Q=
+	t=1734025148; cv=none; b=Q/5WjLClOAHDZeNeNhD4/hQZ7p3WHOQCRxM0bTVg7YXJpDbZqVCqPVdtzfp/fRGuk4HNSjiNqq7u4MEz4BBtU3BGUV4QE7EXk+/hywTMPnfVy0aLuQ4Yoylt11hmuQOxFI1VOL83TtYI5IN6iEjxJfC0cABxsC15IhUPnLwTRCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024390; c=relaxed/simple;
-	bh=62NNRZFHQmo40hFSGvOtd//d9jJBBMxlJXBiGjvW+Jg=;
+	s=arc-20240116; t=1734025148; c=relaxed/simple;
+	bh=sGfnaVgMZiOribpVuzirzglVRb5MNeQuv6Me7US94gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VncAeD6YVdk0gPK2wp/MTbpQNvklq5a2tcOkkbojCgwhmTlwK5qawdTTie6sUoxzxfJDMeDdBiqSedltQgHg0GG5HC4WCFBk4XlK78LOcP7Jg6auvhqIye5jl8bloSEVq3SsDzu2cOGXoqyCGMhZeqiUlhg70/69OCvpQGk2928=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfNv9XoS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D778C4CED0;
-	Thu, 12 Dec 2024 17:26:30 +0000 (UTC)
+	 MIME-Version; b=LxmcBV4hPfYQxres6Yvo7FZuRKH8CSqf07wuvnOCl2G26j4oNQmeoaJd7zNVhJ8n9ejkz3XFBUZ51DzxpiA0sgkl7ZgChHDvO6d5g8AWW1dkDr6FGAm8VZidJVwwmYCyEElRgQDgChhBVEN7yvU9Jk60J/Hdfx2fzn5sljdfx5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDJqw1qt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44694C4CECE;
+	Thu, 12 Dec 2024 17:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024390;
-	bh=62NNRZFHQmo40hFSGvOtd//d9jJBBMxlJXBiGjvW+Jg=;
+	s=korg; t=1734025148;
+	bh=sGfnaVgMZiOribpVuzirzglVRb5MNeQuv6Me7US94gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfNv9XoS00s83f5WueyibpNMsZ3yOu7h4MUtlJQ117rT/VXusQRpRX/gN0anEwFRg
-	 il5qcOSmQWbUzQqfusi3XNuCGpna5D0DHmWz2chCuvLStD/4wr+j8KruAjCGn997gL
-	 lS+FNKL8z9/AgX8bvKdk4VHHLhoCdP0gDD/tX2z8=
+	b=tDJqw1qt6gXo3KBeM9rjFH02Ee0ofIvdd2EQ2t3ishD0qxlsIf0q9WgV6cYCPFVYp
+	 MvaaO/X8qWo1zsZ0vhVnHd4m1WedIpRVfzu8Ss+FGwnlw9xtAZycUzEE9zPbXYryPA
+	 uvmeopcu3xHgeaTEscQ3vpSZVAKyUHaLXKFaOIL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 5.10 251/459] KVM: arm64: Ignore PMCNTENSET_EL0 while checking for overflow status
+	Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 071/321] drm: fsl-dcu: enable PIXCLK on LS1021A
 Date: Thu, 12 Dec 2024 15:59:49 +0100
-Message-ID: <20241212144303.508684223@linuxfoundation.org>
+Message-ID: <20241212144232.794144611@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raghavendra Rao Ananta <rananta@google.com>
+From: Matthias Schiffer <matthias.schiffer@tq-group.com>
 
-commit 54bbee190d42166209185d89070c58a343bf514b upstream.
+[ Upstream commit ffcde9e44d3e18fde3d18bfff8d9318935413bfd ]
 
-DDI0487K.a D13.3.1 describes the PMU overflow condition, which evaluates
-to true if any counter's global enable (PMCR_EL0.E), overflow flag
-(PMOVSSET_EL0[n]), and interrupt enable (PMINTENSET_EL1[n]) are all 1.
-Of note, this does not require a counter to be enabled
-(i.e. PMCNTENSET_EL0[n] = 1) to generate an overflow.
+The PIXCLK needs to be enabled in SCFG before accessing certain DCU
+registers, or the access will hang. For simplicity, the PIXCLK is enabled
+unconditionally, resulting in increased power consumption.
 
-Align kvm_pmu_overflow_status() with the reality of the architecture
-and stop using PMCNTENSET_EL0 as part of the overflow condition. The
-bug was discovered while running an SBSA PMU test [*], which only sets
-PMCR.E, PMOVSSET<0>, PMINTENSET<0>, and expects an overflow interrupt.
-
-Cc: stable@vger.kernel.org
-Fixes: 76d883c4e640 ("arm64: KVM: Add access handler for PMOVSSET and PMOVSCLR register")
-Link: https://github.com/ARM-software/sbsa-acs/blob/master/test_pool/pmu/operating_system/test_pmu001.c
-Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
-[ oliver: massaged changelog ]
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20241120005230.2335682-2-oliver.upton@linux.dev
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Fixes: 109eee2f2a18 ("drm/layerscape: Add Freescale DCU DRM driver")
+Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240926055552.1632448-2-alexander.stein@ew.tq-group.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/pmu-emul.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/fsl-dcu/Kconfig           |  1 +
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 15 +++++++++++++++
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h |  3 +++
+ 3 files changed, 19 insertions(+)
 
---- a/arch/arm64/kvm/pmu-emul.c
-+++ b/arch/arm64/kvm/pmu-emul.c
-@@ -371,7 +371,6 @@ static u64 kvm_pmu_overflow_status(struc
+diff --git a/drivers/gpu/drm/fsl-dcu/Kconfig b/drivers/gpu/drm/fsl-dcu/Kconfig
+index d7dd8ba90e3af..9e5a35e7c00cc 100644
+--- a/drivers/gpu/drm/fsl-dcu/Kconfig
++++ b/drivers/gpu/drm/fsl-dcu/Kconfig
+@@ -8,6 +8,7 @@ config DRM_FSL_DCU
+ 	select DRM_PANEL
+ 	select REGMAP_MMIO
+ 	select VIDEOMODE_HELPERS
++	select MFD_SYSCON if SOC_LS1021A
+ 	help
+ 	  Choose this option if you have an Freescale DCU chipset.
+ 	  If M is selected the module will be called fsl-dcu-drm.
+diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+index 11b4a81bacc68..1065249807323 100644
+--- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
++++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+@@ -100,6 +100,7 @@ static void fsl_dcu_irq_uninstall(struct drm_device *dev)
+ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
+ {
+ 	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
++	struct regmap *scfg;
+ 	int ret;
  
- 	if ((__vcpu_sys_reg(vcpu, PMCR_EL0) & ARMV8_PMU_PMCR_E)) {
- 		reg = __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
--		reg &= __vcpu_sys_reg(vcpu, PMCNTENSET_EL0);
- 		reg &= __vcpu_sys_reg(vcpu, PMINTENSET_EL1);
- 		reg &= kvm_pmu_valid_counter_mask(vcpu);
+ 	ret = fsl_dcu_drm_modeset_init(fsl_dev);
+@@ -108,6 +109,20 @@ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
+ 		return ret;
  	}
+ 
++	scfg = syscon_regmap_lookup_by_compatible("fsl,ls1021a-scfg");
++	if (PTR_ERR(scfg) != -ENODEV) {
++		/*
++		 * For simplicity, enable the PIXCLK unconditionally,
++		 * resulting in increased power consumption. Disabling
++		 * the clock in PM or on unload could be implemented as
++		 * a future improvement.
++		 */
++		ret = regmap_update_bits(scfg, SCFG_PIXCLKCR, SCFG_PIXCLKCR_PXCEN,
++					 SCFG_PIXCLKCR_PXCEN);
++		if (ret < 0)
++			return dev_err_probe(dev->dev, ret, "failed to enable pixclk\n");
++	}
++
+ 	ret = drm_vblank_init(dev, dev->mode_config.num_crtc);
+ 	if (ret < 0) {
+ 		dev_err(dev->dev, "failed to initialize vblank\n");
+diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h
+index e2049a0e8a92a..566396013c04a 100644
+--- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h
++++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h
+@@ -160,6 +160,9 @@
+ #define FSL_DCU_ARGB4444		12
+ #define FSL_DCU_YUV422			14
+ 
++#define SCFG_PIXCLKCR			0x28
++#define SCFG_PIXCLKCR_PXCEN		BIT(31)
++
+ #define VF610_LAYER_REG_NUM		9
+ #define LS1021A_LAYER_REG_NUM		10
+ 
+-- 
+2.43.0
+
 
 
 
