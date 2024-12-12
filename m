@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03F39EECA2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDB89EEB3F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 432081620A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCC7C168991
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46121218AB3;
-	Thu, 12 Dec 2024 15:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5212E2054F8;
+	Thu, 12 Dec 2024 15:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKKBORzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhmGOg2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CDD2153DF;
-	Thu, 12 Dec 2024 15:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0996F2153FC;
+	Thu, 12 Dec 2024 15:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017665; cv=none; b=Jbv4np7qTuVrOJi1UZ4APJHaJbZIUJ3NHKnbUi9nkdBHAUVPALn05O2JG6X4Va7flpnI54xkRH4weqzolhlMbajXGFIoF9TryNGJRuSTlgqiwxNm2jClVPVzc81D5d21zdBp91LEMoIWiNML+PjQ+hs2dTjuD9FB7xgiuCA0IAE=
+	t=1734016647; cv=none; b=S7sqYZOrAQcC5R9Vckk2pJ9OJNx5ojYXAC4OBCgzjmRqqWdClcsYGwXz9kpDM7TQF++1wu+M7NkHX8aPiE+gM3WBS3BWlBJRDzPkRxbEf8llyLgIsLMLgip0aLWWr5CziYHxIPFtoq2BtXIL+5ne5emp6OFOIw7ne+ZG/2gi0cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017665; c=relaxed/simple;
-	bh=1ouPhNZjZP8NVAjRMrqZXY/kDYybr4ue/N+mDUMLMR0=;
+	s=arc-20240116; t=1734016647; c=relaxed/simple;
+	bh=A0XYsUuBLyWrIx3EqjooKB7Pxr1XF4NBomJRQzQ4Q0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AU0vyPzJvjn8GzPxwJ7lLytxNi/AfsQDv2sDKS6WQ7NGF8bs12MlECA74RO7xX6TdBvyeyyBPTsVucSD68okSpehszW8kDMDY7QK2U6LJpFp+D5bOv+uBc23AItxRpikiJeDjckUKzsUe1QrAkGWkPvZnCOAr6XwkoJOXzOUYSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKKBORzL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630F4C4CECE;
-	Thu, 12 Dec 2024 15:34:24 +0000 (UTC)
+	 MIME-Version; b=H2EcrjPGM7VR7oTQfPPyhiRcW2dpwDAqkfwuimUie68ARiUNno1G4lzgox2iILKnSIfZ7IxF3eTNjqb9799x4L1AFUoOVuuuw4POGi2OtZAp3C2vcSGMjdBpOsIBJuZP4GAxB56HuYeEgzgMvItSYgq8mxV67+NrjXNnxtTnxWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhmGOg2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68937C4CED4;
+	Thu, 12 Dec 2024 15:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017664;
-	bh=1ouPhNZjZP8NVAjRMrqZXY/kDYybr4ue/N+mDUMLMR0=;
+	s=korg; t=1734016646;
+	bh=A0XYsUuBLyWrIx3EqjooKB7Pxr1XF4NBomJRQzQ4Q0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKKBORzL2E6+eZ/oxHfwENFAUcsK2ijpvl9aSs/WfI6sy5AnsOQCdIUhK8zyFwzDx
-	 s5Aw63wcNjwtdTlpxqsVm5Q1VDBzaQEjfoW8S1yTXN/sIxM790TxX578RR4va4Ynpx
-	 YB5/tCjCr1qHz/Q1sltGGq/vKEZRM6bYrQWxDLRQ=
+	b=uhmGOg2Je41TK27qANi2+rFb4m7oDDwlL1CasdP2qmVCiv9DtPIKAzTvnWnTrfXDt
+	 pQgero5n9ZKWKIUxz7pLMt72sJ3h0n1z3dH6W5G83wMYH9E+w2Tt+oXQcn1nHRbR7P
+	 Rjr8tNTbC+KCwb5YMQyM8ZennoE/Nyw82DGiPTpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Tommy Giesler <tommy.giesler@hetzner.com>,
+	Sarah Maedel <sarah.maedel@hetzner-cloud.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/356] soc: fsl: cpm1: qmc: Introduce qmc_init_resource() and its CPM1 version
+Subject: [PATCH 6.12 227/466] hwmon: (nct6775) Add 665-ACE/600M-CL to ASUS WMI monitoring list
 Date: Thu, 12 Dec 2024 15:56:36 +0100
-Message-ID: <20241212144247.667641506@linuxfoundation.org>
+Message-ID: <20241212144315.743092426@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Sarah Maedel <sarah.maedel@hetzner-cloud.de>
 
-[ Upstream commit 727b3ab490a5f5e74fb3f246c9fdfb339d309950 ]
+[ Upstream commit ccae49e5cf6ebda1a7fa5d2ca99500987c7420c4 ]
 
-Current code handles the CPM1 version of QMC. Resources initialisations
-(i.e. retrieving base addresses and offsets of different parts) will
-be slightly different in the QUICC Engine (QE) version. Indeed, in QE
-version, some resources need to be allocated and are no more "staticaly"
-defined.
+Boards such as
+* Pro WS 665-ACE
+* Pro WS 600M-CL
+have got a nct6775 chip, but by default there's no use of it
+because of resource conflict with WMI method.
 
-In order to prepare the support for QE version, introduce
-qmc_init_resource() to initialize those resources and isolate the CPM1
-specific operations in a specific function.
+Add affected boards to the WMI monitoring list.
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/20240808071132.149251-27-herve.codina@bootlin.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Stable-dep-of: cb3daa51db81 ("soc: fsl: cpm1: qmc: Set the ret error code on platform_get_irq() failure")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=204807
+Co-developed-by: Tommy Giesler <tommy.giesler@hetzner.com>
+Signed-off-by: Tommy Giesler <tommy.giesler@hetzner.com>
+Signed-off-by: Sarah Maedel <sarah.maedel@hetzner-cloud.de>
+Message-ID: <20241018074611.358619-1-sarah.maedel@hetzner-cloud.de>
+[groeck: Change commit message to imperative mood]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/qmc.c | 47 ++++++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 16 deletions(-)
+ drivers/hwmon/nct6775-platform.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index a5c9cbb99600e..f2bda8658e034 100644
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -1265,11 +1265,38 @@ static irqreturn_t qmc_irq_handler(int irq, void *priv)
- 	return IRQ_HANDLED;
- }
- 
-+static int qmc_cpm1_init_resources(struct qmc *qmc, struct platform_device *pdev)
-+{
-+	struct resource *res;
-+
-+	qmc->scc_regs = devm_platform_ioremap_resource_byname(pdev, "scc_regs");
-+	if (IS_ERR(qmc->scc_regs))
-+		return PTR_ERR(qmc->scc_regs);
-+
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "scc_pram");
-+	if (!res)
-+		return -EINVAL;
-+	qmc->scc_pram_offset = res->start - get_immrbase();
-+	qmc->scc_pram = devm_ioremap_resource(qmc->dev, res);
-+	if (IS_ERR(qmc->scc_pram))
-+		return PTR_ERR(qmc->scc_pram);
-+
-+	qmc->dpram  = devm_platform_ioremap_resource_byname(pdev, "dpram");
-+	if (IS_ERR(qmc->dpram))
-+		return PTR_ERR(qmc->dpram);
-+
-+	return 0;
-+}
-+
-+static int qmc_init_resources(struct qmc *qmc, struct platform_device *pdev)
-+{
-+	return qmc_cpm1_init_resources(qmc, pdev);
-+}
-+
- static int qmc_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
- 	unsigned int nb_chans;
--	struct resource *res;
- 	struct qmc *qmc;
- 	int irq;
- 	int ret;
-@@ -1287,21 +1314,9 @@ static int qmc_probe(struct platform_device *pdev)
- 				     "Failed to get TSA serial\n");
- 	}
- 
--	qmc->scc_regs = devm_platform_ioremap_resource_byname(pdev, "scc_regs");
--	if (IS_ERR(qmc->scc_regs))
--		return PTR_ERR(qmc->scc_regs);
--
--	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "scc_pram");
--	if (!res)
--		return -EINVAL;
--	qmc->scc_pram_offset = res->start - get_immrbase();
--	qmc->scc_pram = devm_ioremap_resource(qmc->dev, res);
--	if (IS_ERR(qmc->scc_pram))
--		return PTR_ERR(qmc->scc_pram);
--
--	qmc->dpram  = devm_platform_ioremap_resource_byname(pdev, "dpram");
--	if (IS_ERR(qmc->dpram))
--		return PTR_ERR(qmc->dpram);
-+	ret = qmc_init_resources(qmc, pdev);
-+	if (ret)
-+		return ret;
- 
- 	/* Parse channels informationss */
- 	ret = qmc_of_parse_chans(qmc, np);
+diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
+index 096f1daa8f2bc..1218a3b449a80 100644
+--- a/drivers/hwmon/nct6775-platform.c
++++ b/drivers/hwmon/nct6775-platform.c
+@@ -1350,6 +1350,8 @@ static const char * const asus_msi_boards[] = {
+ 	"Pro H610M-CT D4",
+ 	"Pro H610T D4",
+ 	"Pro Q670M-C",
++	"Pro WS 600M-CL",
++	"Pro WS 665-ACE",
+ 	"Pro WS W680-ACE",
+ 	"Pro WS W680-ACE IPMI",
+ 	"Pro WS W790-ACE",
 -- 
 2.43.0
 
