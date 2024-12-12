@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-102913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26EF9EF53C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 406709EF739
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90E17189F4A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDD5417F631
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55BC223313;
-	Thu, 12 Dec 2024 17:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66DB3216E3B;
+	Thu, 12 Dec 2024 17:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhDG/U8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9b3MByP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628E04F218;
-	Thu, 12 Dec 2024 17:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B832144C4;
+	Thu, 12 Dec 2024 17:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022964; cv=none; b=l93TzOPOgfJhZnmYtoc7PFsdZMfPIdW4g3Osqf8qgnGNWDALUH9K8OBLAtlgemxdRBedznQg8w9jIQGhGSYqAQnFuExeP7jXqD4qZP03CV58fj81oxWbI9pAJUcLpFZ3zxpssDM43/z/QZsqEug2Hy3xPG4nk3G+LWxfzlr4smI=
+	t=1734024262; cv=none; b=ECxivbJAE01U/XiMd4top6xw6Ts9At27umw4MeH/fcoztd83W17sV2XKUd/wD8Nq1l9+SY873fo03dlgNDkoD3JqrQJZ+TgWuaJT0z2XDGslxUGtI8kjCclYffM3uF7rUNC5TFe6AhmeBhJ5r0fRgVQZ5CikFZdu1lFhhgxYMQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022964; c=relaxed/simple;
-	bh=fi7ePMHERJajQPV/eUbYdIcuBmvPcQz38a12nsvyrEA=;
+	s=arc-20240116; t=1734024262; c=relaxed/simple;
+	bh=ZxVMKWdOumQ9TJ1HZiwHBqeaBKXneByjBoDDL11eN/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ceb1PhP1I0rAGySoeA8RseGWUZ+l+4S3DRUIualVDaGFX1+I1/gkPCI0Fu2X3YHP9y0EGurY3Qr6Rlh/7iv6w/RuUE0Qf8uVuYxtIFLyn6q4uFPWVy/SwwgFwN0fpLOpWhjSk6bNd/9DGgNGEH+FV8eMjy4qGJmSxEBhBAcyOyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhDG/U8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA16FC4CECE;
-	Thu, 12 Dec 2024 17:02:43 +0000 (UTC)
+	 MIME-Version; b=ZW1udwtYb3V9Pb8CWmNiQCIUknW1KxD2EqV8N5VXUHQmLTOgi5eONkrpTwOqySRLsidEZn9LtXX8nk5BkJj6JhoymhC9NAGDamXEZqDzXMd/K5l6C0y6aR+SCPVKnERHDF+q08oAkzDD57qmNplney1ovwNB/fVsvFYayxLjqcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9b3MByP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38660C4CED0;
+	Thu, 12 Dec 2024 17:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022964;
-	bh=fi7ePMHERJajQPV/eUbYdIcuBmvPcQz38a12nsvyrEA=;
+	s=korg; t=1734024259;
+	bh=ZxVMKWdOumQ9TJ1HZiwHBqeaBKXneByjBoDDL11eN/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhDG/U8w7NyHa1mlrCYtrmUHv510v9T/6HWCh3XU7zXpEL8jY7JUKRb6PHKUP+9IV
-	 Wi/FAMOneMoJO6FoIa6oDRbV2Fs8Kmr9yo8OOdxM2XWLOLh2NGXmL7XDm0MPHZY+EB
-	 92b9dwus4zbsL60pFPz7aIS9knvqLrPvBxSTodq4=
+	b=n9b3MByPlhjATOLt+R1sqnizZMhGEf6VE/o/EfxBJEWwn3SkkmKXsxzFbkvoi2jgq
+	 vEi0UsPxcDn3E2Bwv/bjJO7byBuQLT7zRQt56Ith2zVKFumYIaAh2FK+9zWrCjeuiL
+	 U+2ZHjEl4xtzzSkTEMnjZcyHZ4fppo5JsWInr8DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3030e17bd57a73d39bd7@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	David Sterba <dsterba@suse.com>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 380/565] btrfs: add a sanity check for btrfs root in btrfs_search_slot()
+Subject: [PATCH 5.10 237/459] staging: greybus: uart: clean up TIOCGSERIAL
 Date: Thu, 12 Dec 2024 15:59:35 +0100
-Message-ID: <20241212144326.650079691@linuxfoundation.org>
+Message-ID: <20241212144302.939249702@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 3ed51857a50f530ac7a1482e069dfbd1298558d4 ]
+[ Upstream commit d38be702452137fa82a56ff7cc577d829add1637 ]
 
-Syzbot reports a null-ptr-deref in btrfs_search_slot().
+TIOCSSERIAL is a horrid, underspecified, legacy interface which for most
+serial devices is only useful for setting the close_delay and
+closing_wait parameters.
 
-The reproducer is using rescue=ibadroots, and the extent tree root is
-corrupted thus the extent tree is NULL.
+The xmit_fifo_size parameter could be used to set the hardware transmit
+fifo size of a legacy UART when it could not be detected, but the
+interface is limited to eight bits and should be left unset when not
+used.
 
-When scrub tries to search the extent tree to gather the needed extent
-info, btrfs_search_slot() doesn't check if the target root is NULL or
-not, resulting the null-ptr-deref.
+Similarly, baud_base could be used to set the UART base clock when it
+could not be detected but might as well be left unset when it is not
+known.
 
-Add sanity check for btrfs root before using it in btrfs_search_slot().
+The type parameter could be used to set the UART type, but is
+better left unspecified (type unknown) when it isn't used.
 
-Reported-by: syzbot+3030e17bd57a73d39bd7@syzkaller.appspotmail.com
-Fixes: 42437a6386ff ("btrfs: introduce mount option rescue=ignorebadroots")
-Link: https://syzkaller.appspot.com/bug?extid=3030e17bd57a73d39bd7
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Tested-by: syzbot+3030e17bd57a73d39bd7@syzkaller.appspotmail.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Note that some applications have historically expected TIOCGSERIAL to be
+implemented, but judging from the Debian sources, the port type not
+being PORT_UNKNOWN is only used to check for the existence of legacy
+serial ports (ttySn). Notably USB serial drivers like ftdi_sio have been
+using PORT_UNKNOWN for twenty years without any problems.
+
+Drop the bogus values provided by the greybus implementation.
+
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20210407102334.32361-8-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: fe0ebeafc3b7 ("staging: greybus: uart: Fix atomicity violation in get_serial_info()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/staging/greybus/uart.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index af6ddf1f913ae..345f205af6198 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -1763,7 +1763,7 @@ int btrfs_search_slot(struct btrfs_trans_handle *trans, struct btrfs_root *root,
- 		      const struct btrfs_key *key, struct btrfs_path *p,
- 		      int ins_len, int cow)
+diff --git a/drivers/staging/greybus/uart.c b/drivers/staging/greybus/uart.c
+index edaa83a693d27..5cdc5dff9f55b 100644
+--- a/drivers/staging/greybus/uart.c
++++ b/drivers/staging/greybus/uart.c
+@@ -610,10 +610,7 @@ static int get_serial_info(struct tty_struct *tty,
  {
--	struct btrfs_fs_info *fs_info = root->fs_info;
-+	struct btrfs_fs_info *fs_info;
- 	struct extent_buffer *b;
- 	int slot;
- 	int ret;
-@@ -1776,6 +1776,10 @@ int btrfs_search_slot(struct btrfs_trans_handle *trans, struct btrfs_root *root,
- 	int min_write_lock_level;
- 	int prev_cmp;
+ 	struct gb_tty *gb_tty = tty->driver_data;
  
-+	if (!root)
-+		return -EINVAL;
-+
-+	fs_info = root->fs_info;
- 	might_sleep();
- 
- 	lowest_level = p->lowest_level;
+-	ss->type = PORT_16550A;
+ 	ss->line = gb_tty->minor;
+-	ss->xmit_fifo_size = 16;
+-	ss->baud_base = 9600;
+ 	ss->close_delay = jiffies_to_msecs(gb_tty->port.close_delay) / 10;
+ 	ss->closing_wait =
+ 		gb_tty->port.closing_wait == ASYNC_CLOSING_WAIT_NONE ?
 -- 
 2.43.0
 
