@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-101384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7619EEC1B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C14059EF2E3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6767A1693FE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F20F16C7F8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF37C2153DF;
-	Thu, 12 Dec 2024 15:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE278226520;
+	Thu, 12 Dec 2024 16:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IV4k0now"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cp5pW+CQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C48820969B;
-	Thu, 12 Dec 2024 15:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B14213E6B;
+	Thu, 12 Dec 2024 16:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017368; cv=none; b=skwTjBQxTDnpwO9Yuxq0V6Z7M2yGzT0L3b0O/y7EzOF0I8+zmoJKplnByJR1JxnuM9OuTnybcWyNK7a7bP+uGB2wPau6UnwV38u4sYL9t//J7SkftgBuI8TGOjFSKIQmYE8L89MyZH4G60dan8EJ9SG7PW1AP6gRuS9DFngkrko=
+	t=1734021237; cv=none; b=XxHcodI+VBn8kRnMnJMa/X0X1ycCnt/h12A5MElss2ciAbNWD6VTcK2S+LmRcb+ovv2ewXtswBVeI9Hy9uo3qwmw6Tkcxw5y8xpfCqakb2C2XFF49JTcxonLG5OtRhjT8gJrVlG3R9RmxMcBMxY2xI0tDAMLBuurv/WMaXkZ48U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017368; c=relaxed/simple;
-	bh=7ntHzSNyOsN4aJZHO3XWslkt8DF1ocyuzj801oYcl9o=;
+	s=arc-20240116; t=1734021237; c=relaxed/simple;
+	bh=oyzXDGTE0H8WU8Tcw6EcbavSxdPRDlONFEJ6z68Z0b4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2BX5N2z7AHPpvObvoZPl3Dz+dXxmWdhzPhzl60zUIQe/q6uKWu7GtS7PoSEoASFuGbfxv108Gd4xukYoSc49yQXjjKgI3UL1xbFapIynecbVfbiUWTzZpzV101UEJDYSHSAKpK5AB0k964hJ9spOPZFsEgRfwyQbYz+NZ7dkFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IV4k0now; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C974C4CECE;
-	Thu, 12 Dec 2024 15:29:27 +0000 (UTC)
+	 MIME-Version; b=rWLE1DSUxB0LAou9AT/JaInhbTXiqWZdsFtHMlo7mRflyJYyao6r/gjiF2yYqLBDO5UUggs7748NC2/RD/+/0gCgDZHJDj/GsYivFhDdwx2+JrlaZCLAMYA3tKeXQY14XbTSIDsohLzzqI9yQm0JH5YE/F1eyHCwAl1fcDpEaGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cp5pW+CQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58DBC4CECE;
+	Thu, 12 Dec 2024 16:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017368;
-	bh=7ntHzSNyOsN4aJZHO3XWslkt8DF1ocyuzj801oYcl9o=;
+	s=korg; t=1734021237;
+	bh=oyzXDGTE0H8WU8Tcw6EcbavSxdPRDlONFEJ6z68Z0b4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IV4k0nowfUsMYy3rxl9rRIJipVre6Q/k+yj2vDi2a5kz1kVykFn4+tBd+SWHzxPmc
-	 dvnJnoJ1fNAgvd0LgKsBqV3Y3CC5Jx3JvToXTSkMt/myofZvffR6uKli6oDeVIHqQ1
-	 bJli17uJ+EmU61w1G/Y8AQAhT+SYIiuKvFGOUfHA=
+	b=Cp5pW+CQOnHtlSJdGKHiJfhBGds8P/6GbmKg4pJtyF5wOne24SaU7UxH8Va1y8hWn
+	 889VY/urZQr8dWUu3dVUZNmydguXm1dWXmUnHCJf+O9t9NRLbtSRFw8XuvnnCFzPz7
+	 wc5wpW4TJFI6aLKkdwCZwgDcKtj6BfeM8Wr3npz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bean Huo <beanhuo@micron.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 430/466] scsi: ufs: pltfrm: Dellocate HBA during ufshcd_pltfrm_remove()
+Subject: [PATCH 6.1 654/772] drm/vc4: hvs: Set AXI panic modes for the HVS
 Date: Thu, 12 Dec 2024 15:59:59 +0100
-Message-ID: <20241212144323.860823793@linuxfoundation.org>
+Message-ID: <20241212144416.945584664@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 897df60c16d54ad515a3d0887edab5c63da06d1f ]
+[ Upstream commit 014eccc9da7bfc76a3107fceea37dd60f1d63630 ]
 
-This will ensure that the scsi host is cleaned up properly using
-scsi_host_dev_release(). Otherwise, it may lead to memory leaks.
+The HVS can change AXI request mode based on how full the COB
+FIFOs are.
+Until now the vc4 driver has been relying on the firmware to
+have set these to sensible values.
 
-Cc: stable@vger.kernel.org # 4.4
-Fixes: 03b1781aa978 ("[SCSI] ufs: Add Platform glue driver for ufshcd")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20241111-ufs_bug_fix-v1-5-45ad8b62f02e@linaro.org
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+With HVS channel 2 now being used for live video, change the
+panic mode for all channels to be explicitly set by the driver,
+and the same for all channels.
+
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-7-dave.stevenson@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufshcd-pltfrm.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/vc4/vc4_hvs.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
-index b8dadd0a2f4c0..505572d4fa878 100644
---- a/drivers/ufs/host/ufshcd-pltfrm.c
-+++ b/drivers/ufs/host/ufshcd-pltfrm.c
-@@ -534,6 +534,7 @@ void ufshcd_pltfrm_remove(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
+index 82c8eda2d4358..88442cb65915f 100644
+--- a/drivers/gpu/drm/vc4/vc4_hvs.c
++++ b/drivers/gpu/drm/vc4/vc4_hvs.c
+@@ -910,6 +910,17 @@ static int vc4_hvs_bind(struct device *dev, struct device *master, void *data)
+ 			      SCALER_DISPCTRL_SCLEIRQ);
  
- 	pm_runtime_get_sync(&pdev->dev);
- 	ufshcd_remove(hba);
-+	ufshcd_dealloc_host(hba);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
- }
+ 
++	/* Set AXI panic mode.
++	 * VC4 panics when < 2 lines in FIFO.
++	 * VC5 panics when less than 1 line in the FIFO.
++	 */
++	dispctrl &= ~(SCALER_DISPCTRL_PANIC0_MASK |
++		      SCALER_DISPCTRL_PANIC1_MASK |
++		      SCALER_DISPCTRL_PANIC2_MASK);
++	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC0);
++	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
++	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
++
+ 	/* Set AXI panic mode.
+ 	 * VC4 panics when < 2 lines in FIFO.
+ 	 * VC5 panics when less than 1 line in the FIFO.
 -- 
 2.43.0
 
