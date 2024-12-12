@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1274D9EF1B3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22189EEC51
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D30D174F89
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B34562827BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C2B22C373;
-	Thu, 12 Dec 2024 16:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F2821764F;
+	Thu, 12 Dec 2024 15:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pll1SLtQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKdZHFBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCE0215764;
-	Thu, 12 Dec 2024 16:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2295F212F9E;
+	Thu, 12 Dec 2024 15:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020209; cv=none; b=PCKfyAkB9IPNJy8UQ2qtfMcYuOAPKjAiMrINxFJAVL2UNFYLvJABZmpZY+pIeEf6IRZq31CKdSMJs0hNEA3LidRHFgtA6EPsHrhiIjPuI7LuduUkNOTsxnVn77/Ga7nFpu2M8I6jcMWrkJ/NfFmIRnBuwgXkgcbhzLREIW4vF2s=
+	t=1734017612; cv=none; b=fHeNXZF4elr7RzBW4ev6XdnEdmF2cSJSoTHRjM8pLdHXinfpTs9WUBT96PjkEpqGa+0DviB06Xh5sXak/DBZ+qcX1jFlcpm9rUGE6Y6FjNwRtniLyVMIgHFES1O9Ijx2EStA4EIKv0y6uf3cQVS3ZCJIZcM+pul+7rwLiR17rrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020209; c=relaxed/simple;
-	bh=SMHhaBuzvtRcHC9c4aIhDI7rWM3WscqLBOHBS6N8OxI=;
+	s=arc-20240116; t=1734017612; c=relaxed/simple;
+	bh=kgUrOAM6RwnMxshPyhqs07mWvKCKBikcrQazPWAd2ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ukcgAmBaKpAEHzcMf2o/HR5cZV8vuWq2RXMC0PyhpzswWzECyRMRAY3RSycm8cKOjIRtJ5kAPyppCoHQc8YMyrtUosbt/2zwKTyhE1LgpIzAsuJogi9BhgDYXVshFlTU9S+0mdIa/oIDPJ4JbEnEtnU6M0Dfm5b0x1lvum2eVKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pll1SLtQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20FCC4CED0;
-	Thu, 12 Dec 2024 16:16:48 +0000 (UTC)
+	 MIME-Version; b=N8PXaALwJ9Ottw50JFBG4hL85MnDuW1qHvgynacjvwt7dE3OBnjfpn0mabZAuvWoNiX1q8qkBv9zHgHoOI/QsMvKu/s87K1dSiGKOnVkN8GJiejoda7pG/jhqjT6s9OVRK+JPAvdWd6GrZVJt0HYyMZprnOEbLIiL8/cYR4jcn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKdZHFBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FF4C4CECE;
+	Thu, 12 Dec 2024 15:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020209;
-	bh=SMHhaBuzvtRcHC9c4aIhDI7rWM3WscqLBOHBS6N8OxI=;
+	s=korg; t=1734017612;
+	bh=kgUrOAM6RwnMxshPyhqs07mWvKCKBikcrQazPWAd2ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pll1SLtQGVqv0IFT5+q0SEZ7FpAwMFOqhUOLnXRdk2XJYbc2ywa6vioodPh4Qthdk
-	 ysG0whE6N/RLIXPxJCT/Ue8zjWIBNtbenRExLryG04xjg2SyQYR5jDHo92ENGNF1bm
-	 VNCWOYnWGhG0hCeMVogWVpjTpB5LkLqcwnnjXZV8=
+	b=aKdZHFBGDmEMy9p51UOsL2sx3yYQm/9yyr9ed7prOpRfy0LGiMCSUbmwRni6LA2EN
+	 926kethLRwYWGmie01zdtzwIkQRQssAJW8ENmQr+lkPTpnv7YGnaSe3t/uX4S59Eeo
+	 On59VNEfSniL/m/aAr/kD5S6Bt7Af+FS5brehqcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.1 406/772] arm64: tls: Fix context-switching of tpidrro_el0 when kpti is enabled
+	Ivan Solodovnikov <solodovnikov.ia@phystech.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 032/356] dccp: Fix memory leak in dccp_feat_change_recv
 Date: Thu, 12 Dec 2024 15:55:51 +0100
-Message-ID: <20241212144406.700101541@linuxfoundation.org>
+Message-ID: <20241212144245.894762534@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
 
-commit 67ab51cbdfee02ef07fb9d7d14cc0bf6cb5a5e5c upstream.
+[ Upstream commit 22be4727a8f898442066bcac34f8a1ad0bc72e14 ]
 
-Commit 18011eac28c7 ("arm64: tls: Avoid unconditional zeroing of
-tpidrro_el0 for native tasks") tried to optimise the context switching
-of tpidrro_el0 by eliding the clearing of the register when switching
-to a native task with kpti enabled, on the erroneous assumption that
-the kpti trampoline entry code would already have taken care of the
-write.
+If dccp_feat_push_confirm() fails after new value for SP feature was accepted
+without reconciliation ('entry == NULL' branch), memory allocated for that value
+with dccp_feat_clone_sp_val() is never freed.
 
-Although the kpti trampoline does zero the register on entry from a
-native task, the check in tls_thread_switch() is on the *next* task and
-so we can end up leaving a stale, non-zero value in the register if the
-previous task was 32-bit.
+Here is the kmemleak stack for this:
 
-Drop the broken optimisation and zero tpidrro_el0 unconditionally when
-switching to a native 64-bit task.
+unreferenced object 0xffff88801d4ab488 (size 8):
+  comm "syz-executor310", pid 1127, jiffies 4295085598 (age 41.666s)
+  hex dump (first 8 bytes):
+    01 b4 4a 1d 80 88 ff ff                          ..J.....
+  backtrace:
+    [<00000000db7cabfe>] kmemdup+0x23/0x50 mm/util.c:128
+    [<0000000019b38405>] kmemdup include/linux/string.h:465 [inline]
+    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:371 [inline]
+    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:367 [inline]
+    [<0000000019b38405>] dccp_feat_change_recv net/dccp/feat.c:1145 [inline]
+    [<0000000019b38405>] dccp_feat_parse_options+0x1196/0x2180 net/dccp/feat.c:1416
+    [<00000000b1f6d94a>] dccp_parse_options+0xa2a/0x1260 net/dccp/options.c:125
+    [<0000000030d7b621>] dccp_rcv_state_process+0x197/0x13d0 net/dccp/input.c:650
+    [<000000001f74c72e>] dccp_v4_do_rcv+0xf9/0x1a0 net/dccp/ipv4.c:688
+    [<00000000a6c24128>] sk_backlog_rcv include/net/sock.h:1041 [inline]
+    [<00000000a6c24128>] __release_sock+0x139/0x3b0 net/core/sock.c:2570
+    [<00000000cf1f3a53>] release_sock+0x54/0x1b0 net/core/sock.c:3111
+    [<000000008422fa23>] inet_wait_for_connect net/ipv4/af_inet.c:603 [inline]
+    [<000000008422fa23>] __inet_stream_connect+0x5d0/0xf70 net/ipv4/af_inet.c:696
+    [<0000000015b6f64d>] inet_stream_connect+0x53/0xa0 net/ipv4/af_inet.c:735
+    [<0000000010122488>] __sys_connect_file+0x15c/0x1a0 net/socket.c:1865
+    [<00000000b4b70023>] __sys_connect+0x165/0x1a0 net/socket.c:1882
+    [<00000000f4cb3815>] __do_sys_connect net/socket.c:1892 [inline]
+    [<00000000f4cb3815>] __se_sys_connect net/socket.c:1889 [inline]
+    [<00000000f4cb3815>] __x64_sys_connect+0x6e/0xb0 net/socket.c:1889
+    [<00000000e7b1e839>] do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+    [<0000000055e91434>] entry_SYSCALL_64_after_hwframe+0x67/0xd1
 
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: stable@vger.kernel.org
-Fixes: 18011eac28c7 ("arm64: tls: Avoid unconditional zeroing of tpidrro_el0 for native tasks")
-Signed-off-by: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20241114095332.23391-1-will@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Clean up the allocated memory in case of dccp_feat_push_confirm() failure
+and bail out with an error reset code.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: e77b8363b2ea ("dccp: Process incoming Change feature-negotiation options")
+Signed-off-by: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
+Link: https://patch.msgid.link/20241126143902.190853-1-solodovnikov.ia@phystech.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/process.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dccp/feat.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/process.c
-+++ b/arch/arm64/kernel/process.c
-@@ -426,7 +426,7 @@ static void tls_thread_switch(struct tas
+diff --git a/net/dccp/feat.c b/net/dccp/feat.c
+index 54086bb05c42c..f7554dcdaaba9 100644
+--- a/net/dccp/feat.c
++++ b/net/dccp/feat.c
+@@ -1166,8 +1166,12 @@ static u8 dccp_feat_change_recv(struct list_head *fn, u8 is_mandatory, u8 opt,
+ 			goto not_valid_or_not_known;
+ 		}
  
- 	if (is_compat_thread(task_thread_info(next)))
- 		write_sysreg(next->thread.uw.tp_value, tpidrro_el0);
--	else if (!arm64_kernel_unmapped_at_el0())
-+	else
- 		write_sysreg(0, tpidrro_el0);
+-		return dccp_feat_push_confirm(fn, feat, local, &fval);
++		if (dccp_feat_push_confirm(fn, feat, local, &fval)) {
++			kfree(fval.sp.vec);
++			return DCCP_RESET_CODE_TOO_BUSY;
++		}
  
- 	write_sysreg(*task_user_tls(next), tpidr_el0);
++		return 0;
+ 	} else if (entry->state == FEAT_UNSTABLE) {	/* 6.6.2 */
+ 		return 0;
+ 	}
+-- 
+2.43.0
+
 
 
 
