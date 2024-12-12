@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750789EF37F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FEE79EF0A5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C374A179A62
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB249189BECD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC51723588C;
-	Thu, 12 Dec 2024 16:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493CE236956;
+	Thu, 12 Dec 2024 16:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVtDgRqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTCdzYXH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BA222687A;
-	Thu, 12 Dec 2024 16:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0481A2210E5;
+	Thu, 12 Dec 2024 16:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021756; cv=none; b=cLaEGCL66fALABLPB15H0PFhNjIukI6f6TRTz/2dTnEw2oN7lqXpFw4FYWivyH8qGZqL8a2+B/w/YSySS19RwV7l2TW4+2ktfHDDk7pxfJAzKT7pyr3zmoSb0LytNEyUtL4kHq88OhQ5qR6I4vhJa5ZRBrWw4fnbnjr+/pKpMjQ=
+	t=1734019801; cv=none; b=jgEmUHa0ydWtfDHjJJScv5EaoVNUMKfE5CmZzJ+BlURa+ybDlx7RW58EZrMqQ7aI5mo8wEfIz6E8cNQs2DcMDkdLU8CiOJ8qFPT3zeR2YRTxGx8BefOfJh1DAzw1R+I0KZrsxrOakz/hCHlJOdAtnJ0naBjSQatsvn4XSjC0hQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021756; c=relaxed/simple;
-	bh=eXcVip5XV+xa1ZjtIH3YOEZjw2bpgiGhQKw8B7yhFhA=;
+	s=arc-20240116; t=1734019801; c=relaxed/simple;
+	bh=0V6lT0vs3qHe0ZQUZdKYqwuZW3HE+UYB2TLN0FJVCZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Civ9zy+PwugM3xXiw8tVuKy7UsMHU93hlJNMGPIiFFP9fNHKgCvr9X2npZN6Un2ivL/VV0IJ7k+eLnSUmOMQAtK4OOxKO+8R4lRQzk/GADyYEgG8fFUNps2/BFnLKKjwBYaGOzEWCgd46a6FSbDCmABJtChK8oiXTnU0e9+8dYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVtDgRqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB42C4CECE;
-	Thu, 12 Dec 2024 16:42:35 +0000 (UTC)
+	 MIME-Version; b=pW1pJ8h9A/Cq0/3X6szt86tsGtqeHH0UItZz6FrfXIrUadPQMON5sXW0p7wV7J7+wi9e6NbKmwTYDT3RZbdjrx5mCICuF7cDNawyfszsz2XnlqU+diUjSgHU3hqGx8H9LPGYHUQhoZNLtlUA6gwpYIEnHO3I6oZ0mTBaGyNXe3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTCdzYXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C222C4CECE;
+	Thu, 12 Dec 2024 16:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021756;
-	bh=eXcVip5XV+xa1ZjtIH3YOEZjw2bpgiGhQKw8B7yhFhA=;
+	s=korg; t=1734019800;
+	bh=0V6lT0vs3qHe0ZQUZdKYqwuZW3HE+UYB2TLN0FJVCZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVtDgRqQ7cBQORvSU2+ereYdBdZ2wJp1uwJepmW0lmdP2EUB4kCfFB5YUuvMOX4QR
-	 BCr96SR+YuKLXS5L4Dru1ehXlBr+ehGqcWQx+6DknY295IbG3/jwMQTYO/UI2P7d9C
-	 5omSOfgOqn6rgkA5FZiVaXhW5jTYoC7cAo5YN95U=
+	b=vTCdzYXHBkYQo74zLl0q24A9GMHW/TM2Cnw4ppP7OpISExtaM17/9qitE+e1lcdCx
+	 ulsHHopqylXUFNidr9yM4EcAuyLjV/qUlhhqKiwxRc6nwRxUYMs5561VJiSmuFZWCk
+	 3Kruvf4L8sxasqiAqhLRfhYJ9BoL5YWVr90efJig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/565] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet
+Subject: [PATCH 6.1 302/772] LoongArch: BPF: Sign-extend return values
 Date: Thu, 12 Dec 2024 15:54:07 +0100
-Message-ID: <20241212144313.552743097@linuxfoundation.org>
+Message-ID: <20241212144402.382545650@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 0107f28f135231da22a9ad5756bb16bd5cada4d5 ]
+[ Upstream commit 73c359d1d356cf10236ccd358bd55edab33e9424 ]
 
-The Vexia Edu Atla 10 tablet mostly uses the BYTCR tablet defaults,
-but as happens on more models it is using IN1 instead of IN3 for
-its internal mic and JD_SRC_JD2_IN4N instead of JD_SRC_JD1_IN4P
-for jack-detection.
+(1) Description of Problem:
 
-Add a DMI quirk for this to fix the internal-mic and jack-detection.
+When testing BPF JIT with the latest compiler toolchains on LoongArch,
+there exist some strange failed test cases, dmesg shows something like
+this:
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241024211615.79518-2-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  # dmesg -t | grep FAIL | head -1
+  ... ret -3 != -3 (0xfffffffd != 0xfffffffd)FAIL ...
+
+(2) Steps to Reproduce:
+
+  # echo 1 > /proc/sys/net/core/bpf_jit_enable
+  # modprobe test_bpf
+
+(3) Additional Info:
+
+There are no failed test cases compiled with the lower version of GCC
+such as 13.3.0, while the problems only appear with higher version of
+GCC such as 14.2.0.
+
+This is because the problems were hidden by the lower version of GCC due
+to redundant sign extension instructions generated by compiler, but with
+optimization of higher version of GCC, the sign extension instructions
+have been removed.
+
+(4) Root Cause Analysis:
+
+The LoongArch architecture does not expose sub-registers, and hold all
+32-bit values in a sign-extended format. While BPF, on the other hand,
+exposes sub-registers, and use zero-extension (similar to arm64/x86).
+
+This has led to some subtle bugs, where a BPF JITted program has not
+sign-extended the a0 register (return value in LoongArch land), passed
+the return value up the kernel, for example:
+
+  | int from_bpf(void);
+  |
+  | long foo(void)
+  | {
+  |    return from_bpf();
+  | }
+
+Here, a0 would be 0xffffffff instead of the expected 0xffffffffffffffff.
+
+Internally, the LoongArch JIT uses a5 as a dedicated register for BPF
+return values. That is to say, the LoongArch BPF uses a5 for BPF return
+values, which are zero-extended, whereas the LoongArch ABI uses a0 which
+is sign-extended.
+
+(5) Final Solution:
+
+Keep a5 zero-extended, but explicitly sign-extend a0 (which is used
+outside BPF land). Because libbpf currently defines the return value
+of an ebpf program as a 32-bit unsigned integer, just use addi.w to
+extend bit 31 into bits 63 through 32 of a5 to a0. This is similar to
+commit 2f1b0d3d7331 ("riscv, bpf: Sign-extend return values").
+
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/loongarch/net/bpf_jit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 899a8435a1eb8..8706fef8ccce8 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -1102,6 +1102,21 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{	/* Vexia Edu Atla 10 tablet */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
-+		},
-+		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
-+					BYT_RT5640_JD_SRC_JD2_IN4N |
-+					BYT_RT5640_OVCD_TH_2000UA |
-+					BYT_RT5640_OVCD_SF_0P75 |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF2 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{	/* Voyo Winpad A15 */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index 4e86441e63196..2567916370b4e 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -179,7 +179,7 @@ static void __build_epilogue(struct jit_ctx *ctx, bool is_tail_call)
+ 
+ 	if (!is_tail_call) {
+ 		/* Set return value */
+-		move_reg(ctx, LOONGARCH_GPR_A0, regmap[BPF_REG_0]);
++		emit_insn(ctx, addiw, LOONGARCH_GPR_A0, regmap[BPF_REG_0], 0);
+ 		/* Return to the caller */
+ 		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, LOONGARCH_GPR_ZERO, 0);
+ 	} else {
 -- 
 2.43.0
 
