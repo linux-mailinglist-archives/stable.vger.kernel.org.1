@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF169EEA76
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:14:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 454059EF3E3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 239BC16BDCE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6A817E393
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC16E218EB5;
-	Thu, 12 Dec 2024 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987D3239BAF;
+	Thu, 12 Dec 2024 16:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tP66DAgN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysNiRpV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D41218587;
-	Thu, 12 Dec 2024 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53148239BAA;
+	Thu, 12 Dec 2024 16:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016145; cv=none; b=uqotZfZsBg5yml5ZfgSDHr7Jg9CoDagI2vHab+HPyR1jzsZbJjB32aA+dcPiZkMl5oe2VhEMD6/f+U6I9miEggzVd0+2EvN5Cp3pl2xGR2MZVSTCCT7NC7akLzJr7DnjhyMd5krOwmTFGgvTyZg7mfQl2CuLYqQHfANVwsnDm8o=
+	t=1734022003; cv=none; b=Stm0XxWUEOkNlKfNNJfxK9poRWMnq7MxMxtAF8ZQDg8nAa4UYVG4/5eMaQbOcG/8ioBj7VVaV78UcIWgTJj/VzLOoXoeqZVoA/n81LCPbpFyEL84QACp6Fued2RTffasIGZUtqmGj3UNXqIyiEDysYomyY4xXtzmTBdb7sMxAU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016145; c=relaxed/simple;
-	bh=OKuHh8HENHJsMxuSSPhOmRA1MFExL0CKdoB1CaU1Dww=;
+	s=arc-20240116; t=1734022003; c=relaxed/simple;
+	bh=/FINlOcDb4yFqWvfhGXJODOPl5jSmRVEIvK96JxSd5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQfx/mDSlnJNzSqy2q4UpugkOy7vBdvA7qcE0PdWgvZXowfTTYV3VMQ73zKeffbhKZJO/OgbL3g18QNeOdE/rCTHTfjekanbBzjd64mj3ktOubY6qjelmjlXuvU2cDUDz22lkRMpiRe834KKqTbMfsUUelQm7myYX5NzaetpOms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tP66DAgN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F99DC4CECE;
-	Thu, 12 Dec 2024 15:09:04 +0000 (UTC)
+	 MIME-Version; b=FaEfSg4etSad6Wq0sV0pnNtqrSeyNBgm+ChaGMSAMnvitHRpUHTKpQO+PjLOkNXVxh9SDGZEsJVonhq+Vj4ReFG2noYUO4ItvhmxL2FdGnO9U+9BysoJzA6cBqLvDLf3L6F5m4vOYpphEYMB919emd/BQ2Ec61PyBu0EVl4h5vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysNiRpV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4444C4CECE;
+	Thu, 12 Dec 2024 16:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016144;
-	bh=OKuHh8HENHJsMxuSSPhOmRA1MFExL0CKdoB1CaU1Dww=;
+	s=korg; t=1734022003;
+	bh=/FINlOcDb4yFqWvfhGXJODOPl5jSmRVEIvK96JxSd5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tP66DAgNNlMogtM5kGcF8dQ7/cex4WVfvqBxdj6lolf1yz9as0/zw4BHRpc4xEJ2F
-	 wJLZFx/Y9IMSvHoA53Pk1csC/nLoXB7AaOt7NAfkTW8An4njN6K6PXCKO7M1wtBZo4
-	 ulAoPMNqk+Nst4J+Qs3G2oxPSrYOqvPhsIeb3/IY=
+	b=ysNiRpV8S2En5oy91g1/0GO2y+wlWw4WTNkIxFddZv+3M7KF5/Donq3g19BObB0LB
+	 zZ/QCkPhH55k9x9fNW0tvu2+K7oI0I83TTS8kX/KTSmIGJlhKm8bPp30lE6SxvcXzk
+	 ATfYTjLlVuzLU3pSxxPwSsTY6IWz3VK+BYJdtfB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 145/466] scsi: qla2xxx: Fix abort in bsg timeout
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 119/565] Revert "cgroup: Fix memory leak caused by missing cgroup_bpf_offline"
 Date: Thu, 12 Dec 2024 15:55:14 +0100
-Message-ID: <20241212144312.526031157@linuxfoundation.org>
+Message-ID: <20241212144316.189382107@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,232 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit c423263082ee8ccfad59ab33e3d5da5dc004c21e upstream.
+[ Upstream commit feb301c60970bd2a1310a53ce2d6e4375397a51b ]
 
-Current abort of bsg on timeout prematurely clears the
-outstanding_cmds[]. Abort does not allow FW to return the IOCB/SRB. In
-addition, bsg_job_done() is not called to return the BSG (i.e. leak).
+This reverts commit 04f8ef5643bcd8bcde25dfdebef998aea480b2ba.
 
-Abort the outstanding bsg/SRB and wait for the completion. The
-completion IOCB will wake up the bsg_timeout thread. If abort is not
-successful, then driver will forcibly call bsg_job_done() and free the
-srb.
+Only cgroup v2 can be attached by cgroup by BPF programs. Revert this
+commit and cgroup_bpf_inherit and cgroup_bpf_offline won't be called in
+cgroup v1. The memory leak issue will be fixed with next patch.
 
-Err Inject:
-
- - qaucli -z
- - assign CT Passthru IOCB's NportHandle with another initiator
-   nport handle to trigger timeout.  Remote port will drop CT request.
- - bsg_job_done is properly called as part of cleanup
-
-kernel: qla2xxx [0000:21:00.1]-7012:7: qla2x00_process_ct : 286 : Error Inject.
-kernel: qla2xxx [0000:21:00.1]-7016:7: bsg rqst type: FC_BSG_HST_CT else type: 101 - loop-id=1 portid=fffffa.
-kernel: qla2xxx [0000:21:00.1]-70bb:7: qla24xx_bsg_timeout CMD timeout. bsg ptr ffff9971a42f0838 msgcode 80000004 vendor cmd fa010000
-kernel: qla2xxx [0000:21:00.1]-507c:7: Abort command issued - hdl=4b, type=5
-kernel: qla2xxx [0000:21:00.1]-5040:7: ELS-CT pass-through-ct pass-through error hdl=4b comp_status-status=0x5 error subcode 1=0x0 error subcode 2=0xaf882e80.
-kernel: qla2xxx [0000:21:00.1]-7009:7: qla2x00_bsg_job_done: sp hdl 4b, result=70000 bsg ptr ffff9971a42f0838
-kernel: qla2xxx [0000:21:00.1]-802c:7: Aborting bsg ffff9971a42f0838 sp=ffff99760b87ba80 handle=4b rval=0
-kernel: qla2xxx [0000:21:00.1]-708a:7: bsg abort success. bsg ffff9971a42f0838 sp=ffff99760b87ba80 handle=0x4b
-kernel: qla2xxx [0000:21:00.1]-7012:7: qla2x00_process_ct : 286 : Error Inject.
-kernel: qla2xxx [0000:21:00.1]-7016:7: bsg rqst type: FC_BSG_HST_CT else type: 101 - loop-id=1 portid=fffffa.
-kernel: qla2xxx [0000:21:00.1]-70bb:7: qla24xx_bsg_timeout CMD timeout. bsg ptr ffff9971a42f43b8 msgcode 80000004 vendor cmd fa010000
-kernel: qla2xxx [0000:21:00.1]-7012:7: qla_bsg_found : 2206 : Error Inject 2.
-kernel: qla2xxx [0000:21:00.1]-802c:7: Aborting bsg ffff9971a42f43b8 sp=ffff99762c304440 handle=5e rval=5
-kernel: qla2xxx [0000:21:00.1]-704f:7: bsg abort fail.  bsg=ffff9971a42f43b8 sp=ffff99762c304440 rval=5.
-kernel: qla2xxx [0000:21:00.1]-7051:7: qla_bsg_found bsg_job_done : bsg ffff9971a42f43b8 result 0xfffffffa sp ffff99762c304440.
-
-Cc: stable@vger.kernel.org
-Fixes: c449b4198701 ("scsi: qla2xxx: Use QP lock to search for bsg")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-2-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04f8ef5643bc ("cgroup: Fix memory leak caused by missing cgroup_bpf_offline")
+Link: https://lore.kernel.org/cgroups/aka2hk5jsel5zomucpwlxsej6iwnfw4qu5jkrmjhyfhesjlfdw@46zxhg5bdnr7/
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |  114 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 92 insertions(+), 22 deletions(-)
+ kernel/cgroup/cgroup.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -24,6 +24,7 @@ void qla2x00_bsg_job_done(srb_t *sp, int
- {
- 	struct bsg_job *bsg_job = sp->u.bsg_job;
- 	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
-+	struct completion *comp = sp->comp;
- 
- 	ql_dbg(ql_dbg_user, sp->vha, 0x7009,
- 	    "%s: sp hdl %x, result=%x bsg ptr %p\n",
-@@ -35,6 +36,9 @@ void qla2x00_bsg_job_done(srb_t *sp, int
- 	bsg_reply->result = res;
- 	bsg_job_done(bsg_job, bsg_reply->result,
- 		       bsg_reply->reply_payload_rcv_len);
-+
-+	if (comp)
-+		complete(comp);
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 9ba87c5de1a87..7346197f464cb 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -2228,10 +2228,8 @@ static void cgroup_kill_sb(struct super_block *sb)
+ 	 * And don't kill the default root.
+ 	 */
+ 	if (list_empty(&root->cgrp.self.children) && root != &cgrp_dfl_root &&
+-	    !percpu_ref_is_dying(&root->cgrp.self.refcnt)) {
+-		cgroup_bpf_offline(&root->cgrp);
++	    !percpu_ref_is_dying(&root->cgrp.self.refcnt))
+ 		percpu_ref_kill(&root->cgrp.self.refcnt);
+-	}
+ 	cgroup_put(&root->cgrp);
+ 	kernfs_kill_sb(sb);
  }
- 
- void qla2x00_bsg_sp_free(srb_t *sp)
-@@ -3061,7 +3065,7 @@ skip_chip_chk:
- 
- static bool qla_bsg_found(struct qla_qpair *qpair, struct bsg_job *bsg_job)
- {
--	bool found = false;
-+	bool found, do_bsg_done;
- 	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
- 	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
- 	struct qla_hw_data *ha = vha->hw;
-@@ -3069,6 +3073,11 @@ static bool qla_bsg_found(struct qla_qpa
- 	int cnt;
- 	unsigned long flags;
- 	struct req_que *req;
-+	int rval;
-+	DECLARE_COMPLETION_ONSTACK(comp);
-+	uint32_t ratov_j;
-+
-+	found = do_bsg_done = false;
- 
- 	spin_lock_irqsave(qpair->qp_lock_ptr, flags);
- 	req = qpair->req;
-@@ -3080,42 +3089,104 @@ static bool qla_bsg_found(struct qla_qpa
- 		     sp->type == SRB_ELS_CMD_HST ||
- 		     sp->type == SRB_ELS_CMD_HST_NOLOGIN) &&
- 		    sp->u.bsg_job == bsg_job) {
--			req->outstanding_cmds[cnt] = NULL;
--			spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
--
--			if (!ha->flags.eeh_busy && ha->isp_ops->abort_command(sp)) {
--				ql_log(ql_log_warn, vha, 0x7089,
--						"mbx abort_command failed.\n");
--				bsg_reply->result = -EIO;
--			} else {
--				ql_dbg(ql_dbg_user, vha, 0x708a,
--						"mbx abort_command success.\n");
--				bsg_reply->result = 0;
--			}
--			/* ref: INIT */
--			kref_put(&sp->cmd_kref, qla2x00_sp_release);
- 
- 			found = true;
--			goto done;
-+			sp->comp = &comp;
-+			break;
- 		}
- 	}
- 	spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
- 
--done:
--	return found;
-+	if (!found)
-+		return false;
-+
-+	if (ha->flags.eeh_busy) {
-+		/* skip over abort.  EEH handling will return the bsg. Wait for it */
-+		rval = QLA_SUCCESS;
-+		ql_dbg(ql_dbg_user, vha, 0x802c,
-+			"eeh encounter. bsg %p sp=%p handle=%x \n",
-+			bsg_job, sp, sp->handle);
-+	} else {
-+		rval = ha->isp_ops->abort_command(sp);
-+		ql_dbg(ql_dbg_user, vha, 0x802c,
-+			"Aborting bsg %p sp=%p handle=%x rval=%x\n",
-+			bsg_job, sp, sp->handle, rval);
-+	}
-+
-+	switch (rval) {
-+	case QLA_SUCCESS:
-+		/* Wait for the command completion. */
-+		ratov_j = ha->r_a_tov / 10 * 4 * 1000;
-+		ratov_j = msecs_to_jiffies(ratov_j);
-+
-+		if (!wait_for_completion_timeout(&comp, ratov_j)) {
-+			ql_log(ql_log_info, vha, 0x7089,
-+				"bsg abort timeout.  bsg=%p sp=%p handle %#x .\n",
-+				bsg_job, sp, sp->handle);
-+
-+			do_bsg_done = true;
-+		} else {
-+			/* fw had returned the bsg */
-+			ql_dbg(ql_dbg_user, vha, 0x708a,
-+				"bsg abort success. bsg %p sp=%p handle=%#x\n",
-+				bsg_job, sp, sp->handle);
-+			do_bsg_done = false;
-+		}
-+		break;
-+	default:
-+		ql_log(ql_log_info, vha, 0x704f,
-+			"bsg abort fail.  bsg=%p sp=%p rval=%x.\n",
-+			bsg_job, sp, rval);
-+
-+		do_bsg_done = true;
-+		break;
-+	}
-+
-+	if (!do_bsg_done)
-+		return true;
-+
-+	spin_lock_irqsave(qpair->qp_lock_ptr, flags);
-+	/*
-+	 * recheck to make sure it's still the same bsg_job due to
-+	 * qp_lock_ptr was released earlier.
-+	 */
-+	if (req->outstanding_cmds[cnt] &&
-+	    req->outstanding_cmds[cnt]->u.bsg_job != bsg_job) {
-+		/* fw had returned the bsg */
-+		spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
-+		return true;
-+	}
-+	req->outstanding_cmds[cnt] = NULL;
-+	spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
-+
-+	/* ref: INIT */
-+	sp->comp = NULL;
-+	kref_put(&sp->cmd_kref, qla2x00_sp_release);
-+	bsg_reply->result = -ENXIO;
-+	bsg_reply->reply_payload_rcv_len = 0;
-+
-+	ql_dbg(ql_dbg_user, vha, 0x7051,
-+	       "%s bsg_job_done : bsg %p result %#x sp %p.\n",
-+	       __func__, bsg_job, bsg_reply->result, sp);
-+
-+	bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
-+
-+	return true;
- }
- 
- int
- qla24xx_bsg_timeout(struct bsg_job *bsg_job)
- {
--	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
-+	struct fc_bsg_request *bsg_request = bsg_job->request;
- 	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
- 	struct qla_hw_data *ha = vha->hw;
- 	int i;
- 	struct qla_qpair *qpair;
- 
--	ql_log(ql_log_info, vha, 0x708b, "%s CMD timeout. bsg ptr %p.\n",
--	    __func__, bsg_job);
-+	ql_log(ql_log_info, vha, 0x708b,
-+	       "%s CMD timeout. bsg ptr %p msgcode %x vendor cmd %x\n",
-+	       __func__, bsg_job, bsg_request->msgcode,
-+	       bsg_request->rqst_data.h_vendor.vendor_cmd[0]);
- 
- 	if (qla2x00_isp_reg_stat(ha)) {
- 		ql_log(ql_log_info, vha, 0x9007,
-@@ -3136,7 +3207,6 @@ qla24xx_bsg_timeout(struct bsg_job *bsg_
- 	}
- 
- 	ql_log(ql_log_info, vha, 0x708b, "SRB not found to abort.\n");
--	bsg_reply->result = -ENXIO;
- 
- done:
- 	return 0;
+-- 
+2.43.0
+
 
 
 
