@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A549EF37A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC5E9EEC95
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27E522810EC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97E692846B4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AE4226554;
-	Thu, 12 Dec 2024 16:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EFE217F30;
+	Thu, 12 Dec 2024 15:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfkd5M69"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptgh8w9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556F8222D57;
-	Thu, 12 Dec 2024 16:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F161E21578B;
+	Thu, 12 Dec 2024 15:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022391; cv=none; b=QPrLZp0QI+gkyCldUSJnjOip4di28svG6CgAwU24RpM2G/XlJUMfRk19yZ565EZEQDFPylBsVenwLy9pX4oGxSWQ5TDRia20epOec2pvNR4kSw3nPx2kaOIzly3lD7yGdvhUXA85vocFHPQLeSjitCA50DzBAWd8zSf3uPidp5I=
+	t=1734017762; cv=none; b=UNBGrpIMVm/oGmr27Y2o74AtLwhK+A+Kmx95Hea+KOSMNiVcKxAgahBdMptLNm98QOaiI72Wr++pRjsnvSUxibuGU0w1mHiMTKk6vpDXI+neb9tIqQUsQkRPNk3Mq8GdG/VCf2Heq50FFFm0W60TWb58sotVRhuE7DUnBX965b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022391; c=relaxed/simple;
-	bh=h6S/vdoicKL6Nowsrs+3aqGnumIuK8OAN8idBG4j8Is=;
+	s=arc-20240116; t=1734017762; c=relaxed/simple;
+	bh=7FjQUMnlaWtGsD/X4vwP1SawEhYb8sDzKZpvUVY5aZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYG0zSxRPUnT7gCw/jfzweLcCeZXRjoTf8NsBHaoKEnoDjwbvYFsym3EaPzuI17G9nMlP8oBhg+6+HTk9gDXDQJDBV1VJ47B37hWZmyuh1qOfPSi0DwpK8jxwCM+VyLnAc6tN/IQnsiEU2Jqqbc/bfw26/+DzFUAuSjeP9+V2Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfkd5M69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5A4C4CED3;
-	Thu, 12 Dec 2024 16:53:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FsYWF/c1yckdryH/PhxbQiw1WOvFdhN+IQRDwH4Re771vCXbHe5GV+piBRqfdgSHgT27C0J0v6vSzpJEVSLGkbJA66sbCvEovc4gIq7ZIy9Ys7gsw2a8xDpC8VaVxT/l9of3fSW59uahD7wbw0TnoD7EhI6+cL8cFFbTAsudLkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptgh8w9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCE8C4CECE;
+	Thu, 12 Dec 2024 15:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022391;
-	bh=h6S/vdoicKL6Nowsrs+3aqGnumIuK8OAN8idBG4j8Is=;
+	s=korg; t=1734017761;
+	bh=7FjQUMnlaWtGsD/X4vwP1SawEhYb8sDzKZpvUVY5aZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tfkd5M69kcNc3Ps0oM+zs7RNGadjqF77VbC1R5ejTrwMkfUbi2qZf2Hkkow40959M
-	 MfYNS8HRaTVa8eLE/NaoUCZ0XAAyW0LAAZDYkKrakPrnx/mqGpYqXU0ybDwZFi0bco
-	 FovoKgVkjG+Egy1Agbyw0mRCNXuwQFpxzVo18Gb8=
+	b=ptgh8w9pQT+xbe8TcPiBCLokxGLZEybNkmQcYutK3JNWfsddhbyfDjNfFHaH8stqu
+	 /OJWBkpYXLBRrBgR/XjpxOiZ8XTLXfcIhy8ENNtAW8N/1afoC5I/vYQ2tGmUethvEy
+	 lWsWNO8qLwPqOblKBMTlnHo+JqcG5+VW/TfMfWzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 229/565] scsi: qedi: Fix a possible memory leak in qedi_alloc_and_init_sb()
+Subject: [PATCH 6.6 105/356] i3c: master: Extend address status bit to 4 and add I3C_ADDR_SLOT_EXT_DESIRED
 Date: Thu, 12 Dec 2024 15:57:04 +0100
-Message-ID: <20241212144320.539851086@linuxfoundation.org>
+Message-ID: <20241212144248.787447841@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,198 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 95bbdca4999bc59a72ebab01663d421d6ce5775d ]
+[ Upstream commit 2f552fa280590e61bd3dbe66a7b54b99caa642a4 ]
 
-Hook "qedi_ops->common->sb_init = qed_sb_init" does not release the DMA
-memory sb_virt when it fails. Add dma_free_coherent() to free it. This
-is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
+Extend the address status bit to 4 and introduce the
+I3C_ADDR_SLOT_EXT_DESIRED macro to indicate that a device prefers a
+specific address. This is generally set by the 'assigned-address' in the
+device tree source (dts) file.
 
-Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/r/20241026125711.484-3-thunder.leizhen@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+ ┌────┬─────────────┬───┬─────────┬───┐
+ │S/Sr│ 7'h7E RnW=0 │ACK│ ENTDAA  │ T ├────┐
+ └────┴─────────────┴───┴─────────┴───┘    │
+ ┌─────────────────────────────────────────┘
+ │  ┌──┬─────────────┬───┬─────────────────┬────────────────┬───┬─────────┐
+ └─►│Sr│7'h7E RnW=1  │ACK│48bit UID BCR DCR│Assign 7bit Addr│PAR│ ACK/NACK│
+    └──┴─────────────┴───┴─────────────────┴────────────────┴───┴─────────┘
+
+Some master controllers (such as HCI) need to prepare the entire above
+transaction before sending it out to the I3C bus. This means that a 7-bit
+dynamic address needs to be allocated before knowing the target device's
+UID information.
+
+However, some I3C targets may request specific addresses (called as
+"init_dyn_addr"), which is typically specified by the DT-'s
+assigned-address property. Lower addresses having higher IBI priority. If
+it is available, i3c_bus_get_free_addr() preferably return a free address
+that is not in the list of desired addresses (called as "init_dyn_addr").
+This allows the device with the "init_dyn_addr" to switch to its
+"init_dyn_addr" when it hot-joins the I3C bus. Otherwise, if the
+"init_dyn_addr" is already in use by another I3C device, the target device
+will not be able to switch to its desired address.
+
+If the previous step fails, fallback returning one of the remaining
+unassigned address, regardless of its state in the desired list.
+
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241021-i3c_dts_assign-v8-2-4098b8bde01e@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Stable-dep-of: 851bd21cdb55 ("i3c: master: Fix dynamic address leak when 'assigned-address' is present")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i3c/master.c       | 65 +++++++++++++++++++++++++++++++-------
+ include/linux/i3c/master.h |  7 ++--
+ 2 files changed, 59 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index b36edbef5b82f..76b2e6484f90f 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -369,6 +369,7 @@ static int qedi_alloc_and_init_sb(struct qedi_ctx *qedi,
- 	ret = qedi_ops->common->sb_init(qedi->cdev, sb_info, sb_virt, sb_phys,
- 				       sb_id, QED_SB_TYPE_STORAGE);
- 	if (ret) {
-+		dma_free_coherent(&qedi->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
- 		QEDI_ERR(&qedi->dbg_ctx,
- 			 "Status block initialization failed for id = %d.\n",
- 			  sb_id);
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 2b6bc03652139..d2a08a9a54414 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -342,7 +342,7 @@ struct bus_type i3c_bus_type = {
+ };
+ 
+ static enum i3c_addr_slot_status
+-i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
++i3c_bus_get_addr_slot_status_mask(struct i3c_bus *bus, u16 addr, u32 mask)
+ {
+ 	unsigned long status;
+ 	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
+@@ -353,11 +353,17 @@ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+ 	status = bus->addrslots[bitpos / BITS_PER_LONG];
+ 	status >>= bitpos % BITS_PER_LONG;
+ 
+-	return status & I3C_ADDR_SLOT_STATUS_MASK;
++	return status & mask;
+ }
+ 
+-static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
+-					 enum i3c_addr_slot_status status)
++static enum i3c_addr_slot_status
++i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
++{
++	return i3c_bus_get_addr_slot_status_mask(bus, addr, I3C_ADDR_SLOT_STATUS_MASK);
++}
++
++static void i3c_bus_set_addr_slot_status_mask(struct i3c_bus *bus, u16 addr,
++					      enum i3c_addr_slot_status status, u32 mask)
+ {
+ 	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
+ 	unsigned long *ptr;
+@@ -366,9 +372,14 @@ static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
+ 		return;
+ 
+ 	ptr = bus->addrslots + (bitpos / BITS_PER_LONG);
+-	*ptr &= ~((unsigned long)I3C_ADDR_SLOT_STATUS_MASK <<
+-						(bitpos % BITS_PER_LONG));
+-	*ptr |= (unsigned long)status << (bitpos % BITS_PER_LONG);
++	*ptr &= ~((unsigned long)mask << (bitpos % BITS_PER_LONG));
++	*ptr |= ((unsigned long)status & mask) << (bitpos % BITS_PER_LONG);
++}
++
++static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
++					 enum i3c_addr_slot_status status)
++{
++	i3c_bus_set_addr_slot_status_mask(bus, addr, status, I3C_ADDR_SLOT_STATUS_MASK);
+ }
+ 
+ static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
+@@ -380,13 +391,44 @@ static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
+ 	return status == I3C_ADDR_SLOT_FREE;
+ }
+ 
++/*
++ * ┌────┬─────────────┬───┬─────────┬───┐
++ * │S/Sr│ 7'h7E RnW=0 │ACK│ ENTDAA  │ T ├────┐
++ * └────┴─────────────┴───┴─────────┴───┘    │
++ * ┌─────────────────────────────────────────┘
++ * │  ┌──┬─────────────┬───┬─────────────────┬────────────────┬───┬─────────┐
++ * └─►│Sr│7'h7E RnW=1  │ACK│48bit UID BCR DCR│Assign 7bit Addr│PAR│ ACK/NACK│
++ *    └──┴─────────────┴───┴─────────────────┴────────────────┴───┴─────────┘
++ * Some master controllers (such as HCI) need to prepare the entire above transaction before
++ * sending it out to the I3C bus. This means that a 7-bit dynamic address needs to be allocated
++ * before knowing the target device's UID information.
++ *
++ * However, some I3C targets may request specific addresses (called as "init_dyn_addr"), which is
++ * typically specified by the DT-'s assigned-address property. Lower addresses having higher IBI
++ * priority. If it is available, i3c_bus_get_free_addr() preferably return a free address that is
++ * not in the list of desired addresses (called as "init_dyn_addr"). This allows the device with
++ * the "init_dyn_addr" to switch to its "init_dyn_addr" when it hot-joins the I3C bus. Otherwise,
++ * if the "init_dyn_addr" is already in use by another I3C device, the target device will not be
++ * able to switch to its desired address.
++ *
++ * If the previous step fails, fallback returning one of the remaining unassigned address,
++ * regardless of its state in the desired list.
++ */
+ static int i3c_bus_get_free_addr(struct i3c_bus *bus, u8 start_addr)
+ {
+ 	enum i3c_addr_slot_status status;
+ 	u8 addr;
+ 
+ 	for (addr = start_addr; addr < I3C_MAX_ADDR; addr++) {
+-		status = i3c_bus_get_addr_slot_status(bus, addr);
++		status = i3c_bus_get_addr_slot_status_mask(bus, addr,
++							   I3C_ADDR_SLOT_EXT_STATUS_MASK);
++		if (status == I3C_ADDR_SLOT_FREE)
++			return addr;
++	}
++
++	for (addr = start_addr; addr < I3C_MAX_ADDR; addr++) {
++		status = i3c_bus_get_addr_slot_status_mask(bus, addr,
++							   I3C_ADDR_SLOT_STATUS_MASK);
+ 		if (status == I3C_ADDR_SLOT_FREE)
+ 			return addr;
+ 	}
+@@ -1877,9 +1919,10 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+ 			goto err_rstdaa;
+ 		}
+ 
+-		i3c_bus_set_addr_slot_status(&master->bus,
+-					     i3cboardinfo->init_dyn_addr,
+-					     I3C_ADDR_SLOT_I3C_DEV);
++		i3c_bus_set_addr_slot_status_mask(&master->bus,
++						  i3cboardinfo->init_dyn_addr,
++						  I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_DESIRED,
++						  I3C_ADDR_SLOT_EXT_STATUS_MASK);
+ 
+ 		/*
+ 		 * Only try to create/attach devices that have a static
+diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+index ed6b153481021..f2eb2452ffa5f 100644
+--- a/include/linux/i3c/master.h
++++ b/include/linux/i3c/master.h
+@@ -290,7 +290,8 @@ enum i3c_open_drain_speed {
+  * @I3C_ADDR_SLOT_I2C_DEV: address is assigned to an I2C device
+  * @I3C_ADDR_SLOT_I3C_DEV: address is assigned to an I3C device
+  * @I3C_ADDR_SLOT_STATUS_MASK: address slot mask
+- *
++ * @I3C_ADDR_SLOT_EXT_DESIRED: the bitmask represents addresses that are preferred by some devices,
++ *			       such as the "assigned-address" property in a device tree source.
+  * On an I3C bus, addresses are assigned dynamically, and we need to know which
+  * addresses are free to use and which ones are already assigned.
+  *
+@@ -303,9 +304,11 @@ enum i3c_addr_slot_status {
+ 	I3C_ADDR_SLOT_I2C_DEV,
+ 	I3C_ADDR_SLOT_I3C_DEV,
+ 	I3C_ADDR_SLOT_STATUS_MASK = 3,
++	I3C_ADDR_SLOT_EXT_STATUS_MASK = 7,
++	I3C_ADDR_SLOT_EXT_DESIRED = BIT(2),
+ };
+ 
+-#define I3C_ADDR_SLOT_STATUS_BITS 2
++#define I3C_ADDR_SLOT_STATUS_BITS 4
+ 
+ /**
+  * struct i3c_bus - I3C bus object
 -- 
 2.43.0
 
