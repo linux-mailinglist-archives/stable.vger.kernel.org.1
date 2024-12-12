@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-101288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8119EEB58
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED569EF139
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E924A282E75
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:23:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE322884EA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996931487CD;
-	Thu, 12 Dec 2024 15:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580F922969E;
+	Thu, 12 Dec 2024 16:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZ4FLiqx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yh+qECbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510F62054F8;
-	Thu, 12 Dec 2024 15:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DF123D41A;
+	Thu, 12 Dec 2024 16:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017035; cv=none; b=C1Sm0grz88/ZP2WFk9tIxELpK+7KKY97EpVHCPSFHT+YRZPfG1BPJL/U796aNyyDHKe9h2HCCh+9gc8Lrbl9/1kXTxSGre+YD6dQdGlsMOpVwTruQ0Ho/zy8DEKtBst3r+hawoCuY2gGHfvpj0lHL76aChATAor+O27ggf305QA=
+	t=1734020737; cv=none; b=as01wOxw/wkDuFj305dggjuZ1qOTtMuk3Dnf4YT6Orae2OAO1UbhW7X4pv2vH4boYDJI+lpIUQRBkxcxYEdjQZHe46R7lexPb7w+rWikJhzD62G4elhh2BFoVhjeMqV1JbkYpF7mTiGTBhrpL99vCVKUWz3eHPqou7E7nvQKyOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017035; c=relaxed/simple;
-	bh=0UK1F1ZTUh/fmCrD3DDvZcCDrYby2TmTej6EpymLeas=;
+	s=arc-20240116; t=1734020737; c=relaxed/simple;
+	bh=NTK+L0x+I9OCyi80mXYsNqKY4qokrPT+JRMzR4bkfUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DtVO0qb7Hs7dt8y44Mwt0fjSkT55emP3GykN7iSGfE5M2bI8VPyt73qq4qxCqhUBKFXvi2X+fUObS56Y/eqfktXe+P7aVGhrZ37DZ3R8HhYuEd36k5Brwe0C9UwuAI5dQhAdpOXW3cMmZKsWgQORVMp9TVzq2LM/5iTpThOa9TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZ4FLiqx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B077AC4CECE;
-	Thu, 12 Dec 2024 15:23:54 +0000 (UTC)
+	 MIME-Version; b=axz7Z9w87ygGWSkqbIx+jJElXge477dFN59Y1BHR/b4uvCIzKMbPBWNxueEy+Qqa1x2M/ycVLghpF0QbOvSsyK+Io4B4N+ueg3KVhyqvF9Ov749fhZ+jO4aUZjyhqncq7PKtGnqFxlX6CoFd7YjhudHa6p7nrF2sCMgTepCrKes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yh+qECbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69602C4CECE;
+	Thu, 12 Dec 2024 16:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017035;
-	bh=0UK1F1ZTUh/fmCrD3DDvZcCDrYby2TmTej6EpymLeas=;
+	s=korg; t=1734020736;
+	bh=NTK+L0x+I9OCyi80mXYsNqKY4qokrPT+JRMzR4bkfUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZ4FLiqxsJZcnZ+ljPxomQYTxa2dmczHEmzW1QfY37f/Sbj4g3cczaIjx+RTB129K
-	 xkCSYfy4QrV9Q+R8OMPR+mpnTK5RM6EkZeNvEnR6I9Rby1UhJuubBXcoXyGAhVg+my
-	 8q+4bLgOYHxYavAUynmSg9B1FnWpDOHVCTEAZnSA=
+	b=Yh+qECbB9DKCm/DMJnxxP472ABJG5TVT1+UembO8phhTnB/0klFxaaQEBQwFBfd1J
+	 ZLEDwEJA93HBIiRE52TIsro5tf9Fr/ZbFuNz1bCg+HOUbQqI+LqWNn1wg7LnLyocHC
+	 1MwFniB1TcDbS6vd8dryXxQapPLgur5VOm1Gu9uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
-	Nihar Chaithanya <niharchaithanya@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Frode Nordahl <frode.nordahl@canonical.com>,
+	Chris Mi <cmi@nvidia.com>,
+	Ariel Levkovich <lariel@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 322/466] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
+Subject: [PATCH 6.1 546/772] net/mlx5e: Remove workaround to avoid syndrome for internal port
 Date: Thu, 12 Dec 2024 15:58:11 +0100
-Message-ID: <20241212144319.517744145@linuxfoundation.org>
+Message-ID: <20241212144412.528824712@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +66,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nihar Chaithanya <niharchaithanya@gmail.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
+[ Upstream commit 5085f861b414e4a51ce28a891dfa32a10a54b64e ]
 
-When the value of lp is 0 at the beginning of the for loop, it will
-become negative in the next assignment and we should bail out.
+Previously a workaround was added to avoid syndrome 0xcdb051. It is
+triggered when offload a rule with tunnel encapsulation, and
+forwarding to another table, but not matching on the internal port in
+firmware steering mode. The original workaround skips internal tunnel
+port logic, which is not correct as not all cases are considered. As
+an example, if vlan is configured on the uplink port, traffic can't
+pass because vlan header is not added with this workaround. Besides,
+there is no such issue for software steering. So, this patch removes
+that, and returns error directly if trying to offload such rule for
+firmware steering.
 
-Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
-Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 06b4eac9c4be ("net/mlx5e: Don't offload internal port if filter device is out device")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Tested-by: Frode Nordahl <frode.nordahl@canonical.com>
+Reviewed-by: Chris Mi <cmi@nvidia.com>
+Reviewed-by: Ariel Levkovich <lariel@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20241203204920.232744-7-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../ethernet/mellanox/mlx5/core/en/tc_tun_encap.c   | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 39957361a7eed..f9009e4f9ffd8 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -2891,6 +2891,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
- 	/* bubble the new value up the tree as required.
- 	 */
- 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
-+		if (lp == 0)
-+			break;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+index 907ad6ffe7275..407556334495d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+@@ -4,6 +4,7 @@
+ #include <net/fib_notifier.h>
+ #include <net/nexthop.h>
+ #include "tc_tun_encap.h"
++#include "fs_core.h"
+ #include "en_tc.h"
+ #include "tc_tun.h"
+ #include "rep/tc.h"
+@@ -23,10 +24,18 @@ static int mlx5e_set_int_port_tunnel(struct mlx5e_priv *priv,
+ 
+ 	route_dev = dev_get_by_index(dev_net(e->out_dev), e->route_dev_ifindex);
+ 
+-	if (!route_dev || !netif_is_ovs_master(route_dev) ||
+-	    attr->parse_attr->filter_dev == e->out_dev)
++	if (!route_dev || !netif_is_ovs_master(route_dev))
+ 		goto out;
+ 
++	if (priv->mdev->priv.steering->mode == MLX5_FLOW_STEERING_MODE_DMFS &&
++	    mlx5e_eswitch_uplink_rep(attr->parse_attr->filter_dev) &&
++	    (attr->esw_attr->dests[out_index].flags & MLX5_ESW_DEST_ENCAP)) {
++		mlx5_core_warn(priv->mdev,
++			       "Matching on external port with encap + fwd to table actions is not allowed for firmware steering\n");
++		err = -EINVAL;
++		goto out;
++	}
 +
- 		/* get the index of the first leaf of the 4 leaf
- 		 * group containing the specified leaf (leafno).
- 		 */
+ 	err = mlx5e_set_fwd_to_int_port_actions(priv, attr, e->route_dev_ifindex,
+ 						MLX5E_TC_INT_PORT_EGRESS,
+ 						&attr->action, out_index);
 -- 
 2.43.0
 
