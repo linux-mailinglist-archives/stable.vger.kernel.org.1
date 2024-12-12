@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C359F9EEB86
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8829EED5A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EF4916833B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10F2166D3A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C535D215764;
-	Thu, 12 Dec 2024 15:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED02222D52;
+	Thu, 12 Dec 2024 15:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKqqn8bC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntnzPvRT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAED2054F8;
-	Thu, 12 Dec 2024 15:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABF8222D4E;
+	Thu, 12 Dec 2024 15:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016851; cv=none; b=u0UXWXlcczpgHC8CQsNdFm0ofzI0u1I46Ddu19qpG3GUJkSnx6gOa4wZUpEkFVCg3TOHt7bd4yr3QznBH9RLBRY73K7t99mNp7EwBPv+aLst529iiHTFkmJW7iaHp7uhAX2MENN4oJhsbv1m9XSrItVcvHfRIDVUIYUWtTSGGb4=
+	t=1734018089; cv=none; b=VOJKPgz7CxrTdx7H8mmG5gOSJahoUiJQ5W+d6C1F1lDAeaOwrad+B0hBicwSAcJW8puid7sF8K5Rt+N8XAJ63aAQa9qqN9zs5VX+2aWLL2DfVF+uLncOsrpqOGIK96gVMzaYOAaZjOpK8F6/+oK892O87NtmNWp4hOIww8+DoF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016851; c=relaxed/simple;
-	bh=EoFV/8VcBfB31cnSItfxz2LPo+Zg/a/wtoDI0sRxBbY=;
+	s=arc-20240116; t=1734018089; c=relaxed/simple;
+	bh=b19EL3yo+LDscVvqG6L3UTmXpC7mUWG8L4am/BfwgCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRBTih1pv5w7TzwYpopPvth6f7zISHYoGdB6mz8VeJafoLGYF1SKjhQfvieGriDoEwJKjbycD9RO6gV2MKUvxAj/Q/MB0Lff46oC00I3vIEA/o45nbebNSy2PG87WA2Zq72EQ0yADmuUpI+RuCMjfgW5WxLn/Xt+MqAZoEWyf+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKqqn8bC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D767C4CEDD;
-	Thu, 12 Dec 2024 15:20:50 +0000 (UTC)
+	 MIME-Version; b=KOaEGV3/ik8lKj49ohGCttyC3x/usMN/6fS0MKLgB5tOMrRMqUwTeNdhXUzrJlDoq1ggFey6NrbmG7e82sXrkYLAHE96qgV6DGN+tYqNKiT+TBV5vnkRCdb9ktjLQPX56OLAKm45u+gV14tJ0wIuOWbvqO+9vBI5qy9c8yxmdUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntnzPvRT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F57CC4CECE;
+	Thu, 12 Dec 2024 15:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016851;
-	bh=EoFV/8VcBfB31cnSItfxz2LPo+Zg/a/wtoDI0sRxBbY=;
+	s=korg; t=1734018089;
+	bh=b19EL3yo+LDscVvqG6L3UTmXpC7mUWG8L4am/BfwgCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pKqqn8bCBegJZN8Sxh9XaWWpArHzvFhSiEdwlwOIgrrdfrzM0vY1DI3ZePy2G5ajf
-	 osunU5Chv1ODzDk0/B4/SCZN7uhykpoZ552p0khnKmZ2p7xedsDj6D32Bh5R17IvBT
-	 Mv22gIHu9dAhvKBBCm1MovFZiK5ixXUNLjGXhVjQ=
+	b=ntnzPvRTXQQxaV9O2Af54duWWhnkJi26TFRXhSiNkJZp5hqn9Qi6+WsGiupXcJCvI
+	 XBfH61O/Jtk5EFtCo1b8/qNV9cOKa9PNSBwAbs7xQEXbd0ovHNwEp6LtIpIxsPUC04
+	 b4ggvgapW0pwc/dSxmjcSuBS1Frt70eidv93kE8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mac Chiang <mac.chiang@intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 314/466] ASoC: sdw_utils: Add quirk to exclude amplifier function
+	Liequan Che <cheliequan@inspur.com>,
+	Zheng Wang <zyytlz.wz@163.com>,
+	Mingzhe Zou <mingzhe.zou@easystack.cn>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 164/356] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR again
 Date: Thu, 12 Dec 2024 15:58:03 +0100
-Message-ID: <20241212144319.185312293@linuxfoundation.org>
+Message-ID: <20241212144251.114717024@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mac Chiang <mac.chiang@intel.com>
+From: Liequan Che <cheliequan@inspur.com>
 
-[ Upstream commit 358ee2c1493e5d2c59820ffd8087eb0e367be4c6 ]
+commit b2e382ae12a63560fca35050498e19e760adf8c0 upstream.
 
-When SKUs use the multi-function codec, which integrates
-Headset, Amplifier and DMIC. The corresponding quirks provide
-options to support internal amplifier/DMIC or not.
+Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+node allocations") leads a NULL pointer deference in cache_set_flush().
 
-In the case of RT722, this SKU excludes the internal amplifier and
-use an additional amplifier instead.
+1721         if (!IS_ERR_OR_NULL(c->root))
+1722                 list_add(&c->root->list, &c->btree_cache);
 
-Signed-off-by: Mac Chiang <mac.chiang@intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20241028072631.15536-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+>From the above code in cache_set_flush(), if previous registration code
+fails before allocating c->root, it is possible c->root is NULL as what
+it is initialized. __bch_btree_node_alloc() never returns NULL but
+c->root is possible to be NULL at above line 1721.
+
+This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
+
+Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
+Signed-off-by: Liequan Che <cheliequan@inspur.com>
+Cc: stable@vger.kernel.org
+Cc: Zheng Wang <zyytlz.wz@163.com>
+Reviewed-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20241202115638.28957-1-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sdw_utils/soc_sdw_utils.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/bcache/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sdw_utils/soc_sdw_utils.c b/sound/soc/sdw_utils/soc_sdw_utils.c
-index c06963ac7fafa..e6ac5c0fd3bec 100644
---- a/sound/soc/sdw_utils/soc_sdw_utils.c
-+++ b/sound/soc/sdw_utils/soc_sdw_utils.c
-@@ -363,6 +363,8 @@ struct asoc_sdw_codec_info codec_info_list[] = {
- 				.num_controls = ARRAY_SIZE(generic_spk_controls),
- 				.widgets = generic_spk_widgets,
- 				.num_widgets = ARRAY_SIZE(generic_spk_widgets),
-+				.quirk = SOC_SDW_CODEC_SPKR,
-+				.quirk_exclude = true,
- 			},
- 			{
- 				.direction = {false, true},
--- 
-2.43.0
-
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1724,7 +1724,7 @@ static void cache_set_flush(struct closu
+ 	if (!IS_ERR_OR_NULL(c->gc_thread))
+ 		kthread_stop(c->gc_thread);
+ 
+-	if (!IS_ERR(c->root))
++	if (!IS_ERR_OR_NULL(c->root))
+ 		list_add(&c->root->list, &c->btree_cache);
+ 
+ 	/*
 
 
 
