@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-102808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D57D9EF4E0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D12E89EF5B2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721E61897B85
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 617592889F7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E62622A7E4;
-	Thu, 12 Dec 2024 16:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29C91F2381;
+	Thu, 12 Dec 2024 17:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuTjOS3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilNavmUO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8C91F2381;
-	Thu, 12 Dec 2024 16:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9084C13CA93;
+	Thu, 12 Dec 2024 17:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022568; cv=none; b=BsKogRgkswX+4mcJz1cvJZDWrYo/hqitpT4lFDoOUphPRU/kPTOmGRpSDTwWZglMiVecLKa91B9VRexRr2WWtWTNPnzDGXbL8Cf1cWEfl87kOtBggSdlpkFTrmj4bNiD8AZQ/jLK2P/D8xoIsySmKjxv396LVYEw9wBqqrBERXs=
+	t=1734023941; cv=none; b=XNRy5FRp8SPTNcrq8rKI5f9fmKim9GGFISMZpejMj9tU1qPzfpf15IpcDjKA/O3qmSQWBsZvrRN3vhlDkCWL8YPoXE9QpeoCMbBVV3mZByuIQykovnpb0aKjZw9zuNL247wY6eV+joL0fDosRyjWRFSowuBxDhEHvPKYaBxEMu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022568; c=relaxed/simple;
-	bh=BLhJ3L4HU5Uha8CT7F389E0s4p4nxzLNrPfStjYYYBE=;
+	s=arc-20240116; t=1734023941; c=relaxed/simple;
+	bh=4D2L5DPKp1c1ufUQbRyMvgPH+GhygCD5KURoPAsFuLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiWjd5J2QfCe3fWH2uEM+rCfLnLWDtoryWn07s73Hp/2kMlAuN2ZpNy5uGHOKsAOzh+howhS74wwek11EiW3Ti6J98TOn5dqTBaEN+oZumqzkLJqY+XIdMqPMirWk9YyjQNosL2NrjpJyHemK3qgoBCSj3dnJCZBGQAFgqdvlXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuTjOS3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EE3C4CED3;
-	Thu, 12 Dec 2024 16:56:06 +0000 (UTC)
+	 MIME-Version; b=DCOMYVI2Pu4zMdDkZMSEyRcITeQ3Hq/ipId/4ypzc08h7yuUO+itJfqtLbIoXg/EjJO3kK1UPHR5MZ/0vc2qQ8pUg93y4s3/T8DsOfVGRsmpBA0l4PvvLJ6uEF9h8KJTPeAS6WKyJrStfBEwZTYznVMQiNKtEbwTbM+/+CbkPKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilNavmUO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FAB8C4CECE;
+	Thu, 12 Dec 2024 17:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022567;
-	bh=BLhJ3L4HU5Uha8CT7F389E0s4p4nxzLNrPfStjYYYBE=;
+	s=korg; t=1734023941;
+	bh=4D2L5DPKp1c1ufUQbRyMvgPH+GhygCD5KURoPAsFuLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuTjOS3G3B6HpYMfDm9UBC/TzkFebxvvR/O/3BHojQq+6ces/kEjAJnGLwoLcgg6F
-	 FWgmBFAQA5JtVwFewjvw8x40ejjFNtak6iE7sO5UIH6uihlt9v7h9OnTCWkFtpXGpC
-	 1A/XTvbWqjO3rShMfws51Yn/9ILvLAEtOOdD3mTc=
+	b=ilNavmUOwBUSPA5Xx+AEEmOviC7u5UkZbwcxZFvfuvbY+/iI8536YoFxi2Z41boi5
+	 rGAXkij4Ia4vDMq3ku360HoL8CZRX0C9XhBbTyaKEvWot+0D67pwXeXS3+0d+Npwft
+	 fZB/b8tx8ZzVAn/6UXkyjNKWl7narUrHhKr3lUYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salam Noureddine <noureddine@arista.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 276/565] tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets
-Date: Thu, 12 Dec 2024 15:57:51 +0100
-Message-ID: <20241212144322.369405931@linuxfoundation.org>
+Subject: [PATCH 5.10 134/459] drm/etnaviv: Request pages from DMA32 zone on addressing_limited
+Date: Thu, 12 Dec 2024 15:57:52 +0100
+Message-ID: <20241212144258.806475717@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,63 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 614f4d166eeeb9bd709b0ad29552f691c0f45776 ]
+[ Upstream commit 13c96ac9a3f0f1c7ba1ff0656ea508e7fa065e7e ]
 
-The hardware on Broadcom 1G chipsets have a known limitation
-where they cannot handle DMA addresses that cross over 4GB.
-When such an address is encountered, the hardware sets the
-address overflow error bit in the DMA status register and
-triggers a reset.
+Remove __GFP_HIGHMEM when requesting a page from DMA32 zone,
+and since all vivante GPUs in the system will share the same
+DMA constraints, move the check of whether to get a page from
+DMA32 to etnaviv_bind().
 
-However, BCM57766 hardware is setting the overflow bit and
-triggering a reset in some cases when there is no actual
-underlying address overflow. The hardware team analyzed the
-issue and concluded that it is happening when the status
-block update has an address with higher (b16 to b31) bits
-as 0xffff following a previous update that had lowest bits
-as 0xffff.
-
-To work around this bug in the BCM57766 hardware, set the
-coherent dma mask from the current 64b to 31b. This will
-ensure that upper bits of the status block DMA address are
-always at most 0x7fff, thus avoiding the improper overflow
-check described above. This work around is intended for only
-status block and ring memories and has no effect on TX and
-RX buffers as they do not require coherent memory.
-
-Fixes: 72f2afb8a685 ("[TG3]: Add DMA address workaround")
-Reported-by: Salam Noureddine <noureddine@arista.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Link: https://patch.msgid.link/20241119055741.147144-1-pavan.chebbi@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b72af445cd38 ("drm/etnaviv: request pages from DMA32 zone when needed")
+Suggested-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/etnaviv/etnaviv_drv.c | 10 ++++++++++
+ drivers/gpu/drm/etnaviv/etnaviv_gpu.c |  8 --------
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 757138c33b753..4fb1d2749c063 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -17739,6 +17739,9 @@ static int tg3_init_one(struct pci_dev *pdev,
- 	} else
- 		persist_dma_mask = dma_mask = DMA_BIT_MASK(64);
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+index edf9387069cdc..b7225d863f684 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+@@ -543,6 +543,16 @@ static int etnaviv_bind(struct device *dev)
+ 	priv->num_gpus = 0;
+ 	priv->shm_gfp_mask = GFP_HIGHUSER | __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
  
-+	if (tg3_asic_rev(tp) == ASIC_REV_57766)
-+		persist_dma_mask = DMA_BIT_MASK(31);
++	/*
++	 * If the GPU is part of a system with DMA addressing limitations,
++	 * request pages for our SHM backend buffers from the DMA32 zone to
++	 * hopefully avoid performance killing SWIOTLB bounce buffering.
++	 */
++	if (dma_addressing_limited(dev)) {
++		priv->shm_gfp_mask |= GFP_DMA32;
++		priv->shm_gfp_mask &= ~__GFP_HIGHMEM;
++	}
 +
- 	/* Configure DMA attributes. */
- 	if (dma_mask > DMA_BIT_MASK(32)) {
- 		err = dma_set_mask(&pdev->dev, dma_mask);
+ 	priv->cmdbuf_suballoc = etnaviv_cmdbuf_suballoc_new(drm->dev);
+ 	if (IS_ERR(priv->cmdbuf_suballoc)) {
+ 		dev_err(drm->dev, "Failed to create cmdbuf suballocator\n");
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+index 8baa59fb32f2d..5fb1d62ec5950 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+@@ -780,14 +780,6 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+ 	if (ret)
+ 		goto fail;
+ 
+-	/*
+-	 * If the GPU is part of a system with DMA addressing limitations,
+-	 * request pages for our SHM backend buffers from the DMA32 zone to
+-	 * hopefully avoid performance killing SWIOTLB bounce buffering.
+-	 */
+-	if (dma_addressing_limited(gpu->dev))
+-		priv->shm_gfp_mask |= GFP_DMA32;
+-
+ 	/* Create buffer: */
+ 	ret = etnaviv_cmdbuf_init(priv->cmdbuf_suballoc, &gpu->buffer,
+ 				  PAGE_SIZE);
 -- 
 2.43.0
 
