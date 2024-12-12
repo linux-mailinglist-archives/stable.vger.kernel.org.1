@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871A69EF209
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3CC99EEC74
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B93E1189E5CB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1007161BA3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC5E243551;
-	Thu, 12 Dec 2024 16:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966902135C1;
+	Thu, 12 Dec 2024 15:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdIafKfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ln9rNTNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA6824354C;
-	Thu, 12 Dec 2024 16:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B3F215777;
+	Thu, 12 Dec 2024 15:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020388; cv=none; b=GbgoXB/OccB6yI3GM/m/IrJJEOjfRq9cxLZOzWVLGC6s05iIrDFzOSm/O+DO0U15fVDX74P2E/kH2mnTPRhJ6Qsid/6/dzY8cwqBpsGBXHQbegrzFx+sTeq2esweuRS5BbsZiXMAOMTDZnM74lD7O1TrlRpeHnccB2nEMYpjbrc=
+	t=1734017568; cv=none; b=qiM6OqgQpMT/9mM5xIcuLRN/VxSDq2htGL3vyS7VUKAIbm7gzwxuDDzXyxYZDgnFGTqc/DS+aLMmpUWfXrIXSA2YMDS8R+shpY09qLsxH3dAWrk8Kz824Xbc34ozeCswUbt90TvDc1Z2t5q57IRpbTwbhLRAJ08mx/mG0o+V5Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020388; c=relaxed/simple;
-	bh=Vkdln2D9V9BfXaQ77BAc8by+BSGCHwTtrxrjtb8p4G8=;
+	s=arc-20240116; t=1734017568; c=relaxed/simple;
+	bh=sc6qf7ZEQbsq28djOxfPaLGFAm/X9ihi06ubROuL3W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEyLlMyuTWFlrVoL3m3UqOOz0a/OWIfoAqNbFJHA25SMlw/Ohj/T8CYuAlIwpiZmStrWtSeKkl8I7fNeQqb1YbRszrEptjof1sNW7yZ7zSHvkAlSLow7jiTT9CqMvXuMhz6AhdYcmfAYQJuQa2MOyl+o8ffXqEyZ42rThB1KKYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdIafKfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D527CC4CED3;
-	Thu, 12 Dec 2024 16:19:47 +0000 (UTC)
+	 MIME-Version; b=MHlLTEtqrnuYAq6fMdmNror6CArqe1vBhjRxxp+5/ljyFG4/zJEUymt9DPkXHu2IN6yl3whjofBuzirPTvU2jN9YTBfZxeMQY2XXrlwwxYMnSrBGHMcD4tQ1WLZZH0O499dDQwSCf+Js/DueGlsk2xerGimjWKKSibCA5lbaYAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ln9rNTNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3088C4CEDD;
+	Thu, 12 Dec 2024 15:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020388;
-	bh=Vkdln2D9V9BfXaQ77BAc8by+BSGCHwTtrxrjtb8p4G8=;
+	s=korg; t=1734017568;
+	bh=sc6qf7ZEQbsq28djOxfPaLGFAm/X9ihi06ubROuL3W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdIafKfUfIjz2FIZz2Y3JjDOGHed92x+3ZjpsrmUSYckbH1fHvRjLXvXCRkZ+l/ek
-	 VxvKxgN/oKAwWE+gATiWD5eK8VWg478QyiwzbTNyA2WnAxt1ZNe5rC1elJtbiD+9Nu
-	 guNQXdUqWvdRzlaTj8nOsl6hejgfS72lXK+MB5sY=
+	b=ln9rNTNV3FbSMXW3rBjE1xYDqeJw5FqXqoHqSjEtf6PCzNUTxFGgvLHJepi5nxnmF
+	 WVnMNTBucAtyhMTkAQOfpvwEmKDYUKRLqH82i7tZAKX4GWVl5BAlYpWZO33OycUMK5
+	 +TDBwD0DrMzKQrGAkAVWVr0oWAP42ETkTNZV/mC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 424/772] NFSD: Prevent a potential integer overflow
+	Shuang Li <shuali@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Cong Wang <cong.wang@bytedance.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 050/356] net: sched: fix erspan_opt settings in cls_flower
 Date: Thu, 12 Dec 2024 15:56:09 +0100
-Message-ID: <20241212144407.436181908@linuxfoundation.org>
+Message-ID: <20241212144246.609752615@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit 7f33b92e5b18e904a481e6e208486da43e4dc841 upstream.
+[ Upstream commit 292207809486d99c78068d3f459cbbbffde88415 ]
 
-If the tag length is >= U32_MAX - 3 then the "length + 4" addition
-can result in an integer overflow. Address this by splitting the
-decoding into several steps so that decode_cb_compound4res() does
-not have to perform arithmetic on the unsafe length value.
+When matching erspan_opt in cls_flower, only the (version, dir, hwid)
+fields are relevant. However, in fl_set_erspan_opt() it initializes
+all bits of erspan_opt and its mask to 1. This inadvertently requires
+packets to match not only the (version, dir, hwid) fields but also the
+other fields that are unexpectedly set to 1.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch resolves the issue by ensuring that only the (version, dir,
+hwid) fields are configured in fl_set_erspan_opt(), leaving the other
+fields to 0 in erspan_opt.
+
+Fixes: 79b1011cb33d ("net: sched: allow flower to match erspan options")
+Reported-by: Shuang Li <shuali@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4callback.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/sched/cls_flower.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -297,17 +297,17 @@ static int decode_cb_compound4res(struct
- 	u32 length;
- 	__be32 *p;
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 6ee7064c82fcc..bcf1b8012b2c3 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -1320,7 +1320,6 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 	int err;
  
--	p = xdr_inline_decode(xdr, 4 + 4);
-+	p = xdr_inline_decode(xdr, XDR_UNIT);
- 	if (unlikely(p == NULL))
- 		goto out_overflow;
--	hdr->status = be32_to_cpup(p++);
-+	hdr->status = be32_to_cpup(p);
- 	/* Ignore the tag */
--	length = be32_to_cpup(p++);
--	p = xdr_inline_decode(xdr, length + 4);
--	if (unlikely(p == NULL))
-+	if (xdr_stream_decode_u32(xdr, &length) < 0)
-+		goto out_overflow;
-+	if (xdr_inline_decode(xdr, length) == NULL)
-+		goto out_overflow;
-+	if (xdr_stream_decode_u32(xdr, &hdr->nops) < 0)
- 		goto out_overflow;
--	p += XDR_QUADLEN(length);
--	hdr->nops = be32_to_cpup(p);
- 	return 0;
- out_overflow:
- 	return -EIO;
+ 	md = (struct erspan_metadata *)&key->enc_opts.data[key->enc_opts.len];
+-	memset(md, 0xff, sizeof(*md));
+ 	md->version = 1;
+ 
+ 	if (!depth)
+@@ -1349,9 +1348,9 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 			NL_SET_ERR_MSG(extack, "Missing tunnel key erspan option index");
+ 			return -EINVAL;
+ 		}
++		memset(&md->u.index, 0xff, sizeof(md->u.index));
+ 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX]) {
+ 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX];
+-			memset(&md->u, 0x00, sizeof(md->u));
+ 			md->u.index = nla_get_be32(nla);
+ 		}
+ 	} else if (md->version == 2) {
+@@ -1360,10 +1359,12 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 			NL_SET_ERR_MSG(extack, "Missing tunnel key erspan option dir or hwid");
+ 			return -EINVAL;
+ 		}
++		md->u.md2.dir = 1;
+ 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_DIR]) {
+ 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_DIR];
+ 			md->u.md2.dir = nla_get_u8(nla);
+ 		}
++		set_hwid(&md->u.md2, 0xff);
+ 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_HWID]) {
+ 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_HWID];
+ 			set_hwid(&md->u.md2, nla_get_u8(nla));
+-- 
+2.43.0
+
 
 
 
