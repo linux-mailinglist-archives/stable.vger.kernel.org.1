@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-103661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5A99EF8F4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0489EF829
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEE5F1896EC8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B28A170AEB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87900221D93;
-	Thu, 12 Dec 2024 17:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EA9216E3B;
+	Thu, 12 Dec 2024 17:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNPCY/94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVEZSq0t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4358A20A5EE;
-	Thu, 12 Dec 2024 17:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8513521660B;
+	Thu, 12 Dec 2024 17:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025232; cv=none; b=ZCmAiDqegwd0Yvefccs5kJ4z5p5pwBUJgabn9NcXLNJkSGnoh5h4wZopzPg7fn4ZBzZygH+OolsdNX/TY83dBlsnwUKvnBfJQSs7XGAl+EtbNVhuzNN+6MEKL3NzD/0vrdf7Mw3KzHHHhlbsBmueomCzzmU15aXlKZTs0/94JD0=
+	t=1734024445; cv=none; b=HgqKuBvN8ziS/BmAiTOMfMzrmCCxe9d3gpnqNwG/S9anJeWy6/ku8c5CRQH348ySp7aCYq/ao1mTxfYYQ0wCYu2CZtRV+Vi+kuogQGsj0HSYpDHKPe9/ani3UA1dIM1J9XMgz7vMaih8AjKCJLL6OHUKz5lULFayfMaEb/iUPNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025232; c=relaxed/simple;
-	bh=4As/Dmpa9sBNQpTnQraNaytGtC13vDgx2diHbaPtPkw=;
+	s=arc-20240116; t=1734024445; c=relaxed/simple;
+	bh=K2rs2QTGYHbIFblqdRhmq2LAiXpbJFmyYFN7ka64fMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLEsLECBqVRex3bafxa0nOAiPOKWe6TkyopSoQkjbT0012odNXc2MwUWH/U9aH0lLPw0sZcBNXwoKQs8Mip7/FhMc0W7jqhyb9VjchfT6Rt7kuO1+PrY2lTzuDvrxExhlbQRfOLuMkjiWmGw7/+3BJikETanGoYIF43gYJwHCFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNPCY/94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD118C4CECE;
-	Thu, 12 Dec 2024 17:40:31 +0000 (UTC)
+	 MIME-Version; b=f2RPK8vjw95BftGdfMMro8ZUTnVmwvFi/9Cg7Inpq/eT3HX0iuyq+SIESngBmtkyPnL+BFx2yg7Xm9BgkPSdq9BYENJcDpi7k+WA2G44iNR3OB4xmb1ZDlAauzspOtj+x/R/G7QdwK9q07ljbQTPat3UmEWXJ6GIdEOr/4IP3d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVEZSq0t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6A0C4CED0;
+	Thu, 12 Dec 2024 17:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025232;
-	bh=4As/Dmpa9sBNQpTnQraNaytGtC13vDgx2diHbaPtPkw=;
+	s=korg; t=1734024445;
+	bh=K2rs2QTGYHbIFblqdRhmq2LAiXpbJFmyYFN7ka64fMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNPCY/94RXSVfXPBS0EDey/8jJPJAIKNSI5eax4CGvsZp/hZPbtlHDwFY3rTQpywl
-	 5LJRO3sWX2fGgTTCgE9XJ0O6KHBbP8e7XVksLBO6L+ZZWnTi8w7H/0M5iaz8J3/jvB
-	 rEBq7QT7Uxsh75Nv3gUN+eiQ02x3ChGX3Z2ZvyZI=
+	b=hVEZSq0t5HhZz/Ql/pMfgT2wNKlTeeXugotT+PV+32sQjFmg7G9GzAE7zRfhoEKu6
+	 WsBx7QhpMqsd2MtyRNpx4wkuBalqCJ3EhwPRUXkGBsPT7w+eL2kgVHWTCqoxEIaWc+
+	 WpS1ctn01nHp0QqnYoS5TzQ0C38w1CzaCdKBpSV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 100/321] scsi: qedf: Fix a possible memory leak in qedf_alloc_and_init_sb()
-Date: Thu, 12 Dec 2024 16:00:18 +0100
-Message-ID: <20241212144233.941467232@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 281/459] ALSA: hda/realtek: Apply quirk for Medion E15433
+Date: Thu, 12 Dec 2024 16:00:19 +0100
+Message-ID: <20241212144304.730473107@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c62c30429db3eb4ced35c7fcf6f04a61ce3a01bb ]
+commit ca0f79f0286046f6a91c099dc941cf7afae198d6 upstream.
 
-Hook "qed_ops->common->sb_init = qed_sb_init" does not release the DMA
-memory sb_virt when it fails. Add dma_free_coherent() to free it. This
-is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
+Medion E15433 laptop wich ALC269VC (SSID 2782:1705) needs the same
+workaround for the missing speaker as another model.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/r/20241026125711.484-2-thunder.leizhen@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1233298
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241128072646.15659-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 1 +
+ sound/pci/hda/patch_realtek.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index e0601b5520b78..3f137ca650388 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -2596,6 +2596,7 @@ static int qedf_alloc_and_init_sb(struct qedf_ctx *qedf,
- 	    sb_id, QED_SB_TYPE_STORAGE);
- 
- 	if (ret) {
-+		dma_free_coherent(&qedf->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
- 		QEDF_ERR(&qedf->dbg_ctx,
- 			 "Status block initialization failed (0x%x) for id = %d.\n",
- 			 ret, sb_id);
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9464,6 +9464,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+ 	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
++	SND_PCI_QUIRK(0x2782, 0x1705, "MEDION E15433", ALC269VC_FIXUP_INFINIX_Y4_MAX),
+ 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
 
 
 
