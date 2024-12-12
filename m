@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-102276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B919EF10F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C86B9EECE0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76E2029F08D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC559164FF8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A96F239BAD;
-	Thu, 12 Dec 2024 16:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31FC217F48;
+	Thu, 12 Dec 2024 15:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FK60m2La"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaAiTKld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C515C226542;
-	Thu, 12 Dec 2024 16:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9196F2FE;
+	Thu, 12 Dec 2024 15:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020637; cv=none; b=CAr335Acem5FQLcd4SE/1Z944gwgTXYVMx8wYP1V7nQVB0KP5KQeLOUVl/UIx8rhlGoYJrd3fFMHmjPSEF+w6CCCfghNgPLitFCs0dmx4zEPM9hkbLmLBtVx+F27WQ48WMIdjtmvPLNCrIpMjLPPWLJ29Z/BvZyX/Di5+37n6Y0=
+	t=1734017811; cv=none; b=mCBWiKyhSpTlfiAPJjZ44di4sgb5akCc6aLsFnQToUlRggHlRXV8GOZ1N4/bhOusRTiJ8yqJcbor1PEKkv6J/sdDalKBxCTGKVamuqYZ2XEYI+WwEED5S7K/fV8WpRPtegMWMPjLr+F9Sg28/SYTjEYDa5UPr+lanEwTWM9uhSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020637; c=relaxed/simple;
-	bh=HCgQ90lr0Y+wKyZmZUdBOe3qcY+YO2+HRJnOzUWLD7E=;
+	s=arc-20240116; t=1734017811; c=relaxed/simple;
+	bh=Zo4FzIFUAQYmtCmmKBWR5+IzdqHZng7Q5YKmssNZ4kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/8NLW1nMFtBd6+tYyUFnuV4TH852Ibxjc6RW4qsM7pQOL5tJlWjfgQUdhszW5QYmufAB//Lnmb7vPkeky+TDIuFDBzCNKADCXnTjEUwpRCONrQf4mWMXBkNylBFgfhgFBZ8c57H+KFjF1k2rsK0DbJ3M4/Om1lQ1V1BaILu4Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FK60m2La; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA36C4CECE;
-	Thu, 12 Dec 2024 16:23:56 +0000 (UTC)
+	 MIME-Version; b=g+zioswWv5X7jaHvdr4NtolRQvteEUQ7QqRuzvLlYLjZ1BHByrGpVFG14ZHhOudtE0u44FO1Om5wid0J90xFBvOuxUhmzoxUzTPV2wgoA/FfeT2IoQ6K6lzzXll21RTE1A9ly8ULjNZkFmW7yfDJNcmGpzmAGA9raGUrGK8LfxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaAiTKld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF1FC4CED0;
+	Thu, 12 Dec 2024 15:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020637;
-	bh=HCgQ90lr0Y+wKyZmZUdBOe3qcY+YO2+HRJnOzUWLD7E=;
+	s=korg; t=1734017811;
+	bh=Zo4FzIFUAQYmtCmmKBWR5+IzdqHZng7Q5YKmssNZ4kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FK60m2LaV78lOz9whwo7gAu3Lr1nEN++P9/02U1M4iIN0+we+N3Fg5c8imaHgknbw
-	 /zHapbk1m/Xe5v5+8jE2GkW4fDum3RthBEWgqjpfQWhGavxgY0DJk0kisn82LrniQw
-	 vUBLF0pCsYdKuKnzoM9Z0hueWByIct9xBtTRL+lA=
+	b=gaAiTKld/Ba6zDN3cJ9b9oYezSxUJH+3nTjyH/+Ftt+qM8w5cBSKOp7E5zIAm10a1
+	 UMff087sQ9+Ib0U5613qjY3x9jQmO85NpTRcH8EfU1vNInYYnBxX8pWJNaz24waZap
+	 rmqgkS53emNDDy7AaU2bX65jEl3cTMOIwCmbTVEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 491/772] thermal: int3400: Fix reading of current_uuid for active policy
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 117/356] ALSA: seq: ump: Use automatic cleanup of kfree()
 Date: Thu, 12 Dec 2024 15:57:16 +0100
-Message-ID: <20241212144410.241829198@linuxfoundation.org>
+Message-ID: <20241212144249.273635709@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 7082503622986537f57bdb5ef23e69e70cfad881 upstream.
+[ Upstream commit 316e38ef776663a7a4c5d76438c42c948c574df4 ]
 
-When the current_uuid attribute is set to the active policy UUID,
-reading back the same attribute is returning "INVALID" instead of
-the active policy UUID on some platforms before Ice Lake.
+There are common patterns where a temporary buffer is allocated and
+freed at the exit, and those can be simplified with the recent cleanup
+mechanism via __free(kfree).
 
-In platforms before Ice Lake, firmware provides a list of supported
-thermal policies. In this case, user space can select any of the
-supported thermal policies via a write to attribute "current_uuid".
+No functional changes, only code refactoring.
 
-In commit c7ff29763989 ("thermal: int340x: Update OS policy capability
-handshake")', the OS policy handshake was updated to support Ice Lake
-and later platforms and it treated priv->current_uuid_index=0 as
-invalid. However, priv->current_uuid_index=0 is for the active policy,
-only priv->current_uuid_index=-1 is invalid.
-
-Fix this issue by updating the priv->current_uuid_index check.
-
-Fixes: c7ff29763989 ("thermal: int340x: Update OS policy capability handshake")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: 5.18+ <stable@vger.kernel.org> # 5.18+
-Link: https://patch.msgid.link/20241114200213.422303-1-srinivas.pandruvada@linux.intel.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240222111509.28390-9-tiwai@suse.de
+Stable-dep-of: aaa55faa2495 ("ALSA: seq: ump: Fix seq port updates per FB info notify")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/intel/int340x_thermal/int3400_thermal.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/seq/seq_ump_client.c | 33 ++++++++++++---------------------
+ 1 file changed, 12 insertions(+), 21 deletions(-)
 
---- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-@@ -145,7 +145,7 @@ static ssize_t current_uuid_show(struct
- 	struct int3400_thermal_priv *priv = dev_get_drvdata(dev);
- 	int i, length = 0;
+diff --git a/sound/core/seq/seq_ump_client.c b/sound/core/seq/seq_ump_client.c
+index eaf7181b9af5b..b4c7543a24249 100644
+--- a/sound/core/seq/seq_ump_client.c
++++ b/sound/core/seq/seq_ump_client.c
+@@ -225,18 +225,15 @@ static bool skip_group(struct seq_ump_client *client, struct seq_ump_group *grou
+ static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
+ {
+ 	struct seq_ump_group *group = &client->groups[group_index];
+-	struct snd_seq_port_info *port;
++	struct snd_seq_port_info *port __free(kfree) = NULL;
+ 	struct snd_seq_port_callback pcallbacks;
+-	int err;
  
--	if (priv->current_uuid_index > 0)
-+	if (priv->current_uuid_index >= 0)
- 		return sprintf(buf, "%s\n",
- 			       int3400_thermal_uuids[priv->current_uuid_index]);
+ 	if (skip_group(client, group))
+ 		return 0;
  
+ 	port = kzalloc(sizeof(*port), GFP_KERNEL);
+-	if (!port) {
+-		err = -ENOMEM;
+-		goto error;
+-	}
++	if (!port)
++		return -ENOMEM;
+ 
+ 	fill_port_info(port, client, group);
+ 	port->flags = SNDRV_SEQ_PORT_FLG_GIVEN_PORT;
+@@ -249,24 +246,22 @@ static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
+ 	pcallbacks.unuse = seq_ump_unuse;
+ 	pcallbacks.event_input = seq_ump_process_event;
+ 	port->kernel = &pcallbacks;
+-	err = snd_seq_kernel_client_ctl(client->seq_client,
+-					SNDRV_SEQ_IOCTL_CREATE_PORT,
+-					port);
+- error:
+-	kfree(port);
+-	return err;
++	return snd_seq_kernel_client_ctl(client->seq_client,
++					 SNDRV_SEQ_IOCTL_CREATE_PORT,
++					 port);
+ }
+ 
+ /* update the sequencer ports; called from notify_fb_change callback */
+ static void update_port_infos(struct seq_ump_client *client)
+ {
+-	struct snd_seq_port_info *old, *new;
++	struct snd_seq_port_info *old __free(kfree) = NULL;
++	struct snd_seq_port_info *new __free(kfree) = NULL;
+ 	int i, err;
+ 
+ 	old = kzalloc(sizeof(*old), GFP_KERNEL);
+ 	new = kzalloc(sizeof(*new), GFP_KERNEL);
+ 	if (!old || !new)
+-		goto error;
++		return;
+ 
+ 	for (i = 0; i < SNDRV_UMP_MAX_GROUPS; i++) {
+ 		if (skip_group(client, &client->groups[i]))
+@@ -278,7 +273,7 @@ static void update_port_infos(struct seq_ump_client *client)
+ 						SNDRV_SEQ_IOCTL_GET_PORT_INFO,
+ 						old);
+ 		if (err < 0)
+-			goto error;
++			return;
+ 		fill_port_info(new, client, &client->groups[i]);
+ 		if (old->capability == new->capability &&
+ 		    !strcmp(old->name, new->name))
+@@ -287,13 +282,10 @@ static void update_port_infos(struct seq_ump_client *client)
+ 						SNDRV_SEQ_IOCTL_SET_PORT_INFO,
+ 						new);
+ 		if (err < 0)
+-			goto error;
++			return;
+ 		/* notify to system port */
+ 		snd_seq_system_client_ev_port_change(client->seq_client, i);
+ 	}
+- error:
+-	kfree(new);
+-	kfree(old);
+ }
+ 
+ /* update dir_bits and active flag for all groups in the client */
+@@ -350,7 +342,7 @@ static void update_group_attrs(struct seq_ump_client *client)
+ /* create a UMP Endpoint port */
+ static int create_ump_endpoint_port(struct seq_ump_client *client)
+ {
+-	struct snd_seq_port_info *port;
++	struct snd_seq_port_info *port __free(kfree) = NULL;
+ 	struct snd_seq_port_callback pcallbacks;
+ 	unsigned int rawmidi_info = client->ump->core.info_flags;
+ 	int err;
+@@ -399,7 +391,6 @@ static int create_ump_endpoint_port(struct seq_ump_client *client)
+ 	err = snd_seq_kernel_client_ctl(client->seq_client,
+ 					SNDRV_SEQ_IOCTL_CREATE_PORT,
+ 					port);
+-	kfree(port);
+ 	return err;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
