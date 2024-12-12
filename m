@@ -1,118 +1,187 @@
-Return-Path: <stable+bounces-100872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079A49EE325
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 10:35:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 973E09EE367
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 10:50:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE83F188758F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:35:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6BE21634AA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8CF20E30D;
-	Thu, 12 Dec 2024 09:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102B1153800;
+	Thu, 12 Dec 2024 09:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hHx2qL0s"
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="cztbVQQA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B2C20E30C
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 09:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0AD1E9B27
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 09:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733996114; cv=none; b=DJ7ZZDfNQxsiSXDwHDf+4bIoTTNbmNXpLpxSemgm8WXMBWibDbyedmyWuee6ogd1+Zy8PSHPA5OTHmGAQyjXGPD52GwaG7UXsppSjb/Lii036NvIkJNDVJtU2B4Vu8/eNwPTAyTmW4Kpa0ibu0CJKJyeY2IFraLdBcMDmId/Ch0=
+	t=1733996995; cv=none; b=Xk01XmtcOEaMcDM6krekS1Nd64iaozeDFAZchRUGQpV4jrUlt+D06AEc1rTTFOtXVEhD/PRmZW6WSGNi97aBgvTQmGWhlMqf1AG4JTZ0zSKADLt5COhllpckzJLd97Ob091009VIg6cxYGxNjSAsrxfL3Pg+N3Ivt55/+s7BYDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733996114; c=relaxed/simple;
-	bh=Va7Rbm4URrvIDt/DyH6qR9FjFuQwl7M8B+lnkEdmojI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NQN25ukvZr3zRvvqoWPT7ul2xEgnWxnixa+Pew70+m7Ze4YBcp2/NxGc/qxXYeo6VewMJSm4VVWSa8cofMeD7IOPchlOOEc75kA0sXIDAaVzGKO5gkXezybTAUrioL+TRnC/YU9pxhNenUhiL/zgcVei97XkrBbTYyr4I5PN4Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hHx2qL0s; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4361d5dcf5bso3979275e9.3
-        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 01:35:12 -0800 (PST)
+	s=arc-20240116; t=1733996995; c=relaxed/simple;
+	bh=s81qkoUSIoACM58iDiCwAec13spS5htj6r4Sfr88sQc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IA+RKT5UDR6gqTDDbjR/gQQktguUO3FtFMFiCVgH0u9kNNeCr19x3mVlehku5PBxe/G1vt1TC8By8/90JjPk4dWksISdzOypmKgRNDbN/urMUHDGrFzeekg4iktwnbRpeTWvrkRv1tYpw+WjA+OQTlQL99wsG8IBw3nDjJOF+Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=cztbVQQA; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7e9e38dd5f1so333783a12.0
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 01:49:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733996111; x=1734600911; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8c4l7lRS2bRhcX4yC4do8L3ZZ1P+9nyFTMOBopT/2GQ=;
-        b=hHx2qL0suimF4/i617UkBK/fOS+3VIjXHioNBPzo2FTACMU0te/AISNnmEBiYSvhTi
-         W1Lt/ZM4DNHJ7nMKmsRXmY2gaeHSnOe9Y2PqMulfcUUPUAtWNK8yidCZ6GcTq0h9jM/C
-         IdboEt/kEufShJmTCrLPpNNF0vYtui6LabZjeiqKbJ3kshEpWosjhV3tSVKs3W0sagMU
-         r/8DJKX5/ebUtPBFMikYwyFs8iGC+nP9DVpkiHdUnKVqpdeV7s+Rnyv2zbmQMU9d9wF0
-         nQKmjGCC/d4ixSCqab8FwrUC+zlKOWuWAWlaLlkoE3+K63E1NrmzROV1cVxcaRNn0l/Y
-         uhvw==
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1733996992; x=1734601792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yx/0fdgxjKDGAMHYgncy5mU2Vm1CuDbaOYTtTgjXVXI=;
+        b=cztbVQQASad10KpVSGJMC743oj/LrUvDhfLRiGZnMxwt5amIZvkEKT92PO5WSETGdj
+         7lTJod6zCi1iGBZ6Z6MI0x4RP1So4GBxkdhcwvwPRPmoBp+PJLtzEUwcmmyLESeXO+3A
+         KfgwoVwcXsF/V5YieO8EQhJY+/FsSEzWql5Lyac/m5tLHkeo+dRMzyMiO/KCOGCv67y3
+         GZN9TGXDw9AgFfqeJbMtn5EOq/39zzyiv/uGKEVy7TXOJEhvEfWHhBYFyk33qNxAu91B
+         U6eHepa990YKIvniuugKSGw0JU+xQYoyv1iqorqXVmMph/MjXM88vMfzf0vbgDCMjjb4
+         bdJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733996111; x=1734600911;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8c4l7lRS2bRhcX4yC4do8L3ZZ1P+9nyFTMOBopT/2GQ=;
-        b=h+uOzMUXkQTCJ6JFd5k5jQESsQCX1o3X0fJvDOc0j/p+R54wUuWxGT9EHCoNvOch4L
-         WXpEAyJ1C0le6r2S9KlxRW5favSb/G3whKa1ssQYVccPIGi8tVQyNufspj27rwmUJyWC
-         uGpWCStr6tVXVYD2LPctBAsuXe8PpP/blkT4eTI1Ub05X7o2uWSEeW3Zup5yQsvMxQhy
-         olY4ef+sNJqKvslitbUdFRyhrEfDEiD6siX324cGXNrhIRh/jVPSEgWUrQMY87kbPa8o
-         hFKxxswM7l0SLaY0stcKC5CEsLLmNnIeQHdHHFPl3zOydbrJQdyInvYpjl+JkAs88IiN
-         hIEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQmSmQg7nCRAPZgWZ2l1fe1I4UzbmTByqlssE0YTZgxIMcUQaUVHNrm87eFrJdzzyZUc8vfpM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLtHi/pfEa+aI5nZkJU1pf9IeletmKC7oLs9Zl7JjrkTZK13lQ
-	T6aylhppBx3xLcg33+agqdYWgt8S0N1xaPA/xGSGC+1hrq1NXCRDIlcnqtiuCmU=
-X-Gm-Gg: ASbGncuaQ+f+p/2+NVhCtK0jOKTDlOES6RNzagxorSEe6T8j8xnJjzCdZ+rLuXiss/M
-	fLM3Rbye08hgdXUy6TXIEGgzXjmCwrEh2ocYUtk7iCVzAicw9Amh25OdlFHbCNhrJNoZCIDNGAV
-	GVn83Ka+5Nsm900SfTnLYvbNEbblKx8ckbt4k+biYKY1PcmJIUZECAoZpxe+hdb3glHlNCaQLSI
-	fNZ8HRdybn0hXk959/eXMMcNnM8GgJNKBxaejZwGLIVl30qYunhSauPHEHMHw==
-X-Google-Smtp-Source: AGHT+IGized2vRZ+5/jSNeWf5x91CH3k8LiPPRqNJnZVzhvP9p1wXolywFcegCjc1TiC1IePEY+Hsw==
-X-Received: by 2002:a05:600c:3548:b0:435:40be:3949 with SMTP id 5b1f17b1804b1-43622844ab5mr24401495e9.16.1733996111444;
-        Thu, 12 Dec 2024 01:35:11 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4362559eedcsm10990545e9.23.2024.12.12.01.35.10
+        d=1e100.net; s=20230601; t=1733996992; x=1734601792;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yx/0fdgxjKDGAMHYgncy5mU2Vm1CuDbaOYTtTgjXVXI=;
+        b=pid8d2/jKtTSOB9Adm5ew6A3atSVMcJKbc56XJd+XQsW3/ilIIJk4gbzBofblsJbLU
+         GIhxSsLNQd9ZnMCwb8+mw0Nh93E57rWkzrqzfyiWmAJO4JUqScC1pQgPaPYfLbc35yYW
+         D7cOEtFr+S5LwKLgkedcLwzFidGzQ9Ldl5xHtdVFNdghECfR6fosqLjVoKXgSMZ9Dw97
+         OEI5+DSDIq+g8MSbgKGE8S1xFqp/RIMPUAFBGzzADaLm1KVGD4W2UTNIdr/2DomYs2c8
+         k+FaIve7UjXUQE5EuSRQZfNNodw6FkIBgteI4h1m4PB9hWp63l6X639EYCFih3fGLvzi
+         hPcw==
+X-Forwarded-Encrypted: i=1; AJvYcCWlC0z1W1K0JjxLxdCJYimsF9Xt5YVCckqU2hqunDo37TTZdalfRPwZ/V3TBlOID1+oKkvWwek=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWcmnu2zfKMxjLNQgNmVHLTWHdXKUM9gE8/QS5OZfTDyUC5AJD
+	DTvviZ3ptmpIWGGZ9YqTofgS+fAOCJdw3JBfZxmpEfglOMZZyhQdzMsbTvNd9W8=
+X-Gm-Gg: ASbGnctyTE9a7KyeLCPbjyoy79m5nUb2F3sOk5zYeFUIW7qxTNOGa2VkI5h8gOc6054
+	/UYozB8WPlzCssLueBZHWyiyKIbXid5WmeFE05/6nRKrggLfLdc4aX/JIIMfMi2c0QouYr3GzXR
+	YxG6BaRfhExHoqrxzWNRge8qln4+dw01737XKBLjLu+LBxNltl/LvAOxuADxcA2QYwCYtXMbro2
+	p6Koa3uSyoCp2VApcrZf66EfG7y4Q37qL4mdfMGDfEOTAqA3G7DJhAXG18CcllWr+VXXAhZP5dY
+	FiwdRxOsgClEvEU3OSircpnPqbo6OYWqWb8GlOHBFiQ=
+X-Google-Smtp-Source: AGHT+IG3Iz5dRJ5sBcw7SXyRAd9ifotl+/tTrmFy4GLzX26DqsnCMCjd/ftOnykjadUym1K0y6Yrlg==
+X-Received: by 2002:a05:6a21:e92:b0:1db:eff0:6ae7 with SMTP id adf61e73a8af0-1e1cec0abb8mr4140267637.33.1733996992166;
+        Thu, 12 Dec 2024 01:49:52 -0800 (PST)
+Received: from localhost.localdomain (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725dc0bb650sm8713034b3a.101.2024.12.12.01.49.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 01:35:10 -0800 (PST)
-Date: Thu, 12 Dec 2024 12:35:07 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Joao Pinto <jpinto@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Wei Yongjun <weiyongjun1@huawei.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
-	stable@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: Re: [PATCH v3 0/3] PCI: endpoint: fix bug for 2 APIs and simplify 1
- API
-Message-ID: <1fac71d8-dcfe-4924-ab01-dc85a822b740@stanley.mountain>
-References: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
+        Thu, 12 Dec 2024 01:49:51 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: peter.chen@kernel.org,
+	gregkh@linuxfoundation.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-usb@vger.kernel.org,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	stable@vger.kernel.org
+Subject: [PATCH] usb: chipidea: ci_hdrc_imx: decrement device's refcount on the error path of .probe()
+Date: Thu, 12 Dec 2024 18:49:45 +0900
+Message-Id: <20241212094945.3784866-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 10, 2024 at 10:00:17PM +0800, Zijun Hu wrote:
-> This patch series is to fix bug for APIs
-> - devm_pci_epc_destroy().
-> - pci_epf_remove_vepf().
-> 
-> and simplify APIs below:
-> - pci_epc_get().
-> 
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
+Current implementation of ci_hdrc_imx_probe() does not decrement the
+refcount of the device obtained in usbmisc_get_init_data(). Add a
+put_device() call before returning an error after the call.
 
-This is very good.  This is Config FS.  Is there a kself test for configfs
-or did you create your own test?
+This bug was found by an experimental static analysis tool that I am
+developing.
 
-regards,
-dan carpenter
+Cc: stable@vger.kernel.org
+Fixes: f40017e0f332 ("chipidea: usbmisc_imx: Add USB support for VF610 SoCs")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+---
+ drivers/usb/chipidea/ci_hdrc_imx.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index f2801700be8e..6418052264f2 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -370,25 +370,29 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 		data->pinctrl = devm_pinctrl_get(dev);
+ 		if (PTR_ERR(data->pinctrl) == -ENODEV)
+ 			data->pinctrl = NULL;
+-		else if (IS_ERR(data->pinctrl))
+-			return dev_err_probe(dev, PTR_ERR(data->pinctrl),
++		else if (IS_ERR(data->pinctrl)) {
++			ret = dev_err_probe(dev, PTR_ERR(data->pinctrl),
+ 					     "pinctrl get failed\n");
++			goto err_put;
++		}
+ 
+ 		data->hsic_pad_regulator =
+ 				devm_regulator_get_optional(dev, "hsic");
+ 		if (PTR_ERR(data->hsic_pad_regulator) == -ENODEV) {
+ 			/* no pad regulator is needed */
+ 			data->hsic_pad_regulator = NULL;
+-		} else if (IS_ERR(data->hsic_pad_regulator))
+-			return dev_err_probe(dev, PTR_ERR(data->hsic_pad_regulator),
++		} else if (IS_ERR(data->hsic_pad_regulator)) {
++			ret = dev_err_probe(dev, PTR_ERR(data->hsic_pad_regulator),
+ 					     "Get HSIC pad regulator error\n");
++			goto err_put;
++		}
+ 
+ 		if (data->hsic_pad_regulator) {
+ 			ret = regulator_enable(data->hsic_pad_regulator);
+ 			if (ret) {
+ 				dev_err(dev,
+ 					"Failed to enable HSIC pad regulator\n");
+-				return ret;
++				goto err_put;
+ 			}
+ 		}
+ 	}
+@@ -402,13 +406,14 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 			dev_err(dev,
+ 				"pinctrl_hsic_idle lookup failed, err=%ld\n",
+ 					PTR_ERR(pinctrl_hsic_idle));
+-			return PTR_ERR(pinctrl_hsic_idle);
++			ret = PTR_ERR(pinctrl_hsic_idle);
++			goto err_put;
+ 		}
+ 
+ 		ret = pinctrl_select_state(data->pinctrl, pinctrl_hsic_idle);
+ 		if (ret) {
+ 			dev_err(dev, "hsic_idle select failed, err=%d\n", ret);
+-			return ret;
++			goto err_put;
+ 		}
+ 
+ 		data->pinctrl_hsic_active = pinctrl_lookup_state(data->pinctrl,
+@@ -417,7 +422,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 			dev_err(dev,
+ 				"pinctrl_hsic_active lookup failed, err=%ld\n",
+ 					PTR_ERR(data->pinctrl_hsic_active));
+-			return PTR_ERR(data->pinctrl_hsic_active);
++			ret = PTR_ERR(data->pinctrl_hsic_active);
++			goto err_put;
+ 		}
+ 	}
+ 
+@@ -527,6 +533,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 	if (pdata.flags & CI_HDRC_PMQOS)
+ 		cpu_latency_qos_remove_request(&data->pm_qos_req);
+ 	data->ci_pdev = NULL;
++err_put:
++	put_device(data->usbmisc_data->dev);
+ 	return ret;
+ }
+ 
+-- 
+2.34.1
 
 
