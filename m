@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-101040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46269EEA2F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DEE9EF111
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B33481889C79
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDC3C1895B0C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA682139B2;
-	Thu, 12 Dec 2024 15:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B3E23EA9E;
+	Thu, 12 Dec 2024 16:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYF1u1F5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bw+/ISiJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDF4213E97;
-	Thu, 12 Dec 2024 15:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C5523EA98;
+	Thu, 12 Dec 2024 16:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016049; cv=none; b=Lg8JTtXYDQ7l42JftEe0Uj7Ih/fsWbamSFc+wKOIWhVinIZ4RHbjmUpYyko0C4DY4fhkf6LY966ibmIrqmB9neeEUabe6yHLTkXxh2BMRk2t7VSsSyQJoDX4CZ7tmo0S2SZVr+zNxNNktptrbBS0uqMHH4jVB3DgIa9jeWD2Oxo=
+	t=1734019962; cv=none; b=EHJjURk5RQoqDeraXWbANlKJwCO7sRM+UiR1A8/ED5PChh71CbDF8GAxgh8JXoSgvyE8vKuKK+V4fxvL45KqIRjqjVIZWEagnVquW4qUz3jMa+jaKBuzxt4pL3pSj9Svdr9ibno6PQZJVD1VxYT0pmfj2+3gvJPO2R5hFhYsJ7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016049; c=relaxed/simple;
-	bh=CgJ91vbxXck4jTGGS81nzhvFz7unz5aw9+3zHjZx6f8=;
+	s=arc-20240116; t=1734019962; c=relaxed/simple;
+	bh=HNi4M1OAzB5rheRp82yf93ASqX9VTx/hlThjT/Tuc/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ljKDuPnxn0KmGLbkJFpIHXgLHn2FnNSB1nXBylk9S2CSgMnLaM+cLF4LHcEVYys9mqw4V7JfNrKrtlZppWd7RIzCWyoiwxv80AA+9Bw5ZTNSGQpFDWl0SX4o1g/IFxmmV/S1ZOJgK4VuFyCuL9/TQtfA8ZyOI5qBMOzagC+xSZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYF1u1F5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A74BC4CECE;
-	Thu, 12 Dec 2024 15:07:28 +0000 (UTC)
+	 MIME-Version; b=b9Olo0pXnruc0uvhFv3yR+rK1i+SwnUf3W3V0jBvfC3PTbO1+PVJLpS1n9n+pUBDIloHhzEv3AqAWd3xbueF4AO8QOUEJ5VONzKdIW8iah62D8eeN5c7n8GOzfIulf1sm7bh2sB2xCr5Z0daWYVKq87h3I5oXCLLngxfKrpkNiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bw+/ISiJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE71C4CEDD;
+	Thu, 12 Dec 2024 16:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016048;
-	bh=CgJ91vbxXck4jTGGS81nzhvFz7unz5aw9+3zHjZx6f8=;
+	s=korg; t=1734019962;
+	bh=HNi4M1OAzB5rheRp82yf93ASqX9VTx/hlThjT/Tuc/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYF1u1F5oA4qZC3Du/w1kWAG3c5TRWLFipTY2CPUG7Ep7THCiKp99MVOVcqkbTMth
-	 YcVDchnPJsrYXsyPG580EEFCjTdNHx08gsWc56CDJQskB8x4/Y1CJ59+V1XStvDL+c
-	 o8TtMmWmee/vmmqLZpOd1v61W/oDrOd/koSsACrQ=
+	b=Bw+/ISiJUO4Ch9nAxvVc9azbUlsIgVxN2BfsmAkRk63n6iTQFmCNxxFrWsOxziVE4
+	 QBrVW1TS+UoohUHy6HB4cXQ6zo8ZgBonlM0SbP8797tht9pqnA5faVFAcinaaI0SKm
+	 yXp1jTCLLMgdrP4vyEd++uF6n9FpRb7JOHvhp8zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/466] bpf: Remove unnecessary kfree(im_node) in lpm_trie_update_elem
-Date: Thu, 12 Dec 2024 15:54:46 +0100
-Message-ID: <20241212144311.438252369@linuxfoundation.org>
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.1 342/772] xen: Fix the issue of resource not being properly released in xenbus_dev_probe()
+Date: Thu, 12 Dec 2024 15:54:47 +0100
+Message-ID: <20241212144404.043052754@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +59,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit 3d5611b4d7efbefb85a74fcdbc35c603847cc022 ]
+commit afc545da381ba0c651b2658966ac737032676f01 upstream.
 
-There is no need to call kfree(im_node) when updating element fails,
-because im_node must be NULL. Remove the unnecessary kfree() for
-im_node.
+This patch fixes an issue in the function xenbus_dev_probe(). In the
+xenbus_dev_probe() function, within the if (err) branch at line 313, the
+program incorrectly returns err directly without releasing the resources
+allocated by err = drv->probe(dev, id). As the return value is non-zero,
+the upper layers assume the processing logic has failed. However, the probe
+operation was performed earlier without a corresponding remove operation.
+Since the probe actually allocates resources, failing to perform the remove
+operation could lead to problems.
 
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241206110622.1161752-3-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 532d6b36b2bf ("bpf: Handle in-place update for full LPM trie correctly")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix this issue, we followed the resource release logic of the
+xenbus_dev_remove() function by adding a new block fail_remove before the
+fail_put block. After entering the branch if (err) at line 313, the
+function will use a goto statement to jump to the fail_remove block,
+ensuring that the previously acquired resources are correctly released,
+thus preventing the reference count leak.
+
+This bug was identified by an experimental static analysis tool developed
+by our team. The tool specializes in analyzing reference count operations
+and detecting potential issues where resources are not properly managed.
+In this case, the tool flagged the missing release operation as a
+potential problem, which led to the development of this patch.
+
+Fixes: 4bac07c993d0 ("xen: add the Xenbus sysfs and virtual device hotplug driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241105130919.4621-1-chenqiuji666@gmail.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/lpm_trie.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/xen/xenbus/xenbus_probe.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index a82cf3693778a..8a040f123e04a 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -315,7 +315,7 @@ static long trie_update_elem(struct bpf_map *map,
- 			     void *_key, void *value, u64 flags)
- {
- 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
--	struct lpm_trie_node *node, *im_node = NULL, *new_node = NULL;
-+	struct lpm_trie_node *node, *im_node, *new_node = NULL;
- 	struct lpm_trie_node *free_node = NULL;
- 	struct lpm_trie_node __rcu **slot;
- 	struct bpf_lpm_trie_key_u8 *key = _key;
-@@ -449,9 +449,7 @@ static long trie_update_elem(struct bpf_map *map,
- 	if (ret) {
- 		if (new_node)
- 			trie->n_entries--;
--
- 		kfree(new_node);
--		kfree(im_node);
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -313,7 +313,7 @@ int xenbus_dev_probe(struct device *_dev
+ 	if (err) {
+ 		dev_warn(&dev->dev, "watch_otherend on %s failed.\n",
+ 		       dev->nodename);
+-		return err;
++		goto fail_remove;
  	}
  
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
--- 
-2.43.0
-
+ 	dev->spurious_threshold = 1;
+@@ -322,6 +322,12 @@ int xenbus_dev_probe(struct device *_dev
+ 			 dev->nodename);
+ 
+ 	return 0;
++fail_remove:
++	if (drv->remove) {
++		down(&dev->reclaim_sem);
++		drv->remove(dev);
++		up(&dev->reclaim_sem);
++	}
+ fail_put:
+ 	module_put(drv->driver.owner);
+ fail:
 
 
 
