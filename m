@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1C59EED19
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 976DD9EF396
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE24418878AA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D57C9285C99
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9FD218587;
-	Thu, 12 Dec 2024 15:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67BD235C26;
+	Thu, 12 Dec 2024 16:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DASj1/H2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdtAkRfT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FAC2135C1;
-	Thu, 12 Dec 2024 15:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8310522968C;
+	Thu, 12 Dec 2024 16:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017919; cv=none; b=SgRRKkDDx1OS7BLCSCADlgt7jQSaE7LI2WmV2IrfqtlIh+Xxhevb52fBT+xv6kBiu/BWt4bBXh9ReXZ3S5Y3uOwIbXCbD5GS7eGZfko5D3KOIr4eL2WcHr4p8oM46G9q/ikUWWWLhw9IWs8r12E0zmRB6wZolrsuE5ZzhapFU5Y=
+	t=1734022545; cv=none; b=f/DKne5x1EwMHUX0fJYi7x77Dq8xtznsSTnqaQqAcY+LUXgwZnKHyUTZ71EbZ+5XWH1cP64DPFs7ZvQ/IP9iDJvV6JzpZDONwY7fxNX32VzExlpYN3Nk7Emxh0BGMOuFtgZ/CmBtofBE7rSMlV8hOeAb/94l60go6L7OHAvZs/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017919; c=relaxed/simple;
-	bh=09GIPPN9YC2Az21L8J/mjl9yRoeTsShg5o7dAmKAP+E=;
+	s=arc-20240116; t=1734022545; c=relaxed/simple;
+	bh=1USr4TxGFBcBvVOKVqPoS2EIgRhRF4kjBc1FIGJvaGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fo+G3HtAhNhR+pclMP3INS+n83Bsr3zzkxfaLu92glCrEriao7hBcz8xjCHuDpYlJUhoUqQm2b9NFQinbyi0HVWI43sOgoT08N3f1hU7yratCNiGhKOJT+TLa6hE9cC7joZSQ7/SLRItwMpE6zJxX1hrBl/Cap3p3QT+0qppXUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DASj1/H2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FD6C4CED0;
-	Thu, 12 Dec 2024 15:38:38 +0000 (UTC)
+	 MIME-Version; b=EdtWgkRgiCKNc/m17FrlAvalHenLvxfwtKqZGmNma/wm/n4CfGsDt0CbFmAxlEd8RO9rs8H7mvPBE6FIlJuMADE3cTSX1QZlw47hJpan2HE/xeu6TSEljwNDUO9Ayw8mw3DrTVM3KA9JA7zwkqfT3ciVIgyJG1FyLI88Cp5qxrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdtAkRfT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D33EC4CECE;
+	Thu, 12 Dec 2024 16:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017919;
-	bh=09GIPPN9YC2Az21L8J/mjl9yRoeTsShg5o7dAmKAP+E=;
+	s=korg; t=1734022545;
+	bh=1USr4TxGFBcBvVOKVqPoS2EIgRhRF4kjBc1FIGJvaGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DASj1/H2eq/DvuXwhWCnzoGBh+HJq8RtbzB7SK8Cp5n8e3sf5wbSG3GwWH1TcvkTd
-	 WrWSzH+KPttTj6XZU8C5siBOBY2HEBQifLNXJTsofXofEBTgCref6XNsS4xr3CA/Y3
-	 UdxHqm+yBwAz3bLj0ijUuIpEPPNPTgMY6iEB25AQ=
+	b=WdtAkRfTqJY8PEFb14iDC9FxNkF5B4F1zC61sbu0YupJVuRtaa5RCxtAAL6VaskmI
+	 1BqGz5VWmBtREsZGkQq/6vT7cAQvqAMg3fez333ReasR5/cbm6+gYsZfDyAu0UeLc7
+	 oT3ClT/nEmMupnWxTzcZJR50d03sgIZGujYj/7Zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 147/356] arm64: Ensure bits ASID[15:8] are masked out when the kernel uses 8-bit ASIDs
+	Avihai Horon <avihaih@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 271/565] vfio/pci: Properly hide first-in-list PCIe extended capability
 Date: Thu, 12 Dec 2024 15:57:46 +0100
-Message-ID: <20241212144250.447211980@linuxfoundation.org>
+Message-ID: <20241212144322.176104894@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Avihai Horon <avihaih@nvidia.com>
 
-commit c0900d15d31c2597dd9f634c8be2b71762199890 upstream.
+[ Upstream commit fe4bf8d0b6716a423b16495d55b35d3fe515905d ]
 
-Linux currently sets the TCR_EL1.AS bit unconditionally during CPU
-bring-up. On an 8-bit ASID CPU, this is RES0 and ignored, otherwise
-16-bit ASIDs are enabled. However, if running in a VM and the hypervisor
-reports 8-bit ASIDs (ID_AA64MMFR0_EL1.ASIDBits == 0) on a 16-bit ASIDs
-CPU, Linux uses bits 8 to 63 as a generation number for tracking old
-process ASIDs. The bottom 8 bits of this generation end up being written
-to TTBR1_EL1 and also used for the ASID-based TLBI operations as the
-upper 8 bits of the ASID. Following an ASID roll-over event we can have
-threads of the same application with the same 8-bit ASID but different
-generation numbers running on separate CPUs. Both TLB caching and the
-TLBI operations will end up using different actual 16-bit ASIDs for the
-same process.
+There are cases where a PCIe extended capability should be hidden from
+the user. For example, an unknown capability (i.e., capability with ID
+greater than PCI_EXT_CAP_ID_MAX) or a capability that is intentionally
+chosen to be hidden from the user.
 
-A similar scenario can happen in a big.LITTLE configuration if the boot
-CPU only uses 8-bit ASIDs while secondary CPUs have 16-bit ASIDs.
+Hiding a capability is done by virtualizing and modifying the 'Next
+Capability Offset' field of the previous capability so it points to the
+capability after the one that should be hidden.
 
-Ensure that the ASID generation is only tracked by bits 16 and up,
-leaving bits 15:8 as 0 if the kernel uses 8-bit ASIDs. Note that
-clearing TCR_EL1.AS is not sufficient since the architecture requires
-that the top 8 bits of the ASID passed to TLBI instructions are 0 rather
-than ignored in such configuration.
+The special case where the first capability in the list should be hidden
+is handled differently because there is no previous capability that can
+be modified. In this case, the capability ID and version are zeroed
+while leaving the next pointer intact. This hides the capability and
+leaves an anchor for the rest of the capability list.
 
-Cc: stable@vger.kernel.org
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: James Morse <james.morse@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20241203151941.353796-1-catalin.marinas@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, today, hiding the first capability in the list is not done
+properly if the capability is unknown, as struct
+vfio_pci_core_device->pci_config_map is set to the capability ID during
+initialization but the capability ID is not properly checked later when
+used in vfio_config_do_rw(). This leads to the following warning [1] and
+to an out-of-bounds access to ecap_perms array.
+
+Fix it by checking cap_id in vfio_config_do_rw(), and if it is greater
+than PCI_EXT_CAP_ID_MAX, use an alternative struct perm_bits for direct
+read only access instead of the ecap_perms array.
+
+Note that this is safe since the above is the only case where cap_id can
+exceed PCI_EXT_CAP_ID_MAX (except for the special capabilities, which
+are already checked before).
+
+[1]
+
+WARNING: CPU: 118 PID: 5329 at drivers/vfio/pci/vfio_pci_config.c:1900 vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
+CPU: 118 UID: 0 PID: 5329 Comm: simx-qemu-syste Not tainted 6.12.0+ #1
+(snip)
+Call Trace:
+ <TASK>
+ ? show_regs+0x69/0x80
+ ? __warn+0x8d/0x140
+ ? vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
+ ? report_bug+0x18f/0x1a0
+ ? handle_bug+0x63/0xa0
+ ? exc_invalid_op+0x19/0x70
+ ? asm_exc_invalid_op+0x1b/0x20
+ ? vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
+ ? vfio_pci_config_rw+0x244/0x430 [vfio_pci_core]
+ vfio_pci_rw+0x101/0x1b0 [vfio_pci_core]
+ vfio_pci_core_read+0x1d/0x30 [vfio_pci_core]
+ vfio_device_fops_read+0x27/0x40 [vfio]
+ vfs_read+0xbd/0x340
+ ? vfio_device_fops_unl_ioctl+0xbb/0x740 [vfio]
+ ? __rseq_handle_notify_resume+0xa4/0x4b0
+ __x64_sys_pread64+0x96/0xc0
+ x64_sys_call+0x1c3d/0x20d0
+ do_syscall_64+0x4d/0x120
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Tested-by: Yi Liu <yi.l.liu@intel.com>
+Link: https://lore.kernel.org/r/20241124142739.21698-1-avihaih@nvidia.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/context.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/vfio/pci/vfio_pci_config.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/mm/context.c
-+++ b/arch/arm64/mm/context.c
-@@ -32,9 +32,9 @@ static unsigned long nr_pinned_asids;
- static unsigned long *pinned_asid_map;
+diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
+index 6e58b4bf7a601..63f6308b0f8c9 100644
+--- a/drivers/vfio/pci/vfio_pci_config.c
++++ b/drivers/vfio/pci/vfio_pci_config.c
+@@ -312,6 +312,10 @@ static int vfio_virt_config_read(struct vfio_pci_core_device *vdev, int pos,
+ 	return count;
+ }
  
- #define ASID_MASK		(~GENMASK(asid_bits - 1, 0))
--#define ASID_FIRST_VERSION	(1UL << asid_bits)
-+#define ASID_FIRST_VERSION	(1UL << 16)
++static struct perm_bits direct_ro_perms = {
++	.readfn = vfio_direct_config_read,
++};
++
+ /* Default capability regions to read-only, no-virtualization */
+ static struct perm_bits cap_perms[PCI_CAP_ID_MAX + 1] = {
+ 	[0 ... PCI_CAP_ID_MAX] = { .readfn = vfio_direct_config_read }
+@@ -1840,9 +1844,17 @@ static ssize_t vfio_config_do_rw(struct vfio_pci_core_device *vdev, char __user
+ 		cap_start = *ppos;
+ 	} else {
+ 		if (*ppos >= PCI_CFG_SPACE_SIZE) {
+-			WARN_ON(cap_id > PCI_EXT_CAP_ID_MAX);
++			/*
++			 * We can get a cap_id that exceeds PCI_EXT_CAP_ID_MAX
++			 * if we're hiding an unknown capability at the start
++			 * of the extended capability list.  Use default, ro
++			 * access, which will virtualize the id and next values.
++			 */
++			if (cap_id > PCI_EXT_CAP_ID_MAX)
++				perm = &direct_ro_perms;
++			else
++				perm = &ecap_perms[cap_id];
  
--#define NUM_USER_ASIDS		ASID_FIRST_VERSION
-+#define NUM_USER_ASIDS		(1UL << asid_bits)
- #define ctxid2asid(asid)	((asid) & ~ASID_MASK)
- #define asid2ctxid(asid, genid)	((asid) | (genid))
- 
+-			perm = &ecap_perms[cap_id];
+ 			cap_start = vfio_find_cap_start(vdev, *ppos);
+ 		} else {
+ 			WARN_ON(cap_id > PCI_CAP_ID_MAX);
+-- 
+2.43.0
+
 
 
 
