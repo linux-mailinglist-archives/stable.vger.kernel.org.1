@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-103075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A94A9EF4F3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 706B39EF92C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153D528B798
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 328D528F206
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF09211A34;
-	Thu, 12 Dec 2024 17:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CBC2253E0;
+	Thu, 12 Dec 2024 17:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zst6hAge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Voi5lIEi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B50C6F2FE;
-	Thu, 12 Dec 2024 17:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944492248A4;
+	Thu, 12 Dec 2024 17:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023467; cv=none; b=iR0cLJbjqSPcd8Gw5rDaDDRWvQ6upeNqsRAlg43KAuygGmwhtY2aub8+FaIKot07qrlwYsvpTvYOkt6Mf6KIh6vY2PEa+rSJw5EiYd0LQKmE6/08SdqUeJqhCZAFRGSpuuvGaAc5wSR7oBKQ6VAQ4DLNLV12Bp8Gu+oKC8rIrB8=
+	t=1734025585; cv=none; b=Wlj4cDdBIesImh3+AvadXpJdMBB2MciKn8Twja2Httzc7u7ae5yVsd0ztHtseZf7jccBcF7kbwmUtxsX5YKz8EisU7W7kzHdAr2SjjEgwz0M6RFyA30EaCJuulW0RnWj1GIqmRmgWQtLPX7+fteG+bzEekSq2CSMwmNxDLDX9JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023467; c=relaxed/simple;
-	bh=MmbuJJjEYOmXESSwcQ9fnC6tR9NIrrm0BOXDPiNwtac=;
+	s=arc-20240116; t=1734025585; c=relaxed/simple;
+	bh=hP7hW1cYSLGnEkYC/FiOhuAg6eLTTnWNwfdr1Z9Y02I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkV0r++ll1tFIxHB281qowYZQgJTh/B0im/bMZwLEE4TL0nrg+3tuDa2TYwv+b/xOzxpGQLfQv0U0sj7DcTgrsQ6mYnr9NFUAPKzcytrPJY3TuSpTfwAoVXI2vyXgHGt3fvJEXACxKgZ184sHl+C6JAePoz7rzYjrkN+gjVwDjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zst6hAge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2098BC4CECE;
-	Thu, 12 Dec 2024 17:11:06 +0000 (UTC)
+	 MIME-Version; b=f1Ksr7fFpRhkUED1PP4MAndmj4qzX9yx6cRRGV0Q14Lf1DM7bgVHnLRZWenn7rF35FuEAk/KlKzPx+G3G86Np1ngEGNEvPTxkchfMRIwzN1lOx6zCD20j1pk0iQZtk43uVKoUYOpSpNCGEaxJWhICDcHU13hTDlWRpYjS2qzw3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Voi5lIEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B5DC4CECE;
+	Thu, 12 Dec 2024 17:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023467;
-	bh=MmbuJJjEYOmXESSwcQ9fnC6tR9NIrrm0BOXDPiNwtac=;
+	s=korg; t=1734025585;
+	bh=hP7hW1cYSLGnEkYC/FiOhuAg6eLTTnWNwfdr1Z9Y02I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zst6hAge3XsWtKkIBymBQH4C8XRIaQXbS0gJnYja+KCMmhG9ch1yD68U6R7loX9wf
-	 tyH8dTSDnmJrnVrJ/lx5BQQeUKd4OTqlwsqak7xflDRiEUaxkRkp2EPCKe6upzFtS2
-	 UhQtfPzxjBw1+rgec45gYyXv6Fdzro2YLjuEEGqo=
+	b=Voi5lIEiqDa3FsksIjztXWOE7pW7tc6bLlClPF2cBBF7PHvg1DNMhxqG5lfFCfzpN
+	 Rui/yIG+VUE3TdGNK9SPiW9KDbu5N0pv5+W8B2kYPiPm9tRgZVo2lMXjBW10UxUJA6
+	 +k+jXjHlcjVCOE0u6Wd3A3J9Hn3PVWEMWlX4R8Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kinsey Moore <kinsey.moore@oarcorp.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.15 542/565] jffs2: Prevent rtime decompress memory corruption
+	Oleksandr Ocheretnyi <oocheret@cisco.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 219/321] iTCO_wdt: mask NMI_NOW bit for update_no_reboot_bit() call
 Date: Thu, 12 Dec 2024 16:02:17 +0100
-Message-ID: <20241212144333.280510664@linuxfoundation.org>
+Message-ID: <20241212144238.631484417@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kinsey Moore <kinsey.moore@oarcorp.com>
+From: Oleksandr Ocheretnyi <oocheret@cisco.com>
 
-commit fe051552f5078fa02d593847529a3884305a6ffe upstream.
+[ Upstream commit daa814d784ac034c62ab3fb0ef83daeafef527e2 ]
 
-The rtime decompression routine does not fully check bounds during the
-entirety of the decompression pass and can corrupt memory outside the
-decompression buffer if the compressed data is corrupted. This adds the
-required check to prevent this failure mode.
+Commit da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake
+PCH iTCO") does not mask NMI_NOW bit during TCO1_CNT register's
+value comparison for update_no_reboot_bit() call causing following
+failure:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Kinsey Moore <kinsey.moore@oarcorp.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   ...
+   iTCO_vendor_support: vendor-support=0
+   iTCO_wdt iTCO_wdt: unable to reset NO_REBOOT flag, device
+                                    disabled by hardware/BIOS
+   ...
+
+and this can lead to unexpected NMIs later during regular
+crashkernel's workflow because of watchdog probe call failures.
+
+This change masks NMI_NOW bit for TCO1_CNT register values to
+avoid unexpected NMI_NOW bit inversions.
+
+Fixes: da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake PCH iTCO")
+Signed-off-by: Oleksandr Ocheretnyi <oocheret@cisco.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/r/20240913191403.2560805-1-oocheret@cisco.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/compr_rtime.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/watchdog/iTCO_wdt.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
---- a/fs/jffs2/compr_rtime.c
-+++ b/fs/jffs2/compr_rtime.c
-@@ -95,6 +95,9 @@ static int jffs2_rtime_decompress(unsign
+diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
+index 134237d8b8fca..c03df400ffb90 100644
+--- a/drivers/watchdog/iTCO_wdt.c
++++ b/drivers/watchdog/iTCO_wdt.c
+@@ -83,6 +83,13 @@
+ #define TCO2_CNT(p)	(TCOBASE(p) + 0x0a) /* TCO2 Control Register	*/
+ #define TCOv2_TMR(p)	(TCOBASE(p) + 0x12) /* TCOv2 Timer Initial Value*/
  
- 		positions[value]=outpos;
- 		if (repeat) {
-+			if ((outpos + repeat) >= destlen) {
-+				return 1;
-+			}
- 			if (backoffs + repeat >= outpos) {
- 				while(repeat) {
- 					cpage_out[outpos++] = cpage_out[backoffs++];
++/*
++ * NMI_NOW is bit 8 of TCO1_CNT register
++ * Read/Write
++ * This bit is implemented as RW but has no effect on HW.
++ */
++#define NMI_NOW		BIT(8)
++
+ /* internal variables */
+ struct iTCO_wdt_private {
+ 	struct watchdog_device wddev;
+@@ -221,13 +228,23 @@ static int update_no_reboot_bit_cnt(void *priv, bool set)
+ 	struct iTCO_wdt_private *p = priv;
+ 	u16 val, newval;
+ 
+-	val = inw(TCO1_CNT(p));
++	/*
++	 * writing back 1b1 to NMI_NOW of TCO1_CNT register
++	 * causes NMI_NOW bit inversion what consequently does
++	 * not allow to perform the register's value comparison
++	 * properly.
++	 *
++	 * NMI_NOW bit masking for TCO1_CNT register values
++	 * helps to avoid possible NMI_NOW bit inversions on
++	 * following write operation.
++	 */
++	val = inw(TCO1_CNT(p)) & ~NMI_NOW;
+ 	if (set)
+ 		val |= BIT(0);
+ 	else
+ 		val &= ~BIT(0);
+ 	outw(val, TCO1_CNT(p));
+-	newval = inw(TCO1_CNT(p));
++	newval = inw(TCO1_CNT(p)) & ~NMI_NOW;
+ 
+ 	/* make sure the update is successful */
+ 	return val != newval ? -EIO : 0;
+-- 
+2.43.0
+
 
 
 
