@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21539EEB3C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A219EECA3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16D2A16CB0B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBC7E1884A94
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356D51537C8;
-	Thu, 12 Dec 2024 15:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1720D215777;
+	Thu, 12 Dec 2024 15:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ag95hGyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SseH0ulp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44482EAE5;
-	Thu, 12 Dec 2024 15:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86DE217670;
+	Thu, 12 Dec 2024 15:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016633; cv=none; b=hcFuT7cEM/9bRBx4Wj4b/js3kph4WU/C9bZkTdHsPJu2srJEmY9wKsh8isk6cHELNk454i/3FOvg/VkgW9qBYjL4Ai70xz4bYpLYDtmOx/0Izbzr85Bm2gus8675+A9YkwPr5CAeqv3FVXk0ipg6upIVwk34q9YE+J3oDiBXLmc=
+	t=1734017661; cv=none; b=FIjs2ZMMRRgSFQzgi0fXPmuk5mS7ksZFim9Egkrui2EzUEF8WXoTn8W1RhPPq1tgIHDpu0VaSLjtuvk92fii2fmdQKtOxHgZ50r3YKGIpOWwKoSIbVRHwUzRwjH92rUC8sHNcJmsCYdDPL9XXh0972txrJFx7MKUvvW6VZTICOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016633; c=relaxed/simple;
-	bh=RqUd2VqAbtKcrsT7gNR/9Cz0PCcr2iMUtyzGaT9pcbQ=;
+	s=arc-20240116; t=1734017661; c=relaxed/simple;
+	bh=NIRMlwkb6yruWEuK9p/P2Wg1+dFIjz6cYpQretMHEzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfgiVq55eY3+TXNvViQbavPGl1Jp4UOQn0tP9kmTM94cyLI2gwmsj4WYRcRYIg5ZfX8QgmTlYrusgBQMwsV6T1ZjR7MNwIW84wiNUqBW2y1zjlkio2R7PMtinYvQjfq58f5rptpCgNmLf7VVMjYJ7TviaRkFPIOsQ2Zx805KZrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ag95hGyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624C8C4CECE;
-	Thu, 12 Dec 2024 15:17:12 +0000 (UTC)
+	 MIME-Version; b=TYjpN0KlttCy5LHjqWsH0W8nI39Govt5jwkRzKpXzTJx51IuKsd4CAUjkdSbgAELuXXsvFsrup166wi9agspadS+4Jn0ZVgCpCiZdBqUuahJ3LbeUaDEdxr45nOUNJlScs+JKRBdKLpDua5lUJCaixat4E97hnVhdO8jzePEO4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SseH0ulp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CBEC4CECE;
+	Thu, 12 Dec 2024 15:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016632;
-	bh=RqUd2VqAbtKcrsT7gNR/9Cz0PCcr2iMUtyzGaT9pcbQ=;
+	s=korg; t=1734017661;
+	bh=NIRMlwkb6yruWEuK9p/P2Wg1+dFIjz6cYpQretMHEzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ag95hGygtE2twS6cEtDBC+Pu9aSildKyG0IEK+LxFHGtfrKRTAwpFECDdT+xH0bK5
-	 3jMo5Xl2WZDzypSHtDBarJ0JGROGOs0HvXmOX+5ZsJCVyCxnq6sYhprc9QWJTl6fUd
-	 Rz92ENwDrMhEzpZ54wRYzbeZdk5hh8l56HGDDuvU=
+	b=SseH0ulpTLaxAiFP5pCAZi2Gt+8aTWhgzUreVTxvEw2Hlee5Nl5NBSCo1r2HLu5IB
+	 xIUZYZSjNbKFOex4jpIT+XF92+ArT+54rZHrJIaD9MsXyyesUIagZ+ZA+9yxarNoG/
+	 2SO9D0vSX3VWKXRnIUipljoY50aXwMpcxe3TBMi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	Marco Elver <elver@google.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/466] kcsan: Turn report_filterlist_lock into a raw_spinlock
+Subject: [PATCH 6.6 076/356] soc: fsl: cpm1: qmc: Re-order probe() operations
 Date: Thu, 12 Dec 2024 15:56:35 +0100
-Message-ID: <20241212144315.705899551@linuxfoundation.org>
+Message-ID: <20241212144247.628640653@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,214 +62,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 59458fa4ddb47e7891c61b4a928d13d5f5b00aa0 ]
+[ Upstream commit a13bf605342ea9df492b8159cadaa41862b53e15 ]
 
-Ran Xiaokai reports that with a KCSAN-enabled PREEMPT_RT kernel, we can see
-splats like:
+Current code handles CPM1 version of QMC. In the QUICC Engine (QE)
+version, some operations done at probe() need to be done in a different
+order.
 
-| BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-| in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-| preempt_count: 10002, expected: 0
-| RCU nest depth: 0, expected: 0
-| no locks held by swapper/1/0.
-| irq event stamp: 156674
-| hardirqs last  enabled at (156673): [<ffffffff81130bd9>] do_idle+0x1f9/0x240
-| hardirqs last disabled at (156674): [<ffffffff82254f84>] sysvec_apic_timer_interrupt+0x14/0xc0
-| softirqs last  enabled at (0): [<ffffffff81099f47>] copy_process+0xfc7/0x4b60
-| softirqs last disabled at (0): [<0000000000000000>] 0x0
-| Preemption disabled at:
-| [<ffffffff814a3e2a>] paint_ptr+0x2a/0x90
-| CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.11.0+ #3
-| Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-0-ga698c8995f-prebuilt.qemu.org 04/01/2014
-| Call Trace:
-|  <IRQ>
-|  dump_stack_lvl+0x7e/0xc0
-|  dump_stack+0x1d/0x30
-|  __might_resched+0x1a2/0x270
-|  rt_spin_lock+0x68/0x170
-|  kcsan_skip_report_debugfs+0x43/0xe0
-|  print_report+0xb5/0x590
-|  kcsan_report_known_origin+0x1b1/0x1d0
-|  kcsan_setup_watchpoint+0x348/0x650
-|  __tsan_unaligned_write1+0x16d/0x1d0
-|  hrtimer_interrupt+0x3d6/0x430
-|  __sysvec_apic_timer_interrupt+0xe8/0x3a0
-|  sysvec_apic_timer_interrupt+0x97/0xc0
-|  </IRQ>
+In order to prepare the support for the QE version, changed the sequence
+of operation done at probe():
+- Retrieve the tsa_serial earlier, before initializing resources.
+- Group SCC initialisation and do this initialization when it is really
+  needed in the probe() sequence.
 
-On a detected data race, KCSAN's reporting logic checks if it should
-filter the report. That list is protected by the report_filterlist_lock
-*non-raw* spinlock which may sleep on RT kernels.
+Having the QE compatible sequence in the CPM1 version does not lead to
+any issue and works correctly without any regressions.
 
-Since KCSAN may report data races in any context, convert it to a
-raw_spinlock.
-
-This requires being careful about when to allocate memory for the filter
-list itself which can be done via KCSAN's debugfs interface. Concurrent
-modification of the filter list via debugfs should be rare: the chosen
-strategy is to optimistically pre-allocate memory before the critical
-section and discard if unused.
-
-Link: https://lore.kernel.org/all/20240925143154.2322926-1-ranxiaokai627@163.com/
-Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Tested-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20240808071132.149251-26-herve.codina@bootlin.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Stable-dep-of: cb3daa51db81 ("soc: fsl: cpm1: qmc: Set the ret error code on platform_get_irq() failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kcsan/debugfs.c | 74 ++++++++++++++++++++----------------------
- 1 file changed, 36 insertions(+), 38 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 54 +++++++++++++++++++---------------------
+ 1 file changed, 26 insertions(+), 28 deletions(-)
 
-diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
-index 53b21ae30e00e..b14072071889f 100644
---- a/kernel/kcsan/debugfs.c
-+++ b/kernel/kcsan/debugfs.c
-@@ -46,14 +46,8 @@ static struct {
- 	int		used;		/* number of elements used */
- 	bool		sorted;		/* if elements are sorted */
- 	bool		whitelist;	/* if list is a blacklist or whitelist */
--} report_filterlist = {
--	.addrs		= NULL,
--	.size		= 8,		/* small initial size */
--	.used		= 0,
--	.sorted		= false,
--	.whitelist	= false,	/* default is blacklist */
--};
--static DEFINE_SPINLOCK(report_filterlist_lock);
-+} report_filterlist;
-+static DEFINE_RAW_SPINLOCK(report_filterlist_lock);
+diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+index f22d1d85d1021..a5c9cbb99600e 100644
+--- a/drivers/soc/fsl/qe/qmc.c
++++ b/drivers/soc/fsl/qe/qmc.c
+@@ -1281,6 +1281,12 @@ static int qmc_probe(struct platform_device *pdev)
+ 	qmc->dev = &pdev->dev;
+ 	INIT_LIST_HEAD(&qmc->chan_head);
  
- /*
-  * The microbenchmark allows benchmarking KCSAN core runtime only. To run
-@@ -110,7 +104,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
- 		return false;
- 	func_addr -= offset; /* Get function start */
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	if (report_filterlist.used == 0)
- 		goto out;
- 
-@@ -127,7 +121,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
- 		ret = !ret;
- 
- out:
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 	return ret;
- }
- 
-@@ -135,9 +129,9 @@ static void set_report_filterlist_whitelist(bool whitelist)
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	report_filterlist.whitelist = whitelist;
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- }
- 
- /* Returns 0 on success, error-code otherwise. */
-@@ -145,6 +139,9 @@ static ssize_t insert_report_filterlist(const char *func)
- {
- 	unsigned long flags;
- 	unsigned long addr = kallsyms_lookup_name(func);
-+	unsigned long *delay_free = NULL;
-+	unsigned long *new_addrs = NULL;
-+	size_t new_size = 0;
- 	ssize_t ret = 0;
- 
- 	if (!addr) {
-@@ -152,32 +149,33 @@ static ssize_t insert_report_filterlist(const char *func)
- 		return -ENOENT;
- 	}
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+retry_alloc:
-+	/*
-+	 * Check if we need an allocation, and re-validate under the lock. Since
-+	 * the report_filterlist_lock is a raw, cannot allocate under the lock.
-+	 */
-+	if (data_race(report_filterlist.used == report_filterlist.size)) {
-+		new_size = (report_filterlist.size ?: 4) * 2;
-+		delay_free = new_addrs = kmalloc_array(new_size, sizeof(unsigned long), GFP_KERNEL);
-+		if (!new_addrs)
-+			return -ENOMEM;
++	qmc->tsa_serial = devm_tsa_serial_get_byphandle(qmc->dev, np, "fsl,tsa-serial");
++	if (IS_ERR(qmc->tsa_serial)) {
++		return dev_err_probe(qmc->dev, PTR_ERR(qmc->tsa_serial),
++				     "Failed to get TSA serial\n");
 +	}
++
+ 	qmc->scc_regs = devm_platform_ioremap_resource_byname(pdev, "scc_regs");
+ 	if (IS_ERR(qmc->scc_regs))
+ 		return PTR_ERR(qmc->scc_regs);
+@@ -1297,33 +1303,13 @@ static int qmc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(qmc->dpram))
+ 		return PTR_ERR(qmc->dpram);
  
--	if (report_filterlist.addrs == NULL) {
--		/* initial allocation */
--		report_filterlist.addrs =
--			kmalloc_array(report_filterlist.size,
--				      sizeof(unsigned long), GFP_ATOMIC);
--		if (report_filterlist.addrs == NULL) {
--			ret = -ENOMEM;
--			goto out;
--		}
--	} else if (report_filterlist.used == report_filterlist.size) {
--		/* resize filterlist */
--		size_t new_size = report_filterlist.size * 2;
--		unsigned long *new_addrs =
--			krealloc(report_filterlist.addrs,
--				 new_size * sizeof(unsigned long), GFP_ATOMIC);
+-	qmc->tsa_serial = devm_tsa_serial_get_byphandle(qmc->dev, np, "fsl,tsa-serial");
+-	if (IS_ERR(qmc->tsa_serial)) {
+-		return dev_err_probe(qmc->dev, PTR_ERR(qmc->tsa_serial),
+-				     "Failed to get TSA serial\n");
+-	}
 -
--		if (new_addrs == NULL) {
--			/* leave filterlist itself untouched */
--			ret = -ENOMEM;
--			goto out;
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
-+	if (report_filterlist.used == report_filterlist.size) {
-+		/* Check we pre-allocated enough, and retry if not. */
-+		if (report_filterlist.used >= new_size) {
-+			raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+			kfree(new_addrs); /* kfree(NULL) is safe */
-+			delay_free = new_addrs = NULL;
-+			goto retry_alloc;
- 		}
+-	/* Connect the serial (SCC) to TSA */
+-	ret = tsa_serial_connect(qmc->tsa_serial);
+-	if (ret) {
+-		dev_err(qmc->dev, "Failed to connect TSA serial\n");
+-		return ret;
+-	}
+-
+ 	/* Parse channels informationss */
+ 	ret = qmc_of_parse_chans(qmc, np);
+ 	if (ret)
+-		goto err_tsa_serial_disconnect;
++		return ret;
  
-+		if (report_filterlist.used)
-+			memcpy(new_addrs, report_filterlist.addrs, report_filterlist.used * sizeof(unsigned long));
-+		delay_free = report_filterlist.addrs; /* free the old list */
-+		report_filterlist.addrs = new_addrs;  /* switch to the new list */
- 		report_filterlist.size = new_size;
--		report_filterlist.addrs = new_addrs;
+ 	nb_chans = qmc_nb_chans(qmc);
+ 
+-	/* Init GMSR_H and GMSR_L registers */
+-	qmc_write32(qmc->scc_regs + SCC_GSMRH,
+-		    SCC_GSMRH_CDS | SCC_GSMRH_CTSS | SCC_GSMRH_CDP | SCC_GSMRH_CTSP);
+-
+-	/* enable QMC mode */
+-	qmc_write32(qmc->scc_regs + SCC_GSMRL, SCC_GSMRL_MODE_QMC);
+-
+ 	/*
+ 	 * Allocate the buffer descriptor table
+ 	 * 8 rx and 8 tx descriptors per channel
+@@ -1333,8 +1319,7 @@ static int qmc_probe(struct platform_device *pdev)
+ 					    &qmc->bd_dma_addr, GFP_KERNEL);
+ 	if (!qmc->bd_table) {
+ 		dev_err(qmc->dev, "Failed to allocate bd table\n");
+-		ret = -ENOMEM;
+-		goto err_tsa_serial_disconnect;
++		return -ENOMEM;
  	}
+ 	memset(qmc->bd_table, 0, qmc->bd_size);
  
- 	/* Note: deduplicating should be done in userspace. */
-@@ -185,9 +183,9 @@ static ssize_t insert_report_filterlist(const char *func)
- 		kallsyms_lookup_name(func);
- 	report_filterlist.sorted = false;
- 
--out:
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 
-+	kfree(delay_free);
- 	return ret;
- }
- 
-@@ -204,13 +202,13 @@ static int show_info(struct seq_file *file, void *v)
+@@ -1346,8 +1331,7 @@ static int qmc_probe(struct platform_device *pdev)
+ 					     &qmc->int_dma_addr, GFP_KERNEL);
+ 	if (!qmc->int_table) {
+ 		dev_err(qmc->dev, "Failed to allocate interrupt table\n");
+-		ret = -ENOMEM;
+-		goto err_tsa_serial_disconnect;
++		return -ENOMEM;
  	}
+ 	memset(qmc->int_table, 0, qmc->int_size);
  
- 	/* show filter functions, and filter type */
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	seq_printf(file, "\n%s functions: %s\n",
- 		   report_filterlist.whitelist ? "whitelisted" : "blacklisted",
- 		   report_filterlist.used == 0 ? "none" : "");
- 	for (i = 0; i < report_filterlist.used; ++i)
- 		seq_printf(file, " %ps\n", (void *)report_filterlist.addrs[i]);
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
+@@ -1366,18 +1350,32 @@ static int qmc_probe(struct platform_device *pdev)
  
- 	return 0;
- }
+ 	ret = qmc_setup_tsa(qmc);
+ 	if (ret)
+-		goto err_tsa_serial_disconnect;
++		return ret;
+ 
+ 	qmc_write16(qmc->scc_pram + QMC_GBL_QMCSTATE, 0x8000);
+ 
+ 	ret = qmc_setup_chans(qmc);
+ 	if (ret)
+-		goto err_tsa_serial_disconnect;
++		return ret;
+ 
+ 	/* Init interrupts table */
+ 	ret = qmc_setup_ints(qmc);
+ 	if (ret)
+-		goto err_tsa_serial_disconnect;
++		return ret;
++
++	/* Connect the serial (SCC) to TSA */
++	ret = tsa_serial_connect(qmc->tsa_serial);
++	if (ret) {
++		dev_err(qmc->dev, "Failed to connect TSA serial\n");
++		return ret;
++	}
++
++	/* Init GMSR_H and GMSR_L registers */
++	qmc_write32(qmc->scc_regs + SCC_GSMRH,
++		    SCC_GSMRH_CDS | SCC_GSMRH_CTSS | SCC_GSMRH_CDP | SCC_GSMRH_CTSP);
++
++	/* enable QMC mode */
++	qmc_write32(qmc->scc_regs + SCC_GSMRL, SCC_GSMRL_MODE_QMC);
+ 
+ 	/* Disable and clear interrupts,  set the irq handler */
+ 	qmc_write16(qmc->scc_regs + SCC_SCCM, 0x0000);
 -- 
 2.43.0
 
