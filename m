@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF439EF02B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E929EF3D5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 610D128CD9B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D776217F128
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9DF22915D;
-	Thu, 12 Dec 2024 16:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE79F21E0BC;
+	Thu, 12 Dec 2024 16:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlyYsgxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsJNxqgw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C3F21C166;
-	Thu, 12 Dec 2024 16:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7E821CFEA;
+	Thu, 12 Dec 2024 16:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020063; cv=none; b=CPMt7Im9gVvtagWufgqS1sJy2IF2ELvVsfYDbSd8UOzbG6lHk1QD3Xf0U0MkQty1weI331dt47OvEdFURmHL77BnA2pithlI7akQcNrL1057O7DE+2RGXgEA+vfEv+8XKGXUyGe4Oj+Ya61GSeaRIHUIyT/OcglPw3skwsrZPOM=
+	t=1734022141; cv=none; b=bcz8y4dw30NXZrmwWQWOSGqW1w9uFVZmr9aeT5Vk/2/Eu8Kx3PGcBgNlTk/gRrtbMAfMASzqT/VV0BnpsH8a4S3DkQqF0/iW+or5PygBqcj9QYrPlhERWrwkn2+psl8WcoPubAwKQsCXiExSCQ0yAao+1zAtfPqXLy1MjNXogXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020063; c=relaxed/simple;
-	bh=8VWOQhOJ57JAbXQlquFhiFRRgCWDQT5OBN79U3klwwo=;
+	s=arc-20240116; t=1734022141; c=relaxed/simple;
+	bh=ILxousSOTB6LGBFvvaj7d9VNm3UjsahzgwCzX3xZoH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iu0VQSIjfDkpcWs+vZEyhhg8HeI3H3ynNhgj9LSpVeb6L9DNqg0T0rdXft3pKIlonemj15GCen8ZCVKE2ktWsF22raa2ehse3uhf307Mjub/Mc5AcjU/9W5mcLzoZ0nrjNIQvd8yEiikS4LxIjwtrfOewrKCTRstq7bnw/ELKO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlyYsgxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D589C4CECE;
-	Thu, 12 Dec 2024 16:14:22 +0000 (UTC)
+	 MIME-Version; b=tstnQzEHYDFT7kvrd+KsSDxIT779RI8LhKkfxt8IOLKwOG5C1kIP6RX9UvqdYI/0n1ilGp81kjbvtVfo+n8yLZHD3XAZBj867SbMcYlO/C5qBXApJ77QEiVUcpu5wiNEnV3bQL4jH18wz5k1+uvM3HszJQHaRvwjiGOuCc6iNp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsJNxqgw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAAFC4CECE;
+	Thu, 12 Dec 2024 16:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020063;
-	bh=8VWOQhOJ57JAbXQlquFhiFRRgCWDQT5OBN79U3klwwo=;
+	s=korg; t=1734022141;
+	bh=ILxousSOTB6LGBFvvaj7d9VNm3UjsahzgwCzX3xZoH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlyYsgxxamaW3kIoYiolUbNiBqj/bk+T2Jrz/hcuqcFbRXUN0wxbLqNdVmNd2xqq7
-	 U080LDlc1bkGBSb2lf/XpjvbhdkWBbcNyUWJp0uFGD7NrGMP1yOf5+WcCWOtIBj1v2
-	 /eC1SvXLvzw8UnoC6OVzD7RSmpV46h+JdxbCVafI=
+	b=zsJNxqgwKAYAgqXyhpdbw7277977QfrinrbOU4ESZFsE4CKMIVpChg7HyVzEeDnX2
+	 0Iq5bCC0ytpfzYyh06bVy4cbCFerIrENHActVsZ6lWgC9RZzEC2RHGIzKavZdAUgay
+	 i64pC5D8XMvhNDdAK5e9QsoNfPaS8tt3FJrU/eA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 369/772] KVM: x86/mmu: Skip the "try unsync" path iff the old SPTE was a leaf SPTE
-Date: Thu, 12 Dec 2024 15:55:14 +0100
-Message-ID: <20241212144405.159922775@linuxfoundation.org>
+	Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 120/565] cgroup/bpf: only cgroup v2 can be attached by bpf programs
+Date: Thu, 12 Dec 2024 15:55:15 +0100
+Message-ID: <20241212144316.226826131@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 2867eb782cf7f64c2ac427596133b6f9c3f64b7a upstream.
+[ Upstream commit 2190df6c91373fdec6db9fc07e427084f232f57e ]
 
-Apply make_spte()'s optimization to skip trying to unsync shadow pages if
-and only if the old SPTE was a leaf SPTE, as non-leaf SPTEs in direct MMUs
-are always writable, i.e. could trigger a false positive and incorrectly
-lead to KVM creating a SPTE without write-protecting or marking shadow
-pages unsync.
+Only cgroup v2 can be attached by bpf programs, so this patch introduces
+that cgroup_bpf_inherit and cgroup_bpf_offline can only be called in
+cgroup v2, and this can fix the memleak mentioned by commit 04f8ef5643bc
+("cgroup: Fix memory leak caused by missing cgroup_bpf_offline"), which
+has been reverted.
 
-This bug only affects the TDP MMU, as the shadow MMU only overwrites a
-shadow-present SPTE when synchronizing SPTEs (and only 4KiB SPTEs can be
-unsync).  Specifically, mmu_set_spte() drops any non-leaf SPTEs *before*
-calling make_spte(), whereas the TDP MMU can do a direct replacement of a
-page table with the leaf SPTE.
-
-Opportunistically update the comment to explain why skipping the unsync
-stuff is safe, as opposed to simply saying "it's someone else's problem".
-
-Cc: stable@vger.kernel.org
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20241010182427.1434605-5-seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
+Fixes: 4bfc0bb2c60e ("bpf: decouple the lifetime of cgroup_bpf from cgroup itself")
+Link: https://lore.kernel.org/cgroups/aka2hk5jsel5zomucpwlxsej6iwnfw4qu5jkrmjhyfhesjlfdw@46zxhg5bdnr7/
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/mmu/spte.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ kernel/cgroup/cgroup.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kvm/mmu/spte.c
-+++ b/arch/x86/kvm/mmu/spte.c
-@@ -194,12 +194,20 @@ bool make_spte(struct kvm_vcpu *vcpu, st
- 		spte |= PT_WRITABLE_MASK | shadow_mmu_writable_mask;
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 7346197f464cb..d031e0b8bf9f6 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -2058,8 +2058,10 @@ int cgroup_setup_root(struct cgroup_root *root, u16 ss_mask)
+ 	if (ret)
+ 		goto exit_stats;
  
- 		/*
--		 * Optimization: for pte sync, if spte was writable the hash
--		 * lookup is unnecessary (and expensive). Write protection
--		 * is responsibility of kvm_mmu_get_page / kvm_mmu_sync_roots.
--		 * Same reasoning can be applied to dirty page accounting.
-+		 * When overwriting an existing leaf SPTE, and the old SPTE was
-+		 * writable, skip trying to unsync shadow pages as any relevant
-+		 * shadow pages must already be unsync, i.e. the hash lookup is
-+		 * unnecessary (and expensive).
-+		 *
-+		 * The same reasoning applies to dirty page/folio accounting;
-+		 * KVM will mark the folio dirty using the old SPTE, thus
-+		 * there's no need to immediately mark the new SPTE as dirty.
-+		 *
-+		 * Note, both cases rely on KVM not changing PFNs without first
-+		 * zapping the old SPTE, which is guaranteed by both the shadow
-+		 * MMU and the TDP MMU.
- 		 */
--		if (is_writable_pte(old_spte))
-+		if (is_last_spte(old_spte, level) && is_writable_pte(old_spte))
- 			goto out;
+-	ret = cgroup_bpf_inherit(root_cgrp);
+-	WARN_ON_ONCE(ret);
++	if (root == &cgrp_dfl_root) {
++		ret = cgroup_bpf_inherit(root_cgrp);
++		WARN_ON_ONCE(ret);
++	}
  
- 		/*
+ 	trace_cgroup_setup_root(root);
+ 
+@@ -5446,9 +5448,11 @@ static struct cgroup *cgroup_create(struct cgroup *parent, const char *name,
+ 	if (ret)
+ 		goto out_kernfs_remove;
+ 
+-	ret = cgroup_bpf_inherit(cgrp);
+-	if (ret)
+-		goto out_psi_free;
++	if (cgrp->root == &cgrp_dfl_root) {
++		ret = cgroup_bpf_inherit(cgrp);
++		if (ret)
++			goto out_psi_free;
++	}
+ 
+ 	/*
+ 	 * New cgroup inherits effective freeze counter, and
+@@ -5766,7 +5770,8 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
+ 
+ 	cgroup1_check_for_release(parent);
+ 
+-	cgroup_bpf_offline(cgrp);
++	if (cgrp->root == &cgrp_dfl_root)
++		cgroup_bpf_offline(cgrp);
+ 
+ 	/* put the base reference */
+ 	percpu_ref_kill(&cgrp->self.refcnt);
+-- 
+2.43.0
+
 
 
 
