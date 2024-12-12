@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-102105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE799EF0C7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823039EF135
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB05516F19C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 256B3188DB5E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA8021CFF0;
-	Thu, 12 Dec 2024 16:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE3223ED77;
+	Thu, 12 Dec 2024 16:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtLgvBsb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIBERYJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC67213E99;
-	Thu, 12 Dec 2024 16:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9B722654A;
+	Thu, 12 Dec 2024 16:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019987; cv=none; b=E+Ehic0e1g33l/piGAa/45/XqIGEYk6UM7QA3tiKhKg6tXJFoc2mRK+1bYmw21yykiubB2qiwVWTIMVP7Tiq0kMMaihAGM4k6jgHBCoA5TNzuPXfD4oU/4EcP9kx3svYixmheJgN41SHA9kfRxOL0cYoOA3C+ef2aaMbdJt2G/w=
+	t=1734019998; cv=none; b=ldEnRavdjKvgRJXcz1zusoaOKLCRq1WcYMEfLPVUq6N5BYgYXxd07PLBhSU2kloXrw+gIsutyA37a+ALBaM1c/h8waRoVa0chF+GJeGPCDy62mqtZdVugwgkNp5tTFRTqGZBiX8xdSCT1EEp5efqbW+lzyWLE+yGUcu6j4WKOBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019987; c=relaxed/simple;
-	bh=uacbkvJRfX2YmgIq5DAi6hIBEGFD2UofJAiSbAiZj3I=;
+	s=arc-20240116; t=1734019998; c=relaxed/simple;
+	bh=4lRJK/R2FDDknHaGuEjyWnQ6X/eY9v83W7HtQotP1lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Arg/8vv1EJUpBK3UFqy0FLbOzqAWW/4jzx210sefARWtFjudnuOXq5XYZKmO696XDG1RPN+SR8jwIfOGztdMyTGmADAdvmzFHsn68hB0+NVAXsSKdPqccMuPDwNIgfIt+eF+1GaRE6B/4Ax4GKthv7kH/h0Q6Nqe+5MyJp2JI0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtLgvBsb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A748C4CECE;
-	Thu, 12 Dec 2024 16:13:06 +0000 (UTC)
+	 MIME-Version; b=dgnaDmiWfilihO5q5EL9wAhDPtxzC5+OdNHBx94aiozE5qyMwiH4Lt4mSZGIF/RbO6PpgfCFgj0mxgod5ctUR3XiKYU58lWCx4bfu/uwkG3QXOzhE8ZF8UpNA0KY2tIn4tcTNkluDVF0C0j0Sp2VYeqD/tTUOw9E1OxzaK4BENU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIBERYJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3C1C4CED0;
+	Thu, 12 Dec 2024 16:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019986;
-	bh=uacbkvJRfX2YmgIq5DAi6hIBEGFD2UofJAiSbAiZj3I=;
+	s=korg; t=1734019998;
+	bh=4lRJK/R2FDDknHaGuEjyWnQ6X/eY9v83W7HtQotP1lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LtLgvBsbGmfCjUXqzdEGewoIFNe6KXls5MRB3mHlUkHZog3b5VvXxY7mFdAA6AxA5
-	 stZaY5hs9+sIIODi4FoQ7gS757uLogcwbfmI1PlgPnoSCd7Yih0ElhXepLjKCRl6dr
-	 DAcebhTVPA0S4RT5ahmC0iUZ/cReueilphWPnv4E=
+	b=nIBERYJ0SpETHEEnZJKw5t43wan1JpB/hEGNws2MZDDHOa8W/uAdwPAAe/Vy6isCl
+	 YMxOERB1R+YeLQe+M9ilbVHtCYXcvuNRM8fJEFhi/tYvYw2U0K80MMYG9It/Jd7iKI
+	 aisrCu9BcHxKLxjPUQamjDHCzrRLsG8/ADWbUmCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
 	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Xiangyu Chen <xiangyu.chen@windriver.com>
-Subject: [PATCH 6.1 349/772] drm/amd/display: Add NULL check for function pointer in dcn20_set_output_transfer_func
-Date: Thu, 12 Dec 2024 15:54:54 +0100
-Message-ID: <20241212144404.332470550@linuxfoundation.org>
+Subject: [PATCH 6.1 350/772] drm/amd/display: Check phantom_stream before it is used
+Date: Thu, 12 Dec 2024 15:54:55 +0100
+Message-ID: <20241212144404.372524516@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -74,50 +70,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 62ed6f0f198da04e884062264df308277628004f upstream.
+commit 3718a619a8c0a53152e76bb6769b6c414e1e83f4 upstream.
 
-This commit adds a null check for the set_output_gamma function pointer
-in the dcn20_set_output_transfer_func function. Previously,
-set_output_gamma was being checked for null at line 1030, but then it
-was being dereferenced without any null check at line 1048. This could
-potentially lead to a null pointer dereference error if set_output_gamma
-is null.
+dcn32_enable_phantom_stream can return null, so returned value
+must be checked before used.
 
-To fix this, we now ensure that set_output_gamma is not null before
-dereferencing it. We do this by adding a null check for set_output_gamma
-before the call to set_output_gamma at line 1048.
+This fixes 1 NULL_RETURNS issue reported by Coverity.
 
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Xiangyu: BP to fix CVE: CVE-2024-49897, modified the source path]
 Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -856,7 +856,8 @@ bool dcn20_set_output_transfer_func(stru
- 	/*
- 	 * if above if is not executed then 'params' equal to 0 and set in bypass
- 	 */
--	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
-+	if (mpc->funcs->set_output_gamma)
-+		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
+@@ -1796,6 +1796,9 @@ void dcn32_add_phantom_pipes(struct dc *
+ 	// be a valid candidate for SubVP (i.e. has a plane, stream, doesn't
+ 	// already have phantom pipe assigned, etc.) by previous checks.
+ 	phantom_stream = dcn32_enable_phantom_stream(dc, context, pipes, pipe_cnt, index);
++	if (!phantom_stream)
++		return;
++
+ 	dcn32_enable_phantom_plane(dc, context, phantom_stream, index);
  
- 	return true;
- }
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
 
 
 
