@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-101785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A1F9EEE23
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D244B9EEE7A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BABB28600E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:54:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82D43188CA8B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA4F2210DE;
-	Thu, 12 Dec 2024 15:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E72222D44;
+	Thu, 12 Dec 2024 15:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SviPC81y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGWcItv7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08381223C7A;
-	Thu, 12 Dec 2024 15:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A5C2210C2;
+	Thu, 12 Dec 2024 15:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018788; cv=none; b=WgNWf6QkTgUdkAIyDC/he0nUHfJaD7V6w5O8gfSUAIepVNQhts39Oc6oyjofMYwDD+Q6pXxgFNBomA7MrXOalpSRjhjDWxw4gBoPSsBLGZiWfjDobj7I8giUNjWWSwZxwc44gve3vHURv7CRKdRxYo5XoHaZfMmh6rbtceIIrxg=
+	t=1734018707; cv=none; b=ICIsnHLwXO5q88E+DDgGt4ppQnYaHpDmI/eq+Vbst6z1mZO3qnLlvGbWmWU4cl2+gyBNZ3bEsEbPqb2gI7gu9rmLg5oB6S+/qrR2+fDIcDfeOYYgm5xdC5TEAdJBsqFAHudgvW8rwROCUmjhOykpkrlIQ+QLm25mOHkNwLTch+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018788; c=relaxed/simple;
-	bh=Fx+GYVLHBhVMA0PUhR9R0PuHathXWEd2TwK1iXbOJYw=;
+	s=arc-20240116; t=1734018707; c=relaxed/simple;
+	bh=OeQInyXXhRzDUPQOlDUg/lpyFcQ8eHyo1BHuVZJkBU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o8YWa92wYVSc6DQLrNnOFBqbxGwzsj2TJf4/1DSSKSCimxIAOdzRLJBohTKhalQ0NSa/186UQAhYcppWjWYrJkOJ0Jw6reLLrhgAkLuabyg3l5krzJkW6RxoVWoa1cjkpHj2LHbX6CRiR3Fj514rHt03vSt2BsBoDF7u4kXjsuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SviPC81y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68302C4CECE;
-	Thu, 12 Dec 2024 15:53:07 +0000 (UTC)
+	 MIME-Version; b=Wf85hzEmCtT97Ryk2RWUPw5DFMFF1AKONXTwOqfSQU2LpnYV17zq26F9QiGTyeo3HeQf707dk+YK+0g4jWAXnISupd4gyz3DLunLKnZ0rPwnQiPME2HV6YEOF5Qlolw0SZ/wt5Dmwdp3c6W2QJPB/n0NIwL1aTSIUBgCFqnH4II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGWcItv7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25890C4CECE;
+	Thu, 12 Dec 2024 15:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018787;
-	bh=Fx+GYVLHBhVMA0PUhR9R0PuHathXWEd2TwK1iXbOJYw=;
+	s=korg; t=1734018707;
+	bh=OeQInyXXhRzDUPQOlDUg/lpyFcQ8eHyo1BHuVZJkBU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SviPC81y2ijoby4hWG9C78X5BxPi5YnJFcSFYJJV26uTzn9AdPw7aWSnMNSVr27Z6
-	 PJQCEhDYYWb75K3av6c7BQSbiY7gfpc5HuauBQ4G9UeSKSFu5Fh2cz3dxvpuzvN6oy
-	 MAhT6/xvKMPkzdzgPc64hmxPYgLbuXTELHVG4PFo=
+	b=KGWcItv7SWgk19UfC06N3pzQI1LeVhpekN6hEvBlOE/XulrA7TKOy2LXMpXEQDecN
+	 0TlSk+lNJiG28GxBVFFaFi/falFR3ZDzodrzsExFBR+4G/kBM0X9mL1RL448NdVqh3
+	 //R0X8ZkO8zuBVScgHnk+LOQJ8a2AAW+K3w7fD+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/772] x86/amd_nb: Fix compile-testing without CONFIG_AMD_NB
-Date: Thu, 12 Dec 2024 15:49:14 +0100
-Message-ID: <20241212144350.326301455@linuxfoundation.org>
+Subject: [PATCH 6.1 010/772] bpf: fix filed access without lock
+Date: Thu, 12 Dec 2024 15:49:15 +0100
+Message-ID: <20241212144350.375931609@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -61,55 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit fce9642c765a18abd1db0339a7d832c29b68456a ]
+[ Upstream commit a32aee8f0d987a7cba7fcc28002553361a392048 ]
 
-node_to_amd_nb() is defined to NULL in non-AMD configs:
+The tcp_bpf_recvmsg_parser() function, running in user context,
+retrieves seq_copied from tcp_sk without holding the socket lock, and
+stores it in a local variable seq. However, the softirq context can
+modify tcp_sk->seq_copied concurrently, for example, n tcp_read_sock().
 
-  drivers/platform/x86/amd/hsmp/plat.c: In function 'init_platform_device':
-  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: dereferencing 'void *' pointer [-Werror]
-    165 |                 sock->root                      = node_to_amd_nb(i)->root;
-        |                                                                    ^~
-  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: request for member 'root' in something not a structure or union
+As a result, the seq value is stale when it is assigned back to
+tcp_sk->copied_seq at the end of tcp_bpf_recvmsg_parser(), leading to
+incorrect behavior.
 
-Users of the interface who also allow COMPILE_TEST will cause the above build
-error so provide an inline stub to fix that.
+Due to concurrency, the copied_seq field in tcp_bpf_recvmsg_parser()
+might be set to an incorrect value (less than the actual copied_seq) at
+the end of function: 'WRITE_ONCE(tcp->copied_seq, seq)'. This causes the
+'offset' to be negative in tcp_read_sock()->tcp_recv_skb() when
+processing new incoming packets (sk->copied_seq - skb->seq becomes less
+than 0), and all subsequent packets will be dropped.
 
-  [ bp: Massage commit message. ]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20241029092329.3857004-1-arnd@kernel.org
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Link: https://lore.kernel.org/r/20241028065226.35568-1-mrpre@163.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/amd_nb.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_bpf.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/amd_nb.h b/arch/x86/include/asm/amd_nb.h
-index ed0eaf65c4372..c8cdc69aae098 100644
---- a/arch/x86/include/asm/amd_nb.h
-+++ b/arch/x86/include/asm/amd_nb.h
-@@ -116,7 +116,10 @@ static inline bool amd_gart_present(void)
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 07a896685d0d3..f67e4c9f8d40e 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -216,11 +216,11 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 				  int flags,
+ 				  int *addr_len)
+ {
+-	struct tcp_sock *tcp = tcp_sk(sk);
+ 	int peek = flags & MSG_PEEK;
+-	u32 seq = tcp->copied_seq;
+ 	struct sk_psock *psock;
++	struct tcp_sock *tcp;
+ 	int copied = 0;
++	u32 seq;
  
- #define amd_nb_num(x)		0
- #define amd_nb_has_feature(x)	false
--#define node_to_amd_nb(x)	NULL
-+static inline struct amd_northbridge *node_to_amd_nb(int node)
-+{
-+	return NULL;
-+}
- #define amd_gart_present(x)	false
+ 	if (unlikely(flags & MSG_ERRQUEUE))
+ 		return inet_recv_error(sk, msg, len, addr_len);
+@@ -233,7 +233,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
+ 		return tcp_recvmsg(sk, msg, len, flags, addr_len);
  
- #endif
+ 	lock_sock(sk);
+-
++	tcp = tcp_sk(sk);
++	seq = tcp->copied_seq;
+ 	/* We may have received data on the sk_receive_queue pre-accept and
+ 	 * then we can not use read_skb in this context because we haven't
+ 	 * assigned a sk_socket yet so have no link to the ops. The work-around
 -- 
 2.43.0
 
