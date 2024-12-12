@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-101195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D20E9EEAD1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2743E9EF387
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43A42282A45
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF694286A7D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9101537C8;
-	Thu, 12 Dec 2024 15:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008A4229667;
+	Thu, 12 Dec 2024 16:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPmxUNy3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcfIGyuR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473F613BC26;
-	Thu, 12 Dec 2024 15:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18BE22912F;
+	Thu, 12 Dec 2024 16:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016690; cv=none; b=ETtcCbgcc+w09oZjm2+JjgyO0/HORGeuEUwpHUWkPB2H4zgV9wl2cTfgPEaSvijqdXuhPzSYwUuW+wDnmq2d3+Qc9Cv2/x3b9MecqNsE6ewNgdFzLR6v4pV7tvuuuLKS5ebHktDsqwvurG8GDsTSkiq1eTb7AjaD1sIqXqMKS2Q=
+	t=1734022454; cv=none; b=IaL+WeAlV+FzzdMYH6J3PwBGeK3WNRPPo5vc3uR3iNh75qWeL5sLOibm8Y0C2zj3ofGb5JO9JnZ9VTYq5Wycf0O1LAS6VSW2ht8+vIg3zx5V77DW5sk+pRmc/4NYGtSuUzLEiIQpKQSHxmsq7zZsRP3xHEcEarn2Ds9K4RM+dtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016690; c=relaxed/simple;
-	bh=vcu3Tf4Z1kgBz1E8S0mUQlGoG8LX/zGHxQfMfDa+C0Y=;
+	s=arc-20240116; t=1734022454; c=relaxed/simple;
+	bh=zaN0CjDcegDhe90Zinx6BDHaPxzA7rGgpTe/hn43R1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BICGCLubhp7+0DsB87BpZSYh33rE/xx3HQMZnp5tC+djBIVLy4TXDyQdbE2c6vHyQLGsmlnjngskjzTLLOuS8nYOLwTd59zOU77hSmUDCY4ulKlTbK5OKeQHtuU0/Z8ndr/P5DVYib4EEVWs4GB9NNGSe0cAno75zaQOysSvjAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPmxUNy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B66FC4CECE;
-	Thu, 12 Dec 2024 15:18:09 +0000 (UTC)
+	 MIME-Version; b=Hz8Ppmywz1Xl4YaMvXvTRD3VEb/BFG2Du0HSAduXf9WIss1tGQekTWbG3EU3yCvo/CvvtaKRY96XqCgIgg7GaK2qnRTkxwk7UaOsdKDQRKYvSJ0erNRvrWoxzgMe9MtxGuK1doCyzfUo3Xhq4M0D/6GBCrDaWQFZSaULYDoUoIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcfIGyuR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECDFC4CECE;
+	Thu, 12 Dec 2024 16:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016689;
-	bh=vcu3Tf4Z1kgBz1E8S0mUQlGoG8LX/zGHxQfMfDa+C0Y=;
+	s=korg; t=1734022454;
+	bh=zaN0CjDcegDhe90Zinx6BDHaPxzA7rGgpTe/hn43R1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPmxUNy3nJP/FQlyM0UD/BVDL0rOX+O66ED71ehy0r4Z5hdvueiFacSLHk8ytjVUX
-	 uVPKGt9Y72UEG0cSxcE4i/280Ewm2XTV2aDgVORraY22JCRBa0T9cs8K0Qi1Vn8T7S
-	 EhfAxLLLac3N5K5NFwUOdiK/LkEPQAplGOJPd2MU=
+	b=fcfIGyuRkgXhLkpY2oE52qokp008aJVH8IxJqf06YSJ4xgvYmugxarzcmnVnNjlPy
+	 qaBUTeRfK1WY701GWOPnypf1gQN+IlC9Gma64CELLQddj0g6nKhIYSQgqNd47My9OK
+	 bPL5fL7nNJrBKMFu45vpgAx+UUuTYnr/m+wLQKfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Zhongwei <Zhongwei.Zhang@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Naveen Naidu <naveennaidu479@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 271/466] drm/amd/display: Fix garbage or black screen when resetting otg
+Subject: [PATCH 5.15 245/565] PCI: cpqphp: Use PCI_POSSIBLE_ERROR() to check config reads
 Date: Thu, 12 Dec 2024 15:57:20 +0100
-Message-ID: <20241212144317.491865663@linuxfoundation.org>
+Message-ID: <20241212144321.159878774@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongwei <Zhongwei.Zhang@amd.com>
+From: weiyufeng <weiyufeng@kylinos.cn>
 
-[ Upstream commit ffa1e31f70d2e97c121709b44a8960f5d7becb10 ]
+[ Upstream commit a18a025c2fb5fbf2d1d0606ea0d7441ac90e9c39 ]
 
-[Why]
-For some EDP to MIPI panel, disabling OTG when link is alive like boot
-case, the converter might output garbage or show no display because our
-GPU is not sending required pixel data.
-Alos Dig fifo underflow was found which might cause garbage, when
-resetting otg for other types of EDP panels.
+When config pci_ops.read() can detect failed PCI transactions, the data
+returned to the CPU is PCI_ERROR_RESPONSE (~0 or 0xffffffff).
 
-[How]
-Skipping resetting OTG if the dig fifo is on. Make sure that the otg for
-the pipe is the one that the dig fifo is selecting via the FE mask.
+Obviously a successful PCI config read may *also* return that data if a
+config register happens to contain ~0, so it doesn't definitively indicate
+an error unless we know the register cannot contain ~0.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Zhongwei <Zhongwei.Zhang@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Use PCI_POSSIBLE_ERROR() to check the response we get when we read data
+from hardware.  This unifies PCI error response checking and makes error
+checks consistent and easier to find.
+
+Link: https://lore.kernel.org/r/b12005c0d57bb9d4c8b486724d078b7bd92f8321.1637243717.git.naveennaidu479@gmail.com
+Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: e2226dbc4a49 ("PCI: cpqphp: Fix PCIBIOS_* return value confusion")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/dio/dcn314/dcn314_dio_stream_encoder.c    | 10 ++++++++++
- .../amd/display/dc/hwss/dcn314/dcn314_hwseq.c    | 16 ++++++++++++++++
- 2 files changed, 26 insertions(+)
+ drivers/pci/hotplug/cpqphp_pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dio/dcn314/dcn314_dio_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dio/dcn314/dcn314_dio_stream_encoder.c
-index 5b343f745cf33..ae81451a3a725 100644
---- a/drivers/gpu/drm/amd/display/dc/dio/dcn314/dcn314_dio_stream_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dio/dcn314/dcn314_dio_stream_encoder.c
-@@ -83,6 +83,15 @@ void enc314_disable_fifo(struct stream_encoder *enc)
- 	REG_UPDATE(DIG_FIFO_CTRL0, DIG_FIFO_ENABLE, 0);
+diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
+index 1b2b3f3b648bc..a20875da4ec70 100644
+--- a/drivers/pci/hotplug/cpqphp_pci.c
++++ b/drivers/pci/hotplug/cpqphp_pci.c
+@@ -138,7 +138,7 @@ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 o
+ 
+ 	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
+ 		return -1;
+-	if (vendID == 0xffffffff)
++	if (PCI_POSSIBLE_ERROR(vendID))
+ 		return -1;
+ 	return pci_bus_read_config_dword(bus, devfn, offset, value);
  }
+@@ -251,7 +251,7 @@ static int PCI_GetBusDevHelper(struct controller *ctrl, u8 *bus_num, u8 *dev_num
+ 			*dev_num = tdevice;
+ 			ctrl->pci_bus->number = tbus;
+ 			pci_bus_read_config_dword(ctrl->pci_bus, *dev_num, PCI_VENDOR_ID, &work);
+-			if (!nobridge || (work == 0xffffffff))
++			if (!nobridge || PCI_POSSIBLE_ERROR(work))
+ 				return 0;
  
-+static bool enc314_is_fifo_enabled(struct stream_encoder *enc)
-+{
-+	struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);
-+	uint32_t reset_val;
-+
-+	REG_GET(DIG_FIFO_CTRL0, DIG_FIFO_ENABLE, &reset_val);
-+	return (reset_val != 0);
-+}
-+
- void enc314_dp_set_odm_combine(
- 	struct stream_encoder *enc,
- 	bool odm_combine)
-@@ -468,6 +477,7 @@ static const struct stream_encoder_funcs dcn314_str_enc_funcs = {
- 
- 	.enable_fifo = enc314_enable_fifo,
- 	.disable_fifo = enc314_disable_fifo,
-+	.is_fifo_enabled = enc314_is_fifo_enabled,
- 	.set_input_mode = enc314_set_dig_input_mode,
- };
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
-index a8e04a39a19e5..efcc1a6b364c2 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
-@@ -355,6 +355,20 @@ void dcn314_calculate_pix_rate_divider(
- 	}
- }
- 
-+static bool dcn314_is_pipe_dig_fifo_on(struct pipe_ctx *pipe)
-+{
-+	return pipe && pipe->stream
-+		// Check dig's otg instance.
-+		&& pipe->stream_res.stream_enc
-+		&& pipe->stream_res.stream_enc->funcs->dig_source_otg
-+		&& pipe->stream_res.tg->inst == pipe->stream_res.stream_enc->funcs->dig_source_otg(pipe->stream_res.stream_enc)
-+		&& pipe->stream->link && pipe->stream->link->link_enc
-+		&& pipe->stream->link->link_enc->funcs->is_dig_enabled
-+		&& pipe->stream->link->link_enc->funcs->is_dig_enabled(pipe->stream->link->link_enc)
-+		&& pipe->stream_res.stream_enc->funcs->is_fifo_enabled
-+		&& pipe->stream_res.stream_enc->funcs->is_fifo_enabled(pipe->stream_res.stream_enc);
-+}
-+
- void dcn314_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc_state *context, unsigned int current_pipe_idx)
- {
- 	unsigned int i;
-@@ -374,6 +388,8 @@ void dcn314_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc
- 		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal)) &&
- 			!pipe->stream->apply_seamless_boot_optimization &&
- 			!pipe->stream->apply_edp_fast_boot_optimization) {
-+			if (dcn314_is_pipe_dig_fifo_on(pipe))
-+				continue;
- 			pipe->stream_res.tg->funcs->disable_crtc(pipe->stream_res.tg);
- 			reset_sync_context_for_pipe(dc, context, i);
- 			otg_disabled[i] = true;
+ 			dbg("bus_num %d devfn %d\n", *bus_num, *dev_num);
 -- 
 2.43.0
 
