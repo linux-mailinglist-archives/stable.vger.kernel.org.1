@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-103227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB859EF738
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AE79EF54B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DFD3189CCA4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1E9170C33
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18B9213E9F;
-	Thu, 12 Dec 2024 17:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D72D22968F;
+	Thu, 12 Dec 2024 16:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GU4JiF6c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1j9VmlIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D31D1632E6;
-	Thu, 12 Dec 2024 17:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F452288F5;
+	Thu, 12 Dec 2024 16:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023926; cv=none; b=ry2T/CxhNYibfJcDYtnehUhRKu2UCvoMuZF7m6nBvZVCB248dd8CriNMl1ZfBgMUSqRYRrTzEgb2RaH8EaVW2JZFyy215w1UVGyueKtwuW7v9THkHUGDRdDtanaV0PQKbNsxLTwgbDlenig+9p/XHi5FrkWMFWBUCl9VS9TIWIg=
+	t=1734022553; cv=none; b=IRYlODVZLK9uCpO6yWAxMTB+lmDd7OmCCXv/+D88FI/VGTNCIO+RmwLpDKVID2St0S5DWm5TZBkmHGbJp8tcruXYONct/4oqE2pzzmWi3nomhJYhd4e057LFKxq0+JdD3jBFnizMSSpPb1dTG6ulrjzWhjrTGyMW+9zu9H47jT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023926; c=relaxed/simple;
-	bh=pNYxAcGRp7+VAO0U3/6uXUbtipbTwDZyNeQuyC7Vywk=;
+	s=arc-20240116; t=1734022553; c=relaxed/simple;
+	bh=i0ARyF5ushn4AXN0OZ4tCGXhN5zWJJ/MxN/k2lVwEKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vogy/5kW34NQ0bzQ1cGs2TgSRM1utOi9HRr4Gyn53p1l4SGVUhVL8CefdESKMb5iq5Xu0Ik4dJ9AymFFJ1H6j1YBTDc0TRtfdsTwzs39sCHcnhjDavzgLrcOIEFTbkNu7CsvJr41C3ZuguNkPuNvAYyaRHyys1mVvOCJ7ig06ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GU4JiF6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9842C4CECE;
-	Thu, 12 Dec 2024 17:18:45 +0000 (UTC)
+	 MIME-Version; b=ZAeJEjqkdebXXhuPHMNKn167u8qJzf+uMD9s/eth9aSCj2jLzW5ktmNVGhV3qfkHty4RaNpOLmpMQpgCdXMZ9lecc64F+Il4DYwMC1pCsYR/lu6WWrcAqjJxIk8CgZ1kj/KE4lYc36S83f8lK/x8OOgYhlFe1azd4wyFskKa7aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1j9VmlIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A98AC4CED4;
+	Thu, 12 Dec 2024 16:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023926;
-	bh=pNYxAcGRp7+VAO0U3/6uXUbtipbTwDZyNeQuyC7Vywk=;
+	s=korg; t=1734022553;
+	bh=i0ARyF5ushn4AXN0OZ4tCGXhN5zWJJ/MxN/k2lVwEKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GU4JiF6csXreMS7PxFyUe/Qwdp43Qy37saz9n5D0XgDNAWUlrQr/a1+NLhhWZWTqz
-	 TL/RlK++ZbrBpYKlhvnMa2PCpcMuBNT0WTg/xPt85mrO2n4rKjeVULoOly80TfCfGE
-	 kJlBkPpBbVY0cQ3LMEm4fj5advrjj9K0LrnMn/d0=
+	b=1j9VmlItcN8UvFMNC2jfGOT7anobyA1I/gDo2+slfELPcdl1QrF9z+SjcouvdE4cY
+	 YC1L0AuAPruwCKXA3NEw1GRU1prFBc/dZYNjYX8NDI4TADetWCxlKSoyIfUIBuJZ/E
+	 dwjqzrS7Z7CTziHBBy/j4N9ZN2FtqO5VblZNnj8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christina Jacob <cjacob@marvell.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Eric Sandeen <sandeen@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/459] octeontx2-pf: ethtool fec mode support
+Subject: [PATCH 5.15 272/565] fs_parser: update mount_api doc to match function signature
 Date: Thu, 12 Dec 2024 15:57:47 +0100
-Message-ID: <20241212144258.600453175@linuxfoundation.org>
+Message-ID: <20241212144322.214671679@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,339 +68,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christina Jacob <cjacob@marvell.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit d0cf9503e908ee7b235a5efecedeb74aabc482f3 ]
+[ Upstream commit c66f759832a83cb273ba5a55c66dcc99384efa74 ]
 
-Add ethtool support to configure fec modes baser/rs and
-support to fecth FEC stats from CGX as well PHY.
+Add the missing 'name' parameter to the mount_api documentation for
+fs_validate_description().
 
-Configure fec mode
-	- ethtool --set-fec eth0 encoding rs/baser/off/auto
-Query fec mode
-	- ethtool --show-fec eth0
-
-Signed-off-by: Christina Jacob <cjacob@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e26f8eac6bb2 ("octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_ethtool.c")
+Fixes: 96cafb9ccb15 ("fs_parser: remove fs_parameter_description name field")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20241125215021.231758-1-rdunlap@infradead.org
+Cc: Eric Sandeen <sandeen@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/nic/otx2_common.c       |  20 +++
- .../marvell/octeontx2/nic/otx2_common.h       |   6 +
- .../marvell/octeontx2/nic/otx2_ethtool.c      | 160 +++++++++++++++++-
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   3 +
- 4 files changed, 188 insertions(+), 1 deletion(-)
+ Documentation/filesystems/mount_api.rst | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 3b4530bc30378..2b6baf0ad3f7d 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -60,6 +60,19 @@ void otx2_update_lmac_stats(struct otx2_nic *pfvf)
- 	mutex_unlock(&pfvf->mbox.lock);
- }
+diff --git a/Documentation/filesystems/mount_api.rst b/Documentation/filesystems/mount_api.rst
+index eb358a00be279..12e30da6a511c 100644
+--- a/Documentation/filesystems/mount_api.rst
++++ b/Documentation/filesystems/mount_api.rst
+@@ -778,7 +778,8 @@ process the parameters it is given.
  
-+void otx2_update_lmac_fec_stats(struct otx2_nic *pfvf)
-+{
-+	struct msg_req *req;
-+
-+	if (!netif_running(pfvf->netdev))
-+		return;
-+	mutex_lock(&pfvf->mbox.lock);
-+	req = otx2_mbox_alloc_msg_cgx_fec_stats(&pfvf->mbox);
-+	if (req)
-+		otx2_sync_mbox_msg(&pfvf->mbox);
-+	mutex_unlock(&pfvf->mbox.lock);
-+}
-+
- int otx2_update_rq_stats(struct otx2_nic *pfvf, int qidx)
- {
- 	struct otx2_rcv_queue *rq = &pfvf->qset.rq[qidx];
-@@ -1492,6 +1505,13 @@ void mbox_handler_cgx_stats(struct otx2_nic *pfvf,
- 		pfvf->hw.cgx_tx_stats[id] = rsp->tx_stats[id];
- }
+    * ::
  
-+void mbox_handler_cgx_fec_stats(struct otx2_nic *pfvf,
-+				struct cgx_fec_stats_rsp *rsp)
-+{
-+	pfvf->hw.cgx_fec_corr_blks += rsp->fec_corr_blks;
-+	pfvf->hw.cgx_fec_uncorr_blks += rsp->fec_uncorr_blks;
-+}
-+
- void mbox_handler_nix_txsch_alloc(struct otx2_nic *pf,
- 				  struct nix_txsch_alloc_rsp *rsp)
- {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index 386cb08497e48..866b1a2cc9a12 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -197,6 +197,8 @@ struct otx2_hw {
- 	struct otx2_drv_stats	drv_stats;
- 	u64			cgx_rx_stats[CGX_RX_STATS_COUNT];
- 	u64			cgx_tx_stats[CGX_TX_STATS_COUNT];
-+	u64			cgx_fec_corr_blks;
-+	u64			cgx_fec_uncorr_blks;
- 	u8			cgx_links;  /* No. of CGX links present in HW */
- 	u8			lbk_links;  /* No. of LBK links present in HW */
- };
-@@ -627,6 +629,9 @@ void mbox_handler_nix_txsch_alloc(struct otx2_nic *pf,
- 				  struct nix_txsch_alloc_rsp *rsp);
- void mbox_handler_cgx_stats(struct otx2_nic *pfvf,
- 			    struct cgx_stats_rsp *rsp);
-+void mbox_handler_cgx_fec_stats(struct otx2_nic *pfvf,
-+				struct cgx_fec_stats_rsp *rsp);
-+void otx2_set_fec_stats_count(struct otx2_nic *pfvf);
- void mbox_handler_nix_bp_enable(struct otx2_nic *pfvf,
- 				struct nix_bp_cfg_rsp *rsp);
+-       bool fs_validate_description(const struct fs_parameter_description *desc);
++       bool fs_validate_description(const char *name,
++                                    const struct fs_parameter_description *desc);
  
-@@ -635,6 +640,7 @@ void otx2_get_dev_stats(struct otx2_nic *pfvf);
- void otx2_get_stats64(struct net_device *netdev,
- 		      struct rtnl_link_stats64 *stats);
- void otx2_update_lmac_stats(struct otx2_nic *pfvf);
-+void otx2_update_lmac_fec_stats(struct otx2_nic *pfvf);
- int otx2_update_rq_stats(struct otx2_nic *pfvf, int qidx);
- int otx2_update_sq_stats(struct otx2_nic *pfvf, int qidx);
- void otx2_set_ethtool_ops(struct net_device *netdev);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index fc4ca8246df24..540a16d0a3274 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -66,6 +66,8 @@ static const unsigned int otx2_n_dev_stats = ARRAY_SIZE(otx2_dev_stats);
- static const unsigned int otx2_n_drv_stats = ARRAY_SIZE(otx2_drv_stats);
- static const unsigned int otx2_n_queue_stats = ARRAY_SIZE(otx2_queue_stats);
- 
-+static struct cgx_fw_data *otx2_get_fwdata(struct otx2_nic *pfvf);
-+
- static void otx2_get_drvinfo(struct net_device *netdev,
- 			     struct ethtool_drvinfo *info)
- {
-@@ -128,6 +130,10 @@ static void otx2_get_strings(struct net_device *netdev, u32 sset, u8 *data)
- 
- 	strcpy(data, "reset_count");
- 	data += ETH_GSTRING_LEN;
-+	sprintf(data, "Fec Corrected Errors: ");
-+	data += ETH_GSTRING_LEN;
-+	sprintf(data, "Fec Uncorrected Errors: ");
-+	data += ETH_GSTRING_LEN;
- }
- 
- static void otx2_get_qset_stats(struct otx2_nic *pfvf,
-@@ -160,11 +166,30 @@ static void otx2_get_qset_stats(struct otx2_nic *pfvf,
- 	}
- }
- 
-+static int otx2_get_phy_fec_stats(struct otx2_nic *pfvf)
-+{
-+	struct msg_req *req;
-+	int rc = -ENOMEM;
-+
-+	mutex_lock(&pfvf->mbox.lock);
-+	req = otx2_mbox_alloc_msg_cgx_get_phy_fec_stats(&pfvf->mbox);
-+	if (!req)
-+		goto end;
-+
-+	if (!otx2_sync_mbox_msg(&pfvf->mbox))
-+		rc = 0;
-+end:
-+	mutex_unlock(&pfvf->mbox.lock);
-+	return rc;
-+}
-+
- /* Get device and per queue statistics */
- static void otx2_get_ethtool_stats(struct net_device *netdev,
- 				   struct ethtool_stats *stats, u64 *data)
- {
- 	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	u64 fec_corr_blks, fec_uncorr_blks;
-+	struct cgx_fw_data *rsp;
- 	int stat;
- 
- 	otx2_get_dev_stats(pfvf);
-@@ -183,6 +208,32 @@ static void otx2_get_ethtool_stats(struct net_device *netdev,
- 	for (stat = 0; stat < CGX_TX_STATS_COUNT; stat++)
- 		*(data++) = pfvf->hw.cgx_tx_stats[stat];
- 	*(data++) = pfvf->reset_count;
-+
-+	fec_corr_blks = pfvf->hw.cgx_fec_corr_blks;
-+	fec_uncorr_blks = pfvf->hw.cgx_fec_uncorr_blks;
-+
-+	rsp = otx2_get_fwdata(pfvf);
-+	if (!IS_ERR(rsp) && rsp->fwdata.phy.misc.has_fec_stats &&
-+	    !otx2_get_phy_fec_stats(pfvf)) {
-+		/* Fetch fwdata again because it's been recently populated with
-+		 * latest PHY FEC stats.
-+		 */
-+		rsp = otx2_get_fwdata(pfvf);
-+		if (!IS_ERR(rsp)) {
-+			struct fec_stats_s *p = &rsp->fwdata.phy.fec_stats;
-+
-+			if (pfvf->linfo.fec == OTX2_FEC_BASER) {
-+				fec_corr_blks   = p->brfec_corr_blks;
-+				fec_uncorr_blks = p->brfec_uncorr_blks;
-+			} else {
-+				fec_corr_blks   = p->rsfec_corr_cws;
-+				fec_uncorr_blks = p->rsfec_uncorr_cws;
-+			}
-+		}
-+	}
-+
-+	*(data++) = fec_corr_blks;
-+	*(data++) = fec_uncorr_blks;
- }
- 
- static int otx2_get_sset_count(struct net_device *netdev, int sset)
-@@ -195,9 +246,11 @@ static int otx2_get_sset_count(struct net_device *netdev, int sset)
- 
- 	qstats_count = otx2_n_queue_stats *
- 		       (pfvf->hw.rx_queues + pfvf->hw.tx_queues);
-+	otx2_update_lmac_fec_stats(pfvf);
- 
- 	return otx2_n_dev_stats + otx2_n_drv_stats + qstats_count +
--		CGX_RX_STATS_COUNT + CGX_TX_STATS_COUNT + 1;
-+	       CGX_RX_STATS_COUNT + CGX_TX_STATS_COUNT + OTX2_FEC_STATS_CNT
-+	       + 1;
- }
- 
- /* Get no of queues device supports and current queue count */
-@@ -700,6 +753,109 @@ static int otx2_get_ts_info(struct net_device *netdev,
- 	return 0;
- }
- 
-+static struct cgx_fw_data *otx2_get_fwdata(struct otx2_nic *pfvf)
-+{
-+	struct cgx_fw_data *rsp = NULL;
-+	struct msg_req *req;
-+	int err = 0;
-+
-+	mutex_lock(&pfvf->mbox.lock);
-+	req = otx2_mbox_alloc_msg_cgx_get_aux_link_info(&pfvf->mbox);
-+	if (!req) {
-+		mutex_unlock(&pfvf->mbox.lock);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	err = otx2_sync_mbox_msg(&pfvf->mbox);
-+	if (!err) {
-+		rsp = (struct cgx_fw_data *)
-+			otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
-+	} else {
-+		rsp = ERR_PTR(err);
-+	}
-+
-+	mutex_unlock(&pfvf->mbox.lock);
-+	return rsp;
-+}
-+
-+static int otx2_get_fecparam(struct net_device *netdev,
-+			     struct ethtool_fecparam *fecparam)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	struct cgx_fw_data *rsp;
-+	const int fec[] = {
-+		ETHTOOL_FEC_OFF,
-+		ETHTOOL_FEC_BASER,
-+		ETHTOOL_FEC_RS,
-+		ETHTOOL_FEC_BASER | ETHTOOL_FEC_RS};
-+#define FEC_MAX_INDEX 4
-+	if (pfvf->linfo.fec < FEC_MAX_INDEX)
-+		fecparam->active_fec = fec[pfvf->linfo.fec];
-+
-+	rsp = otx2_get_fwdata(pfvf);
-+	if (IS_ERR(rsp))
-+		return PTR_ERR(rsp);
-+
-+	if (rsp->fwdata.supported_fec <= FEC_MAX_INDEX) {
-+		if (!rsp->fwdata.supported_fec)
-+			fecparam->fec = ETHTOOL_FEC_NONE;
-+		else
-+			fecparam->fec = fec[rsp->fwdata.supported_fec];
-+	}
-+	return 0;
-+}
-+
-+static int otx2_set_fecparam(struct net_device *netdev,
-+			     struct ethtool_fecparam *fecparam)
-+{
-+	struct otx2_nic *pfvf = netdev_priv(netdev);
-+	struct mbox *mbox = &pfvf->mbox;
-+	struct fec_mode *req, *rsp;
-+	int err = 0, fec = 0;
-+
-+	switch (fecparam->fec) {
-+	/* Firmware does not support AUTO mode consider it as FEC_OFF */
-+	case ETHTOOL_FEC_OFF:
-+	case ETHTOOL_FEC_AUTO:
-+		fec = OTX2_FEC_OFF;
-+		break;
-+	case ETHTOOL_FEC_RS:
-+		fec = OTX2_FEC_RS;
-+		break;
-+	case ETHTOOL_FEC_BASER:
-+		fec = OTX2_FEC_BASER;
-+		break;
-+	default:
-+		netdev_warn(pfvf->netdev, "Unsupported FEC mode: %d",
-+			    fecparam->fec);
-+		return -EINVAL;
-+	}
-+
-+	if (fec == pfvf->linfo.fec)
-+		return 0;
-+
-+	mutex_lock(&mbox->lock);
-+	req = otx2_mbox_alloc_msg_cgx_set_fec_param(&pfvf->mbox);
-+	if (!req) {
-+		err = -ENOMEM;
-+		goto end;
-+	}
-+	req->fec = fec;
-+	err = otx2_sync_mbox_msg(&pfvf->mbox);
-+	if (err)
-+		goto end;
-+
-+	rsp = (struct fec_mode *)otx2_mbox_get_rsp(&pfvf->mbox.mbox,
-+						   0, &req->hdr);
-+	if (rsp->fec >= 0)
-+		pfvf->linfo.fec = rsp->fec;
-+	else
-+		err = rsp->fec;
-+end:
-+	mutex_unlock(&mbox->lock);
-+	return err;
-+}
-+
- static const struct ethtool_ops otx2_ethtool_ops = {
- 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
- 				     ETHTOOL_COALESCE_MAX_FRAMES,
-@@ -725,6 +881,8 @@ static const struct ethtool_ops otx2_ethtool_ops = {
- 	.get_pauseparam		= otx2_get_pauseparam,
- 	.set_pauseparam		= otx2_set_pauseparam,
- 	.get_ts_info		= otx2_get_ts_info,
-+	.get_fecparam		= otx2_get_fecparam,
-+	.set_fecparam		= otx2_set_fecparam,
- };
- 
- void otx2_set_ethtool_ops(struct net_device *netdev)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index aada28868ac59..1516f24837754 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -787,6 +787,9 @@ static void otx2_process_pfaf_mbox_msg(struct otx2_nic *pf,
- 	case MBOX_MSG_CGX_STATS:
- 		mbox_handler_cgx_stats(pf, (struct cgx_stats_rsp *)msg);
- 		break;
-+	case MBOX_MSG_CGX_FEC_STATS:
-+		mbox_handler_cgx_fec_stats(pf, (struct cgx_fec_stats_rsp *)msg);
-+		break;
- 	default:
- 		if (msg->rc)
- 			dev_err(pf->dev,
+      This performs some validation checks on a parameter description.  It
+      returns true if the description is good and false if it is not.  It will
 -- 
 2.43.0
 
