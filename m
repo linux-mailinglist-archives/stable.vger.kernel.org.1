@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F03B9EF821
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214A19EF57E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D3551897939
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17EF917AC56
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3792210F1;
-	Thu, 12 Dec 2024 17:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB13223E71;
+	Thu, 12 Dec 2024 17:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIYhamNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7q98cTn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1292213E6F;
-	Thu, 12 Dec 2024 17:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDDF223E69;
+	Thu, 12 Dec 2024 17:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024641; cv=none; b=bLXupkF+MSB+9SkvA1pGxqKFklsrt0jAZP/7e1BEVN/w5O9uQmPXoqS03mH5Z/4vxXDJeiPSDBFWtpOdlB2rns5ydyqYNu/1A10HBYC7cg5H20kvIK9/DLgQDSthvsPIxLbZo2ucMysMsPPPzDrCO2gMr0AbykSEUMygzWcVegA=
+	t=1734023356; cv=none; b=EduhbYliOiQQ5sHFWNuewDEPwJL9Ld+a51OzuazbYksU5odhlBeQhNq7RGLmzWCzrR/dLWdSgz+FznK4O74nU864SsmuqGcyK8rhwZhvXgnVijnbJMBwJX62u0nj4l+fza1Ge1PR6ErUu5rTYUWtxuWb2Va6WQCjE/cLVWaEPv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024641; c=relaxed/simple;
-	bh=v28xHSLjP0WEh4d49xZDcKS0l7x7kygEuUHvvRug1iQ=;
+	s=arc-20240116; t=1734023356; c=relaxed/simple;
+	bh=JHqdMTP68qDUsCSDbKY7yHKdKO8tyAYdnbToAZlyFqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o3PZ+qqxv+rlvX3KXVw2f53GOiI65QTFWoSBduKGACujYpUN6wQfOeUPl7C2xHm5ZSshXXRfiHKO4jMXFV02e73kGWGk0b6Fm15vtbN/rXy12NoedIHqmOpaIQ41wg+gCnjA+eM0P8oDQNeS4m7eRkmAy6GOZXTL9WkGXstaa+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIYhamNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4146BC4CECE;
-	Thu, 12 Dec 2024 17:30:41 +0000 (UTC)
+	 MIME-Version; b=Dd/VW87hb8/V8D2qSQQ6G93dBYHE7Ln69KDH3VDuKK8FgW+FYcvGP2rVPYmm/BKNJWOJK/wQPNVSbRlkPBoHNSNMcY2dQgwZ8uOLc/fnn2sAZhSE6cb1rIxPMjKrzKd7RFso/fGYM4V4hXAicAPfgLGKvXLaQyFH2C7RoBNp8pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7q98cTn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79127C4CECE;
+	Thu, 12 Dec 2024 17:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024641;
-	bh=v28xHSLjP0WEh4d49xZDcKS0l7x7kygEuUHvvRug1iQ=;
+	s=korg; t=1734023355;
+	bh=JHqdMTP68qDUsCSDbKY7yHKdKO8tyAYdnbToAZlyFqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIYhamNONSSyZqRRXi01OuTJKbOcrcxhWC+V0uVgBTd8C3Ey/kOr4B6JM9A7eZ2oj
-	 VO+Tm49gQ46tCzO8S3sBFcAm7MR7U0vM0X7RcRK2r/V3bSWpST7aH0oiB/7H6fmPmI
-	 vAnv5tvOaLzQuy7drhciUeW8UPVvneQkeZ/7caeA=
+	b=W7q98cTnrUrxIrp424XXNH2LkLOO1FqXmwZNQQW0nxvQGGKwrQTrVxJQroQx+9LHv
+	 kcqRCaYogM7yv98hZkdG7ph553EgvZzzcAgF1BzsgQilswabRpKq1f2cjTvNE/kq08
+	 msVsIQKREueXp6rL4ZVe4873B6K1ls2ROrfTKIug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nazar Bilinskyi <nbilinskyi@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 364/459] ALSA: hda/realtek: Enable mute and micmute LED on HP ProBook 430 G8
+	syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 507/565] Bluetooth: hci_core: Fix not checking skb length on hci_acldata_packet
 Date: Thu, 12 Dec 2024 16:01:42 +0100
-Message-ID: <20241212144308.053683404@linuxfoundation.org>
+Message-ID: <20241212144331.811553964@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nazar Bilinskyi <nbilinskyi@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 3a83f7baf1346aca885cb83cb888e835fef7c472 upstream.
+[ Upstream commit 3fe288a8214e7dd784d1f9b7c9e448244d316b47 ]
 
-HP ProBook 430 G8 has a mute and micmute LEDs that can be made to work
-using quirk ALC236_FIXUP_HP_GPIO_LED. Enable already existing quirk.
+This fixes not checking if skb really contains an ACL header otherwise
+the code may attempt to access some uninitilized/invalid memory past the
+valid skb->data.
 
-Signed-off-by: Nazar Bilinskyi <nbilinskyi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241130231631.8929-1-nbilinskyi@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
+Tested-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6ea290ba76d8c1eb1ac2
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/hci_core.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9149,6 +9149,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-+	SND_PCI_QUIRK(0x103c, 0x87df, "HP ProBook 430 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f1, "HP ProBook 630 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 7dff3f1a2a9eb..7ed5d6e47e4f3 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4943,18 +4943,22 @@ static void hci_tx_work(struct work_struct *work)
+ /* ACL data packet */
+ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	struct hci_acl_hdr *hdr = (void *) skb->data;
++	struct hci_acl_hdr *hdr;
+ 	struct hci_conn *conn;
+ 	__u16 handle, flags;
+ 
+-	skb_pull(skb, HCI_ACL_HDR_SIZE);
++	hdr = skb_pull_data(skb, sizeof(*hdr));
++	if (!hdr) {
++		bt_dev_err(hdev, "ACL packet too small");
++		goto drop;
++	}
+ 
+ 	handle = __le16_to_cpu(hdr->handle);
+ 	flags  = hci_flags(handle);
+ 	handle = hci_handle(handle);
+ 
+-	BT_DBG("%s len %d handle 0x%4.4x flags 0x%4.4x", hdev->name, skb->len,
+-	       handle, flags);
++	bt_dev_dbg(hdev, "len %d handle 0x%4.4x flags 0x%4.4x", skb->len,
++		   handle, flags);
+ 
+ 	hdev->stat.acl_rx++;
+ 
+@@ -4973,6 +4977,7 @@ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
+ 			   handle);
+ 	}
+ 
++drop:
+ 	kfree_skb(skb);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
