@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-102955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9A19EF53A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:14:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C53769EF6A7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57817189CD45
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83E9828B25E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196F0215799;
-	Thu, 12 Dec 2024 17:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DAA42210D4;
+	Thu, 12 Dec 2024 17:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNSZ5d5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rms60Xv4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C948D53365;
-	Thu, 12 Dec 2024 17:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5A821660B;
+	Thu, 12 Dec 2024 17:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023099; cv=none; b=ASd3vwPPEBTPetYqP8bCmkIAUiihi4IG6dK7+zfIWl0bxw3o+haNy84wl8w6DEdR/oLYzx7Xn6xmtsuabmbVkrjgMTAdkO27se4bqAbQXNEWge1+KcwRi4OAVOTKlxvXgHsalJ2x8fFfLf1qYMRfduL6BUUZ+JaxTcQUFC1cggg=
+	t=1734024478; cv=none; b=kfqn0hlXjwWkItv6MhX6nX90T7nmRMnDJyD/zaJi0Lhn0Ds2VStULLWRhZs98hJ/+D/6c37eD4UI5ebeoRfoR8VX1aECayAyMtNXeOoUv+55RQngsPGvl82atPvIOeFp3RJzQjp9y7FrULFOtvxYWH97dQ6CVO8jXU2GNs/Qwuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023099; c=relaxed/simple;
-	bh=c0f3a0cVZWOygKU0PTReB5rk4iUxNsycTWEkWAHobws=;
+	s=arc-20240116; t=1734024478; c=relaxed/simple;
+	bh=+yEjuido8qfFC5WvYm/quN8OQi+lRqHM3Q6CF9w/sXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSivoUVMx0DfuN919VziHcF7gyiUv3DxUh0nSBa+mKTCmtUhH72NTt60hTBu/9r0WJRlZOran8n8Px9dkLSc6FxnqQJCEoODrTQAtMj987s69mApVbeebrV42e04/peXQqUQ03VEpXOAHZMmkoMoW9kiMSva9bbRXOJ4nFtdNzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNSZ5d5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE23C4CED4;
-	Thu, 12 Dec 2024 17:04:59 +0000 (UTC)
+	 MIME-Version; b=LaDSHC+OIsxR4dynzg4yZcAxTVz37VGYuQlfm4tXPD0nU5m8GKXidj41qtDlG5Qs/MXARg/g+Yx0WzVJuxe0CJogMFjr7ucxCgqn2zENN2PjoqSNddR28ULBrvWKIhj5WPDxEmXvaHlua3weoUhn5TVUJione+JpqD4NxZyOZYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rms60Xv4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59E6C4CECE;
+	Thu, 12 Dec 2024 17:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023099;
-	bh=c0f3a0cVZWOygKU0PTReB5rk4iUxNsycTWEkWAHobws=;
+	s=korg; t=1734024478;
+	bh=+yEjuido8qfFC5WvYm/quN8OQi+lRqHM3Q6CF9w/sXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNSZ5d5AZ9CWESGjr1PKD5qA9VWbUREf+XZ1NtcHvXo9gKUJ93oeIxRAEfg/bk7xe
-	 cpnvQF/YTfiafDaOtODbSdlfcXVTdCyVZKnYd2GadAF3eGwCyp2psZOBiDaf7Oamnn
-	 Drd4Ug5HMvuO4Us/VMXy8+U/wqrkUfOUfguIYvfY=
+	b=rms60Xv4UpWQRqqb8Nra59htaCEL3CQYpURKVagqyiDbw0XSZtEnHLvNo9zfRBI+J
+	 gDOQqQkZChhRDgff/4kN5byIIzOnbl7mFqiX1VTKV8Zu7lxCy2aBAUQdLkeiTnoBmg
+	 ViCU4TBlzEUQjzdmEPglER5yc9GaxWDZr0Fh2XvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 424/565] ethtool: Fix wrong mod state in case of verbose and no_mask bitset
-Date: Thu, 12 Dec 2024 16:00:19 +0100
-Message-ID: <20241212144328.430243062@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 282/459] usb: dwc3: gadget: Fix checking for number of TRBs left
+Date: Thu, 12 Dec 2024 16:00:20 +0100
+Message-ID: <20241212144304.772184972@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 910c4788d6155b2202ec88273376cd7ecdc24f0a ]
+commit 02a6982b0ccfcdc39e20016f5fc9a1b7826a6ee7 upstream.
 
-A bitset without mask in a _SET request means we want exactly the bits in
-the bitset to be set. This works correctly for compact format but when
-verbose format is parsed, ethnl_update_bitset32_verbose() only sets the
-bits present in the request bitset but does not clear the rest. The commit
-6699170376ab ("ethtool: fix application of verbose no_mask bitset") fixes
-this issue by clearing the whole target bitmap before we start iterating.
-The solution proposed brought an issue with the behavior of the mod
-variable. As the bitset is always cleared the old value will always
-differ to the new value.
+The check whether the TRB ring is full or empty in dwc3_calc_trbs_left()
+is insufficient. It assumes there are active TRBs if there's any request
+in the started_list. However, that's not the case for requests with a
+large SG list.
 
-Fix it by adding a new function to compare bitmaps and a temporary variable
-which save the state of the old bitmap.
+That is, if we have a single usb request that requires more TRBs than
+the total TRBs in the TRB ring, the queued TRBs will be available when
+all the TRBs in the ring are completed. But the request is only
+partially completed and remains in the started_list. With the current
+logic, the TRB ring is empty, but dwc3_calc_trbs_left() returns 0.
 
-Fixes: 6699170376ab ("ethtool: fix application of verbose no_mask bitset")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20241202153358.1142095-1-kory.maincent@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by additionally checking for the request->num_trbs for active
+TRB count.
+
+Cc: stable@vger.kernel.org
+Fixes: 51f1954ad853 ("usb: dwc3: gadget: Fix dwc3_calc_trbs_left()")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/708dc62b56b77da1f704cc2ae9b6ddb1f2dbef1f.1731545781.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ethtool/bitset.c | 48 ++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 44 insertions(+), 4 deletions(-)
+ drivers/usb/dwc3/gadget.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
-index 0515d6604b3b9..f0883357d12e5 100644
---- a/net/ethtool/bitset.c
-+++ b/net/ethtool/bitset.c
-@@ -425,12 +425,32 @@ static int ethnl_parse_bit(unsigned int *index, bool *val, unsigned int nbits,
- 	return 0;
- }
- 
-+/**
-+ * ethnl_bitmap32_equal() - Compare two bitmaps
-+ * @map1:  first bitmap
-+ * @map2:  second bitmap
-+ * @nbits: bit size to compare
-+ *
-+ * Return: true if first @nbits are equal, false if not
-+ */
-+static bool ethnl_bitmap32_equal(const u32 *map1, const u32 *map2,
-+				 unsigned int nbits)
-+{
-+	if (memcmp(map1, map2, nbits / 32 * sizeof(u32)))
-+		return false;
-+	if (nbits % 32 == 0)
-+		return true;
-+	return !((map1[nbits / 32] ^ map2[nbits / 32]) &
-+		 ethnl_lower_bits(nbits % 32));
-+}
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -953,11 +953,14 @@ static u32 dwc3_calc_trbs_left(struct dw
+ 	 * pending to be processed by the driver.
+ 	 */
+ 	if (dep->trb_enqueue == dep->trb_dequeue) {
++		struct dwc3_request *req;
 +
- static int
- ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 			      const struct nlattr *attr, struct nlattr **tb,
- 			      ethnl_string_array_t names,
- 			      struct netlink_ext_ack *extack, bool *mod)
- {
-+	u32 *saved_bitmap = NULL;
- 	struct nlattr *bit_attr;
- 	bool no_mask;
- 	int rem;
-@@ -448,8 +468,20 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 	}
+ 		/*
+-		 * If there is any request remained in the started_list at
+-		 * this point, that means there is no TRB available.
++		 * If there is any request remained in the started_list with
++		 * active TRBs at this point, then there is no TRB available.
+ 		 */
+-		if (!list_empty(&dep->started_list))
++		req = next_request(&dep->started_list);
++		if (req && req->num_trbs)
+ 			return 0;
  
- 	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
--	if (no_mask)
--		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
-+	if (no_mask) {
-+		unsigned int nwords = DIV_ROUND_UP(nbits, 32);
-+		unsigned int nbytes = nwords * sizeof(u32);
-+		bool dummy;
-+
-+		/* The bitmap size is only the size of the map part without
-+		 * its mask part.
-+		 */
-+		saved_bitmap = kcalloc(nwords, sizeof(u32), GFP_KERNEL);
-+		if (!saved_bitmap)
-+			return -ENOMEM;
-+		memcpy(saved_bitmap, bitmap, nbytes);
-+		ethnl_bitmap32_clear(bitmap, 0, nbits, &dummy);
-+	}
- 
- 	nla_for_each_nested(bit_attr, tb[ETHTOOL_A_BITSET_BITS], rem) {
- 		bool old_val, new_val;
-@@ -458,22 +490,30 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 		if (nla_type(bit_attr) != ETHTOOL_A_BITSET_BITS_BIT) {
- 			NL_SET_ERR_MSG_ATTR(extack, bit_attr,
- 					    "only ETHTOOL_A_BITSET_BITS_BIT allowed in ETHTOOL_A_BITSET_BITS");
-+			kfree(saved_bitmap);
- 			return -EINVAL;
- 		}
- 		ret = ethnl_parse_bit(&idx, &new_val, nbits, bit_attr, no_mask,
- 				      names, extack);
--		if (ret < 0)
-+		if (ret < 0) {
-+			kfree(saved_bitmap);
- 			return ret;
-+		}
- 		old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
- 		if (new_val != old_val) {
- 			if (new_val)
- 				bitmap[idx / 32] |= ((u32)1 << (idx % 32));
- 			else
- 				bitmap[idx / 32] &= ~((u32)1 << (idx % 32));
--			*mod = true;
-+			if (!no_mask)
-+				*mod = true;
- 		}
- 	}
- 
-+	if (no_mask && !ethnl_bitmap32_equal(saved_bitmap, bitmap, nbits))
-+		*mod = true;
-+
-+	kfree(saved_bitmap);
- 	return 0;
- }
- 
--- 
-2.43.0
-
+ 		return DWC3_TRB_NUM - 1;
 
 
 
