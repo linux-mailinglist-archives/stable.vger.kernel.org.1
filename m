@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FCA9EF7C3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701E89EF6CD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53552189CC51
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8990360A92
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AB9222D4A;
-	Thu, 12 Dec 2024 17:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E91222D6A;
+	Thu, 12 Dec 2024 17:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU5tlisb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkQwcpL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90035213E6F;
-	Thu, 12 Dec 2024 17:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B0321CFEA;
+	Thu, 12 Dec 2024 17:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024684; cv=none; b=koU793t9GTO4Uy/YY8nWx+IyPi3TWnZnFERGLQLlpYCRu5S+kJq0mb0VLbRzAxmuo8HiSCuJEzg8vC09Jsm8awvJP4ovjB9GJ5ls0CF8m/kuumzpOs70JVsNaoy0Q6hvBdkFoEwOrBMuBxfmWG2M3ITcVl39KeiyfTghLhv7ARo=
+	t=1734023488; cv=none; b=FDzj1s4XBhUww5jFCfcqJiRgL1TjVfmEB/YDl/4rvAotEJEzDCMFBb/At+VwEY+Fot6bhJieFyE8Xs+/owEs9CEH2wuDPW2PtdtV6/pX2/gc72vAwn2rknmKU5Y23xoVzZYavKrpaQmBX/kooCWgC1orOrA48de2607l4jqMCbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024684; c=relaxed/simple;
-	bh=CSUHbPe+swbeJg1sOVupj2BE4INH9hYN/tVkEAdZdCE=;
+	s=arc-20240116; t=1734023488; c=relaxed/simple;
+	bh=DdRp495ByXfgZG/bve1fzkYnPQQgYh68oaPNP8K4rto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHWciQo5AHBv6ZX8vOWyK68t2x/5QEEgeToI6spGVBcEkaO4NWa+CbrwqX6RqO0WuvJEG6PraMJ3EKJYB806PVg+zfRdXfU1vkjXmJUbGsyx84YrDvUp6nxJPKk+bKP22jd7ljg8mkmypMmfLcnRAq3duXqwjlPO3yycU836MY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU5tlisb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19887C4CECE;
-	Thu, 12 Dec 2024 17:31:23 +0000 (UTC)
+	 MIME-Version; b=IWEcEvU89b30CFlYHh8+nJluFjSW6w38ZWyi2VSDrNwzq0SG4w3Dm4lxV9OUGMZ8Z6g/v3ZxpUBOjXxbJWteJX2zEnQVdqoPYHl+ObhEpHY2YRv7Icp+MRp8x4I0A69B/EvZUZXLTaJXvTmi3y7sWQuX6Cr9e0W/aPynh2jznpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkQwcpL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2340C4CECE;
+	Thu, 12 Dec 2024 17:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024684;
-	bh=CSUHbPe+swbeJg1sOVupj2BE4INH9hYN/tVkEAdZdCE=;
+	s=korg; t=1734023486;
+	bh=DdRp495ByXfgZG/bve1fzkYnPQQgYh68oaPNP8K4rto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yU5tlisbryAqsGpK5hej/x5PKf3D24SvYKSZBu+kvRJqxbu3Lpkjn1em9yjmewGMZ
-	 aUho8d2g7LjWCsznfgqsOdj9770KjzjBQSLTOOGrDfBFVC2Jxl9VCxiqlC5tyZifjv
-	 7A0sCRfdpjo1VeXQ0vdqoMvPudOzgEYeSnVgz/HM=
+	b=MkQwcpL5AQ3rojKFamD/sJ2JJP6rtMDnJQAXOvga1kQmcZBc31zHQkQwUgR3WE7wV
+	 iqwGRbUptS99UgpWrO6OQIK7SmVslNp7q5Dj94AMQil0lcVHr+cI3NXUZDZ/S6PCgI
+	 v2QFUjycbNYqN2IfHZtE9LCdFceiNZpgIgstqJwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>
-Subject: [PATCH 5.10 376/459] mmc: core: Further prevent card detect during shutdown
+	Yi Yang <yiyang13@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 519/565] nvdimm: rectify the illogical code within nd_dax_probe()
 Date: Thu, 12 Dec 2024 16:01:54 +0100
-Message-ID: <20241212144308.520246763@linuxfoundation.org>
+Message-ID: <20241212144332.308070835@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Yi Yang <yiyang13@huawei.com>
 
-commit 87a0d90fcd31c0f36da0332428c9e1a1e0f97432 upstream.
+[ Upstream commit b61352101470f8b68c98af674e187cfaa7c43504 ]
 
-Disabling card detect from the host's ->shutdown_pre() callback turned out
-to not be the complete solution. More precisely, beyond the point when the
-mmc_bus->shutdown() has been called, to gracefully power off the card, we
-need to prevent card detect. Otherwise the mmc_rescan work may poll for the
-card with a CMD13, to see if it's still alive, which then will fail and
-hang as the card has already been powered off.
+When nd_dax is NULL, nd_pfn is consequently NULL as well. Nevertheless,
+it is inadvisable to perform pointer arithmetic or address-taking on a
+NULL pointer.
+Introduce the nd_dax_devinit() function to enhance the code's logic and
+improve its readability.
 
-To fix this problem, let's disable mmc_rescan prior to power off the card
-during shutdown.
-
-Reported-by: Anthony Pighin <anthony.pighin@nokia.com>
-Fixes: 66c915d09b94 ("mmc: core: Disable card detect during shutdown")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Closes: https://lore.kernel.org/all/BN0PR08MB695133000AF116F04C3A9FFE83212@BN0PR08MB6951.namprd08.prod.outlook.com/
-Tested-by: Anthony Pighin <anthony.pighin@nokia.com>
-Message-ID: <20241125122446.18684-1-ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20241108085526.527957-1-yiyang13@huawei.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/bus.c  |    2 ++
- drivers/mmc/core/core.c |    3 +++
- 2 files changed, 5 insertions(+)
+ drivers/nvdimm/dax_devs.c | 4 ++--
+ drivers/nvdimm/nd.h       | 7 +++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/core/bus.c
-+++ b/drivers/mmc/core/bus.c
-@@ -160,6 +160,8 @@ static void mmc_bus_shutdown(struct devi
- 	if (dev->driver && drv->shutdown)
- 		drv->shutdown(card);
+diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
+index 99965077bac4f..e7b8211c19cc6 100644
+--- a/drivers/nvdimm/dax_devs.c
++++ b/drivers/nvdimm/dax_devs.c
+@@ -106,12 +106,12 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
  
-+	__mmc_stop_host(host);
-+
- 	if (host->bus_ops->shutdown) {
- 		ret = host->bus_ops->shutdown(host);
- 		if (ret)
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -2345,6 +2345,9 @@ void mmc_start_host(struct mmc_host *hos
- 
- void __mmc_stop_host(struct mmc_host *host)
- {
-+	if (host->rescan_disable)
-+		return;
-+
- 	if (host->slot.cd_irq >= 0) {
- 		mmc_gpio_set_cd_wake(host, false);
- 		disable_irq(host->slot.cd_irq);
+ 	nvdimm_bus_lock(&ndns->dev);
+ 	nd_dax = nd_dax_alloc(nd_region);
+-	nd_pfn = &nd_dax->nd_pfn;
+-	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
++	dax_dev = nd_dax_devinit(nd_dax, ndns);
+ 	nvdimm_bus_unlock(&ndns->dev);
+ 	if (!dax_dev)
+ 		return -ENOMEM;
+ 	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
++	nd_pfn = &nd_dax->nd_pfn;
+ 	nd_pfn->pfn_sb = pfn_sb;
+ 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
+ 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
+diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+index 5467ebbb4a6b0..55ae9fa9db5bf 100644
+--- a/drivers/nvdimm/nd.h
++++ b/drivers/nvdimm/nd.h
+@@ -485,6 +485,13 @@ struct nd_dax *to_nd_dax(struct device *dev);
+ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns);
+ bool is_nd_dax(struct device *dev);
+ struct device *nd_dax_create(struct nd_region *nd_region);
++static inline struct device *nd_dax_devinit(struct nd_dax *nd_dax,
++					    struct nd_namespace_common *ndns)
++{
++	if (!nd_dax)
++		return NULL;
++	return nd_pfn_devinit(&nd_dax->nd_pfn, ndns);
++}
+ #else
+ static inline int nd_dax_probe(struct device *dev,
+ 		struct nd_namespace_common *ndns)
+-- 
+2.43.0
+
 
 
 
