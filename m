@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-103433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7848F9EF78C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA2F9EF97B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1163D18903BD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BF99189E0FC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F74222D57;
-	Thu, 12 Dec 2024 17:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE63221D93;
+	Thu, 12 Dec 2024 17:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsuA5zTX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSRjGbTr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F52E222D4C;
-	Thu, 12 Dec 2024 17:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1986D211493;
+	Thu, 12 Dec 2024 17:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024553; cv=none; b=EyuR7X+TQh9GipITw59AN8zCjiwXpDxWQANzKRYk5nryQ4y6tybICmJrh3wlD3G80mJ0OJLnHkbPKKkIFQ5WkIrUac23COp/3LyL+03HUX23HawgX9RMDsfctBfCBsLDxuUkmQmyiPJ44X2An9CkxkQq/jHSC33SN0ad19vV2j4=
+	t=1734025393; cv=none; b=aT9UV1g32aw2woxqlVDzEyBeTHXud44fQ0y1r5MA9KiGJCC+Edfkwp8WHg5wRq88SGz9oadWX2QMq+6+mnvQir81eRr140XGndT+4aNXamSiy3SCaF0iP4HSuJVM6X08wJmYYMNC3rq9A8ZuKEbR/AAWDq3TZDo4dUiG/i0pICs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024553; c=relaxed/simple;
-	bh=6xYqisBupcpvqghjWLQ/PHLHyRMnlvpDBhvleHtDhb8=;
+	s=arc-20240116; t=1734025393; c=relaxed/simple;
+	bh=16qrS8YSbhvl12VMIMrtcQ+eWMSf4LGD86dTbfsriE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAr6mpS+qmuXXBqZJPqtbahuaayJ4OoAMoUZNS3pk2tcOOF4wYDaYZaKC7fIjL5u22zu4CmHzS0HtnUYwFUtBMpBsHSRbiVnytJs+u1RAUOmx79pXPznQQa8y2+zMLQoK+RLFYFKaMjievTNV3ceULREVkVlFYEHR1nBfNvlecI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsuA5zTX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094E7C4CED0;
-	Thu, 12 Dec 2024 17:29:12 +0000 (UTC)
+	 MIME-Version; b=VSq84QznQqMSXgJbmZMshcmXNXmgYKoP4LmNzkG/C0wyvJPSYeg9e+zZ45+nlY9K0FDDJqM+ydOfyDZ83P9ZWKFsiaEYvIyzGZ5nQHoYaOlvWz94qGBM+quMRRNYPnFzu4QMAUhom385ZbxDge4H45vISduh2dWy5iqQhE7EOfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSRjGbTr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277AFC4CEE6;
+	Thu, 12 Dec 2024 17:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024553;
-	bh=6xYqisBupcpvqghjWLQ/PHLHyRMnlvpDBhvleHtDhb8=;
+	s=korg; t=1734025392;
+	bh=16qrS8YSbhvl12VMIMrtcQ+eWMSf4LGD86dTbfsriE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wsuA5zTXInrNd5btzEx3Ki2XNQ3B0nWS6E5U3A4GCZvXXz6UkcFrutsntQII5DPaq
-	 r2qIxcvZg73dGRJPnpVxsdqPfW3n8moSSqpks4fvTlpiQn9BvOKa1TY/h/2giHHhDF
-	 L9F8aM6AdokLlJBeYOwd3IiV+bIjALjVJ3hkTLt0=
+	b=SSRjGbTr5vNqGi7yd639lY3H+ItSYVi7CSh6LWJhCQfE8fzsJGeCMHeSx3vIGDv/c
+	 FCFvunTwgf+V2m7HzVlpsIvecJ7VYL09CqKDd0yI70CjoyP7MHJ9oH01uTRr5KA2xv
+	 b0NhTJW0T01dt7M2R/w9RYXBVeJWpDNRs8IbGbgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 334/459] can: j1939: j1939_session_new(): fix skb reference counting
-Date: Thu, 12 Dec 2024 16:01:12 +0100
-Message-ID: <20241212144306.855769133@linuxfoundation.org>
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.4 155/321] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+Date: Thu, 12 Dec 2024 16:01:13 +0100
+Message-ID: <20241212144236.099411447@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit a8c695005bfe6569acd73d777ca298ddddd66105 ]
+commit 3791ea69a4858b81e0277f695ca40f5aae40f312 upstream.
 
-Since j1939_session_skb_queue() does an extra skb_get() for each new
-skb, do the same for the initial one in j1939_session_new() to avoid
-refcount underflow.
+The early_console_setup() function initializes the sci_ports[0].port with
+an object of type struct uart_port obtained from the object of type
+struct earlycon_device received as argument by the early_console_setup().
 
-Reported-by: syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d4e8dc385d9258220c31
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241105094823.2403806-1-dmantipov@yandex.ru
-[mkl: clean up commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It may happen that later, when the rest of the serial ports are probed,
+the serial port that was used as earlycon (e.g., port A) to be mapped to a
+different position in sci_ports[] and the slot 0 to be used by a different
+serial port (e.g., port B), as follows:
+
+sci_ports[0] = port A
+sci_ports[X] = port B
+
+In this case, the new port mapped at index zero will have associated data
+that was used for earlycon.
+
+In case this happens, after Linux boot, any access to the serial port that
+maps on sci_ports[0] (port A) will block the serial port that was used as
+earlycon (port B).
+
+To fix this, add early_console_exit() that clean the sci_ports[0] at
+earlycon exit time.
+
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20241106120118.1719888-4-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/transport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sh-sci.c |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
-index a86256ab14022..84d63fb29ca1f 100644
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1489,7 +1489,7 @@ static struct j1939_session *j1939_session_new(struct j1939_priv *priv,
- 	session->state = J1939_SESSION_NEW;
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3457,6 +3457,32 @@ early_platform_init_buffer("earlyprintk"
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+ static struct plat_sci_port port_cfg __initdata;
  
- 	skb_queue_head_init(&session->skb_queue);
--	skb_queue_tail(&session->skb_queue, skb);
-+	skb_queue_tail(&session->skb_queue, skb_get(skb));
++static int early_console_exit(struct console *co)
++{
++	struct sci_port *sci_port = &sci_ports[0];
++	struct uart_port *port = &sci_port->port;
++	unsigned long flags;
++	int locked = 1;
++
++	if (port->sysrq)
++		locked = 0;
++	else if (oops_in_progress)
++		locked = uart_port_trylock_irqsave(port, &flags);
++	else
++		uart_port_lock_irqsave(port, &flags);
++
++	/*
++	 * Clean the slot used by earlycon. A new SCI device might
++	 * map to this slot.
++	 */
++	memset(sci_ports, 0, sizeof(*sci_port));
++
++	if (locked)
++		uart_port_unlock_irqrestore(port, flags);
++
++	return 0;
++}
++
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
+ {
+@@ -3475,6 +3501,8 @@ static int __init early_console_setup(st
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
  
- 	skcb = j1939_skb_to_cb(skb);
- 	memcpy(&session->skcb, skcb, sizeof(session->skcb));
--- 
-2.43.0
-
+ 	device->con->write = serial_console_write;
++	device->con->exit = early_console_exit;
++
+ 	return 0;
+ }
+ static int __init sci_early_console_setup(struct earlycon_device *device,
 
 
 
