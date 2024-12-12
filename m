@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC5B9EF7DD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C019EF4EB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B602852BF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AFD0168C2D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477B2216E2D;
-	Thu, 12 Dec 2024 17:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA92821660B;
+	Thu, 12 Dec 2024 16:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpGY9c8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pb1Tyc/G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0483415696E;
-	Thu, 12 Dec 2024 17:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96434205501;
+	Thu, 12 Dec 2024 16:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025057; cv=none; b=RdOq34o+TrkqumDKxozL9LUF2dD/zWqG7n6lTv3cZNQeq2pBtdZ7KMsfo2jEo4rutb8mgn/JMXiphMGkF7QshsZkulT9iFKNLrAY64nq3ItjH4XrlzgL5ka1yQUU40G6OrvHeXsu5eIZaM8tDV/Tpqz78EGJLYn5MFzsKIXyrTE=
+	t=1734022781; cv=none; b=SQop5S5L96P2Vlph42PQfnQKmOa/bKegvpglWigNASROZGTOakhi1JhkG8/GjLsStB8rt59UoOUjiie1VXI0Eu2A9tYJNrsDcblmJc+Kwjmb9bzg2EKu58DGf01UDy6VXKFRn0DFjPpuj/z18De8nB4/gX4YAKMulNgAYTbc4IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025057; c=relaxed/simple;
-	bh=XF78K/OpJC6b7MBW2Py19Wda77QU0OLrYFKZXr+c37k=;
+	s=arc-20240116; t=1734022781; c=relaxed/simple;
+	bh=WlBlpxEZJRE6LQ1mKSlVcS2+imXqUBgk1KA+nyyIVaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PneaA6PTTIpEbtT6oxn58v48EL3dqmeT4mxwB6B1hXfG7G6YBG4v0Yos7xuuHVpxATF7UdlICO+B7k/r1/wAy/6blIQQ6AyPor5iHC1b7BnVmHJsm/5z1PmBuH1dO2PAJrcBmjQedcfNzbPYlo8DOSu5zv21KYaur9vqN+2jS84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpGY9c8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4B0C4CECE;
-	Thu, 12 Dec 2024 17:37:36 +0000 (UTC)
+	 MIME-Version; b=Ea8Q5p6iAtK0/AXb3ZvXyiHRVBNZZCE4k2PiU3983ekrxhs1A4OzOI9nR7qrcrNheYZ7nAh1/CT0YxVrFeZEvEA4lc3kBLJeuOskfpXpYziiRLDhbBzoZoOoCPLyd1sreFZaYd9wmDOt6xbElMX5bQTOcr3SPUAEUSDZhcJL39o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pb1Tyc/G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DECC4CED0;
+	Thu, 12 Dec 2024 16:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025056;
-	bh=XF78K/OpJC6b7MBW2Py19Wda77QU0OLrYFKZXr+c37k=;
+	s=korg; t=1734022781;
+	bh=WlBlpxEZJRE6LQ1mKSlVcS2+imXqUBgk1KA+nyyIVaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YpGY9c8ekXktjwcLFLrG/0ZKejFR6bQpH/xpqaA/CmEwfRp3UXN7eS+X+EL1jGzdj
-	 /Jw5ituH8tJ+OL38k1iBsXpgXMDQT+lqIy0VZTHxwXBNEpVOLuqklxLVdNaxeEnXhU
-	 5MJHA7GLPh0uHONz5BHO/EOCx8b8Ai5oI0AMtpnU=
+	b=pb1Tyc/GkouOcKWGAo+FM6/OPPSuQiIeD6P+c74vHID5hnJM+eoA7nJ2/yB7HywIT
+	 b8zAGdljdMQLRYp2UVNLWo0wTAqFX/1ZLXPDRlm6+a7MSp/AiRzBX9doaFsgGPcQD4
+	 VH7XmXy328Ia5Usr6HU3amEAka0OFrVb8TbzBO4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Down <chris@chrisdown.name>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.4 011/321] kbuild: Use uname for LINUX_COMPILE_HOST detection
+	Bin Liu <b-liu@ti.com>,
+	Judith Mendez <jm@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 5.15 334/565] serial: 8250: omap: Move pm_runtime_get_sync
 Date: Thu, 12 Dec 2024 15:58:49 +0100
-Message-ID: <20241212144230.093284824@linuxfoundation.org>
+Message-ID: <20241212144324.797688524@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Down <chris@chrisdown.name>
+From: Bin Liu <b-liu@ti.com>
 
-commit 1e66d50ad3a1dbf0169b14d502be59a4b1213149 upstream.
+commit bcc7ba668818dcadd2f1db66b39ed860a63ecf97 upstream.
 
-`hostname` may not be present on some systems as it's not mandated by
-POSIX/SUSv4. This isn't just a theoretical problem: on Arch Linux,
-`hostname` is provided by `inetutils`, which isn't part of the base
-distribution.
+Currently in omap_8250_shutdown, the dma->rx_running flag is
+set to zero in omap_8250_rx_dma_flush. Next pm_runtime_get_sync
+is called, which is a runtime resume call stack which can
+re-set the flag. When the call omap_8250_shutdown returns, the
+flag is expected to be UN-SET, but this is not the case. This
+is causing issues the next time UART is re-opened and
+omap_8250_rx_dma is called. Fix by moving pm_runtime_get_sync
+before the omap_8250_rx_dma_flush.
 
-    ./scripts/mkcompile_h: line 38: hostname: command not found
-
-Use `uname -n` instead, which is more likely to be available (and
-mandated by standards).
-
-Signed-off-by: Chris Down <chris@chrisdown.name>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+cc: stable@vger.kernel.org
+Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
+Signed-off-by: Bin Liu <b-liu@ti.com>
+[Judith: Add commit message]
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Tested-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20241031172315.453750-1-jm@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mkcompile_h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/scripts/mkcompile_h
-+++ b/scripts/mkcompile_h
-@@ -45,7 +45,7 @@ else
- 	LINUX_COMPILE_BY=$KBUILD_BUILD_USER
- fi
- if test -z "$KBUILD_BUILD_HOST"; then
--	LINUX_COMPILE_HOST=`hostname`
-+	LINUX_COMPILE_HOST=`uname -n`
- else
- 	LINUX_COMPILE_HOST=$KBUILD_BUILD_HOST
- fi
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -763,12 +763,12 @@ static void omap_8250_shutdown(struct ua
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	struct omap8250_priv *priv = port->private_data;
+ 
++	pm_runtime_get_sync(port->dev);
++
+ 	flush_work(&priv->qos_work);
+ 	if (up->dma)
+ 		omap_8250_rx_dma_flush(up);
+ 
+-	pm_runtime_get_sync(port->dev);
+-
+ 	serial_out(up, UART_OMAP_WER, 0);
+ 	if (priv->habit & UART_HAS_EFR2)
+ 		serial_out(up, UART_OMAP_EFR2, 0x0);
 
 
 
