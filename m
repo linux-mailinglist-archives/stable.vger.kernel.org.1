@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB87B9EEA6C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:14:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48ACA9EF0F2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8AA016B95A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 473E51894811
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7672E20E034;
-	Thu, 12 Dec 2024 15:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF6122330D;
+	Thu, 12 Dec 2024 16:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhtYXgnH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8By5Az5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327FF2139B2;
-	Thu, 12 Dec 2024 15:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE764222D4B;
+	Thu, 12 Dec 2024 16:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016114; cv=none; b=RciivQK+Fq9yMI0MU8VGT6Z+8iNo7G0amsC3a6uy5jTk/o8RWv/6woeZYyZdxGBCcSpjKPyS4ug5eLiokh7/Xut2A/2nTMB1Rv/6qasiNzJ7OGvMKx0hEzJV8Ou+DrE47Cz0sLTA4Sp0Hf4CK+c1vMJA02n6BC+25Jwcj2pLHTE=
+	t=1734020159; cv=none; b=Qu3CfdXxI3ruZbRFAx29lPCTxYUM0YJPK292jawlHQQTi9ZhSvwL7VebMywL4YHi3SkvOqOhFBENOKm1vl7LjOTTPAefdnO6mhBIcKQ0s9Y9Hs+Hh7w6PI8318GgH4NzKFSSTtPT+WmUCIzi9ku4do4MYpVImiZlVCfT5DlNEd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016114; c=relaxed/simple;
-	bh=x+Z1rFqlgZC1faQkyFojAewLmwlYSIf6rLlrD+UoD/Q=;
+	s=arc-20240116; t=1734020159; c=relaxed/simple;
+	bh=Bj0xO6nSFJylT0MiJ/HupEsO5181rkaz/kYlvpAA3rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bev0GNHE3kHO9FG4JOaxlWbB00NlkJPuAAcrKlwluJlNLRa7wAsE5DQk7cySXt23R3Mi72UzAuxfZjZiYCFIq7fUlAHhLfonb2kwmkj3GLJRLGGW/W+bMgufThTRaeGBkK65Q5eJTJR0FesyacGiwxAGNMcqY1PxHJWWAUOF3M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhtYXgnH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19C7C4CED0;
-	Thu, 12 Dec 2024 15:08:33 +0000 (UTC)
+	 MIME-Version; b=UZc2GcFZAhR1x70Ne6qAdQ60WBvDzvZ9/SQpzhI7DpsqQUklAG2IvGoGxUohc907XH5m6EnRfhTCmuJSz1zk4w7LrSt1cjNZyCA7H94RqeldPsgzmZPGDfsuUlFh371b3HA8grXDfcgcA70smuhKHBA/Pm3t3OrZV5Re3Vl1FcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8By5Az5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BA3C4CECE;
+	Thu, 12 Dec 2024 16:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016114;
-	bh=x+Z1rFqlgZC1faQkyFojAewLmwlYSIf6rLlrD+UoD/Q=;
+	s=korg; t=1734020158;
+	bh=Bj0xO6nSFJylT0MiJ/HupEsO5181rkaz/kYlvpAA3rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FhtYXgnHe6/ttTt0Fl01UQRg/XHGwVt064XA3XkOgtzd4PzrpLpFlepXzuhIqCeHq
-	 CBSKz4zKPxRfkTU9qyUIZSQWozPEkU/2SuVpvQJQKNSZW5ag6WGZQJtehR3GG60204
-	 GWBOLTtUdn9OQpV+7BdDjMrbrKU7vbg8ez2py3s4=
+	b=Y8By5Az5sCHhnTGXxQ8u2o2RnsK5zJ+G46sa9GEgyriOipPPboEKLyDmImqEJebf3
+	 gdbqZuSXrWmW0QXG23O/TMGQ7WmoetuCAjX44Vp97AQ0AqwKOEOjcq7m5uQIBCD7eV
+	 RCHqjJtJDExajXPs1EGvJs3TYl0CeJJ8gzVhujgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.12 137/466] arm64: ptrace: fix partial SETREGSET for NT_ARM_FPMR
-Date: Thu, 12 Dec 2024 15:55:06 +0100
-Message-ID: <20241212144312.214725297@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 362/772] ext4: supress data-race warnings in ext4_free_inodes_{count,set}()
+Date: Thu, 12 Dec 2024 15:55:07 +0100
+Message-ID: <20241212144404.879552550@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit f5d71291841aecfe5d8435da2dfa7f58ccd18bc8 upstream.
+commit 902cc179c931a033cd7f4242353aa2733bf8524c upstream.
 
-Currently fpmr_set() doesn't initialize the temporary 'fpmr' variable,
-and a SETREGSET call with a length of zero will leave this
-uninitialized. Consequently an arbitrary value will be written back to
-target->thread.uw.fpmr, potentially leaking up to 64 bits of memory from
-the kernel stack. The read is limited to a specific slot on the stack,
-and the issue does not provide a write mechanism.
+find_group_other() and find_group_orlov() read *_lo, *_hi with
+ext4_free_inodes_count without additional locking. This can cause
+data-race warning, but since the lock is held for most writes and free
+inodes value is generally not a problem even if it is incorrect, it is
+more appropriate to use READ_ONCE()/WRITE_ONCE() than to add locking.
 
-Fix this by initializing the temporary value before copying the regset
-from userspace, as for other regsets (e.g. NT_PRSTATUS, NT_PRFPREG,
-NT_ARM_SYSTEM_CALL). In the case of a zero-length write, the existing
-contents of FPMR will be retained.
+==================================================================
+BUG: KCSAN: data-race in ext4_free_inodes_count / ext4_free_inodes_set
 
-Before this patch:
+write to 0xffff88810404300e of 2 bytes by task 6254 on cpu 1:
+ ext4_free_inodes_set+0x1f/0x80 fs/ext4/super.c:405
+ __ext4_new_inode+0x15ca/0x2200 fs/ext4/ialloc.c:1216
+ ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+ vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+ do_symlinkat+0xe3/0x340 fs/namei.c:4641
+ __do_sys_symlinkat fs/namei.c:4657 [inline]
+ __se_sys_symlinkat fs/namei.c:4654 [inline]
+ __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+ x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-| # ./fpmr-test
-| Attempting to write NT_ARM_FPMR::fpmr = 0x900d900d900d900d
-| SETREGSET(nt=0x40e, len=8) wrote 8 bytes
-|
-| Attempting to read NT_ARM_FPMR::fpmr
-| GETREGSET(nt=0x40e, len=8) read 8 bytes
-| Read NT_ARM_FPMR::fpmr = 0x900d900d900d900d
-|
-| Attempting to write NT_ARM_FPMR (zero length)
-| SETREGSET(nt=0x40e, len=0) wrote 0 bytes
-|
-| Attempting to read NT_ARM_FPMR::fpmr
-| GETREGSET(nt=0x40e, len=8) read 8 bytes
-| Read NT_ARM_FPMR::fpmr = 0xffff800083963d50
+read to 0xffff88810404300e of 2 bytes by task 6257 on cpu 0:
+ ext4_free_inodes_count+0x1c/0x80 fs/ext4/super.c:349
+ find_group_other fs/ext4/ialloc.c:594 [inline]
+ __ext4_new_inode+0x6ec/0x2200 fs/ext4/ialloc.c:1017
+ ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+ vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+ do_symlinkat+0xe3/0x340 fs/namei.c:4641
+ __do_sys_symlinkat fs/namei.c:4657 [inline]
+ __se_sys_symlinkat fs/namei.c:4654 [inline]
+ __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+ x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-After this patch:
-
-| # ./fpmr-test
-| Attempting to write NT_ARM_FPMR::fpmr = 0x900d900d900d900d
-| SETREGSET(nt=0x40e, len=8) wrote 8 bytes
-|
-| Attempting to read NT_ARM_FPMR::fpmr
-| GETREGSET(nt=0x40e, len=8) read 8 bytes
-| Read NT_ARM_FPMR::fpmr = 0x900d900d900d900d
-|
-| Attempting to write NT_ARM_FPMR (zero length)
-| SETREGSET(nt=0x40e, len=0) wrote 0 bytes
-|
-| Attempting to read NT_ARM_FPMR::fpmr
-| GETREGSET(nt=0x40e, len=8) read 8 bytes
-| Read NT_ARM_FPMR::fpmr = 0x900d900d900d900d
-
-Fixes: 4035c22ef7d4 ("arm64/ptrace: Expose FPMR via ptrace")
-Cc: <stable@vger.kernel.org> # 6.9.x
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20241205121655.1824269-3-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Link: https://patch.msgid.link/20241003125337.47283-1-aha310510@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/ptrace.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/super.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -719,6 +719,8 @@ static int fpmr_set(struct task_struct *
- 	if (!system_supports_fpmr())
- 		return -EINVAL;
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -338,9 +338,9 @@ __u32 ext4_free_group_clusters(struct su
+ __u32 ext4_free_inodes_count(struct super_block *sb,
+ 			      struct ext4_group_desc *bg)
+ {
+-	return le16_to_cpu(bg->bg_free_inodes_count_lo) |
++	return le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_lo)) |
+ 		(EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT ?
+-		 (__u32)le16_to_cpu(bg->bg_free_inodes_count_hi) << 16 : 0);
++		 (__u32)le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_hi)) << 16 : 0);
+ }
  
-+	fpmr = target->thread.uw.fpmr;
-+
- 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &fpmr, 0, count);
- 	if (ret)
- 		return ret;
+ __u32 ext4_used_dirs_count(struct super_block *sb,
+@@ -394,9 +394,9 @@ void ext4_free_group_clusters_set(struct
+ void ext4_free_inodes_set(struct super_block *sb,
+ 			  struct ext4_group_desc *bg, __u32 count)
+ {
+-	bg->bg_free_inodes_count_lo = cpu_to_le16((__u16)count);
++	WRITE_ONCE(bg->bg_free_inodes_count_lo, cpu_to_le16((__u16)count));
+ 	if (EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT)
+-		bg->bg_free_inodes_count_hi = cpu_to_le16(count >> 16);
++		WRITE_ONCE(bg->bg_free_inodes_count_hi, cpu_to_le16(count >> 16));
+ }
+ 
+ void ext4_used_dirs_set(struct super_block *sb,
 
 
 
