@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1639EF6EF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4FF9EF590
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11E28188F739
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94FE318958EE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A2D2165F0;
-	Thu, 12 Dec 2024 17:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C17223E97;
+	Thu, 12 Dec 2024 16:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUF0GkNu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cu5bHHn5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF50223C4E;
-	Thu, 12 Dec 2024 17:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32F8223E93;
+	Thu, 12 Dec 2024 16:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024045; cv=none; b=jLm5gi4l4Q7kVPwyIOfqppbut8ikh6Pfl/YuHj9stknqhp7j6V1PUrwhQJMOtrySjtNe8zFfHQ06zOxDwPj/ktR6jPdBOXQURyCBblpkOFMLqJroJCz5LPvmO8MzbYg5C6yYVNzYQuW2My96Snwd7cqsUN8WhZqONrWWeOp0e8E=
+	t=1734022697; cv=none; b=EsmhRcV+ZfxmpOxo7MF5Ffui7Yyfa/rQTtTg8oStJ5fvvq6OjRoHB9DwRgFpt7APtMv/SQSh+SKGCihMr74Q4S4HpXdG1YHxgEBWs4F76PP1aIhMlwHr3kMTJEQ+eW8FmNiDCr00Mgs2ABDwX1Ssaw1h10d+VjAKgmgVcPUuiSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024045; c=relaxed/simple;
-	bh=W2X0ltOSNBcELJmWSgJtqc8efTCNZSHdmrOUxJaVMs8=;
+	s=arc-20240116; t=1734022697; c=relaxed/simple;
+	bh=Clrjdd1fbiemmpiO94t8ztjstgMaHk14H+r9X2ouzH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fsx7BlzSEg/xBA6B4Tup3HUV7IOhk5x6IF+9ZsUiVKsX4fz6rKAqU7u8PhyUoIcddgvL5780FrXHW3eNjOGdqVZcNwJykRpPsIVddcqRnKrJrcWo17/hpayN/4fEkaXqKtPb2z0lK0g8T2KZPo3e6i/Z1A4pSAj/LnYbVa2A7t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUF0GkNu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A2DC4CECE;
-	Thu, 12 Dec 2024 17:20:44 +0000 (UTC)
+	 MIME-Version; b=XdVQ3N8yjQ4mbSbMwpecrq0TQPqUPEbV7ppA2SHl/N86YTnUlLw1NXnPwGjIIMR3R8waAnPxIY1oRIcSFgwSSkzsrHaoLLsHHajwoXlLI/McDqS/gR5FeSw4E5Fd/95zf4MXt5UGMBAKt421pgtIT+A5LernXzh7yVfgHTvRmYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cu5bHHn5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1864DC4CECE;
+	Thu, 12 Dec 2024 16:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024045;
-	bh=W2X0ltOSNBcELJmWSgJtqc8efTCNZSHdmrOUxJaVMs8=;
+	s=korg; t=1734022696;
+	bh=Clrjdd1fbiemmpiO94t8ztjstgMaHk14H+r9X2ouzH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUF0GkNu4iSy2U5aJq3LzfoCWbODAg2DpqqYQftBTloEqrj8Rno0pU6/tXkLUzDzS
-	 ASFgtixDJSIJGCUSpYMLyKTvY4bXqGHK2e8AyRnWYutmcha7h9MfORg4UBMiGKXj84
-	 SsoxFAxGVhp+nzBsQeg+4UP6KiTJ6IAMpr5tHa8s=
+	b=cu5bHHn51p8ibgVDp6U0r9aw7uH9KNqZ0p+v6/wmIQNp2ucQgnQmbmMN7Cg8ZKRId
+	 NqleZy4ktjAjMK4utoMm9PcYwD4aKGjkD6Q2GbDUdK7CQrt9f5aCsGPzASt+vxfCQd
+	 ZLwyu1S5LkyP5rARRK9NEY1GBaxoOMlICjNijF2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Ning <zhangn1985@outlook.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 168/459] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for USB Type-C device
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 5.15 311/565] KVM: arm64: Ignore PMCNTENSET_EL0 while checking for overflow status
 Date: Thu, 12 Dec 2024 15:58:26 +0100
-Message-ID: <20241212144300.149555633@linuxfoundation.org>
+Message-ID: <20241212144323.899571767@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,147 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Raghavendra Rao Ananta <rananta@google.com>
 
-[ Upstream commit 686fb77712a4bc94b76a0c5ae74c60118b7a0d79 ]
+commit 54bbee190d42166209185d89070c58a343bf514b upstream.
 
-While design wise the idea of converting the driver to use
-the hierarchy of the IRQ chips is correct, the implementation
-has (inherited) flaws. This was unveiled when platform_get_irq()
-had started WARN() on IRQ 0 that is supposed to be a Linux
-IRQ number (also known as vIRQ).
+DDI0487K.a D13.3.1 describes the PMU overflow condition, which evaluates
+to true if any counter's global enable (PMCR_EL0.E), overflow flag
+(PMOVSSET_EL0[n]), and interrupt enable (PMINTENSET_EL1[n]) are all 1.
+Of note, this does not require a counter to be enabled
+(i.e. PMCNTENSET_EL0[n] = 1) to generate an overflow.
 
-Rework the driver to respect IRQ domain when creating each MFD
-device separately, as the domain is not the same for all of them.
+Align kvm_pmu_overflow_status() with the reality of the architecture
+and stop using PMCNTENSET_EL0 as part of the overflow condition. The
+bug was discovered while running an SBSA PMU test [*], which only sets
+PMCR.E, PMOVSSET<0>, PMINTENSET<0>, and expects an overflow interrupt.
 
-Fixes: 9c6235c86332 ("mfd: intel_soc_pmic_bxtwc: Add bxt_wcove_usbc device")
-Fixes: d2061f9cc32d ("usb: typec: add driver for Intel Whiskey Cove PMIC USB Type-C PHY")
-Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
-Reported-by: Zhang Ning <zhangn1985@outlook.com>
-Closes: https://lore.kernel.org/r/TY2PR01MB3322FEDCDC048B7D3794F922CDBA2@TY2PR01MB3322.jpnprd01.prod.outlook.com
-Tested-by: Zhang Ning <zhangn1985@outlook.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20241005193029.1929139-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 76d883c4e640 ("arm64: KVM: Add access handler for PMOVSSET and PMOVSCLR register")
+Link: https://github.com/ARM-software/sbsa-acs/blob/master/test_pool/pmu/operating_system/test_pmu001.c
+Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+[ oliver: massaged changelog ]
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241120005230.2335682-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/intel_soc_pmic_bxtwc.c | 57 +++++++++++++++++++++---------
- drivers/usb/typec/tcpm/wcove.c     |  4 ---
- 2 files changed, 40 insertions(+), 21 deletions(-)
+ arch/arm64/kvm/pmu-emul.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
-index 3b41cc2d1ec01..82c71b475a7e0 100644
---- a/drivers/mfd/intel_soc_pmic_bxtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
-@@ -240,16 +240,6 @@ static struct mfd_cell bxt_wc_dev[] = {
- 		.num_resources = ARRAY_SIZE(thermal_resources),
- 		.resources = thermal_resources,
- 	},
--	{
--		.name = "bxt_wcove_usbc",
--		.num_resources = ARRAY_SIZE(usbc_resources),
--		.resources = usbc_resources,
--	},
--	{
--		.name = "bxt_wcove_ext_charger",
--		.num_resources = ARRAY_SIZE(charger_resources),
--		.resources = charger_resources,
--	},
- 	{
- 		.name = "bxt_wcove_bcu",
- 		.num_resources = ARRAY_SIZE(bcu_resources),
-@@ -271,6 +261,19 @@ static struct mfd_cell bxt_wc_dev[] = {
- 	},
- };
+--- a/arch/arm64/kvm/pmu-emul.c
++++ b/arch/arm64/kvm/pmu-emul.c
+@@ -371,7 +371,6 @@ static u64 kvm_pmu_overflow_status(struc
  
-+static struct mfd_cell bxt_wc_chgr_dev[] = {
-+	{
-+		.name = "bxt_wcove_usbc",
-+		.num_resources = ARRAY_SIZE(usbc_resources),
-+		.resources = usbc_resources,
-+	},
-+	{
-+		.name = "bxt_wcove_ext_charger",
-+		.num_resources = ARRAY_SIZE(charger_resources),
-+		.resources = charger_resources,
-+	},
-+};
-+
- static int regmap_ipc_byte_reg_read(void *context, unsigned int reg,
- 				    unsigned int *val)
- {
-@@ -418,6 +421,26 @@ static int bxtwc_add_chained_irq_chip(struct intel_soc_pmic *pmic,
- 					0, chip, data);
- }
+ 	if ((__vcpu_sys_reg(vcpu, PMCR_EL0) & ARMV8_PMU_PMCR_E)) {
+ 		reg = __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
+-		reg &= __vcpu_sys_reg(vcpu, PMCNTENSET_EL0);
+ 		reg &= __vcpu_sys_reg(vcpu, PMINTENSET_EL1);
+ 	}
  
-+static int bxtwc_add_chained_devices(struct intel_soc_pmic *pmic,
-+				     const struct mfd_cell *cells, int n_devs,
-+				     struct regmap_irq_chip_data *pdata,
-+				     int pirq, int irq_flags,
-+				     const struct regmap_irq_chip *chip,
-+				     struct regmap_irq_chip_data **data)
-+{
-+	struct device *dev = pmic->dev;
-+	struct irq_domain *domain;
-+	int ret;
-+
-+	ret = bxtwc_add_chained_irq_chip(pmic, pdata, pirq, irq_flags, chip, data);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add %s IRQ chip\n", chip->name);
-+
-+	domain = regmap_irq_get_domain(*data);
-+
-+	return devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE, cells, n_devs, NULL, 0, domain);
-+}
-+
- static int bxtwc_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -496,14 +519,14 @@ static int bxtwc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
- 
--	/* Add chained IRQ handler for CHGR IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_CHGR_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_chgr,
--					 &pmic->irq_chip_data_chgr);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_chgr_dev, ARRAY_SIZE(bxt_wc_chgr_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_CHGR_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_chgr,
-+					&pmic->irq_chip_data_chgr);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add CHGR IRQ chip\n");
-+		return ret;
- 
- 	/* Add chained IRQ handler for CRIT IRQs */
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
-diff --git a/drivers/usb/typec/tcpm/wcove.c b/drivers/usb/typec/tcpm/wcove.c
-index 7e9c279bf49df..22fe8d60fe368 100644
---- a/drivers/usb/typec/tcpm/wcove.c
-+++ b/drivers/usb/typec/tcpm/wcove.c
-@@ -620,10 +620,6 @@ static int wcove_typec_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
- 
--	irq = regmap_irq_get_virq(pmic->irq_chip_data_chgr, irq);
--	if (irq < 0)
--		return irq;
--
- 	ret = guid_parse(WCOVE_DSM_UUID, &wcove->guid);
- 	if (ret)
- 		return ret;
--- 
-2.43.0
-
 
 
 
