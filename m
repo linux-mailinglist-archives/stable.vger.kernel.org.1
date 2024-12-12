@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07A89EF52D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:14:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F29EF9EF6B1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30C70189E870
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C649189E403
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1F122331F;
-	Thu, 12 Dec 2024 17:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681B82210F1;
+	Thu, 12 Dec 2024 17:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxT9+dzs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wV0WvLqV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9092153DD;
-	Thu, 12 Dec 2024 17:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FE82206A5;
+	Thu, 12 Dec 2024 17:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022971; cv=none; b=YbC2wE/S+4mLYguSkxZLgAWoisy7sK6wE5Mcn8AJVV5fLK8zfAtpZlJNqQmwMaRhOH+2qiT+lvjbisYWu1fh6Xc6FKl+HTT1xS+KqQst66TraAGZNGKinSDm51Jv4WTWL0VUvsd0lFYrgGjhxz2upv+zOVs592aTQNvdwIT4aFs=
+	t=1734024175; cv=none; b=fZcm75mEv/A0co9gMajl4zHs503Z6f6PzXgvUqd8R64b05GaNn6qxpeLcu+wPk3RSXXwG7ehR2T6aRg0TZJsVal86YCilLKtdrM3ryJVGuZKD2y2DK3Y9gVNLWgFfhE8TzSEDKZmv6GVK9uZp8NiZp3HuQFkgOw6eD2YOrv0oD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022971; c=relaxed/simple;
-	bh=7cBiUFyq7EYeReXk19+DqsCI3TC64D5K+Z2SleDYlmI=;
+	s=arc-20240116; t=1734024175; c=relaxed/simple;
+	bh=y/rxPk4C11a34KRfb8Ogb0JErWhGW4REQUgKTnQjrcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKkm0/eCdkFpVG+DHwjvdaCAOf1dEQ0mmoT14dT7pTO6T7MB5f2og1ZzROV8r0nhqGKPkitJkdG3rRFK9/DOtABJnmRsjKAxSEwWNkh6Zq2/usDB1qQ6tufgCTXyF7HemZix22ufjlo1nzafZGJ0CsFQjbWSLgvLQklnC1Ick/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxT9+dzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41BEC4CECE;
-	Thu, 12 Dec 2024 17:02:50 +0000 (UTC)
+	 MIME-Version; b=X/VkXxQ3xJUGpi7reCq/iKW61Lgzkr1LIzst/lamXJv0HWPL7nk/GDz6DK7X8GXQZ1Slxzg2sDGGI+QN87JqU80AgkocSuR3HbwFppElbd4wkIySKWMF6mTF0xBGS7DMb9np+XfhEPimHve7jGfjg9+xmheeFsCZK826Jq7feXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wV0WvLqV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9998BC4CECE;
+	Thu, 12 Dec 2024 17:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022971;
-	bh=7cBiUFyq7EYeReXk19+DqsCI3TC64D5K+Z2SleDYlmI=;
+	s=korg; t=1734024175;
+	bh=y/rxPk4C11a34KRfb8Ogb0JErWhGW4REQUgKTnQjrcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxT9+dzsHnX7s9wvzuDkEAw5mIdhmcR5Td+5I9UcGigv707nZHYHSui9QDpo7ehdu
-	 /c0zoTKFdvU1Hp5gK6t8ua8Z0OCnYXAaT399yTWta1yCEnzbvQ2UyOUuR0eIR1fxad
-	 nY/vVK1sLCalQONbhBuYqSHgMuZX14lxZn85XlHU=
+	b=wV0WvLqVOYBBCHRMHeOTWjIpAPNARSMUdBA/Jcfhq0R2r1llw8YocnO7D4QLbyCWg
+	 ibga0K51XGcYtRH2VWLpTrV4LITocvakSi86kOw71ep+b7tzhP0m6b9ccKrkQCsj0c
+	 XsADUvLh0LoXSDPpI+vKXWa8ZRV6CNW/LkWQCJI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lew <quic_clew@quicinc.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 353/565] rpmsg: glink: Propagate TX failures in intentless mode as well
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 210/459] remoteproc: qcom_q6v5_mss: Re-order writes to the IMEM region
 Date: Thu, 12 Dec 2024 15:59:08 +0100
-Message-ID: <20241212144325.555335727@linuxfoundation.org>
+Message-ID: <20241212144301.868179746@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Sibi Sankar <quic_sibis@quicinc.com>
 
-commit 7a68f9fa97357a0f2073c9c31ed4101da4fce93e upstream.
+[ Upstream commit 7b22b7719fc17d5979a991c918c868ab041be5c8 ]
 
-As support for splitting transmission over several messages using
-TX_DATA_CONT was introduced it does not immediately return the return
-value of qcom_glink_tx().
+Any write access to the IMEM region when the Q6 is setting up XPU
+protection on it will result in a XPU violation. Fix this by ensuring
+IMEM writes related to the MBA post-mortem logs happen before the Q6
+is brought out of reset.
 
-The result is that in the intentless case (i.e. intent == NULL), the
-code will continue to send all additional chunks. This is wasteful, and
-it's possible that the send operation could incorrectly indicate
-success, if the last chunk fits in the TX fifo.
-
-Fix the condition.
-
-Fixes: 8956927faed3 ("rpmsg: glink: Add TX_DATA_CONT command while sending")
-Reviewed-by: Chris Lew <quic_clew@quicinc.com>
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Fixes: 318130cc9362 ("remoteproc: qcom_q6v5_mss: Add MBA log extraction support")
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240819073020.3291287-1-quic_sibis@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230418163018.785524-2-quic_bjorande@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/remoteproc/qcom_q6v5_mss.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1355,8 +1355,9 @@ static int __qcom_glink_send(struct glin
- 	ret = qcom_glink_tx(glink, &req, sizeof(req), data, chunk_size, wait);
- 
- 	/* Mark intent available if we failed */
--	if (ret && intent) {
--		intent->in_use = false;
-+	if (ret) {
-+		if (intent)
-+			intent->in_use = false;
- 		return ret;
+diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
+index 3d975ecd93360..876223e6c9291 100644
+--- a/drivers/remoteproc/qcom_q6v5_mss.c
++++ b/drivers/remoteproc/qcom_q6v5_mss.c
+@@ -980,6 +980,9 @@ static int q6v5_mba_load(struct q6v5 *qproc)
+ 		goto disable_active_clks;
  	}
  
-@@ -1377,8 +1378,9 @@ static int __qcom_glink_send(struct glin
- 				    chunk_size, wait);
- 
- 		/* Mark intent available if we failed */
--		if (ret && intent) {
--			intent->in_use = false;
-+		if (ret) {
-+			if (intent)
-+				intent->in_use = false;
- 			break;
- 		}
- 	}
++	if (qproc->has_mba_logs)
++		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
++
+ 	writel(qproc->mba_phys, qproc->rmb_base + RMB_MBA_IMAGE_REG);
+ 	if (qproc->dp_size) {
+ 		writel(qproc->mba_phys + SZ_1M, qproc->rmb_base + RMB_PMI_CODE_START_REG);
+-- 
+2.43.0
+
 
 
 
