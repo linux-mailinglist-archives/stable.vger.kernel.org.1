@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-100946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F6C9EE994
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:02:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8F49EE9E6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:06:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B7B41884A93
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:02:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DBCA169D59
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0202209F56;
-	Thu, 12 Dec 2024 15:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BEF216E18;
+	Thu, 12 Dec 2024 15:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3j0vJ1N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6yAFZ7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D37D2EAE5;
-	Thu, 12 Dec 2024 15:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47B22163AE;
+	Thu, 12 Dec 2024 15:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015718; cv=none; b=qrl2xgNhL6rW7PjmmHhqoaWGgFRCl9Ju46YLmfy9E2OlcqA1cQnj9B3HZoVghAojzYPOtL0N9NG2JfsMXvyPEESGEM0TLbOGWJw19QA/Rrsvxcha3NW/iQoXW+hX9fmCv+QtKz47+bVtiCCWy/8loXgCeohPdhbWQ6qa/A6tLn8=
+	t=1734015862; cv=none; b=VY8bgPj+xfk33zukKdngay7ObeXTT+LOVPhtV+TlltwOOxpV/oeM6ILQ5Kj0pSoAIsgIi0J1QC/JUwEYzen6FnwtTMif434b/7YeFZKTtDU33YkT8gzgIX0jDecAgGXgoVTUhMQTY+3WkTJqk9DaLwkmX6Oi/lGCIueGfLu5/tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015718; c=relaxed/simple;
-	bh=7Sj87azbfa3EoKh1XbctN9JlT7uaI3wXA0P9j51z3nI=;
+	s=arc-20240116; t=1734015862; c=relaxed/simple;
+	bh=H/WS0i2f++3St1U77bM8apR39w2b22ItLtS+uPHem/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlFLpK7rXpunCuNdsGicm5ce1zs/Kf4B94YQJiCpI2R04R0xOWYLiMqN8QN4UiPmwtRiwZHPQLVDbAOBLScq2Liyx6drYZ8ECoC93jvQ7IvIYBLsf7Ae5VBc0ADbytmOat3IlQ7IVwcX8bv+j/xPos+8q+L5RYrtZEeTrd5uO1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3j0vJ1N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85BCC4CECE;
-	Thu, 12 Dec 2024 15:01:57 +0000 (UTC)
+	 MIME-Version; b=RcL1SKf8RXfb1OrWyQgTMUdFpdIDXNnyEt8LnLgcM9VK/Lzgc4iK6qh4opSAT77vUHjmqpKcJeXeNKYLMoHDdi1qFe69Bx2Cpi898PCgxXRaF6QARBDOLHvYPSakvFRbxG1BIhHaWmVK4JqMEiJPqtM4EnMx84Ig/o9wKrxMr1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6yAFZ7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1706C4CED4;
+	Thu, 12 Dec 2024 15:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015718;
-	bh=7Sj87azbfa3EoKh1XbctN9JlT7uaI3wXA0P9j51z3nI=;
+	s=korg; t=1734015862;
+	bh=H/WS0i2f++3St1U77bM8apR39w2b22ItLtS+uPHem/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3j0vJ1NyQv5AvWei26hvnNjp9WjvoLk2x40oEzZbinY/fdMW1R4NJbtDWjsjTX81
-	 wTg7VYP0FKVVcPnvQuLzvHWtKT/X1b+PMCyYW3FYLRGEAGvAkbLY+L6dWI8rc9TRVN
-	 dF1UeRifQBS1QW/AAthcaSafOI8xo1OUooXS8f/8=
+	b=f6yAFZ7IPcT2E3hegizklb71UroL3swpS0YCiSbfFUXUS54VJCfH4HpoeHoC+i7Sb
+	 Xd3H/lt5o/fRoVW1pOyoJY8BRmiRU9hStVWvXQyj9xlnPZDXpwaD+JTovCXaQ5wwA/
+	 b9AvIBAtxtSwkbqAM3YEAMBpUVJTmAdYkfRTMOrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	Daniel Xu <dxu@dxuuu.xyz>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/466] bnxt_en: ethtool: Supply ntuple rss context action
-Date: Thu, 12 Dec 2024 15:53:13 +0100
-Message-ID: <20241212144307.644730387@linuxfoundation.org>
+Subject: [PATCH 6.12 025/466] net: Fix icmp host relookup triggering ip_rt_bug
+Date: Thu, 12 Dec 2024 15:53:14 +0100
+Message-ID: <20241212144307.684711664@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -67,49 +68,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Xu <dxu@dxuuu.xyz>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit be75cda92a65a13db242117d674cd5584477a168 ]
+[ Upstream commit c44daa7e3c73229f7ac74985acb8c7fb909c4e0a ]
 
-Commit 2f4f9fe5bf5f ("bnxt_en: Support adding ntuple rules on RSS
-contexts") added support for redirecting to an RSS context as an ntuple
-rule action. However, it forgot to update the ETHTOOL_GRXCLSRULE
-codepath. This caused `ethtool -n` to always report the action as
-"Action: Direct to queue 0" which is wrong.
+arp link failure may trigger ip_rt_bug while xfrm enabled, call trace is:
 
-Fix by teaching bnxt driver to report the RSS context when applicable.
+WARNING: CPU: 0 PID: 0 at net/ipv4/route.c:1241 ip_rt_bug+0x14/0x20
+Modules linked in:
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.0-rc6-00077-g2e1b3cc9d7f7
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+RIP: 0010:ip_rt_bug+0x14/0x20
+Call Trace:
+ <IRQ>
+ ip_send_skb+0x14/0x40
+ __icmp_send+0x42d/0x6a0
+ ipv4_link_failure+0xe2/0x1d0
+ arp_error_report+0x3c/0x50
+ neigh_invalidate+0x8d/0x100
+ neigh_timer_handler+0x2e1/0x330
+ call_timer_fn+0x21/0x120
+ __run_timer_base.part.0+0x1c9/0x270
+ run_timer_softirq+0x4c/0x80
+ handle_softirqs+0xac/0x280
+ irq_exit_rcu+0x62/0x80
+ sysvec_apic_timer_interrupt+0x77/0x90
 
-Fixes: 2f4f9fe5bf5f ("bnxt_en: Support adding ntuple rules on RSS contexts")
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
-Link: https://patch.msgid.link/2e884ae39e08dc5123be7c170a6089cefe6a78f7.1732748253.git.dxu@dxuuu.xyz
+The script below reproduces this scenario:
+ip xfrm policy add src 0.0.0.0/0 dst 0.0.0.0/0 \
+	dir out priority 0 ptype main flag localok icmp
+ip l a veth1 type veth
+ip a a 192.168.141.111/24 dev veth0
+ip l s veth0 up
+ping 192.168.141.155 -c 1
+
+icmp_route_lookup() create input routes for locally generated packets
+while xfrm relookup ICMP traffic.Then it will set input route
+(dst->out = ip_rt_bug) to skb for DESTUNREACH.
+
+For ICMP err triggered by locally generated packets, dst->dev of output
+route is loopback. Generally, xfrm relookup verification is not required
+on loopback interfaces (net.ipv4.conf.lo.disable_xfrm = 1).
+
+Skip icmp relookup for locally generated packets to fix it.
+
+Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241127040850.1513135-1-dongchenchen2@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv4/icmp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 20ba14eb87e00..b901ecb57f255 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -1193,10 +1193,14 @@ static int bnxt_grxclsrule(struct bnxt *bp, struct ethtool_rxnfc *cmd)
- 		}
- 	}
- 
--	if (fltr->base.flags & BNXT_ACT_DROP)
-+	if (fltr->base.flags & BNXT_ACT_DROP) {
- 		fs->ring_cookie = RX_CLS_FLOW_DISC;
--	else
-+	} else if (fltr->base.flags & BNXT_ACT_RSS_CTX) {
-+		fs->flow_type |= FLOW_RSS;
-+		cmd->rss_context = fltr->base.fw_vnic_id;
-+	} else {
- 		fs->ring_cookie = fltr->base.rxq;
-+	}
- 	rc = 0;
- 
- fltr_err:
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index e1384e7331d82..c3ad41573b33e 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -519,6 +519,9 @@ static struct rtable *icmp_route_lookup(struct net *net,
+ 	if (!IS_ERR(dst)) {
+ 		if (rt != rt2)
+ 			return rt;
++		if (inet_addr_type_dev_table(net, route_lookup_dev,
++					     fl4->daddr) == RTN_LOCAL)
++			return rt;
+ 	} else if (PTR_ERR(dst) == -EPERM) {
+ 		rt = NULL;
+ 	} else {
 -- 
 2.43.0
 
