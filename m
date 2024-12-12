@@ -1,202 +1,166 @@
-Return-Path: <stable+bounces-103906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F5D9EFA50
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:05:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B12E16619E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:43 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2165A221DA0;
-	Thu, 12 Dec 2024 18:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OrmQmPfj"
-X-Original-To: stable@vger.kernel.org
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11011056.outbound.protection.outlook.com [52.101.65.56])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC1929EFA60
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:08:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CFA205517;
-	Thu, 12 Dec 2024 18:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734026597; cv=fail; b=e66kkBSSY+7cE7DJ1e29J4/66UdVY3BLp0SqAIEufCfBXnmD217kKWjIHWb5+Jr30/6D86xql8FgLuTaMted7cLBcbZvs5esSVWn1s4pFy085ybu+P0suiyAUEVNtmDygEGsrCPmExv6u8tVQm5Xko9Kgest5tzdYugzhVt7Kyc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734026597; c=relaxed/simple;
-	bh=UcqkRfiM0lHBQfaf7y6teiozoDqdprHi2DabnW66NcY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GtMalsV7Q+YZ5+yZgh5hVSyhZwnXE2K1PNDzKNSqmU9RObFp1nVmcqPiP1MEqabvrfkN1TW/WPOWsQqVtFuqOZjBNQ2yUGyPXV/WT/J1v0D0HwLzygRoH7rWT9Z+J4OKpedYtXT09wufecRn0zBK2Xd3FjkO5Z3oYJAyx6rFv4A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OrmQmPfj; arc=fail smtp.client-ip=52.101.65.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ryN2Fxv6bbSahVzc1Ut6ArqkCzrv20aWPCg1laur2IG8BSMWZBYCoX16qIdNdiAJXWGbrkWcwupHcJhrHe5J9TR9wct26adguefdT4r6uDKTUzv1DiCZRvLn8OAF3pHaV4a7W2ncBFSnsCXtPtfbOjWR+S1NNTIAqPIkV8Fz0G937pkR5xbDz6t+0Hd/RyRApQD5mRquLw2rNIkmF+pp7/uiIo4z4zAjj3hDgDHOYOy8B6uKPA/sVBm1cEdU5CBcMlb+9zcFo2tpFnuiPzp4WDzKMqsafCqtZpiDRW/TjZqrEunStD0RcY8CRGsjSPsuKRdbcIYf6bwmOJQ0uWcGkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x52Vp1/3Ri81u51cNkeaGGjrXAv20vSqFTgr+Nf3WLU=;
- b=q70KSAWhqWKwGZeMjk0JPrNrOEP37FNbYMUO1JkxGK51HUGTLxqyVWbja4sOUVWjED+m7ALIwlIqyf0nteyZBk+hp+cWn+b+0DGM7ZXMm+qGUYEp36fOJgD3GJw04t24ppr3cSjK/pD4xCbueXP/AV9Af7uu7EzvhQiRba+1LVAG7lHPQpp0WuQqL58aYDHmbswhSRpNXy4rDtg6u+2JjM3Cz/hBok33xq9GcQtmusoj4XvlYW3LLgWafyh8oy06MGxLbpTTD5fyUQILeGuOBupc8ayUNFQRU171durzaeo9lsxynIDVdT5CZeb2s1YYqvJqa6hud8YZWKBRLFT97Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x52Vp1/3Ri81u51cNkeaGGjrXAv20vSqFTgr+Nf3WLU=;
- b=OrmQmPfjEa2X2Eai7RTxBWL6Qit0yn/akGFiH+omALsHo2GxpbG7dJjwOnVlMo2yBXr7izxSfcK470i/T7llyJ0H9S59cO9tGQaNwjs1kp16t+04LZb2+BDyE+0ndypC3coYt1+/1KJJ9h0LKOlYLEi+QiHyb3XRuvZJNh+8/Ds/HABskBCHYJGjRoUP1qE6qIjcWB+OMSNkbDUca789/Aj/bg50VKQWkciNn2jz/kl4NFR4VpAJZ65F3Jo2s/drEcEOczUIjALoLRn4dzhEzqs08XoVdL5CU4taaHczoYS/toOCanNwefEYpPIw8YXRTOGWU/6POzSHvdcnSwgh8Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DBBPR04MB7865.eurprd04.prod.outlook.com (2603:10a6:10:1e2::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.14; Thu, 12 Dec
- 2024 18:03:13 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8230.010; Thu, 12 Dec 2024
- 18:03:12 +0000
-Date: Thu, 12 Dec 2024 13:03:05 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Joao Pinto <jpinto@synopsys.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Wei Yongjun <weiyongjun1@huawei.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] PCI: endpoint: Fix API pci_epf_add_vepf()
- returning -EBUSY error
-Message-ID: <Z1slWQ2xkP80HscH@lizhi-Precision-Tower-5810>
-References: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
- <20241210-pci-epc-core_fix-v3-3-4d86dd573e4b@quicinc.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241210-pci-epc-core_fix-v3-3-4d86dd573e4b@quicinc.com>
-X-ClientProxiedBy: BYAPR06CA0022.namprd06.prod.outlook.com
- (2603:10b6:a03:d4::35) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87A8E28D351
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:38 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADE6231A3A;
+	Thu, 12 Dec 2024 18:05:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hvBlVNQY"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8FB23098A
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 18:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734026725; cv=none; b=sjHRaHyRcQkBZq97zWTwNs4o3xkFKgO0zvIF+T5bpuuDcu5ct0w3NW8L5CjgaCoOQfGT7cmkGcW6zDFuybqaOh7GymuJLVSvfbOlCdf8WJEP/VvOYBi9bf5+j5edV2jMPvHseHfrtdTN6/RT9RTjgECNjtX57sig+M7vqoXvF+U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734026725; c=relaxed/simple;
+	bh=GnTV6Da5YELPXMcORuq9yXyw8ZWX24rsUjlfFf5wTMU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a2MoVoIejcjbMTeh9rGkXNiWzjOh2sMn+xiQ2hWxSVGFxB29QbjiDTaThNiuFrW9/MppRa1vpXrRWJrTOFWKmwnhmr/7KgtsTozlmd8bUH36fNGq4a92N5AHFVgYfqhOZ41w08Hq00frGVX7mtCyr/6WpgvaEIuvbc1GuUzDzyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hvBlVNQY; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6d91653e9d7so8985696d6.1
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 10:05:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1734026722; x=1734631522; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0ACbT2hrUAn63fc+9lLjJy9djGKWLbWmKIxJyevbg8Q=;
+        b=hvBlVNQYJGcWRJLpa2eP1TY6zv3u1HTv5pfRvvXV5ZCETQGtqmkawsHLAXZYphAHmk
+         LzLkcSpPXCFFPAc9dO/LtZ0jJeBSqmBV54WBmLC6qZRemJrTKA9Xm0BHn1hRdEFpmKF6
+         zv8N5l5zGItEr/W0LnI3bTB4N4M6Ad9EZ3TGNO63WgwXmEfB8f+sBKEEBOS/BxspLZAe
+         8T60jnymhiOjk1WaiMFDB4VxV0FjUwNotaU9djgI6pow73wEeOgTdfcNEfqz1n6luNq+
+         vYtbOsLFKCGqT2WUqXjvBFzr9iKUOb7748rNiV+gJrBeHHHmUuSqYN18fMWgbmG+Td+V
+         17Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734026722; x=1734631522;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0ACbT2hrUAn63fc+9lLjJy9djGKWLbWmKIxJyevbg8Q=;
+        b=rOYRUBoEsnIFZxitzmO2E38LUqLTpGgC0fvegnfvp/D1KkEm4yEeQ6K1u5gebxiCfB
+         Hz9k9qi/SV/fLX6whUSlxDDk1Q/D4U3Ks9hxf/nauAHGEszURz6kTyyoMY1x65jEcaBk
+         MD151/v6/Xbu1GVAXEPJFXCjkcRBqVqTmMTNtQN7Olp6sKywYG3u0XzXPxIkBICJZZAV
+         Vz+dM7UUwtpac137wUTOJZXFPkd6Wp0Mv59UdtWpR2f32Ng+Vv9o7zS7ZlyGx43M+oks
+         q6dCW63gxjOYfwpEDJ8xgxCO4C6TiO5Zf/FGugwqp27BXENcIQ8ToSVbVmJVZP+UX240
+         B7/Q==
+X-Gm-Message-State: AOJu0Yxmk5I6A74Yhz1qPtIVQBpwunFAADmL5dMKv62P4/BoLCgBq7dR
+	vOwXY+pIf5YiKfWsxBhDHcxfAHzu+oRFPe1usyymZod5n61u0iGd0yqlnbV5OYL3SKzSrbmpq0s
+	XsD5vAvBukwUt0QeOML/yf8/bB7gBZx4Z+0gLJw==
+X-Gm-Gg: ASbGncsO0FqpWsL6P8ic98+tfmypD+9g43yIOfO0Z4ChNg7N4stV5yXHuoFr4ukJUCq
+	FLoz3E+X1HnP2/2vNCHeKKv428kx/6olb3bs7
+X-Google-Smtp-Source: AGHT+IHG/uFO/ewrJZj42vcEKEa3DNJ0EvDn2NCbKG87UO1uP4jMl3G4T3F9G2Z6947ZPgYyKqumWNWDItutLlRMg3k=
+X-Received: by 2002:ad4:4ee6:0:b0:6d8:a1b4:b591 with SMTP id
+ 6a1803df08f44-6db0f77b2f3mr18289156d6.23.1734026722575; Thu, 12 Dec 2024
+ 10:05:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DBBPR04MB7865:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4980f063-105e-46f0-c06c-08dd1ad73e95
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ZMy0iAwm3kfWK1nX72f9gillZMwBp2+lx1eLG1QTgwurm1YVne7YFyKvEBmq?=
- =?us-ascii?Q?QcEf7TZQwEZtyNfYs4sxqn9vPLCV6r+Q+y8x9uHPkZ2LwR68L483SKvzoUGw?=
- =?us-ascii?Q?PQQkn1nLP7SPkxfQvQBjRqKV7ODXElHRUsDw2rwQnnDBuEBiOycDjZe+yBP9?=
- =?us-ascii?Q?xhqEg/suY1yN/DQFk4nkpK86HrKnGTllb1jC31rjZiMOB4ogl7hSoftdEat/?=
- =?us-ascii?Q?G0DBb8jgWqRpVw5OEwCa6rE1x6oOPA2AVZESlGuB9mN5y/dEnRJIFXlXQ44B?=
- =?us-ascii?Q?Vt7dsMyLHWuHQnF4YVfElf1MpOlgKy8vn8NYbSUK1LrRcuehxm29gm+kK6lk?=
- =?us-ascii?Q?ycg4HC6aE54OJeShBTfxJNdwcRddX1dN5TC58NDrH8SA/Lf5cmeUR4XNzD6P?=
- =?us-ascii?Q?VqnWwoNEgEAdA85K0WchEdabyTBsYBQIBeu3rwIbL/wblV/+kF3vgsy8VZT7?=
- =?us-ascii?Q?ttBQx664kfdqvx2k1ZrEVJrNeFysUFz64aOg6sugLCut2YRg9WL84jrgOPko?=
- =?us-ascii?Q?5k01ghJ8pGGx107YKs04gXjp9No8B9xj6YZYL1bpKPJhitd46pVq1MfeZNII?=
- =?us-ascii?Q?mCNYayiEyiCzeq/sStg97S/K9vLaTIP797eQQeapCJYaIcf3qBRlIxCFTpKn?=
- =?us-ascii?Q?AFvZUAgVmk4FsrOzeGx4wIwBDoLQPX+hb+wkU0fWuNXnuTYQXiB34h3EbnKV?=
- =?us-ascii?Q?U0SWuDTDxFb/5u3bYHcrr96il0iO+8tPX08j8d8PnSu0YPrSdGDBF4ZVy1J9?=
- =?us-ascii?Q?U2ELk86rXUlAkhYWGlmT/EZHLspR7Ev6U18tJlirlMArzcDiQrdMA/7BxVJX?=
- =?us-ascii?Q?vXDSZJelVXThNMY3SHajxpbHEP7Wktr3TCuatlZQedlZu4As3pUiUCYMutod?=
- =?us-ascii?Q?B11/QlcqYLliUDFUyknl7RWHoQ7ZfaJ/nYWE0ApY4k3ZQpKHcY3ub+auDXV7?=
- =?us-ascii?Q?cl/er8I1Nii6BH75Ns29N1AT0Qbtwqi3LWfvOTOrmCJhhklmmFMXPiLoljAQ?=
- =?us-ascii?Q?kMpmSYNJp+MgX4jdnUGLovsuqlQewgjtmMvHmXtd3lPVIthQuqSYdckGVH+Z?=
- =?us-ascii?Q?fXORm5vZLpWiocREP8zZKLRuoXs5Hdf+AqCYcyT0Ntq0VV+nuvrXyb3YyvSw?=
- =?us-ascii?Q?bI8jiIDX862Fq/V5hlmxvJmCGq8iKm7IpHPoN0uXsMt+vk66YUlnpLI7ard7?=
- =?us-ascii?Q?wvnzKDaXfvi35SnAYvRbCoBPMJmhvQ1uqXFzhHExLbc1ZPZAGivgKz1NWlnu?=
- =?us-ascii?Q?jx2N3lW2UvgrMBN5jGQS1BtxSi/IHXVnLrqQMClY8gN5Aujd/VPgWmC4+hDM?=
- =?us-ascii?Q?K7q8jsMVr9wdk8GNMnldocHU+eovbY7q/gKjRFkUPJhmgcYfdIhv6TqtG96d?=
- =?us-ascii?Q?EztZNHfr1YntTcx9xZUK0fJXG3z1CNDadgwY8Z9T7sFUmukjvQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nOjPGMMCShHRJcZkcp2tDKpVptt1lvwBP9GXlStDZGAYEGhmecFP3fANwils?=
- =?us-ascii?Q?bvWxqhhiFPb9X8DNLqNawwIVMDsCPzrF/KbSViB426D4D9wbp5hRs7vxZEyt?=
- =?us-ascii?Q?wXLz6HO5h0IHrrbDB0nCg8WPyAmj26vB8mdsSUefiNyIc5e1+3tvso9rvkET?=
- =?us-ascii?Q?lgqLLzFTDwGRHdpBvc/R5PR8spPqQq0a0IgSSkQF0FzKzI00l5IGors5jVZd?=
- =?us-ascii?Q?jVpS+YJ6A+SzAomfenGVLooVWAV7KOYD8/iBjWVSOf/AOSzfLQ/6ZrkqukXJ?=
- =?us-ascii?Q?y7L2GXd1wu8I5HGR+x/yTvJZ5plTtKsE7ChA20oVcuUmRf8+1Am1loR+fCBe?=
- =?us-ascii?Q?n2GKRU7TGmVPuaQ/wI7nKqYAgbe3M3TUrWJYg6pUvUqp1eHZRLi9T1Gd7hTb?=
- =?us-ascii?Q?lDzNhzFd5i4zXEzGRpLH4dbt+aEtLSUT2daJwBqNXdLNUwqimYk240OIJWlt?=
- =?us-ascii?Q?4rs7tO54wasw/aJ+FPciGccSJfq9y4q5xVdcKU5o9U/VQumqHnUO+IRG1qdS?=
- =?us-ascii?Q?S31BPe1tZmLGu/VOeS5Pknie3p0OlcUHMGVVtly54Ggajy3m1q7W07jyOBjH?=
- =?us-ascii?Q?Lpq1QmRb4giVxz6AC+dqNejDiT4kY7XiLaCtxC7r7QV4ZaTvEIa/ryKrtKLX?=
- =?us-ascii?Q?p981gDXJiRXmDvDpd+h6emT6DTjtRTTaFU4WnkskH7m8NZeUp0yUF7Evrzdr?=
- =?us-ascii?Q?UvKjY4pETAmJm5B8ocnx49qhlJtWZk6/i3ZjCO9oGJ4nXDP5ix4ghbzt60bX?=
- =?us-ascii?Q?bFhx6ZQVevo3iffJ4siRfRSAb7BsB7woYfnmYRQw4xpQipLm7E7c+ZEsweEc?=
- =?us-ascii?Q?CiXKffSCAivbz0VYhJ0A9sqdMk7Up/jO3jsX/jd71rxSg8kSgLYjsh0HLSaA?=
- =?us-ascii?Q?IiRjCqS/mNLv8gGl7bo/VacGpfolPOYHWwLPIwHHLbvQN3Ptuylz95u6xIow?=
- =?us-ascii?Q?8RkW/Y6mH4hDJpRgx5YNjlNxf9PXMv/Fsr+2rdW4Ak2b01+AVPMB3Opc5WBh?=
- =?us-ascii?Q?ltYj+vgj0pw6s4b4T+Unjvbx4j8BIL6XrgqhPDom9KFwA/yuG4JD4p7VED4s?=
- =?us-ascii?Q?J7iVGBOf8W0XwYSuy14faqQUO00xHJv0R2TRY2/ExRck9hyMnh3UseyRL0qJ?=
- =?us-ascii?Q?DnqikkGcJkkYMQd3BkKrOj1V55r1RiD75t8FMXfc5tUHqekaPCaFNMmV/LIx?=
- =?us-ascii?Q?KZnWJKJ+jdbgw2fIUN32TIm/3sLkiFEf3ljVoZeRCgky7OIvPl4ZAxPJEfjq?=
- =?us-ascii?Q?aWhbbjjekL2AzOxwXsFn4k5I+aMDSqeviliB2gJy3yLpaFC8lPfefgIYStJ0?=
- =?us-ascii?Q?fO+5aTYElhMqufbJ2M/dzrhQ+Bzy6jDiGxQsgHed26nY6S5owrnCVjOWvA3w?=
- =?us-ascii?Q?mwPrSV9bwko87EZ4Jc5hEsPsOnfeM5idsR5lcQgpJEEDdvD6XJuq72rrRqfm?=
- =?us-ascii?Q?jf8ZgLewmBIstuB5SKIDTlVGJxP68BfnfAVDhhR7gs6p2V44cbVn3NEp1UNj?=
- =?us-ascii?Q?/cAWf4OBEzTgSczZr9AlKcgRP3txSq/Cy9va8zPSkc2W1/Wb4TGuTCyf+5gI?=
- =?us-ascii?Q?q4LKnI2VceuMHOk+Va9HEkCIkYY4kLfAeaskxXKA?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4980f063-105e-46f0-c06c-08dd1ad73e95
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2024 18:03:12.7982
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5hUK9UvfAsUhvpd60yTn8wJMZHrQMuW3USvyApQa7mE0hnV1k5PYnSO/xLujVzLSP28y4SOqnd5P44EjlNawtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7865
+References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 12 Dec 2024 23:35:11 +0530
+Message-ID: <CA+G9fYuX2BsEOCZPC+2aJZ6mEh10kGY69pEQU3oo1rmK-8kTRg@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/466] 6.12.5-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, Thomas Gleixner <tglx@linutronix.de>, John Stultz <jstultz@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Dec 10, 2024 at 10:00:20PM +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Thu, 12 Dec 2024 at 20:30, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> pci_epf_add_vepf() will suffer -EBUSY error by steps below:
+> This is the start of the stable review cycle for the 6.12.5 release.
+> There are 466 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> pci_epf_add_vepf(@epf_pf, @epf_vf)       // add
-> pci_epf_remove_vepf(@epf_pf, @epf_vf)   // remove
-> pci_epf_add_vepf(@epf_pf, @epf_vf)     // add again, -EBUSY error.
+> Responses should be made by Sat, 14 Dec 2024 14:41:35 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.5-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-nit: can you align comments to the same column?
+The riscv builds failed on Linux stable-rc linux-6.12.y due to following build
+warnings / errors.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+riscv:
+  * build/gcc-13-defconfig
+  * build/clang-19-defconfig
+  * build/clang-nightly-defconfig
+  * build/gcc-8-defconfig
 
->
-> Fix by clearing @epf_vf->epf_pf in pci_epf_remove_vepf().
->
-> Fixes: 1cf362e907f3 ("PCI: endpoint: Add support to add virtual function in endpoint core")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
->  drivers/pci/endpoint/pci-epf-core.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
-> index 8fa2797d4169a9f21136bbf73daa818da6c4ac49..50bc2892a36c54aa82c819ac5a9c99e9155d92c1 100644
-> --- a/drivers/pci/endpoint/pci-epf-core.c
-> +++ b/drivers/pci/endpoint/pci-epf-core.c
-> @@ -202,6 +202,7 @@ void pci_epf_remove_vepf(struct pci_epf *epf_pf, struct pci_epf *epf_vf)
->
->  	mutex_lock(&epf_pf->lock);
->  	clear_bit(epf_vf->vfunc_no, &epf_pf->vfunction_num_map);
-> +	epf_vf->epf_pf = NULL;
->  	list_del(&epf_vf->list);
->  	mutex_unlock(&epf_pf->lock);
->  }
->
-> --
-> 2.34.1
->
+First seen on Linux stable-rc linux-6.12.y v6.12.4-467-g3f47dc0fd5b1,
+  Good: v6.12.4
+  Bad:  6.12.5-rc1
+
+
+Build log:
+-----------
+kernel/time/timekeeping.c: In function 'timekeeping_debug_get_ns':
+kernel/time/timekeeping.c:263:17: error: too few arguments to function
+'clocksource_delta'
+  263 |         delta = clocksource_delta(now, last, mask);
+      |                 ^~~~~~~~~~~~~~~~~
+In file included from kernel/time/timekeeping.c:30:
+kernel/time/timekeeping_internal.h:18:19: note: declared here
+   18 | static inline u64 clocksource_delta(u64 now, u64 last, u64
+mask, u64 max_delta)
+      |                   ^~~~~~~~~~~~~~~~~
+make[5]: *** [scripts/Makefile.build:229: kernel/time/timekeeping.o] Error 1
+
+Links:
+-------
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.4-467-g3f47dc0fd5b1/testrun/26281169/suite/build/test/gcc-13-defconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.4-467-g3f47dc0fd5b1/testrun/26281169/suite/build/test/gcc-13-defconfig/history/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12.4-467-g3f47dc0fd5b1/testrun/26281169/suite/build/test/gcc-13-defconfig/details/
+
+Steps to reproduce:
+------------
+# tuxmake --runtime podman --target-arch riscv --toolchain gcc-13
+--kconfig defconfig
+
+metadata:
+----
+  git describe:  v6.12.4-467-g3f47dc0fd5b1
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+  git sha: 3f47dc0fd5b11e6655e9fa78a350d64c0a3d53d3
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2q7Ekivz3juYAyrxbUVAOGrVOAe/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2q7Ekivz3juYAyrxbUVAOGrVOAe/
+  toolchain: gcc-13 and clang
+  config: gcc-13-defconfig
+  arch: riscv
+
+
+ --
+Linaro LKFT
+https://lkft.linaro.org
 
