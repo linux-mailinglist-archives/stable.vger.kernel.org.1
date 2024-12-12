@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C270E9EF803
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C5EF9EF769
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82ED1292758
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8906017CB86
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EED3222D75;
-	Thu, 12 Dec 2024 17:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC97215764;
+	Thu, 12 Dec 2024 17:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNEnDwdR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAA8Prn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0961222D72;
-	Thu, 12 Dec 2024 17:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5725C2144C4;
+	Thu, 12 Dec 2024 17:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025113; cv=none; b=hrJNq0yyP1yhGG7mSYvJxRxwqzScd2Tq6NMOhQB+Pm+RPRhfPDGrPdKiQnq3gL0Mh7rCznwZYKbg9PKWyDd9IVc/9VZlgBhGFph0IacDV3LCPyDaufC2SUXH+jNaaV8W58VNkttqKQZqaAW9wtwhzGNjTWGa0SuAqtEbUfws+jU=
+	t=1734024269; cv=none; b=EUiD49ZYlA9x39fqjxD0HSfcf4i6GEGsZu07nCvgjAi6mtiKEWE5HyoCeI7nLWTjYBdDrGl0iySFCLQsMPjnAYM9P6dWsTkvoAK5vkemi+Zx5t2x2AtaT8vMK8YrPEzBmE3uE7Qem1NoKmhBZqtepRBjvhPZ0hcLbtbyIXUkeVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025113; c=relaxed/simple;
-	bh=J1uUGLE3cO9Zw2/YYTvDx+peOkkICcVvwKcufkLyh9k=;
+	s=arc-20240116; t=1734024269; c=relaxed/simple;
+	bh=4DJ1F8K4jk21OW/eE0QXOymxqbdEVDb+LlMvxzV96pU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBRuJijDdW12G4m+lOA9D+FNKoQAK2yPFmOhghKh7Q66l2GD1Jp5ZQ9ijVwb1b5bhqTSVd7YLSSKuXyUPrjgl4yREUHalOgzqRzvwlS2RHCFdULrn6HYVdfvc1Zk8Ua4hGGQQ1cN2U2IURFdgm/J2IIdGITptzn6kkhZIctUaCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNEnDwdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05EF7C4CECE;
-	Thu, 12 Dec 2024 17:38:32 +0000 (UTC)
+	 MIME-Version; b=gKJ7TTqdKCN7ymp8g4HaeQRoNPpy0X4lxc0lwG1ZN6AKSD3VR4k6nBRWFGtpTQBblQtcjxn448j9EH6BaiLn4rydpQoZXn/QahiZPMvtbe5bpmTzLur39YUOzOcTFiTgPR9RJ/XHTeWG2QDobDoE2Jry4e9k0E4C4PEllP7pKxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAA8Prn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D32BC4CECE;
+	Thu, 12 Dec 2024 17:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025113;
-	bh=J1uUGLE3cO9Zw2/YYTvDx+peOkkICcVvwKcufkLyh9k=;
+	s=korg; t=1734024268;
+	bh=4DJ1F8K4jk21OW/eE0QXOymxqbdEVDb+LlMvxzV96pU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNEnDwdRDe32FxW6RadVwpfZTSDY2P2lIoRZVMNH7wzU3z1XHPnPwZv8hewvGU8Yw
-	 Z3HOm4e4TQXANI4hnqjYiBYZk3D3i2cVY6eeQ+QeYN9cKSBi+kvtFF//66Y6H95yHT
-	 H8/3KHwVx8jW+B58QX60pwf0WxJGQRVYzkXnOicU=
+	b=qAA8Prn3s504r3Z2JuSAlUtdAFNkdQSqCyP4xBpiEU/q5fx07Dywr5hjbJ+sPGwH3
+	 6jC1tEuTRfZxcaoPMdUaedJBT+3MJ4ixkCHUo6aNpgMvIz7VgiRNB5uujqGrttQCTv
+	 D3Nt3c+pY7BTeFT+ZHuipA1Kbwmpv8jYU9m3ZwRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	chao liu <liuzgyid@outlook.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 060/321] drm/imx/ipuv3: Use IRQF_NO_AUTOEN flag in request_irq()
+Subject: [PATCH 5.10 240/459] apparmor: fix Do simple duplicate message elimination
 Date: Thu, 12 Dec 2024 15:59:38 +0100
-Message-ID: <20241212144232.363676167@linuxfoundation.org>
+Message-ID: <20241212144303.062512321@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: chao liu <liuzgyid@outlook.com>
 
-[ Upstream commit 40004709a3d3b07041a473a163ca911ef04ab8bd ]
+[ Upstream commit 9b897132424fe76bf6c61f22f9cf12af7f1d1e6a ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+Multiple profiles shared 'ent->caps', so some logs missed.
 
-Fixes: 47b1be5c0f4e ("staging: imx/drm: request irq only after adding the crtc")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240912083020.3720233-4-ruanjinjie@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 0ed3b28ab8bf ("AppArmor: mediation of non file objects")
+Signed-off-by: chao liu <liuzgyid@outlook.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/ipuv3-crtc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ security/apparmor/capability.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3-crtc.c b/drivers/gpu/drm/imx/ipuv3-crtc.c
-index f19264e91d4db..49a71ee5c583c 100644
---- a/drivers/gpu/drm/imx/ipuv3-crtc.c
-+++ b/drivers/gpu/drm/imx/ipuv3-crtc.c
-@@ -411,14 +411,12 @@ static int ipu_crtc_init(struct ipu_crtc *ipu_crtc,
+diff --git a/security/apparmor/capability.c b/security/apparmor/capability.c
+index deccea8654ad8..1b13fd89d5a9f 100644
+--- a/security/apparmor/capability.c
++++ b/security/apparmor/capability.c
+@@ -94,6 +94,8 @@ static int audit_caps(struct common_audit_data *sa, struct aa_profile *profile,
+ 		return error;
+ 	} else {
+ 		aa_put_profile(ent->profile);
++		if (profile != ent->profile)
++			cap_clear(ent->caps);
+ 		ent->profile = aa_get_profile(profile);
+ 		cap_raise(ent->caps, cap);
  	}
- 
- 	ipu_crtc->irq = ipu_plane_irq(ipu_crtc->plane[0]);
--	ret = devm_request_irq(ipu_crtc->dev, ipu_crtc->irq, ipu_irq_handler, 0,
--			"imx_drm", ipu_crtc);
-+	ret = devm_request_irq(ipu_crtc->dev, ipu_crtc->irq, ipu_irq_handler,
-+			       IRQF_NO_AUTOEN, "imx_drm", ipu_crtc);
- 	if (ret < 0) {
- 		dev_err(ipu_crtc->dev, "irq request failed with %d.\n", ret);
- 		goto err_put_plane1_res;
- 	}
--	/* Only enable IRQ when we actually need it to trigger work. */
--	disable_irq(ipu_crtc->irq);
- 
- 	return 0;
- 
 -- 
 2.43.0
 
