@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-103022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DE29EF62B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E479EF7B4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C73718955A8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954C41891C34
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A5921E085;
-	Thu, 12 Dec 2024 17:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD25222D68;
+	Thu, 12 Dec 2024 17:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5IKfOkc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqkfvMWv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFA44F218;
-	Thu, 12 Dec 2024 17:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0605C217664;
+	Thu, 12 Dec 2024 17:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023305; cv=none; b=YvWQwTtxZAJvlN05Os5c+h3YUOY9ONkB4e5G738ZMPBGfqUcdxJQHm0j3gfGfOeSmEqiTMcUgZrhCVPMaNDaHlpv9Yc7Echzb6RlZE3iLWzSMep4ZsJh2A9NdUFz8qJPzzsAOqv0HEjHRN2fruDIri6BLClTanyQrLvnR8v7QAs=
+	t=1734024688; cv=none; b=H7Pds6HUqGMeJryXjsuob3CgR9jLp2xHAnmW2vIwtYYQowrnDUNW8dKvrUfBT3GgtAqihyojE78UAQ6xB+mI+D64YT23qLrGaw2u43kDDqdD/gM4U76vI7Q3trAUQnvCzM7hnS8Zgyg2pDFY1d80jxO3bkd8kjRHMabRWGY1TA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023305; c=relaxed/simple;
-	bh=O0QtuM8iXaydGS3i8KExS+2FcMC//XkAdW5II49UBuE=;
+	s=arc-20240116; t=1734024688; c=relaxed/simple;
+	bh=CTjnrbyz84RmXC82LUPoGQzAZUEMn7lGuIwRmX2J6XI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7L1CQM3dzHI3ngkQpvMX3V0I8SqpZ/MTG6iUwleE1bGurQm2hlarkPMLW4Mi9metRD+49yag3wjH6OzYz+Q4Xg4Qx34G5A5B7/PMuesax6Y6lFX+J4Ny2qI3ejVftQ/liXcrrUgUnJzB7kE0X1KWmUT8FYxMHNHJLAD8Gf3QFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5IKfOkc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B41C4CECE;
-	Thu, 12 Dec 2024 17:08:24 +0000 (UTC)
+	 MIME-Version; b=cezvHCvmE59a9wNcHjgbx3u2pnI/2GMmvZMDITVyoNU51YIHrEkl2hmeIfS6pNO4Az9CO/JRimlI0Hk3V3/BXlFLUYGOVDldkIyz9Ex9O7h7TEYCgqhDsFv7geW+hz4QOkYW/VRxglnuIiaRSr6BYqdI5ySHgg9xrV6tQeFKeTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqkfvMWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481FEC4CECE;
+	Thu, 12 Dec 2024 17:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023305;
-	bh=O0QtuM8iXaydGS3i8KExS+2FcMC//XkAdW5II49UBuE=;
+	s=korg; t=1734024687;
+	bh=CTjnrbyz84RmXC82LUPoGQzAZUEMn7lGuIwRmX2J6XI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5IKfOkcYBLxFkBmTpMw/8k9y59o4OZYohMZXTwmDOeD9PckwNQsZXq1GOoXBIFER
-	 QBiCzVZgdAAr6ItPwBC50vFAvi7QeIPYdD8K3+Rj3tUNJy9SLtrtntls+xq3CHI8aq
-	 qqcLEMtVgZ+MHYu3KPkfzr0BxiKqyg6whh7gII1o=
+	b=uqkfvMWvqdtR5ALPmVeIqH4arteAYFJd+SMYUaZkclvlXoQVgEM5x0fTEMlwHL6qQ
+	 Ta/2z6h21WDQzKSoxFjLS+ctlznEquQsy2MoXjTPvOzI/i81+3z7r+Jxm8laapUW7L
+	 9gqi5uxiG9bpNvo1l2EMbZMCyp6pSfDhp4rphs8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jamie Iles <quic_jiles@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 491/565] net: inet6: do not leave a dangling sk pointer in inet6_create()
-Date: Thu, 12 Dec 2024 16:01:26 +0100
-Message-ID: <20241212144331.177655398@linuxfoundation.org>
+Subject: [PATCH 5.10 349/459] i3c: fix incorrect address slot lookup on 64-bit
+Date: Thu, 12 Dec 2024 16:01:27 +0100
+Message-ID: <20241212144307.447239047@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Jamie Iles <quic_jiles@quicinc.com>
 
-[ Upstream commit 9df99c395d0f55fb444ef39f4d6f194ca437d884 ]
+[ Upstream commit f18f98110f2b179792cb70d85cba697320a3790f ]
 
-sock_init_data() attaches the allocated sk pointer to the provided sock
-object. If inet6_create() fails later, the sk object is released, but the
-sock object retains the dangling sk pointer, which may cause use-after-free
-later.
+The address slot bitmap is an array of unsigned long's which are the
+same size as an int on 32-bit platforms but not 64-bit.  Loading the
+bitmap into an int could result in the incorrect status being returned
+for a slot and slots being reported as the wrong status.
 
-Clear the sock sk pointer on error.
-
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-8-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Cc: Boris Brezillon <bbrezillon@kernel.org>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jamie Iles <quic_jiles@quicinc.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20210922165600.179394-1-quic_jiles@quicinc.com
+Stable-dep-of: 851bd21cdb55 ("i3c: master: Fix dynamic address leak when 'assigned-address' is present")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/af_inet6.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ drivers/i3c/master.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index bbfa5d3a16f01..4d5f5f2585da9 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -258,31 +258,29 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 		 */
- 		inet->inet_sport = htons(inet->inet_num);
- 		err = sk->sk_prot->hash(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- 	if (sk->sk_prot->init) {
- 		err = sk->sk_prot->init(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 2527965a6f24d..63c79b3cd7d4f 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -347,7 +347,8 @@ struct bus_type i3c_bus_type = {
+ static enum i3c_addr_slot_status
+ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+ {
+-	int status, bitpos = addr * 2;
++	unsigned long status;
++	int bitpos = addr * 2;
  
- 	if (!kern) {
- 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- out:
- 	return err;
- out_rcu_unlock:
- 	rcu_read_unlock();
- 	goto out;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- static int __inet6_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len,
+ 	if (addr > I2C_MAX_ADDR)
+ 		return I3C_ADDR_SLOT_RSVD;
 -- 
 2.43.0
 
