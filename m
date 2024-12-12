@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-100977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D00B9EE9D7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:06:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8C49EE9D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87AB1168B2D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:04:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1B9C169ACF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF19215798;
-	Thu, 12 Dec 2024 15:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61BD21639F;
+	Thu, 12 Dec 2024 15:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHMueygL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yS3+Stml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2907421577F;
-	Thu, 12 Dec 2024 15:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7185920E034;
+	Thu, 12 Dec 2024 15:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015821; cv=none; b=oICDqC3QBtlpzJB3ZlGjx6FAICCdMDt16WxiFrF7WQnh+iPLbSjAMbhzrA8LZT5WahkL+pTfJegMy2EdNbzdAjJII7WtrNJNz8kYJEjjzgwSGGYK0bfMTQfkqo4aAhZO3OqJzlOVFROwqfFVkC2Xjaaio0PjyL/uLHCc7y9mtpA=
+	t=1734015828; cv=none; b=TZIEAW4Ft+WXmso14F8DCcUy4IfejC0onMsC4Gz8paby2bZv5mNLXUdKnqjjO3jKWGm6q0fxoMEUPegEhPsbGLOdDfFfgZ68VMF0d3iIEl/9+YJvNM8rQ7EzQcef0o4kyXHNZ7jhtR8KjuVcjQ8D6HVxlyUwOdjmw3HXXngkI7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015821; c=relaxed/simple;
-	bh=7qEq2dG1K3N5jLXrGZ8nqCqeOYUnuL9mLQAUC0sff8M=;
+	s=arc-20240116; t=1734015828; c=relaxed/simple;
+	bh=4vPVZbifg9X0Phr8fQk+UG26Bp26xK0WIVUBPex5kes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=psC6xlCFgDA0SjqZpUCz6QeQ7r80ZKJu12pvv3LWRFJ5YZ8avnVjYH2j5D8hjnj+yJ6rmTXDJoHkQSBdntWElEvMYKxZY4HuOkpZJtNrYVmyb9Quk7SyKCoG3wZUV1lwNcUZT9AGxdRYRzKWmiaBHe2vgiddHgyz6kuF0Sa3zcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHMueygL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89882C4CECE;
-	Thu, 12 Dec 2024 15:03:40 +0000 (UTC)
+	 MIME-Version; b=GPxNKICG02AbuuJIlpmXpEd77tssg8aNWeqe3OPimqc7DxGejQ9rGdrArQer2nNnX1bEzuIYMnPMjPoFJzILLNKpSLoI9s628YSWlpGCqhaFOCSteafZ6NKVzTQ9xabDTZopJR0ldr1eno5c8NeHK5HTQrSxFh7SiIyGXe8hIlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yS3+Stml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69127C4CECE;
+	Thu, 12 Dec 2024 15:03:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015821;
-	bh=7qEq2dG1K3N5jLXrGZ8nqCqeOYUnuL9mLQAUC0sff8M=;
+	s=korg; t=1734015827;
+	bh=4vPVZbifg9X0Phr8fQk+UG26Bp26xK0WIVUBPex5kes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHMueygLtZRcM7orvdFaGA3WUuGLCnQg7Zg9C3QOCNaIAA5QPExsTtj/gXRpbTWHn
-	 OtZZc4ltyAzcFF9POJxSzRzmsrn/xbQxAtx9qjhlontMrpd6ULbwbj5w/kNYrUJS2D
-	 /EI5taW243EZILUCS3TWXRFtNxxySsxg37qSXud0=
+	b=yS3+StmlL4HMkHDVaYiJN9iFVaB6iXHQzL/A9EBaUoUZhGHuj+30LR2M2a3kfayhG
+	 oMki2IVnIkcvQgk9hk6g2NV44F617/HRWFs7rZDxBs+saCVlqDK5biJzXov2bipMS2
+	 I32CsNvtQO04/dXFVWOsCaMbonMTNtr352A24/HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/466] net/mlx5: HWS: Fix memory leak in mlx5hws_definer_calc_layout
-Date: Thu, 12 Dec 2024 15:53:43 +0100
-Message-ID: <20241212144308.954799722@linuxfoundation.org>
+Subject: [PATCH 6.12 055/466] net/mlx5: HWS: Properly set bwc queue locks lock classes
+Date: Thu, 12 Dec 2024 15:53:44 +0100
+Message-ID: <20241212144308.993113809@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -70,37 +70,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 530b69a26952c95ffc9e6dcd1cff6f249032780a ]
+[ Upstream commit 10e0f0c018d5ce5ba4f349875c67f99c3253b5c3 ]
 
-It allocates a match template, which creates a compressed definer fc
-struct, but that is not deallocated.
+The mentioned "Fixes" patch forgot to do that.
 
-This commit fixes that.
-
-Fixes: 74a778b4a63f ("net/mlx5: HWS, added definers handling")
+Fixes: 9addffa34359 ("net/mlx5: HWS, use lock classes for bwc locks")
 Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
 Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241203204920.232744-2-tariqt@nvidia.com
+Link: https://patch.msgid.link/20241203204920.232744-3-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/steering/hws/mlx5hws_bwc_complex.c       | 2 ++
- 1 file changed, 2 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_send.c  | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_bwc_complex.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_bwc_complex.c
-index 601fad5fc54a3..ee4058bafe119 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_bwc_complex.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_bwc_complex.c
-@@ -39,6 +39,8 @@ bool mlx5hws_bwc_match_params_is_complex(struct mlx5hws_context *ctx,
- 		} else {
- 			mlx5hws_err(ctx, "Failed to calculate matcher definer layout\n");
- 		}
-+	} else {
-+		kfree(mt->fc);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_send.c
+index 6d443e6ee8d9e..08be034bd1e16 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_send.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_send.c
+@@ -990,6 +990,7 @@ static int hws_bwc_send_queues_init(struct mlx5hws_context *ctx)
+ 	for (i = 0; i < bwc_queues; i++) {
+ 		mutex_init(&ctx->bwc_send_queue_locks[i]);
+ 		lockdep_register_key(ctx->bwc_lock_class_keys + i);
++		lockdep_set_class(ctx->bwc_send_queue_locks + i, ctx->bwc_lock_class_keys + i);
  	}
  
- 	mlx5hws_match_template_destroy(mt);
+ 	return 0;
 -- 
 2.43.0
 
