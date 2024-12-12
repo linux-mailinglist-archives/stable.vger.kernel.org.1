@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7C89EF55C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A419EF775
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1C8317E401
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15743189E0A5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDED22332B;
-	Thu, 12 Dec 2024 17:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39B2211493;
+	Thu, 12 Dec 2024 17:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpnbrHWU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f3uEejt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7DF2153DD;
-	Thu, 12 Dec 2024 17:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8DF13CA93;
+	Thu, 12 Dec 2024 17:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022977; cv=none; b=NiP0qrqJFyqW1HYxD1USFHF7JxLSFB1XgtDPwN3L7beTqprdNXfT/FNKWdHs9XCANK2Q3buXZkgTynaoE0ucs3DShV9arg9ZnxVT9IClzakrZeSlP0Sjc43MY4Ex4hDmduf5TJN2icQGcBuUQx6lITUeVy9hPBgie8tVtCD9eho=
+	t=1734024187; cv=none; b=KShYYoIMf187jioqpK5aJdEStWyt3PF67C/JK/hbD0TdIXVr0dHFuYZfuvTV8vbFKxs3Q+Y6boKBR147M+vMTQllVVCfQiPpngV8pPhXTAWCE0cfeaHCLYVf3tTPxl6ZaAZFx6bBsgoynbP23Y6vm9c7/qtuPiHgJc8gZJHeVW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022977; c=relaxed/simple;
-	bh=3kRjESqyhqvYIg1Ox9O7u0b2W4TC3pCatdaYBGyP3ko=;
+	s=arc-20240116; t=1734024187; c=relaxed/simple;
+	bh=CMlOVf6T5VAZDQWzW9ehbriSUqwVVYoiytnF1YL6Vrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNL0owAQhC7Qw52Myx4XyV725rPj/m7InAnzRGA9VLv3mlwtXy2NAsE9lrmcSf4wpb/xxz/OLioqIZgdzqksF04M19GqObJebn8hPW5AvQVBDJ9+DkkV4AijfR3qrkSPG6ODG4ZEmx1WEC1RLD005esvRBPj+zv1BkHfKfsm1/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpnbrHWU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303ACC4CED0;
-	Thu, 12 Dec 2024 17:02:56 +0000 (UTC)
+	 MIME-Version; b=tHg4TrHSXKOvvRaESe8G9PSM1f9XS7mPJJVSgU1W8McFzOdPODaB7MYVpvQOjqGLjMMNtwPFTVkaf4YFqSbgoigprF73IQ9ag8CbWYlUZL2qW3eoycFQ4yGBLt18AfP+kYvpM6uC8bbQfXcB69KGu4PHueBHhwknSMVNEeh8iVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f3uEejt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33EBC4CECE;
+	Thu, 12 Dec 2024 17:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022977;
-	bh=3kRjESqyhqvYIg1Ox9O7u0b2W4TC3pCatdaYBGyP3ko=;
+	s=korg; t=1734024187;
+	bh=CMlOVf6T5VAZDQWzW9ehbriSUqwVVYoiytnF1YL6Vrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZpnbrHWUHUSmFc89QjRdUrK1xmKWMGZIyrrxeQ8GVccgqP+ykUSCVRG2hHj/5yydT
-	 z4Tk5CuGhscIRrOx6bSpBbZsie/cAIFEPGVv54qH/TMPXIuPw9ZAB+ubo0AzMmxyx7
-	 bzInAPrOm9kan/ik4YFZEtWCOv4nuLzKM7Tm191w=
+	b=1f3uEejtD1xy/MkWIbQB4NkbrpmtpgbQtD43el1RJadAAO2b+8AJte7ggF0nbk1ce
+	 qTyb2Ngf6I8r/qzhecYc7Mxi6W4/5ZTKUuc9G9VpZu7t2zDGKWZRF7IPj5pk1sZHrC
+	 xlbHvztLmP7x/nb6D2+O8+MvAR1FVUzcXdgYvJNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 355/565] um: Fix the return value of elf_core_copy_task_fpregs
-Date: Thu, 12 Dec 2024 15:59:10 +0100
-Message-ID: <20241212144325.635833727@linuxfoundation.org>
+Subject: [PATCH 5.10 213/459] NFSD: Fix nfsd4_shutdown_copy()
+Date: Thu, 12 Dec 2024 15:59:11 +0100
+Message-ID: <20241212144301.985895730@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 865e3845eeaa21e9a62abc1361644e67124f1ec0 ]
+[ Upstream commit 62a8642ba00aa8ceb0a02ade942f5ec52e877c95 ]
 
-This function is expected to return a boolean value, which should be
-true on success and false on failure.
+nfsd4_shutdown_copy() is just this:
 
-Fixes: d1254b12c93e ("uml: fix x86_64 core dump crash")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20240913023302.130300-1-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+	while ((copy = nfsd4_get_copy(clp)) != NULL)
+		nfsd4_stop_copy(copy);
+
+nfsd4_get_copy() bumps @copy's reference count, preventing
+nfsd4_stop_copy() from releasing @copy.
+
+A while loop like this usually works by removing the first element
+of the list, but neither nfsd4_get_copy() nor nfsd4_stop_copy()
+alters the async_copies list.
+
+Best I can tell, then, is that nfsd4_shutdown_copy() continues to
+loop until other threads manage to remove all the items from this
+list. The spinning loop blocks shutdown until these items are gone.
+
+Possibly the reason we haven't seen this issue in the field is
+because client_has_state() prevents __destroy_client() from calling
+nfsd4_shutdown_copy() if there are any items on this list. In a
+subsequent patch I plan to remove that restriction.
+
+Fixes: e0639dc5805a ("NFSD introduce async copy feature")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/process.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4proc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
-index 4b6179a8a3e8f..8d84684000b0b 100644
---- a/arch/um/kernel/process.c
-+++ b/arch/um/kernel/process.c
-@@ -403,6 +403,6 @@ int elf_core_copy_fpregs(struct task_struct *t, elf_fpregset_t *fpu)
- {
- 	int cpu = current_thread_info()->cpu;
- 
--	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu);
-+	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu) == 0;
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 237e47896af86..8cf0e4e62bc84 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1256,7 +1256,7 @@ static void nfsd4_stop_copy(struct nfsd4_copy *copy)
+ 	nfs4_put_copy(copy);
  }
  
+-static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
++static struct nfsd4_copy *nfsd4_unhash_copy(struct nfs4_client *clp)
+ {
+ 	struct nfsd4_copy *copy = NULL;
+ 
+@@ -1265,6 +1265,9 @@ static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
+ 		copy = list_first_entry(&clp->async_copies, struct nfsd4_copy,
+ 					copies);
+ 		refcount_inc(&copy->refcount);
++		copy->cp_clp = NULL;
++		if (!list_empty(&copy->copies))
++			list_del_init(&copy->copies);
+ 	}
+ 	spin_unlock(&clp->async_lock);
+ 	return copy;
+@@ -1274,7 +1277,7 @@ void nfsd4_shutdown_copy(struct nfs4_client *clp)
+ {
+ 	struct nfsd4_copy *copy;
+ 
+-	while ((copy = nfsd4_get_copy(clp)) != NULL)
++	while ((copy = nfsd4_unhash_copy(clp)) != NULL)
+ 		nfsd4_stop_copy(copy);
+ }
+ #ifdef CONFIG_NFSD_V4_2_INTER_SSC
 -- 
 2.43.0
 
