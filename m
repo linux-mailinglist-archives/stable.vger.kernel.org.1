@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1659EF856
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E11249EF5DC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CF551654E6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8D251892D19
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1413222D62;
-	Thu, 12 Dec 2024 17:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DB922332E;
+	Thu, 12 Dec 2024 17:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSnDT+SF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJirw5d+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA4F20A5EE;
-	Thu, 12 Dec 2024 17:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C21222D62;
+	Thu, 12 Dec 2024 17:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024763; cv=none; b=UUgpvkGbM/phNh+uivRQQR/f5XwCe7rar/CSDA/CTBpUK57gAIISQFQ18RWLA3RG5Hd1AaFMhOLocOQHPCTsvNECQenD8hoQPoRh+EEiOOQfBBRXsZqmSk0C7l+rpkXIygMXCvxkNTnVVwIt3ndGWGksp4P9d0VsCOhLRPvaxGQ=
+	t=1734023533; cv=none; b=JSOv2AhZiB6O1nVGeB3fxmH4KdrKQGbkz6O+G1zJ+/JansIzzeXBcK0mM3pCt4gQkIyL9zOmwvuRucIXI2cvLCSTGbYr5Mmh72/y2MqoLWHZdOw78t9fDB1qD6OWlYE36U8JdhIHrOfWkCiNhU64y33zjaBysHapCzwzqyifh28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024763; c=relaxed/simple;
-	bh=XAFCdz/ZEWmKSsqajo0bqbMu3ReOae8OJOz9NY1WtGo=;
+	s=arc-20240116; t=1734023533; c=relaxed/simple;
+	bh=pt7mVEovaL36Kn+UuWrxFAYdd6gW1NwUraD+awE7dmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LOnaGHR4KcObCEkmJvdU4x/A4t+uUUSJMfSflDbhjWDchrMp844Myuc4R/bjyJ1tGngfE4c6tc7IPsqRxq3Xyjs+9KdrZM3gEhBm8YUSSm09U2oOqGr6hdW8z4Xek54cpkabmC61YYJBYkAHVSIZmHl6Y3KUINW1VSZOILQPqvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSnDT+SF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5C1C4CED0;
-	Thu, 12 Dec 2024 17:32:42 +0000 (UTC)
+	 MIME-Version; b=sAHGfXSzm2SvTnWuBa/Uv53U+fov/8T2lBJWbkhaWIEaiXf26fOYDlXxdKY8bogEbQxxxPq2c7ixSoRXY+n+3AVVWWhHLR3c2MEu8Ew+Ym7YHH0paV7FxYXm802bNwebxAVmxB1f/901hWCsX6imRTg+7QxpUb1fdzlgUQTLH+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJirw5d+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66397C4CED0;
+	Thu, 12 Dec 2024 17:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024763;
-	bh=XAFCdz/ZEWmKSsqajo0bqbMu3ReOae8OJOz9NY1WtGo=;
+	s=korg; t=1734023532;
+	bh=pt7mVEovaL36Kn+UuWrxFAYdd6gW1NwUraD+awE7dmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSnDT+SFqmVk6b7nntE0b56GIPWt8Jc7RLlV1Hnd64Fzyg86AMjk8tmymWgQl/6D2
-	 Ewjdn2BO07z+uIZNAUBE50VWJj8mGdQv+q93amCkmgRtG0rYG8P8nXuO92VaqZczNE
-	 VFFXCKS475E/61EIvcpwbT3DH3IAwTKW9KMHSs5Q=
+	b=MJirw5d+0ZnGIqtSoilPfajuo60F1hL0KAK368kkuaPycQn1EcBzFlv23PhoGaMFd
+	 CAjfRI3KiPBLsHIL/ut/kXI2lYFmoToUbfVwW3YKV9fQCZZhvLZqf0qMgGCtRWhEvz
+	 6DqgsFHoUvi1KwBX8kHbaETDSNPzD1VhDrdjvAL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Nikitin <denik@chromium.org>,
-	Levi Yun <yeoreum.yun@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 403/459] dma-debug: fix a possible deadlock on radix_lock
-Date: Thu, 12 Dec 2024 16:02:21 +0100
-Message-ID: <20241212144309.682798698@linuxfoundation.org>
+	Andy-ld Lu <andy-ld.lu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 547/565] mmc: mtk-sd: Fix error handle of probe function
+Date: Thu, 12 Dec 2024 16:02:22 +0100
+Message-ID: <20241212144333.477850486@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Levi Yun <yeoreum.yun@arm.com>
+From: Andy-ld Lu <andy-ld.lu@mediatek.com>
 
-[ Upstream commit 7543c3e3b9b88212fcd0aaf5cab5588797bdc7de ]
+commit 291220451c775a054cedc4fab4578a1419eb6256 upstream.
 
-radix_lock() shouldn't be held while holding dma_hash_entry[idx].lock
-otherwise, there's a possible deadlock scenario when
-dma debug API is called holding rq_lock():
+In the probe function, it goes to 'release_mem' label and returns after
+some procedure failure. But if the clocks (partial or all) have been
+enabled previously, they would not be disabled in msdc_runtime_suspend,
+since runtime PM is not yet enabled for this case.
 
-CPU0                   CPU1                       CPU2
-dma_free_attrs()
-check_unmap()          add_dma_entry()            __schedule() //out
-                                                  (A) rq_lock()
-get_hash_bucket()
-(A) dma_entry_hash
-                                                  check_sync()
-                       (A) radix_lock()           (W) dma_entry_hash
-dma_entry_free()
-(W) radix_lock()
-                       // CPU2's one
-                       (W) rq_lock()
+That cause mmc related clocks always on during system suspend and block
+suspend flow. Below log is from a SDCard issue of MT8196 chromebook, it
+returns -ETIMEOUT while polling clock stable in the msdc_ungate_clock()
+and probe failed, but the enabled clocks could not be disabled anyway.
 
-CPU1 situation can happen when it extending radix tree and
-it tries to wake up kswapd via wake_all_kswapd().
+[  129.059253] clk_chk_dev_pm_suspend()
+[  129.350119] suspend warning: msdcpll is on
+[  129.354494] [ck_msdc30_1_sel : enabled, 1, 1, 191999939,   ck_msdcpll_d2]
+[  129.362787] [ck_msdcpll_d2   : enabled, 1, 1, 191999939,         msdcpll]
+[  129.371041] [ck_msdc30_1_ck  : enabled, 1, 1, 191999939, ck_msdc30_1_sel]
+[  129.379295] [msdcpll         : enabled, 1, 1, 383999878,          clk26m]
 
-CPU2 situation can happen while perf_event_task_sched_out()
-(i.e. dma sync operation is called while deleting perf_event using
- etm and etr tmc which are Arm Coresight hwtracing driver backends).
+Add a new 'release_clk' label and reorder the error handle functions to
+make sure the clocks be disabled after probe failure.
 
-To remove this possible situation, call dma_entry_free() after
-put_hash_bucket() in check_unmap().
-
-Reported-by: Denis Nikitin <denik@chromium.org>
-Closes: https://lists.linaro.org/archives/list/coresight@lists.linaro.org/thread/2WMS7BBSF5OZYB63VT44U5YWLFP5HL6U/#RWM6MLQX5ANBTEQ2PRM7OXCBGCE6NPWU
-Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ffaea6ebfe9c ("mmc: mtk-sd: Use readl_poll_timeout instead of open-coded polling")
+Fixes: 7a2fa8eed936 ("mmc: mtk-sd: use devm_mmc_alloc_host")
+Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+Message-ID: <20241107121215.5201-1-andy-ld.lu@mediatek.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/debug.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/mmc/host/mtk-sd.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 654b039dfc335..d19f610c9eef8 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -1047,9 +1047,13 @@ static void check_unmap(struct dma_debug_entry *ref)
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2612,7 +2612,7 @@ static int msdc_drv_probe(struct platfor
+ 	ret = msdc_ungate_clock(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Cannot ungate clocks!\n");
+-		goto release_mem;
++		goto release_clk;
  	}
+ 	msdc_init_hw(host);
  
- 	hash_bucket_del(entry);
--	dma_entry_free(entry);
--
- 	put_hash_bucket(bucket, flags);
-+
-+	/*
-+	 * Free the entry outside of bucket_lock to avoid ABBA deadlocks
-+	 * between that and radix_lock.
-+	 */
-+	dma_entry_free(entry);
- }
- 
- static void check_for_stack(struct device *dev,
--- 
-2.43.0
-
+@@ -2622,14 +2622,14 @@ static int msdc_drv_probe(struct platfor
+ 					     GFP_KERNEL);
+ 		if (!host->cq_host) {
+ 			ret = -ENOMEM;
+-			goto host_free;
++			goto release;
+ 		}
+ 		host->cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
+ 		host->cq_host->mmio = host->base + 0x800;
+ 		host->cq_host->ops = &msdc_cmdq_ops;
+ 		ret = cqhci_init(host->cq_host, mmc, true);
+ 		if (ret)
+-			goto host_free;
++			goto release;
+ 		mmc->max_segs = 128;
+ 		/* cqhci 16bit length */
+ 		/* 0 size, means 65536 so we don't have to -1 here */
+@@ -2654,9 +2654,10 @@ static int msdc_drv_probe(struct platfor
+ end:
+ 	pm_runtime_disable(host->dev);
+ release:
+-	platform_set_drvdata(pdev, NULL);
+ 	msdc_deinit_hw(host);
++release_clk:
+ 	msdc_gate_clock(host);
++	platform_set_drvdata(pdev, NULL);
+ release_mem:
+ 	if (host->dma.gpd)
+ 		dma_free_coherent(&pdev->dev,
 
 
 
