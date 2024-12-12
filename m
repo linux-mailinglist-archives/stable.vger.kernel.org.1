@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009749EF1C8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9658A9EF42D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4548281C32
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E38A328BFCA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1502358AF;
-	Thu, 12 Dec 2024 16:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA04422654A;
+	Thu, 12 Dec 2024 17:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj7WH1kP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUcnzQd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499602358A6;
-	Thu, 12 Dec 2024 16:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A4E226546;
+	Thu, 12 Dec 2024 17:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021153; cv=none; b=lsay3CxsrFSQRYq8V4WC9gRxIjO18js0VypLAumGcQ4HPxkoYkp5J32LsNbsHs9/ubxGERBih2PtFS7jkM3Ni0ZkDvnLE4VVIwwC0jWVbF2xaYOB6sHYFmDnL2SpEDMXmRVbvFDrZjAOuqA/fraTr8NGGbym/ZZudjb+Jksus1o=
+	t=1734023060; cv=none; b=YAmMigjUWyrxvyH70bLTJa5n3JFfUejbs91wYe+iS2/IvjuoceWLcfDliRVcIAfBNfvaRZUNBFlElekUYkv58kgidDCGJLJKIjCWuDa376U8DR4fmPCwA5ZVWO2C8iKfrfSCKGuw2E/yMhYV9HyAQ2Xdb1/COo40/zkuKGDGTDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021153; c=relaxed/simple;
-	bh=+NaXVwwVA/Lfwt+J6MguqT24pm0rqiJngAysW0OqDl8=;
+	s=arc-20240116; t=1734023060; c=relaxed/simple;
+	bh=c3qJIn/Wv+RcMaAg6N23t+QFf6GmIyIKlgeTHa8OD7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osIIrLxCK8l/Qnh4lwt+WFLcQoxc3rZmybwvKn6eu9bvho25pnDSG/D1cBWkGHJtZNHL/XXHkXxVVz9YLUClyI85Y/z5xArZ+Z4bcBuBxLj4yESnIgM6csf8cJ7MQSg/UtMmg3w9bMnaPJfb1uPb6k9Nhy2P8bQLmmQWvuEBPxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lj7WH1kP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B72C4CEF5;
-	Thu, 12 Dec 2024 16:32:32 +0000 (UTC)
+	 MIME-Version; b=n9+6y2jIJaE7uwWiLrnBan/E9z25oU9rkkbWCPifW7EIQiymQxO6M6SVZK0k3haEyq9/ChJNVhv2Bq7V48lCBSKIrHQlf9QaDTBO4vrSCEK0PpOMe3i9BFLaecDA8UYJd7a4H2l7xt4vfa3TZ+gaMecW7x8DpzA396Bx7cI7EiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUcnzQd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E74C4CECE;
+	Thu, 12 Dec 2024 17:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021153;
-	bh=+NaXVwwVA/Lfwt+J6MguqT24pm0rqiJngAysW0OqDl8=;
+	s=korg; t=1734023060;
+	bh=c3qJIn/Wv+RcMaAg6N23t+QFf6GmIyIKlgeTHa8OD7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lj7WH1kPQ6FxsL6pXy8yFCEoylaIzaXPWJhYAViqwLQlpS0xmggzA5XDV6vye5oS4
-	 PwEcrNTfXZaabJnLHW96vlelCY1f4Ea14NyGoBN1d8RrhCWh0r/36x9WycPkVBsdeR
-	 QnCCGxeMs1twYXeJ5RLcb0DYfkSRLg8nKBRwmE+0=
+	b=yUcnzQd/8F+MkEkDja6Zocbhc9adJXlFibYzpmVDk1zm06YB+WYQRsORW+AaJtqtp
+	 ZxsJTi3lcn/RtFvMO0YQpi5XM4OV4enX4/UfOjNgBaxeRqLZLouOw40asZ4t4cFJSZ
+	 93tv8TVTgIPEt5qTPVXEgFIWgLcECTNbgp5dK0FQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 660/772] drm/radeon/r600_cs: Fix possible int overflow in r600_packet3_check()
+Subject: [PATCH 5.15 410/565] ptp: Add error handling for adjfine callback in ptp_clock_adjtime
 Date: Thu, 12 Dec 2024 16:00:05 +0100
-Message-ID: <20241212144417.193447494@linuxfoundation.org>
+Message-ID: <20241212144327.865186242@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: Ajay Kaher <ajay.kaher@broadcom.com>
 
-[ Upstream commit a1e2da6a5072f8abe5b0feaa91a5bcd9dc544a04 ]
+[ Upstream commit 98337d7c87577ded71114f6976edb70a163e27bc ]
 
-It is possible, although unlikely, that an integer overflow will occur
-when the result of radeon_get_ib_value() is shifted to the left.
+ptp_clock_adjtime sets ptp->dialed_frequency even when adjfine
+callback returns an error. This causes subsequent reads to return
+an incorrect value.
 
-Avoid it by casting one of the operands to larger data type (u64).
+Fix this by adding error check before ptp->dialed_frequency is set.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 39a8cbd9ca05 ("ptp: remember the adjusted frequency")
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://patch.msgid.link/20241125105954.1509971-1-ajay.kaher@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r600_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ptp/ptp_clock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
-index 6cf54a747749d..780352f794e91 100644
---- a/drivers/gpu/drm/radeon/r600_cs.c
-+++ b/drivers/gpu/drm/radeon/r600_cs.c
-@@ -2104,7 +2104,7 @@ static int r600_packet3_check(struct radeon_cs_parser *p,
- 				return -EINVAL;
- 			}
- 
--			offset = radeon_get_ib_value(p, idx+1) << 8;
-+			offset = (u64)radeon_get_ib_value(p, idx+1) << 8;
- 			if (offset != track->vgt_strmout_bo_offset[idx_value]) {
- 				DRM_ERROR("bad STRMOUT_BASE_UPDATE, bo offset does not match: 0x%llx, 0x%x\n",
- 					  offset, track->vgt_strmout_bo_offset[idx_value]);
+diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+index e70c6dec3a3a3..92dd1c6f54f4a 100644
+--- a/drivers/ptp/ptp_clock.c
++++ b/drivers/ptp/ptp_clock.c
+@@ -136,7 +136,8 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
+ 			err = ops->adjfine(ops, tx->freq);
+ 		else
+ 			err = ops->adjfreq(ops, ppb);
+-		ptp->dialed_frequency = tx->freq;
++		if (!err)
++			ptp->dialed_frequency = tx->freq;
+ 	} else if (tx->modes & ADJ_OFFSET) {
+ 		if (ops->adjphase) {
+ 			s32 offset = tx->offset;
 -- 
 2.43.0
 
