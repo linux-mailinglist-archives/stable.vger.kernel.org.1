@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1BF9EF59C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E319EF5CA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15EDF189BF38
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A92DE283E5E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494232253E0;
-	Thu, 12 Dec 2024 16:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81840205501;
+	Thu, 12 Dec 2024 17:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YuEh5eEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OFU0F8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051FC229690;
-	Thu, 12 Dec 2024 16:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3DE4F218;
+	Thu, 12 Dec 2024 17:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022516; cv=none; b=jEgmtZNQwUHPpUp456235wQ3ktfDjxJRf1BencDGecRcf8OIugeYJqqvgRXS+nJN68MRW3+xCbXD8GnfJIaWH0wLLWM60uGu2z4+FP3elDvSLhX3Szk1c9Gh0EdFkQz4djJw4Uk9n23QAUdBIYIJIVmSeGaF8NpJmRvKzvF86SQ=
+	t=1734023987; cv=none; b=DYx8ryhsptigVnJwF8YsTaseEJIOynLXyDDIruvRkkRWDZewURMQ/5SBuhhflWAkb9Ux47zijnr0QhiNOxqNqcGBjdpmFXYHBLjhQpFvc/SJYf63Rl7vOvwNsy5a+xigOn5kXBC0UI+74Ek0c3rKC5vqiGCM9WQXsTjSuO1vizc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022516; c=relaxed/simple;
-	bh=TSkBpMGCePSrP2Cuqob+rcJ0bb5BaBEstMEH80e2+sc=;
+	s=arc-20240116; t=1734023987; c=relaxed/simple;
+	bh=97YbupvImvM3N1vgzToJbRzxWsqD+2j+g/Qxtq/kn30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s59K/U+8qg2NfjIsoyGxhbheux1iS15M6oUFYDyBte0VW0RJpFcIWVY8i6qs3/VLDh+tE1KVPjqOACLlduDRAKv+FOJdEERi1iIwXO86oxKoJkR57/oiJ6CCTC1tkO4bGA1YNJHwoqkW0gyyOz6MiCsgkx1tWYhbJlGEZI7K0eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YuEh5eEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C840C4CECE;
-	Thu, 12 Dec 2024 16:55:14 +0000 (UTC)
+	 MIME-Version; b=am4F1lBnQi9kVZbVsbyJ4BMsW7b/UTXEOjz68mWf3NWU09BMPOE+QNJOAh740HqgMEQ0hTaT10eSciXQKoM7w5ulbnSOd8SndEEYgDrGyEr7n6dSDcNa2kf5nkfLZzgiIO2iFm1S/wgXrSI7k35hoW9Lspffd3K6vE44RdL4Scc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OFU0F8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C67C4CECE;
+	Thu, 12 Dec 2024 17:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022515;
-	bh=TSkBpMGCePSrP2Cuqob+rcJ0bb5BaBEstMEH80e2+sc=;
+	s=korg; t=1734023987;
+	bh=97YbupvImvM3N1vgzToJbRzxWsqD+2j+g/Qxtq/kn30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YuEh5eEqCH2drrgUdBchv2vlIe7tMRgwZrxDbS8BSMclIGFz1fo9o6yxJ2Rokv1Nd
-	 GjNiD5WvwFTyeALUPOxy6CrObp5bKyZkBTcQLk5cUlnNttHHgqfIy3jLZlGyuzi0io
-	 V18gERf1xuQiUTgRVkgxyID6vXf2LWqeBaQMhR8I=
+	b=1OFU0F8PmxwWYis4aLgpJ5yC/RSIneD5Wft5mY0CWkAS+4QtonMQhPa6nYeML2jB5
+	 xKxKOnIF8xmFpBknmZyGIVz2zORVVyIho5e4PL7eg3deIOurSIc6quEtqIDeHz5g+3
+	 v0ONPSlAfIEXaQdMERSKNroMhRnYAiPeyePYPYoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 263/565] NFSD: Prevent NULL dereference in nfsd4_process_cb_update()
-Date: Thu, 12 Dec 2024 15:57:38 +0100
-Message-ID: <20241212144321.863220983@linuxfoundation.org>
+Subject: [PATCH 5.10 121/459] selftests/bpf: Fix txmsg_redir of test_txmsg_pull in test_sockmap
+Date: Thu, 12 Dec 2024 15:57:39 +0100
+Message-ID: <20241212144258.290330377@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit 1e02c641c3a43c88cecc08402000418e15578d38 ]
+[ Upstream commit b29e231d66303c12b7b8ac3ac2a057df06b161e8 ]
 
-@ses is initialized to NULL. If __nfsd4_find_backchannel() finds no
-available backchannel session, setup_callback_client() will try to
-dereference @ses and segfault.
+txmsg_redir in "Test pull + redirect" case of test_txmsg_pull should be
+1 instead of 0.
 
-Fixes: dcbeaa68dbbd ("nfsd4: allow backchannel recovery")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 328aa08a081b ("bpf: Selftests, break down test_sockmap into subtests")
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Link: https://lore.kernel.org/r/20241012203731.1248619-3-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4callback.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/bpf/test_sockmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index 4eae2c5af2edf..18d62d3424c1a 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -1379,6 +1379,8 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
- 		ses = c->cn_session;
- 	}
- 	spin_unlock(&clp->cl_lock);
-+	if (!c)
-+		return;
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 48c8f24cf9964..157a3c7b735e2 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -1557,7 +1557,7 @@ static void test_txmsg_pull(int cgrp, struct sockmap_options *opt)
+ 	test_send_large(opt, cgrp);
  
- 	err = setup_callback_client(clp, &conn, ses);
- 	if (err) {
+ 	/* Test pull + redirect */
+-	txmsg_redir = 0;
++	txmsg_redir = 1;
+ 	txmsg_start = 1;
+ 	txmsg_end = 2;
+ 	test_send(opt, cgrp);
 -- 
 2.43.0
 
