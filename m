@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093139EF4E2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 071E89EF701
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C50F11899AEE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C2E171545
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3B62210F8;
-	Thu, 12 Dec 2024 16:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBED216E2D;
+	Thu, 12 Dec 2024 17:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SS/3RhCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXiVBWKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9711A2054EF;
-	Thu, 12 Dec 2024 16:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5A3176AA1;
+	Thu, 12 Dec 2024 17:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022117; cv=none; b=mJSiGKzmIwtr2xBgSni8nO7yA7IfGo0rQW27+MkyRwgiFO4tUcZClFXuOjKHE+Bdt481eSq95MWC42hB3Mt7CN1YLBDtqeQNQC/z1M5we4uHcmslCZgneVECJA97LlA5wR6s23iXZpKYN93QqskIoPmO7yiQM8LH9E0Kyor3mng=
+	t=1734023613; cv=none; b=HXG40UkZJQxouig5pflM2+z7Ca8vEshqWYruXF+rZu9BI3P91tTVv2jP178v6kw85K6orOL34lXrceuRq1mZJsUoi81v2L8g40vi4XvL/knf8icpa1WE9sUVodCWVJsjDuvqambbnrtVvriXrLvcREjKrljXoRU7WwsZEqKEAGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022117; c=relaxed/simple;
-	bh=DdIMJm5RvjCupqqEh0+H0diQHknWxle0I6rwdDoQUD8=;
+	s=arc-20240116; t=1734023613; c=relaxed/simple;
+	bh=kw6Vz1YBUyi11newayDzzmrT0/cYlfKNiXdt22AyFQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MV+4pNp0KtLOxJfDv9DJUDeuE1733bJbiEhuI/uNpqP8K+RuqXmYUpJxl5TxGF2N+mTU/fyujmrGUFVy9z5PDLbtG4fg79l4O0j/+8j4xhnaHJPRViVyRdJfT3AW+Hya8fGGcIm1gyqmNmzhW6yO24adenmjem0UOgSCl/PQX48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SS/3RhCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C669FC4CECE;
-	Thu, 12 Dec 2024 16:48:36 +0000 (UTC)
+	 MIME-Version; b=SAUVTtogTbluodve5qN3mKSQ9Zpuj8z8qFEQgWbcoqOdS+9rS3eBYm5QIUwMEiBQVFyQWTd8qu6/tXEPnQLgP9cwBjWLgQUNAmrLm74Ev7lofmqxEmufNBjG1lYBcWAxMj7xIBc9DJEqjE4JugYmqHgPoQTAG104V4rKN4nDQsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXiVBWKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87489C4CECE;
+	Thu, 12 Dec 2024 17:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022117;
-	bh=DdIMJm5RvjCupqqEh0+H0diQHknWxle0I6rwdDoQUD8=;
+	s=korg; t=1734023612;
+	bh=kw6Vz1YBUyi11newayDzzmrT0/cYlfKNiXdt22AyFQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SS/3RhCuU9tQYYxIeUd40j40fiVa8AOv6bq4/+0dBSD5ystIXok2UNHnQ+PXDyuXc
-	 zfegH1UTtrJBnVhACRSwVXwBw8RBfKuqCTgYMMD4MjwmwYut8WX7vsOFfz2idVY9vO
-	 +/GlhpOuH4pcbhd4KTNpl7qc6hg7ePQAhfsyX8f0=
+	b=GXiVBWKYzvS5KSChEirMJPJpIrmcA1T9xZIVuVQkWeeKAGesNFo21mSM46kDYDwTr
+	 UEYdhx6R/nQ+fjEMR4DtH75SqG+nduSYEZF4UONWfQf+aZpObYx6X7pVi0aTVzS99A
+	 Zgr/GtQejDf4pd06OKJIjA1tknWEI6Ns2tK90Dv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 151/565] wifi: mwifiex: Use IRQF_NO_AUTOEN flag in request_irq()
+	syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 5.10 008/459] ovl: Filter invalid inodes with missing lookup function
 Date: Thu, 12 Dec 2024 15:55:46 +0100
-Message-ID: <20241212144317.452946248@linuxfoundation.org>
+Message-ID: <20241212144253.856709025@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 9a98dd48b6d834d7a3fe5e8e7b8c3a1d006f9685 ]
+commit c8b359dddb418c60df1a69beea01d1b3322bfe83 upstream.
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+Add a check to the ovl_dentry_weird() function to prevent the
+processing of directory inodes that lack the lookup function.
+This is important because such inodes can cause errors in overlayfs
+when passed to the lowerstack.
 
-Fixes: 853402a00823 ("mwifiex: Enable WoWLAN for both sdio and pcie")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240910124314.698896-3-ruanjinjie@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=a8c9d476508bd14a90e5
+Suggested-by: Miklos Szeredi <miklos@szeredi.hu>
+Link: https://lore.kernel.org/linux-unionfs/CAJfpegvx-oS9XGuwpJx=Xe28_jzWx5eRo1y900_ZzWY+=gGzUg@mail.gmail.com/
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/overlayfs/util.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index 7943fd3b3058d..18ab3222b1406 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -1614,7 +1614,8 @@ static void mwifiex_probe_of(struct mwifiex_adapter *adapter)
- 	}
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -131,6 +131,9 @@ void ovl_dentry_init_flags(struct dentry
  
- 	ret = devm_request_irq(dev, adapter->irq_wakeup,
--			       mwifiex_irq_wakeup_handler, IRQF_TRIGGER_LOW,
-+			       mwifiex_irq_wakeup_handler,
-+			       IRQF_TRIGGER_LOW | IRQF_NO_AUTOEN,
- 			       "wifi_wake", adapter);
- 	if (ret) {
- 		dev_err(dev, "Failed to request irq_wakeup %d (%d)\n",
-@@ -1622,7 +1623,6 @@ static void mwifiex_probe_of(struct mwifiex_adapter *adapter)
- 		goto err_exit;
- 	}
- 
--	disable_irq(adapter->irq_wakeup);
- 	if (device_init_wakeup(dev, true)) {
- 		dev_err(dev, "fail to init wakeup for mwifiex\n");
- 		goto err_exit;
--- 
-2.43.0
-
+ bool ovl_dentry_weird(struct dentry *dentry)
+ {
++	if (!d_can_lookup(dentry) && !d_is_file(dentry) && !d_is_symlink(dentry))
++		return true;
++
+ 	return dentry->d_flags & (DCACHE_NEED_AUTOMOUNT |
+ 				  DCACHE_MANAGE_TRANSIT |
+ 				  DCACHE_OP_HASH |
 
 
 
