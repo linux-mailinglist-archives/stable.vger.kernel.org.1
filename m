@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EB09EF7E3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1409EF65C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BF2B1899A62
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5F7176020
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFBE215762;
-	Thu, 12 Dec 2024 17:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFA022654B;
+	Thu, 12 Dec 2024 17:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfSyhPVH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5zOjgI8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9651E211493;
-	Thu, 12 Dec 2024 17:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D08176AA1;
+	Thu, 12 Dec 2024 17:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024354; cv=none; b=OQO4F1FhCBm5j+52v66lU5NmNvwSk+/OPQjyOOhmTo9ACL5ZQBcrTxCu9Pjgun6VkD8nyvzMyYiUrl/FK1cWBBTvXL40/X4KYrpOeNzxIxChlsx40x0V0/VDTBI18npYhxc7oYWiY7PJ31BRwvoFo01HLKTj3uqZRzA/+qpJFuI=
+	t=1734023063; cv=none; b=E3/J+XzaKcBKwKgOnXrlUVqh2KtPDCLtcaKmMNOgx74nVp6HnIpka4LwPH+0jIFKvDWmij2dmA4OAY9AX2dbUKb6LuxODFJwpUkeSPzyOWRQqqAF2Q8o+jPsWKfNivAIgX46i3MITxR7m0CWvZtzeV40D0836N/ZmYYB2sWZVQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024354; c=relaxed/simple;
-	bh=P6bnw46EBaKR+nzb0bmb40QmuruxPY85nJmyyVRV0SM=;
+	s=arc-20240116; t=1734023063; c=relaxed/simple;
+	bh=U0UcI7Nq1ZhvCgzENlBhINQXcqaj6awzxtSaa7fS9jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bINyatYcNzAZWqxG19JCObigcWSxA3Xa13TTut6QivId8yOO3TkIZ01BTTGe1GL/d54Tz4Bc5e98MOlcC+i8mKXDQjOlLNJ2YgjbZmDXu4wsTWBvTCzAloM8ucED614wfMq9SF0blg5wUQZaklZ+DQpJiEN7jxNsW4ixkLmMx30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfSyhPVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177BAC4CED3;
-	Thu, 12 Dec 2024 17:25:53 +0000 (UTC)
+	 MIME-Version; b=Kd58lRB6TXE5ayqSIOvdMuSVOBZfAL9TAozhASqgvmKJXHL7GoFo66tde2hQd8TtKp+KbEdg9TVbmKZVzzIa6YCzPt2R8UwuDP8ljTDKRuW/7g9Jxcg3BxijFNQ2A4DWBfiqXn57CCPr99SNO0LnIrAwJ7DUuw8C9gIHLsx/PhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5zOjgI8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F24C4CECE;
+	Thu, 12 Dec 2024 17:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024354;
-	bh=P6bnw46EBaKR+nzb0bmb40QmuruxPY85nJmyyVRV0SM=;
+	s=korg; t=1734023063;
+	bh=U0UcI7Nq1ZhvCgzENlBhINQXcqaj6awzxtSaa7fS9jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfSyhPVH/kM5oW0Sp6YOhSFJWuMhUTR9q77v+SRzODPaYWWHL40+5aAPr7ZOn80ak
-	 FD2HZX5BMRLELnjMco6+Lsi0r3wcFBYTMDo6pS91hYhFQlMLma9K6Z8CRzpI9h/Ums
-	 h1sKPKH1VIwREqtI9VKzTCezroj3hjULqgw5O7HE=
+	b=P5zOjgI8VpH4i6LJOEZkOiH6uNd6T00cUZs2m1XICJgonvmcH+KdWb/J8vif2UmKh
+	 K4rMMoz+zGlkcBnCBVdPOChruPhPj2skFOHJ6eLQbsC8KVEHE2wOKu+GeZ8tlLnwAT
+	 WTpedb6eL2nEAlnqgyfTwqmgrxBagoF/QUiwDrEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.10 268/459] um: ubd: Do not use drvdata in release
+	Martin Ottens <martin.ottens@fau.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 411/565] net/sched: tbf: correct backlog statistic for GSO packets
 Date: Thu, 12 Dec 2024 16:00:06 +0100
-Message-ID: <20241212144304.191439077@linuxfoundation.org>
+Message-ID: <20241212144327.904928400@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Martin Ottens <martin.ottens@fau.de>
 
-commit 5bee35e5389f450a7eea7318deb9073e9414d3b1 upstream.
+[ Upstream commit 1596a135e3180c92e42dd1fbcad321f4fb3e3b17 ]
 
-The drvdata is not available in release. Let's just use container_of()
-to get the ubd instance. Otherwise, removing a ubd device will result
-in a crash:
+When the length of a GSO packet in the tbf qdisc is larger than the burst
+size configured the packet will be segmented by the tbf_segment function.
+Whenever this function is used to enqueue SKBs, the backlog statistic of
+the tbf is not increased correctly. This can lead to underflows of the
+'backlog' byte-statistic value when these packets are dequeued from tbf.
 
-RIP: 0033:blk_mq_free_tag_set+0x1f/0xba
-RSP: 00000000e2083bf0  EFLAGS: 00010246
-RAX: 000000006021463a RBX: 0000000000000348 RCX: 0000000062604d00
-RDX: 0000000004208060 RSI: 00000000605241a0 RDI: 0000000000000348
-RBP: 00000000e2083c10 R08: 0000000062414010 R09: 00000000601603f7
-R10: 000000000000133a R11: 000000006038c4bd R12: 0000000000000000
-R13: 0000000060213a5c R14: 0000000062405d20 R15: 00000000604f7aa0
-Kernel panic - not syncing: Segfault with no mm
-CPU: 0 PID: 17 Comm: kworker/0:1 Not tainted 6.8.0-rc3-00107-gba3f67c11638 #1
-Workqueue: events mc_work_proc
-Stack:
- 00000000 604f7ef0 62c5d000 62405d20
- e2083c30 6002c776 6002c755 600e47ff
- e2083c60 6025ffe3 04208060 603d36e0
-Call Trace:
- [<6002c776>] ubd_device_release+0x21/0x55
- [<6002c755>] ? ubd_device_release+0x0/0x55
- [<600e47ff>] ? kfree+0x0/0x100
- [<6025ffe3>] device_release+0x70/0xba
- [<60381d6a>] kobject_put+0xb5/0xe2
- [<6026027b>] put_device+0x19/0x1c
- [<6026a036>] platform_device_put+0x26/0x29
- [<6026ac5a>] platform_device_unregister+0x2c/0x2e
- [<6002c52e>] ubd_remove+0xb8/0xd6
- [<6002bb74>] ? mconsole_reply+0x0/0x50
- [<6002b926>] mconsole_remove+0x160/0x1cc
- [<6002bbbc>] ? mconsole_reply+0x48/0x50
- [<6003379c>] ? um_set_signals+0x3b/0x43
- [<60061c55>] ? update_min_vruntime+0x14/0x70
- [<6006251f>] ? dequeue_task_fair+0x164/0x235
- [<600620aa>] ? update_cfs_group+0x0/0x40
- [<603a0e77>] ? __schedule+0x0/0x3ed
- [<60033761>] ? um_set_signals+0x0/0x43
- [<6002af6a>] mc_work_proc+0x77/0x91
- [<600520b4>] process_scheduled_works+0x1af/0x2c3
- [<6004ede3>] ? assign_work+0x0/0x58
- [<600527a1>] worker_thread+0x2f7/0x37a
- [<6004ee3b>] ? set_pf_worker+0x0/0x64
- [<6005765d>] ? arch_local_irq_save+0x0/0x2d
- [<60058e07>] ? kthread_exit+0x0/0x3a
- [<600524aa>] ? worker_thread+0x0/0x37a
- [<60058f9f>] kthread+0x130/0x135
- [<6002068e>] new_thread_handler+0x85/0xb6
+Reproduce the bug:
+Ensure that the sender machine has GSO enabled. Configured the tbf on
+the outgoing interface of the machine as follows (burstsize = 1 MTU):
+$ tc qdisc add dev <oif> root handle 1: tbf rate 50Mbit burst 1514 latency 50ms
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Link: https://patch.msgid.link/20241104163203.435515-3-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Send bulk TCP traffic out via this interface, e.g., by running an iPerf3
+client on this machine. Check the qdisc statistics:
+$ tc -s qdisc show dev <oif>
+
+The 'backlog' byte-statistic has incorrect values while traffic is
+transferred, e.g., high values due to u32 underflows. When the transfer
+is stopped, the value is != 0, which should never happen.
+
+This patch fixes this bug by updating the statistics correctly, even if
+single SKBs of a GSO SKB cannot be enqueued.
+
+Fixes: e43ac79a4bc6 ("sch_tbf: segment too big GSO packets")
+Signed-off-by: Martin Ottens <martin.ottens@fau.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241125174608.1484356-1-martin.ottens@fau.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_kern.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_tbf.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/arch/um/drivers/ubd_kern.c
-+++ b/arch/um/drivers/ubd_kern.c
-@@ -861,7 +861,7 @@ static int ubd_open_dev(struct ubd *ubd_
+diff --git a/net/sched/sch_tbf.c b/net/sched/sch_tbf.c
+index 7461e5c67d50a..5f50fdeaafa8d 100644
+--- a/net/sched/sch_tbf.c
++++ b/net/sched/sch_tbf.c
+@@ -193,7 +193,7 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct tbf_sched_data *q = qdisc_priv(sch);
+ 	struct sk_buff *segs, *nskb;
+ 	netdev_features_t features = netif_skb_features(skb);
+-	unsigned int len = 0, prev_len = qdisc_pkt_len(skb);
++	unsigned int len = 0, prev_len = qdisc_pkt_len(skb), seg_len;
+ 	int ret, nb;
  
- static void ubd_device_release(struct device *dev)
- {
--	struct ubd *ubd_dev = dev_get_drvdata(dev);
-+	struct ubd *ubd_dev = container_of(dev, struct ubd, pdev.dev);
+ 	segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
+@@ -204,21 +204,27 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
+ 	nb = 0;
+ 	skb_list_walk_safe(segs, segs, nskb) {
+ 		skb_mark_not_on_list(segs);
+-		qdisc_skb_cb(segs)->pkt_len = segs->len;
+-		len += segs->len;
++		seg_len = segs->len;
++		qdisc_skb_cb(segs)->pkt_len = seg_len;
+ 		ret = qdisc_enqueue(segs, q->qdisc, to_free);
+ 		if (ret != NET_XMIT_SUCCESS) {
+ 			if (net_xmit_drop_count(ret))
+ 				qdisc_qstats_drop(sch);
+ 		} else {
+ 			nb++;
++			len += seg_len;
+ 		}
+ 	}
+ 	sch->q.qlen += nb;
+-	if (nb > 1)
++	sch->qstats.backlog += len;
++	if (nb > 0) {
+ 		qdisc_tree_reduce_backlog(sch, 1 - nb, prev_len - len);
+-	consume_skb(skb);
+-	return nb > 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
++		consume_skb(skb);
++		return NET_XMIT_SUCCESS;
++	}
++
++	kfree_skb(skb);
++	return NET_XMIT_DROP;
+ }
  
- 	blk_cleanup_queue(ubd_dev->queue);
- 	blk_mq_free_tag_set(&ubd_dev->tag_set);
+ static int tbf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+-- 
+2.43.0
+
 
 
 
