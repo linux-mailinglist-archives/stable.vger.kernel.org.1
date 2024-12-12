@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-101000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A314D9EE9CF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:05:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD139EEA05
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:08:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F6F12814BD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:05:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4396188BEF1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E40216E14;
-	Thu, 12 Dec 2024 15:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5362156FF;
+	Thu, 12 Dec 2024 15:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBxmuVmX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRUaeghA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E22F2156EA;
-	Thu, 12 Dec 2024 15:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B555211476;
+	Thu, 12 Dec 2024 15:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015909; cv=none; b=tmE1DhSbauUtcBVk7I76ZqbVQcQ7Afy4xBrLJACz6MFF4KCamGtPBHvjzt8KOC7sD9xYvYbVGjiw2C2XzptqOg80d2QNl60emYmmhUyfoOnsanf02DyaIHhOq+Wyk1FWtNB1XFHXkUnmuR4CYGO2knPUWNt1U+VM4N0+c2LN5/8=
+	t=1734015947; cv=none; b=CeHABcVyKsS+eb4ZWVFrutSdNg8kDzvq3J2vmu5MGWmV6rRta1P903Kldg7NX+0OH25sZIZA4Q4FunfUOQMjLuXE9IjSFf3oM6v7cKK6LQa6bHDwNw1+E9OxPZfsDAF6GAK5xngJZYq4Nrv2bHxMoUtoI2Xfn5LmKbaFExIESzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015909; c=relaxed/simple;
-	bh=Bm62T7imI+sIEfVcv3nevS23KRXdxnrXZ4uHNWMtvyU=;
+	s=arc-20240116; t=1734015947; c=relaxed/simple;
+	bh=ZWtvUjQPb4Gx0JN99ssqnkPn2f/VZVMpXy3/Jzbb4mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQmNjmc07mbkZmImBiMvUz5X7UaMeSKlqmj3HxRk5xHwmALBkwgckSjzWsNqf+hz+Xf8AD7wyUBur+3df2CjlJB8soCRztSEPx/4As2h5tMpNG4qBM525KtVgTTnegu6+X/TUf97w5o70W0YBJ9/B4N8rmWE31jQNudW7Jd9rOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBxmuVmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1FF4C4CECE;
-	Thu, 12 Dec 2024 15:05:08 +0000 (UTC)
+	 MIME-Version; b=n0NKirJXmXAhQMOvGsMw60Anrd44m2do2aT0NHVkc5wge9WlKZYWRqu+YsMm62ysiq/my7xACLcnEoIgqQMSYz7WYG0cLjRvtUWkbF+LaHbP2iGtt6g+/7JN/9+RdWI1jC2BEnaUT70ANKrq4eGfkEWWpyUbamcgD140IBxxobA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRUaeghA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B90C4CECE;
+	Thu, 12 Dec 2024 15:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015909;
-	bh=Bm62T7imI+sIEfVcv3nevS23KRXdxnrXZ4uHNWMtvyU=;
+	s=korg; t=1734015946;
+	bh=ZWtvUjQPb4Gx0JN99ssqnkPn2f/VZVMpXy3/Jzbb4mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBxmuVmX9fLIkjm6Sn4/R8Iv1O2I9G5BtRho/Kr0O+XctwQAI1DG/u6iRD3Ljo9Yj
-	 WBL/B4Anvq+fQWnrIjygIuj/69M6mPYoRRErRUHuyKP+I/ouJ3bREEa/NvfTBnYX3L
-	 9NMKC+6MsOhIaGA6nwloFcmxlssg8RvtNs1RNFiA=
+	b=YRUaeghAPApbri1kJ0VkhonxGuJWdmihVOGwt9ruFHysmrvLMIT9FFUNnwy7aWoLl
+	 y24h48sbvO/nkGe1kzBcf7WNb+usgPV/FPJ1nPz88pZX+rZi9PPmN8h41M5rbWu7wd
+	 7ZjqIqqA1YsIs0JDeyvMr58EraPo+mexHtJwO9/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1939f24bdb783e9e43d9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/466] net: avoid potential UAF in default_operstate()
-Date: Thu, 12 Dec 2024 15:53:49 +0100
-Message-ID: <20241212144309.189388247@linuxfoundation.org>
+Subject: [PATCH 6.12 061/466] gpio: grgpio: use a helper variable to store the address of ofdev->dev
+Date: Thu, 12 Dec 2024 15:53:50 +0100
+Message-ID: <20241212144309.229101655@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -68,224 +65,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 750e51603395e755537da08f745864c93e3ce741 ]
+[ Upstream commit d036ae41cebdfae92666024163c109b8fef516fa ]
 
-syzbot reported an UAF in default_operstate() [1]
+Instead of dereferencing the platform device pointer repeatedly, just
+store its address in a helper variable.
 
-Issue is a race between device and netns dismantles.
-
-After calling __rtnl_unlock() from netdev_run_todo(),
-we can not assume the netns of each device is still alive.
-
-Make sure the device is not in NETREG_UNREGISTERED state,
-and add an ASSERT_RTNL() before the call to
-__dev_get_by_index().
-
-We might move this ASSERT_RTNL() in __dev_get_by_index()
-in the future.
-
-[1]
-
-BUG: KASAN: slab-use-after-free in __dev_get_by_index+0x5d/0x110 net/core/dev.c:852
-Read of size 8 at addr ffff888043eba1b0 by task syz.0.0/5339
-
-CPU: 0 UID: 0 PID: 5339 Comm: syz.0.0 Not tainted 6.12.0-syzkaller-10296-gaaf20f870da0 #0
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0x169/0x550 mm/kasan/report.c:489
-  kasan_report+0x143/0x180 mm/kasan/report.c:602
-  __dev_get_by_index+0x5d/0x110 net/core/dev.c:852
-  default_operstate net/core/link_watch.c:51 [inline]
-  rfc2863_policy+0x224/0x300 net/core/link_watch.c:67
-  linkwatch_do_dev+0x3e/0x170 net/core/link_watch.c:170
-  netdev_run_todo+0x461/0x1000 net/core/dev.c:10894
-  rtnl_unlock net/core/rtnetlink.c:152 [inline]
-  rtnl_net_unlock include/linux/rtnetlink.h:133 [inline]
-  rtnl_dellink+0x760/0x8d0 net/core/rtnetlink.c:3520
-  rtnetlink_rcv_msg+0x791/0xcf0 net/core/rtnetlink.c:6911
-  netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2541
-  netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
-  netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1347
-  netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1891
-  sock_sendmsg_nosec net/socket.c:711 [inline]
-  __sock_sendmsg+0x221/0x270 net/socket.c:726
-  ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2583
-  ___sys_sendmsg net/socket.c:2637 [inline]
-  __sys_sendmsg+0x269/0x350 net/socket.c:2669
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2a3cb80809
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f2a3d9cd058 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f2a3cd45fa0 RCX: 00007f2a3cb80809
-RDX: 0000000000000000 RSI: 0000000020000000 RDI: 0000000000000008
-RBP: 00007f2a3cbf393e R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f2a3cd45fa0 R15: 00007ffd03bc65c8
- </TASK>
-
-Allocated by task 5339:
-  kasan_save_stack mm/kasan/common.c:47 [inline]
-  kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
-  poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
-  __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:394
-  kasan_kmalloc include/linux/kasan.h:260 [inline]
-  __kmalloc_cache_noprof+0x243/0x390 mm/slub.c:4314
-  kmalloc_noprof include/linux/slab.h:901 [inline]
-  kmalloc_array_noprof include/linux/slab.h:945 [inline]
-  netdev_create_hash net/core/dev.c:11870 [inline]
-  netdev_init+0x10c/0x250 net/core/dev.c:11890
-  ops_init+0x31e/0x590 net/core/net_namespace.c:138
-  setup_net+0x287/0x9e0 net/core/net_namespace.c:362
-  copy_net_ns+0x33f/0x570 net/core/net_namespace.c:500
-  create_new_namespaces+0x425/0x7b0 kernel/nsproxy.c:110
-  unshare_nsproxy_namespaces+0x124/0x180 kernel/nsproxy.c:228
-  ksys_unshare+0x57d/0xa70 kernel/fork.c:3314
-  __do_sys_unshare kernel/fork.c:3385 [inline]
-  __se_sys_unshare kernel/fork.c:3383 [inline]
-  __x64_sys_unshare+0x38/0x40 kernel/fork.c:3383
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 12:
-  kasan_save_stack mm/kasan/common.c:47 [inline]
-  kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
-  kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:582
-  poison_slab_object mm/kasan/common.c:247 [inline]
-  __kasan_slab_free+0x59/0x70 mm/kasan/common.c:264
-  kasan_slab_free include/linux/kasan.h:233 [inline]
-  slab_free_hook mm/slub.c:2338 [inline]
-  slab_free mm/slub.c:4598 [inline]
-  kfree+0x196/0x420 mm/slub.c:4746
-  netdev_exit+0x65/0xd0 net/core/dev.c:11992
-  ops_exit_list net/core/net_namespace.c:172 [inline]
-  cleanup_net+0x802/0xcc0 net/core/net_namespace.c:632
-  process_one_work kernel/workqueue.c:3229 [inline]
-  process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
-  worker_thread+0x870/0xd30 kernel/workqueue.c:3391
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-The buggy address belongs to the object at ffff888043eba000
- which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 432 bytes inside of
- freed 2048-byte region [ffff888043eba000, ffff888043eba800)
-
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x43eb8
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-flags: 0x4fff00000000040(head|node=1|zone=1|lastcpupid=0x7ff)
-page_type: f5(slab)
-raw: 04fff00000000040 ffff88801ac42000 dead000000000122 0000000000000000
-raw: 0000000000000000 0000000000080008 00000001f5000000 0000000000000000
-head: 04fff00000000040 ffff88801ac42000 dead000000000122 0000000000000000
-head: 0000000000000000 0000000000080008 00000001f5000000 0000000000000000
-head: 04fff00000000003 ffffea00010fae01 ffffffffffffffff 0000000000000000
-head: 0000000000000008 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5339, tgid 5338 (syz.0.0), ts 69674195892, free_ts 69663220888
-  set_page_owner include/linux/page_owner.h:32 [inline]
-  post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1556
-  prep_new_page mm/page_alloc.c:1564 [inline]
-  get_page_from_freelist+0x3649/0x3790 mm/page_alloc.c:3474
-  __alloc_pages_noprof+0x292/0x710 mm/page_alloc.c:4751
-  alloc_pages_mpol_noprof+0x3e8/0x680 mm/mempolicy.c:2265
-  alloc_slab_page+0x6a/0x140 mm/slub.c:2408
-  allocate_slab+0x5a/0x2f0 mm/slub.c:2574
-  new_slab mm/slub.c:2627 [inline]
-  ___slab_alloc+0xcd1/0x14b0 mm/slub.c:3815
-  __slab_alloc+0x58/0xa0 mm/slub.c:3905
-  __slab_alloc_node mm/slub.c:3980 [inline]
-  slab_alloc_node mm/slub.c:4141 [inline]
-  __do_kmalloc_node mm/slub.c:4282 [inline]
-  __kmalloc_noprof+0x2e6/0x4c0 mm/slub.c:4295
-  kmalloc_noprof include/linux/slab.h:905 [inline]
-  sk_prot_alloc+0xe0/0x210 net/core/sock.c:2165
-  sk_alloc+0x38/0x370 net/core/sock.c:2218
-  __netlink_create+0x65/0x260 net/netlink/af_netlink.c:629
-  __netlink_kernel_create+0x174/0x6f0 net/netlink/af_netlink.c:2015
-  netlink_kernel_create include/linux/netlink.h:62 [inline]
-  uevent_net_init+0xed/0x2d0 lib/kobject_uevent.c:783
-  ops_init+0x31e/0x590 net/core/net_namespace.c:138
-  setup_net+0x287/0x9e0 net/core/net_namespace.c:362
-page last free pid 1032 tgid 1032 stack trace:
-  reset_page_owner include/linux/page_owner.h:25 [inline]
-  free_pages_prepare mm/page_alloc.c:1127 [inline]
-  free_unref_page+0xdf9/0x1140 mm/page_alloc.c:2657
-  __slab_free+0x31b/0x3d0 mm/slub.c:4509
-  qlink_free mm/kasan/quarantine.c:163 [inline]
-  qlist_free_all+0x9a/0x140 mm/kasan/quarantine.c:179
-  kasan_quarantine_reduce+0x14f/0x170 mm/kasan/quarantine.c:286
-  __kasan_slab_alloc+0x23/0x80 mm/kasan/common.c:329
-  kasan_slab_alloc include/linux/kasan.h:250 [inline]
-  slab_post_alloc_hook mm/slub.c:4104 [inline]
-  slab_alloc_node mm/slub.c:4153 [inline]
-  kmem_cache_alloc_node_noprof+0x1d9/0x380 mm/slub.c:4205
-  __alloc_skb+0x1c3/0x440 net/core/skbuff.c:668
-  alloc_skb include/linux/skbuff.h:1323 [inline]
-  alloc_skb_with_frags+0xc3/0x820 net/core/skbuff.c:6612
-  sock_alloc_send_pskb+0x91a/0xa60 net/core/sock.c:2881
-  sock_alloc_send_skb include/net/sock.h:1797 [inline]
-  mld_newpack+0x1c3/0xaf0 net/ipv6/mcast.c:1747
-  add_grhead net/ipv6/mcast.c:1850 [inline]
-  add_grec+0x1492/0x19a0 net/ipv6/mcast.c:1988
-  mld_send_initial_cr+0x228/0x4b0 net/ipv6/mcast.c:2234
-  ipv6_mc_dad_complete+0x88/0x490 net/ipv6/mcast.c:2245
-  addrconf_dad_completed+0x712/0xcd0 net/ipv6/addrconf.c:4342
- addrconf_dad_work+0xdc2/0x16f0
-  process_one_work kernel/workqueue.c:3229 [inline]
-  process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
-
-Memory state around the buggy address:
- ffff888043eba080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888043eba100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff888043eba180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                     ^
- ffff888043eba200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888043eba280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-
-Fixes: 8c55facecd7a ("net: linkwatch: only report IF_OPER_LOWERLAYERDOWN if iflink is actually down")
-Reported-by: syzbot+1939f24bdb783e9e43d9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/674f3a18.050a0220.48a03.0041.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20241203170933.2449307-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20241015131832.44678-3-brgl@bgdev.pl
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 050b23d081da ("gpio: grgpio: Add NULL check in grgpio_probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/link_watch.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-grgpio.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/net/core/link_watch.c b/net/core/link_watch.c
-index ab150641142aa..1b4d39e380842 100644
---- a/net/core/link_watch.c
-+++ b/net/core/link_watch.c
-@@ -45,9 +45,14 @@ static unsigned int default_operstate(const struct net_device *dev)
- 		int iflink = dev_get_iflink(dev);
- 		struct net_device *peer;
+diff --git a/drivers/gpio/gpio-grgpio.c b/drivers/gpio/gpio-grgpio.c
+index 017c7170eb57c..2d16ce13a804d 100644
+--- a/drivers/gpio/gpio-grgpio.c
++++ b/drivers/gpio/gpio-grgpio.c
+@@ -328,6 +328,7 @@ static const struct irq_domain_ops grgpio_irq_domain_ops = {
+ static int grgpio_probe(struct platform_device *ofdev)
+ {
+ 	struct device_node *np = ofdev->dev.of_node;
++	struct device *dev = &ofdev->dev;
+ 	void  __iomem *regs;
+ 	struct gpio_chip *gc;
+ 	struct grgpio_priv *priv;
+@@ -337,7 +338,7 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 	int size;
+ 	int i;
  
--		if (iflink == dev->ifindex)
-+		/* If called from netdev_run_todo()/linkwatch_sync_dev(),
-+		 * dev_net(dev) can be already freed, and RTNL is not held.
-+		 */
-+		if (dev->reg_state == NETREG_UNREGISTERED ||
-+		    iflink == dev->ifindex)
- 			return IF_OPER_DOWN;
+-	priv = devm_kzalloc(&ofdev->dev, sizeof(*priv), GFP_KERNEL);
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
  
-+		ASSERT_RTNL();
- 		peer = __dev_get_by_index(dev_net(dev), iflink);
- 		if (!peer)
- 			return IF_OPER_DOWN;
+@@ -346,28 +347,28 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 		return PTR_ERR(regs);
+ 
+ 	gc = &priv->gc;
+-	err = bgpio_init(gc, &ofdev->dev, 4, regs + GRGPIO_DATA,
++	err = bgpio_init(gc, dev, 4, regs + GRGPIO_DATA,
+ 			 regs + GRGPIO_OUTPUT, NULL, regs + GRGPIO_DIR, NULL,
+ 			 BGPIOF_BIG_ENDIAN_BYTE_ORDER);
+ 	if (err) {
+-		dev_err(&ofdev->dev, "bgpio_init() failed\n");
++		dev_err(dev, "bgpio_init() failed\n");
+ 		return err;
+ 	}
+ 
+ 	priv->regs = regs;
+ 	priv->imask = gc->read_reg(regs + GRGPIO_IMASK);
+-	priv->dev = &ofdev->dev;
++	priv->dev = dev;
+ 
+ 	gc->owner = THIS_MODULE;
+ 	gc->to_irq = grgpio_to_irq;
+-	gc->label = devm_kasprintf(&ofdev->dev, GFP_KERNEL, "%pOF", np);
++	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
+ 	gc->base = -1;
+ 
+ 	err = of_property_read_u32(np, "nbits", &prop);
+ 	if (err || prop <= 0 || prop > GRGPIO_MAX_NGPIO) {
+ 		gc->ngpio = GRGPIO_MAX_NGPIO;
+-		dev_dbg(&ofdev->dev,
+-			"No or invalid nbits property: assume %d\n", gc->ngpio);
++		dev_dbg(dev, "No or invalid nbits property: assume %d\n",
++			gc->ngpio);
+ 	} else {
+ 		gc->ngpio = prop;
+ 	}
+@@ -379,7 +380,7 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 	irqmap = (s32 *)of_get_property(np, "irqmap", &size);
+ 	if (irqmap) {
+ 		if (size < gc->ngpio) {
+-			dev_err(&ofdev->dev,
++			dev_err(dev,
+ 				"irqmap shorter than ngpio (%d < %d)\n",
+ 				size, gc->ngpio);
+ 			return -EINVAL;
+@@ -389,7 +390,7 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 						     &grgpio_irq_domain_ops,
+ 						     priv);
+ 		if (!priv->domain) {
+-			dev_err(&ofdev->dev, "Could not add irq domain\n");
++			dev_err(dev, "Could not add irq domain\n");
+ 			return -EINVAL;
+ 		}
+ 
+@@ -419,13 +420,13 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 
+ 	err = gpiochip_add_data(gc, priv);
+ 	if (err) {
+-		dev_err(&ofdev->dev, "Could not add gpiochip\n");
++		dev_err(dev, "Could not add gpiochip\n");
+ 		if (priv->domain)
+ 			irq_domain_remove(priv->domain);
+ 		return err;
+ 	}
+ 
+-	dev_info(&ofdev->dev, "regs=0x%p, base=%d, ngpio=%d, irqs=%s\n",
++	dev_info(dev, "regs=0x%p, base=%d, ngpio=%d, irqs=%s\n",
+ 		 priv->regs, gc->base, gc->ngpio, priv->domain ? "on" : "off");
+ 
+ 	return 0;
 -- 
 2.43.0
 
