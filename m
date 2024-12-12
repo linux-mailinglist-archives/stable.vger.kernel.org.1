@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-101472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2849EECA6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC449EEAEE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E7C8188C34C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A22A169C55
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC186F2FE;
-	Thu, 12 Dec 2024 15:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB45216E28;
+	Thu, 12 Dec 2024 15:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6b2U52D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="manFJElg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4420721578B;
-	Thu, 12 Dec 2024 15:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC07221578A;
+	Thu, 12 Dec 2024 15:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017672; cv=none; b=El8APwlfEPAISL4pfwTQlLQmoMZVx4MkTWgfRE/SqqT1O+agTB1V25eyt6n2swAYpFuM/XyF+fzEDGztNjP9lEa3NfvVh4/3MhVP4BRfSnJ8euItjnsh6YRLGR+FYTqzXhekfvX1UC4fK5eU3tDTw6PxGpWKmRsP4thHdioS27g=
+	t=1734016483; cv=none; b=mPuwj/gFn3BfbXTTkx6IXnCmXF3RYUrp52TxYBfDWgWh5nBf/4rhTXW8B1ESB7Mjxk7lfJHHfIyKhW+2aX8g6nLn1SuIgPGHBvcMyaG26twvspUTD5pF7A2jO98k0NN7KG/aC0HBdC1tdoHUzy/2GO2gvjf54WW756o0k/1soqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017672; c=relaxed/simple;
-	bh=HRSPRAqiHwoWeecGuYvTcvTcpq60yzEcRZ3VCQayDfM=;
+	s=arc-20240116; t=1734016483; c=relaxed/simple;
+	bh=rHOmSHKtj7Fhf6ocDBQFZyzwf7NQ+HJxWafr2ha9S0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ephk1qLWfOW1fVlN1IS1ixrhQqJ4aV+ZKZP9agnETy0H86dO3+UE+AmdYy3zQPHxkT7NxuMQ4OA2/KvIZ8gDUOlC3O65j7ggmrWOuQY4PL5VyK0X/Oq8KfoMH4e6SDpRGmIuL5vJuVzXd6nyp4+XsmMq3FG8ZX2RDitLL3C1uvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6b2U52D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3668C4CECE;
-	Thu, 12 Dec 2024 15:34:31 +0000 (UTC)
+	 MIME-Version; b=cLvPOq1POnUER8qqQ0QsFdkq/bY+BwFoOrlz9iWiJ4orGAI7602BX9NJOC/WIMjfHOA5alwfqi0luJczOxKxMrT/GNGtXQWMtG/UAH4NrpnkBJ1ZW67qqWx7z74jwPYRDU6CUq978ZSLkOnzD4BCRoE7OnAi6TNkk2ffhSsQIXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=manFJElg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BECC4CECE;
+	Thu, 12 Dec 2024 15:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017672;
-	bh=HRSPRAqiHwoWeecGuYvTcvTcpq60yzEcRZ3VCQayDfM=;
+	s=korg; t=1734016483;
+	bh=rHOmSHKtj7Fhf6ocDBQFZyzwf7NQ+HJxWafr2ha9S0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6b2U52DAODvKLg4I5pkXnopfW9dKi6Bo9tDFJut044Mgn8vxfxIAIxOofKhJXDqd
-	 rSWrI3ijb5yU3O6DPJ6tFMlK89DAPXI1ogP88RqB6UaPsYze72oOxMbiB3kdunEhWg
-	 /cigx+aAi4bqzIBWDPhZOML69J65eQTcHWpZODio=
+	b=manFJElg4zS2FsUVQW/tBWJPusTC7KEtt88co9eQfyD/xEiYyyu9ICV7BqQndblA9
+	 QOqqOXBT/uMxnnNsAM3wlL9ym74C8xxrY8QOP5r3PYwNkWQtE0VzoKMT9+UZ5hj6By
+	 3dfutRHx2ZO0ZYiajRW5MBOI/i1+OB9mhl8RJ4IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Frode Nordahl <frode.nordahl@canonical.com>,
-	Chris Mi <cmi@nvidia.com>,
-	Ariel Levkovich <lariel@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/356] net/mlx5e: Remove workaround to avoid syndrome for internal port
+	Adrian Taylor <ade@hohum.me.uk>,
+	Gary Guo <gary@garyguo.net>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 211/466] rust: enable arbitrary_self_types and remove `Receiver`
 Date: Thu, 12 Dec 2024 15:56:20 +0100
-Message-ID: <20241212144247.043848575@linuxfoundation.org>
+Message-ID: <20241212144315.125422372@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Gary Guo <gary@garyguo.net>
 
-[ Upstream commit 5085f861b414e4a51ce28a891dfa32a10a54b64e ]
+commit c95bbb59a9b22f9b838b15d28319185c1c884329 upstream.
 
-Previously a workaround was added to avoid syndrome 0xcdb051. It is
-triggered when offload a rule with tunnel encapsulation, and
-forwarding to another table, but not matching on the internal port in
-firmware steering mode. The original workaround skips internal tunnel
-port logic, which is not correct as not all cases are considered. As
-an example, if vlan is configured on the uplink port, traffic can't
-pass because vlan header is not added with this workaround. Besides,
-there is no such issue for software steering. So, this patch removes
-that, and returns error directly if trying to offload such rule for
-firmware steering.
+The term "receiver" means that a type can be used as the type of `self`,
+and thus enables method call syntax `foo.bar()` instead of
+`Foo::bar(foo)`. Stable Rust as of today (1.81) enables a limited
+selection of types (primitives and types in std, e.g. `Box` and `Arc`)
+to be used as receivers, while custom types cannot.
 
-Fixes: 06b4eac9c4be ("net/mlx5e: Don't offload internal port if filter device is out device")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Tested-by: Frode Nordahl <frode.nordahl@canonical.com>
-Reviewed-by: Chris Mi <cmi@nvidia.com>
-Reviewed-by: Ariel Levkovich <lariel@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241203204920.232744-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We want the kernel `Arc` type to have the same functionality as the Rust
+std `Arc`, so we use the `Receiver` trait (gated behind `receiver_trait`
+unstable feature) to gain the functionality.
+
+The `arbitrary_self_types` RFC [1] (tracking issue [2]) is accepted and
+it will allow all types that implement a new `Receiver` trait (different
+from today's unstable trait) to be used as receivers. This trait will be
+automatically implemented for all `Deref` types, which include our `Arc`
+type, so we no longer have to opt-in to be used as receiver. To prepare
+us for the change, remove the `Receiver` implementation and the
+associated feature. To still allow `Arc` and others to be used as method
+receivers, turn on `arbitrary_self_types` feature instead.
+
+This feature gate is introduced in 1.23.0. It used to enable both
+`Deref` types and raw pointer types to be used as receivers, but the
+latter is now split into a different feature gate in Rust 1.83 nightly.
+We do not need receivers on raw pointers so this change would not affect
+us and usage of `arbitrary_self_types` feature would work for all Rust
+versions that we support (>=1.78).
+
+Cc: Adrian Taylor <ade@hohum.me.uk>
+Link: https://github.com/rust-lang/rfcs/pull/3519 [1]
+Link: https://github.com/rust-lang/rust/issues/44874 [2]
+Signed-off-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20240915132734.1653004-1-gary@garyguo.net
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/mellanox/mlx5/core/en/tc_tun_encap.c   | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ rust/kernel/lib.rs      |    2 +-
+ rust/kernel/list/arc.rs |    3 ---
+ rust/kernel/sync/arc.rs |    6 ------
+ scripts/Makefile.build  |    2 +-
+ 4 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-index f1d1e1542e81b..c11092da2e7d8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-@@ -5,6 +5,7 @@
- #include <net/nexthop.h>
- #include <net/ip_tunnels.h>
- #include "tc_tun_encap.h"
-+#include "fs_core.h"
- #include "en_tc.h"
- #include "tc_tun.h"
- #include "rep/tc.h"
-@@ -24,10 +25,18 @@ static int mlx5e_set_int_port_tunnel(struct mlx5e_priv *priv,
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -12,10 +12,10 @@
+ //! do so first instead of bypassing this crate.
  
- 	route_dev = dev_get_by_index(dev_net(e->out_dev), e->route_dev_ifindex);
+ #![no_std]
++#![feature(arbitrary_self_types)]
+ #![feature(coerce_unsized)]
+ #![feature(dispatch_from_dyn)]
+ #![feature(new_uninit)]
+-#![feature(receiver_trait)]
+ #![feature(unsize)]
  
--	if (!route_dev || !netif_is_ovs_master(route_dev) ||
--	    attr->parse_attr->filter_dev == e->out_dev)
-+	if (!route_dev || !netif_is_ovs_master(route_dev))
- 		goto out;
+ // Ensure conditional compilation based on the kernel configuration works;
+--- a/rust/kernel/list/arc.rs
++++ b/rust/kernel/list/arc.rs
+@@ -441,9 +441,6 @@ where
+     }
+ }
  
-+	if (priv->mdev->priv.steering->mode == MLX5_FLOW_STEERING_MODE_DMFS &&
-+	    mlx5e_eswitch_uplink_rep(attr->parse_attr->filter_dev) &&
-+	    (attr->esw_attr->dests[out_index].flags & MLX5_ESW_DEST_ENCAP)) {
-+		mlx5_core_warn(priv->mdev,
-+			       "Matching on external port with encap + fwd to table actions is not allowed for firmware steering\n");
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	err = mlx5e_set_fwd_to_int_port_actions(priv, attr, e->route_dev_ifindex,
- 						MLX5E_TC_INT_PORT_EGRESS,
- 						&attr->action, out_index);
--- 
-2.43.0
-
+-// This is to allow [`ListArc`] (and variants) to be used as the type of `self`.
+-impl<T, const ID: u64> core::ops::Receiver for ListArc<T, ID> where T: ListArcSafe<ID> + ?Sized {}
+-
+ // This is to allow coercion from `ListArc<T>` to `ListArc<U>` if `T` can be converted to the
+ // dynamically-sized type (DST) `U`.
+ impl<T, U, const ID: u64> core::ops::CoerceUnsized<ListArc<U, ID>> for ListArc<T, ID>
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -171,9 +171,6 @@ impl<T: ?Sized> ArcInner<T> {
+     }
+ }
+ 
+-// This is to allow [`Arc`] (and variants) to be used as the type of `self`.
+-impl<T: ?Sized> core::ops::Receiver for Arc<T> {}
+-
+ // This is to allow coercion from `Arc<T>` to `Arc<U>` if `T` can be converted to the
+ // dynamically-sized type (DST) `U`.
+ impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::CoerceUnsized<Arc<U>> for Arc<T> {}
+@@ -480,9 +477,6 @@ pub struct ArcBorrow<'a, T: ?Sized + 'a>
+     _p: PhantomData<&'a ()>,
+ }
+ 
+-// This is to allow [`ArcBorrow`] (and variants) to be used as the type of `self`.
+-impl<T: ?Sized> core::ops::Receiver for ArcBorrow<'_, T> {}
+-
+ // This is to allow `ArcBorrow<U>` to be dispatched on when `ArcBorrow<T>` can be coerced into
+ // `ArcBorrow<U>`.
+ impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<ArcBorrow<'_, U>>
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -248,7 +248,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+ # Compile Rust sources (.rs)
+ # ---------------------------------------------------------------------------
+ 
+-rust_allowed_features := new_uninit
++rust_allowed_features := arbitrary_self_types,new_uninit
+ 
+ # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+ # current working directory, which may be not accessible in the out-of-tree
 
 
 
