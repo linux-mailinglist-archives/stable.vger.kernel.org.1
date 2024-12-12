@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-102425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67DFE9EF2A0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E939EEBBB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C26F3189F5AC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C02D28355D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945F9235C25;
-	Thu, 12 Dec 2024 16:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0692153F4;
+	Thu, 12 Dec 2024 15:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JA03bibB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEGP+sib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52705223C49;
-	Thu, 12 Dec 2024 16:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996BD748A;
+	Thu, 12 Dec 2024 15:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021180; cv=none; b=DjCbylYHXay8En8IlW17HFwRp22AFEI66o4l2tlB1Slwnx/eFgevK0GOivHj8+GJhTXRtV4BnJdjmZpxxTvrWeyYZj9xpeHAEuN5fXziBmq00NYwES50rb6tzw5gsTsGldVHPHQpvItcWey3qamaDHALusXtFm0+1xR3HHmph9w=
+	t=1734017311; cv=none; b=TV+pwd1LenMUOVVP7OPIV0XgSITTc4jM7jQdGDMKQz19crp5yjTMS/2bLT3yAYrsTb31lkI2mn4BAycaSaPgDLYipIVQlM7s5N6aa8aQezkZwJ3nedmoneUtZlPEnKHHSQ5Rg2q4HeAE0TMy+F2+67Pv42cJaEamZ85gBX3MQmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021180; c=relaxed/simple;
-	bh=3lc1E6Sdyhw/Ioh0mGiIcwhdd41IwGvJgqlGLMP+6+8=;
+	s=arc-20240116; t=1734017311; c=relaxed/simple;
+	bh=jo+soLT40rXgf1Qn0g60kPv7F3PTkDyA51ojdrN9RF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvLCP3R8w0vLllXQgx7ziL8YPkyx8CGIblfePIj8IvMzpc7JRatTiDcbB1k7tqeHsHX2025Rk1jleWsu6GTnvNMGhvnxzjowSnKpBFx0TAMYmJWUfTypWAyyDkTvt4eTOKGa6RjC23K1awIwiCk4O1F0Mg4+JA2C9usdeINtMFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JA03bibB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C82C4CECE;
-	Thu, 12 Dec 2024 16:32:59 +0000 (UTC)
+	 MIME-Version; b=ewMD7ttJ7O0V+SaRCfEppliaJmvuLpKi/LTT/ejE8bpjMNl2UHMAYqKROWdx/6pvPFsy+/W7w2M/1SIuX69EINaNndfeQFG5Gz1kGdK6N4cx0XyqdMXjwXLiUAhrjkf6qKyqAguGrwLaHa5H4sP3d1SmVmUTlK3x1Inh6O+BHE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEGP+sib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D567C4CECE;
+	Thu, 12 Dec 2024 15:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021180;
-	bh=3lc1E6Sdyhw/Ioh0mGiIcwhdd41IwGvJgqlGLMP+6+8=;
+	s=korg; t=1734017311;
+	bh=jo+soLT40rXgf1Qn0g60kPv7F3PTkDyA51ojdrN9RF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JA03bibBJxfarhljViJcbH6U1NJpCpyObC6SLg2DiTavk1BniJtmNSWl1MS4W3rGA
-	 TLpin/8gICqRjIzUFALp5az8gryQv1HfdATjrDhOfGYnBRKpIJgSzIDQbnhA48AzxZ
-	 TrvMjn+FyASDmI1tiLt5R3Gm3MfNdqVAD6nFTGfM=
+	b=NEGP+sibIOhhDZFj0fm8Zyed7gYxDvPg5xU36vWlhzkW5NynMS9IyxXKGKADQwfo9
+	 fksmxubuTCAZruGpZiwj0uPhpRd2lm2V8RAoRfpMn2XRKG3q56hFP+nc/+Kw7W78Xo
+	 U2OcE239b1C1q0qR2oBVX2aWtTyofnUX6g7ybVuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wander Lairson Costa <wander@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 667/772] af_packet: avoid erroring out after sock_init_data() in packet_create()
+Subject: [PATCH 6.12 443/466] sched/deadline: Fix warning in migrate_enable for boosted tasks
 Date: Thu, 12 Dec 2024 16:00:12 +0100
-Message-ID: <20241212144417.476334722@linuxfoundation.org>
+Message-ID: <20241212144324.358551206@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
+[ Upstream commit 0664e2c311b9fa43b33e3e81429cd0c2d7f9c638 ]
 
-After sock_init_data() the allocated sk object is attached to the provided
-sock object. On error, packet_create() frees the sk object leaving the
-dangling pointer in the sock object on return. Some other code may try
-to use this pointer and cause use-after-free.
+When running the following command:
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+while true; do
+    stress-ng --cyclic 30 --timeout 30s --minimize --quiet
+done
+
+a warning is eventually triggered:
+
+WARNING: CPU: 43 PID: 2848 at kernel/sched/deadline.c:794
+setup_new_dl_entity+0x13e/0x180
+...
+Call Trace:
+ <TASK>
+ ? show_trace_log_lvl+0x1c4/0x2df
+ ? enqueue_dl_entity+0x631/0x6e0
+ ? setup_new_dl_entity+0x13e/0x180
+ ? __warn+0x7e/0xd0
+ ? report_bug+0x11a/0x1a0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x14/0x70
+ ? asm_exc_invalid_op+0x16/0x20
+ enqueue_dl_entity+0x631/0x6e0
+ enqueue_task_dl+0x7d/0x120
+ __do_set_cpus_allowed+0xe3/0x280
+ __set_cpus_allowed_ptr_locked+0x140/0x1d0
+ __set_cpus_allowed_ptr+0x54/0xa0
+ migrate_enable+0x7e/0x150
+ rt_spin_unlock+0x1c/0x90
+ group_send_sig_info+0xf7/0x1a0
+ ? kill_pid_info+0x1f/0x1d0
+ kill_pid_info+0x78/0x1d0
+ kill_proc_info+0x5b/0x110
+ __x64_sys_kill+0x93/0xc0
+ do_syscall_64+0x5c/0xf0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+ RIP: 0033:0x7f0dab31f92b
+
+This warning occurs because set_cpus_allowed dequeues and enqueues tasks
+with the ENQUEUE_RESTORE flag set. If the task is boosted, the warning
+is triggered. A boosted task already had its parameters set by
+rt_mutex_setprio, and a new call to setup_new_dl_entity is unnecessary,
+hence the WARN_ON call.
+
+Check if we are requeueing a boosted task and avoid calling
+setup_new_dl_entity if that's the case.
+
+Fixes: 295d6d5e3736 ("sched/deadline: Fix switching to -deadline")
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lore.kernel.org/r/20240724142253.27145-2-wander@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/sched/deadline.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index c9c813f731c6e..9da9e41899c65 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3418,18 +3418,18 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	if (sock->type == SOCK_PACKET)
- 		sock->ops = &packet_ops_spkt;
- 
-+	po = pkt_sk(sk);
-+	err = packet_alloc_pending(po);
-+	if (err)
-+		goto out_sk_free;
-+
- 	sock_init_data(sock, sk);
- 
--	po = pkt_sk(sk);
- 	init_completion(&po->skb_completion);
- 	sk->sk_family = PF_PACKET;
- 	po->num = proto;
- 	po->xmit = dev_queue_xmit;
- 
--	err = packet_alloc_pending(po);
--	if (err)
--		goto out2;
--
- 	packet_cached_dev_reset(po);
- 
- 	sk->sk_destruct = packet_sock_destruct;
-@@ -3462,7 +3462,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	sock_prot_inuse_add(net, &packet_proto, 1);
- 
- 	return 0;
--out2:
-+out_sk_free:
- 	sk_free(sk);
- out:
- 	return err;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index be1b917dc8ce4..40a1ad4493b4d 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2042,6 +2042,7 @@ enqueue_dl_entity(struct sched_dl_entity *dl_se, int flags)
+ 	} else if (flags & ENQUEUE_REPLENISH) {
+ 		replenish_dl_entity(dl_se);
+ 	} else if ((flags & ENQUEUE_RESTORE) &&
++		   !is_dl_boosted(dl_se) &&
+ 		   dl_time_before(dl_se->deadline, rq_clock(rq_of_dl_se(dl_se)))) {
+ 		setup_new_dl_entity(dl_se);
+ 	}
 -- 
 2.43.0
 
