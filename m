@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564669EF464
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6D99EF557
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4578F18921D3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CB3928EB5F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11C2223C62;
-	Thu, 12 Dec 2024 16:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E356E223C5D;
+	Thu, 12 Dec 2024 17:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4nJfWdb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIqitkOk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E22F2236EA;
-	Thu, 12 Dec 2024 16:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BAE223C5A;
+	Thu, 12 Dec 2024 17:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022167; cv=none; b=dvDCNCn0s1rLDgbCpgfqi5R6o8eM2yOIm8HmPBtrITh9zZiPumFFKwCmgfWdDEiUrHloVIYDK67hEh1iY+Fl9wkiRiF66VqPbE6pJ02JxOYKJbhcU5eBcCuTTj+bCg5hnSJJssH+MVGaMNlCCtY4P3KkCSJs4/lMnsTZ8n7Q6pI=
+	t=1734023707; cv=none; b=Xc2sEv0fGEsgWPhnrpay9/i9mitdhFH67pVsESgOyBRaJArxqFvCFnwChck4hJACI0C07oJ9RjuDxdnyNBpV3Y3icqB5TgwvT2HHHNyFMAUF6vLESS5cIjOxsWXy0iuIWN8bD2ggQazNFCFsfAOKrZx5j9My1cTou/QL6ceGqlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022167; c=relaxed/simple;
-	bh=R/crO/NKGt7Abr2wMLExJe30ngcV9ZnL4w4YhUnTVto=;
+	s=arc-20240116; t=1734023707; c=relaxed/simple;
+	bh=tHCrU6hWQx/nwdt+WYm7k5IVbvlMjP8ijLLQ478tXvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNY4/EnYHonMg52yKT0AxOkLSzSLfWpUq45ruCN3cvxkr2HXtKV8KXvd1V8LH4cL3v1kEWSH2J9wSHNdjDymqBZ9PzscBLjj1JsQuQJuJ3oW352F6DY5fyu0Pa9GEDUrnnNpapQADY2mrNkrHCJl0k35iNnFfZGjQeboWLFOOFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4nJfWdb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82BEC4CECE;
-	Thu, 12 Dec 2024 16:49:26 +0000 (UTC)
+	 MIME-Version; b=IbsqVno7MdnHqXkCarGvojWDjK5nM5nQdVFJwTbZixct0EDViItBXByAceTOAwJ3b67kAKYct7CZCXZwe+yDGL0KSlhxmoUmbzyGoqtXvmvhH4saOFKLIE8jRv3Le1PGVkLB7vVkp89HopwNgM9WJgcmZTVPliUzoRPzrglzfyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIqitkOk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CF6C4CECE;
+	Thu, 12 Dec 2024 17:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022167;
-	bh=R/crO/NKGt7Abr2wMLExJe30ngcV9ZnL4w4YhUnTVto=;
+	s=korg; t=1734023707;
+	bh=tHCrU6hWQx/nwdt+WYm7k5IVbvlMjP8ijLLQ478tXvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x4nJfWdbdqK4LY57+Dr3oR/r2JKfdWIJIyGfwMvfBJ6XCmFNgL4Dwq8dIGtwFLjZ3
-	 23/1Y+ZQ3Q0h4yxIFKeBH+/oJHY0LNJpMk/A3OXHIkXqaOKbHEFSL0aegrr0tkAjbW
-	 S9Wy6LuvJE7K2gLeVHhU/2H28/lZ1yvDQ2hKtBG0=
+	b=VIqitkOkq/okLsP3c5IyPSIjusXc/slgxSMhbc9kCagIwdk+makwyw5k3uC+eIsUC
+	 DaVsFSmjSb406gDc7jgdLuj+Yua5n0HYGs6fy9lWnh4mUZE9zUpm6kUPFAzJ5zvKRJ
+	 Fr+mpO1R6Sl9rf1Mjo0rGwx5Xt2S5+2mKURrdsF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raed Salem <raeds@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 167/565] xfrm: rename xfrm_state_offload struct to allow reuse
-Date: Thu, 12 Dec 2024 15:56:02 +0100
-Message-ID: <20241212144318.078123712@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.10 025/459] media: dvbdev: fix the logic when DVB_DYNAMIC_MINORS is not set
+Date: Thu, 12 Dec 2024 15:56:03 +0100
+Message-ID: <20241212144254.518175418@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 87e0a94e60ea2e29be9dec6bc146fbc9861a4055 ]
+commit a4aebaf6e6efff548b01a3dc49b4b9074751c15b upstream.
 
-The struct xfrm_state_offload has all fields needed to hold information
-for offloaded policies too. In order to do not create new struct with
-same fields, let's rename existing one and reuse it later.
+When CONFIG_DVB_DYNAMIC_MINORS, ret is not initialized, and a
+semaphore is left at the wrong state, in case of errors.
 
-Reviewed-by: Raed Salem <raeds@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Acked-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Stable-dep-of: 2cf567f421db ("netdevsim: copy addresses for both in and out paths")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make the code simpler and avoid mistakes by having just one error
+check logic used weather DVB_DYNAMIC_MINORS is used or not.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202410201717.ULWWdJv8-lkp@intel.com/
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Link: https://lore.kernel.org/r/9e067488d8935b8cf00959764a1fa5de85d65725.1730926254.git.mchehab+huawei@kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xfrm.h     | 10 +++++-----
- net/xfrm/xfrm_device.c |  2 +-
- net/xfrm/xfrm_state.c  |  4 ++--
- net/xfrm/xfrm_user.c   |  2 +-
- 4 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/media/dvb-core/dvbdev.c |   15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 20ce2e1b3f61e..395d85eeb5d88 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -126,7 +126,7 @@ struct xfrm_state_walk {
- 	struct xfrm_address_filter *filter;
- };
- 
--struct xfrm_state_offload {
-+struct xfrm_dev_offload {
- 	struct net_device	*dev;
- 	struct net_device	*real_dev;
- 	unsigned long		offload_handle;
-@@ -246,7 +246,7 @@ struct xfrm_state {
- 	struct xfrm_lifetime_cur curlft;
- 	struct hrtimer		mtimer;
- 
--	struct xfrm_state_offload xso;
-+	struct xfrm_dev_offload xso;
- 
- 	/* used to fix curlft->add_time when changing date */
- 	long		saved_tmo;
-@@ -1885,7 +1885,7 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x);
- 
- static inline void xfrm_dev_state_advance_esn(struct xfrm_state *x)
- {
--	struct xfrm_state_offload *xso = &x->xso;
-+	struct xfrm_dev_offload *xso = &x->xso;
- 
- 	if (xso->dev && xso->dev->xfrmdev_ops->xdo_dev_state_advance_esn)
- 		xso->dev->xfrmdev_ops->xdo_dev_state_advance_esn(x);
-@@ -1911,7 +1911,7 @@ static inline bool xfrm_dst_offload_ok(struct dst_entry *dst)
- 
- static inline void xfrm_dev_state_delete(struct xfrm_state *x)
- {
--	struct xfrm_state_offload *xso = &x->xso;
-+	struct xfrm_dev_offload *xso = &x->xso;
- 
- 	if (xso->dev)
- 		xso->dev->xfrmdev_ops->xdo_dev_state_delete(x);
-@@ -1919,7 +1919,7 @@ static inline void xfrm_dev_state_delete(struct xfrm_state *x)
- 
- static inline void xfrm_dev_state_free(struct xfrm_state *x)
- {
--	struct xfrm_state_offload *xso = &x->xso;
-+	struct xfrm_dev_offload *xso = &x->xso;
- 	struct net_device *dev = xso->dev;
- 
- 	if (dev && dev->xfrmdev_ops) {
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index 4d13f7a372ab6..61aa0fd9d2a0c 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -225,7 +225,7 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
- 	int err;
- 	struct dst_entry *dst;
- 	struct net_device *dev;
--	struct xfrm_state_offload *xso = &x->xso;
-+	struct xfrm_dev_offload *xso = &x->xso;
- 	xfrm_address_t *saddr;
- 	xfrm_address_t *daddr;
- 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 60f3ea5561ddf..ff8159bae7bbf 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -750,7 +750,7 @@ xfrm_dev_state_flush_secctx_check(struct net *net, struct net_device *dev, bool
- 
- 	for (i = 0; i <= net->xfrm.state_hmask; i++) {
- 		struct xfrm_state *x;
--		struct xfrm_state_offload *xso;
-+		struct xfrm_dev_offload *xso;
- 
- 		hlist_for_each_entry(x, net->xfrm.state_bydst+i, bydst) {
- 			xso = &x->xso;
-@@ -834,7 +834,7 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
- 	err = -ESRCH;
- 	for (i = 0; i <= net->xfrm.state_hmask; i++) {
- 		struct xfrm_state *x;
--		struct xfrm_state_offload *xso;
-+		struct xfrm_dev_offload *xso;
- restart:
- 		hlist_for_each_entry(x, net->xfrm.state_bydst+i, bydst) {
- 			xso = &x->xso;
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 1ebd54afe34c9..bb63b0dab87bd 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -843,7 +843,7 @@ static int copy_sec_ctx(struct xfrm_sec_ctx *s, struct sk_buff *skb)
- 	return 0;
- }
- 
--static int copy_user_offload(struct xfrm_state_offload *xso, struct sk_buff *skb)
-+static int copy_user_offload(struct xfrm_dev_offload *xso, struct sk_buff *skb)
- {
- 	struct xfrm_user_offload *xuo;
- 	struct nlattr *attr;
--- 
-2.43.0
-
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -544,6 +544,9 @@ int dvb_register_device(struct dvb_adapt
+ 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
+ 		if (dvb_minors[minor] == NULL)
+ 			break;
++#else
++	minor = nums2minor(adap->num, type, id);
++#endif
+ 	if (minor >= MAX_DVB_MINORS) {
+ 		if (new_node) {
+ 			list_del (&new_node->list_head);
+@@ -557,17 +560,7 @@ int dvb_register_device(struct dvb_adapt
+ 		mutex_unlock(&dvbdev_register_lock);
+ 		return -EINVAL;
+ 	}
+-#else
+-	minor = nums2minor(adap->num, type, id);
+-	if (minor >= MAX_DVB_MINORS) {
+-		dvb_media_device_free(dvbdev);
+-		list_del(&dvbdev->list_head);
+-		kfree(dvbdev);
+-		*pdvbdev = NULL;
+-		mutex_unlock(&dvbdev_register_lock);
+-		return ret;
+-	}
+-#endif
++
+ 	dvbdev->minor = minor;
+ 	dvb_minors[minor] = dvb_device_get(dvbdev);
+ 	up_write(&minor_rwsem);
 
 
 
