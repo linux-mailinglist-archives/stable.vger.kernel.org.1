@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA449EEB29
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535219EF35E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA5D2188E9B4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F349291A5E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82D8748A;
-	Thu, 12 Dec 2024 15:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8047E23A59F;
+	Thu, 12 Dec 2024 16:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxDB5YLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwMafnO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3114212D6A;
-	Thu, 12 Dec 2024 15:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD672253EC;
+	Thu, 12 Dec 2024 16:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016595; cv=none; b=DVDmlOoocA/GVAeMtXLq/7OhaLB5Bt42NXy2+pe+wHCo7yYYPnwtStrRQrsDr8/2lhcAodtTHjBL4/5To8v2fZBy1e09bYXLmFJAvBPxQyxlKl6ecq5decVNbyz+eIom8Q/hlsdPxLAfg7wbuEmrxW/0eyvcAFPSp3cQw9Q9eAs=
+	t=1734022286; cv=none; b=G1Op/+p/r4bXJHpMlwYAjqby/UIpOgHYKwKr/H60jBM41mjTm7oRRNbWtnCAa05nkzX38y626y3dhnffS5a9OXQhHdp7UBuc1iSZE6iHjVFxmc0c18rKf21nfZniIe8yQDF4v8EhE0+XLb++hio11GE63pZBRwhiBiBk3zDKIPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016595; c=relaxed/simple;
-	bh=5D07K1MlGmSwp600FUznAVGlxrvVqvoeIFShIWJ7Cxo=;
+	s=arc-20240116; t=1734022286; c=relaxed/simple;
+	bh=0Y2o9VoCzDGQYtQhU9cV4PWt0wLv8UqxuKin3TCyXWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7EsTTqeRk3pEMx16CFTP1alNZ6J43rr9YndxwfWxCmsbZsR+MLa4PnqLbwpkLKOFA55Jk6ef5WPRsroqMtUcTJswO5snASt5SO2e8fR6ZH9v37B2zomqVAFjsKkD8c62tqc9wJ4RllVF6rzodzVpGdp7uNXXUQ65PKGgwpfD3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxDB5YLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64399C4CECE;
-	Thu, 12 Dec 2024 15:16:34 +0000 (UTC)
+	 MIME-Version; b=p40wbjLfPJKbWdDEHroo4PNfhUBBB955hZc1mHG0CcQoVvhl2aj6YS/9vaP17wuz2uLxtX72qLwTkQcTD6lzz+Ok8P8+elVhwS3L75buBWQezsj38dNijg4CS/rJWioBTjUMdX5K+Aq7ImVgmtBuTfL9W2CTg+nB3RWC1djBtVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwMafnO5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7039C4CECE;
+	Thu, 12 Dec 2024 16:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016595;
-	bh=5D07K1MlGmSwp600FUznAVGlxrvVqvoeIFShIWJ7Cxo=;
+	s=korg; t=1734022286;
+	bh=0Y2o9VoCzDGQYtQhU9cV4PWt0wLv8UqxuKin3TCyXWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxDB5YLeIXmxgZyhV3LHXa7ELLxqGojEyZBuvh89IfCjc5OM6y2IRJSWm+EzJNsXT
-	 v7/hePf0MpYlZ5+6mGZoZ6G9ZFM8vsqdTtDB8dvxP8+uw5WyL6a/S76FTrzIjP5phN
-	 YeFtEycwUNX+QtiU7mn/o7cMA9DBgov5L0zkHKsY=
+	b=ZwMafnO5bavDbzXMtJ2hC00nNNdEPin1QRnFoUdTHKG5A2wTfP3QaTPtxDliIY96b
+	 C68o0XUm7ndiWzdVPOYW6Rzvt7qhZtJ0CqyaDq6Gcf+QVTAAl4ueTuJtSUlWCT5zNN
+	 JY30lZXX649zynLhQOWp5uyUr+B3b51tuN1WynKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+73582d08864d8268b6fd@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/466] crypto: ecdsa - Avoid signed integer overflow on signature decoding
-Date: Thu, 12 Dec 2024 15:56:34 +0100
-Message-ID: <20241212144315.667525203@linuxfoundation.org>
+Subject: [PATCH 5.15 200/565] ALSA: usx2y: Use snd_card_free_when_closed() at disconnection
+Date: Thu, 12 Dec 2024 15:56:35 +0100
+Message-ID: <20241212144319.399297075@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3b0565c703503f832d6cd7ba805aafa3b330cb9d ]
+[ Upstream commit dafb28f02be407e07a6f679e922a626592b481b0 ]
 
-When extracting a signature component r or s from an ASN.1-encoded
-integer, ecdsa_get_signature_rs() subtracts the expected length
-"bufsize" from the ASN.1 length "vlen" (both of unsigned type size_t)
-and stores the result in "diff" (of signed type ssize_t).
+The USB disconnect callback is supposed to be short and not too-long
+waiting.  OTOH, the current code uses snd_card_free() at
+disconnection, but this waits for the close of all used fds, hence it
+can take long.  It eventually blocks the upper layer USB ioctls, which
+may trigger a soft lockup.
 
-This results in a signed integer overflow if vlen > SSIZE_MAX + bufsize.
+An easy workaround is to replace snd_card_free() with
+snd_card_free_when_closed().  This variant returns immediately while
+the release of resources is done asynchronously by the card device
+release at the last close.
 
-The kernel is compiled with -fno-strict-overflow, which implies -fwrapv,
-meaning signed integer overflow is not undefined behavior.  And the
-function does check for overflow:
-
-       if (-diff >= bufsize)
-               return -EINVAL;
-
-So the code is fine in principle but not very obvious.  In the future it
-might trigger a false-positive with CONFIG_UBSAN_SIGNED_WRAP=y.
-
-Avoid by comparing the two unsigned variables directly and erroring out
-if "vlen" is too large.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 230cd5e24853 ("[ALSA] prevent oops & dead keyboard on usb unplugging while the device is be ing used")
+Reported-by: syzbot+73582d08864d8268b6fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=73582d08864d8268b6fd
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241113111042.15058-2-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/ecdsa.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ sound/usb/usx2y/usbusx2y.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
-index d5a10959ec281..80ef16ae6a40b 100644
---- a/crypto/ecdsa.c
-+++ b/crypto/ecdsa.c
-@@ -36,29 +36,24 @@ static int ecdsa_get_signature_rs(u64 *dest, size_t hdrlen, unsigned char tag,
- 				  const void *value, size_t vlen, unsigned int ndigits)
- {
- 	size_t bufsize = ndigits * sizeof(u64);
--	ssize_t diff = vlen - bufsize;
- 	const char *d = value;
- 
--	if (!value || !vlen)
-+	if (!value || !vlen || vlen > bufsize + 1)
- 		return -EINVAL;
- 
--	/* diff = 0: 'value' has exacly the right size
--	 * diff > 0: 'value' has too many bytes; one leading zero is allowed that
--	 *           makes the value a positive integer; error on more
--	 * diff < 0: 'value' is missing leading zeros
-+	/*
-+	 * vlen may be 1 byte larger than bufsize due to a leading zero byte
-+	 * (necessary if the most significant bit of the integer is set).
- 	 */
--	if (diff > 0) {
-+	if (vlen > bufsize) {
- 		/* skip over leading zeros that make 'value' a positive int */
- 		if (*d == 0) {
- 			vlen -= 1;
--			diff--;
- 			d++;
--		}
--		if (diff)
-+		} else {
- 			return -EINVAL;
-+		}
+diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
+index 099bee662af6b..c3292afa883ee 100644
+--- a/sound/usb/usx2y/usbusx2y.c
++++ b/sound/usb/usx2y/usbusx2y.c
+@@ -423,7 +423,7 @@ static void snd_usx2y_disconnect(struct usb_interface *intf)
  	}
--	if (-diff >= bufsize)
--		return -EINVAL;
+ 	if (usx2y->us428ctls_sharedmem)
+ 		wake_up(&usx2y->us428ctls_wait_queue_head);
+-	snd_card_free(card);
++	snd_card_free_when_closed(card);
+ }
  
- 	ecc_digits_from_bytes(d, vlen, dest, ndigits);
- 
+ static int snd_usx2y_probe(struct usb_interface *intf,
 -- 
 2.43.0
 
