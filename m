@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-103526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DD99EF76D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6479EF76F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10967288E23
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C00828CF60
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F055B223C58;
-	Thu, 12 Dec 2024 17:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC733222D45;
+	Thu, 12 Dec 2024 17:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVuYC9uD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kukfiWnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE7C222D45;
-	Thu, 12 Dec 2024 17:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7999F2236EB;
+	Thu, 12 Dec 2024 17:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024834; cv=none; b=aX2MB1SQr4KDL0zHpLcIRN0tg22jpHeysKbSPqCfYVfBNfOIVMoyVy2j9iITgtTrQRfv0/aY0Ni3cLNPy93UWqODho3r1+A2mRaGcVhvZZiyxfXxeMm0BfnCZeHFrMaCXgNux4t+BP25UXbed2M/SvRCe85M4UJ9HO63krNQAzY=
+	t=1734024840; cv=none; b=Om4pTz2hXgsNCmWNQcmBnbRkQoFGe8QZp43b4wUwi4AYY5o353ugtpB92PLaeLBts72TqDUjd6O8dJCwdSfQX40U742azA0w3t86eXqQjxu9WJdFao3oKcW6J5yyO4mq+Z+wEYjmU9DVHvAZyOgxBYK8G5K2zQkvg3wrfCUETrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024834; c=relaxed/simple;
-	bh=q9YJQthvXQ+pRAzfnO5nZyPMb/vWEb3pXdfvt1AkEWM=;
+	s=arc-20240116; t=1734024840; c=relaxed/simple;
+	bh=SuPF9fIulFCsjuqAxKI248MRMR+ZlZGK8QMIqFO4I60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhxewvdQ0vUgS2Z8qJGgpy7+8v0PBPpVAgJSpQmQ+NC+738TJ7uQjdV6PPRfFPIklgiAVBQbQV24dzW28o6ccsrNY2MmN3nuW69cNPX76KsoXVlJkPI5wxRyAeBa3EUHR2BGP0z8pUHlMAIb42qWINobCjASAm+2OE3PbeoEw/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVuYC9uD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31384C4CECE;
-	Thu, 12 Dec 2024 17:33:54 +0000 (UTC)
+	 MIME-Version; b=WHBHNkOxD+6WRbcmcz5fkmqVK6BTrAPLUJi4jmwocAxEFSQ4g8+y62Tx0Y5JmoheSsPO+OrPr6SldAmec3FAOI6J3Sw5rQoroBustCYbUqPXjrM7Uv5QQRCsnwSBjY5yZfXgLtwiyT6A/zrNuzSoAiVRSuOo30vgS2kM+F6vrZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kukfiWnM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00745C4CECE;
+	Thu, 12 Dec 2024 17:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024834;
-	bh=q9YJQthvXQ+pRAzfnO5nZyPMb/vWEb3pXdfvt1AkEWM=;
+	s=korg; t=1734024840;
+	bh=SuPF9fIulFCsjuqAxKI248MRMR+ZlZGK8QMIqFO4I60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVuYC9uDjOuvPRJWVM/mRRoKGazacllGUY4TbsMBxo5KijBBIJCcJPgevawouyFz4
-	 NQsaAcSHgo9CxhLyYlxQAUAta8T73R5Ma1Q9fLd0sgd/8VS5RC6t8GF0vvmo1x+2ez
-	 Tgzy7eHGq7dUrAvLdf1fODMfYdP2wBUyZrq1kZQQ=
+	b=kukfiWnMq14q/LQjj0hjwvL/a9VTlIfxY9dQi0GtrMO9F0wnLdwGlRFBff4a7Kn8M
+	 cjByS/xmlMvxClMQ5tXPU3pgt5CXRjAIqCHHTNsKMSccoR51F9nQR7aaEbL1Lx5T1P
+	 DUCBZZ7OYhp/nB/6OJRc3+UGksjqIiAsSh6oUYAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Defa Li <defa.li@mediatek.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Peter Chen <peter.chen@kernel.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 428/459] i3c: Use i3cdev->desc->info instead of calling i3c_device_get_info() to avoid deadlock
-Date: Thu, 12 Dec 2024 16:02:46 +0100
-Message-ID: <20241212144310.668878205@linuxfoundation.org>
+Subject: [PATCH 5.10 429/459] usb: chipidea: udc: handle USB Error Interrupt if IOC not set
+Date: Thu, 12 Dec 2024 16:02:47 +0100
+Message-ID: <20241212144310.708839172@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
 References: <20241212144253.511169641@linuxfoundation.org>
@@ -66,110 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Defa Li <defa.li@mediatek.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 6cf7b65f7029914dc0cd7db86fac9ee5159008c6 ]
+[ Upstream commit 548f48b66c0c5d4b9795a55f304b7298cde2a025 ]
 
-A deadlock may happen since the i3c_master_register() acquires
-&i3cbus->lock twice. See the log below.
-Use i3cdev->desc->info instead of calling i3c_device_info() to
-avoid acquiring the lock twice.
+As per USBSTS register description about UEI:
 
-v2:
-  - Modified the title and commit message
+  When completion of a USB transaction results in an error condition, this
+  bit is set by the Host/Device Controller. This bit is set along with the
+  USBINT bit, if the TD on which the error interrupt occurred also had its
+  interrupt on complete (IOC) bit set.
 
-============================================
-WARNING: possible recursive locking detected
-6.11.0-mainline
---------------------------------------------
-init/1 is trying to acquire lock:
-f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_bus_normaluse_lock
+UI is set only when IOC set. Add checking UEI to fix miss call
+isr_tr_complete_handler() when IOC have not set and transfer error happen.
 
-but task is already holding lock:
-f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_master_register
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&i3cbus->lock);
-  lock(&i3cbus->lock);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-2 locks held by init/1:
- #0: fcffff809b6798f8 (&dev->mutex){....}-{3:3}, at: __driver_attach
- #1: f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_master_register
-
-stack backtrace:
-CPU: 6 UID: 0 PID: 1 Comm: init
-Call trace:
- dump_backtrace+0xfc/0x17c
- show_stack+0x18/0x28
- dump_stack_lvl+0x40/0xc0
- dump_stack+0x18/0x24
- print_deadlock_bug+0x388/0x390
- __lock_acquire+0x18bc/0x32ec
- lock_acquire+0x134/0x2b0
- down_read+0x50/0x19c
- i3c_bus_normaluse_lock+0x14/0x24
- i3c_device_get_info+0x24/0x58
- i3c_device_uevent+0x34/0xa4
- dev_uevent+0x310/0x384
- kobject_uevent_env+0x244/0x414
- kobject_uevent+0x14/0x20
- device_add+0x278/0x460
- device_register+0x20/0x34
- i3c_master_register_new_i3c_devs+0x78/0x154
- i3c_master_register+0x6a0/0x6d4
- mtk_i3c_master_probe+0x3b8/0x4d8
- platform_probe+0xa0/0xe0
- really_probe+0x114/0x454
- __driver_probe_device+0xa0/0x15c
- driver_probe_device+0x3c/0x1ac
- __driver_attach+0xc4/0x1f0
- bus_for_each_dev+0x104/0x160
- driver_attach+0x24/0x34
- bus_add_driver+0x14c/0x294
- driver_register+0x68/0x104
- __platform_driver_register+0x20/0x30
- init_module+0x20/0xfe4
- do_one_initcall+0x184/0x464
- do_init_module+0x58/0x1ec
- load_module+0xefc/0x10c8
- __arm64_sys_finit_module+0x238/0x33c
- invoke_syscall+0x58/0x10c
- el0_svc_common+0xa8/0xdc
- do_el0_svc+0x1c/0x28
- el0_svc+0x50/0xac
- el0t_64_sync_handler+0x70/0xbc
- el0t_64_sync+0x1a8/0x1ac
-
-Signed-off-by: Defa Li <defa.li@mediatek.com>
-Link: https://lore.kernel.org/r/20241107132549.25439-1-defa.li@mediatek.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Acked-by: Peter Chen <peter.chen@kernel.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240926022906.473319-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/chipidea/udc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 0ade1ce2bbc89..0d8210f40ff63 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -279,7 +279,8 @@ static int i3c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
- 	struct i3c_device_info devinfo;
- 	u16 manuf, part, ext;
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 5cdf03534c0c7..1c7af91bf03af 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -2024,7 +2024,7 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
+ 			}
+ 		}
  
--	i3c_device_get_info(i3cdev, &devinfo);
-+	if (i3cdev->desc)
-+		devinfo = i3cdev->desc->info;
- 	manuf = I3C_PID_MANUF_ID(devinfo.pid);
- 	part = I3C_PID_PART_ID(devinfo.pid);
- 	ext = I3C_PID_EXTRA_INFO(devinfo.pid);
+-		if (USBi_UI  & intr)
++		if ((USBi_UI | USBi_UEI) & intr)
+ 			isr_tr_complete_handler(ci);
+ 
+ 		if ((USBi_SLI & intr) && !(ci->suspended)) {
 -- 
 2.43.0
 
