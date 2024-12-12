@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-101282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6463B9EEB50
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4FD99EED08
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A29282CEF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:23:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA11C2820A7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DBA2153FC;
-	Thu, 12 Dec 2024 15:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCADC2210E8;
+	Thu, 12 Dec 2024 15:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wZPWgNe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcYzjEqU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209BA2080FC;
-	Thu, 12 Dec 2024 15:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961EE2210E2;
+	Thu, 12 Dec 2024 15:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017014; cv=none; b=dhpo0eGK+n9lS14i4qBXNBpWklRtaedm+ylh5CQitefZ28l/gqjuNGWz2ybtj35pD2a6SErNWEH0hKYtW0sqiQIMrkuT/mZ36sQk83N0bDefuuYdf6iN7VuJ0c9mea6DYZK3jqnv0yX4bqRfFrLlAVfcAI2DE7Vk8dm003rnFaM=
+	t=1734018028; cv=none; b=OPEaMooBc/iw5RuMHIAZUum5ADnFw938kgYVs4Q6HIVvTs/ivcjWpz2VAc6eYEqKCQRkMnFEEC0wEoQxofUseNoUBCzFzFUAdGe3tNExhBl9zXx2KwGGIgXtR0okRRDg0kQSOWmGMGwxGLgJOxv0XiLEG6fOA56XYHCZl3vYNZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017014; c=relaxed/simple;
-	bh=oNDPXtHL6rsRSHaUvERmKumV2qDblZD0uTAe6cYnIgI=;
+	s=arc-20240116; t=1734018028; c=relaxed/simple;
+	bh=8JTKbGchHvlrXiAOjKzj0PsNmmD75hIBUHM8nlJpx0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fm7zIRTVlF4paQ7SjpsX5+dhSxENly7gCp/uKHH9Hnkd+NfZ5PPjVjQkjbtzv0V/4VJ/6J5fxt9Y6faU3oFFaQnzYmo87beX8MnK6hQWudxUVlqW8/a53K6bQljTETOfTncn6TVS193y/nky/3f4yF5A6wkJSwC9wY3SlIO/gw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wZPWgNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8130FC4CECE;
-	Thu, 12 Dec 2024 15:23:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cnAB5TSPJDfv0LkSIMmsmc/qkqP49wkddyPl4Mli1S4aElZ8HOls6l+T6vmQj0TvURR7iWZOKzXE2tHf0zFIn0NAMkPPzUz6FM1rlTXDmMiOt/g47eSPs6DUhMicx+I3ikY/cZq4LZVnJnjby8HWvDGP8O50l/fSLecJwZpwmJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcYzjEqU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B441C4CECE;
+	Thu, 12 Dec 2024 15:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017014;
-	bh=oNDPXtHL6rsRSHaUvERmKumV2qDblZD0uTAe6cYnIgI=;
+	s=korg; t=1734018026;
+	bh=8JTKbGchHvlrXiAOjKzj0PsNmmD75hIBUHM8nlJpx0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1wZPWgNeHvjxrapqK9jifkIZPOcX7mWxcF8ulRR/qADJL/WvF+cCoHDh4WcBxrW+R
-	 0dQm66A7Kro1hXizCfBzpMGrp0QKpePb6cvDguNNny2GG9fcxb2J6LgqAVp718L9dM
-	 xbtsTGWT8HvyaEnWYqYrOdWEu5DKH3BaPytFBLmg=
+	b=zcYzjEqUFDbh85wmakneNnpxrqj+a0h1S/NSIi6Gntzwo9Nb3U/pFVrZR1fzDiDyE
+	 ZmctEAy5qobG/HiQ99GDVyvQ0xv8zNvxYEA3P3RnUYRvtPHkAP6szI84fZQrjruE36
+	 W8DrmhHnbIcSEmR03G1TLWSd0j3OfwNWJTGKt9TQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Ausef Yousof <Ausef.Yousof@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 326/466] drm/amd/display: Remove hw w/a toggle if on DP2/HPO
+	Jordy Zomer <jordyzomer@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 176/356] xsk: fix OOB map writes when deleting elements
 Date: Thu, 12 Dec 2024 15:58:15 +0100
-Message-ID: <20241212144319.669836624@linuxfoundation.org>
+Message-ID: <20241212144251.590066603@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ausef Yousof <Ausef.Yousof@amd.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit b4c804628485af2b46f0d24a87190735cac37d61 ]
+commit 32cd3db7de97c0c7a018756ce66244342fd583f0 upstream.
 
-[why&how]
-Applying a hw w/a only relevant to DIG FIFO causing corruption
-using HPO, do not apply the w/a if on DP2/HPO
+Jordy says:
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"
+In the xsk_map_delete_elem function an unsigned integer
+(map->max_entries) is compared with a user-controlled signed integer
+(k). Due to implicit type conversion, a large unsigned value for
+map->max_entries can bypass the intended bounds check:
+
+	if (k >= map->max_entries)
+		return -EINVAL;
+
+This allows k to hold a negative value (between -2147483648 and -2),
+which is then used as an array index in m->xsk_map[k], which results
+in an out-of-bounds access.
+
+	spin_lock_bh(&m->lock);
+	map_entry = &m->xsk_map[k]; // Out-of-bounds map_entry
+	old_xs = unrcu_pointer(xchg(map_entry, NULL));  // Oob write
+	if (old_xs)
+		xsk_map_sock_delete(old_xs, map_entry);
+	spin_unlock_bh(&m->lock);
+
+The xchg operation can then be used to cause an out-of-bounds write.
+Moreover, the invalid map_entry passed to xsk_map_sock_delete can lead
+to further memory corruption.
+"
+
+It indeed results in following splat:
+
+[76612.897343] BUG: unable to handle page fault for address: ffffc8fc2e461108
+[76612.904330] #PF: supervisor write access in kernel mode
+[76612.909639] #PF: error_code(0x0002) - not-present page
+[76612.914855] PGD 0 P4D 0
+[76612.917431] Oops: Oops: 0002 [#1] PREEMPT SMP
+[76612.921859] CPU: 11 UID: 0 PID: 10318 Comm: a.out Not tainted 6.12.0-rc1+ #470
+[76612.929189] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
+[76612.939781] RIP: 0010:xsk_map_delete_elem+0x2d/0x60
+[76612.944738] Code: 00 00 41 54 55 53 48 63 2e 3b 6f 24 73 38 4c 8d a7 f8 00 00 00 48 89 fb 4c 89 e7 e8 2d bf 05 00 48 8d b4 eb 00 01 00 00 31 ff <48> 87 3e 48 85 ff 74 05 e8 16 ff ff ff 4c 89 e7 e8 3e bc 05 00 31
+[76612.963774] RSP: 0018:ffffc9002e407df8 EFLAGS: 00010246
+[76612.969079] RAX: 0000000000000000 RBX: ffffc9002e461000 RCX: 0000000000000000
+[76612.976323] RDX: 0000000000000001 RSI: ffffc8fc2e461108 RDI: 0000000000000000
+[76612.983569] RBP: ffffffff80000001 R08: 0000000000000000 R09: 0000000000000007
+[76612.990812] R10: ffffc9002e407e18 R11: ffff888108a38858 R12: ffffc9002e4610f8
+[76612.998060] R13: ffff888108a38858 R14: 00007ffd1ae0ac78 R15: ffffc9002e4610c0
+[76613.005303] FS:  00007f80b6f59740(0000) GS:ffff8897e0ec0000(0000) knlGS:0000000000000000
+[76613.013517] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[76613.019349] CR2: ffffc8fc2e461108 CR3: 000000011e3ef001 CR4: 00000000007726f0
+[76613.026595] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[76613.033841] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[76613.041086] PKRU: 55555554
+[76613.043842] Call Trace:
+[76613.046331]  <TASK>
+[76613.048468]  ? __die+0x20/0x60
+[76613.051581]  ? page_fault_oops+0x15a/0x450
+[76613.055747]  ? search_extable+0x22/0x30
+[76613.059649]  ? search_bpf_extables+0x5f/0x80
+[76613.063988]  ? exc_page_fault+0xa9/0x140
+[76613.067975]  ? asm_exc_page_fault+0x22/0x30
+[76613.072229]  ? xsk_map_delete_elem+0x2d/0x60
+[76613.076573]  ? xsk_map_delete_elem+0x23/0x60
+[76613.080914]  __sys_bpf+0x19b7/0x23c0
+[76613.084555]  __x64_sys_bpf+0x1a/0x20
+[76613.088194]  do_syscall_64+0x37/0xb0
+[76613.091832]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[76613.096962] RIP: 0033:0x7f80b6d1e88d
+[76613.100592] Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 b5 0f 00 f7 d8 64 89 01 48
+[76613.119631] RSP: 002b:00007ffd1ae0ac68 EFLAGS: 00000206 ORIG_RAX: 0000000000000141
+[76613.131330] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f80b6d1e88d
+[76613.142632] RDX: 0000000000000098 RSI: 00007ffd1ae0ad20 RDI: 0000000000000003
+[76613.153967] RBP: 00007ffd1ae0adc0 R08: 0000000000000000 R09: 0000000000000000
+[76613.166030] R10: 00007f80b6f77040 R11: 0000000000000206 R12: 00007ffd1ae0aed8
+[76613.177130] R13: 000055ddf42ce1e9 R14: 000055ddf42d0d98 R15: 00007f80b6fab040
+[76613.188129]  </TASK>
+
+Fix this by simply changing key type from int to u32.
+
+Fixes: fbfc504a24f5 ("bpf: introduce new bpf AF_XDP map type BPF_MAP_TYPE_XSKMAP")
+CC: stable@vger.kernel.org
+Reported-by: Jordy Zomer <jordyzomer@google.com>
+Suggested-by: Jordy Zomer <jordyzomer@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20241122121030.716788-2-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c  | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/xdp/xskmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 7d68006137a97..3bd0d46c17010 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -132,6 +132,8 @@ static void dcn35_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *
- 	for (i = 0; i < dc->res_pool->pipe_count; ++i) {
- 		struct pipe_ctx *old_pipe = &dc->current_state->res_ctx.pipe_ctx[i];
- 		struct pipe_ctx *new_pipe = &context->res_ctx.pipe_ctx[i];
-+		struct clk_mgr_internal *clk_mgr_internal = TO_CLK_MGR_INTERNAL(clk_mgr_base);
-+		struct dccg *dccg = clk_mgr_internal->dccg;
- 		struct pipe_ctx *pipe = safe_to_lower
- 			? &context->res_ctx.pipe_ctx[i]
- 			: &dc->current_state->res_ctx.pipe_ctx[i];
-@@ -148,8 +150,13 @@ static void dcn35_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *
- 		new_pipe->stream_res.stream_enc &&
- 		new_pipe->stream_res.stream_enc->funcs->is_fifo_enabled &&
- 		new_pipe->stream_res.stream_enc->funcs->is_fifo_enabled(new_pipe->stream_res.stream_enc);
--		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal) ||
--			!pipe->stream->link_enc) && !stream_changed_otg_dig_on) {
-+		bool has_active_hpo = dccg->ctx->dc->link_srv->dp_is_128b_132b_signal(old_pipe) && dccg->ctx->dc->link_srv->dp_is_128b_132b_signal(new_pipe);
-+
-+		if (!has_active_hpo && !dccg->ctx->dc->link_srv->dp_is_128b_132b_signal(pipe) &&
-+					(pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal) ||
-+					!pipe->stream->link_enc) && !stream_changed_otg_dig_on)) {
-+
-+
- 			/* This w/a should not trigger when we have a dig active */
- 			if (disable) {
- 				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
--- 
-2.43.0
-
+--- a/net/xdp/xskmap.c
++++ b/net/xdp/xskmap.c
+@@ -224,7 +224,7 @@ static long xsk_map_delete_elem(struct b
+ 	struct xsk_map *m = container_of(map, struct xsk_map, map);
+ 	struct xdp_sock __rcu **map_entry;
+ 	struct xdp_sock *old_xs;
+-	int k = *(u32 *)key;
++	u32 k = *(u32 *)key;
+ 
+ 	if (k >= map->max_entries)
+ 		return -EINVAL;
 
 
 
