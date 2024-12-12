@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF58B9EEBD5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0DB9EEDBE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CCC5162FE1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D45EB1885936
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C0F2153D9;
-	Thu, 12 Dec 2024 15:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BA822331F;
+	Thu, 12 Dec 2024 15:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kC6HjiDZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prkNLxKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4194C205ACF;
-	Thu, 12 Dec 2024 15:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D1B223315;
+	Thu, 12 Dec 2024 15:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017164; cv=none; b=JTqwAGNRZ2I2weVYd0nsGNiPQvkl6D3Mqmr87TSm88gjQVkyHBtSQuPkftRJ3PAswfCeBemeger0pWXzSkIXJQm3V+0TktqgzWmjarYC8ZkITxs33GrrvDsLRCa1aGPJOp8nZUcX2xle+/WXkNZ+dpAspjYJ7/+xlRfx+N691GY=
+	t=1734018292; cv=none; b=IvyYjK79qwa7OeZEbggM1s+vxXY2psb86gr+f8cSXUXtuBKZSo7F/c65/sN8slbLCpe3F/3XmFoNUJdL2ANNln5rNo9n/ndMjAxqXSzy2LZTWxgyLAReeVhMKHVi7iZcsft4I6kCMrGNnPcLALipj0TBNQUgtwHz/cbD/fnr8LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017164; c=relaxed/simple;
-	bh=e6oYQ9F0uXRLxXxkTUWrhEx6lb+UsGSgJW6yt66wEq8=;
+	s=arc-20240116; t=1734018292; c=relaxed/simple;
+	bh=s5eAHj6rjgOS1qYq5pHaq4QviwB9jdST1/VUvZuP++k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3BdKI9kx4s1yTlbxCvcUReIwHdQnz3lEEIDpBZRRGBfYDoufWCR49vi+enZ6Opw/umHwHIDdzL5vs0PdQoUs8Fr/2CGNaskISQt56C6ofsvAs+2dXFC0lcRdL9AiluOz1HC6RgQt2Vjhl91Hp3haXbDDU19YbOjjE/t02htP4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kC6HjiDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1588C4CECE;
-	Thu, 12 Dec 2024 15:26:03 +0000 (UTC)
+	 MIME-Version; b=ZcKT9A8NIWs6UckZ0UeY/+cw6TdLab02csH/QH28nMp0dRLm1+lmJLQ1WJ921Am4IIytoOeEHseU595ZXkPpH2SwsVgYZD1V+dt6kB6aWwOOarswVXGFu0XTMMkoRuS1DR6aiplZg0ei9YbXmVtq98m1dbBUjitl6j0Vt50QNDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prkNLxKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE01CC4CECE;
+	Thu, 12 Dec 2024 15:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017164;
-	bh=e6oYQ9F0uXRLxXxkTUWrhEx6lb+UsGSgJW6yt66wEq8=;
+	s=korg; t=1734018292;
+	bh=s5eAHj6rjgOS1qYq5pHaq4QviwB9jdST1/VUvZuP++k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kC6HjiDZa5Ts1USOKyJqWo+ixZGuZzmnbhnih2YXKCNZlg8CFkbZaErm5mdRPPUjU
-	 WlbLFLQ+Bkr9gI5I0xGfiJZwdr+wTwAcgKYQ94PkmSMngUTPdTV0/+1/x2HUbE7n2c
-	 VUBcNe/UF6IaJXlRRg9nwtdXBcjZh6rYHb+Z6XuI=
+	b=prkNLxKzVxSF2iWLqoEGodyQ4bfL8MDPJtfO66HHX2xSroW4OdzmofF3uggN9jo/M
+	 n6abZKTxUjLAv8cEeKkyvzvWftQuHWudNgW5pEplCRBMWYse3+6Wvj/ojTCZAIBS/K
+	 /EoX/YE2S2OmX6ARcxoz0NiD5OmD+OOauLVhtwuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiuhong Wang <xiuhong.wang@unisoc.com>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 401/466] f2fs: fix to shrink read extent node in batches
-Date: Thu, 12 Dec 2024 15:59:30 +0100
-Message-ID: <20241212144322.600078803@linuxfoundation.org>
+Subject: [PATCH 6.6 252/356] wifi: ipw2x00: libipw_rx_any(): fix bad alignment
+Date: Thu, 12 Dec 2024 15:59:31 +0100
+Message-ID: <20241212144254.561704952@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,183 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-[ Upstream commit 3fc5d5a182f6a1f8bd4dc775feb54c369dd2c343 ]
+[ Upstream commit 4fa4f049dc0d9741b16c96bcbf0108c85368a2b9 ]
 
-We use rwlock to protect core structure data of extent tree during
-its shrink, however, if there is a huge number of extent nodes in
-extent tree, during shrink of extent tree, it may hold rwlock for
-a very long time, which may trigger kernel hang issue.
+This patch fixes incorrect code alignment.
 
-This patch fixes to shrink read extent node in batches, so that,
-critical region of the rwlock can be shrunk to avoid its extreme
-long time hold.
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:871:2-3: code aligned with following code on line 882.
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:886:2-3: code aligned with following code on line 900.
 
-Reported-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
-Closes: https://lore.kernel.org/linux-f2fs-devel/20241112110627.1314632-1-xiuhong.wang@unisoc.com/
-Signed-off-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11381
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241101060725.54640-1-jiapeng.chong@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/extent_cache.c | 69 +++++++++++++++++++++++++-----------------
- 1 file changed, 41 insertions(+), 28 deletions(-)
+ drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index 62ac440d94168..368d9cbdea743 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -346,21 +346,22 @@ static struct extent_tree *__grab_extent_tree(struct inode *inode,
- }
- 
- static unsigned int __free_extent_tree(struct f2fs_sb_info *sbi,
--					struct extent_tree *et)
-+				struct extent_tree *et, unsigned int nr_shrink)
- {
- 	struct rb_node *node, *next;
- 	struct extent_node *en;
--	unsigned int count = atomic_read(&et->node_cnt);
-+	unsigned int count;
- 
- 	node = rb_first_cached(&et->root);
--	while (node) {
-+
-+	for (count = 0; node && count < nr_shrink; count++) {
- 		next = rb_next(node);
- 		en = rb_entry(node, struct extent_node, rb_node);
- 		__release_extent_node(sbi, et, en);
- 		node = next;
- 	}
- 
--	return count - atomic_read(&et->node_cnt);
-+	return count;
- }
- 
- static void __drop_largest_extent(struct extent_tree *et,
-@@ -579,6 +580,30 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
- 	return en;
- }
- 
-+static unsigned int __destroy_extent_node(struct inode *inode,
-+					enum extent_type type)
-+{
-+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
-+	struct extent_tree *et = F2FS_I(inode)->extent_tree[type];
-+	unsigned int nr_shrink = type == EX_READ ?
-+				READ_EXTENT_CACHE_SHRINK_NUMBER :
-+				AGE_EXTENT_CACHE_SHRINK_NUMBER;
-+	unsigned int node_cnt = 0;
-+
-+	if (!et || !atomic_read(&et->node_cnt))
-+		return 0;
-+
-+	while (atomic_read(&et->node_cnt)) {
-+		write_lock(&et->lock);
-+		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
-+		write_unlock(&et->lock);
-+	}
-+
-+	f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
-+
-+	return node_cnt;
-+}
-+
- static void __update_extent_tree_range(struct inode *inode,
- 			struct extent_info *tei, enum extent_type type)
- {
-@@ -717,9 +742,6 @@ static void __update_extent_tree_range(struct inode *inode,
- 		}
- 	}
- 
--	if (is_inode_flag_set(inode, FI_NO_EXTENT))
--		__free_extent_tree(sbi, et);
--
- 	if (et->largest_updated) {
- 		et->largest_updated = false;
- 		updated = true;
-@@ -737,6 +759,9 @@ static void __update_extent_tree_range(struct inode *inode,
- out_read_extent_cache:
- 	write_unlock(&et->lock);
- 
-+	if (is_inode_flag_set(inode, FI_NO_EXTENT))
-+		__destroy_extent_node(inode, EX_READ);
-+
- 	if (updated)
- 		f2fs_mark_inode_dirty_sync(inode, true);
- }
-@@ -899,10 +924,14 @@ static unsigned int __shrink_extent_tree(struct f2fs_sb_info *sbi, int nr_shrink
- 	list_for_each_entry_safe(et, next, &eti->zombie_list, list) {
- 		if (atomic_read(&et->node_cnt)) {
- 			write_lock(&et->lock);
--			node_cnt += __free_extent_tree(sbi, et);
-+			node_cnt += __free_extent_tree(sbi, et,
-+					nr_shrink - node_cnt - tree_cnt);
- 			write_unlock(&et->lock);
- 		}
--		f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
-+
-+		if (atomic_read(&et->node_cnt))
-+			goto unlock_out;
-+
- 		list_del_init(&et->list);
- 		radix_tree_delete(&eti->extent_tree_root, et->ino);
- 		kmem_cache_free(extent_tree_slab, et);
-@@ -1041,23 +1070,6 @@ unsigned int f2fs_shrink_age_extent_tree(struct f2fs_sb_info *sbi, int nr_shrink
- 	return __shrink_extent_tree(sbi, nr_shrink, EX_BLOCK_AGE);
- }
- 
--static unsigned int __destroy_extent_node(struct inode *inode,
--					enum extent_type type)
--{
--	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
--	struct extent_tree *et = F2FS_I(inode)->extent_tree[type];
--	unsigned int node_cnt = 0;
--
--	if (!et || !atomic_read(&et->node_cnt))
--		return 0;
--
--	write_lock(&et->lock);
--	node_cnt = __free_extent_tree(sbi, et);
--	write_unlock(&et->lock);
--
--	return node_cnt;
--}
--
- void f2fs_destroy_extent_node(struct inode *inode)
- {
- 	__destroy_extent_node(inode, EX_READ);
-@@ -1066,7 +1078,6 @@ void f2fs_destroy_extent_node(struct inode *inode)
- 
- static void __drop_extent_tree(struct inode *inode, enum extent_type type)
- {
--	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 	struct extent_tree *et = F2FS_I(inode)->extent_tree[type];
- 	bool updated = false;
- 
-@@ -1074,7 +1085,6 @@ static void __drop_extent_tree(struct inode *inode, enum extent_type type)
- 		return;
- 
- 	write_lock(&et->lock);
--	__free_extent_tree(sbi, et);
- 	if (type == EX_READ) {
- 		set_inode_flag(inode, FI_NO_EXTENT);
- 		if (et->largest.len) {
-@@ -1083,6 +1093,9 @@ static void __drop_extent_tree(struct inode *inode, enum extent_type type)
- 		}
- 	}
- 	write_unlock(&et->lock);
-+
-+	__destroy_extent_node(inode, type);
-+
- 	if (updated)
- 		f2fs_mark_inode_dirty_sync(inode, true);
- }
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+index 48d6870bbf4e2..9a97ab9b89ae8 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+@@ -870,8 +870,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 	switch (ieee->iw_mode) {
+ 	case IW_MODE_ADHOC:
+ 		/* our BSS and not from/to DS */
+-		if (ether_addr_equal(hdr->addr3, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == 0) {
++		if (ether_addr_equal(hdr->addr3, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
+@@ -885,8 +885,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 		break;
+ 	case IW_MODE_INFRA:
+ 		/* our BSS (== from our AP) and from DS */
+-		if (ether_addr_equal(hdr->addr2, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS) {
++		if (ether_addr_equal(hdr->addr2, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
 -- 
 2.43.0
 
