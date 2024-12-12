@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-103595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3A89EF8A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:44:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB48F9EF550
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AEAF17E2FC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33A0E179032
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB23221D93;
-	Thu, 12 Dec 2024 17:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6771F2288F5;
+	Thu, 12 Dec 2024 17:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajM3viv9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAiv9bnZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88898215178;
-	Thu, 12 Dec 2024 17:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254D8217664;
+	Thu, 12 Dec 2024 17:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025039; cv=none; b=nLDwgsG+gdUfSZqIKEuCxl0kTQ/9pjchDDnobCs+t1zw+Zsfr94cnEj7KpgDn45ds+9QMZV+FTQkszYzNVWx3mjdGhfyhXw596JWPk9AoQXf9IQzogqo9HhJ7SRlrCTq21LxXusmW73ODot+FMdFOzdNXPF6Y+ETPauo//BXKjA=
+	t=1734022878; cv=none; b=NbBW6hVobsuePUF0zDLeDnl1gaomh4fCFV82sK0HztkWLCPAzyVwG4LFLCLeGjwP3d7J+PEiBSMlFcu5mXMaB5CSgxpHLd4QDVpmhDSi432CKlLQwdzDMO/uRhrLZ71+8zRFB4gI8BH5vnYbvQFf4JGQERzthMXtQG8TvZtC+K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025039; c=relaxed/simple;
-	bh=OlObgQETfXfwKBdE9vzpzuvYr8rd0WwYpftTStGu7Yk=;
+	s=arc-20240116; t=1734022878; c=relaxed/simple;
+	bh=DKCtLftPcUYZpuOVCscS6pEXRCfuMbux9lZ4MqGclcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JRKfLTTXfnhbm3f8+Ubw9GqoLc6gGTYGNcQW8CXomHT2pFCEYiZO99DYe9eS6s1652jHjvF3Ufk5V9xh+Y/B5fRke//8dDJtSgdzlc15bxDEgp6lbYpbU/0EVqTWRmZwoh8bbdDZzVkrjwj7MCxjy/D32YWj/U3HdElby1XG5s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajM3viv9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0332C4CECE;
-	Thu, 12 Dec 2024 17:37:18 +0000 (UTC)
+	 MIME-Version; b=qLCCcJaGXsBS3uqZ4kq4XAdc5j5RWLRVA/u3mgSSqXkdtMGcPGc1NUL3Jcxo7WUMZUBCuH7kEjvxtBPvWZCM9226H2n4AXv9Ta5GJzHUOpDX+MmWETWAsfliMM+6u8ulgkfLxH7e8Ul/nXsRwUclJmI1f0p2naF6F6U1Qzi+Pk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAiv9bnZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E375C4CECE;
+	Thu, 12 Dec 2024 17:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025039;
-	bh=OlObgQETfXfwKBdE9vzpzuvYr8rd0WwYpftTStGu7Yk=;
+	s=korg; t=1734022878;
+	bh=DKCtLftPcUYZpuOVCscS6pEXRCfuMbux9lZ4MqGclcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajM3viv9HZJJ+aOjVGkFtr6tkt0ckQdpSF21HgKrXaY4Jq86rtyfif+EwUqARhERx
-	 08/wmOJXtP6UgMpAwIokG5qYssIYl2qhao+kVsXX54510Y/8pw6ndESGzPGo0jSPIK
-	 geqoZmMLCH/lVh3fAWxNuMs8AQxogfkbvJq6FpGw=
+	b=eAiv9bnZQYuTb5sdVztdp+OsTT52vpeL3V10Z0i/rNY4KTt6QPlDJ/q2RdjKX44Ov
+	 /7Ek2PmSYDyxqW3Sw6TfA4A87/Lj6gmdYOoy4HTy6D05WnYKVIlSBYuQGiayHg6rTL
+	 7o7MERSWRfpLVuEzNk2//kjGJpTtU5qaFy26tp8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Jeremy Gebben <jgebben@sweptlaser.com>,
+	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/321] acpi/arm64: Adjust error handling procedure in gtdt_parse_timer_block()
-Date: Thu, 12 Dec 2024 15:59:13 +0100
-Message-ID: <20241212144231.389820572@linuxfoundation.org>
+Subject: [PATCH 5.15 359/565] rtc: abx80x: Fix WDT bit position of the status register
+Date: Thu, 12 Dec 2024 15:59:14 +0100
+Message-ID: <20241212144325.802568500@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
 
-[ Upstream commit 1a9de2f6fda69d5f105dd8af776856a66abdaa64 ]
+[ Upstream commit 10e078b273ee7a2b8b4f05a64ac458f5e652d18d ]
 
-In case of error in gtdt_parse_timer_block() invalid 'gtdt_frame'
-will be used in 'do {} while (i-- >= 0 && gtdt_frame--);' statement block
-because do{} block will be executed even if 'i == 0'.
+The WDT bit in the status register is 5, not 6. This fixes from 6 to 5.
 
-Adjust error handling procedure by replacing 'i-- >= 0' with 'i-- > 0'.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: a712c3ed9b8a ("acpi/arm64: Add memory-mapped timer support in GTDT driver")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240827101239.22020-1-amishin@t-argos.ru
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://abracon.com/Support/AppsManuals/Precisiontiming/AB08XX-Application-Manual.pdf
+Link: https://www.microcrystal.com/fileadmin/Media/Products/RTC/App.Manual/RV-1805-C3_App-Manual.pdf
+Fixes: 749e36d0a0d7 ("rtc: abx80x: add basic watchdog support")
+Cc: Jeremy Gebben <jgebben@sweptlaser.com>
+Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+Link: https://lore.kernel.org/r/20241008041737.1640633-1-iwamatsu@nigauri.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/arm64/gtdt.c | 2 +-
+ drivers/rtc/rtc-abx80x.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-index 311419d1d6b05..b00724700f552 100644
---- a/drivers/acpi/arm64/gtdt.c
-+++ b/drivers/acpi/arm64/gtdt.c
-@@ -283,7 +283,7 @@ static int __init gtdt_parse_timer_block(struct acpi_gtdt_timer_block *block,
- 		if (frame->virt_irq > 0)
- 			acpi_unregister_gsi(gtdt_frame->virtual_timer_interrupt);
- 		frame->virt_irq = 0;
--	} while (i-- >= 0 && gtdt_frame--);
-+	} while (i-- > 0 && gtdt_frame--);
+diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
+index 9b0138d07232d..2ea6fdd2ae984 100644
+--- a/drivers/rtc/rtc-abx80x.c
++++ b/drivers/rtc/rtc-abx80x.c
+@@ -37,7 +37,7 @@
+ #define ABX8XX_REG_STATUS	0x0f
+ #define ABX8XX_STATUS_AF	BIT(2)
+ #define ABX8XX_STATUS_BLF	BIT(4)
+-#define ABX8XX_STATUS_WDT	BIT(6)
++#define ABX8XX_STATUS_WDT	BIT(5)
  
- 	return -EINVAL;
- }
+ #define ABX8XX_REG_CTRL1	0x10
+ #define ABX8XX_CTRL_WRITE	BIT(0)
 -- 
 2.43.0
 
