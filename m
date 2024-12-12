@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5389EEB3D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFA49EEC70
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2AC9188D2D0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B3E1283656
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C54217F55;
-	Thu, 12 Dec 2024 15:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45623217F26;
+	Thu, 12 Dec 2024 15:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JYmFKa+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EI1/PpJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0701217F26;
-	Thu, 12 Dec 2024 15:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D59215764;
+	Thu, 12 Dec 2024 15:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016653; cv=none; b=iStrwG8do6/sMmfgrSe+DiF7FiJNQWEbICDalle0yiRiyCs6ViLVyKUJ/C+0cng0WMWSfbimzs9vESWh7TLFfQYvCrWI1Kj8U9vHotEZP1IMrvxXTNc/XqFnCDK6jygitbvAvLLtSJb4ZwFsWPMlrrkoWL1vrc1yO7FytOgMxlw=
+	t=1734017676; cv=none; b=E+O9PEP9g84oQ84ilBUrPbnqSb42qtBhYJ+WJfVcdvepSnSLD3XG3wVGxHs9NgpeFrOIAloLX03BKg1hbLsSunL2NkPEC+AL5QDN2IHmJAAW/kBrx/ym5GerhVhGcmpF4U5rIv/WJwmLBvYaBc2ePfbW+4kmunfzk0wfWmGtP3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016653; c=relaxed/simple;
-	bh=v9YPEko2fGWbrX4UsD+Cts5igXWVubUHr6XYqz4v+ZM=;
+	s=arc-20240116; t=1734017676; c=relaxed/simple;
+	bh=+owGEW8YeDRHzCFIoC7P44pxIKbAc0XqsykRVQGEq+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4oDbZ6CcXz4kgTmjNcghe5MHSaBGmjSxKZUFfzfeG8wPuBUxtAATWUr20brw4Iw3S5MdIht362CH7KS6GvhLm5rYXcTGR/z1PwdbVGiQS6FqdLUrZfXJlYaHOUgaMmbGHkB4T2kgulvCasIHZE+cnk0ZZtH2OteL2M0yt+OP+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JYmFKa+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C16C4CED4;
-	Thu, 12 Dec 2024 15:17:32 +0000 (UTC)
+	 MIME-Version; b=h+MKPReLHfbKgVIHz5wcmvyMmTQ0V/PbvOar6L5Rw0+JXz2CzjTb/B4AfI095oHbouoju4jjoiH3HFLI/s2qLCbLdWFA3Q5Qb2VMidVC8ysK6YAWpodFTW3SYcL6FJLH2cF7jWBWsDIv2vqGC2Pve74X0PQ4VfblDgIHFi/PC74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EI1/PpJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C300C4CECE;
+	Thu, 12 Dec 2024 15:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016653;
-	bh=v9YPEko2fGWbrX4UsD+Cts5igXWVubUHr6XYqz4v+ZM=;
+	s=korg; t=1734017675;
+	bh=+owGEW8YeDRHzCFIoC7P44pxIKbAc0XqsykRVQGEq+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JYmFKa+OcGJfDzNyAms2owCXyBqGMIzlZciJX8SMt+buQir0nDbSW1QskNeeVdO+
-	 V/q6EHGu5vq0eibLrZK5urCsJEXHcvGvhPhlU9PF190dh9EAJTRLYbwKfjNKEILRsw
-	 tdgMeEX/H8TZ4LjdOtYTMTa4m8K9T3cqg4I/jAcI=
+	b=EI1/PpJ0Vvm0ptd5HFpcb2xbH+1BMlpxXY0bPI+DMIE2z2zQdhU8YhQz81SFaI0ET
+	 L5ddImPHTCT9ccjx6UwrYrl7DifIB/IY2uDt59nuQVNVy03myXog479qBMac9u+fxE
+	 byu1REX1Do9vWe1mhaOqdB8kHJzkOXFwa1KejgU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 229/466] ACPI: x86: Add adev NULL check to acpi_quirk_skip_serdev_enumeration()
+Subject: [PATCH 6.6 079/356] soc: fsl: cpm1: qmc: Set the ret error code on platform_get_irq() failure
 Date: Thu, 12 Dec 2024 15:56:38 +0100
-Message-ID: <20241212144315.819864740@linuxfoundation.org>
+Message-ID: <20241212144247.746298989@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 4a49194f587a62d972b602e3e1a2c3cfe6567966 ]
+[ Upstream commit cb3daa51db819a172e9524e96e2ed96b4237e51a ]
 
-acpi_dev_hid_match() does not check for adev == NULL, dereferencing
-it unconditional.
+A kernel test robot detected a missing error code:
+   qmc.c:1942 qmc_probe() warn: missing error code 'ret'
 
-Add a check for adev being NULL before calling acpi_dev_hid_match().
+Indeed, the error returned by platform_get_irq() is checked and the
+operation is aborted in case of failure but the ret error code is
+not set in that case.
 
-At the moment acpi_quirk_skip_serdev_enumeration() is never called with
-a controller_parent without an ACPI companion, but better safe than sorry.
+Set the ret error code.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241109220028.83047-1-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202411051350.KNy6ZIWA-lkp@intel.com/
+Fixes: 3178d58e0b97 ("soc: fsl: cpm1: Add support for QMC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20241105145623.401528-1-herve.codina@bootlin.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/fsl/qe/qmc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 3eec889d4f5f8..423565c31d5ef 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -536,7 +536,7 @@ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *s
- 	 * Set skip to true so that the tty core creates a serdev ctrl device.
- 	 * The backlight driver will manually create the serdev client device.
- 	 */
--	if (acpi_dev_hid_match(adev, "DELL0501")) {
-+	if (adev && acpi_dev_hid_match(adev, "DELL0501")) {
- 		*skip = true;
- 		/*
- 		 * Create a platform dev for dell-uart-backlight to bind to.
+diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+index 9fa75effcfc06..f1720c7cbe063 100644
+--- a/drivers/soc/fsl/qe/qmc.c
++++ b/drivers/soc/fsl/qe/qmc.c
+@@ -1420,8 +1420,10 @@ static int qmc_probe(struct platform_device *pdev)
+ 
+ 	/* Set the irq handler */
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0)
++	if (irq < 0) {
++		ret = irq;
+ 		goto err_exit_xcc;
++	}
+ 	ret = devm_request_irq(qmc->dev, irq, qmc_irq_handler, 0, "qmc", qmc);
+ 	if (ret < 0)
+ 		goto err_exit_xcc;
 -- 
 2.43.0
 
