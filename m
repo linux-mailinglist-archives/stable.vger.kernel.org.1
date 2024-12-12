@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-101749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F1A9EEDE4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6434E9EEDF6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B28D128630A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25D5B286721
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FC221CFF0;
-	Thu, 12 Dec 2024 15:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94D42185A0;
+	Thu, 12 Dec 2024 15:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deZSEWS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEiGc6R6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D89614A82;
-	Thu, 12 Dec 2024 15:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A776E217679;
+	Thu, 12 Dec 2024 15:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018665; cv=none; b=b+Q/PHjdwvMiKuQm3pXWlbb9w7PfXuq59V9v0PoK/jE4ndTV2FPUp7NHWRnMu2RH8MEnv3j6tYxaFL2BT/9p4vsmA8DiKyXu6+XOyMjrHQI2AnarOU6rwazxPZ7HwaiCrTYiLoyoLAdsr2gaH0WJA5dNQPmDUyAEoJfhgCnAjn4=
+	t=1734018700; cv=none; b=kTfp9ehKU/GIcyjWYZgM/lIDoOR+FC3GKUJ2RQNVrI+o1ggOOPnZIAAr/GBor9EhtQvvWBqPOAVKsPTwQninyTDjiOJl+xdUtuICMpMCLkGqAq2FO6QnrkPkmV5ANFNJiTlbPyc3tfvTVlxYK3x1GWKghlSc2t067iIITHYVJzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018665; c=relaxed/simple;
-	bh=B9K9czin3yTghEPq5HfqE3OET+Ukr0gh6qu1csw7ezU=;
+	s=arc-20240116; t=1734018700; c=relaxed/simple;
+	bh=zQnpIrlBQJ3GvJ5mT0hwt5pTW47hdbqEh7MvrGmPg4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+JqsMk+LIJ5jfJrA9imXSXjtwciWmpJNNh1I2pn6XBHk5haT0dxkIzkYO52TcX/ayb49gzojDp/hFzePCntPp9KKaciUKRFaXDjhQ0nvh83LAKwclHswf60sCfmETB6+BuNUWHYvfN2hL7oPaRCo6GjVrTHJ7e0aKXyKitAyNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deZSEWS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE90C4CECE;
-	Thu, 12 Dec 2024 15:51:04 +0000 (UTC)
+	 MIME-Version; b=L8qYIYqBB6Vl979tvDsTdwtjdPfMZQGma1FL/EWMypM+Ohp0xbJ3lboA2Z2rlUPvjMqGTljVyJ/Y8j+gXkkuMtz+1SDxM7BRXZJaW/TeW3xu1mMPIM2xUgHts1/wpTgLAhIy7SK7aWBJ2wrFQHwuxSklE3CcKNr47zj8ybynZ0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEiGc6R6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2707FC4CECE;
+	Thu, 12 Dec 2024 15:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018665;
-	bh=B9K9czin3yTghEPq5HfqE3OET+Ukr0gh6qu1csw7ezU=;
+	s=korg; t=1734018700;
+	bh=zQnpIrlBQJ3GvJ5mT0hwt5pTW47hdbqEh7MvrGmPg4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deZSEWS7+cJERd/C7d0NsI8zHTnxacfa1UdI9dPvRvNTL9gF2jNZo9nnP9kbUWBMd
-	 2GQTt3ufDAxXgo7lUn3/uhrCqmzehtzMNGRPeliSGQqsT2pZxZ3RVQdyRal4xzm8PP
-	 zcC82rX1Fhq2dbzb6nxZsGr0Kr67gNWA4CcDxsWc=
+	b=NEiGc6R6w4M8+Nt8+K9E8+KDEMoKUuDWIAU8zSoAUZkhsEuxXAe9ehpW0FjFtOfAD
+	 TALSfqRjPyRlhmjFQhNxy+yUq+jmceRm8QU9VfXhrOhZTYwxPzk/e84SAR3rYv9iJN
+	 vL3wve01UfaxK4y4/i9k1ONncgjbMTv5Tnqt+6PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Larabel <Michael@phoronix.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.6 353/356] platform/x86: asus-wmi: Fix thermal profile initialization
-Date: Thu, 12 Dec 2024 16:01:12 +0100
-Message-ID: <20241212144258.518356625@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.6 354/356] serial: amba-pl011: fix build regression
+Date: Thu, 12 Dec 2024 16:01:13 +0100
+Message-ID: <20241212144258.555828848@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
 References: <20241212144244.601729511@linuxfoundation.org>
@@ -66,48 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit b012170fed282151f7ba8988a347670c299f5ab3 upstream.
+commit b5a23a60e8ab5711f4952912424347bf3864ce8d upstream.
 
-When support for vivobook fan profiles was added, the initial
-call to throttle_thermal_policy_set_default() was removed, which
-however is necessary for full initialization.
+When CONFIG_DMA_ENGINE is disabled, the driver now fails to build:
 
-Fix this by calling throttle_thermal_policy_set_default() again
-when setting up the platform profile.
+drivers/tty/serial/amba-pl011.c: In function 'pl011_unthrottle_rx':
+drivers/tty/serial/amba-pl011.c:1822:16: error: 'struct uart_amba_port' has no member named 'using_rx_dma'
+ 1822 |         if (uap->using_rx_dma) {
+      |                ^~
+drivers/tty/serial/amba-pl011.c:1823:20: error: 'struct uart_amba_port' has no member named 'dmacr'
+ 1823 |                 uap->dmacr |= UART011_RXDMAE;
+      |                    ^~
+drivers/tty/serial/amba-pl011.c:1824:32: error: 'struct uart_amba_port' has no member named 'dmacr'
+ 1824 |                 pl011_write(uap->dmacr, uap, REG_DMACR);
+      |                                ^~
 
-Fixes: bcbfcebda2cb ("platform/x86: asus-wmi: add support for vivobook fan profiles")
-Reported-by: Michael Larabel <Michael@phoronix.com>
-Closes: https://www.phoronix.com/review/lunar-lake-xe2/5
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20241025191514.15032-2-W_Armin@gmx.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Add the missing #ifdef check around these field accesses, matching
+what other parts of this driver do.
+
+Fixes: 2bcacc1c87ac ("serial: amba-pl011: Fix RX stall when DMA is used")
+Cc: stable <stable@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411140617.nkjeHhsK-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20241115110021.744332-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/asus-wmi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/tty/serial/amba-pl011.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -3569,6 +3569,16 @@ static int platform_profile_setup(struct
- 	if (!asus->throttle_thermal_policy_dev)
- 		return 0;
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -1837,10 +1837,12 @@ static void pl011_unthrottle_rx(struct u
  
-+	/*
-+	 * We need to set the default thermal profile during probe or otherwise
-+	 * the system will often remain in silent mode, causing low performance.
-+	 */
-+	err = throttle_thermal_policy_set_default(asus);
-+	if (err < 0) {
-+		pr_warn("Failed to set default thermal profile\n");
-+		return err;
-+	}
-+
- 	dev_info(dev, "Using throttle_thermal_policy for platform_profile support\n");
+ 	pl011_write(uap->im, uap, REG_IMSC);
  
- 	asus->platform_profile_handler.profile_get = asus_wmi_platform_profile_get;
++#ifdef CONFIG_DMA_ENGINE
+ 	if (uap->using_rx_dma) {
+ 		uap->dmacr |= UART011_RXDMAE;
+ 		pl011_write(uap->dmacr, uap, REG_DMACR);
+ 	}
++#endif
+ 
+ 	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
 
 
 
