@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-102651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7789EF414
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA579EEA6B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9511A1728CA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47662188C727
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370B2239BAB;
-	Thu, 12 Dec 2024 16:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A91217670;
+	Thu, 12 Dec 2024 15:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6Ax7Hoi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xdv0nsLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E715F239BA8;
-	Thu, 12 Dec 2024 16:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024802080FC;
+	Thu, 12 Dec 2024 15:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022000; cv=none; b=qwfbhUND4hjK+9zTw78mnsRSd5K6Ht360H1FR69bZHZiBglX7cYGLd0SmmuSHhzDRVdoXYtXI1jDFBY8Xg+SfHgHuqmi4USiPxz4AhhLs4kU3Y2SdgQbXQ7vZfkSE50gVtPNcgwTfHRCfeQMQUftEcqesDdDqbqVdB/OKeYRPIQ=
+	t=1734016142; cv=none; b=s9UQeavZPboEsqRyQhyngXioFkVH6GdVQFMzXR17PI5X4gK2rHs2uF0/CaMvtQFA499hUmVp/omyNAhkuQVAMN9+xg4cQx+Ii930RlnrA3fZx6igNLckNyopqpfxrnfIJl4+kYLhMksLhhFpp0nPEUYa17k+aEnJiaDe7TG/HdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022000; c=relaxed/simple;
-	bh=Kzph2Ai97nC+190nLtzVOD2t20lx/22iYpnprRlb27w=;
+	s=arc-20240116; t=1734016142; c=relaxed/simple;
+	bh=NjWE/Pkji4lYqDbDKx8YnSrV6bJx1R4OyIOrhyinDXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDWomScyM/+yIEB/8MVBPU+slkpnf+lgyUB+AKQDt8hk6bf2PM0qwgUhZOSXWYtZW7UmgUyZB+O5MNd81Pa8cOW84nz77yx54islTC1taCDAIWxNKJQ8hvFOySw5F0Zac2YAUWF/nQ7KAUBb3VdeuuATFMVdetHtJkI8VyeU/aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6Ax7Hoi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E44FC4CECE;
-	Thu, 12 Dec 2024 16:46:38 +0000 (UTC)
+	 MIME-Version; b=vFgQAiJuuVD0UpMhYwrMoAs6pcwXnkFlZgvx8M8piheQw0TP6DVFf8o66gvleisDOHN8kI730g27r4rcvoYWDqkKDWDpt3TO+t9pc10LNevabFn26Co14OwT6GU9mkLJenhis5Xdq2dB+1TUW15wZIMQEdHFr1X+jOI1Fs+jrs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xdv0nsLM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1D9C4CECE;
+	Thu, 12 Dec 2024 15:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021999;
-	bh=Kzph2Ai97nC+190nLtzVOD2t20lx/22iYpnprRlb27w=;
+	s=korg; t=1734016141;
+	bh=NjWE/Pkji4lYqDbDKx8YnSrV6bJx1R4OyIOrhyinDXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6Ax7HoiT255kkvulETzJYo/L60DHQ0LFQc4pS+4q9ZHO6s+enIGDT+x5jXjl9FAx
-	 Ka7Z2fuWEIbbFyQ9/+9241Il1PGEtpwQmdWXXIb2s28zHL5QpPVGBYQ/MrCabuaHiH
-	 JD/0lQncIs4+KBwkAS84c+H/39zAVr2LSMsvz7m8=
+	b=Xdv0nsLMtD4MtfOvyeYF4rafvZqLh92jYNFYlQeopdeEnboqAI9ABkeq5wVluH8RE
+	 ep+yp17UlXBspimxWpKUhKkY3nMHfH5VJ8gIj7/KQW5SazmeGJ+yaNfiMBN9xy5o/h
+	 gZCcXamY65+FNwK7pDyMdaxkD7J3KY3Dd2Qtu69U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 118/565] arm64: dts: mediatek: mt8173-elm-hana: Add vdd-supply to second source trackpad
+	Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 144/466] ALSA: hda/realtek: Add support for Samsung Galaxy Book3 360 (NP730QFG)
 Date: Thu, 12 Dec 2024 15:55:13 +0100
-Message-ID: <20241212144316.150461714@linuxfoundation.org>
+Message-ID: <20241212144312.486847926@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
 
-[ Upstream commit f766fae08f6a2eaeb45d8d2c053724c91526835c ]
+commit e2974a220594c06f536e65dfd7b2447e0e83a1cb upstream.
 
-The Hana device has a second source option trackpad, but it is missing
-its regulator supply. It only works because the regulator is marked as
-always-on.
+Fixes the 3.5mm headphone jack on the Samsung Galaxy Book 3 360
+NP730QFG laptop.
+Unlike the other Galaxy Book3 series devices, this device only needs
+the ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET quirk.
+Verified changes on the device and compared with codec state in Windows.
 
-Add the regulator supply, but leave out the post-power-on delay. Instead,
-document the post-power-on delay along with the reason for not adding
-it in a comment.
+[ white-space fixes by tiwai ]
 
-Fixes: 689b937bedde ("arm64: dts: mediatek: add mt8173 elm and hana board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241018082001.1296963-1-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/QB1PR01MB40047D4CC1282DB7F1333124CC352@QB1PR01MB4004.CANPRD01.PROD.OUTLOOK.COM
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi b/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi
-index bdcd35cecad90..fd6230352f4fd 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtsi
-@@ -43,6 +43,14 @@ trackpad2: trackpad@2c {
- 		interrupts = <117 IRQ_TYPE_LEVEL_LOW>;
- 		reg = <0x2c>;
- 		hid-descr-addr = <0x0020>;
-+		/*
-+		 * The trackpad needs a post-power-on delay of 100ms,
-+		 * but at time of writing, the power supply for it on
-+		 * this board is always on. The delay is therefore not
-+		 * added to avoid impacting the readiness of the
-+		 * trackpad.
-+		 */
-+		vdd-supply = <&mt6397_vgp6_reg>;
- 		wakeup-source;
- 	};
- };
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10753,6 +10753,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x144d, 0xc830, "Samsung Galaxy Book Ion (NT950XCJ-X716A)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc832, "Samsung Galaxy Book Flex Alpha (NP730QCJ)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xca03, "Samsung Galaxy Book2 Pro 360 (NP930QED)", ALC298_FIXUP_SAMSUNG_AMP),
++	SND_PCI_QUIRK(0x144d, 0xca06, "Samsung Galaxy Book3 360 (NP730QFG)", ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xc868, "Samsung Galaxy Book2 Pro (NP930XED)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc870, "Samsung Galaxy Book2 Pro (NP950XED)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc872, "Samsung Galaxy Book2 Pro (NP950XEE)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
 
 
 
