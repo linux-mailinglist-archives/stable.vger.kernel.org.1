@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97B49EEB72
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A169E9EF22E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0EE9188AA52
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 531F9189E939
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E152080FC;
-	Thu, 12 Dec 2024 15:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BB9239BC4;
+	Thu, 12 Dec 2024 16:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQ6Prnsr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXaPbCQK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163222054F8;
-	Thu, 12 Dec 2024 15:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132B621578F;
+	Thu, 12 Dec 2024 16:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016813; cv=none; b=LBey4Fc5/I/RHS94kQLWtrsvIeLO8hca57Sum+l+kkN93sFA90rNzwSiXSb1/Tk1UsiEFMheB9CmlUJmqeXZQ2ePfZ4W5LhrIoHDq1zY5iU1KKunWZULr83lBFyrH9PRZtm7kT2aRERUOlNu0IfjUcwGQd/snmYn1CLBVTs7mx0=
+	t=1734020668; cv=none; b=Y8icb6m43Y/ZmQJ+lcrdhWlB3hRvVmW2prS1k3t/g3yFDNmz5loyTB0mjeQdawlaZJ+rraPXYng8BX693AiLOW6IBUbdhS6qMgmuvspmUmERZAG0O7wy1TypKThATH1ycW2Q57PZIkUclIGRo6UjZD+TKhFgUJ2V8rfkirUFDV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016813; c=relaxed/simple;
-	bh=9KItybwNXiAt0omzOrMMl30eaGu/TIE1VSxke+4GH2g=;
+	s=arc-20240116; t=1734020668; c=relaxed/simple;
+	bh=ok1dTBx5Pg/QCMSFVrVFLEhvE0qCE6nNCMEcKvENhT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQCawwWAN8wEJJGuB3YHJijskvPka7J+1C05tT8KDqNyyAtoaj+PPh9Tfohhv23MNKLqFMy2H5+/PqnbARsl6PNxBG5UzO9WjJbWWAlejgYs6fwiu2OsWIw6M9jVBKl4uZm1ppI08Nt8SVmWft1AomPgCu/k+e1dwHHiVBYJrFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQ6Prnsr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B38C4CED0;
-	Thu, 12 Dec 2024 15:20:12 +0000 (UTC)
+	 MIME-Version; b=mPWlK+n3g4dOHxudSExYIE0gF5txe6IuvaDdWIE4w2nkV+BZeXiaI8NiAr0GanV+qfEYUion/k+rm6TGdQCBeKYd2ekoPH7uQH0z4jE9Rj6BULz2+mWzcg8bD+Bf8pkubKYbRFQnM+2vRb+O1IoXCqt4cskPBp0KFlhpOs+XoDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXaPbCQK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6693BC4CECE;
+	Thu, 12 Dec 2024 16:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016812;
-	bh=9KItybwNXiAt0omzOrMMl30eaGu/TIE1VSxke+4GH2g=;
+	s=korg; t=1734020667;
+	bh=ok1dTBx5Pg/QCMSFVrVFLEhvE0qCE6nNCMEcKvENhT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQ6PrnsrkpkdVOGXsQfQH9CS6IirUgmn2hxsm+85XJw3OnVrc40uX79w696GsQJ27
-	 K1tjpgo51Wyh1lFajDGDmv/ojA/ZlecqqaxBaBtyJl8g29k1/KYrDhEHV0lJQt+bSR
-	 PRl5lCNWXfUta/86SPKKJJ9TogJcfWFf6JpZZ9UM=
+	b=CXaPbCQKe3M47q/tBl/qJ32tyHeo+DW681AM1VROpLqvKUUeTjXZmHUoD3QavwEgX
+	 yeEZLZXK/xvFlxOyjUo8q03PBsXxKSGw1Nkr5SY2bMt20BpIMy6WHglamRQwJg11Z3
+	 6jQv1vjhfJ+VsX7zUGJJHUcxoqQ4EKxfHfVrnVrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikandan Muralidharan <manikandan.m@microchip.com>,
-	Dharma Balasubiramani <dharma.b@microchip.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Martin Ottens <martin.ottens@fau.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 304/466] drm/panel: simple: Add Microchip AC69T88A LVDS Display panel
-Date: Thu, 12 Dec 2024 15:57:53 +0100
-Message-ID: <20241212144318.787154535@linuxfoundation.org>
+Subject: [PATCH 6.1 529/772] net/sched: tbf: correct backlog statistic for GSO packets
+Date: Thu, 12 Dec 2024 15:57:54 +0100
+Message-ID: <20241212144411.821479115@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikandan Muralidharan <manikandan.m@microchip.com>
+From: Martin Ottens <martin.ottens@fau.de>
 
-[ Upstream commit 40da1463cd6879f542238b36c1148f517927c595 ]
+[ Upstream commit 1596a135e3180c92e42dd1fbcad321f4fb3e3b17 ]
 
-Add support for Microchip AC69T88A 5 inch TFT LCD 800x480
-Display module with LVDS interface.The panel uses the Sitronix
-ST7262 800x480 Display driver
+When the length of a GSO packet in the tbf qdisc is larger than the burst
+size configured the packet will be segmented by the tbf_segment function.
+Whenever this function is used to enqueue SKBs, the backlog statistic of
+the tbf is not increased correctly. This can lead to underflows of the
+'backlog' byte-statistic value when these packets are dequeued from tbf.
 
-Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240919091548.430285-2-manikandan.m@microchip.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reproduce the bug:
+Ensure that the sender machine has GSO enabled. Configured the tbf on
+the outgoing interface of the machine as follows (burstsize = 1 MTU):
+$ tc qdisc add dev <oif> root handle 1: tbf rate 50Mbit burst 1514 latency 50ms
+
+Send bulk TCP traffic out via this interface, e.g., by running an iPerf3
+client on this machine. Check the qdisc statistics:
+$ tc -s qdisc show dev <oif>
+
+The 'backlog' byte-statistic has incorrect values while traffic is
+transferred, e.g., high values due to u32 underflows. When the transfer
+is stopped, the value is != 0, which should never happen.
+
+This patch fixes this bug by updating the statistics correctly, even if
+single SKBs of a GSO SKB cannot be enqueued.
+
+Fixes: e43ac79a4bc6 ("sch_tbf: segment too big GSO packets")
+Signed-off-by: Martin Ottens <martin.ottens@fau.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241125174608.1484356-1-martin.ottens@fau.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ net/sched/sch_tbf.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 86735430462fa..06381c6282097 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -4565,6 +4565,31 @@ static const struct panel_desc yes_optoelectronics_ytc700tlag_05_201c = {
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+diff --git a/net/sched/sch_tbf.c b/net/sched/sch_tbf.c
+index 277ad11f4d613..c4c91b55e98b0 100644
+--- a/net/sched/sch_tbf.c
++++ b/net/sched/sch_tbf.c
+@@ -207,7 +207,7 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct tbf_sched_data *q = qdisc_priv(sch);
+ 	struct sk_buff *segs, *nskb;
+ 	netdev_features_t features = netif_skb_features(skb);
+-	unsigned int len = 0, prev_len = qdisc_pkt_len(skb);
++	unsigned int len = 0, prev_len = qdisc_pkt_len(skb), seg_len;
+ 	int ret, nb;
  
-+static const struct drm_display_mode mchp_ac69t88a_mode = {
-+	.clock = 25000,
-+	.hdisplay = 800,
-+	.hsync_start = 800 + 88,
-+	.hsync_end = 800 + 88 + 5,
-+	.htotal = 800 + 88 + 5 + 40,
-+	.vdisplay = 480,
-+	.vsync_start = 480 + 23,
-+	.vsync_end = 480 + 23 + 5,
-+	.vtotal = 480 + 23 + 5 + 1,
-+};
+ 	segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
+@@ -218,21 +218,27 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
+ 	nb = 0;
+ 	skb_list_walk_safe(segs, segs, nskb) {
+ 		skb_mark_not_on_list(segs);
+-		qdisc_skb_cb(segs)->pkt_len = segs->len;
+-		len += segs->len;
++		seg_len = segs->len;
++		qdisc_skb_cb(segs)->pkt_len = seg_len;
+ 		ret = qdisc_enqueue(segs, q->qdisc, to_free);
+ 		if (ret != NET_XMIT_SUCCESS) {
+ 			if (net_xmit_drop_count(ret))
+ 				qdisc_qstats_drop(sch);
+ 		} else {
+ 			nb++;
++			len += seg_len;
+ 		}
+ 	}
+ 	sch->q.qlen += nb;
+-	if (nb > 1)
++	sch->qstats.backlog += len;
++	if (nb > 0) {
+ 		qdisc_tree_reduce_backlog(sch, 1 - nb, prev_len - len);
+-	consume_skb(skb);
+-	return nb > 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
++		consume_skb(skb);
++		return NET_XMIT_SUCCESS;
++	}
 +
-+static const struct panel_desc mchp_ac69t88a = {
-+	.modes = &mchp_ac69t88a_mode,
-+	.num_modes = 1,
-+	.bpc = 8,
-+	.size = {
-+		.width = 108,
-+		.height = 65,
-+	},
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+};
-+
- static const struct drm_display_mode arm_rtsm_mode[] = {
- 	{
- 		.clock = 65000,
-@@ -5048,6 +5073,9 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "yes-optoelectronics,ytc700tlag-05-201c",
- 		.data = &yes_optoelectronics_ytc700tlag_05_201c,
-+	}, {
-+		.compatible = "microchip,ac69t88a",
-+		.data = &mchp_ac69t88a,
- 	}, {
- 		/* Must be the last entry */
- 		.compatible = "panel-dpi",
++	kfree_skb(skb);
++	return NET_XMIT_DROP;
+ }
+ 
+ static int tbf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 -- 
 2.43.0
 
