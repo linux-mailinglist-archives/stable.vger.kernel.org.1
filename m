@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022669EF8F3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:11 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B0B9EF66D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6A5E284714
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C041170A9F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29640229660;
-	Thu, 12 Dec 2024 17:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D898222D74;
+	Thu, 12 Dec 2024 17:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsPzR2LA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfEkYPz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8DC223C42;
-	Thu, 12 Dec 2024 17:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A74E222D62;
+	Thu, 12 Dec 2024 17:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025473; cv=none; b=F7ZP8TEejVsgzZAoYI0MU2T8kvkS6ITf/jt9AZ7KMHLMb6EIUq7BcVZTGCUW0DVhnnRAmhTo9O1HWFM9iYx4ECCYn5QoqrtbnbYldpsz3a+bvYU/Bfu7rFTGUrgSgfF8yUkpOA73REj3Lf1SaXI0ia7EqYcAO83lJ0NG6bmVNPY=
+	t=1734023323; cv=none; b=EgImP/2n8lQw+yTl2BX+ZOiouuC1eECh46yMj5TU/bqxwmNREdwhbI519VeOaQwR/du9a0zpkE52YYZasjHLA3mmtpMspm8YZ5Um+nsqtVd+1Z+aPwk18rPh8CK24WOk6ekazNPzDIz9JXtavKhy6p0UfB/Ay/yAghhyfoOBPwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025473; c=relaxed/simple;
-	bh=fc2yK8/m05vTPPrxQ5orf1m1S+eX3n2O/yqxC48JeyU=;
+	s=arc-20240116; t=1734023323; c=relaxed/simple;
+	bh=5Lz6BXWHVULL91ddyhYThyMssHDf/LBVYwrnqmWV4NA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zhex0QQGU+RWBem3TgV/A3wd5nornkP1zsQAwTUPpKVsBYCLhPgNVTXjup2aCu57BvxBNi3hLCjEf7IbVYsmOj4UPvNo2EQ0Nal3N9wM21/Q6tZm7mFFH/k8gm4470VBaS3Fo3XvoFAPr7nVkF4VZydbXEyG3VnpGem4jl/qxUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsPzR2LA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6A5C4CECE;
-	Thu, 12 Dec 2024 17:44:33 +0000 (UTC)
+	 MIME-Version; b=mKHYr1OcB5UNf/vlzVAfANhwzKiWRIYpi60XAM5l+0l8IeQ5PkjjlCmqwkxqCr+BUFUSjtQjUYoV7/AlPgFtd3N5Jg/VAMatNqL0SgEf15v9yiyH7mg9cnBXPU5W++/DTZZQfmHQzRCkrnE2qt7IDSw2cUzw7UVVf7RJXHy0lcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfEkYPz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD45C4CECE;
+	Thu, 12 Dec 2024 17:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025473;
-	bh=fc2yK8/m05vTPPrxQ5orf1m1S+eX3n2O/yqxC48JeyU=;
+	s=korg; t=1734023322;
+	bh=5Lz6BXWHVULL91ddyhYThyMssHDf/LBVYwrnqmWV4NA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsPzR2LAym/A5mm6Mz9slAxBflefztl3tAOJO09zlcaMCTuf55LyEpr0yoWgpdjnn
-	 N2azGQ83NDuB1RcKaLY2Kwg0+OHjKZacuc9RovL7Z70jymzXKfEEG45pkfar9iqY/2
-	 nLTbeipC1QcjXfrrwlYTpP+R9JLIeRbSdcSceSP8=
+	b=KfEkYPz1SePR3Rw2ym6+TsATjLxjAEZnZ2QIXkFKctGxk0uK25yYiMMFyIgCeLuNI
+	 3YImSFQIVcii1fsUpO90rMmFd+711734OO9xlNXZ/oRksXDbSDL/9b94I27eIyEOzN
+	 TH4PMPi25rvnbR8I682ClQO8Alv4Dh+kxEU74Sl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 174/321] lib: string_helpers: silence snprintf() output truncation warning
+	Lang Yu <lang.yu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 497/565] drm/amdgpu: refine error handling in amdgpu_ttm_tt_pin_userptr
 Date: Thu, 12 Dec 2024 16:01:32 +0100
-Message-ID: <20241212144236.857177115@linuxfoundation.org>
+Message-ID: <20241212144331.413554394@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Lang Yu <lang.yu@amd.com>
 
-commit a508ef4b1dcc82227edc594ffae583874dd425d7 upstream.
+[ Upstream commit 46186667f98fb7158c98f4ff5da62c427761ffcd ]
 
-The output of ".%03u" with the unsigned int in range [0, 4294966295] may
-get truncated if the target buffer is not 12 bytes. This can't really
-happen here as the 'remainder' variable cannot exceed 999 but the
-compiler doesn't know it. To make it happy just increase the buffer to
-where the warning goes away.
+Free sg table when dma_map_sgtable() failed to avoid memory leak.
 
-Fixes: 3c9f3681d0b4 ("[SCSI] lib: add generic helper to print sizes rounded to the correct SI range")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/r/20241101205453.9353-1-brgl@bgdev.pl
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lang Yu <lang.yu@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/string_helpers.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/lib/string_helpers.c
-+++ b/lib/string_helpers.c
-@@ -51,7 +51,7 @@ void string_get_size(u64 size, u64 blk_s
- 	static const unsigned int rounding[] = { 500, 50, 5 };
- 	int i = 0, j;
- 	u32 remainder = 0, sf_cap;
--	char tmp[8];
-+	char tmp[12];
- 	const char *unit;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index 9a1b19e3d4378..ca00a2d5e38b5 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -775,7 +775,7 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
+ 	/* Map SG to device */
+ 	r = dma_map_sgtable(adev->dev, ttm->sg, direction, 0);
+ 	if (r)
+-		goto release_sg;
++		goto release_sg_table;
  
- 	tmp[0] = '\0';
+ 	/* convert SG to linear array of pages and dma addresses */
+ 	drm_prime_sg_to_dma_addr_array(ttm->sg, gtt->ttm.dma_address,
+@@ -783,6 +783,8 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
+ 
+ 	return 0;
+ 
++release_sg_table:
++	sg_free_table(ttm->sg);
+ release_sg:
+ 	kfree(ttm->sg);
+ 	ttm->sg = NULL;
+-- 
+2.43.0
+
 
 
 
