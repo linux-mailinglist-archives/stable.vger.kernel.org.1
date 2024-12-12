@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C9E9EED44
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB149EEB98
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA475285A09
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C1AF188A1CD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0C9222D5E;
-	Thu, 12 Dec 2024 15:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8C5212B0F;
+	Thu, 12 Dec 2024 15:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwCH7GKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrzYnvCv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7777B1547F0;
-	Thu, 12 Dec 2024 15:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D991487CD;
+	Thu, 12 Dec 2024 15:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018197; cv=none; b=pIb2iDkFaGSefURKEKBW4Cf+tNxChp0r9BP71PNvEylv5AH5Dos9J77GPm5E7BQxfsUEEoq7GssOpuCf4xh5AnYzbVbar+xBqkj7HIZrUWSKLwzzwyntaJxngvKqgYB+o42Vpm7m1RwQ//KqNb2o0DLBgs0p24Le4eZhwv8zkI0=
+	t=1734016969; cv=none; b=sUxDs1qMfgSu4E/MgCYnRebx9thsXDfMLfY4nV0bf3+VL2ioc9kwxXX6F/KelagTMWh7I1tLBvcVinu6UO4k2gxOAo3rrLY3SPt5T/HNnY3tLGX8eRKMcscfKd7cV3tJkxMuVUZAhn8Hp9YYsI75+QX5NsyL6Sk0zWoWoENbCw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018197; c=relaxed/simple;
-	bh=aUsAp68o3SH+LrZJXA8u4pNMTKZcpCrRZl5UqjXumZM=;
+	s=arc-20240116; t=1734016969; c=relaxed/simple;
+	bh=2FmDGy49VXvAAE7XJzqTawbNIUus5mhAjyP/gLJtIOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlpgPgNbH3q6+YWtF4NHINNhCwYSd7fhoC/GnzE7jCon9TkjAiq4MdpAZSVqaDh8IIzqVGOSXboTRER44rfOSzUeW2MoCFzxnA+AFPfxSspKSBJq22M+O99pbF1HgLnFOLtIq/RK/qRCssD44+JGD93WSYYppc7fQSHxtwY5mWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwCH7GKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C90C4CECE;
-	Thu, 12 Dec 2024 15:43:16 +0000 (UTC)
+	 MIME-Version; b=I6OX7HKr73KjYpNPZ1176XJpUNCuOq8RkdBOcRS5iH0ZolhTQPwvTnzY4xxjakcDsi2pGFjqKIBkaMczrpDjiaixzh3CN3T7/aYu3O40KC7F748V2mDr8y2F/tCFivpYBIxTilf6vUrMoD1QIuA+gAvCF3DFoNuoQq6akNA7n8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrzYnvCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111F3C4CED0;
+	Thu, 12 Dec 2024 15:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018197;
-	bh=aUsAp68o3SH+LrZJXA8u4pNMTKZcpCrRZl5UqjXumZM=;
+	s=korg; t=1734016969;
+	bh=2FmDGy49VXvAAE7XJzqTawbNIUus5mhAjyP/gLJtIOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwCH7GKmVy0CCMSLdaqKTjyiRxI0fi1evCCaQmAiz4kSi5t57A36mcQMmgfKieYPJ
-	 /RyBaKmnRR5Te+ap0sx7MLiF7adBBYeORxZPG2OEGxuSGvNsitfRFdphbP9HsySECc
-	 oyNZ1bNFBr4X9joK5wEWp9juA+0OogwrNRixB67o=
+	b=UrzYnvCvt+5fOhA08wfKLBM6+4h2ALYmHZNOQ1oEX42avtNoL6dFnxmZnzOF1Yrl9
+	 28CwjriBN1wbzxxPg5FaRYguVJOIFSQPrgmlUya77rSZyhR8hfSdhZJE3fRSmtGjdH
+	 PEoQ63C73bF8i8qr/6m+S4f1eWL/EIRMESdzzcwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sandipan Das <sandipan.das@amd.com>,
+	Danil Pylaev <danstiv404@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/356] perf/x86/amd: Warn only on new bits set
+Subject: [PATCH 6.12 344/466] Bluetooth: Add new quirks for ATS2851
 Date: Thu, 12 Dec 2024 15:58:33 +0100
-Message-ID: <20241212144252.292017840@linuxfoundation.org>
+Message-ID: <20241212144320.382285533@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Danil Pylaev <danstiv404@gmail.com>
 
-[ Upstream commit de20037e1b3c2f2ca97b8c12b8c7bca8abd509a7 ]
+[ Upstream commit 94464a7b71634037b13d54021e0dfd0fb0d8c1f0 ]
 
-Warning at every leaking bits can cause a flood of message, triggering
-various stall-warning mechanisms to fire, including CSD locks, which
-makes the machine to be unusable.
+This adds quirks for broken extended create connection,
+and write auth payload timeout.
 
-Track the bits that are being leaked, and only warn when a new bit is
-set.
-
-That said, this patch will help with the following issues:
-
-1) It will tell us which bits are being set, so, it is easy to
-   communicate it back to vendor, and to do a root-cause analyzes.
-
-2) It avoid the machine to be unusable, because, worst case
-   scenario, the user gets less than 60 WARNs (one per unhandled bit).
-
-Suggested-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Sandipan Das <sandipan.das@amd.com>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lkml.kernel.org/r/20241001141020.2620361-1-leitao@debian.org
+Signed-off-by: Danil Pylaev <danstiv404@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/amd/core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/net/bluetooth/hci.h      | 14 ++++++++++++++
+ include/net/bluetooth/hci_core.h | 10 ++++++----
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index 8ed10366c4a27..aa8fc2cf1bde7 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -895,11 +895,12 @@ static int amd_pmu_handle_irq(struct pt_regs *regs)
- static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	static atomic64_t status_warned = ATOMIC64_INIT(0);
-+	u64 reserved, status, mask, new_bits, prev_bits;
- 	struct perf_sample_data data;
- 	struct hw_perf_event *hwc;
- 	struct perf_event *event;
- 	int handled = 0, idx;
--	u64 reserved, status, mask;
- 	bool pmu_enabled;
- 
- 	/*
-@@ -964,7 +965,12 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- 	 * the corresponding PMCs are expected to be inactive according to the
- 	 * active_mask
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index a1864cff616ae..5bb4eaa52e14c 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -301,6 +301,20 @@ enum {
  	 */
--	WARN_ON(status > 0);
-+	if (status > 0) {
-+		prev_bits = atomic64_fetch_or(status, &status_warned);
-+		// A new bit was set for the very first time.
-+		new_bits = status & ~prev_bits;
-+		WARN(new_bits, "New overflows for inactive PMCs: %llx\n", new_bits);
-+	}
+ 	HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT,
  
- 	/* Clear overflow and freeze bits */
- 	amd_pmu_ack_global_status(~status);
++	/*
++	 * When this quirk is set, the HCI_OP_LE_EXT_CREATE_CONN command is
++	 * disabled. This is required for the Actions Semiconductor ATS2851
++	 * based controllers, which erroneously claims to support it.
++	 */
++	HCI_QUIRK_BROKEN_EXT_CREATE_CONN,
++
++	/*
++	 * When this quirk is set, the command WRITE_AUTH_PAYLOAD_TIMEOUT is
++	 * skipped. This is required for the Actions Semiconductor ATS2851
++	 * based controllers, due to a race condition in pairing process.
++	 */
++	HCI_QUIRK_BROKEN_WRITE_AUTH_PAYLOAD_TIMEOUT,
++
+ 	/* When this quirk is set, MSFT extension monitor tracking by
+ 	 * address filter is supported. Since tracking quantity of each
+ 	 * pattern is limited, this feature supports tracking multiple
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 4c185a08c3a3a..c95f7e6ba2551 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1934,8 +1934,8 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+ 			   !test_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &(dev)->quirks))
+ 
+ /* Use ext create connection if command is supported */
+-#define use_ext_conn(dev) ((dev)->commands[37] & 0x80)
+-
++#define use_ext_conn(dev) (((dev)->commands[37] & 0x80) && \
++	!test_bit(HCI_QUIRK_BROKEN_EXT_CREATE_CONN, &(dev)->quirks))
+ /* Extended advertising support */
+ #define ext_adv_capable(dev) (((dev)->le_features[1] & HCI_LE_EXT_ADV))
+ 
+@@ -1948,8 +1948,10 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+  * C24: Mandatory if the LE Controller supports Connection State and either
+  * LE Feature (LL Privacy) or LE Feature (Extended Advertising) is supported
+  */
+-#define use_enhanced_conn_complete(dev) (ll_privacy_capable(dev) || \
+-					 ext_adv_capable(dev))
++#define use_enhanced_conn_complete(dev) ((ll_privacy_capable(dev) || \
++					 ext_adv_capable(dev)) && \
++					 !test_bit(HCI_QUIRK_BROKEN_EXT_CREATE_CONN, \
++						 &(dev)->quirks))
+ 
+ /* Periodic advertising support */
+ #define per_adv_capable(dev) (((dev)->le_features[1] & HCI_LE_PERIODIC_ADV))
 -- 
 2.43.0
 
