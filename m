@@ -1,217 +1,158 @@
-Return-Path: <stable+bounces-103944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0479F9EFED4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 22:53:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93EB49EFF37
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 23:22:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9FE2282A62
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 21:53:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B4EF165AC0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 22:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3EE1B21AA;
-	Thu, 12 Dec 2024 21:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCD21DC19A;
+	Thu, 12 Dec 2024 22:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KwYDEv/8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QwJuupoJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AD92F2F
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 21:53:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4181898FB
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 22:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734040412; cv=none; b=AVQGLpYGtQI9a5DR44Wx/hblkDK8kO5gWitdEY8M8uvntQN7UeIvv8J9EpKtDwM4iFAUq0FnCuB7JvA7Eo7jtNPIvRhzV+N36AeK4CZw2NUk4d394WmY7d/v0JABKWeNiBLXDnzufoQTH13BZhRjityGA6CFmrBKzqbonO2f8BI=
+	t=1734042171; cv=none; b=aPaGp29vZ03gNdG9zt8iK+u4MC8jORJ+WB6CQFFd31C0Z2tAY3bCzjzFPFz5X9zYrswrK1UcDmLt9iUAL2oHlkLbXaphFpkSZ+A4nDOUTbbp/KRs8qfZMXdmrPodwpYrrvW7F95JzfpXFEmg98Iv4t+y/ed70+WPJzy/GgnM8x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734040412; c=relaxed/simple;
-	bh=EZgd3qCvIcKqGwz89O1AUrquGdCJj7Z4nTegOvN1dVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CvjvPsMmoF0L/gyeNHs2u4AhfQRVuhNKV6iFGSIyMVZfHmY6PX6y7JhKd/NYHgimURqMxcuvT0QjMxod2CTmKhvR9tzzE57M9jAWVRpOy9qJaa94NgiuRbMj4zi2IA2vHhQHtv29KsCyucUGVK3Tn85yXn07GTNiRfRW7krv0F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KwYDEv/8; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734040411; x=1765576411;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EZgd3qCvIcKqGwz89O1AUrquGdCJj7Z4nTegOvN1dVk=;
-  b=KwYDEv/8KMkRgde/9y17tJ9px6RVyvWuH5cZkJTk7sy1v1XaHFBQANO1
-   eARc3tQ7+Zl6xi71gezLW3lm3RzyQPLTwCtYvLCUgS82OackLs+DwYRly
-   nayAbCSovzFr8gZAVSRVqkwlvj9socVAst3GfJmNwTcJJVoiZNy9I/vFK
-   BzeGOSuv3nQT/FijjJWmTM/ydyBY4HTgY07lzrFBo45Vl+OuX8l5b+DWd
-   1sSY5Uda5qBb0O0fv3lZDjUD4ix+9PhgHuHVjuV/kchqaZcKD/jeBGDSu
-   hJFitNHkav7Vp/Jda2JTSaSHQZbqk1O15eWBvIdi1u36k2I5ybAqDtAoq
-   g==;
-X-CSE-ConnectionGUID: yta7GamuQTyn4xXCdzMJaQ==
-X-CSE-MsgGUID: d8L9qHpXQvqWHITc3Mg1ew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="34613136"
-X-IronPort-AV: E=Sophos;i="6.12,229,1728975600"; 
-   d="scan'208";a="34613136"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 13:53:30 -0800
-X-CSE-ConnectionGUID: 7yTZk0a3TvaEnddmN45K5A==
-X-CSE-MsgGUID: lTA3uTQ1RQCBNi1Oh93tKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,229,1728975600"; 
-   d="scan'208";a="96763266"
-Received: from ldmartin-desk2.corp.intel.com (HELO ldmartin-desk2) ([10.125.110.147])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 13:53:29 -0800
-Date: Thu, 12 Dec 2024 15:53:21 -0600
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: matthew.brost@intel.com, 
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/xe/client: Better correlate exec_queue and GT
- timestamps
-Message-ID: <esvcbb7t6wbtuzdvbntdustpcurafkxh73syizig3gz7eth5qs@ouhq6b6bgu3t>
-References: <20241212173432.1244440-1-lucas.demarchi@intel.com>
+	s=arc-20240116; t=1734042171; c=relaxed/simple;
+	bh=mYR85XkPv99mgY49elAAtDmoBwLsFWrGRtjvzlV2lMw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bl1KYq4br+v9QDmXXg+e039CkId4U3YJAV8NSpqgnq2smSuqUdk6xA4FYghdSLFnRXLyPKZv60iEDDEzloPpzrXaVXYIfUD5u8hKvyBDiM9ZpggA9W6D4BJML+cuVlwGbkK8cyLXVf5a6rIdvOMR8jZLwkXd1u0SmylmYd0SzQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QwJuupoJ; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-7b35758d690so196199785a.1
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 14:22:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734042169; x=1734646969; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mEPfB9th6277+hdPLAjftJ4fYSDwY+ol/KJ9uoK9pPQ=;
+        b=QwJuupoJcBmT+4VDDBJHrFRnzDON6GUAekzM5/1+EE5ALtdn2THHmUPWocx9EU89CA
+         LN+PvZjHE4hv6RDPoWhNqZ/JXIyAP11gHH+JuhyysEGdWWiNs/nZ3bMt6F3So1Q03dRC
+         5aZaf3OCf4RWxcbdAFkCDR3Eq1ym7M/SanTbI6YSgkLtcf+jonkIHU/RR+AWMFX89hUK
+         V7QRpsAMLSlVoavGrepobw2YxfLxoHO94lorpSqzhv4jWAnLlNlcDb62HjsTW0O5JlWW
+         +KxORWsp6nIF0NIn4g/uMEzEK7dsV0/jh5Kfm1z7yBvdt63O1WGe7Ytu4roVjnC2BTvB
+         tpbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734042169; x=1734646969;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mEPfB9th6277+hdPLAjftJ4fYSDwY+ol/KJ9uoK9pPQ=;
+        b=GQHzw8Zj93q+gt8xEYDzkKZuzmT1KMvigo5XKCtzWB2b4P/bA7QlOi9g46xtpkbAfb
+         qlANXt2Ncf3w/1v/9uQ8wl5U7sUFc2Oo4UwZ6BF5W9SO68mVk4sxbBLeEBqrWxVgBZ/C
+         SbS2ryd4k8TEFhwuTWTlfEYpRy+L55UnJ8Gx/XyUqcLcVUrzRCiDKMW1F3+lLlN2OCt/
+         ivrv/qNIR2ySo6VAloHFQJcgeEH+gdpFsfUpl6wNBuFLp6V2fnEq5bksczsnziEe6rsK
+         eCBJaqBUIhpi+cnpVTCeTmYKUseFXsKR6v8nxFhvLwtM6yLZ1Mhis0O9NmBGb9VBvcqh
+         5j0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXUZUIBrCOCNyUX01VctygPqBDQGC+R4j5Cfaw23INLguf5q1q8LI6FtZsgBPTYDI++ekJOAik=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzE8rppGHwvd2VGwrAnZ7pkYaxZgYGzAmnLFz3DagJuXPUlSb7N
+	ByEm33GVV9jVpqHfbwlrO6YnGawf9bHQdyywXBkvuqmsLhXFcFeYt0kaeD0VSSSjaxpyLWKGdOZ
+	0huKXbEdicg==
+X-Google-Smtp-Source: AGHT+IG3QKcT19u3tKue7Af++4n+trcy46qQ2b0EAFNosiBK/eJ754xf5sUvQqp2hsksG9PM0K6tME4nWOHiQg==
+X-Received: from qkpn21.prod.google.com ([2002:a05:620a:2955:b0:7b6:e209:1c29])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:27cc:b0:7b6:c540:9531 with SMTP id af79cd13be357-7b6fbee746bmr25541885a.18.1734042169099;
+ Thu, 12 Dec 2024 14:22:49 -0800 (PST)
+Date: Thu, 12 Dec 2024 22:22:47 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20241212173432.1244440-1-lucas.demarchi@intel.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20241212222247.724674-1-edumazet@google.com>
+Subject: [PATCH net] net: tun: fix tun_napi_alloc_frags()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com, 
+	stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Dec 12, 2024 at 09:34:32AM -0800, Lucas De Marchi wrote:
->This partially reverts commit fe4f5d4b6616 ("drm/xe: Clean up VM / exec
->queue file lock usage."). While it's desired to have the mutex to
->protect only the reference to the exec queue, getting and dropping each
->mutex and then later getting the GPU timestamp, doesn't produce a
->correct result: it introduces multiple opportunities for the task to be
->scheduled out and thus wrecking havoc the deltas reported to userspace.
->
->Also, to better correlate the timestamp from the exec queues with the
->GPU, disable preemption so they can be updated without allowing the task
->to be scheduled out. We leave interrupts enabled as that shouldn't be
->enough disturbance for the deltas to matter to userspace.
->
->Test scenario:
->
->	* IGT'S `xe_drm_fdinfo --r --r utilization-single-full-load`
->	* Platform: LNL, where CI occasionally reports failures
->	* `stress -c $(nproc)` running in parallel to disturb the
->	  system
->
->This brings a first failure from "after ~150 executions" to "never
->occurs after 1000 attempts".
+syzbot reported the following crash [1]
 
+Issue came with the blamed commit. Instead of going through
+all the iov components, we keep using the first one
+and end up with a malformed skb.
 
-so it fails after 2704 runs, but it seems like it's for a reason other than
-what's fixed here that was previously failing at ~150 runs. See below.
-Relevant lines from the log are marked
+[1]
 
-	####################################### 2705/10000
-	IGT-Version: 1.29-g19f996f8b (x86_64) (Linux: 6.13.0-rc2-xe+ x86_64)
-	Using IGT_SRANDOM=1734033293 for randomisation
-	Opened device: /dev/dri/card0
-	Starting subtest: utilization-single-full-load
-	(xe_drm_fdinfo:40147) CRITICAL: Test assertion failure function check_results, file ../tests/intel/xe_drm_fdinfo.c:528:
-	(xe_drm_fdinfo:40147) CRITICAL: Failed assertion: percent < 105.0
-	(xe_drm_fdinfo:40147) CRITICAL: error: 105.811345 >= 105.000000
-	Stack trace:
-	  #0 ../lib/igt_core.c:2051 __igt_fail_assert()
-	  #1 ../tests/intel/xe_drm_fdinfo.c:520 check_results()
-	  #2 ../tests/intel/xe_drm_fdinfo.c:464 utilization_single()
-	  #3 ../tests/intel/xe_drm_fdinfo.c:852 __igt_unique____real_main806()
-	  #4 ../tests/intel/xe_drm_fdinfo.c:806 main()
-	  #5 ../sysdeps/nptl/libc_start_call_main.h:74 __libc_start_call_main()
-	  #6 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
-	  #7 [_start+0x25]
-	Subtest utilization-single-full-load failed.
-	**** DEBUG ****
-	(xe_drm_fdinfo:40147) DEBUG: rcs: spinner started
-	(xe_drm_fdinfo:40147) DEBUG: rcs: spinner ended (timestamp=19184279)
-	(xe_drm_fdinfo:40147) DEBUG: rcs: sample 1: cycles 0, total_cycles 325162895781
-	(xe_drm_fdinfo:40147) DEBUG: rcs: sample 2: cycles 19184523, total_cycles 325182184120
-	(xe_drm_fdinfo:40147) DEBUG: rcs: percent: 99.461763
-	(xe_drm_fdinfo:40147) DEBUG: bcs: spinner started
-	(xe_drm_fdinfo:40147) DEBUG: bcs: spinner ended (timestamp=19193059)
-	(xe_drm_fdinfo:40147) DEBUG: bcs: sample 1: cycles 0, total_cycles 325182330134
-	(xe_drm_fdinfo:40147) DEBUG: bcs: sample 2: cycles 19193168, total_cycles 325201552996
-	(xe_drm_fdinfo:40147) DEBUG: bcs: percent: 99.845522
-	(xe_drm_fdinfo:40147) DEBUG: ccs: spinner started
-	(xe_drm_fdinfo:40147) DEBUG: ccs: spinner ended (timestamp=19200849)
-	(xe_drm_fdinfo:40147) DEBUG: ccs: sample 1: cycles 0, total_cycles 325201742269
-	(xe_drm_fdinfo:40147) DEBUG: ccs: sample 2: cycles 19201013, total_cycles 325220974694
-	(xe_drm_fdinfo:40147) DEBUG: ccs: percent: 99.836666
-	(xe_drm_fdinfo:40147) DEBUG: vcs: spinner started
-	(xe_drm_fdinfo:40147) DEBUG: vcs: spinner ended (timestamp=19281420)
-	(xe_drm_fdinfo:40147) DEBUG: vcs: sample 1: cycles 0, total_cycles 325221246644
-	(xe_drm_fdinfo:40147) DEBUG: vcs: sample 2: cycles 19281506, total_cycles 325240467813
-	(xe_drm_fdinfo:40147) DEBUG: vcs: percent: 100.313904
-	(xe_drm_fdinfo:40147) DEBUG: vecs: spinner started
-[0]--->	(xe_drm_fdinfo:40147) DEBUG: vecs: spinner ended (timestamp=20348520)
-[1]--->	(xe_drm_fdinfo:40147) DEBUG: vecs: sample 1: cycles 0, total_cycles 325242482039
-[2]--->	(xe_drm_fdinfo:40147) DEBUG: vecs: sample 2: cycles 20348601, total_cycles 325261713058
-	(xe_drm_fdinfo:40147) DEBUG: vecs: percent: 105.811345
-	(xe_drm_fdinfo:40147) CRITICAL: Test assertion failure function check_results, file ../tests/intel/xe_drm_fdinfo.c:528:
-	(xe_drm_fdinfo:40147) CRITICAL: Failed assertion: percent < 105.0
-	(xe_drm_fdinfo:40147) CRITICAL: error: 105.811345 >= 105.000000
+kernel BUG at net/core/skbuff.c:2849 !
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 UID: 0 PID: 6230 Comm: syz-executor132 Not tainted 6.13.0-rc1-syzkaller-00407-g96b6fcc0ee41 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/25/2024
+ RIP: 0010:__pskb_pull_tail+0x1568/0x1570 net/core/skbuff.c:2848
+Code: 38 c1 0f 8c 32 f1 ff ff 4c 89 f7 e8 92 96 74 f8 e9 25 f1 ff ff e8 e8 ae 09 f8 48 8b 5c 24 08 e9 eb fb ff ff e8 d9 ae 09 f8 90 <0f> 0b 66 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffc90004cbef30 EFLAGS: 00010293
+RAX: ffffffff8995c347 RBX: 00000000fffffff2 RCX: ffff88802cf45a00
+RDX: 0000000000000000 RSI: 00000000fffffff2 RDI: 0000000000000000
+RBP: ffff88807df0c06a R08: ffffffff8995b084 R09: 1ffff1100fbe185c
+R10: dffffc0000000000 R11: ffffed100fbe185d R12: ffff888076e85d50
+R13: ffff888076e85c80 R14: ffff888076e85cf4 R15: ffff888076e85c80
+FS:  00007f0dca6ea6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f0dca6ead58 CR3: 00000000119da000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  skb_cow_data+0x2da/0xcb0 net/core/skbuff.c:5284
+  tipc_aead_decrypt net/tipc/crypto.c:894 [inline]
+  tipc_crypto_rcv+0x402/0x24e0 net/tipc/crypto.c:1844
+  tipc_rcv+0x57e/0x12a0 net/tipc/node.c:2109
+  tipc_l2_rcv_msg+0x2bd/0x450 net/tipc/bearer.c:668
+  __netif_receive_skb_list_ptype net/core/dev.c:5720 [inline]
+  __netif_receive_skb_list_core+0x8b7/0x980 net/core/dev.c:5762
+  __netif_receive_skb_list net/core/dev.c:5814 [inline]
+  netif_receive_skb_list_internal+0xa51/0xe30 net/core/dev.c:5905
+  gro_normal_list include/net/gro.h:515 [inline]
+  napi_complete_done+0x2b5/0x870 net/core/dev.c:6256
+  napi_complete include/linux/netdevice.h:567 [inline]
+  tun_get_user+0x2ea0/0x4890 drivers/net/tun.c:1982
+  tun_chr_write_iter+0x10d/0x1f0 drivers/net/tun.c:2057
+ do_iter_readv_writev+0x600/0x880
+  vfs_writev+0x376/0xba0 fs/read_write.c:1050
+  do_writev+0x1b6/0x360 fs/read_write.c:1096
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
+Fixes: de4f5fed3f23 ("iov_iter: add iter_iovec() helper")
+Reported-by: syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/675b61aa.050a0220.599f4.00bb.GAE@google.com/T/#u
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+---
+ drivers/net/tun.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index d7a865ef370b6968c095510ae16b5196e30e54b9..e816aaba8e5f2ed06f8832f79553b6c976e75bb8 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1481,7 +1481,7 @@ static struct sk_buff *tun_napi_alloc_frags(struct tun_file *tfile,
+ 	skb->truesize += skb->data_len;
+ 
+ 	for (i = 1; i < it->nr_segs; i++) {
+-		const struct iovec *iov = iter_iov(it);
++		const struct iovec *iov = iter_iov(it) + i;
+ 		size_t fragsz = iov->iov_len;
+ 		struct page *page;
+ 		void *frag;
+-- 
+2.47.1.613.gc27f4b7a9f-goog
 
-It fails because total_cyles is smaller than the reported delta.
-However [0] shows the timestamp recorded by the GPU itself, which is
-reasonably close to the delta cycles (there are schedule gpu schedule
-latencies that are accounted in one vs the other, so it's not exact).
-So, it indeed executed for (at least) 20348520 cycles, but the reported
-delta for total_cycles is 325261713058 - 325242482039 == 19231019
-
-For me the reason for the failure is the first sample. It reads
-cycles == 0, which means the ctx wasn't scheduled out yet to update the
-counter. So, depending of how fast the CPU can read the first sample, it
-may read a total_cycles that is actually more than the timestamp it
-should have been: cycles may remain the same for some time while
-total_cycles is still ticking.
-
-I still think this patch here makes sense from a user perspective: we
-should try to get the gpu timestamp and client timestamp close together
-if user is expected to calculate a ratio between them.
-
- From a testing perspective, maybe it'd better to check if the timestamp
-reported by the GPU ([0]) closely matches the one reported via client
-info ([1]) rather than calculating any percentage, which means leaving
-the total_cycles out of the equation for igt.  Thoughts?
-
-Lucas De Marchi
-
->
->Cc: stable@vger.kernel.org # v6.11+
->Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3512
->Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->---
-> drivers/gpu/drm/xe/xe_drm_client.c | 9 +++------
-> 1 file changed, 3 insertions(+), 6 deletions(-)
->
->diff --git a/drivers/gpu/drm/xe/xe_drm_client.c b/drivers/gpu/drm/xe/xe_drm_client.c
->index 298a587da7f17..e307b4d6bab5a 100644
->--- a/drivers/gpu/drm/xe/xe_drm_client.c
->+++ b/drivers/gpu/drm/xe/xe_drm_client.c
->@@ -338,15 +338,12 @@ static void show_run_ticks(struct drm_printer *p, struct drm_file *file)
->
-> 	/* Accumulate all the exec queues from this client */
-> 	mutex_lock(&xef->exec_queue.lock);
->-	xa_for_each(&xef->exec_queue.xa, i, q) {
->-		xe_exec_queue_get(q);
->-		mutex_unlock(&xef->exec_queue.lock);
->+	preempt_disable();
->
->+	xa_for_each(&xef->exec_queue.xa, i, q)
-> 		xe_exec_queue_update_run_ticks(q);
->
->-		mutex_lock(&xef->exec_queue.lock);
->-		xe_exec_queue_put(q);
->-	}
->+	preempt_enable();
-> 	mutex_unlock(&xef->exec_queue.lock);
->
-> 	gpu_timestamp = xe_hw_engine_read_timestamp(hwe);
->-- 
->2.47.0
->
 
