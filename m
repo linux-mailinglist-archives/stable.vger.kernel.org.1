@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-103412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632609EF7CF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C95CC9EF843
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1613A1899A18
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 890EE293FC3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E767A215764;
-	Thu, 12 Dec 2024 17:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21938216E2D;
+	Thu, 12 Dec 2024 17:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pn0+Y2sJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdwIhd4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A228B13CA81;
-	Thu, 12 Dec 2024 17:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D338120A5EE;
+	Thu, 12 Dec 2024 17:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024490; cv=none; b=lWWddIHv+nW+g5D8wCQ7ppML79lWLXMGbMdvXKqwTUHuKglqFiwZia0KvNYrjIS/r8TmQYyW81M527LZOMKczmHl12uZQu/4Kuc7uDn9BIO/xKF4yOL3SdvWhWlLS0ynBR5sEmcZhjcao8G8ZXIwUMVHjh5t1WTxXBEg7fJpWm4=
+	t=1734025243; cv=none; b=RD22xfuU7OmWbzp9WNWQyq2atibgBAqkjUwnqH5rcn0aiLqFqe/NI8nd4VpbApTV6FIXMzGiyCdnE+YnAZL2i6c/amkj/shWEIb5wGodQ+/vJYUgfnMTWHdb27sV0cJyhepBpTNWdoVQPR2w7IZz4qh7J4RSV60dm97tVXYvo6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024490; c=relaxed/simple;
-	bh=G+d5wiZNPz1AO7i/3vfLj0SCLfKpbvvPI5prO8EVXVA=;
+	s=arc-20240116; t=1734025243; c=relaxed/simple;
+	bh=owewg07qQg5rGh8gG6pGebaEKP4N1AGhUaf3M560Qwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojxlY6ClrCiohfqYx25xfiieRajfqdju6ifLB4JsD/02o2gRA6MkkCvhLxKgF751D5ndA9+yFY0b+JUIPHivzq3hLjpkh8LSa9m7weEvEe0KszC2SJ6KJvQtDwWw10fq96HZ8phjvr63t80PYhMd2ZJHZDvX6Ab9ZCE0wOyxbcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pn0+Y2sJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23928C4CED0;
-	Thu, 12 Dec 2024 17:28:09 +0000 (UTC)
+	 MIME-Version; b=fae0/gt8UY0IaseSElLovtP3r4lFxrJUO+Ac9J3brq5oalZkvpnjkGibRFEyXYEOtnhmO9muGelntT+1160NRyH3JwI2cOldxbtsXwT71gcr5rll9tZhTFB+Mtk50a6P2wuP50fOyZRVrnvVYPic0O1Zh2Qm/viz4TghsnHBq8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdwIhd4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B69CC4CECE;
+	Thu, 12 Dec 2024 17:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024490;
-	bh=G+d5wiZNPz1AO7i/3vfLj0SCLfKpbvvPI5prO8EVXVA=;
+	s=korg; t=1734025243;
+	bh=owewg07qQg5rGh8gG6pGebaEKP4N1AGhUaf3M560Qwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pn0+Y2sJu2+XZ0MrxTeMulg2ImZIhmeaJNJcGPi1CNHdOiZEv81TeL94EquPo/clq
-	 2otcDtPWqW67mN0e6yZLRlBAv/P+268Hq58i2WjQPr7nlOCvCPxLbfhGFtHEdHjk7G
-	 tBUjsC5zJMuo5UUJ+aocVJEzVHe5KLf1+YvvO13o=
+	b=HdwIhd4EBgqcVq5/wNaqXI+hMAWGJkDIptInuypX4z26vNdBW33zBOo8quDQRE3TP
+	 dj1QeZnTL54Hqtn9xQgj/wAcHj80e7s8f2IyUHCXWqSzI4kr3j+QvfIXVavWIwVdFR
+	 E522eT69UI8gOH7ZQYzs46iapuVSYgpyLN+CwjqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.10 283/459] usb: dwc3: gadget: Fix looping of queued SG entries
+	Michal Suchanek <msuchanek@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 103/321] powerpc/sstep: make emulate_vsx_load and emulate_vsx_store static
 Date: Thu, 12 Dec 2024 16:00:21 +0100
-Message-ID: <20241212144304.812221979@linuxfoundation.org>
+Message-ID: <20241212144234.059289636@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Michal Suchanek <msuchanek@suse.de>
 
-commit b7fc65f5141c24785dc8c19249ca4efcf71b3524 upstream.
+[ Upstream commit a26c4dbb3d9c1821cb0fc11cb2dbc32d5bf3463b ]
 
-The dwc3_request->num_queued_sgs is decremented on completion. If a
-partially completed request is handled, then the
-dwc3_request->num_queued_sgs no longer reflects the total number of
-num_queued_sgs (it would be cleared).
+These functions are not used outside of sstep.c
 
-Correctly check the number of request SG entries remained to be prepare
-and queued. Failure to do this may cause null pointer dereference when
-accessing non-existent SG entry.
-
-Cc: stable@vger.kernel.org
-Fixes: c96e6725db9d ("usb: dwc3: gadget: Correct the logic for queuing sgs")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/d07a7c4aa0fcf746cdca0515150dbe5c52000af7.1731545781.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 350779a29f11 ("powerpc: Handle most loads and stores in instruction emulation code")
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20241001130356.14664-1-msuchanek@suse.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/sstep.h |  5 -----
+ arch/powerpc/lib/sstep.c         | 12 ++++--------
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1188,8 +1188,8 @@ static int dwc3_prepare_trbs_sg(struct d
- 	struct scatterlist *s;
- 	int		i;
- 	unsigned int length = req->request.length;
--	unsigned int remaining = req->request.num_mapped_sgs
--		- req->num_queued_sgs;
-+	unsigned int remaining = req->num_pending_sgs;
-+	unsigned int num_queued_sgs = req->request.num_mapped_sgs - remaining;
- 	unsigned int num_trbs = req->num_trbs;
- 	bool needs_extra_trb = dwc3_needs_extra_trb(dep, req);
+diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
+index 769f055509c9a..eef81dd406075 100644
+--- a/arch/powerpc/include/asm/sstep.h
++++ b/arch/powerpc/include/asm/sstep.h
+@@ -160,9 +160,4 @@ extern int emulate_step(struct pt_regs *regs, unsigned int instr);
+  */
+ extern int emulate_loadstore(struct pt_regs *regs, struct instruction_op *op);
  
-@@ -1197,7 +1197,7 @@ static int dwc3_prepare_trbs_sg(struct d
- 	 * If we resume preparing the request, then get the remaining length of
- 	 * the request and resume where we left off.
- 	 */
--	for_each_sg(req->request.sg, s, req->num_queued_sgs, i)
-+	for_each_sg(req->request.sg, s, num_queued_sgs, i)
- 		length -= sg_dma_len(s);
+-extern void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+-			     const void *mem, bool cross_endian);
+-extern void emulate_vsx_store(struct instruction_op *op,
+-			      const union vsx_reg *reg, void *mem,
+-			      bool cross_endian);
+ extern int emulate_dcbz(unsigned long ea, struct pt_regs *regs);
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index 490162fb0893f..368a36079cb6c 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -663,8 +663,8 @@ static nokprobe_inline int emulate_stq(struct pt_regs *regs, unsigned long ea,
+ #endif /* __powerpc64 */
  
- 	for_each_sg(sg, s, remaining, i) {
+ #ifdef CONFIG_VSX
+-void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+-		      const void *mem, bool rev)
++static nokprobe_inline void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
++					     const void *mem, bool rev)
+ {
+ 	int size, read_size;
+ 	int i, j;
+@@ -744,11 +744,9 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 		break;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(emulate_vsx_load);
+-NOKPROBE_SYMBOL(emulate_vsx_load);
+ 
+-void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+-		       void *mem, bool rev)
++static nokprobe_inline void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
++					      void *mem, bool rev)
+ {
+ 	int size, write_size;
+ 	int i, j;
+@@ -820,8 +818,6 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 		break;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(emulate_vsx_store);
+-NOKPROBE_SYMBOL(emulate_vsx_store);
+ 
+ static nokprobe_inline int do_vsx_load(struct instruction_op *op,
+ 				       unsigned long ea, struct pt_regs *regs,
+-- 
+2.43.0
+
 
 
 
