@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882879EF3FC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 805529EF09F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 389BA189BB79
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3808B188F8B6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4741922FDE4;
-	Thu, 12 Dec 2024 16:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2446E223E90;
+	Thu, 12 Dec 2024 16:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIsk7gia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgqaJffI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0219C2253FD;
-	Thu, 12 Dec 2024 16:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D438E222D72;
+	Thu, 12 Dec 2024 16:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021674; cv=none; b=YjVc0w+83sk6sVp6YbY2AipiUUaNwudjfEChI0O6CEy0Y1tpH45RypDiiAH7Fuv9Cm7Ex+DJrvuW3qsLGf+3wcqrG23TD7N0ZruuxpKv6IjrA+3H0tfoGULmiQ1p/Gd5lHf1RJXhmC4OHy+kmHqVwifuDeUoC+KYKOOeAbL0ixE=
+	t=1734019692; cv=none; b=l+gb6d3bPkzCMdnV0xln/kI5PPxX9cjIdQU8riGGHSVI8P6UxTLzzJIzl+O+qZV+obyy1IOGLwzQwP1NPKxMBj2t1z7WbG1T1RVeeUXkxUdAUkJn0l5OfUe3Rrbf+WNcTU+wmubsfdBe89JFpBBvJ37kJFBsUqNUMbvwGQnoiPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021674; c=relaxed/simple;
-	bh=FyZPqs4aBb8gx9A2zidsebURhaKWmAFTFUdD6phBAqk=;
+	s=arc-20240116; t=1734019692; c=relaxed/simple;
+	bh=YJoB2touhNwOSsfYdLqWO6sPxhewwJJUzViP2ifqJBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMD9sL/JMnvTVwUfIktQlbXczP4CbyWhv3ZVD2dAkf+rTeLRP7PtRt386Ya7BsVZU1nWdNgNZX9YPFbCDqNIlfAiaH2DPzspOzg9YE78wxCc+K81M3mTwCN7pe9tJyuDsMftTIMkll0ynnfyMJncm5fDcCpI4j7lM+IpogRNb5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIsk7gia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E8AC4CECE;
-	Thu, 12 Dec 2024 16:41:13 +0000 (UTC)
+	 MIME-Version; b=mZvJqi/exBaAC/4IJbkeJK49sbPKjCtN3guxgSCyFQCIKkkyEfuqjr+QTUOIS1Ll7rCXhFpTlD9DMWHWBOlajuuR2mjuHfoCBZjBpQLq+xWAwzLaawJsYYsQ37Pyytkob3pMhoA2uiM9HDDN8AFaOQwFciLKu6zyys8C5x+2Jb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgqaJffI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBA3C4CECE;
+	Thu, 12 Dec 2024 16:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021673;
-	bh=FyZPqs4aBb8gx9A2zidsebURhaKWmAFTFUdD6phBAqk=;
+	s=korg; t=1734019692;
+	bh=YJoB2touhNwOSsfYdLqWO6sPxhewwJJUzViP2ifqJBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIsk7giaYV6E2DoZkwCUBzLR6XMNdjcOqH2H3xl9/+e7VuN84XWBx1M7OCla9Z5DY
-	 DTb0LCXWR8bgd5ZR4F2kAKgzboLBQ+5WNsXGT85PsRYj5GbVT/chgRmzGPyZLyagsn
-	 PZAR7VZIOKXstttwx8y5ApGIQ3sEcT0jljhA0L50=
+	b=pgqaJffIbUJRbMAQfVSdttQmBI0YeGvq/hMW7v8ryosM/36wzSDCk9CLQHenDEQHQ
+	 6CHEE9Zrd4GnV2YyF6vKc9nB8sUJgD5MGcMlKgiDRmMBM9leAEOEDuiBOGdS+rx69T
+	 YtXDWj78W+69IxLjgYgmYrYfH6ZWTztVUEn/JXeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harith George <harith.g@alifsemi.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Christoph Hellwig <hch@lst.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/565] ARM: 9419/1: mm: Fix kernel memory mapping for xip kernels
-Date: Thu, 12 Dec 2024 15:53:38 +0100
-Message-ID: <20241212144312.365206316@linuxfoundation.org>
+Subject: [PATCH 6.1 274/772] f2fs: open code allocate_segment_by_default
+Date: Thu, 12 Dec 2024 15:53:39 +0100
+Message-ID: <20241212144401.230509500@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harith G <harith.g@alifsemi.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit ed6cbe6e5563452f305e89c15846820f2874e431 ]
+[ Upstream commit 8442d94b8ac8d5d8300725a9ffa9def526b71170 ]
 
-The patchset introducing kernel_sec_start/end variables to separate the
-kernel/lowmem memory mappings, broke the mapping of the kernel memory
-for xipkernels.
+allocate_segment_by_default has just two callers, which use very
+different code pathes inside it based on the force paramter.  Just
+open code the logic in the two callers using a new helper to decided
+if a new segment should be allocated.
 
-kernel_sec_start/end variables are in RO area before the MMU is switched
-on for xipkernels.
-So these cannot be set early in boot in head.S. Fix this by setting these
-after MMU is switched on.
-xipkernels need two different mappings for kernel text (starting at
-CONFIG_XIP_PHYS_ADDR) and data (starting at CONFIG_PHYS_OFFSET).
-Also, move the kernel code mapping from devicemaps_init() to map_kernel().
-
-Fixes: a91da5457085 ("ARM: 9089/1: Define kernel physical section start and end")
-Signed-off-by: Harith George <harith.g@alifsemi.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 43563069e1c1 ("f2fs: check curseg->inited before write_sum_page in change_curseg")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/head.S |  8 ++++++--
- arch/arm/mm/mmu.c      | 34 +++++++++++++++++++++-------------
- 2 files changed, 27 insertions(+), 15 deletions(-)
+ fs/f2fs/segment.c | 50 +++++++++++++++++++++++------------------------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
-diff --git a/arch/arm/kernel/head.S b/arch/arm/kernel/head.S
-index 3fc7f9750ce4b..0638d20061d8c 100644
---- a/arch/arm/kernel/head.S
-+++ b/arch/arm/kernel/head.S
-@@ -252,11 +252,15 @@ __create_page_tables:
- 	 */
- 	add	r0, r4, #KERNEL_OFFSET >> (SECTION_SHIFT - PMD_ORDER)
- 	ldr	r6, =(_end - 1)
-+
-+	/* For XIP, kernel_sec_start/kernel_sec_end are currently in RO memory */
-+#ifndef CONFIG_XIP_KERNEL
- 	adr_l	r5, kernel_sec_start		@ _pa(kernel_sec_start)
- #if defined CONFIG_CPU_ENDIAN_BE8 || defined CONFIG_CPU_ENDIAN_BE32
- 	str	r8, [r5, #4]			@ Save physical start of kernel (BE)
- #else
- 	str	r8, [r5]			@ Save physical start of kernel (LE)
-+#endif
- #endif
- 	orr	r3, r8, r7			@ Add the MMU flags
- 	add	r6, r4, r6, lsr #(SECTION_SHIFT - PMD_ORDER)
-@@ -264,6 +268,7 @@ __create_page_tables:
- 	add	r3, r3, #1 << SECTION_SHIFT
- 	cmp	r0, r6
- 	bls	1b
-+#ifndef CONFIG_XIP_KERNEL
- 	eor	r3, r3, r7			@ Remove the MMU flags
- 	adr_l	r5, kernel_sec_end		@ _pa(kernel_sec_end)
- #if defined CONFIG_CPU_ENDIAN_BE8 || defined CONFIG_CPU_ENDIAN_BE32
-@@ -271,8 +276,7 @@ __create_page_tables:
- #else
- 	str	r3, [r5]			@ Save physical end of kernel (LE)
- #endif
--
--#ifdef CONFIG_XIP_KERNEL
-+#else
- 	/*
- 	 * Map the kernel image separately as it is not located in RAM.
- 	 */
-diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
-index 83a91e0ab8480..fc0ef1c913c1b 100644
---- a/arch/arm/mm/mmu.c
-+++ b/arch/arm/mm/mmu.c
-@@ -1381,18 +1381,6 @@ static void __init devicemaps_init(const struct machine_desc *mdesc)
- 		create_mapping(&map);
- 	}
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index bfc3c9ba6ef40..a40322964c1e0 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2859,31 +2859,20 @@ static int get_ssr_segment(struct f2fs_sb_info *sbi, int type,
+ 	return 0;
+ }
  
--	/*
--	 * Map the kernel if it is XIP.
--	 * It is always first in the modulearea.
--	 */
--#ifdef CONFIG_XIP_KERNEL
--	map.pfn = __phys_to_pfn(CONFIG_XIP_PHYS_ADDR & SECTION_MASK);
--	map.virtual = MODULES_VADDR;
--	map.length = ((unsigned long)_exiprom - map.virtual + ~SECTION_MASK) & SECTION_MASK;
--	map.type = MT_ROM;
--	create_mapping(&map);
--#endif
--
- 	/*
- 	 * Map the cache flushing regions.
- 	 */
-@@ -1582,12 +1570,27 @@ static void __init map_kernel(void)
- 	 * This will only persist until we turn on proper memory management later on
- 	 * and we remap the whole kernel with page granularity.
- 	 */
-+#ifdef CONFIG_XIP_KERNEL
-+	phys_addr_t kernel_nx_start = kernel_sec_start;
-+#else
- 	phys_addr_t kernel_x_start = kernel_sec_start;
- 	phys_addr_t kernel_x_end = round_up(__pa(__init_end), SECTION_SIZE);
- 	phys_addr_t kernel_nx_start = kernel_x_end;
-+#endif
- 	phys_addr_t kernel_nx_end = kernel_sec_end;
- 	struct map_desc map;
- 
-+	/*
-+	 * Map the kernel if it is XIP.
-+	 * It is always first in the modulearea.
-+	 */
-+#ifdef CONFIG_XIP_KERNEL
-+	map.pfn = __phys_to_pfn(CONFIG_XIP_PHYS_ADDR & SECTION_MASK);
-+	map.virtual = MODULES_VADDR;
-+	map.length = ((unsigned long)_exiprom - map.virtual + ~SECTION_MASK) & SECTION_MASK;
-+	map.type = MT_ROM;
-+	create_mapping(&map);
-+#else
- 	map.pfn = __phys_to_pfn(kernel_x_start);
- 	map.virtual = __phys_to_virt(kernel_x_start);
- 	map.length = kernel_x_end - kernel_x_start;
-@@ -1597,7 +1600,7 @@ static void __init map_kernel(void)
- 	/* If the nx part is small it may end up covered by the tail of the RWX section */
- 	if (kernel_x_end == kernel_nx_end)
- 		return;
--
-+#endif
- 	map.pfn = __phys_to_pfn(kernel_nx_start);
- 	map.virtual = __phys_to_virt(kernel_nx_start);
- 	map.length = kernel_nx_end - kernel_nx_start;
-@@ -1742,6 +1745,11 @@ void __init paging_init(const struct machine_desc *mdesc)
+-/*
+- * flush out current segment and replace it with new segment
+- * This function should be returned with success, otherwise BUG
+- */
+-static void allocate_segment_by_default(struct f2fs_sb_info *sbi,
+-						int type, bool force)
++static bool need_new_seg(struct f2fs_sb_info *sbi, int type)
  {
- 	void *zero_page;
+ 	struct curseg_info *curseg = CURSEG_I(sbi, type);
  
-+#ifdef CONFIG_XIP_KERNEL
-+	/* Store the kernel RW RAM region start/end in these variables */
-+	kernel_sec_start = CONFIG_PHYS_OFFSET & SECTION_MASK;
-+	kernel_sec_end = round_up(__pa(_end), SECTION_SIZE);
-+#endif
- 	pr_debug("physical kernel sections: 0x%08llx-0x%08llx\n",
- 		 kernel_sec_start, kernel_sec_end);
+-	if (force)
+-		new_curseg(sbi, type, true);
+-	else if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
+-					curseg->seg_type == CURSEG_WARM_NODE)
+-		new_curseg(sbi, type, false);
+-	else if (curseg->alloc_type == LFS &&
+-			is_next_segment_free(sbi, curseg, type) &&
+-			likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
+-		new_curseg(sbi, type, false);
+-	else if (f2fs_need_SSR(sbi) &&
+-			get_ssr_segment(sbi, type, SSR, 0))
+-		change_curseg(sbi, type, true);
+-	else
+-		new_curseg(sbi, type, false);
+-
+-	stat_inc_seg_type(sbi, curseg);
++	if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
++	    curseg->seg_type == CURSEG_WARM_NODE)
++		return true;
++	if (curseg->alloc_type == LFS &&
++	    is_next_segment_free(sbi, curseg, type) &&
++	    likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
++		return true;
++	if (!f2fs_need_SSR(sbi) || !get_ssr_segment(sbi, type, SSR, 0))
++		return true;
++	return false;
+ }
  
+ void f2fs_allocate_segment_for_resize(struct f2fs_sb_info *sbi, int type,
+@@ -2936,7 +2925,8 @@ static void __allocate_new_segment(struct f2fs_sb_info *sbi, int type,
+ 		return;
+ alloc:
+ 	old_segno = curseg->segno;
+-	allocate_segment_by_default(sbi, type, true);
++	new_curseg(sbi, type, true);
++	stat_inc_seg_type(sbi, curseg);
+ 	locate_dirty_segment(sbi, old_segno);
+ }
+ 
+@@ -3287,11 +3277,19 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
+ 	update_sit_entry(sbi, old_blkaddr, -1);
+ 
+ 	if (!__has_curseg_space(sbi, curseg)) {
+-		if (from_gc)
++		/*
++		 * Flush out current segment and replace it with new segment.
++		 */
++		if (from_gc) {
+ 			get_atssr_segment(sbi, type, se->type,
+ 						AT_SSR, se->mtime);
+-		else
+-			allocate_segment_by_default(sbi, type, false);
++		} else {
++			if (need_new_seg(sbi, type))
++				new_curseg(sbi, type, false);
++			else
++				change_curseg(sbi, type, true);
++			stat_inc_seg_type(sbi, curseg);
++		}
+ 	}
+ 	/*
+ 	 * segment dirty status should be updated after segment allocation,
 -- 
 2.43.0
 
