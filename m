@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-102342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5612B9EF171
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70039EEB57
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 167BB28D1EF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7208B280FB3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FEA223C65;
-	Thu, 12 Dec 2024 16:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214152153F4;
+	Thu, 12 Dec 2024 15:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4KzTTrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNK65/Z6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647D621E0BC;
-	Thu, 12 Dec 2024 16:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19102080FC;
+	Thu, 12 Dec 2024 15:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020879; cv=none; b=phOrrrKXb5vGMBr7lyP9u9lWSt5OU5tvCwYVpB6+baC0CORDws8p+YCnapOaaUAnF0SyEnukXLAzL+KFdmSjz4mTVB/cYuYjJjcXMS/tSbxRCO9SdOF2dnQ7o2FnSmw00JzPZQzXcAvQSoIqBaItTcfU+6fOue1KmndFfrznViQ=
+	t=1734017031; cv=none; b=IEbKk9AFbxr1Fd+vT+jIdHZ1NnANy8kAMORsymDUeehWN07/RfMCO6mCOGuBxtrV4czZsKXCFFtfJ/45js/dK8LZ04DT1uGywSmGZdEXnh0qoCIMKPcnLz3ANsZh/ZaI80ObEohxRZGVH4zxvCOEeisstXhNg5I57UHh0VHfxoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020879; c=relaxed/simple;
-	bh=R2s1ZQd3xGi7Xh6uqjghSue/m0C3+YDR4t7pkTT3Plg=;
+	s=arc-20240116; t=1734017031; c=relaxed/simple;
+	bh=PUd9nsIFDk0vuMkCRP+khYSnpT4mJVibwwttum4Kr8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HON2uAv3wI3pUKyt6kxXdCjjtFTQLd9b5UC3YmYNPgwkeMntlX8A/tw9SxyA5U8ZwbwjtP+dzeMkfLZHFGhNdeKlHcsO4CwxogMR9Gb8os2DUWOPvt6+pt3rwKASHwCQHCje6oIwscaz874tJXKJA1iuPfWt+Z6xCyNi5Md/W44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4KzTTrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CD7C4CEDE;
-	Thu, 12 Dec 2024 16:27:58 +0000 (UTC)
+	 MIME-Version; b=nKa3dZZXUAYWcEFpFCrCzXgcJJ8q9kfNs2gvgxYlcY5raY5OINdIr1XwACrLxuRKlM9Dxh6r5tyT4qTWYFiuiOT5JujhiNNDeLuxoTNaQtlubnoYsTr2uTFDhIC/coYle6TTv9uU+BZWa2LesxpUqJOFSWnJ2LZJ71KhO/fwuZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNK65/Z6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7E1C4CECE;
+	Thu, 12 Dec 2024 15:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020879;
-	bh=R2s1ZQd3xGi7Xh6uqjghSue/m0C3+YDR4t7pkTT3Plg=;
+	s=korg; t=1734017031;
+	bh=PUd9nsIFDk0vuMkCRP+khYSnpT4mJVibwwttum4Kr8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4KzTTrzEmPsQkWX/UX+UgI0Q2V28i/J+MOsZDt6+9dSsZ2Una1mgzto2TTw2cWDM
-	 3/6s4a/j+kslfurzDmeUQp36IUDu/7/fv6Xj91d6BuKyp7TJGIEITG18pnRqNBG/Rm
-	 6wSvT6VHtYo8zwMSapuEYWw8KSZfzv3Dq1bURghM=
+	b=cNK65/Z6rB4iwPIADiVjWX3JFIhIi4ESsc1L4g9bmiN12+xvXOCem5Is6SChw6+g7
+	 hnDC6ZIli6YaSJct9jZEy7fNPXbMhZ9GY94LiYZfrsGXoYJQD6lNRJZCe2CZR4EZgQ
+	 rZ86RZca6VhAnXsDRxeGFTPJw7CZ0jQHoOcuvrtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 555/772] usb: dwc3: ep0: Dont clear ep0 DWC3_EP_TRANSFER_STARTED
+Subject: [PATCH 6.12 331/466] ALSA: usb-audio: Make mic volume workarounds globally applicable
 Date: Thu, 12 Dec 2024 15:58:20 +0100
-Message-ID: <20241212144412.903184469@linuxfoundation.org>
+Message-ID: <20241212144319.863398219@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 5d2fb074dea289c41f5aaf2c3f68286bee370634 ]
+[ Upstream commit d6e6b9218ced5249b9136833ef5ec3f554ec7fde ]
 
-The driver cannot issue the End Transfer command to the SETUP transfer.
-Don't clear DWC3_EP_TRANSFER_STARTED flag to make sure that the driver
-won't send Start Transfer command again, which can cause no-resource
-error. For example this can occur if the host issues a reset to the
-device.
+It seems that many webcams have buggy firmware and don't expose the
+mic capture volume with the proper resolution.  We have workarounds in
+mixer.c, but judging from the numbers, those can be better managed as
+global quirk flags.
 
-Cc: stable@vger.kernel.org
-Fixes: 76cb323f80ac ("usb: dwc3: ep0: clear all EP0 flags")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/d3d618185fd614bb7426352a9fc1199641d3b5f5.1731545781.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20241105120220.5740-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/ep0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer.c    | 58 ++++++++++++--------------------------------
+ sound/usb/quirks.c   | 31 +++++++++++++++++++----
+ sound/usb/usbaudio.h |  4 +++
+ 3 files changed, 45 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
-index 2da36f02a10e8..e87b37cb9a7af 100644
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -229,7 +229,7 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
- 	/* stall is always issued on EP0 */
- 	dep = dwc->eps[0];
- 	__dwc3_gadget_ep_set_halt(dep, 1, false);
--	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED;
-+	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED | DWC3_EP_TRANSFER_STARTED;
- 	dep->flags |= DWC3_EP_ENABLED;
- 	dwc->delayed_status = false;
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index bd67027c76775..0591da2839269 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1084,6 +1084,21 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
+ 				  struct snd_kcontrol *kctl)
+ {
+ 	struct snd_usb_audio *chip = cval->head.mixer->chip;
++
++	if (chip->quirk_flags & QUIRK_FLAG_MIC_RES_384) {
++		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
++			usb_audio_info(chip,
++				"set resolution quirk: cval->res = 384\n");
++			cval->res = 384;
++		}
++	} else if (chip->quirk_flags & QUIRK_FLAG_MIC_RES_16) {
++		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
++			usb_audio_info(chip,
++				"set resolution quirk: cval->res = 16\n");
++			cval->res = 16;
++		}
++	}
++
+ 	switch (chip->usb_id) {
+ 	case USB_ID(0x0763, 0x2030): /* M-Audio Fast Track C400 */
+ 	case USB_ID(0x0763, 0x2031): /* M-Audio Fast Track C600 */
+@@ -1168,27 +1183,6 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
+ 		}
+ 		break;
  
+-	case USB_ID(0x046d, 0x0807): /* Logitech Webcam C500 */
+-	case USB_ID(0x046d, 0x0808):
+-	case USB_ID(0x046d, 0x0809):
+-	case USB_ID(0x046d, 0x0819): /* Logitech Webcam C210 */
+-	case USB_ID(0x046d, 0x081b): /* HD Webcam c310 */
+-	case USB_ID(0x046d, 0x081d): /* HD Webcam c510 */
+-	case USB_ID(0x046d, 0x0825): /* HD Webcam c270 */
+-	case USB_ID(0x046d, 0x0826): /* HD Webcam c525 */
+-	case USB_ID(0x046d, 0x08ca): /* Logitech Quickcam Fusion */
+-	case USB_ID(0x046d, 0x0991):
+-	case USB_ID(0x046d, 0x09a2): /* QuickCam Communicate Deluxe/S7500 */
+-	/* Most audio usb devices lie about volume resolution.
+-	 * Most Logitech webcams have res = 384.
+-	 * Probably there is some logitech magic behind this number --fishor
+-	 */
+-		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
+-			usb_audio_info(chip,
+-				"set resolution quirk: cval->res = 384\n");
+-			cval->res = 384;
+-		}
+-		break;
+ 	case USB_ID(0x0495, 0x3042): /* ESS Technology Asus USB DAC */
+ 		if ((strstr(kctl->id.name, "Playback Volume") != NULL) ||
+ 			strstr(kctl->id.name, "Capture Volume") != NULL) {
+@@ -1197,28 +1191,6 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
+ 			cval->res = 1;
+ 		}
+ 		break;
+-	case USB_ID(0x1224, 0x2a25): /* Jieli Technology USB PHY 2.0 */
+-		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
+-			usb_audio_info(chip,
+-				"set resolution quirk: cval->res = 16\n");
+-			cval->res = 16;
+-		}
+-		break;
+-	case USB_ID(0x1bcf, 0x2283): /* NexiGo N930AF FHD Webcam */
+-	case USB_ID(0x03f0, 0x654a): /* HP 320 FHD Webcam */
+-		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
+-			usb_audio_info(chip,
+-				"set resolution quirk: cval->res = 16\n");
+-			cval->res = 16;
+-		}
+-		break;
+-	case USB_ID(0x1bcf, 0x2281): /* HD Webcam */
+-		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
+-			usb_audio_info(chip,
+-				"set resolution quirk: cval->res = 16\n");
+-			cval->res = 16;
+-		}
+-		break;
+ 	}
+ }
+ 
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 2cded83467c0d..00101875d9a8d 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2144,7 +2144,7 @@ struct usb_audio_quirk_flags_table {
+ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 	/* Device matches */
+ 	DEVICE_FLG(0x03f0, 0x654a, /* HP 320 FHD Webcam */
+-		   QUIRK_FLAG_GET_SAMPLE_RATE),
++		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
+ 	DEVICE_FLG(0x041e, 0x3000, /* Creative SB Extigy */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x041e, 0x4080, /* Creative Live Cam VF0610 */
+@@ -2152,10 +2152,31 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 	DEVICE_FLG(0x045e, 0x083c, /* MS USB Link headset */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_CTL_MSG_DELAY |
+ 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
++	DEVICE_FLG(0x046d, 0x0807, /* Logitech Webcam C500 */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
++	DEVICE_FLG(0x046d, 0x0808, /* Logitech Webcam C600 */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
++	DEVICE_FLG(0x046d, 0x0809,
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
++	DEVICE_FLG(0x046d, 0x0819, /* Logitech Webcam C210 */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
++	DEVICE_FLG(0x046d, 0x081b, /* HD Webcam c310 */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
++	DEVICE_FLG(0x046d, 0x081d, /* HD Webcam c510 */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
++	DEVICE_FLG(0x046d, 0x0825, /* HD Webcam c270 */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
++	DEVICE_FLG(0x046d, 0x0826, /* HD Webcam c525 */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
+ 	DEVICE_FLG(0x046d, 0x084c, /* Logitech ConferenceCam Connect */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_CTL_MSG_DELAY_1M),
++	DEVICE_FLG(0x046d, 0x08ca, /* Logitech Quickcam Fusion */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
+ 	DEVICE_FLG(0x046d, 0x0991, /* Logitech QuickCam Pro */
+-		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_IGNORE_CTL_ERROR),
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_IGNORE_CTL_ERROR |
++		   QUIRK_FLAG_MIC_RES_384),
++	DEVICE_FLG(0x046d, 0x09a2, /* QuickCam Communicate Deluxe/S7500 */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_MIC_RES_384),
+ 	DEVICE_FLG(0x046d, 0x09a4, /* Logitech QuickCam E 3500 */
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x0499, 0x1509, /* Steinberg UR22 */
+@@ -2223,7 +2244,7 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 	DEVICE_FLG(0x0fd9, 0x0008, /* Hauppauge HVR-950Q */
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x1224, 0x2a25, /* Jieli Technology USB PHY 2.0 */
+-		   QUIRK_FLAG_GET_SAMPLE_RATE),
++		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
+ 	DEVICE_FLG(0x1395, 0x740a, /* Sennheiser DECT */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x1397, 0x0507, /* Behringer UMC202HD */
+@@ -2261,9 +2282,9 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 	DEVICE_FLG(0x19f7, 0x0035, /* RODE NT-USB+ */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x1bcf, 0x2281, /* HD Webcam */
+-		   QUIRK_FLAG_GET_SAMPLE_RATE),
++		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
+ 	DEVICE_FLG(0x1bcf, 0x2283, /* NexiGo N930AF FHD Webcam */
+-		   QUIRK_FLAG_GET_SAMPLE_RATE),
++		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
+ 	DEVICE_FLG(0x2040, 0x7200, /* Hauppauge HVR-950Q */
+ 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
+ 	DEVICE_FLG(0x2040, 0x7201, /* Hauppauge HVR-950Q-MXL */
+diff --git a/sound/usb/usbaudio.h b/sound/usb/usbaudio.h
+index b0f042c996087..158ec053dc44d 100644
+--- a/sound/usb/usbaudio.h
++++ b/sound/usb/usbaudio.h
+@@ -194,6 +194,8 @@ extern bool snd_usb_skip_validation;
+  * QUIRK_FLAG_FIXED_RATE
+  *  Do not set PCM rate (frequency) when only one rate is available
+  *  for the given endpoint.
++ * QUIRK_FLAG_MIC_RES_16 and QUIRK_FLAG_MIC_RES_384
++ *  Set the fixed resolution for Mic Capture Volume (mostly for webcams)
+  */
+ 
+ #define QUIRK_FLAG_GET_SAMPLE_RATE	(1U << 0)
+@@ -218,5 +220,7 @@ extern bool snd_usb_skip_validation;
+ #define QUIRK_FLAG_IFACE_SKIP_CLOSE	(1U << 19)
+ #define QUIRK_FLAG_FORCE_IFACE_RESET	(1U << 20)
+ #define QUIRK_FLAG_FIXED_RATE		(1U << 21)
++#define QUIRK_FLAG_MIC_RES_16		(1U << 22)
++#define QUIRK_FLAG_MIC_RES_384		(1U << 23)
+ 
+ #endif /* __USBAUDIO_H */
 -- 
 2.43.0
 
