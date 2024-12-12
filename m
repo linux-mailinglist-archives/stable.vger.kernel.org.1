@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-101158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02109EEB1F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4F99EF368
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13C21645C6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FCD829298E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E5C21B91D;
-	Thu, 12 Dec 2024 15:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56BC231A50;
+	Thu, 12 Dec 2024 16:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHBfw4EO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vK66Sw4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0922153F8;
-	Thu, 12 Dec 2024 15:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61466231A49;
+	Thu, 12 Dec 2024 16:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016562; cv=none; b=qnm5g9LvXhHbRbMIdufa5IDnUMBG6ilpvW2E5ly9UZNV5vXaWYrXqAUdoWfrVSKs0c4indet1uZ54GQJRnPDrOzbKVbmzEo6GaCX5tOjNOKciO9mq045wpiqvUZ4cuX370MeHhRRVv7byCHsHyZqtbQ0rvNlhdv6bo8x3C8aIN4=
+	t=1734022321; cv=none; b=iSFm/0y4g2KsTgqFi5sbzJcgSFlRSXOb1F65FeOkpaOaUXRdZ3YLwUGHDFfdSx53Zls7346AfDDLHb/Z5S/nLpfLZzPusLaB5tNvJmaoSZlm8julVjdKgGYyuJ4j5yP1DUguJkjpGKxXGNORRArpFYXMMSOWq031Xhc7ZDGSBAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016562; c=relaxed/simple;
-	bh=Pcb9xkgITxwIAijiWVj9KEOInchfo3aFprxSHAFO/Uc=;
+	s=arc-20240116; t=1734022321; c=relaxed/simple;
+	bh=ZeF874+1nyKMJuGnuQB8cykD8/eID8DHqRq4WyOFAfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6kR5+M288JiWXW8DazP2QhcjXz3WXWOyr/ERkJGe8kM1CeEDBWdoHWZTgUJhgAxmbW84YRBseyZ11LhyT/YHqJyTFkuc0qeXGXb2nB9O8ok/bvi9wJXB1XhgD5cErHZqx3RXNVzNpkjkqjjchD3E7WT7Az88r6O08JeXF7j4TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHBfw4EO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB921C4CECE;
-	Thu, 12 Dec 2024 15:16:01 +0000 (UTC)
+	 MIME-Version; b=C18SLvEiuVQee2IqmGkOtIRd7jYXYccIjhx9ZKj/9bXz5RV1Sph2925QfHfKP105ZfpNOIra+yCITOqchfOyAWduQRwEJdUxOCHiM0yGSh8HBmCuopri0U6d2RuBE3cct7b92Np7wPffZk169gKoXOlhWttw8MwtiVUDLqsGDC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vK66Sw4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2B7C4CED0;
+	Thu, 12 Dec 2024 16:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016562;
-	bh=Pcb9xkgITxwIAijiWVj9KEOInchfo3aFprxSHAFO/Uc=;
+	s=korg; t=1734022320;
+	bh=ZeF874+1nyKMJuGnuQB8cykD8/eID8DHqRq4WyOFAfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vHBfw4EOYYeew4FWSlX/Xsm01e7wqPt6B07bxQkhRtjJddP+zBF9Bw4II1jvFMGX9
-	 4KdDpzdSHZ0muYuGuk6Q8ZFuSCIrdMiTlqscEmYxkuzbc3Ssy1Of2EoGlkcgWw/BcL
-	 yeZWqo93HdgZYhdnS+++Kk+qmEDDj5Q1HFw9dp/s=
+	b=vK66Sw4Yq9EUJfRijgER9PBPX+Yb8HNFg36GQ2mZFUq7axEw0rwEf+B/wUxbuRDv0
+	 XluQh5YxmBoXgzMN7qROoevYmOJt7dRZbW0RdGgeRRJSXojvQGgM9j+Q63ViQ0vkBP
+	 pzAXbwB07RT+QQdH70TbM9x9wqADrnIWeqL47AXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	John Stultz <jstultz@google.com>,
+	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 234/466] timekeeping: Always check for negative motion
+Subject: [PATCH 5.15 208/565] bpf: fix recursive lock when verdict program return SK_PASS
 Date: Thu, 12 Dec 2024 15:56:43 +0100
-Message-ID: <20241212144316.027637082@linuxfoundation.org>
+Message-ID: <20241212144319.713750174@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit c163e40af9b2331b2c629fd4ec8b703ed4d4ae39 ]
+[ Upstream commit 8ca2a1eeadf09862190b2810697702d803ceef2d ]
 
-clocksource_delta() has two variants. One with a check for negative motion,
-which is only selected by x86. This is a historic leftover as this function
-was previously used in the time getter hot paths.
+When the stream_verdict program returns SK_PASS, it places the received skb
+into its own receive queue, but a recursive lock eventually occurs, leading
+to an operating system deadlock. This issue has been present since v6.9.
 
-Since 135225a363ae timekeeping_cycles_to_ns() has unconditional protection
-against this as a by-product of the protection against 64bit math overflow.
+'''
+sk_psock_strp_data_ready
+    write_lock_bh(&sk->sk_callback_lock)
+    strp_data_ready
+      strp_read_sock
+        read_sock -> tcp_read_sock
+          strp_recv
+            cb.rcv_msg -> sk_psock_strp_read
+              # now stream_verdict return SK_PASS without peer sock assign
+              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
+              sk_psock_verdict_apply
+                sk_psock_skb_ingress_self
+                  sk_psock_skb_ingress_enqueue
+                    sk_psock_data_ready
+                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
 
-clocksource_delta() is only used in the clocksource watchdog and in
-timekeeping_advance(). The extra conditional there is not hurting anyone.
+'''
 
-Remove the config option and unconditionally prevent negative motion of the
-readout.
+This topic has been discussed before, but it has not been fixed.
+Previous discussion:
+https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/all/20241031120328.599430157@linutronix.de
+Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
+Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Kconfig                   | 1 -
- kernel/time/Kconfig                | 5 -----
- kernel/time/timekeeping_internal.h | 7 -------
- 3 files changed, 13 deletions(-)
+ net/core/skmsg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 7b9a7e8f39acc..171be04eca1f5 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -145,7 +145,6 @@ config X86
- 	select ARCH_HAS_PARANOID_L1D_FLUSH
- 	select BUILDTIME_TABLE_SORT
- 	select CLKEVT_I8253
--	select CLOCKSOURCE_VALIDATE_LAST_CYCLE
- 	select CLOCKSOURCE_WATCHDOG
- 	# Word-size accesses may read uninitialized data past the trailing \0
- 	# in strings and cause false KMSAN reports.
-diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
-index 8ebb6d5a106be..b0b97a60aaa6f 100644
---- a/kernel/time/Kconfig
-+++ b/kernel/time/Kconfig
-@@ -17,11 +17,6 @@ config ARCH_CLOCKSOURCE_DATA
- config ARCH_CLOCKSOURCE_INIT
- 	bool
- 
--# Clocksources require validation of the clocksource against the last
--# cycle update - x86/TSC misfeature
--config CLOCKSOURCE_VALIDATE_LAST_CYCLE
--	bool
--
- # Timekeeping vsyscall support
- config GENERIC_TIME_VSYSCALL
- 	bool
-diff --git a/kernel/time/timekeeping_internal.h b/kernel/time/timekeeping_internal.h
-index 4ca2787d1642e..1d4854d5c386e 100644
---- a/kernel/time/timekeeping_internal.h
-+++ b/kernel/time/timekeeping_internal.h
-@@ -15,7 +15,6 @@ extern void tk_debug_account_sleep_time(const struct timespec64 *t);
- #define tk_debug_account_sleep_time(x)
- #endif
- 
--#ifdef CONFIG_CLOCKSOURCE_VALIDATE_LAST_CYCLE
- static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
- {
- 	u64 ret = (now - last) & mask;
-@@ -26,12 +25,6 @@ static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
- 	 */
- 	return ret & ~(mask >> 1) ? 0 : ret;
- }
--#else
--static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
--{
--	return (now - last) & mask;
--}
--#endif
- 
- /* Semi public for serialization of non timekeeper VDSO updates. */
- extern raw_spinlock_t timekeeper_lock;
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 84824f715a2d1..f8563d4da0b10 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1104,9 +1104,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
+ 		if (tls_sw_has_ctx_rx(sk)) {
+ 			psock->saved_data_ready(sk);
+ 		} else {
+-			write_lock_bh(&sk->sk_callback_lock);
++			read_lock_bh(&sk->sk_callback_lock);
+ 			strp_data_ready(&psock->strp);
+-			write_unlock_bh(&sk->sk_callback_lock);
++			read_unlock_bh(&sk->sk_callback_lock);
+ 		}
+ 	}
+ 	rcu_read_unlock();
 -- 
 2.43.0
 
