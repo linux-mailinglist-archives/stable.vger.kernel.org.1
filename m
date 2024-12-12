@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-101591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489B79EED61
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73449EF11A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 765E9188EDFD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78E5229F23A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1183222D58;
-	Thu, 12 Dec 2024 15:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D621239BC5;
+	Thu, 12 Dec 2024 16:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGdhdz/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpd8A60N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C98B215799;
-	Thu, 12 Dec 2024 15:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0862E2210C2;
+	Thu, 12 Dec 2024 16:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018096; cv=none; b=Il+DXnfXqp4CAPqa/p8GvsgEbhrTEiYwq7GdYWI/aUvu5+TU/F8Lgr8OUlp57wimGhraGHovkMWkP9/jj56TTibCwuFG7zIKdYYZoO5ixtffYbLuvl10XzlQv696LnTAvgAdo3fB7+ONKyig/GHmZLw8Z/vcObeIL9WAmmQkriw=
+	t=1734020672; cv=none; b=CRjpLy9LwltNe4P8RSQ2J75TUcUL5OGMuzIclvFHh0LSltwKII+4sL7oaQH5kskrSETPkz6pacGcjMinLNNXY9AuoZQ5UI1bLQ0v+yGZbZNQBWZfefr2SvAFpxnVXIKFhHZEES5IWnip8J63uxTX/kou7D0L8HcFwyPeON6Gxec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018096; c=relaxed/simple;
-	bh=DfO83Np6x/cqKOHZsajcwhaaggW61KyZ+zmK5M+mSGo=;
+	s=arc-20240116; t=1734020672; c=relaxed/simple;
+	bh=V+Hrk+uPgNAKC74R5gLBZ+KwcH7szeTpHlqzHEqMLlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alod30lZyfZMrCMbCxfVeYaXW0iRiqq3P1mwoMCsevx8Qd9mUZNuMrmZsyzDY/0Nz8BOUw8tPtnSX/ySsyy5RVqFibVsZ2u1pGYXW9tfNYdnUsXDXHlvwTJUJ2ZVs0eDfnZzoeuAnk3wb8VTOqVSgq9oRAJOsw/Y12zv9iOKVfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGdhdz/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB3BC4CECE;
-	Thu, 12 Dec 2024 15:41:35 +0000 (UTC)
+	 MIME-Version; b=KHTJg/HqLgdqCKpnERX5duA5wEThgGrHZ5y3+6qJ1FBFO7fQSEf29rZolL7UJk/JbWty+DLtKv8peUo8IQjP7OghMrx4y3ECPhjJpnUK7t6CIOrNW/HjhnhkF3hANbCdYYEfUC9eKcxrb4uBp06wGNiLU5dO0iPNGBtE56G39CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpd8A60N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3F7C4CECE;
+	Thu, 12 Dec 2024 16:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018096;
-	bh=DfO83Np6x/cqKOHZsajcwhaaggW61KyZ+zmK5M+mSGo=;
+	s=korg; t=1734020671;
+	bh=V+Hrk+uPgNAKC74R5gLBZ+KwcH7szeTpHlqzHEqMLlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGdhdz/TbQTZaKMKqR7yw8pO/Z6iK9f1WauPF5ePTdI8B/iTMrjOlW0Dr/UaJaNnA
-	 4GTKhGE/UBEJ6NbWclz314g/IyqJOh1HlWCqxH6EnRNR+0NS0MVH4DnE2a1oFQFgvb
-	 vp5tjhhEkmegwefK/ROt3xM+G7ADb6o20ja8S4oA=
+	b=kpd8A60NoVQl769pGlHiQCmBZaS8Yw0nOmITTIxPJeDZrSY6JyjrgCjwCDfz/twWw
+	 LeRYdzlC1bDBCI0Y4fI+SXtlr6MSHxoCuASZsNJI9Ve3IWcgR672RUFwbyBxPsuTeB
+	 qenwHJ0J0jZQ/dGZ7BFFGdd/gv3QFHjRzm3SHVE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 156/356] scsi: qla2xxx: Remove check req_sg_cnt should be equal to rsp_sg_cnt
+	syzbot+671e2853f9851d039551@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	WingMan Kwok <w-kwok2@ti.com>,
+	Murali Karicheri <m-karicheri2@ti.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	George McCollister <george.mccollister@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 530/772] net: hsr: avoid potential out-of-bound access in fill_frame_info()
 Date: Thu, 12 Dec 2024 15:57:55 +0100
-Message-ID: <20241212144250.803458814@linuxfoundation.org>
+Message-ID: <20241212144411.871833514@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +68,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 833c70e212fc40d3e98da941796f4c7bcaecdf58 upstream.
+[ Upstream commit b9653d19e556c6afd035602927a93d100a0d7644 ]
 
-Firmware supports multiple sg_cnt for request and response for CT
-commands, so remove the redundant check. A check is there where sg_cnt
-for request and response should be same. This is not required as driver
-and FW have code to handle multiple and different sg_cnt on request and
-response.
+syzbot is able to feed a packet with 14 bytes, pretending
+it is a vlan one.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-5-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since fill_frame_info() is relying on skb->mac_len already,
+extend the check to cover this case.
+
+BUG: KMSAN: uninit-value in fill_frame_info net/hsr/hsr_forward.c:709 [inline]
+ BUG: KMSAN: uninit-value in hsr_forward_skb+0x9ee/0x3b10 net/hsr/hsr_forward.c:724
+  fill_frame_info net/hsr/hsr_forward.c:709 [inline]
+  hsr_forward_skb+0x9ee/0x3b10 net/hsr/hsr_forward.c:724
+  hsr_dev_xmit+0x2f0/0x350 net/hsr/hsr_device.c:235
+  __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
+  netdev_start_xmit include/linux/netdevice.h:5011 [inline]
+  xmit_one net/core/dev.c:3590 [inline]
+  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3606
+  __dev_queue_xmit+0x366a/0x57d0 net/core/dev.c:4434
+  dev_queue_xmit include/linux/netdevice.h:3168 [inline]
+  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
+  packet_snd net/packet/af_packet.c:3146 [inline]
+  packet_sendmsg+0x91ae/0xa6f0 net/packet/af_packet.c:3178
+  sock_sendmsg_nosec net/socket.c:711 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:726
+  __sys_sendto+0x594/0x750 net/socket.c:2197
+  __do_sys_sendto net/socket.c:2204 [inline]
+  __se_sys_sendto net/socket.c:2200 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2200
+  x64_sys_call+0x346a/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:4091 [inline]
+  slab_alloc_node mm/slub.c:4134 [inline]
+  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4186
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:587
+  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:678
+  alloc_skb include/linux/skbuff.h:1323 [inline]
+  alloc_skb_with_frags+0xc8/0xd00 net/core/skbuff.c:6612
+  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2881
+  packet_alloc_skb net/packet/af_packet.c:2995 [inline]
+  packet_snd net/packet/af_packet.c:3089 [inline]
+  packet_sendmsg+0x74c6/0xa6f0 net/packet/af_packet.c:3178
+  sock_sendmsg_nosec net/socket.c:711 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:726
+  __sys_sendto+0x594/0x750 net/socket.c:2197
+  __do_sys_sendto net/socket.c:2204 [inline]
+  __se_sys_sendto net/socket.c:2200 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2200
+  x64_sys_call+0x346a/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Reported-by: syzbot+671e2853f9851d039551@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6745dc7f.050a0220.21d33d.0018.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: WingMan Kwok <w-kwok2@ti.com>
+Cc: Murali Karicheri <m-karicheri2@ti.com>
+Cc: MD Danish Anwar <danishanwar@ti.com>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Cc: George McCollister <george.mccollister@gmail.com>
+Link: https://patch.msgid.link/20241126144344.4177332-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |   10 ----------
- 1 file changed, 10 deletions(-)
+ net/hsr/hsr_forward.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -494,16 +494,6 @@ qla2x00_process_ct(struct bsg_job *bsg_j
- 		goto done;
- 	}
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index 0323ab5023c69..2790f3964d6bd 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -588,6 +588,8 @@ static int fill_frame_info(struct hsr_frame_info *frame,
+ 		frame->is_vlan = true;
  
--	if ((req_sg_cnt !=  bsg_job->request_payload.sg_cnt) ||
--	    (rsp_sg_cnt != bsg_job->reply_payload.sg_cnt)) {
--		ql_log(ql_log_warn, vha, 0x7011,
--		    "request_sg_cnt: %x dma_request_sg_cnt: %x reply_sg_cnt:%x "
--		    "dma_reply_sg_cnt: %x\n", bsg_job->request_payload.sg_cnt,
--		    req_sg_cnt, bsg_job->reply_payload.sg_cnt, rsp_sg_cnt);
--		rval = -EAGAIN;
--		goto done_unmap_sg;
--	}
--
- 	if (!vha->flags.online) {
- 		ql_log(ql_log_warn, vha, 0x7012,
- 		    "Host is not online.\n");
+ 	if (frame->is_vlan) {
++		if (skb->mac_len < offsetofend(struct hsr_vlan_ethhdr, vlanhdr))
++			return -EINVAL;
+ 		vlan_hdr = (struct hsr_vlan_ethhdr *)ethhdr;
+ 		proto = vlan_hdr->vlanhdr.h_vlan_encapsulated_proto;
+ 		/* FIXME: */
+-- 
+2.43.0
+
 
 
 
