@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-103341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128D99EF7FF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDF89EF804
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7495178889
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6ABC292704
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34441211493;
-	Thu, 12 Dec 2024 17:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1522236EB;
+	Thu, 12 Dec 2024 17:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsBELCYv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RogJKBNO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63162144C4;
-	Thu, 12 Dec 2024 17:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D4A222D6A;
+	Thu, 12 Dec 2024 17:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024275; cv=none; b=usmva2c9Rt3FMuzRC2sDq1HGYnsqIdWfagR+FQApL6P/7ELTL2xYD2Ev3QTgRdjzIZxA3WBhzPM8Gusz5Yk8kI5efTWccet7q5zssqXiVGggc9n+3yE3H99G1cD+Wbm8ABxZdSABmSL24XcKCCg14Qf/TPIdG+FPb2vOL1H3wdk=
+	t=1734025119; cv=none; b=uTOE20NHuv3AIrgct2jnV/AzlSZDXwPHpQsAZU7avLqr7gz2436uX/9hRdttjxh1EmsV/fY4oL8FjGSDg6KrlmcMeOqQBZB7Cl+XG6/QsTSRtBhZQjmuxMRIHHxYy6mSq8NkazHaSmGOkRYkIDpL66Fs8xw+Z0+lhsS04S2W9ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024275; c=relaxed/simple;
-	bh=chvTYBEYCj9CsYhyy3iMukwaJa/X5Y7K5KfYS98fC6k=;
+	s=arc-20240116; t=1734025119; c=relaxed/simple;
+	bh=j2oM5m377zC/bx3ykb4gcmVmkg5vLLb4ksU2ZWktpjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wj+aTv4LDy82r8XHrAmaGPZt4RfYD+JJ4YQ5acjwyIH/eJ6upR3dsOq7UQ9eUJl5ezEKr6NBAO/7818a/aen399EL97yOSlyqvaty+6CTOcGaMb5rlInXygs09ih7ZzeHp+V58Qj13O58vYuDp83SilgBxlTrYAxH95nl5RUH8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsBELCYv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB9CC4CECE;
-	Thu, 12 Dec 2024 17:24:34 +0000 (UTC)
+	 MIME-Version; b=rUTM1qHfYK8kJ9BIFRGKnV0OXCaUbhZqhTSXibUTNWhZY4XXaT5+t7xl5btemFAgL9mt+EVwSYMS0xmcyViNDItAWmiUDTa0cXcG6cJRLLMVw9cunVOIbvS4rBJ18R82JpMMXd9vBIVG/j/1QhkLdETludkDtyfWOwitDaQUkAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RogJKBNO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF546C4CECE;
+	Thu, 12 Dec 2024 17:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024274;
-	bh=chvTYBEYCj9CsYhyy3iMukwaJa/X5Y7K5KfYS98fC6k=;
+	s=korg; t=1734025119;
+	bh=j2oM5m377zC/bx3ykb4gcmVmkg5vLLb4ksU2ZWktpjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RsBELCYvxF0Dodj3lSgYEQ9eq9Tn0iB4Lt+7H5cOX82jeHnslcqZqZyp7Hk078sgf
-	 b9Bn8UKu9xfhuWii3rMNd2p66J/7IEiR3hau9IklyqCi8igm+qsymLrO7EsSj0ODYh
-	 iNM5bSGwAMHwIksNgWAcHRGl5JkbKIeqOwiOZ1wU=
+	b=RogJKBNOcrSRHAyrJFlK/9zEKJpl9vuk3chQBy6hZSPA7quL2GcEifSeoJ4gC5KXp
+	 fP4f4BbyzEV4mNChexTS0R6EqPtKtYITOgJkN3zF9t0tOUGEbo0kZ7Ao8FOq0jeKvH
+	 SpnHebE37d3o1GX9VOF49pqcQ6tjy55aVMK2yhOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.10 242/459] usb: ehci-spear: fix call balance of sehci clk handling routines
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 062/321] ASoC: fsl_micfil: Drop unnecessary register read
 Date: Thu, 12 Dec 2024 15:59:40 +0100
-Message-ID: <20241212144303.142553314@linuxfoundation.org>
+Message-ID: <20241212144232.442105540@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 40c974826734836402abfd44efbf04f63a2cc1c1 upstream.
+[ Upstream commit c808e277bcdfce37aed80a443be305ac1aec1623 ]
 
-If the clock sehci->clk was not enabled in spear_ehci_hcd_drv_probe,
-it should not be disabled in any path.
+in get_pdm_clk() REG_MICFIL_CTRL2 is read twice. Drop second read.
 
-Conversely, if it was enabled in spear_ehci_hcd_drv_probe, it must be disabled
-in all error paths to ensure proper cleanup.
-
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Fixes: 7675d6ba436f ("USB: EHCI: make ehci-spear a separate driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241114230310.432213-1-mordan@ispras.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://lore.kernel.org/r/20220414162249.3934543-2-s.hauer@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 06df673d2023 ("ASoC: fsl_micfil: fix regmap_write_bits usage")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ehci-spear.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/usb/host/ehci-spear.c
-+++ b/drivers/usb/host/ehci-spear.c
-@@ -108,7 +108,9 @@ static int spear_ehci_hcd_drv_probe(stru
- 	/* registers start at offset 0x0 */
- 	hcd_to_ehci(hcd)->caps = hcd->regs;
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 6285ee8f829e5..a69237b7f564a 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -117,8 +117,6 @@ static inline int get_pdm_clk(struct fsl_micfil *micfil,
+ 	regmap_read(micfil->regmap, REG_MICFIL_CTRL2, &ctrl2_reg);
+ 	osr = 16 - ((ctrl2_reg & MICFIL_CTRL2_CICOSR_MASK)
+ 		    >> MICFIL_CTRL2_CICOSR_SHIFT);
+-
+-	regmap_read(micfil->regmap, REG_MICFIL_CTRL2, &ctrl2_reg);
+ 	qsel = ctrl2_reg & MICFIL_CTRL2_QSEL_MASK;
  
--	clk_prepare_enable(sehci->clk);
-+	retval = clk_prepare_enable(sehci->clk);
-+	if (retval)
-+		goto err_put_hcd;
- 	retval = usb_add_hcd(hcd, irq, IRQF_SHARED);
- 	if (retval)
- 		goto err_stop_ehci;
-@@ -133,8 +135,7 @@ static int spear_ehci_hcd_drv_remove(str
- 
- 	usb_remove_hcd(hcd);
- 
--	if (sehci->clk)
--		clk_disable_unprepare(sehci->clk);
-+	clk_disable_unprepare(sehci->clk);
- 	usb_put_hcd(hcd);
- 
- 	return 0;
+ 	switch (qsel) {
+-- 
+2.43.0
+
 
 
 
