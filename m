@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EFD9EF401
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A41B9EEBDA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FDFC29074E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C5BC18842F1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3ED223304;
-	Thu, 12 Dec 2024 17:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34638205ACF;
+	Thu, 12 Dec 2024 15:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmiahxFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FS/EHH7z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7683013792B;
-	Thu, 12 Dec 2024 17:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6668209693;
+	Thu, 12 Dec 2024 15:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022947; cv=none; b=cw0bp0ogVNx3FaLOLNEot6hg5jli0hpQKYlvqIaBnZ6h7hvjVlvHvspAG6o8oj8+fEIt/KmmdBKVYx5Rgs5TeL3DG1XXv/ZTkpIxS0RG9SjXj1zxfhvi3bMIbg2jjGbiFwKF2VO3KR7ArQ9nNhQEC3E41dWJZb5Fp1K4RghMMbo=
+	t=1734017168; cv=none; b=VqnrcO7hkl9L3rVO7974qcmnAJwXltk8c4/Xw7cIMmK3ChduZgFLJezfXMqPflXnYuDHA2n0TkmbEl17cdUVUdISYugj7m9AS65j2PjerbS2Lq3v24ddSTx3UZc1G89G1YhPWeL8EaZNGUDDMsuthv+2DyIW7F6VJPMWIenou7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022947; c=relaxed/simple;
-	bh=1/HAYwbjMOVTOIXPgJdMI1H/mdGYXyAY8m53SEd/SMw=;
+	s=arc-20240116; t=1734017168; c=relaxed/simple;
+	bh=r4RlD3Q0MxYPC54U00LLU92luqU0lajDKst7Dh6WsQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9br5tASFDVPonmr8T9o8RCiYVcmxS6zZZrIRwWbrM8mbMwXpZTuFGsv6nHIreQAcBcyXdykZf6Q3BlMqd2zk1F16ujlBE+f3XrswBY8l8jzNGj+swET7KwRKn6sni0SuV+M+WzLvm+DaEhAcAxDYJ0+shHfE/aJqRXA2f6Sq74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmiahxFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D70D8C4CECE;
-	Thu, 12 Dec 2024 17:02:26 +0000 (UTC)
+	 MIME-Version; b=Vunq+ZKREVOKAp4lfJdr1as8svuZT7Eh/ARlr5oAJlQek5rkImm/hXOgXIXDAVwUvn5nw5H4daFVsGCf0FImSdRc6S981jrww1pX+FzC/LuuAwjYauqLF9R+jh+fdvqGBbSqqhjxEbHzg0Jvxd77CBGXbmse+vkf06ntXHD7gmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FS/EHH7z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54080C4CECE;
+	Thu, 12 Dec 2024 15:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022947;
-	bh=1/HAYwbjMOVTOIXPgJdMI1H/mdGYXyAY8m53SEd/SMw=;
+	s=korg; t=1734017167;
+	bh=r4RlD3Q0MxYPC54U00LLU92luqU0lajDKst7Dh6WsQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EmiahxFwCez7rVgg9YQ4uD09MMADWR4r1y6H2MINtPd+1yze97WyFQ+1Ns2iyz9t4
-	 MaLSpC82N9ZWiDsKMeQc1W9Cqp614/H7QABs3FK1UL7TiIoqNI4mJOd0uF+hgz9cQL
-	 aqjhMYbCc7ssG8/+Ii0vQoMwJmlCs5yeAWBEsbP4=
+	b=FS/EHH7zlFWhSYFCNqg1r6Sg1RtUbp9A6nzYVHPrMVmdqniaQSL9W8qFN1W2O6znQ
+	 nsRNoxZDAbmYOyvAFFyQSNBGjBABTeKKRWu7xgjPhjK7JhilmqJdWvhA1c2ExdDwC7
+	 qHzstpoVvG6WU9iIkNhYFdNwQ4DdfOEnhoVx1DGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
+	Xiuhong Wang <xiuhong.wang@unisoc.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 376/565] xfs: fix log recovery when unknown rocompat bits are set
+Subject: [PATCH 6.12 402/466] f2fs: add a sysfs node to limit max read extent count per-inode
 Date: Thu, 12 Dec 2024 15:59:31 +0100
-Message-ID: <20241212144326.490898499@linuxfoundation.org>
+Message-ID: <20241212144322.637902573@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 74ad4693b6473950e971b3dc525b5ee7570e05d0 ]
+[ Upstream commit 009a8241a8e5a14ea2dd0b8db42dbf283527dd44 ]
 
-Log recovery has always run on read only mounts, even where the primary
-superblock advertises unknown rocompat bits.  Due to a misunderstanding
-between Eric and Darrick back in 2018, we accidentally changed the
-superblock write verifier to shutdown the fs over that exact scenario.
-As a result, the log cleaning that occurs at the end of the mounting
-process fails if there are unknown rocompat bits set.
+Quoted:
+"at this time, there are still 1086911 extent nodes in this zombie
+extent tree that need to be cleaned up.
 
-As we now allow writing of the superblock if there are unknown rocompat
-bits set on a RO mount, we no longer want to turn off RO state to allow
-log recovery to succeed on a RO mount.  Hence we also remove all the
-(now unnecessary) RO state toggling from the log recovery path.
+crash_arm64_sprd_v8.0.3++> extent_tree.node_cnt ffffff80896cc500
+  node_cnt = {
+    counter = 1086911
+  },
+"
 
-Fixes: 9e037cb7972f ("xfs: check for unknown v5 feature bits in superblock write verifier"
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Stable-dep-of: 652f03db897b ("xfs: remove unknown compat feature check in superblock write validation")
+As reported by Xiuhong, there will be a huge number of extent nodes
+in extent tree, it may potentially cause:
+- slab memory fragments
+- extreme long time shrink on extent tree
+- low mapping efficiency
+
+Let's add a sysfs node to limit max read extent count for each inode,
+by default, value of this threshold is 10240, it can be updated
+according to user's requirement.
+
+Reported-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/20241112110627.1314632-1-xiuhong.wang@unisoc.com/
+Signed-off-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_sb.c |  3 ++-
- fs/xfs/xfs_log.c       | 17 -----------------
- 2 files changed, 2 insertions(+), 18 deletions(-)
+ Documentation/ABI/testing/sysfs-fs-f2fs |  6 ++++++
+ fs/f2fs/extent_cache.c                  |  5 ++++-
+ fs/f2fs/f2fs.h                          |  4 ++++
+ fs/f2fs/sysfs.c                         | 10 ++++++++++
+ 4 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/libxfs/xfs_sb.c b/fs/xfs/libxfs/xfs_sb.c
-index 26dd9ceb44b42..f867da8128ca6 100644
---- a/fs/xfs/libxfs/xfs_sb.c
-+++ b/fs/xfs/libxfs/xfs_sb.c
-@@ -263,7 +263,8 @@ xfs_validate_sb_write(
- 		return -EFSCORRUPTED;
+diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
+index 513296bb6f297..3e1630c70d8ae 100644
+--- a/Documentation/ABI/testing/sysfs-fs-f2fs
++++ b/Documentation/ABI/testing/sysfs-fs-f2fs
+@@ -822,3 +822,9 @@ Description:	It controls the valid block ratio threshold not to trigger excessiv
+ 		for zoned deivces. The initial value of it is 95(%). F2FS will stop the
+ 		background GC thread from intiating GC for sections having valid blocks
+ 		exceeding the ratio.
++
++What:		/sys/fs/f2fs/<disk>/max_read_extent_count
++Date:		November 2024
++Contact:	"Chao Yu" <chao@kernel.org>
++Description:	It controls max read extent count for per-inode, the value of threshold
++		is 10240 by default.
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index 368d9cbdea743..fb09c8e9bc573 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -674,7 +674,9 @@ static void __update_extent_tree_range(struct inode *inode,
+ 		}
+ 
+ 		if (end < org_end && (type != EX_READ ||
+-				org_end - end >= F2FS_MIN_EXTENT_LEN)) {
++			(org_end - end >= F2FS_MIN_EXTENT_LEN &&
++			atomic_read(&et->node_cnt) <
++					sbi->max_read_extent_count))) {
+ 			if (parts) {
+ 				__set_extent_info(&ei,
+ 					end, org_end - end,
+@@ -1169,6 +1171,7 @@ void f2fs_init_extent_cache_info(struct f2fs_sb_info *sbi)
+ 	sbi->hot_data_age_threshold = DEF_HOT_DATA_AGE_THRESHOLD;
+ 	sbi->warm_data_age_threshold = DEF_WARM_DATA_AGE_THRESHOLD;
+ 	sbi->last_age_weight = LAST_AGE_WEIGHT;
++	sbi->max_read_extent_count = DEF_MAX_READ_EXTENT_COUNT;
+ }
+ 
+ int __init f2fs_create_extent_cache(void)
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 93a5e1c24e566..cec3dd205b3df 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -634,6 +634,9 @@ enum {
+ #define DEF_HOT_DATA_AGE_THRESHOLD	262144
+ #define DEF_WARM_DATA_AGE_THRESHOLD	2621440
+ 
++/* default max read extent count per inode */
++#define DEF_MAX_READ_EXTENT_COUNT	10240
++
+ /* extent cache type */
+ enum extent_type {
+ 	EX_READ,
+@@ -1619,6 +1622,7 @@ struct f2fs_sb_info {
+ 	/* for extent tree cache */
+ 	struct extent_tree_info extent_tree[NR_EXTENT_CACHES];
+ 	atomic64_t allocated_data_blocks;	/* for block age extent_cache */
++	unsigned int max_read_extent_count;	/* max read extent count per inode */
+ 
+ 	/* The threshold used for hot and warm data seperation*/
+ 	unsigned int hot_data_age_threshold;
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index c56e8c8739352..d9a44f03e558b 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -789,6 +789,13 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
+ 		return count;
  	}
  
--	if (xfs_sb_has_ro_compat_feature(sbp, XFS_SB_FEAT_RO_COMPAT_UNKNOWN)) {
-+	if (!xfs_is_readonly(mp) &&
-+	    xfs_sb_has_ro_compat_feature(sbp, XFS_SB_FEAT_RO_COMPAT_UNKNOWN)) {
- 		xfs_alert(mp,
- "Corruption detected in superblock read-only compatible features (0x%x)!",
- 			(sbp->sb_features_ro_compat &
-diff --git a/fs/xfs/xfs_log.c b/fs/xfs/xfs_log.c
-index eba295f666acc..be2f714d1553a 100644
---- a/fs/xfs/xfs_log.c
-+++ b/fs/xfs/xfs_log.c
-@@ -707,15 +707,7 @@ xfs_log_mount(
- 	 * just worked.
- 	 */
- 	if (!xfs_has_norecovery(mp)) {
--		/*
--		 * log recovery ignores readonly state and so we need to clear
--		 * mount-based read only state so it can write to disk.
--		 */
--		bool	readonly = test_and_clear_bit(XFS_OPSTATE_READONLY,
--						&mp->m_opstate);
- 		error = xlog_recover(log);
--		if (readonly)
--			set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
- 		if (error) {
- 			xfs_warn(mp, "log mount/recovery failed: error %d",
- 				error);
-@@ -764,7 +756,6 @@ xfs_log_mount_finish(
- 	struct xfs_mount	*mp)
- {
- 	struct xlog		*log = mp->m_log;
--	bool			readonly;
- 	int			error = 0;
- 
- 	if (xfs_has_norecovery(mp)) {
-@@ -772,12 +763,6 @@ xfs_log_mount_finish(
- 		return 0;
- 	}
- 
--	/*
--	 * log recovery ignores readonly state and so we need to clear
--	 * mount-based read only state so it can write to disk.
--	 */
--	readonly = test_and_clear_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
--
- 	/*
- 	 * During the second phase of log recovery, we need iget and
- 	 * iput to behave like they do for an active filesystem.
-@@ -828,8 +813,6 @@ xfs_log_mount_finish(
- 	xfs_buftarg_drain(mp->m_ddev_targp);
- 
- 	clear_bit(XLOG_RECOVERY_NEEDED, &log->l_opstate);
--	if (readonly)
--		set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
- 
- 	/* Make sure the log is dead if we're returning failure. */
- 	ASSERT(!error || xlog_is_shutdown(log));
++	if (!strcmp(a->attr.name, "max_read_extent_count")) {
++		if (t > UINT_MAX)
++			return -EINVAL;
++		*ui = (unsigned int)t;
++		return count;
++	}
++
+ 	if (!strcmp(a->attr.name, "ipu_policy")) {
+ 		if (t >= BIT(F2FS_IPU_MAX))
+ 			return -EINVAL;
+@@ -1054,6 +1061,8 @@ F2FS_SBI_GENERAL_RW_ATTR(revoked_atomic_block);
+ F2FS_SBI_GENERAL_RW_ATTR(hot_data_age_threshold);
+ F2FS_SBI_GENERAL_RW_ATTR(warm_data_age_threshold);
+ F2FS_SBI_GENERAL_RW_ATTR(last_age_weight);
++/* read extent cache */
++F2FS_SBI_GENERAL_RW_ATTR(max_read_extent_count);
+ #ifdef CONFIG_BLK_DEV_ZONED
+ F2FS_SBI_GENERAL_RO_ATTR(unusable_blocks_per_sec);
+ F2FS_SBI_GENERAL_RW_ATTR(blkzone_alloc_policy);
+@@ -1244,6 +1253,7 @@ static struct attribute *f2fs_attrs[] = {
+ 	ATTR_LIST(hot_data_age_threshold),
+ 	ATTR_LIST(warm_data_age_threshold),
+ 	ATTR_LIST(last_age_weight),
++	ATTR_LIST(max_read_extent_count),
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(f2fs);
 -- 
 2.43.0
 
