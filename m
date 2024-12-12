@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C75C9EF0BB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D29E9EF3FF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E89F176384
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E3A717AE73
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A7F23ED5A;
-	Thu, 12 Dec 2024 16:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DA9239BBA;
+	Thu, 12 Dec 2024 16:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yhz4ZHLk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8pYCy7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FDF23EA7D;
-	Thu, 12 Dec 2024 16:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42143229692;
+	Thu, 12 Dec 2024 16:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019968; cv=none; b=hSPhf2THB7k8PKjSRkPZ8tte3nrJ7BcvHcw1RctMcJfSD83chtpkos5Ihaw5EIdU9qXEG3QwL4d/pmkPkx5jaKiHIIxdnktRwb5rv+YzBEx0Xt2YqoOkY+af385AVgoZEv+27cbVeOgWtSYbCDapC4265rGA3sKzN4xTh2oftwo=
+	t=1734022017; cv=none; b=GZ7vWsSpnc/gz3tj4yPHhPPxsxJXGEjFalF2Vb9XnQ4lA8YJ+vf3hC6cj+WVp/nLIIeo2EvRuPQ/3Z5XEX/WUQSKdxF2KELWAKnF5RvE0UvwvkahS1/OE0rVE5aPRoUemnS+TcMxkOilEeTsvZxJ4IA3YbkBj4EKnFTdhc/0/Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019968; c=relaxed/simple;
-	bh=sDhtc5xHoCSUDwrXi1V1uzpSUbM/gG4d8gxmCQwRSa4=;
+	s=arc-20240116; t=1734022017; c=relaxed/simple;
+	bh=frNd6jk6jgPeszZG+3XPYCGJFpgSH4IvN4QkBG3zbXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxefhAOaPGNDTsE4Nj9huhOM9UDnfALIPqlrDliEsk1xtiUcZXtZGtuwZpCrowB/TCkujVCY8lG6BleEORK24eWw61nG0FV3O/YfcK8uRWciyoIg5/yCHn+/+cNl2rVPILFu4ObIVzG9nhe2Y8iHUe50hghLK7aA1pilGl2Y8vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yhz4ZHLk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AA4C4CECE;
-	Thu, 12 Dec 2024 16:12:48 +0000 (UTC)
+	 MIME-Version; b=T5BGqd1dIcuudPmxbCWa75nByQnB1DXJWWN+FwN0uT3Z6nbRfkHBv3xeFXMvzT5wc/PKnY6hzh7W2BTU5DVayOcSYOBrX+9jb0qxPPmowa3tghiE5mnaJFsCx+I+WRmXZw+JFMMPGHm2jP2mlOSpQG7mKpxP+2DQP0Nn1r4nvNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8pYCy7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2560C4CECE;
+	Thu, 12 Dec 2024 16:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019968;
-	bh=sDhtc5xHoCSUDwrXi1V1uzpSUbM/gG4d8gxmCQwRSa4=;
+	s=korg; t=1734022017;
+	bh=frNd6jk6jgPeszZG+3XPYCGJFpgSH4IvN4QkBG3zbXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yhz4ZHLkHJ+Kg7xcFnx/GhtZpc5ro9EstsdcM3JekApV37FFPOukoNOhupS4XhrVm
-	 vvSmYUR0F3jqWWqtup90EEDel4S5yAeveJkbJuZ67xn0stpmBIAN8UP9iGokrJ+QJJ
-	 m3TidM57djsDtBxP87yM1CGvV28nKWH9PVVXpSpg=
+	b=x8pYCy7/Y5E6lwDlLa70PWArqfUBBU/wmzv3xgygbDaXBXel/sDR04TnfexitDeXK
+	 fhUa/xvnuOk95HjuvnD9k9VNk690zLGZrgSCgwu0P7mK3rLrog3FMX08dBBcNip58E
+	 J07I6HySH6VTf8XaVS4zHPg9UZtqBh6fbV8GIZB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.1 344/772] usb: ehci-spear: fix call balance of sehci clk handling routines
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 094/565] crypto: qat - remove faulty arbiter config reset
 Date: Thu, 12 Dec 2024 15:54:49 +0100
-Message-ID: <20241212144404.121154970@linuxfoundation.org>
+Message-ID: <20241212144315.199955262@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Ahsan Atta <ahsan.atta@intel.com>
 
-commit 40c974826734836402abfd44efbf04f63a2cc1c1 upstream.
+[ Upstream commit 70199359902f1c7187dcb28a1be679a7081de7cc ]
 
-If the clock sehci->clk was not enabled in spear_ehci_hcd_drv_probe,
-it should not be disabled in any path.
+Resetting the service arbiter config can cause potential issues
+related to response ordering and ring flow control check in the
+event of AER or device hang. This is because it results in changing
+the default response ring size from 32 bytes to 16 bytes. The service
+arbiter config reset also disables response ring flow control check.
+Thus, by removing this reset we can prevent the service arbiter from
+being configured inappropriately, which leads to undesired device
+behaviour in the event of errors.
 
-Conversely, if it was enabled in spear_ehci_hcd_drv_probe, it must be disabled
-in all error paths to ensure proper cleanup.
-
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Fixes: 7675d6ba436f ("USB: EHCI: make ehci-spear a separate driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241114230310.432213-1-mordan@ispras.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7afa232e76ce ("crypto: qat - Intel(R) QAT DH895xcc accelerator")
+Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/ehci-spear.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/crypto/qat/qat_common/adf_hw_arbiter.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/usb/host/ehci-spear.c
-+++ b/drivers/usb/host/ehci-spear.c
-@@ -106,7 +106,9 @@ static int spear_ehci_hcd_drv_probe(stru
- 	/* registers start at offset 0x0 */
- 	hcd_to_ehci(hcd)->caps = hcd->regs;
+diff --git a/drivers/crypto/qat/qat_common/adf_hw_arbiter.c b/drivers/crypto/qat/qat_common/adf_hw_arbiter.c
+index 64e4596a24f40..fd39cbcdec039 100644
+--- a/drivers/crypto/qat/qat_common/adf_hw_arbiter.c
++++ b/drivers/crypto/qat/qat_common/adf_hw_arbiter.c
+@@ -90,10 +90,6 @@ void adf_exit_arb(struct adf_accel_dev *accel_dev)
  
--	clk_prepare_enable(sehci->clk);
-+	retval = clk_prepare_enable(sehci->clk);
-+	if (retval)
-+		goto err_put_hcd;
- 	retval = usb_add_hcd(hcd, irq, IRQF_SHARED);
- 	if (retval)
- 		goto err_stop_ehci;
-@@ -131,8 +133,7 @@ static int spear_ehci_hcd_drv_remove(str
+ 	hw_data->get_arb_info(&info);
  
- 	usb_remove_hcd(hcd);
- 
--	if (sehci->clk)
--		clk_disable_unprepare(sehci->clk);
-+	clk_disable_unprepare(sehci->clk);
- 	usb_put_hcd(hcd);
- 
- 	return 0;
+-	/* Reset arbiter configuration */
+-	for (i = 0; i < ADF_ARB_NUM; i++)
+-		WRITE_CSR_ARB_SARCONFIG(csr, arb_off, i, 0);
+-
+ 	/* Unmap worker threads to service arbiters */
+ 	for (i = 0; i < hw_data->num_engines; i++)
+ 		WRITE_CSR_ARB_WT2SAM(csr, arb_off, wt_off, i, 0);
+-- 
+2.43.0
+
 
 
 
