@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9EB9EF535
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:14:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8C39EF67B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 689CF1886994
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77DFB2866A4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD93F223E69;
-	Thu, 12 Dec 2024 17:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC243216E2D;
+	Thu, 12 Dec 2024 17:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E83cljRg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ql7XVFDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69358223C74;
-	Thu, 12 Dec 2024 17:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A919F211493;
+	Thu, 12 Dec 2024 17:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023195; cv=none; b=JyjZX1L6Sq5nx0Yu6Dyz3PgM9Z7iTRCg1r6WGjp1sML0W1lkTPzo4eqCeJUKT7So0qhwzEhXMSmGXs2gbgC30RRPnKmY4EhplmI+VEl4U6tYVAm9TCARBxH5n1kuh1h5KQ9MtWwL8QzrqmyblXp4FwPPzjCb77GKj3/tllfg9SQ=
+	t=1734024363; cv=none; b=awBLyxktu1GY25/Cj2x2ixpJv7FqzGYHFwp1K0eDTAlzal/9KGYiYsIODB7A0/YeCcDenR1w0y2zpymF4PvbvpGpl6JAwnG7ENR7KTEHetyuGwIIOe5BiZriC8x7vp8Lst/Zwg32H+kejSEWqZFMOeOGFjoianE8KOzJqrh9ujQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023195; c=relaxed/simple;
-	bh=hlexmcx3dBLtidtL0P3FWdhRKWT4dqZ5vLmNrjEKJ1k=;
+	s=arc-20240116; t=1734024363; c=relaxed/simple;
+	bh=hDzS/XVHmRwQhPfdpAbFswJnDazjSU5irHThrdo0hhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aISIrXpnrNK8wUH7JCbmPIq46YO7jAwju4uk0zLLpshSoaxyqPqVSpV02Zxcs988kWbZ4h4whOunlOVrUegubKdQJVb8+nTx/cWHnJ1ijyJ54QvvAqEXYQVwxNy8Or5QPkk7pNoyHdpYsvPhI/0z1k7fDJhkARdnbAIfVL05qy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E83cljRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7239C4CECE;
-	Thu, 12 Dec 2024 17:06:34 +0000 (UTC)
+	 MIME-Version; b=PbdsKg1LKNgaGpJ3D8RkgWDCD04kP3OtY0vZksATmMQ1GDgAdRTA+rK5W354goWW0+6ccKTEY+urtBl/fMOrJA3ApIwqJ/hyvaVM2uE8WCCS8rz8a41qqBfxil8SPHbOP6Mjcl3OCGZiJr2U6ssneDXgYiXqfqpQz6spSqG6gUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql7XVFDj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291BBC4CECE;
+	Thu, 12 Dec 2024 17:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023195;
-	bh=hlexmcx3dBLtidtL0P3FWdhRKWT4dqZ5vLmNrjEKJ1k=;
+	s=korg; t=1734024363;
+	bh=hDzS/XVHmRwQhPfdpAbFswJnDazjSU5irHThrdo0hhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E83cljRgwqZ2tyfjUEBipxcxPLr1wJRki8kQyxUAl09Nno42BTI0siSvpECXIwYzC
-	 S8HqcpOdQmbAPiL4wyRFV7sgX92qIE2WvJ4mD3j3me1V2/O+/WmA9/4/4wcTy0aWvO
-	 AoAnTjhU5p5BBL94ulya9msnhFN1tBc9V01PaJj0=
+	b=ql7XVFDjtFirKkVtuY6c/nrFT/uFb2rbqPrcUvZLRXNPXkFT2VM/9cHDL02kXLED2
+	 12T0UnqgsHmJgp6IABKb9wzc0FaFrvnoqD1mxy3bIPNLWDSEq/GwIaDHTNdeNsA5p3
+	 ogkM7J9Zygb78Xp5FAfwNR3RnJXVwK3S3lfGV4qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Wiesner <jwiesner@suse.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 414/565] net/ipv6: release expired exception dst cached in socket
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 271/459] um: vector: Do not use drvdata in release
 Date: Thu, 12 Dec 2024 16:00:09 +0100
-Message-ID: <20241212144328.024385743@linuxfoundation.org>
+Message-ID: <20241212144304.309325150@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Wiesner <jwiesner@suse.de>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 3301ab7d5aeb0fe270f73a3d4810c9d1b6a9f045 ]
+commit 51b39d741970742a5c41136241a9c48ac607cf82 upstream.
 
-Dst objects get leaked in ip6_negative_advice() when this function is
-executed for an expired IPv6 route located in the exception table. There
-are several conditions that must be fulfilled for the leak to occur:
-* an ICMPv6 packet indicating a change of the MTU for the path is received,
-  resulting in an exception dst being created
-* a TCP connection that uses the exception dst for routing packets must
-  start timing out so that TCP begins retransmissions
-* after the exception dst expires, the FIB6 garbage collector must not run
-  before TCP executes ip6_negative_advice() for the expired exception dst
+The drvdata is not available in release. Let's just use container_of()
+to get the vector_device instance. Otherwise, removing a vector device
+will result in a crash:
 
-When TCP executes ip6_negative_advice() for an exception dst that has
-expired and if no other socket holds a reference to the exception dst, the
-refcount of the exception dst is 2, which corresponds to the increment
-made by dst_init() and the increment made by the TCP socket for which the
-connection is timing out. The refcount made by the socket is never
-released. The refcount of the dst is decremented in sk_dst_reset() but
-that decrement is counteracted by a dst_hold() intentionally placed just
-before the sk_dst_reset() in ip6_negative_advice(). After
-ip6_negative_advice() has finished, there is no other object tied to the
-dst. The socket lost its reference stored in sk_dst_cache and the dst is
-no longer in the exception table. The exception dst becomes a leaked
-object.
+RIP: 0033:vector_device_release+0xf/0x50
+RSP: 00000000e187bc40  EFLAGS: 00010202
+RAX: 0000000060028f61 RBX: 00000000600f1baf RCX: 00000000620074e0
+RDX: 000000006220b9c0 RSI: 0000000060551c80 RDI: 0000000000000000
+RBP: 00000000e187bc50 R08: 00000000603ad594 R09: 00000000e187bb70
+R10: 000000000000135a R11: 00000000603ad422 R12: 00000000623ae028
+R13: 000000006287a200 R14: 0000000062006d30 R15: 00000000623700b6
+Kernel panic - not syncing: Segfault with no mm
+CPU: 0 UID: 0 PID: 16 Comm: kworker/0:1 Not tainted 6.12.0-rc6-g59b723cd2adb #1
+Workqueue: events mc_work_proc
+Stack:
+ 60028f61 623ae028 e187bc80 60276fcd
+ 6220b9c0 603f5820 623ae028 00000000
+ e187bcb0 603a2bcd 623ae000 62370010
+Call Trace:
+ [<60028f61>] ? vector_device_release+0x0/0x50
+ [<60276fcd>] device_release+0x70/0xba
+ [<603a2bcd>] kobject_put+0xba/0xe7
+ [<60277265>] put_device+0x19/0x1c
+ [<60281266>] platform_device_put+0x26/0x29
+ [<60281e5f>] platform_device_unregister+0x2c/0x2e
+ [<60029422>] vector_remove+0x52/0x58
+ [<60031316>] ? mconsole_reply+0x0/0x50
+ [<600310c8>] mconsole_remove+0x160/0x1cc
+ [<603b19f4>] ? strlen+0x0/0x15
+ [<60066611>] ? __dequeue_entity+0x1a9/0x206
+ [<600666a7>] ? set_next_entity+0x39/0x63
+ [<6006666e>] ? set_next_entity+0x0/0x63
+ [<60038fa6>] ? um_set_signals+0x0/0x43
+ [<6003070c>] mc_work_proc+0x77/0x91
+ [<60057664>] process_scheduled_works+0x1b3/0x2dd
+ [<60055f32>] ? assign_work+0x0/0x58
+ [<60057f0a>] worker_thread+0x1e9/0x293
+ [<6005406f>] ? set_pf_worker+0x0/0x64
+ [<6005d65d>] ? arch_local_irq_save+0x0/0x2d
+ [<6005d748>] ? kthread_exit+0x0/0x3a
+ [<60057d21>] ? worker_thread+0x0/0x293
+ [<6005dbf1>] kthread+0x126/0x12b
+ [<600219c5>] new_thread_handler+0x85/0xb6
 
-As a result of this dst leak, an unbalanced refcount is reported for the
-loopback device of a net namespace being destroyed under kernels that do
-not contain e5f80fcf869a ("ipv6: give an IPv6 dev to blackhole_netdev"):
-unregister_netdevice: waiting for lo to become free. Usage count = 2
-
-Fix the dst leak by removing the dst_hold() in ip6_negative_advice(). The
-patch that introduced the dst_hold() in ip6_negative_advice() was
-92f1655aa2b22 ("net: fix __dst_negative_advice() race"). But 92f1655aa2b22
-merely refactored the code with regards to the dst refcount so the issue
-was present even before 92f1655aa2b22. The bug was introduced in
-54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually
-expired.") where the expired cached route is deleted and the sk_dst_cache
-member of the socket is set to NULL by calling dst_negative_advice() but
-the refcount belonging to the socket is left unbalanced.
-
-The IPv4 version - ipv4_negative_advice() - is not affected by this bug.
-When the TCP connection times out ipv4_negative_advice() merely resets the
-sk_dst_cache of the socket while decrementing the refcount of the
-exception dst.
-
-Fixes: 92f1655aa2b22 ("net: fix __dst_negative_advice() race")
-Fixes: 54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually expired.")
-Link: https://lore.kernel.org/netdev/20241113105611.GA6723@incl/T/#u
-Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241128085950.GA4505@incl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://patch.msgid.link/20241104163203.435515-5-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/um/drivers/vector_kern.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 35d3f02ddf163..407dba4327f53 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -2769,10 +2769,10 @@ static void ip6_negative_advice(struct sock *sk,
- 	if (rt->rt6i_flags & RTF_CACHE) {
- 		rcu_read_lock();
- 		if (rt6_check_expired(rt)) {
--			/* counteract the dst_release() in sk_dst_reset() */
--			dst_hold(dst);
-+			/* rt/dst can not be destroyed yet,
-+			 * because of rcu_read_lock()
-+			 */
- 			sk_dst_reset(sk);
--
- 			rt6_remove_exception_rt(rt);
- 		}
- 		rcu_read_unlock();
--- 
-2.43.0
-
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -827,7 +827,8 @@ static struct platform_driver uml_net_dr
+ 
+ static void vector_device_release(struct device *dev)
+ {
+-	struct vector_device *device = dev_get_drvdata(dev);
++	struct vector_device *device =
++		container_of(dev, struct vector_device, pdev.dev);
+ 	struct net_device *netdev = device->dev;
+ 
+ 	list_del(&device->list);
 
 
 
