@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-102502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110119EF331
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E67029EF285
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E9051940770
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4924B28EB46
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16135222D5C;
-	Thu, 12 Dec 2024 16:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096FC22C372;
+	Thu, 12 Dec 2024 16:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZcIeYxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6yGilc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53C52054EF;
-	Thu, 12 Dec 2024 16:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB521487CD;
+	Thu, 12 Dec 2024 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021464; cv=none; b=NEDrv59Ek82ickUATg9gL/yGYTfk5ZaP3UQwu15Ng4GxS+ObS9V6oVtbRBm9N3nluEHwof7yJuImuFzfUsUtZ6hz1zzUsPU+3+P5lj/Ob2/mVtq16+b5fNZK9jVyPekFPJwltXx6yoN+QRpZVi7eLdKkvVXeJTzG7x8b0k8UTyg=
+	t=1734021590; cv=none; b=IN9xuCqpx3h556Fh6nJp6Mm9KbUC6alckEXm4xbJUJf7HiRTtTBe6lK+S2a2GVwq6v/t0coW5wLZdmWKAfxB5IGrl+tFhFJPa9YzFdwLntljKNPY8XoIMeA5tGAEM4YOocGOqkDL7YiyKCUmAE30GkS2FE5x3B7ofo+ZIGPx10A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021464; c=relaxed/simple;
-	bh=Tb2dFtFW+e/lFZxQgA0k/oB2GddQCh5uKx449R5FNg4=;
+	s=arc-20240116; t=1734021590; c=relaxed/simple;
+	bh=xaSKFI/87jME0pzLwWkKhPDOav535gglkASX8X0096E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CsiEOMa8L/GPLrcggMiWcup71Sp0WQfriaaxkAqsvDILqpGn2xnEeD6vzqYkuX7jTKrbZz+r5sZellPnUUTYn6j/vZP3eHJW2vsFuYd6ttAU8+iWNlBlPVl4hm/k7Vl0Y5VPbfn85La9OYZ87Wpql2KuHOPztXaunggFKhqROBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZcIeYxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32314C4CECE;
-	Thu, 12 Dec 2024 16:37:44 +0000 (UTC)
+	 MIME-Version; b=hVwWrbwJAYlbfUkdHlUV84EQm+hYwIalUq4BZh7lE4WppOGOTjEua77NWX1uS9qouKsKZGhUEt6GRYRojy9ITa9c5stqzvtbxcTcNI5Ft2L1PtvZarIh4+Cm/9NK6EiYZTm2hCB/qyEP4cRjvrrv4L/WV6yihmE5YcVjsjdK6pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6yGilc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E7DC4CECE;
+	Thu, 12 Dec 2024 16:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021464;
-	bh=Tb2dFtFW+e/lFZxQgA0k/oB2GddQCh5uKx449R5FNg4=;
+	s=korg; t=1734021590;
+	bh=xaSKFI/87jME0pzLwWkKhPDOav535gglkASX8X0096E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZcIeYxNqGgGFOGzp7b9KXlYan0GoiPRb8/JEQ/LMDa+zVWRxD8XJekMp++js3hS2
-	 nKmIIfr5it7pLTsB3umrQdlFEyNF7cDU2G+KIDDXYyipLFno+XogidLokID8xPjUad
-	 OIkBoTuSQCIYzoK8dbImbGO7WX9rEgxAVFiem/Us=
+	b=R6yGilc3EpYaUWpffSxH2vrdYdWuOFgFXXABDi5Cgtkklhr088tJCPs1A8RnAfMK+
+	 OLL+dZl7ddREMs29I5kEA1VX6p64v0vYimQl7h20nCmMmFPURc6vcWHZlCuwx80KLD
+	 IhS7z7gApmEuMTHIScCUxkxIkgq2/0KlDWzyn1dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Kinsey Moore <kinsey.moore@oarcorp.com>,
 	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.1 743/772] jffs2: Prevent rtime decompress memory corruption
-Date: Thu, 12 Dec 2024 16:01:28 +0100
-Message-ID: <20241212144420.636192415@linuxfoundation.org>
+Subject: [PATCH 6.1 744/772] jffs2: Fix rtime decompressor
+Date: Thu, 12 Dec 2024 16:01:29 +0100
+Message-ID: <20241212144420.675280418@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -65,35 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kinsey Moore <kinsey.moore@oarcorp.com>
+From: Richard Weinberger <richard@nod.at>
 
-commit fe051552f5078fa02d593847529a3884305a6ffe upstream.
+commit b29bf7119d6bbfd04aabb8d82b060fe2a33ef890 upstream.
 
-The rtime decompression routine does not fully check bounds during the
-entirety of the decompression pass and can corrupt memory outside the
-decompression buffer if the compressed data is corrupted. This adds the
-required check to prevent this failure mode.
+The fix for a memory corruption contained a off-by-one error and
+caused the compressor to fail in legit cases.
 
+Cc: Kinsey Moore <kinsey.moore@oarcorp.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Kinsey Moore <kinsey.moore@oarcorp.com>
+Fixes: fe051552f5078 ("jffs2: Prevent rtime decompress memory corruption")
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jffs2/compr_rtime.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/jffs2/compr_rtime.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/fs/jffs2/compr_rtime.c
 +++ b/fs/jffs2/compr_rtime.c
-@@ -95,6 +95,9 @@ static int jffs2_rtime_decompress(unsign
+@@ -95,7 +95,7 @@ static int jffs2_rtime_decompress(unsign
  
  		positions[value]=outpos;
  		if (repeat) {
-+			if ((outpos + repeat) >= destlen) {
-+				return 1;
-+			}
+-			if ((outpos + repeat) >= destlen) {
++			if ((outpos + repeat) > destlen) {
+ 				return 1;
+ 			}
  			if (backoffs + repeat >= outpos) {
- 				while(repeat) {
- 					cpage_out[outpos++] = cpage_out[backoffs++];
 
 
 
