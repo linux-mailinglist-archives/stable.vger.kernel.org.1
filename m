@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B31E9EF5AE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98109EF9D6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFD3D189CDD6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C820E16CF5B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2FF223313;
-	Thu, 12 Dec 2024 17:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68479223C55;
+	Thu, 12 Dec 2024 17:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a87FwJOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trHnk/wB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C44F222D7E;
-	Thu, 12 Dec 2024 17:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261AE13C918;
+	Thu, 12 Dec 2024 17:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023335; cv=none; b=A0WloEl2oVyZQK+cJJ30Q7fDOyZm1hU9qMOdpEGvmm5apkUlGfL9Yfn+4HQebYxlJYLjGDofuwDKv566RM0fzUOGiaxhTBb4c6CHqeUZdk3Z1vY3dMN5BlcEu6G3XWnr2zt1GP7QJDZUNm4jbeokhU9eO6hRocWrRPND65BNi4o=
+	t=1734025553; cv=none; b=k3izi3UEPPR9kwQ7iB1rpC5Uh66W3Gj2T6t7nIHZTc26Vceoj6VmBmGBZXSmbrNO+XwRMHwKTchSHKq0dUUuZCAKxcwuphWl/6qtPVcbP/2VwN0XL06SmxcgOtRgEXlAurRNUG3ltqkbAoL/yn7QYkNAfL/rELzP/1+QIRcwqIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023335; c=relaxed/simple;
-	bh=ynZo7XeTzCMRYZWwjKN/on03uiHl8HFDP15I4BA/k9k=;
+	s=arc-20240116; t=1734025553; c=relaxed/simple;
+	bh=DXL/m2MQPVbMlHR+KZ7sbrLlPGbyUruWal8Uany0CpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVxHW73kv9FxZ9uaALH6z5Rmh35d0oc0fdz+OO4t1qu86lu66mf9acy9SF/XdYurJxI7Js3VUtz6hdjJKeILNFcRevYqEm+vBTS0C2/qmSE3wcGvjDER14Eo8h9lHNEoU3t+gNcqv4yZj43o4pJp7AqhvO49EWGa8GagclxzWOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a87FwJOS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0D4C4CECE;
-	Thu, 12 Dec 2024 17:08:54 +0000 (UTC)
+	 MIME-Version; b=WeaU29B8rhEALh5amfWhG0t1uEUwJ/korIaLnEEJ9RTkg0SUFQ4YJBGMIkZoALOpnj20F1gj3GWB4BO8J2RKO+34dkPKbFKKuamlwgvp630u0XITifbA2nLbU4qvSrGcm37861xd2yYNpAJnqFSnWc/UdF6akRx+PO7OHJtFYS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trHnk/wB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17EDC4CECE;
+	Thu, 12 Dec 2024 17:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023334;
-	bh=ynZo7XeTzCMRYZWwjKN/on03uiHl8HFDP15I4BA/k9k=;
+	s=korg; t=1734025553;
+	bh=DXL/m2MQPVbMlHR+KZ7sbrLlPGbyUruWal8Uany0CpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a87FwJOSdlQEkz3tTCA2l+YcCQCXz3nHpY6dlsM7D7j0hSAWl6mh5QlwFxwHGWZmH
-	 dQjeV7Nf0r92VvTVREsVh551yI3yYvEa+j6Se7zfeTi6pfRIYAjw2G0Od9pd0AW3kP
-	 Lr/ufJTSn2qbB8gMsR8L7AEd+GlrFAiACRyR+kB0=
+	b=trHnk/wBynMJxXiwk7lkqgPZStIJ/yGcyVzdr8ez52hPGdo+207mjRE3jTchvQNd6
+	 17O75jzGaJr4bUbYBQoEKNnBKY319gdk1rGDbJbKRtCzZtRCZH6luEDdzBdHm5kfJl
+	 COyKK979vXaWjtGs5mQSAWKWabzUmi01/+2sTOrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 500/565] jfs: fix shift-out-of-bounds in dbSplit
+	Chris Lew <quic_clew@quicinc.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.4 177/321] rpmsg: glink: Propagate TX failures in intentless mode as well
 Date: Thu, 12 Dec 2024 16:01:35 +0100
-Message-ID: <20241212144331.529040324@linuxfoundation.org>
+Message-ID: <20241212144236.975817803@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ]
+commit 7a68f9fa97357a0f2073c9c31ed4101da4fce93e upstream.
 
-When dmt_budmin is less than zero, it causes errors
-in the later stages. Added a check to return an error beforehand
-in dbAllocCtl itself.
+As support for splitting transmission over several messages using
+TX_DATA_CONT was introduced it does not immediately return the return
+value of qcom_glink_tx().
 
-Reported-by: syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b5ca8a249162c4b9a7d0
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The result is that in the intentless case (i.e. intent == NULL), the
+code will continue to send all additional chunks. This is wasteful, and
+it's possible that the send operation could incorrectly indicate
+success, if the last chunk fits in the TX fifo.
+
+Fix the condition.
+
+Fixes: 8956927faed3 ("rpmsg: glink: Add TX_DATA_CONT command while sending")
+Reviewed-by: Chris Lew <quic_clew@quicinc.com>
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230418163018.785524-2-quic_bjorande@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/rpmsg/qcom_glink_native.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 3fa78e5f9b21e..7486c79a5058b 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1886,6 +1886,9 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
- 			return -EIO;
- 		dp = (struct dmap *) mp->data;
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1355,8 +1355,9 @@ static int __qcom_glink_send(struct glin
+ 	ret = qcom_glink_tx(glink, &req, sizeof(req), data, chunk_size, wait);
  
-+		if (dp->tree.budmin < 0)
-+			return -EIO;
-+
- 		/* try to allocate the blocks.
- 		 */
- 		rc = dbAllocDmapLev(bmp, dp, (int) nblocks, l2nb, results);
--- 
-2.43.0
-
+ 	/* Mark intent available if we failed */
+-	if (ret && intent) {
+-		intent->in_use = false;
++	if (ret) {
++		if (intent)
++			intent->in_use = false;
+ 		return ret;
+ 	}
+ 
+@@ -1377,8 +1378,9 @@ static int __qcom_glink_send(struct glin
+ 				    chunk_size, wait);
+ 
+ 		/* Mark intent available if we failed */
+-		if (ret && intent) {
+-			intent->in_use = false;
++		if (ret) {
++			if (intent)
++				intent->in_use = false;
+ 			break;
+ 		}
+ 	}
 
 
 
