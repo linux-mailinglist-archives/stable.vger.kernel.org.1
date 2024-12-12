@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DA19EEBC9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FBBE9EED74
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 465D5161771
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1536816BD02
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0287212B0F;
-	Thu, 12 Dec 2024 15:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6126721E0BC;
+	Thu, 12 Dec 2024 15:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6WQKU8I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lt3Pu5e9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF3F2054F8;
-	Thu, 12 Dec 2024 15:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125E321E085;
+	Thu, 12 Dec 2024 15:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017124; cv=none; b=tUSZkQTmVzzk/1/u2hB5/hi76eafMI5dp28/gMeKZqUc3SfuMy+JYXunKj10X7gWbLnWWYmCJiAVvYOa7GdgFtMXmxkOo1R2PuiIELaE9fW9PdH88edIVptjGGemmndv4emSqoa42AUuppXJzCCHitA1ypHz4OgFAb/VZPJDguM=
+	t=1734018146; cv=none; b=Kw23qn1vcl1TeuCtWDf8iIdEaTmWID3cRUwBpKQ0yQxBTQkKINS5V6zlxxFVzPHniOz9gnAsJAuEG3HGjmGX4/2oVzUBRnmPBVpLvsV3ryLCyDy+5OW37IksiOhTPi9sinKsqe69JyDasaiQTaElZ9RODFEbsy4DsCwMp5x8m+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017124; c=relaxed/simple;
-	bh=UX2n90SaQvJakUquo5R/KHgXgFusCtjPjcu0bGoEuQc=;
+	s=arc-20240116; t=1734018146; c=relaxed/simple;
+	bh=O/XHJIlVdj47wLwJJQRm9/KHC4IMYOBgv+ExBSo+Yu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEhip4vLoJay4Odo3f3iCGwdeqCliyfxGnrsLO8flspJsMJCPdit9gNvRTV7Syp8dLftdPAKH8MBbuLkis4g4MqaVs7osBemyvWa4qAAw1bv3GtSX7wX0Np4GWOyhwi5NTnJQ+xBxbuzNqAsj+9Anxrr/pdVSkelSKgiQGjbo3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6WQKU8I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12C9C4CECE;
-	Thu, 12 Dec 2024 15:25:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pLaFBsYEvDE5Bm5/CwgGTDIWTCOjuUtprQ7QNF5azrIiU32IWVL6q5V5i1bSC2mVFQnCLGBDgcnxKfMRSLXzj16fvtPszgbK0Fu/0iojI/iU082oUblc/OhHS6BjYOWwlwzELsb96tZE0jLWyA6LVh8cpQYkmSZ7DYR3btnb2Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lt3Pu5e9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9C7C4CECE;
+	Thu, 12 Dec 2024 15:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017124;
-	bh=UX2n90SaQvJakUquo5R/KHgXgFusCtjPjcu0bGoEuQc=;
+	s=korg; t=1734018145;
+	bh=O/XHJIlVdj47wLwJJQRm9/KHC4IMYOBgv+ExBSo+Yu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6WQKU8IRNVaL2fdin9DS7bUwxm/U+i8AHb/IVgjx/pe8dsNt4V0DN7Ns02kbHiLe
-	 hpqgeiVe/V0Mdmn0h9P3mt3i/ydlvLG6f0uE8cttXqmM20HgPLapCZFU7wg8aM0wxQ
-	 76i+bvRZRYW7cURWt/ud/h4YJB6fwq8/UIbupYv8=
+	b=Lt3Pu5e96WE5WWOCDGTl2HXZBAX4sHSadeDve7DH/txKbQ6dXDFw7P8PFDq5Vb7GQ
+	 PKyvDvfa6eKTLvGFpQ5WLq6jV2p3RuQa8MRxzPA02KKtcjwUCKBJ060zXucuEgOyjD
+	 ZAYjijwnXtJ8Oz8xKmTYhQ2OMXx3yyknvb9Y/r2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Attila Fazekas <afazekas@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 360/466] rtla/timerlat: Make timerlat_hist_cpu->*_count unsigned long long
+Subject: [PATCH 6.6 210/356] drm: panel-orientation-quirks: Add quirk for AYA NEO GEEK
 Date: Thu, 12 Dec 2024 15:58:49 +0100
-Message-ID: <20241212144321.003515853@linuxfoundation.org>
+Message-ID: <20241212144252.911608109@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
 
-[ Upstream commit 76b3102148135945b013797fac9b206273f0f777 ]
+[ Upstream commit 428656feb972ca99200fc127b5aecb574efd9d3d ]
 
-Do the same fix as in previous commit also for timerlat-hist.
+Add quirk orientation for AYA NEO GEEK. The name appears without
+spaces in DMI strings. The board name is completely different to
+the previous models making it difficult to reuse their quirks
+despite being the same resolution and using the same orientation.
 
-Link: https://lore.kernel.org/20241011121015.2868751-2-tglozar@redhat.com
-Reported-by: Attila Fazekas <afazekas@redhat.com>
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Tested by the JELOS team that has been patching their own kernel for a
+while now and confirmed by users in the AYA NEO and ChimeraOS discord
+servers.
+
+Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/40350b0d63fe2b54e7cba1e14be50917203f0079.1726492131.git.tjakobi@math.uni-bielefeld.de
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_hist.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
-index f6aa83ff15659..ae55cd7912833 100644
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -62,9 +62,9 @@ struct timerlat_hist_cpu {
- 	int			*thread;
- 	int			*user;
- 
--	int			irq_count;
--	int			thread_count;
--	int			user_count;
-+	unsigned long long	irq_count;
-+	unsigned long long	thread_count;
-+	unsigned long long	user_count;
- 
- 	unsigned long long	min_irq;
- 	unsigned long long	sum_irq;
-@@ -304,15 +304,15 @@ timerlat_print_summary(struct timerlat_hist_params *params,
- 			continue;
- 
- 		if (!params->no_irq)
--			trace_seq_printf(trace->seq, "%9d ",
-+			trace_seq_printf(trace->seq, "%9llu ",
- 					data->hist[cpu].irq_count);
- 
- 		if (!params->no_thread)
--			trace_seq_printf(trace->seq, "%9d ",
-+			trace_seq_printf(trace->seq, "%9llu ",
- 					data->hist[cpu].thread_count);
- 
- 		if (params->user_hist)
--			trace_seq_printf(trace->seq, "%9d ",
-+			trace_seq_printf(trace->seq, "%9llu ",
- 					 data->hist[cpu].user_count);
- 	}
- 	trace_seq_printf(trace->seq, "\n");
-@@ -488,15 +488,15 @@ timerlat_print_stats_all(struct timerlat_hist_params *params,
- 		trace_seq_printf(trace->seq, "count:");
- 
- 	if (!params->no_irq)
--		trace_seq_printf(trace->seq, "%9d ",
-+		trace_seq_printf(trace->seq, "%9llu ",
- 				 sum.irq_count);
- 
- 	if (!params->no_thread)
--		trace_seq_printf(trace->seq, "%9d ",
-+		trace_seq_printf(trace->seq, "%9llu ",
- 				 sum.thread_count);
- 
- 	if (params->user_hist)
--		trace_seq_printf(trace->seq, "%9d ",
-+		trace_seq_printf(trace->seq, "%9llu ",
- 				 sum.user_count);
- 
- 	trace_seq_printf(trace->seq, "\n");
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 2ee14c6b6fd62..c00f6f16244c0 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -208,6 +208,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_PRODUCT_NAME, "AYA NEO Founder"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
++	}, {	/* AYA NEO GEEK */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "GEEK"),
++		},
++		.driver_data = (void *)&lcd800x1280_rightside_up,
+ 	}, {	/* AYA NEO NEXT */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
 -- 
 2.43.0
 
