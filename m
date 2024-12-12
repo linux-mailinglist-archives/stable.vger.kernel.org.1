@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-101097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8779EEABB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBE59EF409
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AAFC167D93
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0937189EE39
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5CF213E97;
-	Thu, 12 Dec 2024 15:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B17522A7F4;
+	Thu, 12 Dec 2024 16:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPiymGwB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R90kBZoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23E9217705;
-	Thu, 12 Dec 2024 15:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0962223C5C;
+	Thu, 12 Dec 2024 16:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016348; cv=none; b=XU8jGUr1IzQJBk08nZ0IjyIXLS8UMRztFnxUtkxZw8HJKjp4qTFOVo4hMmJNARS/MMMukKcyBiktNoF7T47S3g584WaUNiyF4uZijI1B7ZieEASGsfyNFHz5ztubCSS9+4CR9LFgOkRUOKYlvGAzoJJDEsD+RfGl7yibo5SWpEw=
+	t=1734022107; cv=none; b=MI5VfFWX5lmQPUX0fElGPoG+EOUg6loxrACUAwzQVUPkSGt9v/WE+7A2Obj4N3sAgD9yzUoQMV/2PdAQa/NO9O8hCYHaQWbrbJbZN1crBK6HTAmHtjPMQL9jtbpYnA3AhJk0e1dBdDWDNLAnIHd+RitQC2Y6z+dCUZCvEGy2dGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016348; c=relaxed/simple;
-	bh=BV8GAUdrdkFdL22+WLbfHQmwGZnvz09bKTexGmQRurw=;
+	s=arc-20240116; t=1734022107; c=relaxed/simple;
+	bh=UDKMsbPpWQgA3S+BhiVFZ9ZbUKieecG/BHCcV6akSCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E65rDU6VL0Zke4wXFYp5iEBosfMqpkS7Hn/Ak+7Z+pWjY9gGm5s3JWx+JpblT3stkhnHJ930/FAQBULc77WSnXtl0zfIis6uMKjBDHLEPxgYjNODPgW+8W96b8LJ4ruh/uqfEDVx3CRvbeqkHZH6wRl3xNUrLMp+MPoKNARcmiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPiymGwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466CAC4CED0;
-	Thu, 12 Dec 2024 15:12:28 +0000 (UTC)
+	 MIME-Version; b=cBobr5WDXqlhD05UjPGnV3P2brP6c0lvcONkhqSCzMFMm9jMaCvqKqbgYeZM5dNC7Fstyc+rOxSeDuuPN2m/z2MyEWCygWIqXr23iKV6bMYbWrl9XRZSgjS9ARErqKm+iDANeKhrtWWK5FTtf7U8i+CiHPmkXZRDhBiuODxtmS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R90kBZoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B73C4CECE;
+	Thu, 12 Dec 2024 16:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016348;
-	bh=BV8GAUdrdkFdL22+WLbfHQmwGZnvz09bKTexGmQRurw=;
+	s=korg; t=1734022106;
+	bh=UDKMsbPpWQgA3S+BhiVFZ9ZbUKieecG/BHCcV6akSCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPiymGwBU9WtCg/tg1+OFmLskWO73yGpDidr81A2hxMbz39RR52vcKXRC5yo8JMLw
-	 OpDHl5gaXA1TC38btphUBGJu6Z8W0q4gZ2sHSKZmWJcZ2CjCZ+eJij+oTVRJM0iF8n
-	 9eYVxYpFEAC24yCMBUzIpUjGloxuKSPYFwD2/lt0=
+	b=R90kBZoDtmOI2Cl0ZWYxIqJT7ghKn3R+vjXSCHbWXFA5FcrQlcx+AhzSR6NfQjzal
+	 QFMwypUi+Mtz7XrPQXP1/jFyR7XEmYoFxC8wT44uCJwPXU5PNsEBUFYxoxaEApWD0u
+	 AFFedE6a1HuNWp79NaPbLWtGSKSu1Ho7m28pZptQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Lo-an Chen <lo-an.chen@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 174/466] drm/amd/display: Correct prefetch calculation
-Date: Thu, 12 Dec 2024 15:55:43 +0100
-Message-ID: <20241212144313.674152497@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 149/565] drm/omap: Fix locking in omap_gem_new_dmabuf()
+Date: Thu, 12 Dec 2024 15:55:44 +0100
+Message-ID: <20241212144317.375182551@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lo-an Chen <lo-an.chen@amd.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 24d3749c11d949972d8c22e75567dc90ff5482e7 upstream.
+[ Upstream commit e6a1c4037227539373c8cf484ace83833e2ad6a2 ]
 
-[WHY]
-The minimum value of the dst_y_prefetch_equ was not correct
-in prefetch calculation whice causes OPTC underflow.
+omap_gem_new_dmabuf() creates the new gem object, and then takes and
+holds the omap_obj->lock for the rest of the function. This has two
+issues:
 
-[HOW]
-Add the min operation of dst_y_prefetch_equ in prefetch calculation.
+- omap_gem_free_object(), which is called in the error paths, also takes
+  the same lock, leading to deadlock
+- Even if the above wouldn't happen, in the error cases
+  omap_gem_new_dmabuf() still unlocks omap_obj->lock, even after the
+  omap_obj has already been freed.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Lo-an Chen <lo-an.chen@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Furthermore, I don't think there's any reason to take the lock at all,
+as the object was just created and not yet shared with anyone else.
+
+To fix all this, drop taking the lock.
+
+Fixes: 3cbd0c587b12 ("drm/omap: gem: Replace struct_mutex usage with omap_obj private lock")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/511b99d7-aade-4f92-bd3e-63163a13d617@stanley.mountain/
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240806-omapdrm-misc-fixes-v1-3-15d31aea0831@ideasonboard.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/omapdrm/omap_gem.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-@@ -1222,6 +1222,7 @@ static dml_bool_t CalculatePrefetchSched
- 	s->dst_y_prefetch_oto = s->Tvm_oto_lines + 2 * s->Tr0_oto_lines + s->Lsw_oto;
+diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
+index 38af6195d9593..ed206312ab426 100644
+--- a/drivers/gpu/drm/omapdrm/omap_gem.c
++++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+@@ -1303,8 +1303,6 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
  
- 	s->dst_y_prefetch_equ = p->VStartup - (*p->TSetup + dml_max(p->TWait + p->TCalc, *p->Tdmdl)) / s->LineTime - (*p->DSTYAfterScaler + (dml_float_t) *p->DSTXAfterScaler / (dml_float_t)p->myPipe->HTotal);
-+	s->dst_y_prefetch_equ = dml_min(s->dst_y_prefetch_equ, 63.75); // limit to the reg limit of U6.2 for DST_Y_PREFETCH
+ 	omap_obj = to_omap_bo(obj);
  
- #ifdef __DML_VBA_DEBUG__
- 	dml_print("DML::%s: HTotal = %u\n", __func__, p->myPipe->HTotal);
+-	mutex_lock(&omap_obj->lock);
+-
+ 	omap_obj->sgt = sgt;
+ 
+ 	if (sgt->orig_nents == 1) {
+@@ -1319,21 +1317,17 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
+ 		pages = kcalloc(npages, sizeof(*pages), GFP_KERNEL);
+ 		if (!pages) {
+ 			omap_gem_free_object(obj);
+-			obj = ERR_PTR(-ENOMEM);
+-			goto done;
++			return ERR_PTR(-ENOMEM);
+ 		}
+ 
+ 		omap_obj->pages = pages;
+ 		ret = drm_prime_sg_to_page_array(sgt, pages, npages);
+ 		if (ret) {
+ 			omap_gem_free_object(obj);
+-			obj = ERR_PTR(-ENOMEM);
+-			goto done;
++			return ERR_PTR(-ENOMEM);
+ 		}
+ 	}
+ 
+-done:
+-	mutex_unlock(&omap_obj->lock);
+ 	return obj;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
