@@ -1,100 +1,78 @@
-Return-Path: <stable+bounces-100928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DF29EE907
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079649EE95C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A22BB281641
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:37:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D719161866
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D872153C3;
-	Thu, 12 Dec 2024 14:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67B6215764;
+	Thu, 12 Dec 2024 14:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCf81hOD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BSdXoiju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4C142AA6
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 14:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1E22153C3;
+	Thu, 12 Dec 2024 14:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734014225; cv=none; b=plLMpeuPldUcxi+pNTCNBaiz5rrQdkpvsXN47mT+s7Gezh3nlFi3VSRtfTPaRNKjGrL5Hh7ororeUA3EW2mBxN3qwvfjJKSqRTwe++6sGarAWYQYYeMufxnIHlxaowF8luwAx77GUSEefa/2wD8xHHDWMVmLLQfI828q8sgbX6U=
+	t=1734015046; cv=none; b=A5xOGBXhz+Wtl2f3UMZjYa2y9mIK5I89Q4ZQ3UJ0bip7VibdvqaD2isVInsEiEXYWoJ2xWgZjq0BQcij9/M4cqlSLZRQyZcKSfv1eMd8Y1r9SPYqUJPM8izByJXPBeGPujZGaPd7UKWTna4NqsN28CxN5tu269cRyyp6hop+kQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734014225; c=relaxed/simple;
-	bh=OrXgTWOVMSQ8g7yL8EpsBRsTEeuhIumteiVLOraBin4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pYd+82jBCiC+ChJUujLdRc8avzs21ja27IunANQvlN9sP3PMPdB19GjiNGhwBajezby5y1ZXaSDvIUZJYlahaXDnyL6U6AkVld7ZiHcSrycep2jmz5/J8Z40Wv3tJq7M0Elc4tC3Lodos4Rlc8r89Q0nI5aMd9d/jERjnH/Utas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCf81hOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E241C4CECE;
-	Thu, 12 Dec 2024 14:37:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734014224;
-	bh=OrXgTWOVMSQ8g7yL8EpsBRsTEeuhIumteiVLOraBin4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mCf81hODlYN5liZDXTB4tRbL567MrtyX5Mvvfeb00b5L2iZ3xvzEE1d9V3nyu4ui8
-	 /X/UvrtfCuQTttnWrYOCHeSQQ07bKF34pe11skTTp6Q3AqzCeqKSxKU0HeKokU7XSg
-	 IiL3WG63qv7sh/xoKJvBNRVffEAunDm3Z30GUWlI=
-Date: Thu, 12 Dec 2024 15:37:01 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux@roeck-us.net, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] clocksource: Make negative motion
- detection more robust" failed to apply to 6.12-stable tree
-Message-ID: <2024121255-handled-ample-e394@gregkh>
-References: <2024121203-griminess-blah-4e97@gregkh>
- <87ikrp9f59.ffs@tglx>
- <2024121232-obligate-varsity-e68f@gregkh>
- <2024121235-impale-paddle-8f94@gregkh>
- <87frmt9dl3.ffs@tglx>
- <2024121205-override-postbox-5ed6@gregkh>
+	s=arc-20240116; t=1734015046; c=relaxed/simple;
+	bh=V/D333GEnAXR6TKatHVFatYZi2rCIDF/Ea/kA02M6pM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gSz2XfizcFL0JlnyR+Kw5QVeZwqsT4E4lnvFKmRpmR2/OzGJokJIZe8yPOGtnhPktFFytAg5YI5iK9zflBrGK/bCHu/O34SKWEh30h0+TRuagLY99f3H4M9WAR58N+SVFOW/qwuOWXUeSE8OKSEbSbRfR1CVt9MRjmOc0RTS/WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BSdXoiju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78602C4CECE;
+	Thu, 12 Dec 2024 14:50:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734015046;
+	bh=V/D333GEnAXR6TKatHVFatYZi2rCIDF/Ea/kA02M6pM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BSdXoijuwcRCkFR3ocvCl1oONKTr80TQeHpVRLgIGf6kx6vvk2yO/yl2ooWPMgEFp
+	 bR5UXF50RJgyOBDVvfht7UBXLHDRnxuvCMzSfJWLfs+QOKUe/o3OEWsuZV3l5U7EEW
+	 PouE/wL9vOUt5O7cQhPK2SQH6ROojebRmUsl85sLfTcUsSCqjfkJf83k4g6zK9S1si
+	 7IpncSShyUR24QXDWsY8zpveuY/x+Si6paDlU1sd9TVmQ9aXW9CMi5LnA+KbdRMoBr
+	 TPfzjVA9MLWaX40gFgCevVwapf2r/LfhN0tkykt5NYSYSrneLyoEutRS56KrDigj37
+	 vc6uRtDwCAWDQ==
+Date: Thu, 12 Dec 2024 06:50:44 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>, cve@kernel.org
+Cc: jianqi.ren.cn@windriver.com, stable@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ sashal@kernel.org, jamie.bainbridge@gmail.com, jdamato@fastly.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] net: napi: Prevent overflow of
+ napi_defer_hard_irqs
+Message-ID: <20241212065044.09d7b377@kernel.org>
+In-Reply-To: <2024121250-preschool-napping-502e@gregkh>
+References: <20241211040304.3212711-1-jianqi.ren.cn@windriver.com>
+	<2024121250-preschool-napping-502e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024121205-override-postbox-5ed6@gregkh>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 12, 2024 at 03:35:14PM +0100, Greg KH wrote:
-> On Thu, Dec 12, 2024 at 03:32:24PM +0100, Thomas Gleixner wrote:
-> > On Thu, Dec 12 2024 at 15:18, Greg KH wrote:
-> > > On Thu, Dec 12, 2024 at 03:17:03PM +0100, Greg KH wrote:
-> > >> > But I don't think these two commits are necessarily stable material,
-> > >> > though I don't have a strong opinion on it. If c163e40af9b2 is
-> > >> > backported, then it has it's own large dependency chain on pre 6.10
-> > >> > kernels...
-> > >> 
-> > >> It's in the queues for some reason, let me figure out why...
-> > >
-> > > Ah, it was an AUTOSEL thing, I'll go drop it from all queues except
-> > > 6.12.y for now, thanks.
-> > >
-> > > But, for 6.12.y, we want this fixup too, right?
+On Thu, 12 Dec 2024 12:41:08 +0100 Greg KH wrote:
+> On Wed, Dec 11, 2024 at 12:03:04PM +0800, jianqi.ren.cn@windriver.com wrote:
+> > From: Joe Damato <jdamato@fastly.com>
 > > 
-> > If you have c163e40af9b2 pulled back into 6.12.y, then yes. I don't know
-> > why this actually rejects. I just did
-> > 
-> > git-cherry-pick c163e40af9b2
-> > git-cherry-pick 51f109e92935
-> > 
-> > on top of v6.12.4 and that just worked fine.
+> > [ Upstream commit 08062af0a52107a243f7608fd972edb54ca5b7f8 ]  
 > 
-> The build breaks :(
+> You can't ignore the 6.6.y tree :(
+> 
+> Dropping from my review queue now.
 
-To be specific:
-
-kernel/time/timekeeping.c: In function ‘timekeeping_debug_get_ns’:
-kernel/time/timekeeping.c:263:17: error: too few arguments to function ‘clocksource_delta’
-  263 |         delta = clocksource_delta(now, last, mask);
-      |                 ^~~~~~~~~~~~~~~~~
-In file included from kernel/time/timekeeping.c:30:
-
-
+Is it possible to instead mark CVE-2024-50018 as invalid, please?
+The change is cosmetic.
 
