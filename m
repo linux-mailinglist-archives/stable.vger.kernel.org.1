@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035C59EF8CB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B99E59EF533
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB1711893099
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65AD417E495
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D80D216E2D;
-	Thu, 12 Dec 2024 17:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4A6223316;
+	Thu, 12 Dec 2024 17:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TegSpdtS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGGZxse0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB1115696E;
-	Thu, 12 Dec 2024 17:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC71B13792B;
+	Thu, 12 Dec 2024 17:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025093; cv=none; b=gp2OrzFNsxJ7YMX33mgmDAjoLVDfT5OB6mrvDP7zk5+jzISZmVu85ERJStqLuWasYUhkANrluoIV36I+665cEpTiy1QaYj0oJm9A4XzQiEfKpaiWYrwa/tyYfLrTk69AMdZE1nw1gGMvOrmjVvpx9Exgk7iHl1u1QeuR8AXVRy4=
+	t=1734022951; cv=none; b=rxHy4LdbXRgJ8J9sGZ2ndRHEG9QJbR/UgEpE9tEsbELhuiDuCjZfKhY3anJsiJsmF1A2eIFcFuKFJO8S4xzBisLhtvB4N6bpusIKLKMeHVK/ccpa16+yolZHdqBXQbBVkToSM6xgjPrl3wv6nc2FzOJel9UE76CB5gquCHJ7Frs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025093; c=relaxed/simple;
-	bh=stcHcM74PTe1EI2vmSH4+jmfLCwVsBl2q+fEeEgf1aA=;
+	s=arc-20240116; t=1734022951; c=relaxed/simple;
+	bh=YxyH301M1I4eGGU0ViY5Nh96A38eEPIUy6P6E3BLSkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TOOO67YTEM8N5Y5qYAF8tnuV2xUQUVv4tsjf7M3ELxcYY93HORygTqZ5dXCBX67Rf9Rv1+9iwozveOGUinWoOtMeaWMx7A+3jQHAm2NfZmU2lnGWAVC6SU60u76Uw5ImL0ZLuzqTSuicx0j9DEUnDWCoELchpDUH9vJh3m5/koQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TegSpdtS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9486DC4CECE;
-	Thu, 12 Dec 2024 17:38:12 +0000 (UTC)
+	 MIME-Version; b=YKbf662Y5chLTUlw0n6fXnu+iCPgfZa14XvL1QqfHSnh1GO3awb0x4/Wsk6H0h26QsTxaRusVsCz+KW5LfkHmQPNgKZg6mLzH2UI/Noaaq6eVlv2tzMQ7RuEJ8x4nUb7GtKsAkgsFfmOK7Dq2sT+4HFMqdsafuYppGPjMOYWEr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGGZxse0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE0EC4CECE;
+	Thu, 12 Dec 2024 17:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025093;
-	bh=stcHcM74PTe1EI2vmSH4+jmfLCwVsBl2q+fEeEgf1aA=;
+	s=korg; t=1734022950;
+	bh=YxyH301M1I4eGGU0ViY5Nh96A38eEPIUy6P6E3BLSkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TegSpdtSe3FOXwRa5GC8tjHTFOg0vTL5wwAJwmsPeSybezf+INHlNZrxTTNKFWBVK
-	 bm3vitdhdkvKBkTFthy5HoXSXDtuz5je2sAvTJC3JEV9hy5sfrEsMzmgGgEwbADRD6
-	 SWL6jKoRLQcQQ1j89YlNCMTXqLSppLvHF16yICI8=
+	b=OGGZxse0V/YsHyuPORaLfFWIHcXZ1DUBBjdFCk5CX++3zyk8ZgJBjk9LUzICXIbQE
+	 GqRS5Kb3mOx/gnqSM58thLHHSAKqeej/79fxzvJyWgJMU54Pih9OdsTRojeTmGxIxa
+	 vkpmpA10WCndzNl13LGjj3NvjMVqiNb+h1CTl8oY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Qiu <luoqiu@kylinsec.com.cn>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 054/321] firmware: arm_scpi: Check the DVFS OPP count returned by the firmware
+Subject: [PATCH 5.15 377/565] xfs: remove unknown compat feature check in superblock write validation
 Date: Thu, 12 Dec 2024 15:59:32 +0100
-Message-ID: <20241212144232.126974096@linuxfoundation.org>
+Message-ID: <20241212144326.530483878@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Qiu <luoqiu@kylinsec.com.cn>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit 109aa654f85c5141e813b2cd1bd36d90be678407 ]
+[ Upstream commit 652f03db897ba24f9c4b269e254ccc6cc01ff1b7 ]
 
-Fix a kernel crash with the below call trace when the SCPI firmware
-returns OPP count of zero.
+Compat features are new features that older kernels can safely ignore,
+allowing read-write mounts without issues. The current sb write validation
+implementation returns -EFSCORRUPTED for unknown compat features,
+preventing filesystem write operations and contradicting the feature's
+definition.
 
-dvfs_info.opp_count may be zero on some platforms during the reboot
-test, and the kernel will crash after dereferencing the pointer to
-kcalloc(info->count, sizeof(*opp), GFP_KERNEL).
+Additionally, if the mounted image is unclean, the log recovery may need
+to write to the superblock. Returning an error for unknown compat features
+during sb write validation can cause mount failures.
 
-  |  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000028
-  |  Mem abort info:
-  |    ESR = 0x96000004
-  |    Exception class = DABT (current EL), IL = 32 bits
-  |    SET = 0, FnV = 0
-  |    EA = 0, S1PTW = 0
-  |  Data abort info:
-  |    ISV = 0, ISS = 0x00000004
-  |    CM = 0, WnR = 0
-  |  user pgtable: 4k pages, 48-bit VAs, pgdp = 00000000faefa08c
-  |  [0000000000000028] pgd=0000000000000000
-  |  Internal error: Oops: 96000004 [#1] SMP
-  |  scpi-hwmon: probe of PHYT000D:00 failed with error -110
-  |  Process systemd-udevd (pid: 1701, stack limit = 0x00000000aaede86c)
-  |  CPU: 2 PID: 1701 Comm: systemd-udevd Not tainted 4.19.90+ #1
-  |  Hardware name: PHYTIUM LTD Phytium FT2000/4/Phytium FT2000/4, BIOS
-  |  pstate: 60000005 (nZCv daif -PAN -UAO)
-  |  pc : scpi_dvfs_recalc_rate+0x40/0x58 [clk_scpi]
-  |  lr : clk_register+0x438/0x720
-  |  Call trace:
-  |   scpi_dvfs_recalc_rate+0x40/0x58 [clk_scpi]
-  |   devm_clk_hw_register+0x50/0xa0
-  |   scpi_clk_ops_init.isra.2+0xa0/0x138 [clk_scpi]
-  |   scpi_clocks_probe+0x528/0x70c [clk_scpi]
-  |   platform_drv_probe+0x58/0xa8
-  |   really_probe+0x260/0x3d0
-  |   driver_probe_device+0x12c/0x148
-  |   device_driver_attach+0x74/0x98
-  |   __driver_attach+0xb4/0xe8
-  |   bus_for_each_dev+0x88/0xe0
-  |   driver_attach+0x30/0x40
-  |   bus_add_driver+0x178/0x2b0
-  |   driver_register+0x64/0x118
-  |   __platform_driver_register+0x54/0x60
-  |   scpi_clocks_driver_init+0x24/0x1000 [clk_scpi]
-  |   do_one_initcall+0x54/0x220
-  |   do_init_module+0x54/0x1c8
-  |   load_module+0x14a4/0x1668
-  |   __se_sys_finit_module+0xf8/0x110
-  |   __arm64_sys_finit_module+0x24/0x30
-  |   el0_svc_common+0x78/0x170
-  |   el0_svc_handler+0x38/0x78
-  |   el0_svc+0x8/0x340
-  |  Code: 937d7c00 a94153f3 a8c27bfd f9400421 (b8606820)
-  |  ---[ end trace 06feb22469d89fa8 ]---
-  |  Kernel panic - not syncing: Fatal exception
-  |  SMP: stopping secondary CPUs
-  |  Kernel Offset: disabled
-  |  CPU features: 0x10,a0002008
-  |  Memory Limit: none
+Although XFS currently does not use compat feature flags, this issue
+affects current kernels' ability to mount images that may use compat
+feature flags in the future.
 
-Fixes: 8cb7cf56c9fe ("firmware: add support for ARM System Control and Power Interface(SCPI) protocol")
-Signed-off-by: Luo Qiu <luoqiu@kylinsec.com.cn>
-Message-Id: <55A2F7A784391686+20241101032115.275977-1-luoqiu@kylinsec.com.cn>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Since superblock read validation already warns about unknown compat
+features, it's unnecessary to repeat this warning during write validation.
+Therefore, the relevant code in write validation is being removed.
+
+Fixes: 9e037cb7972f ("xfs: check for unknown v5 feature bits in superblock write verifier")
+Cc: stable@vger.kernel.org # v4.19+
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scpi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/xfs/libxfs/xfs_sb.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/firmware/arm_scpi.c b/drivers/firmware/arm_scpi.c
-index 72634e9d81169..131b22bd713f3 100644
---- a/drivers/firmware/arm_scpi.c
-+++ b/drivers/firmware/arm_scpi.c
-@@ -627,6 +627,9 @@ static struct scpi_dvfs_info *scpi_dvfs_get_info(u8 domain)
- 	if (ret)
- 		return ERR_PTR(ret);
- 
-+	if (!buf.opp_count)
-+		return ERR_PTR(-ENOENT);
-+
- 	info = kmalloc(sizeof(*info), GFP_KERNEL);
- 	if (!info)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/fs/xfs/libxfs/xfs_sb.c b/fs/xfs/libxfs/xfs_sb.c
+index f867da8128ca6..3175e3620a418 100644
+--- a/fs/xfs/libxfs/xfs_sb.c
++++ b/fs/xfs/libxfs/xfs_sb.c
+@@ -256,13 +256,6 @@ xfs_validate_sb_write(
+ 	 * the kernel cannot support since we checked for unsupported bits in
+ 	 * the read verifier, which means that memory is corrupt.
+ 	 */
+-	if (xfs_sb_has_compat_feature(sbp, XFS_SB_FEAT_COMPAT_UNKNOWN)) {
+-		xfs_warn(mp,
+-"Corruption detected in superblock compatible features (0x%x)!",
+-			(sbp->sb_features_compat & XFS_SB_FEAT_COMPAT_UNKNOWN));
+-		return -EFSCORRUPTED;
+-	}
+-
+ 	if (!xfs_is_readonly(mp) &&
+ 	    xfs_sb_has_ro_compat_feature(sbp, XFS_SB_FEAT_RO_COMPAT_UNKNOWN)) {
+ 		xfs_alert(mp,
 -- 
 2.43.0
 
