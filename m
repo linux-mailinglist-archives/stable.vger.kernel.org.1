@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABD79EF745
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FC49EF91A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88F6F175582
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E4317BD13
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBB7215782;
-	Thu, 12 Dec 2024 17:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006C6223313;
+	Thu, 12 Dec 2024 17:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNEOaD0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1/i8vVK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE7E215762;
-	Thu, 12 Dec 2024 17:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EC1222D7C;
+	Thu, 12 Dec 2024 17:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024216; cv=none; b=mrPQbPbAT2yWferg9GEB8nB5gz1UN9y5s3m4s+y7ifEiO3xwOaRTYL28niJb/0HpL2w4uK0lI8O2+QpuNLdSehVz8jJ1Qv0YPOc7A4chjgbT0cSRrJz9rp7WMU4N7NFDhFCFSnGOISAjUhG/D7gVRg976ehHLBdKFbwphBgtqsg=
+	t=1734025157; cv=none; b=OS5O+KrIO0UOpvd/+iRqzrMkGX6G+AXpKprBCwZZxkG41MbvPMR4nSFpx3+AY93sz9tbasWfawEOqtiFK95llnmg+3qqWJVKQ+wsiiHAlg1YTVvoe6v+6v4ONUFz9IkdhT2q8E04DYhNdZYYDFKXaUg4LyVxrB/FwTiNDUHcOKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024216; c=relaxed/simple;
-	bh=iWJDrnJkS9igJ8xdE/F0TuVH4gJCf71zoe/E7gSFzQg=;
+	s=arc-20240116; t=1734025157; c=relaxed/simple;
+	bh=5Wj/ub8yRUKQ8I8YEhOKicPTgfqLFgZwrIZWmMD330E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jz1O3/aAzKkYlSbA2TIkv3RpSVfZypM5+3Z53LboVTQiAMfcQ0FcZDVAqOMFOYL3k0ispm0Wafn8QNtPopGJ+boDhpYYdSrVTeH1tbXppmHmb3rClXGVMsvUlq4nXrbMc0vMB463hT0iyLxeCB8vqo0i8gngLG6kLVkUvliLhgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNEOaD0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8ADC4CECE;
-	Thu, 12 Dec 2024 17:23:35 +0000 (UTC)
+	 MIME-Version; b=P6yXOIPLCDdChP87VoIKrRRajd6EjFoVZkFmJlP/KZMwAk0S6zNY5YwUMIqR5KYlWDWoAK6q9JqKgKaUSZOlE3sPJ6+npzIphp0VFnVwxcqprse12EpOnU1qQUEoWaeD4ljSNfxcOBTtyRns6UaUgZVE1Z/BtIRjQPX8MGw+OP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1/i8vVK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F0AC4CECE;
+	Thu, 12 Dec 2024 17:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024216;
-	bh=iWJDrnJkS9igJ8xdE/F0TuVH4gJCf71zoe/E7gSFzQg=;
+	s=korg; t=1734025157;
+	bh=5Wj/ub8yRUKQ8I8YEhOKicPTgfqLFgZwrIZWmMD330E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jNEOaD0rkhjAkFeSQLSb13hCQ44rm0WjFee0GBU7lngjSM3fOpHheDuCVxjLwhWGR
-	 wO9WgHqWTprj2eZkNHLSvsQG8nu1M74wzwPBfDf595hVEw1hpstHqgbW9PP08kVvPo
-	 KuDpTwKYiR5wZi2TvGYcAac8w1y6IiOxZwWwBjUs=
+	b=W1/i8vVKBeRzIq5q95dCdH+P1SHklq0MTq++OTl/HR7PkAHH8J5Hpi7r8QjozX+ia
+	 I4TMO5ULKIZhRyHwT/8vCqeVj3WGgzFXLYVFruzGNfin4zTzKIdAk1Q8h91VzFkHmb
+	 yKWkj3pAb21i7I+WkN7Qh4CTW56LG0DGpc5a8/M8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 224/459] net: stmmac: dwmac-socfpga: Set RX watchdog interrupt as broken
-Date: Thu, 12 Dec 2024 15:59:22 +0100
-Message-ID: <20241212144302.419638384@linuxfoundation.org>
+Subject: [PATCH 5.4 045/321] crypto: cavium - Fix an error handling path in cpt_ucode_load_fw()
+Date: Thu, 12 Dec 2024 15:59:23 +0100
+Message-ID: <20241212144231.772385052@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 407618d66dba55e7db1278872e8be106808bbe91 ]
+[ Upstream commit 572b7cf08403b6c67dfe0dc3e0f2efb42443254f ]
 
-On DWMAC3 and later, there's a RX Watchdog interrupt that's used for
-interrupt coalescing. It's known to be buggy on some platforms, and
-dwmac-socfpga appears to be one of them. Changing the interrupt
-coalescing from ethtool doesn't appear to have any effect here.
+If do_cpt_init() fails, a previous dma_alloc_coherent() call needs to be
+undone.
 
-Without disabling RIWT (Received Interrupt Watchdog Timer, I
-believe...), we observe latencies while receiving traffic that amount to
-around ~0.4ms. This was discovered with NTP but can be easily reproduced
-with a simple ping. Without this patch :
+Add the needed dma_free_coherent() before returning.
 
-64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.657 ms
-
-With this patch :
-
-64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.254 ms
-
-Fixes: 801d233b7302 ("net: stmmac: Add SOCFPGA glue driver")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20241122141256.764578-1-maxime.chevallier@bootlin.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9e2c7d99941d ("crypto: cavium - Add Support for Octeon-tx CPT Engine")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 2 ++
+ drivers/crypto/cavium/cpt/cptpf_main.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index 142bf912011e2..263235a4fc554 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -426,6 +426,8 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
- 	plat_dat->bsp_priv = dwmac;
- 	plat_dat->fix_mac_speed = socfpga_dwmac_fix_mac_speed;
+diff --git a/drivers/crypto/cavium/cpt/cptpf_main.c b/drivers/crypto/cavium/cpt/cptpf_main.c
+index b3db27b142afb..52101755d0ddf 100644
+--- a/drivers/crypto/cavium/cpt/cptpf_main.c
++++ b/drivers/crypto/cavium/cpt/cptpf_main.c
+@@ -303,6 +303,8 @@ static int cpt_ucode_load_fw(struct cpt_device *cpt, const u8 *fw, bool is_ae)
  
-+	plat_dat->riwt_off = 1;
-+
- 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
- 	if (ret)
- 		goto err_remove_config_dt;
+ 	ret = do_cpt_init(cpt, mcode);
+ 	if (ret) {
++		dma_free_coherent(&cpt->pdev->dev, mcode->code_size,
++				  mcode->code, mcode->phys_base);
+ 		dev_err(dev, "do_cpt_init failed with ret: %d\n", ret);
+ 		goto fw_release;
+ 	}
 -- 
 2.43.0
 
