@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71719EF2EB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3188D9EEBC7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F9416F02D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257A61886E56
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659A3221D9F;
-	Thu, 12 Dec 2024 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C8C212B0F;
+	Thu, 12 Dec 2024 15:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0Y7auP2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sq+862Lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA84222D77;
-	Thu, 12 Dec 2024 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9269B2054F8;
+	Thu, 12 Dec 2024 15:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020961; cv=none; b=NnXTmvGtLardpLiXBQ1IRQUbhxoDeax7vgx/3FrrVocCZMuxqg65AUSCkwb4BUfGT/eWCApBe/6IV6qb0xiJX9kmxUXbEE0yGoecXlsj1kWnLDT0hyACpCmIRdgEPGgYh0AIf7Us0dd+HSjxJ/Nu5/EC3zxgoFRf+ofVlxU6UPQ=
+	t=1734017108; cv=none; b=WA1WiZFXR3TiUj65wiSr2Jj1f6uqZJjcCdDwisGgrnCUg4w6Am5wMp+nlZuFgqu4/MU/eAzh7r1nYilx2nTsA3y+pLR2B4lGRnKhrA87ky6ElwAlSlidGolbTsctIJLGgtWVCewX+0P03lTUjHCXUQLAzVgwhlcnOxonW8qbjtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020961; c=relaxed/simple;
-	bh=QK2wstWghp6GVEWOJXs/5jIrzABJpP8fHUspNftWXKE=;
+	s=arc-20240116; t=1734017108; c=relaxed/simple;
+	bh=r6PK7uxeFoeVSDQ1VG+mRn8wLK0L54GgkjkpoKC6Y9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FlMl/MgBwLe28FWBUwHI9y7Zs6FdRukutDmYKFX9391N9fBmVe5afvzinONqnkURZwCJa54jN1/vQH/pAP/zoRR+7BLt4m+be9d804Mt20+wtquI4mK9cpMjTgEIObN0W0H/7CBcSghpbfrh87J5pCp0OGUCsJX8oKIPShDbE1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0Y7auP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFB3C4CED0;
-	Thu, 12 Dec 2024 16:29:20 +0000 (UTC)
+	 MIME-Version; b=YyHNVBp3mANhf4VGNLY1EQSb9u/DTuDr3JgSPv37SqbJdoayegBHOAEOVi+kUlkAt9eJh0dAz6+vF39PkNUVdxPjsV+5IyjoJzl+prbhDhN1K0QYSC/dxFGoIkEUDfDSglrPtXJyc3T/Qjsf2nHBkvAbjYxT1AoF1bMmkuemjE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sq+862Lc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986D1C4CECE;
+	Thu, 12 Dec 2024 15:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020961;
-	bh=QK2wstWghp6GVEWOJXs/5jIrzABJpP8fHUspNftWXKE=;
+	s=korg; t=1734017107;
+	bh=r6PK7uxeFoeVSDQ1VG+mRn8wLK0L54GgkjkpoKC6Y9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t0Y7auP2E2DBFS/qQWmR++mEKuFfcWor3u4z8vJ+WKsEYh3X0eodDfM9CjVcwiNTj
-	 TrN+ozgmuG4hu2xVnVgHoe669bq6zn4n4nyRUPXix9E/0wc0iyrMtbK5Z637tioFee
-	 xsC3VTx5sD3Z4LDKJ04Giy2AyrxXTX4YdANMQhBE=
+	b=sq+862Lc9/5HnFwreB10zhMKSVl2sMX5RIFg5JsqTk7ckgK/tE5et3Ex99ySWD2tu
+	 1lI+JUg1NHn0/3lYYZWxyzjNmgTa/VNS1E03FtbD6fCn8WvWOqrVUZAMilmIWQiYxp
+	 TifggFyyfM3Fmi+y7rmm8t4SNBBe9VtjpV+aHtwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 608/772] can: dev: can_set_termination(): allow sleeping GPIOs
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tatsuya S <tatsuya.s2862@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 384/466] tracing: Fix function name for trampoline
 Date: Thu, 12 Dec 2024 15:59:13 +0100
-Message-ID: <20241212144415.044688121@linuxfoundation.org>
+Message-ID: <20241212144321.942096154@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Tatsuya S <tatsuya.s2862@gmail.com>
 
-commit ee1dfbdd8b4b6de85e96ae2059dc9c1bdb6b49b5 upstream.
+[ Upstream commit 6ce5a6f0a07d37cc377df08a8d8a9c283420f323 ]
 
-In commit 6e86a1543c37 ("can: dev: provide optional GPIO based
-termination support") GPIO based termination support was added.
+The issue that unrelated function name is shown on stack trace like
+following even though it should be trampoline code address is caused by
+the creation of trampoline code in the area where .init.text section
+of module was freed after module is loaded.
 
-For no particular reason that patch uses gpiod_set_value() to set the
-GPIO. This leads to the following warning, if the systems uses a
-sleeping GPIO, i.e. behind an I2C port expander:
+bash-1344    [002] .....    43.644608: <stack trace>
+=> (MODULE INIT FUNCTION)
+=> vfs_write
+=> ksys_write
+=> do_syscall_64
+=> entry_SYSCALL_64_after_hwframe
 
-| WARNING: CPU: 0 PID: 379 at /drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x50/0x6c
-| CPU: 0 UID: 0 PID: 379 Comm: ip Not tainted 6.11.0-20241016-1 #1 823affae360cc91126e4d316d7a614a8bf86236c
+To resolve this, when function address of stack trace entry is in
+trampoline, output without looking up symbol name.
 
-Replace gpiod_set_value() by gpiod_set_value_cansleep() to allow the
-use of sleeping GPIOs.
-
-Cc: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Cc: stable@vger.kernel.org
-Reported-by: Leonard Göhrs <l.goehrs@pengutronix.de>
-Tested-by: Leonard Göhrs <l.goehrs@pengutronix.de>
-Fixes: 6e86a1543c37 ("can: dev: provide optional GPIO based termination support")
-Link: https://patch.msgid.link/20241121-dev-fix-can_set_termination-v1-1-41fa6e29216d@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241021071454.34610-2-tatsuya.s2862@gmail.com
+Signed-off-by: Tatsuya S <tatsuya.s2862@gmail.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/dev/dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace.c        | 33 +++++++++++++++++++++++++--------
+ kernel/trace/trace.h        |  7 +++++++
+ kernel/trace/trace_output.c |  4 ++++
+ 3 files changed, 36 insertions(+), 8 deletions(-)
 
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -452,7 +452,7 @@ static int can_set_termination(struct ne
- 	else
- 		set = 0;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 6a891e00aa7f4..17d2ffde0bb60 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -988,7 +988,8 @@ static inline void trace_access_lock_init(void)
+ #endif
  
--	gpiod_set_value(priv->termination_gpio, set);
-+	gpiod_set_value_cansleep(priv->termination_gpio, set);
+ #ifdef CONFIG_STACKTRACE
+-static void __ftrace_trace_stack(struct trace_buffer *buffer,
++static void __ftrace_trace_stack(struct trace_array *tr,
++				 struct trace_buffer *buffer,
+ 				 unsigned int trace_ctx,
+ 				 int skip, struct pt_regs *regs);
+ static inline void ftrace_trace_stack(struct trace_array *tr,
+@@ -997,7 +998,8 @@ static inline void ftrace_trace_stack(struct trace_array *tr,
+ 				      int skip, struct pt_regs *regs);
  
- 	return 0;
+ #else
+-static inline void __ftrace_trace_stack(struct trace_buffer *buffer,
++static inline void __ftrace_trace_stack(struct trace_array *tr,
++					struct trace_buffer *buffer,
+ 					unsigned int trace_ctx,
+ 					int skip, struct pt_regs *regs)
+ {
+@@ -2947,7 +2949,8 @@ struct ftrace_stacks {
+ static DEFINE_PER_CPU(struct ftrace_stacks, ftrace_stacks);
+ static DEFINE_PER_CPU(int, ftrace_stack_reserve);
+ 
+-static void __ftrace_trace_stack(struct trace_buffer *buffer,
++static void __ftrace_trace_stack(struct trace_array *tr,
++				 struct trace_buffer *buffer,
+ 				 unsigned int trace_ctx,
+ 				 int skip, struct pt_regs *regs)
+ {
+@@ -2994,6 +2997,20 @@ static void __ftrace_trace_stack(struct trace_buffer *buffer,
+ 		nr_entries = stack_trace_save(fstack->calls, size, skip);
+ 	}
+ 
++#ifdef CONFIG_DYNAMIC_FTRACE
++	/* Mark entry of stack trace as trampoline code */
++	if (tr->ops && tr->ops->trampoline) {
++		unsigned long tramp_start = tr->ops->trampoline;
++		unsigned long tramp_end = tramp_start + tr->ops->trampoline_size;
++		unsigned long *calls = fstack->calls;
++
++		for (int i = 0; i < nr_entries; i++) {
++			if (calls[i] >= tramp_start && calls[i] < tramp_end)
++				calls[i] = FTRACE_TRAMPOLINE_MARKER;
++		}
++	}
++#endif
++
+ 	event = __trace_buffer_lock_reserve(buffer, TRACE_STACK,
+ 				    struct_size(entry, caller, nr_entries),
+ 				    trace_ctx);
+@@ -3024,7 +3041,7 @@ static inline void ftrace_trace_stack(struct trace_array *tr,
+ 	if (!(tr->trace_flags & TRACE_ITER_STACKTRACE))
+ 		return;
+ 
+-	__ftrace_trace_stack(buffer, trace_ctx, skip, regs);
++	__ftrace_trace_stack(tr, buffer, trace_ctx, skip, regs);
  }
+ 
+ void __trace_stack(struct trace_array *tr, unsigned int trace_ctx,
+@@ -3033,7 +3050,7 @@ void __trace_stack(struct trace_array *tr, unsigned int trace_ctx,
+ 	struct trace_buffer *buffer = tr->array_buffer.buffer;
+ 
+ 	if (rcu_is_watching()) {
+-		__ftrace_trace_stack(buffer, trace_ctx, skip, NULL);
++		__ftrace_trace_stack(tr, buffer, trace_ctx, skip, NULL);
+ 		return;
+ 	}
+ 
+@@ -3050,7 +3067,7 @@ void __trace_stack(struct trace_array *tr, unsigned int trace_ctx,
+ 		return;
+ 
+ 	ct_irq_enter_irqson();
+-	__ftrace_trace_stack(buffer, trace_ctx, skip, NULL);
++	__ftrace_trace_stack(tr, buffer, trace_ctx, skip, NULL);
+ 	ct_irq_exit_irqson();
+ }
+ 
+@@ -3067,8 +3084,8 @@ void trace_dump_stack(int skip)
+ 	/* Skip 1 to skip this function. */
+ 	skip++;
+ #endif
+-	__ftrace_trace_stack(printk_trace->array_buffer.buffer,
+-			     tracing_gen_ctx(), skip, NULL);
++	__ftrace_trace_stack(printk_trace, printk_trace->array_buffer.buffer,
++				tracing_gen_ctx(), skip, NULL);
+ }
+ EXPORT_SYMBOL_GPL(trace_dump_stack);
+ 
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index c866991b9c78b..30d6675c78cfe 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -2176,4 +2176,11 @@ static inline int rv_init_interface(void)
+ }
+ #endif
+ 
++/*
++ * This is used only to distinguish
++ * function address from trampoline code.
++ * So this value has no meaning.
++ */
++#define FTRACE_TRAMPOLINE_MARKER  ((unsigned long) INT_MAX)
++
+ #endif /* _LINUX_KERNEL_TRACE_H */
+diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
+index 868f2f912f280..c14573e5a9033 100644
+--- a/kernel/trace/trace_output.c
++++ b/kernel/trace/trace_output.c
+@@ -1246,6 +1246,10 @@ static enum print_line_t trace_stack_print(struct trace_iterator *iter,
+ 			break;
+ 
+ 		trace_seq_puts(s, " => ");
++		if ((*p) == FTRACE_TRAMPOLINE_MARKER) {
++			trace_seq_puts(s, "[FTRACE TRAMPOLINE]\n");
++			continue;
++		}
+ 		seq_print_ip_sym(s, (*p) + delta, flags);
+ 		trace_seq_putc(s, '\n');
+ 	}
+-- 
+2.43.0
+
 
 
 
