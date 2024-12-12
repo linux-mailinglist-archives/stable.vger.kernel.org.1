@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB20E9EF5A3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9369EF5DA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DD8117BB50
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DA5728D334
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E15E223C42;
-	Thu, 12 Dec 2024 16:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57FE21660B;
+	Thu, 12 Dec 2024 17:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWqwe5Kx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BD/ZXqLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5727D213E9F;
-	Thu, 12 Dec 2024 16:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900D91F2381;
+	Thu, 12 Dec 2024 17:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022621; cv=none; b=acdeogJeEndD1DUKF9clsiMHOhTO7AF3caQVtvcYNMRXn525bX0BpQZiFTRSmAitqfF1sOKcK3PT7PfWd2HeIDw3fKil9YS/Q/3CzjpRD1/Sclqu+WWvcFehlbn52b3SCAJeULeiuNtUO/TqvNIs3RSF8p9R/AMhsQX1l1nzqVE=
+	t=1734024014; cv=none; b=hxEc1YspPsmq5rYHSY3I2WkwyMbZls3jIf0xyyBO/MEs+AuheOOnlxMZpVHnmLTAOUGb+UDIgCaZEwAuaQduZSrzqwmPb5v6JM8Wnfp6dlM69pVXsKa3yFxCb3udDm4JgEWc9WaM+/dNGdCM7H4YWy0w89n4h3XAn4kAeab1MuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022621; c=relaxed/simple;
-	bh=Di0t90/Wrx/xyg+eDKrxjslfojlBxsURbwK5kc7VDII=;
+	s=arc-20240116; t=1734024014; c=relaxed/simple;
+	bh=pQQp6wCNWZHuP6yUkJGkrCI+uZLRyRxLqo+e3grcb3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDl+smNTZ6jIT8wrUOOa8wimgmkvEIaEQoefogJuW5uJmB61nyHRX4iCvAbjVyYwZRDcD67Sge03m3GHGLLfyQtL/Cn60jExeilIzaO3cB5ZYLQJ9CFii5yXOBtdXWnBkLeIYpE/9pspa59pJlfNSdzgQgn4gKFoRUCdqidMrrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWqwe5Kx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3DEC4CECE;
-	Thu, 12 Dec 2024 16:56:59 +0000 (UTC)
+	 MIME-Version; b=DgBE4nU67ZFCNV8mvHjekUqT50buC9AcvgkHcVU+6HIPcFysx4DTg8cY0Iv6dUCIaU6lkKqLvuNG4A4LkyljxkRCsOhbxhEI0mlOgSOmQYVUEghWw34yw6YIv5isQn1QvPDnDe3RxHSMG7BbRz/bfn/2e54OVc7iLUBAAIEHvaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BD/ZXqLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1988AC4CECE;
+	Thu, 12 Dec 2024 17:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022621;
-	bh=Di0t90/Wrx/xyg+eDKrxjslfojlBxsURbwK5kc7VDII=;
+	s=korg; t=1734024014;
+	bh=pQQp6wCNWZHuP6yUkJGkrCI+uZLRyRxLqo+e3grcb3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWqwe5KxPi0fL9zVfw8TnPT97mnqt/OBUDI+l4AZauu2ZXMc++PJ64g65bYytUW1z
-	 zvh7e0+eoVKRwUBHhjrZuXo+DgqafXfVQc7px2DJQ5ozAjaWxWE/Nni8mbNH8j0L9l
-	 iYzEIUKehMQkvPf72aCVyve9TOfxZoP78CFIPNwk=
+	b=BD/ZXqLTzdvwc/UIEHWuv9gFzOLtgbcGeDH2tDiD5hZaN9G7QjQ1orHFVTziYY6to
+	 VljIAQAfjoy1Fi6IIoG+MHBX9bU3C6VIzSKuc+/szX3aod2rfowC8xbdD9fQSqFUd4
+	 fEF4EmHUnenKRsplgi/RnubLZTm2XyMxaqI65CNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 261/565] rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length
+Subject: [PATCH 5.10 118/459] netdevsim: copy addresses for both in and out paths
 Date: Thu, 12 Dec 2024 15:57:36 +0100
-Message-ID: <20241212144321.786179081@linuxfoundation.org>
+Message-ID: <20241212144258.172139535@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 06c59d97f63c1b8af521fa5aef8a716fb988b285 ]
+[ Upstream commit 2cf567f421dbfe7e53b7e5ddee9400da10efb75d ]
 
-The name len field of the CMD_OPEN packet is only 16-bits and the upper
-16-bits of "param2" are a different "prio" field, which can be nonzero in
-certain situations, and CMD_OPEN packets can be unexpectedly dropped
-because of this.
+The current code only copies the address for the in path, leaving the out
+path address set to 0. This patch corrects the issue by copying the addresses
+for both the in and out paths. Before this patch:
 
-Fix this by masking out the upper 16 bits of param2.
+  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+  SA count=2 tx=20
+  sa[0] tx ipaddr=0.0.0.0
+  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+  sa[1] rx ipaddr=192.168.0.1
+  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
 
-Fixes: b4f8e52b89f6 ("rpmsg: Introduce Qualcomm RPM glink driver")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241007235935.6216-1-jonathan@marek.ca
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+After this patch:
+
+  = cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
+  SA count=2 tx=20
+  sa[0] tx ipaddr=192.168.0.2
+  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
+  sa[1] rx ipaddr=192.168.0.1
+  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
+  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+
+Fixes: 7699353da875 ("netdevsim: add ipsec offload testing")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20241010040027.21440-3-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/netdevsim/ipsec.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-index 49f08c0fdf975..25f98490a60db 100644
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1045,7 +1045,8 @@ static irqreturn_t qcom_glink_native_intr(int irq, void *data)
- 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
- 			break;
- 		case GLINK_CMD_OPEN:
--			ret = qcom_glink_rx_defer(glink, param2);
-+			/* upper 16 bits of param2 are the "prio" field */
-+			ret = qcom_glink_rx_defer(glink, param2 & 0xffff);
- 			break;
- 		case GLINK_CMD_TX_DATA:
- 		case GLINK_CMD_TX_DATA_CONT:
+diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
+index 386336a38f349..feca55eef9938 100644
+--- a/drivers/net/netdevsim/ipsec.c
++++ b/drivers/net/netdevsim/ipsec.c
+@@ -171,14 +171,13 @@ static int nsim_ipsec_add_sa(struct xfrm_state *xs)
+ 		return ret;
+ 	}
+ 
+-	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
++	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN)
+ 		sa.rx = true;
+ 
+-		if (xs->props.family == AF_INET6)
+-			memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
+-		else
+-			memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
+-	}
++	if (xs->props.family == AF_INET6)
++		memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
++	else
++		memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
+ 
+ 	/* the preparations worked, so save the info */
+ 	memcpy(&ipsec->sa[sa_idx], &sa, sizeof(sa));
 -- 
 2.43.0
 
