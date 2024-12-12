@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0052D9EF146
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A25A9EEC28
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64921779B9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6B87284BF5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D650823FA04;
-	Thu, 12 Dec 2024 16:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CBA2153DF;
+	Thu, 12 Dec 2024 15:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mz75tWbI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDJNz79u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B9B23FD1B;
-	Thu, 12 Dec 2024 16:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120B4212F9E;
+	Thu, 12 Dec 2024 15:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020112; cv=none; b=PDBkgkOQdVC6iRdwBYg4eV9Vv0fzP0pKu09lpS5aXENt2vTajJEtrzQWW0l9c7f2K5Buc4i5wlx7cdhcnGHJbKUHP044LSYKP2A+7Pc1JSZi1OmVyeF8aAkEh2DlJlzdQwb+luzCfbBURaenKOxkjxqJXtAKApdWaTqBYjcVNHw=
+	t=1734017496; cv=none; b=TkRyW4lC27M54GeaM7LvpFnXM0JuQtOMruThVi0RKhPthRgtD2JqflOdgC7WvyalRoJ/qUBzxML1g2+Dvel1Nl1ZGeibdrlHKVX6NuczTmT7JrdK8TArAK2PHpSn++ES9HAulZ8VY8JmxhNBd1br00Ox4wFYKjLs3XnajvvQotU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020112; c=relaxed/simple;
-	bh=Cj6VjRn5DS7q1dWH65ZlKGPusE6n44sp5zV/zFQidFA=;
+	s=arc-20240116; t=1734017496; c=relaxed/simple;
+	bh=snFbKpD+T44FMJy+PegFyynMhOlfKASoXmS9CWVcOhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T83i2Vo812TQru0Nbzp8bFF3iGC7oSidr69ZCQTglpJbyUVC56U14hxpwj+ymcnFnmdklbQtziokm+jILrcUYMhK1m7KlpbsXhS2oRhW7X1ul14X4XEPYNKBr9UBrSth+al59iQBRbdwAc3nB3LMwSocXYetIVnT3I9udlpD+9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mz75tWbI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90507C4CECE;
-	Thu, 12 Dec 2024 16:15:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WesMYWwxen+ogQcGlDX/6o+jmJXTq4kITssQhluVFFeEECT6TsUn2iQ9hrcf+Av2QAls1+rs1hMGmnBIunoCN0pbq7juxbrP6MzaR/uYdirDt5cxaKtVyKM/Hqs616t6NzgiwSbTDw9e2RfrvvrACGxtFTqDNHRwpP1nejoh3+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDJNz79u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A425C4CECE;
+	Thu, 12 Dec 2024 15:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020112;
-	bh=Cj6VjRn5DS7q1dWH65ZlKGPusE6n44sp5zV/zFQidFA=;
+	s=korg; t=1734017495;
+	bh=snFbKpD+T44FMJy+PegFyynMhOlfKASoXmS9CWVcOhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mz75tWbIu85ty6+MLKBxX1N4D0gV5XYeUTFucFGABG5KRS6KJd8MlBIc6PFjUxNYW
-	 3NbdUv01Rr2bMzC/EEmjf1bqqA+OZsjlj2xPh84Jf7e4lzYTpSqsD7pLvYwgCu4gJw
-	 +Yy+NL0F8hUo/vwj2DOA3MY54AnqDPod8RPPMLeU=
+	b=WDJNz79uUm4A+x65V4xdHa63C5CDxroycEdijzIms/cezuvgiDQZL3H//vcFR8DIq
+	 YdtNweFfarhLNgqmUImrCw4UvknytpdNHP9fP49c1MB2/Pj0XOwMVt/nG1ng/vl3Ww
+	 b9uAEy6812OK3iGav0F1jGofE0RCY8JTu3rf4SYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 380/772] dt-bindings: iio: dac: ad3552r: fix maximum spi speed
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Alexander Kozhinov <ak.alexander.kozhinov@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 006/356] can: gs_usb: add usb endpoint address detection at driver probe step
 Date: Thu, 12 Dec 2024 15:55:25 +0100
-Message-ID: <20241212144405.603525517@linuxfoundation.org>
+Message-ID: <20241212144244.868730752@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,146 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+From: Alexander Kozhinov <ak.alexander.kozhinov@gmail.com>
 
-commit d1d1c117f39b2057d1e978f26a8bd9631ddb193b upstream.
+[ Upstream commit 889b2ae9139a87b3390f7003cb1bb3d65bf90a26 ]
 
-Fix maximum SPI clock speed, as per datasheet (Rev. B, page 6).
+There is an approach made to implement gs_usb firmware/driver based on
+Zephyr RTOS. It was found that USB stack of Zephyr RTOS overwrites USB
+EP addresses, if they have different last 4 bytes in absence of other
+endpoints.
 
-Fixes: b0a96c5f599e ("dt-bindings: iio: dac: Add adi,ad3552r.yaml")
-Cc: stable@vger.kernel.org
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-4-ceb157487329@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example in case of gs_usb candlelight firmware EP-IN is 0x81 and
+EP-OUT 0x02. If there are no additional USB endpoints, Zephyr RTOS will
+overwrite EP-OUT to 0x01. More information can be found in the
+discussion with Zephyr RTOS USB stack maintainer here:
+
+https://github.com/zephyrproject-rtos/zephyr/issues/67812
+
+There are already two different gs_usb FW driver implementations based
+on Zephyr RTOS:
+
+1. https://github.com/CANnectivity/cannectivity
+   (by: https://github.com/henrikbrixandersen)
+2. https://github.com/zephyrproject-rtos/zephyr/compare/main...KozhinovAlexander:zephyr:gs_usb
+   (by: https://github.com/KozhinovAlexander)
+
+At the moment both Zephyr RTOS implementations use dummy USB endpoint,
+to overcome described USB stack behavior from Zephyr itself. Since
+Zephyr RTOS is intended to be used on microcontrollers with very
+constrained amount of resources (ROM, RAM) and additional endpoint
+requires memory, it is more convenient to update the gs_usb driver in
+the Linux kernel.
+
+To fix this problem, update the gs_usb driver from using hard coded
+endpoint numbers to evaluate the endpoint descriptors and use the
+endpoints provided there.
+
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Alexander Kozhinov <ak.alexander.kozhinov@gmail.com>
+Link: https://patch.msgid.link/20241018212450.31746-1-ak.alexander.kozhinov@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
---- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-@@ -26,7 +26,7 @@ properties:
-     maxItems: 1
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index ed59451f03cdd..de616d6589c0b 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -43,9 +43,6 @@
+ #define USB_XYLANTA_SAINT3_VENDOR_ID 0x16d0
+ #define USB_XYLANTA_SAINT3_PRODUCT_ID 0x0f30
  
-   spi-max-frequency:
--    maximum: 30000000
-+    maximum: 66000000
+-#define GS_USB_ENDPOINT_IN 1
+-#define GS_USB_ENDPOINT_OUT 2
+-
+ /* Timestamp 32 bit timer runs at 1 MHz (1 µs tick). Worker accounts
+  * for timer overflow (will be after ~71 minutes)
+  */
+@@ -336,6 +333,9 @@ struct gs_usb {
  
-   reset-gpios:
-     maxItems: 1
+ 	unsigned int hf_size_rx;
+ 	u8 active_channels;
++
++	unsigned int pipe_in;
++	unsigned int pipe_out;
+ };
+ 
+ /* 'allocate' a tx context.
+@@ -687,7 +687,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 
+ resubmit_urb:
+ 	usb_fill_bulk_urb(urb, parent->udev,
+-			  usb_rcvbulkpipe(parent->udev, GS_USB_ENDPOINT_IN),
++			  parent->pipe_in,
+ 			  hf, dev->parent->hf_size_rx,
+ 			  gs_usb_receive_bulk_callback, parent);
+ 
+@@ -819,7 +819,7 @@ static netdev_tx_t gs_can_start_xmit(struct sk_buff *skb,
+ 	}
+ 
+ 	usb_fill_bulk_urb(urb, dev->udev,
+-			  usb_sndbulkpipe(dev->udev, GS_USB_ENDPOINT_OUT),
++			  dev->parent->pipe_out,
+ 			  hf, dev->hf_size_tx,
+ 			  gs_usb_xmit_callback, txc);
+ 
+@@ -925,8 +925,7 @@ static int gs_can_open(struct net_device *netdev)
+ 			/* fill, anchor, and submit rx urb */
+ 			usb_fill_bulk_urb(urb,
+ 					  dev->udev,
+-					  usb_rcvbulkpipe(dev->udev,
+-							  GS_USB_ENDPOINT_IN),
++					  dev->parent->pipe_in,
+ 					  buf,
+ 					  dev->parent->hf_size_rx,
+ 					  gs_usb_receive_bulk_callback, parent);
+@@ -1413,6 +1412,7 @@ static int gs_usb_probe(struct usb_interface *intf,
+ 			const struct usb_device_id *id)
+ {
+ 	struct usb_device *udev = interface_to_usbdev(intf);
++	struct usb_endpoint_descriptor *ep_in, *ep_out;
+ 	struct gs_host_frame *hf;
+ 	struct gs_usb *parent;
+ 	struct gs_host_config hconf = {
+@@ -1422,6 +1422,13 @@ static int gs_usb_probe(struct usb_interface *intf,
+ 	unsigned int icount, i;
+ 	int rc;
+ 
++	rc = usb_find_common_endpoints(intf->cur_altsetting,
++				       &ep_in, &ep_out, NULL, NULL);
++	if (rc) {
++		dev_err(&intf->dev, "Required endpoints not found\n");
++		return rc;
++	}
++
+ 	/* send host config */
+ 	rc = usb_control_msg_send(udev, 0,
+ 				  GS_USB_BREQ_HOST_FORMAT,
+@@ -1466,6 +1473,10 @@ static int gs_usb_probe(struct usb_interface *intf,
+ 	usb_set_intfdata(intf, parent);
+ 	parent->udev = udev;
+ 
++	/* store the detected endpoints */
++	parent->pipe_in = usb_rcvbulkpipe(parent->udev, ep_in->bEndpointAddress);
++	parent->pipe_out = usb_sndbulkpipe(parent->udev, ep_out->bEndpointAddress);
++
+ 	for (i = 0; i < icount; i++) {
+ 		unsigned int hf_size_rx = 0;
+ 
+-- 
+2.43.0
+
 
 
 
