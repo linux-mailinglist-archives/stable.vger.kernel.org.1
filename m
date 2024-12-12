@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C1F9EF33A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DEF9EEC41
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB7B1291256
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6D0280D35
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8312622A815;
-	Thu, 12 Dec 2024 16:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1402153FC;
+	Thu, 12 Dec 2024 15:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjV8AqON"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrbDz7Ls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BFB13792B;
-	Thu, 12 Dec 2024 16:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73997212F9E;
+	Thu, 12 Dec 2024 15:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022216; cv=none; b=bYJ2sdf/nZxZlIfnmNOSoSyitzp4rcpfLx95To8Y8IpkOqINUj66WTCjiwOs+jPYSyOylHsX8ZKdat1Vyjds+wE7va0JBBRo0mAPW9ed6pHXMF6oBlQDCF+bozRun90blTxGHuAjrlGl7f8vKMQOvyWMxV2YLBWMSkBxHXjPME8=
+	t=1734017589; cv=none; b=J4Wb56/Tw+Wy8uiXlsY1LwMaBm/1Ysg9JQmVgU7038RhMDwuq9I9H1hdX1JluO7Ove/zj1VM5EppN/EghxXmVP9TTIn4vmNzj6Qh4S8VwRbBS9nKkjwJGRgkDBpilKl+bP3f2Lhm+DxauK6rkKbusUsGUX69Dv0tv5JWl1fXbmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022216; c=relaxed/simple;
-	bh=Myo+rapvEVB42EF7SKjEH4KI0+quwg0FjSkdY6GSEug=;
+	s=arc-20240116; t=1734017589; c=relaxed/simple;
+	bh=2A5EAs1lcK/sUFCd8GCKz4M8bPsuunPa25kAVD4MmjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZrW+/My/yu0oSMUkFtIdobk829sr5/7Ns0MDx/7/NLf1xi0VJsbLnPx5Ou7mZC2pxs8V5WME4n3i26KJIVTfBC+TE0CXOyMIR6wQlr9Xm6UzilFmYNFqghEYBzYGtvUY0Hm7qh9a72NESk6s2co0R5RS5SiIQ1KZX+dRHjskmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZjV8AqON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DBCC4CECE;
-	Thu, 12 Dec 2024 16:50:14 +0000 (UTC)
+	 MIME-Version; b=r7liWmphNOgeeJS/j482+PwmxmoWsXIfGbNajQ+su4PEV4h30/hW5Zs+kVCcSdINVShnp6PRQgFlzUmglFFkIH7ussgRljHsVEN5CWZnzZ4BGqY0z6L1mwFRkiwlCXe1c80JqqEGFSfmF6kLd9yeGyxAametc/63a9H2Dd1sOBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrbDz7Ls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3513C4CECE;
+	Thu, 12 Dec 2024 15:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022216;
-	bh=Myo+rapvEVB42EF7SKjEH4KI0+quwg0FjSkdY6GSEug=;
+	s=korg; t=1734017589;
+	bh=2A5EAs1lcK/sUFCd8GCKz4M8bPsuunPa25kAVD4MmjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZjV8AqONE0CplY/HfR2ZmGpQqhf9wb6h0cwvBy7Ccb73tVFAW56J15xNxKojIcO5s
-	 Qk/i0s00N2SPHTDZnfN/4gFJj1fwB1fCy4jDUlXY7KNMiyArTdHzgUoM1p0iESG18/
-	 udoHMa6wRizdM0B7V6aH43ejfcTVav5hTTSE9uyM=
+	b=xrbDz7Lse14LrrZsGg+FekpfbWGKI7uoBZyiJmub61tBkthGZ0bFSqr0RQviTev1T
+	 OpLL/V4bjzPZ/MBmcudpFYvsGdLGwPzVedk1urjVyjxJ7RysjLUNcgIp65aiLfu3dk
+	 fleJQBDtZnifJP4LyOkvJBsU1ShzkB6b4uuO1HIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 179/565] drm/panfrost: Remove unused id_mask from struct panfrost_model
+Subject: [PATCH 6.6 055/356] mlxsw: spectrum_acl_flex_keys: Add ipv4_5b flex key
 Date: Thu, 12 Dec 2024 15:56:14 +0100
-Message-ID: <20241212144318.550168575@linuxfoundation.org>
+Message-ID: <20241212144246.803955106@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Price <steven.price@arm.com>
+From: Amit Cohen <amcohen@nvidia.com>
 
-[ Upstream commit 581d1f8248550f2b67847e6d84f29fbe3751ea0a ]
+[ Upstream commit c6caabdf3e0cc50ba4a44bebc82cda5551d81d4f ]
 
-The id_mask field of struct panfrost_model has never been used.
+The previous patch replaced the key block 'ipv4_4' with 'ipv4_5'. The
+corresponding block for Spectrum-4 is 'ipv4_4b'. To be consistent, replace
+key block 'ipv4_4b' with 'ipv4_5b'.
 
-Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
-Signed-off-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241025140008.385081-1-steven.price@arm.com
+Signed-off-by: Amit Cohen <amcohen@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 217bbf156f93 ("mlxsw: spectrum_acl_flex_keys: Use correct key block on Spectrum-4")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_gpu.c | 1 -
- 1 file changed, 1 deletion(-)
+ .../net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c    | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-index f8355de6e335d..813c759505e03 100644
---- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-@@ -158,7 +158,6 @@ static void panfrost_gpu_init_quirks(struct panfrost_device *pfdev)
- struct panfrost_model {
- 	const char *name;
- 	u32 id;
--	u32 id_mask;
- 	u64 features;
- 	u64 issues;
- 	struct {
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
+index cc00c8d69eb77..7d66c4f2deeaa 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
+@@ -321,8 +321,8 @@ static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_mac_5b[] = {
+ 	MLXSW_AFK_ELEMENT_INST_EXT_U32(SRC_SYS_PORT, 0x04, 0, 9, -1, true), /* RX_ACL_SYSTEM_PORT */
+ };
+ 
+-static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv4_4b[] = {
+-	MLXSW_AFK_ELEMENT_INST_U32(VIRT_ROUTER, 0x04, 13, 12),
++static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv4_5b[] = {
++	MLXSW_AFK_ELEMENT_INST_U32(VIRT_ROUTER, 0x04, 20, 12),
+ };
+ 
+ static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv6_2b[] = {
+@@ -339,7 +339,7 @@ static const struct mlxsw_afk_block mlxsw_sp4_afk_blocks[] = {
+ 	MLXSW_AFK_BLOCK(0x38, mlxsw_sp_afk_element_info_ipv4_0),
+ 	MLXSW_AFK_BLOCK(0x39, mlxsw_sp_afk_element_info_ipv4_1),
+ 	MLXSW_AFK_BLOCK(0x3A, mlxsw_sp_afk_element_info_ipv4_2),
+-	MLXSW_AFK_BLOCK(0x35, mlxsw_sp_afk_element_info_ipv4_4b),
++	MLXSW_AFK_BLOCK(0x36, mlxsw_sp_afk_element_info_ipv4_5b),
+ 	MLXSW_AFK_BLOCK(0x40, mlxsw_sp_afk_element_info_ipv6_0),
+ 	MLXSW_AFK_BLOCK(0x41, mlxsw_sp_afk_element_info_ipv6_1),
+ 	MLXSW_AFK_BLOCK(0x47, mlxsw_sp_afk_element_info_ipv6_2b),
 -- 
 2.43.0
 
