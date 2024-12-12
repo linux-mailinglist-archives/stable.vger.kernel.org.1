@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3808E9EF24D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8229EECC5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9811893540
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EBC7283B3C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795E92397A6;
-	Thu, 12 Dec 2024 16:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940E6221D9C;
+	Thu, 12 Dec 2024 15:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpN3UZsy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDsNNARC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388D723874D;
-	Thu, 12 Dec 2024 16:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8082210FB;
+	Thu, 12 Dec 2024 15:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020604; cv=none; b=Lzvm4Dr/yJIXYeWMSfujzlOumaLTofH/J5phxALtQsXQE+Fbu0e+u3/VTBLAFDYIWxcI2fEnZgEtTtw3Gh6TZy78XHmu0KU+EPMQqQ3vEGPaZuvusg1Rv75wJDrDob+2uqh6CH9J0Hol1kP4/SdjaSYseXZK+4tHLqFChR3vnbU=
+	t=1734017877; cv=none; b=OmuI5oH03dBH8mjf6ZVoU9gOa79zZEOnqWuajqukk6GynDQNpMCnrbx5cyCRRQlMEs0r8uFYvnC1VxKwlj15Wyrd9oS1P0G6yXyJ5zYA7DZ1a0UlZr8lOwyUR7TUtmXxDfFHTjk8NMJcHUIpG9jxJ/oV1Y1BUNIimKLcZxa2oW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020604; c=relaxed/simple;
-	bh=MEKrE5vio2wtmTjOSBXzMuQBVypzB+nxwRIZAIe/nT8=;
+	s=arc-20240116; t=1734017877; c=relaxed/simple;
+	bh=O+Z1pypRDeaiZEx7pkYSdExqq6P8IjgYRpcDE6dvFxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6y3eM6F/V/yDm0uBUthXSyMXkyjgN9I6KTRglbz8nC+N5kc20598e5A34W6amnhjRfz9ivldHtltLmICe0VRc2PA+P7w4EQL4o1CRfer31TvpbujXKD43pHvwzaYKElc2P4Nd18NflBCtaI3Ui+cdavZtagNf4PdvFppzdexSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpN3UZsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EA8C4CED0;
-	Thu, 12 Dec 2024 16:23:23 +0000 (UTC)
+	 MIME-Version; b=SBH7v62dcmoNkP65vhju4JkcfeTjPBtfOA8+zvxpWYc1NvTd4wSu+NLT2w7BzXqzZheqErcxDq1MBYt+2o48ldDWGfDv/HfG+GWOgL7hH/7A0rzYOOGEtupMHn0ctCqXXN9hmmgOOSb762lrDVpkp98BIozoe3FNw34pEuY8Qws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDsNNARC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73937C4CED7;
+	Thu, 12 Dec 2024 15:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020604;
-	bh=MEKrE5vio2wtmTjOSBXzMuQBVypzB+nxwRIZAIe/nT8=;
+	s=korg; t=1734017876;
+	bh=O+Z1pypRDeaiZEx7pkYSdExqq6P8IjgYRpcDE6dvFxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vpN3UZsypFAhnfgXyKloZIcf1gRe5EBBuAvHDx8bLwI51cCB5LHu8j3rOg5FmOiLb
-	 UjxmfwLzys24e81Q/AtyA+z7gayNsrH9o0tKeE3UTwa2XbdS+Va8nAboyeW5+kc0oZ
-	 ftuxZJyztOuL6doKhtzPl+8VuqwnXkQdSTZdxslU=
+	b=GDsNNARCNJ4bMW9GzzbaNSRaz+PJT8SVFjPn2SZ37gz/cwxHX9NtxfEKOzsMDXg4Z
+	 l3gPawf7OpnE5nQz8wAT+DJoGpMHoiB0QVxjJnnN3NC8rEvQY/DDETs8PWTbj39a0F
+	 Z9DwVM+djuNkNZR/Ri2FdIJKNk/QRDj8rK9bM8dM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 511/772] can: gs_usb: gs_usb_probe(): align block comment
+Subject: [PATCH 6.6 137/356] x86/CPU/AMD: WARN when setting EFER.AUTOIBRS if and only if the WRMSR fails
 Date: Thu, 12 Dec 2024 15:57:36 +0100
-Message-ID: <20241212144411.066946220@linuxfoundation.org>
+Message-ID: <20241212144250.056404154@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 5780148bedd6aa7e51d3a18cd70f5b9b6cefb79e ]
+[ Upstream commit 492077668fb453b8b16c842fcf3fafc2ebc190e9 ]
 
-Indent block comment so that it aligns the * on each line.
+When ensuring EFER.AUTOIBRS is set, WARN only on a negative return code
+from msr_set_bit(), as '1' is used to indicate the WRMSR was successful
+('0' indicates the MSR bit was already set).
 
-Link: https://lore.kernel.org/all/20230718-gs_usb-cleanups-v1-2-c3b9154ec605@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: 889b2ae9139a ("can: gs_usb: add usb endpoint address detection at driver probe step")
+Fixes: 8cc68c9c9e92 ("x86/CPU/AMD: Make sure EFER[AIBRSE] is set")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/Z1MkNofJjt7Oq0G6@google.com
+Closes: https://lore.kernel.org/all/20241205220604.GA2054199@thelio-3990X
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 1d089c9b46410..cb96e42961109 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -1400,8 +1400,8 @@ static int gs_usb_probe(struct usb_interface *intf,
- 		dev->canch[i]->parent = dev;
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 145c81c68394b..9413fb767c6a7 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1205,7 +1205,7 @@ static void init_amd(struct cpuinfo_x86 *c)
+ 	 */
+ 	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
+ 	    cpu_has(c, X86_FEATURE_AUTOIBRS))
+-		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS));
++		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS) < 0);
  
- 		/* set RX packet size based on FD and if hardware
--                * timestamps are supported.
--		*/
-+		 * timestamps are supported.
-+		 */
- 		if (dev->canch[i]->can.ctrlmode_supported & CAN_CTRLMODE_FD) {
- 			if (dev->canch[i]->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 				hf_size_rx = struct_size(hf, canfd_ts, 1);
+ 	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
+ 	     cpu_has_amd_erratum(c, amd_erratum_1485))
 -- 
 2.43.0
 
