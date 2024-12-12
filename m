@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8AB19EED6C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658099EF19F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DB31188F010
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 253A1289044
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5F822332A;
-	Thu, 12 Dec 2024 15:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1BF23024C;
+	Thu, 12 Dec 2024 16:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuySuH+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4xJJR8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE13223302;
-	Thu, 12 Dec 2024 15:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4847E216E2D;
+	Thu, 12 Dec 2024 16:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018131; cv=none; b=EzCGMXMs4z1UpZrO1Pw5JDvjWqQzTcjRU4KR+kErCe8NVA+vQ1uovzkrRGOcDYCwnSBsz2sy6kOr0VEbtZ4UoOhLGoFCRz/VV/7dO62hMcRmWTr5+5K5A1qcZdTCDd6tsybchaMFmOxIk+LX50lVBO8rNYADEy28AKAWuDBOSVI=
+	t=1734021015; cv=none; b=fmXveS4v+imqiFscSGGDu6CGCemqnxCBKeP5DfmY5jih1X+ZnGBLeuDqMVcInaCkT19C2fnX/X5twLauB5DztQ7IJHVOYqH4Ag4xwI8U/775g2/sFYX+BwwLuG0KsKt/bYX84gzqHiEK4O50gtuVJtaAU2A8s3UneW44gZt5K+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018131; c=relaxed/simple;
-	bh=1lrfd4Z8JMoP+/hDNIox+vqVr/obbs5Qeq6/6SjTuMs=;
+	s=arc-20240116; t=1734021015; c=relaxed/simple;
+	bh=cR4liVtNITZ15wBkoXPriSxvpBWbfdIrmLrxc9+SpYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvzEqth0IdHFR0HKVvwEdcGRlOn+RUi3RcpjR+SWeLYZN8qgheWvlMR9GFU6aWf8uG3JsbhUQxW108tKZTTSAwMPEQEU39MdxgYRYgkixn1WzCll+Iht9Szj9X5HfwzikrW0xAkclPwW9kdRCD1v4lWU66QxJTt2AVjTOF5CYZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuySuH+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50127C4CECE;
-	Thu, 12 Dec 2024 15:42:10 +0000 (UTC)
+	 MIME-Version; b=QcdrsK1EQm2aNqGe6SYUrbj+NM5/x9n79P0NF9+oYXkX/sdCzf7rS9Yoc2T/yJ79PcNrB++OfjPy+QnvFzutXq4pGHVykhTcQ1iKhuiLBy3OIiDCHco3uPQsiabvxftd4kOIdQx4dQp30o9WolAUMZzDM1pZRthcrOk27dQszhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4xJJR8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57224C4CECE;
+	Thu, 12 Dec 2024 16:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018130;
-	bh=1lrfd4Z8JMoP+/hDNIox+vqVr/obbs5Qeq6/6SjTuMs=;
+	s=korg; t=1734021014;
+	bh=cR4liVtNITZ15wBkoXPriSxvpBWbfdIrmLrxc9+SpYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuySuH+Rp3D4eVbRgUQmGdgNf8aDq3P7O9TPCLv5mtUajioK8v2EnfcSUhqbLSuBg
-	 fYEcJ9sTMbC/eJYjXZtASXFhCYWntead4oqkNjq3LM5Kd1SEBr8Wq9IefXTS+Foa+3
-	 wy14EpI8tNRSVgIntwoeKNZzSnnmgGTzPMfSWwow=
+	b=a4xJJR8juEmsmU4kFoqt7gjyUGsLyO/yLMXob1/OOk/mhGLHj5RR2h2cG/B3yahtY
+	 vtG5lBCRK10kty4oYRmUdYq4ze5E2QxLtS8OQ44Qk8yR4VXO4ALUeJh1TLMfXIbsx0
+	 AscLDFw/UVTqg4Omiu+/whdRRtHXRsLdTezhmDT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/356] drm/vc4: hvs: Set AXI panic modes for the HVS
-Date: Thu, 12 Dec 2024 15:58:46 +0100
-Message-ID: <20241212144252.793919364@linuxfoundation.org>
+Subject: [PATCH 6.1 582/772] leds: flash: mt6360: Fix device_for_each_child_node() refcounting in error paths
+Date: Thu, 12 Dec 2024 15:58:47 +0100
+Message-ID: <20241212144413.990703504@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 014eccc9da7bfc76a3107fceea37dd60f1d63630 ]
+[ Upstream commit 73b03b27736e440e3009fe1319cbc82d2cd1290c ]
 
-The HVS can change AXI request mode based on how full the COB
-FIFOs are.
-Until now the vc4 driver has been relying on the firmware to
-have set these to sensible values.
+The device_for_each_child_node() macro requires explicit calls to
+fwnode_handle_put() upon early exits to avoid memory leaks, and in
+this case the error paths are handled after jumping to
+'out_flash_realease', which misses that required call to
+to decrement the refcount of the child node.
 
-With HVS channel 2 now being used for live video, change the
-panic mode for all channels to be explicitly set by the driver,
-and the same for all channels.
+A more elegant and robust solution is using the scoped variant of the
+loop, which automatically handles such early exits.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-7-dave.stevenson@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Fix the child node refcounting in the error paths by using
+device_for_each_child_node_scoped().
+
+Cc: stable@vger.kernel.org
+Fixes: 679f8652064b ("leds: Add mt6360 driver")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20240927-leds_device_for_each_child_node_scoped-v1-1-95c0614b38c8@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/leds/flash/leds-mt6360.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index 008352166579e..bea1b3d35cdd3 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -956,6 +956,17 @@ static int vc4_hvs_bind(struct device *dev, struct device *master, void *data)
- 			      SCALER_DISPCTRL_SCLEIRQ);
+diff --git a/drivers/leds/flash/leds-mt6360.c b/drivers/leds/flash/leds-mt6360.c
+index 2fab335a64252..71c1ddd71f8ea 100644
+--- a/drivers/leds/flash/leds-mt6360.c
++++ b/drivers/leds/flash/leds-mt6360.c
+@@ -797,7 +797,6 @@ static void mt6360_v4l2_flash_release(struct mt6360_priv *priv)
+ static int mt6360_led_probe(struct platform_device *pdev)
+ {
+ 	struct mt6360_priv *priv;
+-	struct fwnode_handle *child;
+ 	size_t count;
+ 	int i = 0, ret;
  
+@@ -824,7 +823,7 @@ static int mt6360_led_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
  
-+	/* Set AXI panic mode.
-+	 * VC4 panics when < 2 lines in FIFO.
-+	 * VC5 panics when less than 1 line in the FIFO.
-+	 */
-+	dispctrl &= ~(SCALER_DISPCTRL_PANIC0_MASK |
-+		      SCALER_DISPCTRL_PANIC1_MASK |
-+		      SCALER_DISPCTRL_PANIC2_MASK);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC0);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
-+
- 	/* Set AXI panic mode.
- 	 * VC4 panics when < 2 lines in FIFO.
- 	 * VC5 panics when less than 1 line in the FIFO.
+-	device_for_each_child_node(&pdev->dev, child) {
++	device_for_each_child_node_scoped(&pdev->dev, child) {
+ 		struct mt6360_led *led = priv->leds + i;
+ 		struct led_init_data init_data = { .fwnode = child, };
+ 		u32 reg, led_color;
 -- 
 2.43.0
 
