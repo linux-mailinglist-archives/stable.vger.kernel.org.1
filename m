@@ -1,55 +1,66 @@
-Return-Path: <stable+bounces-102564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C88D9EF3A2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:01:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91AEB9EEFB0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49C531895FB6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51DED2977BE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F9A223C49;
-	Thu, 12 Dec 2024 16:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74FD2253E7;
+	Thu, 12 Dec 2024 16:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6heTiYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vO6b1FL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8793122540A;
-	Thu, 12 Dec 2024 16:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627B1235C40;
+	Thu, 12 Dec 2024 16:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021684; cv=none; b=sxo11kFANv45izNh8R+qATCXjjQHNi3MxODS/yodcP4if42rEOGINSa+Qjub0F3s5LHqACM0twEtrg5pOYcmcOnk1DMM0O18XCRXLon5WRuPZYRCH9YQaImSo3G2MDF1Z4HEjKW3cPvwph7rNJp5/a7md3PLzQKfCwSsGNAgWFw=
+	t=1734019737; cv=none; b=Cnxj3ToyPlIE80sb2QecQFB4N+EsA6n4INxephztlvE6ji4ItwSlGqMqZjyjyNfu+FYfVAOJYOFOeK4cE6OxB1rRSMJKW/sYSEEKh0+PzqFxfYRR8KlnD0jjPMF2zocGv8Syjp1ohPbENe+fya9U9WIOk3Nu8CxqN8COkPCB3PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021684; c=relaxed/simple;
-	bh=Njue87T6jO81O9j/9DM5r59/0HJmwVS0aZmXpSeHU6g=;
+	s=arc-20240116; t=1734019737; c=relaxed/simple;
+	bh=cbPHxUnXUKDUhVDr6fy+3ZHefuKEOfLQghqaN+wbFI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qA5pV/IGhNO6FzBn3K8dcp8i1tdgqT6wCtq1ZdmwcnFBuw3GD9c8qk4GCmB5mzUVykgWfBpkuoNazjdZOwi8weG2QqhlCMBqKfs6SSNokZNErfD3B4kBGEk80DjBKZuzuUNjAeIAfEtlwK/dyG+YHy7328mDyHjb4i32gHjZpJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6heTiYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FC7C4CECE;
-	Thu, 12 Dec 2024 16:41:23 +0000 (UTC)
+	 MIME-Version; b=bAZ4nOYARG6RVXc6ourL7nIEatHtlkiy9qvETaIIqSRNsR5hX1jsbrccJtacXXUsQaK6iwxFyLJDPKciCpJbrxuRtwQdkzrcU5hreVw0ERa75XX3vXn/cQzTF0fvqZ2jOogVEGi9nc6XUq2mwlv8YyZsbgbQb3KbmWiacZeax1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vO6b1FL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80087C4CECE;
+	Thu, 12 Dec 2024 16:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021684;
-	bh=Njue87T6jO81O9j/9DM5r59/0HJmwVS0aZmXpSeHU6g=;
+	s=korg; t=1734019737;
+	bh=cbPHxUnXUKDUhVDr6fy+3ZHefuKEOfLQghqaN+wbFI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6heTiYkFCbfzAcgnJjKPeQ6Ce/ZYkS5TcYr/iSzqAZuGHPmAdFfyT5LN9MdVdZwE
-	 Rzh52BIpVjn8v35L8cuUljDoaGw72yOtKJhpChiLbSDWSHCHf+teeQZSJ4KlbnwGjy
-	 u7wSJObUWDFWYDqvYZsTaG7VqJbx3MRN4/ouwY10=
+	b=vO6b1FL3eKmWQr42Wj/6ZmSP5vzdq0gLycYEyZPc0ih0wpF3i+izereS4pqAz0A3Q
+	 gt0iPNkZgQjlFl1ixS0ZzEMGfAOp9E7BX3yhjoUTarSljhFgZOLi7WSzD+4ewTvBrN
+	 UXO7m5fJZ3D6jtg51bN0KOM7MDS6RxBECeffNxwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.15 034/565] drm/bridge: tc358768: Fix DSI command tx
+	Benjamin Peterson <benjamin@engflow.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 284/772] perf trace: Avoid garbage when not printing a syscalls arguments
 Date: Thu, 12 Dec 2024 15:53:49 +0100
-Message-ID: <20241212144312.803960017@linuxfoundation.org>
+Message-ID: <20241212144401.636526309@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +72,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Benjamin Peterson <benjamin@engflow.com>
 
-commit 32c4514455b2b8fde506f8c0962f15c7e4c26f1d upstream.
+[ Upstream commit 1302e352b26f34991b619b5d0b621b76d20a3883 ]
 
-Wait for the command transmission to be completed in the DSI transfer
-function polling for the dc_start bit to go back to idle state after the
-transmission is started.
+syscall__scnprintf_args may not place anything in the output buffer
+(e.g., because the arguments are all zero). If that happened in
+trace__fprintf_sys_enter, its fprintf would receive an unitialized
+buffer leading to garbage output.
 
-This is documented in the datasheet and failures to do so lead to
-commands corruption.
+Fix the problem by passing the (possibly zero) bounds of the argument
+buffer to the output fprintf.
 
-Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20240926141246.48282-1-francesco@dolcini.it
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240926141246.48282-1-francesco@dolcini.it
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a98392bb1e169a04 ("perf trace: Use beautifiers on syscalls:sys_enter_ handlers")
+Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Tested-by: Howard Chu <howardchu95@gmail.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241107232128.108981-2-benjamin@engflow.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ tools/perf/builtin-trace.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -124,6 +124,9 @@
- #define TC358768_DSI_CONFW_MODE_CLR	(6 << 29)
- #define TC358768_DSI_CONFW_ADDR_DSI_CONTROL	(0x3 << 24)
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 48e101ad13924..441655e659c2b 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -2385,6 +2385,7 @@ static int trace__fprintf_sys_enter(struct trace *trace, struct evsel *evsel,
+ 	char msg[1024];
+ 	void *args, *augmented_args = NULL;
+ 	int augmented_args_size;
++	size_t printed = 0;
  
-+/* TC358768_DSICMD_TX (0x0600) register */
-+#define TC358768_DSI_CMDTX_DC_START	BIT(0)
-+
- static const char * const tc358768_supplies[] = {
- 	"vddc", "vddmipi", "vddio"
- };
-@@ -227,6 +230,21 @@ static void tc358768_update_bits(struct
- 		tc358768_write(priv, reg, tmp);
- }
+ 	if (sc == NULL)
+ 		return -1;
+@@ -2400,8 +2401,8 @@ static int trace__fprintf_sys_enter(struct trace *trace, struct evsel *evsel,
  
-+static void tc358768_dsicmd_tx(struct tc358768_priv *priv)
-+{
-+	u32 val;
-+
-+	/* start transfer */
-+	tc358768_write(priv, TC358768_DSICMD_TX, TC358768_DSI_CMDTX_DC_START);
-+	if (priv->error)
-+		return;
-+
-+	/* wait transfer completion */
-+	priv->error = regmap_read_poll_timeout(priv->regmap, TC358768_DSICMD_TX, val,
-+					       (val & TC358768_DSI_CMDTX_DC_START) == 0,
-+					       100, 100000);
-+}
-+
- static int tc358768_sw_reset(struct tc358768_priv *priv)
- {
- 	/* Assert Reset */
-@@ -507,8 +525,7 @@ static ssize_t tc358768_dsi_host_transfe
- 		}
- 	}
- 
--	/* start transfer */
--	tc358768_write(priv, TC358768_DSICMD_TX, 1);
-+	tc358768_dsicmd_tx(priv);
- 
- 	ret = tc358768_clear_error(priv);
- 	if (ret)
+ 	args = perf_evsel__sc_tp_ptr(evsel, args, sample);
+ 	augmented_args = syscall__augmented_args(sc, sample, &augmented_args_size, trace->raw_augmented_syscalls_args_size);
+-	syscall__scnprintf_args(sc, msg, sizeof(msg), args, augmented_args, augmented_args_size, trace, thread);
+-	fprintf(trace->output, "%s", msg);
++	printed += syscall__scnprintf_args(sc, msg, sizeof(msg), args, augmented_args, augmented_args_size, trace, thread);
++	fprintf(trace->output, "%.*s", (int)printed, msg);
+ 	err = 0;
+ out_put:
+ 	thread__put(thread);
+-- 
+2.43.0
+
 
 
 
