@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1789EF877
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671489EF93F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:49:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91AB7171900
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28D3E28DEBE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162E62210F1;
-	Thu, 12 Dec 2024 17:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC362288F5;
+	Thu, 12 Dec 2024 17:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0O023Qb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IofeZOqq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DA0213E6F;
-	Thu, 12 Dec 2024 17:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A728B205E2E;
+	Thu, 12 Dec 2024 17:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024729; cv=none; b=narsxCWdnDuGdPNcfu1P18bOGH2R+fzTSVJ+PRxMvL5Nck42gVTzfc7exURqdi459Jl+vjy4FHDzhZKk3R0EMLTB9YPhV0aA7++SU1CH9pwvRK2JD3cPhB/1ezk4NwD21DiGGwRapyhnqu5UxoFXLNvTehaOfSixseV9aG8Yu1E=
+	t=1734025660; cv=none; b=oeK5+3097NPX34t4x1Cz23LzurqCRgBFlM3VvZfu2edNzRMLJrv2y0wWa+S1AdnHVchKQZMiNzlhijaRTixRnxJ8jy1sgqA1kKItnN5JeyLw463mYi0ANFo5D0msppuHDfDxmxhD1RR+A2+ztu8P5ImRFp4ub3twleJgw4yx2+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024729; c=relaxed/simple;
-	bh=6HzHDSZVByceSj6cl2WDjJK5ZEENza3EU+n0VDfMwxE=;
+	s=arc-20240116; t=1734025660; c=relaxed/simple;
+	bh=D/s36In1HlVmWM8h9hZrw/p/oQ/7LV55kO0SohU9gIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzKlFWUrqg/NFseFa87uhFM+EcGFvIGaqI9iv2aqXJwBkGiIKV3YUtwlSh49ZzRr4ALznqBEp1p7BKMCnBqHQDP2gGqPgfDiYW0q3a32VZDJimxx+Y+p+7busZ5X0g7LEzi5YHqUFHQU4KOBqQIArFjfWRGVOiNHl2PKVQDCNh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0O023Qb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44ECEC4CECE;
-	Thu, 12 Dec 2024 17:32:09 +0000 (UTC)
+	 MIME-Version; b=M1YY87ELsYp6Q6Ug6nxGbs7msoskmJuzV0NHYnWLgYjV49qjx6Og/MrmzVF6Gu5+urtLEv6DlDGMt+90u10WR0uyPC2nBBFO3EI0UxXT4kdEw+0geyLfwRqxXF1P0D1BS5uUj8Bz/1vmSYwl8gLY6SKGGw3bW9EZuY8/uegK6Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IofeZOqq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D26FC4CECE;
+	Thu, 12 Dec 2024 17:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024729;
-	bh=6HzHDSZVByceSj6cl2WDjJK5ZEENza3EU+n0VDfMwxE=;
+	s=korg; t=1734025660;
+	bh=D/s36In1HlVmWM8h9hZrw/p/oQ/7LV55kO0SohU9gIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0O023Qbcdqa7zmR03GFcNs6rDnUa+wzJUS4xFnxn5M0PvOLLuL7jPkdFJ0BUw350
-	 1eeDmaSnDGvJ4QBOpUWPA/2cBkWYmFI6M6qR5YjgHvUax1mB1YxNisOw1X1wEcerrS
-	 y3votES8yuZ/kNU7Eyci4pzZkT8qiSgJC5cxPBnw=
+	b=IofeZOqq7wEXw/6Y5k2TF0mPElip3RtcrjeunDPrcjMLjtfV9/usYddY/OlCLNwwm
+	 FCAZOEA1G8gAxLNZu/ifANVC2quzbJXc2NcF2v4eew4npZkiN7/mBHgTwoqIzMvX6u
+	 sks/5R6IF2EbSkVILmZaZWU5lLbjLMzG0Mknz5mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elena Salomatkina <esalomatkina@ispras.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 393/459] net/sched: cbs: Fix integer overflow in cbs_set_port_rate()
-Date: Thu, 12 Dec 2024 16:02:11 +0100
-Message-ID: <20241212144309.289424838@linuxfoundation.org>
+	stable@kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.4 214/321] i3c: master: Fix miss free init_dyn_addr at i3c_master_put_i3c_addrs()
+Date: Thu, 12 Dec 2024 16:02:12 +0100
+Message-ID: <20241212144238.432028781@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elena Salomatkina <esalomatkina@ispras.ru>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 397006ba5d918f9b74e734867e8fddbc36dc2282 ]
+commit 3082990592f7c6d7510a9133afa46e31bbe26533 upstream.
 
-The subsequent calculation of port_rate = speed * 1000 * BYTES_PER_KBIT,
-where the BYTES_PER_KBIT is of type LL, may cause an overflow.
-At least when speed = SPEED_20000, the expression to the left of port_rate
-will be greater than INT_MAX.
+if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+                                      ^^^ here check "init_dyn_addr"
+	i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr, ...)
+						             ^^^^
+							free "dyn_addr"
+Fix copy/paste error "dyn_addr" by replacing it with "init_dyn_addr".
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Elena Salomatkina <esalomatkina@ispras.ru>
-Link: https://patch.msgid.link/20241013124529.1043-1-esalomatkina@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241001162608.224039-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_cbs.c | 2 +-
+ drivers/i3c/master.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_cbs.c b/net/sched/sch_cbs.c
-index 2eaac2ff380fa..db92ae819fd28 100644
---- a/net/sched/sch_cbs.c
-+++ b/net/sched/sch_cbs.c
-@@ -309,7 +309,7 @@ static void cbs_set_port_rate(struct net_device *dev, struct cbs_sched_data *q)
- {
- 	struct ethtool_link_ksettings ecmd;
- 	int speed = SPEED_10;
--	int port_rate;
-+	s64 port_rate;
- 	int err;
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1263,7 +1263,7 @@ static void i3c_master_put_i3c_addrs(str
+ 					     I3C_ADDR_SLOT_FREE);
  
- 	err = __ethtool_get_link_ksettings(dev, &ecmd);
--- 
-2.43.0
-
+ 	if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+-		i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr,
++		i3c_bus_set_addr_slot_status(&master->bus, dev->boardinfo->init_dyn_addr,
+ 					     I3C_ADDR_SLOT_FREE);
+ }
+ 
 
 
 
