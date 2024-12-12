@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8809EF16D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 362079EED6B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BBA528FCFF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F5F6188EFD4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5484C22C34F;
-	Thu, 12 Dec 2024 16:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202A4223324;
+	Thu, 12 Dec 2024 15:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVeyUg+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSnL7FjO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F137022C345;
-	Thu, 12 Dec 2024 16:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0349223302;
+	Thu, 12 Dec 2024 15:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020863; cv=none; b=QdvnJXKwHn9f76/CZOUb/krpqrbPr2vllpqA/r4/szQRAKF0jAewaUkgGDx00bIdzl7CRNAKDxsV96rizFnCiGdArXjwyrdcDSISEkD6HTWNbBC334ONt4fJCr9u212Ey0Rq/lAlyfsANbhZ/us9X5BnIQa+tTGbgFDipLvSXjY=
+	t=1734018123; cv=none; b=uI1jha5grKi7zail0ortSreNpkj6qjBcw5ItfGOZb/WJ4K5IU+EOozAw1pG3sbWjxcmHnp4m/EOj3csEVfVU+ncJuetUnaRFdhc/bWi64yV8D+wVVv6cWuEhD3mj1dhnXLAg+d1u0NwIPXK70tiUjqY/wI6onUbLyJzGCR22S0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020863; c=relaxed/simple;
-	bh=8G6KZgHxm3CzuiOf0M41AaisrUo0fySfMfIaOmox44w=;
+	s=arc-20240116; t=1734018123; c=relaxed/simple;
+	bh=L3XMAST3A5fRGZdlBu+BDNh8REW5xx7IMolxT1Rp+D8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M2gnm1tuL7p21ni6w0jEvCxTVVsKMXjiI2+LAlFrCQ4nkRPVnnSFUoseqZJeMvAXnUpZfs654TieMTE3P6irQysz4SZ4Rqs0TXOKgi9WEu1+fd9OhbH79ZJJLiB7GOTxtX25jwFN3REZC3kIG1tfyCPLyJrrqvXWsMM6OGu8Izk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVeyUg+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606C1C4CECE;
-	Thu, 12 Dec 2024 16:27:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Uhe+Vl+QKRI7nlCm1RFSO9lgDzuXJ4O/Tp432JpsAZyomCdFN8CWplIPlDgTzZheSTqxEBkV9VTxkWqXhfio1Yvp1xEQSCe8KFWX6fmSWIokrl57bTd/3ES46i1gZ85bwkNtJ2KgfFwL2mKV+luGP2SeY7uD919izFCX9u64mEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSnL7FjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1A9C4CECE;
+	Thu, 12 Dec 2024 15:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020862;
-	bh=8G6KZgHxm3CzuiOf0M41AaisrUo0fySfMfIaOmox44w=;
+	s=korg; t=1734018123;
+	bh=L3XMAST3A5fRGZdlBu+BDNh8REW5xx7IMolxT1Rp+D8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NVeyUg+BfpirIFB+rWFmRVc2K1ry+bWV5KMKS/0fkYXh+hDJyIoBR0GnnmUQXy+js
-	 BjLp6HHqXWveXF8alspj0mFvp2oCxLG1v7aGaedMiDVGENhAQK9zzl3oxFDd89n205
-	 t2Wll1o0Hs+D7klj3ub911ijc5wJTU+rVX7MejXQ=
+	b=CSnL7FjOUygHn9M+HFOcjje7N76FFowNFpZF2Mduas8mRlWCrh6cS/np1R9FOwvhu
+	 vmYRRsxsP6QO9chnSRH5EnfPN3eddZoSghP9vF0Vaf4PU2GKjV7PSCbfmFsa0ExBhD
+	 nIin0fbyAZtQPV0+De4IAPQLV+732YYpp7yCqh/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Callahan Kovacs <callahankovacs@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 579/772] device property: Constify device child node APIs
+Subject: [PATCH 6.6 205/356] HID: magicmouse: Apple Magic Trackpad 2 USB-C driver support
 Date: Thu, 12 Dec 2024 15:58:44 +0100
-Message-ID: <20241212144413.871298499@linuxfoundation.org>
+Message-ID: <20241212144252.713865981@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +60,208 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Callahan Kovacs <callahankovacs@gmail.com>
 
-[ Upstream commit 7952cd2b8213f20a1752634c25dfd215da537722 ]
+[ Upstream commit 87a2f10395c82c2b4687bb8611a6c5663a12f9e7 ]
 
-The device parameter is not altered in the device child node APIs,
-constify them.
+Adds driver support for the USB-C model of Apple's Magic Trackpad 2.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20221004092129.19412-5-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 73b03b27736e ("leds: flash: mt6360: Fix device_for_each_child_node() refcounting in error paths")
+The 2024 USB-C model is compatible with the existing Magic Trackpad 2
+driver but has a different hardware ID.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219470
+Signed-off-by: Callahan Kovacs <callahankovacs@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/property.c  |  6 +++---
- include/linux/property.h | 12 ++++++------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/hid/hid-ids.h        |  1 +
+ drivers/hid/hid-magicmouse.c | 56 ++++++++++++++++++++++++++----------
+ 2 files changed, 42 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index eb9b01c2ff1d9..ba612087a278f 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -790,7 +790,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_available_child_node);
-  * fwnode pointer. Note that this function also puts a reference to @child
-  * unconditionally.
-  */
--struct fwnode_handle *device_get_next_child_node(struct device *dev,
-+struct fwnode_handle *device_get_next_child_node(const struct device *dev,
- 						 struct fwnode_handle *child)
- {
- 	const struct fwnode_handle *fwnode = dev_fwnode(dev);
-@@ -833,7 +833,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_named_child_node);
-  * The caller is responsible for calling fwnode_handle_put() on the returned
-  * fwnode pointer.
-  */
--struct fwnode_handle *device_get_named_child_node(struct device *dev,
-+struct fwnode_handle *device_get_named_child_node(const struct device *dev,
- 						  const char *childname)
- {
- 	return fwnode_get_named_child_node(dev_fwnode(dev), childname);
-@@ -899,7 +899,7 @@ EXPORT_SYMBOL_GPL(fwnode_device_is_available);
-  *
-  * Return: the number of child nodes for a given device.
-  */
--unsigned int device_get_child_node_count(struct device *dev)
-+unsigned int device_get_child_node_count(const struct device *dev)
- {
- 	struct fwnode_handle *child;
- 	unsigned int count = 0;
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 587b5b666b5bb..ec3490591f934 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -114,16 +114,16 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
- 	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
- 	     child = fwnode_get_next_available_child_node(fwnode, child))
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 1a05e22685895..f16940f3d93d4 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -94,6 +94,7 @@
+ #define USB_DEVICE_ID_APPLE_MAGICMOUSE2	0x0269
+ #define USB_DEVICE_ID_APPLE_MAGICTRACKPAD	0x030e
+ #define USB_DEVICE_ID_APPLE_MAGICTRACKPAD2	0x0265
++#define USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC	0x0324
+ #define USB_DEVICE_ID_APPLE_FOUNTAIN_ANSI	0x020e
+ #define USB_DEVICE_ID_APPLE_FOUNTAIN_ISO	0x020f
+ #define USB_DEVICE_ID_APPLE_GEYSER_ANSI	0x0214
+diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
+index c9c968d4b36a3..9bb8daf7f7860 100644
+--- a/drivers/hid/hid-magicmouse.c
++++ b/drivers/hid/hid-magicmouse.c
+@@ -224,7 +224,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 		touch_minor = tdata[4];
+ 		state = tdata[7] & TOUCH_STATE_MASK;
+ 		down = state != TOUCH_STATE_NONE;
+-	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		   input->id.product ==
++			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		id = tdata[8] & 0xf;
+ 		x = (tdata[1] << 27 | tdata[0] << 19) >> 19;
+ 		y = -((tdata[3] << 30 | tdata[2] << 22 | tdata[1] << 14) >> 19);
+@@ -256,8 +258,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 	/* If requested, emulate a scroll wheel by detecting small
+ 	 * vertical touch motions.
+ 	 */
+-	if (emulate_scroll_wheel && (input->id.product !=
+-			USB_DEVICE_ID_APPLE_MAGICTRACKPAD2)) {
++	if (emulate_scroll_wheel &&
++	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
++	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		unsigned long now = jiffies;
+ 		int step_x = msc->touches[id].scroll_x - x;
+ 		int step_y = msc->touches[id].scroll_y - y;
+@@ -356,7 +359,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 		input_report_abs(input, ABS_MT_POSITION_X, x);
+ 		input_report_abs(input, ABS_MT_POSITION_Y, y);
  
--struct fwnode_handle *device_get_next_child_node(
--	struct device *dev, struct fwnode_handle *child);
-+struct fwnode_handle *device_get_next_child_node(const struct device *dev,
-+						 struct fwnode_handle *child);
+-		if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2)
++		if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		    input->id.product ==
++			    USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC)
+ 			input_report_abs(input, ABS_MT_PRESSURE, pressure);
  
- #define device_for_each_child_node(dev, child)				\
- 	for (child = device_get_next_child_node(dev, NULL); child;	\
- 	     child = device_get_next_child_node(dev, child))
+ 		if (report_undeciphered) {
+@@ -364,7 +369,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 			    input->id.product == USB_DEVICE_ID_APPLE_MAGICMOUSE2)
+ 				input_event(input, EV_MSC, MSC_RAW, tdata[7]);
+ 			else if (input->id.product !=
+-					USB_DEVICE_ID_APPLE_MAGICTRACKPAD2)
++					 USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
++				 input->id.product !=
++					 USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC)
+ 				input_event(input, EV_MSC, MSC_RAW, tdata[8]);
+ 		}
+ 	}
+@@ -490,7 +497,9 @@ static int magicmouse_raw_event(struct hid_device *hdev,
+ 		magicmouse_emit_buttons(msc, clicks & 3);
+ 		input_report_rel(input, REL_X, x);
+ 		input_report_rel(input, REL_Y, y);
+-	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		   input->id.product ==
++			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		input_mt_sync_frame(input);
+ 		input_report_key(input, BTN_MOUSE, clicks & 1);
+ 	} else { /* USB_DEVICE_ID_APPLE_MAGICTRACKPAD */
+@@ -542,7 +551,9 @@ static int magicmouse_setup_input(struct input_dev *input, struct hid_device *hd
+ 			__set_bit(REL_WHEEL_HI_RES, input->relbit);
+ 			__set_bit(REL_HWHEEL_HI_RES, input->relbit);
+ 		}
+-	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		   input->id.product ==
++			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		/* If the trackpad has been connected to a Mac, the name is
+ 		 * automatically personalized, e.g., "José Expósito's Trackpad".
+ 		 * When connected through Bluetooth, the personalized name is
+@@ -618,7 +629,9 @@ static int magicmouse_setup_input(struct input_dev *input, struct hid_device *hd
+ 				  MOUSE_RES_X);
+ 		input_abs_set_res(input, ABS_MT_POSITION_Y,
+ 				  MOUSE_RES_Y);
+-	} else if (input->id.product ==  USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		   input->id.product ==
++			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		input_set_abs_params(input, ABS_MT_PRESSURE, 0, 253, 0, 0);
+ 		input_set_abs_params(input, ABS_PRESSURE, 0, 253, 0, 0);
+ 		input_set_abs_params(input, ABS_MT_ORIENTATION, -3, 4, 0, 0);
+@@ -657,7 +670,8 @@ static int magicmouse_setup_input(struct input_dev *input, struct hid_device *hd
+ 	input_set_events_per_packet(input, 60);
  
--struct fwnode_handle *fwnode_get_named_child_node(
--	const struct fwnode_handle *fwnode, const char *childname);
--struct fwnode_handle *device_get_named_child_node(struct device *dev,
-+struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
-+						  const char *childname);
-+struct fwnode_handle *device_get_named_child_node(const struct device *dev,
- 						  const char *childname);
+ 	if (report_undeciphered &&
+-	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
++	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		__set_bit(EV_MSC, input->evbit);
+ 		__set_bit(MSC_RAW, input->mscbit);
+ 	}
+@@ -682,7 +696,9 @@ static int magicmouse_input_mapping(struct hid_device *hdev,
  
- struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
-@@ -132,7 +132,7 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
- int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
- int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
+ 	/* Magic Trackpad does not give relative data after switching to MT */
+ 	if ((hi->input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD ||
+-	     hi->input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) &&
++	     hi->input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++	     hi->input->id.product ==
++		     USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
+ 	    field->flags & HID_MAIN_ITEM_RELATIVE)
+ 		return -1;
  
--unsigned int device_get_child_node_count(struct device *dev);
-+unsigned int device_get_child_node_count(const struct device *dev);
+@@ -718,7 +734,8 @@ static int magicmouse_enable_multitouch(struct hid_device *hdev)
+ 	int ret;
+ 	int feature_size;
  
- static inline bool device_property_read_bool(struct device *dev,
- 					     const char *propname)
+-	if (hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	if (hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++	    hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		if (hdev->vendor == BT_VENDOR_ID_APPLE) {
+ 			feature_size = sizeof(feature_mt_trackpad2_bt);
+ 			feature = feature_mt_trackpad2_bt;
+@@ -763,7 +780,8 @@ static int magicmouse_fetch_battery(struct hid_device *hdev)
+ 
+ 	if (!hdev->battery || hdev->vendor != USB_VENDOR_ID_APPLE ||
+ 	    (hdev->product != USB_DEVICE_ID_APPLE_MAGICMOUSE2 &&
+-	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2))
++	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
++	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC))
+ 		return -1;
+ 
+ 	report_enum = &hdev->report_enum[hdev->battery_report_type];
+@@ -832,7 +850,9 @@ static int magicmouse_probe(struct hid_device *hdev,
+ 
+ 	if (id->vendor == USB_VENDOR_ID_APPLE &&
+ 	    (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+-	     (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 && hdev->type != HID_TYPE_USBMOUSE)))
++	     ((id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++	       id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
++	      hdev->type != HID_TYPE_USBMOUSE)))
+ 		return 0;
+ 
+ 	if (!msc->input) {
+@@ -847,7 +867,8 @@ static int magicmouse_probe(struct hid_device *hdev,
+ 	else if (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2)
+ 		report = hid_register_report(hdev, HID_INPUT_REPORT,
+ 			MOUSE2_REPORT_ID, 0);
+-	else if (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	else if (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		 id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		if (id->vendor == BT_VENDOR_ID_APPLE)
+ 			report = hid_register_report(hdev, HID_INPUT_REPORT,
+ 				TRACKPAD2_BT_REPORT_ID, 0);
+@@ -917,7 +938,8 @@ static __u8 *magicmouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 	 */
+ 	if (hdev->vendor == USB_VENDOR_ID_APPLE &&
+ 	    (hdev->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+-	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) &&
++	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
+ 	    *rsize == 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
+ 		hid_info(hdev,
+ 			 "fixing up magicmouse battery report descriptor\n");
+@@ -948,6 +970,10 @@ static const struct hid_device_id magic_mice[] = {
+ 		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2), .driver_data = 0 },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE,
+ 		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2), .driver_data = 0 },
++	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE,
++		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC), .driver_data = 0 },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE,
++		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC), .driver_data = 0 },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, magic_mice);
 -- 
 2.43.0
 
