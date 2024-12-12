@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-101529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BAA9EED07
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08B29EF21E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D606F18824E5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88BF71897C2E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313342210CD;
-	Thu, 12 Dec 2024 15:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0659F238E1C;
+	Thu, 12 Dec 2024 16:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsy8qOlc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzOI+OD8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB68621E085;
-	Thu, 12 Dec 2024 15:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C8D22652A;
+	Thu, 12 Dec 2024 16:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017874; cv=none; b=UOUkoFwkSejgPrvIR7w2afMYAIwfW71+IwlqSn3l6p2a7O5ZiJS3HgPcI8vEblSGJO1cuBpVvqiBcCOD8ECbjXUAzlD4SwL0Pcv5KHIM6LY+lH6b5BvpEAMBZrQYM4DcHhUvh/MArdkqHMNvMpaRMY63b8mU5R75uzqHkvhEfH8=
+	t=1734020600; cv=none; b=bN5DGSCB8EJwNpyTBk8ijspPkYdPo7x3v8qVftZ3kcz+g71T7MkB1o4VfpFGrm6tVuy0f6wbM84cKrWH8RrPG1Dzx1i7AJaCPVxZdXo+cKJgBb1H5zvKZIPc5m4n9o0pXvyf++E+XzqELmqI/U5dhm7aD8yxqgnz2cU6mL4Fsao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017874; c=relaxed/simple;
-	bh=6FZ2w0krYJuGiawEr4Efy9GKfPIvmIlYZVPIsladLmY=;
+	s=arc-20240116; t=1734020600; c=relaxed/simple;
+	bh=oqgEjLu5hwZ/5F9Ucbi4X2mrFPWdpk+buaQXhq5o6/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aO4VqndGilKQezmv4VS8Bi0BXtQMQqJRIE7ND/9VOxgTf7NnYsOqQUSX4NrbTL/Vx2KJWakyP021j16KJavON4nkGT/6jevoFFjnpsvR6xYEPaHT+3BJIDA3tv6LdUUNCcH43M7s9Ybvw7FNqn48YpYu9mJrH3EOXW1pxR7iEpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsy8qOlc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D615C4CECE;
-	Thu, 12 Dec 2024 15:37:53 +0000 (UTC)
+	 MIME-Version; b=l1lVAhLLEyKVsZUf3cP8BmO5LU3/BlI+mZ5qpWY0iHOqEVqXv0LPYZjR/wrZZ9xo58uusUHEpCjtOui4mpgQc2Nk7qxSIdIM4OgqymEsaqHFqiCzEPZEPikWgoQsvPUasQyrykHsAuA6ugB9KR0P9RjmC39BSyRRCSRXU/BgGGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzOI+OD8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7495C4CECE;
+	Thu, 12 Dec 2024 16:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017873;
-	bh=6FZ2w0krYJuGiawEr4Efy9GKfPIvmIlYZVPIsladLmY=;
+	s=korg; t=1734020600;
+	bh=oqgEjLu5hwZ/5F9Ucbi4X2mrFPWdpk+buaQXhq5o6/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wsy8qOlc7in1bZXMqA1liXwbAvuddQONeQ4jE1QTsE57VsgJAWAHxKiGKPdVb1X80
-	 BXOwUYoVAIWXJZIpmmULd+0kVxZp/wJwH95Wyl7FhifMsE7yVq6cR+EJR/BAxzStot
-	 Dvx72xWrid9iBV8xk1q5yI9qMS1rxt/FdwlAI/2E=
+	b=lzOI+OD8GCfq+BX/fMHDWCceiw0GKSk1KybfO9Lp7QoBWoHbzZKFxm+yck/ludp7K
+	 lbtmS9PPMU8AQTaHQOiyo81MXrXIdvfvvb7PrBmcUmIth3dlPoG1Ew4dTmqOSLEQ8R
+	 FBep1fAtr1khbIU00sBGlAjNeSXAX2FlR40eC584=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/356] bpf: Fix exact match conditions in trie_get_next_key()
+Subject: [PATCH 6.1 510/772] can: gs_usb: remove leading space from goto labels
 Date: Thu, 12 Dec 2024 15:57:35 +0100
-Message-ID: <20241212144250.018391184@linuxfoundation.org>
+Message-ID: <20241212144411.026316788@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 27abc7b3fa2e09bbe41e2924d328121546865eda ]
+[ Upstream commit f1a14714bf48f87fa8e774f415ea9815daf3750d ]
 
-trie_get_next_key() uses node->prefixlen == key->prefixlen to identify
-an exact match, However, it is incorrect because when the target key
-doesn't fully match the found node (e.g., node->prefixlen != matchlen),
-these two nodes may also have the same prefixlen. It will return
-expected result when the passed key exist in the trie. However when a
-recently-deleted key or nonexistent key is passed to
-trie_get_next_key(), it may skip keys and return incorrect result.
+Remove leading spaces from goto labels in accordance with the kernel
+encoding style.
 
-Fix it by using node->prefixlen == matchlen to identify exact matches.
-When the condition is true after the search, it also implies
-node->prefixlen equals key->prefixlen, otherwise, the search would
-return NULL instead.
-
-Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241206110622.1161752-6-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/all/20230718-gs_usb-cleanups-v1-1-c3b9154ec605@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: 889b2ae9139a ("can: gs_usb: add usb endpoint address detection at driver probe step")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/usb/gs_usb.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 958f907cdaf0e..c4f1d465ae35c 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -638,7 +638,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 	struct lpm_trie_node **node_stack = NULL;
- 	int err = 0, stack_ptr = -1;
- 	unsigned int next_bit;
--	size_t matchlen;
-+	size_t matchlen = 0;
- 
- 	/* The get_next_key follows postorder. For the 4 node example in
- 	 * the top of this file, the trie_get_next_key() returns the following
-@@ -677,7 +677,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 		next_bit = extract_bit(key->data, node->prefixlen);
- 		node = rcu_dereference(node->child[next_bit]);
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 264a0f764e011..1d089c9b46410 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -639,7 +639,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		netif_rx(skb);
  	}
--	if (!node || node->prefixlen != key->prefixlen ||
-+	if (!node || node->prefixlen != matchlen ||
- 	    (node->flags & LPM_TREE_NODE_FLAG_IM))
- 		goto find_leftmost;
  
+- resubmit_urb:
++resubmit_urb:
+ 	usb_fill_bulk_urb(urb, usbcan->udev,
+ 			  usb_rcvbulkpipe(usbcan->udev, GS_USB_ENDPOINT_IN),
+ 			  hf, dev->parent->hf_size_rx,
+@@ -649,7 +649,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 
+ 	/* USB failure take down all interfaces */
+ 	if (rc == -ENODEV) {
+- device_detach:
++device_detach:
+ 		for (rc = 0; rc < GS_MAX_INTF; rc++) {
+ 			if (usbcan->canch[rc])
+ 				netif_device_detach(usbcan->canch[rc]->netdev);
+@@ -814,12 +814,12 @@ static netdev_tx_t gs_can_start_xmit(struct sk_buff *skb,
+ 
+ 	return NETDEV_TX_OK;
+ 
+- badidx:
++badidx:
+ 	kfree(hf);
+- nomem_hf:
++nomem_hf:
+ 	usb_free_urb(urb);
+ 
+- nomem_urb:
++nomem_urb:
+ 	gs_free_tx_context(txc);
+ 	dev_kfree_skb(skb);
+ 	stats->tx_dropped++;
+@@ -1311,7 +1311,7 @@ static struct gs_can *gs_make_candev(unsigned int channel,
+ 
+ 	return dev;
+ 
+- out_free_candev:
++out_free_candev:
+ 	free_candev(dev->netdev);
+ 	return ERR_PTR(rc);
+ }
 -- 
 2.43.0
 
