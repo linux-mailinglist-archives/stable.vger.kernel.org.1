@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-102891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2289EF571
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798A79EF75A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B2911765E5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0145B1898755
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56857217664;
-	Thu, 12 Dec 2024 17:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09CE2165F0;
+	Thu, 12 Dec 2024 17:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNhouiAx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xfvirdt7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C29223326;
-	Thu, 12 Dec 2024 17:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D01E2144C4;
+	Thu, 12 Dec 2024 17:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022882; cv=none; b=U4qcMCVFSEepYslRdI5APT0JkSqO6attWMNdPWeQZU+T2lweWHw6J7VkVzwwYPa3FRAfIEviUctxE31pLHD2TtZEsQFmT3Rw7f+c4YtU37B6kr9ATiEea/L1xt6PZUx5SSh19veB6pcOn02H1jqs9g+a7Ilrt6PDjLgrnVEPgW0=
+	t=1734024281; cv=none; b=rUAdvzp9q3cBnw5T1v8ChHT08uR159SkO3ZihUG5tR1ugC51+c2+BmJoiJIb+88UTzczAE9aDyCTd/CaELxRNTwOJmeRNB7+MjHV9l0NsWepOs15+IUVCLQrAWD/ufKmZtSY+ebNrYNvONMaP832XPXHJQuPP0frLEYr4dIym2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022882; c=relaxed/simple;
-	bh=9dwRpKNZzeU8bP53oaQ8l9iAeAWZCr78a48qaLPtSvY=;
+	s=arc-20240116; t=1734024281; c=relaxed/simple;
+	bh=CStefnE/RGD2pZSPg+cjYfL83aWAW1/Ki/FOIbGGciQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXA7EtwVQJywR7n1D6lErJaPXj14l5KJYHJH0C03VoKIxdPwfoAobRlxQkb4yx+VlXQw0+fjbmIJ+aVk6oYQQu8uvKqQg+wKcdPP9AcjIirWhPimi7jmFYqpCu1NQIuD7Us8p5yizPMoIYfteyH3rQ0eBzJ3Gt8nEOF4Rw4Dljc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNhouiAx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3ECC4CECE;
-	Thu, 12 Dec 2024 17:01:21 +0000 (UTC)
+	 MIME-Version; b=nWvtFPHAByJ/POh7T8aIKwt57OZFdQwaMTyBLOLxNqo2rJNzgLoLDQug29+YwN5/1LlpULRZNqYxU4BMRf4LSj8VJrSh/QQzrN+GpObsreUkUKxxaZzW+jcOLFnLj4xpeHGiVcw0zTIqLlrTHAgWLn0E0cIZDmW7R+tRayHKx6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xfvirdt7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3B2C4CECE;
+	Thu, 12 Dec 2024 17:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022881;
-	bh=9dwRpKNZzeU8bP53oaQ8l9iAeAWZCr78a48qaLPtSvY=;
+	s=korg; t=1734024281;
+	bh=CStefnE/RGD2pZSPg+cjYfL83aWAW1/Ki/FOIbGGciQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNhouiAxaTE/5MjQfxZ8YHxWrlby3+ZTlyuZdtFtqEVnyQIfIE4ZKDxv04U+RtvnJ
-	 nW7e0rDoHIqm/Ju4nF7eE6jenG9Z4KpaYggYQGRmxonTeD4Uw8IpwC6HkV7Bz0TAW4
-	 jHp+4WPJmQZkxsj581E7twAyuNsVzPSQTWtdhSVI=
+	b=Xfvirdt7fUIN0UeYVhHNR9kuEFTMdMTqJi5OHASbA4JZ2q2ub9NsEmUvmS4KTQ1Ot
+	 grTnfJG3F98g3tEIXqcGLoCVNR5Oe3goXWK/l4n0sTmKO75st/1X5+oWE49YCZl3FP
+	 zU/evJKpB3nSO8+wYyY9STMJHwUvDz0Y0niiRpPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongliang Gao <leonylgao@tencent.com>,
-	Jingqun Li <jingqunli@tencent.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Kyle Tso <kyletso@google.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 360/565] rtc: check if __rtc_read_time was successful in rtc_timer_do_work()
+Subject: [PATCH 5.10 217/459] power: supply: core: Remove might_sleep() from power_supply_put()
 Date: Thu, 12 Dec 2024 15:59:15 +0100
-Message-ID: <20241212144325.842764285@linuxfoundation.org>
+Message-ID: <20241212144302.139234600@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongliang Gao <leonylgao@tencent.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit e8ba8a2bc4f60a1065f23d6a0e7cbea945a0f40d ]
+[ Upstream commit f6da4553ff24a5d1c959c9627c965323adc3d307 ]
 
-If the __rtc_read_time call fails,, the struct rtc_time tm; may contain
-uninitialized data, or an illegal date/time read from the RTC hardware.
+The put_device() call in power_supply_put() may call
+power_supply_dev_release(). The latter function does not sleep so
+power_supply_put() doesn't sleep either. Hence, remove the might_sleep()
+call from power_supply_put(). This patch suppresses false positive
+complaints about calling a sleeping function from atomic context if
+power_supply_put() is called from atomic context.
 
-When calling rtc_tm_to_ktime later, the result may be a very large value
-(possibly KTIME_MAX). If there are periodic timers in rtc->timerqueue,
-they will continually expire, may causing kernel softlockup.
-
-Fixes: 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
-Signed-off-by: Yongliang Gao <leonylgao@tencent.com>
-Acked-by: Jingqun Li <jingqunli@tencent.com>
-Link: https://lore.kernel.org/r/20241011043153.3788112-1-leonylgao@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Kyle Tso <kyletso@google.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Fixes: 1a352462b537 ("power_supply: Add power_supply_put for decrementing device reference counter")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240917193914.47566-1-bvanassche@acm.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/interface.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/power/supply/power_supply_core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index 29c12947e73fc..7c62b13077627 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -893,13 +893,18 @@ void rtc_timer_do_work(struct work_struct *work)
- 	struct timerqueue_node *next;
- 	ktime_t now;
- 	struct rtc_time tm;
-+	int err;
- 
- 	struct rtc_device *rtc =
- 		container_of(work, struct rtc_device, irqwork);
- 
- 	mutex_lock(&rtc->ops_lock);
- again:
--	__rtc_read_time(rtc, &tm);
-+	err = __rtc_read_time(rtc, &tm);
-+	if (err) {
-+		mutex_unlock(&rtc->ops_lock);
-+		return;
-+	}
- 	now = rtc_tm_to_ktime(tm);
- 	while ((next = timerqueue_getnext(&rtc->timerqueue))) {
- 		if (next->expires > now)
+diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
+index 5c8c117b396e7..61ba2b343b938 100644
+--- a/drivers/power/supply/power_supply_core.c
++++ b/drivers/power/supply/power_supply_core.c
+@@ -479,8 +479,6 @@ EXPORT_SYMBOL_GPL(power_supply_get_by_name);
+  */
+ void power_supply_put(struct power_supply *psy)
+ {
+-	might_sleep();
+-
+ 	atomic_dec(&psy->use_cnt);
+ 	put_device(&psy->dev);
+ }
 -- 
 2.43.0
 
