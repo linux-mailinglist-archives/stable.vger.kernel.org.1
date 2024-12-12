@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2936C9EEA22
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82939EF2DE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2AF5285211
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F53C2898D8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C6521CFEA;
-	Thu, 12 Dec 2024 15:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863F223690B;
+	Thu, 12 Dec 2024 16:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pn90AS64"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEbfXs+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3606D21660C;
-	Thu, 12 Dec 2024 15:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422C52153FA;
+	Thu, 12 Dec 2024 16:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016152; cv=none; b=TOttks9K7+O/swgMCHQQLviBlmIUE6R8ebcEahFZ42G5OdvA7p/OZeyQ9RGUtC1J6p598Ko0vmw85EemNMomzP9RoKr4KUVeriX6G4Q9D038smZYr+8XfmGuRVKD15agOcBW6ekGM1p+WeE48E0UEZhnv41YxDyFw/h69fs9caQ=
+	t=1734021928; cv=none; b=FDGrgg9R5XAgh/GXmwHkmrzIe+YOIexpn1ztdgU/KQZfLjnaf6gDmtBfflRt7Mz/vY2SlMx2DNb0JiyRLYXFPXPcijzKiw6C1O5MOcmfkNZOhWmy7Kx2Vz0Xaedh6Z3BFbADwqYKJ2ppB+nZ8HqoTxZnc64DyE3ty+Up/goCpP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016152; c=relaxed/simple;
-	bh=TRr0fjNalF84kZBPirA0y6RwCSQCMTVPkzByZo6GdFA=;
+	s=arc-20240116; t=1734021928; c=relaxed/simple;
+	bh=xcgqE10bRV6rn71nL4tF98RPVm90yk7taeMGmNnpCAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I23a7uYa35vKzH9McHem/QN5b9n4l8WdAzEjCtXqYroMHV0fWSJ90MkHC1BfxY61tQU9fgZyAxkcWjEyT8VI6rBYs3HOFS1VfSxRRV3ww2wGOS+VJq1o/ExGgten2J3VjO5v2WA6615ZIKEsOZTJ0l5DNIfs0C4S/zQU7gCHeYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pn90AS64; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991E9C4CECE;
-	Thu, 12 Dec 2024 15:09:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=It15zA9pC4WMFa3rk1OL/Qc9Hx/GNAHp/Va+70oIJJuXkMp9h8x53HGHIo9equGJgEciWBwgOpVjOf+z5O7We5x9zqYrAQ3Ue1tARWf7FcA1HkY+R1uNQS1WDOs8IZmAL4OEMERULNheX+ebkF1+ZDPjyH1ndQ+QJyBISYDlnHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEbfXs+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A307EC4CED3;
+	Thu, 12 Dec 2024 16:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016152;
-	bh=TRr0fjNalF84kZBPirA0y6RwCSQCMTVPkzByZo6GdFA=;
+	s=korg; t=1734021928;
+	bh=xcgqE10bRV6rn71nL4tF98RPVm90yk7taeMGmNnpCAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pn90AS64DBzBlxiOTuI+MHxF2N+nPnVMQA/5SYcSKf0mokRLBFpMATwGb7IN3WEz6
-	 Z92MHCcE9+GouWSgPhueAWRSoO8H2xwj9xjTSiXzUyFcUC4Nwx+YzJigce/l3ugP+s
-	 D7ppSZ3Sr0H/CwmjXtk6bZdpiHx/rLrJt6RjhWKY=
+	b=CEbfXs+BPA/ckRWekU7SvrKOLa2gOZcPoxcDeyrHO8pCYit/1MpGCEWdKzxLsQXsj
+	 whUfhUHp70mRFJ6PIPvatAF+lhvgOBgPV6bJ9iRVoimPNDMC3r6sNY32QSfGM4Poxw
+	 Qjl0+PZzpST+E2JBTLLE+OfrdJjRS39oDnrahvM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordy Zomer <jordyzomer@google.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 127/466] ksmbd: fix Out-of-Bounds Write in ksmbd_vfs_stream_write
+	Chen Ridong <chenridong@huawei.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 101/565] crypto: caam - add error check to caam_rsa_set_priv_key_form
 Date: Thu, 12 Dec 2024 15:54:56 +0100
-Message-ID: <20241212144311.822735638@linuxfoundation.org>
+Message-ID: <20241212144315.477178977@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordy Zomer <jordyzomer@google.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 313dab082289e460391c82d855430ec8a28ddf81 upstream.
+[ Upstream commit b64140c74e954f1db6eae5548ca3a1f41b6fad79 ]
 
-An offset from client could be a negative value, It could allows
-to write data outside the bounds of the allocated buffer.
-Note that this issue is coming when setting
-'vfs objects = streams_xattr parameter' in ksmbd.conf.
+The caam_rsa_set_priv_key_form did not check for memory allocation errors.
+Add the checks to the caam_rsa_set_priv_key_form functions.
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Signed-off-by: Jordy Zomer <jordyzomer@google.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 52e26d77b8b3 ("crypto: caam - add support for RSA key form 2")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Gaurav Jain <gaurav.jain@nxp.com>
+Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/caam/caampkc.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6868,6 +6868,8 @@ int smb2_write(struct ksmbd_work *work)
- 	}
+diff --git a/drivers/crypto/caam/caampkc.c b/drivers/crypto/caam/caampkc.c
+index 51b48b57266a6..7881846651d12 100644
+--- a/drivers/crypto/caam/caampkc.c
++++ b/drivers/crypto/caam/caampkc.c
+@@ -979,7 +979,7 @@ static int caam_rsa_set_pub_key(struct crypto_akcipher *tfm, const void *key,
+ 	return -ENOMEM;
+ }
  
- 	offset = le64_to_cpu(req->Offset);
-+	if (offset < 0)
-+		return -EINVAL;
- 	length = le32_to_cpu(req->Length);
+-static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
++static int caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
+ 				       struct rsa_key *raw_key)
+ {
+ 	struct caam_rsa_key *rsa_key = &ctx->key;
+@@ -988,7 +988,7 @@ static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
  
- 	if (req->Channel == SMB2_CHANNEL_RDMA_V1 ||
+ 	rsa_key->p = caam_read_raw_data(raw_key->p, &p_sz);
+ 	if (!rsa_key->p)
+-		return;
++		return -ENOMEM;
+ 	rsa_key->p_sz = p_sz;
+ 
+ 	rsa_key->q = caam_read_raw_data(raw_key->q, &q_sz);
+@@ -1021,7 +1021,7 @@ static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
+ 
+ 	rsa_key->priv_form = FORM3;
+ 
+-	return;
++	return 0;
+ 
+ free_dq:
+ 	kfree_sensitive(rsa_key->dq);
+@@ -1035,6 +1035,7 @@ static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
+ 	kfree_sensitive(rsa_key->q);
+ free_p:
+ 	kfree_sensitive(rsa_key->p);
++	return -ENOMEM;
+ }
+ 
+ static int caam_rsa_set_priv_key(struct crypto_akcipher *tfm, const void *key,
+@@ -1080,7 +1081,9 @@ static int caam_rsa_set_priv_key(struct crypto_akcipher *tfm, const void *key,
+ 	rsa_key->e_sz = raw_key.e_sz;
+ 	rsa_key->n_sz = raw_key.n_sz;
+ 
+-	caam_rsa_set_priv_key_form(ctx, &raw_key);
++	ret = caam_rsa_set_priv_key_form(ctx, &raw_key);
++	if (ret)
++		goto err;
+ 
+ 	return 0;
+ 
+-- 
+2.43.0
+
 
 
 
