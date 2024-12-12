@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD24A9EF7D6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5779EF8EF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9120E189B2D5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2875D28E37F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C392206A5;
-	Thu, 12 Dec 2024 17:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6653522914D;
+	Thu, 12 Dec 2024 17:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYS/j7+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWfBNmWl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9885216E3B;
-	Thu, 12 Dec 2024 17:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234C12253FD;
+	Thu, 12 Dec 2024 17:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024526; cv=none; b=gK33gOEn6K3MrIqlT0DlckWnPSC9sSfUZ/y25Opj0PC5xtuys2UuWZ9Lkjle+U6jY/a+BOegPk/OsVvX/UznZKICWk7w55tvBgZp2fFmm6w+jhfvVHQkkAf8nPmI9Y0IlCDMT20xtuyxPYoYyzykxxZjbRxhOiZqUT75hpI9aWw=
+	t=1734025462; cv=none; b=fPXgX0t7kFUIgCMmszpHylyYgkWpIP8VQ2cJJyLfh5/ThvhcudocC2o2eTIXt/ksTrBfJAcUT/pibWJBrqbF0+tmCUmusmZlve4BrKPeQ24tC8EXpt6RGQUAmGW0SnlXRcvq2eHE1Jd8hDtuoMn72MSMc0K/f652dkqwKG0YYIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024526; c=relaxed/simple;
-	bh=YT79NFKtA0iA5yVXNgqQiVzc1KnkkmQ87esWXBl2WkQ=;
+	s=arc-20240116; t=1734025462; c=relaxed/simple;
+	bh=LWAw4zKhtk4lMD2PXUUUjq40MxAhQKbC7i7pl5cFX6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sF8lZLwlAnQ0mXAcrdLw4TMiBSathcMh+7+Qg6BIGJvS6H7U28kU7QrMwVQkpPLUCul4LevhDULqaFCLuMw6A9s9g322K22DxNzjofqck2R9vqWF1u9ARmYTPKG+9lBPcAlBHIhcUfaUAQ8WTdpEAla/PV3qltPJ8fVz7qFbJCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYS/j7+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E663BC4CED4;
-	Thu, 12 Dec 2024 17:28:45 +0000 (UTC)
+	 MIME-Version; b=c+hFH66mhmFSl/AiqDErbODc0RG6oGIfH/WucA1NqeVB6vCttXf25h29Vxzc8pTnNvPmaMLc2NEavPuNo3Pz8e4p7orl7uWdapjdfsiR7aKxOCurhKEEUr5ncA0xdTrnX+WGSthmkxFXz3EwsxWVlnGVDaSAyqQ6IO0W6n+be9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWfBNmWl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4EDC4CED0;
+	Thu, 12 Dec 2024 17:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024526;
-	bh=YT79NFKtA0iA5yVXNgqQiVzc1KnkkmQ87esWXBl2WkQ=;
+	s=korg; t=1734025461;
+	bh=LWAw4zKhtk4lMD2PXUUUjq40MxAhQKbC7i7pl5cFX6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYS/j7+lXr5UY5ywe7T1XWerWIhqnqfeF4KQsKV8ILt91MihudeY0fUFhsBPhRB/F
-	 v2wPKzABS9Js331aUnLJ5Mji8klA3s7DVWZN6Kc72IGvMK2GLZyQGexCxEzXl978LY
-	 MSqydzBGWbwCh+Gg8NZCH1TkS+9CV0DGzv4x2sPo=
+	b=nWfBNmWlGVVJ0fqYNNA8JsyTqfZyWX79qLeT1qL+jO0AQNnMH5OMZ+S2dLd3cqv4y
+	 67QvGtNvRu1aS0s+bnqblPhrJRZAc+1gCCWLH5jOERcARJXON+/FBavZNDV0boMTx7
+	 xv2rVQA7W9PPnvA8Zp2boqZ4DFqtMkXZwJfECp3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yassine Oudjana <y.oudjana@protonmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 326/459] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
+	Jeongjun Park <aha310510@gmail.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.4 146/321] ext4: supress data-race warnings in ext4_free_inodes_{count,set}()
 Date: Thu, 12 Dec 2024 16:01:04 +0100
-Message-ID: <20241212144306.539446445@linuxfoundation.org>
+Message-ID: <20241212144235.745905876@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
+commit 902cc179c931a033cd7f4242353aa2733bf8524c upstream.
 
-Clear the IRQ enable bit of WDT_MODE before asserting software reset
-in order to make TOPRGU issue a system reset signal instead of an IRQ.
+find_group_other() and find_group_orlov() read *_lo, *_hi with
+ext4_free_inodes_count without additional locking. This can cause
+data-race warning, but since the lock is held for most writes and free
+inodes value is generally not a problem even if it is incorrect, it is
+more appropriate to use READ_ONCE()/WRITE_ONCE() than to add locking.
 
-Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+==================================================================
+BUG: KCSAN: data-race in ext4_free_inodes_count / ext4_free_inodes_set
+
+write to 0xffff88810404300e of 2 bytes by task 6254 on cpu 1:
+ ext4_free_inodes_set+0x1f/0x80 fs/ext4/super.c:405
+ __ext4_new_inode+0x15ca/0x2200 fs/ext4/ialloc.c:1216
+ ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+ vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+ do_symlinkat+0xe3/0x340 fs/namei.c:4641
+ __do_sys_symlinkat fs/namei.c:4657 [inline]
+ __se_sys_symlinkat fs/namei.c:4654 [inline]
+ __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+ x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+read to 0xffff88810404300e of 2 bytes by task 6257 on cpu 0:
+ ext4_free_inodes_count+0x1c/0x80 fs/ext4/super.c:349
+ find_group_other fs/ext4/ialloc.c:594 [inline]
+ __ext4_new_inode+0x6ec/0x2200 fs/ext4/ialloc.c:1017
+ ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+ vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+ do_symlinkat+0xe3/0x340 fs/namei.c:4641
+ __do_sys_symlinkat fs/namei.c:4657 [inline]
+ __se_sys_symlinkat fs/namei.c:4654 [inline]
+ __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+ x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Link: https://patch.msgid.link/20241003125337.47283-1-aha310510@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/mtk_wdt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ext4/super.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
-index d6a6393f609d1..2cc668b295fd9 100644
---- a/drivers/watchdog/mtk_wdt.c
-+++ b/drivers/watchdog/mtk_wdt.c
-@@ -153,9 +153,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -259,9 +259,9 @@ __u32 ext4_free_group_clusters(struct su
+ __u32 ext4_free_inodes_count(struct super_block *sb,
+ 			      struct ext4_group_desc *bg)
  {
- 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
- 	void __iomem *wdt_base;
-+	u32 reg;
+-	return le16_to_cpu(bg->bg_free_inodes_count_lo) |
++	return le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_lo)) |
+ 		(EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT ?
+-		 (__u32)le16_to_cpu(bg->bg_free_inodes_count_hi) << 16 : 0);
++		 (__u32)le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_hi)) << 16 : 0);
+ }
  
- 	wdt_base = mtk_wdt->wdt_base;
+ __u32 ext4_used_dirs_count(struct super_block *sb,
+@@ -315,9 +315,9 @@ void ext4_free_group_clusters_set(struct
+ void ext4_free_inodes_set(struct super_block *sb,
+ 			  struct ext4_group_desc *bg, __u32 count)
+ {
+-	bg->bg_free_inodes_count_lo = cpu_to_le16((__u16)count);
++	WRITE_ONCE(bg->bg_free_inodes_count_lo, cpu_to_le16((__u16)count));
+ 	if (EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT)
+-		bg->bg_free_inodes_count_hi = cpu_to_le16(count >> 16);
++		WRITE_ONCE(bg->bg_free_inodes_count_hi, cpu_to_le16(count >> 16));
+ }
  
-+	/* Enable reset in order to issue a system reset instead of an IRQ */
-+	reg = readl(wdt_base + WDT_MODE);
-+	reg &= ~WDT_MODE_IRQ_EN;
-+	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
-+
- 	while (1) {
- 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
- 		mdelay(5);
--- 
-2.43.0
-
+ void ext4_used_dirs_set(struct super_block *sb,
 
 
 
