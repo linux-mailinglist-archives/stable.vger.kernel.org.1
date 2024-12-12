@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56CF09EF248
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90FC9EECCC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB07417124A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2B5188DB36
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AD6217F40;
-	Thu, 12 Dec 2024 16:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C04217F29;
+	Thu, 12 Dec 2024 15:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQasToGw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bymw1Gr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2C82F44;
-	Thu, 12 Dec 2024 16:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44877215777;
+	Thu, 12 Dec 2024 15:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020473; cv=none; b=DVYM/J718DEQn0jTg15GwkOcPkaaPjlrL/6b1o7byrLKjGvGcPVPOgfCY2YP5vQymW9P7f9oX21M7CHwsT26kOLdZCPZUNNh45KkqzhWnJYh4sqioBRxL79qbWLFt/5z92W8gHTkoq8NLlM54mBwznWHOGx00dhAXOcI3gN3GWw=
+	t=1734017748; cv=none; b=YSpGuwfGfiZuRb1IACD9fbhNa2cVVWvuSiKBPXs/P8/w3xTerg+nbcKe80yibdbOFcEQ/BFfRofH5Nm6/8kkjCLBKR+mec/KX+CWoukZ7RFKNuGbgthIdxj5eIXdTxI4U0N2mWDFC32AuL6/Ocd2QljzthqAkysK2zN5DG27yno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020473; c=relaxed/simple;
-	bh=YSwQ5Fo8NvrUhyJqOnXGxxVlJH92sDib1H4iG/Ocji0=;
+	s=arc-20240116; t=1734017748; c=relaxed/simple;
+	bh=GIAHy7+k6MgML/pXt3OKcdHV1z0ZKVhXffgX9QkyUUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTVwBK4x3YO6PKZLl3fI7NcVCgApuKX0pzVC+PbOq+jBBYm9XB/3mNsWryPxDUNHvX5OZ8IfqB/LuL23CJ9XYVBFak17VvhEMymU4JxtAgcjKAdzIPP2J8dmNMNBM3nCZDksmG3K08TEXnGcqLb+XdGd87ffgOp6/S5DnlRyGTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQasToGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53104C4CED3;
-	Thu, 12 Dec 2024 16:21:12 +0000 (UTC)
+	 MIME-Version; b=LmyoMe8EqE9Zac4RHVrJlNQSeSFChFxz0q8nIZ2M7UorwLA0z6Pz/VvxJNwU5LtM5t++MWSL1s6LoW1leyxEHn9yYeuegWdFUQfln4o8l/EiONi4Jorow2Xd+Zk0vbhGyIgPjxGs7qnmB85wjUJAeZPfGr7c5pKCSOMu25fxERI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bymw1Gr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AECC4CECE;
+	Thu, 12 Dec 2024 15:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020472;
-	bh=YSwQ5Fo8NvrUhyJqOnXGxxVlJH92sDib1H4iG/Ocji0=;
+	s=korg; t=1734017748;
+	bh=GIAHy7+k6MgML/pXt3OKcdHV1z0ZKVhXffgX9QkyUUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IQasToGwFjU9bJpEJ87kwwzkqxElK08BJuYDTmkBrn2KXvElgMNMIgEL0Aeq/d6az
-	 Y+1mfUo3l5CGxrTKmksY7thwYRlkJyCpUp+7ofu3iUCmqkp2/nF1dVawb3ldfyXCX1
-	 XsdlC7oRP0/6vbDDvQ2vbxY+Uj1EX4JI9WO+oye4=
+	b=bymw1Gr98xusX8LcfZvIzIHkK0vxSYIbC9OPClrQAVPVq6oojUVYMhBu+a3impk3A
+	 FBjFcSjSTqa8prVHTOxaPQDb3yAZpWc+e4ALLdK/jgE0gdBPNkVyT9kDAM4/QeFmG8
+	 NZL6t620nwN3IV5j2qYkG6vAUxF3f8w+0x0KdDss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 475/772] iommu/io-pgtable-arm: Fix stage-2 map/unmap for concatenated tables
+	Carlos Song <carlos.song@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 101/356] i3c: master: support to adjust first broadcast address speed
 Date: Thu, 12 Dec 2024 15:57:00 +0100
-Message-ID: <20241212144409.563173934@linuxfoundation.org>
+Message-ID: <20241212144248.614605599@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Carlos Song <carlos.song@nxp.com>
 
-commit d71fa842d33c48ac2809ae11d2379b5a788792cb upstream.
+[ Upstream commit aef79e189ba2b32f78bd35daf2c0b41f3868a321 ]
 
-ARM_LPAE_LVL_IDX() takes into account concatenated PGDs and can return
-an index spanning multiple page-table pages given a sufficiently large
-input address. However, when the resulting index is used to calculate
-the number of remaining entries in the page, the possibility of
-concatenation is ignored and we end up computing a negative upper bound:
+According to I3C spec 6.2 Timing Specification, the Open Drain High Period
+of SCL Clock timing for first broadcast address should be adjusted to 200ns
+at least. I3C device working as i2c device will see the broadcast to close
+its Spike Filter then change to work at I3C mode. After that I3C open drain
+SCL high level should be adjusted back.
 
-	max_entries = ARM_LPAE_PTES_PER_TABLE(data) - map_idx_start;
-
-On the map path, this results in a negative 'mapped' value being
-returned but on the unmap path we can leak child tables if they are
-skipped in __arm_lpae_free_pgtable().
-
-Introduce an arm_lpae_max_entries() helper to convert a table index into
-the remaining number of entries within a single page-table page.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20241024162516.2005652-2-smostafa@google.com
-[will: Tweaked comment and commit message]
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240910051626.4052552-1-carlos.song@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Stable-dep-of: 25bc99be5fe5 ("i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/io-pgtable-arm.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/i3c/master.c       | 12 ++++++++++++
+ include/linux/i3c/master.h | 16 ++++++++++++++++
+ 2 files changed, 28 insertions(+)
 
---- a/drivers/iommu/io-pgtable-arm.c
-+++ b/drivers/iommu/io-pgtable-arm.c
-@@ -180,6 +180,18 @@ static phys_addr_t iopte_to_paddr(arm_lp
- 	return (paddr | (paddr << (48 - 12))) & (ARM_LPAE_PTE_ADDR_MASK << 4);
- }
- 
-+/*
-+ * Convert an index returned by ARM_LPAE_PGD_IDX(), which can point into
-+ * a concatenated PGD, into the maximum number of entries that can be
-+ * mapped in the same table page.
-+ */
-+static inline int arm_lpae_max_entries(int i, struct arm_lpae_io_pgtable *data)
-+{
-+	int ptes_per_table = ARM_LPAE_PTES_PER_TABLE(data);
-+
-+	return ptes_per_table - (i & (ptes_per_table - 1));
-+}
-+
- static bool selftest_running = false;
- 
- static dma_addr_t __arm_lpae_dma_addr(void *pages)
-@@ -357,7 +369,7 @@ static int __arm_lpae_map(struct arm_lpa
- 
- 	/* If we can install a leaf entry at this level, then do so */
- 	if (size == block_size) {
--		max_entries = ARM_LPAE_PTES_PER_TABLE(data) - map_idx_start;
-+		max_entries = arm_lpae_max_entries(map_idx_start, data);
- 		num_entries = min_t(int, pgcount, max_entries);
- 		ret = arm_lpae_init_pte(data, iova, paddr, prot, lvl, num_entries, ptep);
- 		if (!ret && mapped)
-@@ -564,7 +576,7 @@ static size_t arm_lpae_split_blk_unmap(s
- 
- 	if (size == split_sz) {
- 		unmap_idx_start = ARM_LPAE_LVL_IDX(iova, lvl, data);
--		max_entries = ptes_per_table - unmap_idx_start;
-+		max_entries = arm_lpae_max_entries(unmap_idx_start, data);
- 		num_entries = min_t(int, pgcount, max_entries);
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index bbd5dc89be229..78171a754a3f8 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1827,6 +1827,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+ 		goto err_bus_cleanup;
  	}
  
-@@ -622,7 +634,7 @@ static size_t __arm_lpae_unmap(struct ar
++	if (master->ops->set_speed) {
++		ret = master->ops->set_speed(master, I3C_OPEN_DRAIN_SLOW_SPEED);
++		if (ret)
++			goto err_bus_cleanup;
++	}
++
+ 	/*
+ 	 * Reset all dynamic address that may have been assigned before
+ 	 * (assigned by the bootloader for example).
+@@ -1835,6 +1841,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+ 	if (ret && ret != I3C_ERROR_M2)
+ 		goto err_bus_cleanup;
  
- 	/* If the size matches this level, we're in the right place */
- 	if (size == ARM_LPAE_BLOCK_SIZE(lvl, data)) {
--		max_entries = ARM_LPAE_PTES_PER_TABLE(data) - unmap_idx_start;
-+		max_entries = arm_lpae_max_entries(unmap_idx_start, data);
- 		num_entries = min_t(int, pgcount, max_entries);
++	if (master->ops->set_speed) {
++		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
++		if (ret)
++			goto err_bus_cleanup;
++	}
++
+ 	/* Disable all slave events before starting DAA. */
+ 	ret = i3c_master_disec_locked(master, I3C_BROADCAST_ADDR,
+ 				      I3C_CCC_EVENT_SIR | I3C_CCC_EVENT_MR |
+diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+index 1cbf0baca65fe..f0aa4c549aa7f 100644
+--- a/include/linux/i3c/master.h
++++ b/include/linux/i3c/master.h
+@@ -269,6 +269,20 @@ enum i3c_bus_mode {
+ 	I3C_BUS_MODE_MIXED_SLOW,
+ };
  
- 		while (i < num_entries) {
++/**
++ * enum i3c_open_drain_speed - I3C open-drain speed
++ * @I3C_OPEN_DRAIN_SLOW_SPEED: Slow open-drain speed for sending the first
++ *				broadcast address. The first broadcast address at this speed
++ *				will be visible to all devices on the I3C bus. I3C devices
++ *				working in I2C mode will turn off their spike filter when
++ *				switching into I3C mode.
++ * @I3C_OPEN_DRAIN_NORMAL_SPEED: Normal open-drain speed in I3C bus mode.
++ */
++enum i3c_open_drain_speed {
++	I3C_OPEN_DRAIN_SLOW_SPEED,
++	I3C_OPEN_DRAIN_NORMAL_SPEED,
++};
++
+ /**
+  * enum i3c_addr_slot_status - I3C address slot status
+  * @I3C_ADDR_SLOT_FREE: address is free
+@@ -428,6 +442,7 @@ struct i3c_bus {
+  *		      NULL.
+  * @enable_hotjoin: enable hot join event detect.
+  * @disable_hotjoin: disable hot join event detect.
++ * @set_speed: adjust I3C open drain mode timing.
+  */
+ struct i3c_master_controller_ops {
+ 	int (*bus_init)(struct i3c_master_controller *master);
+@@ -456,6 +471,7 @@ struct i3c_master_controller_ops {
+ 				 struct i3c_ibi_slot *slot);
+ 	int (*enable_hotjoin)(struct i3c_master_controller *master);
+ 	int (*disable_hotjoin)(struct i3c_master_controller *master);
++	int (*set_speed)(struct i3c_master_controller *master, enum i3c_open_drain_speed speed);
+ };
+ 
+ /**
+-- 
+2.43.0
+
 
 
 
