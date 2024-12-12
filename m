@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE1F9EEB6B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C7BA9EF37C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB89C1888045
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A518287F13
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21862153FC;
-	Thu, 12 Dec 2024 15:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3AA2139D2;
+	Thu, 12 Dec 2024 16:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M79eMul3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Gx1uZqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7D8216E18;
-	Thu, 12 Dec 2024 15:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A106223C5E;
+	Thu, 12 Dec 2024 16:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016773; cv=none; b=TbpEn57JxA/Gx1SREBm3wU6Zz0YU88yvCSmx1T1EcAg7OuPvOpmkpyPnbAySNpqcEBIncw/ng/sFhccmGSPnUlHkFPAY1EQUHiFactVXx+dzf188e6eha9pjpkm1TrDgI0qGrKekT7li0VBiYGAdCQRBN50UHBf6/bCZFLiCcaI=
+	t=1734022420; cv=none; b=sAdwHnN3OVxSnHrTdbt9PZ1+4q/vEkYS3h0cc6zAFg2boFr7WpqZKuJHrj7fnxeDE6sLUKV/fE0Uptou7wjCPpk3W7EeJk66nLpQ9HWc+rve1gOsD2074z71Nkj8gQbmWdSghcQaaGq6dL8dobSz6Or8iVArpOkes6/TQeD6z+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016773; c=relaxed/simple;
-	bh=aW314q8mCqkakBxUU5iHrjJrdPgXaYRECHe3/VwQXxM=;
+	s=arc-20240116; t=1734022420; c=relaxed/simple;
+	bh=ds5W2oOkguem4g1A6muxtJXqcD/X8y+IGep99baELgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OskxZOF3jIEwt4neGOh1CRDsnCITdbROtwn/WVQKKNUeRiFiYP+g8JFFAHSJ9K8Pp8dv7ADHVGZBq1jH7kl6yNpq1GjCNBjDSnv+TgAF9ZUkMdNBhE+Imbgh4g6ff0vIgTSklmDnglqIHoPDIcI9rzbyCrKsGtIY4/JGeQyTaz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M79eMul3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17C7C4CECE;
-	Thu, 12 Dec 2024 15:19:32 +0000 (UTC)
+	 MIME-Version; b=YSRVMjZNdqOkYGKSytspV4llgSfT9iwnWPcZSVqtSuMMEt1/KQvS8/7qc9O1UeHaaOARmTYC+qErzeslI6RLPaVtxfJfz6MpIDZ3/S9dIIJFjKsx2oORzBRwUxmAxj8L3iPNHh07QlaRvuGdGAo+nEdhLOK8Ek6jwvCDPUlLirM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Gx1uZqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E148C4CECE;
+	Thu, 12 Dec 2024 16:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016773;
-	bh=aW314q8mCqkakBxUU5iHrjJrdPgXaYRECHe3/VwQXxM=;
+	s=korg; t=1734022420;
+	bh=ds5W2oOkguem4g1A6muxtJXqcD/X8y+IGep99baELgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M79eMul3KsycVLl1JRzYVNCBq05J4Aq42xHXpljoLXlGOnG323in94ySZARe0wjFF
-	 zEvDFqwPKTnkVF9bW0JhMFLdr7xWDVxafYjaAvcHrX/PY57I7mr2oFwgw6fkJOpFPa
-	 MDLl92xHv1WzzaFVCIQN7O7T2HqEWqkDqi5vvwh8=
+	b=1Gx1uZqZF/8wgLcGOIZa3st58JPiVOukHlIYJzy0yRL4vA29mSZGf/1FG7POI2LcY
+	 XTxm9YrgVMNjIhZcgu5sJ/xys/rSLo7F3HY7ZRZQdYOaMWvTnV2IHbmdDZqpi6b3Pz
+	 KPkXRyC7FjxOZbsBsEDYA00wuJDoVpSBNS6V7xzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
-	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 262/466] drm: panel-orientation-quirks: Add quirk for AYA NEO GEEK
+Subject: [PATCH 5.15 236/565] fbdev: sh7760fb: Fix a possible memory leak in sh7760fb_alloc_mem()
 Date: Thu, 12 Dec 2024 15:57:11 +0100
-Message-ID: <20241212144317.150566389@linuxfoundation.org>
+Message-ID: <20241212144320.811973524@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit 428656feb972ca99200fc127b5aecb574efd9d3d ]
+[ Upstream commit f89d17ae2ac42931be2a0153fecbf8533280c927 ]
 
-Add quirk orientation for AYA NEO GEEK. The name appears without
-spaces in DMI strings. The board name is completely different to
-the previous models making it difficult to reuse their quirks
-despite being the same resolution and using the same orientation.
+When information such as info->screen_base is not ready, calling
+sh7760fb_free_mem() does not release memory correctly. Call
+dma_free_coherent() instead.
 
-Tested by the JELOS team that has been patching their own kernel for a
-while now and confirmed by users in the AYA NEO and ChimeraOS discord
-servers.
-
-Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
-Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/40350b0d63fe2b54e7cba1e14be50917203f0079.1726492131.git.tjakobi@math.uni-bielefeld.de
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/video/fbdev/sh7760fb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 01a33d33c4aaf..4a73821b81f6f 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -208,6 +208,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_PRODUCT_NAME, "AYA NEO Founder"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
-+	}, {	/* AYA NEO GEEK */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "GEEK"),
-+		},
-+		.driver_data = (void *)&lcd800x1280_rightside_up,
- 	}, {	/* AYA NEO NEXT */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
+diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
+index 6adf048c1bae8..62e28d315d815 100644
+--- a/drivers/video/fbdev/sh7760fb.c
++++ b/drivers/video/fbdev/sh7760fb.c
+@@ -409,12 +409,11 @@ static int sh7760fb_alloc_mem(struct fb_info *info)
+ 		vram = PAGE_SIZE;
+ 
+ 	fbmem = dma_alloc_coherent(info->device, vram, &par->fbdma, GFP_KERNEL);
+-
+ 	if (!fbmem)
+ 		return -ENOMEM;
+ 
+ 	if ((par->fbdma & SH7760FB_DMA_MASK) != SH7760FB_DMA_MASK) {
+-		sh7760fb_free_mem(info);
++		dma_free_coherent(info->device, vram, fbmem, par->fbdma);
+ 		dev_err(info->device, "kernel gave me memory at 0x%08lx, which is"
+ 			"unusable for the LCDC\n", (unsigned long)par->fbdma);
+ 		return -ENOMEM;
 -- 
 2.43.0
 
