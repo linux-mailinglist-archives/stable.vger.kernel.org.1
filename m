@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-102828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B14D9EF4A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631339EF6B5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC39176B26
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9413F1941CB5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8934223C55;
-	Thu, 12 Dec 2024 16:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4171B2165F0;
+	Thu, 12 Dec 2024 17:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oWDVIdz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibMTWRrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A699613792B;
-	Thu, 12 Dec 2024 16:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2586211493;
+	Thu, 12 Dec 2024 17:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022645; cv=none; b=RKp4s2agdO6SfdAS9wo5TnSnJstkh4fkrP6xcYcrf9SWTDvtObZFDSC2236T+95UJfuDi85adRgP+YhGBux8ACpRSnpt8DVWoqXlhLzs2gAL/aaEYh+hCLQQ7MEQy6+SbYFzzxngYIHPCJOjyLQskBkA+YtapF1tJQu/N6/qM6M=
+	t=1734024094; cv=none; b=LqLsVfisqoXMtEoOqffTFs3gTdWUWDLuWwy1xOlpZrQhp0/XSuQHFLdI4vzbDI+IVNslDHv3T7UXDmmgMMmOYAic+98NpLZABQ7EqyFXdWDrVotBilU8vckAFWZbg77TMfSJfCG2vzVIdg/Fc26PaMriCPnLOpic3GTMnHoXsMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022645; c=relaxed/simple;
-	bh=lVDj1pZR4dcFUTYLO8LT1h4Gxp3PiSOjERhaDPuLhXo=;
+	s=arc-20240116; t=1734024094; c=relaxed/simple;
+	bh=buwBPoZPaSFuSkYSugud5zoRWy1O/ZerTI5ItH+kbdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRzxWTkOL/lW9DHlQ/uF22bxM9/TmhZ6+n/qnqGLWUdGl9UNC9/B7zioCLZRqdnyV9kCLmcqR7lmD8DYXRYIugkAoz9HwKArhWIMRBq39LE4eT2pckVita4ad6bIr7XGyv3AEfl0zxOKFFyo5IJT0ats5kc6WPV9VdjarCLeL9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oWDVIdz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D94CC4CECE;
-	Thu, 12 Dec 2024 16:57:24 +0000 (UTC)
+	 MIME-Version; b=FokNRv81Bx1Zxy4m/gO3VYGnFV5Ie21I0quWqOoUa93wccyTb6wPVZ3+28iYkzVFcUOpsMigBKZsVd3T/wfvqWwMRJ/3MHA7ZkS1/eUeYwXQt10QLb4E23qd/tlFZkNAAfQv9sFsePZkdHZZZZtKlhKaYgjaIvmb4GjHJ7h/YeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibMTWRrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F412C4CECE;
+	Thu, 12 Dec 2024 17:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022645;
-	bh=lVDj1pZR4dcFUTYLO8LT1h4Gxp3PiSOjERhaDPuLhXo=;
+	s=korg; t=1734024093;
+	bh=buwBPoZPaSFuSkYSugud5zoRWy1O/ZerTI5ItH+kbdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2oWDVIdz2CO71YyFj1y3m2FzvG5NSs9KF1y8sY8G7urkRhm6eK4w44JC+QaoiVdyy
-	 DU5MQh6x/yH/6EASpUychVGGC7FeIpP2mg/tdscDuQmnEiRBWy8P9jW4QopY9mMF7r
-	 V3XKdZAQzXom5WBTk0r9zHsqfM8FUlVSsULTJgf4=
+	b=ibMTWRrIA8C9NElcN2ZQ53gaA4p5tmNLCW3Vsr/4SgM9aPjrq3LLXVtvQDB6qZ3F5
+	 zn7lW5dPAGG6jeX8LrD3d2StG7nugl/KGY7oJj2dyQwJY2sTNBVn6DklEA2i3++QAs
+	 lWTGECZoZBCaXcjMCF0KXu9JIFE+KM99PQk8A1Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.15 297/565] xen: Fix the issue of resource not being properly released in xenbus_dev_probe()
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 154/459] ALSA: usx2y: Cleanup probe and disconnect callbacks
 Date: Thu, 12 Dec 2024 15:58:12 +0100
-Message-ID: <20241212144323.206867958@linuxfoundation.org>
+Message-ID: <20241212144259.601405832@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +61,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit afc545da381ba0c651b2658966ac737032676f01 upstream.
+[ Upstream commit 2ac7a12ead2be2e31bd5e796455bef31e8516845 ]
 
-This patch fixes an issue in the function xenbus_dev_probe(). In the
-xenbus_dev_probe() function, within the if (err) branch at line 313, the
-program incorrectly returns err directly without releasing the resources
-allocated by err = drv->probe(dev, id). As the return value is non-zero,
-the upper layers assume the processing logic has failed. However, the probe
-operation was performed earlier without a corresponding remove operation.
-Since the probe actually allocates resources, failing to perform the remove
-operation could lead to problems.
+Minor code refactoring by merging the superfluous function calls.
+The functions were split in the past for covering pre-history USB
+driver code, but this is utterly useless.
 
-To fix this issue, we followed the resource release logic of the
-xenbus_dev_remove() function by adding a new block fail_remove before the
-fail_put block. After entering the branch if (err) at line 313, the
-function will use a goto statement to jump to the fail_remove block,
-ensuring that the previously acquired resources are correctly released,
-thus preventing the reference count leak.
-
-This bug was identified by an experimental static analysis tool developed
-by our team. The tool specializes in analyzing reference count operations
-and detecting potential issues where resources are not properly managed.
-In this case, the tool flagged the missing release operation as a
-potential problem, which led to the development of this patch.
-
-Fixes: 4bac07c993d0 ("xen: add the Xenbus sysfs and virtual device hotplug driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241105130919.4621-1-chenqiuji666@gmail.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20210517131545.27252-11-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: dafb28f02be4 ("ALSA: usx2y: Use snd_card_free_when_closed() at disconnection")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/xenbus/xenbus_probe.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/usb/usx2y/usbusx2y.c | 107 ++++++++++++++-----------------------
+ 1 file changed, 40 insertions(+), 67 deletions(-)
 
---- a/drivers/xen/xenbus/xenbus_probe.c
-+++ b/drivers/xen/xenbus/xenbus_probe.c
-@@ -308,7 +308,7 @@ int xenbus_dev_probe(struct device *_dev
- 	if (err) {
- 		dev_warn(&dev->dev, "watch_otherend on %s failed.\n",
- 		       dev->nodename);
--		return err;
-+		goto fail_remove;
- 	}
+diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
+index 373c600ba3fec..9d5a33c4ff2f3 100644
+--- a/sound/usb/usx2y/usbusx2y.c
++++ b/sound/usb/usx2y/usbusx2y.c
+@@ -149,7 +149,6 @@ MODULE_PARM_DESC(enable, "Enable "NAME_ALLCAPS".");
  
- 	dev->spurious_threshold = 1;
-@@ -317,6 +317,12 @@ int xenbus_dev_probe(struct device *_dev
- 			 dev->nodename);
+ static int snd_usx2y_card_used[SNDRV_CARDS];
  
+-static void usx2y_usb_disconnect(struct usb_device *usb_device, void *ptr);
+ static void snd_usx2y_card_private_free(struct snd_card *card);
+ 
+ /*
+@@ -363,66 +362,6 @@ static int usx2y_create_card(struct usb_device *device,
  	return 0;
-+fail_remove:
-+	if (drv->remove) {
-+		down(&dev->reclaim_sem);
-+		drv->remove(dev);
-+		up(&dev->reclaim_sem);
-+	}
- fail_put:
- 	module_put(drv->driver.owner);
- fail:
+ }
+ 
+-static int usx2y_usb_probe(struct usb_device *device,
+-			   struct usb_interface *intf,
+-			   const struct usb_device_id *device_id,
+-			   struct snd_card **cardp)
+-{
+-	int		err;
+-	struct snd_card *card;
+-
+-	*cardp = NULL;
+-	if (le16_to_cpu(device->descriptor.idVendor) != 0x1604 ||
+-	    (le16_to_cpu(device->descriptor.idProduct) != USB_ID_US122 &&
+-	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US224 &&
+-	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US428))
+-		return -EINVAL;
+-
+-	err = usx2y_create_card(device, intf, &card);
+-	if (err < 0)
+-		return err;
+-	err = usx2y_hwdep_new(card, device);
+-	if (err < 0)
+-		goto error;
+-	err = snd_card_register(card);
+-	if (err < 0)
+-		goto error;
+-	*cardp = card;
+-	return 0;
+-
+- error:
+-	snd_card_free(card);
+-	return err;
+-}
+-
+-/*
+- * new 2.5 USB kernel API
+- */
+-static int snd_usx2y_probe(struct usb_interface *intf, const struct usb_device_id *id)
+-{
+-	struct snd_card *card;
+-	int err;
+-
+-	err = usx2y_usb_probe(interface_to_usbdev(intf), intf, id, &card);
+-	if (err < 0)
+-		return err;
+-	dev_set_drvdata(&intf->dev, card);
+-	return 0;
+-}
+-
+-static void snd_usx2y_disconnect(struct usb_interface *intf)
+-{
+-	usx2y_usb_disconnect(interface_to_usbdev(intf),
+-			     usb_get_intfdata(intf));
+-}
+-
+-static struct usb_driver snd_usx2y_usb_driver = {
+-	.name =		"snd-usb-usx2y",
+-	.probe =	snd_usx2y_probe,
+-	.disconnect =	snd_usx2y_disconnect,
+-	.id_table =	snd_usx2y_usb_id_table,
+-};
+-
+ static void snd_usx2y_card_private_free(struct snd_card *card)
+ {
+ 	struct usx2ydev *usx2y = usx2y(card);
+@@ -436,18 +375,15 @@ static void snd_usx2y_card_private_free(struct snd_card *card)
+ 		snd_usx2y_card_used[usx2y->card_index] = 0;
+ }
+ 
+-/*
+- * Frees the device.
+- */
+-static void usx2y_usb_disconnect(struct usb_device *device, void *ptr)
++static void snd_usx2y_disconnect(struct usb_interface *intf)
+ {
+ 	struct snd_card *card;
+ 	struct usx2ydev *usx2y;
+ 	struct list_head *p;
+ 
+-	if (!ptr)
++	card = usb_get_intfdata(intf);
++	if (!card)
+ 		return;
+-	card = ptr;
+ 	usx2y = usx2y(card);
+ 	usx2y->chip_status = USX2Y_STAT_CHIP_HUP;
+ 	usx2y_unlinkseq(&usx2y->as04);
+@@ -463,4 +399,41 @@ static void usx2y_usb_disconnect(struct usb_device *device, void *ptr)
+ 	snd_card_free(card);
+ }
+ 
++static int snd_usx2y_probe(struct usb_interface *intf,
++			   const struct usb_device_id *id)
++{
++	struct usb_device *device = interface_to_usbdev(intf);
++	struct snd_card *card;
++	int err;
++
++	if (le16_to_cpu(device->descriptor.idVendor) != 0x1604 ||
++	    (le16_to_cpu(device->descriptor.idProduct) != USB_ID_US122 &&
++	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US224 &&
++	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US428))
++		return -EINVAL;
++
++	err = usx2y_create_card(device, intf, &card);
++	if (err < 0)
++		return err;
++	err = usx2y_hwdep_new(card, device);
++	if (err < 0)
++		goto error;
++	err = snd_card_register(card);
++	if (err < 0)
++		goto error;
++
++	dev_set_drvdata(&intf->dev, card);
++	return 0;
++
++ error:
++	snd_card_free(card);
++	return err;
++}
++
++static struct usb_driver snd_usx2y_usb_driver = {
++	.name =		"snd-usb-usx2y",
++	.probe =	snd_usx2y_probe,
++	.disconnect =	snd_usx2y_disconnect,
++	.id_table =	snd_usx2y_usb_id_table,
++};
+ module_usb_driver(snd_usx2y_usb_driver);
+-- 
+2.43.0
+
 
 
 
