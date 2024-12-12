@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091DB9EF5EC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70A79EF4AA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39F44189D1F8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F1C51894C76
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B472206A5;
-	Thu, 12 Dec 2024 17:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B4E225A56;
+	Thu, 12 Dec 2024 16:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXMvfBiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmSnHfw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E6E53365;
-	Thu, 12 Dec 2024 17:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8AF213E6B;
+	Thu, 12 Dec 2024 16:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023674; cv=none; b=LTBh6kSldmMcosDbNe9ZsvER6lRzRQD8BDlsf3l2yTiuATxLk/D9P0Ui6qxpCl5nCgiRZ8slC9xRHtk+OoDr0b5ElPrOtLTIOztcsxe2M9Gif7mxEXAGnfISKPgLOTWm3g2yyNQxvyV1u6BCiawdPFdXDpYC2hLs3HEIxKhZRzI=
+	t=1734022301; cv=none; b=krl6TkAPBmeJwu4QcdjNjQawXlQKKwGrXNmRFlCwesLRqEGDVNwjfiZwmJ4IEH+CxbVjoVLMY84F0h1H47SzDDQtmItEZmBtbz/djlPGhJhLoo8S5yiXBHggTRpdvE/eqrjSBCWySc2U7BLdGayCjnBNiyE3nv9f34J/myFgWj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023674; c=relaxed/simple;
-	bh=BM5E1arpKZKeH5Cx79f6Q5c/5mW6N54hOTN4APRXKmo=;
+	s=arc-20240116; t=1734022301; c=relaxed/simple;
+	bh=H0zysKh6px2obvmXtNtxL+UBO4KbXq0sSuIzRCe3Fh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XravTOCii21X/x69VjKj/SaCzNvU7r2LD/gMNxl+YMAYynRgEFgTbpXXJrmR7ycxgAWBqjdVqSQPuNhbLzyL7K8KCuR9rLcIJOKKMqwUWRPNknBCWZ8B76kTzu4fvk6nhXAOn0oRONX1Mze5hwUTQC7ph1z/BLM81A7WMZ1ykBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXMvfBiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12854C4CECE;
-	Thu, 12 Dec 2024 17:14:33 +0000 (UTC)
+	 MIME-Version; b=fvU76VqaKpE3/3lVENFL0d/TE7ukYnsH777ynmhBQLgPRT00/14rixdqbKWbSxdLFoeB9R6xAFHhKQyQLwasb4VR2ot/D2Bo5frSK0kEfhzA6TkdwGg1OTkWR3yTYz5KIx8DjLmaN0ZXMgmaUmUnoQtwiY3d8x2i4kcZnUHQpO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmSnHfw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395E8C4CECE;
+	Thu, 12 Dec 2024 16:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023674;
-	bh=BM5E1arpKZKeH5Cx79f6Q5c/5mW6N54hOTN4APRXKmo=;
+	s=korg; t=1734022301;
+	bh=H0zysKh6px2obvmXtNtxL+UBO4KbXq0sSuIzRCe3Fh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NXMvfBiUt3A8l+DMg5i8AoXstohAGg1fDIskUyZJCbjXHZdpSTDINaPW2Hz+MHY0D
-	 9E69xc+zT9R1K3N7ngHFBKfsjG+JziwmLMwjqnaBmXrNsNXZctltlAYrTc+POG/NTb
-	 dHtYfHVnnxo4lIIoOaV38eWNAnljzt5U8LOq/OnA=
+	b=UmSnHfw6JlN7caJ/ElKgryGCk14dDj1fYXqmaRXZMepSg3ROeQjDs0zL/3AqJtd4S
+	 D2FnhL0A0p7ZjtiTFw3yfw5niA7XlI2/JYow40Va2brez6NDF94diZk5FGfQSsnh82
+	 RnXnHhhTb2ilf7JU5OekuIOKILW7hLGHkysOMG0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/459] can: j1939: fix error in J1939 documentation.
+Subject: [PATCH 5.15 187/565] netfilter: nf_tables: must hold rcu read lock while iterating object type list
 Date: Thu, 12 Dec 2024 15:56:22 +0100
-Message-ID: <20241212144255.266764869@linuxfoundation.org>
+Message-ID: <20241212144318.872673501@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Hölzl <alexander.hoelzl@gmx.net>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit b6ec62e01aa4229bc9d3861d1073806767ea7838 ]
+[ Upstream commit cddc04275f95ca3b18da5c0fb111705ac173af89 ]
 
-The description of PDU1 format usage mistakenly referred to PDU2 format.
+Update of stateful object triggers:
+WARNING: suspicious RCU usage
+net/netfilter/nf_tables_api.c:7759 RCU-list traversed in non-reader section!!
 
-Signed-off-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20241023145257.82709-1-alexander.hoelzl@gmx.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+other info that might help us debug this:
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by nft/3060:
+ #0: ffff88810f0578c8 (&nft_net->commit_mutex){+.+.}-{4:4}, [..]
+
+... but this list is not protected by the transaction mutex but the
+nfnl nftables subsystem mutex.
+
+Switch to nft_obj_type_get which will acquire rcu read lock,
+bump refcount, and returns the result.
+
+v3: Dan Carpenter points out nft_obj_type_get returns error pointer, not
+NULL, on error.
+
+Fixes: dad3bdeef45f ("netfilter: nf_tables: fix memory leak during stateful obj update").
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/j1939.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/networking/j1939.rst b/Documentation/networking/j1939.rst
-index 0a4b73b03b997..59f81ba411608 100644
---- a/Documentation/networking/j1939.rst
-+++ b/Documentation/networking/j1939.rst
-@@ -83,7 +83,7 @@ format, the Group Extension is set in the PS-field.
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 20e2f2deb336d..7fdeed8a31866 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7115,9 +7115,7 @@ static int nf_tables_updobj(const struct nft_ctx *ctx,
+ 	struct nft_trans *trans;
+ 	int err = -ENOMEM;
  
- On the other hand, when using PDU1 format, the PS-field contains a so-called
- Destination Address, which is _not_ part of the PGN. When communicating a PGN
--from user space to kernel (or vice versa) and PDU2 format is used, the PS-field
-+from user space to kernel (or vice versa) and PDU1 format is used, the PS-field
- of the PGN shall be set to zero. The Destination Address shall be set
- elsewhere.
+-	if (!try_module_get(type->owner))
+-		return -ENOENT;
+-
++	/* caller must have obtained type->owner reference. */
+ 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWOBJ,
+ 				sizeof(struct nft_trans_obj));
+ 	if (!trans)
+@@ -7185,15 +7183,16 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
+ 		if (info->nlh->nlmsg_flags & NLM_F_REPLACE)
+ 			return -EOPNOTSUPP;
+ 
+-		type = __nft_obj_type_get(objtype, family);
+-		if (WARN_ON_ONCE(!type))
+-			return -ENOENT;
+-
+ 		if (!obj->ops->update)
+ 			return 0;
+ 
++		type = nft_obj_type_get(net, objtype, family);
++		if (WARN_ON_ONCE(IS_ERR(type)))
++			return PTR_ERR(type);
++
+ 		nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
+ 
++		/* type->owner reference is put when transaction object is released. */
+ 		return nf_tables_updobj(&ctx, type, nla[NFTA_OBJ_DATA], obj);
+ 	}
  
 -- 
 2.43.0
