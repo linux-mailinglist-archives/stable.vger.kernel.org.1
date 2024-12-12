@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A169E9EF22E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0968E9EEB73
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 531F9189E939
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7F96188AAF8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BB9239BC4;
-	Thu, 12 Dec 2024 16:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C078220E034;
+	Thu, 12 Dec 2024 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXaPbCQK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HO+UdIV6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132B621578F;
-	Thu, 12 Dec 2024 16:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5862AF0E;
+	Thu, 12 Dec 2024 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020668; cv=none; b=Y8icb6m43Y/ZmQJ+lcrdhWlB3hRvVmW2prS1k3t/g3yFDNmz5loyTB0mjeQdawlaZJ+rraPXYng8BX693AiLOW6IBUbdhS6qMgmuvspmUmERZAG0O7wy1TypKThATH1ycW2Q57PZIkUclIGRo6UjZD+TKhFgUJ2V8rfkirUFDV4=
+	t=1734016816; cv=none; b=JVgobDtWC82bREAFuzoVwxrvh55Kv6Db8mhPSz1ic5Ww7Hdf4WHPqLC62KI9pI+JVQ94kvuM/TeEa5RtpVJ8x16U2xs3ADwnXo8+zxxGClL5h0Xf/Trrftp259fQr8Z1e+Dd2X51kqbeyzxhD5CXerHNiwuaoT6bLuHOhSbdHEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020668; c=relaxed/simple;
-	bh=ok1dTBx5Pg/QCMSFVrVFLEhvE0qCE6nNCMEcKvENhT4=;
+	s=arc-20240116; t=1734016816; c=relaxed/simple;
+	bh=nWSgcp1NJpPc9ENsgX5ZhYrQe+TUIFrbtxZoOaqVY0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPWlK+n3g4dOHxudSExYIE0gF5txe6IuvaDdWIE4w2nkV+BZeXiaI8NiAr0GanV+qfEYUion/k+rm6TGdQCBeKYd2ekoPH7uQH0z4jE9Rj6BULz2+mWzcg8bD+Bf8pkubKYbRFQnM+2vRb+O1IoXCqt4cskPBp0KFlhpOs+XoDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXaPbCQK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6693BC4CECE;
-	Thu, 12 Dec 2024 16:24:27 +0000 (UTC)
+	 MIME-Version; b=NLxP8tKAvabfzN7RlnR/PYVauv62/vfTaGB1LUL15YdwySTx4OPbKngjKtFYkzBlpnGSJKgLW+oni72LUlFK57CSCg5/iqeYJv1W5g9Z0IJ+MVFkRlmvX8as41gmW0JwmzHiDsoa63X3Xq6YkhiK7jT4+ZmUQO1H+lUQC21vKcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HO+UdIV6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEA0C4CECE;
+	Thu, 12 Dec 2024 15:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020667;
-	bh=ok1dTBx5Pg/QCMSFVrVFLEhvE0qCE6nNCMEcKvENhT4=;
+	s=korg; t=1734016816;
+	bh=nWSgcp1NJpPc9ENsgX5ZhYrQe+TUIFrbtxZoOaqVY0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXaPbCQKe3M47q/tBl/qJ32tyHeo+DW681AM1VROpLqvKUUeTjXZmHUoD3QavwEgX
-	 yeEZLZXK/xvFlxOyjUo8q03PBsXxKSGw1Nkr5SY2bMt20BpIMy6WHglamRQwJg11Z3
-	 6jQv1vjhfJ+VsX7zUGJJHUcxoqQ4EKxfHfVrnVrQ=
+	b=HO+UdIV6lP97HI9Xevo8AJFaC+xOT2IrWtAaCMBr2vPWfm7kMvn+fNwff7ZFDJldH
+	 gYmPUUgQIcL5jADKF3n0j/FwD8wB+FX5XEcc6KIbuhxPgs0doSFF95g9YRi7ON220Q
+	 OU/ExnNRu9nejksr7GlKbnfBVR7zHkKF5vguVplU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Ottens <martin.ottens@fau.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shengyu Qu <wiagn233@outlook.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 529/772] net/sched: tbf: correct backlog statistic for GSO packets
+Subject: [PATCH 6.12 305/466] net: sfp: change quirks for Alcatel Lucent G-010S-P
 Date: Thu, 12 Dec 2024 15:57:54 +0100
-Message-ID: <20241212144411.821479115@linuxfoundation.org>
+Message-ID: <20241212144318.834763591@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Ottens <martin.ottens@fau.de>
+From: Shengyu Qu <wiagn233@outlook.com>
 
-[ Upstream commit 1596a135e3180c92e42dd1fbcad321f4fb3e3b17 ]
+[ Upstream commit 90cb5f1776ba371478e2b08fbf7018c7bd781a8d ]
 
-When the length of a GSO packet in the tbf qdisc is larger than the burst
-size configured the packet will be segmented by the tbf_segment function.
-Whenever this function is used to enqueue SKBs, the backlog statistic of
-the tbf is not increased correctly. This can lead to underflows of the
-'backlog' byte-statistic value when these packets are dequeued from tbf.
+Seems Alcatel Lucent G-010S-P also have the same problem that it uses
+TX_FAULT pin for SOC uart. So apply sfp_fixup_ignore_tx_fault to it.
 
-Reproduce the bug:
-Ensure that the sender machine has GSO enabled. Configured the tbf on
-the outgoing interface of the machine as follows (burstsize = 1 MTU):
-$ tc qdisc add dev <oif> root handle 1: tbf rate 50Mbit burst 1514 latency 50ms
-
-Send bulk TCP traffic out via this interface, e.g., by running an iPerf3
-client on this machine. Check the qdisc statistics:
-$ tc -s qdisc show dev <oif>
-
-The 'backlog' byte-statistic has incorrect values while traffic is
-transferred, e.g., high values due to u32 underflows. When the transfer
-is stopped, the value is != 0, which should never happen.
-
-This patch fixes this bug by updating the statistics correctly, even if
-single SKBs of a GSO SKB cannot be enqueued.
-
-Fixes: e43ac79a4bc6 ("sch_tbf: segment too big GSO packets")
-Signed-off-by: Martin Ottens <martin.ottens@fau.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241125174608.1484356-1-martin.ottens@fau.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+Link: https://patch.msgid.link/TYCPR01MB84373677E45A7BFA5A28232C98792@TYCPR01MB8437.jpnprd01.prod.outlook.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_tbf.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/net/phy/sfp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_tbf.c b/net/sched/sch_tbf.c
-index 277ad11f4d613..c4c91b55e98b0 100644
---- a/net/sched/sch_tbf.c
-+++ b/net/sched/sch_tbf.c
-@@ -207,7 +207,7 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
- 	struct tbf_sched_data *q = qdisc_priv(sch);
- 	struct sk_buff *segs, *nskb;
- 	netdev_features_t features = netif_skb_features(skb);
--	unsigned int len = 0, prev_len = qdisc_pkt_len(skb);
-+	unsigned int len = 0, prev_len = qdisc_pkt_len(skb), seg_len;
- 	int ret, nb;
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index a5684ef5884bd..dcec92625cf65 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -466,7 +466,8 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
+ static const struct sfp_quirk sfp_quirks[] = {
+ 	// Alcatel Lucent G-010S-P can operate at 2500base-X, but incorrectly
+ 	// report 2500MBd NRZ in their EEPROM
+-	SFP_QUIRK_M("ALCATELLUCENT", "G010SP", sfp_quirk_2500basex),
++	SFP_QUIRK("ALCATELLUCENT", "G010SP", sfp_quirk_2500basex,
++		  sfp_fixup_ignore_tx_fault),
  
- 	segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
-@@ -218,21 +218,27 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
- 	nb = 0;
- 	skb_list_walk_safe(segs, segs, nskb) {
- 		skb_mark_not_on_list(segs);
--		qdisc_skb_cb(segs)->pkt_len = segs->len;
--		len += segs->len;
-+		seg_len = segs->len;
-+		qdisc_skb_cb(segs)->pkt_len = seg_len;
- 		ret = qdisc_enqueue(segs, q->qdisc, to_free);
- 		if (ret != NET_XMIT_SUCCESS) {
- 			if (net_xmit_drop_count(ret))
- 				qdisc_qstats_drop(sch);
- 		} else {
- 			nb++;
-+			len += seg_len;
- 		}
- 	}
- 	sch->q.qlen += nb;
--	if (nb > 1)
-+	sch->qstats.backlog += len;
-+	if (nb > 0) {
- 		qdisc_tree_reduce_backlog(sch, 1 - nb, prev_len - len);
--	consume_skb(skb);
--	return nb > 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
-+		consume_skb(skb);
-+		return NET_XMIT_SUCCESS;
-+	}
-+
-+	kfree_skb(skb);
-+	return NET_XMIT_DROP;
- }
- 
- static int tbf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	// Alcatel Lucent G-010S-A can operate at 2500base-X, but report 3.2GBd
+ 	// NRZ in their EEPROM
 -- 
 2.43.0
 
