@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-103027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 992BC9EF595
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35869EF9C9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D1651758E9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7334517D949
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3266C222D65;
-	Thu, 12 Dec 2024 17:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1D22236FC;
+	Thu, 12 Dec 2024 17:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnR8LCXL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RicFZRhk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E224F218;
-	Thu, 12 Dec 2024 17:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B19B13C918;
+	Thu, 12 Dec 2024 17:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023320; cv=none; b=hIbMW+J1/JUHoQs9XJw/fvfmE3WpU9rQgt+wWWH3FV1xDMm8EUAgnGsOr79m1r3DZKVZJifYVNQo+H2ocuKBCEHb7VZsoJVaUKd2/OoPdqkhVUb2JtFkbTdfpRBz815FYJv8F1gtXSg4XSfd7tRouarJSW+PrnItehHv8JG+hFk=
+	t=1734025571; cv=none; b=BF7je/sQ8OyAFwRfIo2UlZMtMvLoIzcRKiovdj84nofajxOyTNrlgfbaIPIs3NyOOaGxXXZOHXgDvWJN9ev952hPmfjrgQYw0NAk/oo+P0ZL/B4CacX8fp/6DY5IsZKTBxN6bxhdkMLL9+vrAb0Zn2U0/7jQ6FhMAG9IIEdjtUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023320; c=relaxed/simple;
-	bh=G4ccLg4Yu9Wem+ohfKfbv6WKDUz2dJyVKVFvUONZcEs=;
+	s=arc-20240116; t=1734025571; c=relaxed/simple;
+	bh=OoHRxY6CLgkSwCErZ0bGuyxSDfwrTM+azY6HJ/vaiQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/O12PCHRrtLnYZlsPSB7840qf0mY9mcwcPclY0hZh6XyHtClXwvOmmaDqQUkJpOJiPPmP2KKVXMm2AnnEvLDbjCGSmJMHwoSvjQD1L7DXyH9O24MAmLjfPZAA8HliZDEQRjnN4/al9PkHGG0lnPQXHnjhEWbjhYSdjF6e74L7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnR8LCXL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EB6C4CECE;
-	Thu, 12 Dec 2024 17:08:39 +0000 (UTC)
+	 MIME-Version; b=Ffgg5d9sVPcFmjSNwi4MSYpN2o4r/Ylx1Qc0G6gW7Z1kj42FS+vRiM1OdRFh5KIAmOQCdESWAhbhyIMONs6C/IbGaL19sK8TgknfJCvTG2dBytw07+4opVYBA3Zts6AJR9ZUUkafS9THxTCQz+xT96RMwhH7+VnxfflKgjTgcNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RicFZRhk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99177C4CECE;
+	Thu, 12 Dec 2024 17:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023319;
-	bh=G4ccLg4Yu9Wem+ohfKfbv6WKDUz2dJyVKVFvUONZcEs=;
+	s=korg; t=1734025571;
+	bh=OoHRxY6CLgkSwCErZ0bGuyxSDfwrTM+azY6HJ/vaiQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnR8LCXLXdOruuj2mJw78kCJ5YfwQ/KpPi8pPZqkeJuzEVuhQJh77RtjVWkT9QhPj
-	 812a3DbV39KxQfvC0yRmUsBpva9YuZp0Z+Zofor5S3Wc3gR86UI8zJ3+8XSOcyAUA0
-	 fqo6H6GLV3/4VWOk11lnUQcjswF/Qp74GCQnfFs8=
+	b=RicFZRhkCLvkHsX4ie2n8zWWXlM5w31kaz+GeXeinwNoK9VKXle40UpxYdD4Dpca6
+	 AtA+gR1f+kFFUj541lFkP5O5kzZsClyqZjnOr9rGQqvcNaWtsBWSR6/yLTLwhcB+6I
+	 FYZomkqOjNB1XFfnmDtAE7xKzKU3xIDNyqwdMLM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 496/565] drm/amdgpu: Dereference the ATCS ACPI buffer
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.4 173/321] usb: dwc3: gadget: Fix checking for number of TRBs left
 Date: Thu, 12 Dec 2024 16:01:31 +0100
-Message-ID: <20241212144331.374859009@linuxfoundation.org>
+Message-ID: <20241212144236.817801334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 32e7ee293ff476c67b51be006e986021967bc525 ]
+commit 02a6982b0ccfcdc39e20016f5fc9a1b7826a6ee7 upstream.
 
-Need to dereference the atcs acpi buffer after
-the method is executed, otherwise it will result in
-a memory leak.
+The check whether the TRB ring is full or empty in dwc3_calc_trbs_left()
+is insufficient. It assumes there are active TRBs if there's any request
+in the started_list. However, that's not the case for requests with a
+large SG list.
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That is, if we have a single usb request that requires more TRBs than
+the total TRBs in the TRB ring, the queued TRBs will be available when
+all the TRBs in the ring are completed. But the request is only
+partially completed and remains in the started_list. With the current
+logic, the TRB ring is empty, but dwc3_calc_trbs_left() returns 0.
+
+Fix this by additionally checking for the request->num_trbs for active
+TRB count.
+
+Cc: stable@vger.kernel.org
+Fixes: 51f1954ad853 ("usb: dwc3: gadget: Fix dwc3_calc_trbs_left()")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/708dc62b56b77da1f704cc2ae9b6ddb1f2dbef1f.1731545781.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/gadget.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-index 592ca0cfe61d0..0adc992e4630a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
-@@ -761,6 +761,7 @@ int amdgpu_acpi_power_shift_control(struct amdgpu_device *adev,
- 		return -EIO;
- 	}
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -903,11 +903,14 @@ static u32 dwc3_calc_trbs_left(struct dw
+ 	 * pending to be processed by the driver.
+ 	 */
+ 	if (dep->trb_enqueue == dep->trb_dequeue) {
++		struct dwc3_request *req;
++
+ 		/*
+-		 * If there is any request remained in the started_list at
+-		 * this point, that means there is no TRB available.
++		 * If there is any request remained in the started_list with
++		 * active TRBs at this point, then there is no TRB available.
+ 		 */
+-		if (!list_empty(&dep->started_list))
++		req = next_request(&dep->started_list);
++		if (req && req->num_trbs)
+ 			return 0;
  
-+	kfree(info);
- 	return 0;
- }
- 
--- 
-2.43.0
-
+ 		return DWC3_TRB_NUM - 1;
 
 
 
