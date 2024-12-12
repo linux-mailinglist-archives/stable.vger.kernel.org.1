@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-103428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50999EF757
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCE89EF965
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:50:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 097BC1700D3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBC2718958EE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C2C2210E1;
-	Thu, 12 Dec 2024 17:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC1C223C5A;
+	Thu, 12 Dec 2024 17:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOxX5NgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9DuVT/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C00216E2D;
-	Thu, 12 Dec 2024 17:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3383E225403;
+	Thu, 12 Dec 2024 17:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024538; cv=none; b=QlRzQoDZPcKap2wVW0FJRXSC2frWiH/iil9T4pC6bRNsz064fikS44BCNl2Htc2j+bc8kilbfSQXAA7dMYBwbIyeQ6Kfxmbso0fqRXBGdzLULq12Rmgd8L5qXanby5zSjoMf7WifL3fhkk93+LeoupThqyx4s0SfY86YeCYIJyk=
+	t=1734025381; cv=none; b=c7K4wnMvVb10Z1mkk29D34hBLQ8AQj/avvzTaKMl44RdAmvTGf7r7TvitFJiriO5fdSu7en4TEzzoeFHIctoBBOK+bz05j8fH2xG/JTQi2rPTsjGFRKghR48240iqv4XDQEcHuNSviQYmDCtiLxHvBVJeMS9MIlrOnUbAMnBzdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024538; c=relaxed/simple;
-	bh=RpEpWgywSi7cdIWTSsvcYbA6xPlL7mK35aGEYaGTEx4=;
+	s=arc-20240116; t=1734025381; c=relaxed/simple;
+	bh=LMDFzIc3VDFkxjw0Xno1bDl4SgK/ifJAxK1DqBiEago=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTASqwQ9HeZiasuuEBCkY738DlCcrRHHLJ4Ev+wFbWItoHQIaBIN+fABcx7mA2vQnr0seNgaoS2ngHWFlASw14idNt+8qAzJv155yvyyMFiD/YHERuYDCyKbNmkhhitXqKZdD9k1K19sf+nPMkcs185BWNBoAeCstLVQll4eTpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOxX5NgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05F6C4CED0;
-	Thu, 12 Dec 2024 17:28:57 +0000 (UTC)
+	 MIME-Version; b=PD73ZdFqyTxV2Eg37p0BJ5MtY2ZxJRah38oxnXN8JniobMJAnoG+IVjWIDpG91++SdtFf+bMuT4GjXFx+ITnf8/s7zM8uF4f0XVAE+Euyco+S0SCB6rOuTINaDPlS03eh6V27AxClp/sGaYdE7zFdFUudJqFI0IW3mIsTgMJj/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9DuVT/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E05C4AF15;
+	Thu, 12 Dec 2024 17:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024538;
-	bh=RpEpWgywSi7cdIWTSsvcYbA6xPlL7mK35aGEYaGTEx4=;
+	s=korg; t=1734025379;
+	bh=LMDFzIc3VDFkxjw0Xno1bDl4SgK/ifJAxK1DqBiEago=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOxX5NgMQpLbrfxbQ7bgYm51qy2OmmzOH7ql90DkB/9ImRmMwOWqUmxE6rujLRUt2
-	 Q2q1q95x0W3UeYcm6SMBF1Tc6r4uo9add1l95qdEV45uxiTVoRx4R5CUaaDPiVMQ/x
-	 aHixph0b+K362aXlcY5T80Vqqmz354Q4V1LBKtY0=
+	b=X9DuVT/K5oJCMc7UHeoGxO8ZQdggyxwkpvFIzMyEm9Ijsqpa5slI5qtg9huq/79pu
+	 mNB2kqwqrI48nold/hto+/4Y1/+/oGDuiLo78g7TCbRfTrv+iRFTkrtMWMyTXaMh/T
+	 /z8cbS9WdXxiA68qNLMgRdeSBP7o1UitCsdMTDMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 330/459] netfilter: x_tables: fix LED ID check in led_tg_check()
-Date: Thu, 12 Dec 2024 16:01:08 +0100
-Message-ID: <20241212144306.699508141@linuxfoundation.org>
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 5.4 151/321] comedi: Flush partial mappings in error case
+Date: Thu, 12 Dec 2024 16:01:09 +0100
+Message-ID: <20241212144235.943000157@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 04317f4eb2aad312ad85c1a17ad81fe75f1f9bc7 ]
+commit ce8f9fb651fac95dd41f69afe54d935420b945bd upstream.
 
-Syzbot has reported the following BUG detected by KASAN:
+If some remap_pfn_range() calls succeeded before one failed, we still have
+buffer pages mapped into the userspace page tables when we drop the buffer
+reference with comedi_buf_map_put(bm). The userspace mappings are only
+cleaned up later in the mmap error path.
 
-BUG: KASAN: slab-out-of-bounds in strlen+0x58/0x70
-Read of size 1 at addr ffff8881022da0c8 by task repro/5879
-...
-Call Trace:
- <TASK>
- dump_stack_lvl+0x241/0x360
- ? __pfx_dump_stack_lvl+0x10/0x10
- ? __pfx__printk+0x10/0x10
- ? _printk+0xd5/0x120
- ? __virt_addr_valid+0x183/0x530
- ? __virt_addr_valid+0x183/0x530
- print_report+0x169/0x550
- ? __virt_addr_valid+0x183/0x530
- ? __virt_addr_valid+0x183/0x530
- ? __virt_addr_valid+0x45f/0x530
- ? __phys_addr+0xba/0x170
- ? strlen+0x58/0x70
- kasan_report+0x143/0x180
- ? strlen+0x58/0x70
- strlen+0x58/0x70
- kstrdup+0x20/0x80
- led_tg_check+0x18b/0x3c0
- xt_check_target+0x3bb/0xa40
- ? __pfx_xt_check_target+0x10/0x10
- ? stack_depot_save_flags+0x6e4/0x830
- ? nft_target_init+0x174/0xc30
- nft_target_init+0x82d/0xc30
- ? __pfx_nft_target_init+0x10/0x10
- ? nf_tables_newrule+0x1609/0x2980
- ? nf_tables_newrule+0x1609/0x2980
- ? rcu_is_watching+0x15/0xb0
- ? nf_tables_newrule+0x1609/0x2980
- ? nf_tables_newrule+0x1609/0x2980
- ? __kmalloc_noprof+0x21a/0x400
- nf_tables_newrule+0x1860/0x2980
- ? __pfx_nf_tables_newrule+0x10/0x10
- ? __nla_parse+0x40/0x60
- nfnetlink_rcv+0x14e5/0x2ab0
- ? __pfx_validate_chain+0x10/0x10
- ? __pfx_nfnetlink_rcv+0x10/0x10
- ? __lock_acquire+0x1384/0x2050
- ? netlink_deliver_tap+0x2e/0x1b0
- ? __pfx_lock_release+0x10/0x10
- ? netlink_deliver_tap+0x2e/0x1b0
- netlink_unicast+0x7f8/0x990
- ? __pfx_netlink_unicast+0x10/0x10
- ? __virt_addr_valid+0x183/0x530
- ? __check_object_size+0x48e/0x900
- netlink_sendmsg+0x8e4/0xcb0
- ? __pfx_netlink_sendmsg+0x10/0x10
- ? aa_sock_msg_perm+0x91/0x160
- ? __pfx_netlink_sendmsg+0x10/0x10
- __sock_sendmsg+0x223/0x270
- ____sys_sendmsg+0x52a/0x7e0
- ? __pfx_____sys_sendmsg+0x10/0x10
- __sys_sendmsg+0x292/0x380
- ? __pfx___sys_sendmsg+0x10/0x10
- ? lockdep_hardirqs_on_prepare+0x43d/0x780
- ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
- ? exc_page_fault+0x590/0x8c0
- ? do_syscall_64+0xb6/0x230
- do_syscall_64+0xf3/0x230
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
- </TASK>
+Fix it by explicitly flushing all mappings in our VMA on the error path.
 
-Since an invalid (without '\0' byte at all) byte sequence may be passed
-from userspace, add an extra check to ensure that such a sequence is
-rejected as possible ID and so never passed to 'kstrdup()' and further.
+See commit 79a61cc3fc04 ("mm: avoid leaving partial pfn mappings around in
+error case").
 
-Reported-by: syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6c8215822f35fdb35667
-Fixes: 268cb38e1802 ("netfilter: x_tables: add LED trigger target")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20241017-comedi-tlb-v3-1-16b82f9372ce@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/xt_LED.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/staging/comedi/comedi_fops.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/netfilter/xt_LED.c b/net/netfilter/xt_LED.c
-index 0371c387b0d1f..13a2b5820b34b 100644
---- a/net/netfilter/xt_LED.c
-+++ b/net/netfilter/xt_LED.c
-@@ -97,7 +97,9 @@ static int led_tg_check(const struct xt_tgchk_param *par)
- 	struct xt_led_info_internal *ledinternal;
- 	int err;
+--- a/drivers/staging/comedi/comedi_fops.c
++++ b/drivers/staging/comedi/comedi_fops.c
+@@ -2383,6 +2383,18 @@ static int comedi_mmap(struct file *file
  
--	if (ledinfo->id[0] == '\0')
-+	/* Bail out if empty string or not a string at all. */
-+	if (ledinfo->id[0] == '\0' ||
-+	    !memchr(ledinfo->id, '\0', sizeof(ledinfo->id)))
- 		return -EINVAL;
+ 			start += PAGE_SIZE;
+ 		}
++
++#ifdef CONFIG_MMU
++		/*
++		 * Leaving behind a partial mapping of a buffer we're about to
++		 * drop is unsafe, see remap_pfn_range_notrack().
++		 * We need to zap the range here ourselves instead of relying
++		 * on the automatic zapping in remap_pfn_range() because we call
++		 * remap_pfn_range() in a loop.
++		 */
++		if (retval)
++			zap_vma_ptes(vma, vma->vm_start, size);
++#endif
+ 	}
  
- 	mutex_lock(&xt_led_mutex);
--- 
-2.43.0
-
+ 	if (retval == 0) {
 
 
 
