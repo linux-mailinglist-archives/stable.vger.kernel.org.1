@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEEC9EF1BF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A439EEA98
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 853F6176027
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C94A4188C12E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BACF223C6F;
-	Thu, 12 Dec 2024 16:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFDD21661F;
+	Thu, 12 Dec 2024 15:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbrREzZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJyB4Je3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA46320969B;
-	Thu, 12 Dec 2024 16:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3949621504F;
+	Thu, 12 Dec 2024 15:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020269; cv=none; b=VL9IyigKNimdfpMYCQkkKgwxTdzom7v0f5F1KHo6zvVNSJY2t0xEgO9dL4BcWnPpgDi6mJMZUtVFkW9qGheRaKqpj+pBtkUVJB5GTZmMwAX/pbeNS4dVusrpimbnU6CZWu8gVVm78gMbz+3Z1uk+vZNML3hRySeG1O7xib9aQEY=
+	t=1734016327; cv=none; b=HmbUBG8yYmeJcKMEvg/0xKCzBUDLIpuqfTrNVx5QjviOFDT/LlcFd38joaaJp/3HeuHvzS4AE3GeLKIgFQl+j52SXidsRCVMbpGyZcrrgWX7pkri6OoInJHa1hXoDn4SE16flMvRWz8m4SA+L5KIeRTX13gCqXR+wBF8qka7jDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020269; c=relaxed/simple;
-	bh=HQbn975PS/S+H7Soxwj3UHMFErfKue0dzhOLNTqc4qc=;
+	s=arc-20240116; t=1734016327; c=relaxed/simple;
+	bh=zMpPo/iL6JlyrrObBH7DXCkTX9upy+wGhrlj9g80tlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i8apIaf4OtixT3t0OP3xl+Uwd5wE3wawSAu7jhsv0qu9ti4gikK+kkF4OQdCxsEAqZyxf7nFh4uyCjb7CsYq1FYKbaP53m5ssFS6Ry+9Vo7pUelY/LTjOtZ2asfWyvImNWx5aRroLYxT35ckO4SPzbmLoSYIm+Zd9hMtQjAbo/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbrREzZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62EF0C4CECE;
-	Thu, 12 Dec 2024 16:17:48 +0000 (UTC)
+	 MIME-Version; b=ixl1djvwegabi0HyLg6exAGGsYbkPvym7qpZvbMg/sRvu0CBIDUs1q4EWQH/ZfiTD8SMkHyxT0FNZf7VKtuDbA619yfKRfRNCPrGcxPjZbhpkUxkAZzgAIbQW1fD/gEAEWTY1ccPPvoAIQvCrFQaWFjx9vUVnVpMl0CGMIdi/Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJyB4Je3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBC4C4CECE;
+	Thu, 12 Dec 2024 15:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020268;
-	bh=HQbn975PS/S+H7Soxwj3UHMFErfKue0dzhOLNTqc4qc=;
+	s=korg; t=1734016327;
+	bh=zMpPo/iL6JlyrrObBH7DXCkTX9upy+wGhrlj9g80tlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbrREzZs8q8LwFjyTnJrB6ejtjZNaPefnDQI8fwk2JttbRGGB117q4lFlcR5018KB
-	 5FMfTfQtLkX02s5LRLluy/HhbwlaZ3g1cgs47wdZOKJXgzHxuTCAs6GRVVaYL1jeLa
-	 LM3L4SLkpDqFXnxMobcyYgjtWiz9O+jZNeh9U580=
+	b=vJyB4Je3gdzo+Id9mqQSDb1GqhY+8YXb67umf/eCKh8+s1qK6azcdTkCtmyTvzGdo
+	 SQUZhmvOhL8HnxGNK9MyDL1QyDPANnnh8RD/WTxUSU9s3p2kUY7JVbbGw/gQ4jK/cN
+	 Ir3g5Yv0iiTOdczAUMCTFaB1kjtxG1zhAnUqLrx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Subject: [PATCH 6.1 392/772] spi: Fix acpi deferred irq probe
+	David Yat Sin <David.YatSin@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 168/466] drm/amdkfd: hard-code cacheline for gc943,gc944
 Date: Thu, 12 Dec 2024 15:55:37 +0100
-Message-ID: <20241212144406.100049950@linuxfoundation.org>
+Message-ID: <20241212144313.441280651@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: David Yat Sin <David.YatSin@amd.com>
 
-commit d24cfee7f63d6b44d45a67c5662bd1cc48e8b3ca upstream.
+commit 55ed120dcfdde2478c3ebfa1c0ac4ed1e430053b upstream.
 
-When probing spi device take care of deferred probe of ACPI irq gpio
-similar like for OF/DT case.
+Cacheline size is not available in IP discovery for gc943,gc944.
 
->From practical standpoint this fixes issue with vsc-tp driver on
-Dell XP 9340 laptop, which try to request interrupt with spi->irq
-equal to -EPROBE_DEFER and fail to probe with the following error:
-
-vsc-tp spi-INTC10D0:00: probe with driver vsc-tp failed with error -22
-
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Fixes: 33ada67da352 ("ACPI / spi: attach GPIO IRQ from ACPI description to SPI device")
+Signed-off-by: David Yat Sin <David.YatSin@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com> # Dell XPS9320, ov01a10
-Link: https://patch.msgid.link/20241122094224.226773-1-stanislaw.gruszka@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -425,6 +425,16 @@ static int spi_probe(struct device *dev)
- 			spi->irq = 0;
- 	}
- 
-+	if (has_acpi_companion(dev) && spi->irq < 0) {
-+		struct acpi_device *adev = to_acpi_device_node(dev->fwnode);
-+
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
-+		if (spi->irq == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+		if (spi->irq < 0)
-+			spi->irq = 0;
-+	}
-+
- 	ret = dev_pm_domain_attach(dev, true);
- 	if (ret)
- 		return ret;
-@@ -2697,9 +2707,6 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
- 
--	if (spi->irq < 0)
--		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
--
- 	acpi_device_set_enumerated(adev);
- 
- 	adev->power.flags.ignore_parent = true;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
+@@ -1509,6 +1509,8 @@ static int kfd_fill_gpu_cache_info_from_
+ 	if (adev->gfx.config.gc_tcp_size_per_cu) {
+ 		pcache_info[i].cache_size = adev->gfx.config.gc_tcp_size_per_cu;
+ 		pcache_info[i].cache_level = 1;
++		/* Cacheline size not available in IP discovery for gc943,gc944 */
++		pcache_info[i].cache_line_size = 128;
+ 		pcache_info[i].flags = (CRAT_CACHE_FLAGS_ENABLED |
+ 					CRAT_CACHE_FLAGS_DATA_CACHE |
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
+@@ -1520,6 +1522,7 @@ static int kfd_fill_gpu_cache_info_from_
+ 		pcache_info[i].cache_size =
+ 			adev->gfx.config.gc_l1_instruction_cache_size_per_sqc;
+ 		pcache_info[i].cache_level = 1;
++		pcache_info[i].cache_line_size = 64;
+ 		pcache_info[i].flags = (CRAT_CACHE_FLAGS_ENABLED |
+ 					CRAT_CACHE_FLAGS_INST_CACHE |
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
+@@ -1530,6 +1533,7 @@ static int kfd_fill_gpu_cache_info_from_
+ 	if (adev->gfx.config.gc_l1_data_cache_size_per_sqc) {
+ 		pcache_info[i].cache_size = adev->gfx.config.gc_l1_data_cache_size_per_sqc;
+ 		pcache_info[i].cache_level = 1;
++		pcache_info[i].cache_line_size = 64;
+ 		pcache_info[i].flags = (CRAT_CACHE_FLAGS_ENABLED |
+ 					CRAT_CACHE_FLAGS_DATA_CACHE |
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
+@@ -1540,6 +1544,7 @@ static int kfd_fill_gpu_cache_info_from_
+ 	if (adev->gfx.config.gc_tcc_size) {
+ 		pcache_info[i].cache_size = adev->gfx.config.gc_tcc_size;
+ 		pcache_info[i].cache_level = 2;
++		pcache_info[i].cache_line_size = 128;
+ 		pcache_info[i].flags = (CRAT_CACHE_FLAGS_ENABLED |
+ 					CRAT_CACHE_FLAGS_DATA_CACHE |
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
+@@ -1550,6 +1555,7 @@ static int kfd_fill_gpu_cache_info_from_
+ 	if (adev->gmc.mall_size) {
+ 		pcache_info[i].cache_size = adev->gmc.mall_size / 1024;
+ 		pcache_info[i].cache_level = 3;
++		pcache_info[i].cache_line_size = 64;
+ 		pcache_info[i].flags = (CRAT_CACHE_FLAGS_ENABLED |
+ 					CRAT_CACHE_FLAGS_DATA_CACHE |
+ 					CRAT_CACHE_FLAGS_SIMD_CACHE);
 
 
 
