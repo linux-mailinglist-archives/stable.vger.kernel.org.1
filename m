@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546829EF8E1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4909EF677
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F78617596D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FF74286CB4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BB6216E2D;
-	Thu, 12 Dec 2024 17:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE50B2165F0;
+	Thu, 12 Dec 2024 17:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOZeg0XJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fepPHPsn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E244520A5EE;
-	Thu, 12 Dec 2024 17:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7197E211493;
+	Thu, 12 Dec 2024 17:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025140; cv=none; b=RxxhZHeBuw3WZEWXxQKnQkGmAfRKKYbN8IcPjxbIEzTH/1FXVdrMkVvf6Bf+7VtUWcH51vwF1uZcGo+B+fII7ehyC/Vb8pags4cTmf7VaL8gSTZQk2/GtytsBHPPMtqPEUjhaw/LzehTdFIUQVdyD9wfigWbRcxUE9TdmrNzZDo=
+	t=1734024348; cv=none; b=ZvLmVpzfMIyaerDsa/izEEZVOPTP3Hwtaak83FxT5AnK4Tc1wJ7RFxzUy48Z2P+F3XJTOJM8Ehsv8969A6cBWPlDorfFQ9lx3JzXblmN+FMvQby/h2tPEYHN1hnk5Z1qJNE1od5BHh1T/wpxYcHP9O1bqjh2xdV1+9y55EUrk5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025140; c=relaxed/simple;
-	bh=Qu7CplK0vYjgVy4bn0beXxNMMw7DV/5j4POH77mXvds=;
+	s=arc-20240116; t=1734024348; c=relaxed/simple;
+	bh=hRiPN7sGHU8CR6JcxoWKd1TTk9E01agh3r984+cctIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjOSC/wf8r4AdXu8zfKsO1FYx1M7gQN6a7MnVN+I6PlpqF2KhfOJLgky9H1v2xYEvnh+5JPCGxv5/zumNeMayEX0hGs+qaa7lLUohveRM2yWahOhMc4Y+bwZ1XDmHEENvi/8yk6J4TpUYHb+SL7bFpSlV/L3XjL9QSCNWfSrOEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOZeg0XJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C875C4CECE;
-	Thu, 12 Dec 2024 17:38:59 +0000 (UTC)
+	 MIME-Version; b=jd6EQolWG5Vp/F0ukFxYjXM228ntUbLxBZe4rQwoLyuqKWZfT9I8WM2uP/a7N9FRVK8/w2PMF7Qj1pATus2iQT5jmIW2HJhwPui6hFR8SoOvvYwGrjud7u1RGJvPGnWRw7nYclmWieeQq8jgsL8QircahL49rTPmdcb4q9Xm1IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fepPHPsn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB93C4CECE;
+	Thu, 12 Dec 2024 17:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025139;
-	bh=Qu7CplK0vYjgVy4bn0beXxNMMw7DV/5j4POH77mXvds=;
+	s=korg; t=1734024348;
+	bh=hRiPN7sGHU8CR6JcxoWKd1TTk9E01agh3r984+cctIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOZeg0XJoNOkuLycUAjHfPukdIAZ21hMd2PNNd7LPTNmMrS3MQhj9LewlQ/R9k1xO
-	 aTB0BVXakri8mWasdKMyaCugNQNdwn3+rxYLJ1OVUAzS9XE+1wB1JHjYp5k7o/zMVb
-	 ARgk2V/e9manzoZFiav7DzSw9VHPMavsDtkw6p9s=
+	b=fepPHPsnASza+ch2c/NDc1K1ldzGWb/5gyKaGYFURWKrdG98Bg7eUe4O6W704m2bM
+	 LL2fbgjSrVIXWu4x/sB6N8/mK7wks1/9kx/kx6J4Wcst4WTdZvpIb4QJ9++XBqBH3H
+	 Hmtdotv1+DS+E5xk49RuvJLlALTE7ILSyRe0QVno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Emil Velikov <emil.velikov@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 069/321] drm/fsl-dcu: Set GEM CMA functions with DRM_GEM_CMA_DRIVER_OPS
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.10 249/459] perf/x86/intel/pt: Fix buffer full but size is 0 case
 Date: Thu, 12 Dec 2024 15:59:47 +0100
-Message-ID: <20241212144232.715893166@linuxfoundation.org>
+Message-ID: <20241212144303.429928891@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 6a32e55d18b34a787f7beaacc912b30b58022646 ]
+commit 5b590160d2cf776b304eb054afafea2bd55e3620 upstream.
 
-DRM_GEM_CMA_DRIVER_OPS sets the functions in struct drm_driver
-to their defaults. No functional changes are made.
+If the trace data buffer becomes full, a truncated flag [T] is reported
+in PERF_RECORD_AUX.  In some cases, the size reported is 0, even though
+data must have been added to make the buffer full.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20200605073247.4057-12-tzimmermann@suse.de
-Stable-dep-of: ffcde9e44d3e ("drm: fsl-dcu: enable PIXCLK on LS1021A")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That happens when the buffer fills up from empty to full before the
+Intel PT driver has updated the buffer position.  Then the driver
+calculates the new buffer position before calculating the data size.
+If the old and new positions are the same, the data size is reported
+as 0, even though it is really the whole buffer size.
+
+Fix by detecting when the buffer position is wrapped, and adjust the
+data size calculation accordingly.
+
+Example
+
+  Use a very small buffer size (8K) and observe the size of truncated [T]
+  data. Before the fix, it is possible to see records of 0 size.
+
+  Before:
+
+    $ perf record -m,8K -e intel_pt// uname
+    Linux
+    [ perf record: Woken up 2 times to write data ]
+    [ perf record: Captured and wrote 0.105 MB perf.data ]
+    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
+    Warning:
+    AUX data lost 2 times out of 3!
+
+    5 19462712368111 0x19710 [0x40]: PERF_RECORD_AUX offset: 0 size: 0 flags: 0x1 [T]
+    5 19462712700046 0x19ba8 [0x40]: PERF_RECORD_AUX offset: 0x170 size: 0xe90 flags: 0x1 [T]
+
+ After:
+
+    $ perf record -m,8K -e intel_pt// uname
+    Linux
+    [ perf record: Woken up 3 times to write data ]
+    [ perf record: Captured and wrote 0.040 MB perf.data ]
+    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
+    Warning:
+    AUX data lost 2 times out of 3!
+
+    1 113720802995 0x4948 [0x40]: PERF_RECORD_AUX offset: 0 size: 0x2000 flags: 0x1 [T]
+    1 113720979812 0x6b10 [0x40]: PERF_RECORD_AUX offset: 0x2000 size: 0x2000 flags: 0x1 [T]
+
+Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20241022155920.17511-2-adrian.hunter@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/x86/events/intel/pt.c |   11 ++++++++---
+ arch/x86/events/intel/pt.h |    2 ++
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-index 113d2e30cf952..abbc1ddbf27f0 100644
---- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-+++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-@@ -141,12 +141,7 @@ static struct drm_driver fsl_dcu_drm_driver = {
- 	.irq_handler		= fsl_dcu_drm_irq,
- 	.irq_preinstall		= fsl_dcu_irq_uninstall,
- 	.irq_uninstall		= fsl_dcu_irq_uninstall,
--	.gem_create_object	= drm_gem_cma_create_object_default_funcs,
--	.prime_handle_to_fd	= drm_gem_prime_handle_to_fd,
--	.prime_fd_to_handle	= drm_gem_prime_fd_to_handle,
--	.gem_prime_import_sg_table = drm_gem_cma_prime_import_sg_table,
--	.gem_prime_mmap		= drm_gem_cma_prime_mmap,
--	.dumb_create		= drm_gem_cma_dumb_create,
-+	DRM_GEM_CMA_DRIVER_OPS,
- 	.fops			= &fsl_dcu_drm_fops,
- 	.name			= "fsl-dcu-drm",
- 	.desc			= "Freescale DCU DRM",
--- 
-2.43.0
-
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -811,11 +811,13 @@ static void pt_buffer_advance(struct pt_
+ 	buf->cur_idx++;
+ 
+ 	if (buf->cur_idx == buf->cur->last) {
+-		if (buf->cur == buf->last)
++		if (buf->cur == buf->last) {
+ 			buf->cur = buf->first;
+-		else
++			buf->wrapped = true;
++		} else {
+ 			buf->cur = list_entry(buf->cur->list.next, struct topa,
+ 					      list);
++		}
+ 		buf->cur_idx = 0;
+ 	}
+ }
+@@ -829,8 +831,11 @@ static void pt_buffer_advance(struct pt_
+ static void pt_update_head(struct pt *pt)
+ {
+ 	struct pt_buffer *buf = perf_get_aux(&pt->handle);
++	bool wrapped = buf->wrapped;
+ 	u64 topa_idx, base, old;
+ 
++	buf->wrapped = false;
++
+ 	if (buf->single) {
+ 		local_set(&buf->data_size, buf->output_off);
+ 		return;
+@@ -848,7 +853,7 @@ static void pt_update_head(struct pt *pt
+ 	} else {
+ 		old = (local64_xchg(&buf->head, base) &
+ 		       ((buf->nr_pages << PAGE_SHIFT) - 1));
+-		if (base < old)
++		if (base < old || (base == old && wrapped))
+ 			base += buf->nr_pages << PAGE_SHIFT;
+ 
+ 		local_add(base - old, &buf->data_size);
+--- a/arch/x86/events/intel/pt.h
++++ b/arch/x86/events/intel/pt.h
+@@ -65,6 +65,7 @@ struct pt_pmu {
+  * @head:	logical write offset inside the buffer
+  * @snapshot:	if this is for a snapshot/overwrite counter
+  * @single:	use Single Range Output instead of ToPA
++ * @wrapped:	buffer advance wrapped back to the first topa table
+  * @stop_pos:	STOP topa entry index
+  * @intr_pos:	INT topa entry index
+  * @stop_te:	STOP topa entry pointer
+@@ -82,6 +83,7 @@ struct pt_buffer {
+ 	local64_t		head;
+ 	bool			snapshot;
+ 	bool			single;
++	bool			wrapped;
+ 	long			stop_pos, intr_pos;
+ 	struct topa_entry	*stop_te, *intr_te;
+ 	void			**data_pages;
 
 
 
