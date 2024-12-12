@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73C29EEA17
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5829EF38D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97AAF284414
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF89317B191
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A18218594;
-	Thu, 12 Dec 2024 15:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E876F23695D;
+	Thu, 12 Dec 2024 16:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jiu3tDLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDYEsxy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E131216E29;
-	Thu, 12 Dec 2024 15:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A214C236956;
+	Thu, 12 Dec 2024 16:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016104; cv=none; b=ZuX7gQQHZtpX/t8Jq9t0LNngNRdc9n9HLO+5XNWPzjNejJrZeGhWv/yEq/A9tCMJc4+cW5io6U5TVxRD5fBriPDn9xMw2RQQDN5qPO2lQOjiyl8ZzK7esAZfnnL/eHfLeQJsUiUt91oi5urfiiQxWZYjE1r+AUzoNApyDaT0MZY=
+	t=1734021957; cv=none; b=JfBDOEORxb13Ga5+S/Kv3R4Y80a7wUxoMJL85R96YKdJntWwDgTEZ3p72aKDPsp4o4EvTcuTYlB30+mTnO6uFPOxd7+5jm61JAfXvv88jHwdUBJMrhRzt5Kzbhcws+R9jcEcMUhxZVrN+m33IprV1fbL7p3J+CXUV4YlqY4cxQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016104; c=relaxed/simple;
-	bh=n6PivKZJM8QSqbZPerQO8s9E1k+8H2H9DBgRBhGxzcI=;
+	s=arc-20240116; t=1734021957; c=relaxed/simple;
+	bh=HtkS0L2/SwsThCB3AmVifn6oyEvG/GnWNl3lktsYhBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBXAG76YQ122ihAuIxANKi3idJRENJ2kzhCuaEPaLIB/lYkCJYWjOAjtYJtGhu7z1XgnRbfmOx4Wwdah4wKXW8IH8HObLLCdusrIDLU28mLHu+lXy2Tpgwqux4uVkVJs0lIi2mFuzQgs0EdURpryq3weyJ2c2p2x6i+Jr9KOisI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jiu3tDLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7095C4CECE;
-	Thu, 12 Dec 2024 15:08:23 +0000 (UTC)
+	 MIME-Version; b=OHQmZiKTlNA3vJm11q7WkhCx6B4oyVDJeYpYWxSnj7c6KkiUWBRErJcUKtsnGH72LCD2HJa9fbuqyeSyGjPu6nPebdMJzBPFPxkRcWiJZSWOTYmRdtVdHch9DwgF62kmp9zwq2YBSHA0Y6vHADyqb3dYdgx/k2hcC1kHg3XXYeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDYEsxy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD1DC4CED0;
+	Thu, 12 Dec 2024 16:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016104;
-	bh=n6PivKZJM8QSqbZPerQO8s9E1k+8H2H9DBgRBhGxzcI=;
+	s=korg; t=1734021957;
+	bh=HtkS0L2/SwsThCB3AmVifn6oyEvG/GnWNl3lktsYhBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jiu3tDLx732bhompztP7Nw25SxtqXHVRzrOkMSbCSnFrgyCbgo8dE4DYT9NQZbIuJ
-	 7sszA2HGJ4gd7IMmU/c56mrSvLl+HNKtB1Rg2w+FqmBxqdD3Ihb+71agh5pOQ10A/Y
-	 9Bl6EUxepe0zkZb/2eX4G5GC3SrTMslrlqk1WmWk=
+	b=JDYEsxy1NOwsb8dbvcuxu12+aSwu7F8jo3uvvh5xlnMJpgAtIdQkS4X8/QB3bUrhr
+	 A6v21piBzfDK7/TfRlUYKDXK0bEl2oS1SdQdgwqY3JidAvw8xeTRHBojYapVfGeSfB
+	 815ZDEuS+3NHk1diqrZhphtZREdr0qncfIyIEmPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yutang Jiang <jiangyutang@os.amperecomputing.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.12 134/466] arm64: mm: Fix zone_dma_limit calculation
+	Marco Elver <elver@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 108/565] kcsan, seqlock: Fix incorrect assumption in read_seqbegin()
 Date: Thu, 12 Dec 2024 15:55:03 +0100
-Message-ID: <20241212144312.099490335@linuxfoundation.org>
+Message-ID: <20241212144315.744936114@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Marco Elver <elver@google.com>
 
-commit 56a708742a8bf127eb66798bfc9c9516c61f9930 upstream.
+[ Upstream commit 183ec5f26b2fc97a4a9871865bfe9b33c41fddb2 ]
 
-Commit ba0fb44aed47 ("dma-mapping: replace zone_dma_bits by
-zone_dma_limit") and subsequent patches changed how zone_dma_limit is
-calculated to allow a reduced ZONE_DMA even when RAM starts above 4GB.
-Commit 122c234ef4e1 ("arm64: mm: keep low RAM dma zone") further fixed
-this to ensure ZONE_DMA remains below U32_MAX if RAM starts below 4GB,
-especially on platforms that do not have IORT or DT description of the
-device DMA ranges. While zone boundaries calculation was fixed by the
-latter commit, zone_dma_limit, used to determine the GFP_DMA flag in the
-core code, was not updated. This results in excessive use of GFP_DMA and
-unnecessary ZONE_DMA allocations on some platforms.
+During testing of the preceding changes, I noticed that in some cases,
+current->kcsan_ctx.in_flat_atomic remained true until task exit. This is
+obviously wrong, because _all_ accesses for the given task will be
+treated as atomic, resulting in false negatives i.e. missed data races.
 
-Update zone_dma_limit to match the actual upper bound of ZONE_DMA.
+Debugging led to fs/dcache.c, where we can see this usage of seqlock:
 
-Fixes: ba0fb44aed47 ("dma-mapping: replace zone_dma_bits by zone_dma_limit")
-Cc: <stable@vger.kernel.org> # 6.12.x
-Reported-by: Yutang Jiang <jiangyutang@os.amperecomputing.com>
-Tested-by: Yutang Jiang <jiangyutang@os.amperecomputing.com>
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Link: https://lore.kernel.org/r/20241125171650.77424-1-yang@os.amperecomputing.com
-[catalin.marinas@arm.com: some tweaking of the commit log]
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	struct dentry *d_lookup(const struct dentry *parent, const struct qstr *name)
+	{
+		struct dentry *dentry;
+		unsigned seq;
+
+		do {
+			seq = read_seqbegin(&rename_lock);
+			dentry = __d_lookup(parent, name);
+			if (dentry)
+				break;
+		} while (read_seqretry(&rename_lock, seq));
+	[...]
+
+As can be seen, read_seqretry() is never called if dentry != NULL;
+consequently, current->kcsan_ctx.in_flat_atomic will never be reset to
+false by read_seqretry().
+
+Give up on the wrong assumption of "assume closing read_seqretry()", and
+rely on the already-present annotations in read_seqcount_begin/retry().
+
+Fixes: 88ecd153be95 ("seqlock, kcsan: Add annotations for KCSAN")
+Signed-off-by: Marco Elver <elver@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241104161910.780003-6-elver@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/init.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ include/linux/seqlock.h | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -116,15 +116,6 @@ static void __init arch_reserve_crashker
- 
- static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index a06af404c4b2a..49943cad85fe7 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -894,11 +894,7 @@ typedef struct {
+  */
+ static inline unsigned read_seqbegin(const seqlock_t *sl)
  {
--	/**
--	 * Information we get from firmware (e.g. DT dma-ranges) describe DMA
--	 * bus constraints. Devices using DMA might have their own limitations.
--	 * Some of them rely on DMA zone in low 32-bit memory. Keep low RAM
--	 * DMA zone on platforms that have RAM there.
--	 */
--	if (memblock_start_of_DRAM() < U32_MAX)
--		zone_limit = min(zone_limit, U32_MAX);
+-	unsigned ret = read_seqcount_begin(&sl->seqcount);
 -
- 	return min(zone_limit, memblock_end_of_DRAM() - 1) + 1;
+-	kcsan_atomic_next(0);  /* non-raw usage, assume closing read_seqretry() */
+-	kcsan_flat_atomic_begin();
+-	return ret;
++	return read_seqcount_begin(&sl->seqcount);
  }
  
-@@ -140,6 +131,14 @@ static void __init zone_sizes_init(void)
- 	acpi_zone_dma_limit = acpi_iort_dma_get_max_cpu_address();
- 	dt_zone_dma_limit = of_dma_get_max_cpu_address(NULL);
- 	zone_dma_limit = min(dt_zone_dma_limit, acpi_zone_dma_limit);
-+	/*
-+	 * Information we get from firmware (e.g. DT dma-ranges) describe DMA
-+	 * bus constraints. Devices using DMA might have their own limitations.
-+	 * Some of them rely on DMA zone in low 32-bit memory. Keep low RAM
-+	 * DMA zone on platforms that have RAM there.
-+	 */
-+	if (memblock_start_of_DRAM() < U32_MAX)
-+		zone_dma_limit = min(zone_dma_limit, U32_MAX);
- 	arm64_dma_phys_limit = max_zone_phys(zone_dma_limit);
- 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
- #endif
+ /**
+@@ -914,12 +910,6 @@ static inline unsigned read_seqbegin(const seqlock_t *sl)
+  */
+ static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
+ {
+-	/*
+-	 * Assume not nested: read_seqretry() may be called multiple times when
+-	 * completing read critical section.
+-	 */
+-	kcsan_flat_atomic_end();
+-
+ 	return read_seqcount_retry(&sl->seqcount, start);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
