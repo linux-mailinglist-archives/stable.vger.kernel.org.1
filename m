@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33849EF4AB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016F99EF705
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3ED616733E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DE4B188EBE3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E4B229685;
-	Thu, 12 Dec 2024 16:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536AC205501;
+	Thu, 12 Dec 2024 17:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZO+AZ85P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8cpSJ9B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F8F2210E1;
-	Thu, 12 Dec 2024 16:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125A413CA93;
+	Thu, 12 Dec 2024 17:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022476; cv=none; b=qHKUhT49AcSsGImmMWb85wkF4VpG0orcEOZQJGILfinogJw3GFtmOTqrfIu7yfixO2wHlsAYTACQTC9ODeQHOPStOyXtszVHgF652pd2wXxFo6yhY1rypZHnxpl/6ss7uO6cAbYkEqhh/PzD3Qt8GKO/wjavH+lxXpxCRHWHPiM=
+	t=1734023867; cv=none; b=dmcVQ2LSsi/qp0X4WPTEfZwz+KBK+UJqdgk7X4pOwmyGjT3EmeFzEW3/61d1baIzO8DeUybjUaRdlC4tWwUKMJjQsfa9bxv2I7Sx58u1snNgDQJFQQg2Q1IDFKg+MJ9IxhbbIGFHmj9gZg9Q7GWpVlyINan+r7cJ9OdtYUToDGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022476; c=relaxed/simple;
-	bh=7YoHu6uG+3pEo01h6hUzvgLUzwFNi8J02Q9G1G3pQa0=;
+	s=arc-20240116; t=1734023867; c=relaxed/simple;
+	bh=G9vAWf3hjsSKU+fVUokDFFtpAjLgGkGv24yZpAei6eY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7H9xDfSNTVW3XVyR/hDnInUmOfSlpODSkckEslxM4BCUIixKXHvqMZ7yGWPyrHcgD6GJHPOEULtb1v8vCt/5u225Vc3GQ3rOO4wb3W6hNhyZwFrW/zi8EU8JXn5aVrdQ7kTuIxegTdbFReuky2EXx0XosQKHzlMH85gvDnKPLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZO+AZ85P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23C1C4CED0;
-	Thu, 12 Dec 2024 16:54:35 +0000 (UTC)
+	 MIME-Version; b=HGx2InfwLfsB4c6sbtjdxK0o9iOKOj/FrJqoBbGQaLTz6M7sOMDrEJ0wIOsfl7GHyHvD1/oWKMkyoZX02/NxhkaIB1ZgVT9BzTmoWtbMSjsZ2y+feOs7gbYhDOEyGDzuDek3BaljJJQanIC7+pinBczAWkvNI7P7XuhuULHHHNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8cpSJ9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1EDC4CECE;
+	Thu, 12 Dec 2024 17:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022476;
-	bh=7YoHu6uG+3pEo01h6hUzvgLUzwFNi8J02Q9G1G3pQa0=;
+	s=korg; t=1734023866;
+	bh=G9vAWf3hjsSKU+fVUokDFFtpAjLgGkGv24yZpAei6eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZO+AZ85P/Inq8o6440Sm70ad8fjhKUv1uIwyFt8u2kp/lPLqDNMgHbgcYPTeyaIMY
-	 CeVyygBysLXK3jZu3C18Tsm2ac+FtVzFH4y1ptgxAqre6faAKbRBuiAIypu3bPcysQ
-	 wUE+H0yIsfbMZeI5OFBVbTr6VVUhPFC67FE5A8xE=
+	b=l8cpSJ9BX46XF3fZ2ghe1vp1At9eQcbXgK/fFN4fREfHoLcrmDk+qEwyKO23Cwn7K
+	 rfeqDtiIbA+GyBiKx6tENBaWVzN9Z8CjJukGNCZBTwT9w/3aubwhWRnNDwE2GPUb10
+	 WI61oA0eypwiGuwB8dWze/RDZtwv4Zh/CIdEqK7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Igor Prusov <ivprusov@salutedevices.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 250/565] f2fs: remove the unused flush argument to change_curseg
-Date: Thu, 12 Dec 2024 15:57:25 +0100
-Message-ID: <20241212144321.359157472@linuxfoundation.org>
+Subject: [PATCH 5.10 108/459] dt-bindings: vendor-prefixes: Add NeoFidelity, Inc
+Date: Thu, 12 Dec 2024 15:57:26 +0100
+Message-ID: <20241212144257.781503507@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Igor Prusov <ivprusov@salutedevices.com>
 
-[ Upstream commit 5bcd655fffaec24e849bda1207446f5cc821713e ]
+[ Upstream commit 5d9e6d6fc1b98c8c22d110ee931b3b233d43cd13 ]
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 43563069e1c1 ("f2fs: check curseg->inited before write_sum_page in change_curseg")
+Add vendor prefix for NeoFidelity, Inc
+
+Signed-off-by: Igor Prusov <ivprusov@salutedevices.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240925-ntp-amps-8918-8835-v3-1-e2459a8191a6@salutedevices.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index cb37c711b1f61..3e5900ddb92b0 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2729,7 +2729,7 @@ bool f2fs_segment_has_free_slot(struct f2fs_sb_info *sbi, int segno)
-  * This function always allocates a used segment(from dirty seglist) by SSR
-  * manner, so it should recover the existing segment information of valid blocks
-  */
--static void change_curseg(struct f2fs_sb_info *sbi, int type, bool flush)
-+static void change_curseg(struct f2fs_sb_info *sbi, int type)
- {
- 	struct dirty_seglist_info *dirty_i = DIRTY_I(sbi);
- 	struct curseg_info *curseg = CURSEG_I(sbi, type);
-@@ -2737,9 +2737,7 @@ static void change_curseg(struct f2fs_sb_info *sbi, int type, bool flush)
- 	struct f2fs_summary_block *sum_node;
- 	struct page *sum_page;
- 
--	if (flush)
--		write_sum_page(sbi, curseg->sum_blk,
--					GET_SUM_BLOCK(sbi, curseg->segno));
-+	write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
- 
- 	__set_test_and_inuse(sbi, new_segno);
- 
-@@ -2778,7 +2776,7 @@ static void get_atssr_segment(struct f2fs_sb_info *sbi, int type,
- 		struct seg_entry *se = get_seg_entry(sbi, curseg->next_segno);
- 
- 		curseg->seg_type = se->type;
--		change_curseg(sbi, type, true);
-+		change_curseg(sbi, type);
- 	} else {
- 		/* allocate cold segment by default */
- 		curseg->seg_type = CURSEG_COLD_DATA;
-@@ -2953,7 +2951,7 @@ void f2fs_allocate_segment_for_resize(struct f2fs_sb_info *sbi, int type,
- 		goto unlock;
- 
- 	if (f2fs_need_SSR(sbi) && get_ssr_segment(sbi, type, SSR, 0))
--		change_curseg(sbi, type, true);
-+		change_curseg(sbi, type);
- 	else
- 		new_curseg(sbi, type, true);
- 
-@@ -3444,7 +3442,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
- 			if (need_new_seg(sbi, type))
- 				new_curseg(sbi, type, false);
- 			else
--				change_curseg(sbi, type, true);
-+				change_curseg(sbi, type);
- 			stat_inc_seg_type(sbi, curseg);
- 		}
- 	}
-@@ -3705,7 +3703,7 @@ void f2fs_do_replace_block(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- 	/* change the current segment */
- 	if (segno != curseg->segno) {
- 		curseg->next_segno = segno;
--		change_curseg(sbi, type, true);
-+		change_curseg(sbi, type);
- 	}
- 
- 	curseg->next_blkoff = GET_BLKOFF_FROM_SEG0(sbi, new_blkaddr);
-@@ -3733,7 +3731,7 @@ void f2fs_do_replace_block(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
- 	if (recover_curseg) {
- 		if (old_cursegno != curseg->segno) {
- 			curseg->next_segno = old_cursegno;
--			change_curseg(sbi, type, true);
-+			change_curseg(sbi, type);
- 		}
- 		curseg->next_blkoff = old_blkoff;
- 		curseg->alloc_type = old_alloc_type;
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 2735be1a84709..e04be09dd0291 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -718,6 +718,8 @@ patternProperties:
+     description: National Semiconductor
+   "^nec,.*":
+     description: NEC LCD Technologies, Ltd.
++  "^neofidelity,.*":
++    description: Neofidelity Inc.
+   "^neonode,.*":
+     description: Neonode Inc.
+   "^netgear,.*":
 -- 
 2.43.0
 
