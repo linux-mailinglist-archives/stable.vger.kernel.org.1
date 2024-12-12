@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207C39EF9A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C32619EF84D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E97DA16A4AE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 651491894C87
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BE2229673;
-	Thu, 12 Dec 2024 17:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA8D21E085;
+	Thu, 12 Dec 2024 17:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcytlbuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="na0MUw/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48B52236F0;
-	Thu, 12 Dec 2024 17:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED6220A5EE;
+	Thu, 12 Dec 2024 17:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025479; cv=none; b=bkRSmm5VZgQePfu7JoOY9gCMKnJZFE72p9liT7pZsQ8/8gIza1Ll1Rtc5A80xC2zB5+TspX3e5+3vU/QdJW8WV6AHdwpLZFIEuCwiXoAlAV8F34+ijiF+HsbH2T5NrVuM3xTvbpU5c8uV9kZcNBMuWPmnDbTdRcoZRr0vLTeNfg=
+	t=1734024648; cv=none; b=OJerlZZO3CWbK6eYVnpWhmVyfpTbCKmQLCx5P/gBvbNGloYQtqrH+AamPesUs/j/F/0EHnWBRZihr1jNUMkdEu9fCyiY5TmQ+SgMQcuh3Qidp0BlP5pvcJS6p979ipSa7wbcc77iFpVVmML9XAdFi1Eg/QYDBkiielRsHtYpeQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025479; c=relaxed/simple;
-	bh=YtNpmElHklEtwLwWQqpkBzObkAwPDbCKEbF+4WAUkLo=;
+	s=arc-20240116; t=1734024648; c=relaxed/simple;
+	bh=iUvHgM3/BuX7BHv1haWbnBIYkx+H7szf6bdUpcSCJ0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=niNIUnAL0AoeJMdydBA1h4WYPL0n9PHxIkNFoXbGPjcakBYnYIK+xjnJH+fNRzanwqK9rw59WVmLtISDTXZMX7Jn0JHTetkrDvPaJjrON8yRvi7k5QLb5jX36j4LtgJBRNjRFjFGrX3btSrz/wrfj1T1IQSBH0T0zYhJe28TCpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcytlbuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346ACC4CECE;
-	Thu, 12 Dec 2024 17:44:39 +0000 (UTC)
+	 MIME-Version; b=JefbU3IFF6oRCX+vIxEgovFdT3ZPS+PX8h9X7Ia9CwvhW9V+FEE26PglY03oLtCFmajkM/wAmTIcP/ENAK1LrvCQgfymYi2PmKrgFbMeY7DnVwSzrseNgoaMU3L8e7qNVZopMbmlSDURJeWS3cy88zIMZQtyK7nQXSyHDTE87rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=na0MUw/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF97C4CECE;
+	Thu, 12 Dec 2024 17:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025479;
-	bh=YtNpmElHklEtwLwWQqpkBzObkAwPDbCKEbF+4WAUkLo=;
+	s=korg; t=1734024647;
+	bh=iUvHgM3/BuX7BHv1haWbnBIYkx+H7szf6bdUpcSCJ0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jcytlbuhBFTwm97wkCBcS+7ErUCDUtUEy9p0f/gpO7niIdk8guO7R4LbxDsNfp2ZQ
-	 ivofW2Hw8gNj80dY8BSZlpqFE83i8IVAM6LxkEcwyrmAt542poPSULcdf9a/D+g+Q/
-	 Zqd9Q7ejTWG8j1qjrFIINLJi8EWT3A5mB1dhgP9s=
+	b=na0MUw/BhFy/0nVNybSZWMGiJPpJ9ycSt6VXY7OePOdd7MMT5O2ZRnUZt1FCRjw0O
+	 Odqb0rlCkXQryQJ/PmQJ25dxDUIj+m2GAEx8cecqKJh3nN0o94h27J9NPA881vLtvh
+	 6DmzLT2InodonL8L+kwrusXd9w9TW1B/Lks2fy6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 184/321] NFSv4.0: Fix a use-after-free problem in the asynchronous open()
-Date: Thu, 12 Dec 2024 16:01:42 +0100
-Message-ID: <20241212144237.256422395@linuxfoundation.org>
+	Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 365/459] ALSA: hda/realtek: Add support for Samsung Galaxy Book3 360 (NP730QFG)
+Date: Thu, 12 Dec 2024 16:01:43 +0100
+Message-ID: <20241212144308.091815234@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
 
-[ Upstream commit 2fdb05dc0931250574f0cb0ebeb5ed8e20f4a889 ]
+commit e2974a220594c06f536e65dfd7b2447e0e83a1cb upstream.
 
-Yang Erkun reports that when two threads are opening files at the same
-time, and are forced to abort before a reply is seen, then the call to
-nfs_release_seqid() in nfs4_opendata_free() can result in a
-use-after-free of the pointer to the defunct rpc task of the other
-thread.
-The fix is to ensure that if the RPC call is aborted before the call to
-nfs_wait_on_sequence() is complete, then we must call nfs_release_seqid()
-in nfs4_open_release() before the rpc_task is freed.
+Fixes the 3.5mm headphone jack on the Samsung Galaxy Book 3 360
+NP730QFG laptop.
+Unlike the other Galaxy Book3 series devices, this device only needs
+the ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET quirk.
+Verified changes on the device and compared with codec state in Windows.
 
-Reported-by: Yang Erkun <yangerkun@huawei.com>
-Fixes: 24ac23ab88df ("NFSv4: Convert open() into an asynchronous RPC call")
-Reviewed-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ white-space fixes by tiwai ]
+
+Signed-off-by: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/QB1PR01MB40047D4CC1282DB7F1333124CC352@QB1PR01MB4004.CANPRD01.PROD.OUTLOOK.COM
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 31503bade3358..632cea3fb91da 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -2477,12 +2477,14 @@ static void nfs4_open_release(void *calldata)
- 	struct nfs4_opendata *data = calldata;
- 	struct nfs4_state *state = NULL;
- 
-+	/* In case of error, no cleanup! */
-+	if (data->rpc_status != 0 || !data->rpc_done) {
-+		nfs_release_seqid(data->o_arg.seqid);
-+		goto out_free;
-+	}
- 	/* If this request hasn't been cancelled, do nothing */
- 	if (!data->cancelled)
- 		goto out_free;
--	/* In case of error, no cleanup! */
--	if (data->rpc_status != 0 || !data->rpc_done)
--		goto out_free;
- 	/* In case we need an open_confirm, no cleanup! */
- 	if (data->o_res.rflags & NFS4_OPEN_RESULT_CONFIRM)
- 		goto out_free;
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9269,6 +9269,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x144d, 0xc830, "Samsung Galaxy Book Ion (NT950XCJ-X716A)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc832, "Samsung Galaxy Book Flex Alpha (NP730QCJ)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xca03, "Samsung Galaxy Book2 Pro 360 (NP930QED)", ALC298_FIXUP_SAMSUNG_AMP),
++	SND_PCI_QUIRK(0x144d, 0xca06, "Samsung Galaxy Book3 360 (NP730QFG)", ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xc868, "Samsung Galaxy Book2 Pro (NP930XED)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
 
 
 
