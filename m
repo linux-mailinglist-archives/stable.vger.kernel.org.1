@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2189F9EF057
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C61CC9EF29A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8340E18849B4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 789A628831A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6993235C32;
-	Thu, 12 Dec 2024 16:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E241D2253EE;
+	Thu, 12 Dec 2024 16:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zREQZt/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUbkeTPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846E5222D72;
-	Thu, 12 Dec 2024 16:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0496222D68;
+	Thu, 12 Dec 2024 16:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019696; cv=none; b=YK6tiZnrzdNIZHlnwrOKWH0Dti2MrsjsJyd33kAr810cPs3xNziKXkPRCDEmw4sBHBQuhb9gMZ9cKj2qxTr5fD69wW+n4LNEoKjm3jhUZH4v6U4GvBJhDWUdp1gdtQdPchEY94JXr1QIRdhYQ0Qku2DxlJWpVrX4hwi/8mFck+o=
+	t=1734021658; cv=none; b=ia3UfMbFefUmWTM8hOhaeoW1udJ3nmAzDWHrraTGCMrkXQi6x8Y2tN62WApFasLJ8ih6KlBIvn9MTGsfLP/TufyLQ/dIVUr3aPWGCQdOaycAi0BdZyxM/4K+yPxaHDCp/crJrIVbiitbJpX/hSDDhI4FLrznnCEGrZ81Zth6gJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019696; c=relaxed/simple;
-	bh=QblXOO4dQ8GQlfJDjpxLaiETlqXPsK1gM2HROb7+iD4=;
+	s=arc-20240116; t=1734021658; c=relaxed/simple;
+	bh=Vm/atCh3AQ35pi37C+qrrV3y1L3kiiuM47apwIlyAyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMlVrzOvMxkNDER9zXtG3Z+JKo6RO8dx5rHseQGVBUKWlz57FTGn5yFy/KP/WNDb1x4wezxA3GswMQQC1mtiENMGDYnub8XNSNfErLhl7+BRiMlX8y9jgOaFMRSaswowwnWEsoi/bZMKEd6+c2F64QykVSZbjyP5u6RKA9BS7R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zREQZt/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68CBC4CECE;
-	Thu, 12 Dec 2024 16:08:15 +0000 (UTC)
+	 MIME-Version; b=cCf8x28J/QLvSRwY71rcWE9WJ3hNX+GyaIf+19MQ8YgR9TGtpkxRDys91R7sc9XiDp1Ri5UFOo+VkwLz+YZ1q7ZKxhvPCJueTDgcIcT3093Kbz7pvgdkIcA6LT9kMYbnFpCS/aTOpCBA89jLuePOyCb5k29NHLEyWB2cBdAykG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUbkeTPR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D169C4CECE;
+	Thu, 12 Dec 2024 16:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019696;
-	bh=QblXOO4dQ8GQlfJDjpxLaiETlqXPsK1gM2HROb7+iD4=;
+	s=korg; t=1734021658;
+	bh=Vm/atCh3AQ35pi37C+qrrV3y1L3kiiuM47apwIlyAyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zREQZt/KTPfdplzrbCxjeBYMRtWEDbQTjcWx+y+QhvSrdMW98snrUiwkTsfFVXa1Y
-	 8f2gU34uDwR49phXQS2aB4zihhvlzQQ6r+XcqftTFUJsRXrjaGLWwi2Hg603B8i5xw
-	 C6fVSoEH4dBPhfVhlVj/SGg7lqCulYUnVXosNnt8=
+	b=AUbkeTPRT2O/5kMkN9rXj06zfNEgmlcJgsTtBjACQ/AOKgtsGxsRxlOBuTksvSgj2
+	 UfW7YmjabImovjAyeF57V8pvLy4pfFrFG3Hk2A5wWWdfpZcinr7/YrrxvQPfqQ52/c
+	 WSbRPBLoGm+HMefHKRh4gXhxyU0Ods6Q+gw7XjAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 257/772] clk: clk-axi-clkgen: make sure to enable the AXI bus clock
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 007/565] media: gspca: ov534-ov772x: Fix off-by-one error in set_frame_rate()
 Date: Thu, 12 Dec 2024 15:53:22 +0100
-Message-ID: <20241212144400.534702669@linuxfoundation.org>
+Message-ID: <20241212144311.736256417@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit c64ef7e4851d1a9abbb7f7833e4936973ac5ba79 ]
+commit d2842dec577900031826dc44e9bf0c66416d7173 upstream.
 
-In order to access the registers of the HW, we need to make sure that
-the AXI bus clock is enabled. Hence let's increase the number of clocks
-by one.
+In set_frame_rate(), select a rate in rate_0 or rate_1 by checking
+sd->frame_rate >= r->fps in a loop, but the loop condition terminates when
+the index reaches zero, which fails to check the last elememt in rate_0 or
+rate_1.
 
-In order to keep backward compatibility and make sure old DTs still work
-we check if clock-names is available or not. If it is, then we can
-disambiguate between really having the AXI clock or a parent clock and
-so we can enable the bus clock. If not, we fallback to what was done
-before and don't explicitly enable the AXI bus clock.
+Check for >= 0 so that the last one in rate_0 or rate_1 is also checked.
 
-Note that if clock-names is given, the axi clock must be the last one in
-the phandle array (also enforced in the DT bindings) so that we can reuse
-as much code as possible.
-
-Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-2-bc5e0733ad76@analog.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 189d92af707e ("V4L/DVB (13422): gspca - ov534: ov772x changes from Richard Kaswy.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk-axi-clkgen.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/media/usb/gspca/ov534.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
-index ac6ff736ac8f6..bb5cd9d389930 100644
---- a/drivers/clk/clk-axi-clkgen.c
-+++ b/drivers/clk/clk-axi-clkgen.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/platform_device.h>
-+#include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/slab.h>
- #include <linux/io.h>
-@@ -510,6 +511,7 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 	struct clk_init_data init;
- 	const char *parent_names[2];
- 	const char *clk_name;
-+	struct clk *axi_clk;
- 	unsigned int i;
- 	int ret;
- 
-@@ -526,8 +528,24 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 		return PTR_ERR(axi_clkgen->base);
- 
- 	init.num_parents = of_clk_get_parent_count(pdev->dev.of_node);
--	if (init.num_parents < 1 || init.num_parents > 2)
--		return -EINVAL;
-+
-+	axi_clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
-+	if (!IS_ERR(axi_clk)) {
-+		if (init.num_parents < 2 || init.num_parents > 3)
-+			return -EINVAL;
-+
-+		init.num_parents -= 1;
-+	} else {
-+		/*
-+		 * Legacy... So that old DTs which do not have clock-names still
-+		 * work. In this case we don't explicitly enable the AXI bus
-+		 * clock.
-+		 */
-+		if (PTR_ERR(axi_clk) != -ENOENT)
-+			return PTR_ERR(axi_clk);
-+		if (init.num_parents < 1 || init.num_parents > 2)
-+			return -EINVAL;
-+	}
- 
- 	for (i = 0; i < init.num_parents; i++) {
- 		parent_names[i] = of_clk_get_parent_name(pdev->dev.of_node, i);
--- 
-2.43.0
-
+--- a/drivers/media/usb/gspca/ov534.c
++++ b/drivers/media/usb/gspca/ov534.c
+@@ -847,7 +847,7 @@ static void set_frame_rate(struct gspca_
+ 		r = rate_1;
+ 		i = ARRAY_SIZE(rate_1);
+ 	}
+-	while (--i > 0) {
++	while (--i >= 0) {
+ 		if (sd->frame_rate >= r->fps)
+ 			break;
+ 		r++;
 
 
 
