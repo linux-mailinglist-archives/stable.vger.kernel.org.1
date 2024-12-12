@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-101029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3919EEA2A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA749EEFD4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE36188A9FB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B5B2288BED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE4B216E1D;
-	Thu, 12 Dec 2024 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65186239BBC;
+	Thu, 12 Dec 2024 16:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgseFGUX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3cXiRhK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7968C2EAE5;
-	Thu, 12 Dec 2024 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EEE2253EC;
+	Thu, 12 Dec 2024 16:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016010; cv=none; b=BQ25BtwVjZWoSiq1chnAaRRQC0iwSHjGu6nKOVDkWBDODD7fAwsEKvSc22VBH52NZjJVaG7enyir/9lMJEeRILRAdQWHl3dre/qVR85U7PlnJwosYpafkPs31l+fiOapPWhatXnVTIa/fanOczOD90gI7JyXVrMnkPyxZfG09gY=
+	t=1734019918; cv=none; b=ip+fv6w0bo6yZNJcp7ZcSZ4lJo0Y0N/KNnGFHjnwjG99HIoz5WdQ5lK5BCUvj0KgqgKmwKkJ5fSRv/iza9XE6PyAHvR8GZ3yPMycOaPM2xkqVWZKIDQkPhO9q8PtfBZ2g7Ub4FZylNOAc5w1X1+0xpii2QT/i9BYIJ5nGyzQVnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016010; c=relaxed/simple;
-	bh=qizGT6EDJKsninS3o1N5zqa6K3ny2w9o9YmEZXOZI14=;
+	s=arc-20240116; t=1734019918; c=relaxed/simple;
+	bh=QHxFY6zcDqAX9cghiE8DdapD50Wh+MO6wQX9AuPAlHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVYM9CouJ9buY6aVvc5dPqe1bNpFyfibztv+fH2DA9Z+x4aV9LkG1sfMfBRq+ygQwE8rVIrSCF3bAZYhJXgKtdD1c+MqoDcvcUcVwAbogVN86HJpbxqZAOGrMoS6IiDL+Y8nFgae+b4KxEMMscK5PWTo3GTzOFDyzGnO8vB1iWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgseFGUX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC14BC4CECE;
-	Thu, 12 Dec 2024 15:06:49 +0000 (UTC)
+	 MIME-Version; b=NAUSdR5Qbm/RSsa3RtX03PLvgNPt7AMzp1n3awrNQj+Ird8AhG9+L+YtbAiN4bHY5eO0RzKTjV53xq9eAjFY/umXI6vXEcJ1B1oqZ8cdV0zNVwodk2knWe9bMT5ukGaT5dscAM6cBIVctukkw2zsUV9+RXM8Sgj71RbKhQeP1XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3cXiRhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AF8C4CECE;
+	Thu, 12 Dec 2024 16:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016010;
-	bh=qizGT6EDJKsninS3o1N5zqa6K3ny2w9o9YmEZXOZI14=;
+	s=korg; t=1734019918;
+	bh=QHxFY6zcDqAX9cghiE8DdapD50Wh+MO6wQX9AuPAlHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgseFGUXWeRKTkbwQkuZWWWfRZ4oxmZGXi/j5mDLVY/YTT2jKByFs7J0OnlCtRlNA
-	 NLzTX2DBMg1WZOAZVWoagllK34F9tE+WJa51VlBrncEHnY7M1yHXROEFgfG5uBEasu
-	 HxeNhB3rpbK0CHF+zOD/J6IM/UwTp7xapx5CwTc4=
+	b=X3cXiRhKy/JnLISXkJztudXtoY1bimyJBEVOoKTCjn1Sqd7gaCjStnLBi6/Hw43uO
+	 K6dFA5kjJiCQ3/rrKVf+vS0KuYqctYDv9Se1X0ETvJteufu5etMsG5seQ0dc3FLSe5
+	 fMYf+e3zGM4Wa+xHi1UHyhDKizGlksLAfs/DRtTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yingfu.zhou" <yingfu.zhou@shopee.com>,
-	"Chunguang.xu" <chunguang.xu@shopee.com>,
-	"Yue.zhao" <yue.zhao@shopee.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/466] nvme-rdma: unquiesce admin_q before destroy it
+Subject: [PATCH 6.1 331/772] misc: apds990x: Fix missing pm_runtime_disable()
 Date: Thu, 12 Dec 2024 15:54:36 +0100
-Message-ID: <20241212144311.045849513@linuxfoundation.org>
+Message-ID: <20241212144403.577701786@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunguang.xu <chunguang.xu@shopee.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 5858b687559809f05393af745cbadf06dee61295 ]
+[ Upstream commit 3c5d8b819d27012264edd17e6ae7fffda382fe44 ]
 
-Kernel will hang on destroy admin_q while we create ctrl failed, such
-as following calltrace:
+The pm_runtime_disable() is missing in probe error path,
+so add it to fix it.
 
-PID: 23644    TASK: ff2d52b40f439fc0  CPU: 2    COMMAND: "nvme"
- #0 [ff61d23de260fb78] __schedule at ffffffff8323bc15
- #1 [ff61d23de260fc08] schedule at ffffffff8323c014
- #2 [ff61d23de260fc28] blk_mq_freeze_queue_wait at ffffffff82a3dba1
- #3 [ff61d23de260fc78] blk_freeze_queue at ffffffff82a4113a
- #4 [ff61d23de260fc90] blk_cleanup_queue at ffffffff82a33006
- #5 [ff61d23de260fcb0] nvme_rdma_destroy_admin_queue at ffffffffc12686ce
- #6 [ff61d23de260fcc8] nvme_rdma_setup_ctrl at ffffffffc1268ced
- #7 [ff61d23de260fd28] nvme_rdma_create_ctrl at ffffffffc126919b
- #8 [ff61d23de260fd68] nvmf_dev_write at ffffffffc024f362
- #9 [ff61d23de260fe38] vfs_write at ffffffff827d5f25
-    RIP: 00007fda7891d574  RSP: 00007ffe2ef06958  RFLAGS: 00000202
-    RAX: ffffffffffffffda  RBX: 000055e8122a4d90  RCX: 00007fda7891d574
-    RDX: 000000000000012b  RSI: 000055e8122a4d90  RDI: 0000000000000004
-    RBP: 00007ffe2ef079c0   R8: 000000000000012b   R9: 000055e8122a4d90
-    R10: 0000000000000000  R11: 0000000000000202  R12: 0000000000000004
-    R13: 000055e8122923c0  R14: 000000000000012b  R15: 00007fda78a54500
-    ORIG_RAX: 0000000000000001  CS: 0033  SS: 002b
-
-This due to we have quiesced admi_q before cancel requests, but forgot
-to unquiesce before destroy it, as a result we fail to drain the
-pending requests, and hang on blk_mq_freeze_queue_wait() forever. Here
-try to reuse nvme_rdma_teardown_admin_queue() to fix this issue and
-simplify the code.
-
-Fixes: 958dc1d32c80 ("nvme-rdma: add clean action for failed reconnection")
-Reported-by: Yingfu.zhou <yingfu.zhou@shopee.com>
-Signed-off-by: Chunguang.xu <chunguang.xu@shopee.com>
-Signed-off-by: Yue.zhao <yue.zhao@shopee.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 92b1f84d46b2 ("drivers/misc: driver for APDS990X ALS and proximity sensors")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240923035556.3009105-1-ruanjinjie@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/rdma.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/misc/apds990x.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nvme/host/rdma.c b/drivers/nvme/host/rdma.c
-index 24a2759798d01..913e6e5a80705 100644
---- a/drivers/nvme/host/rdma.c
-+++ b/drivers/nvme/host/rdma.c
-@@ -1091,13 +1091,7 @@ static int nvme_rdma_setup_ctrl(struct nvme_rdma_ctrl *ctrl, bool new)
+diff --git a/drivers/misc/apds990x.c b/drivers/misc/apds990x.c
+index e2100cc42ce86..668609d22fe18 100644
+--- a/drivers/misc/apds990x.c
++++ b/drivers/misc/apds990x.c
+@@ -1148,7 +1148,7 @@ static int apds990x_probe(struct i2c_client *client,
+ 		err = chip->pdata->setup_resources();
+ 		if (err) {
+ 			err = -EINVAL;
+-			goto fail3;
++			goto fail4;
+ 		}
  	}
- destroy_admin:
- 	nvme_stop_keep_alive(&ctrl->ctrl);
--	nvme_quiesce_admin_queue(&ctrl->ctrl);
--	blk_sync_queue(ctrl->ctrl.admin_q);
--	nvme_rdma_stop_queue(&ctrl->queues[0]);
--	nvme_cancel_admin_tagset(&ctrl->ctrl);
--	if (new)
--		nvme_remove_admin_tag_set(&ctrl->ctrl);
--	nvme_rdma_destroy_admin_queue(ctrl);
-+	nvme_rdma_teardown_admin_queue(ctrl, new);
- 	return ret;
- }
  
+@@ -1156,7 +1156,7 @@ static int apds990x_probe(struct i2c_client *client,
+ 				apds990x_attribute_group);
+ 	if (err < 0) {
+ 		dev_err(&chip->client->dev, "Sysfs registration failed\n");
+-		goto fail4;
++		goto fail5;
+ 	}
+ 
+ 	err = request_threaded_irq(client->irq, NULL,
+@@ -1167,15 +1167,17 @@ static int apds990x_probe(struct i2c_client *client,
+ 	if (err) {
+ 		dev_err(&client->dev, "could not get IRQ %d\n",
+ 			client->irq);
+-		goto fail5;
++		goto fail6;
+ 	}
+ 	return err;
+-fail5:
++fail6:
+ 	sysfs_remove_group(&chip->client->dev.kobj,
+ 			&apds990x_attribute_group[0]);
+-fail4:
++fail5:
+ 	if (chip->pdata && chip->pdata->release_resources)
+ 		chip->pdata->release_resources();
++fail4:
++	pm_runtime_disable(&client->dev);
+ fail3:
+ 	regulator_bulk_disable(ARRAY_SIZE(chip->regs), chip->regs);
+ fail2:
 -- 
 2.43.0
 
