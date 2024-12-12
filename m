@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E716B9EEBED
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276FD9EF221
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C3E9188A825
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:27:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C4B4189233B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A76748A;
-	Thu, 12 Dec 2024 15:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BB8223E9A;
+	Thu, 12 Dec 2024 16:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdpAWW3L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6pm18WG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21918209693;
-	Thu, 12 Dec 2024 15:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4594223E93;
+	Thu, 12 Dec 2024 16:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017235; cv=none; b=TFAdXZLbM4AamyTITjvQF5+3YXoPboyxmCZNUUjCvXxAJWEfKvI+PIk3DoJ1CZySS8d2hjFrrlO1FkokfBqtHbydtyUVpr4GJrIIMiDNLPOGj2yMqRRty4NyvbHIggzxzPvKoF6ZggTJWJetefXdIbNZhZcI72VoY7rF+gMnF58=
+	t=1734021094; cv=none; b=GbSHLTiRv7XtjYg9tg130Adi7IU3TrvWwD75IOJ0hN0t+2p9Rf/Gb10NeeJmbjy15hSHk8Txy/jTyAoFtsU/fu6T5TTltZpeAyCEzCJSfVPsOE2djUB5eRLGYBuI5GtUxd4Z08PzeF4bdQNM2hunwfRh40Y0cwWJB5Dg24RAQkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017235; c=relaxed/simple;
-	bh=iuuCJWrXd8cJoHEbaHjwk/7mh9LPjSD5PWAuBnJ7OMI=;
+	s=arc-20240116; t=1734021094; c=relaxed/simple;
+	bh=5rX4JRyQtkSurNa1u41o4ematgP/b7QfDJjNS2NgxBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KdUDZhEKQuWdH49ChIgw/SAY+FftqmUwrxPi4nG26NEmXpgZQs/dVraIzza95L8vTyXb7yTaPdkOaW+M2XgWsSiL6sqBdYZD5KBWeJ41/EYEzqU4O0lMkfKXxdnW8JOy85o0duVHhZcAGiet9DqcSGOWYcXbfnp73LOtd3GE00g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdpAWW3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E988C4CED0;
-	Thu, 12 Dec 2024 15:27:14 +0000 (UTC)
+	 MIME-Version; b=lyUm4ZUrmEo5istEEFu2aQgOWuNvHk8No6hmrEq4/Yd2mIdUqYiBsZ2DV3b4kKq1XM3uSlGR7rhUEwUscBAJfEecjyfJx2M5CpgEP09MOSl0irYLeZ2mvVgVHi/hCY2D7K0gTE+wn07wawFkMIHMxKQ3vPNCQuwzr+v4HNJwQnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6pm18WG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F30C4CECE;
+	Thu, 12 Dec 2024 16:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017235;
-	bh=iuuCJWrXd8cJoHEbaHjwk/7mh9LPjSD5PWAuBnJ7OMI=;
+	s=korg; t=1734021094;
+	bh=5rX4JRyQtkSurNa1u41o4ematgP/b7QfDJjNS2NgxBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdpAWW3L/DhbbcoixNB8ewUDZENDB9Fz4dw7n63z4gFbbCTta8/9r77lLEBfz8rRy
-	 KmJPt1tPmpsz/+6pksikFWT3by0HnShg5WhzUVEG3yp8soYgZnI/cBd1XBZkwPMvs8
-	 BZHQNiC1FFhAsLycRetLY1MDUfh3FqOtGdCmK0W4=
+	b=j6pm18WGbRQs30o++OWMPY0bqvvFONXPB/QMRqKpmWZvjobdlQ2YZ/zARJAeijdzD
+	 Kwyg2VpnlAkmGotgPVBOdNhG3W10qRTl0Vj83vq+OTOdNO9W1B92dK2TyL03k5xjK7
+	 VGpWlejggXfXyVHWV0gj/Eq4GjWtug3R/8SuINBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Filipe Manana <fdmanana@suse.com>,
+	Fabian Vogt <fvogt@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 419/466] MIPS: Loongson64: DTS: Really fix PCIe port nodes for ls7a
+Subject: [PATCH 6.1 643/772] btrfs: avoid unnecessary device path update for the same device
 Date: Thu, 12 Dec 2024 15:59:48 +0100
-Message-ID: <20241212144323.309915119@linuxfoundation.org>
+Message-ID: <20241212144416.495492995@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,270 +64,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 4fbd66d8254cedfd1218393f39d83b6c07a01917 ]
+[ Upstream commit 2e8b6bc0ab41ce41e6dfcc204b6cc01d5abbc952 ]
 
-Fix the dtc warnings:
+[PROBLEM]
+It is very common for udev to trigger device scan, and every time a
+mounted btrfs device got re-scan from different soft links, we will get
+some of unnecessary device path updates, this is especially common
+for LVM based storage:
 
-    arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
-    arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
-    arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+ # lvs
+  scratch1 test -wi-ao---- 10.00g
+  scratch2 test -wi-a----- 10.00g
+  scratch3 test -wi-a----- 10.00g
+  scratch4 test -wi-a----- 10.00g
+  scratch5 test -wi-a----- 10.00g
+  test     test -wi-a----- 10.00g
 
-And a runtime warning introduced in commit 045b14ca5c36 ("of: WARN on
-deprecated #address-cells/#size-cells handling"):
+ # mkfs.btrfs -f /dev/test/scratch1
+ # mount /dev/test/scratch1 /mnt/btrfs
+ # dmesg -c
+ [  205.705234] BTRFS: device fsid 7be2602f-9e35-4ecf-a6ff-9e91d2c182c9 devid 1 transid 6 /dev/mapper/test-scratch1 (253:4) scanned by mount (1154)
+ [  205.710864] BTRFS info (device dm-4): first mount of filesystem 7be2602f-9e35-4ecf-a6ff-9e91d2c182c9
+ [  205.711923] BTRFS info (device dm-4): using crc32c (crc32c-intel) checksum algorithm
+ [  205.713856] BTRFS info (device dm-4): using free-space-tree
+ [  205.722324] BTRFS info (device dm-4): checking UUID tree
 
-    WARNING: CPU: 0 PID: 1 at drivers/of/base.c:106 of_bus_n_addr_cells+0x9c/0xe0
-    Missing '#address-cells' in /bus@10000000/pci@1a000000/pci_bridge@9,0
+So far so good, but even if we just touched any soft link of
+"dm-4", we will get quite some unnecessary device path updates.
 
-The fix is similar to commit d89a415ff8d5 ("MIPS: Loongson64: DTS: Fix PCIe
-port nodes for ls7a"), which has fixed the issue for ls2k (despite its
-subject mentions ls7a).
+ # touch /dev/mapper/test-scratch1
+ # dmesg -c
+ [  469.295796] BTRFS info: devid 1 device path /dev/mapper/test-scratch1 changed to /dev/dm-4 scanned by (udev-worker) (1221)
+ [  469.300494] BTRFS info: devid 1 device path /dev/dm-4 changed to /dev/mapper/test-scratch1 scanned by (udev-worker) (1221)
 
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Such device path rename is unnecessary and can lead to random path
+change due to the udev race.
+
+[CAUSE]
+Inside device_list_add(), we are using a very primitive way checking if
+the device has changed, strcmp().
+
+Which can never handle links well, no matter if it's hard or soft links.
+
+So every different link of the same device will be treated as a different
+device, causing the unnecessary device path update.
+
+[FIX]
+Introduce a helper, is_same_device(), and use path_equal() to properly
+detect the same block device.
+So that the different soft links won't trigger the rename race.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1230641
+Reported-by: Fabian Vogt <fvogt@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/loongson/ls7a-pch.dtsi | 73 +++++++++++++++++++----
- 1 file changed, 60 insertions(+), 13 deletions(-)
+ fs/btrfs/volumes.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
-index cce9428afc41f..ee71045883e7e 100644
---- a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
-+++ b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
-@@ -70,7 +70,6 @@
- 			device_type = "pci";
- 			#address-cells = <3>;
- 			#size-cells = <2>;
--			#interrupt-cells = <2>;
- 			msi-parent = <&msi>;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 8c7e74499ed17..9779ab410f8fa 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -671,6 +671,42 @@ u8 *btrfs_sb_fsid_ptr(struct btrfs_super_block *sb)
+ 	return has_metadata_uuid ? sb->metadata_uuid : sb->fsid;
+ }
  
- 			reg = <0 0x1a000000 0 0x02000000>,
-@@ -234,7 +233,7 @@
- 				};
- 			};
++static bool is_same_device(struct btrfs_device *device, const char *new_path)
++{
++	struct path old = { .mnt = NULL, .dentry = NULL };
++	struct path new = { .mnt = NULL, .dentry = NULL };
++	char *old_path = NULL;
++	bool is_same = false;
++	int ret;
++
++	if (!device->name)
++		goto out;
++
++	old_path = kzalloc(PATH_MAX, GFP_NOFS);
++	if (!old_path)
++		goto out;
++
++	rcu_read_lock();
++	ret = strscpy(old_path, rcu_str_deref(device->name), PATH_MAX);
++	rcu_read_unlock();
++	if (ret < 0)
++		goto out;
++
++	ret = kern_path(old_path, LOOKUP_FOLLOW, &old);
++	if (ret)
++		goto out;
++	ret = kern_path(new_path, LOOKUP_FOLLOW, &new);
++	if (ret)
++		goto out;
++	if (path_equal(&old, &new))
++		is_same = true;
++out:
++	kfree(old_path);
++	path_put(&old);
++	path_put(&new);
++	return is_same;
++}
++
+ /*
+  * Handle scanned device having its CHANGING_FSID_V2 flag set and the fs_devices
+  * being created with a disk that has already completed its fsid change. Such
+@@ -889,7 +925,7 @@ static noinline struct btrfs_device *device_list_add(const char *path,
+ 				disk_super->fsid, devid, found_transid, path,
+ 				current->comm, task_pid_nr(current));
  
--			pci_bridge@9,0 {
-+			pcie@9,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -244,12 +243,16 @@
- 				interrupts = <32 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 32 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@a,0 {
-+			pcie@a,0 {
- 				compatible = "pci0014,7a09.1",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
-@@ -259,12 +262,16 @@
- 				interrupts = <33 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 33 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@b,0 {
-+			pcie@b,0 {
- 				compatible = "pci0014,7a09.1",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
-@@ -274,12 +281,16 @@
- 				interrupts = <34 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 34 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@c,0 {
-+			pcie@c,0 {
- 				compatible = "pci0014,7a09.1",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
-@@ -289,12 +300,16 @@
- 				interrupts = <35 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 35 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@d,0 {
-+			pcie@d,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -304,12 +319,16 @@
- 				interrupts = <36 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 36 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@e,0 {
-+			pcie@e,0 {
- 				compatible = "pci0014,7a09.1",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
-@@ -319,12 +338,16 @@
- 				interrupts = <37 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 37 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@f,0 {
-+			pcie@f,0 {
- 				compatible = "pci0014,7a29.1",
- 						   "pci0014,7a29",
- 						   "pciclass060400",
-@@ -334,12 +357,16 @@
- 				interrupts = <40 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 40 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@10,0 {
-+			pcie@10,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -349,12 +376,16 @@
- 				interrupts = <41 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 41 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@11,0 {
-+			pcie@11,0 {
- 				compatible = "pci0014,7a29.1",
- 						   "pci0014,7a29",
- 						   "pciclass060400",
-@@ -364,12 +395,16 @@
- 				interrupts = <42 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 42 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@12,0 {
-+			pcie@12,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -379,12 +414,16 @@
- 				interrupts = <43 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 43 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@13,0 {
-+			pcie@13,0 {
- 				compatible = "pci0014,7a29.1",
- 						   "pci0014,7a29",
- 						   "pciclass060400",
-@@ -394,12 +433,16 @@
- 				interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 38 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@14,0 {
-+			pcie@14,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -409,9 +452,13 @@
- 				interrupts = <39 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 39 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 		};
- 
+-	} else if (!device->name || strcmp(device->name->str, path)) {
++	} else if (!device->name || !is_same_device(device, path)) {
+ 		/*
+ 		 * When FS is already mounted.
+ 		 * 1. If you are here and if the device->name is NULL that
 -- 
 2.43.0
 
