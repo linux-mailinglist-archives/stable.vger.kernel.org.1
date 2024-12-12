@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAAA9EEDE5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F5C9EEC17
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F0B6188B929
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 598A1166C56
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6160222D5C;
-	Thu, 12 Dec 2024 15:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02572153F4;
+	Thu, 12 Dec 2024 15:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcwaWXsC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVm6LygA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636874F218;
-	Thu, 12 Dec 2024 15:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA35748A;
+	Thu, 12 Dec 2024 15:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018386; cv=none; b=oxuZwbgJg3uOLFYyDbDxepDh6ZBrNLZa3a54nvPvVMzpMbaTOa1+XCig2Ti9XDfMBvwEd9fVW8v6Ryd0wV7RH//cgyfxHhuYrRlMBkmF24qisuOYjaCcGpvhwGajxHZgH7SJoBi/IxjU0l1CgoukWeEvKtN/uKcwDB7jlMKvBFM=
+	t=1734017361; cv=none; b=lY2vxULQk8q7xxgN+aZ8KfmgaJ+dcSEQFxSTsJhIaVDoNX3XKv/EvEIlA2AGCaqeoq2kThrxAkcWhlHckk6lPcMsR74DgwuLNvP7412ytop7LoY7fz1R9T//fR5QglG7YB9GDJDBUIc6IqG9CzMjqYyXDy38mH/3/moFKzufiG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018386; c=relaxed/simple;
-	bh=LfMxkzeTrzJgQRxl1BOyIiGUlyvo4c0RnLXfb3etRxU=;
+	s=arc-20240116; t=1734017361; c=relaxed/simple;
+	bh=a9Xp5Gk5DVdWrRcDgZb1b4tayrtOrMxtJAogDc6IB6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P3LdBxJFAVjkmJ5ErdrQh6RDR5UEYVwv65HO4sR6yFX8+qEx5lWy0bIp6MW6przitq+nW0Op3AH00B0U6btIrpP48N0+EUMlNA0Jul3d940m1WQX2/0gi6fhJuoS5n9TmOxeGiJ1hS0iUgn7ja5Clu1AHLjDGQYC/FzPgI1KWiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcwaWXsC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CFBC4CED0;
-	Thu, 12 Dec 2024 15:46:25 +0000 (UTC)
+	 MIME-Version; b=GsTni04fdoxRKciILIgGX6uTOWE8TAe4mDrZ+rs0aVr9zPQ1n2VVwLahbl1kjkdlc0NHaH8sPTdsbSmPQXKrGB3CLA4/YJ5MQ35jI9CVvVR1ce1+gYvTyGTDCv+a4GTorr6UW+7cloCrDbIxUcdFbi2j36y0i3SBgtualoqPtKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVm6LygA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA79C4CECE;
+	Thu, 12 Dec 2024 15:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018386;
-	bh=LfMxkzeTrzJgQRxl1BOyIiGUlyvo4c0RnLXfb3etRxU=;
+	s=korg; t=1734017361;
+	bh=a9Xp5Gk5DVdWrRcDgZb1b4tayrtOrMxtJAogDc6IB6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LcwaWXsCrYNC5SLtboTOOqJSjcawKNbK7dqqvQWfIzm1u/p1ya6H103P4uP8Os2CN
-	 D5Nf4ORXkLfk0q3nC4flrXrl6hO4Wyzvv9y8IMfOs6mHZWoiBV2WvQ4t7qfiBJbc6/
-	 RUUpqV3h2xt+X1zU0DwYnXI7IGzfPIotZ871LAZw=
+	b=dVm6LygAMwmS5RTL3MBZGqIko669HyZn6j5HGUQjSdCX4RX3qIJLE4EvF3VTNLQDM
+	 1qxv4GWElz5bYms927UjlYfW/+4/tYy5FCQwCH2HpXY43crTw0gSMljgASbw8PfzE3
+	 Sb6nmeCEp5Y+HsAP+L/mPDKHsGxww6wJHyl9fwro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Anish Kumar <yesanishhere@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 278/356] leds: class: Protect brightness_show() with led_cdev->led_access mutex
+Subject: [PATCH 6.12 428/466] setlocalversion: work around "git describe" performance
 Date: Thu, 12 Dec 2024 15:59:57 +0100
-Message-ID: <20241212144255.567000461@linuxfoundation.org>
+Message-ID: <20241212144323.659683667@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,175 +64,180 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
-[ Upstream commit 4ca7cd938725a4050dcd62ae9472e931d603118d ]
+[ Upstream commit 523f3dbc187a9618d4fd80c2b438e4d490705dcd ]
 
-There is NULL pointer issue observed if from Process A where hid device
-being added which results in adding a led_cdev addition and later a
-another call to access of led_cdev attribute from Process B can result
-in NULL pointer issue.
+Contrary to expectations, passing a single candidate tag to "git
+describe" is slower than not passing any --match options.
 
-Use mutex led_cdev->led_access to protect access to led->cdev and its
-attribute inside brightness_show() and max_brightness_show() and also
-update the comment for mutex that it should be used to protect the led
-class device fields.
+  $ time git describe --debug
+  ...
+  traversed 10619 commits
+  ...
+  v6.12-rc5-63-g0fc810ae3ae1
 
-	Process A 				Process B
+  real    0m0.169s
 
- kthread+0x114
- worker_thread+0x244
- process_scheduled_works+0x248
- uhid_device_add_worker+0x24
- hid_add_device+0x120
- device_add+0x268
- bus_probe_device+0x94
- device_initial_probe+0x14
- __device_attach+0xfc
- bus_for_each_drv+0x10c
- __device_attach_driver+0x14c
- driver_probe_device+0x3c
- __driver_probe_device+0xa0
- really_probe+0x190
- hid_device_probe+0x130
- ps_probe+0x990
- ps_led_register+0x94
- devm_led_classdev_register_ext+0x58
- led_classdev_register_ext+0x1f8
- device_create_with_groups+0x48
- device_create_groups_vargs+0xc8
- device_add+0x244
- kobject_uevent+0x14
- kobject_uevent_env[jt]+0x224
- mutex_unlock[jt]+0xc4
- __mutex_unlock_slowpath+0xd4
- wake_up_q+0x70
- try_to_wake_up[jt]+0x48c
- preempt_schedule_common+0x28
- __schedule+0x628
- __switch_to+0x174
-						el0t_64_sync+0x1a8/0x1ac
-						el0t_64_sync_handler+0x68/0xbc
-						el0_svc+0x38/0x68
-						do_el0_svc+0x1c/0x28
-						el0_svc_common+0x80/0xe0
-						invoke_syscall+0x58/0x114
-						__arm64_sys_read+0x1c/0x2c
-						ksys_read+0x78/0xe8
-						vfs_read+0x1e0/0x2c8
-						kernfs_fop_read_iter+0x68/0x1b4
-						seq_read_iter+0x158/0x4ec
-						kernfs_seq_show+0x44/0x54
-						sysfs_kf_seq_show+0xb4/0x130
-						dev_attr_show+0x38/0x74
-						brightness_show+0x20/0x4c
-						dualshock4_led_get_brightness+0xc/0x74
+  $ time git describe --match=v6.12-rc5 --debug
+  ...
+  traversed 1310024 commits
+  v6.12-rc5-63-g0fc810ae3ae1
 
-[ 3313.874295][ T4013] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
-[ 3313.874301][ T4013] Mem abort info:
-[ 3313.874303][ T4013]   ESR = 0x0000000096000006
-[ 3313.874305][ T4013]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 3313.874307][ T4013]   SET = 0, FnV = 0
-[ 3313.874309][ T4013]   EA = 0, S1PTW = 0
-[ 3313.874311][ T4013]   FSC = 0x06: level 2 translation fault
-[ 3313.874313][ T4013] Data abort info:
-[ 3313.874314][ T4013]   ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
-[ 3313.874316][ T4013]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[ 3313.874318][ T4013]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[ 3313.874320][ T4013] user pgtable: 4k pages, 39-bit VAs, pgdp=00000008f2b0a000
-..
+  real    0m1.281s
 
-[ 3313.874332][ T4013] Dumping ftrace buffer:
-[ 3313.874334][ T4013]    (ftrace buffer empty)
-..
-..
-[ dd3313.874639][ T4013] CPU: 6 PID: 4013 Comm: InputReader
-[ 3313.874648][ T4013] pc : dualshock4_led_get_brightness+0xc/0x74
-[ 3313.874653][ T4013] lr : led_update_brightness+0x38/0x60
-[ 3313.874656][ T4013] sp : ffffffc0b910bbd0
-..
-..
-[ 3313.874685][ T4013] Call trace:
-[ 3313.874687][ T4013]  dualshock4_led_get_brightness+0xc/0x74
-[ 3313.874690][ T4013]  brightness_show+0x20/0x4c
-[ 3313.874692][ T4013]  dev_attr_show+0x38/0x74
-[ 3313.874696][ T4013]  sysfs_kf_seq_show+0xb4/0x130
-[ 3313.874700][ T4013]  kernfs_seq_show+0x44/0x54
-[ 3313.874703][ T4013]  seq_read_iter+0x158/0x4ec
-[ 3313.874705][ T4013]  kernfs_fop_read_iter+0x68/0x1b4
-[ 3313.874708][ T4013]  vfs_read+0x1e0/0x2c8
-[ 3313.874711][ T4013]  ksys_read+0x78/0xe8
-[ 3313.874714][ T4013]  __arm64_sys_read+0x1c/0x2c
-[ 3313.874718][ T4013]  invoke_syscall+0x58/0x114
-[ 3313.874721][ T4013]  el0_svc_common+0x80/0xe0
-[ 3313.874724][ T4013]  do_el0_svc+0x1c/0x28
-[ 3313.874727][ T4013]  el0_svc+0x38/0x68
-[ 3313.874730][ T4013]  el0t_64_sync_handler+0x68/0xbc
-[ 3313.874732][ T4013]  el0t_64_sync+0x1a8/0x1ac
+In fact, the --debug output shows that git traverses all or most of
+history. For some repositories and/or git versions, those 1.3s are
+actually 10-15 seconds.
 
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Reviewed-by: Anish Kumar <yesanishhere@gmail.com>
-Link: https://lore.kernel.org/r/20241103160527.82487-1-quic_mojha@quicinc.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+This has been acknowledged as a performance bug in git [1], and a fix
+is on its way [2]. However, no solution is yet in git.git, and even
+when one lands, it will take quite a while before it finds its way to
+a release and for $random_kernel_developer to pick that up.
+
+So rewrite the logic to use plumbing commands. For each of the
+candidate values of $tag, we ask: (1) is $tag even an annotated
+tag? (2) Is it eligible to describe HEAD, i.e. an ancestor of
+HEAD? (3) If so, how many commits are in $tag..HEAD?
+
+I have tested that this produces the same output as the current script
+for ~700 random commits between v6.9..v6.10. For those 700 commits,
+and in my git repo, the 'make -s kernelrelease' command is on average
+~4 times faster with this patch applied (geometric mean of ratios).
+
+For the commit mentioned in Josh's original report [3], the
+time-consuming part of setlocalversion goes from
+
+$ time git describe --match=v6.12-rc5 c1e939a21eb1
+v6.12-rc5-44-gc1e939a21eb1
+
+real    0m1.210s
+
+to
+
+$ time git rev-list --count --left-right v6.12-rc5..c1e939a21eb1
+0       44
+
+real    0m0.037s
+
+[1] https://lore.kernel.org/git/20241101113910.GA2301440@coredump.intra.peff.net/
+[2] https://lore.kernel.org/git/20241106192236.GC880133@coredump.intra.peff.net/
+[3] https://lore.kernel.org/lkml/309549cafdcfe50c4fceac3263220cc3d8b109b2.1730337435.git.jpoimboe@kernel.org/
+
+Reported-by: Sean Christopherson <seanjc@google.com>
+Closes: https://lore.kernel.org/lkml/ZPtlxmdIJXOe0sEy@google.com/
+Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Closes: https://lore.kernel.org/lkml/309549cafdcfe50c4fceac3263220cc3d8b109b2.1730337435.git.jpoimboe@kernel.org/
+Tested-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-class.c | 14 +++++++++++---
- include/linux/leds.h     |  2 +-
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ scripts/setlocalversion | 54 +++++++++++++++++++++++++++++------------
+ 1 file changed, 38 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
-index c66d1bead0a4a..e7d75716632b8 100644
---- a/drivers/leds/led-class.c
-+++ b/drivers/leds/led-class.c
-@@ -29,11 +29,14 @@ static ssize_t brightness_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
- 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-+	unsigned int brightness;
+diff --git a/scripts/setlocalversion b/scripts/setlocalversion
+index 38b96c6797f40..5818465abba98 100755
+--- a/scripts/setlocalversion
++++ b/scripts/setlocalversion
+@@ -30,6 +30,27 @@ if test $# -gt 0 -o ! -d "$srctree"; then
+ 	usage
+ fi
  
--	/* no lock needed for this */
-+	mutex_lock(&led_cdev->led_access);
- 	led_update_brightness(led_cdev);
-+	brightness = led_cdev->brightness;
-+	mutex_unlock(&led_cdev->led_access);
- 
--	return sprintf(buf, "%u\n", led_cdev->brightness);
-+	return sprintf(buf, "%u\n", brightness);
- }
- 
- static ssize_t brightness_store(struct device *dev,
-@@ -70,8 +73,13 @@ static ssize_t max_brightness_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
- 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-+	unsigned int max_brightness;
++try_tag() {
++	tag="$1"
 +
-+	mutex_lock(&led_cdev->led_access);
-+	max_brightness = led_cdev->max_brightness;
-+	mutex_unlock(&led_cdev->led_access);
++	# Is $tag an annotated tag?
++	[ "$(git cat-file -t "$tag" 2> /dev/null)" = tag ] || return 1
++
++	# Is it an ancestor of HEAD, and if so, how many commits are in $tag..HEAD?
++	# shellcheck disable=SC2046 # word splitting is the point here
++	set -- $(git rev-list --count --left-right "$tag"...HEAD 2> /dev/null)
++
++	# $1 is 0 if and only if $tag is an ancestor of HEAD. Use
++	# string comparison, because $1 is empty if the 'git rev-list'
++	# command somehow failed.
++	[ "$1" = 0 ] || return 1
++
++	# $2 is the number of commits in the range $tag..HEAD, possibly 0.
++	count="$2"
++
++	return 0
++}
++
+ scm_version()
+ {
+ 	local short=false
+@@ -61,33 +82,33 @@ scm_version()
+ 	# stable kernel:    6.1.7      ->  v6.1.7
+ 	version_tag=v$(echo "${KERNELVERSION}" | sed -E 's/^([0-9]+\.[0-9]+)\.0(.*)$/\1\2/')
  
--	return sprintf(buf, "%u\n", led_cdev->max_brightness);
-+	return sprintf(buf, "%u\n", max_brightness);
- }
- static DEVICE_ATTR_RO(max_brightness);
++	# try_tag initializes count if the tag is usable.
++	count=
++
+ 	# If a localversion* file exists, and the corresponding
+ 	# annotated tag exists and is an ancestor of HEAD, use
+ 	# it. This is the case in linux-next.
+-	tag=${file_localversion#-}
+-	desc=
+-	if [ -n "${tag}" ]; then
+-		desc=$(git describe --match=$tag 2>/dev/null)
++	if [ -n "${file_localversion#-}" ] ; then
++		try_tag "${file_localversion#-}"
+ 	fi
  
-diff --git a/include/linux/leds.h b/include/linux/leds.h
-index d3056bc6f0a1a..e91802cdc4161 100644
---- a/include/linux/leds.h
-+++ b/include/linux/leds.h
-@@ -244,7 +244,7 @@ struct led_classdev {
- 	struct kernfs_node	*brightness_hw_changed_kn;
- #endif
+ 	# Otherwise, if a localversion* file exists, and the tag
+ 	# obtained by appending it to the tag derived from
+ 	# KERNELVERSION exists and is an ancestor of HEAD, use
+ 	# it. This is e.g. the case in linux-rt.
+-	if [ -z "${desc}" ] && [ -n "${file_localversion}" ]; then
+-		tag="${version_tag}${file_localversion}"
+-		desc=$(git describe --match=$tag 2>/dev/null)
++	if [ -z "${count}" ] && [ -n "${file_localversion}" ]; then
++		try_tag "${version_tag}${file_localversion}"
+ 	fi
  
--	/* Ensures consistent access to the LED Flash Class device */
-+	/* Ensures consistent access to the LED class device */
- 	struct mutex		led_access;
- };
+ 	# Otherwise, default to the annotated tag derived from KERNELVERSION.
+-	if [ -z "${desc}" ]; then
+-		tag="${version_tag}"
+-		desc=$(git describe --match=$tag 2>/dev/null)
++	if [ -z "${count}" ]; then
++		try_tag "${version_tag}"
+ 	fi
  
+-	# If we are at the tagged commit, we ignore it because the version is
+-	# well-defined.
+-	if [ "${tag}" != "${desc}" ]; then
++	# If we are at the tagged commit, we ignore it because the
++	# version is well-defined. If none of the attempted tags exist
++	# or were usable, $count is still empty.
++	if [ -z "${count}" ] || [ "${count}" -gt 0 ]; then
+ 
+ 		# If only the short version is requested, don't bother
+ 		# running further git commands
+@@ -95,14 +116,15 @@ scm_version()
+ 			echo "+"
+ 			return
+ 		fi
++
+ 		# If we are past the tagged commit, we pretty print it.
+ 		# (like 6.1.0-14595-g292a089d78d3)
+-		if [ -n "${desc}" ]; then
+-			echo "${desc}" | awk -F- '{printf("-%05d", $(NF-1))}'
++		if [ -n "${count}" ]; then
++			printf "%s%05d" "-" "${count}"
+ 		fi
+ 
+ 		# Add -g and exactly 12 hex chars.
+-		printf '%s%s' -g "$(echo $head | cut -c1-12)"
++		printf '%s%.12s' -g "$head"
+ 	fi
+ 
+ 	if ${no_dirty}; then
 -- 
 2.43.0
 
