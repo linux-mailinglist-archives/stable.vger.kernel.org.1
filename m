@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-102038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780A09EEFAF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA709EF3B7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16E64297AF5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C0E16A7EE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E3A235C3A;
-	Thu, 12 Dec 2024 16:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CB1231A31;
+	Thu, 12 Dec 2024 16:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpYG2X7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Loal4bPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D169C235C40;
-	Thu, 12 Dec 2024 16:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609F0223C49;
+	Thu, 12 Dec 2024 16:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019733; cv=none; b=CMXQoBE9b4ao5KFd2nbtq3qKIdmqOiN7hBZAmhItUY6Bawgw2XOMsSCgiV6VUn+hUcVhojITFGSEC3zo0Dc1Lz7pdQUmSetLQ36EGSYgGUA9NsL1eLbXHEN83/i4m0/rJR+2TAa6YO+yX/AzyCdXnPeOY05D4/hWfXkZup/zUDo=
+	t=1734021681; cv=none; b=fjldjB4TsPRrnzeGSWS9shb1BFoJkHUHehP4SIm184bfe9sXJCk4V64leIZtXeIKl80K4Nc0eCaAxK2ugMv4kNJ6nqKmn4TjrhD+I6MufMJQ60RreNFykpfU9UOs8jcHfLqjQFuBLdw4B9dqUEaJRisd0Znbimsi+ZpUG6Y8dDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019733; c=relaxed/simple;
-	bh=N/BGw5ofhLb3/nYwOYvOUFosgWS3IB4l6xeFAf3rTrc=;
+	s=arc-20240116; t=1734021681; c=relaxed/simple;
+	bh=vpoxC+ggmNCYxL8EYsuotcyoKF6RR2uByX38YYAYqAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFwFKCkSEhE0pIQ98M5AMK+Q6ZBVbhvkbMpuAmFYTXwnXE74suG0HWFkrmDSsy2EARO0LaaogZ8d9CTa1yUXSzodoEYzZMn2xBHRzWrEot9wnZauht7s/5vtKxDoToh9uLSQcgENZqw90Zc/rUcGBzf8gz8mrSXGHlKBX9x9VUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpYG2X7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F3FC4CED3;
-	Thu, 12 Dec 2024 16:08:53 +0000 (UTC)
+	 MIME-Version; b=tFoJ7b1KKbN9UYpalP4FBLEx39hW2omzltFOA3KMuQiL6Y6s2wNbqqJb64Qq+41/FDOcOUusvQ+JQY8wTqIR5NAa59oAm6mWeQd9+DF6/R7XmOpM1amm/sgV92J5HLv8733IgpLJ4FektuUK95uBV+TAdtRUsP/3pYUafd+0fck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Loal4bPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BF8C4CECE;
+	Thu, 12 Dec 2024 16:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019733;
-	bh=N/BGw5ofhLb3/nYwOYvOUFosgWS3IB4l6xeFAf3rTrc=;
+	s=korg; t=1734021681;
+	bh=vpoxC+ggmNCYxL8EYsuotcyoKF6RR2uByX38YYAYqAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpYG2X7GBQrFjE4EupbVfy7McYkchq6q/xeDpGrBbhVsyJMKThHcSFx6LYWzke8mf
-	 vKk3X81myzVFDEZcCX0+Wsw/iFp8IYcCAwiGXJa2Gu/U5E/GEVdSVx+Dbau9i4pgqX
-	 +oZ2fSuN9Q2AC6zThLRdN29Z4xFO0OT2l7RSYCfQ=
+	b=Loal4bPbneKjsLnI/M/P4TW19BQYeCZ2jN2x1DIgyuGlY9J4O/jit1sBNX0RF4+8q
+	 LmmtBbWl0ZVxT/sm4XlWep4kEFtzbSd+0Q4Au6SL1T53yuxaVL7afgXh+zMko8FVX9
+	 +a1U53NkjVeIW48oIplArz+ihaeZ6YZKjDfHws+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Peterson <benjamin@engflow.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 283/772] perf trace: Do not lose last events in a race
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Aurelien Jarno <aurelien@aurel32.net>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 033/565] Revert "mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K"
 Date: Thu, 12 Dec 2024 15:53:48 +0100
-Message-ID: <20241212144401.596417223@linuxfoundation.org>
+Message-ID: <20241212144312.759098932@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,79 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Peterson <benjamin@engflow.com>
+From: Aurelien Jarno <aurelien@aurel32.net>
 
-[ Upstream commit 3fd7c36973a250e17a4ee305a31545a9426021f4 ]
+commit 1635e407a4a64d08a8517ac59ca14ad4fc785e75 upstream.
 
-If a perf trace event selector specifies a maximum number of events to output
-(i.e., "/nr=N/" syntax), the event printing handler, trace__event_handler,
-disables the event selector after the maximum number events are
-printed.
+The commit 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages
+bigger than 4K") increased the max_req_size, even for 4K pages, causing
+various issues:
+- Panic booting the kernel/rootfs from an SD card on Rockchip RK3566
+- Panic booting the kernel/rootfs from an SD card on StarFive JH7100
+- "swiotlb buffer is full" and data corruption on StarFive JH7110
 
-Furthermore, trace__event_handler checked if the event selector was
-disabled before doing any work. This avoided exceeding the maximum
-number of events to print if more events were in the buffer before the
-selector was disabled.
+At this stage no fix have been found, so it's probably better to just
+revert the change.
 
-However, the event selector can be disabled for reasons other than
-exceeding the maximum number of events. In particular, when the traced
-subprocess exits, the main loop disables all event selectors. This meant
-the last events of a traced subprocess might be lost to the printing
-handler's short-circuiting logic.
+This reverts commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890.
 
-This nondeterministic problem could be seen by running the following many times:
-
-  $ perf trace -e syscalls:sys_enter_exit_group true
-
-trace__event_handler should simply check for exceeding the maximum number of
-events to print rather than the state of the event selector.
-
-Fixes: a9c5e6c1e9bff42c ("perf trace: Introduce per-event maximum number of events property")
-Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
-Tested-by: Howard Chu <howardchu95@gmail.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241107232128.108981-1-benjamin@engflow.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Sam Protsenko <semen.protsenko@linaro.org>
+Fixes: 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K")
+Closes: https://lore.kernel.org/linux-mmc/614692b4-1dbe-31b8-a34d-cb6db1909bb7@w6rz.net/
+Closes: https://lore.kernel.org/linux-mmc/CAC8uq=Ppnmv98mpa1CrWLawWoPnu5abtU69v-=G-P7ysATQ2Pw@mail.gmail.com/
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+Message-ID: <20241110114700.622372-1-aurelien@aurel32.net>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-trace.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/mmc/host/dw_mmc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 9aafa332828f8..48e101ad13924 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2779,13 +2779,8 @@ static int trace__event_handler(struct trace *trace, struct evsel *evsel,
- {
- 	struct thread *thread;
- 	int callchain_ret = 0;
--	/*
--	 * Check if we called perf_evsel__disable(evsel) due to, for instance,
--	 * this event's max_events having been hit and this is an entry coming
--	 * from the ring buffer that we should discard, since the max events
--	 * have already been considered/printed.
--	 */
--	if (evsel->disabled)
-+
-+	if (evsel->nr_events_printed >= evsel->max_events)
- 		return 0;
- 
- 	thread = machine__findnew_thread(trace->host, sample->pid, sample->tid);
--- 
-2.43.0
-
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -2903,8 +2903,8 @@ static int dw_mci_init_slot(struct dw_mc
+ 	if (host->use_dma == TRANS_MODE_IDMAC) {
+ 		mmc->max_segs = host->ring_size;
+ 		mmc->max_blk_size = 65535;
+-		mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
+-		mmc->max_seg_size = mmc->max_req_size;
++		mmc->max_seg_size = 0x1000;
++		mmc->max_req_size = mmc->max_seg_size * host->ring_size;
+ 		mmc->max_blk_count = mmc->max_req_size / 512;
+ 	} else if (host->use_dma == TRANS_MODE_EDMAC) {
+ 		mmc->max_segs = 64;
 
 
 
