@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-101135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8BD9EEADD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86199EF119
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EB7F188A88E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B73016C7B5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B5E2165F0;
-	Thu, 12 Dec 2024 15:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D78C223E64;
+	Thu, 12 Dec 2024 16:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTsrtkZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Y2wAjpq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516B821504F;
-	Thu, 12 Dec 2024 15:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5D2223E60;
+	Thu, 12 Dec 2024 16:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016480; cv=none; b=bm+Vnq5Oc8/XmaYtO44H9R1CR/mbAYlP8b18pum9b13UdUFSbelvTb2+pmdJVbr0axOUm+jSQK0en2CUOwieEVufyl2w0ep4vTsEnj6vNVDsm7qoc/0vOy7fRBZxjGrKkME2GWASjXsFoTm+BHyfS7hkxo42VHhFVgmrGeu3QtY=
+	t=1734020312; cv=none; b=NxTVjcswHXR5CJJLxglhjwsWSTU8IKiiu4xUB/DcK3xhxulaOPAY3Dsx04JQxx8o9c+B0wl8sY3msRq33IBLvaLR3urIfTCFX5UQhz0B+9uoUqGxmvQEbIl61k6287EAw3OSiQez4/kDMhn22jwUCZfEDzMH8ATTab3LzPgfY1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016480; c=relaxed/simple;
-	bh=jxeIciw1eZw3NUE/XjbIwo2PajEK8VYG7s4i/pxkxY4=;
+	s=arc-20240116; t=1734020312; c=relaxed/simple;
+	bh=jlKNKBaX4cG+i3stVfKGuRIxUUPVGt7TpQmCFmNqAvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWjJfTVyds+f/oAqJbOdhY5U35d3+Q3w0jme0NXPWbLJrFPTo5iJ5hQm5nniR2ucHq9QAEjaadKgeCJmipjxdCHoQScS3JOCs3IqTaOXjj61DPW8AX2ellVKocyDSeQ+wEDgL5Zz5Yk+UYXjIaPuv8oK49fYjoTsYHvL/ADLjCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTsrtkZr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8789CC4CED0;
-	Thu, 12 Dec 2024 15:14:39 +0000 (UTC)
+	 MIME-Version; b=Ov5oLap4AJ0e1JkTdCO1Sfq/xpiUtnPCL01YTgZnk41/ZMwOppBxt53B8pngAGYrFiEgUVov3d1lSYcrUhiPhrG9O9K9o4dKBLb/69ZA2HveGh/1cN2CN/L7cr7aFBOy9Y73vypVhv3B2tN8/9uN6OdexMBdCjL5XQg7PVQzrDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Y2wAjpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3BAC4CED0;
+	Thu, 12 Dec 2024 16:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016480;
-	bh=jxeIciw1eZw3NUE/XjbIwo2PajEK8VYG7s4i/pxkxY4=;
+	s=korg; t=1734020310;
+	bh=jlKNKBaX4cG+i3stVfKGuRIxUUPVGt7TpQmCFmNqAvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTsrtkZrjMI098BNmRRWAVGM74S2zvb2ZVEnFSPaxPN5P2BLaOp/vVI7ASvJk0eGh
-	 mcjx7K2HvgR4DPCaURoTTkFW7m+jEA8LM5XCUV51o1OsfLDV8zx1DrrTtDjulMndQv
-	 4HMA3nzhfWZGmICiyKewjU8P5reKz7981OaMfFbU=
+	b=0Y2wAjpqrrYTApCnYog+iBXNM9qMasaKSjKfZwCjM/oKaHhkajg8Lu5mrlL85E019
+	 s3P3I7lnys1oUXhK4e7mWr6hw7pCGHm8Jmc4stErhDrOtayZXpMSD8nqU7oxh+S/+G
+	 Lx8L0zIqAz3/vnJ8ikjB++tiTqpUnJzm4vWy1U2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH 6.12 210/466] memblock: allow zero threshold in validate_numa_converage()
-Date: Thu, 12 Dec 2024 15:56:19 +0100
-Message-ID: <20241212144315.087020635@linuxfoundation.org>
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 435/772] ubi: fastmap: Fix duplicate slab cache names while attaching
+Date: Thu, 12 Dec 2024 15:56:20 +0100
+Message-ID: <20241212144407.909009837@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 9cdc6423acb49055efb444ecd895d853a70ef931 upstream.
+[ Upstream commit bcddf52b7a17adcebc768d26f4e27cf79adb424c ]
 
-Currently memblock validate_numa_converage() returns false negative when
-threshold set to zero.
+Since commit 4c39529663b9 ("slab: Warn on duplicate cache names when
+DEBUG_VM=y"), the duplicate slab cache names can be detected and a
+kernel WARNING is thrown out.
+In UBI fast attaching process, alloc_ai() could be invoked twice
+with the same slab cache name 'ubi_aeb_slab_cache', which will trigger
+following warning messages:
+ kmem_cache of name 'ubi_aeb_slab_cache' already exists
+ WARNING: CPU: 0 PID: 7519 at mm/slab_common.c:107
+          __kmem_cache_create_args+0x100/0x5f0
+ Modules linked in: ubi(+) nandsim [last unloaded: nandsim]
+ CPU: 0 UID: 0 PID: 7519 Comm: modprobe Tainted: G 6.12.0-rc2
+ RIP: 0010:__kmem_cache_create_args+0x100/0x5f0
+ Call Trace:
+   __kmem_cache_create_args+0x100/0x5f0
+   alloc_ai+0x295/0x3f0 [ubi]
+   ubi_attach+0x3c3/0xcc0 [ubi]
+   ubi_attach_mtd_dev+0x17cf/0x3fa0 [ubi]
+   ubi_init+0x3fb/0x800 [ubi]
+   do_init_module+0x265/0x7d0
+   __x64_sys_finit_module+0x7a/0xc0
 
-Make the check if the memory size with invalid node ID is greater than
-the threshold exclusive to fix that.
+The problem could be easily reproduced by loading UBI device by fastmap
+with CONFIG_DEBUG_VM=y.
+Fix it by using different slab names for alloc_ai() callers.
 
-Link: https://lore.kernel.org/all/Z0mIDBD4KLyxyOCm@kernel.org/
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d2158f69a7d4 ("UBI: Remove alloc_ai() slab name from parameter list")
+Fixes: fdf10ed710c0 ("ubi: Rework Fastmap attach base code")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memblock.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/ubi/attach.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -735,7 +735,7 @@ int __init_memblock memblock_add(phys_ad
- /**
-  * memblock_validate_numa_coverage - check if amount of memory with
-  * no node ID assigned is less than a threshold
-- * @threshold_bytes: maximal number of pages that can have unassigned node
-+ * @threshold_bytes: maximal memory size that can have unassigned node
-  * ID (in bytes).
-  *
-  * A buggy firmware may report memory that does not belong to any node.
-@@ -755,7 +755,7 @@ bool __init_memblock memblock_validate_n
- 			nr_pages += end_pfn - start_pfn;
- 	}
+diff --git a/drivers/mtd/ubi/attach.c b/drivers/mtd/ubi/attach.c
+index ae5abe492b52a..adc47b87b38a5 100644
+--- a/drivers/mtd/ubi/attach.c
++++ b/drivers/mtd/ubi/attach.c
+@@ -1447,7 +1447,7 @@ static int scan_all(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 	return err;
+ }
  
--	if ((nr_pages << PAGE_SHIFT) >= threshold_bytes) {
-+	if ((nr_pages << PAGE_SHIFT) > threshold_bytes) {
- 		mem_size_mb = memblock_phys_mem_size() >> 20;
- 		pr_err("NUMA: no nodes coverage for %luMB of %luMB RAM\n",
- 		       (nr_pages << PAGE_SHIFT) >> 20, mem_size_mb);
+-static struct ubi_attach_info *alloc_ai(void)
++static struct ubi_attach_info *alloc_ai(const char *slab_name)
+ {
+ 	struct ubi_attach_info *ai;
+ 
+@@ -1461,7 +1461,7 @@ static struct ubi_attach_info *alloc_ai(void)
+ 	INIT_LIST_HEAD(&ai->alien);
+ 	INIT_LIST_HEAD(&ai->fastmap);
+ 	ai->volumes = RB_ROOT;
+-	ai->aeb_slab_cache = kmem_cache_create("ubi_aeb_slab_cache",
++	ai->aeb_slab_cache = kmem_cache_create(slab_name,
+ 					       sizeof(struct ubi_ainf_peb),
+ 					       0, 0, NULL);
+ 	if (!ai->aeb_slab_cache) {
+@@ -1491,7 +1491,7 @@ static int scan_fast(struct ubi_device *ubi, struct ubi_attach_info **ai)
+ 
+ 	err = -ENOMEM;
+ 
+-	scan_ai = alloc_ai();
++	scan_ai = alloc_ai("ubi_aeb_slab_cache_fastmap");
+ 	if (!scan_ai)
+ 		goto out;
+ 
+@@ -1557,7 +1557,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
+ 	int err;
+ 	struct ubi_attach_info *ai;
+ 
+-	ai = alloc_ai();
++	ai = alloc_ai("ubi_aeb_slab_cache");
+ 	if (!ai)
+ 		return -ENOMEM;
+ 
+@@ -1575,7 +1575,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
+ 		if (err > 0 || mtd_is_eccerr(err)) {
+ 			if (err != UBI_NO_FASTMAP) {
+ 				destroy_ai(ai);
+-				ai = alloc_ai();
++				ai = alloc_ai("ubi_aeb_slab_cache");
+ 				if (!ai)
+ 					return -ENOMEM;
+ 
+@@ -1614,7 +1614,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
+ 	if (ubi->fm && ubi_dbg_chk_fastmap(ubi)) {
+ 		struct ubi_attach_info *scan_ai;
+ 
+-		scan_ai = alloc_ai();
++		scan_ai = alloc_ai("ubi_aeb_slab_cache_dbg_chk_fastmap");
+ 		if (!scan_ai) {
+ 			err = -ENOMEM;
+ 			goto out_wl;
+-- 
+2.43.0
+
 
 
 
