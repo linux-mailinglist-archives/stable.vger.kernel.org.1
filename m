@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-103892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64ED69EFA10
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9AD69EF9FD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3431892E8B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B33A1893376
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB18A223C62;
-	Thu, 12 Dec 2024 17:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846FB2210DE;
+	Thu, 12 Dec 2024 17:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZACq/yf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKBaWWTg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BC8223C57;
-	Thu, 12 Dec 2024 17:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4253D2080D9;
+	Thu, 12 Dec 2024 17:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025913; cv=none; b=nBKOA7+PmWbMCxv6/BiYWt1sQGraAfELcLz8hlq1VKCwpaWVm9jywdziRqZ4X3c/QLFNkZg7+wipESBgZzFoKBPAgQDu/zKbVUlO/OnErL+dNse2dBR3sa0BQgbiihW5cZnTpzdVliyZIhWLz+WuCdVAIYFW1bSOll0hhkjJQBs=
+	t=1734025867; cv=none; b=PiNZ6y/bk+Ss7mgMSEVmVat/iGTbBh1f8na15U79lNryefx3uJYsz2FauRADubXDMhcNoFciC3FsN41T8yT4j90hkypF7OLecELi9Hz0K9xuZ/tJjlPwr3sv+8LTNMxJC78zacYG8sYQsDPPKoEkioztNwkiL4sLcVpFp6JICX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025913; c=relaxed/simple;
-	bh=QsFVZ+pAbqsAwz+2x1LVBKpPy1HYz92k3yiwAmliflo=;
+	s=arc-20240116; t=1734025867; c=relaxed/simple;
+	bh=6i8g3MAAo5+zl6+YeVWW7HUuxYb7O784+GoqLOW/hwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ds6571jyJ6PGkAM/IDHioiU60pLPZqVC/ZhNfm3JsUaMBf1ZgFHsjQuhn9AJsdkpQswa6ZGpvEqASUA1Fi68H1LRhM2yAAJv0zz2/0qQDuW0UgW+eGImllLwwzkM8rxodc6GAG9KqYNVhcFZA6fXzIFfmOzg1lrv19Htl7rDJcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZACq/yf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D6BC4CECE;
-	Thu, 12 Dec 2024 17:51:52 +0000 (UTC)
+	 MIME-Version; b=jieNUY9uVMMyB9PLMxtr1Ua1cdLWOVUhgI+T1B3uw52Kzo2aDTY4gpHWujSsgdLD3jMb5YDgCvX/fRLWqBNVNnZUhfHcxZNtKAIVID5wcxcoOzFT4R/NnHcsmAhKyglZg9y0qs+1d/aQsLSZpPPqLTWstAhcp56OyKSf9/CS5wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKBaWWTg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726A7C4CECE;
+	Thu, 12 Dec 2024 17:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025913;
-	bh=QsFVZ+pAbqsAwz+2x1LVBKpPy1HYz92k3yiwAmliflo=;
+	s=korg; t=1734025865;
+	bh=6i8g3MAAo5+zl6+YeVWW7HUuxYb7O784+GoqLOW/hwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZACq/yf8/9uKgnmqk1nXBglEKRd09Lu1raIWMf47gyTUbB5SIzknL7noQIzf9U7Eq
-	 Z0SA26+qERDA5X3npZplW3xWKMkH5Taqb3wp000b8JoHEGmhKqHFUF6dLgcxNX7DvZ
-	 ij+9gbPD/NKmdTsf+zhUXt+mBUKmRJaThr5S2JSM=
+	b=bKBaWWTgtqm803BYXJ/EsXcB6s2NYYfYGQDSfZTjVchsiijBFiCclbIb+SzHMRBeF
+	 ggvtvawoJpYi6X2Vb1FCSiKYfBKk5CNxNHUqCG17re2iEGFKyeEYeesTOEZ/yU1rEl
+	 hNHa9+6e+ToU8jJrdE+QmjJjwh3jaTCmy8ddsrYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Rob Herring <robh@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Parker Newman <pnewman@connecttech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 305/321] powerpc/prom_init: Fixup missing powermac #size-cells
-Date: Thu, 12 Dec 2024 16:03:43 +0100
-Message-ID: <20241212144242.027967164@linuxfoundation.org>
+Subject: [PATCH 5.4 306/321] misc: eeprom: eeprom_93cx6: Add quirk for extra read clock cycle
+Date: Thu, 12 Dec 2024 16:03:44 +0100
+Message-ID: <20241212144242.064946561@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -67,101 +66,117 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Parker Newman <pnewman@connecttech.com>
 
-[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
+[ Upstream commit 7738a7ab9d12c5371ed97114ee2132d4512e9fd5 ]
 
-On some powermacs `escc` nodes are missing `#size-cells` properties,
-which is deprecated and now triggers a warning at boot since commit
-045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
-handling").
+Add a quirk similar to eeprom_93xx46 to add an extra clock cycle before
+reading data from the EEPROM.
 
-For example:
+The 93Cx6 family of EEPROMs output a "dummy 0 bit" between the writing
+of the op-code/address from the host to the EEPROM and the reading of
+the actual data from the EEPROM.
 
-  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
-  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
-  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
-  ...
-  Call Trace:
-    of_bus_n_size_cells+0x98/0x108 (unreliable)
-    of_bus_default_count_cells+0x40/0x60
-    __of_get_address+0xc8/0x21c
-    __of_address_to_resource+0x5c/0x228
-    pmz_init_port+0x5c/0x2ec
-    pmz_probe.isra.0+0x144/0x1e4
-    pmz_console_init+0x10/0x48
-    console_init+0xcc/0x138
-    start_kernel+0x5c4/0x694
+More info can be found on page 6 of the AT93C46 datasheet (linked below).
+Similar notes are found in other 93xx6 datasheets.
 
-As powermacs boot via prom_init it's possible to add the missing
-properties to the device tree during boot, avoiding the warning. Note
-that `escc-legacy` nodes are also missing `#size-cells` properties, but
-they are skipped by the macio driver, so leave them alone.
+In summary the read operation for a 93Cx6 EEPROM is:
+Write to EEPROM:	110[A5-A0]	(9 bits)
+Read from EEPROM:	0[D15-D0]	(17 bits)
 
-Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
+Where:
+	110 is the start bit and READ OpCode
+	[A5-A0] is the address to read from
+	0 is a "dummy bit" preceding the actual data
+	[D15-D0] is the actual data.
+
+Looking at the READ timing diagrams in the 93Cx6 datasheets the dummy
+bit should be clocked out on the last address bit clock cycle meaning it
+should be discarded naturally.
+
+However, depending on the hardware configuration sometimes this dummy
+bit is not discarded. This is the case with Exar PCI UARTs which require
+an extra clock cycle between sending the address and reading the data.
+
+Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-5193-SEEPROM-AT93C46D-Datasheet.pdf
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Parker Newman <pnewman@connecttech.com>
+Link: https://lore.kernel.org/r/0f23973efefccd2544705a0480b4ad4c2353e407.1727880931.git.pnewman@connecttech.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ drivers/misc/eeprom/eeprom_93cx6.c | 10 ++++++++++
+ include/linux/eeprom_93cx6.h       | 11 +++++++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 7f4e2c031a9ab..b7ef63614417d 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2856,7 +2856,7 @@ static void __init fixup_device_tree_chrp(void)
- #endif
+diff --git a/drivers/misc/eeprom/eeprom_93cx6.c b/drivers/misc/eeprom/eeprom_93cx6.c
+index 36a2eb837371b..6b42ba6705d3f 100644
+--- a/drivers/misc/eeprom/eeprom_93cx6.c
++++ b/drivers/misc/eeprom/eeprom_93cx6.c
+@@ -186,6 +186,11 @@ void eeprom_93cx6_read(struct eeprom_93cx6 *eeprom, const u8 word,
+ 	eeprom_93cx6_write_bits(eeprom, command,
+ 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width);
  
- #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
--static void __init fixup_device_tree_pmac(void)
-+static void __init fixup_device_tree_pmac64(void)
- {
- 	phandle u3, i2c, mpic;
- 	u32 u3_rev;
-@@ -2896,7 +2896,31 @@ static void __init fixup_device_tree_pmac(void)
- 		     &parent, sizeof(parent));
- }
- #else
--#define fixup_device_tree_pmac()
-+#define fixup_device_tree_pmac64()
-+#endif
-+
-+#ifdef CONFIG_PPC_PMAC
-+static void __init fixup_device_tree_pmac(void)
-+{
-+	__be32 val = 1;
-+	char type[8];
-+	phandle node;
-+
-+	// Some pmacs are missing #size-cells on escc nodes
-+	for (node = 0; prom_next_node(&node); ) {
-+		type[0] = '\0';
-+		prom_getprop(node, "device_type", type, sizeof(type));
-+		if (prom_strcmp(type, "escc"))
-+			continue;
-+
-+		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
-+			continue;
-+
-+		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
++	if (has_quirk_extra_read_cycle(eeprom)) {
++		eeprom_93cx6_pulse_high(eeprom);
++		eeprom_93cx6_pulse_low(eeprom);
 +	}
-+}
-+#else
-+static inline void fixup_device_tree_pmac(void) { }
- #endif
++
+ 	/*
+ 	 * Read the requested 16 bits.
+ 	 */
+@@ -252,6 +257,11 @@ void eeprom_93cx6_readb(struct eeprom_93cx6 *eeprom, const u8 byte,
+ 	eeprom_93cx6_write_bits(eeprom, command,
+ 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width + 1);
  
- #ifdef CONFIG_PPC_EFIKA
-@@ -3121,6 +3145,7 @@ static void __init fixup_device_tree(void)
- 	fixup_device_tree_maple_memory_controller();
- 	fixup_device_tree_chrp();
- 	fixup_device_tree_pmac();
-+	fixup_device_tree_pmac64();
- 	fixup_device_tree_efika();
- 	fixup_device_tree_pasemi();
- }
++	if (has_quirk_extra_read_cycle(eeprom)) {
++		eeprom_93cx6_pulse_high(eeprom);
++		eeprom_93cx6_pulse_low(eeprom);
++	}
++
+ 	/*
+ 	 * Read the requested 8 bits.
+ 	 */
+diff --git a/include/linux/eeprom_93cx6.h b/include/linux/eeprom_93cx6.h
+index c860c72a921d0..3a485cc0e0fa0 100644
+--- a/include/linux/eeprom_93cx6.h
++++ b/include/linux/eeprom_93cx6.h
+@@ -11,6 +11,8 @@
+ 	Supported chipsets: 93c46, 93c56 and 93c66.
+  */
+ 
++#include <linux/bits.h>
++
+ /*
+  * EEPROM operation defines.
+  */
+@@ -34,6 +36,7 @@
+  * @register_write(struct eeprom_93cx6 *eeprom): handler to
+  * write to the eeprom register by using all reg_* fields.
+  * @width: eeprom width, should be one of the PCI_EEPROM_WIDTH_* defines
++ * @quirks: eeprom or controller quirks
+  * @drive_data: Set if we're driving the data line.
+  * @reg_data_in: register field to indicate data input
+  * @reg_data_out: register field to indicate data output
+@@ -50,6 +53,9 @@ struct eeprom_93cx6 {
+ 	void (*register_write)(struct eeprom_93cx6 *eeprom);
+ 
+ 	int width;
++	unsigned int quirks;
++/* Some EEPROMs require an extra clock cycle before reading */
++#define PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE	BIT(0)
+ 
+ 	char drive_data;
+ 	char reg_data_in;
+@@ -71,3 +77,8 @@ extern void eeprom_93cx6_wren(struct eeprom_93cx6 *eeprom, bool enable);
+ 
+ extern void eeprom_93cx6_write(struct eeprom_93cx6 *eeprom,
+ 			       u8 addr, u16 data);
++
++static inline bool has_quirk_extra_read_cycle(struct eeprom_93cx6 *eeprom)
++{
++	return eeprom->quirks & PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE;
++}
 -- 
 2.43.0
 
