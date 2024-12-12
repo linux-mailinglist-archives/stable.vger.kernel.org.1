@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3272B9EF4CB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2449EF99F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2BE4289356
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5301917B483
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFB0222D5E;
-	Thu, 12 Dec 2024 17:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7DF22540F;
+	Thu, 12 Dec 2024 17:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzDNvgx9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkVpI1BE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB78176AA1;
-	Thu, 12 Dec 2024 17:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCD56F2FE;
+	Thu, 12 Dec 2024 17:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023314; cv=none; b=j6zrTT+89AGow3kEkbMRxt1ru62zIMXzSGSLvQlPJ/3ZNxP+SZjJEjW9oyDJ+A3OqtREzmF00Hxwg56sLzDeBMrt9+3kshjhdd/HubM+IPEYNlQesk61gohY0pbLX2PO8VtAM+9E+9RfK37budW7C3i1juRZdahERtPMNTfAzAM=
+	t=1734025446; cv=none; b=gDSCVlpOhaI0mkmUbsvGZwO1hQCn8MBYnD2RHy04vF9Tl52WBsFdVwfAUI53jAKAH7BRyGR+Ehb7anRRUa8phBCiPE/zyA6NYSXFm18BXjtS/6xRDf7/Ed/fUSOqFvlVhrpYUpALsnMFaF/myMmMcSiCpQRZYHfqTSKBOPSvWkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023314; c=relaxed/simple;
-	bh=isMdDs09m2rQKImS/eHayU82W+v5oyHmR5KdUNNxijo=;
+	s=arc-20240116; t=1734025446; c=relaxed/simple;
+	bh=0LkOiYtKzGTLLRrXJwtuOfmud8XAMZlbeF8NNVC/VmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/vGhsBPgfmEylDnQ4WFWzYTTP3fiOCBF7e/GHQ41ytY5Rs4xpgNPQwYotLq9XoQWIXSDZa2ohDWzjW7ZuJCplHZSy91VhgIjR3WTegf+DVRQv8XnW9FsokDfLEDumclwAcRfaNuoqfvs1oZJf66nPWDIQBSRrh9VQ0SbK6dH/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzDNvgx9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F45C4CECE;
-	Thu, 12 Dec 2024 17:08:33 +0000 (UTC)
+	 MIME-Version; b=hH2tH+/YhnbLevPZJuaSafGL2876l4NHWV6lMLblw6P9QleYPxCsSIR4zJXKYdONR759vgdMl6G27ElVytQAdTtLahFlFr16cd0wjkrXsyugYPYutNSTv+ePODF4+xfamQuPTju7f3wYur/5P4YO4XW/bzqMq/u87EBsDzJgEO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkVpI1BE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E97C4CEDD;
+	Thu, 12 Dec 2024 17:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023313;
-	bh=isMdDs09m2rQKImS/eHayU82W+v5oyHmR5KdUNNxijo=;
+	s=korg; t=1734025446;
+	bh=0LkOiYtKzGTLLRrXJwtuOfmud8XAMZlbeF8NNVC/VmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MzDNvgx9fSPv/KHTRjFGVU+x/m1eGhgoP0oHHbewLFN6ZQPBdjHYve+bDNlHbNSkk
-	 ULDwlHPMJ8lkPmxhI3UGIFe5yYxs9JGi8Ydry+LUp3MM7ht6fzAfKlAv/9sujw821A
-	 l/b+6g3OUoWczXNcXAa8Zo1o9ykvCx+HFVOhVIg4=
+	b=XkVpI1BE/cg3lbssgdrjM5nlNgNB+/BvOB7ofaFm0RrfeS42m+BZybz/HILWh8B6X
+	 wqm7V+xcZY70Zo2JhvEQhJwm2vc8gyqkEd+p8/KAC5F38a8ZvdHGWKPhudBBAhhaRE
+	 KI9fyEmvWKCxtYkMwg8WMRu5UqAt30JGzE934sZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikandan Muralidharan <manikandan.m@microchip.com>,
-	Dharma Balasubiramani <dharma.b@microchip.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 494/565] drm/panel: simple: Add Microchip AC69T88A LVDS Display panel
+	Dinesh Kumar <desikumar81@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 171/321] ALSA: hda/realtek: Fix Internal Speaker and Mic boost of Infinix Y4 Max
 Date: Thu, 12 Dec 2024 16:01:29 +0100
-Message-ID: <20241212144331.296955771@linuxfoundation.org>
+Message-ID: <20241212144236.740618173@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikandan Muralidharan <manikandan.m@microchip.com>
+From: Dinesh Kumar <desikumar81@gmail.com>
 
-[ Upstream commit 40da1463cd6879f542238b36c1148f517927c595 ]
+commit 5ebe792a5139f1ce6e4aed22bef12e7e2660df96 upstream.
 
-Add support for Microchip AC69T88A 5 inch TFT LCD 800x480
-Display module with LVDS interface.The panel uses the Sitronix
-ST7262 800x480 Display driver
+Internal Speaker of Infinix Y4 Max remains muted due to incorrect
+Pin configuration, and the Internal Mic records high noise. This patch
+corrects the Pin configuration for the Internal Speaker and limits
+the Internal Mic boost.
+HW Probe for device: https://linux-hardware.org/?probe=6d4386c347
+Test: Internal Speaker works fine, Mic has low noise.
 
-Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240919091548.430285-2-manikandan.m@microchip.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dinesh Kumar <desikumar81@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241125092842.13208-1-desikumar81@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ sound/pci/hda/patch_realtek.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 26c99ffe787cd..67412115b4b30 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -4453,6 +4453,31 @@ static const struct panel_desc yes_optoelectronics_ytc700tlag_05_201c = {
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
- 
-+static const struct drm_display_mode mchp_ac69t88a_mode = {
-+	.clock = 25000,
-+	.hdisplay = 800,
-+	.hsync_start = 800 + 88,
-+	.hsync_end = 800 + 88 + 5,
-+	.htotal = 800 + 88 + 5 + 40,
-+	.vdisplay = 480,
-+	.vsync_start = 480 + 23,
-+	.vsync_end = 480 + 23 + 5,
-+	.vtotal = 480 + 23 + 5 + 1,
-+};
-+
-+static const struct panel_desc mchp_ac69t88a = {
-+	.modes = &mchp_ac69t88a_mode,
-+	.num_modes = 1,
-+	.bpc = 8,
-+	.size = {
-+		.width = 108,
-+		.height = 65,
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6422,6 +6422,7 @@ enum {
+ 	ALC269_FIXUP_THINKPAD_ACPI,
+ 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
+ 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
++	ALC269VC_FIXUP_INFINIX_Y4_MAX,
+ 	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
+ 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
+@@ -6681,6 +6682,15 @@ static const struct hda_fixup alc269_fix
+ 		.chained = true,
+ 		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
+ 	},
++	[ALC269VC_FIXUP_INFINIX_Y4_MAX] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x1b, 0x90170150 }, /* use as internal speaker */
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
 +	},
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+};
-+
- static const struct drm_display_mode arm_rtsm_mode[] = {
- 	{
- 		.clock = 65000,
-@@ -4915,6 +4940,9 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "yes-optoelectronics,ytc700tlag-05-201c",
- 		.data = &yes_optoelectronics_ytc700tlag_05_201c,
-+	}, {
-+		.compatible = "microchip,ac69t88a",
-+		.data = &mchp_ac69t88a,
- 	}, {
- 		/* Must be the last entry */
- 		.compatible = "panel-dpi",
--- 
-2.43.0
-
+ 	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -8539,6 +8549,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
++	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
+ 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
 
 
 
