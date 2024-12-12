@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308579EF75B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7227E9EF7F7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4783189E935
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 326CB28C720
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAB321660C;
-	Thu, 12 Dec 2024 17:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B69222333E;
+	Thu, 12 Dec 2024 17:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1oGxy+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4Qz23qo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA6E215762;
-	Thu, 12 Dec 2024 17:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AC622331C;
+	Thu, 12 Dec 2024 17:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024250; cv=none; b=NNofwh4AFNt6mRsE8VGmTq5PHpU1LuQFhTwnEfTOfsU8uSwz2nm37qTfIzQvGzB32ebOVtI6Kjzjp/TjjesB8hoND4fcZov553+Greg0pIa/W4YkPG1/tAbErWdrkZTKTUaa7hBx1VyGBldcSsleMq2k+1tRwJvJN4Qb0l32y08=
+	t=1734025096; cv=none; b=XYQgaUqqj48AK7vDYpVe45Ip35AaMnyGUGMG0TC6uebNPb2hZzs1QBTQbH0LJFRmFjpI2ES5tE36IjqycbfWcyiZ7rayq//iahbwW8DukY8dhbVN1SIoKSWyFK2XccGRXzMVy23C4QsejOOMti4VQ2rmC4rClUiqfxoAydQzWFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024250; c=relaxed/simple;
-	bh=xBjqdF7ATqdEdc+nTD5Ctew7brlR2L5PMeFryXaT5xM=;
+	s=arc-20240116; t=1734025096; c=relaxed/simple;
+	bh=yTrlgzDbU+gxO+UkgKUzt2Af3ldL3xWwEPFw9RK3n54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Za7cvs1/PM2+svNubB5SO5pxytqN0hk5cc9vpbjg5jerA5RGFZgTusSkb0r1bbJGU5bkQIzFNoU6Xf7ApPYyHmd7GyEXsjRTjp6QK+AnmJ0Cs4ILXkktkv4Gpb/Jk2+dPxLnFhyEbsCZIOSITQCJbpz4RNqZ393LkEqe1lSm+wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1oGxy+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3040CC4CECE;
-	Thu, 12 Dec 2024 17:24:10 +0000 (UTC)
+	 MIME-Version; b=boFCnq7l5DKXMn2oBvFwPeE0CuiImF1fj3jiIUbVLcHyGbsEKAi1YwZ8DcRPKMuYBmjpNF37pfzC7e6hETUS+QPQK8gboE1D4TVr7HBi0nTcAkCloT5AxpB6P3QY9guu9L2o/syPm9lRWs2bYxIxVXmwBTPbkhZtZO1tNLEc4Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4Qz23qo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921FAC4CECE;
+	Thu, 12 Dec 2024 17:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024250;
-	bh=xBjqdF7ATqdEdc+nTD5Ctew7brlR2L5PMeFryXaT5xM=;
+	s=korg; t=1734025096;
+	bh=yTrlgzDbU+gxO+UkgKUzt2Af3ldL3xWwEPFw9RK3n54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K1oGxy+nwjHJ0m/IcO0AcApwMOEnFmAC5iCrOXbARPyiUXNN4DPfe37PKi7C48ioW
-	 7A7QmoL4AVZQ5uSiSLCf7p42kIwGfK0A1xP1nEU3pApIKu8lLxdKTN2ROXtYmgr4VE
-	 qoYF/CczcsXqGHcOt7kNy7hGvRgpNtEdIvtthx28=
+	b=X4Qz23qo+v7To7L971NmtVZnhhLZ9QO6+bshgdShHyFBRCBbYlKFZcsiMMK1n6iRb
+	 2r49YC15JUHWt7ByPAQF0RpG/c1kwmnw1YgWYY2zn6f+BmDPC6ZfKNU02jeskd+CFx
+	 RApMPhGdihZ1q4cmsrvp9pp2S5OnRiQttS7Bk6vE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	syzbot+422188bce66e76020e55@syzkaller.appspotmail.com,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 234/459] USB: chaoskey: fail open after removal
-Date: Thu, 12 Dec 2024 15:59:32 +0100
-Message-ID: <20241212144302.814148945@linuxfoundation.org>
+Subject: [PATCH 5.4 055/321] drm/mm: Mark drm_mm_interval_tree*() functions with __maybe_unused
+Date: Thu, 12 Dec 2024 15:59:33 +0100
+Message-ID: <20241212144232.166943873@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 422dc0a4d12d0b80dd3aab3fe5943f665ba8f041 ]
+[ Upstream commit 53bd7c1c0077db533472ae32799157758302ef48 ]
 
-chaoskey_open() takes the lock only to increase the
-counter of openings. That means that the mutual exclusion
-with chaoskey_disconnect() cannot prevent an increase
-of the counter and chaoskey_open() returning a success.
+The INTERVAL_TREE_DEFINE() uncoditionally provides a bunch of helper
+functions which in some cases may be not used. This, in particular,
+prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
 
-If that race is hit, chaoskey_disconnect() will happily
-free all resources associated with the device after
-it has dropped the lock, as it has read the counter
-as zero.
+.../drm/drm_mm.c:152:1: error: unused function 'drm_mm_interval_tree_insert' [-Werror,-Wunused-function]
+  152 | INTERVAL_TREE_DEFINE(struct drm_mm_node, rb,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  153 |                      u64, __subtree_last,
+      |                      ~~~~~~~~~~~~~~~~~~~~
+  154 |                      START, LAST, static inline, drm_mm_interval_tree)
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To prevent this race chaoskey_open() has to check
-the presence of the device under the lock.
-However, the current per device lock cannot be used,
-because it is a part of the data structure to be
-freed. Hence an additional global mutex is needed.
-The issue is as old as the driver.
+Fix this by marking drm_mm_interval_tree*() functions with __maybe_unused.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Reported-by: syzbot+422188bce66e76020e55@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=422188bce66e76020e55
-Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
-Rule: add
-Link: https://lore.kernel.org/stable/20241002132201.552578-1-oneukum%40suse.com
-Link: https://lore.kernel.org/r/20241002132201.552578-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
+
+Fixes: 202b52b7fbf7 ("drm: Track drm_mm nodes with an interval tree")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240829154640.1120050-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/chaoskey.c | 35 ++++++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/drm_mm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
-index 87067c3d6109b..32fa7fd50c380 100644
---- a/drivers/usb/misc/chaoskey.c
-+++ b/drivers/usb/misc/chaoskey.c
-@@ -27,6 +27,8 @@ static struct usb_class_driver chaoskey_class;
- static int chaoskey_rng_read(struct hwrng *rng, void *data,
- 			     size_t max, bool wait);
+diff --git a/drivers/gpu/drm/drm_mm.c b/drivers/gpu/drm/drm_mm.c
+index 4581c53873722..d00ffa51f544a 100644
+--- a/drivers/gpu/drm/drm_mm.c
++++ b/drivers/gpu/drm/drm_mm.c
+@@ -154,7 +154,7 @@ static void show_leaks(struct drm_mm *mm) { }
  
-+static DEFINE_MUTEX(chaoskey_list_lock);
-+
- #define usb_dbg(usb_if, format, arg...) \
- 	dev_dbg(&(usb_if)->dev, format, ## arg)
+ INTERVAL_TREE_DEFINE(struct drm_mm_node, rb,
+ 		     u64, __subtree_last,
+-		     START, LAST, static inline, drm_mm_interval_tree)
++		     START, LAST, static inline __maybe_unused, drm_mm_interval_tree)
  
-@@ -231,6 +233,7 @@ static void chaoskey_disconnect(struct usb_interface *interface)
- 	if (dev->hwrng_registered)
- 		hwrng_unregister(&dev->hwrng);
- 
-+	mutex_lock(&chaoskey_list_lock);
- 	usb_deregister_dev(interface, &chaoskey_class);
- 
- 	usb_set_intfdata(interface, NULL);
-@@ -245,6 +248,7 @@ static void chaoskey_disconnect(struct usb_interface *interface)
- 	} else
- 		mutex_unlock(&dev->lock);
- 
-+	mutex_unlock(&chaoskey_list_lock);
- 	usb_dbg(interface, "disconnect done");
- }
- 
-@@ -252,6 +256,7 @@ static int chaoskey_open(struct inode *inode, struct file *file)
- {
- 	struct chaoskey *dev;
- 	struct usb_interface *interface;
-+	int rv = 0;
- 
- 	/* get the interface from minor number and driver information */
- 	interface = usb_find_interface(&chaoskey_driver, iminor(inode));
-@@ -267,18 +272,23 @@ static int chaoskey_open(struct inode *inode, struct file *file)
- 	}
- 
- 	file->private_data = dev;
-+	mutex_lock(&chaoskey_list_lock);
- 	mutex_lock(&dev->lock);
--	++dev->open;
-+	if (dev->present)
-+		++dev->open;
-+	else
-+		rv = -ENODEV;
- 	mutex_unlock(&dev->lock);
-+	mutex_unlock(&chaoskey_list_lock);
- 
--	usb_dbg(interface, "open success");
--	return 0;
-+	return rv;
- }
- 
- static int chaoskey_release(struct inode *inode, struct file *file)
- {
- 	struct chaoskey *dev = file->private_data;
- 	struct usb_interface *interface;
-+	int rv = 0;
- 
- 	if (dev == NULL)
- 		return -ENODEV;
-@@ -287,14 +297,15 @@ static int chaoskey_release(struct inode *inode, struct file *file)
- 
- 	usb_dbg(interface, "release");
- 
-+	mutex_lock(&chaoskey_list_lock);
- 	mutex_lock(&dev->lock);
- 
- 	usb_dbg(interface, "open count at release is %d", dev->open);
- 
- 	if (dev->open <= 0) {
- 		usb_dbg(interface, "invalid open count (%d)", dev->open);
--		mutex_unlock(&dev->lock);
--		return -ENODEV;
-+		rv = -ENODEV;
-+		goto bail;
- 	}
- 
- 	--dev->open;
-@@ -303,13 +314,15 @@ static int chaoskey_release(struct inode *inode, struct file *file)
- 		if (dev->open == 0) {
- 			mutex_unlock(&dev->lock);
- 			chaoskey_free(dev);
--		} else
--			mutex_unlock(&dev->lock);
--	} else
--		mutex_unlock(&dev->lock);
--
-+			goto destruction;
-+		}
-+	}
-+bail:
-+	mutex_unlock(&dev->lock);
-+destruction:
-+	mutex_lock(&chaoskey_list_lock);
- 	usb_dbg(interface, "release success");
--	return 0;
-+	return rv;
- }
- 
- static void chaos_read_callback(struct urb *urb)
+ struct drm_mm_node *
+ __drm_mm_interval_first(const struct drm_mm *mm, u64 start, u64 last)
 -- 
 2.43.0
 
