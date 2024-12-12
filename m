@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-101297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA749EEBB9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EAE9EF3E9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6FCC188D1E1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96D612898D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92A421578E;
-	Thu, 12 Dec 2024 15:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD122288CD;
+	Thu, 12 Dec 2024 17:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brQXeOj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqdSXHmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650061487CD;
-	Thu, 12 Dec 2024 15:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574A722A81C;
+	Thu, 12 Dec 2024 17:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017065; cv=none; b=WWokSq1g/1G76Pkd3QZNeXoVz4m/in0aeIog5769ElnKDz9uUvGxckG+bNIZIZcLmgwQ57mc1cYGIEq1JY6eY8dCTJXKSGD1+tjg9kD7sczLJNhhHs28GpHa3SwHdJM7KdcL8xZRP/etyQYZ7KZ8OVOmXABZbz1ZOUX5S19RGcI=
+	t=1734022839; cv=none; b=FMxHZy4dBLevzSzJInbaR7tfnfHOd65EuB1zoyEjwXhSrHA+9aLvID/cLw3WWr5CCI8oMuJTyQvpxvIsv8ClHMnsoZuliGk9VaaSF2RviSQm/CFqJv1UTZuPUtHA0QU6ySbGLtnlXJbmGncUMCS06lTJlb+VoHkkI7nKQ35Pofc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017065; c=relaxed/simple;
-	bh=MnNF9z6M6wNSdzZkKHuY8uDjBPJ83J4jZqkoYCm5NAo=;
+	s=arc-20240116; t=1734022839; c=relaxed/simple;
+	bh=87efIatYdbPJfMSAplZIo1eM2+e5tyrrEi3N1rAaJtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWMaoIygngmO5u5LP6h6dfPvOWKT9pj7PfG/KgAeNoaKxnjK2YmolhSwc0Z3c1hYU4OJ415cF7IkBl3QdzZq15SxBrS+zf93yepDRWxcRq/M6RpXec1emEVn3ivTXXZrL4TUluLna/WSE7E9JEH7c/E8gHHEsc1/bejNYs6TIBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brQXeOj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF30C4CECE;
-	Thu, 12 Dec 2024 15:24:24 +0000 (UTC)
+	 MIME-Version; b=RCTHUvyYn+wKSsp8AOxHIrnW1DaUwSIMLiofwwM8yy1jHT0G8ANGbajyKM66FiLpkg7G2eITSj9DymG6bpO1rgpKTs3C7Gjyhk5yJLtmsWwGXtQS4ZyEx0pPfVlluh6O3WBU4D9k6CMez5CbFpj8qGkwcocnJ3BT6U2GjbPfCAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqdSXHmW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2F3C4CED0;
+	Thu, 12 Dec 2024 17:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017065;
-	bh=MnNF9z6M6wNSdzZkKHuY8uDjBPJ83J4jZqkoYCm5NAo=;
+	s=korg; t=1734022839;
+	bh=87efIatYdbPJfMSAplZIo1eM2+e5tyrrEi3N1rAaJtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brQXeOj9uJ5FsWSAJS2kPBXNxoqwRUxmTv3HB/5EFvsq7CunxFpkWCGoUNUlJdTMY
-	 e2hRcNLMpWemdEEzFmn8E/Q4EVtKP9A2ba8ZY9B8+Mttbpe2ijl3NWsiAlM9P6urRn
-	 TdKHX3eYXrp5cPfBrT01sA3T3wSPfa1epAXxdnZk=
+	b=YqdSXHmWSLalXtyDl2RmQGzxPWVXNLSiD8hr/uZx0TASI1UfDBEWOg8uWl8aQSSq8
+	 omEnwdu9bNqO4rjPN82/jOO82RScnKrpCQaRxmljubLgySed592D5s5i1Ym3PXeTU1
+	 wNiU7oklX2HN8kUxbQpsg7uJhC6db+r+4ZTEj5og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 373/466] clk: qcom: tcsrcc-sm8550: add SAR2130P support
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 347/565] ALSA: hda/realtek: Apply quirk for Medion E15433
 Date: Thu, 12 Dec 2024 15:59:02 +0100
-Message-ID: <20241212144321.514694388@linuxfoundation.org>
+Message-ID: <20241212144325.315077168@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit d2e0a043530b9d6f37a8de8f05e0725667aba0a6 ]
+commit ca0f79f0286046f6a91c099dc941cf7afae198d6 upstream.
 
-The SAR2130P platform has the same TCSR Clock Controller as the SM8550,
-except for the lack of the UFS clocks. Extend the SM8550 TCSRCC driver
-to support SAR2130P.
+Medion E15433 laptop wich ALC269VC (SSID 2782:1705) needs the same
+workaround for the missing speaker as another model.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241027-sar2130p-clocks-v5-9-ecad2a1432ba@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1233298
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241128072646.15659-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/tcsrcc-sm8550.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/tcsrcc-sm8550.c b/drivers/clk/qcom/tcsrcc-sm8550.c
-index e5e8f2e82b949..41d73f92a000a 100644
---- a/drivers/clk/qcom/tcsrcc-sm8550.c
-+++ b/drivers/clk/qcom/tcsrcc-sm8550.c
-@@ -129,6 +129,13 @@ static struct clk_branch tcsr_usb3_clkref_en = {
- 	},
- };
- 
-+static struct clk_regmap *tcsr_cc_sar2130p_clocks[] = {
-+	[TCSR_PCIE_0_CLKREF_EN] = &tcsr_pcie_0_clkref_en.clkr,
-+	[TCSR_PCIE_1_CLKREF_EN] = &tcsr_pcie_1_clkref_en.clkr,
-+	[TCSR_USB2_CLKREF_EN] = &tcsr_usb2_clkref_en.clkr,
-+	[TCSR_USB3_CLKREF_EN] = &tcsr_usb3_clkref_en.clkr,
-+};
-+
- static struct clk_regmap *tcsr_cc_sm8550_clocks[] = {
- 	[TCSR_PCIE_0_CLKREF_EN] = &tcsr_pcie_0_clkref_en.clkr,
- 	[TCSR_PCIE_1_CLKREF_EN] = &tcsr_pcie_1_clkref_en.clkr,
-@@ -146,6 +153,12 @@ static const struct regmap_config tcsr_cc_sm8550_regmap_config = {
- 	.fast_io = true,
- };
- 
-+static const struct qcom_cc_desc tcsr_cc_sar2130p_desc = {
-+	.config = &tcsr_cc_sm8550_regmap_config,
-+	.clks = tcsr_cc_sar2130p_clocks,
-+	.num_clks = ARRAY_SIZE(tcsr_cc_sar2130p_clocks),
-+};
-+
- static const struct qcom_cc_desc tcsr_cc_sm8550_desc = {
- 	.config = &tcsr_cc_sm8550_regmap_config,
- 	.clks = tcsr_cc_sm8550_clocks,
-@@ -153,7 +166,8 @@ static const struct qcom_cc_desc tcsr_cc_sm8550_desc = {
- };
- 
- static const struct of_device_id tcsr_cc_sm8550_match_table[] = {
--	{ .compatible = "qcom,sm8550-tcsr" },
-+	{ .compatible = "qcom,sar2130p-tcsr", .data = &tcsr_cc_sar2130p_desc },
-+	{ .compatible = "qcom,sm8550-tcsr", .data = &tcsr_cc_sm8550_desc },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, tcsr_cc_sm8550_match_table);
-@@ -162,7 +176,7 @@ static int tcsr_cc_sm8550_probe(struct platform_device *pdev)
- {
- 	struct regmap *regmap;
- 
--	regmap = qcom_cc_map(pdev, &tcsr_cc_sm8550_desc);
-+	regmap = qcom_cc_map(pdev, of_device_get_match_data(&pdev->dev));
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9546,6 +9546,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+ 	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
++	SND_PCI_QUIRK(0x2782, 0x1705, "MEDION E15433", ALC269VC_FIXUP_INFINIX_Y4_MAX),
+ 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
 
 
 
