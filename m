@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-103419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B559A9EF813
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3EA29EF680
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1FA01887D1A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C6143604E7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D70F21CFF0;
-	Thu, 12 Dec 2024 17:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CE62165EA;
+	Thu, 12 Dec 2024 17:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWAHFlnk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WM5mLnSl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B413CA81;
-	Thu, 12 Dec 2024 17:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39B82F44;
+	Thu, 12 Dec 2024 17:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024511; cv=none; b=o57apJrMp6EoGZ05NRWlHa8b2YzR8ks3r7O9hxiHbubzlGe1pc7dQfbC4JIfoLH1EMMKioGKfTPM0MqHERSjg18CwbQnnZt+sLzESZabMNL6v5dSrvsF5rjWnJFL5XTM4RzY5P/6f3IAB653WWzTL/QCeFsYji5gkV2CjPu6p5E=
+	t=1734023290; cv=none; b=G/rGZ0nyDBM9JpITkHy6TXjPUjiC1qBNlj+C00aiPt5K3QnMJVE7fUxP7iDuzoLwE1j63IdsUzpxg/LoZIMHa3wR2ie33hvuRnYjccLT/zXj4gWRD+rIcMcRY5ph24qLDfGpMTx0xAb+42yB+5d3tG+ZkNEQgZq6zjIkc+H7UHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024511; c=relaxed/simple;
-	bh=Ge8aroH3jYjGWM05xCoiQO4uP9ettJjyB7fbtc4gq94=;
+	s=arc-20240116; t=1734023290; c=relaxed/simple;
+	bh=WLsx2VJtZnb2wZ/+0UKSNQu9yI9rUVTpoo3S3vQS81Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0NwETHvC9aqVBcsx/kEspkYrEX43dziutcOspr0X+afokNx89bKCxVT7fwKoBaFrctdKeZoBtlRPXRygSptGHXtH9Th28h0JHKRE2Nwd9O4ReXn1vwAuOhpK2VosxbF2c+AFVFcpLUSCeCkPo2sy1dXtPUxBMBnlJUiIYA0YXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWAHFlnk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6250C4CED0;
-	Thu, 12 Dec 2024 17:28:30 +0000 (UTC)
+	 MIME-Version; b=hKGOkTU5YOYhFVzKgWfndFOkDgRG/uGWkj0Z1fpMSOrSO/2JniAhzA5aZZI7iFwUQZ7OMTl/RYYIKmYCDCsPVSQfHpldlEcfLfDKXI77E8Ho68pdtH3L9m5ULzR2YqLVH/dZL4IhIVUA6N4TSC9b0N7LAUQzMNRPlkkBRSp7PvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WM5mLnSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE2CC4CECE;
+	Thu, 12 Dec 2024 17:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024511;
-	bh=Ge8aroH3jYjGWM05xCoiQO4uP9ettJjyB7fbtc4gq94=;
+	s=korg; t=1734023289;
+	bh=WLsx2VJtZnb2wZ/+0UKSNQu9yI9rUVTpoo3S3vQS81Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWAHFlnkzOlxXuBsunTF5HQL0/bCK78FnkQrN2qEh1S6+H0tyqbZuYddbYAMMBFbt
-	 FmPZv6E/GbLRnUJu9Nj0I+8WGSi3Y7gDJL2UvEQoNpX/2OrauvkL7hqK3sfjsgjnfT
-	 I6sm1LculKDN45pxqf12nQRuJ7P4HMTCcc77XyGs=
+	b=WM5mLnSl7XCM8jFnWAX9Q0Sss9Psl1H4u91/DiPrhJ7ZMi82vNvBfr+y2RvPnB+vL
+	 VM23vO/RIybtVjsSMT+DP1v61XqZl+DAc2zrBiSnd6YlR++TRy3ia+Z9yPFodgTQaY
+	 vz6HbkzyoPrl3xmgPLcli4OaQzEvsAT4SG1tPgKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 313/459] quota: flush quota_release_work upon quota writeback
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 456/565] scsi: qla2xxx: Fix use after free on unload
 Date: Thu, 12 Dec 2024 16:00:51 +0100
-Message-ID: <20241212144306.009493585@linuxfoundation.org>
+Message-ID: <20241212144329.750159904@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit ac6f420291b3fee1113f21d612fa88b628afab5b ]
+commit 07c903db0a2ff84b68efa1a74a4de353ea591eb0 upstream.
 
-One of the paths quota writeback is called from is:
+System crash is observed with stack trace warning of use after
+free. There are 2 signals to tell dpc_thread to terminate (UNLOADING
+flag and kthread_stop).
 
-freeze_super()
-  sync_filesystem()
-    ext4_sync_fs()
-      dquot_writeback_dquots()
+On setting the UNLOADING flag when dpc_thread happens to run at the time
+and sees the flag, this causes dpc_thread to exit and clean up
+itself. When kthread_stop is called for final cleanup, this causes use
+after free.
 
-Since we currently don't always flush the quota_release_work queue in
-this path, we can end up with the following race:
+Remove UNLOADING signal to terminate dpc_thread.  Use the kthread_stop
+as the main signal to exit dpc_thread.
 
- 1. dquot are added to releasing_dquots list during regular operations.
- 2. FS Freeze starts, however, this does not flush the quota_release_work queue.
- 3. Freeze completes.
- 4. Kernel eventually tries to flush the workqueue while FS is frozen which
-    hits a WARN_ON since transaction gets started during frozen state:
+[596663.812935] kernel BUG at mm/slub.c:294!
+[596663.812950] invalid opcode: 0000 [#1] SMP PTI
+[596663.812957] CPU: 13 PID: 1475935 Comm: rmmod Kdump: loaded Tainted: G          IOE    --------- -  - 4.18.0-240.el8.x86_64 #1
+[596663.812960] Hardware name: HP ProLiant DL380p Gen8, BIOS P70 08/20/2012
+[596663.812974] RIP: 0010:__slab_free+0x17d/0x360
 
-  ext4_journal_check_start+0x28/0x110 [ext4] (unreliable)
-  __ext4_journal_start_sb+0x64/0x1c0 [ext4]
-  ext4_release_dquot+0x90/0x1d0 [ext4]
-  quota_release_workfn+0x43c/0x4d0
+...
+[596663.813008] Call Trace:
+[596663.813022]  ? __dentry_kill+0x121/0x170
+[596663.813030]  ? _cond_resched+0x15/0x30
+[596663.813034]  ? _cond_resched+0x15/0x30
+[596663.813039]  ? wait_for_completion+0x35/0x190
+[596663.813048]  ? try_to_wake_up+0x63/0x540
+[596663.813055]  free_task+0x5a/0x60
+[596663.813061]  kthread_stop+0xf3/0x100
+[596663.813103]  qla2x00_remove_one+0x284/0x440 [qla2xxx]
 
-Which is the following line:
-
-  WARN_ON(sb->s_writers.frozen == SB_FREEZE_COMPLETE);
-
-Which ultimately results in generic/390 failing due to dmesg
-noise. This was detected on powerpc machine 15 cores.
-
-To avoid this, make sure to flush the workqueue during
-dquot_writeback_dquots() so we dont have any pending workitems after
-freeze.
-
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-CC: stable@vger.kernel.org
-Fixes: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241121123855.645335-2-ojaswin@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-3-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c |   15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 9b8babbd1653c..525ae0f11818c 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -692,6 +692,8 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -6851,12 +6851,15 @@ qla2x00_do_dpc(void *data)
+ 	set_user_nice(current, MIN_NICE);
  
- 	WARN_ON_ONCE(!rwsem_is_locked(&sb->s_umount));
+ 	set_current_state(TASK_INTERRUPTIBLE);
+-	while (!kthread_should_stop()) {
++	while (1) {
+ 		ql_dbg(ql_dbg_dpc, base_vha, 0x4000,
+ 		    "DPC handler sleeping.\n");
  
-+	flush_delayed_work(&quota_release_work);
+ 		schedule();
+ 
++		if (kthread_should_stop())
++			break;
 +
- 	for (cnt = 0; cnt < MAXQUOTAS; cnt++) {
- 		if (type != -1 && cnt != type)
- 			continue;
--- 
-2.43.0
-
+ 		if (test_and_clear_bit(DO_EEH_RECOVERY, &base_vha->dpc_flags))
+ 			qla_pci_set_eeh_busy(base_vha);
+ 
+@@ -6869,15 +6872,16 @@ qla2x00_do_dpc(void *data)
+ 			goto end_loop;
+ 		}
+ 
++		if (test_bit(UNLOADING, &base_vha->dpc_flags))
++			/* don't do any work. Wait to be terminated by kthread_stop */
++			goto end_loop;
++
+ 		ha->dpc_active = 1;
+ 
+ 		ql_dbg(ql_dbg_dpc + ql_dbg_verbose, base_vha, 0x4001,
+ 		    "DPC handler waking up, dpc_flags=0x%lx.\n",
+ 		    base_vha->dpc_flags);
+ 
+-		if (test_bit(UNLOADING, &base_vha->dpc_flags))
+-			break;
+-
+ 		if (IS_P3P_TYPE(ha)) {
+ 			if (IS_QLA8044(ha)) {
+ 				if (test_and_clear_bit(ISP_UNRECOVERABLE,
+@@ -7195,9 +7199,6 @@ end_loop:
+ 	 */
+ 	ha->dpc_active = 0;
+ 
+-	/* Cleanup any residual CTX SRBs. */
+-	qla2x00_abort_all_cmds(base_vha, DID_NO_CONNECT << 16);
+-
+ 	return 0;
+ }
+ 
 
 
 
