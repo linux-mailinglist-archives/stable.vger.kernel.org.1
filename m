@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-102263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C0E9EF102
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC049EEB5D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FD1D29E8AA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62F0818833B1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07484237FFC;
-	Thu, 12 Dec 2024 16:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED862AF0E;
+	Thu, 12 Dec 2024 15:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLNIk2Ml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIgqjffE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE104237FEB;
-	Thu, 12 Dec 2024 16:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4251487CD;
+	Thu, 12 Dec 2024 15:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020589; cv=none; b=BAKbo1PoZmAz6gAxrek8bQR5JXvyLeaUk0hN2rybpO3rgm1ZYv4gKFLxPNkDURTuMhPlJpuiwKnN852jfDRtxZnrofA5T8DpfMRNKpE1NiYjNbD6vy80DvhJBHLVC7A0IDHovrFcEKVupvXawOCrbuHTRyVDLHHjvmBznqDNteg=
+	t=1734016733; cv=none; b=OegfSCdITVz0jT5RUGof6+ider3SFi3QHfeyDHWjQ15iliDfQefdqW+K/GmC9HeDhBGQVtQbIl27ZTuJ+oULl+pPOGJ73WGRBJj0vXhSKuIhaXm/5zoFQAASdRItz6CZ3AI5IfOz6Tej6V8C7c44Mr7xQnUWenuNXXoXs/LP/lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020589; c=relaxed/simple;
-	bh=ZKLFhqxjp/s15VrCKbAVos748QOsolh5UxUElQBr6D0=;
+	s=arc-20240116; t=1734016733; c=relaxed/simple;
+	bh=ZovdAfawvbn6omlP5QeTG1FapPXSM+gkBTR9uitTjkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IH1GAUWawj1ytm85Ht1q39Ow/V/Gpzoy6QeR916B8uE2/xe4pRwwB0aRY00NoE7ZhCBHTYO8RGtRVVYw9j89LHEgZ+3yPhbgjyXVYSQbFmJt7rHqIKp374/tImryLKfbjgTbzxnIh4h559iKr1UoyUS4QDPfsKoSu//7UGEvwiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLNIk2Ml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A55C4CECE;
-	Thu, 12 Dec 2024 16:23:08 +0000 (UTC)
+	 MIME-Version; b=CmBHWWRQW1EzNzW2P+eSM7mT0GKJnq2f6kG1FVYjTMsCPCnE3ufo1DBml6vpHsEI86k2gohoXmMq6Pwc5zGeloR9H6xHVl4Fnx2zUV0+Yew69bnXWipQIjRs9dE239vy/9/fnaqTgr9J5b2PoC16cF3D+oOfkHajB/j7deUu0Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIgqjffE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB44C4CECE;
+	Thu, 12 Dec 2024 15:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020589;
-	bh=ZKLFhqxjp/s15VrCKbAVos748QOsolh5UxUElQBr6D0=;
+	s=korg; t=1734016732;
+	bh=ZovdAfawvbn6omlP5QeTG1FapPXSM+gkBTR9uitTjkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLNIk2Ml+gdmkN5bnMWWt/kIgB8F2uAY17do7Xnk9aYs610Ay02zmMYcWGan6PYbW
-	 pArXQsOhID1mDaruC8MVPjKwUFABHWq3TtzzRm2cFS2ljH0GNlMJZHKXa48OXeNOdv
-	 f8hrT80HtFx8gG9zqUaqGotcX0nGQ7KhfGBfm2cs=
+	b=dIgqjffEo4hwWlnNvwKP6czN0EmVWHGTZRSMFx0jmh9o0C6f9SXjI5p3LiMlNh9WF
+	 UY+OQ6iqIBDWoEvrCT9qjrMPhZ5eae4ncSTMnxci6I3rfrfXIyuSo8YX9TgMc3wOd/
+	 jj7bofFzMvHm3pUtrBkwDN5JbrLBOwTO12hMg84o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Ocheretnyi <oocheret@cisco.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Leo Chen <leo.chen@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 507/772] iTCO_wdt: mask NMI_NOW bit for update_no_reboot_bit() call
+Subject: [PATCH 6.12 283/466] drm/amd/display: Full exit out of IPS2 when all allow signals have been cleared
 Date: Thu, 12 Dec 2024 15:57:32 +0100
-Message-ID: <20241212144410.903930383@linuxfoundation.org>
+Message-ID: <20241212144317.972025241@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Ocheretnyi <oocheret@cisco.com>
+From: Leo Chen <leo.chen@amd.com>
 
-[ Upstream commit daa814d784ac034c62ab3fb0ef83daeafef527e2 ]
+[ Upstream commit 0fe33e115fec305c35c66b78ad26e3755ab54b9c ]
 
-Commit da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake
-PCH iTCO") does not mask NMI_NOW bit during TCO1_CNT register's
-value comparison for update_no_reboot_bit() call causing following
-failure:
+[Why]
+A race condition occurs between cursor movement and vertical interrupt control
+thread from OS, with both threads trying to exit IPS2.
+Vertical interrupt control thread clears the prev driver allow signal while not fully
+finishing the IPS2 exit process.
 
-   ...
-   iTCO_vendor_support: vendor-support=0
-   iTCO_wdt iTCO_wdt: unable to reset NO_REBOOT flag, device
-                                    disabled by hardware/BIOS
-   ...
+[How]
+We want to detect all the allow signals have been cleared before we perform the full exit.
 
-and this can lead to unexpected NMIs later during regular
-crashkernel's workflow because of watchdog probe call failures.
-
-This change masks NMI_NOW bit for TCO1_CNT register values to
-avoid unexpected NMI_NOW bit inversions.
-
-Fixes: da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake PCH iTCO")
-Signed-off-by: Oleksandr Ocheretnyi <oocheret@cisco.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/r/20240913191403.2560805-1-oocheret@cisco.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Leo Chen <leo.chen@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/iTCO_wdt.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c    | 6 ++++--
+ drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h | 3 ++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
-index e937b4dd28be7..35ae40b35f555 100644
---- a/drivers/watchdog/iTCO_wdt.c
-+++ b/drivers/watchdog/iTCO_wdt.c
-@@ -82,6 +82,13 @@
- #define TCO2_CNT(p)	(TCOBASE(p) + 0x0a) /* TCO2 Control Register	*/
- #define TCOv2_TMR(p)	(TCOBASE(p) + 0x12) /* TCOv2 Timer Initial Value*/
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+index 1e7de0f03290a..ec5009f411eb0 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+@@ -1294,6 +1294,8 @@ static void dc_dmub_srv_notify_idle(const struct dc *dc, bool allow_idle)
  
-+/*
-+ * NMI_NOW is bit 8 of TCO1_CNT register
-+ * Read/Write
-+ * This bit is implemented as RW but has no effect on HW.
-+ */
-+#define NMI_NOW		BIT(8)
+ 		memset(&new_signals, 0, sizeof(new_signals));
+ 
++		new_signals.bits.allow_idle = 1; /* always set */
 +
- /* internal variables */
- struct iTCO_wdt_private {
- 	struct watchdog_device wddev;
-@@ -219,13 +226,23 @@ static int update_no_reboot_bit_cnt(void *priv, bool set)
- 	struct iTCO_wdt_private *p = priv;
- 	u16 val, newval;
+ 		if (dc->config.disable_ips == DMUB_IPS_ENABLE ||
+ 		    dc->config.disable_ips == DMUB_IPS_DISABLE_DYNAMIC) {
+ 			new_signals.bits.allow_pg = 1;
+@@ -1389,7 +1391,7 @@ static void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
+ 		 */
+ 		dc_dmub_srv->needs_idle_wake = false;
  
--	val = inw(TCO1_CNT(p));
-+	/*
-+	 * writing back 1b1 to NMI_NOW of TCO1_CNT register
-+	 * causes NMI_NOW bit inversion what consequently does
-+	 * not allow to perform the register's value comparison
-+	 * properly.
-+	 *
-+	 * NMI_NOW bit masking for TCO1_CNT register values
-+	 * helps to avoid possible NMI_NOW bit inversions on
-+	 * following write operation.
-+	 */
-+	val = inw(TCO1_CNT(p)) & ~NMI_NOW;
- 	if (set)
- 		val |= BIT(0);
- 	else
- 		val &= ~BIT(0);
- 	outw(val, TCO1_CNT(p));
--	newval = inw(TCO1_CNT(p));
-+	newval = inw(TCO1_CNT(p)) & ~NMI_NOW;
+-		if (prev_driver_signals.bits.allow_ips2 &&
++		if ((prev_driver_signals.bits.allow_ips2 || prev_driver_signals.all == 0) &&
+ 		    (!dc->debug.optimize_ips_handshake ||
+ 		     ips_fw->signals.bits.ips2_commit || !ips_fw->signals.bits.in_idle)) {
+ 			DC_LOG_IPS(
+@@ -1450,7 +1452,7 @@ static void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
+ 		}
  
- 	/* make sure the update is successful */
- 	return val != newval ? -EIO : 0;
+ 		dc_dmub_srv_notify_idle(dc, false);
+-		if (prev_driver_signals.bits.allow_ips1) {
++		if (prev_driver_signals.bits.allow_ips1 || prev_driver_signals.all == 0) {
+ 			DC_LOG_IPS(
+ 				"wait for IPS1 commit clear (ips1_commit=%u ips2_commit=%u)",
+ 				ips_fw->signals.bits.ips1_commit,
+diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+index ebcf68bfae2b3..7835100b37c41 100644
+--- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
++++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+@@ -747,7 +747,8 @@ union dmub_shared_state_ips_driver_signals {
+ 		uint32_t allow_ips1 : 1; /**< 1 is IPS1 is allowed */
+ 		uint32_t allow_ips2 : 1; /**< 1 is IPS1 is allowed */
+ 		uint32_t allow_z10 : 1; /**< 1 if Z10 is allowed */
+-		uint32_t reserved_bits : 28; /**< Reversed bits */
++		uint32_t allow_idle : 1; /**< 1 if driver is allowing idle */
++		uint32_t reserved_bits : 27; /**< Reversed bits */
+ 	} bits;
+ 	uint32_t all;
+ };
 -- 
 2.43.0
 
