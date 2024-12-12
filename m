@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF54A9EF3B1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:01:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC949EEC63
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9F40189EEAA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78FB8168A96
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A88A22331F;
-	Thu, 12 Dec 2024 16:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE686215777;
+	Thu, 12 Dec 2024 15:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIPJHsXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8+YpQ/z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9887223313;
-	Thu, 12 Dec 2024 16:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB212135C1;
+	Thu, 12 Dec 2024 15:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022153; cv=none; b=Yrcabl+hdYnvSd36jOYRHUmOYWnrjrg0n+QXVkJzAz+dasJT7R2aZ4oyrmZfScEYs7+tXS6T2+S+HopFAgjb3KKBCmFt4r9YcaJfHxY5blf5+z/KMol1vGj2sxHnXfHV9HAmw6fc58QBzOI7OIyohmn8yG60Iz0chocyB2xI+T4=
+	t=1734017531; cv=none; b=P1Yc2zG0zvLE29QVHSCxXbI5tlYnOBBRKOeookC7SaWLV3+6XQ1ph6uuG7OpOhngOWk0vgt51TUdrWBCdGQcU2zcergjo/YKyP4hnOTrkOWxsoSxDjH0e9mE0bXxruRDfQsmsiVqL2QYKkx1lsqTDWm7tHfkO5R2o8UNLKyWuCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022153; c=relaxed/simple;
-	bh=Ab4B+AV8PLzW3+eS873XQXDRhRweaCVpcp6Gob89mFo=;
+	s=arc-20240116; t=1734017531; c=relaxed/simple;
+	bh=ElEtl9VBboOKTbqMwuf7AvF/AITELJUzmAxvwViySqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKMrxr0jDrGVE3u3PQed/Fegzk0bWQfXzdwB3SxQOqwaeme82n6gyQnE0bHY4EMFrdM+bcJi7dPoakwt9cWzEDI/Gmc72u3PJNdQiWYlgHlVj5EmsC+8lijrib188jZK0fT3USyg4S0/gHbOQvQ8shbKfIJdyMyN+OIfeWXmaRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIPJHsXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5498AC4CECE;
-	Thu, 12 Dec 2024 16:49:12 +0000 (UTC)
+	 MIME-Version; b=Fge8xdihBw+Oq+r47wsL1klYXc1tVcfcAcSdusia9hH2Koktw0iq9Q/94DYrWQeGUcUYNer+kdBZ8EKvZ6/nOLTYXoetHG0NGSMPWGLzCn0c1C0msMnF4Higiv6fdDARxiE4VQ0F7llbYjwOcAeaNONgQtL/DTYINks8rO7YOgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8+YpQ/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D463FC4CECE;
+	Thu, 12 Dec 2024 15:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022152;
-	bh=Ab4B+AV8PLzW3+eS873XQXDRhRweaCVpcp6Gob89mFo=;
+	s=korg; t=1734017531;
+	bh=ElEtl9VBboOKTbqMwuf7AvF/AITELJUzmAxvwViySqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qIPJHsXl9RCeMXDnsXGdbkt9MvU0hXJIjrCJMtdFa3zQ286Kwpyzcn0wAFgJfPUFN
-	 ssS3/6RXTw+dHe1hwN+3N0+rAu67tU/l++807MbQC+0S3WPUBS39xhph/LI+RQ7O8U
-	 kF5Vw0qzQ1UBH42zAJ07pg9Oz9al2pQFPfrKJNrg=
+	b=e8+YpQ/z4dp6xQDQ2SOaEb7/KE1TN+d+yHTd8bF3QT7oFgMEAaCM/1YCAYwzhpR0E
+	 Wk3nWaHBRmWjb3X37bP/siaBLKUhABwVdWctUY75DhPq76xpReWx3Y5g3TW+riPaRx
+	 wVNvSBcxS9VxlNGbKM6p2IOf41kt2LFmm8h89whE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 163/565] drm/bridge: anx7625: Drop EDID cache on bridge power off
-Date: Thu, 12 Dec 2024 15:55:58 +0100
-Message-ID: <20241212144317.919231168@linuxfoundation.org>
+	Wen Gu <guwen@linux.alibaba.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Jan Karcher <jaka@linux.ibm.com>
+Subject: [PATCH 6.6 040/356] net/smc: add operations to merge sndbuf with peer DMB
+Date: Thu, 12 Dec 2024 15:55:59 +0100
+Message-ID: <20241212144246.212617801@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Wen Gu <guwen@linux.alibaba.com>
 
-[ Upstream commit 00ae002116a14c2e6a342c4c9ae080cdbb9b4b21 ]
+[ Upstream commit 4398888268582cb51b69c6ee94f551bb8d37d12f ]
 
-The bridge might miss the display change events when it's powered off.
-This happens when a user changes the external monitor when the system
-is suspended and the embedded controller doesn't not wake AP up.
+In some scenarios using Emulated-ISM device, sndbuf can share the same
+physical memory region with peer DMB to avoid data copy from one side
+to the other. In such case the sndbuf is only a descriptor that
+describes the shared memory and does not actually occupy memory, it's
+more like a ghost buffer.
 
-It's also observed that one DP-to-HDMI bridge doesn't work correctly
-when there is no EDID read after it is powered on.
+      +----------+                     +----------+
+      | socket A |                     | socket B |
+      +----------+                     +----------+
+            |                               |
+       +--------+                       +--------+
+       | sndbuf |                       |  DMB   |
+       |  desc  |                       |  desc  |
+       +--------+                       +--------+
+            |                               |
+            |                          +----v-----+
+            +-------------------------->  memory  |
+                                       +----------+
 
-Drop the cache to force an EDID read after system resume to fix this.
+So here introduces three new SMC-D device operations to check if this
+feature is supported by device, and to {attach|detach} ghost sndbuf to
+peer DMB. For now only loopback-ism supports this.
 
-Fixes: 8bdfc5dae4e3 ("drm/bridge: anx7625: Add anx7625 MIPI DSI/DPI to DP")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240926092931.3870342-2-treapking@chromium.org
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Reviewed-and-tested-by: Jan Karcher <jaka@linux.ibm.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 0541db8ee32c ("net/smc: initialize close_work early to avoid warning")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/net/smc.h |  3 +++
+ net/smc/smc_ism.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ net/smc/smc_ism.h |  4 ++++
+ 3 files changed, 47 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index f895ef1939fa0..01612d2c034af 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -1704,6 +1704,8 @@ static int __maybe_unused anx7625_runtime_pm_suspend(struct device *dev)
- 	mutex_lock(&ctx->lock);
+diff --git a/include/net/smc.h b/include/net/smc.h
+index 9dfe57f3e4f0b..6fef76087b9ed 100644
+--- a/include/net/smc.h
++++ b/include/net/smc.h
+@@ -79,6 +79,9 @@ struct smcd_ops {
+ 	int (*reset_vlan_required)(struct smcd_dev *dev);
+ 	int (*signal_event)(struct smcd_dev *dev, struct smcd_gid *rgid,
+ 			    u32 trigger_irq, u32 event_code, u64 info);
++	int (*support_dmb_nocopy)(struct smcd_dev *dev);
++	int (*attach_dmb)(struct smcd_dev *dev, struct smcd_dmb *dmb);
++	int (*detach_dmb)(struct smcd_dev *dev, u64 token);
+ };
  
- 	anx7625_stop_dp_work(ctx);
-+	if (!ctx->pdata.panel_bridge)
-+		anx7625_remove_edid(ctx);
- 	anx7625_power_standby(ctx);
+ struct smcd_dev {
+diff --git a/net/smc/smc_ism.c b/net/smc/smc_ism.c
+index 3623df320de55..61ffc72014013 100644
+--- a/net/smc/smc_ism.c
++++ b/net/smc/smc_ism.c
+@@ -228,6 +228,46 @@ int smc_ism_register_dmb(struct smc_link_group *lgr, int dmb_len,
+ #endif
+ }
  
- 	mutex_unlock(&ctx->lock);
++bool smc_ism_support_dmb_nocopy(struct smcd_dev *smcd)
++{
++	/* for now only loopback-ism supports
++	 * merging sndbuf with peer DMB to avoid
++	 * data copies between them.
++	 */
++	return (smcd->ops->support_dmb_nocopy &&
++		smcd->ops->support_dmb_nocopy(smcd));
++}
++
++int smc_ism_attach_dmb(struct smcd_dev *dev, u64 token,
++		       struct smc_buf_desc *dmb_desc)
++{
++	struct smcd_dmb dmb;
++	int rc = 0;
++
++	if (!dev->ops->attach_dmb)
++		return -EINVAL;
++
++	memset(&dmb, 0, sizeof(dmb));
++	dmb.dmb_tok = token;
++	rc = dev->ops->attach_dmb(dev, &dmb);
++	if (!rc) {
++		dmb_desc->sba_idx = dmb.sba_idx;
++		dmb_desc->token = dmb.dmb_tok;
++		dmb_desc->cpu_addr = dmb.cpu_addr;
++		dmb_desc->dma_addr = dmb.dma_addr;
++		dmb_desc->len = dmb.dmb_len;
++	}
++	return rc;
++}
++
++int smc_ism_detach_dmb(struct smcd_dev *dev, u64 token)
++{
++	if (!dev->ops->detach_dmb)
++		return -EINVAL;
++
++	return dev->ops->detach_dmb(dev, token);
++}
++
+ static int smc_nl_handle_smcd_dev(struct smcd_dev *smcd,
+ 				  struct sk_buff *skb,
+ 				  struct netlink_callback *cb)
+diff --git a/net/smc/smc_ism.h b/net/smc/smc_ism.h
+index 0e5e563099ec3..8312c3586d2b3 100644
+--- a/net/smc/smc_ism.h
++++ b/net/smc/smc_ism.h
+@@ -41,6 +41,10 @@ int smc_ism_put_vlan(struct smcd_dev *dev, unsigned short vlan_id);
+ int smc_ism_register_dmb(struct smc_link_group *lgr, int buf_size,
+ 			 struct smc_buf_desc *dmb_desc);
+ int smc_ism_unregister_dmb(struct smcd_dev *dev, struct smc_buf_desc *dmb_desc);
++bool smc_ism_support_dmb_nocopy(struct smcd_dev *smcd);
++int smc_ism_attach_dmb(struct smcd_dev *dev, u64 token,
++		       struct smc_buf_desc *dmb_desc);
++int smc_ism_detach_dmb(struct smcd_dev *dev, u64 token);
+ int smc_ism_signal_shutdown(struct smc_link_group *lgr);
+ void smc_ism_get_system_eid(u8 **eid);
+ u16 smc_ism_get_chid(struct smcd_dev *dev);
 -- 
 2.43.0
 
