@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-103408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53769EF6A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD4D9EF6A1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:27:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83E9828B25E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC47817B838
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DAA42210D4;
-	Thu, 12 Dec 2024 17:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0D021E086;
+	Thu, 12 Dec 2024 17:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rms60Xv4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLfcfFcq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5A821660B;
-	Thu, 12 Dec 2024 17:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E1913792B;
+	Thu, 12 Dec 2024 17:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024478; cv=none; b=kfqn0hlXjwWkItv6MhX6nX90T7nmRMnDJyD/zaJi0Lhn0Ds2VStULLWRhZs98hJ/+D/6c37eD4UI5ebeoRfoR8VX1aECayAyMtNXeOoUv+55RQngsPGvl82atPvIOeFp3RJzQjp9y7FrULFOtvxYWH97dQ6CVO8jXU2GNs/Qwuo=
+	t=1734023103; cv=none; b=m9BVPiMGt4xwGNgn5v4J7ARkdOudsc5zs4jymiWfeZ6iL1qgbTJm2CzOZSmCmiqfP4PzrM2WfAoQw6Wp8dopPzUkTbBLPGGBIP9DKTre5VXuRtsOiE2TqlX7w/9+Tw0/MBK/x5nIqGwBECs63Pz2PnYAWr5VHayv2z7ibE3nKo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024478; c=relaxed/simple;
-	bh=+yEjuido8qfFC5WvYm/quN8OQi+lRqHM3Q6CF9w/sXA=;
+	s=arc-20240116; t=1734023103; c=relaxed/simple;
+	bh=snzliHm4d3f8Fm+qosSiOuawQThwg7JCoIngsrIrTBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LaDSHC+OIsxR4dynzg4yZcAxTVz37VGYuQlfm4tXPD0nU5m8GKXidj41qtDlG5Qs/MXARg/g+Yx0WzVJuxe0CJogMFjr7ucxCgqn2zENN2PjoqSNddR28ULBrvWKIhj5WPDxEmXvaHlua3weoUhn5TVUJione+JpqD4NxZyOZYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rms60Xv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59E6C4CECE;
-	Thu, 12 Dec 2024 17:27:57 +0000 (UTC)
+	 MIME-Version; b=F3lV/IqVzFI/OxROxawpceB8jflBmJcdJkfKyAHkYeHqBe/z3clUj9rne8TDojIeQLkbWHI4pb/JLi3oYz2WT3P01Dl0Xsqdhcdgss/51GfKohxHbyoUEtKWSbD+TqqjZ1gYCHJcmHskzSlWffogE0rMnT+7WPcZ3nk97oa7DPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLfcfFcq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8DEC4CED0;
+	Thu, 12 Dec 2024 17:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024478;
-	bh=+yEjuido8qfFC5WvYm/quN8OQi+lRqHM3Q6CF9w/sXA=;
+	s=korg; t=1734023102;
+	bh=snzliHm4d3f8Fm+qosSiOuawQThwg7JCoIngsrIrTBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rms60Xv4UpWQRqqb8Nra59htaCEL3CQYpURKVagqyiDbw0XSZtEnHLvNo9zfRBI+J
-	 gDOQqQkZChhRDgff/4kN5byIIzOnbl7mFqiX1VTKV8Zu7lxCy2aBAUQdLkeiTnoBmg
-	 ViCU4TBlzEUQjzdmEPglER5yc9GaxWDZr0Fh2XvU=
+	b=PLfcfFcqNd+xIAHu0QSaLcBVmT7iZ3tnFqY33fJ/IAwD7izhN2IxoXDfxyveLeNSg
+	 khXeQm2Wm3cb9s8coxObAm2/WBSsfe2nvkSwlAczWu1LfJ7FpFOTeWKrRQ/Nvhll44
+	 FyszA5yHfPe/YSLKm5g6w+gFnJfN9zaSsnMxLTrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.10 282/459] usb: dwc3: gadget: Fix checking for number of TRBs left
+	syzbot+3ec5271486d7cb2d242a@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 425/565] geneve: do not assume mac header is set in geneve_xmit_skb()
 Date: Thu, 12 Dec 2024 16:00:20 +0100
-Message-ID: <20241212144304.772184972@linuxfoundation.org>
+Message-ID: <20241212144328.470163780@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 02a6982b0ccfcdc39e20016f5fc9a1b7826a6ee7 upstream.
+[ Upstream commit 8588c99c7d47448fcae39e3227d6e2bb97aad86d ]
 
-The check whether the TRB ring is full or empty in dwc3_calc_trbs_left()
-is insufficient. It assumes there are active TRBs if there's any request
-in the started_list. However, that's not the case for requests with a
-large SG list.
+We should not assume mac header is set in output path.
 
-That is, if we have a single usb request that requires more TRBs than
-the total TRBs in the TRB ring, the queued TRBs will be available when
-all the TRBs in the ring are completed. But the request is only
-partially completed and remains in the started_list. With the current
-logic, the TRB ring is empty, but dwc3_calc_trbs_left() returns 0.
+Use skb_eth_hdr() instead of eth_hdr() to fix the issue.
 
-Fix this by additionally checking for the request->num_trbs for active
-TRB count.
+sysbot reported the following :
 
-Cc: stable@vger.kernel.org
-Fixes: 51f1954ad853 ("usb: dwc3: gadget: Fix dwc3_calc_trbs_left()")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/708dc62b56b77da1f704cc2ae9b6ddb1f2dbef1f.1731545781.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 skb_mac_header include/linux/skbuff.h:3052 [inline]
+ WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 eth_hdr include/linux/if_ether.h:24 [inline]
+ WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 geneve_xmit_skb drivers/net/geneve.c:898 [inline]
+ WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 geneve_xmit+0x4c38/0x5730 drivers/net/geneve.c:1039
+Modules linked in:
+CPU: 0 UID: 0 PID: 11635 Comm: syz.4.1423 Not tainted 6.12.0-syzkaller-10296-gaaf20f870da0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+ RIP: 0010:skb_mac_header include/linux/skbuff.h:3052 [inline]
+ RIP: 0010:eth_hdr include/linux/if_ether.h:24 [inline]
+ RIP: 0010:geneve_xmit_skb drivers/net/geneve.c:898 [inline]
+ RIP: 0010:geneve_xmit+0x4c38/0x5730 drivers/net/geneve.c:1039
+Code: 21 c6 02 e9 35 d4 ff ff e8 a5 48 4c fb 90 0f 0b 90 e9 fd f5 ff ff e8 97 48 4c fb 90 0f 0b 90 e9 d8 f5 ff ff e8 89 48 4c fb 90 <0f> 0b 90 e9 41 e4 ff ff e8 7b 48 4c fb 90 0f 0b 90 e9 cd e7 ff ff
+RSP: 0018:ffffc90003b2f870 EFLAGS: 00010283
+RAX: 000000000000037a RBX: 000000000000ffff RCX: ffffc9000dc3d000
+RDX: 0000000000080000 RSI: ffffffff86428417 RDI: 0000000000000003
+RBP: ffffc90003b2f9f0 R08: 0000000000000003 R09: 000000000000ffff
+R10: 000000000000ffff R11: 0000000000000002 R12: ffff88806603c000
+R13: 0000000000000000 R14: ffff8880685b2780 R15: 0000000000000e23
+FS:  00007fdc2deed6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b30a1dff8 CR3: 0000000056b8c000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
+  netdev_start_xmit include/linux/netdevice.h:5011 [inline]
+  __dev_direct_xmit+0x58a/0x720 net/core/dev.c:4490
+  dev_direct_xmit include/linux/netdevice.h:3181 [inline]
+  packet_xmit+0x1e4/0x360 net/packet/af_packet.c:285
+  packet_snd net/packet/af_packet.c:3146 [inline]
+  packet_sendmsg+0x2700/0x5660 net/packet/af_packet.c:3178
+  sock_sendmsg_nosec net/socket.c:711 [inline]
+  __sock_sendmsg net/socket.c:726 [inline]
+  __sys_sendto+0x488/0x4f0 net/socket.c:2197
+  __do_sys_sendto net/socket.c:2204 [inline]
+  __se_sys_sendto net/socket.c:2200 [inline]
+  __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2200
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: a025fb5f49ad ("geneve: Allow configuration of DF behaviour")
+Reported-by: syzbot+3ec5271486d7cb2d242a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/674f4b72.050a0220.17bd51.004a.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Link: https://patch.msgid.link/20241203182122.2725517-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/geneve.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -953,11 +953,14 @@ static u32 dwc3_calc_trbs_left(struct dw
- 	 * pending to be processed by the driver.
- 	 */
- 	if (dep->trb_enqueue == dep->trb_dequeue) {
-+		struct dwc3_request *req;
-+
- 		/*
--		 * If there is any request remained in the started_list at
--		 * this point, that means there is no TRB available.
-+		 * If there is any request remained in the started_list with
-+		 * active TRBs at this point, then there is no TRB available.
- 		 */
--		if (!list_empty(&dep->started_list))
-+		req = next_request(&dep->started_list);
-+		if (req && req->num_trbs)
- 			return 0;
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index d7440cc4be80b..10e3d69205a4f 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -985,7 +985,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 		if (geneve->cfg.df == GENEVE_DF_SET) {
+ 			df = htons(IP_DF);
+ 		} else if (geneve->cfg.df == GENEVE_DF_INHERIT) {
+-			struct ethhdr *eth = eth_hdr(skb);
++			struct ethhdr *eth = skb_eth_hdr(skb);
  
- 		return DWC3_TRB_NUM - 1;
+ 			if (ntohs(eth->h_proto) == ETH_P_IPV6) {
+ 				df = htons(IP_DF);
+-- 
+2.43.0
+
 
 
 
