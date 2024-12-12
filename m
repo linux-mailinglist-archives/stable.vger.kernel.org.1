@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84EF9EF8DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816EE9EF59B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A94FD2841E8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 277F21899048
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083AB223E99;
-	Thu, 12 Dec 2024 17:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD86222D72;
+	Thu, 12 Dec 2024 17:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMCc2Uk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bN/L8ka3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B982B6F2FE;
-	Thu, 12 Dec 2024 17:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC47D222D64;
+	Thu, 12 Dec 2024 17:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025437; cv=none; b=YEx2yC+R3cGj5mi0JbRwv2nPF65P3tZyL/nBJz1DEurYwdX1M+0mBRals9cJEv2GJqeQsOPm1En/km0PYyE7ZCqYf2bTbSAMSdX6WdZi4OsqIyHyY63bRKKBuHWPJ1JINRnJxUP6XoZeGxMopGKNwwEBk59L14d4h1NFZ2RuObw=
+	t=1734023225; cv=none; b=Eb68E7HjV4j1csCB6ti9tl1hxHS6KUVIHqEb/KAFhUzpViqi4MDH/LVIB0GeNDh3b7gg1oh0wUyVH4IdFHbZwgUnZTi7JiG0PmtdMWAJk1zTDOxD9cul0PquC1K4pdKzFKES3SZNgy3lQofcSK7F91qxF/R1rSewsbNSFbZhCQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025437; c=relaxed/simple;
-	bh=COm7bFt8dkceTYiiHKBCoCLn5oJQf/RkVbfFaVLWEUU=;
+	s=arc-20240116; t=1734023225; c=relaxed/simple;
+	bh=1Olvwo8nJGArGBFeU4Jsni9D1RmXO6iiOkqrUskeDRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHN6JN4+icao6J5aFVxJFsrD8iMSvlw1h3jAQ7Jvr77yKsaFj0rahQFst01auA6EtxwXpkQ+xipbzhqmRLRzAd39CpHCtm6knnMxpa0YYyghS6SFecRXPAZOB0QGurD2rQ6kGrr+aKg164B/+mZG8vByS2wx41uPaBDOk9VoB4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMCc2Uk5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE83C4CECE;
-	Thu, 12 Dec 2024 17:43:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z8RSADVx0hDl40Zt+P5JHT5Ok/tsvg3ZJRZDhV5WS8Nl2uC3fFj8d36gZhSH7db4R32/3FPrEG5GJ4rFNH5FjuNisHl+snUgsLanIv3R/8Olr0p8mlPHj0HYp0fbrhkDScxrrgXMvBKFVVnKeV1LfDv4yrKJ29uXUxFGr/HeeIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bN/L8ka3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A0BC4CED0;
+	Thu, 12 Dec 2024 17:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025437;
-	bh=COm7bFt8dkceTYiiHKBCoCLn5oJQf/RkVbfFaVLWEUU=;
+	s=korg; t=1734023225;
+	bh=1Olvwo8nJGArGBFeU4Jsni9D1RmXO6iiOkqrUskeDRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fMCc2Uk5vIO4VwQ8/c0+SQ3o2i94YrK6mldxuiZrdtF0Q4mwxYxEnyaqcMIaS/fod
-	 Ecmv32Usx7wW9A0Jo9rmqYaJrTzm11MhDCxJqTb8cxDFDpeQK04QgcxBJMtDJ34FzH
-	 BPZHx30NUhkr8gHN7zAPjCY+GvubYXs1gA2unFKU=
+	b=bN/L8ka3SXtgQDOycW1XqEjExI3frBY1Ha/FU1wz+ufExYGG++Im1HgFQrOq2eg4X
+	 AyuOqhUi75/NnurvsMHl1vX4gp5ixxFtvz1TYzM01TbqU/c8RjpFsCgjLuVMWr3Gbl
+	 UsnXIzN6W+/3GvhlUGQXYRzSAGnAgdpXg9pC2+/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Subject: [PATCH 5.4 142/321] cgroup: Make operations on the cgroup root_list RCU safe
+	Hans de Goede <hdegoede@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 465/565] mmc: sdhci-pci: Add DMI quirk for missing CD GPIO on Vexia Edu Atla 10 tablet
 Date: Thu, 12 Dec 2024 16:01:00 +0100
-Message-ID: <20241212144235.586996883@linuxfoundation.org>
+Message-ID: <20241212144330.114975262@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +60,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit d23b5c577715892c87533b13923306acc6243f93 upstream.
+commit 7f0fa47ceebcff0e3591bb7e32a71a2cd7846149 upstream.
 
-At present, when we perform operations on the cgroup root_list, we must
-hold the cgroup_mutex, which is a relatively heavyweight lock. In reality,
-we can make operations on this list RCU-safe, eliminating the need to hold
-the cgroup_mutex during traversal. Modifications to the list only occur in
-the cgroup root setup and destroy paths, which should be infrequent in a
-production environment. In contrast, traversal may occur frequently.
-Therefore, making it RCU-safe would be beneficial.
+The Vexia Edu Atla 10 tablet distributed to schools in the Spanish
+Andalucía region has no ACPI fwnode associated with the SDHCI controller
+for its microsd-slot and thus has no ACPI GPIO resource info.
 
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-[fp: adapt to 5.10 mainly because of changes made by e210a89f5b07
- ("cgroup.c: add helper __cset_cgroup_from_root to cleanup duplicated
- codes")]
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-[Shivani: Modified to apply on v5.4.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Reviewed-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
-Signed-off-by: Siddh Raman Pant <siddh.raman.pant@oracle.com>
+This causes the following error to be logged and the slot to not work:
+[   10.572113] sdhci-pci 0000:00:12.0: failed to setup card detect gpio
+
+Add a DMI quirk table for providing gpiod_lookup_tables with manually
+provided CD GPIO info and use this DMI table to provide the CD GPIO info
+on this tablet. This fixes the microsd-slot not working.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Message-ID: <20241118210049.311079-1-hdegoede@redhat.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/cgroup-defs.h     |    1 +
- kernel/cgroup/cgroup-internal.h |    3 ++-
- kernel/cgroup/cgroup.c          |   23 ++++++++++++++++-------
- 3 files changed, 19 insertions(+), 8 deletions(-)
+ drivers/mmc/host/sdhci-pci-core.c |   72 ++++++++++++++++++++++++++++++++++++++
+ drivers/mmc/host/sdhci-pci.h      |    1 
+ 2 files changed, 73 insertions(+)
 
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -517,6 +517,7 @@ struct cgroup_root {
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -23,6 +23,7 @@
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+ #include <linux/gpio.h>
++#include <linux/gpio/machine.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/pm_qos.h>
+ #include <linux/debugfs.h>
+@@ -1303,6 +1304,29 @@ static const struct sdhci_pci_fixes sdhc
+ 	.priv_size	= sizeof(struct intel_host),
+ };
  
- 	/* A list running through the active hierarchies */
- 	struct list_head root_list;
-+	struct rcu_head rcu;
++/* DMI quirks for devices with missing or broken CD GPIO info */
++static const struct gpiod_lookup_table vexia_edu_atla10_cd_gpios = {
++	.dev_id = "0000:00:12.0",
++	.table = {
++		GPIO_LOOKUP("INT33FC:00", 38, "cd", GPIO_ACTIVE_HIGH),
++		{ }
++	},
++};
++
++static const struct dmi_system_id sdhci_intel_byt_cd_gpio_override[] = {
++	{
++		/* Vexia Edu Atla 10 tablet 9V version */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
++		},
++		.driver_data = (void *)&vexia_edu_atla10_cd_gpios,
++	},
++	{ }
++};
++
+ static const struct sdhci_pci_fixes sdhci_intel_byt_sd = {
+ #ifdef CONFIG_PM_SLEEP
+ 	.resume		= byt_resume,
+@@ -1321,6 +1345,7 @@ static const struct sdhci_pci_fixes sdhc
+ 	.add_host	= byt_add_host,
+ 	.remove_slot	= byt_remove_slot,
+ 	.ops		= &sdhci_intel_byt_ops,
++	.cd_gpio_override = sdhci_intel_byt_cd_gpio_override,
+ 	.priv_size	= sizeof(struct intel_host),
+ };
  
- 	/* Hierarchy-specific flags */
- 	unsigned int flags;
---- a/kernel/cgroup/cgroup-internal.h
-+++ b/kernel/cgroup/cgroup-internal.h
-@@ -172,7 +172,8 @@ extern struct list_head cgroup_roots;
+@@ -2120,6 +2145,42 @@ static const struct dev_pm_ops sdhci_pci
+  *                                                                           *
+ \*****************************************************************************/
  
- /* iterate across the hierarchies */
- #define for_each_root(root)						\
--	list_for_each_entry((root), &cgroup_roots, root_list)
-+	list_for_each_entry_rcu((root), &cgroup_roots, root_list,	\
-+				lockdep_is_held(&cgroup_mutex))
++static struct gpiod_lookup_table *sdhci_pci_add_gpio_lookup_table(
++	struct sdhci_pci_chip *chip)
++{
++	struct gpiod_lookup_table *cd_gpio_lookup_table;
++	const struct dmi_system_id *dmi_id = NULL;
++	size_t count;
++
++	if (chip->fixes && chip->fixes->cd_gpio_override)
++		dmi_id = dmi_first_match(chip->fixes->cd_gpio_override);
++
++	if (!dmi_id)
++		return NULL;
++
++	cd_gpio_lookup_table = dmi_id->driver_data;
++	for (count = 0; cd_gpio_lookup_table->table[count].key; count++)
++		;
++
++	cd_gpio_lookup_table = kmemdup(dmi_id->driver_data,
++				       /* count + 1 terminating entry */
++				       struct_size(cd_gpio_lookup_table, table, count + 1),
++				       GFP_KERNEL);
++	if (!cd_gpio_lookup_table)
++		return ERR_PTR(-ENOMEM);
++
++	gpiod_add_lookup_table(cd_gpio_lookup_table);
++	return cd_gpio_lookup_table;
++}
++
++static void sdhci_pci_remove_gpio_lookup_table(struct gpiod_lookup_table *lookup_table)
++{
++	if (lookup_table) {
++		gpiod_remove_lookup_table(lookup_table);
++		kfree(lookup_table);
++	}
++}
++
+ static struct sdhci_pci_slot *sdhci_pci_probe_slot(
+ 	struct pci_dev *pdev, struct sdhci_pci_chip *chip, int first_bar,
+ 	int slotno)
+@@ -2224,8 +2285,19 @@ static struct sdhci_pci_slot *sdhci_pci_
+ 		device_init_wakeup(&pdev->dev, true);
  
- /**
-  * for_each_subsys - iterate all enabled cgroup subsystems
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1314,7 +1314,7 @@ void cgroup_free_root(struct cgroup_root
- {
- 	if (root) {
- 		idr_destroy(&root->cgroup_idr);
--		kfree(root);
-+		kfree_rcu(root, rcu);
- 	}
- }
+ 	if (slot->cd_idx >= 0) {
++		struct gpiod_lookup_table *cd_gpio_lookup_table;
++
++		cd_gpio_lookup_table = sdhci_pci_add_gpio_lookup_table(chip);
++		if (IS_ERR(cd_gpio_lookup_table)) {
++			ret = PTR_ERR(cd_gpio_lookup_table);
++			goto remove;
++		}
++
+ 		ret = mmc_gpiod_request_cd(host->mmc, "cd", slot->cd_idx,
+ 					   slot->cd_override_level, 0);
++
++		sdhci_pci_remove_gpio_lookup_table(cd_gpio_lookup_table);
++
+ 		if (ret && ret != -EPROBE_DEFER)
+ 			ret = mmc_gpiod_request_cd(host->mmc, NULL,
+ 						   slot->cd_idx,
+--- a/drivers/mmc/host/sdhci-pci.h
++++ b/drivers/mmc/host/sdhci-pci.h
+@@ -151,6 +151,7 @@ struct sdhci_pci_fixes {
+ #endif
  
-@@ -1348,7 +1348,7 @@ static void cgroup_destroy_root(struct c
- 	spin_unlock_irq(&css_set_lock);
+ 	const struct sdhci_ops	*ops;
++	const struct dmi_system_id *cd_gpio_override;
+ 	size_t			priv_size;
+ };
  
- 	if (!list_empty(&root->root_list)) {
--		list_del(&root->root_list);
-+		list_del_rcu(&root->root_list);
- 		cgroup_root_count--;
- 	}
- 
-@@ -1401,7 +1401,6 @@ static struct cgroup *cset_cgroup_from_r
- {
- 	struct cgroup *res = NULL;
- 
--	lockdep_assert_held(&cgroup_mutex);
- 	lockdep_assert_held(&css_set_lock);
- 
- 	if (cset == &init_css_set) {
-@@ -1421,13 +1420,23 @@ static struct cgroup *cset_cgroup_from_r
- 		}
- 	}
- 
--	BUG_ON(!res);
-+	/*
-+	 * If cgroup_mutex is not held, the cgrp_cset_link will be freed
-+	 * before we remove the cgroup root from the root_list. Consequently,
-+	 * when accessing a cgroup root, the cset_link may have already been
-+	 * freed, resulting in a NULL res_cgroup. However, by holding the
-+	 * cgroup_mutex, we ensure that res_cgroup can't be NULL.
-+	 * If we don't hold cgroup_mutex in the caller, we must do the NULL
-+	 * check.
-+	 */
- 	return res;
- }
- 
- /*
-  * Return the cgroup for "task" from the given hierarchy. Must be
-- * called with cgroup_mutex and css_set_lock held.
-+ * called with css_set_lock held to prevent task's groups from being modified.
-+ * Must be called with either cgroup_mutex or rcu read lock to prevent the
-+ * cgroup root from being destroyed.
-  */
- struct cgroup *task_cgroup_from_root(struct task_struct *task,
- 				     struct cgroup_root *root)
-@@ -2012,7 +2021,7 @@ void init_cgroup_root(struct cgroup_fs_c
- 	struct cgroup_root *root = ctx->root;
- 	struct cgroup *cgrp = &root->cgrp;
- 
--	INIT_LIST_HEAD(&root->root_list);
-+	INIT_LIST_HEAD_RCU(&root->root_list);
- 	atomic_set(&root->nr_cgrps, 1);
- 	cgrp->root = root;
- 	init_cgroup_housekeeping(cgrp);
-@@ -2094,7 +2103,7 @@ int cgroup_setup_root(struct cgroup_root
- 	 * care of subsystems' refcounts, which are explicitly dropped in
- 	 * the failure exit path.
- 	 */
--	list_add(&root->root_list, &cgroup_roots);
-+	list_add_rcu(&root->root_list, &cgroup_roots);
- 	cgroup_root_count++;
- 
- 	/*
 
 
 
