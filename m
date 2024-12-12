@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EB39EF800
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DAD9EF55D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D99317167D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28216175F11
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E94216E2D;
-	Thu, 12 Dec 2024 17:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0559A216E2D;
+	Thu, 12 Dec 2024 17:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIPwJjjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQB60SmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A9A215762;
-	Thu, 12 Dec 2024 17:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EF51487CD;
+	Thu, 12 Dec 2024 17:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024409; cv=none; b=M+VQVcxZhkMRJaqISNcuI7wKEz191MGSb9cTaQeB7+fdgfBbUxQe36U3clre6MoTtq4ULADTJLgBSi5t+ClJUHAYcd3feqfNaVbh2o+SYIaujoRG+WMVgecvVBDo1bdEqKATCE5ThbzfomglV1EUc1hwko9CQ/7VdKiyUI1H12Q=
+	t=1734023090; cv=none; b=pz9Xkozn8mdfqOFMEea7dTQobQEWKKJwSVq8arfw0wNkru+CofChMBX6J2Wal+ZW48Ge7ip0yrcRc+7emay2K+xSMIhL0KrlZflToanBbFGLW0lqQKRjePH8V3E9UTf1v0sR5PS0uBB9nTBX7TlOzD/p644UOlDz51SagXcvGAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024409; c=relaxed/simple;
-	bh=MxGVUedLGdiHnudnNpkcwwK3dwaaPcsGKwDSWGbX7VI=;
+	s=arc-20240116; t=1734023090; c=relaxed/simple;
+	bh=3+ElpqkLZMb3NRcsERLLsc7E6XsjlXa7KSBScZ2xPvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAnlemKSPmDcP1y5SR6kjIfyhtAwOed60TBSC4AG3hF7MjEHQKuV8X++GYyuw0vMkOu3tHV5Tb2o903noCIr2EtMssdockrRoAFXip8OfdIGfuXKHcnTc5hr6K+vt1IOZmtGz8saf5O8yKPTAQanCUki8WitIYCe1RigU/QT5is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIPwJjjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67CCC4CED0;
-	Thu, 12 Dec 2024 17:26:48 +0000 (UTC)
+	 MIME-Version; b=NYguZhUdInQe06HQtE4GpiPrnCGuXmiHHJ7TQi8tKQb11ZSIdpMV8ZeuRg1ojwx+usnVQslHmV03f6ZxD1rL63NTilf0eucNy9dHirHd3SjH7VQI9D9qoZWhhFJna1F8Tcx8baZsCmKv4y1BO1JKV6t436eCHnzkGsB6SfRN7jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQB60SmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375A3C4CECE;
+	Thu, 12 Dec 2024 17:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024409;
-	bh=MxGVUedLGdiHnudnNpkcwwK3dwaaPcsGKwDSWGbX7VI=;
+	s=korg; t=1734023090;
+	bh=3+ElpqkLZMb3NRcsERLLsc7E6XsjlXa7KSBScZ2xPvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIPwJjjHUQKUKgo753T4Cm2Trsk1JrUyssxEV32K7o85a+QTXBkO3vKUIm4Lnxu0N
-	 CA2v7EimH5wE8KNUbdgukecOA/NUdPHmWV5VtTaTfaZKY6fPnoZLT3cWdLAf9lHDAl
-	 b/DG/XCA1xHuO6Hy+iA93c2sq/wMAqsGB1jMEUA8=
+	b=cQB60SmRRAYF5suaxTraybKFxVHv6u7/CBBY0bDC38N/UM6ojE/ZmOHtbrncrRdvc
+	 0RZig+e+oLU6F56JShCR4pAN9q+KXLDSp8YQu+Ckugd7DRul1kBIuEWYaSjJUoXArq
+	 yn4NxDKoGGZIjPeDqKP1ZdHEJO+yaBlwS+vyNkiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Sadovnikov <ancowi69@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 5.10 247/459] jfs: xattr: check invalid xattr size more strictly
-Date: Thu, 12 Dec 2024 15:59:45 +0100
-Message-ID: <20241212144303.343940387@linuxfoundation.org>
+	Yang Erkun <yangerkun@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 391/565] nfsd: make sure exp active before svc_export_show
+Date: Thu, 12 Dec 2024 15:59:46 +0100
+Message-ID: <20241212144327.098307540@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <ancowi69@gmail.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-commit d9f9d96136cba8fedd647d2c024342ce090133c2 upstream.
+commit be8f982c369c965faffa198b46060f8853e0f1f0 upstream.
 
-Commit 7c55b78818cf ("jfs: xattr: fix buffer overflow for invalid xattr")
-also addresses this issue but it only fixes it for positive values, while
-ea_size is an integer type and can take negative values, e.g. in case of
-a corrupted filesystem. This still breaks validation and would overflow
-because of implicit conversion from int to size_t in print_hex_dump().
+The function `e_show` was called with protection from RCU. This only
+ensures that `exp` will not be freed. Therefore, the reference count for
+`exp` can drop to zero, which will trigger a refcount use-after-free
+warning when `exp_get` is called. To resolve this issue, use
+`cache_get_rcu` to ensure that `exp` remains active.
 
-Fix this issue by clamping the ea_size value instead.
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 3 PID: 819 at lib/refcount.c:25
+refcount_warn_saturate+0xb1/0x120
+CPU: 3 UID: 0 PID: 819 Comm: cat Not tainted 6.12.0-rc3+ #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.16.1-2.fc37 04/01/2014
+RIP: 0010:refcount_warn_saturate+0xb1/0x120
+...
+Call Trace:
+ <TASK>
+ e_show+0x20b/0x230 [nfsd]
+ seq_read_iter+0x589/0x770
+ seq_read+0x1e5/0x270
+ vfs_read+0x125/0x530
+ ksys_read+0xc1/0x160
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: bf18f163e89c ("NFSD: Using exp_get for export getting")
+Cc: stable@vger.kernel.org # 4.20+
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/xattr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/export.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -559,7 +559,7 @@ static int ea_get(struct inode *inode, s
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1324,9 +1324,12 @@ static int e_show(struct seq_file *m, vo
+ 		return 0;
+ 	}
  
-       size_check:
- 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
--		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
-+		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
- 
- 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
- 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+-	exp_get(exp);
++	if (!cache_get_rcu(&exp->h))
++		return 0;
++
+ 	if (cache_check(cd, &exp->h, NULL))
+ 		return 0;
++
+ 	exp_put(exp);
+ 	return svc_export_show(m, cd, cp);
+ }
 
 
 
