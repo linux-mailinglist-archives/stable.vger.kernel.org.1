@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-103026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559A49EF5F1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9E49EF989
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E038418975B9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A8591892F6C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A07222D64;
-	Thu, 12 Dec 2024 17:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785C52288FD;
+	Thu, 12 Dec 2024 17:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfzxrE7L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfL13GVg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D994F218;
-	Thu, 12 Dec 2024 17:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346862288EF;
+	Thu, 12 Dec 2024 17:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023317; cv=none; b=ZQEvQByUi/Bx17uYr4IHHic7Jujgut1YsAgHW4wWHhokbguMml92f+GXHI75eDCvNiEQYm4j9zWPxGyzJotndrOH4qT8QX4ZWWZ1IL5pODLc+pXjlwosZ1PsFoXAd//kpyH5Y/LIeES+QNTnZMTFXWnJUnkY3kuAR9BtuGhXug0=
+	t=1734025450; cv=none; b=fS26b0wARM4L1GWiZjVipHNHg/Jsxh9gq9fs5VpCCJQp20mPEUbokjHp3p69rpFsSwuqCE7ljhNt6aCjdZpqBXZgkNj64lSJW6/TeDyfuWvVVhUooUEHjMkOAQqcfcODhLHc8rz7ZQnydW6V5Nyk24nw0JvV6psB/KdKFocjntA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023317; c=relaxed/simple;
-	bh=/PdAFuw0edTSa8Yz1DEX6EEhfQaq+UpQb9UOmZj7Yb4=;
+	s=arc-20240116; t=1734025450; c=relaxed/simple;
+	bh=5a9YNAKMNNXaAoewYZWNjaFOCNM9180pfEHMG2WO54g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtLqHFDEyTEG81QGiNlnKIWoCEb/GyTbA5qvUlJiiOtghgGdr31RGE1ZE5bNIo5M/n2Jm7wfcbRoB+nBMKMZpsB2pOfIa3M+2CjsU/L2/MIQV8sa8QnTNU6Q1JknTLsTbsx4p/jgCJDDCQ/Bi4PelEfA6oEem2sKbUh+jky04a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfzxrE7L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFC5C4CECE;
-	Thu, 12 Dec 2024 17:08:36 +0000 (UTC)
+	 MIME-Version; b=HyLCA2pv3UO+rb7+HPairHbPYtA7SyDY1xEoXzoP+xgAXE9si/43mF6/Z9cBCHWQmDu8xs3VSmzcqSG5VCeP0x4xoUC3EvXABjpFZ9A/UOHa8Am+FpsZa4msDYJnePkfjIXKBBGpj7CFIfJF0n9V3bJQY9N22ipNo1FuhN5o+H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfL13GVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F1B1C4CED3;
+	Thu, 12 Dec 2024 17:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023316;
-	bh=/PdAFuw0edTSa8Yz1DEX6EEhfQaq+UpQb9UOmZj7Yb4=;
+	s=korg; t=1734025449;
+	bh=5a9YNAKMNNXaAoewYZWNjaFOCNM9180pfEHMG2WO54g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nfzxrE7LZ2T6YrRy9P+1OXJKcThAubKv5l90oxz9FnbBFkXF3m7N0EULutUeQAOa/
-	 R7NqVywivKI6jN7vQGmOhXoj6XNV1oylbpY0IxegcXYuR5ZnOMz+H/ZeJ2+TA/jjow
-	 n95Qh2JIVUimYscuIJhxxRrf1TiuGghXhcMiexzw=
+	b=NfL13GVgOxDhp+jSyeMNqUREhjOJG8kWf3yQrdQdwqKvrGcjPkTONsPcq+ZHFKOQU
+	 BpN4wz+z5qea4EpF/IqnlLhU0qNxAJp9E9XOKd4B7Ix8sARlalkEO6j9UOv72VyBWQ
+	 fjstRcH/B4wMx8nsoqFSap+GI1hUu6L56LNUWc9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Lu <victorchengchi.lu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 495/565] drm/amdgpu: clear RB_OVERFLOW bit when enabling interrupts for vega20_ih
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 172/321] ALSA: hda/realtek: Apply quirk for Medion E15433
 Date: Thu, 12 Dec 2024 16:01:30 +0100
-Message-ID: <20241212144331.336013845@linuxfoundation.org>
+Message-ID: <20241212144236.778222075@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 8b22f048331dfd45fdfbf0efdfb1d43deff7518d ]
+commit ca0f79f0286046f6a91c099dc941cf7afae198d6 upstream.
 
-Port this change to vega20_ih.c:
-commit afbf7955ff01 ("drm/amdgpu: clear RB_OVERFLOW bit when enabling interrupts")
+Medion E15433 laptop wich ALC269VC (SSID 2782:1705) needs the same
+workaround for the missing speaker as another model.
 
-Original commit message:
-"Why:
-Setting IH_RB_WPTR register to 0 will not clear the RB_OVERFLOW bit
-if RB_ENABLE is not set.
-
-How to fix:
-Set WPTR_OVERFLOW_CLEAR bit after RB_ENABLE bit is set.
-The RB_ENABLE bit is required to be set, together with
-WPTR_OVERFLOW_ENABLE bit so that setting WPTR_OVERFLOW_CLEAR bit
-would clear the RB_OVERFLOW."
-
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1233298
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241128072646.15659-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vega20_ih.c | 27 ++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vega20_ih.c b/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
-index 87edd1908e8b9..9e1ed14cc3141 100644
---- a/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
-@@ -109,6 +109,33 @@ static int vega20_ih_toggle_ring_interrupts(struct amdgpu_device *adev,
- 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, RB_ENABLE, (enable ? 1 : 0));
- 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, RB_GPU_TS_ENABLE, 1);
- 
-+	if (enable) {
-+		/* Unset the CLEAR_OVERFLOW bit to make sure the next step
-+		 * is switching the bit from 0 to 1
-+		 */
-+		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
-+		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
-+			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
-+				return -ETIMEDOUT;
-+		} else {
-+			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+		}
-+
-+		/* Clear RB_OVERFLOW bit */
-+		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
-+		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
-+			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
-+				return -ETIMEDOUT;
-+		} else {
-+			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+		}
-+
-+		/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
-+		 * can be detected.
-+		 */
-+		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
-+	}
-+
- 	/* enable_intr field is only valid in ring0 */
- 	if (ih == &adev->irq.ih)
- 		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, ENABLE_INTR, (enable ? 1 : 0));
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8550,6 +8550,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+ 	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
++	SND_PCI_QUIRK(0x2782, 0x1705, "MEDION E15433", ALC269VC_FIXUP_INFINIX_Y4_MAX),
+ 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
 
 
 
