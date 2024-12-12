@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-101043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83FB9EEA00
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D215E9EEA06
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9FC3285508
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B03A2819DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E39621660C;
-	Thu, 12 Dec 2024 15:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D4A217640;
+	Thu, 12 Dec 2024 15:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAKjF/Iw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uu3NsvHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB002165F0;
-	Thu, 12 Dec 2024 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50175215F48;
+	Thu, 12 Dec 2024 15:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016059; cv=none; b=W3RaMSn8AfqJa9+he9Guzcdddf/sQQsKRPABSZnBRdm6rpMyRdJIFcz/7GDg0BQ1GCjbxFF+KBS6sSCunJrCiIsRWk7kU5prpMJ/9EE0SHRK6o0vXbMnM0fuFPUaJHAePxloNIZWyez6meIDC9/ClBLx1Xs5xuvsoK4JEOciDP4=
+	t=1734016066; cv=none; b=VkqQwfhyckINnQurj1UiRjMIWvt9h5E+dcoLn/hZf58Ej7G66e81CDwhP5zXIY8abY5zeg4tHRsbDaS4eHlzFAnSscrgDmAC1cS0zO6CeEsbFkqXgiyivRsEmejoMeSvwr5KDAnRRM+UlDFleB7X7sNKqORpQjEopBvaRH/dEEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016059; c=relaxed/simple;
-	bh=biUjPGq3s1SUmj9jpt2+qLOnIaqxEV5gX+Rq3VAEKGM=;
+	s=arc-20240116; t=1734016066; c=relaxed/simple;
+	bh=wt/N8ZX5jjgo88VCUl6+z4njAmTe+AhVDWr10oQ2fmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEovyREI1/3VwT8VgXr/93Irw+TOs7OiNXyF7r9rFWg0SdStGV0wST+YVVT/bkq5jnR3IdQtTbk9Kiefk6PsG1xAmLs6gb6T5ZepJLX0Jqp9RmMViwjCR1BFe7t3NPBD5AV+4cE8Oqs/G5Z/gM+Mb5QLk3lHmaaccERcXgPV+do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAKjF/Iw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C39C4CECE;
-	Thu, 12 Dec 2024 15:07:38 +0000 (UTC)
+	 MIME-Version; b=QJHgn+dqjoR19/BHB/s+7mHBHcoaNz7NvbcmgbsUEvp0siA9q5gHpDVSJ1yaYDlmhDYYVltRwLwBHfXcQxMw02K0b9jt5PGyrCUrjWoWO2PjJ8UJhvLCUwHtWfF8VImudZ2If2rP8zcCpW0pfpef+qtWvJ7bZZ2Ni/1JRqa198c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uu3NsvHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60C7C4CECE;
+	Thu, 12 Dec 2024 15:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016059;
-	bh=biUjPGq3s1SUmj9jpt2+qLOnIaqxEV5gX+Rq3VAEKGM=;
+	s=korg; t=1734016066;
+	bh=wt/N8ZX5jjgo88VCUl6+z4njAmTe+AhVDWr10oQ2fmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAKjF/IwoGydhd3mGbW7PoJxgnkubxlXs3M4fOdmmlvDIeggzFkfcTdlF/vO/kTYM
-	 Ncy/xbj58AvabsPgyhA9JjvUwPS3LercD9XRuUIkYpHU85JNBpJzCAqoC3FMZn8BHC
-	 GPUQOxqrdhSj3JLvYYOiwKWK6k2Cp4HzI9gfkUrg=
+	b=uu3NsvHO/pNwGgFFaBJpyevz2TObh6r2GwExLoUr435gQgxJo8P4x6ZeKP5nGgmsj
+	 tb592DEypck+zjOG8j8kyHWJ6VikiNZnuWfflX64pErgoHx6hikCSLYPO1h4YjC7MJ
+	 Cf2EJmQWMk8fl5P/oniHTJbDHqcRvSFgoYguSgJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/466] x86/CPU/AMD: WARN when setting EFER.AUTOIBRS if and only if the WRMSR fails
-Date: Thu, 12 Dec 2024 15:54:49 +0100
-Message-ID: <20241212144311.551750511@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 121/466] rust: allow `clippy::needless_lifetimes`
+Date: Thu, 12 Dec 2024 15:54:50 +0100
+Message-ID: <20241212144311.588804118@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -67,41 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 492077668fb453b8b16c842fcf3fafc2ebc190e9 ]
+commit 60fc1e6750133620e404d40b93df5afe32e3e6c6 upstream.
 
-When ensuring EFER.AUTOIBRS is set, WARN only on a negative return code
-from msr_set_bit(), as '1' is used to indicate the WRMSR was successful
-('0' indicates the MSR bit was already set).
+In beta Clippy (i.e. Rust 1.83.0), the `needless_lifetimes` lint has
+been extended [1] to suggest eliding `impl` lifetimes, e.g.
 
-Fixes: 8cc68c9c9e92 ("x86/CPU/AMD: Make sure EFER[AIBRSE] is set")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/Z1MkNofJjt7Oq0G6@google.com
-Closes: https://lore.kernel.org/all/20241205220604.GA2054199@thelio-3990X
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    error: the following explicit lifetimes could be elided: 'a
+    --> rust/kernel/list.rs:647:6
+        |
+    647 | impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'a, T, ID> {}
+        |      ^^                                                                  ^^
+        |
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
+        = note: `-D clippy::needless-lifetimes` implied by `-D warnings`
+        = help: to override `-D warnings` add `#[allow(clippy::needless_lifetimes)]`
+    help: elide the lifetimes
+        |
+    647 - impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'a, T, ID> {}
+    647 + impl<T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'_, T, ID> {}
+
+A possibility would have been to clean them -- the RFC patch [2] did
+this, while asking if we wanted these cleanups. There is an open issue
+[3] in Clippy about being able to differentiate some of the new cases,
+e.g. those that do not involve introducing `'_`. Thus it seems others
+feel similarly.
+
+Thus, for the time being, we decided to `allow` the lint.
+
+Link: https://github.com/rust-lang/rust-clippy/pull/13286 [1]
+Link: https://lore.kernel.org/rust-for-linux/20241012231300.397010-1-ojeda@kernel.org/ [2]
+Link: https://github.com/rust-lang/rust-clippy/issues/13514 [3]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Link: https://lore.kernel.org/r/20241116181538.369355-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index d8408aafeed98..79d2e17f6582e 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1065,7 +1065,7 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	 */
- 	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
- 	    cpu_has(c, X86_FEATURE_AUTOIBRS))
--		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS));
-+		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS) < 0);
+--- a/Makefile
++++ b/Makefile
+@@ -456,6 +456,7 @@ export rust_common_flags := --edition=20
+ 			    -Wclippy::mut_mut \
+ 			    -Wclippy::needless_bitwise_bool \
+ 			    -Wclippy::needless_continue \
++			    -Aclippy::needless_lifetimes \
+ 			    -Wclippy::no_mangle_with_rust_abi \
+ 			    -Wclippy::dbg_macro
  
- 	/* AMD CPUs don't need fencing after x2APIC/TSC_DEADLINE MSR writes. */
- 	clear_cpu_cap(c, X86_FEATURE_APIC_MSRS_FENCE);
--- 
-2.43.0
-
 
 
 
