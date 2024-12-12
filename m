@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D3F9EF04A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0439EF326
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C6FC16AC5A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66680189DDBF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96243223E8C;
-	Thu, 12 Dec 2024 16:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC0522F38F;
+	Thu, 12 Dec 2024 16:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igsm12L0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVzU6Wlm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52266223E81;
-	Thu, 12 Dec 2024 16:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B35E22F38B;
+	Thu, 12 Dec 2024 16:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019662; cv=none; b=qrt+jqVcsLCgqZqQhAdSGgnMymp7x0wKoE8iM85GcwbIoHKz8iMI43tg4OLOUh3nul0p/RweMdtuJGvTB8RDqRlDm6mK0vqDnYNP0yFighFiN6Olt2MMmA9HP9amdRfOSNNsogXqMIGPK11B+sc5DRTmlm1dNliPS7kuMMksfe8=
+	t=1734021620; cv=none; b=A6eh2rPKrf+Pp8PQudlYKyWI8WCAe642EH155ZfiM8YG536RHYoKaTRg4NQEguQczi8jHBW5w18OlddhMYzwc2MtVbdA322sAvCSKmZmlSWJ85qlOpy2BWmJxvyW00HAwAuGnyPrXBS5+IVLuSKHx2A4Pi1ICg0aZgpOqWwG8vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019662; c=relaxed/simple;
-	bh=fwDlHEO8idT1UmCKwnJLis9mWI5+bSSF8GUBLGG7y5Y=;
+	s=arc-20240116; t=1734021620; c=relaxed/simple;
+	bh=PrOyaCf2if34Pc9Sxka/2T7Tw46AOF+8xab3qsq8e2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgB2laBuSGv1Aef9dO2zIsEnkHOEn+NKye7KY4/d/ccWqdf2syPMxGO1g3oJJMULT05UnLvQgV8wo9B0TobbHt95Oc657SYXkQ0PFDbKhFcHYf38+mdbYbvAm4i3YPhqsJm4HgxD7y+F0PNXqzYH3SJj/YZtBrmMuUymlyCENiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igsm12L0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCF7C4CECE;
-	Thu, 12 Dec 2024 16:07:41 +0000 (UTC)
+	 MIME-Version; b=YfhzEoGXY6Fx01KM0g/2vZHJ88yUmsMbl4m5G66wObsrQYO/nwSl94slLdGIZeBYqgbVGQLANhfvrocEI6YbMxge3pObBzGaq39zwMaeNstNoT8EBS9JxvjL661ERHS24k4lwBjjnUfzplD/MB/BPixXRffeRA4Kd5ThSfcnbfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVzU6Wlm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5437BC4CECE;
+	Thu, 12 Dec 2024 16:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019662;
-	bh=fwDlHEO8idT1UmCKwnJLis9mWI5+bSSF8GUBLGG7y5Y=;
+	s=korg; t=1734021619;
+	bh=PrOyaCf2if34Pc9Sxka/2T7Tw46AOF+8xab3qsq8e2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igsm12L0PPn1OcOk46oSmXR6TxF1BxsAPUCYNFvbo1Z/2UFHFGEne5x9nxgqGFtCD
-	 bvFENoyLTfxmet8hgv1QEQkJ+CyFA93ScPiyADgz6XgqIzfzYFOrkuqfjZ/eY9XiWm
-	 mkgyXrA9CluIol5YgTKIX+Vt0zc++Br1UqZOPXyo=
+	b=TVzU6WlmX3AMLGqArjECEad7EJQEAvZQZTMsDBLgxKcrE3ivUgifyglpkDzgoNZ0b
+	 NZ8joL2eb3Da90rvhEtDI57zJ86J90Te/gMFnwiUTgvLPKu+h21cwGzBrBkmwr6kvt
+	 E0paKq4ZjGOa4gXU+iUWWRxjxD+1hWALhfC0NnLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Rosenberg <drosen@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 266/772] f2fs: fix to account dirty data in __get_secs_required()
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 016/565] clk: qcom: gcc-qcs404: fix initial rate of GPLL3
 Date: Thu, 12 Dec 2024 15:53:31 +0100
-Message-ID: <20241212144400.902000042@linuxfoundation.org>
+Message-ID: <20241212144312.094332890@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,137 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 1acd73edbbfef2c3c5b43cba4006a7797eca7050 ]
+commit 36d202241d234fa4ac50743510d098ad52bd193a upstream.
 
-It will trigger system panic w/ testcase in [1]:
+The comment before the config of the GPLL3 PLL says that the
+PLL should run at 930 MHz. In contrary to this, calculating
+the frequency from the current configuration values by using
+19.2 MHz as input frequency defined in 'qcs404.dtsi', it gives
+921.6 MHz:
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/segment.c:2752!
-RIP: 0010:new_curseg+0xc81/0x2110
-Call Trace:
- f2fs_allocate_data_block+0x1c91/0x4540
- do_write_page+0x163/0xdf0
- f2fs_outplace_write_data+0x1aa/0x340
- f2fs_do_write_data_page+0x797/0x2280
- f2fs_write_single_data_page+0x16cd/0x2190
- f2fs_write_cache_pages+0x994/0x1c80
- f2fs_write_data_pages+0x9cc/0xea0
- do_writepages+0x194/0x7a0
- filemap_fdatawrite_wbc+0x12b/0x1a0
- __filemap_fdatawrite_range+0xbb/0xf0
- file_write_and_wait_range+0xa1/0x110
- f2fs_do_sync_file+0x26f/0x1c50
- f2fs_sync_file+0x12b/0x1d0
- vfs_fsync_range+0xfa/0x230
- do_fsync+0x3d/0x80
- __x64_sys_fsync+0x37/0x50
- x64_sys_call+0x1e88/0x20d0
- do_syscall_64+0x4b/0x110
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x0
+  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
+  921600000.00000000000000000000
 
-The root cause is if checkpoint_disabling and lfs_mode are both on,
-it will trigger OPU for all overwritten data, it may cost more free
-segment than expected, so f2fs must account those data correctly to
-calculate cosumed free segments later, and return ENOSPC earlier to
-avoid run out of free segment during block allocation.
+Set 'alpha_hi' in the configuration to a value used in downstream
+kernels [1][2] in order to get the correct output rate:
 
-[1] https://lore.kernel.org/fstests/20241015025106.3203676-1-chao@kernel.org/
+  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x70
+  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
+  930000000.00000000000000000000
 
-Fixes: 4354994f097d ("f2fs: checkpoint disabling")
-Cc: Daniel Rosenberg <drosen@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The change is based on static code analysis, compile tested only.
+
+[1] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/kernel.lnx.5.4.r56-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L335
+[2} https://git.codelinaro.org/clo/la/kernel/msm-5.15/-/blob/kernel.lnx.5.15.r49-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L127
+
+Cc: stable@vger.kernel.org
+Fixes: 652f1813c113 ("clk: qcom: gcc: Add global clock controller driver for QCS404")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/r/20241022-fix-gcc-qcs404-gpll3-v1-1-c4d30d634d19@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.h | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+ drivers/clk/qcom/gcc-qcs404.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 17d1723d98a0b..dde79842d14d1 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -584,18 +584,21 @@ static inline int reserved_sections(struct f2fs_sb_info *sbi)
- }
- 
- static inline bool has_curseg_enough_space(struct f2fs_sb_info *sbi,
--			unsigned int node_blocks, unsigned int dent_blocks)
-+			unsigned int node_blocks, unsigned int data_blocks,
-+			unsigned int dent_blocks)
- {
- 
--	unsigned segno, left_blocks;
-+	unsigned int segno, left_blocks, blocks;
- 	int i;
- 
--	/* check current node sections in the worst case. */
--	for (i = CURSEG_HOT_NODE; i <= CURSEG_COLD_NODE; i++) {
-+	/* check current data/node sections in the worst case. */
-+	for (i = CURSEG_HOT_DATA; i < NR_PERSISTENT_LOG; i++) {
- 		segno = CURSEG_I(sbi, i)->segno;
- 		left_blocks = CAP_BLKS_PER_SEC(sbi) -
- 				get_ckpt_valid_blocks(sbi, segno, true);
--		if (node_blocks > left_blocks)
-+
-+		blocks = i <= CURSEG_COLD_DATA ? data_blocks : node_blocks;
-+		if (blocks > left_blocks)
- 			return false;
- 	}
- 
-@@ -609,8 +612,9 @@ static inline bool has_curseg_enough_space(struct f2fs_sb_info *sbi,
- }
- 
- /*
-- * calculate needed sections for dirty node/dentry
-- * and call has_curseg_enough_space
-+ * calculate needed sections for dirty node/dentry and call
-+ * has_curseg_enough_space, please note that, it needs to account
-+ * dirty data as well in lfs mode when checkpoint is disabled.
-  */
- static inline void __get_secs_required(struct f2fs_sb_info *sbi,
- 		unsigned int *lower_p, unsigned int *upper_p, bool *curseg_p)
-@@ -619,19 +623,30 @@ static inline void __get_secs_required(struct f2fs_sb_info *sbi,
- 					get_pages(sbi, F2FS_DIRTY_DENTS) +
- 					get_pages(sbi, F2FS_DIRTY_IMETA);
- 	unsigned int total_dent_blocks = get_pages(sbi, F2FS_DIRTY_DENTS);
-+	unsigned int total_data_blocks = 0;
- 	unsigned int node_secs = total_node_blocks / CAP_BLKS_PER_SEC(sbi);
- 	unsigned int dent_secs = total_dent_blocks / CAP_BLKS_PER_SEC(sbi);
-+	unsigned int data_secs = 0;
- 	unsigned int node_blocks = total_node_blocks % CAP_BLKS_PER_SEC(sbi);
- 	unsigned int dent_blocks = total_dent_blocks % CAP_BLKS_PER_SEC(sbi);
-+	unsigned int data_blocks = 0;
-+
-+	if (f2fs_lfs_mode(sbi) &&
-+		unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
-+		total_data_blocks = get_pages(sbi, F2FS_DIRTY_DATA);
-+		data_secs = total_data_blocks / CAP_BLKS_PER_SEC(sbi);
-+		data_blocks = total_data_blocks % CAP_BLKS_PER_SEC(sbi);
-+	}
- 
- 	if (lower_p)
--		*lower_p = node_secs + dent_secs;
-+		*lower_p = node_secs + dent_secs + data_secs;
- 	if (upper_p)
- 		*upper_p = node_secs + dent_secs +
--			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0);
-+			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0) +
-+			(data_blocks ? 1 : 0);
- 	if (curseg_p)
- 		*curseg_p = has_curseg_enough_space(sbi,
--				node_blocks, dent_blocks);
-+				node_blocks, data_blocks, dent_blocks);
- }
- 
- static inline bool has_not_enough_free_secs(struct f2fs_sb_info *sbi,
--- 
-2.43.0
-
+--- a/drivers/clk/qcom/gcc-qcs404.c
++++ b/drivers/clk/qcom/gcc-qcs404.c
+@@ -337,6 +337,7 @@ static struct clk_alpha_pll gpll1_out_ma
+ /* 930MHz configuration */
+ static const struct alpha_pll_config gpll3_config = {
+ 	.l = 48,
++	.alpha_hi = 0x70,
+ 	.alpha = 0x0,
+ 	.alpha_en_mask = BIT(24),
+ 	.post_div_mask = 0xf << 8,
 
 
 
