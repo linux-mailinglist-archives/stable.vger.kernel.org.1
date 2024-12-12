@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-102865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C019EF4EB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 366EF9EF7D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AFD0168C2D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67C9617FE77
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA92821660B;
-	Thu, 12 Dec 2024 16:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035EB211493;
+	Thu, 12 Dec 2024 17:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pb1Tyc/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdVy6YEU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96434205501;
-	Thu, 12 Dec 2024 16:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B352213CA93;
+	Thu, 12 Dec 2024 17:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022781; cv=none; b=SQop5S5L96P2Vlph42PQfnQKmOa/bKegvpglWigNASROZGTOakhi1JhkG8/GjLsStB8rt59UoOUjiie1VXI0Eu2A9tYJNrsDcblmJc+Kwjmb9bzg2EKu58DGf01UDy6VXKFRn0DFjPpuj/z18De8nB4/gX4YAKMulNgAYTbc4IY=
+	t=1734024208; cv=none; b=crMNNLZpxrj2zaVgv9009asEJc7T23lJ9yObreGGoJNoOMH468pN6Uc1TKRyHvarbjXNah+YD8CXWBVgJ7s7zTAei/FyTLOUFgnAzOhK4Murdh2MzErOBlK84PBQXwf886336IopXAEsgf6SRdmnjEDiOulYHySfuI6FAUPZwms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022781; c=relaxed/simple;
-	bh=WlBlpxEZJRE6LQ1mKSlVcS2+imXqUBgk1KA+nyyIVaM=;
+	s=arc-20240116; t=1734024208; c=relaxed/simple;
+	bh=DWCRGQGZUWGCaSyqk5o1Q6T4c5uJPdXywRHiMVYbsHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ea8Q5p6iAtK0/AXb3ZvXyiHRVBNZZCE4k2PiU3983ekrxhs1A4OzOI9nR7qrcrNheYZ7nAh1/CT0YxVrFeZEvEA4lc3kBLJeuOskfpXpYziiRLDhbBzoZoOoCPLyd1sreFZaYd9wmDOt6xbElMX5bQTOcr3SPUAEUSDZhcJL39o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pb1Tyc/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DECC4CED0;
-	Thu, 12 Dec 2024 16:59:40 +0000 (UTC)
+	 MIME-Version; b=e93cNyiAZyKma9A/cyub+asAr/8eILHrkcc9Qr89W4JYP8pTN+GiXLPOiohwDiY9SK5kd1Dl17I3M6DEWbX9WyhSYu3x6UspWLPqDrG8NIG3b1fOs4biiDTPtTRrBYTQKPUXJZGWWVebWOSQjid2JiVlKp+NQmxEMr3HJb4ZRgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdVy6YEU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D491C4CECE;
+	Thu, 12 Dec 2024 17:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022781;
-	bh=WlBlpxEZJRE6LQ1mKSlVcS2+imXqUBgk1KA+nyyIVaM=;
+	s=korg; t=1734024206;
+	bh=DWCRGQGZUWGCaSyqk5o1Q6T4c5uJPdXywRHiMVYbsHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pb1Tyc/GkouOcKWGAo+FM6/OPPSuQiIeD6P+c74vHID5hnJM+eoA7nJ2/yB7HywIT
-	 b8zAGdljdMQLRYp2UVNLWo0wTAqFX/1ZLXPDRlm6+a7MSp/AiRzBX9doaFsgGPcQD4
-	 VH7XmXy328Ia5Usr6HU3amEAka0OFrVb8TbzBO4o=
+	b=MdVy6YEUbBjxdgIz9ZlBJV6OmGSTootRisW+RUm/jCqfnNu0qiaykP+mtd+xc/p/4
+	 fEGlyGAD41Z1asfB3RYjI9VIh3NZH39o9QvnTz+1OzuvPDhx4lbKWyke0AJQ6Vhmjh
+	 3mM4+n1fCG2mfgAcej3KUHY7zqwIpDkgfOMmO2Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Judith Mendez <jm@ti.com>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 5.15 334/565] serial: 8250: omap: Move pm_runtime_get_sync
+	Ian Rogers <irogers@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Hemant Kumar <hemant@linux.vnet.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 191/459] perf probe: Fix libdw memory leak
 Date: Thu, 12 Dec 2024 15:58:49 +0100
-Message-ID: <20241212144324.797688524@linuxfoundation.org>
+Message-ID: <20241212144301.111803176@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +69,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bin Liu <b-liu@ti.com>
+From: Ian Rogers <irogers@google.com>
 
-commit bcc7ba668818dcadd2f1db66b39ed860a63ecf97 upstream.
+[ Upstream commit 4585038b8e186252141ef86e9f0d8e97f11dce8d ]
 
-Currently in omap_8250_shutdown, the dma->rx_running flag is
-set to zero in omap_8250_rx_dma_flush. Next pm_runtime_get_sync
-is called, which is a runtime resume call stack which can
-re-set the flag. When the call omap_8250_shutdown returns, the
-flag is expected to be UN-SET, but this is not the case. This
-is causing issues the next time UART is re-opened and
-omap_8250_rx_dma is called. Fix by moving pm_runtime_get_sync
-before the omap_8250_rx_dma_flush.
+Add missing dwarf_cfi_end to free memory associated with probe_finder
+cfi_eh which is allocated and owned via a call to
+dwarf_getcfi_elf. Confusingly cfi_dbg shouldn't be freed as its memory
+is owned by the passed in debuginfo struct. Add comments to highlight
+this.
 
-cc: stable@vger.kernel.org
-Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
-Signed-off-by: Bin Liu <b-liu@ti.com>
-[Judith: Add commit message]
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Tested-by: Kevin Hilman <khilman@baylibre.com>
-Link: https://lore.kernel.org/r/20241031172315.453750-1-jm@ti.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This addresses leak sanitizer issues seen in:
+tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+
+Fixes: 270bde1e76f4 ("perf probe: Search both .eh_frame and .debug_frame sections for probe location")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Hemant Kumar <hemant@linux.vnet.ibm.com>
+Link: https://lore.kernel.org/r/20241016235622.52166-3-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/probe-finder.c | 4 ++++
+ tools/perf/util/probe-finder.h | 4 ++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -763,12 +763,12 @@ static void omap_8250_shutdown(struct ua
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	struct omap8250_priv *priv = port->private_data;
+diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
+index fdafbfcef6871..31c779ce029db 100644
+--- a/tools/perf/util/probe-finder.c
++++ b/tools/perf/util/probe-finder.c
+@@ -1483,6 +1483,10 @@ int debuginfo__find_trace_events(struct debuginfo *dbg,
+ 	if (ret >= 0 && tf.pf.skip_empty_arg)
+ 		ret = fill_empty_trace_arg(pev, tf.tevs, tf.ntevs);
  
-+	pm_runtime_get_sync(port->dev);
++#if _ELFUTILS_PREREQ(0, 142)
++	dwarf_cfi_end(tf.pf.cfi_eh);
++#endif
 +
- 	flush_work(&priv->qos_work);
- 	if (up->dma)
- 		omap_8250_rx_dma_flush(up);
+ 	if (ret < 0 || tf.ntevs == 0) {
+ 		for (i = 0; i < tf.ntevs; i++)
+ 			clear_probe_trace_event(&tf.tevs[i]);
+diff --git a/tools/perf/util/probe-finder.h b/tools/perf/util/probe-finder.h
+index 2febb58756789..35eae263ffe74 100644
+--- a/tools/perf/util/probe-finder.h
++++ b/tools/perf/util/probe-finder.h
+@@ -81,9 +81,9 @@ struct probe_finder {
  
--	pm_runtime_get_sync(port->dev);
--
- 	serial_out(up, UART_OMAP_WER, 0);
- 	if (priv->habit & UART_HAS_EFR2)
- 		serial_out(up, UART_OMAP_EFR2, 0x0);
+ 	/* For variable searching */
+ #if _ELFUTILS_PREREQ(0, 142)
+-	/* Call Frame Information from .eh_frame */
++	/* Call Frame Information from .eh_frame. Owned by this struct. */
+ 	Dwarf_CFI		*cfi_eh;
+-	/* Call Frame Information from .debug_frame */
++	/* Call Frame Information from .debug_frame. Not owned. */
+ 	Dwarf_CFI		*cfi_dbg;
+ #endif
+ 	Dwarf_Op		*fb_ops;	/* Frame base attribute */
+-- 
+2.43.0
+
 
 
 
