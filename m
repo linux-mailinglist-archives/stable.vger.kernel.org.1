@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-101194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE1A9EEAD0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE1A9EECF4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C00E282A59
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED33418857CA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559AE2156FF;
-	Thu, 12 Dec 2024 15:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C389221DAB;
+	Thu, 12 Dec 2024 15:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILm2uIjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vknXUBqQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A432080FC;
-	Thu, 12 Dec 2024 15:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A415217F48;
+	Thu, 12 Dec 2024 15:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016687; cv=none; b=Ak+SqClVarabAEjctgx0EubwPeUea7sVTVsk2ZCDBkxX1s+Cl5NwPhNhv58YTBu4PXKs+9guPllf0Zmeeq/DxaTCPZqHNOvl1LfWcypiDSSyhYpnN7l3FBk32msIAtZEylxKzDigxz7Bw6rtoue0FLZTRO6lmGKeTmrV0o0XFBk=
+	t=1734017829; cv=none; b=QTRpbIkPqO73fH6BQOmfntTHsXaru9c/Gvn3cOb6H2tZKaQttGLU2oNkr/XyXM/4LS3loQj457GakrMAVqnM4wLIAZrtCVM/ZwLGTdiojaL7RRvjj07Z27Qfml7YFfVjiLXNlFWCVYSOkIYXbR/7oJc7USjV8ElXlGxJ6Yf6RF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016687; c=relaxed/simple;
-	bh=pk6cTvR6zpwrwDaVhgq2T2foRoAFMLJOtuuT5zfHT1A=;
+	s=arc-20240116; t=1734017829; c=relaxed/simple;
+	bh=opKDVIxjUHZxlesfnA1HsOkw4bbOwFvQwYS8WRBwXKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpvEVjqVpWXNkwJ71IyflFjpiCmIeGkckVOk17rEiJBLziVItezRNrPkCpisoaadAKPW2cxSNgirgUbwXcrfWdAuFR9BebmwoOZ+4S5alrsr6jfzJWIF34gA78unHu5l9ef1edXx5vX2sZTfgE7ancaNl6cpHp/4wHeCaOqdHq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILm2uIjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42246C4CECE;
-	Thu, 12 Dec 2024 15:18:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ndhT1LZatoHX2+IRf7f9eEG/DnR+9uSGVnodgCNVsy5uXh+P+wgWAjbR2qrIFzj+qyk3Qm7vLdlhlfG/Jy3SoruZe4b6iWeoVp84HH6s76oCnrpOFSAorzLWfUV03VYznFryArdpiYVuveZXBorZ23/QvEevsI4AvmBjMVbKOms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vknXUBqQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC91C4CED0;
+	Thu, 12 Dec 2024 15:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016686;
-	bh=pk6cTvR6zpwrwDaVhgq2T2foRoAFMLJOtuuT5zfHT1A=;
+	s=korg; t=1734017828;
+	bh=opKDVIxjUHZxlesfnA1HsOkw4bbOwFvQwYS8WRBwXKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILm2uIjROq9Ler9maX5qlU+mq85XzWX3ILAqMRECJs6YMI8JPYmtNS2LRtcpR8w/Z
-	 INQrE9uuUABwJsucVvA8Nn3M5z1lZeUY+9zeyRm7snjoCoAMN+ERvH7xSn8dGrM3fT
-	 3W2rMRpE8fiK5gn8xuOSE+fLj9Ot2eRiLMRZh7zU=
+	b=vknXUBqQ31ebhX7blc5VrR/KR9cliMMpX0Zwot6c9+rn6D9fEtBU4nFhTuYTFL34C
+	 tHOEQ9A1IhvBXwnZSZBkrfKrl6zYCiibrOIpcTf7o9eaRstAwg6vMKmqc987roT9bW
+	 zu04LdkYKNyuiA0CsgiKB2QT7ZdMzrNXrfVsfmkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Fudongwang <Fudong.Wang@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Quentin Monnet <qmo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 270/466] drm/amd/display: skip disable CRTC in seemless bootup case
-Date: Thu, 12 Dec 2024 15:57:19 +0100
-Message-ID: <20241212144317.453655554@linuxfoundation.org>
+Subject: [PATCH 6.6 121/356] tools: Override makefile ARCH variable if defined, but empty
+Date: Thu, 12 Dec 2024 15:57:20 +0100
+Message-ID: <20241212144249.432884961@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +67,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fudongwang <Fudong.Wang@amd.com>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit 0e37e4b9afbd08df1f00a70bbb4d1ec273d18c9e ]
+[ Upstream commit 537a2525eaf76ea9b0dca62b994500d8670b39d5 ]
 
-Resync FIFO is a workaround to write the same value to
-DENTIST_DISPCLK_CNTL register after programming OTG_PIXEL_RATE_DIV
-register, in case seemless boot, there is no OTG_PIXEL_RATE_DIV register
-update, so skip CRTC disable when resync FIFO to avoid random FIFO error
-and garbage.
+There are a number of tools (bpftool, selftests), that require a
+"bootstrap" build. Here, a bootstrap build is a build host variant of
+a target. E.g., assume that you're performing a bpftool cross-build on
+x86 to riscv, a bootstrap build would then be an x86 variant of
+bpftool. The typical way to perform the host build variant, is to pass
+"ARCH=" in a sub-make. However, if a variable has been set with a
+command argument, then ordinary assignments in the makefile are
+ignored.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Fudongwang <Fudong.Wang@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This side-effect results in that ARCH, and variables depending on ARCH
+are not set. Workaround by overriding ARCH to the host arch, if ARCH
+is empty.
+
+Fixes: 8859b0da5aac ("tools/bpftool: Fix cross-build")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Quentin Monnet <qmo@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lore.kernel.org/bpf/20241127101748.165693-1-bjorn@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/scripts/Makefile.arch | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
-index 4e93eeedfc1bb..a8e04a39a19e5 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
-@@ -371,7 +371,9 @@ void dcn314_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc
- 		if (pipe->top_pipe || pipe->prev_odm_pipe)
- 			continue;
+diff --git a/tools/scripts/Makefile.arch b/tools/scripts/Makefile.arch
+index f6a50f06dfc45..eabfe9f411d91 100644
+--- a/tools/scripts/Makefile.arch
++++ b/tools/scripts/Makefile.arch
+@@ -7,8 +7,8 @@ HOSTARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
+                                   -e s/sh[234].*/sh/ -e s/aarch64.*/arm64/ \
+                                   -e s/riscv.*/riscv/ -e s/loongarch.*/loongarch/)
  
--		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal))) {
-+		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal)) &&
-+			!pipe->stream->apply_seamless_boot_optimization &&
-+			!pipe->stream->apply_edp_fast_boot_optimization) {
- 			pipe->stream_res.tg->funcs->disable_crtc(pipe->stream_res.tg);
- 			reset_sync_context_for_pipe(dc, context, i);
- 			otg_disabled[i] = true;
+-ifndef ARCH
+-ARCH := $(HOSTARCH)
++ifeq ($(strip $(ARCH)),)
++override ARCH := $(HOSTARCH)
+ endif
+ 
+ SRCARCH := $(ARCH)
 -- 
 2.43.0
 
