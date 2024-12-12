@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AB69EEA18
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 844279EF090
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45CC0188C586
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D15281896DAF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147BE21661F;
-	Thu, 12 Dec 2024 15:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B650235C5A;
+	Thu, 12 Dec 2024 16:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mavSS0Re"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/n4jvwi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5929215799;
-	Thu, 12 Dec 2024 15:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CF1235C58;
+	Thu, 12 Dec 2024 16:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015982; cv=none; b=AIqcWGpcM4JsL+ICcoU885xVIwPG9xdhd7szgWFmuKjSJQKUopWG6OeoTF77NoVsfVvRl3SomK775C/4zo3E2B3I8KyghzUOVqdeuFLRWMmRuLoGO+7RLjq8USmlY9MmT0rIxScOLJww9ECQNvUe93QuA6xHy4gShis+4eTz1lU=
+	t=1734019730; cv=none; b=gu13GqRovM913zSfcoU/9QNiR76BjlSBiU/ZFk6wJvsvD3D7yGKj1a3HcVlvf9EvxD9LTPj/T2JFeKjwCfGhqYnOFMwcoS+9b784N/cx7VPjUF3YSQc2YTsrxtBGe4BvKErCy6otahs2856lekbx8h/OLb6NpEdRHZq3k0SaPNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015982; c=relaxed/simple;
-	bh=S9lBQ+krNDaFxMME6dn79MHY0ap/Of8G7gM+w58Wa04=;
+	s=arc-20240116; t=1734019730; c=relaxed/simple;
+	bh=XD4sPBUy0hPnxs01hLQ8c44UZK/JSXqkluTh9ar5qZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJ8lnZ4IAYBeLrtFXekkdtKm67x/a6gATOlIO1kfucnSpg96M6yBtsZOZf2Pa62rF7Rc1QdPj5G/8UEPWpgRwKf0YtrNx+sKvRMHSLXSAV6P8zikKZKQORUFfkFmvFqIT30rZ3rKoHa5/BLxo7CjoUxoWj7FZPShRwj07QiPJn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mavSS0Re; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2A7C4CED4;
-	Thu, 12 Dec 2024 15:06:21 +0000 (UTC)
+	 MIME-Version; b=HW0gfTUheEOL5+94x46p9bnpEwLYoJQiHFGSvCAtexIY0MBs/PSVXV35mBVSHlPkmcZHAmqy242SiNsB3QyUdMhQHtSOmXsbNj1n/cGZFY0ThKMkwqH77O6ROOItfk+6OCHE9wpTYDguecdIWi9qx7ykfBGYeRhFTFmVKIsMAQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/n4jvwi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68640C4CECE;
+	Thu, 12 Dec 2024 16:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015982;
-	bh=S9lBQ+krNDaFxMME6dn79MHY0ap/Of8G7gM+w58Wa04=;
+	s=korg; t=1734019730;
+	bh=XD4sPBUy0hPnxs01hLQ8c44UZK/JSXqkluTh9ar5qZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mavSS0Re8VDKgVE1xaSbiR15CkgbhhZxm/en9tjrOnHJpRrOIKAohLf3EW8yrNbIC
-	 1xx6iIINuAbuW4Uz+eNEliXOO3Xh0ywzNVvhKcm4Ep+PiEvgkldxCLffu0NRoJofig
-	 9dw3+7yyEfewnBaFGaYw4o6V+CPJAAXq4CK9cdjc=
+	b=g/n4jvwipbJbdQHcym2Mr4JXUxFKUG4JlDMfKd1NpC/je2mkFg8Al85rAgh+sqedr
+	 /c+n1ItEYhcb1j/rNBFi9wmSoxLbQtjF9mcv5HoZzq2wQWvLOZ7nuz/A9UU/6Adlel
+	 qGF3YNh3v0AI40OlgsM8RVH94eUESM00iAsPcBZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Shkolnyy <kshk@linux.ibm.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/466] vsock/test: fix failures due to wrong SO_RCVLOWAT parameter
+Subject: [PATCH 6.1 282/772] svcrdma: Address an integer overflow
 Date: Thu, 12 Dec 2024 15:53:47 +0100
-Message-ID: <20241212144309.109905030@linuxfoundation.org>
+Message-ID: <20241212144401.555883880@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Shkolnyy <kshk@linux.ibm.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 7ce1c0921a806ee7d4bb24f74a3b30c89fc5fb39 ]
+[ Upstream commit 3c63d8946e578663b868cb9912dac616ea68bfd0 ]
 
-This happens on 64-bit big-endian machines.
-SO_RCVLOWAT requires an int parameter. However, instead of int, the test
-uses unsigned long in one place and size_t in another. Both are 8 bytes
-long on 64-bit machines. The kernel, having received the 8 bytes, doesn't
-test for the exact size of the parameter, it only cares that it's >=
-sizeof(int), and casts the 4 lower-addressed bytes to an int, which, on
-a big-endian machine, contains 0. 0 doesn't trigger an error, SO_RCVLOWAT
-returns with success and the socket stays with the default SO_RCVLOWAT = 1,
-which results in vsock_test failures, while vsock_perf doesn't even notice
-that it's failed to change it.
+Dan Carpenter reports:
+> Commit 78147ca8b4a9 ("svcrdma: Add a "parsed chunk list" data
+> structure") from Jun 22, 2020 (linux-next), leads to the following
+> Smatch static checker warning:
+>
+>	net/sunrpc/xprtrdma/svc_rdma_recvfrom.c:498 xdr_check_write_chunk()
+>	warn: potential user controlled sizeof overflow 'segcount * 4 * 4'
+>
+> net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+>     488 static bool xdr_check_write_chunk(struct svc_rdma_recv_ctxt *rctxt)
+>     489 {
+>     490         u32 segcount;
+>     491         __be32 *p;
+>     492
+>     493         if (xdr_stream_decode_u32(&rctxt->rc_stream, &segcount))
+>                                                               ^^^^^^^^
+>
+>     494                 return false;
+>     495
+>     496         /* A bogus segcount causes this buffer overflow check to fail. */
+>     497         p = xdr_inline_decode(&rctxt->rc_stream,
+> --> 498                               segcount * rpcrdma_segment_maxsz * sizeof(*p));
+>
+>
+> segcount is an untrusted u32.  On 32bit systems anything >= SIZE_MAX / 16 will
+> have an integer overflow and some those values will be accepted by
+> xdr_inline_decode().
 
-Fixes: b1346338fbae ("vsock_test: POLLIN + SO_RCVLOWAT test")
-Fixes: 542e893fbadc ("vsock/test: two tests to check credit update logic")
-Fixes: 8abbffd27ced ("test/vsock: vsock_perf utility")
-Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 78147ca8b4a9 ("svcrdma: Add a "parsed chunk list" data structure")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/vsock/vsock_perf.c | 6 +++---
- tools/testing/vsock/vsock_test.c | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/sunrpc/xprtrdma/svc_rdma_recvfrom.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/vsock/vsock_perf.c b/tools/testing/vsock/vsock_perf.c
-index 4e8578f815e08..22633c2848cc7 100644
---- a/tools/testing/vsock/vsock_perf.c
-+++ b/tools/testing/vsock/vsock_perf.c
-@@ -133,7 +133,7 @@ static float get_gbps(unsigned long bits, time_t ns_delta)
- 	       ((float)ns_delta / NSEC_PER_SEC);
- }
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+index b2dd01e5274e9..186c9c12432b1 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+@@ -482,7 +482,13 @@ static bool xdr_check_write_chunk(struct svc_rdma_recv_ctxt *rctxt)
+ 	if (xdr_stream_decode_u32(&rctxt->rc_stream, &segcount))
+ 		return false;
  
--static void run_receiver(unsigned long rcvlowat_bytes)
-+static void run_receiver(int rcvlowat_bytes)
- {
- 	unsigned int read_cnt;
- 	time_t rx_begin_ns;
-@@ -163,7 +163,7 @@ static void run_receiver(unsigned long rcvlowat_bytes)
- 	printf("Listen port %u\n", port);
- 	printf("RX buffer %lu bytes\n", buf_size_bytes);
- 	printf("vsock buffer %lu bytes\n", vsock_buf_bytes);
--	printf("SO_RCVLOWAT %lu bytes\n", rcvlowat_bytes);
-+	printf("SO_RCVLOWAT %d bytes\n", rcvlowat_bytes);
- 
- 	fd = socket(AF_VSOCK, SOCK_STREAM, 0);
- 
-@@ -439,7 +439,7 @@ static long strtolx(const char *arg)
- int main(int argc, char **argv)
- {
- 	unsigned long to_send_bytes = DEFAULT_TO_SEND_BYTES;
--	unsigned long rcvlowat_bytes = DEFAULT_RCVLOWAT_BYTES;
-+	int rcvlowat_bytes = DEFAULT_RCVLOWAT_BYTES;
- 	int peer_cid = -1;
- 	bool sender = false;
- 
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index 8d38dbf8f41f0..7fd25b814b4b6 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -835,7 +835,7 @@ static void test_stream_poll_rcvlowat_server(const struct test_opts *opts)
- 
- static void test_stream_poll_rcvlowat_client(const struct test_opts *opts)
- {
--	unsigned long lowat_val = RCVLOWAT_BUF_SIZE;
-+	int lowat_val = RCVLOWAT_BUF_SIZE;
- 	char buf[RCVLOWAT_BUF_SIZE];
- 	struct pollfd fds;
- 	short poll_flags;
-@@ -1357,7 +1357,7 @@ static void test_stream_rcvlowat_def_cred_upd_client(const struct test_opts *opt
- static void test_stream_credit_update_test(const struct test_opts *opts,
- 					   bool low_rx_bytes_test)
- {
--	size_t recv_buf_size;
-+	int recv_buf_size;
- 	struct pollfd fds;
- 	size_t buf_size;
- 	void *buf;
+-	/* A bogus segcount causes this buffer overflow check to fail. */
++	/* Before trusting the segcount value enough to use it in
++	 * a computation, perform a simple range check. This is an
++	 * arbitrary but sensible limit (ie, not architectural).
++	 */
++	if (unlikely(segcount > RPCSVC_MAXPAGES))
++		return false;
++
+ 	p = xdr_inline_decode(&rctxt->rc_stream,
+ 			      segcount * rpcrdma_segment_maxsz * sizeof(*p));
+ 	return p != NULL;
 -- 
 2.43.0
 
