@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-102198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EACC9EF110
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7189EF373
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7A91189BBBD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46ED3291CED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4210E231A23;
-	Thu, 12 Dec 2024 16:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC252144C4;
+	Thu, 12 Dec 2024 16:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNibrWLP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNFFIAPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31FF230D01;
-	Thu, 12 Dec 2024 16:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5784F6F2FE;
+	Thu, 12 Dec 2024 16:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020341; cv=none; b=Jd0lVzmf+5xLwtbWrp5Gm9XciSTSri21h5kzYAChXEf7V83MGhXOQ9vuGA4k10X3aZzj5eABwQWZjKTpVQ6SFb8qyTN19Up6zbTljasoeZH/ZpAF5Yk2GkGwe8+VBqTAbbVRavJugerFnsOYLjsBJpSZYr0HdmJN1377N9VLXVQ=
+	t=1734022371; cv=none; b=VLVI2uMm3QL2Szhrlmd2iN4N+5cXnuqqLHd4zZFK+x+95fxHPU5qaRoUb3J6CTxaIxM6hMxCVP2ElzpDsyAy5OxVckUbkL0O2HqrveKf+urYCWKHIu7nYpOMjA7YnsL4wc/gEKZDmSj/UFzn1vilTmKGk5zXNsd6+3Ea8ZBPo/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020341; c=relaxed/simple;
-	bh=vLhFUozk6MMubxHarUP8YYfKOVKgmUEu9jtxfB2tkfM=;
+	s=arc-20240116; t=1734022371; c=relaxed/simple;
+	bh=Q4f1+n+UE6PRaQX5wDCcRC+GR2V3Ufm17pOLoyXlvvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ublwiwvtQcjhCrJCkuw/qfhvPYjAsSe+eyDcZ9VueY4BLXvT4+sy/Zfrz5M7ke7li4Fw3IB2roYVszt26ExUdyYv4A4El92IKA5TK/mV00oVTN/BFkvCX+pvYJNlRgOjQrduaZZninc+3Y+xx5juQAGOC/FdBinAAhhItZlNiWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNibrWLP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B4DC4CECE;
-	Thu, 12 Dec 2024 16:19:00 +0000 (UTC)
+	 MIME-Version; b=BGXkzQvWiy0N7qVI9pP7gbTgfJFG+EZeglaN5mVFhrCZ9UFo8b4l8YUl+rU1j6O1r/TgAr7MUiqgma7x9apTaHpQBJZ9pxKKrQmyNH5GYKNdi/z5ka6Y9nzRAPtPUGWhH9K1xEsJQp0190TXc4YO+wkp3tQPu3gyXDosORGjcQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNFFIAPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70057C4CECE;
+	Thu, 12 Dec 2024 16:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020340;
-	bh=vLhFUozk6MMubxHarUP8YYfKOVKgmUEu9jtxfB2tkfM=;
+	s=korg; t=1734022371;
+	bh=Q4f1+n+UE6PRaQX5wDCcRC+GR2V3Ufm17pOLoyXlvvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNibrWLPveVcXJpiEbd+PU0G3hM99lX2hjMI8lc6UAv3LnffzRPNHKivA4vz9My1f
-	 GbmM9UnqGU4WecVwsbZjZgzsPxns9egsn92ECL1StQb8gcl/l08XKmExHhc98QrduW
-	 dNKHovzEUDb/AkDq0WyKl/wyUr1Su5WVfVJnpIDI=
+	b=FNFFIAPDd9yXSY1aGRUp6yfvcqfMIJENylI32UiYXYxl/jP6qPa6/GfgAMeYfzn+k
+	 rHpU5D7r0zv+OBP75G22lA+8dpnZVONyp+Uy8mwhDIJo/XVLX1ZFB/mkgEdnWUiR+7
+	 OBnTElfgyQzIDxthU5PTsVOZeeQBsZOqfsUlLklU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Thelen <gthelen@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Tuan Phan <tuanphan@os.amperecomputing.com>,
-	Chun-Tse Shao <ctshao@google.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 442/772] perf/arm-smmuv3: Fix lockdep assert in ->event_init()
+Subject: [PATCH 5.15 192/565] selftests/bpf: Fix total_bytes in msg_loop_rx in test_sockmap
 Date: Thu, 12 Dec 2024 15:56:27 +0100
-Message-ID: <20241212144408.185455568@linuxfoundation.org>
+Message-ID: <20241212144319.069613685@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,69 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Tse Shao <ctshao@google.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit 02a55f2743012a8089f09f6867220c3d57f16564 ]
+[ Upstream commit 523dffccbadea0cfd65f1ff04944b864c558c4a8 ]
 
-Same as
-https://lore.kernel.org/all/20240514180050.182454-1-namhyung@kernel.org/,
-we should skip `for_each_sibling_event()` for group leader since it
-doesn't have the ctx yet.
+total_bytes in msg_loop_rx should also take push into account, otherwise
+total_bytes will be a smaller value, which makes the msg_loop_rx end early.
 
-Fixes: f3c0eba28704 ("perf: Add a few assertions")
-Reported-by: Greg Thelen <gthelen@google.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Tuan Phan <tuanphan@os.amperecomputing.com>
-Signed-off-by: Chun-Tse Shao <ctshao@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241108050806.3730811-1-ctshao@google.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Besides, total_bytes has already taken pop into account, so we don't need
+to subtract some bytes from iov_buf in sendmsg_test. The additional
+subtraction may make total_bytes a negative number, and msg_loop_rx will
+just end without checking anything.
+
+Fixes: 18d4e900a450 ("bpf: Selftests, improve test_sockmap total bytes counter")
+Fixes: d69672147faa ("selftests, bpf: Add one test for sockmap with strparser")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20241106222520.527076-4-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_smmuv3_pmu.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/perf/arm_smmuv3_pmu.c b/drivers/perf/arm_smmuv3_pmu.c
-index 0e17c57ddb876..feaf79b980017 100644
---- a/drivers/perf/arm_smmuv3_pmu.c
-+++ b/drivers/perf/arm_smmuv3_pmu.c
-@@ -431,6 +431,17 @@ static int smmu_pmu_event_init(struct perf_event *event)
- 			return -EINVAL;
- 	}
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 74cfab7d5eff4..2705cd6c41143 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -602,8 +602,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 		}
+ 		clock_gettime(CLOCK_MONOTONIC, &s->end);
+ 	} else {
++		float total_bytes, txmsg_pop_total, txmsg_push_total;
+ 		int slct, recvp = 0, recv, max_fd = fd;
+-		float total_bytes, txmsg_pop_total;
+ 		int fd_flags = O_NONBLOCK;
+ 		struct timeval timeout;
+ 		unsigned char k = 0;
+@@ -624,10 +624,14 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 		total_bytes = (float)iov_length * (float)cnt;
+ 		if (!opt->sendpage)
+ 			total_bytes *= (float)iov_count;
+-		if (txmsg_apply)
++		if (txmsg_apply) {
++			txmsg_push_total = txmsg_end_push * (total_bytes / txmsg_apply);
+ 			txmsg_pop_total = txmsg_pop * (total_bytes / txmsg_apply);
+-		else
++		} else {
++			txmsg_push_total = txmsg_end_push * cnt;
+ 			txmsg_pop_total = txmsg_pop * cnt;
++		}
++		total_bytes += txmsg_push_total;
+ 		total_bytes -= txmsg_pop_total;
+ 		err = clock_gettime(CLOCK_MONOTONIC, &s->start);
+ 		if (err < 0)
+@@ -771,8 +775,6 @@ static int sendmsg_test(struct sockmap_options *opt)
  
-+	/*
-+	 * Ensure all events are on the same cpu so all events are in the
-+	 * same cpu context, to avoid races on pmu_enable etc.
-+	 */
-+	event->cpu = smmu_pmu->on_cpu;
-+
-+	hwc->idx = -1;
-+
-+	if (event->group_leader == event)
-+		return 0;
-+
- 	for_each_sibling_event(sibling, event->group_leader) {
- 		if (is_software_event(sibling))
- 			continue;
-@@ -442,14 +453,6 @@ static int smmu_pmu_event_init(struct perf_event *event)
- 			return -EINVAL;
- 	}
- 
--	hwc->idx = -1;
--
--	/*
--	 * Ensure all events are on the same cpu so all events are in the
--	 * same cpu context, to avoid races on pmu_enable etc.
--	 */
--	event->cpu = smmu_pmu->on_cpu;
--
- 	return 0;
- }
+ 	rxpid = fork();
+ 	if (rxpid == 0) {
+-		if (txmsg_pop || txmsg_start_pop)
+-			iov_buf -= (txmsg_pop - txmsg_start_pop + 1);
+ 		if (opt->drop_expected || txmsg_ktls_skb_drop)
+ 			_exit(0);
  
 -- 
 2.43.0
