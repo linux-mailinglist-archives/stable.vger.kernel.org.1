@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-102596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFDC9EF371
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 189AC9EF0AA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FE63189A6FF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 461E116B093
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE44222D78;
-	Thu, 12 Dec 2024 16:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E90226520;
+	Thu, 12 Dec 2024 16:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eU/S5+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dt2lgEho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A6B6F2FE;
-	Thu, 12 Dec 2024 16:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3254A213E6B;
+	Thu, 12 Dec 2024 16:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021798; cv=none; b=OhGAKWwguhH0Z5fD/JWUqCLSpV2fBPQOXvwENlSUIXVFWUbaMHba99c7VS9cHUo+wvB7NDQSSsc/gvJ/eioU6curCvx8RJyogBERauMMNd3rTgR8T8kgo3pMX7ESRyeirLTEi1pdHr8E7vI7/dvLZjJM4RuSfULc9WaKKBCUS78=
+	t=1734019866; cv=none; b=gedMUg+Zqh4xkXMcc5c+om0bmKO6JamAi8AHLhJTWxMEdekAShJqxi8vgYsJu6MngF1zeO1CxB0K2LiCAkgeBNe7LaS4cqXhBh/lnwGD6JJBBlAa9F6vX2c9AIUopYztTRyjbOLwnSvpyHLI2d2UoQLrg7JFHy7vtAzmdaSPc3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021798; c=relaxed/simple;
-	bh=moC7ggwc4ImsNdG8gaSoTuPRngs4E8AHHzzHdQE0Os0=;
+	s=arc-20240116; t=1734019866; c=relaxed/simple;
+	bh=+528Hdwv5W0mBSUHAnn6t6oCeP+o9nAU711u1/jsqvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gC27ZKWhg5pbZSkY2oKkgHec28WhiRNyqulNrQrUAv19tCHd76LTvoQa+uoKT8EWy3hyxCjLj3fzjIInVUiSvZB5KOU6c+otCT4hoLGpx3td7d2SZLtoY1wEoNxNQtULUr0xiDg6qI8TE/1k2oKnG5bijRAeOenluUV3WQXFRmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eU/S5+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F0CC4CED3;
-	Thu, 12 Dec 2024 16:43:17 +0000 (UTC)
+	 MIME-Version; b=D6aljTYcGNzfzQhB6YNB9pBlS2ptOEdmSkYCz5b0kclHeG5O3OUaWvprUCSO5KSVzJMl1/EIgyPu4LCNIvDoaEzx2Ul/oNF+G1gnvmC2O+WL9LvvifTmJLI1iRh/10cYyJoKgD7aOELrYe04lQDVODCselTjShQYKhYIR8zrqds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dt2lgEho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D579C4CED4;
+	Thu, 12 Dec 2024 16:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021797;
-	bh=moC7ggwc4ImsNdG8gaSoTuPRngs4E8AHHzzHdQE0Os0=;
+	s=korg; t=1734019866;
+	bh=+528Hdwv5W0mBSUHAnn6t6oCeP+o9nAU711u1/jsqvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2eU/S5+USkX3go6CCEnHBVdUVatClxcJ2MPI7Nlidn/kFouF8Qvb66dwV+5U46p7g
-	 YReQDdAHQ8iMdPcL4q/dXvHntcNwg05+uTL4uW2DO+0UTHxZgymFgGmdyNtStPKfvJ
-	 TIXcJKVynxOg8fJLbtBxQZ2PZ8rTBpg30+TDknmg=
+	b=dt2lgEhodtdP/Ilw647w17qrHvJMFj/lPGGrrFdTthWeWdalRdyFOBd+yJNF0MJe+
+	 glxfu+my8qU5WCzf/EADg1AGQllNFXcy0HFQXHJ5pU8DjgeQz8kONoKz2exGQQOjNS
+	 UyUNHcs/nJRad3acwjgbNc76P5ek+wTejuTh6TUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Yifan <luoyifan@cmss.chinamobile.com>,
-	Mark Brown <broonie@kernel.org>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 066/565] ASoC: stm: Prevent potential division by zero in stm32_sai_mclk_round_rate()
-Date: Thu, 12 Dec 2024 15:54:21 +0100
-Message-ID: <20241212144314.102994564@linuxfoundation.org>
+Subject: [PATCH 6.1 317/772] bnxt_en: Reserve rings after PCIe AER recovery if NIC interface is down
+Date: Thu, 12 Dec 2024 15:54:22 +0100
+Message-ID: <20241212144402.988131815@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Yifan <luoyifan@cmss.chinamobile.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit 63c1c87993e0e5bb11bced3d8224446a2bc62338 ]
+[ Upstream commit 5311598f7f3293683cdc761df71ae3469327332c ]
 
-This patch checks if div is less than or equal to zero (div <= 0). If
-div is zero or negative, the function returns -EINVAL, ensuring the
-division operation (*prate / div) is safe to perform.
+After successful PCIe AER recovery, FW will reset all resource
+reservations.  If it is IF_UP, the driver will call bnxt_open() and
+all resources will be reserved again.  It it is IF_DOWN, we should
+call bnxt_reserve_rings() so that we can reserve resources including
+RoCE resources to allow RoCE to resume after AER.  Without this
+patch, RoCE fails to resume in this IF_DOWN scenario.
 
-Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20241106014654.206860-1-luoyifan@cmss.chinamobile.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Later, if it becomes IF_UP, bnxt_open() will see that resources have
+been reserved and will not reserve again.
+
+Fixes: fb1e6e562b37 ("bnxt_en: Fix AER recovery.")
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 9c3b8e2096565..aa9cdd93b5778 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -380,8 +380,8 @@ static long stm32_sai_mclk_round_rate(struct clk_hw *hw, unsigned long rate,
- 	int div;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 20e2fae64e67f..7d9677d0f7304 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -14113,8 +14113,12 @@ static void bnxt_io_resume(struct pci_dev *pdev)
+ 	rtnl_lock();
  
- 	div = stm32_sai_get_clk_div(sai, *prate, rate);
--	if (div < 0)
--		return div;
-+	if (div <= 0)
-+		return -EINVAL;
+ 	err = bnxt_hwrm_func_qcaps(bp);
+-	if (!err && netif_running(netdev))
+-		err = bnxt_open(netdev);
++	if (!err) {
++		if (netif_running(netdev))
++			err = bnxt_open(netdev);
++		else
++			err = bnxt_reserve_rings(bp, true);
++	}
  
- 	mclk->freq = *prate / div;
- 
+ 	bnxt_ulp_start(bp, err);
+ 	if (!err) {
 -- 
 2.43.0
 
