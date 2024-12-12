@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422A79EF933
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE5C9EF5D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 046BE28E039
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 495E51746B1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF710226526;
-	Thu, 12 Dec 2024 17:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E07B21660C;
+	Thu, 12 Dec 2024 17:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9XSNCBS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeqtcTC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC9522541B;
-	Thu, 12 Dec 2024 17:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3631B53365;
+	Thu, 12 Dec 2024 17:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025611; cv=none; b=J3Bf7XYHDJ3FPm54C8nryfbZ4jgjuMroFdnucGY151mekeP9L3MHLmv0/9aD9h4ONexHwVVBUNbqz1aU9vyDnmwp6jbWqtcOSY2S1eBNuFy+CVki6VidV05kcLArnjSCgrD+6kigb54SstLg5cO5cveQuGcKyVsJ+dzOmRjxdxU=
+	t=1734023548; cv=none; b=e0h8Citk3FbCBSomme0oB1LYU8IiHNXRb0DfOsA1w9ViIxdAg8iQEdqq2z/96lvBRTJbwUl9tnINqF3Z47wPpnAYmbcsrqQkNNHZ5rIo43OXZH6Z9f5LRmnzbF5f6rMjOhLGsBjcuOdeZXUS9eVZbk7x9Gm8kTVNNHIEgc+1xzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025611; c=relaxed/simple;
-	bh=QcdmTgxvVO2zuQ0Wkq7iUnyn1J3f+1GPcE5bKtiJWpU=;
+	s=arc-20240116; t=1734023548; c=relaxed/simple;
+	bh=FSOxS61Jx4JQ07BupQcXEcxu7GqFv39bnjUIvvrR+5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZF2URhElCZpaTnQCrkNH47LYqV48T0Bh4nHW8qdFFZk3fyo1O1GbTTMhL6yyc/mIhU4O7MobDilzMRmCblit8jgVKpZnOZsmbcwIWzq/93ay5AgC8TGxQh4lD93FW+gMHExUSoeDWb6qS//tWAxlCVqAjBqSqQcjwJzggIr0ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9XSNCBS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A992DC4CECE;
-	Thu, 12 Dec 2024 17:46:50 +0000 (UTC)
+	 MIME-Version; b=GsFdpXYLAE+YVtKjWcsp5n/sJ63d+Ld+SkU+evlTxC0gWZ+zps9wURZ5ymjD47NlE3tGz1+7gffACRm8cWIYVRDNhZekhWtE9CRWQL/jXzpPcBYxLhMjHeBfIXA1AFf1nEo0k81le8AN2dpJhWZiHPYbOtQHg1rtQYUe0ZG1e64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeqtcTC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ED8C4CED0;
+	Thu, 12 Dec 2024 17:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025611;
-	bh=QcdmTgxvVO2zuQ0Wkq7iUnyn1J3f+1GPcE5bKtiJWpU=;
+	s=korg; t=1734023548;
+	bh=FSOxS61Jx4JQ07BupQcXEcxu7GqFv39bnjUIvvrR+5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9XSNCBSOu5xNs48bPi7DMi5xgDobiKwkZpYdAc9jEJF0gguR53IgPI+qLiGK3/d2
-	 uNkcKa1HcnnJesv+1Dsb6BgZjyiRpmqX+VBVnDXmG5rYlJLz9xzbCaDeg6cCu/rHMm
-	 fxj/VW8ahoCLdqmvC/K10+mh0q85jrV9fAqlVlp4=
+	b=EeqtcTC2Z06a86n7twLnTIN3GSrspykJyH0YQykSAIXT7kv8iRc3x2N9RosIqwRU8
+	 q8UWMWKrFjTt+1Ih4tiKnVqkY+xZIdAYaJVVO+ZddkXgvlSQaNkSxH8JNAd/sUbDbN
+	 k3TBNUloYtnqN6p9LGkQ/JKIg3IBKqZKwKYVoGew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Wiesner <jwiesner@suse.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 227/321] net/ipv6: release expired exception dst cached in socket
-Date: Thu, 12 Dec 2024 16:02:25 +0100
-Message-ID: <20241212144238.944863413@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Libo Chen <libo.chen.cn@windriver.com>
+Subject: [PATCH 5.15 551/565] ima: Fix use-after-free on a dentrys dname.name
+Date: Thu, 12 Dec 2024 16:02:26 +0100
+Message-ID: <20241212144333.638001631@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Wiesner <jwiesner@suse.de>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-[ Upstream commit 3301ab7d5aeb0fe270f73a3d4810c9d1b6a9f045 ]
+commit be84f32bb2c981ca670922e047cdde1488b233de upstream.
 
-Dst objects get leaked in ip6_negative_advice() when this function is
-executed for an expired IPv6 route located in the exception table. There
-are several conditions that must be fulfilled for the leak to occur:
-* an ICMPv6 packet indicating a change of the MTU for the path is received,
-  resulting in an exception dst being created
-* a TCP connection that uses the exception dst for routing packets must
-  start timing out so that TCP begins retransmissions
-* after the exception dst expires, the FIB6 garbage collector must not run
-  before TCP executes ip6_negative_advice() for the expired exception dst
+->d_name.name can change on rename and the earlier value can be freed;
+there are conditions sufficient to stabilize it (->d_lock on dentry,
+->d_lock on its parent, ->i_rwsem exclusive on the parent's inode,
+rename_lock), but none of those are met at any of the sites. Take a stable
+snapshot of the name instead.
 
-When TCP executes ip6_negative_advice() for an exception dst that has
-expired and if no other socket holds a reference to the exception dst, the
-refcount of the exception dst is 2, which corresponds to the increment
-made by dst_init() and the increment made by the TCP socket for which the
-connection is timing out. The refcount made by the socket is never
-released. The refcount of the dst is decremented in sk_dst_reset() but
-that decrement is counteracted by a dst_hold() intentionally placed just
-before the sk_dst_reset() in ip6_negative_advice(). After
-ip6_negative_advice() has finished, there is no other object tied to the
-dst. The socket lost its reference stored in sk_dst_cache and the dst is
-no longer in the exception table. The exception dst becomes a leaked
-object.
-
-As a result of this dst leak, an unbalanced refcount is reported for the
-loopback device of a net namespace being destroyed under kernels that do
-not contain e5f80fcf869a ("ipv6: give an IPv6 dev to blackhole_netdev"):
-unregister_netdevice: waiting for lo to become free. Usage count = 2
-
-Fix the dst leak by removing the dst_hold() in ip6_negative_advice(). The
-patch that introduced the dst_hold() in ip6_negative_advice() was
-92f1655aa2b22 ("net: fix __dst_negative_advice() race"). But 92f1655aa2b22
-merely refactored the code with regards to the dst refcount so the issue
-was present even before 92f1655aa2b22. The bug was introduced in
-54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually
-expired.") where the expired cached route is deleted and the sk_dst_cache
-member of the socket is set to NULL by calling dst_negative_advice() but
-the refcount belonging to the socket is left unbalanced.
-
-The IPv4 version - ipv4_negative_advice() - is not affected by this bug.
-When the TCP connection times out ipv4_negative_advice() merely resets the
-sk_dst_cache of the socket while decrementing the refcount of the
-exception dst.
-
-Fixes: 92f1655aa2b22 ("net: fix __dst_negative_advice() race")
-Fixes: 54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually expired.")
-Link: https://lore.kernel.org/netdev/20241113105611.GA6723@incl/T/#u
-Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241128085950.GA4505@incl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/20240202182732.GE2087318@ZenIV/
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Libo Chen <libo.chen.cn@windriver.com>
 ---
- net/ipv6/route.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ security/integrity/ima/ima_api.c          |   16 ++++++++++++----
+ security/integrity/ima/ima_template_lib.c |   17 ++++++++++++++---
+ 2 files changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 2e91a563139a8..f1c2ac967e36c 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -2670,10 +2670,10 @@ static void ip6_negative_advice(struct sock *sk,
- 	if (rt->rt6i_flags & RTF_CACHE) {
- 		rcu_read_lock();
- 		if (rt6_check_expired(rt)) {
--			/* counteract the dst_release() in sk_dst_reset() */
--			dst_hold(dst);
-+			/* rt/dst can not be destroyed yet,
-+			 * because of rcu_read_lock()
-+			 */
- 			sk_dst_reset(sk);
--
- 			rt6_remove_exception_rt(rt);
- 		}
- 		rcu_read_unlock();
--- 
-2.43.0
-
+--- a/security/integrity/ima/ima_api.c
++++ b/security/integrity/ima/ima_api.c
+@@ -217,7 +217,7 @@ int ima_collect_measurement(struct integ
+ 	const char *audit_cause = "failed";
+ 	struct inode *inode = file_inode(file);
+ 	struct inode *real_inode = d_real_inode(file_dentry(file));
+-	const char *filename = file->f_path.dentry->d_name.name;
++	struct name_snapshot filename;
+ 	int result = 0;
+ 	int length;
+ 	void *tmpbuf;
+@@ -280,9 +280,13 @@ out:
+ 		if (file->f_flags & O_DIRECT)
+ 			audit_cause = "failed(directio)";
+ 
++		take_dentry_name_snapshot(&filename, file->f_path.dentry);
++
+ 		integrity_audit_msg(AUDIT_INTEGRITY_DATA, inode,
+-				    filename, "collect_data", audit_cause,
+-				    result, 0);
++				    filename.name.name, "collect_data",
++				    audit_cause, result, 0);
++
++		release_dentry_name_snapshot(&filename);
+ 	}
+ 	return result;
+ }
+@@ -395,6 +399,7 @@ out:
+  */
+ const char *ima_d_path(const struct path *path, char **pathbuf, char *namebuf)
+ {
++	struct name_snapshot filename;
+ 	char *pathname = NULL;
+ 
+ 	*pathbuf = __getname();
+@@ -408,7 +413,10 @@ const char *ima_d_path(const struct path
+ 	}
+ 
+ 	if (!pathname) {
+-		strlcpy(namebuf, path->dentry->d_name.name, NAME_MAX);
++		take_dentry_name_snapshot(&filename, path->dentry);
++		strscpy(namebuf, filename.name.name, NAME_MAX);
++		release_dentry_name_snapshot(&filename);
++
+ 		pathname = namebuf;
+ 	}
+ 
+--- a/security/integrity/ima/ima_template_lib.c
++++ b/security/integrity/ima/ima_template_lib.c
+@@ -426,7 +426,10 @@ static int ima_eventname_init_common(str
+ 				     bool size_limit)
+ {
+ 	const char *cur_filename = NULL;
++	struct name_snapshot filename;
+ 	u32 cur_filename_len = 0;
++	bool snapshot = false;
++	int ret;
+ 
+ 	BUG_ON(event_data->filename == NULL && event_data->file == NULL);
+ 
+@@ -439,7 +442,10 @@ static int ima_eventname_init_common(str
+ 	}
+ 
+ 	if (event_data->file) {
+-		cur_filename = event_data->file->f_path.dentry->d_name.name;
++		take_dentry_name_snapshot(&filename,
++					  event_data->file->f_path.dentry);
++		snapshot = true;
++		cur_filename = filename.name.name;
+ 		cur_filename_len = strlen(cur_filename);
+ 	} else
+ 		/*
+@@ -448,8 +454,13 @@ static int ima_eventname_init_common(str
+ 		 */
+ 		cur_filename_len = IMA_EVENT_NAME_LEN_MAX;
+ out:
+-	return ima_write_template_field_data(cur_filename, cur_filename_len,
+-					     DATA_FMT_STRING, field_data);
++	ret = ima_write_template_field_data(cur_filename, cur_filename_len,
++					    DATA_FMT_STRING, field_data);
++
++	if (snapshot)
++		release_dentry_name_snapshot(&filename);
++
++	return ret;
+ }
+ 
+ /*
 
 
 
