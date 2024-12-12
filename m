@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4129EF70B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F41BE9EF7E1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA54116D3FB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4E91170EF2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E69221D9F;
-	Thu, 12 Dec 2024 17:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464AE2153EC;
+	Thu, 12 Dec 2024 17:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMSBFBMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjnuJUm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE0176AA1;
-	Thu, 12 Dec 2024 17:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE714213E6F;
+	Thu, 12 Dec 2024 17:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023312; cv=none; b=bM6QgA0VSiItfO4rQtI52Atc4crWp5O/ePg0WyKsrxJMWgOesmvGpd+5tC0E3nelluegvQchN52T5FdG5vxGd61WEIqUe950AxTGyzYBdQ+MO3kGGlCWuSUkqwPMCBPErYMd+p7SXI5Sgimt0kiHBOznN9S3cpFvTAMVR1RjA0c=
+	t=1734024691; cv=none; b=X21G07P0x4e06keL7iL028I3j5MzDPBqcNhFdxfgf/Bk5HGESV2RgyTyBrlQdtXJBNZAZEMAgyEjzOtB8AIKY0izs1EcvqKTTZs6AqFJELr/7yIx8lukm42zb8HHA7isvxBAafztHWYUHIgpPVDk5fk+VmpBD8RM5m1cKnKUNHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023312; c=relaxed/simple;
-	bh=Cg0qWgoTnVtJzeUTIV3SdFJo78Gk4EWcSFNmrWllooQ=;
+	s=arc-20240116; t=1734024691; c=relaxed/simple;
+	bh=3g0KFebKfY6Wm9FZ+6cZzJyEaZUcfEXi7R2avYtmvi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kA++xDkNFUNfEvqkRu73xNlVk32dSp1weMyBrAzKWBbCLdbYLY5ghgZRp/3x8IlEjB0CSI6bwNmA5pDW1HQpdtGpkIIsT7yBcrUWyIjUJCRe9n6+x58Gvdfl1AX6PvysAviejTSM/PdsxGkjfoCY5egV210/6po4reGDJvfew3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMSBFBMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8295EC4CED0;
-	Thu, 12 Dec 2024 17:08:30 +0000 (UTC)
+	 MIME-Version; b=IPA/BzBLQXh0IdxxLmwWVTZW6v6paN+Uc8OyDZJpa4uvZYKejA7lws/DN7HqZDaU4GDgprVjpogmwmmpLjXWCaG9eFa+8QY5VEiMe3VMnFsnCthVzXh+j3KJjdBShhyG5i57Gmaqsr4/yFZGCH7EMwIu9B6kP5RzSi/YehYpoZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjnuJUm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7538FC4CED0;
+	Thu, 12 Dec 2024 17:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023310;
-	bh=Cg0qWgoTnVtJzeUTIV3SdFJo78Gk4EWcSFNmrWllooQ=;
+	s=korg; t=1734024690;
+	bh=3g0KFebKfY6Wm9FZ+6cZzJyEaZUcfEXi7R2avYtmvi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nMSBFBMOOqfs7+jG//zoxxotaLohcO+RlMe2pvvisuABOy4dn70o7zrSUKWQeGvix
-	 bQiBtVhRfdly2aYHqTQRBPHMrectuMFRfsjPIbwUNVffoxoT7IaKSivnrzT2yxF9FY
-	 m99yhKY9z4+jwN3YRSv/lAhb2SvySfva63XYdmgU=
+	b=qjnuJUm4cPWugVBhoAJviCkkKYkhaK1z63YSfgbTrvterdoQMoS6UeTAvc8azLhfg
+	 9xk2M4hObr8mjSubmbIHJNY7qP8AcQKrGgI+uSeKKk6eCbZllT8qnZQcEZ5mA+t9Go
+	 muQfmS1gwbtTK6hJHmidzaV4m6RclS2z8lpsjU58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 493/565] wifi: ath5k: add PCI ID for Arcadyan devices
+Subject: [PATCH 5.10 350/459] i3c: master: Replace hard code 2 with macro I3C_ADDR_SLOT_STATUS_BITS
 Date: Thu, 12 Dec 2024 16:01:28 +0100
-Message-ID: <20241212144331.258716523@linuxfoundation.org>
+Message-ID: <20241212144307.485040609@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit f3ced9bb90b0a287a1fa6184d16b0f104a78fa90 ]
+[ Upstream commit 16aed0a6520ba01b7d22c32e193fc1ec674f92d4 ]
 
-Arcadyan made routers with this PCI ID containing an AR2417.
+Replace the hardcoded value 2, which indicates 2 bits for I3C address
+status, with the predefined macro I3C_ADDR_SLOT_STATUS_BITS.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20240930180716.139894-3-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Improve maintainability and extensibility of the code.
+
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241021-i3c_dts_assign-v8-1-4098b8bde01e@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Stable-dep-of: 851bd21cdb55 ("i3c: master: Fix dynamic address leak when 'assigned-address' is present")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath5k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i3c/master.c       | 4 ++--
+ include/linux/i3c/master.h | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-index 35a6a7b1047a3..f583e0f3932b8 100644
---- a/drivers/net/wireless/ath/ath5k/pci.c
-+++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -47,6 +47,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
- 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
- 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
- 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
-+	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
- 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
- 	{ 0 }
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 63c79b3cd7d4f..49a744577f4ea 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -348,7 +348,7 @@ static enum i3c_addr_slot_status
+ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+ {
+ 	unsigned long status;
+-	int bitpos = addr * 2;
++	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
+ 
+ 	if (addr > I2C_MAX_ADDR)
+ 		return I3C_ADDR_SLOT_RSVD;
+@@ -362,7 +362,7 @@ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
+ static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
+ 					 enum i3c_addr_slot_status status)
+ {
+-	int bitpos = addr * 2;
++	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
+ 	unsigned long *ptr;
+ 
+ 	if (addr > I2C_MAX_ADDR)
+diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+index 9cb39d901cd5f..06cba906e4e41 100644
+--- a/include/linux/i3c/master.h
++++ b/include/linux/i3c/master.h
+@@ -291,6 +291,8 @@ enum i3c_addr_slot_status {
+ 	I3C_ADDR_SLOT_STATUS_MASK = 3,
  };
+ 
++#define I3C_ADDR_SLOT_STATUS_BITS 2
++
+ /**
+  * struct i3c_bus - I3C bus object
+  * @cur_master: I3C master currently driving the bus. Since I3C is multi-master
+@@ -332,7 +334,7 @@ enum i3c_addr_slot_status {
+ struct i3c_bus {
+ 	struct i3c_dev_desc *cur_master;
+ 	int id;
+-	unsigned long addrslots[((I2C_MAX_ADDR + 1) * 2) / BITS_PER_LONG];
++	unsigned long addrslots[((I2C_MAX_ADDR + 1) * I3C_ADDR_SLOT_STATUS_BITS) / BITS_PER_LONG];
+ 	enum i3c_bus_mode mode;
+ 	struct {
+ 		unsigned long i3c;
 -- 
 2.43.0
 
