@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-101406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9399EEC3E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D209EEAC9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C95D81884F44
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3D63188C5C1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F97421B8E1;
-	Thu, 12 Dec 2024 15:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6D621661F;
+	Thu, 12 Dec 2024 15:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FErsF+hA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTrbmyYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3E72185A0;
-	Thu, 12 Dec 2024 15:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA0421578A;
+	Thu, 12 Dec 2024 15:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017441; cv=none; b=BtpT999d52dmpbxVygP/Iucn7SLm3qESoo7sw+2WtBwR1r1p6HAXyC1zoGr7mWPpC/jLrSxzV1mQEHxkCNteDk+Nak1ET0/CSMjR6g8nk9OIx99V5Mj56YdZnt9EYT67uHkYxTTH8N/wXh05qj04ELgNdGgkfSbbJ3jXM7gjA1g=
+	t=1734016426; cv=none; b=t/ONMnDokuGRmjgZdXko7jYwugvS3dC/4Tt0IPh4xK9aOUqJB3TKrjb6VTvHgiG+wQPMr2e8ygn+Q75r5k6JdEMGYMSy1X11pmciPcvlKV7riGn+gEShJnlzxVA/euxtLxcbjvY13DgiinsdFwb1bJ2XmBgh6fccyZmxHrVPZEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017441; c=relaxed/simple;
-	bh=wD90aT/GNT/MNMaEgyxVvwYJFXZym95hjfz2B+17aAw=;
+	s=arc-20240116; t=1734016426; c=relaxed/simple;
+	bh=LseStpOer+cB7feGNVTlEPB0OtUlzKjDsQZTxbBMjPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brb9xkoxFsL2abeHkGrrgmAhuLmVCZC2qlAZqoB45OZLEDYk9ja/DDiutGOv09TM1Q+RU2e3u235hpoyvyF5V1wseGQwtPncDjkxtMvoaVLohNZNc4+mfwRYkP5V/IxKOigmyczKaGfNe85IEDyB2eLFxQNxAy0rr1Obtz75Q9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FErsF+hA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA15C4CED7;
-	Thu, 12 Dec 2024 15:30:40 +0000 (UTC)
+	 MIME-Version; b=kYOl0kV8RD1a3XvGDjFvCIheDONKSEfALpXqD++AxjIAPvsuyC3pmqLGQL2xMYUUup7SLZWABBKw4+DCuYDkWYqCAgLHWu0dEo7X18riBCZSEoKCaljLraqFxoaKGbJHBJF3ON9u+Stxvah2JK6p/T8W/I++mRgWAfHjy5PBXs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTrbmyYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08470C4CED0;
+	Thu, 12 Dec 2024 15:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017440;
-	bh=wD90aT/GNT/MNMaEgyxVvwYJFXZym95hjfz2B+17aAw=;
+	s=korg; t=1734016425;
+	bh=LseStpOer+cB7feGNVTlEPB0OtUlzKjDsQZTxbBMjPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FErsF+hAR90U7oNGAr5oFwq/RExxuEMXY4gwidnpWPkUQLJ1JOyhds5b3x7DOByWj
-	 jJcQqVZZgTnv5NOOcu0lSStmY3xgvB4wGp4nl1/rWK7A0xas0tPMOiwkrZEos2ef4R
-	 tIuL44X/zj5y7+fEpZV9pHtnczNIvQb6QvaPMEAk=
+	b=vTrbmyYTvwQoAFKNmx3w1QkYPJw6sQ3L8ojkVxrgtZVuS370IPyxl+q0onZ+vW0xO
+	 rSCqDaiRNGxBuq55Z9Rs8If9MtRCyJ8xEJC6XvGKDEH7Od6r9qP0hacSRqbpHfOU9c
+	 hNJrEXNXbDZqDI0S5VwJWyPz30ns6wIYVcsfGkus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/356] can: sun4i_can: sun4i_can_err(): fix {rx,tx}_errors statistics
-Date: Thu, 12 Dec 2024 15:55:33 +0100
-Message-ID: <20241212144245.183427050@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 165/466] selftest: hugetlb_dio: fix test naming
+Date: Thu, 12 Dec 2024 15:55:34 +0100
+Message-ID: <20241212144313.322376604@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 595a81988a6fe06eb5849e972c8b9cb21c4e0d54 ]
+commit 4ae132c693896b0713db572676c90ffd855a4246 upstream.
 
-The sun4i_can_err() function only incremented the receive error counter
-and never the transmit error counter, even if the STA_ERR_DIR flag
-reported that an error had occurred during transmission.
+The string logged when a test passes or fails is used by the selftest
+framework to identify which test is being reported.  The hugetlb_dio test
+not only uses the same strings for every test that is run but it also uses
+different strings for test passes and failures which means that test
+automation is unable to follow what the test is doing at all.
 
-Increment the receive/transmit error counter based on the value of the
-STA_ERR_DIR flag.
+Pull the existing duplicated logging of the number of free huge pages
+before and after the test out of the conditional and replace that and the
+logging of the result with a single ksft_print_result() which incorporates
+the parameters passed into the test into the output.
 
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-11-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241127-kselftest-mm-hugetlb-dio-names-v1-1-22aab01bf550@kernel.org
+Fixes: fae1980347bf ("selftests: hugetlb_dio: fixup check for initial conditions to skip in the start")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sun4i_can.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ tools/testing/selftests/mm/hugetlb_dio.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index 80f7aa2531dc0..283fbf59e66d5 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -579,11 +579,9 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
- 		/* bus error interrupt */
- 		netdev_dbg(dev, "bus error interrupt\n");
- 		priv->can.can_stats.bus_error++;
--		stats->rx_errors++;
-+		ecc = readl(priv->base + SUN4I_REG_STA_ADDR);
+diff --git a/tools/testing/selftests/mm/hugetlb_dio.c b/tools/testing/selftests/mm/hugetlb_dio.c
+index 432d5af15e66..db63abe5ee5e 100644
+--- a/tools/testing/selftests/mm/hugetlb_dio.c
++++ b/tools/testing/selftests/mm/hugetlb_dio.c
+@@ -76,19 +76,15 @@ void run_dio_using_hugetlb(unsigned int start_off, unsigned int end_off)
+ 	/* Get the free huge pages after unmap*/
+ 	free_hpage_a = get_free_hugepages();
  
- 		if (likely(skb)) {
--			ecc = readl(priv->base + SUN4I_REG_STA_ADDR);
--
- 			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
- 			switch (ecc & SUN4I_STA_MASK_ERR) {
-@@ -601,9 +599,15 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
- 					       >> 16;
- 				break;
- 			}
--			/* error occurred during transmission? */
--			if ((ecc & SUN4I_STA_ERR_DIR) == 0)
-+		}
++	ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
++	ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
 +
-+		/* error occurred during transmission? */
-+		if ((ecc & SUN4I_STA_ERR_DIR) == 0) {
-+			if (likely(skb))
- 				cf->data[2] |= CAN_ERR_PROT_TX;
-+			stats->tx_errors++;
-+		} else {
-+			stats->rx_errors++;
- 		}
- 	}
- 	if (isrc & SUN4I_INT_ERR_PASSIVE) {
+ 	/*
+ 	 * If the no. of free hugepages before allocation and after unmap does
+ 	 * not match - that means there could still be a page which is pinned.
+ 	 */
+-	if (free_hpage_a != free_hpage_b) {
+-		ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
+-		ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
+-		ksft_test_result_fail(": Huge pages not freed!\n");
+-	} else {
+-		ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
+-		ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
+-		ksft_test_result_pass(": Huge pages freed successfully !\n");
+-	}
++	ksft_test_result(free_hpage_a == free_hpage_b,
++			 "free huge pages from %u-%u\n", start_off, end_off);
+ }
+ 
+ int main(void)
 -- 
-2.43.0
+2.47.1
 
 
 
