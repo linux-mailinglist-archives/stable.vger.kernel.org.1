@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8299EF867
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0289EF9A7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70B9617974F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5901918927A5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C83222D67;
-	Thu, 12 Dec 2024 17:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA52225403;
+	Thu, 12 Dec 2024 17:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Vc2jy2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMNPDQ4Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B233F2153DD;
-	Thu, 12 Dec 2024 17:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463CC216E2D;
+	Thu, 12 Dec 2024 17:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024798; cv=none; b=hEVQXurTrBZ2xJspwOk/QcESi+B1Bzw3RZMBAgn6DI2Ca+q+0x1SD4FOdYn1Yiy7PDVTjixQqIOcdKZwmLPfLhtonGOFSILLHFoYj93m8EoJgymYETa2d0tbPNhsozkmM7cxUHSYku4f9DLQby26tLJr70rIQEMZI9bPyq/XfDM=
+	t=1734025550; cv=none; b=hYlIp9fc1rTe+VPZeaKnrwAwJ2F3iP0FXd1/gwndAr6LdjYjqsGWfCbcFWYXA/8BinUGEO7hGSWxA7ANheBNA8AMnL4Zeg5S7g3js0LorIYZaihFHT/x+tuljnzhgTBsN4wJLLFYBN/heSVkhfn/87yMJ1AviN43OljOfazSBfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024798; c=relaxed/simple;
-	bh=x86PpJSB4ksdHmHCZ7A46kyKbceh235Z5xFxEsKz1sw=;
+	s=arc-20240116; t=1734025550; c=relaxed/simple;
+	bh=9Dr9qgnoIyBqrAjJUtYrT9sCCtvnGlTefEmdGFHvekU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/5hLLRoP7pBp83WLXzkcB0LlRa+5QvZoctVBEb0xL1qXdsOYn9NEe8iVTodRzel4vacg0SawpaBU/i8BlMypjKtTiSCodirFFLCEyxURCRIvM/nG2UOK78u+XKHwRWzYvl+WZZ6OmF2R/WkbHf2Ygp6rXxMUZqayt735s5s6Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Vc2jy2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB44BC4CECE;
-	Thu, 12 Dec 2024 17:33:15 +0000 (UTC)
+	 MIME-Version; b=CQJDXSlqBtlTjEmb2odsEOsdlGL5nR0/vvsCm7YmTwznohI8adoOwJjNDxIboH8I9F4CBZSzLiAfBTuPMmIuSTuMNN+tdBJDMA6lTfazeO9Y+vh9IaTz46gZNh38BaRjpiIfD8zUIO+D2nCsRsXCGzWpzqF08GitbRn41WcrXZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMNPDQ4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF0FC4CECE;
+	Thu, 12 Dec 2024 17:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024796;
-	bh=x86PpJSB4ksdHmHCZ7A46kyKbceh235Z5xFxEsKz1sw=;
+	s=korg; t=1734025550;
+	bh=9Dr9qgnoIyBqrAjJUtYrT9sCCtvnGlTefEmdGFHvekU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Vc2jy2hHlZAXdU1PpxjCPDX/fn9tiVYpWQb5VPUjyzTby/XMphbpFVjoTTOuIW5I
-	 IPxbbrq3dv79OOAeCq70IDIQE5URx+16YUAZAN1+QtZ0pIcc2D2IOLov4gXoDxoGSV
-	 ZzBxgz6zDVmgddSC59wI2ioASL/Ar4WigNC59QUk=
+	b=SMNPDQ4ZXBztVDaPWEIuRP4+16Zbe212MAuj+dWcNoQHuHyS4WwO7oOBwXHiXMgSH
+	 /nwK65VOMAuL5JBnkQazA4NDXL3gA3+ftnPlbtddkvuNCff40/G140ut8Zx3gYXD4d
+	 g7778Y1pNmN2Byi/0ICv5M3gha92nH9e6jaXh8rU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 385/459] drm/vc4: hvs: Set AXI panic modes for the HVS
+	Li Zetao <lizetao1@huawei.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.4 205/321] media: ts2020: fix null-ptr-deref in ts2020_probe()
 Date: Thu, 12 Dec 2024 16:02:03 +0100
-Message-ID: <20241212144308.978398096@linuxfoundation.org>
+Message-ID: <20241212144238.078671719@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Li Zetao <lizetao1@huawei.com>
 
-[ Upstream commit 014eccc9da7bfc76a3107fceea37dd60f1d63630 ]
+commit 4a058b34b52ed3feb1f3ff6fd26aefeeeed20cba upstream.
 
-The HVS can change AXI request mode based on how full the COB
-FIFOs are.
-Until now the vc4 driver has been relying on the firmware to
-have set these to sensible values.
+KASAN reported a null-ptr-deref issue when executing the following
+command:
 
-With HVS channel 2 now being used for live video, change the
-panic mode for all channels to be explicitly set by the driver,
-and the same for all channels.
+  # echo ts2020 0x20 > /sys/bus/i2c/devices/i2c-0/new_device
+    KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+    CPU: 53 UID: 0 PID: 970 Comm: systemd-udevd Not tainted 6.12.0-rc2+ #24
+    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
+    RIP: 0010:ts2020_probe+0xad/0xe10 [ts2020]
+    RSP: 0018:ffffc9000abbf598 EFLAGS: 00010202
+    RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffffc0714809
+    RDX: 0000000000000002 RSI: ffff88811550be00 RDI: 0000000000000010
+    RBP: ffff888109868800 R08: 0000000000000001 R09: fffff52001577eb6
+    R10: 0000000000000000 R11: ffffc9000abbff50 R12: ffffffffc0714790
+    R13: 1ffff92001577eb8 R14: ffffffffc07190d0 R15: 0000000000000001
+    FS:  00007f95f13b98c0(0000) GS:ffff888149280000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 0000555d2634b000 CR3: 0000000152236000 CR4: 00000000000006f0
+    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+    Call Trace:
+     <TASK>
+     ts2020_probe+0xad/0xe10 [ts2020]
+     i2c_device_probe+0x421/0xb40
+     really_probe+0x266/0x850
+    ...
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-7-dave.stevenson@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The cause of the problem is that when using sysfs to dynamically register
+an i2c device, there is no platform data, but the probe process of ts2020
+needs to use platform data, resulting in a null pointer being accessed.
+
+Solve this problem by adding checks to platform data.
+
+Fixes: dc245a5f9b51 ("[media] ts2020: implement I2C client bindings")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/media/dvb-frontends/ts2020.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index f8f2fc3d15f73..64a02e29b7cb1 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -688,6 +688,17 @@ static int vc4_hvs_bind(struct device *dev, struct device *master, void *data)
- 	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
- 	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
+--- a/drivers/media/dvb-frontends/ts2020.c
++++ b/drivers/media/dvb-frontends/ts2020.c
+@@ -554,13 +554,19 @@ static int ts2020_probe(struct i2c_clien
+ 		const struct i2c_device_id *id)
+ {
+ 	struct ts2020_config *pdata = client->dev.platform_data;
+-	struct dvb_frontend *fe = pdata->fe;
++	struct dvb_frontend *fe;
+ 	struct ts2020_priv *dev;
+ 	int ret;
+ 	u8 u8tmp;
+ 	unsigned int utmp;
+ 	char *chip_str;
  
-+	/* Set AXI panic mode.
-+	 * VC4 panics when < 2 lines in FIFO.
-+	 * VC5 panics when less than 1 line in the FIFO.
-+	 */
-+	dispctrl &= ~(SCALER_DISPCTRL_PANIC0_MASK |
-+		      SCALER_DISPCTRL_PANIC1_MASK |
-+		      SCALER_DISPCTRL_PANIC2_MASK);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC0);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
++	if (!pdata) {
++		dev_err(&client->dev, "platform data is mandatory\n");
++		return -EINVAL;
++	}
 +
- 	HVS_WRITE(SCALER_DISPCTRL, dispctrl);
- 
- 	ret = devm_request_irq(dev, platform_get_irq(pdev, 0),
--- 
-2.43.0
-
++	fe = pdata->fe;
+ 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+ 	if (!dev) {
+ 		ret = -ENOMEM;
 
 
 
