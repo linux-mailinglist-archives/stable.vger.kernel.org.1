@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-103284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46EF19EF76C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1F99EF549
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA627189E218
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D888517E87E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF4721CFEA;
-	Thu, 12 Dec 2024 17:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA97223C5A;
+	Thu, 12 Dec 2024 16:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4MVe44o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVrLPm3w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3863C176AA1;
-	Thu, 12 Dec 2024 17:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B8A22333E;
+	Thu, 12 Dec 2024 16:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024100; cv=none; b=aLMFj0ipoxN1XiGSiEhxDBKM4g1+u36CrMLVb0CgeGGGBDWAs56mJV4tAyxznjtm0CqTjYGWHRzWvemedm20cOoFUIsrCtZhL3/f9CUg3o+DlujCQGep+m5mM3Xv1Tsur6D5dz1iAPfVL5UZwbYmm6dxqCY7iTCdYbWv/0JeHRo=
+	t=1734022652; cv=none; b=hggOktR3l8rhUA7Prv0b+fcH1vCnimAdgo9wcHptCD7JNMTpOc7uLGSPFWowv4MMfofT/Qk373NDzFIr8HaL59u7CJGnxXzoJgm1X6nKuWRy6Ww1X080To1gjh3ptTu+bBvgw2EY0h7XwitYvMXE2gFzqjPgO8Y5xvPUg+mA3wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024100; c=relaxed/simple;
-	bh=rVSRfXzL6QM/fqEfg1GqT2hUONisejX8889oy1UcpNA=;
+	s=arc-20240116; t=1734022652; c=relaxed/simple;
+	bh=8IFiFRfat3al7HB9c2cgMOH3wcGPSvQQzXH/7y2Cj0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsamCBrR1Sr+H0ic8Evv7fuW6RsIwXUdS2z25gPO5GQnY4EI5995p0IoR7XWhuonI4/GHeLJgHDBzEo0jUWL+OeYCRKBbkAJrT24GaRmNEKhqDSneMM2fsouJceN3i5DW9p8QxsEc4ZHxwm7TxJajn+7Sh8ZhP05xdIRrmHcgtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4MVe44o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A058EC4CECE;
-	Thu, 12 Dec 2024 17:21:39 +0000 (UTC)
+	 MIME-Version; b=ZuL88syHqX5LS42Nw7lVYpQGrZAq8BGehL+lji8CCA3yVX/P8UQWbTtB9a0f622jJZ+21LXKNHKgZdBLw0+fa+42ah5jQXbyZSD0rARFfFy24STnUAqgCJI+fFc5/oZ3CX/Tym8DezDky1kFEwX3t/GnOhpWXmQgJ7C0/A+PdXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVrLPm3w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FDAC4CEDE;
+	Thu, 12 Dec 2024 16:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024100;
-	bh=rVSRfXzL6QM/fqEfg1GqT2hUONisejX8889oy1UcpNA=;
+	s=korg; t=1734022652;
+	bh=8IFiFRfat3al7HB9c2cgMOH3wcGPSvQQzXH/7y2Cj0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4MVe44o639xqud7YOH9xYkDrSa7giAIHfejRaAZ9JapS2ac99W21EBFECm+U2KJM
-	 BKixXEZDZs1eFCEa79gtl8qhqrvYWYPq12i9T8Rz6QGXIyx3ZAmbaPyCJfV1Eyx+DT
-	 obzhfVMimbPABxSnCB8PpVWB+HsTvF83yA0zjRz8=
+	b=AVrLPm3wgsww6lDhu6PqTLSbT+auLxXcyLptAZqLItWqVbo422o8I/opp7Dbt9t73
+	 q3fkzLUTcJ+mlLwRnbJAi2xnyogWLEF5pHa9aj8+mwt2mOtjtCRI1dUqS9rOEJzwvg
+	 eUNaM2h3RwMeiUU5gZoaTmMPgBFzvd7X6zmw1vBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 156/459] ALSA: us122l: Use snd_card_free_when_closed() at disconnection
+	Vitalii Mordan <mordan@ispras.ru>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 299/565] usb: ehci-spear: fix call balance of sehci clk handling routines
 Date: Thu, 12 Dec 2024 15:58:14 +0100
-Message-ID: <20241212144259.679641487@linuxfoundation.org>
+Message-ID: <20241212144323.286253915@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit b7df09bb348016943f56b09dcaafe221e3f73947 ]
+commit 40c974826734836402abfd44efbf04f63a2cc1c1 upstream.
 
-The USB disconnect callback is supposed to be short and not too-long
-waiting.  OTOH, the current code uses snd_card_free() at
-disconnection, but this waits for the close of all used fds, hence it
-can take long.  It eventually blocks the upper layer USB ioctls, which
-may trigger a soft lockup.
+If the clock sehci->clk was not enabled in spear_ehci_hcd_drv_probe,
+it should not be disabled in any path.
 
-An easy workaround is to replace snd_card_free() with
-snd_card_free_when_closed().  This variant returns immediately while
-the release of resources is done asynchronously by the card device
-release at the last close.
+Conversely, if it was enabled in spear_ehci_hcd_drv_probe, it must be disabled
+in all error paths to ensure proper cleanup.
 
-The loop of us122l->mmap_count check is dropped as well.  The check is
-useless for the asynchronous operation with *_when_closed().
+Found by Linux Verification Center (linuxtesting.org) with Klever.
 
-Fixes: 030a07e44129 ("ALSA: Add USB US122L driver")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-3-tiwai@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7675d6ba436f ("USB: EHCI: make ehci-spear a separate driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20241114230310.432213-1-mordan@ispras.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/usx2y/us122l.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/usb/host/ehci-spear.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
-index 0b0a87a631a06..bccb47d38c6dc 100644
---- a/sound/usb/usx2y/us122l.c
-+++ b/sound/usb/usx2y/us122l.c
-@@ -617,10 +617,7 @@ static void snd_us122l_disconnect(struct usb_interface *intf)
- 	usb_put_intf(usb_ifnum_to_if(us122l->dev, 1));
- 	usb_put_dev(us122l->dev);
+--- a/drivers/usb/host/ehci-spear.c
++++ b/drivers/usb/host/ehci-spear.c
+@@ -108,7 +108,9 @@ static int spear_ehci_hcd_drv_probe(stru
+ 	/* registers start at offset 0x0 */
+ 	hcd_to_ehci(hcd)->caps = hcd->regs;
  
--	while (atomic_read(&us122l->mmap_count))
--		msleep(500);
--
--	snd_card_free(card);
-+	snd_card_free_when_closed(card);
- }
+-	clk_prepare_enable(sehci->clk);
++	retval = clk_prepare_enable(sehci->clk);
++	if (retval)
++		goto err_put_hcd;
+ 	retval = usb_add_hcd(hcd, irq, IRQF_SHARED);
+ 	if (retval)
+ 		goto err_stop_ehci;
+@@ -133,8 +135,7 @@ static int spear_ehci_hcd_drv_remove(str
  
- static int snd_us122l_suspend(struct usb_interface *intf, pm_message_t message)
--- 
-2.43.0
-
+ 	usb_remove_hcd(hcd);
+ 
+-	if (sehci->clk)
+-		clk_disable_unprepare(sehci->clk);
++	clk_disable_unprepare(sehci->clk);
+ 	usb_put_hcd(hcd);
+ 
+ 	return 0;
 
 
 
