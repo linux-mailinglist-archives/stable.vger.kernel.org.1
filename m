@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-102395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B049EF1B6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 789609EEBE6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75FEE28FAFB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5435A1888748
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2720523236B;
-	Thu, 12 Dec 2024 16:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CB32153D9;
+	Thu, 12 Dec 2024 15:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3NHK7w+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCHTrXmI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7612223E71;
-	Thu, 12 Dec 2024 16:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0160F748A;
+	Thu, 12 Dec 2024 15:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021075; cv=none; b=mHXFERBqHOQGQXmUN48LoeTxWPDg8uTRN1K1j64CyhSCkgLSDn0c8Vr3LxH0kZSaUKyM3BQ+oexSuvJNkQU+69g2NF+HaqxfT9izAPOdyA1ZlDM1D0aIuoWDPS9vTSsu3xycE1MUQWC7HariH1XkXwhVTxRLiqvUFoUfOevaPpg=
+	t=1734017214; cv=none; b=dXm8iI51JsR8v06GrgqYsBH1WCPKpq4nZEmu8W7VuqFrbtXR388bUwFbeHqBXF+OF/5CStIsLaTWDhi1JHSdaHxMDw+kxQlfel94hkOuoYvTUY+HU2cLgfjgCnNLgnYZV4SGJshAx0Rj6ZW5ssuT5HqEXc2cdwlIh1NEOSRTSzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021075; c=relaxed/simple;
-	bh=6tQBPdLnzLEVE3OtmmEnh4AoyOh3rncfnA4SlkhFrsA=;
+	s=arc-20240116; t=1734017214; c=relaxed/simple;
+	bh=S4VT7ZW+pu8SUGmWxgyjeY09Jm5EfyAcAYFHWsGYMC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YePVQtOi0FBjrOD3I65uqVq4YQU1hX3eJjNNo53Xx1XTqAxkZ7BEvbKk2Px9J6SxM6wvP7MeAEE2HirM7CMtwGik78HICZWjIser14uvK5Sdw0VK5DVCB4VCR0mEDGKifAYU6k4Cfh9xvdack7HC1EH1qrdfESBvSVExAie9p/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3NHK7w+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454E4C4CECE;
-	Thu, 12 Dec 2024 16:31:15 +0000 (UTC)
+	 MIME-Version; b=Qdll/+Jj+lfQKfGcRjkr1CB3jEi1nf4FG+znG4bhR3qfsrfd+o7kVHB8ED5D4AZLxuBSGZ+9GUlt1fRkDuPweoNLhsIZglA2VXnC75RHfXQkYbi3XYyX4hgZQEuNMKxmCr12VGoO6wGmEbCIx/C05XQ+gtuur61GI+CEvW1/E7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCHTrXmI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAAAC4CECE;
+	Thu, 12 Dec 2024 15:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021075;
-	bh=6tQBPdLnzLEVE3OtmmEnh4AoyOh3rncfnA4SlkhFrsA=;
+	s=korg; t=1734017213;
+	bh=S4VT7ZW+pu8SUGmWxgyjeY09Jm5EfyAcAYFHWsGYMC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3NHK7w+fEB7Q3cukDBwJT+l5A8iCmgrEndHwwAPWqma0lpiqjvAigW/4U+FPTeZS
-	 vX+xncrsjeb3h03NUCPxUf314bmM7LX7aEsyOZy1DAS5DjG8rfmAZPd6VEHb9VJzOC
-	 Q6ONhPyMm8TqJonJIcWrKAvmzoQjHjkzMk/wyRfo=
+	b=QCHTrXmIdvXnGSM1Q5mtf/NjXJhwdEpaj5dFD1jA88fb9DmFF8DSYGWUFnawZ892a
+	 0PYEhuLcnBs3EvUdEYWL/U7/VGCTEAylSbyun9EFTk2GlCwHV6va/+lMhAWWW+T8D8
+	 2HKzne/pFT+NJ1ZCyZMyDJ0ij82iRM5HGcaeGOaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wengang Wang <wen.gang.wang@oracle.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 638/772] ocfs2: update seq_file index in ocfs2_dlm_seq_next
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 414/466] iio: adc: ad7192: properly check spi_get_device_match_data()
 Date: Thu, 12 Dec 2024 15:59:43 +0100
-Message-ID: <20241212144416.296465704@linuxfoundation.org>
+Message-ID: <20241212144323.113129305@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wengang Wang <wen.gang.wang@oracle.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 914eec5e980171bc128e7e24f7a22aa1d803570e upstream.
+[ Upstream commit b7f99fa1b64af2f696b13cec581cb4cd7d3982b8 ]
 
-The following INFO level message was seen:
+spi_get_device_match_data() can return a NULL pointer. Hence, let's
+check for it.
 
-seq_file: buggy .next function ocfs2_dlm_seq_next [ocfs2] did not
-update position index
-
-Fix:
-Update *pos (so m->index) to make seq_read_iter happy though the index its
-self makes no sense to ocfs2_dlm_seq_next.
-
-Link: https://lkml.kernel.org/r/20241119174500.9198-1-wen.gang.wang@oracle.com
-Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20241014-fix-error-check-v1-1-089e1003d12f@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/dlmglue.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/adc/ad7192.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/ocfs2/dlmglue.c
-+++ b/fs/ocfs2/dlmglue.c
-@@ -3108,6 +3108,7 @@ static void *ocfs2_dlm_seq_next(struct s
- 	struct ocfs2_lock_res *iter = v;
- 	struct ocfs2_lock_res *dummy = &priv->p_iter_res;
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 7042ddfdfc03e..955e9eff0099e 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -1394,6 +1394,9 @@ static int ad7192_probe(struct spi_device *spi)
+ 	st->int_vref_mv = ret == -ENODEV ? avdd_mv : ret / MILLI;
  
-+	(*pos)++;
- 	spin_lock(&ocfs2_dlm_tracking_lock);
- 	iter = ocfs2_dlm_next_res(iter, priv);
- 	list_del_init(&dummy->l_debug_list);
+ 	st->chip_info = spi_get_device_match_data(spi);
++	if (!st->chip_info)
++		return -ENODEV;
++
+ 	indio_dev->name = st->chip_info->name;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->info = st->chip_info->info;
+-- 
+2.43.0
+
 
 
 
