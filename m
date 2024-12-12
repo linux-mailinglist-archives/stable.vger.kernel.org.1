@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1AA49EF23F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60F39EEB35
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32E8118831D7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DFF5280FB3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D280E222D64;
-	Thu, 12 Dec 2024 16:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCA9212B0F;
+	Thu, 12 Dec 2024 15:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKlG9aDz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ndcIC4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90915222D52;
-	Thu, 12 Dec 2024 16:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2A52AF0E;
+	Thu, 12 Dec 2024 15:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020794; cv=none; b=VBE3ex0vdZYMKgw+OKg8ENQa2FFRcLH1q+XQ0tJt/+L6AJgLVydHKE6q9CjwAwZPvuDjPsFCA6fJL2iJc4XE2YEkDxpH47/TIXnbwkdfaZJz+R5poBO+bCvRBk4+tEFEfBmlU8F0LekGbzU21vo+RvzMAzH4t8BYriIYcQz70z8=
+	t=1734016937; cv=none; b=lOop4vUhIWK7owPbcdwsVNH/qEolEsgdShBf+ySQeMX10pdDwABG75PubJdmS6svmxI8CxgQIK1NkmQlD/SfaELJOqxVVtBHTV1f3r6lkwazYpthCULzpggcQB0CZiu9fPRv2gTvgQBZKnf723vGIjKn+vSdA64jkYVIfPnj7io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020794; c=relaxed/simple;
-	bh=2pU3KpXxWERS5twEwG674NfWRIqawJUBpa/Utw9Ci8E=;
+	s=arc-20240116; t=1734016937; c=relaxed/simple;
+	bh=aBsLMIFf7HSzqv5laf4878UAgLPtCcCYwGnDRLUoPnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObUTJjWae8ekTTu+xAwiebFjGzM5bZaXGb/UP4yr7/PuRv+NHebpf0ZZ5bS3keUt8kE3ck+EadBShnmosO2c4ZgjSMRw7u7lwKSzAoLRGQivsoDSN9sXA1qoUVNxn/qTTgTZdXmklTjUtcKkbHMX/v1qu9UbkIHqYTwZongHKXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKlG9aDz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7873C4CED0;
-	Thu, 12 Dec 2024 16:26:33 +0000 (UTC)
+	 MIME-Version; b=gam9BMVVU9wzs4Y7507W5lv0wDKKkK8fNe9343joPwRTlRWFEhHs5sSNeSBgel8jA3mh/C5g3/RCLWZPUaYdONgVA0DC1Oy/MLbM4gjKcdObCocByrxtt7nAYPjPrsFMP+thdCothr+/z14altxsT53Nnv0B4bYX5HX9lGJ14V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ndcIC4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA11C4CECE;
+	Thu, 12 Dec 2024 15:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020794;
-	bh=2pU3KpXxWERS5twEwG674NfWRIqawJUBpa/Utw9Ci8E=;
+	s=korg; t=1734016936;
+	bh=aBsLMIFf7HSzqv5laf4878UAgLPtCcCYwGnDRLUoPnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CKlG9aDz/KYZ3lJa/pYMmpjeFW6gG74fJKfpWCB54J9FmJDeuQU5QEeFEmubd9tQN
-	 INpFThG1NWCarOeMXcUS4/mS4e2/NMQWSFCTm0XanKuyEUphehe7s8btJwRFOPFkn8
-	 oufLKB1j2BiDiSegRdQM/9wdabp36U0pPdXNg+Iw=
+	b=0ndcIC4ckld/n3Aahf2q4C2hRG7hDeXIG51xJEgrPeSym2AeKItYb1OR8gisVrpff
+	 aMnvIywtNBsJNBXNNmC9cBZcY4VYHTpfcC+9xVpxsLQ2kF43qLDBlqJgCYvXSGxV+0
+	 6ztBuf18beRkz7VEfIliJdkyIiyRIiH3mh+8E8yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 562/772] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
+Subject: [PATCH 6.12 338/466] i2c: i801: Add support for Intel Panther Lake
 Date: Thu, 12 Dec 2024 15:58:27 +0100
-Message-ID: <20241212144413.183220667@linuxfoundation.org>
+Message-ID: <20241212144320.138697456@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit d677ce521334d8f1f327cafc8b1b7854b0833158 ]
+[ Upstream commit bd492b58371295d3ae26162b9666be584abad68a ]
 
-Under certain conditions, the 64-bit '-mstack-protector-guard' flags may
-end up in the 32-bit vDSO flags, resulting in build failures due to the
-structure of clang's argument parsing of the stack protector options,
-which validates the arguments of the stack protector guard flags
-unconditionally in the frontend, choking on the 64-bit values when
-targeting 32-bit:
+Add SMBus PCI IDs on Intel Panther Lake-P and -U.
 
-  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
-  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
-  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:85: arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
-  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:87: arch/powerpc/kernel/vdso/vgetrandom-32.o] Error 1
-
-Remove these flags by adding them to the CC32FLAGSREMOVE variable, which
-already handles situations similar to this. Additionally, reformat and
-align a comment better for the expanding CONFIG_CC_IS_CLANG block.
-
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/vdso/Makefile | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ Documentation/i2c/busses/i2c-i801.rst | 1 +
+ drivers/i2c/busses/Kconfig            | 1 +
+ drivers/i2c/busses/i2c-i801.c         | 6 ++++++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index c12be984dccdf..ee9fd65dd8cb3 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -48,10 +48,14 @@ ldflags-y += $(filter-out $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
+diff --git a/Documentation/i2c/busses/i2c-i801.rst b/Documentation/i2c/busses/i2c-i801.rst
+index c840b597912c8..47e8ac5b7099f 100644
+--- a/Documentation/i2c/busses/i2c-i801.rst
++++ b/Documentation/i2c/busses/i2c-i801.rst
+@@ -49,6 +49,7 @@ Supported adapters:
+   * Intel Meteor Lake (SOC and PCH)
+   * Intel Birch Stream (SOC)
+   * Intel Arrow Lake (SOC)
++  * Intel Panther Lake (SOC)
  
- CC32FLAGS := -m32
- CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
--  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
--  # an unused command line flag warning for this file.
- ifdef CONFIG_CC_IS_CLANG
-+# This flag is supported by clang for 64-bit but not 32-bit so it will cause
-+# an unused command line flag warning for this file.
- CC32FLAGSREMOVE += -fno-stack-clash-protection
-+# -mstack-protector-guard values from the 64-bit build are not valid for the
-+# 32-bit one. clang validates the values passed to these arguments during
-+# parsing, even when -fno-stack-protector is passed afterwards.
-+CC32FLAGSREMOVE += -mstack-protector-guard%
- endif
- LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
- AS32FLAGS := -D__VDSO32__
+    Datasheets: Publicly available at the Intel website
+ 
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 6b3ba7e5723aa..2254abda5c46c 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -160,6 +160,7 @@ config I2C_I801
+ 	    Meteor Lake (SOC and PCH)
+ 	    Birch Stream (SOC)
+ 	    Arrow Lake (SOC)
++	    Panther Lake (SOC)
+ 
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called i2c-i801.
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 299fe9d3afab0..75dab01d43a75 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -81,6 +81,8 @@
+  * Meteor Lake PCH-S (PCH)	0x7f23	32	hard	yes	yes	yes
+  * Birch Stream (SOC)		0x5796	32	hard	yes	yes	yes
+  * Arrow Lake-H (SOC)		0x7722	32	hard	yes	yes	yes
++ * Panther Lake-H (SOC)		0xe322	32	hard	yes	yes	yes
++ * Panther Lake-P (SOC)		0xe422	32	hard	yes	yes	yes
+  *
+  * Features supported by this driver:
+  * Software PEC				no
+@@ -261,6 +263,8 @@
+ #define PCI_DEVICE_ID_INTEL_CANNONLAKE_H_SMBUS		0xa323
+ #define PCI_DEVICE_ID_INTEL_COMETLAKE_V_SMBUS		0xa3a3
+ #define PCI_DEVICE_ID_INTEL_METEOR_LAKE_SOC_S_SMBUS	0xae22
++#define PCI_DEVICE_ID_INTEL_PANTHER_LAKE_H_SMBUS	0xe322
++#define PCI_DEVICE_ID_INTEL_PANTHER_LAKE_P_SMBUS	0xe422
+ 
+ struct i801_mux_config {
+ 	char *gpio_chip;
+@@ -1055,6 +1059,8 @@ static const struct pci_device_id i801_ids[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, ARROW_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
++	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
++	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ 0, }
+ };
+ 
 -- 
 2.43.0
 
