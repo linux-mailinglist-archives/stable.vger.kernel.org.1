@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-100904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A299EE65F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:11:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F019EE6A7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:26:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47AFB281956
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 12:11:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75FFD18876CB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 12:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA596212B0B;
-	Thu, 12 Dec 2024 12:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92A8213E7F;
+	Thu, 12 Dec 2024 12:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frbRjRAE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8ihqCP4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A57211719;
-	Thu, 12 Dec 2024 12:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A22205ABE;
+	Thu, 12 Dec 2024 12:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734005486; cv=none; b=NSE9eIuNXrUQWe4/M5TPj1NmxoP58xBBO/aBaDEoMIA6kWx5AK3+T8bvmCq/4XZUtf3mv1fQt6eNVYHhw7A+YrSB4JrieSSkXIkT0UvjpuZPXhmHT2gShsBFvpCcDzSgbaeOIiy4KQ04EN3+j1rXATrSaNEU2jwf76v+3vqF6Q4=
+	t=1734006368; cv=none; b=uIFozlpEcHh8vCzNEldgU6e56sSm5Ko2dYxMAnLAy6gpF2gkYhyM5PSPxyTnkXnYqhCFnUV1M3sW963PZB+fg/SR2zKTB4LyU0gGyrWMzlE0icgzjq9tCZtenE4KCki4mvZLhxinVrCHgQ0jeufzetsqm+amNBL330xPHoamNNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734005486; c=relaxed/simple;
-	bh=z4IR5aQ9BHMU6pLPaRemCvtw3/mCLG8VNTuWpfCN/AU=;
+	s=arc-20240116; t=1734006368; c=relaxed/simple;
+	bh=MmkLc+wLgGzfL5jADllXW0wGKX7TMcrw2DyU6I663SY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P6zn5m+7tVrwC2Sa78XOvHUBmQw4o3Z5MXxnfR+3w1gGozuvyt6+H537MXWCrXzT1p946r7hGEYGETZHBFlqwVci+2CsSLkDzL6ta7/aIUc1pNOBCR2uoz4M2o1vBa7DSjzoN0JERKiaCiuh/9drSY2C1uoLWI91eTnqZ5ZLCU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frbRjRAE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59249C4CECE;
-	Thu, 12 Dec 2024 12:11:23 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lnVz+9VAWvgss5WUMEsAWb6nZS3fvGWB4OQE+4vO2waRQ2OjEKenrIrt/uXArvGdmswd+G8q7kAbWVL2+aABVnyz/B9mfCHKMW7W4CMPUlA77AUtbOX0kqIpl8637n+puxmbU+TYbYzIQVyhE4QlEg8fGAbFYuE1t1nOtNmzSlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8ihqCP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47280C4CED0;
+	Thu, 12 Dec 2024 12:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734005484;
-	bh=z4IR5aQ9BHMU6pLPaRemCvtw3/mCLG8VNTuWpfCN/AU=;
+	s=korg; t=1734006367;
+	bh=MmkLc+wLgGzfL5jADllXW0wGKX7TMcrw2DyU6I663SY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=frbRjRAEc9YR6sD/8xPGdYfwG5V+e0P74CnQSqB7cvBGcKUMyPUOSg4HkYVm7xqmt
-	 u6p81YPyIkCsQfMFMibxy+ccs4tYjrYQCaNUPullQU8pFFnuB6W5LHOy5WIDhBPL6E
-	 J1ghkjfTUTGJI8+DxbJCskR1eBruPGkIDwh0ccd4=
-Date: Thu, 12 Dec 2024 13:11:20 +0100
+	b=h8ihqCP41LrGa4AVn2jVkV924E1ysXLY99gT5FqMf40Hj4EhPthUoCvk7L5qNJqKD
+	 3+lZG9nkn2iPeLutIuWq5ZBQOLXK8keWUmQQe570jFzVv6GDLmHj6v9CIVpW7bRhHB
+	 DRnrTAPJxh9t519FHwSXrVwW7x48POTxSL/dn9Tg=
+Date: Thu, 12 Dec 2024 13:26:04 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: jianqi.ren.cn@windriver.com
-Cc: wayne.lin@amd.com, patches@lists.linux.dev, jerry.zuo@amd.com,
-	zaeem.mohamed@amd.com, daniel.wheeler@amd.com,
-	alexander.deucher@amd.com, stable@vger.kernel.org,
-	harry.wentland@amd.com, sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com, christian.koenig@amd.com,
-	airlied@gmail.com, daniel@ffwll.ch, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] drm/amd/display: Don't refer to dc_sink in
- is_dsc_need_re_compute
-Message-ID: <2024121206-shelve-contusion-6db0@gregkh>
-References: <20241211101544.2121147-1-jianqi.ren.cn@windriver.com>
+To: Michael Krause <mk@galax.is>
+Cc: Salvatore Bonaccorso <carnil@debian.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Michael Krause <mk-debian@galax.is>,
+	Steve French <stfrench@microsoft.com>, stable@vger.kernel.org,
+	regressions@lists.linux.dev, linux-cifs@vger.kernel.org
+Subject: Re: backporting 24a9799aa8ef ("smb: client: fix UAF in
+ smb2_reconnect_server()") to older stable series
+Message-ID: <2024121243-perennial-coveting-b863@gregkh>
+References: <2024040834-magazine-audience-8aa4@gregkh>
+ <Z0rZFrZ0Cz3LJEbI@eldamar.lan>
+ <2e1ad828-24b3-488d-881e-69232c8c6062@galax.is>
+ <1037557ef401a66691a4b1e765eec2e2@manguebit.com>
+ <Z08ZdhIQeqHDHvqu@eldamar.lan>
+ <3441d88b-92e6-4f89-83a4-9230c8701d73@galax.is>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241211101544.2121147-1-jianqi.ren.cn@windriver.com>
+In-Reply-To: <3441d88b-92e6-4f89-83a4-9230c8701d73@galax.is>
 
-On Wed, Dec 11, 2024 at 06:15:44PM +0800, jianqi.ren.cn@windriver.com wrote:
-> From: Wayne Lin <wayne.lin@amd.com>
-> 
-> [ Upstream commit fcf6a49d79923a234844b8efe830a61f3f0584e4 ]
-> 
-> [Why]
-> When unplug one of monitors connected after mst hub, encounter null pointer dereference.
-> 
-> It's due to dc_sink get released immediately in early_unregister() or detect_ctx(). When
-> commit new state which directly referring to info stored in dc_sink will cause null pointer
-> dereference.
-> 
-> [how]
-> Remove redundant checking condition. Relevant condition should already be covered by checking
-> if dsc_aux is null or not. Also reset dsc_aux to NULL when the connector is disconnected.
-> 
-> Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
-> Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-> ---
->  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 4 ++++
->  1 file changed, 4 insertions(+)
+On Tue, Dec 10, 2024 at 12:05:00AM +0100, Michael Krause wrote:
+> On 12/3/24 3:45 PM, Salvatore Bonaccorso wrote:
+> > Paulo,
+> > 
+> > On Tue, Dec 03, 2024 at 10:18:25AM -0300, Paulo Alcantara wrote:
+> > > Michael Krause <mk-debian@galax.is> writes:
+> > > 
+> > > > On 11/30/24 10:21 AM, Salvatore Bonaccorso wrote:
+> > > > > Michael, did a manual backport of 24a9799aa8ef ("smb: client: fix UAF
+> > > > > in smb2_reconnect_server()") which seems in fact to solve the issue.
+> > > > > 
+> > > > > Michael, can you please post your backport here for review from Paulo
+> > > > > and Steve?
+> > > > 
+> > > > Of course, attached.
+> > > > 
+> > > > Now I really hope I didn't screw it up :)
+> > > 
+> > > LGTM.  Thanks Michael for the backport.
+> > 
+> > Thanks a lot for the review. So to get it accepted it needs to be
+> > brough into the form which Greg can pick up. Michael can you do that
+> > and add your Signed-off line accordingly?
+> Happy to. Hope this is in the proper format:
 
-You sent this 3 times, all different, so I have no idea what to do.
+It's corrupted somehow:
 
-Ok, I give up.  I'm deleting ALL of your pending stable patches from my
-review queue now due to all of the problems that these have had.
+patching file fs/smb/client/connect.c
+patch: **** malformed patch at line 202:  		if (rc)
 
-Please work with a more experienced kernel developer at your company to
-get these backports correct, and complete, and send them as a patch
-series with the correct information and documentation as to what is
-going on, so that we have a chance to get this right.
+
+Can you resend it or attach it?
 
 thanks,
 
