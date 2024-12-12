@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-103303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D9BA9EF626
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61AE9EF887
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E66E428EBD8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F0CD1940816
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DEA21660C;
-	Thu, 12 Dec 2024 17:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4011223C55;
+	Thu, 12 Dec 2024 17:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzOzbPu4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ab96mTpg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326612165F0;
-	Thu, 12 Dec 2024 17:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CEE222D75;
+	Thu, 12 Dec 2024 17:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024157; cv=none; b=EQeoAgYsfIHQbe1zePdNj+mtwypOb/puaroSEhA/DagwWrhssXYMLIRGkGPtuM3+y7XojmeBIsADchwfpuPpOHf16LNBnW654Hsxe1hpGRIQdPZFCnLC0qhkVzSKXihQJQYp0QoNxeQtDUJOBQPHT3aFG6hMzWIZKiGsMV63vr8=
+	t=1734025006; cv=none; b=u3AqovdZlxXCir7b1eDUk5IUTLKubf96j1pL4mnVTc4CZ9NnPIKcqjEoG/U/a0XVvfeXx0z2l077VuKzCuf6h4xnhAY7b+EGWLVPohe/K4y7Drz7gbAZwT9QEqoBe5wQPEV5FlKKNz7QghThnKU8aaHiWoxnInEQhR3GyJOpTPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024157; c=relaxed/simple;
-	bh=PHmNu5yNG9D0kIaTLKBohK34zONaef+AXhslrtDja+U=;
+	s=arc-20240116; t=1734025006; c=relaxed/simple;
+	bh=M1Ky2xygdpCVeWznumJ+Hn1ttEG0fxi1KdVon/gduGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYg1T1Cv6X94gN051czF//H3cumXhTDJhgCNuBPnJkW68JgbahaidB/uw6+lyijzXZb+No8O8UlVrZ1cLVcetAZRdV0zjysHW2mhJZ9/lGsEBd3RhaGNfS9InTpX7UAzvfCBK13ZjEr0bSJVejJpFI5cSzT7TR680jDz8z8qnyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzOzbPu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81690C4CECE;
-	Thu, 12 Dec 2024 17:22:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rKPGTzSU9nBr1qePvcgAa1xQEXQE4xG39ChvYX+oCBeKYP1D74Kn21nm69TzrQ+TG2sWPUQXiom+VsjLr9cyGh6fQ59sLM3Gib6ceJNmu8a7Tei7657sbC9dtMoUPnPXpflsD7wrP3fmN+1/p5IMBK+7Zu0nPH4k74YBQzazdsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ab96mTpg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD276C4CECE;
+	Thu, 12 Dec 2024 17:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024157;
-	bh=PHmNu5yNG9D0kIaTLKBohK34zONaef+AXhslrtDja+U=;
+	s=korg; t=1734025006;
+	bh=M1Ky2xygdpCVeWznumJ+Hn1ttEG0fxi1KdVon/gduGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzOzbPu4s/yK79hpRMQjIMwMDh7mhGSRZMccxj8bKE/wqg+y4hiSf7hPAlAcoG1Eb
-	 f5I2dU42KZwsvkVId/xaQzAFVZe0E/ta0u80OURK92G1XyXt3CQiffHrK2yFb7PDlU
-	 cDokRpPrBgUW8WY6GkJyjt8Z5Ui57V/Q5sbstu3g=
+	b=ab96mTpgxD1mwjgte9kuS5gcl3nltD9La/PAVxUIK0gqBKTaWJNC8ehNHQenZOgsE
+	 NmXP/V9iXicpllsaTAohaeO2jQuweHUab33a11jdnW2NmRoVJa56QRklTJwiVHElQO
+	 iJJw8uOJPxDA942+7JkNR+n5Ly5FfRPvSv0Q8cr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Peterson <benjamin@engflow.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Mahmoud Adam <mngyadam@amazon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 204/459] perf trace: Do not lose last events in a race
-Date: Thu, 12 Dec 2024 15:59:02 +0100
-Message-ID: <20241212144301.625648152@linuxfoundation.org>
+Subject: [PATCH 5.4 025/321] cifs: Fix buffer overflow when parsing NFS reparse points
+Date: Thu, 12 Dec 2024 15:59:03 +0100
+Message-ID: <20241212144230.995820758@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,78 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Peterson <benjamin@engflow.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 3fd7c36973a250e17a4ee305a31545a9426021f4 ]
+commit e2a8910af01653c1c268984855629d71fb81f404 upstream.
 
-If a perf trace event selector specifies a maximum number of events to output
-(i.e., "/nr=N/" syntax), the event printing handler, trace__event_handler,
-disables the event selector after the maximum number events are
-printed.
+ReparseDataLength is sum of the InodeType size and DataBuffer size.
+So to get DataBuffer size it is needed to subtract InodeType's size from
+ReparseDataLength.
 
-Furthermore, trace__event_handler checked if the event selector was
-disabled before doing any work. This avoided exceeding the maximum
-number of events to print if more events were in the buffer before the
-selector was disabled.
+Function cifs_strndup_from_utf16() is currentlly accessing buf->DataBuffer
+at position after the end of the buffer because it does not subtract
+InodeType size from the length. Fix this problem and correctly subtract
+variable len.
 
-However, the event selector can be disabled for reasons other than
-exceeding the maximum number of events. In particular, when the traced
-subprocess exits, the main loop disables all event selectors. This meant
-the last events of a traced subprocess might be lost to the printing
-handler's short-circuiting logic.
+Member InodeType is present only when reparse buffer is large enough. Check
+for ReparseDataLength before accessing InodeType to prevent another invalid
+memory access.
 
-This nondeterministic problem could be seen by running the following many times:
+Major and minor rdev values are present also only when reparse buffer is
+large enough. Check for reparse buffer size before calling reparse_mkdev().
 
-  $ perf trace -e syscalls:sys_enter_exit_group true
-
-trace__event_handler should simply check for exceeding the maximum number of
-events to print rather than the state of the event selector.
-
-Fixes: a9c5e6c1e9bff42c ("perf trace: Introduce per-event maximum number of events property")
-Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
-Tested-by: Howard Chu <howardchu95@gmail.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241107232128.108981-1-benjamin@engflow.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: d5ecebc4900d ("smb3: Allow query of symlinks stored as reparse points")
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[use variable name symlink_buf, the other buf->InodeType accesses are
+not used in current version so skip]
+Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-trace.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ fs/cifs/smb2ops.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 3143601c1cb1f..6fbdabd902802 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2757,13 +2757,8 @@ static int trace__event_handler(struct trace *trace, struct evsel *evsel,
- {
- 	struct thread *thread;
- 	int callchain_ret = 0;
--	/*
--	 * Check if we called perf_evsel__disable(evsel) due to, for instance,
--	 * this event's max_events having been hit and this is an entry coming
--	 * from the ring buffer that we should discard, since the max events
--	 * have already been considered/printed.
--	 */
--	if (evsel->disabled)
-+
-+	if (evsel->nr_events_printed >= evsel->max_events)
- 		return 0;
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index b2e45e168548b..64ac683498e03 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -2539,6 +2539,12 @@ parse_reparse_posix(struct reparse_posix_data *symlink_buf,
  
- 	thread = machine__findnew_thread(trace->host, sample->pid, sample->tid);
+ 	/* See MS-FSCC 2.1.2.6 for the 'NFS' style reparse tags */
+ 	len = le16_to_cpu(symlink_buf->ReparseDataLength);
++	if (len < sizeof(symlink_buf->InodeType)) {
++		cifs_dbg(VFS, "srv returned malformed nfs buffer\n");
++		return -EIO;
++	}
++
++	len -= sizeof(symlink_buf->InodeType);
+ 
+ 	if (le64_to_cpu(symlink_buf->InodeType) != NFS_SPECFILE_LNK) {
+ 		cifs_dbg(VFS, "%lld not a supported symlink type\n",
 -- 
 2.43.0
 
