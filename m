@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FBD9EF1A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 736789EEDD0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E642828F72E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C84D16A5FD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA4D231A2E;
-	Thu, 12 Dec 2024 16:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500C72210FE;
+	Thu, 12 Dec 2024 15:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LROrK1Td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oiUTpjT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74A1231A2B;
-	Thu, 12 Dec 2024 16:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D809221DAB;
+	Thu, 12 Dec 2024 15:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021045; cv=none; b=oEOxH6O8PbPlb/UySkxD79gEaCXV9kITb92xdc7tbM+XE41YVyUOJUeBAhdzsftqrbIpieUn4yrEMRpn6Vz4Owbitv/xAYwLQeTnMXdyuQdexYqgsp4pBzuXLENPILDP3AuyzBHwQp3lBwA954AiutS3iTXC3/KRiwRYqjbCDhI=
+	t=1734018336; cv=none; b=RPjCCUdbL1TA+qeZaO6KLC0hVYcS9AVhHdXgktZIO7cAD1Jf5aZH7T614/JTMAbMtgcMjxtLPQHbClbg8UrpUiUlMcsxTBIDSHUiahWSwErMjQIzGw4EV95bJZ2kYH6OhZkBI+9ubi9GI3eRUtAyYsMsNl8/CYoEOECCEkTgXDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021045; c=relaxed/simple;
-	bh=qg0cGAl4eL3NYpdnW/nkx+7ibBWwV/FRHEcFWYnIXG8=;
+	s=arc-20240116; t=1734018336; c=relaxed/simple;
+	bh=QLeJPhr6ZE74x/V+vvkmtwdqARrZwJ87ZUjMEkM955U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jIUPz0vtB8rgLnHliF7ixcrw4RW9ayyBOlBomA/UV9q4dateLp1d+tWkh/Cbbsi6zM68oITK46JKXdUU96lODULd+ABdalw/K1MwOWsf3KKlvgb8dx4ExpcLUwtv3V1uLMRGB7RSZ7ZqNwaTar7xjPcCLZnrs5cf5jTs6MMKWko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LROrK1Td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5FCC4CECE;
-	Thu, 12 Dec 2024 16:30:44 +0000 (UTC)
+	 MIME-Version; b=ON/kcUy3A+nVdP1dggjoukFti7lY10NSOsEjNEcqRIiL9yKb6eKtEp5t7GBtsj834UkLh8qFnGeDq7Gzh770YNKeA6aYBP8QQh4ouwZXHc7HxGy7WwlTnQS67baI7FaNIoBwzg3DEn5/cpm3GoyssAkX2MpTUEj3Xqg4efEuTBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oiUTpjT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AEBFC4CECE;
+	Thu, 12 Dec 2024 15:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021045;
-	bh=qg0cGAl4eL3NYpdnW/nkx+7ibBWwV/FRHEcFWYnIXG8=;
+	s=korg; t=1734018335;
+	bh=QLeJPhr6ZE74x/V+vvkmtwdqARrZwJ87ZUjMEkM955U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LROrK1Td8hQeyekJ0bczgshyyHJ5D7qimtODfZSTFeXQ/KeH6qshgZemyNSFqLTAn
-	 RaAlYcgIPebA9yQT7aJceDMAKPoHF3d+0TGOshVL5g9fbq1UW20TxZuqEfZUe5p3Qa
-	 XwSxkNv0jtD0hPZiR5+ojNfa52B69tj2G+ra4W4E=
+	b=1oiUTpjTLEk/mjCmxkvsH7fyRfDLrdvtuTW9+jUcHlEh0pVIcaEBawpgTYH4ILtnW
+	 S1etnG/XvNZ/2VaA4hzIhfu3tbyP9kC4OD8vtaRC9RMiRxLytt1QxsHC0sKJcjrGeG
+	 n/+RRh7ia2uLRfd0EDV3/1TrfW52krA1rKXds13g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 6.1 631/772] dma-buf: fix dma_fence_array_signaled v4
+	syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 257/356] Bluetooth: hci_core: Fix not checking skb length on hci_acldata_packet
 Date: Thu, 12 Dec 2024 15:59:36 +0100
-Message-ID: <20241212144416.006662611@linuxfoundation.org>
+Message-ID: <20241212144254.754729560@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 78ac1c3558810486d90aa533b0039aa70487a3da upstream.
+[ Upstream commit 3fe288a8214e7dd784d1f9b7c9e448244d316b47 ]
 
-The function silently assumed that signaling was already enabled for the
-dma_fence_array. This meant that without enabling signaling first we would
-never see forward progress.
+This fixes not checking if skb really contains an ACL header otherwise
+the code may attempt to access some uninitilized/invalid memory past the
+valid skb->data.
 
-Fix that by falling back to testing each individual fence when signaling
-isn't enabled yet.
-
-v2: add the comment suggested by Boris why this is done this way
-v3: fix the underflow pointed out by Tvrtko
-v4: atomic_read_acquire() as suggested by Tvrtko
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Tested-by: Chia-I Wu <olvaffe@gmail.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12094
-Cc: <stable@vger.kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241112121925.18464-1-christian.koenig@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
+Tested-by: syzbot+6ea290ba76d8c1eb1ac2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6ea290ba76d8c1eb1ac2
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/dma-fence-array.c |   28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/dma-buf/dma-fence-array.c
-+++ b/drivers/dma-buf/dma-fence-array.c
-@@ -103,10 +103,36 @@ static bool dma_fence_array_enable_signa
- static bool dma_fence_array_signaled(struct dma_fence *fence)
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 3cf4dd9cad8a3..30519d47e8a69 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3735,18 +3735,22 @@ static void hci_tx_work(struct work_struct *work)
+ /* ACL data packet */
+ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
  {
- 	struct dma_fence_array *array = to_dma_fence_array(fence);
-+	int num_pending;
-+	unsigned int i;
+-	struct hci_acl_hdr *hdr = (void *) skb->data;
++	struct hci_acl_hdr *hdr;
+ 	struct hci_conn *conn;
+ 	__u16 handle, flags;
  
--	if (atomic_read(&array->num_pending) > 0)
-+	/*
-+	 * We need to read num_pending before checking the enable_signal bit
-+	 * to avoid racing with the enable_signaling() implementation, which
-+	 * might decrement the counter, and cause a partial check.
-+	 * atomic_read_acquire() pairs with atomic_dec_and_test() in
-+	 * dma_fence_array_enable_signaling()
-+	 *
-+	 * The !--num_pending check is here to account for the any_signaled case
-+	 * if we race with enable_signaling(), that means the !num_pending check
-+	 * in the is_signalling_enabled branch might be outdated (num_pending
-+	 * might have been decremented), but that's fine. The user will get the
-+	 * right value when testing again later.
-+	 */
-+	num_pending = atomic_read_acquire(&array->num_pending);
-+	if (test_bit(DMA_FENCE_FLAG_ENABLE_SIGNAL_BIT, &array->base.flags)) {
-+		if (num_pending <= 0)
-+			goto signal;
- 		return false;
+-	skb_pull(skb, HCI_ACL_HDR_SIZE);
++	hdr = skb_pull_data(skb, sizeof(*hdr));
++	if (!hdr) {
++		bt_dev_err(hdev, "ACL packet too small");
++		goto drop;
 +	}
  
-+	for (i = 0; i < array->num_fences; ++i) {
-+		if (dma_fence_is_signaled(array->fences[i]) && !--num_pending)
-+			goto signal;
-+	}
-+	return false;
-+
-+signal:
- 	dma_fence_array_clear_pending_error(array);
- 	return true;
+ 	handle = __le16_to_cpu(hdr->handle);
+ 	flags  = hci_flags(handle);
+ 	handle = hci_handle(handle);
+ 
+-	BT_DBG("%s len %d handle 0x%4.4x flags 0x%4.4x", hdev->name, skb->len,
+-	       handle, flags);
++	bt_dev_dbg(hdev, "len %d handle 0x%4.4x flags 0x%4.4x", skb->len,
++		   handle, flags);
+ 
+ 	hdev->stat.acl_rx++;
+ 
+@@ -3765,6 +3769,7 @@ static void hci_acldata_packet(struct hci_dev *hdev, struct sk_buff *skb)
+ 			   handle);
+ 	}
+ 
++drop:
+ 	kfree_skb(skb);
  }
+ 
+-- 
+2.43.0
+
 
 
 
