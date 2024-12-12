@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB22B9EF6FF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3339EF9D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B900173EF8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E99DE178886
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CB2223326;
-	Thu, 12 Dec 2024 17:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532EF223C69;
+	Thu, 12 Dec 2024 17:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnFemHKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAHfB/ya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF29322331C;
-	Thu, 12 Dec 2024 17:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F772216E2D;
+	Thu, 12 Dec 2024 17:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023341; cv=none; b=XZs64ghhjHlQlOX8RZN4pyAPgkhxdAeKPEp8OkpRLhJmpPfwebokM1sCrOyg3Zxy+5apvYiRqgsXwmH/RRg7mjVmyld8mIySZITJhWcKwzrM19vOesDVTOvwy3XaK7vm7V7EaJZIW8M8HM5SZvbwPJA6GNhVIdMz8fmfyS/aikI=
+	t=1734025559; cv=none; b=gZCW+tu/oxjxUCGO23/5UTY+VAd2utCfWQXPTedJ5T+1TI8v5asDGbRbJAyoeRPx7qNsm0uFHrS6CdfV3dcQnQ1JH1APOhboe3U5wg+pHffJ1SA6nUReUxbODfUZ2Ljk8fbkorE7iAIIA9bVBw5HyWPHiKV5yfdJxiK+bTOX8BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023341; c=relaxed/simple;
-	bh=rnnJz8i6AYDzY6hphUFjH3s+x25r9WsiCQBP1/AX1PY=;
+	s=arc-20240116; t=1734025559; c=relaxed/simple;
+	bh=nnekUKiPqi/HD2B71FNy1qIFCv/t8rbSY4dURSzKP4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jf551TZ1VMsosDLwP0WYtfpH+4+0L60AaNU0L7HbbXrag0Rtp0W4M3/4xiuND86Iwr0mtS9OqGBEXzYns5o1LjGq4DahhAWUe9NdGAICxFL6vVVRcQTE2sQ10xBPuAHUbVMp6SMIg9Y/CpjCWmu3WMamRkmE+OKLMU/iPEiAzhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnFemHKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788E6C4CECE;
-	Thu, 12 Dec 2024 17:09:00 +0000 (UTC)
+	 MIME-Version; b=AV0Qf0Dy7Q+r6JeXF7bQYwGLHickBN6q7CkO3SEWLDpWS/l1d5SHVHdEuKZGOHamzjTPil7gE4hN1JqDAth+fGxU/IzTbt62oesDilRAFU4yJTGxlvwQhISfCmb816kFyetMmiYZ5VTLkKavqYTzsdQapgT4OmAc0I59+2Ihj64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAHfB/ya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0AAC4CED0;
+	Thu, 12 Dec 2024 17:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023340;
-	bh=rnnJz8i6AYDzY6hphUFjH3s+x25r9WsiCQBP1/AX1PY=;
+	s=korg; t=1734025558;
+	bh=nnekUKiPqi/HD2B71FNy1qIFCv/t8rbSY4dURSzKP4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AnFemHKeqJR8MR8RfvkJL8+zQplEynqfQs7HzxW5mAytYVetLuQfecgDqli+U1DSO
-	 1iWoQTBszFokTRU4YgF5XqVHNMzXQEKFJrQ+bGf/67pj4E/OnSU9xxXFCDDCn2vY72
-	 htu0ZfiHJBbON3HNMHE7dNijogwweDsQ8S1ZNb4c=
+	b=YAHfB/yahrcLTmiCdejeRfMKelBPD/1nMGcOyr6wJ+7MFv3Zvf6CfwBgyFJF2SKN4
+	 jvftEL5rbxMOmimBUXHffNzhrCpMrtHUk4Fblf6ZgnvV3SLwTheVz5mO26NljzihWA
+	 81SzLNu4eBAGPX/vOhhF7MC6byyOYTchrv8kZvzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
-	Nihar Chaithanya <niharchaithanya@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 502/565] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
+Subject: [PATCH 5.4 179/321] um: Fix the return value of elf_core_copy_task_fpregs
 Date: Thu, 12 Dec 2024 16:01:37 +0100
-Message-ID: <20241212144331.607827076@linuxfoundation.org>
+Message-ID: <20241212144237.059225314@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nihar Chaithanya <niharchaithanya@gmail.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
+[ Upstream commit 865e3845eeaa21e9a62abc1361644e67124f1ec0 ]
 
-When the value of lp is 0 at the beginning of the for loop, it will
-become negative in the next assignment and we should bail out.
+This function is expected to return a boolean value, which should be
+true on success and false on failure.
 
-Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
-Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: d1254b12c93e ("uml: fix x86_64 core dump crash")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20240913023302.130300-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/um/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 7486c79a5058b..e6cbe4c982c58 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -2957,6 +2957,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
- 	/* bubble the new value up the tree as required.
- 	 */
- 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
-+		if (lp == 0)
-+			break;
-+
- 		/* get the index of the first leaf of the 4 leaf
- 		 * group containing the specified leaf (leafno).
- 		 */
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index f185d19fd9b60..16460c58f3e2f 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -444,6 +444,6 @@ int elf_core_copy_fpregs(struct task_struct *t, elf_fpregset_t *fpu)
+ {
+ 	int cpu = current_thread_info()->cpu;
+ 
+-	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu);
++	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu) == 0;
+ }
+ 
 -- 
 2.43.0
 
