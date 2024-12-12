@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E01D9EEBCE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386959EED39
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:43:42 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BD1418818B0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5F9285507
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4571C20969B;
-	Thu, 12 Dec 2024 15:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB89B21E0AA;
+	Thu, 12 Dec 2024 15:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RP27rcKD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdJdJ4X/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E7113792B;
-	Thu, 12 Dec 2024 15:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C832185A0;
+	Thu, 12 Dec 2024 15:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017128; cv=none; b=uF3xFdEmAebL6CH/qi1buODxeezA/+ny34/NjhX5Yv5zXtnFhoiElL6d91/2NTDH0PRB+99dd8RX3salyTR6EDWgVj/Pl5eXCJaXMl2PszE4N14llOiEfwbpE+NozImTKJ9thx7zDHh1FRKg1ZONNFc7ZXq8p1Cj9ls3+umX2CA=
+	t=1734018149; cv=none; b=p1pkqBmHsTOx1rzkXlWfa8qTYis5ODPRCb2I4JG8PynZfiZnmO+0ISSKgW5a9ERgHG2uaJGqzhbHQAt0BV7yz7/yECTbVvKVaGOJ4urSsnN18S/V02ssKvchpdV+mTFx4NwiJt2c+xysW6XKyAHbq5jzFEoLospYdivG3BeFXAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017128; c=relaxed/simple;
-	bh=96FrozqUfnlxG2UR1685sX4RWpdNSuZ0v1584ChWvr4=;
+	s=arc-20240116; t=1734018149; c=relaxed/simple;
+	bh=cCbHH3W3g7TU33sAcOU5DJ5sCsoy6LL1Qt3kbVA9gNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCH+oKINOyZFSRg8f4iKkz7RD/7nboPL7TOsXmeeWqQN+k+vn0RNFXISDNw288jQZbdEwXLH/kv4e61VnZQiijGdi7aOz2g/8KidNdedUH3OEri3C8lUx3VIJkUoYhIEQ8tSLdBuOgW2mLiVvTpmSto4PFpTocIyjftMJurpeSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RP27rcKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A607C4CECE;
-	Thu, 12 Dec 2024 15:25:27 +0000 (UTC)
+	 MIME-Version; b=WCGsTcTap8u+gUAlMjnGEnC/kKE2kPTAxAxneEQvkcCCaEb+J+2BIKN6j3oUsse+k/y2MXaOQFb7gyHg4RrLsOD8E9fjgRtJgOWdSbuH+bvXiEl9Ke0TJIwGyohO7Fg6EgxMVdM5+4pQMZStODHh2sjSytNZcHAuGcfDMe8AH54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdJdJ4X/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9CBC4CECE;
+	Thu, 12 Dec 2024 15:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017127;
-	bh=96FrozqUfnlxG2UR1685sX4RWpdNSuZ0v1584ChWvr4=;
+	s=korg; t=1734018149;
+	bh=cCbHH3W3g7TU33sAcOU5DJ5sCsoy6LL1Qt3kbVA9gNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RP27rcKDlz+nxiAKtSbmHaNkzoHbhXDoG8k2MfNT7N0UhAJif/33Kzgzjne00b9oW
-	 tTik2T6YoZh6N8Kq5Xn/wDBri/2bP7VDMXTidRIespZHOMWviiEZS7hambZQ7fYB2P
-	 ceRBsfhHWJEHiXffwHtpbefStotzL9TkLFp9rxSA=
+	b=JdJdJ4X/JPzGVTkeMMZNQXAsi9FW+/5a5EzajCP3c8/Gtdz8ZYHPYaEafgISX+Ps/
+	 m6OhejfiTVFdah6n6m5+KTexJGRgzcnsKmfy2toOgUyFlpwnz0QlIbKFmBaJpK7SJY
+	 //Z7IUsyy6Qqc/hYTzRa0rx7kkSLj5NqgDp1EKhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Liao Chen <liaochen4@huawei.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 361/466] scsi: hisi_sas: Add cond_resched() for no forced preemption model
+Subject: [PATCH 6.6 211/356] drm/bridge: it6505: Enable module autoloading
 Date: Thu, 12 Dec 2024 15:58:50 +0100
-Message-ID: <20241212144321.044850821@linuxfoundation.org>
+Message-ID: <20241212144252.951620296@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit 2233c4a0b948211743659b24c13d6bd059fa75fc ]
+[ Upstream commit 1e2ab24cd708b1c864ff983ee1504c0a409d2f8e ]
 
-For no forced preemption model kernel, in the scenario where the
-expander is connected to 12 high performance SAS SSDs, the following
-call trace may occur:
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
+on the alias from of_device_id table.
 
-[  214.409199][  C240] watchdog: BUG: soft lockup - CPU#240 stuck for 22s! [irq/149-hisi_sa:3211]
-[  214.568533][  C240] pstate: 60400009 (nZCv daif +PAN -UAO -TCO BTYPE=--)
-[  214.575224][  C240] pc : fput_many+0x8c/0xdc
-[  214.579480][  C240] lr : fput+0x1c/0xf0
-[  214.583302][  C240] sp : ffff80002de2b900
-[  214.587298][  C240] x29: ffff80002de2b900 x28: ffff1082aa412000
-[  214.593291][  C240] x27: ffff3062a0348c08 x26: ffff80003a9f6000
-[  214.599284][  C240] x25: ffff1062bbac5c40 x24: 0000000000001000
-[  214.605277][  C240] x23: 000000000000000a x22: 0000000000000001
-[  214.611270][  C240] x21: 0000000000001000 x20: 0000000000000000
-[  214.617262][  C240] x19: ffff3062a41ae580 x18: 0000000000010000
-[  214.623255][  C240] x17: 0000000000000001 x16: ffffdb3a6efe5fc0
-[  214.629248][  C240] x15: ffffffffffffffff x14: 0000000003ffffff
-[  214.635241][  C240] x13: 000000000000ffff x12: 000000000000029c
-[  214.641234][  C240] x11: 0000000000000006 x10: ffff80003a9f7fd0
-[  214.647226][  C240] x9 : ffffdb3a6f0482fc x8 : 0000000000000001
-[  214.653219][  C240] x7 : 0000000000000002 x6 : 0000000000000080
-[  214.659212][  C240] x5 : ffff55480ee9b000 x4 : fffffde7f94c6554
-[  214.665205][  C240] x3 : 0000000000000002 x2 : 0000000000000020
-[  214.671198][  C240] x1 : 0000000000000021 x0 : ffff3062a41ae5b8
-[  214.677191][  C240] Call trace:
-[  214.680320][  C240]  fput_many+0x8c/0xdc
-[  214.684230][  C240]  fput+0x1c/0xf0
-[  214.687707][  C240]  aio_complete_rw+0xd8/0x1fc
-[  214.692225][  C240]  blkdev_bio_end_io+0x98/0x140
-[  214.696917][  C240]  bio_endio+0x160/0x1bc
-[  214.701001][  C240]  blk_update_request+0x1c8/0x3bc
-[  214.705867][  C240]  scsi_end_request+0x3c/0x1f0
-[  214.710471][  C240]  scsi_io_completion+0x7c/0x1a0
-[  214.715249][  C240]  scsi_finish_command+0x104/0x140
-[  214.720200][  C240]  scsi_softirq_done+0x90/0x180
-[  214.724892][  C240]  blk_mq_complete_request+0x5c/0x70
-[  214.730016][  C240]  scsi_mq_done+0x48/0xac
-[  214.734194][  C240]  sas_scsi_task_done+0xbc/0x16c [libsas]
-[  214.739758][  C240]  slot_complete_v3_hw+0x260/0x760 [hisi_sas_v3_hw]
-[  214.746185][  C240]  cq_thread_v3_hw+0xbc/0x190 [hisi_sas_v3_hw]
-[  214.752179][  C240]  irq_thread_fn+0x34/0xa4
-[  214.756435][  C240]  irq_thread+0xc4/0x130
-[  214.760520][  C240]  kthread+0x108/0x13c
-[  214.764430][  C240]  ret_from_fork+0x10/0x18
-
-This is because in the hisi_sas driver, both the hardware interrupt
-handler and the interrupt thread are executed on the same CPU. In the
-performance test scenario, function irq_wait_for_interrupt() will always
-return 0 if lots of interrupts occurs and the CPU will be continuously
-consumed. As a result, the CPU cannot run the watchdog thread. When the
-watchdog time exceeds the specified time, call trace occurs.
-
-To fix it, add cond_resched() to execute the watchdog thread.
-
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20241008021822.2617339-8-liyihang9@huawei.com
-Reviewed-by: Xiang Chen <chenxiang66@hisilicon.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240902113320.903147-2-liaochen4@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 1 +
+ drivers/gpu/drm/bridge/ite-it6505.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 4cd3a3eab6f1c..a7401bade099a 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -2493,6 +2493,7 @@ static int complete_v3_hw(struct hisi_sas_cq *cq)
- 	/* update rd_point */
- 	cq->rd_point = rd_point;
- 	hisi_sas_write32(hisi_hba, COMPL_Q_0_RD_PTR + (0x14 * queue), rd_point);
-+	cond_resched();
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 2a7c620626a03..26d3b9b843267 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -3503,6 +3503,7 @@ static const struct of_device_id it6505_of_match[] = {
+ 	{ .compatible = "ite,it6505" },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(of, it6505_of_match);
  
- 	return completed;
- }
+ static struct i2c_driver it6505_i2c_driver = {
+ 	.driver = {
 -- 
 2.43.0
 
