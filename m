@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB399EF26D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 250819EEBE4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E435189C4B5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA192283A6F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C33A2248A4;
-	Thu, 12 Dec 2024 16:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FC12153F8;
+	Thu, 12 Dec 2024 15:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1hHmZ2L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjY8jRLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193FE223E99;
-	Thu, 12 Dec 2024 16:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1568C20969B;
+	Thu, 12 Dec 2024 15:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021098; cv=none; b=Wp6eSLigcwgQa0atBBMiz1ii/TDgRndG8njEtaAj4lNAoWpMsCD3wqIMXTQS+JlNu0mVO7QqcyknZZrkNzB9PabjpnoJ+isuMwC0kQhJM9g6JpOM6UPF1k34P/R9+JAu52cBkUYvPbkiSCSArkfbZuXeVDa2vWHKN3UHVFWPsek=
+	t=1734017372; cv=none; b=fuf5RM3Z/w9NUCzeHOI63OrquVrhVF+ff/J7SFMcQgF7jrZ0lknh9KYXHjBBVfdVuFa5B/ZVaGrVMn9/J/qiQXxsNvmQk7slhpaI96H6MUVgeg6dH1pHVeVLU+mMqqdaD5il3+NTk55r0a2J+/ZlT9QQ8eVe5QUBc20KKRAfbVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021098; c=relaxed/simple;
-	bh=YdrxfpyhLGiq2+lMr+1jBQtXs/AzwHnsirESVSMyKko=;
+	s=arc-20240116; t=1734017372; c=relaxed/simple;
+	bh=TE2U44ODwP2wS1xgRJmLKvSjz1dAcdO3ivFH8H4pQD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHseFl5DMGlYj3Dg5gWlxe5HfwWnNPgzlQL6FhDnfJyfp9UqTVjgb/9YgNB71+g5rx2VgzmevQdtIZXqL692SGI7EfEt8Gh0a2Og1q/IOSRPfhHBdhpI9LQ4CJxWylo8R41haB647OrGQr/VRDauR1zhneRzEgUDEtmaOlJcvOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1hHmZ2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63093C4CECE;
-	Thu, 12 Dec 2024 16:31:37 +0000 (UTC)
+	 MIME-Version; b=p3fEiFnaSlIHcoQIfrnPaZOXAEVkEDbc/GgAsCSvcQFhN47VNL9VQ6EPcb+7pC2rkpbxkcizyG2dXMAwF1rpFCW9BvPx36HFN7OvK18LWVolqAFk60yeLn40GF49d0nNJ5/NEpSpP+ld3c4XSxO8VYzXxPgGPODDgf3jlJhkQFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjY8jRLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831E8C4CECE;
+	Thu, 12 Dec 2024 15:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021098;
-	bh=YdrxfpyhLGiq2+lMr+1jBQtXs/AzwHnsirESVSMyKko=;
+	s=korg; t=1734017371;
+	bh=TE2U44ODwP2wS1xgRJmLKvSjz1dAcdO3ivFH8H4pQD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1hHmZ2LvE6zaK3gH2aEAZaI52qsT5XXl/pEKd897d1FnYUxG5bE8NjKSi9aj7V0H
-	 efIBEqwjKPyR7xTggE6JLX2xvri9VuyoPx14J6gy9PwkwvoFEJPHH8qOnH62WrL9mF
-	 rauKtu8WCd7Gv6wead5I1620LTu1y0K/vNYlhYww=
+	b=gjY8jRLCku25phD/AaDq00FurEL0IfuA2HhxDcP221055Re//AQhlnhDAKU1nKdPd
+	 g+7esWL4VqzpBUQvfg0KZamQD5HGgl1rUp3laB5/cKwdNmyjg+pSa0sytaO4oQ4gND
+	 v6CfZRXrHLnU3e9E5OwnAAnt3TPjREylwN7Y/gkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Rob Herring <robh@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 644/772] btrfs: do not clear read-only when adding sprout device
-Date: Thu, 12 Dec 2024 15:59:49 +0100
-Message-ID: <20241212144416.537671428@linuxfoundation.org>
+Subject: [PATCH 6.12 421/466] powerpc/prom_init: Fixup missing powermac #size-cells
+Date: Thu, 12 Dec 2024 15:59:50 +0100
+Message-ID: <20241212144323.387918546@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 70958a949d852cbecc3d46127bf0b24786df0130 ]
+[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
 
-If you follow the seed/sprout wiki, it suggests the following workflow:
+On some powermacs `escc` nodes are missing `#size-cells` properties,
+which is deprecated and now triggers a warning at boot since commit
+045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
+handling").
 
-btrfstune -S 1 seed_dev
-mount seed_dev mnt
-btrfs device add sprout_dev
-mount -o remount,rw mnt
+For example:
 
-The first mount mounts the FS readonly, which results in not setting
-BTRFS_FS_OPEN, and setting the readonly bit on the sb. The device add
-somewhat surprisingly clears the readonly bit on the sb (though the
-mount is still practically readonly, from the users perspective...).
-Finally, the remount checks the readonly bit on the sb against the flag
-and sees no change, so it does not run the code intended to run on
-ro->rw transitions, leaving BTRFS_FS_OPEN unset.
+  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
+  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
+  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
+  ...
+  Call Trace:
+    of_bus_n_size_cells+0x98/0x108 (unreliable)
+    of_bus_default_count_cells+0x40/0x60
+    __of_get_address+0xc8/0x21c
+    __of_address_to_resource+0x5c/0x228
+    pmz_init_port+0x5c/0x2ec
+    pmz_probe.isra.0+0x144/0x1e4
+    pmz_console_init+0x10/0x48
+    console_init+0xcc/0x138
+    start_kernel+0x5c4/0x694
 
-As a result, when the cleaner_kthread runs, it sees no BTRFS_FS_OPEN and
-does no work. This results in leaking deleted snapshots until we run out
-of space.
+As powermacs boot via prom_init it's possible to add the missing
+properties to the device tree during boot, avoiding the warning. Note
+that `escc-legacy` nodes are also missing `#size-cells` properties, but
+they are skipped by the macio driver, so leave them alone.
 
-I propose fixing it at the first departure from what feels reasonable:
-when we clear the readonly bit on the sb during device add.
-
-A new fstest I have written reproduces the bug and confirms the fix.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 9779ab410f8fa..a4177014eb8b0 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -2767,8 +2767,6 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
- 	set_blocksize(device->bdev, BTRFS_BDEV_BLOCKSIZE);
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index fbb68fc28ed3a..935568d68196d 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2932,7 +2932,7 @@ static void __init fixup_device_tree_chrp(void)
+ #endif
  
- 	if (seeding_dev) {
--		btrfs_clear_sb_rdonly(sb);
--
- 		/* GFP_KERNEL allocation must not be under device_list_mutex */
- 		seed_devices = btrfs_init_sprout(fs_info);
- 		if (IS_ERR(seed_devices)) {
-@@ -2911,8 +2909,6 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
- 	mutex_unlock(&fs_info->chunk_mutex);
- 	mutex_unlock(&fs_info->fs_devices->device_list_mutex);
- error_trans:
--	if (seeding_dev)
--		btrfs_set_sb_rdonly(sb);
- 	if (trans)
- 		btrfs_end_transaction(trans);
- error_free_zone:
+ #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
+-static void __init fixup_device_tree_pmac(void)
++static void __init fixup_device_tree_pmac64(void)
+ {
+ 	phandle u3, i2c, mpic;
+ 	u32 u3_rev;
+@@ -2972,7 +2972,31 @@ static void __init fixup_device_tree_pmac(void)
+ 		     &parent, sizeof(parent));
+ }
+ #else
+-#define fixup_device_tree_pmac()
++#define fixup_device_tree_pmac64()
++#endif
++
++#ifdef CONFIG_PPC_PMAC
++static void __init fixup_device_tree_pmac(void)
++{
++	__be32 val = 1;
++	char type[8];
++	phandle node;
++
++	// Some pmacs are missing #size-cells on escc nodes
++	for (node = 0; prom_next_node(&node); ) {
++		type[0] = '\0';
++		prom_getprop(node, "device_type", type, sizeof(type));
++		if (prom_strcmp(type, "escc"))
++			continue;
++
++		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
++			continue;
++
++		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
++	}
++}
++#else
++static inline void fixup_device_tree_pmac(void) { }
+ #endif
+ 
+ #ifdef CONFIG_PPC_EFIKA
+@@ -3197,6 +3221,7 @@ static void __init fixup_device_tree(void)
+ 	fixup_device_tree_maple_memory_controller();
+ 	fixup_device_tree_chrp();
+ 	fixup_device_tree_pmac();
++	fixup_device_tree_pmac64();
+ 	fixup_device_tree_efika();
+ 	fixup_device_tree_pasemi();
+ }
 -- 
 2.43.0
 
