@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7874F9EF3E8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC079EED43
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1718B28AF3F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BD02285956
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3269122A81A;
-	Thu, 12 Dec 2024 17:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0835D222D57;
+	Thu, 12 Dec 2024 15:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP9tGGDd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBXpv0A6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09C22288CD;
-	Thu, 12 Dec 2024 17:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65392185A8;
+	Thu, 12 Dec 2024 15:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022833; cv=none; b=BontH7Of9RSBvQjcQf+8P2OhQqtUIKsF9d18fY+O4ebt/6Ax9LuDTwbpgHS3Dl/HA8wLToSn0cSnAgZHSw7YFDvcFts04FaQWDee51GlDO0lMIeaIqNPAuOObbfe09vMTNM84RO0EpjKVHxVg8mzB1lpUbzXfENvsin5D5v0NBw=
+	t=1734018190; cv=none; b=Y23ak+dyQEBusGFAsdoPQM1mRQjpEjp/v08t0wNgV6LetRwKd7GiRr2lcGidiAEp3b9yqoP3DL245wYjj+zGQHpRPvCaltx1qinnC6NjWUfW1ktlMgnOfr6iUB3lxN+C2jXQV4jQjTPeNEIWFhRpUgNI646ttYT6szw6EWsUnYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022833; c=relaxed/simple;
-	bh=ubeAXHATQI5H4IP7YgCC/ff5WA+CRRoZuYaU2WP3M28=;
+	s=arc-20240116; t=1734018190; c=relaxed/simple;
+	bh=afX4iyfVrZ/rSD223IHZCRR8ERRSvr9wm89NcNu4RS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opmSJmaFt7BA4ETK5ZEva2T5QhmUw2aEPv60vEpaBH4zMWa+5uGpuo4pjjzDSSsVlIkkVuN9Y+eaqHcoWCk2IIBJXqqSMkZx4eVQRX4aUwcOSKawl0q/N3thd8/xjwgl8gT1kboHBLmXlU/hhsYGTHipQHRguqpoM04KsU6quPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP9tGGDd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC378C4CECE;
-	Thu, 12 Dec 2024 17:00:30 +0000 (UTC)
+	 MIME-Version; b=CL/O58oKamkcVy8O5mrmTlGP+Spyb/mjcqfty6XzS6GWdrmm5npYUtjMS7ZI7SbQWO5FnFk0fm9ZQrHPiUjc4tk3a6PJIk+pm/tlHth+x6ZAps5KXNx7mnzITwE2vqZwxOYCjEMj2cHf/iBhAnnejeWCEqdpJEMJ11fz12P5Ugg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBXpv0A6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F96AC4CECE;
+	Thu, 12 Dec 2024 15:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022831;
-	bh=ubeAXHATQI5H4IP7YgCC/ff5WA+CRRoZuYaU2WP3M28=;
+	s=korg; t=1734018190;
+	bh=afX4iyfVrZ/rSD223IHZCRR8ERRSvr9wm89NcNu4RS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oP9tGGDdestspc8MpNJJsCUQVP3sdjeXzay+vh0fjKdWI8Ebr60O+Jm1s5af4o9mm
-	 liJtcfx9QoPX1bKjIc5YVTP19Vr2ny+jnR6iGxfQ8OiBJ2akc8yd8h64RbrjYJnrvV
-	 sy5Hx2sOejmu00eybwAz1CSxA9MoMT5BMX9us2aw=
+	b=RBXpv0A63DvmDVRf3I15K2KNVW1wGtkqbsQlj6Cgxz859+fgHXR5kIIC91OHK4k8g
+	 ZyJMxYsi1bgndgBzJHdyMnZkZG4cdpwzdblfVEWuWB2IFQNoD1KYC+FJQrAUZh9PYr
+	 pQoKkb4MX7K4F07RZT7Q9y2FSTRLtCpxN8/X/fwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinesh Kumar <desikumar81@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 346/565] ALSA: hda/realtek: Fix Internal Speaker and Mic boost of Infinix Y4 Max
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 222/356] net: ethernet: fs_enet: Use %pa to format resource_size_t
 Date: Thu, 12 Dec 2024 15:59:01 +0100
-Message-ID: <20241212144325.274756674@linuxfoundation.org>
+Message-ID: <20241212144253.389097794@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinesh Kumar <desikumar81@gmail.com>
+From: Simon Horman <horms@kernel.org>
 
-commit 5ebe792a5139f1ce6e4aed22bef12e7e2660df96 upstream.
+[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
 
-Internal Speaker of Infinix Y4 Max remains muted due to incorrect
-Pin configuration, and the Internal Mic records high noise. This patch
-corrects the Pin configuration for the Internal Speaker and limits
-the Internal Mic boost.
-HW Probe for device: https://linux-hardware.org/?probe=6d4386c347
-Test: Internal Speaker works fine, Mic has low noise.
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
 
-Signed-off-by: Dinesh Kumar <desikumar81@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241125092842.13208-1-desikumar81@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+
+Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+
+Flagged by gcc-14 as:
+
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+      |                                             ~^   ~~~~~~~~~
+      |                                              |      |
+      |                                              |      resource_size_t {aka long long unsigned int}
+      |                                              unsigned int
+      |                                             %llx
+
+No functional change intended.
+Compile tested only.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6925,6 +6925,7 @@ enum {
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
- 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
-+	ALC269VC_FIXUP_INFINIX_Y4_MAX,
- 	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
- 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
-@@ -7237,6 +7238,15 @@ static const struct hda_fixup alc269_fix
- 		.chained = true,
- 		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
- 	},
-+	[ALC269VC_FIXUP_INFINIX_Y4_MAX] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1b, 0x90170150 }, /* use as internal speaker */
-+			{ }
-+		},
-+		.chained = true,
-+		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
-+	},
- 	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -9535,6 +9545,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
-+	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+index f965a2329055e..2f4442072d059 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+@@ -126,7 +126,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
+ 	 * we get is an int, and the odds of multiple bitbang mdio buses
+ 	 * is low enough that it's not worth going too crazy.
+ 	 */
+-	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
+ 
+ 	data = of_get_property(np, "fsl,mdio-pin", &len);
+ 	if (!data || len != 4)
+-- 
+2.43.0
+
 
 
 
