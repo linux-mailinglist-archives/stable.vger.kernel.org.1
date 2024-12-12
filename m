@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976DD9EF396
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5FD69EF1EB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:43:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D57C9285C99
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34E931897D03
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67BD235C26;
-	Thu, 12 Dec 2024 16:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E8623DEAD;
+	Thu, 12 Dec 2024 16:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdtAkRfT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1ezf3iv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8310522968C;
-	Thu, 12 Dec 2024 16:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6E422A7F0;
+	Thu, 12 Dec 2024 16:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022545; cv=none; b=f/DKne5x1EwMHUX0fJYi7x77Dq8xtznsSTnqaQqAcY+LUXgwZnKHyUTZ71EbZ+5XWH1cP64DPFs7ZvQ/IP9iDJvV6JzpZDONwY7fxNX32VzExlpYN3Nk7Emxh0BGMOuFtgZ/CmBtofBE7rSMlV8hOeAb/94l60go6L7OHAvZs/s=
+	t=1734020752; cv=none; b=lxUPMmubzxR7tCLsettcQ2KZzrEpaBfn9InkQHVd9+E34runw6+zFQl1dLIc3MVs42oX4Uo0ajahkiCDUV1gGSOERqvWKqSQcQRHXsH6MvpGGDmswbp9tZqYV/Q6c2A/prRgrG2bXc6sEtLPEwPD5DAWIDh18BX51aWhcOeycP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022545; c=relaxed/simple;
-	bh=1USr4TxGFBcBvVOKVqPoS2EIgRhRF4kjBc1FIGJvaGo=;
+	s=arc-20240116; t=1734020752; c=relaxed/simple;
+	bh=pkEdl3NmVHsUSpgNTh1A+8wyc8aYE3nj/iEcECK1lkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdtWgkRgiCKNc/m17FrlAvalHenLvxfwtKqZGmNma/wm/n4CfGsDt0CbFmAxlEd8RO9rs8H7mvPBE6FIlJuMADE3cTSX1QZlw47hJpan2HE/xeu6TSEljwNDUO9Ayw8mw3DrTVM3KA9JA7zwkqfT3ciVIgyJG1FyLI88Cp5qxrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdtAkRfT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D33EC4CECE;
-	Thu, 12 Dec 2024 16:55:44 +0000 (UTC)
+	 MIME-Version; b=YBp645RJnrZ0nptyfgD2PTxj16yUJ4+p0D98RMuH5mFK62jr36V+EjO//i6E6OD3FxGdndB5IuNUNhBkWhUyqP98G19w4L7cdQFdSyPQHu3io9ykFWYvT8XaV1nbN5Z6L66VQVXML25dL89RNGIAFvY/3mDQCQpYqg8t23oCUlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1ezf3iv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45876C4CED3;
+	Thu, 12 Dec 2024 16:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022545;
-	bh=1USr4TxGFBcBvVOKVqPoS2EIgRhRF4kjBc1FIGJvaGo=;
+	s=korg; t=1734020751;
+	bh=pkEdl3NmVHsUSpgNTh1A+8wyc8aYE3nj/iEcECK1lkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdtAkRfTqJY8PEFb14iDC9FxNkF5B4F1zC61sbu0YupJVuRtaa5RCxtAAL6VaskmI
-	 1BqGz5VWmBtREsZGkQq/6vT7cAQvqAMg3fez333ReasR5/cbm6+gYsZfDyAu0UeLc7
-	 oT3ClT/nEmMupnWxTzcZJR50d03sgIZGujYj/7Zg=
+	b=o1ezf3ivmNPBFouitlyPlcdg9EQoTATfulAd9AcAUVR0gXcQshQ/CpHwfg5bhgea+
+	 6AI6F0wZOSb8LywMm47OT0QHPZDVc8r33ofQkPfqtdb5n13LsXQk3AbLqPv5Zj9/hj
+	 f7MgvnXC0ytzn3syFq08LbBOd8cwlzCP+T6kzBcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avihai Horon <avihaih@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 271/565] vfio/pci: Properly hide first-in-list PCIe extended capability
+Subject: [PATCH 6.1 521/772] can: sja1000: sja1000_err(): fix {rx,tx}_errors statistics
 Date: Thu, 12 Dec 2024 15:57:46 +0100
-Message-ID: <20241212144322.176104894@linuxfoundation.org>
+Message-ID: <20241212144411.494298098@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avihai Horon <avihaih@nvidia.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit fe4bf8d0b6716a423b16495d55b35d3fe515905d ]
+[ Upstream commit 2c4ef3af4b028a0eaaf378df511d3b425b1df61f ]
 
-There are cases where a PCIe extended capability should be hidden from
-the user. For example, an unknown capability (i.e., capability with ID
-greater than PCI_EXT_CAP_ID_MAX) or a capability that is intentionally
-chosen to be hidden from the user.
+The sja1000_err() function only incremented the receive error counter
+and never the transmit error counter, even if the ECC_DIR flag reported
+that an error had occurred during transmission.
 
-Hiding a capability is done by virtualizing and modifying the 'Next
-Capability Offset' field of the previous capability so it points to the
-capability after the one that should be hidden.
+Increment the receive/transmit error counter based on the value of the
+ECC_DIR flag.
 
-The special case where the first capability in the list should be hidden
-is handled differently because there is no previous capability that can
-be modified. In this case, the capability ID and version are zeroed
-while leaving the next pointer intact. This hides the capability and
-leaves an anchor for the rest of the capability list.
-
-However, today, hiding the first capability in the list is not done
-properly if the capability is unknown, as struct
-vfio_pci_core_device->pci_config_map is set to the capability ID during
-initialization but the capability ID is not properly checked later when
-used in vfio_config_do_rw(). This leads to the following warning [1] and
-to an out-of-bounds access to ecap_perms array.
-
-Fix it by checking cap_id in vfio_config_do_rw(), and if it is greater
-than PCI_EXT_CAP_ID_MAX, use an alternative struct perm_bits for direct
-read only access instead of the ecap_perms array.
-
-Note that this is safe since the above is the only case where cap_id can
-exceed PCI_EXT_CAP_ID_MAX (except for the special capabilities, which
-are already checked before).
-
-[1]
-
-WARNING: CPU: 118 PID: 5329 at drivers/vfio/pci/vfio_pci_config.c:1900 vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
-CPU: 118 UID: 0 PID: 5329 Comm: simx-qemu-syste Not tainted 6.12.0+ #1
-(snip)
-Call Trace:
- <TASK>
- ? show_regs+0x69/0x80
- ? __warn+0x8d/0x140
- ? vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
- ? report_bug+0x18f/0x1a0
- ? handle_bug+0x63/0xa0
- ? exc_invalid_op+0x19/0x70
- ? asm_exc_invalid_op+0x1b/0x20
- ? vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
- ? vfio_pci_config_rw+0x244/0x430 [vfio_pci_core]
- vfio_pci_rw+0x101/0x1b0 [vfio_pci_core]
- vfio_pci_core_read+0x1d/0x30 [vfio_pci_core]
- vfio_device_fops_read+0x27/0x40 [vfio]
- vfs_read+0xbd/0x340
- ? vfio_device_fops_unl_ioctl+0xbb/0x740 [vfio]
- ? __rseq_handle_notify_resume+0xa4/0x4b0
- __x64_sys_pread64+0x96/0xc0
- x64_sys_call+0x1c3d/0x20d0
- do_syscall_64+0x4d/0x120
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Tested-by: Yi Liu <yi.l.liu@intel.com>
-Link: https://lore.kernel.org/r/20241124142739.21698-1-avihaih@nvidia.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-10-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_config.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/net/can/sja1000/sja1000.c | 67 ++++++++++++++++++-------------
+ 1 file changed, 39 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-index 6e58b4bf7a601..63f6308b0f8c9 100644
---- a/drivers/vfio/pci/vfio_pci_config.c
-+++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -312,6 +312,10 @@ static int vfio_virt_config_read(struct vfio_pci_core_device *vdev, int pos,
- 	return count;
- }
+diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
+index aac5956e4a532..26ec3c4e41100 100644
+--- a/drivers/net/can/sja1000/sja1000.c
++++ b/drivers/net/can/sja1000/sja1000.c
+@@ -399,8 +399,6 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 	uint8_t ecc, alc;
  
-+static struct perm_bits direct_ro_perms = {
-+	.readfn = vfio_direct_config_read,
-+};
+ 	skb = alloc_can_err_skb(dev, &cf);
+-	if (skb == NULL)
+-		return -ENOMEM;
+ 
+ 	txerr = priv->read_reg(priv, SJA1000_TXERR);
+ 	rxerr = priv->read_reg(priv, SJA1000_RXERR);
+@@ -408,8 +406,11 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 	if (isrc & IRQ_DOI) {
+ 		/* data overrun interrupt */
+ 		netdev_dbg(dev, "data overrun interrupt\n");
+-		cf->can_id |= CAN_ERR_CRTL;
+-		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
++		if (skb) {
++			cf->can_id |= CAN_ERR_CRTL;
++			cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
++		}
 +
- /* Default capability regions to read-only, no-virtualization */
- static struct perm_bits cap_perms[PCI_CAP_ID_MAX + 1] = {
- 	[0 ... PCI_CAP_ID_MAX] = { .readfn = vfio_direct_config_read }
-@@ -1840,9 +1844,17 @@ static ssize_t vfio_config_do_rw(struct vfio_pci_core_device *vdev, char __user
- 		cap_start = *ppos;
- 	} else {
- 		if (*ppos >= PCI_CFG_SPACE_SIZE) {
--			WARN_ON(cap_id > PCI_EXT_CAP_ID_MAX);
-+			/*
-+			 * We can get a cap_id that exceeds PCI_EXT_CAP_ID_MAX
-+			 * if we're hiding an unknown capability at the start
-+			 * of the extended capability list.  Use default, ro
-+			 * access, which will virtualize the id and next values.
-+			 */
-+			if (cap_id > PCI_EXT_CAP_ID_MAX)
-+				perm = &direct_ro_perms;
-+			else
-+				perm = &ecap_perms[cap_id];
+ 		stats->rx_over_errors++;
+ 		stats->rx_errors++;
+ 		sja1000_write_cmdreg(priv, CMD_CDO);	/* clear bit */
+@@ -426,7 +427,7 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 		else
+ 			state = CAN_STATE_ERROR_ACTIVE;
+ 	}
+-	if (state != CAN_STATE_BUS_OFF) {
++	if (state != CAN_STATE_BUS_OFF && skb) {
+ 		cf->can_id |= CAN_ERR_CNT;
+ 		cf->data[6] = txerr;
+ 		cf->data[7] = rxerr;
+@@ -434,33 +435,38 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 	if (isrc & IRQ_BEI) {
+ 		/* bus error interrupt */
+ 		priv->can.can_stats.bus_error++;
+-		stats->rx_errors++;
  
--			perm = &ecap_perms[cap_id];
- 			cap_start = vfio_find_cap_start(vdev, *ppos);
- 		} else {
- 			WARN_ON(cap_id > PCI_CAP_ID_MAX);
+ 		ecc = priv->read_reg(priv, SJA1000_ECC);
++		if (skb) {
++			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+ 
+-		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+-
+-		/* set error type */
+-		switch (ecc & ECC_MASK) {
+-		case ECC_BIT:
+-			cf->data[2] |= CAN_ERR_PROT_BIT;
+-			break;
+-		case ECC_FORM:
+-			cf->data[2] |= CAN_ERR_PROT_FORM;
+-			break;
+-		case ECC_STUFF:
+-			cf->data[2] |= CAN_ERR_PROT_STUFF;
+-			break;
+-		default:
+-			break;
+-		}
++			/* set error type */
++			switch (ecc & ECC_MASK) {
++			case ECC_BIT:
++				cf->data[2] |= CAN_ERR_PROT_BIT;
++				break;
++			case ECC_FORM:
++				cf->data[2] |= CAN_ERR_PROT_FORM;
++				break;
++			case ECC_STUFF:
++				cf->data[2] |= CAN_ERR_PROT_STUFF;
++				break;
++			default:
++				break;
++			}
+ 
+-		/* set error location */
+-		cf->data[3] = ecc & ECC_SEG;
++			/* set error location */
++			cf->data[3] = ecc & ECC_SEG;
++		}
+ 
+ 		/* Error occurred during transmission? */
+-		if ((ecc & ECC_DIR) == 0)
+-			cf->data[2] |= CAN_ERR_PROT_TX;
++		if ((ecc & ECC_DIR) == 0) {
++			stats->tx_errors++;
++			if (skb)
++				cf->data[2] |= CAN_ERR_PROT_TX;
++		} else {
++			stats->rx_errors++;
++		}
+ 	}
+ 	if (isrc & IRQ_EPI) {
+ 		/* error passive interrupt */
+@@ -476,8 +482,10 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 		netdev_dbg(dev, "arbitration lost interrupt\n");
+ 		alc = priv->read_reg(priv, SJA1000_ALC);
+ 		priv->can.can_stats.arbitration_lost++;
+-		cf->can_id |= CAN_ERR_LOSTARB;
+-		cf->data[0] = alc & 0x1f;
++		if (skb) {
++			cf->can_id |= CAN_ERR_LOSTARB;
++			cf->data[0] = alc & 0x1f;
++		}
+ 	}
+ 
+ 	if (state != priv->can.state) {
+@@ -490,6 +498,9 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 			can_bus_off(dev);
+ 	}
+ 
++	if (!skb)
++		return -ENOMEM;
++
+ 	netif_rx(skb);
+ 
+ 	return 0;
 -- 
 2.43.0
 
