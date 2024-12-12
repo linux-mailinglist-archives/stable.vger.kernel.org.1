@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5A79EF50F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6C39EF6BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79B4418960D4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDDDC17C1F8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C326223C69;
-	Thu, 12 Dec 2024 16:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6634021766D;
+	Thu, 12 Dec 2024 17:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/OkSK21"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqP7Ha8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4808113792B;
-	Thu, 12 Dec 2024 16:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24137176AA1;
+	Thu, 12 Dec 2024 17:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022662; cv=none; b=YIVZlSCtVXa0tMTrerd9WX0OmA7+57b27nL6r+Gfq26CYvSgD40t7HbntXAwTxNpSOI2QTGCqK7syHEGtPZJTM2peC/KFRg7Ww1waA7SShsYNxtuvII9a+VkxWTzyN0AqpXmCOBeG8eVVoJjcWPnTVzKtxBTPi874zW3B8UX66k=
+	t=1734024109; cv=none; b=Lz7AgnJAQeWPPCvBuPJKl3ASHdxMcNqOcIWZX9PrKht74zdvDZWpFD4OUBgliIOikIWy60NUdtXN0kY82qDXnx/wfKhWVy9DKuc5i8iKP3hqe0Nv1+MsPGSYLeAXhCM80J/IlfS5HOfTDefSAsxAn1v9VBIwmvlkAoDHR7YVFb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022662; c=relaxed/simple;
-	bh=YWSLv5uk9vK8ZW0wstHmdyxCq2nsCYR+U1J6cCmZsOs=;
+	s=arc-20240116; t=1734024109; c=relaxed/simple;
+	bh=LxcfUMhJho2VIDMBhbfMbPDbyGM/U0vTsX0NLOURVpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqc5FRzdoXVMXugxMYJ3Q8d01YlvAex2gjSjqXsPlmbnT4S3fhmlzIelzvLEC+D+9Y0gKEXz6LGaXnNEA13RQtSRSGoaLPf/ExA+21dqymjtuojqYMK+dP/g8dctyP82pV86kOJ4Gr2/O3efuy7jDJoaVf372o8ddPWL0ufVUaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/OkSK21; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A892DC4CECE;
-	Thu, 12 Dec 2024 16:57:41 +0000 (UTC)
+	 MIME-Version; b=iqhr+YQ4Siv/3i7f5jcp0oRzbX6yAkBjkZv4FycqdWADRmWajcNA5Ch4egs4ppQ8dFfWtgScuD0AXequZYeqGA+38ojsiU0E0Dwtci597zyD6uOVtrS3+6GXppulHfnShMcpvBdm8fe9zxgWVo2jfI53Xc5bsHOtzSFUXzsulHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqP7Ha8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998AEC4CECE;
+	Thu, 12 Dec 2024 17:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022662;
-	bh=YWSLv5uk9vK8ZW0wstHmdyxCq2nsCYR+U1J6cCmZsOs=;
+	s=korg; t=1734024109;
+	bh=LxcfUMhJho2VIDMBhbfMbPDbyGM/U0vTsX0NLOURVpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/OkSK21KqoV6lEDpJXXPifkJzeRqDGoRDVIkQPtOHB2gGmEJPXhO25RIIQMeoP/c
-	 oiNZ8InT/k7nkSetueEbJpmCAz6pd8Vcfny5suS4q5UdLISaGijjD7DQg/8NnM6IfT
-	 DJmJN5Wzo/g8FKuUDRbY+eobXBxb7z55PlXtvuUw=
+	b=SqP7Ha8JURVJLLHPwKF0oiqGW5uOcmGnxb56jWB26FRSmgOL4zHRe7deiBICnEQVq
+	 vTCXlJRnz3FosD/eE6KoLJn7i7JRqjEzVlfkfFL4BtlrcjBruKRrnfrhMT6qx9hEtX
+	 adnpABN8twk7/5S6pp5/LrnRXJHIdGYbcZfEsF4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Mylavarapu <quic_mmanikan@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 302/565] soc: qcom: socinfo: fix revision check in qcom_socinfo_probe()
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 159/459] driver core: Introduce device_find_any_child() helper
 Date: Thu, 12 Dec 2024 15:58:17 +0100
-Message-ID: <20241212144323.404962953@linuxfoundation.org>
+Message-ID: <20241212144259.797847629@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 128fdbf36cddc2a901c4889ba1c89fa9f2643f2c upstream.
+[ Upstream commit 82b070beae1ef55b0049768c8dc91d87565bb191 ]
 
-In success case, the revision holds a non-null pointer. The current
-logic incorrectly returns an error for a non-null pointer, whereas
-it should return an error for a null pointer.
+There are several places in the kernel where this kind of functionality is
+being used. Provide a generic helper for such cases.
 
-The socinfo driver for IPQ9574 and IPQ5332 is currently broken,
-resulting in the following error message
-qcom-socinfo qcom-socinfo: probe with driver qcom-socinfo failed with
-error -12
-
-Add a null check for the revision to ensure it returns an error only in
-failure case (null pointer).
-
-Fixes: e694d2b5c58b ("soc: qcom: Add check devm_kasprintf() returned value")
-Signed-off-by: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241016144852.2888679-1-quic_mmanikan@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20220610120219.18988-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 27aabf27fd01 ("Bluetooth: fix use-after-free in device_for_each_child()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/socinfo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/core.c    | 20 ++++++++++++++++++++
+ include/linux/device.h |  2 ++
+ 2 files changed, 22 insertions(+)
 
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -614,7 +614,7 @@ static int qcom_socinfo_probe(struct pla
- 	qs->attr.revision = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%u.%u",
- 					   SOCINFO_MAJOR(le32_to_cpu(info->ver)),
- 					   SOCINFO_MINOR(le32_to_cpu(info->ver)));
--	if (!qs->attr.soc_id || qs->attr.revision)
-+	if (!qs->attr.soc_id || !qs->attr.revision)
- 		return -ENOMEM;
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index b13a60de5a863..82eb25ad1c72e 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3419,6 +3419,26 @@ struct device *device_find_child_by_name(struct device *parent,
+ }
+ EXPORT_SYMBOL_GPL(device_find_child_by_name);
  
- 	if (offsetof(struct socinfo, serial_num) <= item_size) {
++static int match_any(struct device *dev, void *unused)
++{
++	return 1;
++}
++
++/**
++ * device_find_any_child - device iterator for locating a child device, if any.
++ * @parent: parent struct device
++ *
++ * This is similar to the device_find_child() function above, but it
++ * returns a reference to a child device, if any.
++ *
++ * NOTE: you will need to drop the reference with put_device() after use.
++ */
++struct device *device_find_any_child(struct device *parent)
++{
++	return device_find_child(parent, NULL, match_any);
++}
++EXPORT_SYMBOL_GPL(device_find_any_child);
++
+ int __init devices_init(void)
+ {
+ 	devices_kset = kset_create_and_add("devices", &device_uevent_ops, NULL);
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 9c9ce573c737f..d615719b19d4d 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -834,6 +834,8 @@ struct device *device_find_child(struct device *dev, void *data,
+ 				 int (*match)(struct device *dev, void *data));
+ struct device *device_find_child_by_name(struct device *parent,
+ 					 const char *name);
++struct device *device_find_any_child(struct device *parent);
++
+ int device_rename(struct device *dev, const char *new_name);
+ int device_move(struct device *dev, struct device *new_parent,
+ 		enum dpm_order dpm_order);
+-- 
+2.43.0
+
 
 
 
