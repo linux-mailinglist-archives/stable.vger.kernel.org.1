@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-100903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9199EE65B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:10:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A299EE65F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:11:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61350161006
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 12:09:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47AFB281956
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 12:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3A4259495;
-	Thu, 12 Dec 2024 12:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA596212B0B;
+	Thu, 12 Dec 2024 12:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqJ0dtRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frbRjRAE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46156211A1E;
-	Thu, 12 Dec 2024 12:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A57211719;
+	Thu, 12 Dec 2024 12:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734005394; cv=none; b=O1t2BUeV7nnF0Wg1G9IJ/Cb1Bg8iLXO4WEiCYgxZUumIZ9r+qoldVoiuXgmC3l1GjUt/nhdsWMJD5hHtGAZsnUQADDTYwhbEQsD4LqtG/BZY2dnHLtm2GMump+jfUJI+0UzyjngUYnDDKoYmL9bw2KT/3LSVf/C57HsVhJLm9KE=
+	t=1734005486; cv=none; b=NSE9eIuNXrUQWe4/M5TPj1NmxoP58xBBO/aBaDEoMIA6kWx5AK3+T8bvmCq/4XZUtf3mv1fQt6eNVYHhw7A+YrSB4JrieSSkXIkT0UvjpuZPXhmHT2gShsBFvpCcDzSgbaeOIiy4KQ04EN3+j1rXATrSaNEU2jwf76v+3vqF6Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734005394; c=relaxed/simple;
-	bh=U59/QLEl7hYdBEpB1dXTAZwPI8WQJUNGqd3XEIbuTu8=;
+	s=arc-20240116; t=1734005486; c=relaxed/simple;
+	bh=z4IR5aQ9BHMU6pLPaRemCvtw3/mCLG8VNTuWpfCN/AU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1bonTp7Ei/OYt60aw3RJW7kK/3HgZzxCOqFG5ff12u2hStLdWDuHx9BfVkU4zeN6uDIDyongS/3s6ugrk4OcQBR/her44ZT8NsdlB69pgkCxy2L8G06wTWP7nX44IFZ5Qu1V+XWTZxnzNxIrc6eoPjwFq4cbQ/QBmsAoE0VaPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqJ0dtRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D8BC4CED0;
-	Thu, 12 Dec 2024 12:09:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=P6zn5m+7tVrwC2Sa78XOvHUBmQw4o3Z5MXxnfR+3w1gGozuvyt6+H537MXWCrXzT1p946r7hGEYGETZHBFlqwVci+2CsSLkDzL6ta7/aIUc1pNOBCR2uoz4M2o1vBa7DSjzoN0JERKiaCiuh/9drSY2C1uoLWI91eTnqZ5ZLCU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frbRjRAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59249C4CECE;
+	Thu, 12 Dec 2024 12:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734005392;
-	bh=U59/QLEl7hYdBEpB1dXTAZwPI8WQJUNGqd3XEIbuTu8=;
+	s=korg; t=1734005484;
+	bh=z4IR5aQ9BHMU6pLPaRemCvtw3/mCLG8VNTuWpfCN/AU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gqJ0dtRL1hbkI6dj8gHqlznbjIRPsWmebAsIa29f66JCocZyEdkI97cvA8SAEp0wi
-	 wTKisIHb9AelfijHOjQchtxpHCEaGBnYLRVxAOyT9zLSM1urllO9EdpMyVLtMVBg9T
-	 +WqhCeq7q8opvqM5o9p40U02+f8xWe8v6H74uU1c=
-Date: Thu, 12 Dec 2024 13:09:49 +0100
+	b=frbRjRAEc9YR6sD/8xPGdYfwG5V+e0P74CnQSqB7cvBGcKUMyPUOSg4HkYVm7xqmt
+	 u6p81YPyIkCsQfMFMibxy+ccs4tYjrYQCaNUPullQU8pFFnuB6W5LHOy5WIDhBPL6E
+	 J1ghkjfTUTGJI8+DxbJCskR1eBruPGkIDwh0ccd4=
+Date: Thu, 12 Dec 2024 13:11:20 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: jianqi.ren.cn@windriver.com
-Cc: pc@manguebit.com, stable@vger.kernel.org, sfrench@samba.org, pc@cjr.nz,
-	lsahlber@redhat.com, sprasad@microsoft.com, tom@talpey.com,
-	linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: Re: [PATCH 6.1.y] smb: client: fix potential UAF in
- cifs_dump_full_key()
-Message-ID: <2024121236-jaywalker-outweigh-1c81@gregkh>
-References: <20241209085813.823573-1-jianqi.ren.cn@windriver.com>
+Cc: wayne.lin@amd.com, patches@lists.linux.dev, jerry.zuo@amd.com,
+	zaeem.mohamed@amd.com, daniel.wheeler@amd.com,
+	alexander.deucher@amd.com, stable@vger.kernel.org,
+	harry.wentland@amd.com, sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com, christian.koenig@amd.com,
+	airlied@gmail.com, daniel@ffwll.ch, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] drm/amd/display: Don't refer to dc_sink in
+ is_dsc_need_re_compute
+Message-ID: <2024121206-shelve-contusion-6db0@gregkh>
+References: <20241211101544.2121147-1-jianqi.ren.cn@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,26 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241209085813.823573-1-jianqi.ren.cn@windriver.com>
+In-Reply-To: <20241211101544.2121147-1-jianqi.ren.cn@windriver.com>
 
-On Mon, Dec 09, 2024 at 04:58:13PM +0800, jianqi.ren.cn@windriver.com wrote:
-> From: Paulo Alcantara <pc@manguebit.com>
+On Wed, Dec 11, 2024 at 06:15:44PM +0800, jianqi.ren.cn@windriver.com wrote:
+> From: Wayne Lin <wayne.lin@amd.com>
 > 
-> [ Upstream commit 58acd1f497162e7d282077f816faa519487be045 ]
+> [ Upstream commit fcf6a49d79923a234844b8efe830a61f3f0584e4 ]
 > 
-> Skip sessions that are being teared down (status == SES_EXITING) to
-> avoid UAF.
+> [Why]
+> When unplug one of monitors connected after mst hub, encounter null pointer dereference.
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
+> It's due to dc_sink get released immediately in early_unregister() or detect_ctx(). When
+> commit new state which directly referring to info stored in dc_sink will cause null pointer
+> dereference.
+> 
+> [how]
+> Remove redundant checking condition. Relevant condition should already be covered by checking
+> if dsc_aux is null or not. Also reset dsc_aux to NULL when the connector is disconnected.
+> 
+> Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+> Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 > Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
 > ---
->  fs/smb/client/ioctl.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-You sent this twice, both different, so I have no idea what to do at all
-:(
+You sent this 3 times, all different, so I have no idea what to do.
 
+Ok, I give up.  I'm deleting ALL of your pending stable patches from my
+review queue now due to all of the problems that these have had.
 
+Please work with a more experienced kernel developer at your company to
+get these backports correct, and complete, and send them as a patch
+series with the correct information and documentation as to what is
+going on, so that we have a chance to get this right.
+
+thanks,
+
+greg k-h
 
