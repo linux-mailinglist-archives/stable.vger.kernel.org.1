@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C379EF1E3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6E89EED0C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B891884DB2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7E981694AA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7482397B8;
-	Thu, 12 Dec 2024 16:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E9D21B91D;
+	Thu, 12 Dec 2024 15:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjtdgpbv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7IhaPmX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2815D226545;
-	Thu, 12 Dec 2024 16:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F74321B8E1;
+	Thu, 12 Dec 2024 15:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020623; cv=none; b=nqBf6V3hW3BRVckOQDSFqunQiNI/3AaSrPrT0MfHZznPvzhWHpbpmcvA1Y0FvfptK8W2/1VxkBi03FJJGBui4DuP4ssHhPkGExjPAiCwIBnH7YqzcUSdO2HHyTTPdbbKwosrofmj25VuIVITJjCzIq0CEpZo/dDzwYvjdyeYqkE=
+	t=1734017889; cv=none; b=SYPhbfbpUtrCo85tJGs5fNZVzhkKVKj2s5NeMYs9yu5/4foLJ9cQUbOKXcmsfYL5V7gjU3zs3hKf3R5o+7ZUQWeKdJzbbUDYkXbvn8WpwwgB/aW9aEyWBwclb4HwA4B3VBGy3SKM+ravwz5dWiNJENaz8CW4J+slLAE/AMpB7hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020623; c=relaxed/simple;
-	bh=926HJtEn5ky1N9xkhML+tiW1YsQ0jmDttzzywLJoorU=;
+	s=arc-20240116; t=1734017889; c=relaxed/simple;
+	bh=pjLymWJRNTxsMo9ep9Neo7mHhy3HA3lnRDko3Ug9eB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DunGyl1UGstiSUcg5S7GXGmcxxFQArdV3E5OUoX283rAOoxN/oEH+QnLBMDhjnu+KP7RKYECnL/RO5yZ2mMs9VS6GD8luc2k+/vz16kEDmsK/KJcsUby+cgVk9OSDbzAHHcUzc+64H9lKeNhFPUpprbMPPnfdnASJxBMh4O+sQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjtdgpbv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7293AC4CECE;
-	Thu, 12 Dec 2024 16:23:42 +0000 (UTC)
+	 MIME-Version; b=n58R3c+WH21hb90ygqWJC+YcgeJ9I2thwQIYc+SN3IiWqds/k7RvirOmshZFIVRFktLmdfYsx+/f8FTIQluU8yHzCcNZobFkjUf/g9sNzXfiyaIIsUjMiB2GeBbzROKQLh1QFTl7+VXYiWB6bCZMpUHeNAC4GvfCvFh+abb84jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7IhaPmX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6C9C4CECE;
+	Thu, 12 Dec 2024 15:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020623;
-	bh=926HJtEn5ky1N9xkhML+tiW1YsQ0jmDttzzywLJoorU=;
+	s=korg; t=1734017889;
+	bh=pjLymWJRNTxsMo9ep9Neo7mHhy3HA3lnRDko3Ug9eB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jjtdgpbvkb56lRr82awlJr/yxnn4lTsQgK2bsM973J/He/g9agCFUETyClKTUr5l4
-	 5SwS2fIWOJ3h1K4wiorJ+/ywLxKbjNIQcjiLHzm4fFk2d+YS13mH0QZbUnRd/Vqksy
-	 y3YUYEMbQ7gAV17+8Rn0kU1E5AwzfKbtjPuBivuI=
+	b=x7IhaPmXHkOLvhSTRnoEZplnE2k6oq6eCgZTJqKvxyfAdspGIOVelqw4O/EMsH+km
+	 vi00Tx4milGdnT+/en0dr5WpPWoZPC7IEW4F5NcAsa6VhWI2UXzmDrSpNZs9Vk2Y4S
+	 VwHfWJWzdsl6ekbC2WA7LRL05Q0GaRn4qAXkQEz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 515/772] can: c_can: c_can_handle_bus_err(): update statistics if skb allocation fails
+	Jordy Zomer <jordyzomer@google.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 141/356] ksmbd: fix Out-of-Bounds Read in ksmbd_vfs_stream_read
 Date: Thu, 12 Dec 2024 15:57:40 +0100
-Message-ID: <20241212144411.237609567@linuxfoundation.org>
+Message-ID: <20241212144250.212195378@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Jordy Zomer <jordyzomer@google.com>
 
-[ Upstream commit 9e66242504f49e17481d8e197730faba7d99c934 ]
+commit fc342cf86e2dc4d2edb0fc2ff5e28b6c7845adb9 upstream.
 
-Ensure that the statistics are always updated, even if the skb
-allocation fails.
+An offset from client could be a negative value, It could lead
+to an out-of-bounds read from the stream_buf.
+Note that this issue is coming when setting
+'vfs objects = streams_xattr parameter' in ksmbd.conf.
 
-Fixes: 4d6d26537940 ("can: c_can: fix {rx,tx}_errors statistics")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-2-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: Jordy Zomer <jordyzomer@google.com>
+Signed-off-by: Jordy Zomer <jordyzomer@google.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/c_can/c_can_main.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ fs/smb/server/smb2pdu.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
-index 511615dc33419..cc371d0c9f3c7 100644
---- a/drivers/net/can/c_can/c_can_main.c
-+++ b/drivers/net/can/c_can/c_can_main.c
-@@ -1014,49 +1014,57 @@ static int c_can_handle_bus_err(struct net_device *dev,
- 
- 	/* propagate the error condition to the CAN stack */
- 	skb = alloc_can_err_skb(dev, &cf);
--	if (unlikely(!skb))
--		return 0;
- 
- 	/* check for 'last error code' which tells us the
- 	 * type of the last error to occur on the CAN bus
- 	 */
--	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-+	if (likely(skb))
-+		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
- 	switch (lec_type) {
- 	case LEC_STUFF_ERROR:
- 		netdev_dbg(dev, "stuff error\n");
--		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_STUFF;
- 		stats->rx_errors++;
- 		break;
- 	case LEC_FORM_ERROR:
- 		netdev_dbg(dev, "form error\n");
--		cf->data[2] |= CAN_ERR_PROT_FORM;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_FORM;
- 		stats->rx_errors++;
- 		break;
- 	case LEC_ACK_ERROR:
- 		netdev_dbg(dev, "ack error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
- 		stats->tx_errors++;
- 		break;
- 	case LEC_BIT1_ERROR:
- 		netdev_dbg(dev, "bit1 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT1;
- 		stats->tx_errors++;
- 		break;
- 	case LEC_BIT0_ERROR:
- 		netdev_dbg(dev, "bit0 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT0;
- 		stats->tx_errors++;
- 		break;
- 	case LEC_CRC_ERROR:
- 		netdev_dbg(dev, "CRC error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
- 		stats->rx_errors++;
- 		break;
- 	default:
- 		break;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6652,6 +6652,10 @@ int smb2_read(struct ksmbd_work *work)
  	}
  
-+	if (unlikely(!skb))
-+		return 0;
-+
- 	netif_receive_skb(skb);
- 	return 1;
- }
--- 
-2.43.0
-
+ 	offset = le64_to_cpu(req->Offset);
++	if (offset < 0) {
++		err = -EINVAL;
++		goto out;
++	}
+ 	length = le32_to_cpu(req->Length);
+ 	mincount = le32_to_cpu(req->MinimumCount);
+ 
 
 
 
