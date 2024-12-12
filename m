@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523509EF445
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7869EEDA2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ECCC290DB0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05F2228AEBB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142052288C3;
-	Thu, 12 Dec 2024 17:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C496221D88;
+	Thu, 12 Dec 2024 15:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U02RF7Pa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF84pqEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B9421576E;
-	Thu, 12 Dec 2024 17:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B62B215764;
+	Thu, 12 Dec 2024 15:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023108; cv=none; b=sZRotFStBDmcnSYrz8FrT5I2WIwVmlJVxzN6cwLzIhogRphAd873EpXGIuKy5w75NpyeSSl1L86D2n9LDAuTje7TNt8NdOylUs99JY6mOwT1Wa8BaNZF6Qm8NrplSGBWt0AgHwHMf0HZrH/VrFvqV7ZTL3cioD+4aT/qhq6sSG4=
+	t=1734018472; cv=none; b=RdAp3Jdnd87t/vq/NxYlJK8ZKx7nVazpvYRyK1PN1Ig54FajSKNWwnJTXtXpjSbZiSyRiJoBWiCJfgXVqamvj/SgNFD357l7UwCK7fcIQwQ0hg8i1HRnFrrpox9Xr7E/2nXyqnA+P9darP2PSRpNZaJ9QTkE+2jkOchLDcBoigM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023108; c=relaxed/simple;
-	bh=iLTBcgJAsY+naBNGTNNcuFAaFRMi0DpL++fzbXEvI+s=;
+	s=arc-20240116; t=1734018472; c=relaxed/simple;
+	bh=XXI9I/hZBFiLrbc/vbPHcEk0N4gmwrTvYcML459GsM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRlRGZSzHE7M91FMzH7jNaP/WSSCZXlff3eTzrN25lieciGugYDUbOlQOJc5E1NICLWxBLL1TCE7lA17EzTcr0vB8cSIDtXmVK0kUiOBEe5z1c4SSHKmiLwlts0HZOssFQPewF2aPKOIMYcYDhAUXGPn+9pNvml7jb3LICynMjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U02RF7Pa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E57C4CECE;
-	Thu, 12 Dec 2024 17:05:08 +0000 (UTC)
+	 MIME-Version; b=Y+j9Qyt+FfotVcU53EdSjj/ldNsJIISiU7Kt8n3we5WI5gk5bHvHpEjPu0kkAwT6FJJdobTOpa9lOfecpQt/td9GhA61u0zb1k52ZSbmUOwxmaWH9HZ0H8iq8U6Szq0aG03JphNhYqi6fVBFaB+jYpf/4hbIXnoG68befdduwKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pF84pqEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95850C4CECE;
+	Thu, 12 Dec 2024 15:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023108;
-	bh=iLTBcgJAsY+naBNGTNNcuFAaFRMi0DpL++fzbXEvI+s=;
+	s=korg; t=1734018472;
+	bh=XXI9I/hZBFiLrbc/vbPHcEk0N4gmwrTvYcML459GsM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U02RF7Pad9+Y4omTD6BTRIUYwo3zkV+sYycrYxrOj5nEJX3pf1S7qXR04ERTcsQoS
-	 NczrzoRV4FsuZhNAzislyjZbzbtuNcInnW8dCbdNxjxR8PVdvYMMnMDB7MMWuac5AJ
-	 NeCjxfUE02mUPW2hNdXCwYr5UC8DN567m6KXnRGg=
+	b=pF84pqEQxto5yBlUGA2C+DV3b2mRFYjRimMVCtrLdXL5VEqfEq8H4shgzs+xDE2dL
+	 v/WWdTFxpr8H6hw+xnRl2cSIcnYZk2rVlMWcy7pDYD6DKPF4Hcv2pAVYaA3E+rCqRV
+	 8mpiGvzMWw4PV/HSljdtPYjrBy2WJizKoeMafu6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Peter Chen <peter.chen@kernel.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 427/565] gpio: grgpio: Add NULL check in grgpio_probe
+Subject: [PATCH 6.6 303/356] usb: chipidea: udc: handle USB Error Interrupt if IOC not set
 Date: Thu, 12 Dec 2024 16:00:22 +0100
-Message-ID: <20241212144328.558647667@linuxfoundation.org>
+Message-ID: <20241212144256.535164495@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 050b23d081da0f29474de043e9538c1f7a351b3b ]
+[ Upstream commit 548f48b66c0c5d4b9795a55f304b7298cde2a025 ]
 
-devm_kasprintf() can return a NULL pointer on failure,but this
-returned value in grgpio_probe is not checked.
-Add NULL check in grgpio_probe, to handle kernel NULL
-pointer dereference error.
+As per USBSTS register description about UEI:
 
-Cc: stable@vger.kernel.org
-Fixes: 7eb6ce2f2723 ("gpio: Convert to using %pOF instead of full_name")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20241114091822.78199-1-hanchunchao@inspur.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+  When completion of a USB transaction results in an error condition, this
+  bit is set by the Host/Device Controller. This bit is set along with the
+  USBINT bit, if the TD on which the error interrupt occurred also had its
+  interrupt on complete (IOC) bit set.
+
+UI is set only when IOC set. Add checking UEI to fix miss call
+isr_tr_complete_handler() when IOC have not set and transfer error happen.
+
+Acked-by: Peter Chen <peter.chen@kernel.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240926022906.473319-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-grgpio.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/chipidea/udc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-grgpio.c b/drivers/gpio/gpio-grgpio.c
-index bf5ecf23cbceb..0d2441b7c6d02 100644
---- a/drivers/gpio/gpio-grgpio.c
-+++ b/drivers/gpio/gpio-grgpio.c
-@@ -363,6 +363,9 @@ static int grgpio_probe(struct platform_device *ofdev)
- 	gc->owner = THIS_MODULE;
- 	gc->to_irq = grgpio_to_irq;
- 	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
-+	if (!gc->label)
-+		return -ENOMEM;
-+
- 	gc->base = -1;
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index f70ceedfb468f..9f7d003e467b5 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -2062,7 +2062,7 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
+ 			}
+ 		}
  
- 	err = of_property_read_u32(np, "nbits", &prop);
+-		if (USBi_UI  & intr)
++		if ((USBi_UI | USBi_UEI) & intr)
+ 			isr_tr_complete_handler(ci);
+ 
+ 		if ((USBi_SLI & intr) && !(ci->suspended)) {
 -- 
 2.43.0
 
