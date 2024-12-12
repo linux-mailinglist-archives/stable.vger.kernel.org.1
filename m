@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-103127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AC79EF65E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:24:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CACFF9EF49E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFFD3189A630
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:14:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9D0517F219
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D674222D64;
-	Thu, 12 Dec 2024 17:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEAF222D65;
+	Thu, 12 Dec 2024 16:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGuIOT/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0wNW21G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF83E222D63;
-	Thu, 12 Dec 2024 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3822165EA;
+	Thu, 12 Dec 2024 16:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023628; cv=none; b=pMbIVGNk3kTh5CUqAkjW93Ng5q4VPv7dbZ+oU2J1bFTqCMJ2aqFRH+f9ojewy7/eJdqTFR/teGRjVp1O7j6xOyQ0wHijlLKs+CupjNXYrpsolhhPXti8/HBeo6P1Webvo+EjCSHlZy4b9yZGeeN4S3eAG5rLHB9UsNEmGq6X5kE=
+	t=1734022194; cv=none; b=hDU2ymuvDglBN3ONz944zijlPIpuV0oXg6qDodcSVKGLh/F5YGeJKu1xhnRB2oO3ZqzkiuO5cl4sjF40gV3KTiiEAkQX4URr6g4boKRA6aj37Yco7WQLSzcD9g1LSzVxVwxvTA3OtD2crT8ny68eRfFpAPlEh1Gm8jhWyM8f404=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023628; c=relaxed/simple;
-	bh=+HUopQ8vIvjj34PIhTIHo0PeafA+DVRd+WkKw+pdkRo=;
+	s=arc-20240116; t=1734022194; c=relaxed/simple;
+	bh=SSm+2oAxNi0gzIG/X0rk7560Pl5IKoCMbnIDJM0B2lI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3Ych2SIj9zH3V2bjrFcdBvHc1aJzacO3VvOoK53wz7HNInClYHPHD6OR/1fAWx/aKEWjsoaZfgdQ0EaaysvgYX2ImurNOkOfQSguzDS8v7xnpspR52+EIx0D/34RcULVM8rnIKpftwmIl05YSBRow56MoZ1lA7WI1USHPgi6pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGuIOT/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38991C4CED4;
-	Thu, 12 Dec 2024 17:13:48 +0000 (UTC)
+	 MIME-Version; b=JTl9k61ONwYgidZlmDgaAb6jPNm+allLEtbhGdFbrqdMPXYnKLMNGkzNodns8RoK7uUg0VHjlo4ojcmHjYIgHJ8CW6JqmLHf0iJrcOI+sK53R+ZnAZpityrXyTtNqxW2Fw+xZ78UIuq/IMG+sw59z3pOuKAxcg1LHMFtl+awPNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0wNW21G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6366FC4CED4;
+	Thu, 12 Dec 2024 16:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023628;
-	bh=+HUopQ8vIvjj34PIhTIHo0PeafA+DVRd+WkKw+pdkRo=;
+	s=korg; t=1734022193;
+	bh=SSm+2oAxNi0gzIG/X0rk7560Pl5IKoCMbnIDJM0B2lI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGuIOT/yjPsfeGFFZTLV9lGPYAwNuHrIa6AfNl9mXP8pYYzYGeKN5WQhVGcuTGTty
-	 FkbSYHc7JPuv/Qi62WtQhUUa5iX8p2xLxm+rjzif//980YaF2RZlN9U7i0PDwrvz4d
-	 XUBntpwVptT94FbNQ3XI1lJRCPhnNcNxdUkupNC4=
+	b=q0wNW21GEBMqKSK2cpdFp5jxnv2Eg85oenxOQ3A1zwnTZt38nU/80bqhwuoOVHJrJ
+	 HkaTktmVw/eGm0RLJJ/U2R4U0Evj2niJieNcchH4oGdXYAtGCOc5eOPpsdL1DvBIIO
+	 u+ajwDm0MCkp1BWUu/15FXcgX6vlMDzT9SWsTNK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 030/459] NFSD: Never decrement pending_async_copies on error
+	John Fastabend <john.fastabend@gmail.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 173/565] selftests/bpf: Fix txmsg_redir of test_txmsg_pull in test_sockmap
 Date: Thu, 12 Dec 2024 15:56:08 +0100
-Message-ID: <20241212144254.714133338@linuxfoundation.org>
+Message-ID: <20241212144318.312723288@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit 8286f8b622990194207df9ab852e0f87c60d35e9 ]
+[ Upstream commit b29e231d66303c12b7b8ac3ac2a057df06b161e8 ]
 
-The error flow in nfsd4_copy() calls cleanup_async_copy(), which
-already decrements nn->pending_async_copies.
+txmsg_redir in "Test pull + redirect" case of test_txmsg_pull should be
+1 instead of 0.
 
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Fixes: aadc3bbea163 ("NFSD: Limit the number of concurrent async COPY operations")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 328aa08a081b ("bpf: Selftests, break down test_sockmap into subtests")
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Link: https://lore.kernel.org/r/20241012203731.1248619-3-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1791,10 +1791,8 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
- 		refcount_set(&async_copy->refcount, 1);
- 		/* Arbitrary cap on number of pending async copy operations */
- 		if (atomic_inc_return(&nn->pending_async_copies) >
--				(int)rqstp->rq_pool->sp_nrthreads) {
--			atomic_dec(&nn->pending_async_copies);
-+				(int)rqstp->rq_pool->sp_nrthreads)
- 			goto out_err;
--		}
- 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
- 		if (!async_copy->cp_src)
- 			goto out_err;
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 8404f09cb1e35..b17250c41d691 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -1557,7 +1557,7 @@ static void test_txmsg_pull(int cgrp, struct sockmap_options *opt)
+ 	test_send_large(opt, cgrp);
+ 
+ 	/* Test pull + redirect */
+-	txmsg_redir = 0;
++	txmsg_redir = 1;
+ 	txmsg_start = 1;
+ 	txmsg_end = 2;
+ 	test_send(opt, cgrp);
+-- 
+2.43.0
+
 
 
 
