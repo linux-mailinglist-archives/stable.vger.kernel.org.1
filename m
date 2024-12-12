@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933F69EED8B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10D69EF2ED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5471E28A307
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1A616F8E8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154D622333D;
-	Thu, 12 Dec 2024 15:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE77223E71;
+	Thu, 12 Dec 2024 16:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPnsl4b4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uV8XD7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A0222331C;
-	Thu, 12 Dec 2024 15:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0F52253E6;
+	Thu, 12 Dec 2024 16:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018400; cv=none; b=R4G7xAgSm/jL8WiKWZej4ojCbLUw1usr9Jmt/JOWsGQ4CjhAu7HWKMzVwM23RVUvgN9BWK/uxzQy6Ovi5OwQJ2YnBmjbF+ApUPmSLgQwte3R8EDx2SaP14eiHm81BlQdh/cX2gTnF39PRjLpzfZMjCC5/xgIiF73zTH93R37CAY=
+	t=1734021142; cv=none; b=sOLFpFQkhfX8puobCtnIfspsdLy9ORwRbtZaIsryaAeW4jf0R+jSoJLV4Vr5itYvp+lHDzqg1muq41EsdQStWNykDegb164XmN3YXXBxi4FbCyYle1QkTkFlPLm1YhShZCSfrAtV0dPS+8cHSTn8USso87fL6godn3of5okvxAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018400; c=relaxed/simple;
-	bh=hCi1zbYdJthsyHjHwRO3NCWEO8yjJy6xUwHWBKc2l+w=;
+	s=arc-20240116; t=1734021142; c=relaxed/simple;
+	bh=rrWMRsTdxvzZH9l9ev5BldYv7RrTzuUk2R+uxpLz9Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ItM7RrNw5DKwuBa8szTRETUYxqxlbIZ8i2XAAK67Y1LWX8KOSRqxxiOHzr9CKB8MYo17dea+z+jAYuX01fyG9I31dooBtvQfPJn8l0RAdG5jETbcVyvUCeCrfDpyAXwBNvkLqmoEWNzfiWotD3ZmQ3Hp/K+jnOMtIt//Q70Ilh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPnsl4b4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B605C4AF0B;
-	Thu, 12 Dec 2024 15:46:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WidsAvyv5OgR05S3fr34eTegMYCXPGIN1vVbeeSBO2/DAVSZAGsz9JosJCpP/MRRnlFNkXg4fofLtQtp5Ue4+6yCTUVFUVj1kIONPoXS43a3wFOIWsftSSwPOSLmDuJviQk6eZaWW/zQFKg/aSVp89COUSdfa8IX4pR6q1FQLoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uV8XD7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA3FC4CECE;
+	Thu, 12 Dec 2024 16:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018400;
-	bh=hCi1zbYdJthsyHjHwRO3NCWEO8yjJy6xUwHWBKc2l+w=;
+	s=korg; t=1734021141;
+	bh=rrWMRsTdxvzZH9l9ev5BldYv7RrTzuUk2R+uxpLz9Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YPnsl4b4LAVCXpwhRryzjwA0g7Mem8kG38OkpvKo7yJTVpOpWESBmPYeL7sBkPa90
-	 Ujfbd8NvNLskAHwiSkkEKoXXmmHeV/ekdSiNufRT2iH+t4necv3r1Syr9qbTlfKiQ1
-	 vp+8gKQ0/gsc+okKbRKzVnb11ULNDyVlxPhPaRho=
+	b=0uV8XD7bPk8wzwFSoicdQHc8wWM3oNB4DrgosqwpIu+H3UJQPU/1+tVh1hAauEths
+	 ObkUMrSy9jBVQI2aDGTXmTiJDbwayTwMpTw4oXNBev+KytEMRubwa8oAHFVe2lmw78
+	 +oA6feWKVWuXhgj+bvWhrufhayshaO5nlRoj1NSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 282/356] pinctrl: qcom: spmi-mpp: Add PM8937 compatible
-Date: Thu, 12 Dec 2024 16:00:01 +0100
-Message-ID: <20241212144255.724172977@linuxfoundation.org>
+Subject: [PATCH 6.1 657/772] drm: panel-orientation-quirks: Add quirk for AYA NEO GEEK
+Date: Thu, 12 Dec 2024 16:00:02 +0100
+Message-ID: <20241212144417.069553349@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +65,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
 
-[ Upstream commit f755261190e88f5d19fe0a3b762f0bbaff6bd438 ]
+[ Upstream commit 428656feb972ca99200fc127b5aecb574efd9d3d ]
 
-The PM8937 provides 4 MPPs.
-Add a compatible to support them.
+Add quirk orientation for AYA NEO GEEK. The name appears without
+spaces in DMI strings. The board name is completely different to
+the previous models making it difficult to reuse their quirks
+despite being the same resolution and using the same orientation.
 
+Tested by the JELOS team that has been patching their own kernel for a
+while now and confirmed by users in the AYA NEO and ChimeraOS discord
+servers.
+
+Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/20241031-msm8917-v2-4-8a075faa89b1@mainlining.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/40350b0d63fe2b54e7cba1e14be50917203f0079.1726492131.git.tjakobi@math.uni-bielefeld.de
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-spmi-mpp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-index fe0393829c207..08255a87897cf 100644
---- a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-@@ -984,6 +984,7 @@ static const struct of_device_id pmic_mpp_of_match[] = {
- 	{ .compatible = "qcom,pm8226-mpp", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8841-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pm8916-mpp", .data = (void *) 4 },
-+	{ .compatible = "qcom,pm8937-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pm8941-mpp", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8950-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pmi8950-mpp", .data = (void *) 4 },
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 2ee14c6b6fd62..c00f6f16244c0 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -208,6 +208,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_PRODUCT_NAME, "AYA NEO Founder"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
++	}, {	/* AYA NEO GEEK */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "GEEK"),
++		},
++		.driver_data = (void *)&lcd800x1280_rightside_up,
+ 	}, {	/* AYA NEO NEXT */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
 -- 
 2.43.0
 
