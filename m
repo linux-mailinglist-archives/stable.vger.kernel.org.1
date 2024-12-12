@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-100909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2269EE741
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:58:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6712C9EE749
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:00:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD091188831D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 12:58:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 546451888301
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248342135DE;
-	Thu, 12 Dec 2024 12:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D67211A1B;
+	Thu, 12 Dec 2024 13:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3qpLUcS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2zsM21U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84101714D7
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 12:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369A520E6F5
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 13:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734008330; cv=none; b=eW48DcdKpvX1XI/dxvwqEf8auCwrj76rDrW4wed07EjlihHSCrKbl6f9SUqh4yIKTS0leaUOkjSdmjpeJjCQxgqF3Ml8ob1GD+UaDnIabONQlttA6FC2FvhcWXn2YUAYy1oyqvTVsl6viKUXxfet9Q9W2FR0tw4to1je4A7UYO8=
+	t=1734008430; cv=none; b=L2B8ET9rJxHErWA7Ov+WhXFBNbzkozKLk4regicJJ3xEODL+lp9i19RNJKXro3p1sR5rrGQpLnXGi6gVGlQuJAsRhuCdKManhPey2qnS1Muu6j/gSYqE/9GE48adqLO0V3Hla0QhQ/XtzIzgmWQAPFyeP4x1AU6PY8czbQ6bhBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734008330; c=relaxed/simple;
-	bh=XsJ0ZcRPyiK5y7TIMZN8HLskGEb7OiHUyugkuirbYjs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZRYe6HFh9T31dSGz+OePpOc3U0rGJXG7GsL+l6reED5jh9oolh7vKpIHr4VBm/IzQMdsIZUNOFu3lczakysrhHq47bGx9F/uOUJXePwe/cYe6R1hYv+WJXDtrbo1iyDWTi5KSN/5lfXqeWbig7IGGX1BqrwShusjwMtZ9/KrJf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3qpLUcS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F705C4CECE;
-	Thu, 12 Dec 2024 12:58:49 +0000 (UTC)
+	s=arc-20240116; t=1734008430; c=relaxed/simple;
+	bh=p8q64kOvVivYagYdVaAVxxZOo2beMcbxc91Ia5V1Swc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NQ3Gzzn4/g3imNn2tKfBl/ynguL1Ny28gL1h8ZCjuxYejFF2yYlRfZ7ZMkHwub2bRpHw7LMV9GNDB0F22ulEx9ISPaxOarWikQx648E6k3Usm4WKRKcKOqc3HTMZzkXgZWzELfO1SObRis2/IUOooZSDgWdljMY+UR6bfNdNbXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2zsM21U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8D0C4CECE;
+	Thu, 12 Dec 2024 13:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734008330;
-	bh=XsJ0ZcRPyiK5y7TIMZN8HLskGEb7OiHUyugkuirbYjs=;
+	s=korg; t=1734008429;
+	bh=p8q64kOvVivYagYdVaAVxxZOo2beMcbxc91Ia5V1Swc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=k3qpLUcSlg8ZT9LmKcx7uN9/f1m3DiEfiBlh3jf81sS4+yabdpLULwMCnyNXFoU7P
-	 l0veabeIwHAIQOyvXISd40xdo8wiLKWNMjtR450uJ/yhP7jFN5Ng86FfP7o6ik4N02
-	 tHbsdk/txO3drlOnCv8oI/N+hfFBE6pzvISufFlo=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Revert commit Update Interface to Check UCLK" failed to apply to 6.12-stable tree
-To: Austin.Zheng@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,daniel.wheeler@amd.com,rodrigo.siqueira@amd.com
+	b=Z2zsM21UIvQVhO+Nu1d85vjqVPlbN/30jcnuF+G99MhDL+Gv9/YxvK8gHY1PtbC3Z
+	 u40wk8ctx0vimHxb/3LsEvUDno9pYngxRkl5tSlMLDYf/b6QT70gPtm2L2OB6kfgKl
+	 WkmPL+HPJibuSk1VFdgwK133J20gwzWl2PFDrw0w=
+Subject: FAILED: patch "[PATCH] clocksource: Make negative motion detection more robust" failed to apply to 5.4-stable tree
+To: tglx@linutronix.de,linux@roeck-us.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 12 Dec 2024 13:58:47 +0100
-Message-ID: <2024121247-pantomime-moonlight-81f0@gregkh>
+Date: Thu, 12 Dec 2024 14:00:26 +0100
+Message-ID: <2024121226-cathedral-decimeter-88cb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0e93b76cf92f229409e8da85c2a143868835fec3
+git cherry-pick -x 76031d9536a076bf023bedbdb1b4317fc801dd67
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121247-pantomime-moonlight-81f0@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121226-cathedral-decimeter-88cb@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,129 +77,149 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0e93b76cf92f229409e8da85c2a143868835fec3 Mon Sep 17 00:00:00 2001
-From: Austin Zheng <Austin.Zheng@amd.com>
-Date: Mon, 23 Sep 2024 10:07:32 -0400
-Subject: [PATCH] drm/amd/display: Revert commit Update Interface to Check UCLK
- DPM
+From 76031d9536a076bf023bedbdb1b4317fc801dd67 Mon Sep 17 00:00:00 2001
+From: Thomas Gleixner <tglx@linutronix.de>
+Date: Tue, 3 Dec 2024 11:16:30 +0100
+Subject: [PATCH] clocksource: Make negative motion detection more robust
 
-This reverts commit b8d046985c2dc41a0e264a391da4606099f8d44f.
+Guenter reported boot stalls on a emulated ARM 32-bit platform, which has a
+24-bit wide clocksource.
 
-Reverting as regression discovered on certain systems and golden values
-need to updated.
+It turns out that the calculated maximal idle time, which limits idle
+sleeps to prevent clocksource wrap arounds, is close to the point where the
+negative motion detection triggers.
 
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
-Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  max_idle_ns:                    597268854 ns
+  negative motion tripping point: 671088640 ns
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 48057ac22cbd..57ad6ce88f3f 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -6038,15 +6038,8 @@ void dc_set_edp_power(const struct dc *dc, struct dc_link *edp_link,
- struct dc_power_profile dc_get_power_profile_for_dc_state(const struct dc_state *context)
+If the idle wakeup is delayed beyond that point, the clocksource
+advances far enough to trigger the negative motion detection. This
+prevents the clock to advance and in the worst case the system stalls
+completely if the consecutive sleeps based on the stale clock are
+delayed as well.
+
+Cure this by calculating a more robust cut-off value for negative motion,
+which covers 87.5% of the actual clocksource counter width. Compare the
+delta against this value to catch negative motion. This is specifically for
+clock sources with a small counter width as their wrap around time is close
+to the half counter width. For clock sources with wide counters this is not
+a problem because the maximum idle time is far from the half counter width
+due to the math overflow protection constraints.
+
+For the case at hand this results in a tripping point of 1174405120ns.
+
+Note, that this cannot prevent issues when the delay exceeds the 87.5%
+margin, but that's not different from the previous unchecked version which
+allowed arbitrary time jumps.
+
+Systems with small counter width are prone to invalid results, but this
+problem is unlikely to be seen on real hardware. If such a system
+completely stalls for more than half a second, then there are other more
+urgent problems than the counter wrapping around.
+
+Fixes: c163e40af9b2 ("timekeeping: Always check for negative motion")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/all/8734j5ul4x.ffs@tglx
+Closes: https://lore.kernel.org/all/387b120b-d68a-45e8-b6ab-768cd95d11c2@roeck-us.net
+
+diff --git a/include/linux/clocksource.h b/include/linux/clocksource.h
+index ef1b16da6ad5..65b7c41471c3 100644
+--- a/include/linux/clocksource.h
++++ b/include/linux/clocksource.h
+@@ -49,6 +49,7 @@ struct module;
+  * @archdata:		Optional arch-specific data
+  * @max_cycles:		Maximum safe cycle value which won't overflow on
+  *			multiplication
++ * @max_raw_delta:	Maximum safe delta value for negative motion detection
+  * @name:		Pointer to clocksource name
+  * @list:		List head for registration (internal)
+  * @freq_khz:		Clocksource frequency in khz.
+@@ -109,6 +110,7 @@ struct clocksource {
+ 	struct arch_clocksource_data archdata;
+ #endif
+ 	u64			max_cycles;
++	u64			max_raw_delta;
+ 	const char		*name;
+ 	struct list_head	list;
+ 	u32			freq_khz;
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index aab6472853fa..7304d7cf47f2 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -24,7 +24,7 @@ static void clocksource_enqueue(struct clocksource *cs);
+ 
+ static noinline u64 cycles_to_nsec_safe(struct clocksource *cs, u64 start, u64 end)
  {
- 	struct dc_power_profile profile = { 0 };
--	struct dc *dc = NULL;
+-	u64 delta = clocksource_delta(end, start, cs->mask);
++	u64 delta = clocksource_delta(end, start, cs->mask, cs->max_raw_delta);
  
--	if (!context || !context->clk_mgr || !context->clk_mgr->ctx || !context->clk_mgr->ctx->dc)
--		return profile;
--
--	dc = context->clk_mgr->ctx->dc;
--
--	if (dc->res_pool->funcs->get_power_profile)
--		profile.power_level = dc->res_pool->funcs->get_power_profile(context);
-+	profile.power_level += !context->bw_ctx.bw.dcn.clk.p_state_change_support;
- 
- 	return profile;
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c
-index 2e9c59e9e0c1..1cf9015e854a 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_pmo/dml2_pmo_dcn4_fams2.c
-@@ -1798,7 +1798,6 @@ bool pmo_dcn4_fams2_init_for_pstate_support(struct dml2_pmo_init_for_pstate_supp
- 	}
- 
- 	if (s->pmo_dcn4.num_pstate_candidates > 0) {
--		s->pmo_dcn4.pstate_strategy_candidates[s->pmo_dcn4.num_pstate_candidates-1].allow_state_increase = true;
- 		s->pmo_dcn4.cur_pstate_candidate = -1;
- 		return true;
- 	} else {
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-index 8597e866bfe6..bfb8b8502d20 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-@@ -215,10 +215,6 @@ struct resource_funcs {
- 
- 	void (*get_panel_config_defaults)(struct dc_panel_config *panel_config);
- 	void (*build_pipe_pix_clk_params)(struct pipe_ctx *pipe_ctx);
--	/*
--	 * Get indicator of power from a context that went through full validation
--	 */
--	int (*get_power_profile)(const struct dc_state *context);
- };
- 
- struct audio_support{
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-index f6b840f046a5..3f4b9dba4112 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-@@ -1812,11 +1812,6 @@ static void dcn315_get_panel_config_defaults(struct dc_panel_config *panel_confi
- 	*panel_config = panel_config_defaults;
+ 	if (likely(delta < cs->max_cycles))
+ 		return clocksource_cyc2ns(delta, cs->mult, cs->shift);
+@@ -993,6 +993,15 @@ static inline void clocksource_update_max_deferment(struct clocksource *cs)
+ 	cs->max_idle_ns = clocks_calc_max_nsecs(cs->mult, cs->shift,
+ 						cs->maxadj, cs->mask,
+ 						&cs->max_cycles);
++
++	/*
++	 * Threshold for detecting negative motion in clocksource_delta().
++	 *
++	 * Allow for 0.875 of the counter width so that overly long idle
++	 * sleeps, which go slightly over mask/2, do not trigger the
++	 * negative motion detection.
++	 */
++	cs->max_raw_delta = (cs->mask >> 1) + (cs->mask >> 2) + (cs->mask >> 3);
  }
  
--static int dcn315_get_power_profile(const struct dc_state *context)
--{
--	return !context->bw_ctx.bw.dcn.clk.p_state_change_support;
--}
--
- static struct dc_cap_funcs cap_funcs = {
- 	.get_dcc_compression_cap = dcn20_get_dcc_compression_cap
- };
-@@ -1845,7 +1840,6 @@ static struct resource_funcs dcn315_res_pool_funcs = {
- 	.update_bw_bounding_box = dcn315_update_bw_bounding_box,
- 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
- 	.get_panel_config_defaults = dcn315_get_panel_config_defaults,
--	.get_power_profile = dcn315_get_power_profile,
- };
+ static struct clocksource *clocksource_find_best(bool oneshot, bool skipcur)
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 0ca85ff4fbb4..3d128825d343 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -755,7 +755,8 @@ static void timekeeping_forward_now(struct timekeeper *tk)
+ 	u64 cycle_now, delta;
  
- static bool dcn315_resource_construct(
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-index 59184abab1a7..f2653a86d3e7 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-@@ -1688,22 +1688,6 @@ static void dcn401_build_pipe_pix_clk_params(struct pipe_ctx *pipe_ctx)
- 	}
+ 	cycle_now = tk_clock_read(&tk->tkr_mono);
+-	delta = clocksource_delta(cycle_now, tk->tkr_mono.cycle_last, tk->tkr_mono.mask);
++	delta = clocksource_delta(cycle_now, tk->tkr_mono.cycle_last, tk->tkr_mono.mask,
++				  tk->tkr_mono.clock->max_raw_delta);
+ 	tk->tkr_mono.cycle_last = cycle_now;
+ 	tk->tkr_raw.cycle_last  = cycle_now;
+ 
+@@ -2230,7 +2231,8 @@ static bool timekeeping_advance(enum timekeeping_adv_mode mode)
+ 		return false;
+ 
+ 	offset = clocksource_delta(tk_clock_read(&tk->tkr_mono),
+-				   tk->tkr_mono.cycle_last, tk->tkr_mono.mask);
++				   tk->tkr_mono.cycle_last, tk->tkr_mono.mask,
++				   tk->tkr_mono.clock->max_raw_delta);
+ 
+ 	/* Check if there's really nothing to do */
+ 	if (offset < real_tk->cycle_interval && mode == TK_ADV_TICK)
+diff --git a/kernel/time/timekeeping_internal.h b/kernel/time/timekeeping_internal.h
+index 63e600e943a7..8c9079108ffb 100644
+--- a/kernel/time/timekeeping_internal.h
++++ b/kernel/time/timekeeping_internal.h
+@@ -30,15 +30,15 @@ static inline void timekeeping_inc_mg_floor_swaps(void)
+ 
+ #endif
+ 
+-static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
++static inline u64 clocksource_delta(u64 now, u64 last, u64 mask, u64 max_delta)
+ {
+ 	u64 ret = (now - last) & mask;
+ 
+ 	/*
+-	 * Prevent time going backwards by checking the MSB of mask in
+-	 * the result. If set, return 0.
++	 * Prevent time going backwards by checking the result against
++	 * @max_delta. If greater, return 0.
+ 	 */
+-	return ret & ~(mask >> 1) ? 0 : ret;
++	return ret > max_delta ? 0 : ret;
  }
  
--static int dcn401_get_power_profile(const struct dc_state *context)
--{
--	int uclk_mhz = context->bw_ctx.bw.dcn.clk.dramclk_khz / 1000;
--	int dpm_level = 0;
--
--	for (int i = 0; i < context->clk_mgr->bw_params->clk_table.num_entries_per_clk.num_memclk_levels; i++) {
--		if (context->clk_mgr->bw_params->clk_table.entries[i].memclk_mhz == 0 ||
--			uclk_mhz < context->clk_mgr->bw_params->clk_table.entries[i].memclk_mhz)
--			break;
--		if (uclk_mhz > context->clk_mgr->bw_params->clk_table.entries[i].memclk_mhz)
--			dpm_level++;
--	}
--
--	return dpm_level;
--}
--
- static struct resource_funcs dcn401_res_pool_funcs = {
- 	.destroy = dcn401_destroy_resource_pool,
- 	.link_enc_create = dcn401_link_encoder_create,
-@@ -1730,7 +1714,6 @@ static struct resource_funcs dcn401_res_pool_funcs = {
- 	.prepare_mcache_programming = dcn401_prepare_mcache_programming,
- 	.build_pipe_pix_clk_params = dcn401_build_pipe_pix_clk_params,
- 	.calculate_mall_ways_from_bytes = dcn32_calculate_mall_ways_from_bytes,
--	.get_power_profile = dcn401_get_power_profile,
- };
- 
- static uint32_t read_pipe_fuses(struct dc_context *ctx)
+ /* Semi public for serialization of non timekeeper VDSO updates. */
 
 
