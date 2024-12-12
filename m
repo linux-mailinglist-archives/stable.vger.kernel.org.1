@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-103587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65D49EF8C8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3249EF530
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3C4189E15A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65FB0189BE57
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9528C222D6D;
-	Thu, 12 Dec 2024 17:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E6E21766D;
+	Thu, 12 Dec 2024 17:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WF1/8hqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UCrjhxC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B202153DD;
-	Thu, 12 Dec 2024 17:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731F71487CD;
+	Thu, 12 Dec 2024 17:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025015; cv=none; b=k6huyyK66MFg2FWPfYK7ZK9DT9A5Mh/gWtBurMXdq3jbBO2xWj9clEb7c/mWPBUSSJ+PdU/+7q2RpsL0De5iGm3UuzecW+hJ3Io9u8pnM8849FjpGOJyG3PE+knonCD2VhiKFPx6ZCG4d7X2nJ4syc6PCgOpQktdE5M+nOg9u68=
+	t=1734022917; cv=none; b=dL4dH2jxryYBdKJ+Q8iT0htqUpMUqCoIRj+AjAelvFAF5qzzSuOIKMa8BWcbggExWugz953e1mold3uNf6KOPSr/EEwDvt2sBsrcSdzZeAXBY+WDLjCPiEt0tCOh4oZFx1LYTTgpKYTvuxrP+10sopgMj7RbLLEYUWW1VGTt58Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025015; c=relaxed/simple;
-	bh=vFcQScARS2pxCOlDaGuQFKcjEEpjwJ32x1+09ory8IU=;
+	s=arc-20240116; t=1734022917; c=relaxed/simple;
+	bh=SgdUikX3rJZdxpZU4gbNKTK3mI7ApdaGlFgJhqaQNec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XvsE/04LJTeKfPJldYpyXsiKqcIDUBjE2Vjd7ajXRVUDMpBOb0PcHDGBthklqnr7hqXW2SwBybo09FRLy2lOKZuvpOGzZlkokChljT5r3YA64TcXxWAN5zhXA96AoCbjkAYuOETR8ecMQ+ygwP9t9loC7Lw+HyRVw9/5BBHUN/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WF1/8hqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9308C4CECE;
-	Thu, 12 Dec 2024 17:36:54 +0000 (UTC)
+	 MIME-Version; b=SAtuWDu3k3zVLzG97xn/BAYkdR7JBbJNYjQnYZNNymB99+UQLHBzgAk+QlAhwPXcNaSmnmT4AfhZ57YLADb2O0JReJzW8DcijkCVkJ20JV+ZpaejD9Du8Hb31jlBXK+eAz4oIcRBVEZ7RbYBW3I1Ls5EYTxzzqioShHby+TQVuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UCrjhxC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2F1C4CECE;
+	Thu, 12 Dec 2024 17:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025015;
-	bh=vFcQScARS2pxCOlDaGuQFKcjEEpjwJ32x1+09ory8IU=;
+	s=korg; t=1734022917;
+	bh=SgdUikX3rJZdxpZU4gbNKTK3mI7ApdaGlFgJhqaQNec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WF1/8hqCw57ay5cVccnPvJ+5A6Yu+JQl4joSHh1pkor/1fnutjiXze2UIqBGce0W+
-	 4VqMdWIwpGISR/JdT+R/hlCviyS2mK5BCwZSt1iZwbgbJ62OR0oyrdi3fJfu/Rw9p5
-	 vFuNZnOYerighqJzQR3gRv7ygcSsJ/GoC67r9pNQ=
+	b=2UCrjhxC+E+zsWrwjSp3r1amgMZLsI33az6VnpUnwBVjD5XFZbbFB4EQUYJmR5K/w
+	 fCv1YAxFWSm/6Zm/ATeA8QdjNJked54OH73+PI3FmNQJyYvwxGTAVzs+hyum3BgknP
+	 UaK1VuNysXWMEcJe9a76gsdsRLrwHPAAvPb/NpwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Puranjay Mohan <pjy@amazon.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Hagar Hemdan <hagarhem@amazon.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 027/321] nvme: fix metadata handling in nvme-passthrough
-Date: Thu, 12 Dec 2024 15:59:05 +0100
-Message-ID: <20241212144231.075907860@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 351/565] NFSD: Prevent a potential integer overflow
+Date: Thu, 12 Dec 2024 15:59:06 +0100
+Message-ID: <20241212144325.473639395@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <pjy@amazon.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 ]
+commit 7f33b92e5b18e904a481e6e208486da43e4dc841 upstream.
 
-On an NVMe namespace that does not support metadata, it is possible to
-send an IO command with metadata through io-passthru. This allows issues
-like [1] to trigger in the completion code path.
-nvme_map_user_request() doesn't check if the namespace supports metadata
-before sending it forward. It also allows admin commands with metadata to
-be processed as it ignores metadata when bdev == NULL and may report
-success.
+If the tag length is >= U32_MAX - 3 then the "length + 4" addition
+can result in an integer overflow. Address this by splitting the
+decoding into several steps so that decode_cb_compound4res() does
+not have to perform arithmetic on the unsafe length value.
 
-Reject an IO command with metadata when the NVMe namespace doesn't
-support it and reject an admin command if it has metadata.
-
-[1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
-
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Puranjay Mohan <pjy@amazon.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[ Move the changes from nvme_map_user_request() to nvme_submit_user_cmd()
-  to make it work on 5.4 ]
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4callback.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 0676637e1eab6..a841fd4929adc 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -921,11 +921,16 @@ static int nvme_submit_user_cmd(struct request_queue *q,
- 	bool write = nvme_is_write(cmd);
- 	struct nvme_ns *ns = q->queuedata;
- 	struct gendisk *disk = ns ? ns->disk : NULL;
-+	bool supports_metadata = disk && blk_get_integrity(disk);
-+	bool has_metadata = meta_buffer && meta_len;
- 	struct request *req;
- 	struct bio *bio = NULL;
- 	void *meta = NULL;
- 	int ret;
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -297,17 +297,17 @@ static int decode_cb_compound4res(struct
+ 	u32 length;
+ 	__be32 *p;
  
-+	if (has_metadata && !supports_metadata)
-+		return -EINVAL;
-+
- 	req = nvme_alloc_request(q, cmd, 0, NVME_QID_ANY);
- 	if (IS_ERR(req))
- 		return PTR_ERR(req);
-@@ -940,7 +945,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
- 			goto out;
- 		bio = req->bio;
- 		bio->bi_disk = disk;
--		if (disk && meta_buffer && meta_len) {
-+		if (has_metadata) {
- 			meta = nvme_add_user_metadata(bio, meta_buffer, meta_len,
- 					meta_seed, write);
- 			if (IS_ERR(meta)) {
--- 
-2.43.0
-
+-	p = xdr_inline_decode(xdr, 4 + 4);
++	p = xdr_inline_decode(xdr, XDR_UNIT);
+ 	if (unlikely(p == NULL))
+ 		goto out_overflow;
+-	hdr->status = be32_to_cpup(p++);
++	hdr->status = be32_to_cpup(p);
+ 	/* Ignore the tag */
+-	length = be32_to_cpup(p++);
+-	p = xdr_inline_decode(xdr, length + 4);
+-	if (unlikely(p == NULL))
++	if (xdr_stream_decode_u32(xdr, &length) < 0)
++		goto out_overflow;
++	if (xdr_inline_decode(xdr, length) == NULL)
++		goto out_overflow;
++	if (xdr_stream_decode_u32(xdr, &hdr->nops) < 0)
+ 		goto out_overflow;
+-	p += XDR_QUADLEN(length);
+-	hdr->nops = be32_to_cpup(p);
+ 	return 0;
+ out_overflow:
+ 	return -EIO;
 
 
 
