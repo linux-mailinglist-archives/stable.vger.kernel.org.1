@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC5E9EEC95
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7CB9EF256
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97E692846B4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9911217B533
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EFE217F30;
-	Thu, 12 Dec 2024 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E3B236957;
+	Thu, 12 Dec 2024 16:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptgh8w9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ej2xM259"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F161E21578B;
-	Thu, 12 Dec 2024 15:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EE7215799;
+	Thu, 12 Dec 2024 16:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017762; cv=none; b=UNBGrpIMVm/oGmr27Y2o74AtLwhK+A+Kmx95Hea+KOSMNiVcKxAgahBdMptLNm98QOaiI72Wr++pRjsnvSUxibuGU0w1mHiMTKk6vpDXI+neb9tIqQUsQkRPNk3Mq8GdG/VCf2Heq50FFFm0W60TWb58sotVRhuE7DUnBX965b4=
+	t=1734020488; cv=none; b=EzkgKe5kfpPxkc8Uj9XgCpr7pih0EU71DvAUZbqDMBMzpTQkPfTCW5ZXIW6eoYrpt35BCBoapoMW7yFWu5IXHi//ODkvGONvfW+jeJd4TRyLZsITRwhQiDDb6+FKgAsOAFliowEBpvT29E/Mm942iTxC4QJ5njc+llQx5u75PvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017762; c=relaxed/simple;
-	bh=7FjQUMnlaWtGsD/X4vwP1SawEhYb8sDzKZpvUVY5aZY=;
+	s=arc-20240116; t=1734020488; c=relaxed/simple;
+	bh=BqUtF+c6EqjwBswwXVXASdveY3jx70+1HfWlk/lS1fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FsYWF/c1yckdryH/PhxbQiw1WOvFdhN+IQRDwH4Re771vCXbHe5GV+piBRqfdgSHgT27C0J0v6vSzpJEVSLGkbJA66sbCvEovc4gIq7ZIy9Ys7gsw2a8xDpC8VaVxT/l9of3fSW59uahD7wbw0TnoD7EhI6+cL8cFFbTAsudLkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptgh8w9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCE8C4CECE;
-	Thu, 12 Dec 2024 15:36:01 +0000 (UTC)
+	 MIME-Version; b=HfYyEAOsT5BbBnwy9RkMqn+3t2xe/pSg46ZGJvsd6bi3f3BR3gLrkdVqB28VHg3xDRnoxElYYXqbRiOQh1T7KX/WMe4kUDHxkIP2cIguFQWPqlItfuSvm5H/g5JWQtMYm+dfFZHJAH9dFilPW2xJsP3L0tamLdlA8FhSVXuX8pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ej2xM259; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495DFC4CECE;
+	Thu, 12 Dec 2024 16:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017761;
-	bh=7FjQUMnlaWtGsD/X4vwP1SawEhYb8sDzKZpvUVY5aZY=;
+	s=korg; t=1734020487;
+	bh=BqUtF+c6EqjwBswwXVXASdveY3jx70+1HfWlk/lS1fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptgh8w9pQT+xbe8TcPiBCLokxGLZEybNkmQcYutK3JNWfsddhbyfDjNfFHaH8stqu
-	 /OJWBkpYXLBRrBgR/XjpxOiZ8XTLXfcIhy8ENNtAW8N/1afoC5I/vYQ2tGmUethvEy
-	 lWsWNO8qLwPqOblKBMTlnHo+JqcG5+VW/TfMfWzE=
+	b=Ej2xM259/9v9kEOjtwmQ0Pcc5wY7uoNy1SPPscn82LBv19qUEvisY3gBQhJUwP1Sk
+	 8OFh+xPb0rHGBvMQo4O7OXy4icSMwsqX8l/mffn+GWPotMM/jKleY3U8IPCTHttRn4
+	 SnXogKnR32VniXNqnYHGOIMKNW7mzq9QT+f7fwoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/356] i3c: master: Extend address status bit to 4 and add I3C_ADDR_SLOT_EXT_DESIRED
+	Clement LE GOFFIC <clement.legoffic@foss.st.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Melon Liu <melon1335@163.com>
+Subject: [PATCH 6.1 479/772] ARM: 9429/1: ioremap: Sync PGDs for VMALLOC shadow
 Date: Thu, 12 Dec 2024 15:57:04 +0100
-Message-ID: <20241212144248.787447841@linuxfoundation.org>
+Message-ID: <20241212144409.720217140@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,200 +62,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 2f552fa280590e61bd3dbe66a7b54b99caa642a4 ]
+commit d6e6a74d4cea853b5321eeabb69c611148eedefe upstream.
 
-Extend the address status bit to 4 and introduce the
-I3C_ADDR_SLOT_EXT_DESIRED macro to indicate that a device prefers a
-specific address. This is generally set by the 'assigned-address' in the
-device tree source (dts) file.
+When sync:ing the VMALLOC area to other CPUs, make sure to also
+sync the KASAN shadow memory for the VMALLOC area, so that we
+don't get stale entries for the shadow memory in the top level PGD.
 
- ┌────┬─────────────┬───┬─────────┬───┐
- │S/Sr│ 7'h7E RnW=0 │ACK│ ENTDAA  │ T ├────┐
- └────┴─────────────┴───┴─────────┴───┘    │
- ┌─────────────────────────────────────────┘
- │  ┌──┬─────────────┬───┬─────────────────┬────────────────┬───┬─────────┐
- └─►│Sr│7'h7E RnW=1  │ACK│48bit UID BCR DCR│Assign 7bit Addr│PAR│ ACK/NACK│
-    └──┴─────────────┴───┴─────────────────┴────────────────┴───┴─────────┘
+Since we are now copying PGDs in two instances, create a helper
+function named memcpy_pgd() to do the actual copying, and
+create a helper to map the addresses of VMALLOC_START and
+VMALLOC_END into the corresponding shadow memory.
 
-Some master controllers (such as HCI) need to prepare the entire above
-transaction before sending it out to the I3C bus. This means that a 7-bit
-dynamic address needs to be allocated before knowing the target device's
-UID information.
+Co-developed-by: Melon Liu <melon1335@163.com>
 
-However, some I3C targets may request specific addresses (called as
-"init_dyn_addr"), which is typically specified by the DT-'s
-assigned-address property. Lower addresses having higher IBI priority. If
-it is available, i3c_bus_get_free_addr() preferably return a free address
-that is not in the list of desired addresses (called as "init_dyn_addr").
-This allows the device with the "init_dyn_addr" to switch to its
-"init_dyn_addr" when it hot-joins the I3C bus. Otherwise, if the
-"init_dyn_addr" is already in use by another I3C device, the target device
-will not be able to switch to its desired address.
-
-If the previous step fails, fallback returning one of the remaining
-unassigned address, regardless of its state in the desired list.
-
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241021-i3c_dts_assign-v8-2-4098b8bde01e@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 851bd21cdb55 ("i3c: master: Fix dynamic address leak when 'assigned-address' is present")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 565cbaad83d8 ("ARM: 9202/1: kasan: support CONFIG_KASAN_VMALLOC")
+Link: https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b098de9db6d@foss.st.com/
+Reported-by: Clement LE GOFFIC <clement.legoffic@foss.st.com>
+Suggested-by: Mark Rutland <mark.rutland@arm.com>
+Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master.c       | 65 +++++++++++++++++++++++++++++++-------
- include/linux/i3c/master.h |  7 ++--
- 2 files changed, 59 insertions(+), 13 deletions(-)
+ arch/arm/mm/ioremap.c | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 2b6bc03652139..d2a08a9a54414 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -342,7 +342,7 @@ struct bus_type i3c_bus_type = {
- };
- 
- static enum i3c_addr_slot_status
--i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
-+i3c_bus_get_addr_slot_status_mask(struct i3c_bus *bus, u16 addr, u32 mask)
- {
- 	unsigned long status;
- 	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
-@@ -353,11 +353,17 @@ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
- 	status = bus->addrslots[bitpos / BITS_PER_LONG];
- 	status >>= bitpos % BITS_PER_LONG;
- 
--	return status & I3C_ADDR_SLOT_STATUS_MASK;
-+	return status & mask;
+diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
+index 794cfea9f9d4..ff555823cceb 100644
+--- a/arch/arm/mm/ioremap.c
++++ b/arch/arm/mm/ioremap.c
+@@ -23,6 +23,7 @@
+  */
+ #include <linux/module.h>
+ #include <linux/errno.h>
++#include <linux/kasan.h>
+ #include <linux/mm.h>
+ #include <linux/vmalloc.h>
+ #include <linux/io.h>
+@@ -115,16 +116,40 @@ int ioremap_page(unsigned long virt, unsigned long phys,
  }
+ EXPORT_SYMBOL(ioremap_page);
  
--static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
--					 enum i3c_addr_slot_status status)
-+static enum i3c_addr_slot_status
-+i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
++#ifdef CONFIG_KASAN
++static unsigned long arm_kasan_mem_to_shadow(unsigned long addr)
 +{
-+	return i3c_bus_get_addr_slot_status_mask(bus, addr, I3C_ADDR_SLOT_STATUS_MASK);
++	return (unsigned long)kasan_mem_to_shadow((void *)addr);
++}
++#else
++static unsigned long arm_kasan_mem_to_shadow(unsigned long addr)
++{
++	return 0;
++}
++#endif
++
++static void memcpy_pgd(struct mm_struct *mm, unsigned long start,
++		       unsigned long end)
++{
++	end = ALIGN(end, PGDIR_SIZE);
++	memcpy(pgd_offset(mm, start), pgd_offset_k(start),
++	       sizeof(pgd_t) * (pgd_index(end) - pgd_index(start)));
 +}
 +
-+static void i3c_bus_set_addr_slot_status_mask(struct i3c_bus *bus, u16 addr,
-+					      enum i3c_addr_slot_status status, u32 mask)
+ void __check_vmalloc_seq(struct mm_struct *mm)
  {
- 	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
- 	unsigned long *ptr;
-@@ -366,9 +372,14 @@ static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
- 		return;
+ 	int seq;
  
- 	ptr = bus->addrslots + (bitpos / BITS_PER_LONG);
--	*ptr &= ~((unsigned long)I3C_ADDR_SLOT_STATUS_MASK <<
--						(bitpos % BITS_PER_LONG));
--	*ptr |= (unsigned long)status << (bitpos % BITS_PER_LONG);
-+	*ptr &= ~((unsigned long)mask << (bitpos % BITS_PER_LONG));
-+	*ptr |= ((unsigned long)status & mask) << (bitpos % BITS_PER_LONG);
-+}
-+
-+static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
-+					 enum i3c_addr_slot_status status)
-+{
-+	i3c_bus_set_addr_slot_status_mask(bus, addr, status, I3C_ADDR_SLOT_STATUS_MASK);
- }
- 
- static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
-@@ -380,13 +391,44 @@ static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
- 	return status == I3C_ADDR_SLOT_FREE;
- }
- 
-+/*
-+ * ┌────┬─────────────┬───┬─────────┬───┐
-+ * │S/Sr│ 7'h7E RnW=0 │ACK│ ENTDAA  │ T ├────┐
-+ * └────┴─────────────┴───┴─────────┴───┘    │
-+ * ┌─────────────────────────────────────────┘
-+ * │  ┌──┬─────────────┬───┬─────────────────┬────────────────┬───┬─────────┐
-+ * └─►│Sr│7'h7E RnW=1  │ACK│48bit UID BCR DCR│Assign 7bit Addr│PAR│ ACK/NACK│
-+ *    └──┴─────────────┴───┴─────────────────┴────────────────┴───┴─────────┘
-+ * Some master controllers (such as HCI) need to prepare the entire above transaction before
-+ * sending it out to the I3C bus. This means that a 7-bit dynamic address needs to be allocated
-+ * before knowing the target device's UID information.
-+ *
-+ * However, some I3C targets may request specific addresses (called as "init_dyn_addr"), which is
-+ * typically specified by the DT-'s assigned-address property. Lower addresses having higher IBI
-+ * priority. If it is available, i3c_bus_get_free_addr() preferably return a free address that is
-+ * not in the list of desired addresses (called as "init_dyn_addr"). This allows the device with
-+ * the "init_dyn_addr" to switch to its "init_dyn_addr" when it hot-joins the I3C bus. Otherwise,
-+ * if the "init_dyn_addr" is already in use by another I3C device, the target device will not be
-+ * able to switch to its desired address.
-+ *
-+ * If the previous step fails, fallback returning one of the remaining unassigned address,
-+ * regardless of its state in the desired list.
-+ */
- static int i3c_bus_get_free_addr(struct i3c_bus *bus, u8 start_addr)
- {
- 	enum i3c_addr_slot_status status;
- 	u8 addr;
- 
- 	for (addr = start_addr; addr < I3C_MAX_ADDR; addr++) {
--		status = i3c_bus_get_addr_slot_status(bus, addr);
-+		status = i3c_bus_get_addr_slot_status_mask(bus, addr,
-+							   I3C_ADDR_SLOT_EXT_STATUS_MASK);
-+		if (status == I3C_ADDR_SLOT_FREE)
-+			return addr;
-+	}
-+
-+	for (addr = start_addr; addr < I3C_MAX_ADDR; addr++) {
-+		status = i3c_bus_get_addr_slot_status_mask(bus, addr,
-+							   I3C_ADDR_SLOT_STATUS_MASK);
- 		if (status == I3C_ADDR_SLOT_FREE)
- 			return addr;
- 	}
-@@ -1877,9 +1919,10 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
- 			goto err_rstdaa;
- 		}
- 
--		i3c_bus_set_addr_slot_status(&master->bus,
--					     i3cboardinfo->init_dyn_addr,
--					     I3C_ADDR_SLOT_I3C_DEV);
-+		i3c_bus_set_addr_slot_status_mask(&master->bus,
-+						  i3cboardinfo->init_dyn_addr,
-+						  I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_DESIRED,
-+						  I3C_ADDR_SLOT_EXT_STATUS_MASK);
- 
+ 	do {
+ 		seq = atomic_read(&init_mm.context.vmalloc_seq);
+-		memcpy(pgd_offset(mm, VMALLOC_START),
+-		       pgd_offset_k(VMALLOC_START),
+-		       sizeof(pgd_t) * (pgd_index(VMALLOC_END) -
+-					pgd_index(VMALLOC_START)));
++		memcpy_pgd(mm, VMALLOC_START, VMALLOC_END);
++		if (IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
++			unsigned long start =
++				arm_kasan_mem_to_shadow(VMALLOC_START);
++			unsigned long end =
++				arm_kasan_mem_to_shadow(VMALLOC_END);
++			memcpy_pgd(mm, start, end);
++		}
  		/*
- 		 * Only try to create/attach devices that have a static
-diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-index ed6b153481021..f2eb2452ffa5f 100644
---- a/include/linux/i3c/master.h
-+++ b/include/linux/i3c/master.h
-@@ -290,7 +290,8 @@ enum i3c_open_drain_speed {
-  * @I3C_ADDR_SLOT_I2C_DEV: address is assigned to an I2C device
-  * @I3C_ADDR_SLOT_I3C_DEV: address is assigned to an I3C device
-  * @I3C_ADDR_SLOT_STATUS_MASK: address slot mask
-- *
-+ * @I3C_ADDR_SLOT_EXT_DESIRED: the bitmask represents addresses that are preferred by some devices,
-+ *			       such as the "assigned-address" property in a device tree source.
-  * On an I3C bus, addresses are assigned dynamically, and we need to know which
-  * addresses are free to use and which ones are already assigned.
-  *
-@@ -303,9 +304,11 @@ enum i3c_addr_slot_status {
- 	I3C_ADDR_SLOT_I2C_DEV,
- 	I3C_ADDR_SLOT_I3C_DEV,
- 	I3C_ADDR_SLOT_STATUS_MASK = 3,
-+	I3C_ADDR_SLOT_EXT_STATUS_MASK = 7,
-+	I3C_ADDR_SLOT_EXT_DESIRED = BIT(2),
- };
- 
--#define I3C_ADDR_SLOT_STATUS_BITS 2
-+#define I3C_ADDR_SLOT_STATUS_BITS 4
- 
- /**
-  * struct i3c_bus - I3C bus object
+ 		 * Use a store-release so that other CPUs that observe the
+ 		 * counter's new value are guaranteed to see the results of the
 -- 
-2.43.0
+2.47.1
 
 
 
