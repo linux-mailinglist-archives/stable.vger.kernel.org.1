@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7AE9EF2F1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F629EEDB2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB39A16E42D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2950116D826
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8DA2336A9;
-	Thu, 12 Dec 2024 16:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31346222D7B;
+	Thu, 12 Dec 2024 15:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ve/M+sg4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SquwGQC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA53213E99;
-	Thu, 12 Dec 2024 16:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BAA1547F0;
+	Thu, 12 Dec 2024 15:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021116; cv=none; b=SBBAs0k5KT12iTPLxZcx/1+A0ww+oqZdq851x7odSlhNBOkknwFaH5OY3dqG1ZaLe3/qqxTkQpAL7eoSNp7AGX0BEvGIgaA+L/nazb185sDqJRjSkTdJyxTelMDbCsdlc+leqkxp8FXkP4LeB9QMsvquzWFPAOnLG+CIX/0PyJY=
+	t=1734018271; cv=none; b=gLJ1Vt5wKsBP7jslUjIaCqGTJK5pVjSvbr67UISB2lFlQfNs4Ux6bqSYW0+GE58CHbt8gSBdZXSX24AAMmeOAyr6z2TsDLePSf0f8NoalvBYdX45I839aZWXFPkdj8wWYvipg4A/24v00v76xsAJAkWsOBvF6s910S3Vvn3roxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021116; c=relaxed/simple;
-	bh=vgSutnRKy/SUxU/WYo+0FBaSjEGimYINXLqvjxNMXwE=;
+	s=arc-20240116; t=1734018271; c=relaxed/simple;
+	bh=pVePtFmig52YruBYZMr68ffYc3Ux2+e43YsuCViswD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DknNgxCALzRw8oKxh2x3XMXH0+RJ6QKrQFpmAN3aA4xMJxTHwx+SoUuxdTl4GUV1jQaZW5XfvJbbVUl0x2SlycZpi+6+DzciqJP2dtnPoLMkfU2oqpERfCCXc3xSrxpbwfvzeGZHSPwrWHF4+HWEarZ6nyQOYzbf4g6njuaxvDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ve/M+sg4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C64CC4CECE;
-	Thu, 12 Dec 2024 16:31:55 +0000 (UTC)
+	 MIME-Version; b=N9CS8mJnIWG7XXb1vjOt0T2aogp/+SwmQRMuZTqzU7D3cM2Kr0cGghmFbYwqREHpJavR4dHedQzWtsP7aectig/Fqsym7N8U+Fsdh8G7YMIYYKZbxotvUMx0c5NyTuY6iLlwLBL0QhAXmdlmEXbwupvRzzxGeXkMGjxDR4U56eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SquwGQC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00816C4CECE;
+	Thu, 12 Dec 2024 15:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021116;
-	bh=vgSutnRKy/SUxU/WYo+0FBaSjEGimYINXLqvjxNMXwE=;
+	s=korg; t=1734018270;
+	bh=pVePtFmig52YruBYZMr68ffYc3Ux2+e43YsuCViswD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ve/M+sg4hlUpgKoI3HwLqz6Pv1P9D2ZfqjXeSeoku6o56+K0+HUjjbxYyDU3Rs1Li
-	 qgmx0MUPJBfp3FjraJZ0QXt6r8KRn662pOWPLgL7zvFKgNTqGcAdHacOuL8lgRR9ME
-	 U2zEOJPOQysPN24oXFcysemchXWdhRZ2wOBLFsgE=
+	b=SquwGQC+o2L0tkn+x7Nmti5MsTOsCqXprThamyePhZBFNROI1xX3Py53AIO0C5xXq
+	 Jt5XB7ca5bJPsbQy3qL6VVVhsdUMSeW4D7hrir6DrTqiP6JOYqKDOYsN890Ogii046
+	 GGYZRlpp4/9+oBJFTOClpsGw2fIwR1GIVczOWSig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 620/772] scsi: qla2xxx: Remove check req_sg_cnt should be equal to rsp_sg_cnt
+	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
+	Nihar Chaithanya <niharchaithanya@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 246/356] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
 Date: Thu, 12 Dec 2024 15:59:25 +0100
-Message-ID: <20241212144415.543160940@linuxfoundation.org>
+Message-ID: <20241212144254.328621877@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Nihar Chaithanya <niharchaithanya@gmail.com>
 
-commit 833c70e212fc40d3e98da941796f4c7bcaecdf58 upstream.
+[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
 
-Firmware supports multiple sg_cnt for request and response for CT
-commands, so remove the redundant check. A check is there where sg_cnt
-for request and response should be same. This is not required as driver
-and FW have code to handle multiple and different sg_cnt on request and
-response.
+When the value of lp is 0 at the beginning of the for loop, it will
+become negative in the next assignment and we should bail out.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-5-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
+Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
+Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_bsg.c |   10 ----------
- 1 file changed, 10 deletions(-)
+ fs/jfs/jfs_dmap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_bsg.c
-+++ b/drivers/scsi/qla2xxx/qla_bsg.c
-@@ -494,16 +494,6 @@ qla2x00_process_ct(struct bsg_job *bsg_j
- 		goto done;
- 	}
- 
--	if ((req_sg_cnt !=  bsg_job->request_payload.sg_cnt) ||
--	    (rsp_sg_cnt != bsg_job->reply_payload.sg_cnt)) {
--		ql_log(ql_log_warn, vha, 0x7011,
--		    "request_sg_cnt: %x dma_request_sg_cnt: %x reply_sg_cnt:%x "
--		    "dma_reply_sg_cnt: %x\n", bsg_job->request_payload.sg_cnt,
--		    req_sg_cnt, bsg_job->reply_payload.sg_cnt, rsp_sg_cnt);
--		rval = -EAGAIN;
--		goto done_unmap_sg;
--	}
--
- 	if (!vha->flags.online) {
- 		ql_log(ql_log_warn, vha, 0x7012,
- 		    "Host is not online.\n");
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 39957361a7eed..f9009e4f9ffd8 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2891,6 +2891,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ 	/* bubble the new value up the tree as required.
+ 	 */
+ 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
++		if (lp == 0)
++			break;
++
+ 		/* get the index of the first leaf of the 4 leaf
+ 		 * group containing the specified leaf (leafno).
+ 		 */
+-- 
+2.43.0
+
 
 
 
