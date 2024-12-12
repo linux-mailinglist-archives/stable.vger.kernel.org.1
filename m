@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBE69EF728
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2B19EF5B4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9430189530C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52977189E3B1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C616D20967D;
-	Thu, 12 Dec 2024 17:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7B721E085;
+	Thu, 12 Dec 2024 17:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzkacX0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLWLuNUV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D16213CA93;
-	Thu, 12 Dec 2024 17:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2990D1487CD;
+	Thu, 12 Dec 2024 17:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024219; cv=none; b=g+10rHl3PH09I3ndtkIJH/PshXVh1DyGFNkm3SVUxhP13DeVXsJ+XajtPsl5aUzXqo7IeStOoczQBE1ktDLafh9Emz7BP+Z34qewPdzXqxY54Qn+E/4uIWsth3IH1dlFEkiGsi0nkZe0NYQ74xqITr1WWSgZD6zI6wpk6rKtJgw=
+	t=1734022921; cv=none; b=qAdgEKJV8vdxXSfMRmdrJC07YvwSVVfq2c6izYbb4qjmiKryyRqrAHeRPWmNDj5N72aJyr1m/i+F3ScvdjccNGi6clctxzelZn/yBf3xlkzspRSIGUWml2SWs55MhZw8NDq1WLlkyWDMCqd6HriElKtGZMzRcqcshRZJgcU2iZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024219; c=relaxed/simple;
-	bh=E/KKvT2K3OO6vKa/5Wc2WVyLIcjee/I+A2Pe5x3Nu0s=;
+	s=arc-20240116; t=1734022921; c=relaxed/simple;
+	bh=M/WWFCm3Yt8l5D+9TnYxz2ruDIQ/Zk9vD9uQNW/PuSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sdeklWyZGs9NAFAHkGLCGlrHI7J6DK8gUI20y9cGOf/xaSLghJdlIHd1u4+ue7pJ7Y3+FwQpt+7HGtMgjpkWq9GcIJWwDYO1YRTkYwGZQVULT8FZgpawEzRV0T3JYG0OmaFIL21z+L5xowSRE74jnaRm9WUlUb0b3axz2p36D/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzkacX0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE852C4CECE;
-	Thu, 12 Dec 2024 17:23:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k+0X20GWeuzdDTKNbfugidmY0UxgMosdgfUVtM51cfFZl4evYV64JIlCiWSCEZNKy39CYENvZdiB2q+8hBXV2pJIxuTx4yHATOGmN2mUPoMOGc9PpFAheKw4uZe6jB6w9GyYtP4Twd4ky3TpsttuaWE1mwLD23f4A8wfayAooJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLWLuNUV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876C6C4CECE;
+	Thu, 12 Dec 2024 17:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024219;
-	bh=E/KKvT2K3OO6vKa/5Wc2WVyLIcjee/I+A2Pe5x3Nu0s=;
+	s=korg; t=1734022921;
+	bh=M/WWFCm3Yt8l5D+9TnYxz2ruDIQ/Zk9vD9uQNW/PuSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzkacX0HN2riQlnF0M8qrvYZZZJwSYEm9qCwMwQJqLqIPBi9Xi9jAEWBrNFBrQfdI
-	 3WeAdmQUwsgS7NSIAkF++xzt/bUab9atxfgATRu6YbyFMv2P28ACMLAGjwfrCbwwOD
-	 QjtTi7yoo/ev04/S/tMSv7Rou5f5/c1zpcaCm51U=
+	b=eLWLuNUVuiLxj02vVd5Ed9t+1wDii+ZSqItYFSh1EsL32npsTfyC+nM7zqCG7q86J
+	 eWZ7AonvE4ft84d6U1Ew0pdGKnv679gNW/AiLkSO/MnYLCbhxw2noAR3mJRRtId2fX
+	 tj3wp11rcbqPpv76ybgZm429P8bJuggtpEuiEQGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Alexander Dahl <ada@thorsis.com>, Mark Brown <broonie@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 225/459] spi: atmel-quadspi: Fix register name in verbose logging function
-Date: Thu, 12 Dec 2024 15:59:23 +0100
-Message-ID: <20241212144302.457625723@linuxfoundation.org>
+Subject: [PATCH 5.15 369/565] modpost: remove incorrect code in do_eisa_entry()
+Date: Thu, 12 Dec 2024 15:59:24 +0100
+Message-ID: <20241212144326.211332169@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 2ac40e6d0ccdd93031f8b1af61b0fe5cdd704923 ]
+[ Upstream commit 0c3e091319e4748cb36ac9a50848903dc6f54054 ]
 
-`atmel_qspi_reg_name()` is used for pretty-printing register offsets
-for verbose logging of register accesses. However, due to a typo
-(likely a copy-paste error), QSPI_RD's offset prints as "MR", the
-name of the previous register. Fix this typo.
+This function contains multiple bugs after the following commits:
 
-Fixes: c528ecfbef04 ("spi: atmel-quadspi: Add verbose debug facilities to monitor register accesses")
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Alexander Dahl <ada@thorsis.com>
-Link: https://patch.msgid.link/20241122141302.2599636-1-csokas.bence@prolan.hu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+ - ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+ - 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+
+Commit ac551828993e inserted the following code to do_eisa_entry():
+
+    else
+            strcat(alias, "*");
+
+This is incorrect because 'alias' is uninitialized. If it is not
+NULL-terminated, strcat() could cause a buffer overrun.
+
+Even if 'alias' happens to be zero-filled, it would output:
+
+    MODULE_ALIAS("*");
+
+This would match anything. As a result, the module could be loaded by
+any unrelated uevent from an unrelated subsystem.
+
+Commit ac551828993e introduced another bug.            
+
+Prior to that commit, the conditional check was:
+
+    if (eisa->sig[0])
+
+This checked if the first character of eisa_device_id::sig was not '\0'.
+
+However, commit ac551828993e changed it as follows:
+
+    if (sig[0])
+
+sig[0] is NOT the first character of the eisa_device_id::sig. The
+type of 'sig' is 'char (*)[8]', meaning that the type of 'sig[0]' is
+'char [8]' instead of 'char'. 'sig[0]' and 'symval' refer to the same
+address, which never becomes NULL.
+
+The correct conversion would have been:
+
+    if ((*sig)[0])
+
+However, this if-conditional was meaningless because the earlier change
+in commit ac551828993e was incorrect.
+
+This commit removes the entire incorrect code, which should never have
+been executed.
+
+Fixes: ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+Fixes: 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/atmel-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/mod/file2alias.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 8aa89d93db118..17217cc5e4052 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -182,7 +182,7 @@ static const char *atmel_qspi_reg_name(u32 offset, char *tmp, size_t sz)
- 	case QSPI_MR:
- 		return "MR";
- 	case QSPI_RD:
--		return "MR";
-+		return "RD";
- 	case QSPI_TD:
- 		return "TD";
- 	case QSPI_SR:
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 23e7102abe0cd..d911485646c5c 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -799,10 +799,7 @@ static int do_eisa_entry(const char *filename, void *symval,
+ 		char *alias)
+ {
+ 	DEF_FIELD_ADDR(symval, eisa_device_id, sig);
+-	if (sig[0])
+-		sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+-	else
+-		strcat(alias, "*");
++	sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+ 	return 1;
+ }
+ 
 -- 
 2.43.0
 
