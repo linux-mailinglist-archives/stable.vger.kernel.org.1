@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66C69EF403
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DF79EF1A6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6067A28F6C7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F30290DC4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628EA217F40;
-	Thu, 12 Dec 2024 17:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9230231A25;
+	Thu, 12 Dec 2024 16:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzSxYN3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNqqa9b0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2062210DB;
-	Thu, 12 Dec 2024 17:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2A4231A20;
+	Thu, 12 Dec 2024 16:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022954; cv=none; b=ezvLjTs/TDDGGtbTnlgqU0HzsqEYtozKa2C4g2j+6vp6XuqBnn+l8VcMl8SwWngTKdeqJv8B+wYoG86tb+Xy+djIp8XIm/fmuJGUXP5Xo23GarusK35BtJBc2rtX1NHlu+R5kfFIVs9/5e/x98fgloxlxouTNh9QHphaZwRzyEQ=
+	t=1734021038; cv=none; b=W9vCTNzATy569wtNUZjaF1yfp7oaAfpR23N9W6lz31aiBSPegz2liz92ACeI4uVzGzLKsdr8FeUfGqNE+KjUpr25UPcGc2Ul1pGPv1sk7EkC0skHXpMP7iIJmhXyd2gplbx7K9y7gn8pR8pvkrXW19c+GqRbBLNScHiaDFcrLSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022954; c=relaxed/simple;
-	bh=hr7a9bsEumDFZ+mKRL3jztkKVcAUu4NkiUQPZBxEQGg=;
+	s=arc-20240116; t=1734021038; c=relaxed/simple;
+	bh=fgkx9YW5fyNknQhRUbM+YFnSldT5ffAz4KlAf/vXhLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BvJifuNehe8gcZa0iVI9RgEPt4BvX3jEZaeVn4+YBVtynEO42cEh+Y7jvSr0IMTHtl7297yjcD2qeuGGsG8/bQ9r0+drnlDWDzoWY5lR52sonzrmpf4SKuAhTBkwKyVMOpUxDh+E3fzQ09EuuyoTGAsqlNJZ3g/N3099QtQlpvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzSxYN3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936E0C4CECE;
-	Thu, 12 Dec 2024 17:02:33 +0000 (UTC)
+	 MIME-Version; b=Y5JPkoGgw2o1KgqeXBOEMXeef2wDQVTFwyLHDMrwHZr2vnynfETF2XbjMMtHR+DWNxTSYMFsSOgFRC7hfGxHEvxuqCcpl2Fiw+Abpcs6QAD8tLyLTHrBM3CqcmkjGf5yr6w/aqpk5m0/TRXJsV52mz4cjL5o4OKOrlAuSlrWOxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNqqa9b0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E3AC4CECE;
+	Thu, 12 Dec 2024 16:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022954;
-	bh=hr7a9bsEumDFZ+mKRL3jztkKVcAUu4NkiUQPZBxEQGg=;
+	s=korg; t=1734021038;
+	bh=fgkx9YW5fyNknQhRUbM+YFnSldT5ffAz4KlAf/vXhLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RzSxYN3Dh+pxi0vi15ybMAfe9LIER73JNvXrdmplWb3ntvZ6+lTlwTv0sb8RE/A7f
-	 mOPuFDvo7nQQW1nRl2gHK+4DZI8cpBd3rRHZ6H43gIEIcs8KW1I9N5IvYpCxZtjiwX
-	 Di5oeh4vfHDUxt+cLJVuU328GtAdiKIeQPSUVBQM=
+	b=QNqqa9b0qEoQNa21Hnb/2za6BIzysiTud+LtEopcSVx2jg95tuah5k8kaDEU9nRHR
+	 fXOQII0uui2R8PrH8DbVqhWu0O38XkJLewXE0xSuyMNxnasxw37BjX1PQfTzbBregu
+	 VsbrLvHZg/oXFKMzYG3vSi+vFKuYHYM3P8RzVhyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 378/565] quota: flush quota_release_work upon quota writeback
-Date: Thu, 12 Dec 2024 15:59:33 +0100
-Message-ID: <20241212144326.571580417@linuxfoundation.org>
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.1 629/772] modpost: Add .irqentry.text to OTHER_SECTIONS
+Date: Thu, 12 Dec 2024 15:59:34 +0100
+Message-ID: <20241212144415.926139401@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit ac6f420291b3fee1113f21d612fa88b628afab5b ]
+commit 7912405643a14b527cd4a4f33c1d4392da900888 upstream.
 
-One of the paths quota writeback is called from is:
+The compiler can fully inline the actual handler function of an interrupt
+entry into the .irqentry.text entry point. If such a function contains an
+access which has an exception table entry, modpost complains about a
+section mismatch:
 
-freeze_super()
-  sync_filesystem()
-    ext4_sync_fs()
-      dquot_writeback_dquots()
+  WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference ...
 
-Since we currently don't always flush the quota_release_work queue in
-this path, we can end up with the following race:
+  The relocation at __ex_table+0x447c references section ".irqentry.text"
+  which is not in the list of authorized sections.
 
- 1. dquot are added to releasing_dquots list during regular operations.
- 2. FS Freeze starts, however, this does not flush the quota_release_work queue.
- 3. Freeze completes.
- 4. Kernel eventually tries to flush the workqueue while FS is frozen which
-    hits a WARN_ON since transaction gets started during frozen state:
+Add .irqentry.text to OTHER_SECTIONS to cure the issue.
 
-  ext4_journal_check_start+0x28/0x110 [ext4] (unreliable)
-  __ext4_journal_start_sb+0x64/0x1c0 [ext4]
-  ext4_release_dquot+0x90/0x1d0 [ext4]
-  quota_release_workfn+0x43c/0x4d0
-
-Which is the following line:
-
-  WARN_ON(sb->s_writers.frozen == SB_FREEZE_COMPLETE);
-
-Which ultimately results in generic/390 failing due to dmesg
-noise. This was detected on powerpc machine 15 cores.
-
-To avoid this, make sure to flush the workqueue during
-dquot_writeback_dquots() so we dont have any pending workitems after
-freeze.
-
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-CC: stable@vger.kernel.org
-Fixes: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241121123855.645335-2-ojaswin@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org # needed for linux-5.4-y
+Link: https://lore.kernel.org/all/20241128111844.GE10431@google.com/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/mod/modpost.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 3b62fbcefa8c3..5e2cf15b82f4d 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -690,6 +690,8 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -829,7 +829,7 @@ static void check_section(const char *mo
+ 		".ltext", ".ltext.*"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+ 		".fixup", ".entry.text", ".exception.text", \
+-		".coldtext", ".softirqentry.text"
++		".coldtext", ".softirqentry.text", ".irqentry.text"
  
- 	WARN_ON_ONCE(!rwsem_is_locked(&sb->s_umount));
- 
-+	flush_delayed_work(&quota_release_work);
-+
- 	for (cnt = 0; cnt < MAXQUOTAS; cnt++) {
- 		if (type != -1 && cnt != type)
- 			continue;
--- 
-2.43.0
-
+ #define INIT_SECTIONS      ".init.*"
+ #define MEM_INIT_SECTIONS  ".meminit.*"
 
 
 
