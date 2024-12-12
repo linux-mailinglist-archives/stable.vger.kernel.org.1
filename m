@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-102980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B0D9EF53F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2089EF7BC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8379B1751F5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152E318992A4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2C9223C68;
-	Thu, 12 Dec 2024 17:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015BC216E3B;
+	Thu, 12 Dec 2024 17:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDgWAkJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxhHvOyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA91F223C62;
-	Thu, 12 Dec 2024 17:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B241E215762;
+	Thu, 12 Dec 2024 17:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023177; cv=none; b=FVLsMBbsfiS7O6dujiD01J1C16tSM61WVLt+lj8fALXGHn2Q8Ywl2vnpxI8o+2k7lb+bjNTRirHNLf5SVMjOi60zmzlkcCbv9OKzxqKTL1zCyPRkWf9bgd4PVaokl5kOyVrzSp49OfSW7a8xdV3zaneYdudp0jlHBj9z30y0HvQ=
+	t=1734024375; cv=none; b=MRYrb6K8dOsv9T6O7iCyYNqChfeJ5UPCAbKgfJRFEnQ/hcfki6ohNT1J6/7c3B8YPPp0O3SMt5pvXUqXnrDye09ilo6inGdPxO2qj0bJZZWlgLVZDwS4csOsT1jdFr8RLwnm9QFgchl1Y2+u2Motvp/OjMC7bzRPRSz44lYeCwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023177; c=relaxed/simple;
-	bh=jCR/Vzweiye6M0pqy3m+k8/VA9zuJYCrQ+VVngyF+gc=;
+	s=arc-20240116; t=1734024375; c=relaxed/simple;
+	bh=eklZFBKSMZ/dayt7lSPuBPMuZHhcJnp4MGCcbyzuFpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IThzzlkV7vYsiQyb2krt3WeSsCgALvXEorsOv0tDEsM+27hDCYj2kFu7Ez0BdylohGOcf2DhI+jSTN6ZpnrrQN5bO1VIAQZHUMAL++0KAg3N3hzjzkYF995VrNwRirbgeIzr5D7V7LsrduOxMzDWyHJxS8BGiQ3gY10uGI0p5fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDgWAkJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E110C4CED0;
-	Thu, 12 Dec 2024 17:06:16 +0000 (UTC)
+	 MIME-Version; b=JouWW5t+rYjv99UiTHX58P0tdvzgG2U6KSW0049CLUJlBDdHKeUKLJKS77utA7TiX8rEK+8fJxk42neYdd069mUcTMhV2fnYUCxelLnpz2Ifchk/SCX14lKiw3IaReV+Ve9S8/hBmVAJjKvJiM1thWrBS2Rm2lnuYVesELsh5LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxhHvOyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CF5C4CED0;
+	Thu, 12 Dec 2024 17:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023176;
-	bh=jCR/Vzweiye6M0pqy3m+k8/VA9zuJYCrQ+VVngyF+gc=;
+	s=korg; t=1734024375;
+	bh=eklZFBKSMZ/dayt7lSPuBPMuZHhcJnp4MGCcbyzuFpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDgWAkJmXRS73MoqdHEheqsI7tZmQRTGTrlY3Q17ku94pfJnxRlYqBR6xXIRoSDO6
-	 5nydXLOacC//vLsjeuVTSyietOZOfTyzgvM96/BJgRGnpIuzDfp8+mUOkZKLCB+rLN
-	 rosXZnmweN9oJ/NVZYAAi4dI4FWm+9PeHmcNj+qs=
+	b=yxhHvOyOtdV/bnCCkoNik+RjsRTSX6ORyIQ0eAXoGMU7LfoRvDLlF9MqKMblio795
+	 yB5YXPnJ2so7EQSPmuiJWlxgcJB/bpomce21Y4Jh04v8MKXYgJJcQNjdt3/gz7EqiN
+	 s/RHd4wWm3nvnElsX0L4Y1jZ+ND3YqWULfoe3iWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Kai <KaiShen@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 418/565] net/smc: fix LGR and link use-after-free issue
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.10 275/459] HID: wacom: Interpret tilt data from Intuos Pro BT as signed values
 Date: Thu, 12 Dec 2024 16:00:13 +0100
-Message-ID: <20241212144328.183209998@linuxfoundation.org>
+Message-ID: <20241212144304.476083923@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-[ Upstream commit 2c7f14ed9c19ec0f149479d1c2842ec1f9bf76d7 ]
+commit 49a397ad24ee5e2c53a59dada2780d7e71bd3f77 upstream.
 
-We encountered a LGR/link use-after-free issue, which manifested as
-the LGR/link refcnt reaching 0 early and entering the clear process,
-making resource access unsafe.
+The tilt data contained in the Bluetooth packets of an Intuos Pro are
+supposed to be interpreted as signed values. Simply casting the values
+to type `char` is not guaranteed to work since it is implementation-
+defined whether it is signed or unsigned. At least one user has noticed
+the data being reported incorrectly on their system. To ensure that the
+data is interpreted properly, we specifically cast to `signed char`
+instead.
 
- refcount_t: addition on 0; use-after-free.
- WARNING: CPU: 14 PID: 107447 at lib/refcount.c:25 refcount_warn_saturate+0x9c/0x140
- Workqueue: events smc_lgr_terminate_work [smc]
- Call trace:
-  refcount_warn_saturate+0x9c/0x140
-  __smc_lgr_terminate.part.45+0x2a8/0x370 [smc]
-  smc_lgr_terminate_work+0x28/0x30 [smc]
-  process_one_work+0x1b8/0x420
-  worker_thread+0x158/0x510
-  kthread+0x114/0x118
-
-or
-
- refcount_t: underflow; use-after-free.
- WARNING: CPU: 6 PID: 93140 at lib/refcount.c:28 refcount_warn_saturate+0xf0/0x140
- Workqueue: smc_hs_wq smc_listen_work [smc]
- Call trace:
-  refcount_warn_saturate+0xf0/0x140
-  smcr_link_put+0x1cc/0x1d8 [smc]
-  smc_conn_free+0x110/0x1b0 [smc]
-  smc_conn_abort+0x50/0x60 [smc]
-  smc_listen_find_device+0x75c/0x790 [smc]
-  smc_listen_work+0x368/0x8a0 [smc]
-  process_one_work+0x1b8/0x420
-  worker_thread+0x158/0x510
-  kthread+0x114/0x118
-
-It is caused by repeated release of LGR/link refcnt. One suspect is that
-smc_conn_free() is called repeatedly because some smc_conn_free() from
-server listening path are not protected by sock lock.
-
-e.g.
-
-Calls under socklock        | smc_listen_work
--------------------------------------------------------
-lock_sock(sk)               | smc_conn_abort
-smc_conn_free               | \- smc_conn_free
-\- smcr_link_put            |    \- smcr_link_put (duplicated)
-release_sock(sk)
-
-So here add sock lock protection in smc_listen_work() path, making it
-exclusive with other connection operations.
-
-Fixes: 3b2dec2603d5 ("net/smc: restructure client and server code in af_smc")
-Co-developed-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Co-developed-by: Kai <KaiShen@linux.alibaba.com>
-Signed-off-by: Kai <KaiShen@linux.alibaba.com>
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/linuxwacom/input-wacom/issues/445
+Fixes: 4922cd26f03c ("HID: wacom: Support 2nd-gen Intuos Pro's Bluetooth classic interface")
+CC: stable@vger.kernel.org # 4.11+
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/wacom_wac.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index d433b88e6a277..1072b32a1d75d 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1509,6 +1509,7 @@ static void smc_listen_out(struct smc_sock *new_smc)
- 	if (tcp_sk(new_smc->clcsock->sk)->syn_smc)
- 		atomic_dec(&lsmc->queued_smc_hs);
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1394,9 +1394,9 @@ static void wacom_intuos_pro2_bt_pen(str
+ 					rotation -= 1800;
  
-+	release_sock(newsmcsk); /* lock in smc_listen_work() */
- 	if (lsmc->sk.sk_state == SMC_LISTEN) {
- 		lock_sock_nested(&lsmc->sk, SINGLE_DEPTH_NESTING);
- 		smc_accept_enqueue(&lsmc->sk, newsmcsk);
-@@ -1921,6 +1922,7 @@ static void smc_listen_work(struct work_struct *work)
- 	struct smc_init_info *ini = NULL;
- 	int rc = 0;
- 
-+	lock_sock(&new_smc->sk); /* release in smc_listen_out() */
- 	if (new_smc->listen_smc->sk.sk_state != SMC_LISTEN)
- 		return smc_listen_out_err(new_smc);
- 
--- 
-2.43.0
-
+ 				input_report_abs(pen_input, ABS_TILT_X,
+-						 (char)frame[7]);
++						 (signed char)frame[7]);
+ 				input_report_abs(pen_input, ABS_TILT_Y,
+-						 (char)frame[8]);
++						 (signed char)frame[8]);
+ 				input_report_abs(pen_input, ABS_Z, rotation);
+ 				input_report_abs(pen_input, ABS_WHEEL,
+ 						 get_unaligned_le16(&frame[11]));
 
 
 
