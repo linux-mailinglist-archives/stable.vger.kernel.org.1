@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-102580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10919EF2B9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD96F9EF063
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14A2292569
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C381C178CAA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6125422654D;
-	Thu, 12 Dec 2024 16:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F08236931;
+	Thu, 12 Dec 2024 16:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn2m6McE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVkRlbqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED852139C9;
-	Thu, 12 Dec 2024 16:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD465222D66;
+	Thu, 12 Dec 2024 16:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021743; cv=none; b=H8VUyShhMrcbZTs4fPvguaTlWiGEyoOH8Uc2MEAf+nxsTut/ZjPTDchv5cVGf3z4eQzRuq/DM65Ri+ELDDHqq4fdaAuozt3dCcd2tYGqMnOheAAuUiiYlbA6h7bYYduDWPelm7ebE+UazDz80kn5apIlkU6N62EMtUaKQOalBP0=
+	t=1734019793; cv=none; b=LPeDJZ2iLm/8LcYiZ/9LsGxvnC07V+haUKIla+hWpRrrRQ5FeIcvKmjjYvKP+jQCIUiRFIyFwoF72x9bZFekYWPOHMh5xo63AK/6pJ/c4B3lpz3CencwvTKg2PMCTJJ0KTgf9K0g8NR/8IZVSfgoE8ADCnmauyHuxb78ESorOtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021743; c=relaxed/simple;
-	bh=aTW7eU1UOfMI9lU+LC0MjsovRHRZe5Tjw+aT8a8mU2s=;
+	s=arc-20240116; t=1734019793; c=relaxed/simple;
+	bh=nMP+7LnbOaPyeT0RvMlEkBGBFQNjfA/EJrMHTS4d/gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajce+LKoeS/9C1s5PxJBnzlYIxRTtxq/du8WWms1JK/qtw434f6uKsdkk1O+SN1FVpDVpdNN/mNoBV+uVnoO93QRiZlZnnc3N5JsOxzaaGi9GGRI29c5tX+Um06IVRH68qxGwelvwWdcHZW+RgQFLKM33FJtN5r95pzme+5RhhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn2m6McE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C23C4CED0;
-	Thu, 12 Dec 2024 16:42:21 +0000 (UTC)
+	 MIME-Version; b=RCBjy4bHIXb5/B00iB5OAsMRyfPNZAG39abNMVl7ID+zyJFxXz84518aYRBy8Jiu6YCSn/l/n3lsUNa4En9eDkC6HrrClAxRbd+ZoTS5faTApPQtcRWnIQczZeM5rGA2FW+mrPcFrAnnopWJZNTLgkhfcUkJvTPsoiufzZB7qyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVkRlbqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F88C4CECE;
+	Thu, 12 Dec 2024 16:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021742;
-	bh=aTW7eU1UOfMI9lU+LC0MjsovRHRZe5Tjw+aT8a8mU2s=;
+	s=korg; t=1734019793;
+	bh=nMP+7LnbOaPyeT0RvMlEkBGBFQNjfA/EJrMHTS4d/gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gn2m6McEBwAxHxx6fakMfhlykpVYHeqh2AUyAletHuPyLaKV8AJvlOTQCLYqpW5MY
-	 hfQDXVvJ69xGs3q8YbC+vdxmszjs1C939RoYPimKXV6C0Mw0aRUD/nFu03x0a5Tl5e
-	 VzxyjlsADGel0iUZ0X2ea3J0BFYgqYPb5nXIF2LQ=
+	b=gVkRlbqnecua9B58vHaTlqvbTkCgE/jIhXrMmaTfD43DvN54YAWOp4qkYppys7WYd
+	 +viC6E7tUDmmyTc0bFK73DhIRjic7qujuKENUSoKujaAKZXrlqsCdV6hglQG+zsqA+
+	 8wARHgcPS+ZP0p/X2yZYGRv7Wr3kQF+vADI/rwUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jann Horn <jannh@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mark Brown <broonie@kernel.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Xu <peterx@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 049/565] mm: resolve faulty mmap_region() error path behaviour
-Date: Thu, 12 Dec 2024 15:54:04 +0100
-Message-ID: <20241212144313.432632608@linuxfoundation.org>
+	WANG Xuerui <git@xen0n.name>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>,
+	Xi Ruoyao <xry111@xry111.site>
+Subject: [PATCH 6.1 300/772] LoongArch: Tweak CFLAGS for Clang compatibility
+Date: Thu, 12 Dec 2024 15:54:05 +0100
+Message-ID: <20241212144402.295213474@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,221 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: WANG Xuerui <git@xen0n.name>
 
-[ Upstream commit 5de195060b2e251a835f622759550e6202167641 ]
+[ Upstream commit 38b10b269d04540aee05c34a059dcf304cfce0a8 ]
 
-The mmap_region() function is somewhat terrifying, with spaghetti-like
-control flow and numerous means by which issues can arise and incomplete
-state, memory leaks and other unpleasantness can occur.
+Now the arch code is mostly ready for LLVM/Clang consumption, it is time
+to re-organize the CFLAGS a little to actually enable the LLVM build.
+Namely, all -G0 switches from CFLAGS are removed, and -mexplicit-relocs
+and -mdirect-extern-access are now wrapped with cc-option (with the
+related asm/percpu.h definition guarded against toolchain combos that
+are known to not work).
 
-A large amount of the complexity arises from trying to handle errors late
-in the process of mapping a VMA, which forms the basis of recently
-observed issues with resource leaks and observable inconsistent state.
+A build with !RELOCATABLE && !MODULE is confirmed working within a QEMU
+environment; support for the two features are currently blocked on
+LLVM/Clang, and will come later.
 
-Taking advantage of previous patches in this series we move a number of
-checks earlier in the code, simplifying things by moving the core of the
-logic into a static internal function __mmap_region().
+Why -G0 can be removed:
 
-Doing this allows us to perform a number of checks up front before we do
-any real work, and allows us to unwind the writable unmap check
-unconditionally as required and to perform a CONFIG_DEBUG_VM_MAPLE_TREE
-validation unconditionally also.
+In GCC, -G stands for "small data threshold", that instructs the
+compiler to put data smaller than the specified threshold in a dedicated
+"small data" section (called .sdata on LoongArch and several other
+arches).
 
-We move a number of things here:
+However, benefiting from this would require ABI cooperation, which is
+not the case for LoongArch; and current GCC behave the same whether -G0
+(equal to disabling this optimization) is given or not. So, remove -G0
+from CFLAGS altogether for one less thing to care about. This also
+benefits LLVM/Clang compatibility where the -G switch is not supported.
 
-1. We preallocate memory for the iterator before we call the file-backed
-   memory hook, allowing us to exit early and avoid having to perform
-   complicated and error-prone close/free logic. We carefully free
-   iterator state on both success and error paths.
+Why -mexplicit-relocs can now be conditionally applied without
+regressions:
 
-2. The enclosing mmap_region() function handles the mapping_map_writable()
-   logic early. Previously the logic had the mapping_map_writable() at the
-   point of mapping a newly allocated file-backed VMA, and a matching
-   mapping_unmap_writable() on success and error paths.
+Originally -mexplicit-relocs is unconditionally added to CFLAGS in case
+of CONFIG_AS_HAS_EXPLICIT_RELOCS, because not having it (i.e. old GCC +
+new binutils) would not work: modules will have R_LARCH_ABS_* relocs
+inside, but given the rarity of such toolchain combo in the wild, it may
+not be worthwhile to support it, so support for such relocs in modules
+were not added back when explicit relocs support was upstreamed, and
+-mexplicit-relocs is unconditionally added to fail the build early.
 
-   We now do this unconditionally if this is a file-backed, shared writable
-   mapping. If a driver changes the flags to eliminate VM_MAYWRITE, however
-   doing so does not invalidate the seal check we just performed, and we in
-   any case always decrement the counter in the wrapper.
+Now that Clang compatibility is desired, given Clang is behaving like
+-mexplicit-relocs from day one but without support for the CLI flag, we
+must ensure the flag is not passed in case of Clang. However, explicit
+compiler flavor checks can be more brittle than feature detection: in
+this case what actually matters is support for __attribute__((model))
+when building modules. Given neither older GCC nor current Clang support
+this attribute, probing for the attribute support and #error'ing out
+would allow proper UX without checking for Clang, and also automatically
+work when Clang support for the attribute is to be added in the future.
 
-   We perform a debug assert to ensure a driver does not attempt to do the
-   opposite.
+Why -mdirect-extern-access is now conditionally applied:
 
-3. We also move arch_validate_flags() up into the mmap_region()
-   function. This is only relevant on arm64 and sparc64, and the check is
-   only meaningful for SPARC with ADI enabled. We explicitly add a warning
-   for this arch if a driver invalidates this check, though the code ought
-   eventually to be fixed to eliminate the need for this.
+This is actually a nice-to-have optimization that can reduce GOT
+accesses, but not having it is harmless either. Because Clang does not
+support the option currently, but might do so in the future, conditional
+application via cc-option ensures compatibility with both current and
+future Clang versions.
 
-With all of these measures in place, we no longer need to explicitly close
-the VMA on error paths, as we place all checks which might fail prior to a
-call to any driver mmap hook.
-
-This eliminates an entire class of errors, makes the code easier to reason
-about and more robust.
-
-Link: https://lkml.kernel.org/r/6e0becb36d2f5472053ac5d544c0edfe9b899e25.1730224667.git.lorenzo.stoakes@oracle.com
-Fixes: deb0f6562884 ("mm/mmap: undo ->mmap() when arch_validate_flags() fails")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: Jann Horn <jannh@google.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Tested-by: Mark Brown <broonie@kernel.org>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Helge Deller <deller@gmx.de>
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Xi Ruoyao <xry111@xry111.site> # cc-option changes
+Signed-off-by: WANG Xuerui <git@xen0n.name>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Stable-dep-of: 947d5d036c78 ("LoongArch: Fix build failure with GCC 15 (-std=gnu23)")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/mmap.c |   73 +++++++++++++++++++++++++++++++++++++++-----------------------
- 1 file changed, 47 insertions(+), 26 deletions(-)
+ arch/loongarch/Makefile             | 21 +++++++++++++--------
+ arch/loongarch/include/asm/percpu.h |  6 +++++-
+ arch/loongarch/vdso/Makefile        |  2 +-
+ 3 files changed, 19 insertions(+), 10 deletions(-)
 
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1716,7 +1716,7 @@ static inline int accountable_mapping(st
- 	return (vm_flags & (VM_NORESERVE | VM_SHARED | VM_WRITE)) == VM_WRITE;
- }
+diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+index ed47a3a87768e..275d4d5260c72 100644
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -41,8 +41,8 @@ ld-emul			= $(64bit-emul)
+ cflags-y		+= -mabi=lp64s
+ endif
  
--unsigned long mmap_region(struct file *file, unsigned long addr,
-+static unsigned long __mmap_region(struct file *file, unsigned long addr,
- 		unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
- 		struct list_head *uf)
- {
-@@ -1780,16 +1780,10 @@ unsigned long mmap_region(struct file *f
- 	vma->vm_pgoff = pgoff;
+-cflags-y			+= -G0 -pipe -msoft-float
+-LDFLAGS_vmlinux			+= -G0 -static -n -nostdlib
++cflags-y			+= -pipe -msoft-float
++LDFLAGS_vmlinux			+= -static -n -nostdlib
  
- 	if (file) {
--		if (vm_flags & VM_SHARED) {
--			error = mapping_map_writable(file->f_mapping);
--			if (error)
--				goto free_vma;
--		}
--
- 		vma->vm_file = get_file(file);
- 		error = mmap_file(file, vma);
- 		if (error)
--			goto unmap_and_free_vma;
-+			goto unmap_and_free_file_vma;
+ # When the assembler supports explicit relocation hint, we must use it.
+ # GCC may have -mexplicit-relocs off by default if it was built with an old
+@@ -51,13 +51,18 @@ LDFLAGS_vmlinux			+= -G0 -static -n -nostdlib
+ # When the assembler does not supports explicit relocation hint, we can't use
+ # it.  Disable it if the compiler supports it.
+ #
+-# If you've seen "unknown reloc hint" message building the kernel and you are
+-# now wondering why "-mexplicit-relocs" is not wrapped with cc-option: the
+-# combination of a "new" assembler and "old" compiler is not supported.  Either
+-# upgrade the compiler or downgrade the assembler.
++# The combination of a "new" assembler and "old" GCC is not supported, given
++# the rarity of this combo and the extra complexity needed to make it work.
++# Either upgrade the compiler or downgrade the assembler; the build will error
++# out if it is the case (by probing for the model attribute; all supported
++# compilers in this case would have support).
++#
++# Also, -mdirect-extern-access is useful in case of building with explicit
++# relocs, for avoiding unnecessary GOT accesses. It is harmless to not have
++# support though.
+ ifdef CONFIG_AS_HAS_EXPLICIT_RELOCS
+-cflags-y			+= -mexplicit-relocs
+-KBUILD_CFLAGS_KERNEL		+= -mdirect-extern-access
++cflags-y			+= $(call cc-option,-mexplicit-relocs)
++KBUILD_CFLAGS_KERNEL		+= $(call cc-option,-mdirect-extern-access)
+ else
+ cflags-y			+= $(call cc-option,-mno-explicit-relocs)
+ KBUILD_AFLAGS_KERNEL		+= -Wa,-mla-global-with-pcrel
+diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include/asm/percpu.h
+index c90c560941685..7e804140500f1 100644
+--- a/arch/loongarch/include/asm/percpu.h
++++ b/arch/loongarch/include/asm/percpu.h
+@@ -14,7 +14,11 @@
+  * loaded. Tell the compiler this fact when using explicit relocs.
+  */
+ #if defined(MODULE) && defined(CONFIG_AS_HAS_EXPLICIT_RELOCS)
+-#define PER_CPU_ATTRIBUTES    __attribute__((model("extreme")))
++# if __has_attribute(model)
++#  define PER_CPU_ATTRIBUTES __attribute__((model("extreme")))
++# else
++#  error compiler support for the model attribute is necessary when a recent assembler is used
++# endif
+ #endif
  
- 		/* Can addr have changed??
- 		 *
-@@ -1800,6 +1794,14 @@ unsigned long mmap_region(struct file *f
- 		 */
- 		WARN_ON_ONCE(addr != vma->vm_start);
- 
-+		/*
-+		 * Drivers should not permit writability when previously it was
-+		 * disallowed.
-+		 */
-+		VM_WARN_ON_ONCE(vm_flags != vma->vm_flags &&
-+				!(vm_flags & VM_MAYWRITE) &&
-+				(vma->vm_flags & VM_MAYWRITE));
-+
- 		addr = vma->vm_start;
- 
- 		/* If vm_flags changed after mmap_file(), we should try merge vma again
-@@ -1818,7 +1820,7 @@ unsigned long mmap_region(struct file *f
- 				vma = merge;
- 				/* Update vm_flags to pick up the change. */
- 				vm_flags = vma->vm_flags;
--				goto unmap_writable;
-+				goto file_expanded;
- 			}
- 		}
- 
-@@ -1831,20 +1833,13 @@ unsigned long mmap_region(struct file *f
- 		vma_set_anonymous(vma);
- 	}
- 
--	/* Allow architectures to sanity-check the vm_flags */
--	if (!arch_validate_flags(vma->vm_flags)) {
--		error = -EINVAL;
--		if (file)
--			goto close_and_free_vma;
--		else
--			goto free_vma;
--	}
-+#ifdef CONFIG_SPARC64
-+	/* TODO: Fix SPARC ADI! */
-+	WARN_ON_ONCE(!arch_validate_flags(vm_flags));
-+#endif
- 
- 	vma_link(mm, vma, prev, rb_link, rb_parent);
--	/* Once vma denies write, undo our temporary denial count */
--unmap_writable:
--	if (file && vm_flags & VM_SHARED)
--		mapping_unmap_writable(file->f_mapping);
-+file_expanded:
- 	file = vma->vm_file;
- out:
- 	perf_event_mmap(vma);
-@@ -1875,16 +1870,12 @@ out:
- 
- 	return addr;
- 
--close_and_free_vma:
--	vma_close(vma);
--unmap_and_free_vma:
-+unmap_and_free_file_vma:
- 	fput(vma->vm_file);
- 	vma->vm_file = NULL;
- 
- 	/* Undo any partial mapping done by a device driver. */
- 	unmap_region(mm, vma, prev, vma->vm_start, vma->vm_end);
--	if (vm_flags & VM_SHARED)
--		mapping_unmap_writable(file->f_mapping);
- free_vma:
- 	vm_area_free(vma);
- unacct_error:
-@@ -2907,6 +2898,36 @@ int do_munmap(struct mm_struct *mm, unsi
- 	return __do_munmap(mm, start, len, uf, false);
- }
- 
-+unsigned long mmap_region(struct file *file, unsigned long addr,
-+			  unsigned long len, vm_flags_t vm_flags, unsigned long pgoff,
-+			  struct list_head *uf)
-+{
-+	unsigned long ret;
-+	bool writable_file_mapping = false;
-+
-+	/* Allow architectures to sanity-check the vm_flags. */
-+	if (!arch_validate_flags(vm_flags))
-+		return -EINVAL;
-+
-+	/* Map writable and ensure this isn't a sealed memfd. */
-+	if (file && (vm_flags & VM_SHARED)) {
-+		int error = mapping_map_writable(file->f_mapping);
-+
-+		if (error)
-+			return error;
-+		writable_file_mapping = true;
-+	}
-+
-+	ret = __mmap_region(file, addr, len, vm_flags, pgoff, uf);
-+
-+	/* Clear our write mapping regardless of error. */
-+	if (writable_file_mapping)
-+		mapping_unmap_writable(file->f_mapping);
-+
-+	validate_mm(current->mm);
-+	return ret;
-+}
-+
- static int __vm_munmap(unsigned long start, size_t len, bool downgrade)
- {
- 	int ret;
+ /* Use r21 for fast access */
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index d89e2ac75f7b8..67cfb4934bcf8 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -23,7 +23,7 @@ endif
+ cflags-vdso := $(ccflags-vdso) \
+ 	-isystem $(shell $(CC) -print-file-name=include) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+-	-O2 -g -fno-strict-aliasing -fno-common -fno-builtin -G0 \
++	-O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+ 	$(call cc-option, -fno-asynchronous-unwind-tables) \
+ 	$(call cc-option, -fno-stack-protector)
+-- 
+2.43.0
+
 
 
 
