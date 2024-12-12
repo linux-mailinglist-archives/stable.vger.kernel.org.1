@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F9B9EF330
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F1B9EEE6A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67B61899B2F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FCAF16A9EC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FC024036F;
-	Thu, 12 Dec 2024 16:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F66F217F40;
+	Thu, 12 Dec 2024 15:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Adng9LL2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLQu9yah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D52324036B;
-	Thu, 12 Dec 2024 16:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2A6213E6B;
+	Thu, 12 Dec 2024 15:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021382; cv=none; b=Z03+12rAWkCwpFmjKpR1UdML1KITrCIXxwjG0M4OEF5y7WSwxNru0btCvVE8uFcNZrLquTOojgrdS40FXSQskKoJYJn1YEEteYjXNLCEeCTfozOC3WRRtyAWd9yrQmUZ7MNxtgOOTD37T4bCSNyIS1JmkiKCiRktBQZ40iNr+LY=
+	t=1734018647; cv=none; b=Oui0tb/JZujIy3PzEBUcg9cntJRU/T+Y6hWoH9Om1L1A7g77YUuW+KmWT7B+yPy1rE56Ts9odStupBC/f8ThnmN7aF99oYzkzBgRJaiQEpmEscHlD94M1GoHBP+e+fv1M1KfOQbydWpokgzOi+MjtvqlXZWdIFTjiY3HbiIpRBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021382; c=relaxed/simple;
-	bh=aVVQRb+iDj3LXzoKSX0UZvDH4AtP03OxELowBUjV9Sg=;
+	s=arc-20240116; t=1734018647; c=relaxed/simple;
+	bh=niN/MSaFJxk9XpHYtH7XnvrxW9x3T8jPwNwPJG4yzfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ylmedl8JdBO3MsQuRO1v8noHKpsTbIiRVJgW+cVpKR6jpbT/k5HXIaAMPmSdhksoj90ysjMZtEgECWxwEvzVddkC9v0GfPdjIO1zcg+YQ2rEtGekh05vxC5WDNmD0ZIHNBip9VwWStyuX0iVXkIz4ZE9Wn6b6NJlSNlzPE7lIR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Adng9LL2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847AFC4CEE0;
-	Thu, 12 Dec 2024 16:36:21 +0000 (UTC)
+	 MIME-Version; b=XO4z45lf7Vh67Zp1JSDg/CLZOM3O7ZzINuIxGZQIWQhS/xMPzTKEL4k191RogepYM3k+mDJzfXoLiAUOvq1opMDQH3QiMdWoWEqbQKfNs2GRje5pZVl/Arl4QExEZpG/acjdzcuxMqzZgxwCakiyR2gBl+Y+3iYFPiyKhyfBqwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLQu9yah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9EFC4CECE;
+	Thu, 12 Dec 2024 15:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021382;
-	bh=aVVQRb+iDj3LXzoKSX0UZvDH4AtP03OxELowBUjV9Sg=;
+	s=korg; t=1734018647;
+	bh=niN/MSaFJxk9XpHYtH7XnvrxW9x3T8jPwNwPJG4yzfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Adng9LL2bb432276mdO1W4hQI7nX1GCfBzn6i8CL253wOO3Odgy+lhASeQVty4KOE
-	 zLF55OkkQfmUUU1Dwk+zw8BNG1zbDTaG+Bp3Pjd3R6pvXZrtRln75Epfx+MTQieqis
-	 o+gaQmaT0CWtNQnklmgJ+RYgoGgUH7rSHg/Q4Pag=
+	b=vLQu9yahluZPAuz70+FZIrguwKbD90sLNg5mqrR7jq4jhV/6xkz2lpw9ES6wWg1Pd
+	 vEqqOa9+p73rbKN7qgmQ7AahG0wu1GP3JqKnUJ4uViy1f6ng4nyj0ADDKDgi1VJ8Yg
+	 KVaW+1WWQszLD6i6UWzTLoqpArmnp1cmQ2HbcbZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tova <blueaddagio@laposte.net>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 723/772] ASoC: amd: yc: Add quirk for microphone on Lenovo Thinkpad T14s Gen 6 21M1CTO1WW
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 349/356] ALSA: hda: Fix build error without CONFIG_SND_DEBUG
 Date: Thu, 12 Dec 2024 16:01:08 +0100
-Message-ID: <20241212144419.766629436@linuxfoundation.org>
+Message-ID: <20241212144258.356792569@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <ukleinek@debian.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit cbc86dd0a4fe9f8c41075328c2e740b68419d639 ]
+commit 0ddf2784d6c29e59409a62b8f32dc5abe56135a4 upstream.
 
-Add a quirk for Tova's Lenovo Thinkpad T14s with product name 21M1.
+The macro should have been defined without setting the non-existing
+name field in the case of CONFIG_SND_DEBUG=n.
 
-Suggested-by: Tova <blueaddagio@laposte.net>
-Link: https://bugs.debian.org/1087673
-Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
-Link: https://patch.msgid.link/20241122075606.213132-2-ukleinek@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/20241011131046.5eb3905a@canb.auug.org.au
+Fixes: 5b1913a79c3e ("ALSA: hda: Use own quirk lookup helper")
+Link: https://patch.msgid.link/20241011072152.14657-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/pci/hda/hda_local.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index f38f882fd55ec..af9601bea275e 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -220,6 +220,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21M1"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
--- 
-2.43.0
-
+--- a/sound/pci/hda/hda_local.h
++++ b/sound/pci/hda/hda_local.h
+@@ -308,9 +308,15 @@ struct hda_quirk {
+ #endif
+ };
+ 
++#ifdef CONFIG_SND_DEBUG_VERBOSE
+ #define HDA_CODEC_QUIRK(vend, dev, xname, val) \
+ 	{ _SND_PCI_QUIRK_ID(vend, dev), .value = (val), .name = (xname),\
+ 			.match_codec_ssid = true }
++#else
++#define HDA_CODEC_QUIRK(vend, dev, xname, val) \
++	{ _SND_PCI_QUIRK_ID(vend, dev), .value = (val), \
++			.match_codec_ssid = true }
++#endif
+ 
+ struct snd_hda_pin_quirk {
+ 	unsigned int codec;             /* Codec vendor/device ID */
 
 
 
