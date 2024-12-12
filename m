@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-102586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C1A9EF2BE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F919EF089
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7F7D289F11
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06EC1785F3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2790D226866;
-	Thu, 12 Dec 2024 16:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF222223E9D;
+	Thu, 12 Dec 2024 16:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1l3kSCs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CA9wuNje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D856B216E3B;
-	Thu, 12 Dec 2024 16:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6928D222D68;
+	Thu, 12 Dec 2024 16:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021763; cv=none; b=QXJwtLGRsS26hH/MBLMyFMtdAd/fY89beZdZ52yoTCjlm86iipK6wao8ajuo8od20367K8xijXm8PopWri67wUBvfW3yZVQ/1soOWPN7Pqo2U6HFtda5u6b7jkSRisM255VVHc12KWH8VTZTTL16kZ1tBPIUadm3IqS7S14V6pU=
+	t=1734019712; cv=none; b=Eh3K/6GudeYgh9ELIZAXeYoX/Of5JBc9TW0d/vN5Tztyr1vm5RmxpF3d/0lfm01Puo1hBUFg2g8ebmsg9P9nNn1Hg8dGgmYBxSIQ+zpwPMjgCim1YLvSiQJG+pitfHIkuErGgNZlCIrXSPBInm6Bgw5p7JhgzoU6hB7iKE/7gK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021763; c=relaxed/simple;
-	bh=PB5SQZgsx0EBOsDMIN/QDrnn1Wkg7LgBuEP9VA+HReI=;
+	s=arc-20240116; t=1734019712; c=relaxed/simple;
+	bh=g69dOTKkVTdiOuK/hJGBiVKUIIjuCZmhvuO4ZyHs3ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=as31uPgwld6JfZ1aDqBNbHcxMMfngQEeHBYy9hQ8v9hNoVt0uXt7xc2bYpa3mivHbOPjpe9kVkRHN17HvwqkhfNCQmdNgHslyiQCGaKooMFAyfFjqQNU+J43ue44m9FPjXaF4uZU2Pk62vtlbo/sojWEiZPck4td33m1yV47UgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1l3kSCs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0378DC4CECE;
-	Thu, 12 Dec 2024 16:42:42 +0000 (UTC)
+	 MIME-Version; b=gs6C8/BXA1R6vTvAVfXyo0u9mZUm8Pv4GfWQsrIOLKYTsE7DeV6hCDKmDtW4v3+x5sNcOS0mCKYn7lG+ptZrUaf/iq5MG4VhfZH8JlWFPZjUcaYA2+wPOm1G4Sshs4OCEHsW2XuByqyJMsvv5Gl9plo46IwMJCqo80+UDfjo2Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CA9wuNje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3EBC4CECE;
+	Thu, 12 Dec 2024 16:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021763;
-	bh=PB5SQZgsx0EBOsDMIN/QDrnn1Wkg7LgBuEP9VA+HReI=;
+	s=korg; t=1734019712;
+	bh=g69dOTKkVTdiOuK/hJGBiVKUIIjuCZmhvuO4ZyHs3ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1l3kSCs4EMe3mM9xm7mzP2XX8H6Jkg6snBUoJElV7S3RsVPgX1+V8ZBEr3EJC97p
-	 waKayu4DJV4bGXdEbVAGjlQG2KmBSnARFE4ILLIEi4OYq5NIjpS2p/VDbDYxP2aHAo
-	 ItqDo97EMs777CQDvWTiMESVZs+JpS+vFj7ei34I=
+	b=CA9wuNjeu90YGw8bEodYPIhhP7RrS0QdSrZztQ1bOPm0SuaT/I6ZpcmKDH2xCnrTk
+	 ZoiBUkwanVzpr2PR/ZEqNZzYqeNsIT+xqDioj8Dot7Xcd8RSwlG+kXEhcI9K8AabzD
+	 kKZIUf7R7Y+JMVXTJwBzYRii3VgOMjOmuJ6ZHZLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Mark Fasheh <mark@fasheh.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 026/565] ocfs2: uncache inode which has failed entering the group
-Date: Thu, 12 Dec 2024 15:53:41 +0100
-Message-ID: <20241212144312.481864358@linuxfoundation.org>
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 277/772] f2fs: fix to avoid use GC_AT when setting gc_mode as GC_URGENT_LOW or GC_URGENT_MID
+Date: Thu, 12 Dec 2024 15:53:42 +0100
+Message-ID: <20241212144401.355218270@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-commit 737f34137844d6572ab7d473c998c7f977ff30eb upstream.
+[ Upstream commit 296b8cb34e65fa93382cf919be5a056f719c9a26 ]
 
-Syzbot has reported the following BUG:
+If gc_mode is set to GC_URGENT_LOW or GC_URGENT_MID, cost benefit GC
+approach should be used, but if ATGC is enabled at the same time,
+Age-threshold approach will be selected, which can only do amount of
+GC and it is much less than the numbers of CB approach.
 
-kernel BUG at fs/ocfs2/uptodate.c:509!
-...
-Call Trace:
- <TASK>
- ? __die_body+0x5f/0xb0
- ? die+0x9e/0xc0
- ? do_trap+0x15a/0x3a0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? do_error_trap+0x1dc/0x2c0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? __pfx_do_error_trap+0x10/0x10
- ? handle_invalid_op+0x34/0x40
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? exc_invalid_op+0x38/0x50
- ? asm_exc_invalid_op+0x1a/0x20
- ? ocfs2_set_new_buffer_uptodate+0x2e/0x160
- ? ocfs2_set_new_buffer_uptodate+0x144/0x160
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ocfs2_group_add+0x39f/0x15a0
- ? __pfx_ocfs2_group_add+0x10/0x10
- ? __pfx_lock_acquire+0x10/0x10
- ? mnt_get_write_access+0x68/0x2b0
- ? __pfx_lock_release+0x10/0x10
- ? rcu_read_lock_any_held+0xb7/0x160
- ? __pfx_rcu_read_lock_any_held+0x10/0x10
- ? smack_log+0x123/0x540
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x226/0x2b0
- ocfs2_ioctl+0x65e/0x7d0
- ? __pfx_ocfs2_ioctl+0x10/0x10
- ? smack_file_ioctl+0x29e/0x3a0
- ? __pfx_smack_file_ioctl+0x10/0x10
- ? lockdep_hardirqs_on_prepare+0x43d/0x780
- ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
- ? __pfx_ocfs2_ioctl+0x10/0x10
- __se_sys_ioctl+0xfb/0x170
- do_syscall_64+0xf3/0x230
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
- </TASK>
+some traces:
+  f2fs_gc-254:48-396     [007] ..... 2311600.684028: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1053, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
+  f2fs_gc-254:48-396     [007] ..... 2311600.684527: f2fs_get_victim: dev = (254,48), type = No TYPE, policy = (Background GC, LFS-mode, Age-threshold), victim = 10, cost = 4294364975, ofs_unit = 1, pre_victim_secno = -1, prefree = 0, free = 44898
+  f2fs_gc-254:48-396     [007] ..... 2311600.714835: f2fs_gc_end: dev = (254,48), ret = 0, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
+  f2fs_gc-254:48-396     [007] ..... 2311600.714843: f2fs_background_gc: dev = (254,48), wait_ms = 50, prefree = 0, free = 44898
+  f2fs_gc-254:48-396     [007] ..... 2311600.771785: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:
+  f2fs_gc-254:48-396     [007] ..... 2311600.772275: f2fs_gc_end: dev = (254,48), ret = -61, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
 
-When 'ioctl(OCFS2_IOC_GROUP_ADD, ...)' has failed for the particular
-inode in 'ocfs2_verify_group_and_input()', corresponding buffer head
-remains cached and subsequent call to the same 'ioctl()' for the same
-inode issues the BUG() in 'ocfs2_set_new_buffer_uptodate()' (trying
-to cache the same buffer head of that inode). Fix this by uncaching
-the buffer head with 'ocfs2_remove_from_cache()' on error path in
-'ocfs2_group_add()'.
-
-Link: https://lkml.kernel.org/r/20241114043844.111847-1-dmantipov@yandex.ru
-Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=453873f1588c2d75b447
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0e5e81114de1 ("f2fs: add GC_URGENT_LOW mode in gc_urgent")
+Fixes: d98af5f45520 ("f2fs: introduce gc_urgent_mid mode")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/resize.c |    2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/ABI/testing/sysfs-fs-f2fs | 7 +++++--
+ fs/f2fs/gc.c                            | 2 ++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -566,6 +566,8 @@ out_commit:
- 	ocfs2_commit_trans(osb, handle);
+diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
+index 483639fb727b2..a411ce2c75016 100644
+--- a/Documentation/ABI/testing/sysfs-fs-f2fs
++++ b/Documentation/ABI/testing/sysfs-fs-f2fs
+@@ -303,10 +303,13 @@ Description:	Do background GC aggressively when set. Set to 0 by default.
+ 		GC approach and turns SSR mode on.
+ 		gc urgent low(2): lowers the bar of checking I/O idling in
+ 		order to process outstanding discard commands and GC a
+-		little bit aggressively. uses cost benefit GC approach.
++		little bit aggressively. always uses cost benefit GC approach,
++		and will override age-threshold GC approach if ATGC is enabled
++		at the same time.
+ 		gc urgent mid(3): does GC forcibly in a period of given
+ 		gc_urgent_sleep_time and executes a mid level of I/O idling check.
+-		uses cost benefit GC approach.
++		always uses cost benefit GC approach, and will override
++		age-threshold GC approach if ATGC is enabled at the same time.
  
- out_free_group_bh:
-+	if (ret < 0)
-+		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
- 	brelse(group_bh);
+ What:		/sys/fs/f2fs/<disk>/gc_urgent_sleep_time
+ Date:		August 2017
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 5a661a0e76632..687b2ce82c854 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -227,6 +227,8 @@ static int select_gc_type(struct f2fs_sb_info *sbi, int gc_type)
  
- out_unlock:
+ 	switch (sbi->gc_mode) {
+ 	case GC_IDLE_CB:
++	case GC_URGENT_LOW:
++	case GC_URGENT_MID:
+ 		gc_mode = GC_CB;
+ 		break;
+ 	case GC_IDLE_GREEDY:
+-- 
+2.43.0
+
 
 
 
