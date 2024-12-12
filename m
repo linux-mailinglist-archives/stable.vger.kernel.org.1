@@ -1,129 +1,80 @@
-Return-Path: <stable+bounces-103883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3F99EFA16
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:57:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C15A79EF999
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D9B917A414
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81EAA287585
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39173223711;
-	Thu, 12 Dec 2024 17:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8AA223711;
+	Thu, 12 Dec 2024 17:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSdrkRIr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPhjBwDk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFC622332E;
-	Thu, 12 Dec 2024 17:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14539223E60;
+	Thu, 12 Dec 2024 17:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025889; cv=none; b=d4Vwz0xPfCEE3LyO80VXOwsM/OMjNnOKDlbLUo8MqrK7hsvIgNdEH407FvdAaVE9mwbYkBRurCwqBcjUEoZfmtwsS/2r1ekkOwE8F/S1QSgiXYqjDeEpultegGfNy7Vvyu26coTI20T9Nbn3cCgR7bWdndruAh0jQKCJkfO9fGA=
+	t=1734025920; cv=none; b=NQK5bOM4LWesxyq2Th8f1PXbYOy4OWVGY3Kan51kwuPwQrCpJtnvRonI7/zk7BXt+SCzCdDcEOydhb161kF3lWIWA4qFHrKgC5TG2dS7hCWmNXd3bLhR7czjTO3GhSySNPUJFotJ/6r8ingocGZpzo0yyJzPACbUBLH3ceErReY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025889; c=relaxed/simple;
-	bh=bbh/KXSOtB7WvPTetuNw4pZBiTWf3BR3SnnXne6N3lQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dlNlVOvJs0uHkX76APyydm1iZ5Js9PvmMnygCTWQQY2i5hQlx81W3tdTEcMkYPVar84Z/Mj3Ed8+ozFZE9uHMlMlHBaWgM7UzUNoNmqfFYmYiOjLT78PcwY3gzpe5dcef3T6nP/FYpM+TF1oZ/MykSYQXmd5B1ZkVtC5MbUGvqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSdrkRIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FCAC4CECE;
-	Thu, 12 Dec 2024 17:51:25 +0000 (UTC)
+	s=arc-20240116; t=1734025920; c=relaxed/simple;
+	bh=zFNmZLEv3s2UoaHFYRmHKXkQIJYcRZ1oOSynagA3kAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mr9IfkpIirK5D6vEAgv0UHUPApzYrY2wDNLzGqegsJFJk+P3F3p3b9eVsgY6Tahw/gBBz0clxatzVqpFd5ll2ZJZY13380nnu6qaL7UcayQxbC0AFcb4s9GNhKqkpDQiY1PwZlZH9oFMfvy4EVenudvhaBiqjTcnc6TSdYI85A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPhjBwDk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F7FC4CECE;
+	Thu, 12 Dec 2024 17:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025886;
-	bh=bbh/KXSOtB7WvPTetuNw4pZBiTWf3BR3SnnXne6N3lQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSdrkRIrEloUNS6GeRbUX5RrdXSvqitAM6nXoJI8Ws5NDxHNql67ThNdcbqDKJwjL
-	 f9lA0x1LKBBSRTmNKACEhv0onzbzaF0377csXySp+s4UKF9LHmv4CWp4QUlqjGRIMR
-	 OMgwBNiponUBqzjcfQSRxOmQVFKKvYGFVhTByYrw=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
-	Song Liu <songliubraving@fb.com>
-Subject: [PATCH 5.4 321/321] bpf, xdp: Update devmap comments to reflect napi/rcu usage
-Date: Thu, 12 Dec 2024 16:03:59 +0100
-Message-ID: <20241212144242.661090523@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=korg; t=1734025919;
+	bh=zFNmZLEv3s2UoaHFYRmHKXkQIJYcRZ1oOSynagA3kAw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KPhjBwDkpvbkecFAw0ge8tKI4hoYMr3QXB3qmtzqFOJWVcI4t1ITo50MSXDDuxBM8
+	 c/c7rdhbtFF3obHzlZf5FRWtvGM/tPsbyf8tO4Hao3wREqgmrE4FKHK7tfvVihAC7/
+	 t6TLp5jzPuGBSh1gxFVBso2OPa6si7zHtilEwSZM=
+Date: Thu, 12 Dec 2024 16:17:56 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: cve@kernel.org, jianqi.ren.cn@windriver.com, stable@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	sashal@kernel.org, jamie.bainbridge@gmail.com, jdamato@fastly.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] net: napi: Prevent overflow of napi_defer_hard_irqs
+Message-ID: <2024121246-phrase-dynamite-356d@gregkh>
+References: <20241211040304.3212711-1-jianqi.ren.cn@windriver.com>
+ <2024121250-preschool-napping-502e@gregkh>
+ <20241212065044.09d7b377@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241212065044.09d7b377@kernel.org>
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+On Thu, Dec 12, 2024 at 06:50:44AM -0800, Jakub Kicinski wrote:
+> On Thu, 12 Dec 2024 12:41:08 +0100 Greg KH wrote:
+> > On Wed, Dec 11, 2024 at 12:03:04PM +0800, jianqi.ren.cn@windriver.com wrote:
+> > > From: Joe Damato <jdamato@fastly.com>
+> > > 
+> > > [ Upstream commit 08062af0a52107a243f7608fd972edb54ca5b7f8 ]  
+> > 
+> > You can't ignore the 6.6.y tree :(
+> > 
+> > Dropping from my review queue now.
+> 
+> Is it possible to instead mark CVE-2024-50018 as invalid, please?
+> The change is cosmetic.
 
-------------------
+Now rejected, sorry about that.
 
-From: John Fastabend <john.fastabend@gmail.com>
-
-commit 42a84a8cd0ff0cbff5a4595e1304c4567a30267d upstream.
-
-Now that we rely on synchronize_rcu and call_rcu waiting to
-exit perempt-disable regions (NAPI) lets update the comments
-to reflect this.
-
-Fixes: 0536b85239b84 ("xdp: Simplify devmap cleanup")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Björn Töpel <bjorn.topel@intel.com>
-Acked-by: Song Liu <songliubraving@fb.com>
-Link: https://lore.kernel.org/bpf/1580084042-11598-2-git-send-email-john.fastabend@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- kernel/bpf/devmap.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
-
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -210,10 +210,12 @@ static void dev_map_free(struct bpf_map
- 
- 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
- 	 * so the programs (can be more than one that used this map) were
--	 * disconnected from events. Wait for outstanding critical sections in
--	 * these programs to complete. The rcu critical section only guarantees
--	 * no further reads against netdev_map. It does __not__ ensure pending
--	 * flush operations (if any) are complete.
-+	 * disconnected from events. The following synchronize_rcu() guarantees
-+	 * both rcu read critical sections complete and waits for
-+	 * preempt-disable regions (NAPI being the relevant context here) so we
-+	 * are certain there will be no further reads against the netdev_map and
-+	 * all flush operations are complete. Flush operations can only be done
-+	 * from NAPI context for this reason.
- 	 */
- 
- 	spin_lock(&dev_map_lock);
-@@ -518,12 +520,11 @@ static int dev_map_delete_elem(struct bp
- 		return -EINVAL;
- 
- 	/* Use call_rcu() here to ensure any rcu critical sections have
--	 * completed, but this does not guarantee a flush has happened
--	 * yet. Because driver side rcu_read_lock/unlock only protects the
--	 * running XDP program. However, for pending flush operations the
--	 * dev and ctx are stored in another per cpu map. And additionally,
--	 * the driver tear down ensures all soft irqs are complete before
--	 * removing the net device in the case of dev_put equals zero.
-+	 * completed as well as any flush operations because call_rcu
-+	 * will wait for preempt-disable region to complete, NAPI in this
-+	 * context.  And additionally, the driver tear down ensures all
-+	 * soft irqs are complete before removing the net device in the
-+	 * case of dev_put equals zero.
- 	 */
- 	old_dev = xchg(&dtab->netdev_map[k], NULL);
- 	if (old_dev)
-
-
+greg k-h
 
