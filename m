@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310369EF669
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 661D09EF51C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FD7C171E49
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE0E1898BBF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53C2205501;
-	Thu, 12 Dec 2024 17:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28F1225A2F;
+	Thu, 12 Dec 2024 16:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVBYyviA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7AZLydB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E2B53365;
-	Thu, 12 Dec 2024 17:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDE92253FE;
+	Thu, 12 Dec 2024 16:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023803; cv=none; b=WDpAvUnT7cJazFrYqmKLPh5Eq5H9rotF5Ckmk7NYkcod2DTRMo/R10VSMqFVYN2GqC54mN9e4tVBO7W11sjnSYuPuaRoTB5Q4t4tTNxju0IoDt+d1DMzKV+VlyGwrym5TvOZpv0W8Xy3aV0QS4xFhnYktM0yxK1Lg1vnQFIzK+g=
+	t=1734022289; cv=none; b=k2aAqesg9KfSzZjI1VzHIPgpIfcHKZ6AF19Bzw3tD272gm8/1/eK0sh+A7jVsoPG5ciwaOvUGr9KgbcIRhB6Zq0W2PBIDgEr6hfdIq4TnH2tqgA7nu8Sha9PFSnlD8iCpTWTnlxPs1+m2qEfIsXvtkLTEfG5fboooLH016spmQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023803; c=relaxed/simple;
-	bh=DtOc/qv3HiO44ndkuZ5+EFeBenv9GejD9dPICXy5LIk=;
+	s=arc-20240116; t=1734022289; c=relaxed/simple;
+	bh=KnsQ1YxgOLUUTzI+bMEZQia4Vpq3UIOl2VCEweJKSsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ko7lLd4Z2rtfOufSioPVig/TmV6Mbc3r8yVW6bhw8uSH8wDJaNrNitVVhrPDnuw6QJAXcLQwTl5Jn3DSeScEqketDf0qEKKZsj4H7HzXRikP1neLtWImwkEea2JWdOFblDT+dQ3ye5G4/neSd48IY5FFuAQXXLHdSI3Rej4HLgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVBYyviA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8690C4CECE;
-	Thu, 12 Dec 2024 17:16:42 +0000 (UTC)
+	 MIME-Version; b=BoRmK5oZZ13Suv30qRznNb9zIfSTqffXgQuF23CXUm0sTNJ9V0yyZiAadhGwEI9kN33ttWPsT6pLd2uvvGh324CEYqBu58y5E55TRwOljEoXiMllrjIs7GT5Iszu8ePHEBArjxIFGMZVmMrjWfBVxS7mMcxT4xxFaLVyXDzyXMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7AZLydB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D9DC4CECE;
+	Thu, 12 Dec 2024 16:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023803;
-	bh=DtOc/qv3HiO44ndkuZ5+EFeBenv9GejD9dPICXy5LIk=;
+	s=korg; t=1734022289;
+	bh=KnsQ1YxgOLUUTzI+bMEZQia4Vpq3UIOl2VCEweJKSsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVBYyviAvaYEeMyWs1MxI17y3U5QhZAHidJLbuJTh5Qt5NYuBJnNiLOOd/o7EUDwg
-	 nvJF1FdYCWMQbwe13mmtdZLQLRx3tG/VbXu9nasiCVpNxbawstwW26qoJpGIw9oaZ8
-	 LNmM9Mc8TBwy5mjAMmh5zGoZ2a5ZvLK+MQhD6A/o=
+	b=F7AZLydB1m0MbxWD4zlwOmqOUKm2M0+F63VtiSkyneAN2J+BG48rRGgjg4ZHU9Wpv
+	 6qP6u231VCcrmENCsancZlOYm3ppsAVmy9QwQDpKBCU1XhTkByQiiF8EJ9VnewOvLg
+	 daCKFF/3vwbJmjjt2+nk4RxGprFMrbndJTkX6aHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 057/459] mips: asm: fix warning when disabling MIPS_FP_SUPPORT
-Date: Thu, 12 Dec 2024 15:56:35 +0100
-Message-ID: <20241212144255.772308249@linuxfoundation.org>
+Subject: [PATCH 5.15 201/565] ALSA: us122l: Use snd_card_free_when_closed() at disconnection
+Date: Thu, 12 Dec 2024 15:56:36 +0100
+Message-ID: <20241212144319.438558376@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit da09935975c8f8c90d6f57be2422dee5557206cd ]
+[ Upstream commit b7df09bb348016943f56b09dcaafe221e3f73947 ]
 
-When MIPS_FP_SUPPORT is disabled, __sanitize_fcr31() is defined as
-nothing, which triggers a gcc warning:
+The USB disconnect callback is supposed to be short and not too-long
+waiting.  OTOH, the current code uses snd_card_free() at
+disconnection, but this waits for the close of all used fds, hence it
+can take long.  It eventually blocks the upper layer USB ioctls, which
+may trigger a soft lockup.
 
-    In file included from kernel/sched/core.c:79:
-    kernel/sched/core.c: In function 'context_switch':
-    ./arch/mips/include/asm/switch_to.h:114:39: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
-      114 |                 __sanitize_fcr31(next);                                 \
-          |                                       ^
-    kernel/sched/core.c:5316:9: note: in expansion of macro 'switch_to'
-     5316 |         switch_to(prev, next, prev);
-          |         ^~~~~~~~~
+An easy workaround is to replace snd_card_free() with
+snd_card_free_when_closed().  This variant returns immediately while
+the release of resources is done asynchronously by the card device
+release at the last close.
 
-Fix this by providing an empty body for __sanitize_fcr31() like one is
-defined for __mips_mt_fpaff_switch_to().
+The loop of us122l->mmap_count check is dropped as well.  The check is
+useless for the asynchronous operation with *_when_closed().
 
-Fixes: 36a498035bd2 ("MIPS: Avoid FCSR sanitization when CONFIG_MIPS_FP_SUPPORT=n")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 030a07e44129 ("ALSA: Add USB US122L driver")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241113111042.15058-3-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/switch_to.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/usx2y/us122l.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
-index a4374b4cb88fd..d6ccd53440213 100644
---- a/arch/mips/include/asm/switch_to.h
-+++ b/arch/mips/include/asm/switch_to.h
-@@ -97,7 +97,7 @@ do {									\
- 	}								\
- } while (0)
- #else
--# define __sanitize_fcr31(next)
-+# define __sanitize_fcr31(next) do { (void) (next); } while (0)
- #endif
+diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
+index e558931cce16e..23d7d542a3de6 100644
+--- a/sound/usb/usx2y/us122l.c
++++ b/sound/usb/usx2y/us122l.c
+@@ -617,10 +617,7 @@ static void snd_us122l_disconnect(struct usb_interface *intf)
+ 	usb_put_intf(usb_ifnum_to_if(us122l->dev, 1));
+ 	usb_put_dev(us122l->dev);
  
- /*
+-	while (atomic_read(&us122l->mmap_count))
+-		msleep(500);
+-
+-	snd_card_free(card);
++	snd_card_free_when_closed(card);
+ }
+ 
+ static int snd_us122l_suspend(struct usb_interface *intf, pm_message_t message)
 -- 
 2.43.0
 
