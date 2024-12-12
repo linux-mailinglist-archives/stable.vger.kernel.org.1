@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-102905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149109EF4F6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD759EF8D8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A85071771AE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E528F179B2B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4E7222D74;
-	Thu, 12 Dec 2024 17:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80977223C54;
+	Thu, 12 Dec 2024 17:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xv1cMR73"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DChVhCpH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690CE53365;
-	Thu, 12 Dec 2024 17:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C698223C4D;
+	Thu, 12 Dec 2024 17:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022936; cv=none; b=lKje5MXnhvJemFAz8HtjU1gTwVEZ0CCQ8LhiPnBfDmclKEg3bLk2YZbDR3GBQdk3O5dY422Y2OPKGoZyiXBr10fBrALWcSeoDoxriE2Vn9Jug5hIXGB32TzB201ji6mFfP+CGAn3ZwCR2qVfh2IYwCPsyNPQYdhCBJTN9ihwq0s=
+	t=1734025081; cv=none; b=erFbDiHLx1K+5gw7PbAiCgcRKgY6G7nbm7BPBm4fVYUOnaVCDrGk1PUi4ycm5WRUU6g2oJW/U+6tq3F6jWwnfj6Tl4VZtfXLT0SCkEp86I7IE58z/8yjvW88lqctvrSeVSFhvyc/o4mRajmlFQXU7DBafBLmnJwcwTCHX4o4iuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022936; c=relaxed/simple;
-	bh=IB4JHurD6eRJvEvpty2EocuhhkxjHFnkxUKDRmGvSbg=;
+	s=arc-20240116; t=1734025081; c=relaxed/simple;
+	bh=SF0RB7dBCrY+ZVkHfLv8RiXP87IQmRp7cTF2L6wBgDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFHAb9ARhG0074s3bxh6IUrSG1cCGojgR0s9YGGVeeVFHTmNI5cATI8AIqY7ENiq7wVfXcQnBX7ADFxiV/l0m6FW/0cWRQ7CTnJs48EkI4HqDBSbxrp9xezyHD/LTvGrmQo7lSxvnagrz3w+ChGQt9wupG2Qmy8ncR21hEpNXTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xv1cMR73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7715C4CECE;
-	Thu, 12 Dec 2024 17:02:15 +0000 (UTC)
+	 MIME-Version; b=ZbUvKwTNu+rKLHpYxoyj1ll6GoO4fdigBLFdmXbET6Etbp3NzGAYYLKhkPks7JZPOTS3w2rJ3fNsXVLNL62jg2O29ZZZd3Gpm+MKOdDB/kgO6EZ/mfuxEysoxVBzhvA4V97B61xdiLnaFE+Pqf29lpPqJxomDG7f2M/R6ntnJUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DChVhCpH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20D4C4CED0;
+	Thu, 12 Dec 2024 17:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022936;
-	bh=IB4JHurD6eRJvEvpty2EocuhhkxjHFnkxUKDRmGvSbg=;
+	s=korg; t=1734025081;
+	bh=SF0RB7dBCrY+ZVkHfLv8RiXP87IQmRp7cTF2L6wBgDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xv1cMR73VPKOvqaDot6qfyyFSkUsVRlkwmIgp1N0HyQA/nvCUKqW+P+ywFBHXWM8s
-	 9ehHk2rqF2mIkVW4EHxCTIIymbUfyMNZAZ+yvJfZTL1Bgj/Y3G0uv43KqqgYhEx8fR
-	 hrxDUnUsNcx6vHLwh+zoLOHms3+imfeT4bzatvOc=
+	b=DChVhCpHZDYFpIfs8/oF8Pyl4SsTE4W4r1M7SeoFs9Dg5bugc1xGNLLW0YZHq7ops
+	 BC3kZ0drmBMQLERiYyhVmA6XIHCsjtaoje2olnUgzhY5unekzmI6NNtfD0gLe7f7ZS
+	 /DIg2I4lwGfz4HaNEm1ueoaR4GsZfhsKLox9efiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Liu Jian <liujian56@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Matthew Garrett <mjg59@google.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Bartosz Szczepanek <bsz@semihalf.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 373/565] sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport
+Subject: [PATCH 5.4 050/321] efi/tpm: Pass correct address to memblock_reserve
 Date: Thu, 12 Dec 2024 15:59:28 +0100
-Message-ID: <20241212144326.369568037@linuxfoundation.org>
+Message-ID: <20241212144231.971847399@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Jerry Snitselaar <jsnitsel@redhat.com>
 
-[ Upstream commit 4db9ad82a6c823094da27de4825af693a3475d51 ]
+[ Upstream commit f4cd18c5b2000df0c382f6530eeca9141ea41faf ]
 
-Since transport->sock has been set to NULL during reset transport,
-XPRT_SOCK_UPD_TIMEOUT also needs to be cleared. Otherwise, the
-xs_tcp_set_socket_timeouts() may be triggered in xs_tcp_send_request()
-to dereference the transport->sock that has been set to NULL.
+memblock_reserve() expects a physical address, but the address being
+passed for the TPM final events log is what was returned from
+early_memremap(). This results in something like the following:
 
-Fixes: 7196dbb02ea0 ("SUNRPC: Allow changing of the TCP timeout parameters on the fly")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+[    0.000000] memblock_reserve: [0xffffffffff2c0000-0xffffffffff2c00e4] efi_tpm_eventlog_init+0x324/0x370
+
+Pass the address from efi like what is done for the TPM events log.
+
+Fixes: c46f3405692d ("tpm: Reserve the TPM final events table")
+Cc: Matthew Garrett <mjg59@google.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Bartosz Szczepanek <bsz@semihalf.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Stable-dep-of: e6d654e9f5a9 ("tpm: fix signed/unsigned bug when checking event logs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtsock.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/efi/tpm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 06ea4fb2d4532..9e122c20fcc6e 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1143,6 +1143,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
- 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
-+	clear_bit(XPRT_SOCK_UPD_TIMEOUT, &transport->sock_state);
- }
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index 8f665678e9e39..e8d69bd548f3f 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -97,7 +97,7 @@ int __init efi_tpm_eventlog_init(void)
+ 		goto out_calc;
+ 	}
  
- static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
+-	memblock_reserve((unsigned long)final_tbl,
++	memblock_reserve(efi.tpm_final_log,
+ 			 tbl_size + sizeof(*final_tbl));
+ 	efi_tpm_final_log_size = tbl_size;
+ 
 -- 
 2.43.0
 
