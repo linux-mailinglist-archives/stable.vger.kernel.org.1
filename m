@@ -1,80 +1,87 @@
-Return-Path: <stable+bounces-103894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15A79EF999
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA18D9EF9A8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81EAA287585
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 905BC28E8AB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8AA223711;
-	Thu, 12 Dec 2024 17:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBCF223304;
+	Thu, 12 Dec 2024 17:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPhjBwDk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNe2ZUvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14539223E60;
-	Thu, 12 Dec 2024 17:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B685215710
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 17:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025920; cv=none; b=NQK5bOM4LWesxyq2Th8f1PXbYOy4OWVGY3Kan51kwuPwQrCpJtnvRonI7/zk7BXt+SCzCdDcEOydhb161kF3lWIWA4qFHrKgC5TG2dS7hCWmNXd3bLhR7czjTO3GhSySNPUJFotJ/6r8ingocGZpzo0yyJzPACbUBLH3ceErReY=
+	t=1734025937; cv=none; b=CWeesukt3634WPVgTFgTQPLz73QY+KFR74dRG9bAQ64lhJvAtNjJsdw1fDPZFbgOmNh2uRa45mB9q2mwUi4zn/p9K6Hza6fufPmKCCmVv9DZWXxZ9SSMrX0I6RTbbU6UwliecF8u19qdZumZb1a83orRFHAfKjjMA5ADbOtroBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025920; c=relaxed/simple;
-	bh=zFNmZLEv3s2UoaHFYRmHKXkQIJYcRZ1oOSynagA3kAw=;
+	s=arc-20240116; t=1734025937; c=relaxed/simple;
+	bh=CPjLisD3y6KZv0Ijx0iGsLWzl7zHWtdc5HTBYKM+AMQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mr9IfkpIirK5D6vEAgv0UHUPApzYrY2wDNLzGqegsJFJk+P3F3p3b9eVsgY6Tahw/gBBz0clxatzVqpFd5ll2ZJZY13380nnu6qaL7UcayQxbC0AFcb4s9GNhKqkpDQiY1PwZlZH9oFMfvy4EVenudvhaBiqjTcnc6TSdYI85A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPhjBwDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F7FC4CECE;
-	Thu, 12 Dec 2024 17:51:59 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=pHxlSDtKZU6ppYtbUhBz9taRQ759/85x0aF/UbZKBdm3auSmPciU2UwMmyXPcr/nfhGTUzASJfr2gBWVD7B84iIZjZD9fETzxsu8xwdLs5r4N8ur255S/7LKa2YGs42bGjJdDqdFQToqSV6NSVlvMETDWHyo3C1yDu1eS6qrwwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNe2ZUvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12858C4CECE;
+	Thu, 12 Dec 2024 17:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025919;
-	bh=zFNmZLEv3s2UoaHFYRmHKXkQIJYcRZ1oOSynagA3kAw=;
+	s=korg; t=1734025937;
+	bh=CPjLisD3y6KZv0Ijx0iGsLWzl7zHWtdc5HTBYKM+AMQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KPhjBwDkpvbkecFAw0ge8tKI4hoYMr3QXB3qmtzqFOJWVcI4t1ITo50MSXDDuxBM8
-	 c/c7rdhbtFF3obHzlZf5FRWtvGM/tPsbyf8tO4Hao3wREqgmrE4FKHK7tfvVihAC7/
-	 t6TLp5jzPuGBSh1gxFVBso2OPa6si7zHtilEwSZM=
-Date: Thu, 12 Dec 2024 16:17:56 +0100
+	b=KNe2ZUvw1z9YVfc4FoOZyLdM8DZ2Q8XNH1e9tH3ZoCjFTJYbABxmHR4ZRpJ9C52Bx
+	 9YG0OcB9zYFgmrSXTZtMc2FbLNwk37kwjJyQLoD5tT/MmDsM3NE/2kffD58y3IwIN4
+	 fbbgNfdZp/xMgY8rL7eZ+nKi9bv7ezHtgZ38aMJg=
+Date: Thu, 12 Dec 2024 18:10:09 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: cve@kernel.org, jianqi.ren.cn@windriver.com, stable@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	sashal@kernel.org, jamie.bainbridge@gmail.com, jdamato@fastly.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] net: napi: Prevent overflow of napi_defer_hard_irqs
-Message-ID: <2024121246-phrase-dynamite-356d@gregkh>
-References: <20241211040304.3212711-1-jianqi.ren.cn@windriver.com>
- <2024121250-preschool-napping-502e@gregkh>
- <20241212065044.09d7b377@kernel.org>
+To: Tomas Glozar <tglozar@redhat.com>
+Cc: stable@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: Patch "rtla/timerlat: Make timerlat_top_cpu->*_count unsigned
+ long long" has been added to the 6.6-stable tree
+Message-ID: <2024121247-limb-alkalize-86fb@gregkh>
+References: <20241210210407.3588978-1-sashal@kernel.org>
+ <CAP4=nvSewMCgCYg1jBbHoUkNOknR5Nc5T+0EZZKRG_2RVUfsDw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20241212065044.09d7b377@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAP4=nvSewMCgCYg1jBbHoUkNOknR5Nc5T+0EZZKRG_2RVUfsDw@mail.gmail.com>
 
-On Thu, Dec 12, 2024 at 06:50:44AM -0800, Jakub Kicinski wrote:
-> On Thu, 12 Dec 2024 12:41:08 +0100 Greg KH wrote:
-> > On Wed, Dec 11, 2024 at 12:03:04PM +0800, jianqi.ren.cn@windriver.com wrote:
-> > > From: Joe Damato <jdamato@fastly.com>
-> > > 
-> > > [ Upstream commit 08062af0a52107a243f7608fd972edb54ca5b7f8 ]  
-> > 
-> > You can't ignore the 6.6.y tree :(
-> > 
-> > Dropping from my review queue now.
+On Thu, Dec 12, 2024 at 04:32:22PM +0100, Tomas Glozar wrote:
+> út 10. 12. 2024 v 22:04 odesílatel Sasha Levin <sashal@kernel.org> napsal:
+> >
+> > This is a note to let you know that I've just added the patch titled
+> >
+> >     rtla/timerlat: Make timerlat_top_cpu->*_count unsigned long long
+> >
+> > to the 6.6-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> >
+> > The filename of the patch is:
+> >      rtla-timerlat-make-timerlat_top_cpu-_count-unsigned-.patch
+> > and it can be found in the queue-6.6 subdirectory.
+> >
 > 
-> Is it possible to instead mark CVE-2024-50018 as invalid, please?
-> The change is cosmetic.
+> Could you also add "rtla/timerlat: Make timerlat_hist_cpu->*_count
+> unsigned long long", too (76b3102148135945b013797fac9b20), just like
+> we already have in-queue for 6.12? It makes no sense to do one fix but
+> not the other (clearly autosel AI won't take over the world yet).
 
-Now rejected, sorry about that.
+It does not apply cleanly, can you provide a working, and tested,
+backport for us to add?
+
+thanks,
 
 greg k-h
 
