@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-102578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD57E9EF3E4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C331F9EEFD1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 101A717C0E3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 410AD289070
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16BE2210FE;
-	Thu, 12 Dec 2024 16:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C69239BB3;
+	Thu, 12 Dec 2024 16:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGDTh+lj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnloPcID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAB72139C9;
-	Thu, 12 Dec 2024 16:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FE82397B1;
+	Thu, 12 Dec 2024 16:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021735; cv=none; b=f5DrOwdD3NU+r8kuM/G+3fRrFxLJWHk1REx+nsgsRMfywPODO0Sr7bvzTHztA8YAsaiK7dPbJlx19dMjk/mier9YnQUV2bbIFL30UQtbr8aVQ8xFZI6BPb1M42EGTEBCGipr+IqJu5C2MoJULZ6qpo26XWIXwItvypVS1dWVgdQ=
+	t=1734019900; cv=none; b=Ib8uBCM274xMC8CvgEC4CNqaZRMhQ5Ke0+n4QcTC2z+Bu+4VjKn+SP6rm15NJvqBuazcVR+6W6oaE5//fAtJmv6x7S+AdtSpcS32usk7eOwy0hC+21DPioGYVnGJquqRir6VJyYqdROn0H7fR/BgE+whltUy8Dme3mXtJaLxuz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021735; c=relaxed/simple;
-	bh=fwbg6tJJNZPKpyKQn8N0P6Qa16nZ9iWm2xyNedAKA3E=;
+	s=arc-20240116; t=1734019900; c=relaxed/simple;
+	bh=jzetHflY4LWjToPRIGH6WQQmxRlpPpOIGNvTTjnI8Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNe0247zJiSPBeoJVo6kYYgz21C4EDnOuQuoU/wuWMGedF8bU+L8m9FX4odAlqIo1a1WVIgM/2jIChKDUNM3xkmNECo7Aezw9yoTNqFB7Xi7UdH0gHBCQctV73uKrK2j0/QN4bED6CS7zhXPFawu0chyF6rZRMZt32ImCUgx/Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGDTh+lj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54785C4CED0;
-	Thu, 12 Dec 2024 16:42:14 +0000 (UTC)
+	 MIME-Version; b=gZEttiZYRrrxSOz1ZzJBP+UjbfH9M9NLw7jWwbhGvhdYNVK/bIXt5q6VW/shaOiuyIj1bJFxZu8qsOCrYiRgKrH/pI8a/hZKNkRwv82Ou0NzwwdHfhFJInh1jTYVRNhT8tD1EUvs+h8GqfKkdopfUPqt9lJTPv5NTTGSzrDNCBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnloPcID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D8BC4CECE;
+	Thu, 12 Dec 2024 16:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021735;
-	bh=fwbg6tJJNZPKpyKQn8N0P6Qa16nZ9iWm2xyNedAKA3E=;
+	s=korg; t=1734019900;
+	bh=jzetHflY4LWjToPRIGH6WQQmxRlpPpOIGNvTTjnI8Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGDTh+lj6AN3MqiPcBYLg6t3pe0vP6gnWadNNl00xX7+xg7hXx6YCKar3j1WBfcD0
-	 RR9ZpUgLa7ghh5DKyfH/GnjYe0BGW3gQMdLY40ai2URk/WBdJK6J7pBZyUVFzJ8Oko
-	 lzrFc1DK59ISdWhPAMKall4SLjX9cLFLCu7G8DlU=
+	b=DnloPcIDSHsQBTHIiV713aCE+6EiYmHjPCurOQPuK61RVaYvn5iUD3ocz/h+ukQQP
+	 BtRcHhJk7Dm40nQ8kFSkrwYrRH1Hh/pDi6TGdzmUe0+yN0ZqNwT8rFZBifODqLTqMZ
+	 5F+ZLHn+J13l4e6eaSZYG3tanQZNc7L1vxYcif2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Jann Horn <jannh@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Mark Brown <broonie@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 047/565] mm: unconditionally close VMAs on error
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 297/772] selftests/mount_setattr: Fix failures on 64K PAGE_SIZE kernels
 Date: Thu, 12 Dec 2024 15:54:02 +0100
-Message-ID: <20241212144313.348452562@linuxfoundation.org>
+Message-ID: <20241212144402.176319077@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,142 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 4080ef1579b2413435413988d14ac8c68e4d42c8 ]
+[ Upstream commit f13242a46438e690067a4bf47068fde4d5719947 ]
 
-Incorrect invocation of VMA callbacks when the VMA is no longer in a
-consistent state is bug prone and risky to perform.
+Currently the mount_setattr_test fails on machines with a 64K PAGE_SIZE,
+with errors such as:
 
-With regards to the important vm_ops->close() callback We have gone to
-great lengths to try to track whether or not we ought to close VMAs.
+  #  RUN           mount_setattr_idmapped.invalid_fd_negative ...
+  mkfs.ext4: No space left on device while writing out and closing file system
+  # mount_setattr_test.c:1055:invalid_fd_negative:Expected system("mkfs.ext4 -q /mnt/C/ext4.img") (256) == 0 (0)
+  # invalid_fd_negative: Test terminated by assertion
+  #          FAIL  mount_setattr_idmapped.invalid_fd_negative
+  not ok 12 mount_setattr_idmapped.invalid_fd_negative
 
-Rather than doing so and risking making a mistake somewhere, instead
-unconditionally close and reset vma->vm_ops to an empty dummy operations
-set with a NULL .close operator.
+The code creates a 100,000 byte tmpfs:
 
-We introduce a new function to do so - vma_close() - and simplify existing
-vms logic which tracked whether we needed to close or not.
+	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
+			"size=100000,mode=700"), 0);
 
-This simplifies the logic, avoids incorrect double-calling of the .close()
-callback and allows us to update error paths to simply call vma_close()
-unconditionally - making VMA closure idempotent.
+And then a little later creates a 2MB ext4 filesystem in that tmpfs:
 
-Link: https://lkml.kernel.org/r/28e89dda96f68c505cb6f8e9fc9b57c3e9f74b42.1730224667.git.lorenzo.stoakes@oracle.com
-Fixes: deb0f6562884 ("mm/mmap: undo ->mmap() when arch_validate_flags() fails")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: Jann Horn <jannh@google.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Helge Deller <deller@gmx.de>
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	ASSERT_EQ(ftruncate(img_fd, 1024 * 2048), 0);
+	ASSERT_EQ(system("mkfs.ext4 -q /mnt/C/ext4.img"), 0);
+
+At first glance it seems like that should never work, after all 2MB is
+larger than 100,000 bytes. However the filesystem image doesn't actually
+occupy 2MB on "disk" (actually RAM, due to tmpfs). On 4K kernels the
+ext4.img uses ~84KB of actual space (according to du), which just fits.
+
+However on 64K PAGE_SIZE kernels the ext4.img takes at least 256KB,
+which is too large to fit in the tmpfs, hence the errors.
+
+It seems fraught to rely on the ext4.img taking less space on disk than
+the allocated size, so instead create the tmpfs with a size of 2MB. With
+that all 21 tests pass on 64K PAGE_SIZE kernels.
+
+Fixes: 01eadc8dd96d ("tests: add mount_setattr() selftests")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20241115134114.1219555-1-mpe@ellerman.id.au
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/internal.h |    7 +++++++
- mm/mmap.c     |    9 +++------
- mm/nommu.c    |    3 +--
- mm/util.c     |   15 +++++++++++++++
- 4 files changed, 26 insertions(+), 8 deletions(-)
+ tools/testing/selftests/mount_setattr/mount_setattr_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -46,6 +46,13 @@ void page_writeback_init(void);
-  */
- int mmap_file(struct file *file, struct vm_area_struct *vma);
+diff --git a/tools/testing/selftests/mount_setattr/mount_setattr_test.c b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
+index c6a8c732b8021..304e6422a1f1c 100644
+--- a/tools/testing/selftests/mount_setattr/mount_setattr_test.c
++++ b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
+@@ -1026,7 +1026,7 @@ FIXTURE_SETUP(mount_setattr_idmapped)
+ 			"size=100000,mode=700"), 0);
  
-+/*
-+ * If the VMA has a close hook then close it, and since closing it might leave
-+ * it in an inconsistent state which makes the use of any hooks suspect, clear
-+ * them down by installing dummy empty hooks.
-+ */
-+void vma_close(struct vm_area_struct *vma);
-+
- vm_fault_t do_swap_page(struct vm_fault *vmf);
+ 	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
+-			"size=100000,mode=700"), 0);
++			"size=2m,mode=700"), 0);
  
- void free_pgtables(struct mmu_gather *tlb, struct vm_area_struct *start_vma,
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -180,8 +180,7 @@ static struct vm_area_struct *remove_vma
- 	struct vm_area_struct *next = vma->vm_next;
+ 	ASSERT_EQ(mkdir("/mnt/A", 0777), 0);
  
- 	might_sleep();
--	if (vma->vm_ops && vma->vm_ops->close)
--		vma->vm_ops->close(vma);
-+	vma_close(vma);
- 	if (vma->vm_file)
- 		fput(vma->vm_file);
- 	mpol_put(vma_policy(vma));
-@@ -1877,8 +1876,7 @@ out:
- 	return addr;
- 
- close_and_free_vma:
--	if (vma->vm_ops && vma->vm_ops->close)
--		vma->vm_ops->close(vma);
-+	vma_close(vma);
- unmap_and_free_vma:
- 	fput(vma->vm_file);
- 	vma->vm_file = NULL;
-@@ -2762,8 +2760,7 @@ int __split_vma(struct mm_struct *mm, st
- 		return 0;
- 
- 	/* Clean everything up if vma_adjust failed. */
--	if (new->vm_ops && new->vm_ops->close)
--		new->vm_ops->close(new);
-+	vma_close(new);
- 	if (new->vm_file)
- 		fput(new->vm_file);
- 	unlink_anon_vmas(new);
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -652,8 +652,7 @@ static void delete_vma_from_mm(struct vm
-  */
- static void delete_vma(struct mm_struct *mm, struct vm_area_struct *vma)
- {
--	if (vma->vm_ops && vma->vm_ops->close)
--		vma->vm_ops->close(vma);
-+	vma_close(vma);
- 	if (vma->vm_file)
- 		fput(vma->vm_file);
- 	put_nommu_region(vma->vm_region);
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1104,6 +1104,21 @@ int mmap_file(struct file *file, struct
- 	return err;
- }
- 
-+void vma_close(struct vm_area_struct *vma)
-+{
-+	static const struct vm_operations_struct dummy_vm_ops = {};
-+
-+	if (vma->vm_ops && vma->vm_ops->close) {
-+		vma->vm_ops->close(vma);
-+
-+		/*
-+		 * The mapping is in an inconsistent state, and no further hooks
-+		 * may be invoked upon it.
-+		 */
-+		vma->vm_ops = &dummy_vm_ops;
-+	}
-+}
-+
- #ifdef CONFIG_PRINTK
- /**
-  * mem_dump_obj - Print available provenance information
+-- 
+2.43.0
+
 
 
 
