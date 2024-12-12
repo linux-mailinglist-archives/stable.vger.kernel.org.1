@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-102620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD509EF473
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0F69EF455
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 961DC189CB3F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F12D18909E8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638AB2358BE;
-	Thu, 12 Dec 2024 16:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF0F21660B;
+	Thu, 12 Dec 2024 16:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3oVLFEm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12LFbh/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1B1216E3B;
-	Thu, 12 Dec 2024 16:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEB1205501;
+	Thu, 12 Dec 2024 16:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021880; cv=none; b=r25eQKDPoRWsZXTEpZR40lHiC3G9gX+iRtphER9Rkv4NzEcShP0YbQn9HCaBDiVbmwwIqFieJduKURUWQ3hduITUZE9GJJ9MXtRuSYTfw+sFQv36X7q5HLkNnM8+TkdaWaLG1nHSEtyNHh0kZkDUPS+uX1ITECBCQcD964C3BLs=
+	t=1734021791; cv=none; b=JQoWQiRLG+kPpo045DUy4Q417wfvKs6XLaBJ0cQAQ8xNeqNtJi5+MEZYkNACX+mCAH0HqYcEHV9syNuTt2jYT33FQ+1i7tNlnW03hT7fuyFS6OHqL1+p7Wz4StQ3MY+MT0yeljd8Ene4pCWVwiULLixZDvGq6u4cXpIhibuLejA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021880; c=relaxed/simple;
-	bh=enU1dkpbJAT/ld81qP3MAKMdFxRbI8XivhCiJL8xYdM=;
+	s=arc-20240116; t=1734021791; c=relaxed/simple;
+	bh=VrABIsGvxrppnCXsUsL8GoyoNp7ft1DtBAV8yPH9+/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nt8LbqsE4flL15PwdXHo3YSwpwnkAogRMGdbSwtyZZlyLY1hL0en+oghvTpl/K8guh71onEBwJiRNxBANEbtV56hFo6LMqWMCbFD+7DrXF+CmqH3/HFgt231eSbEnr1lv/0OBgL4vfk2IEMrhHJfjRm9b2Vkvwvg+72/zOFKAWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3oVLFEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4BFC4CECE;
-	Thu, 12 Dec 2024 16:44:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nnwhPSPnnCjUJ01jP+qCRctSjmtNleq6FJKr4fBNq5bAGWxGarSo/jkfrJ69VE1ZUUQSKMd7jLAel4Qr/iuJOG87gF00z7+/VTHiVw0f0K0qpsSs3e5IiO522phZNp3IAwczdyMo80eHwn4I3HZpCo2r2NxMr8q9Ww3/q2djZZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12LFbh/f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821B3C4CECE;
+	Thu, 12 Dec 2024 16:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021879;
-	bh=enU1dkpbJAT/ld81qP3MAKMdFxRbI8XivhCiJL8xYdM=;
+	s=korg; t=1734021791;
+	bh=VrABIsGvxrppnCXsUsL8GoyoNp7ft1DtBAV8yPH9+/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3oVLFEm25mMv6QEzWT8Xy0S5MpCBflo9M7Crf4moonFLdgEl2QpCqDnxRQ52/U4r
-	 itzoPxH5qGQrQoh+hTwgv6qbZueNoR2Xh23fc1UkhepGRZTj21cvxXh15YulzH1nUd
-	 /rjRRk0XEO5LnvG5132R6prrTygS1KmT6jXKj9lQ=
+	b=12LFbh/fxjj/itb2LutJ+D8J02EyT2GEPTdVzVT+d4Rgi8gpCWZFMXsvgDTaIrQbl
+	 avoraSARjmBZzfAJ1OkFfygatoXYRa5mwV/LOsUtFNS9UHfOARPm7R8Z/FV7WtU/G/
+	 c8pG17/nlU2//tljOwbdJPqfkMNCJ4TbQIjW8tOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Piyush Raj Chouhan <piyushchouhan1598@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Kurt Borja <kuurtb@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/565] ALSA: hda/realtek: Add subwoofer quirk for Infinix ZERO BOOK 13
-Date: Thu, 12 Dec 2024 15:54:13 +0100
-Message-ID: <20241212144313.789478218@linuxfoundation.org>
+Subject: [PATCH 5.15 064/565] platform/x86: dell-wmi-base: Handle META key Lock/Unlock events
+Date: Thu, 12 Dec 2024 15:54:19 +0100
+Message-ID: <20241212144314.023582797@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
 References: <20241212144311.432886635@linuxfoundation.org>
@@ -60,71 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit ef5fbdf732a158ec27eeba69d8be851351f29f73 ]
+[ Upstream commit ec61f0bb4feec3345626a2b93b970b6719743997 ]
 
-Infinix ZERO BOOK 13 has a 2+2 speaker system which isn't probed correctly.
-This patch adds a quirk with the proper pin connections.
-Also The mic in this laptop suffers too high gain resulting in mostly
-fan noise being recorded,
-This patch Also limit mic boost.
+Some Alienware devices have a key that locks/unlocks the Meta key. This
+key triggers a WMI event that should be ignored by the kernel, as it's
+handled by internally the firmware.
 
-HW Probe for device; https://linux-hardware.org/?probe=a2e892c47b
+There is no known way of changing this default behavior. The firmware
+would lock/unlock the Meta key, regardless of how the event is handled.
 
-Test: All 4 speaker works, Mic has low noise.
+Tested on an Alienware x15 R1.
 
-Signed-off-by: Piyush Raj Chouhan <piyushchouhan1598@gmail.com>
-Link: https://patch.msgid.link/20241028155516.15552-1-piyuschouhan1598@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Pali Rohár <pali@kernel.org>
+Link: https://lore.kernel.org/r/20241031154441.6663-2-kuurtb@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/platform/x86/dell/dell-wmi-base.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 6b0d9e006f2a3..637180c774d7d 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6935,6 +6935,7 @@ enum {
- 	ALC290_FIXUP_SUBWOOFER_HSJACK,
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
-+	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
- 	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
- 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
-@@ -7237,6 +7238,16 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc269_fixup_pincfg_U7x7_headset_mic,
- 	},
-+	[ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x14, 0x90170151 }, /* use as internal speaker (LFE) */
-+			{ 0x1b, 0x90170152 }, /* use as internal speaker (back) */
-+			{ }
-+		},
-+		.chained = true,
-+		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
-+	},
- 	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -9533,6 +9544,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+diff --git a/drivers/platform/x86/dell/dell-wmi-base.c b/drivers/platform/x86/dell/dell-wmi-base.c
+index b12e6ebd10dd6..c853b429b9d73 100644
+--- a/drivers/platform/x86/dell/dell-wmi-base.c
++++ b/drivers/platform/x86/dell/dell-wmi-base.c
+@@ -79,6 +79,12 @@ static const struct dmi_system_id dell_wmi_smbios_list[] __initconst = {
+ static const struct key_entry dell_wmi_keymap_type_0000[] = {
+ 	{ KE_IGNORE, 0x003a, { KEY_CAPSLOCK } },
+ 
++	/* Meta key lock */
++	{ KE_IGNORE, 0xe000, { KEY_RIGHTMETA } },
++
++	/* Meta key unlock */
++	{ KE_IGNORE, 0xe001, { KEY_RIGHTMETA } },
++
+ 	/* Key code is followed by brightness level */
+ 	{ KE_KEY,    0xe005, { KEY_BRIGHTNESSDOWN } },
+ 	{ KE_KEY,    0xe006, { KEY_BRIGHTNESSUP } },
 -- 
 2.43.0
 
