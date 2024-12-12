@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77189EF2A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D79A9EEDCA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EC98189E314
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90AB5169AC9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21EB22E9F0;
-	Thu, 12 Dec 2024 16:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B7A213E6B;
+	Thu, 12 Dec 2024 15:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9iylI8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iE8ehgg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80149223E83;
-	Thu, 12 Dec 2024 16:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2776F2FE;
+	Thu, 12 Dec 2024 15:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020949; cv=none; b=dadvE/nUuYDjMziuiDeB02o+LCBJ6HlWJluxpNIS4dHGwnKp3EsGtuCkYYTkO8tWlHST6XRsuPDVOB6UaIv7CqNveeV8lVTJIPMXFAL1jOsLUgOw7IIP+elFsh6LEjtmAX1h/EqNPULzbbYIyCohP42e/XN8mi14gpSOWXm0n4M=
+	t=1734018325; cv=none; b=MJ8DGDRyaesw5yOYW7H7bKZMb4odhRTVFghVbi8O22343PLOjy3E0q9KW1Bsjyp9b9gS2VDtxcdE07Q6Q1DXTWEFXzVcRqIhxNsa6lY2RtWGNOI6FY410HEgdmzdZpkD3glSIyP3VzrOhBmZbOuvIn+mI2fLaeL7Ra9ouQhZLsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020949; c=relaxed/simple;
-	bh=aOsMndAkLM5Lye1kaCEAwOMIUSpYgarkECsGkqRLZFE=;
+	s=arc-20240116; t=1734018325; c=relaxed/simple;
+	bh=F8a/zE5c5ubtLNF8WYwp8s6YmKziNPNbyOe/frkvMlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfENipmNei0zs2XfNxP9qpLFNwwsDnK5rvYymc9iXx6r2oNmMuHQd/A64oq4XPv8n4LfBnbWGdvjxOevZ5tKnwqVm6e3/I6kvUdXLdP8BQam394LcqjNeoyorinb83S/FL1xphhn0r8d0BY3mx1mpVrDzmteTUVaetDe1kOWUgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9iylI8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C941BC4CED0;
-	Thu, 12 Dec 2024 16:29:08 +0000 (UTC)
+	 MIME-Version; b=HbZ5e+6YyXXskl17gbr7OOyMtatl3toe9msHM+fLNjWFrpPER4seex3ADzYJ4Qhw3lP5X/DMAytRlqJgLHmMR7MA8qso25z3FrCV3oliiITVnPXPB2WRNQo1aTx6bhmnhsIXT/c7aacA7kqb351pb27nhPfENto9ZQIjuJIQcF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iE8ehgg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26FCC4CECE;
+	Thu, 12 Dec 2024 15:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020949;
-	bh=aOsMndAkLM5Lye1kaCEAwOMIUSpYgarkECsGkqRLZFE=;
+	s=korg; t=1734018325;
+	bh=F8a/zE5c5ubtLNF8WYwp8s6YmKziNPNbyOe/frkvMlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9iylI8ANbqtcNrBWDOQawG4YMK09a4osji0fgTVfGn50JxQGhQoC0IO/iNJ4Ji5I
-	 0gXxBLtNOt/Rt+SnIlwPB/wZgLzIN+opgjyJNTDkbP1G+sWpK78DPQJAeSAfSZPnzh
-	 ep93i8P2oL8gk/C05PHjFxXI4ccJ/cc1D3Q4OyYw=
+	b=iE8ehgg+3Gyud/qpCSQJJwQI3bAaEwGAMNGSKu6FpbjtG74VgOEdZ+Q1ibT85ugyZ
+	 m24c2aVikTCnL+TU1W19p5hLOWJgv/wlehQVjNlWNJQzMtYoz50wWav5CG3D07xfkB
+	 TefePij2AuoOUykiPsLKqJ8TkA76fiQB9uSTxBME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordy Zomer <jordyzomer@google.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 605/772] ksmbd: fix Out-of-Bounds Read in ksmbd_vfs_stream_read
+	Rosen Penev <rosenp@gmail.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 231/356] wifi: ath5k: add PCI ID for SX76X
 Date: Thu, 12 Dec 2024 15:59:10 +0100
-Message-ID: <20241212144414.923101060@linuxfoundation.org>
+Message-ID: <20241212144253.749855399@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordy Zomer <jordyzomer@google.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-commit fc342cf86e2dc4d2edb0fc2ff5e28b6c7845adb9 upstream.
+[ Upstream commit da0474012402d4729b98799d71a54c35dc5c5de3 ]
 
-An offset from client could be a negative value, It could lead
-to an out-of-bounds read from the stream_buf.
-Note that this issue is coming when setting
-'vfs objects = streams_xattr parameter' in ksmbd.conf.
+This is in two devices made by Gigaset, SX762 and SX763.
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Signed-off-by: Jordy Zomer <jordyzomer@google.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20240930180716.139894-2-rosenp@gmail.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/ath/ath5k/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6370,6 +6370,10 @@ int smb2_read(struct ksmbd_work *work)
- 	}
- 
- 	offset = le64_to_cpu(req->Offset);
-+	if (offset < 0) {
-+		err = -EINVAL;
-+		goto out;
-+	}
- 	length = le32_to_cpu(req->Length);
- 	mincount = le32_to_cpu(req->MinimumCount);
- 
+diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
+index 86b8cb975b1ac..35a6a7b1047a3 100644
+--- a/drivers/net/wireless/ath/ath5k/pci.c
++++ b/drivers/net/wireless/ath/ath5k/pci.c
+@@ -46,6 +46,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
+ 	{ PCI_VDEVICE(ATHEROS, 0x001b) }, /* 5413 Eagle */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
++	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
+ 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
+ 	{ 0 }
+ };
+-- 
+2.43.0
+
 
 
 
