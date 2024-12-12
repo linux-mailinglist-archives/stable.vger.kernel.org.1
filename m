@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0968E9EEB73
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F389EED16
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7F96188AAF8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0430164174
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C078220E034;
-	Thu, 12 Dec 2024 15:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240702185A8;
+	Thu, 12 Dec 2024 15:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HO+UdIV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBX4S0wi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5862AF0E;
-	Thu, 12 Dec 2024 15:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42526F2FE;
+	Thu, 12 Dec 2024 15:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016816; cv=none; b=JVgobDtWC82bREAFuzoVwxrvh55Kv6Db8mhPSz1ic5Ww7Hdf4WHPqLC62KI9pI+JVQ94kvuM/TeEa5RtpVJ8x16U2xs3ADwnXo8+zxxGClL5h0Xf/Trrftp259fQr8Z1e+Dd2X51kqbeyzxhD5CXerHNiwuaoT6bLuHOhSbdHEE=
+	t=1734017949; cv=none; b=nTfQVbUz9K6MAsGo5sMj1+QqiI7jEMVejpmlMBoF33hB81jwbcftsHL0s9nslWMDb4VkDUrQDaAUgbBCfbRnrltkTzbH5h6pB8jotpS8SPkGy2mnYn4/APwewcXFeLWy00PEKcVItoDBEtk+hBw7g34SXETkq+TFWWJPQaNp5+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016816; c=relaxed/simple;
-	bh=nWSgcp1NJpPc9ENsgX5ZhYrQe+TUIFrbtxZoOaqVY0Q=;
+	s=arc-20240116; t=1734017949; c=relaxed/simple;
+	bh=cJ9EmaZnNM0qZGzT4rEo/XbIwC9fUy8+fmZp6WfJan8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLxP8tKAvabfzN7RlnR/PYVauv62/vfTaGB1LUL15YdwySTx4OPbKngjKtFYkzBlpnGSJKgLW+oni72LUlFK57CSCg5/iqeYJv1W5g9Z0IJ+MVFkRlmvX8as41gmW0JwmzHiDsoa63X3Xq6YkhiK7jT4+ZmUQO1H+lUQC21vKcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HO+UdIV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEA0C4CECE;
-	Thu, 12 Dec 2024 15:20:15 +0000 (UTC)
+	 MIME-Version; b=ILdGS9rCI21zWrkVYD9d8bDjynvErKXqbT5NWDNvU+QTzkJTJR4d+ZL+K/3ex5TvLtQ9G3Jcg2tuAUj0ojZH2PHPRKcHEaOj9yzVMfliIo4qrDLqlvfyZpskK/+wwBHdEOiYoH1EEzTE6p8veI7dHJ2AfWyj13ESmsFFv0ntRyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBX4S0wi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FD7C4CECE;
+	Thu, 12 Dec 2024 15:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016816;
-	bh=nWSgcp1NJpPc9ENsgX5ZhYrQe+TUIFrbtxZoOaqVY0Q=;
+	s=korg; t=1734017949;
+	bh=cJ9EmaZnNM0qZGzT4rEo/XbIwC9fUy8+fmZp6WfJan8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HO+UdIV6lP97HI9Xevo8AJFaC+xOT2IrWtAaCMBr2vPWfm7kMvn+fNwff7ZFDJldH
-	 gYmPUUgQIcL5jADKF3n0j/FwD8wB+FX5XEcc6KIbuhxPgs0doSFF95g9YRi7ON220Q
-	 OU/ExnNRu9nejksr7GlKbnfBVR7zHkKF5vguVplU=
+	b=CBX4S0winuf4gqIOlrJ3QdzbiP5HxRAffUQdtJFh2rOZ0PxILGgHhy5+zk7Xg21rX
+	 tjugSvgwy0y/rE3i84iv5hr0RbJDFiE/ZbnRt+InNbTf56C1KZtC55znNCb7ILXJVR
+	 1p1jubOT/yYg8JenoA4TATyf74393g9jHMVkec90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 305/466] net: sfp: change quirks for Alcatel Lucent G-010S-P
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 155/356] scsi: qla2xxx: Fix use after free on unload
 Date: Thu, 12 Dec 2024 15:57:54 +0100
-Message-ID: <20241212144318.834763591@linuxfoundation.org>
+Message-ID: <20241212144250.764451631@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengyu Qu <wiagn233@outlook.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 90cb5f1776ba371478e2b08fbf7018c7bd781a8d ]
+commit 07c903db0a2ff84b68efa1a74a4de353ea591eb0 upstream.
 
-Seems Alcatel Lucent G-010S-P also have the same problem that it uses
-TX_FAULT pin for SOC uart. So apply sfp_fixup_ignore_tx_fault to it.
+System crash is observed with stack trace warning of use after
+free. There are 2 signals to tell dpc_thread to terminate (UNLOADING
+flag and kthread_stop).
 
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Link: https://patch.msgid.link/TYCPR01MB84373677E45A7BFA5A28232C98792@TYCPR01MB8437.jpnprd01.prod.outlook.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On setting the UNLOADING flag when dpc_thread happens to run at the time
+and sees the flag, this causes dpc_thread to exit and clean up
+itself. When kthread_stop is called for final cleanup, this causes use
+after free.
+
+Remove UNLOADING signal to terminate dpc_thread.  Use the kthread_stop
+as the main signal to exit dpc_thread.
+
+[596663.812935] kernel BUG at mm/slub.c:294!
+[596663.812950] invalid opcode: 0000 [#1] SMP PTI
+[596663.812957] CPU: 13 PID: 1475935 Comm: rmmod Kdump: loaded Tainted: G          IOE    --------- -  - 4.18.0-240.el8.x86_64 #1
+[596663.812960] Hardware name: HP ProLiant DL380p Gen8, BIOS P70 08/20/2012
+[596663.812974] RIP: 0010:__slab_free+0x17d/0x360
+
+...
+[596663.813008] Call Trace:
+[596663.813022]  ? __dentry_kill+0x121/0x170
+[596663.813030]  ? _cond_resched+0x15/0x30
+[596663.813034]  ? _cond_resched+0x15/0x30
+[596663.813039]  ? wait_for_completion+0x35/0x190
+[596663.813048]  ? try_to_wake_up+0x63/0x540
+[596663.813055]  free_task+0x5a/0x60
+[596663.813061]  kthread_stop+0xf3/0x100
+[596663.813103]  qla2x00_remove_one+0x284/0x440 [qla2xxx]
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-3-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/sfp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_os.c |   15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index a5684ef5884bd..dcec92625cf65 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -466,7 +466,8 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
- static const struct sfp_quirk sfp_quirks[] = {
- 	// Alcatel Lucent G-010S-P can operate at 2500base-X, but incorrectly
- 	// report 2500MBd NRZ in their EEPROM
--	SFP_QUIRK_M("ALCATELLUCENT", "G010SP", sfp_quirk_2500basex),
-+	SFP_QUIRK("ALCATELLUCENT", "G010SP", sfp_quirk_2500basex,
-+		  sfp_fixup_ignore_tx_fault),
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -6899,12 +6899,15 @@ qla2x00_do_dpc(void *data)
+ 	set_user_nice(current, MIN_NICE);
  
- 	// Alcatel Lucent G-010S-A can operate at 2500base-X, but report 3.2GBd
- 	// NRZ in their EEPROM
--- 
-2.43.0
-
+ 	set_current_state(TASK_INTERRUPTIBLE);
+-	while (!kthread_should_stop()) {
++	while (1) {
+ 		ql_dbg(ql_dbg_dpc, base_vha, 0x4000,
+ 		    "DPC handler sleeping.\n");
+ 
+ 		schedule();
+ 
++		if (kthread_should_stop())
++			break;
++
+ 		if (test_and_clear_bit(DO_EEH_RECOVERY, &base_vha->dpc_flags))
+ 			qla_pci_set_eeh_busy(base_vha);
+ 
+@@ -6917,15 +6920,16 @@ qla2x00_do_dpc(void *data)
+ 			goto end_loop;
+ 		}
+ 
++		if (test_bit(UNLOADING, &base_vha->dpc_flags))
++			/* don't do any work. Wait to be terminated by kthread_stop */
++			goto end_loop;
++
+ 		ha->dpc_active = 1;
+ 
+ 		ql_dbg(ql_dbg_dpc + ql_dbg_verbose, base_vha, 0x4001,
+ 		    "DPC handler waking up, dpc_flags=0x%lx.\n",
+ 		    base_vha->dpc_flags);
+ 
+-		if (test_bit(UNLOADING, &base_vha->dpc_flags))
+-			break;
+-
+ 		if (IS_P3P_TYPE(ha)) {
+ 			if (IS_QLA8044(ha)) {
+ 				if (test_and_clear_bit(ISP_UNRECOVERABLE,
+@@ -7238,9 +7242,6 @@ end_loop:
+ 	 */
+ 	ha->dpc_active = 0;
+ 
+-	/* Cleanup any residual CTX SRBs. */
+-	qla2x00_abort_all_cmds(base_vha, DID_NO_CONNECT << 16);
+-
+ 	return 0;
+ }
+ 
 
 
 
