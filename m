@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31C89EF14C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 458919EEB28
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9333B28BB45
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05133280F6D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECC222A7F9;
-	Thu, 12 Dec 2024 16:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7556209693;
+	Thu, 12 Dec 2024 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLHyQHri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrW/NqEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9C1229679;
-	Thu, 12 Dec 2024 16:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640102AF0E;
+	Thu, 12 Dec 2024 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020759; cv=none; b=QuBPib2lNWdb+JUO2jWIiAf34vFZkyiV70uFlkdXwW9jIXcSV1vqDBL4jftR35XZ9X8TGAx7rlY2SujBjr4KVznj7qKG9VcYZwkQDpFTn1q3RjA6HGsNVMxv63g6EKFNDCQv1K2o0ZH7ZsQBW5rI2YE6FyTvGDiCz9Ts4H7QM8I=
+	t=1734016905; cv=none; b=UnF0UC2gkgTUtYO2z1aYSZPo++y5HSHBT3wRrX0bPNWFojO1CveAAVwrJgFQoxl7pg7F1Il5fAtmV/nsHQnvqJK2JXYetbY31XLp77gVLcyA+mzW/ja6qC7F2TKF6aqa7P/AItZ1JE50dZT+P87Pe9xq6xeunVOsGbWpMypg7iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020759; c=relaxed/simple;
-	bh=gAJAelxhM7VmnKerf2ShR39JolCOcjmO+14QtMghyT0=;
+	s=arc-20240116; t=1734016905; c=relaxed/simple;
+	bh=Oh33jIBw09Ja1Yt1VXUkkYKvs7OXwwYEuYKgeKa9tV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=en2EbNqIO2oWJi2ti+rWtCRtfma2FulOZBWE7vN5uAb4nA92HlxVs1ciNhd0HrN3kYg4TDsq1yqu5jB0hf6y5OImXsXaEO1Wak7NJaMav5Dnt/P5kyDSiYSeMArucGRm5/gH9gcmDgWaW/OFyb3RXgjKv4KJSRtXQTFC1NeW4Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLHyQHri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C1FC4CECE;
-	Thu, 12 Dec 2024 16:25:58 +0000 (UTC)
+	 MIME-Version; b=oaEjPvkwcjceDW/nnZ5d1wQ1m6LkJCWJ7n99IGucboCIhve+UaXR84QXyla8766skK/ahL5rietz3mJp9gQ1s6bDAL6e6BpW1+fdPGpUEtAl3tUnK7jsVbTubI43pi/anRR0LX/wQDRmKgV7HjodZnw/hM79Cxzr/kSRajkjCPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrW/NqEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74246C4CECE;
+	Thu, 12 Dec 2024 15:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020759;
-	bh=gAJAelxhM7VmnKerf2ShR39JolCOcjmO+14QtMghyT0=;
+	s=korg; t=1734016904;
+	bh=Oh33jIBw09Ja1Yt1VXUkkYKvs7OXwwYEuYKgeKa9tV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mLHyQHrigE9wbDhMdCRXl6RoxQLpfNVsqMvPt36PlRgX7wGT6iuUB25usRMBBxyBg
-	 6IpVhACcszp1u4YG6rpsp4lKHgCxmNJHKMcfqqMIVFYXsZpNQQgrRnVtOt9qXqKEw4
-	 4UGmQU1V8iUCWWCRXwQxrxL4gjTqNfldXMr2Lgf0=
+	b=nrW/NqEE1uhDl+Bhd0hSdzvhj/k1vgn7dwAILePhGG3VfbcsrJV7y83/r4VskA9ah
+	 Vn/3izj6uHll5v76tbidnXdJfw3sXpfaeeAXOm5vl8JRD3uhgFSMAyQa/v9OhIf2P+
+	 tsFrlxpV2Zuk2O52/4WhgTlzWT48rPvfqkmqgmos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 523/772] can: ems_usb: ems_usb_rx_err(): fix {rx,tx}_errors statistics
+Subject: [PATCH 6.12 299/466] ASoC: sdw_utils: Add support for exclusion DAI quirks
 Date: Thu, 12 Dec 2024 15:57:48 +0100
-Message-ID: <20241212144411.572765632@linuxfoundation.org>
+Message-ID: <20241212144318.595807904@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 72a7e2e74b3075959f05e622bae09b115957dffe ]
+[ Upstream commit 3d9b44d0972be1298400e449cfbcc436df2e988e ]
 
-The ems_usb_rx_err() function only incremented the receive error counter
-and never the transmit error counter, even if the ECC_DIR flag reported
-that an error had occurred during transmission.
+The system contains a mechanism for certain DAI links to be included
+based on a quirk. Add support for certain DAI links to excluded based on
+a quirk, this is useful in situations where the vast majority of SKUs
+utilise a feature so it is easier to quirk on those that don't.
 
-Increment the receive/transmit error counter based on the value of the
-ECC_DIR flag.
-
-Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-12-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20241016030344.13535-2-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/ems_usb.c | 58 ++++++++++++++++++++---------------
- 1 file changed, 33 insertions(+), 25 deletions(-)
+ include/sound/soc_sdw_utils.h       | 1 +
+ sound/soc/sdw_utils/soc_sdw_utils.c | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/ems_usb.c b/drivers/net/can/usb/ems_usb.c
-index 050c0b49938a4..5355bac4dccbe 100644
---- a/drivers/net/can/usb/ems_usb.c
-+++ b/drivers/net/can/usb/ems_usb.c
-@@ -335,15 +335,14 @@ static void ems_usb_rx_err(struct ems_usb *dev, struct ems_cpc_msg *msg)
- 	struct net_device_stats *stats = &dev->netdev->stats;
+diff --git a/include/sound/soc_sdw_utils.h b/include/sound/soc_sdw_utils.h
+index f68c1f193b3b4..dc7541b7b6158 100644
+--- a/include/sound/soc_sdw_utils.h
++++ b/include/sound/soc_sdw_utils.h
+@@ -59,6 +59,7 @@ struct asoc_sdw_dai_info {
+ 	int (*rtd_init)(struct snd_soc_pcm_runtime *rtd, struct snd_soc_dai *dai);
+ 	bool rtd_init_done; /* Indicate that the rtd_init callback is done */
+ 	unsigned long quirk;
++	bool quirk_exclude;
+ };
  
- 	skb = alloc_can_err_skb(dev->netdev, &cf);
--	if (skb == NULL)
--		return;
+ struct asoc_sdw_codec_info {
+diff --git a/sound/soc/sdw_utils/soc_sdw_utils.c b/sound/soc/sdw_utils/soc_sdw_utils.c
+index a6070f822eb9e..863b4d5527cbe 100644
+--- a/sound/soc/sdw_utils/soc_sdw_utils.c
++++ b/sound/soc/sdw_utils/soc_sdw_utils.c
+@@ -1112,7 +1112,8 @@ int asoc_sdw_parse_sdw_endpoints(struct snd_soc_card *card,
+ 				dai_info = &codec_info->dais[adr_end->num];
+ 				soc_dai = asoc_sdw_find_dailink(soc_dais, adr_end);
  
- 	if (msg->type == CPC_MSG_TYPE_CAN_STATE) {
- 		u8 state = msg->msg.can_state;
+-				if (dai_info->quirk && !(dai_info->quirk & ctx->mc_quirk))
++				if (dai_info->quirk &&
++				    !(dai_info->quirk_exclude ^ !!(dai_info->quirk & ctx->mc_quirk)))
+ 					continue;
  
- 		if (state & SJA1000_SR_BS) {
- 			dev->can.state = CAN_STATE_BUS_OFF;
--			cf->can_id |= CAN_ERR_BUSOFF;
-+			if (skb)
-+				cf->can_id |= CAN_ERR_BUSOFF;
- 
- 			dev->can.can_stats.bus_off++;
- 			can_bus_off(dev->netdev);
-@@ -361,44 +360,53 @@ static void ems_usb_rx_err(struct ems_usb *dev, struct ems_cpc_msg *msg)
- 
- 		/* bus error interrupt */
- 		dev->can.can_stats.bus_error++;
--		stats->rx_errors++;
- 
--		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-+		if (skb) {
-+			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
--		switch (ecc & SJA1000_ECC_MASK) {
--		case SJA1000_ECC_BIT:
--			cf->data[2] |= CAN_ERR_PROT_BIT;
--			break;
--		case SJA1000_ECC_FORM:
--			cf->data[2] |= CAN_ERR_PROT_FORM;
--			break;
--		case SJA1000_ECC_STUFF:
--			cf->data[2] |= CAN_ERR_PROT_STUFF;
--			break;
--		default:
--			cf->data[3] = ecc & SJA1000_ECC_SEG;
--			break;
-+			switch (ecc & SJA1000_ECC_MASK) {
-+			case SJA1000_ECC_BIT:
-+				cf->data[2] |= CAN_ERR_PROT_BIT;
-+				break;
-+			case SJA1000_ECC_FORM:
-+				cf->data[2] |= CAN_ERR_PROT_FORM;
-+				break;
-+			case SJA1000_ECC_STUFF:
-+				cf->data[2] |= CAN_ERR_PROT_STUFF;
-+				break;
-+			default:
-+				cf->data[3] = ecc & SJA1000_ECC_SEG;
-+				break;
-+			}
- 		}
- 
- 		/* Error occurred during transmission? */
--		if ((ecc & SJA1000_ECC_DIR) == 0)
--			cf->data[2] |= CAN_ERR_PROT_TX;
-+		if ((ecc & SJA1000_ECC_DIR) == 0) {
-+			stats->tx_errors++;
-+			if (skb)
-+				cf->data[2] |= CAN_ERR_PROT_TX;
-+		} else {
-+			stats->rx_errors++;
-+		}
- 
--		if (dev->can.state == CAN_STATE_ERROR_WARNING ||
--		    dev->can.state == CAN_STATE_ERROR_PASSIVE) {
-+		if (skb && (dev->can.state == CAN_STATE_ERROR_WARNING ||
-+			    dev->can.state == CAN_STATE_ERROR_PASSIVE)) {
- 			cf->can_id |= CAN_ERR_CRTL;
- 			cf->data[1] = (txerr > rxerr) ?
- 			    CAN_ERR_CRTL_TX_PASSIVE : CAN_ERR_CRTL_RX_PASSIVE;
- 		}
- 	} else if (msg->type == CPC_MSG_TYPE_OVERRUN) {
--		cf->can_id |= CAN_ERR_CRTL;
--		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
-+		if (skb) {
-+			cf->can_id |= CAN_ERR_CRTL;
-+			cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
-+		}
- 
- 		stats->rx_over_errors++;
- 		stats->rx_errors++;
- 	}
- 
--	netif_rx(skb);
-+	if (skb)
-+		netif_rx(skb);
- }
- 
- /*
+ 				dev_dbg(dev,
 -- 
 2.43.0
 
