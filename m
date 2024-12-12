@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2245C9EF86E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 340089EF6EB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7DC2294EE3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD50728B84D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8160D215710;
-	Thu, 12 Dec 2024 17:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA3222332D;
+	Thu, 12 Dec 2024 17:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKXuiTcO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZp7Skq7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3C36F2FE;
-	Thu, 12 Dec 2024 17:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D54C223320;
+	Thu, 12 Dec 2024 17:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025326; cv=none; b=IdYwzbS/BzLmrveS12VAIXUePM0Jw3M+Ki7dIyu0dJDVxQZqySLaIkYhiO3t4KGm7guNPDYMcRx8LtP9OpcWybksdTX9KfZ3zqUrlrPHm5qqpXLVFRbwBwt9lDwChLNx003z5VQZF50Y61Jxe81UbaBgxPaY+O7PeUYH85VXFws=
+	t=1734024608; cv=none; b=qFQq8yBKQLutH4aiX3v5sD+rOtp7i3iolF5L74si2tB3JLGJr7uikg6sHNF8t/hF1mPOuJS8Wqq0J+paeHaXRRYukQZ9VtiYcAvDeFfbAtnLpslHGw84APu6GiqE6m7eB++JK90azAEeuClg4M2TaiQKmbfkT5dma3UaHQmCjvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025326; c=relaxed/simple;
-	bh=siL1ryzAkhzKB5YjZs8svtoWTBdz9lfz/jasZcOsezs=;
+	s=arc-20240116; t=1734024608; c=relaxed/simple;
+	bh=peJu836SFe7EytLwqTOJECHue+1MnnZqmfBBOivN/EI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRXPiBu/mOGt0pKFWyDEhhOSFy9fKBiS10fF1bz/ivJ0yRlydLP3bCAkYV1KwRPX6EAq096EXPn4kSXIT3/Satx+c8oW9Gx94x79qB2N8UAJ6RpF7W7WtAe1CXJXK3yCuTTa6RJmvOe3d8TdPvAhU+KvzEpqw1qbBO1SCZ+4Ijk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKXuiTcO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6557C4CED3;
-	Thu, 12 Dec 2024 17:42:05 +0000 (UTC)
+	 MIME-Version; b=rUaDFKSp0LWP74lcNDvhiqhC5oM/+DikPd++7nBpUcU/nMNdPMnQF45k4GYS552N1FITUAdVgALU7uuIS2KUFT2zNg6Zx5ASf8zDXKn/a3F5U1PpVIEqxetc/y6fVZf1lLdky/sIietwzAUkCBJoXFXE1IG2KBpbQyJ5slcGaQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZp7Skq7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B04C4CECE;
+	Thu, 12 Dec 2024 17:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025326;
-	bh=siL1ryzAkhzKB5YjZs8svtoWTBdz9lfz/jasZcOsezs=;
+	s=korg; t=1734024608;
+	bh=peJu836SFe7EytLwqTOJECHue+1MnnZqmfBBOivN/EI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKXuiTcO+S4zRRs7N9hKni3UzH8ELHFFeJ4qCqodTQxeaFg7vb6jd/+xCVWeRQZgh
-	 U5RV5zUtT5ijTSYc1IKWEE8cy4gjiz+NyR/IKgwT7t0bHflxoFMwJoOe+U3wkoQ2as
-	 coEA/kxCBAlqVEr13Q4gM9TUDYoFugX396Yo09oU=
+	b=lZp7Skq7BqlHnDZjBVB4n++qRHcqIruBEcz4RlVK7X0vUsFbqR+wOWk3LMb4AOSFV
+	 bpPpURiwC/N3E7zpgokxdmFQIDxGWcK594t4ueSnZKiOjgK8SRFZ+vxZ6QKo5QyhSQ
+	 Io12vEaMB6vGpSEZ+ZqrIP1stvXbtLNfCZt7T8D8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 132/321] ipmr: convert /proc handlers to rcu_read_lock()
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 312/459] octeontx2-pf: Fix out-of-bounds read in otx2_get_fecparam()
 Date: Thu, 12 Dec 2024 16:00:50 +0100
-Message-ID: <20241212144235.191848295@linuxfoundation.org>
+Message-ID: <20241212144305.969420049@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit b96ef16d2f837870daaea51c38cd50458b95ad5c ]
+commit 93efb0c656837f4a31d7cc6117a7c8cecc8fadac upstream.
 
-We can use standard rcu_read_lock(), to get rid
-of last read_lock(&mrt_lock) call points.
+Code at line 967 implies that rsp->fwdata.supported_fec may be up to 4:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+ 967: if (rsp->fwdata.supported_fec <= FEC_MAX_INDEX)
+
+If rsp->fwdata.supported_fec evaluates to 4, then there is an
+out-of-bounds read at line 971 because fec is an array with
+a maximum of 4 elements:
+
+ 954         const int fec[] = {
+ 955                 ETHTOOL_FEC_OFF,
+ 956                 ETHTOOL_FEC_BASER,
+ 957                 ETHTOOL_FEC_RS,
+ 958                 ETHTOOL_FEC_BASER | ETHTOOL_FEC_RS};
+ 959 #define FEC_MAX_INDEX 4
+
+ 971: fecparam->fec = fec[rsp->fwdata.supported_fec];
+
+Fix this by properly indexing fec[] with rsp->fwdata.supported_fec - 1.
+In this case the proper indexes 0 to 3 are used when
+rsp->fwdata.supported_fec evaluates to a range of 1 to 4, correspondingly.
+
+Fixes: d0cf9503e908 ("octeontx2-pf: ethtool fec mode support")
+Addresses-Coverity-ID: 1501722 ("Out-of-bounds read")
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: fc9c273d6daa ("ipmr: fix tables suspicious RCU usage")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ipmr.c  | 8 ++++----
- net/ipv6/ip6mr.c | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index 2da6896080363..11f916646d34d 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -2916,7 +2916,7 @@ static int ipmr_rtm_dumplink(struct sk_buff *skb, struct netlink_callback *cb)
-  */
- 
- static void *ipmr_vif_seq_start(struct seq_file *seq, loff_t *pos)
--	__acquires(mrt_lock)
-+	__acquires(RCU)
- {
- 	struct mr_vif_iter *iter = seq->private;
- 	struct net *net = seq_file_net(seq);
-@@ -2928,14 +2928,14 @@ static void *ipmr_vif_seq_start(struct seq_file *seq, loff_t *pos)
- 
- 	iter->mrt = mrt;
- 
--	read_lock(&mrt_lock);
-+	rcu_read_lock();
- 	return mr_vif_seq_start(seq, pos);
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -805,7 +805,7 @@ static int otx2_get_fecparam(struct net_
+ 		if (!rsp->fwdata.supported_fec)
+ 			fecparam->fec = ETHTOOL_FEC_NONE;
+ 		else
+-			fecparam->fec = fec[rsp->fwdata.supported_fec];
++			fecparam->fec = fec[rsp->fwdata.supported_fec - 1];
+ 	}
+ 	return 0;
  }
- 
- static void ipmr_vif_seq_stop(struct seq_file *seq, void *v)
--	__releases(mrt_lock)
-+	__releases(RCU)
- {
--	read_unlock(&mrt_lock);
-+	rcu_read_unlock();
- }
- 
- static int ipmr_vif_seq_show(struct seq_file *seq, void *v)
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 6642bc7b9870f..33c5974d467dd 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -401,7 +401,7 @@ static void ip6mr_free_table(struct mr_table *mrt)
-  */
- 
- static void *ip6mr_vif_seq_start(struct seq_file *seq, loff_t *pos)
--	__acquires(mrt_lock)
-+	__acquires(RCU)
- {
- 	struct mr_vif_iter *iter = seq->private;
- 	struct net *net = seq_file_net(seq);
-@@ -413,14 +413,14 @@ static void *ip6mr_vif_seq_start(struct seq_file *seq, loff_t *pos)
- 
- 	iter->mrt = mrt;
- 
--	read_lock(&mrt_lock);
-+	rcu_read_lock();
- 	return mr_vif_seq_start(seq, pos);
- }
- 
- static void ip6mr_vif_seq_stop(struct seq_file *seq, void *v)
--	__releases(mrt_lock)
-+	__releases(RCU)
- {
--	read_unlock(&mrt_lock);
-+	rcu_read_unlock();
- }
- 
- static int ip6mr_vif_seq_show(struct seq_file *seq, void *v)
--- 
-2.43.0
-
 
 
 
