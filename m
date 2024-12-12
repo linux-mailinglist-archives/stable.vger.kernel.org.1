@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AAA9EF59A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D8A9EF6EA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9835434134F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:08:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94126289540
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA3F21E085;
-	Thu, 12 Dec 2024 17:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E04222D6D;
+	Thu, 12 Dec 2024 17:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/2so/su"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zh5Y4H58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC38D217F40;
-	Thu, 12 Dec 2024 17:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2A4221DA4;
+	Thu, 12 Dec 2024 17:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023222; cv=none; b=DuvjDkGYyJbxgWAbSTn132oHKd46j1jqhKf3npxA+JU+cVW50SEdqYvvzLJdlWhhlOr896ijqFEsuMgqPagG6Yv3QBWSCSsBALorhlGnVoj0UkjGdfoakjPRciOY5pr6UVBi2mkxFiAGtz1SZcWa3/xZvucUfywMABNmnjZJENw=
+	t=1734024605; cv=none; b=vGo5X5Y6BcKhN5oUSdo9VYft3GtygFl+1pwEi08dB68kviWMOA41vmQ6W9PQbnnqKWrUwgqipb4SxX9IlSwvl29oXIStCdbTRw5KH77UnRbUCGj+pvdiVLomjgKVMBSdHQny3Fp0cMqPkSF6kaEr3XOsQHOX16MNZ67IYXJtcfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023222; c=relaxed/simple;
-	bh=wmmt3VGqGaTNbt1PNZ5eky598xYl4IXIacpvfpsjWN0=;
+	s=arc-20240116; t=1734024605; c=relaxed/simple;
+	bh=QkhtXDXfhF3M6QIl5Kp3zT5r3P3ZhHgZBq05v42Fsyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/b55MfleAlMnh6gvcxUSr5Umum4MYnp5iOW7Vk/JbvBUghhULxb+jXYUj41vgJpXAgu3DAmVDd2oHzZOjMtQTOqlpXxvsrnchffM+KtDJqFaKpIpFwDXtsvA9KFBTptO3HwG4mdjlCPpbC39HsSK2VAmWpYrESf0k3fvZfhiQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/2so/su; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D98BC4CECE;
-	Thu, 12 Dec 2024 17:07:02 +0000 (UTC)
+	 MIME-Version; b=cIx7ojvCfQIwIoh/xATd3dSNg1kr+MhBpaTfSxYNaHjqJxS/kx/IA+rVxkXlXHSqe35MYC17NFmmcvvj7U1g3vzcG6A5N7Om2cGQ5FjySTg7UAvknxN91h3QaHI/GQJ/wygrfzQaM+cBB3rgmtmJQDfPPEhkub6FfmMBpAxqkPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zh5Y4H58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64D1C4CECE;
+	Thu, 12 Dec 2024 17:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023222;
-	bh=wmmt3VGqGaTNbt1PNZ5eky598xYl4IXIacpvfpsjWN0=;
+	s=korg; t=1734024605;
+	bh=QkhtXDXfhF3M6QIl5Kp3zT5r3P3ZhHgZBq05v42Fsyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/2so/surLocqqk2eyfNVfDKfT4WsRDMSpBiWYwdOBM96WO9+WeKlFw12wzeb51br
-	 llNfPO3ts42XZSrjKty2dKX4Dh/Pnx/2jZFWxQlwF+zVr6FSMjFi2xDuUTh2eNlRhr
-	 k6NiZi6S2WeDz7C5Gq2Viw38zac1NlGPF1gu5ZCY=
+	b=Zh5Y4H58/DiNELiWBcXEuguqCJL7J5icsC1VGT4O4mGAOQJtBNGbIJj8BzwtBG5cD
+	 7Fa7F/Q/eTZqLm5sSxU/3NO2r5bAFE3Nohq1baDahWwXiNkTD2wXCXLd5uVFnmkmMb
+	 K6hkAeM5qpBNHH3LAORIByn3NDwYGWLJetUE8gb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 464/565] regmap: detach regmap from dev on regmap_exit
+	Yang Erkun <yangerkun@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 321/459] nfsd: make sure exp active before svc_export_show
 Date: Thu, 12 Dec 2024 16:00:59 +0100
-Message-ID: <20241212144330.075814519@linuxfoundation.org>
+Message-ID: <20241212144306.336651501@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-commit 3061e170381af96d1e66799d34264e6414d428a7 upstream.
+commit be8f982c369c965faffa198b46060f8853e0f1f0 upstream.
 
-At the end of __regmap_init(), if dev is not NULL, regmap_attach_dev()
-is called, which adds a devres reference to the regmap, to be able to
-retrieve a dev's regmap by name using dev_get_regmap().
+The function `e_show` was called with protection from RCU. This only
+ensures that `exp` will not be freed. Therefore, the reference count for
+`exp` can drop to zero, which will trigger a refcount use-after-free
+warning when `exp_get` is called. To resolve this issue, use
+`cache_get_rcu` to ensure that `exp` remains active.
 
-When calling regmap_exit, the opposite does not happen, and the
-reference is kept until the dev is detached.
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 3 PID: 819 at lib/refcount.c:25
+refcount_warn_saturate+0xb1/0x120
+CPU: 3 UID: 0 PID: 819 Comm: cat Not tainted 6.12.0-rc3+ #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.16.1-2.fc37 04/01/2014
+RIP: 0010:refcount_warn_saturate+0xb1/0x120
+...
+Call Trace:
+ <TASK>
+ e_show+0x20b/0x230 [nfsd]
+ seq_read_iter+0x589/0x770
+ seq_read+0x1e5/0x270
+ vfs_read+0x125/0x530
+ ksys_read+0xc1/0x160
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Add a regmap_detach_dev() function and call it in regmap_exit() to make
-sure that the devres reference is not kept.
-
-Cc: stable@vger.kernel.org
-Fixes: 72b39f6f2b5a ("regmap: Implement dev_get_regmap()")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20241128130554.362486-1-demonsingur%40gmail.com
-Link: https://patch.msgid.link/20241128131625.363835-1-demonsingur@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bf18f163e89c ("NFSD: Using exp_get for export getting")
+Cc: stable@vger.kernel.org # 4.20+
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/nfsd/export.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -663,6 +663,17 @@ int regmap_attach_dev(struct device *dev
- }
- EXPORT_SYMBOL_GPL(regmap_attach_dev);
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1318,9 +1318,12 @@ static int e_show(struct seq_file *m, vo
+ 		return 0;
+ 	}
  
-+static int dev_get_regmap_match(struct device *dev, void *res, void *data);
-+
-+static int regmap_detach_dev(struct device *dev, struct regmap *map)
-+{
-+	if (!dev)
+-	exp_get(exp);
++	if (!cache_get_rcu(&exp->h))
 +		return 0;
 +
-+	return devres_release(dev, dev_get_regmap_release,
-+			      dev_get_regmap_match, (void *)map->name);
-+}
+ 	if (cache_check(cd, &exp->h, NULL))
+ 		return 0;
 +
- static enum regmap_endian regmap_get_reg_endian(const struct regmap_bus *bus,
- 					const struct regmap_config *config)
- {
-@@ -1497,6 +1508,7 @@ int regmap_reinit_cache(struct regmap *m
- {
- 	int ret;
- 
-+	regmap_detach_dev(map->dev, map);
- 	regcache_exit(map);
- 	regmap_debugfs_exit(map);
- 
+ 	exp_put(exp);
+ 	return svc_export_show(m, cd, cp);
+ }
 
 
 
