@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05AD49EF7CE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A0B9EF72C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9CAA284E14
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C710189DC09
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B487C22332D;
-	Thu, 12 Dec 2024 17:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C115221DBE;
+	Thu, 12 Dec 2024 17:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGB3Fjb5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dbo95lGk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7077D222D72;
-	Thu, 12 Dec 2024 17:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2734D2144C4;
+	Thu, 12 Dec 2024 17:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025027; cv=none; b=aI4RH790SFapDSTQZIxk/IexrJ0vnMuADetu0f6e3CPaFxsBQmlVOMUe0VtspmiSLR+vPyYqTL0s8nDoPHEOtTiMDkrSq5KmtYpZAjn66mog2S0Mes6DVvJACYffgjeuigVwMWaaQv9+HcrIkC2OI+k+UD+yff7cuuwyfuGpgb0=
+	t=1734024184; cv=none; b=iGxwVhrr8mmMPUwp+QorQdfHOPUKMjCCj+UD9FsgEK5a3aQNDeDCf1pUgFPLKFW6WoaGQaq15xCVpdJIVUWXyHksl0FjAUIzmnpTMp16TUgIILRwSvHsqeh2Mks2JSATvPyyvaIVEYhhTHDYpkQMS81N0HwZUVxfpELCd47URiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025027; c=relaxed/simple;
-	bh=RPAvSvmHWF+ChswMDI9a+YlE3USuCI0yzNmt7YgKIe8=;
+	s=arc-20240116; t=1734024184; c=relaxed/simple;
+	bh=KwDHRH8eIu1y1gj0rFKf7OEI8LICOibgawGnaaNM+iI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rBA2/XLIbCnzAehPhNTIl6uOOBGvy9bjRQJMu/wtrmCQxfybKaiAY7AIj3NJ9lYDbUFf2jy3MmiNEpPmTxRakgp250wtALnyrZg+N0ap1ftDMIacnK+2nRTNvz0vTo5V3iSmnsn2wIJ9fS5bOsGuLfsJdiBSq1YdCRaBFjhSuo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGB3Fjb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF16C4CECE;
-	Thu, 12 Dec 2024 17:37:06 +0000 (UTC)
+	 MIME-Version; b=CUOoZFB1V4yffBDXLCCvfOkpqFaNeCGb4cZV5d7P0VEZgZ7D6aHeChXy9YPFC85k15bAmxMFIlY493dfG2IoyAGK2CVRpIdx/XzPLtLtIBCPFtcf743yEbxCu+Y4f2DulxPDDP0+zJq4zE8ZbYtZAaDmUjyRAv2vBzq6lRZ6QEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dbo95lGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90656C4CECE;
+	Thu, 12 Dec 2024 17:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025027;
-	bh=RPAvSvmHWF+ChswMDI9a+YlE3USuCI0yzNmt7YgKIe8=;
+	s=korg; t=1734024184;
+	bh=KwDHRH8eIu1y1gj0rFKf7OEI8LICOibgawGnaaNM+iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGB3Fjb5HWh/FUOasZHUwFFP+DQo3/F6d/Z7bc1VnS+xl3RvL/hfhDMNUFN9h5CPl
-	 b07IY65cW0ywq4SLVdLTyd3ebAilT8/BeqAbpZd2RMLTtyGl8GhZUoAFgryvgR6sLC
-	 2IRhIz98xI4AeUb5fp796037FqBKU+EwHycASZa0=
+	b=Dbo95lGk1eVLCf1kaNn7Nq09MHgQDwGQMo3CIBP15uHwytxM6CvsWq3viT7M6AzkC
+	 maVU10JjTgKRt3iNrwMqTw7/lfblSsbJFMEozf+zowjjKKKbR1XoYL/Zv7R8HMjOlp
+	 umzglSjT/6T7jwRucUDGMETwoJkvrHCijnRXhuIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 031/321] nvme-pci: fix freeing of the HMB descriptor table
-Date: Thu, 12 Dec 2024 15:59:09 +0100
-Message-ID: <20241212144231.234506626@linuxfoundation.org>
+Subject: [PATCH 5.10 212/459] NFSD: Cap the number of bytes copied by nfs4_reset_recoverydir()
+Date: Thu, 12 Dec 2024 15:59:10 +0100
+Message-ID: <20241212144301.947789541@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 3c2fb1ca8086eb139b2a551358137525ae8e0d7a ]
+[ Upstream commit f64ea4af43161bb86ffc77e6aeb5bcf5c3229df0 ]
 
-The HMB descriptor table is sized to the maximum number of descriptors
-that could be used for a given device, but __nvme_alloc_host_mem could
-break out of the loop earlier on memory allocation failure and end up
-using less descriptors than planned for, which leads to an incorrect
-size passed to dma_free_coherent.
+It's only current caller already length-checks the string, but let's
+be safe.
 
-In practice this was not showing up because the number of descriptors
-tends to be low and the dma coherent allocator always allocates and
-frees at least a page.
-
-Fixes: 87ad72a59a38 ("nvme-pci: implement host memory buffer support")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 0964a3d3f1aa ("[PATCH] knfsd: nfsd4 reboot dirname fix")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fs/nfsd/nfs4recover.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 20f5616fd5182..11df63d214900 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -125,6 +125,7 @@ struct nvme_dev {
- 	/* host memory buffer support: */
- 	u64 host_mem_size;
- 	u32 nr_host_mem_descs;
-+	u32 host_mem_descs_size;
- 	dma_addr_t host_mem_descs_dma;
- 	struct nvme_host_mem_buf_desc *host_mem_descs;
- 	void **host_mem_desc_bufs;
-@@ -1924,10 +1925,10 @@ static void nvme_free_host_mem(struct nvme_dev *dev)
- 
- 	kfree(dev->host_mem_desc_bufs);
- 	dev->host_mem_desc_bufs = NULL;
--	dma_free_coherent(dev->dev,
--			dev->nr_host_mem_descs * sizeof(*dev->host_mem_descs),
-+	dma_free_coherent(dev->dev, dev->host_mem_descs_size,
- 			dev->host_mem_descs, dev->host_mem_descs_dma);
- 	dev->host_mem_descs = NULL;
-+	dev->host_mem_descs_size = 0;
- 	dev->nr_host_mem_descs = 0;
- }
- 
-@@ -1935,7 +1936,7 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
- 		u32 chunk_size)
- {
- 	struct nvme_host_mem_buf_desc *descs;
--	u32 max_entries, len;
-+	u32 max_entries, len, descs_size;
- 	dma_addr_t descs_dma;
- 	int i = 0;
- 	void **bufs;
-@@ -1948,8 +1949,9 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
- 	if (dev->ctrl.hmmaxd && dev->ctrl.hmmaxd < max_entries)
- 		max_entries = dev->ctrl.hmmaxd;
- 
--	descs = dma_alloc_coherent(dev->dev, max_entries * sizeof(*descs),
--				   &descs_dma, GFP_KERNEL);
-+	descs_size = max_entries * sizeof(*descs);
-+	descs = dma_alloc_coherent(dev->dev, descs_size, &descs_dma,
-+			GFP_KERNEL);
- 	if (!descs)
- 		goto out;
- 
-@@ -1978,6 +1980,7 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
- 	dev->host_mem_size = size;
- 	dev->host_mem_descs = descs;
- 	dev->host_mem_descs_dma = descs_dma;
-+	dev->host_mem_descs_size = descs_size;
- 	dev->host_mem_desc_bufs = bufs;
- 	return 0;
- 
-@@ -1992,8 +1995,7 @@ static int __nvme_alloc_host_mem(struct nvme_dev *dev, u64 preferred,
- 
- 	kfree(bufs);
- out_free_descs:
--	dma_free_coherent(dev->dev, max_entries * sizeof(*descs), descs,
--			descs_dma);
-+	dma_free_coherent(dev->dev, descs_size, descs, descs_dma);
- out:
- 	dev->host_mem_descs = NULL;
- 	return -ENOMEM;
+diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
+index 2904268c18c9a..eca39b5c12c68 100644
+--- a/fs/nfsd/nfs4recover.c
++++ b/fs/nfsd/nfs4recover.c
+@@ -658,7 +658,8 @@ nfs4_reset_recoverydir(char *recdir)
+ 		return status;
+ 	status = -ENOTDIR;
+ 	if (d_is_dir(path.dentry)) {
+-		strcpy(user_recovery_dirname, recdir);
++		strscpy(user_recovery_dirname, recdir,
++			sizeof(user_recovery_dirname));
+ 		status = 0;
+ 	}
+ 	path_put(&path);
 -- 
 2.43.0
 
