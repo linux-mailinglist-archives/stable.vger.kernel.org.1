@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA9A9EF9C4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6DA9EF814
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56ABC175EEE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66735189667F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BEE22758C;
-	Thu, 12 Dec 2024 17:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39366217664;
+	Thu, 12 Dec 2024 17:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHHwxuM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5XKnNhc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F10215041;
-	Thu, 12 Dec 2024 17:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB09E20A5EE;
+	Thu, 12 Dec 2024 17:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025637; cv=none; b=SL53rQv48AkE7yjrJ6LqwGy9OM8g8XWWfJmif09bnLUE0Ov8k2PsEf8stHdvRamKgIEw4/FKagmUOPCtADwxiBbXMVfIEmpVg+Uq3tuj6lLqemnQDDqJ/DetoV/SU/qhgkHzQVHlk0SmZUDp3Y+iQAWwK8+uUWcx/WMrYR9orx8=
+	t=1734024718; cv=none; b=qHI/Tgcf0nx/aLP7h/Mgz+Tupe55in6sUWZf0hFk1XvC0OppTYgryGEuZvioZ5d2Yg9Th+t16VMWDMq/t/E5YD/7WJV/7dWGcQZ+mP1CZHV9fXXw6clALyqFr7NVbQzrMhKBhrzb3FGRf8nv+f82dY8xjGlHIBkM2iDSfS7+Quw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025637; c=relaxed/simple;
-	bh=bAD5VegBRXsIVOrrRsohWdFEDds97YqqFunpKWNqfc4=;
+	s=arc-20240116; t=1734024718; c=relaxed/simple;
+	bh=q2LBRjYnhkgy3h0Dbew9A1r/fufdJiEDNiLmXLZH4W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJOGshtAGaf4fAzcurYHbGLis5O+6KX7a5bHJyfxbsqluSHMrMlWZeRTrAThRaLPQVY9JjMEN/iORRu6IjrEeE30+sL6egQ2zkRtLZH62yLDuw8EXDJjpx0x8C8WyUmUDUAGoAXyhPT3gVkVFzTFd231ezFUv+muzmbepgD0X6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHHwxuM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD743C4CECE;
-	Thu, 12 Dec 2024 17:47:16 +0000 (UTC)
+	 MIME-Version; b=CniXeMn/+3qKozKtz5GaVBJyHxsLxca0oEOXEJiiMLksWf/oOm2Dk7xSie9uKg7tFQXfCb3Mph9QQLKHXDqFugL7J8z7LbovRcLlWR7/SrTZfRpG11hjODEFwoGwrseLfVuqYh4UGD/s5DPBEy40BJb2RUfLXYuo+0oK3Hs3QvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5XKnNhc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E22C4CECE;
+	Thu, 12 Dec 2024 17:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025637;
-	bh=bAD5VegBRXsIVOrrRsohWdFEDds97YqqFunpKWNqfc4=;
+	s=korg; t=1734024717;
+	bh=q2LBRjYnhkgy3h0Dbew9A1r/fufdJiEDNiLmXLZH4W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHHwxuM09mFwOct0K8QPw2WsczfZy7N03AsbEnlZ1Ey8u5ylsfU+jNoHQRSwuFt/H
-	 XHJd6wR+WA+7fnusTmrl8Enjj/A+BqEckrlxukiFd6t+KyZCoAl8TSRnKQLgKzmzbv
-	 uozmWbZKfj2RBjT4nXOuL0GeelJ2f03ifgKWQwdw=
+	b=C5XKnNhcxPw6vFlTA0WTPCbr+MOTYyV200Ip3Bi/bLdTbRX/cvKdMicb4amrVQCdz
+	 D8FpPIJvQ3hxSIrJBFfls68ZmKqmBTQhR+G0JoyNzoJuqk9h1ZT9TFlYVEgNeKB4uh
+	 j87F36NKyL0Xp1TyPcN7PmLqQd5jGOkOLzt+jF9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 5.4 209/321] ovl: Filter invalid inodes with missing lookup function
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 389/459] r8169: dont apply UDP padding quirk on RTL8126A
 Date: Thu, 12 Dec 2024 16:02:07 +0100
-Message-ID: <20241212144238.238473326@linuxfoundation.org>
+Message-ID: <20241212144309.135366313@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit c8b359dddb418c60df1a69beea01d1b3322bfe83 upstream.
+[ Upstream commit 87e26448dbda4523b73a894d96f0f788506d3795 ]
 
-Add a check to the ovl_dentry_weird() function to prevent the
-processing of directory inodes that lack the lookup function.
-This is important because such inodes can cause errors in overlayfs
-when passed to the lowerstack.
+Vendor drivers r8125/r8126 indicate that this quirk isn't needed
+any longer for RTL8126A. Mimic this in r8169.
 
-Reported-by: syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=a8c9d476508bd14a90e5
-Suggested-by: Miklos Szeredi <miklos@szeredi.hu>
-Link: https://lore.kernel.org/linux-unionfs/CAJfpegvx-oS9XGuwpJx=Xe28_jzWx5eRo1y900_ZzWY+=gGzUg@mail.gmail.com/
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/d1317187-aa81-4a69-b831-678436e4de62@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/util.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/fs/overlayfs/util.c
-+++ b/fs/overlayfs/util.c
-@@ -111,6 +111,9 @@ bool ovl_dentry_remote(struct dentry *de
- 
- bool ovl_dentry_weird(struct dentry *dentry)
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 3aa1dda3406cd..b60add52f4497 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4155,8 +4155,8 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
  {
-+	if (!d_can_lookup(dentry) && !d_is_file(dentry) && !d_is_symlink(dentry))
-+		return true;
-+
- 	return dentry->d_flags & (DCACHE_NEED_AUTOMOUNT |
- 				  DCACHE_MANAGE_TRANSIT |
- 				  DCACHE_OP_HASH |
+ 	unsigned int padto = 0, len = skb->len;
+ 
+-	if (rtl_is_8125(tp) && len < 128 + RTL_MIN_PATCH_LEN &&
+-	    rtl_skb_is_udp(skb) && skb_transport_header_was_set(skb)) {
++	if (len < 128 + RTL_MIN_PATCH_LEN && rtl_skb_is_udp(skb) &&
++	    skb_transport_header_was_set(skb)) {
+ 		unsigned int trans_data_len = skb_tail_pointer(skb) -
+ 					      skb_transport_header(skb);
+ 
+@@ -4180,9 +4180,15 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
+ static unsigned int rtl_quirk_packet_padto(struct rtl8169_private *tp,
+ 					   struct sk_buff *skb)
+ {
+-	unsigned int padto;
++	unsigned int padto = 0;
+ 
+-	padto = rtl8125_quirk_udp_padto(tp, skb);
++	switch (tp->mac_version) {
++	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
++		padto = rtl8125_quirk_udp_padto(tp, skb);
++		break;
++	default:
++		break;
++	}
+ 
+ 	switch (tp->mac_version) {
+ 	case RTL_GIGA_MAC_VER_34:
+-- 
+2.43.0
+
 
 
 
