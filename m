@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-102800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267F69EF46C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 923059EF709
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9F35189CDF8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2D9F1895036
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EC72358BE;
-	Thu, 12 Dec 2024 16:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24062153DD;
+	Thu, 12 Dec 2024 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUEMpTRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJe44nXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F47F229690;
-	Thu, 12 Dec 2024 16:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F345205501;
+	Thu, 12 Dec 2024 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022538; cv=none; b=Enxyi73QlH8GD/vLbG7awwWNbP4uJq/+vpmlmVxsq7iZhS733bam0x3ccVwPgHLblAQeGIv2lcgl1UtEbvYizwPRzkr8i1jZWfcIoeIDfL5NDcmGxdbBCo5fXbVeLIoH5J8e4IMLcFtyuA7CgDghjQex08hDHFwGmUTQbBbFPWw=
+	t=1734024008; cv=none; b=lYVJkuxQCEWl5QTVgp5UfUhjqRGghauNB54Eg5yD3kApPlgnAgF23m9qx0lxFm6f+B0aX36cO34vEgf7EdXiiXeVQgRLJGOq4DO1JAsNl+3J0TNRHSW7FsNR+XeVjsiOQStzp+mBKwkldJI9tmeNjmlEQA2gdb8iKr3FOuFYFio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022538; c=relaxed/simple;
-	bh=xP4rYi+Z2R4DTcec58hHdZb+HY8q1uWHt+uifxx7Vl4=;
+	s=arc-20240116; t=1734024008; c=relaxed/simple;
+	bh=0cLwS4e38qJWV++nYig8hwHFsLZtzRvIgO1n983SORM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fb07srTEIRgvfPmoLqtCypIM/LOh+iLY7TJMgk+F/5XmgmdTaGN7tSrwMe+85YPBP/10N4c2XW1rrFrJ3o+xDaWzEa8B69nmcKmbnEfyszXpOSelKgMoEG4N0I1VpcnZtPGEVrH8vORftOb3kFkAoBgZApnP5bmtZYVPshF6eN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUEMpTRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3A0C4CEDF;
-	Thu, 12 Dec 2024 16:55:37 +0000 (UTC)
+	 MIME-Version; b=cNb0GfXYD+FFE764//sZ0J3kzLNbfS6UmLefOcZqdiixhXSZw5xCgFv2BYheI1yfbDxKAJ2Z4nfspo+MN1Af7nB56r7ezRRxyODrf6IQNV3NuA6wblNs5PmJ/dvQcmBk0v2ZfH3fXkXeaCR7GQdJO5BcnRrWvdXPLTQiv8VmHHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJe44nXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8432C4CECE;
+	Thu, 12 Dec 2024 17:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022537;
-	bh=xP4rYi+Z2R4DTcec58hHdZb+HY8q1uWHt+uifxx7Vl4=;
+	s=korg; t=1734024008;
+	bh=0cLwS4e38qJWV++nYig8hwHFsLZtzRvIgO1n983SORM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lUEMpTRdBKIV11L7zxCAntfRrlZ8x9tkkFnJmDFXsoVdzQ8Q1ypT433yLQJ6Caba3
-	 3/GprldvIV/qOzK1fuw64PwUiXv6XynHaEkqxg0yhyHpybMLWJsZ5bQynVrXW3HdPM
-	 rNJnxogYPJLz3gO+3iP4YFRHh+4t1edG376/xDco=
+	b=RJe44nXqPMxSm159QSr0NW/Qnfu799hqWQhnPghSyAjYM44VkBFgOWbZ/jPcPJagx
+	 EXmW/gyUEwXUT2xCs8RdWyQUgCXjrKV/Z3SYDqtiBcFlzKGkAMx+7yGQaAnLrngZMq
+	 q80y/TLBe2KbbLbRAzX6aZ/ml+ovUGLNCNYpbzgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Si-Wei Liu <si-wei.liu@oracle.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Rakesh Babu <rsaladi2@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 269/565] vdpa/mlx5: Fix suboptimal range on iotlb iteration
+Subject: [PATCH 5.10 126/459] octeontx2-pf: Calculate LBK link instead of hardcoding
 Date: Thu, 12 Dec 2024 15:57:44 +0100
-Message-ID: <20241212144322.099661567@linuxfoundation.org>
+Message-ID: <20241212144258.485868899@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 35025963326e44d8bced3eecd42d2f040f4f0024 ]
+[ Upstream commit 8bcf5ced6526e1c4c8a2703f9ca9135fef7409d6 ]
 
-The starting iova address to iterate iotlb map entry within a range
-was set to an irrelevant value when passing to the itree_next()
-iterator, although luckily it doesn't affect the outcome of finding
-out the granule of the smallest iotlb map size. Fix the code to make
-it consistent with the following for-loop.
+CGX links are followed by LBK links but number of
+CGX and LBK links varies between platforms. Hence
+get the number of links present in hardware from
+AF and use it to calculate LBK link number.
 
-Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Message-Id: <20241021134040.975221-3-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: Rakesh Babu <rsaladi2@marvell.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e26f8eac6bb2 ("octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_ethtool.c")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/mlx5/core/mr.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 8 ++++++--
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h | 2 ++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
-index 8b21f564678c9..32ce1a6aae0d2 100644
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -227,7 +227,6 @@ static int map_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr
- 	unsigned long lgcd = 0;
- 	int log_entity_size;
- 	unsigned long size;
--	u64 start = 0;
- 	int err;
- 	struct page *pg;
- 	unsigned int nsg;
-@@ -238,10 +237,9 @@ static int map_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr
- 	struct device *dma = mvdev->vdev.dma_dev;
- 
- 	for (map = vhost_iotlb_itree_first(iotlb, mr->start, mr->end - 1);
--	     map; map = vhost_iotlb_itree_next(map, start, mr->end - 1)) {
-+	     map; map = vhost_iotlb_itree_next(map, mr->start, mr->end - 1)) {
- 		size = maplen(map, mr);
- 		lgcd = gcd(lgcd, size);
--		start += size;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index b062ed06235d2..3b4530bc30378 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -532,8 +532,10 @@ static int otx2_get_link(struct otx2_nic *pfvf)
+ 		link = 4 * ((map >> 8) & 0xF) + ((map >> 4) & 0xF);
  	}
- 	log_entity_size = ilog2(lgcd);
+ 	/* LBK channel */
+-	if (pfvf->hw.tx_chan_base < SDP_CHAN_BASE)
+-		link = 12;
++	if (pfvf->hw.tx_chan_base < SDP_CHAN_BASE) {
++		map = pfvf->hw.tx_chan_base & 0x7FF;
++		link = pfvf->hw.cgx_links | ((map >> 8) & 0xF);
++	}
  
+ 	return link;
+ }
+@@ -1519,6 +1521,8 @@ void mbox_handler_nix_lf_alloc(struct otx2_nic *pfvf,
+ 	pfvf->hw.tx_chan_base = rsp->tx_chan_base;
+ 	pfvf->hw.lso_tsov4_idx = rsp->lso_tsov4_idx;
+ 	pfvf->hw.lso_tsov6_idx = rsp->lso_tsov6_idx;
++	pfvf->hw.cgx_links = rsp->cgx_links;
++	pfvf->hw.lbk_links = rsp->lbk_links;
+ }
+ EXPORT_SYMBOL(mbox_handler_nix_lf_alloc);
+ 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index d6253f2a414d3..386cb08497e48 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -197,6 +197,8 @@ struct otx2_hw {
+ 	struct otx2_drv_stats	drv_stats;
+ 	u64			cgx_rx_stats[CGX_RX_STATS_COUNT];
+ 	u64			cgx_tx_stats[CGX_TX_STATS_COUNT];
++	u8			cgx_links;  /* No. of CGX links present in HW */
++	u8			lbk_links;  /* No. of LBK links present in HW */
+ };
+ 
+ struct otx2_vf_config {
 -- 
 2.43.0
 
