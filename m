@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACE39EEBF4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABE59EEDBA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20799188C27F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:27:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA6B9188F759
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671B3215F6A;
-	Thu, 12 Dec 2024 15:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300CC222D78;
+	Thu, 12 Dec 2024 15:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtENqdv2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2mInA3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B6821578E;
-	Thu, 12 Dec 2024 15:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE12821CFF0;
+	Thu, 12 Dec 2024 15:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017253; cv=none; b=YwIV+wFLabx2o8wMRCjEO9ZMkduEaHZFvgRkP4hb4pWmU/XUuZylNbJJxtF3zI8ApuFzIgN61J7ugr6moyq1R6TOAGsPQzLnGjqPLLqMZ3dLroHaV4JIh1NfrdZ9YwMubOwf7gXjrn/XBKxOdWZGw/htxG2MymVskhoUklh+3QQ=
+	t=1734018267; cv=none; b=NzpHPJf0uVSV4eG6zVZvt1QC3VL1kO2XGcogmKOF4bP52AQImx0/NjjJCAZUYCXdFRTmOK/gYiu/SxcbQ7JSwy8JB9ethanFI2xCecwBrIJoAld7vU2Rd0WytlboYaQdH3uyn7p43sMdkWCFtn+cVWw6HYwkYODCrKIqANnEyDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017253; c=relaxed/simple;
-	bh=S/iB0917nK56neTx0osRJHBXNA81TWPx6COc9+SJcOU=;
+	s=arc-20240116; t=1734018267; c=relaxed/simple;
+	bh=OzahWuI//o3z0kftfNu2gSE4q9E0hrixcLxnWAhjdNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYNHEzJkniw89H8pgOAEBlPO8To3qaeoHGPthnfIbwA7bRQYYMpYsqFbq2S1d+S/kTdvPY5FUXfafWRu2+g0VJoNimJBe5uBOlQAKoTk8GDa9DcEA2KpsXiMbPojz7/Arf40T+3gj5hzQNvatwJecun5EH47+d1eDMkvlHd4fHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtENqdv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3F9C4CECE;
-	Thu, 12 Dec 2024 15:27:32 +0000 (UTC)
+	 MIME-Version; b=XCivdm5xHnQptEKHNnXrQY3ZA6bFWpXYnbL5aRq5PkNQWCNXxuAcrgOw7bcgBLKelkTCFW28gWI/cWoV7muo5w4azVHHMCm/aX+sPO8EHrXq/9coL5DQad7BRMkz3yF3wK2KTvnKR25bPsSmLXiGQolMCHqxpEWwKNFNFQ3GW64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2mInA3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA33C4CECE;
+	Thu, 12 Dec 2024 15:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017253;
-	bh=S/iB0917nK56neTx0osRJHBXNA81TWPx6COc9+SJcOU=;
+	s=korg; t=1734018266;
+	bh=OzahWuI//o3z0kftfNu2gSE4q9E0hrixcLxnWAhjdNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtENqdv2oxVGYDoTOgSvK4HzIWfbTYQWT86dVTm8H2c/IsxiWOAMJK+FFMhLWsO8c
-	 GMvdt8mRmUMtBYsNF+HPoxG9SMwgzMdLkKJSv1K27pWxcdFwbYiXgwAJix27pjQnN7
-	 7IZaDkOEJZzsZo+nMGUOb7MLh27Rarr/eIs2/RvE=
+	b=N2mInA3PlavLiBCYErwXw8Ud35h5tnGIwbna7WDrukfVBUFx23BJjJ3EC6UJ/f/6V
+	 g5ihvTYA9kjIY6V5rC2O3KV/54LmFaIwCK2Nep0iXNx/V/Sxbv4Lwml0rDRzv0z9dr
+	 8tH3Vt8tewnZBBXLzGQm8BGnVRWUjJLXY6Jd0fCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Mayank Rana <quic_mrana@quicinc.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com,
+	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 395/466] PCI: starfive: Enable controller runtime PM before probing host bridge
+Subject: [PATCH 6.6 245/356] jfs: fix array-index-out-of-bounds in jfs_readdir
 Date: Thu, 12 Dec 2024 15:59:24 +0100
-Message-ID: <20241212144322.371235839@linuxfoundation.org>
+Message-ID: <20241212144254.288061363@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mayank Rana <quic_mrana@quicinc.com>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-[ Upstream commit 6168efbebace0db443185d4c6701ca8170a8788d ]
+[ Upstream commit 839f102efb168f02dfdd46717b7c6dddb26b015e ]
 
-A PCI controller device, e.g., StarFive, is parent to PCI host bridge
-device. We must enable runtime PM of the controller before enabling runtime
-PM of the host bridge, which will happen in pci_host_probe(), to avoid this
-warning:
+The stbl might contain some invalid values. Added a check to
+return error code in that case.
 
-  pcie-starfive 940000000.pcie: Enabling runtime PM for inactive device with active children
-
-Fix this issue by enabling StarFive controller device's runtime PM before
-calling pci_host_probe() in plda_pcie_host_init().
-
-Link: https://lore.kernel.org/r/20241111-runtime_pm-v7-1-9c164eefcd87@quicinc.com
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Mayank Rana <quic_mrana@quicinc.com>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reported-by: syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0315f8fe99120601ba88
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/plda/pcie-starfive.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/jfs/jfs_dtree.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pci/controller/plda/pcie-starfive.c b/drivers/pci/controller/plda/pcie-starfive.c
-index c9933ecf68338..0564fdce47c2a 100644
---- a/drivers/pci/controller/plda/pcie-starfive.c
-+++ b/drivers/pci/controller/plda/pcie-starfive.c
-@@ -404,6 +404,9 @@ static int starfive_pcie_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 69fd936fbdb37..8f85177f284b5 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -2891,6 +2891,14 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
+ 		stbl = DT_GETSTBL(p);
  
-+	pm_runtime_enable(&pdev->dev);
-+	pm_runtime_get_sync(&pdev->dev);
+ 		for (i = index; i < p->header.nextindex; i++) {
++			if (stbl[i] < 0 || stbl[i] > 127) {
++				jfs_err("JFS: Invalid stbl[%d] = %d for inode %ld, block = %lld",
++					i, stbl[i], (long)ip->i_ino, (long long)bn);
++				free_page(dirent_buf);
++				DT_PUTPAGE(mp);
++				return -EIO;
++			}
 +
- 	plda->host_ops = &sf_host_ops;
- 	plda->num_events = PLDA_MAX_EVENT_NUM;
- 	/* mask doorbell event */
-@@ -413,11 +416,12 @@ static int starfive_pcie_probe(struct platform_device *pdev)
- 	plda->events_bitmap <<= PLDA_NUM_DMA_EVENTS;
- 	ret = plda_pcie_host_init(&pcie->plda, &starfive_pcie_ops,
- 				  &stf_pcie_event);
--	if (ret)
-+	if (ret) {
-+		pm_runtime_put_sync(&pdev->dev);
-+		pm_runtime_disable(&pdev->dev);
- 		return ret;
-+	}
+ 			d = (struct ldtentry *) & p->slot[stbl[i]];
  
--	pm_runtime_enable(&pdev->dev);
--	pm_runtime_get_sync(&pdev->dev);
- 	platform_set_drvdata(pdev, pcie);
- 
- 	return 0;
+ 			if (((long) jfs_dirent + d->namlen + 1) >
 -- 
 2.43.0
 
