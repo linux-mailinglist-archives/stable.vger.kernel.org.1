@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4E19EF440
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB8E9EF182
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52099188D785
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD89D189D8C2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EF9211A34;
-	Thu, 12 Dec 2024 16:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101E1223C53;
+	Thu, 12 Dec 2024 16:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guFI5mRx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJcdw59E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B4D215764;
-	Thu, 12 Dec 2024 16:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F8721E0BC;
+	Thu, 12 Dec 2024 16:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022156; cv=none; b=k1ZzcZupUeZqDmbMK3YTcZ8uJ7jYB1Jx+M+iX3VA0KiBduBIpIbJniSuxe8l1hHaYaXwlrBnniZBwdZMEbu7y5WoD5ucLD+QOWlnhnzHLX0MyaG8+/swn1gso3ens3YCSbj7SJwx5zMYEMWDvErZvGcpaSkG3WYFyimxMuwzD0Y=
+	t=1734020240; cv=none; b=oTrOyQU9HjNE23GZ1d9A+sRPuvjNEp6ZSdoNUyKcHhruVIc07304k8SJbFOMM5NH4KCrLx5h0F73w/huEc/EIzKns0UX4Q2ZgUc6PwXqQ9buVLl8oIbLmH2573Z5BoM181Fl5yUEcnqtmj0qmxhtKFelzHq3AZZreeWGiiNq7do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022156; c=relaxed/simple;
-	bh=B91lwocSpDfF6JN/47P6fYhxWvhHF3Okyd130h0q6o4=;
+	s=arc-20240116; t=1734020240; c=relaxed/simple;
+	bh=nZnNn93YNpYUUA2goygRPkdD4q84Ehu/LtMIAZAMf7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2cqEgee00G6IflZo39o+pJMOAg0OrxpdTrEaQn56sUngIRjup1FR3SmHeD75pNN6a7AkcbsCDphwP18BOW0gMf+iW8CaeXMDyTaAz8MiOfeAEBUmU6UxR7mjgLAOwDOOZlusS5Rx4IWUkwios/3y8Q3NLe4ELESetsHQVYuRW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guFI5mRx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D92C4CECE;
-	Thu, 12 Dec 2024 16:49:15 +0000 (UTC)
+	 MIME-Version; b=UhoFQLTrLY0uNXnDmB+D9fU5tEpT3r5SUkrab2NqpqjfDs9YuMNq7ie+npwI2E3mpOpSweGAmCg1AmbT6YwpE8NaiAvEhlvRCZWs3zBIQQdGyjYTOXnCyEDFIGqX3Elgfjy5JMF3B+MdWOZUCB7ljvbaDm4YrTCvAWqQf5B7//w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJcdw59E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1887EC4CED0;
+	Thu, 12 Dec 2024 16:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022156;
-	bh=B91lwocSpDfF6JN/47P6fYhxWvhHF3Okyd130h0q6o4=;
+	s=korg; t=1734020240;
+	bh=nZnNn93YNpYUUA2goygRPkdD4q84Ehu/LtMIAZAMf7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=guFI5mRxsI3wDvhGkpuAMWQOGx4JJ4FIRnHlpxL9GRt/i7A3GazRmuG/5gRnxE4/h
-	 g1HYU7Qp5AvS/nL5/Pg97qWepFJpyDX0EooXCOJMIE+GoxRR564fhOAbWt004yM4Ri
-	 lwB0qUGRn3yfeBQeZkNRtPIzYgr8R7UQs3i+e2X0=
+	b=BJcdw59EAeXNBExGkekKkxVv3m1O1tYa+vTv2P4yf5XQ1IgPqVYY7/nYB30GaMFd6
+	 hZXyv6tnwbum3he/3iTpxtaFhGHg6ggvCKAK+5nyN++zUOiCK2NrigslPIUEDVvwA5
+	 6IeSVXJXYLpC8BZ/vSPThYDa/WclcEqZF/Tp8Zpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 164/565] libbpf: Fix output .symtab byte-order during linking
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 414/772] ALSA: hda/realtek: Set PCBeep to default value for ALC274
 Date: Thu, 12 Dec 2024 15:55:59 +0100
-Message-ID: <20241212144317.960273788@linuxfoundation.org>
+Message-ID: <20241212144407.023998960@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit f896b4a5399e97af0b451fcf04754ed316935674 ]
+commit 155699ccab7c78cbba69798242b68bc8ac66d5d2 upstream.
 
-Object linking output data uses the default ELF_T_BYTE type for '.symtab'
-section data, which disables any libelf-based translation. Explicitly set
-the ELF_T_SYM type for output to restore libelf's byte-order conversion,
-noting that input '.symtab' data is already correctly translated.
+BIOS Enable PC beep path cause pop noise via speaker during boot time.
+Set to default value from driver will solve the issue.
 
-Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/87868bfeccf3f51aec61260073f8778e9077050a.1726475448.git.tony.ambardar@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/2721bb57e20a44c3826c473e933f9105@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/linker.c | 2 ++
+ sound/pci/hda/patch_realtek.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
-index bfe0c30841b9b..8907d4238818c 100644
---- a/tools/lib/bpf/linker.c
-+++ b/tools/lib/bpf/linker.c
-@@ -397,6 +397,8 @@ static int init_output_elf(struct bpf_linker *linker, const char *file)
- 		pr_warn_elf("failed to create SYMTAB data");
- 		return -EINVAL;
- 	}
-+	/* Ensure libelf translates byte-order of symbol records */
-+	sec->data->d_type = ELF_T_SYM;
- 
- 	str_off = strset__add_str(linker->strtab_strs, sec->sec_name);
- 	if (str_off < 0)
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -469,6 +469,8 @@ static void alc_fill_eapd_coef(struct hd
+ 		break;
+ 	case 0x10ec0234:
+ 	case 0x10ec0274:
++		alc_write_coef_idx(codec, 0x6e, 0x0c25);
++		fallthrough;
+ 	case 0x10ec0294:
+ 	case 0x10ec0700:
+ 	case 0x10ec0701:
 
 
 
