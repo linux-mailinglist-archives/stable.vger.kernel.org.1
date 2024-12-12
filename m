@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-102486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1A99EF318
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C6C9EEE81
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AE401897432
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A54188C801
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FAE242AB4;
-	Thu, 12 Dec 2024 16:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DF9222D70;
+	Thu, 12 Dec 2024 15:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+YMSIjF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj8i1uyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA9F242AAD;
-	Thu, 12 Dec 2024 16:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9658222D44;
+	Thu, 12 Dec 2024 15:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021404; cv=none; b=GPM9xdqj3Fqw4yAnXvYSPJAyaBt2xV4BT+fPgZbt+X0gzSGAF7jOQ5acXiFN/2GiqybFzOy5evB/IoMTEN9vwNTogWUueYojJXqutSeRT3KhuhpQ/lEZmIdTooBDjR/7hKAoNodR0/nnH/X5L03RX+ecmBqEDC9ZBAj09LI8b0Q=
+	t=1734018693; cv=none; b=s2ak/1Ets6LoKKzbeGEo4oWYVx6jFaT/ycoOKLDmQECOs0Rhr1aoqNQ+mfo9beNO7hd4I7Wiy54qCriaaN/Vm+0jBAxCVrzJ7NI6oCmUWwe6UsC87FwubsYxHiuizAICCVRJdgShzHVHIxXcLzB1ypS+VHh05r9K0bi+mx6/Vig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021404; c=relaxed/simple;
-	bh=IQwED83XV+d1H/AUB3tZC4DsSChVHmdtNq0xjzYqnHw=;
+	s=arc-20240116; t=1734018693; c=relaxed/simple;
+	bh=rgABftn1QCRFJRyG5RHqIam4gU0aIn92HmkYbnUsqRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcO1jFxXRys2iIOtUwDRV2a0xvg/d00DMWCCjT1l0sYfBWVDdc8vwzbOMBnUBrBddnPNM4+j0sl+jOf1n8Xms9JVoteUB0cnpbdMo18KmKffA7sZGXGueC/7MQrBGpW9OMYKNuL0mGpk4+AcnocizOuTe1ofSTvZsn5lSwOLq84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+YMSIjF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F73C4CECE;
-	Thu, 12 Dec 2024 16:36:43 +0000 (UTC)
+	 MIME-Version; b=lH+vwW/8NRurRkm/pqRCYpzT1G5NjwfZPhZbEzmoyniRW5yvKUpMW3B/Hg5T9MT9rplz0I0mw0QvcLyLeOzeBRB8RF98OGdveqj3uORVFfoLDEz4MgDi/QWNoyDjf9M2dbiEPvczVIRezfs7NGdw+coZILdQyYH33FtxfyYFpss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tj8i1uyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324DBC4CECE;
+	Thu, 12 Dec 2024 15:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021404;
-	bh=IQwED83XV+d1H/AUB3tZC4DsSChVHmdtNq0xjzYqnHw=;
+	s=korg; t=1734018693;
+	bh=rgABftn1QCRFJRyG5RHqIam4gU0aIn92HmkYbnUsqRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+YMSIjF5NQc2uiSaQpa9pQuk0PJh6J0xPSJ7O+8KNsJmzKhB/Vz3N9l2re75hGTr
-	 5uKb5tNwoYUtVKWutXguxhYqfkDXt7611nPfeHRfsGM5WrKEz0Q1UEks7tTcuKRHj9
-	 Ow1asxfTxcIRIHF7hwNC10d/RpjfhFeYTB82U55s=
+	b=Tj8i1uyL3K1bAMU3i9x3jgSYI32P7yrvEAIBzdi2CIDYJyV4ck95KshgN9kkuBuvz
+	 Wvlmqe81lXiS+BhAFFioIdN4kjS4JcKqqzLBJBlfBw3x0ucvq8TfPWvUxOxUV17zAs
+	 ayKzmShJcXFD3CMHHxpj3Lr4TRzZLZTg04kSp2vU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@google.com>,
-	Weizhao Ouyang <ouyangweizhao@zeku.com>,
-	Marco Elver <elver@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Evgenii Stepanov <eugenis@google.com>,
-	Peter Collingbourne <pcc@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 729/772] kasan: suppress recursive reports for HW_TAGS
+	Ravindra Yashvant Shinde <ravindra.yashvant.shinde@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 355/356] i3c: master: Remove i3c_dev_disable_ibi_locked(olddev) on device hotjoin
 Date: Thu, 12 Dec 2024 16:01:14 +0100
-Message-ID: <20241212144420.022501682@linuxfoundation.org>
+Message-ID: <20241212144258.594768842@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,187 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@google.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit c6a690e0c978bda8106e7a489c13323f90b087d0 ]
+commit 36faa04ce3d9c962b4b29d285ad07ca29e2988e4 upstream.
 
-KASAN suppresses reports for bad accesses done by the KASAN reporting
-code.  The reporting code might access poisoned memory for reporting
-purposes.
+When a new device hotjoins, a new dynamic address is assigned.
+i3c_master_add_i3c_dev_locked() identifies that the device was previously
+attached to the bus and locates the olddev.
 
-Software KASAN modes do this by suppressing reports during reporting via
-current->kasan_depth, the same way they suppress reports during accesses
-to poisoned slab metadata.
+i3c_master_add_i3c_dev_locked()
+{
+    ...
+    olddev = i3c_master_search_i3c_dev_duplicate(newdev);
+    ...
+    if (olddev) {
+        ...
+        i3c_dev_disable_ibi_locked(olddev);
+        ^^^^^^
+        The olddev should not receive any commands on the i3c bus as it
+        does not exist and has been assigned a new address. This will
+        result in NACK or timeout. So remove it.
+    }
 
-Hardware Tag-Based KASAN does not use current->kasan_depth, and instead
-resets pointer tags for accesses to poisoned memory done by the reporting
-code.
+    i3c_dev_free_ibi_locked(olddev);
+    ^^^^^^^^
+    This function internally calls i3c_dev_disable_ibi_locked() function
+    causing to send DISEC command with old Address.
 
-Despite that, a recursive report can still happen:
+    The olddev should not receive any commands on the i3c bus as it
+    does not exist and has been assigned a new address. This will
+    result in NACK or timeout. So, update the olddev->ibi->enabled
+    flag to false to avoid DISEC with OldAddr.
+}
 
-1. On hardware with faulty MTE support. This was observed by Weizhao
-   Ouyang on a faulty hardware that caused memory tags to randomly change
-   from time to time.
+Include part of Ravindra Yashvant Shinde's work:
+https://lore.kernel.org/linux-i3c/20240820151917.3904956-1-ravindra.yashvant.shinde@nxp.com/T/#u
 
-2. Theoretically, due to a previous MTE-undetected memory corruption.
-
-A recursive report can happen via:
-
-1. Accessing a pointer with a non-reset tag in the reporting code, e.g.
-   slab->slab_cache, which is what Weizhao Ouyang observed.
-
-2. Theoretically, via external non-annotated routines, e.g. stackdepot.
-
-To resolve this issue, resetting tags for all of the pointers in the
-reporting code and all the used external routines would be impractical.
-
-Instead, disable tag checking done by the CPU for the duration of KASAN
-reporting for Hardware Tag-Based KASAN.
-
-Without this fix, Hardware Tag-Based KASAN reporting code might deadlock.
-
-[andreyknvl@google.com: disable preemption instead of migration, fix comment typo]
-  Link: https://lkml.kernel.org/r/d14417c8bc5eea7589e99381203432f15c0f9138.1680114854.git.andreyknvl@google.com
-Link: https://lkml.kernel.org/r/59f433e00f7fa985e8bf9f7caf78574db16b67ab.1678491668.git.andreyknvl@google.com
-Fixes: 2e903b914797 ("kasan, arm64: implement HW_TAGS runtime")
-Signed-off-by: Andrey Konovalov <andreyknvl@google.com>
-Reported-by: Weizhao Ouyang <ouyangweizhao@zeku.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Evgenii Stepanov <eugenis@google.com>
-Cc: Peter Collingbourne <pcc@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: e30a0361b851 ("kasan: make report_lock a raw spinlock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 317bacf960a4 ("i3c: master: add enable(disable) hot join in sys entry")
+Co-developed-by: Ravindra Yashvant Shinde <ravindra.yashvant.shinde@nxp.com>
+Signed-off-by: Ravindra Yashvant Shinde <ravindra.yashvant.shinde@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241001162232.223724-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kasan/report.c | 59 ++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 48 insertions(+), 11 deletions(-)
+ drivers/i3c/master.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/mm/kasan/report.c b/mm/kasan/report.c
-index 5d9ae80df4954..821cd12e8c8a7 100644
---- a/mm/kasan/report.c
-+++ b/mm/kasan/report.c
-@@ -73,10 +73,18 @@ static int __init kasan_set_multi_shot(char *str)
- __setup("kasan_multi_shot", kasan_set_multi_shot);
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2048,11 +2048,16 @@ int i3c_master_add_i3c_dev_locked(struct
+ 			ibireq.max_payload_len = olddev->ibi->max_payload_len;
+ 			ibireq.num_slots = olddev->ibi->num_slots;
  
- /*
-- * Used to suppress reports within kasan_disable/enable_current() critical
-- * sections, which are used for marking accesses to slab metadata.
-+ * This function is used to check whether KASAN reports are suppressed for
-+ * software KASAN modes via kasan_disable/enable_current() critical sections.
-+ *
-+ * This is done to avoid:
-+ * 1. False-positive reports when accessing slab metadata,
-+ * 2. Deadlocking when poisoned memory is accessed by the reporting code.
-+ *
-+ * Hardware Tag-Based KASAN instead relies on:
-+ * For #1: Resetting tags via kasan_reset_tag().
-+ * For #2: Suppression of tag checks via CPU, see report_suppress_start/end().
-  */
--static bool report_suppressed(void)
-+static bool report_suppressed_sw(void)
- {
- #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
- 	if (current->kasan_depth)
-@@ -85,6 +93,30 @@ static bool report_suppressed(void)
- 	return false;
- }
- 
-+static void report_suppress_start(void)
-+{
-+#ifdef CONFIG_KASAN_HW_TAGS
-+	/*
-+	 * Disable preemption for the duration of printing a KASAN report, as
-+	 * hw_suppress_tag_checks_start() disables checks on the current CPU.
-+	 */
-+	preempt_disable();
-+	hw_suppress_tag_checks_start();
-+#else
-+	kasan_disable_current();
-+#endif
-+}
-+
-+static void report_suppress_stop(void)
-+{
-+#ifdef CONFIG_KASAN_HW_TAGS
-+	hw_suppress_tag_checks_stop();
-+	preempt_enable();
-+#else
-+	kasan_enable_current();
-+#endif
-+}
-+
- /*
-  * Used to avoid reporting more than one KASAN bug unless kasan_multi_shot
-  * is enabled. Note that KASAN tests effectively enable kasan_multi_shot
-@@ -152,7 +184,7 @@ static void start_report(unsigned long *flags, bool sync)
- 	/* Do not allow LOCKDEP mangling KASAN reports. */
- 	lockdep_off();
- 	/* Make sure we don't end up in loop. */
--	kasan_disable_current();
-+	report_suppress_start();
- 	spin_lock_irqsave(&report_lock, *flags);
- 	pr_err("==================================================================\n");
- }
-@@ -170,7 +202,7 @@ static void end_report(unsigned long *flags, void *addr)
- 		panic("kasan.fault=panic set ...\n");
- 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
- 	lockdep_on();
--	kasan_enable_current();
-+	report_suppress_stop();
- }
- 
- static void print_error_description(struct kasan_report_info *info)
-@@ -439,9 +471,13 @@ void kasan_report_invalid_free(void *ptr, unsigned long ip, enum kasan_report_ty
- 	struct kasan_report_info info;
- 
- 	/*
--	 * Do not check report_suppressed(), as an invalid-free cannot be
--	 * caused by accessing slab metadata and thus should not be
--	 * suppressed by kasan_disable/enable_current() critical sections.
-+	 * Do not check report_suppressed_sw(), as an invalid-free cannot be
-+	 * caused by accessing poisoned memory and thus should not be suppressed
-+	 * by kasan_disable/enable_current() critical sections.
-+	 *
-+	 * Note that for Hardware Tag-Based KASAN, kasan_report_invalid_free()
-+	 * is triggered by explicit tag checks and not by the ones performed by
-+	 * the CPU. Thus, reporting invalid-free is not suppressed as well.
- 	 */
- 	if (unlikely(!report_enabled()))
- 		return;
-@@ -476,7 +512,7 @@ bool kasan_report(unsigned long addr, size_t size, bool is_write,
- 	unsigned long irq_flags;
- 	struct kasan_report_info info;
- 
--	if (unlikely(report_suppressed()) || unlikely(!report_enabled())) {
-+	if (unlikely(report_suppressed_sw()) || unlikely(!report_enabled())) {
- 		ret = false;
- 		goto out;
- 	}
-@@ -508,8 +544,9 @@ void kasan_report_async(void)
- 	unsigned long flags;
- 
- 	/*
--	 * Do not check report_suppressed(), as kasan_disable/enable_current()
--	 * critical sections do not affect Hardware Tag-Based KASAN.
-+	 * Do not check report_suppressed_sw(), as
-+	 * kasan_disable/enable_current() critical sections do not affect
-+	 * Hardware Tag-Based KASAN.
- 	 */
- 	if (unlikely(!report_enabled()))
- 		return;
--- 
-2.43.0
-
+-			if (olddev->ibi->enabled) {
++			if (olddev->ibi->enabled)
+ 				enable_ibi = true;
+-				i3c_dev_disable_ibi_locked(olddev);
+-			}
+-
++			/*
++			 * The olddev should not receive any commands on the
++			 * i3c bus as it does not exist and has been assigned
++			 * a new address. This will result in NACK or timeout.
++			 * So, update the olddev->ibi->enabled flag to false
++			 * to avoid DISEC with OldAddr.
++			 */
++			olddev->ibi->enabled = false;
+ 			i3c_dev_free_ibi_locked(olddev);
+ 		}
+ 		mutex_unlock(&olddev->ibi_lock);
 
 
 
