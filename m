@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-102265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757F69EF23E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7145A9EEB61
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6BF4189A9C5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 833E31611BC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22247238E0D;
-	Thu, 12 Dec 2024 16:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05266212B0F;
+	Thu, 12 Dec 2024 15:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrN5JwNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t346CBay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE022652A;
-	Thu, 12 Dec 2024 16:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60AE1487CD;
+	Thu, 12 Dec 2024 15:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020596; cv=none; b=macgk5w5MAtsv7Dtvtb+gVlN1EkOd73b8Ycy14PoKMSmE6HCT3hSDgZQnQSUk972RcLaSTPn4CCIEh0FDwoI4RL6/WVBF05ge9AQN94iFss2hcU9CMXbkH2vHTzv8jpPdws6uV+uH8COLak3qB0SnOYZCLjHiin44B+TILcrUGI=
+	t=1734016740; cv=none; b=A9wkvFdqLIbgzRw1IJ17fHFeYJIx4LHA8T5Q9sfgUHqQwhD/hh/39yIqmzPdEnyIaVjhWlAwWGp2gcIL3icUipxGODpBwUwEGS3A0Z+wfwJd2ym56ETtctODHdfCc5hUK812NmrxVETJvPEW0IB+x0BV256JvLt87CN8xMVfT3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020596; c=relaxed/simple;
-	bh=ldKvYzMjHa82Q3UF9LMriaHRVTOrPsxv3OiGiSa/O9U=;
+	s=arc-20240116; t=1734016740; c=relaxed/simple;
+	bh=dtrHlkEBdqeWlh5dN8+mOgO9DUfFZJGQDdevnyBJ9RE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VuRF/CuN0gOHSuACPuGG/O7L+nH4rpkqf/iLu4dE/TMjhFBB4mgzAz0UX9VvIXOq2I6qB3xclurWVuxt35Ah3sa0LV1CPfnTcxi2JxuZbP/iU7cSRQmyctOT0UcrORHzS9DrCr3bRHTYOUgwAOUJ8RkvOv+dGVPxxxI1cGMEBSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrN5JwNM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7E4C4CED0;
-	Thu, 12 Dec 2024 16:23:15 +0000 (UTC)
+	 MIME-Version; b=M3aogavTo45EXXa4HEnv75cp11vDHf4pVkcZ6DkVKJHtZwV7nGwF8B11HdTB8CDB+HdfE7H7cEMCCxWAb5KqRokePBJQpve7Sgk6sIB5skahi6VXI8qO6DFjc47Hc7NVIOh30FfXyuKizxOxMLDKIuzyuEc0BXacPsbsFaGMZcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t346CBay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961B0C4CECE;
+	Thu, 12 Dec 2024 15:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020596;
-	bh=ldKvYzMjHa82Q3UF9LMriaHRVTOrPsxv3OiGiSa/O9U=;
+	s=korg; t=1734016740;
+	bh=dtrHlkEBdqeWlh5dN8+mOgO9DUfFZJGQDdevnyBJ9RE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrN5JwNMr68abFIZx6LrAP/nb0pIC4ot8hyEQWRzkVIutz179jvnJb7jDGpdB3ooq
-	 JfwtESHkaG64WdanxrjqT0vdusS+Cd5sRJ/9oxmOTo2mBLsmTePHOFadlIF4ZHPsJB
-	 O+jB02RrwGOR19y2q0QOiamFonWt24YcTfoE8oDY=
+	b=t346CBayogA/pXSMx3HTqvRAMob6KCKnJWxgZTjoxTDddYe0f6eDnV2G7yHFDj26n
+	 NOmIkRq9eDm6uhOX0et/JwEH3klI1HOyFwlY34Hr+JH1tAAwGFF21fcZRT9dBXcjrq
+	 5sF/ABqczrfUm+dqmHrLSprFjdNGhGFzlDPgitGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yassine Oudjana <y.oudjana@protonmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 509/772] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
+Subject: [PATCH 6.12 285/466] net: ethernet: fs_enet: Use %pa to format resource_size_t
 Date: Thu, 12 Dec 2024 15:57:34 +0100
-Message-ID: <20241212144410.986119242@linuxfoundation.org>
+Message-ID: <20241212144318.049250092@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
+[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
 
-Clear the IRQ enable bit of WDT_MODE before asserting software reset
-in order to make TOPRGU issue a system reset signal instead of an IRQ.
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
 
-Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+
+Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+
+Flagged by gcc-14 as:
+
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+      |                                             ~^   ~~~~~~~~~
+      |                                              |      |
+      |                                              |      resource_size_t {aka long long unsigned int}
+      |                                              unsigned int
+      |                                             %llx
+
+No functional change intended.
+Compile tested only.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/mtk_wdt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
-index e977875367926..08763ff950c6d 100644
---- a/drivers/watchdog/mtk_wdt.c
-+++ b/drivers/watchdog/mtk_wdt.c
-@@ -175,9 +175,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
- {
- 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
- 	void __iomem *wdt_base;
-+	u32 reg;
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+index 2e210a0035584..249b482e32d3b 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+@@ -123,7 +123,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
+ 	 * we get is an int, and the odds of multiple bitbang mdio buses
+ 	 * is low enough that it's not worth going too crazy.
+ 	 */
+-	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
  
- 	wdt_base = mtk_wdt->wdt_base;
- 
-+	/* Enable reset in order to issue a system reset instead of an IRQ */
-+	reg = readl(wdt_base + WDT_MODE);
-+	reg &= ~WDT_MODE_IRQ_EN;
-+	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
-+
- 	while (1) {
- 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
- 		mdelay(5);
+ 	data = of_get_property(np, "fsl,mdio-pin", &len);
+ 	if (!data || len != 4)
 -- 
 2.43.0
 
