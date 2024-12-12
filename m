@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-102691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E929EF3D5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 060C39EF141
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D776217F128
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD94D171FB1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE79F21E0BC;
-	Thu, 12 Dec 2024 16:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F6522914B;
+	Thu, 12 Dec 2024 16:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsJNxqgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPkAzhc2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7E821CFEA;
-	Thu, 12 Dec 2024 16:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C7A218592;
+	Thu, 12 Dec 2024 16:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022141; cv=none; b=bcz8y4dw30NXZrmwWQWOSGqW1w9uFVZmr9aeT5Vk/2/Eu8Kx3PGcBgNlTk/gRrtbMAfMASzqT/VV0BnpsH8a4S3DkQqF0/iW+or5PygBqcj9QYrPlhERWrwkn2+psl8WcoPubAwKQsCXiExSCQ0yAao+1zAtfPqXLy1MjNXogXM=
+	t=1734020067; cv=none; b=RZeQE2F6oeQazVxZ6b93w3Rf0PxJQTKu9di3yYvI1XdVUaDd4ptiVykELr4zUiHFKTxrk5FmbyjGsxXsaJ+bK+RUJM3J/UXsRTbsqOknTRURkb8O+ds67tbu1O+WMOMgqm8WH/j/KI7oe2qpwBMKqP5JhBgnprrD816X19eHTmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022141; c=relaxed/simple;
-	bh=ILxousSOTB6LGBFvvaj7d9VNm3UjsahzgwCzX3xZoH4=;
+	s=arc-20240116; t=1734020067; c=relaxed/simple;
+	bh=KXopIyzoex0fCsDuRzdGuIOHCLjOG5/68oLzr3sjWBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tstnQzEHYDFT7kvrd+KsSDxIT779RI8LhKkfxt8IOLKwOG5C1kIP6RX9UvqdYI/0n1ilGp81kjbvtVfo+n8yLZHD3XAZBj867SbMcYlO/C5qBXApJ77QEiVUcpu5wiNEnV3bQL4jH18wz5k1+uvM3HszJQHaRvwjiGOuCc6iNp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsJNxqgw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAAFC4CECE;
-	Thu, 12 Dec 2024 16:49:00 +0000 (UTC)
+	 MIME-Version; b=AHSyfSA6Xw6o6H6hjBA6TShsIIf5Y0Vcyjahaad4f9Qet5tf9CIae8m/5Kg2BzISnBZMQZSFs7wmfmOgau7vAFrBZKx2f34truzPP5c+P0yUt+/Wed2XtFsHuqhnuhhalgLQsZdWpE1lZk/Gew+zMqjh+MXhOc7ClXbhfxQPVwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPkAzhc2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40C3C4CECE;
+	Thu, 12 Dec 2024 16:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022141;
-	bh=ILxousSOTB6LGBFvvaj7d9VNm3UjsahzgwCzX3xZoH4=;
+	s=korg; t=1734020067;
+	bh=KXopIyzoex0fCsDuRzdGuIOHCLjOG5/68oLzr3sjWBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zsJNxqgwKAYAgqXyhpdbw7277977QfrinrbOU4ESZFsE4CKMIVpChg7HyVzEeDnX2
-	 0Iq5bCC0ytpfzYyh06bVy4cbCFerIrENHActVsZ6lWgC9RZzEC2RHGIzKavZdAUgay
-	 i64pC5D8XMvhNDdAK5e9QsoNfPaS8tt3FJrU/eA0=
+	b=LPkAzhc2j24xFOya7oBErbpTvep9CzwVwTvc5Pcg3ePK3lOhOhrkvMLx1G6GGy4b5
+	 M/Wd5qHSEMriGMoilk7KFHL5aPpKA/Z3bvPCO1XHFXe9tAaSFrI3ujxZIOf39mDkCB
+	 bYg0ZRVuiPaUW9GT5jxWlpmj120+3n1FUZA3qgv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 120/565] cgroup/bpf: only cgroup v2 can be attached by bpf programs
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.1 370/772] powerpc/pseries: Fix KVM guest detection for disabling hardlockup detector
 Date: Thu, 12 Dec 2024 15:55:15 +0100
-Message-ID: <20241212144316.226826131@linuxfoundation.org>
+Message-ID: <20241212144405.199636813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Gautam Menghani <gautam@linux.ibm.com>
 
-[ Upstream commit 2190df6c91373fdec6db9fc07e427084f232f57e ]
+commit 44e5d21e6d3fd2a1fed7f0327cf72e99397e2eaf upstream.
 
-Only cgroup v2 can be attached by bpf programs, so this patch introduces
-that cgroup_bpf_inherit and cgroup_bpf_offline can only be called in
-cgroup v2, and this can fix the memleak mentioned by commit 04f8ef5643bc
-("cgroup: Fix memory leak caused by missing cgroup_bpf_offline"), which
-has been reverted.
+As per the kernel documentation[1], hardlockup detector should
+be disabled in KVM guests as it may give false positives. On
+PPC, hardlockup detector is enabled inside KVM guests because
+disable_hardlockup_detector() is marked as early_initcall and it
+relies on kvm_guest static key (is_kvm_guest()) which is initialized
+later during boot by check_kvm_guest(), which is a core_initcall.
+check_kvm_guest() is also called in pSeries_smp_probe(), which is called
+before initcalls, but it is skipped if KVM guest does not have doorbell
+support or if the guest is launched with SMT=1.
 
-Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
-Fixes: 4bfc0bb2c60e ("bpf: decouple the lifetime of cgroup_bpf from cgroup itself")
-Link: https://lore.kernel.org/cgroups/aka2hk5jsel5zomucpwlxsej6iwnfw4qu5jkrmjhyfhesjlfdw@46zxhg5bdnr7/
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call check_kvm_guest() in disable_hardlockup_detector() so that
+is_kvm_guest() check goes through fine and hardlockup detector can be
+disabled inside the KVM guest.
+
+[1]: Documentation/admin-guide/sysctl/kernel.rst
+
+Fixes: 633c8e9800f3 ("powerpc/pseries: Enable hardlockup watchdog for PowerVM partitions")
+Cc: stable@vger.kernel.org # v5.14+
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20241108094839.33084-1-gautam@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ arch/powerpc/kernel/setup_64.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 7346197f464cb..d031e0b8bf9f6 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2058,8 +2058,10 @@ int cgroup_setup_root(struct cgroup_root *root, u16 ss_mask)
- 	if (ret)
- 		goto exit_stats;
- 
--	ret = cgroup_bpf_inherit(root_cgrp);
--	WARN_ON_ONCE(ret);
-+	if (root == &cgrp_dfl_root) {
-+		ret = cgroup_bpf_inherit(root_cgrp);
-+		WARN_ON_ONCE(ret);
-+	}
- 
- 	trace_cgroup_setup_root(root);
- 
-@@ -5446,9 +5448,11 @@ static struct cgroup *cgroup_create(struct cgroup *parent, const char *name,
- 	if (ret)
- 		goto out_kernfs_remove;
- 
--	ret = cgroup_bpf_inherit(cgrp);
--	if (ret)
--		goto out_psi_free;
-+	if (cgrp->root == &cgrp_dfl_root) {
-+		ret = cgroup_bpf_inherit(cgrp);
-+		if (ret)
-+			goto out_psi_free;
-+	}
- 
- 	/*
- 	 * New cgroup inherits effective freeze counter, and
-@@ -5766,7 +5770,8 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
- 
- 	cgroup1_check_for_release(parent);
- 
--	cgroup_bpf_offline(cgrp);
-+	if (cgrp->root == &cgrp_dfl_root)
-+		cgroup_bpf_offline(cgrp);
- 
- 	/* put the base reference */
- 	percpu_ref_kill(&cgrp->self.refcnt);
--- 
-2.43.0
-
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -924,6 +924,7 @@ static int __init disable_hardlockup_det
+ 	hardlockup_detector_disable();
+ #else
+ 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
++		check_kvm_guest();
+ 		if (is_kvm_guest())
+ 			hardlockup_detector_disable();
+ 	}
 
 
 
