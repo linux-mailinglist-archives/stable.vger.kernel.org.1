@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9F89EECAF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02109EEB1F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8FE18854EB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13C21645C6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D6492210C2;
-	Thu, 12 Dec 2024 15:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E5C21B91D;
+	Thu, 12 Dec 2024 15:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmDjuwQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHBfw4EO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C020121CFEA;
-	Thu, 12 Dec 2024 15:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0922153F8;
+	Thu, 12 Dec 2024 15:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017692; cv=none; b=RYOFNpjUlRYi6PrsG2aSyMqjjKqES3OZhtxdPZHLpBBfg4mIlKWEdrWxxeMTL7jnUWANXsM4rlPUMaVDN8QVwwqH/B4/7Wp5EJRs56uJHLfZhniGnOdkmKY2buBHbnOhmTE2gpQmKazs3OrXkemWfZQdvvK8AJshRLSOLKn5tBo=
+	t=1734016562; cv=none; b=qnm5g9LvXhHbRbMIdufa5IDnUMBG6ilpvW2E5ly9UZNV5vXaWYrXqAUdoWfrVSKs0c4indet1uZ54GQJRnPDrOzbKVbmzEo6GaCX5tOjNOKciO9mq045wpiqvUZ4cuX370MeHhRRVv7byCHsHyZqtbQ0rvNlhdv6bo8x3C8aIN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017692; c=relaxed/simple;
-	bh=hOhxdB3Lq2Bo/M2lUmOUzb5y4ketYO8prV12i2MtKUA=;
+	s=arc-20240116; t=1734016562; c=relaxed/simple;
+	bh=Pcb9xkgITxwIAijiWVj9KEOInchfo3aFprxSHAFO/Uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjJsbFb4AiWyogottDiZWdf3VlwJlOCDjtHdMqJ8qdYNwICYABqx22rWoaePpGPe+IDSihMRAYL9iHTMyrdNzNV8gAzpmIGvrX70T2Amu1NnOxRDhyt3QlinyrXA/1sZYEiLpyfinSxEmMjEfYxvwLmvUR3JO5DiCIxTfV7a/gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmDjuwQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25442C4CED4;
-	Thu, 12 Dec 2024 15:34:51 +0000 (UTC)
+	 MIME-Version; b=l6kR5+M288JiWXW8DazP2QhcjXz3WXWOyr/ERkJGe8kM1CeEDBWdoHWZTgUJhgAxmbW84YRBseyZ11LhyT/YHqJyTFkuc0qeXGXb2nB9O8ok/bvi9wJXB1XhgD5cErHZqx3RXNVzNpkjkqjjchD3E7WT7Az88r6O08JeXF7j4TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHBfw4EO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB921C4CECE;
+	Thu, 12 Dec 2024 15:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017692;
-	bh=hOhxdB3Lq2Bo/M2lUmOUzb5y4ketYO8prV12i2MtKUA=;
+	s=korg; t=1734016562;
+	bh=Pcb9xkgITxwIAijiWVj9KEOInchfo3aFprxSHAFO/Uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmDjuwQOLthB59VyEoUI9lWH00u5SauH94HVHWryjVDmPV8YR0H64LPCoOJbkQMnY
-	 fjOwbXsUxSAN/nBVXf5L8Lyanz8YHtMd9rLHauCK7DA/+LnrSpm2R/b892XGn3EB5I
-	 693iKMQpNxY2azMIhV4jdPUsZPiFuGRIaKuZ4bWk=
+	b=vHBfw4EOYYeew4FWSlX/Xsm01e7wqPt6B07bxQkhRtjJddP+zBF9Bw4II1jvFMGX9
+	 4KdDpzdSHZ0muYuGuk6Q8ZFuSCIrdMiTlqscEmYxkuzbc3Ssy1Of2EoGlkcgWw/BcL
+	 yeZWqo93HdgZYhdnS+++Kk+qmEDDj5Q1HFw9dp/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy-ld Lu <andy-ld.lu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	John Stultz <jstultz@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/356] mmc: mtk-sd: Fix error handle of probe function
+Subject: [PATCH 6.12 234/466] timekeeping: Always check for negative motion
 Date: Thu, 12 Dec 2024 15:56:43 +0100
-Message-ID: <20241212144247.943100533@linuxfoundation.org>
+Message-ID: <20241212144316.027637082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy-ld Lu <andy-ld.lu@mediatek.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 291220451c775a054cedc4fab4578a1419eb6256 ]
+[ Upstream commit c163e40af9b2331b2c629fd4ec8b703ed4d4ae39 ]
 
-In the probe function, it goes to 'release_mem' label and returns after
-some procedure failure. But if the clocks (partial or all) have been
-enabled previously, they would not be disabled in msdc_runtime_suspend,
-since runtime PM is not yet enabled for this case.
+clocksource_delta() has two variants. One with a check for negative motion,
+which is only selected by x86. This is a historic leftover as this function
+was previously used in the time getter hot paths.
 
-That cause mmc related clocks always on during system suspend and block
-suspend flow. Below log is from a SDCard issue of MT8196 chromebook, it
-returns -ETIMEOUT while polling clock stable in the msdc_ungate_clock()
-and probe failed, but the enabled clocks could not be disabled anyway.
+Since 135225a363ae timekeeping_cycles_to_ns() has unconditional protection
+against this as a by-product of the protection against 64bit math overflow.
 
-[  129.059253] clk_chk_dev_pm_suspend()
-[  129.350119] suspend warning: msdcpll is on
-[  129.354494] [ck_msdc30_1_sel : enabled, 1, 1, 191999939,   ck_msdcpll_d2]
-[  129.362787] [ck_msdcpll_d2   : enabled, 1, 1, 191999939,         msdcpll]
-[  129.371041] [ck_msdc30_1_ck  : enabled, 1, 1, 191999939, ck_msdc30_1_sel]
-[  129.379295] [msdcpll         : enabled, 1, 1, 383999878,          clk26m]
+clocksource_delta() is only used in the clocksource watchdog and in
+timekeeping_advance(). The extra conditional there is not hurting anyone.
 
-Add a new 'release_clk' label and reorder the error handle functions to
-make sure the clocks be disabled after probe failure.
+Remove the config option and unconditionally prevent negative motion of the
+readout.
 
-Fixes: ffaea6ebfe9c ("mmc: mtk-sd: Use readl_poll_timeout instead of open-coded polling")
-Fixes: 7a2fa8eed936 ("mmc: mtk-sd: use devm_mmc_alloc_host")
-Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: stable@vger.kernel.org
-Message-ID: <20241107121215.5201-1-andy-ld.lu@mediatek.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/all/20241031120328.599430157@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/Kconfig                   | 1 -
+ kernel/time/Kconfig                | 5 -----
+ kernel/time/timekeeping_internal.h | 7 -------
+ 3 files changed, 13 deletions(-)
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index 9ebf5aa5d9b18..a97034388cdff 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -2813,7 +2813,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
- 	ret = msdc_ungate_clock(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Cannot ungate clocks!\n");
--		goto release_mem;
-+		goto release_clk;
- 	}
- 	msdc_init_hw(host);
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 7b9a7e8f39acc..171be04eca1f5 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -145,7 +145,6 @@ config X86
+ 	select ARCH_HAS_PARANOID_L1D_FLUSH
+ 	select BUILDTIME_TABLE_SORT
+ 	select CLKEVT_I8253
+-	select CLOCKSOURCE_VALIDATE_LAST_CYCLE
+ 	select CLOCKSOURCE_WATCHDOG
+ 	# Word-size accesses may read uninitialized data past the trailing \0
+ 	# in strings and cause false KMSAN reports.
+diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
+index 8ebb6d5a106be..b0b97a60aaa6f 100644
+--- a/kernel/time/Kconfig
++++ b/kernel/time/Kconfig
+@@ -17,11 +17,6 @@ config ARCH_CLOCKSOURCE_DATA
+ config ARCH_CLOCKSOURCE_INIT
+ 	bool
  
-@@ -2823,14 +2823,14 @@ static int msdc_drv_probe(struct platform_device *pdev)
- 					     GFP_KERNEL);
- 		if (!host->cq_host) {
- 			ret = -ENOMEM;
--			goto release_mem;
-+			goto release;
- 		}
- 		host->cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
- 		host->cq_host->mmio = host->base + 0x800;
- 		host->cq_host->ops = &msdc_cmdq_ops;
- 		ret = cqhci_init(host->cq_host, mmc, true);
- 		if (ret)
--			goto release_mem;
-+			goto release;
- 		mmc->max_segs = 128;
- 		/* cqhci 16bit length */
- 		/* 0 size, means 65536 so we don't have to -1 here */
-@@ -2857,9 +2857,10 @@ static int msdc_drv_probe(struct platform_device *pdev)
- end:
- 	pm_runtime_disable(host->dev);
- release:
--	platform_set_drvdata(pdev, NULL);
- 	msdc_deinit_hw(host);
-+release_clk:
- 	msdc_gate_clock(host);
-+	platform_set_drvdata(pdev, NULL);
- release_mem:
- 	if (host->dma.gpd)
- 		dma_free_coherent(&pdev->dev,
+-# Clocksources require validation of the clocksource against the last
+-# cycle update - x86/TSC misfeature
+-config CLOCKSOURCE_VALIDATE_LAST_CYCLE
+-	bool
+-
+ # Timekeeping vsyscall support
+ config GENERIC_TIME_VSYSCALL
+ 	bool
+diff --git a/kernel/time/timekeeping_internal.h b/kernel/time/timekeeping_internal.h
+index 4ca2787d1642e..1d4854d5c386e 100644
+--- a/kernel/time/timekeeping_internal.h
++++ b/kernel/time/timekeeping_internal.h
+@@ -15,7 +15,6 @@ extern void tk_debug_account_sleep_time(const struct timespec64 *t);
+ #define tk_debug_account_sleep_time(x)
+ #endif
+ 
+-#ifdef CONFIG_CLOCKSOURCE_VALIDATE_LAST_CYCLE
+ static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
+ {
+ 	u64 ret = (now - last) & mask;
+@@ -26,12 +25,6 @@ static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
+ 	 */
+ 	return ret & ~(mask >> 1) ? 0 : ret;
+ }
+-#else
+-static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
+-{
+-	return (now - last) & mask;
+-}
+-#endif
+ 
+ /* Semi public for serialization of non timekeeper VDSO updates. */
+ extern raw_spinlock_t timekeeper_lock;
 -- 
 2.43.0
 
