@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-103562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74E49EF8B2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:44:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2459EF94F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:49:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FCBE16E45A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BFC2286E6F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF52223E62;
-	Thu, 12 Dec 2024 17:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552582253F8;
+	Thu, 12 Dec 2024 17:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEup1rLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDDtLPB4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6A66F2FE;
-	Thu, 12 Dec 2024 17:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13475223E96;
+	Thu, 12 Dec 2024 17:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024939; cv=none; b=u0xwLwoVNTk1f8khKeabteteaXEUinF95PpvxN7/aAXKx7MW6EbbjsZhV0uJ3C9lL6c/frjyV8mHB52vGzBVjrnS0LWRC80+Y0QEF0ZFPfDY+EN22CohulJ0Q69z49FRFyUFIkBsVUvMYpuIZxbC3hqh26CNhj3zK84TuBOeO8Y=
+	t=1734025728; cv=none; b=IHHsc2a/pkiisrcr39I48QtK5YpNAsRD/pOlBBAtU/4/4eUf1jnM9SDZwA2NDoiDN+mi2/xJUgwGyRjVScIOi+3lUHoC1bhhXDG6g1WWsh2HSihjNVTccPKbqiNOCQkGYyCNnPPsdZHAgF083W7lF+QTPOZL4ma6R9VGCtQEPD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024939; c=relaxed/simple;
-	bh=J5EMf42bcDLPRf+d16bil5z92Lns6Nw7GbzLFgnHnyQ=;
+	s=arc-20240116; t=1734025728; c=relaxed/simple;
+	bh=ThDCvsf6eP9ZVhxmUQYLaEMZvC9fLwQfrmYV+s1d2zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rb5ljZC7hOVNvKOGq9XwnAu2XB38WtKha237LYXM2kJDigOMPclt1RQc9iWqAG4yPqN9vqBPm5mJVA3CNvVpCeFUaPUpJKbFgOAdSuwyJXrYis/3YCshyemUrJ93KdogZDGMz0evbi22wgJnv6rD3yllR8770fACH/g5b01RSHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEup1rLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4174C4CECE;
-	Thu, 12 Dec 2024 17:35:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WpBP4qN4EPIfNf2U/UwgIwwanbS6CLHoAXA0zEY4XFpCm0GUDJHi2dh/U6KRQjFEHAe+QQWA2t1+J1XXonUfwcGWWtUZEIFOKOxNp7mZ9kOrUxXdyZw0Fl9Hv0DcsMP30z3wo5vXqs84nxiCcNsmaMQ1QnUhSHJpZ/peCn0ljxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDDtLPB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92605C4CECE;
+	Thu, 12 Dec 2024 17:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024939;
-	bh=J5EMf42bcDLPRf+d16bil5z92Lns6Nw7GbzLFgnHnyQ=;
+	s=korg; t=1734025728;
+	bh=ThDCvsf6eP9ZVhxmUQYLaEMZvC9fLwQfrmYV+s1d2zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEup1rLOnLi8FSj37pTKqC69hH1CMku23WPFPf+EMEm3lHcRnxyaEu6bpBRLW+J7i
-	 CvBz0e3K9eCuo1lBAKrEwgGXZ8BSEU/bB50ibHUHGspMEuolEhj6fRreTo6ODcYIr0
-	 Gs0kN3PLedYtVGwdGTP/HEJxbuyFn/TaAgr9EG9w=
+	b=PDDtLPB4mWotIPYwOftsYDSpFxffllMN73cWPkKpC57VaNf4eKE7wFl0ftNlRhf1m
+	 SwvDIOKDHbZ1oGMC5+Ipl5YWzZcHBE9obKtsZq+STOIiMVEUKtUjFHgMRTG7Jzbc//
+	 NJabLlwkXJCo966fRfB9wbMheY6xk/xEaeFV/Oc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kinsey Moore <kinsey.moore@oarcorp.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.10 447/459] jffs2: Fix rtime decompressor
+	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 267/321] drm: panel-orientation-quirks: Add quirk for AYA NEO 2 model
 Date: Thu, 12 Dec 2024 16:03:05 +0100
-Message-ID: <20241212144311.429288088@linuxfoundation.org>
+Message-ID: <20241212144240.527924224@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Weinberger <richard@nod.at>
+From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
 
-commit b29bf7119d6bbfd04aabb8d82b060fe2a33ef890 upstream.
+[ Upstream commit 361ebf5ef843b0aa1704c72eb26b91cf76c3c5b7 ]
 
-The fix for a memory corruption contained a off-by-one error and
-caused the compressor to fail in legit cases.
+Add quirk orientation for AYA NEO 2. The name appears without spaces in
+DMI strings. That made it difficult to reuse the 2021 match. Also the
+display is larger in resolution.
 
-Cc: Kinsey Moore <kinsey.moore@oarcorp.com>
-Cc: stable@vger.kernel.org
-Fixes: fe051552f5078 ("jffs2: Prevent rtime decompress memory corruption")
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested by the JELOS team that has been patching their own kernel for a
+while now and confirmed by users in the AYA NEO and ChimeraOS discord
+servers.
+
+Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/2b35545b77a9fd8c9699b751ca282226dcecb1dd.1726492131.git.tjakobi@math.uni-bielefeld.de
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/compr_rtime.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/jffs2/compr_rtime.c
-+++ b/fs/jffs2/compr_rtime.c
-@@ -95,7 +95,7 @@ static int jffs2_rtime_decompress(unsign
- 
- 		positions[value]=outpos;
- 		if (repeat) {
--			if ((outpos + repeat) >= destlen) {
-+			if ((outpos + repeat) > destlen) {
- 				return 1;
- 			}
- 			if (backoffs + repeat >= outpos) {
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index f1091cb87de0c..bf90a5be956fe 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -166,6 +166,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
++	}, {	/* AYA NEO AYANEO 2 */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
++		},
++		.driver_data = (void *)&lcd1200x1920_rightside_up,
+ 	}, {	/* AYA NEO 2021 */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYADEVICE"),
+-- 
+2.43.0
+
 
 
 
