@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60789EEBE1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA91D9EEE11
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCF43188A79A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C198516B021
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C83205ACF;
-	Thu, 12 Dec 2024 15:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54502210E1;
+	Thu, 12 Dec 2024 15:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="te2dRpJo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mklXQ1CC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA042153D9;
-	Thu, 12 Dec 2024 15:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DD76F2FE;
+	Thu, 12 Dec 2024 15:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017200; cv=none; b=GspLXsVooSkUQoU/LLisjeuo284oPBi2JY6SGB6OZzI822ArYD41y+e9JV/eZWkPC+B/h5hrWZtjfunjc+mc7WuZuorz/VrNfFd85tufStyNgmipRAe3CIhvXkgoF3OJd5fIWKDFYPQE4lQm1LOxAEdcZCNJNhsmJGQNpSrRQiU=
+	t=1734018430; cv=none; b=tBtQrNIQCe3bI07FcBQEY7raIutNyJedxS4+UI6y8hgD6F6lhvDqq3HnMMG2QN6q475vyxuw4U/nrZzNJS0314/7sK/T4TiT3dNmrRWK4m6OXmUQiGRJe7wzVfvtxN2DndE65DM+UnPvNapSYdBaE4MO/Sq1+78SbqpzlClL5Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017200; c=relaxed/simple;
-	bh=lt5xH4ZuINjcfgo/da4VsWPLt5dXHtMoAfM1ksfu0w4=;
+	s=arc-20240116; t=1734018430; c=relaxed/simple;
+	bh=RtPunM/hCg0kz4zTI7RyTNLkIHdKy+nRubKmSBgk1c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etoChkJZ9JXEf6kcymMdp5WwDMf8jcg3vb8wxNR4882Vsbnfbx23lDgdx4sYbrzskxFzw71IO2fspBDJQRa9dQIiOF5EC56M4xFALbzLo5HUttWZL2Lc+i/GUPx8tAyl9dM9UhmtD4riAlXg/FFPif2690h96B3qoEbyt6/+5ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=te2dRpJo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5703C4CECE;
-	Thu, 12 Dec 2024 15:26:39 +0000 (UTC)
+	 MIME-Version; b=noFC+uFdEghvD8rS6+NA3rQvZEalFL+y2z3iWp3E3aXWWrWEkakRwZASde/tBtyAhDwm3r8/FOiqrdp0Dz+7xuSqnAqP0Uwk5VbjsaJaUQhxth9+8ImgKOtXl8ffinuEExatMUHhdVN9lU+2bHi2PtoaaYnw/Gt/FVD0cU0OH/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mklXQ1CC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74B3C4CED7;
+	Thu, 12 Dec 2024 15:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017200;
-	bh=lt5xH4ZuINjcfgo/da4VsWPLt5dXHtMoAfM1ksfu0w4=;
+	s=korg; t=1734018430;
+	bh=RtPunM/hCg0kz4zTI7RyTNLkIHdKy+nRubKmSBgk1c8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=te2dRpJoFDP8CPDeyBkhtwQuZKOfzfmzQe65YVeqemRd1n49zSt/7iu9cX6pGm5sw
-	 sBzHGMtTpXqW66K/kr9G1pO8aJLtTIX8OrUOvU+T3cVnydbQQpc1z2qI3GzdGGC1Rp
-	 Km9ByHDszzANiXTtgK5qIMKUNgDUm6hrH5/TS1wk=
+	b=mklXQ1CC1goO4Gb1Nemhxg1AtAvf9HZVs260yo2a5QqVu864gy48MNH9b2+vsuJyN
+	 J013r8IIxFeVybeTiKbKq0/5dICSPgjU7GAGg5qCc13QshhyoNTueULsUehsNh89v4
+	 0tv8dHJt5avwkq9iRp3mymdd2un/KrHLE7oGioNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Peter Chen <peter.chen@kernel.org>,
+	Danil Pylaev <danstiv404@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 410/466] usb: chipidea: udc: limit usb request length to max 16KB
+Subject: [PATCH 6.6 260/356] Bluetooth: Set quirks for ATS2851
 Date: Thu, 12 Dec 2024 15:59:39 +0100
-Message-ID: <20241212144322.955118835@linuxfoundation.org>
+Message-ID: <20241212144254.869475575@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Danil Pylaev <danstiv404@gmail.com>
 
-[ Upstream commit ca8d18aa7b0f22d66a3ca9a90d8f73431b8eca89 ]
+[ Upstream commit 677a55ba11a82c2835550a82324cec5fcb2f9e2d ]
 
-To let the device controller work properly on short packet limitations,
-one usb request should only correspond to one dTD. Then every dTD will
-set IOC. In theory, each dTD support up to 20KB data transfer if the
-offset is 0. Due to we cannot predetermine the offset, this will limit
-the usb request length to max 16KB. This should be fine since most of
-the user transfer data based on this size policy.
+This adds quirks for broken ats2851 features.
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240923081203.2851768-2-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Danil Pylaev <danstiv404@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci.h  | 1 +
- drivers/usb/chipidea/udc.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
-index e4b003d060c26..97437de52ef68 100644
---- a/drivers/usb/chipidea/ci.h
-+++ b/drivers/usb/chipidea/ci.h
-@@ -25,6 +25,7 @@
- #define TD_PAGE_COUNT      5
- #define CI_HDRC_PAGE_SIZE  4096ul /* page size for TD's */
- #define ENDPT_MAX          32
-+#define CI_MAX_REQ_SIZE	(4 * CI_HDRC_PAGE_SIZE)
- #define CI_MAX_BUF_SIZE	(TD_PAGE_COUNT * CI_HDRC_PAGE_SIZE)
- 
- /******************************************************************************
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index 69ef3cd8d4f83..d3556416dae4f 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -960,6 +960,12 @@ static int _ep_queue(struct usb_ep *ep, struct usb_request *req,
- 		return -EMSGSIZE;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 326ef250bab94..fe5e30662017d 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4490,6 +4490,8 @@ static int btusb_probe(struct usb_interface *intf,
+ 		set_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks);
+ 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
+ 		set_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks);
++		set_bit(HCI_QUIRK_BROKEN_EXT_CREATE_CONN, &hdev->quirks);
++		set_bit(HCI_QUIRK_BROKEN_WRITE_AUTH_PAYLOAD_TIMEOUT, &hdev->quirks);
  	}
  
-+	if (ci->has_short_pkt_limit &&
-+		hwreq->req.length > CI_MAX_REQ_SIZE) {
-+		dev_err(hwep->ci->dev, "request length too big (max 16KB)\n");
-+		return -EMSGSIZE;
-+	}
-+
- 	/* first nuke then test link, e.g. previous status has not sent */
- 	if (!list_empty(&hwreq->queue)) {
- 		dev_err(hwep->ci->dev, "request already in queue\n");
+ 	if (!reset)
 -- 
 2.43.0
 
