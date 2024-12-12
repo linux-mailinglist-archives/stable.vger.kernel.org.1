@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-102444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643269EF253
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 412429EF41A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05102189F7E1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A75B28F815
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D1E22652F;
-	Thu, 12 Dec 2024 16:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB2C217679;
+	Thu, 12 Dec 2024 17:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydvLa/hr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/PcOMVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251CC2054F8;
-	Thu, 12 Dec 2024 16:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2F3213E6B;
+	Thu, 12 Dec 2024 17:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021249; cv=none; b=ovGpwqzh7jOskMBDKcofX9wCmCjZrOyuhOqMdrbWMMFRyDT9Mlm76Xi7UWw/T1FHXPW3TWpae5ZvBstvHIsy0/4xSt/A4o5WrJZ87JblufWHFTA6li/7Bx6yi1MkCSd43GnwDABQZ+K7/po8cMSkscOAwk6S/DeY/Ek8I2NDQyI=
+	t=1734023013; cv=none; b=PIv2BWyWIc2z4EMSQky/i8LVQY/6V81/gFNdAGKAJAFgsafeMPKEqRNVrydF/iKEfHL+oIXxsm75Y5gvlCDh2ieFCBNe6/WnWWw0vJLLbBACTm+DsthTlcgOXaK9YvX7cy5N8uIoBPjOTalRADCf4d46dyGaQAqeLm4UZ+Pv2Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021249; c=relaxed/simple;
-	bh=eX9HlvqbZIx0Mg1zmlczYTojpoxi394NoxSYWKUDiP4=;
+	s=arc-20240116; t=1734023013; c=relaxed/simple;
+	bh=Gc+BBNtIrnHIs9x0tWGokBRxVn03Cbs3PxI4MhlaNjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbmGtxYqCLZWfBXr7Fx/O7kAKcINPqtHeZ4QlDQrNcUVA6O6MkEO3blzPiiSUca2VDnBt5+Q7ZHFVOEw/94Ss6+HQ12KvOtaOg2RvbxNVA7VvQsfwPOJJkX+8Uu6u9PyRM84mziq6/qmBxzL5wnh4WSiXXjjfwfMDvYu1FT6gDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydvLa/hr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAD1C4CECE;
-	Thu, 12 Dec 2024 16:34:08 +0000 (UTC)
+	 MIME-Version; b=n0JgAE75CdgWM3SpLZF4XWuZbT/TH2XBsqcQRLlJR7UQFTNckQtxCdpDDz9ZtfOZVImCkUSgzLDQC3CkhjTsQ8cPiuuV679KScgJZ44WFXN20iPpcMX72r454V9hVlOmYshRVSair1LFuH6rhEXASdAYhc1hqz0xQjVRwSzvXFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/PcOMVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A726C4CED0;
+	Thu, 12 Dec 2024 17:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021249;
-	bh=eX9HlvqbZIx0Mg1zmlczYTojpoxi394NoxSYWKUDiP4=;
+	s=korg; t=1734023013;
+	bh=Gc+BBNtIrnHIs9x0tWGokBRxVn03Cbs3PxI4MhlaNjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydvLa/hrsa5c08f+Q8CCaYAaXM4KpxFPfzTEIfzujd2YVNaYg5JaPbn7v+jl9r7uD
-	 221jahRueyhW/dyZ/f7WEwjJFMF4TN3YNL0xHhA2foCdSwm8N6x40lmnJmkz+ZSWi7
-	 92pVEmGiNZ6tJveudv2TfZvzq+V1w4XQ8Wlt1D00=
+	b=v/PcOMVeWMIzNJrcmXzHBmIiHLzPjUCRxkSeVc8tK3erXH18CTPWGT7Ej7L9n2JhN
+	 yi5VQKRdB+lPQbR+drP/fIFLTaxPzHRODRzEiF5rf1+HFYUftS/xp6SlyeEXZRyux3
+	 zF7mbMox0NUlvV5BRzePNzKbauDzkG3qhu+C52VY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sandipan Das <sandipan.das@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 647/772] perf/x86/amd: Warn only on new bits set
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Lucas Stach <l.stach@pengutronix.de>
+Subject: [PATCH 5.15 397/565] drm/etnaviv: flush shader L1 cache after user commandstream
 Date: Thu, 12 Dec 2024 15:59:52 +0100
-Message-ID: <20241212144416.658487044@linuxfoundation.org>
+Message-ID: <20241212144327.341594199@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit de20037e1b3c2f2ca97b8c12b8c7bca8abd509a7 ]
+commit 4f8dbadef085ab447a01a8d4806a3f629fea05ed upstream.
 
-Warning at every leaking bits can cause a flood of message, triggering
-various stall-warning mechanisms to fire, including CSD locks, which
-makes the machine to be unusable.
+The shader L1 cache is a writeback cache for shader loads/stores
+and thus must be flushed before any BOs backing the shader buffers
+are potentially freed.
 
-Track the bits that are being leaked, and only warn when a new bit is
-set.
-
-That said, this patch will help with the following issues:
-
-1) It will tell us which bits are being set, so, it is easy to
-   communicate it back to vendor, and to do a root-cause analyzes.
-
-2) It avoid the machine to be unusable, because, worst case
-   scenario, the user gets less than 60 WARNs (one per unhandled bit).
-
-Suggested-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Sandipan Das <sandipan.das@amd.com>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lkml.kernel.org/r/20241001141020.2620361-1-leitao@debian.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/amd/core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_buffer.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index 3ac069a4559b0..1282f1a702139 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -881,11 +881,12 @@ static int amd_pmu_handle_irq(struct pt_regs *regs)
- static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
-+	static atomic64_t status_warned = ATOMIC64_INIT(0);
-+	u64 reserved, status, mask, new_bits, prev_bits;
- 	struct perf_sample_data data;
- 	struct hw_perf_event *hwc;
- 	struct perf_event *event;
- 	int handled = 0, idx;
--	u64 reserved, status, mask;
- 	bool pmu_enabled;
- 
- 	/*
-@@ -952,7 +953,12 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- 	 * the corresponding PMCs are expected to be inactive according to the
- 	 * active_mask
- 	 */
--	WARN_ON(status > 0);
-+	if (status > 0) {
-+		prev_bits = atomic64_fetch_or(status, &status_warned);
-+		// A new bit was set for the very first time.
-+		new_bits = status & ~prev_bits;
-+		WARN(new_bits, "New overflows for inactive PMCs: %llx\n", new_bits);
-+	}
- 
- 	/* Clear overflow and freeze bits */
- 	amd_pmu_ack_global_status(~status);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
+@@ -481,7 +481,8 @@ void etnaviv_buffer_queue(struct etnaviv
+ 	} else {
+ 		CMD_LOAD_STATE(buffer, VIVS_GL_FLUSH_CACHE,
+ 				       VIVS_GL_FLUSH_CACHE_DEPTH |
+-				       VIVS_GL_FLUSH_CACHE_COLOR);
++				       VIVS_GL_FLUSH_CACHE_COLOR |
++				       VIVS_GL_FLUSH_CACHE_SHADER_L1);
+ 		if (has_blt) {
+ 			CMD_LOAD_STATE(buffer, VIVS_BLT_ENABLE, 0x1);
+ 			CMD_LOAD_STATE(buffer, VIVS_BLT_SET_COMMAND, 0x1);
 
 
 
