@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28279EF1AE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03F39EECA2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 931CC16C01E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 432081620A5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07F12253E1;
-	Thu, 12 Dec 2024 16:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46121218AB3;
+	Thu, 12 Dec 2024 15:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDzuNMjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKKBORzL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB9C223E9C;
-	Thu, 12 Dec 2024 16:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CDD2153DF;
+	Thu, 12 Dec 2024 15:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020377; cv=none; b=oZVJfE64k6U98U+NBBiFyBwVJzXkwlZZeYRuxpVdXRfmm4JqAcfOq3cwi/IMuJGjucu53a/FnHZ1WL1pzhM+7IhCGalSWSumN0JvjSlMHrZL5m+slWSGkEI8NxkG/SiI8LrjccIjs/vt0ey7Jl4RRkQYDEURTzhZ3SZl4iZcOFU=
+	t=1734017665; cv=none; b=Jbv4np7qTuVrOJi1UZ4APJHaJbZIUJ3NHKnbUi9nkdBHAUVPALn05O2JG6X4Va7flpnI54xkRH4weqzolhlMbajXGFIoF9TryNGJRuSTlgqiwxNm2jClVPVzc81D5d21zdBp91LEMoIWiNML+PjQ+hs2dTjuD9FB7xgiuCA0IAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020377; c=relaxed/simple;
-	bh=IrRd5xV/HESlEMuIT8nuEz/3AswLsdA14s3/D7HHG10=;
+	s=arc-20240116; t=1734017665; c=relaxed/simple;
+	bh=1ouPhNZjZP8NVAjRMrqZXY/kDYybr4ue/N+mDUMLMR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mwh4+8AjCam7JyDJoQnHLW1Bg6EfPYsL2A0zaYu4wGtyH11SUPdzjc6il5RHrjMe0Mi3fmJH4SFmekeIJMC09RAGmWQvglk+4CgaVtuXqfRyr4nX8sxsiqoGzubD46hZ8MM6NhtrOfrtEdDtfn1DI2LdtqYBD2SuEuaxsMbRL2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDzuNMjW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A50C4CED4;
-	Thu, 12 Dec 2024 16:19:35 +0000 (UTC)
+	 MIME-Version; b=AU0vyPzJvjn8GzPxwJ7lLytxNi/AfsQDv2sDKS6WQ7NGF8bs12MlECA74RO7xX6TdBvyeyyBPTsVucSD68okSpehszW8kDMDY7QK2U6LJpFp+D5bOv+uBc23AItxRpikiJeDjckUKzsUe1QrAkGWkPvZnCOAr6XwkoJOXzOUYSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKKBORzL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630F4C4CECE;
+	Thu, 12 Dec 2024 15:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020376;
-	bh=IrRd5xV/HESlEMuIT8nuEz/3AswLsdA14s3/D7HHG10=;
+	s=korg; t=1734017664;
+	bh=1ouPhNZjZP8NVAjRMrqZXY/kDYybr4ue/N+mDUMLMR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VDzuNMjW29OGu+FzDCnTx6mHSv3fKPn6k326xylCWCgKVpv9ndB5qkKoRSLAs6dIM
-	 h72t0eMBUrRlZfEpssJyd5UOy9QfaubCXIk+/w1m+n6lmsEBhlWRwxDPk9WN/xyw1Z
-	 IVuOBvjtq1w2l7MNmBL3bhduWuwCSNr6az57rgZM=
+	b=aKKBORzL2E6+eZ/oxHfwENFAUcsK2ijpvl9aSs/WfI6sy5AnsOQCdIUhK8zyFwzDx
+	 s5Aw63wcNjwtdTlpxqsVm5Q1VDBzaQEjfoW8S1yTXN/sIxM790TxX578RR4va4Ynpx
+	 YB5/tCjCr1qHz/Q1sltGGq/vKEZRM6bYrQWxDLRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Jan Kara <jack@suse.cz>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 450/772] quota: flush quota_release_work upon quota writeback
-Date: Thu, 12 Dec 2024 15:56:35 +0100
-Message-ID: <20241212144408.521481237@linuxfoundation.org>
+Subject: [PATCH 6.6 077/356] soc: fsl: cpm1: qmc: Introduce qmc_init_resource() and its CPM1 version
+Date: Thu, 12 Dec 2024 15:56:36 +0100
+Message-ID: <20241212144247.667641506@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit ac6f420291b3fee1113f21d612fa88b628afab5b ]
+[ Upstream commit 727b3ab490a5f5e74fb3f246c9fdfb339d309950 ]
 
-One of the paths quota writeback is called from is:
+Current code handles the CPM1 version of QMC. Resources initialisations
+(i.e. retrieving base addresses and offsets of different parts) will
+be slightly different in the QUICC Engine (QE) version. Indeed, in QE
+version, some resources need to be allocated and are no more "staticaly"
+defined.
 
-freeze_super()
-  sync_filesystem()
-    ext4_sync_fs()
-      dquot_writeback_dquots()
+In order to prepare the support for QE version, introduce
+qmc_init_resource() to initialize those resources and isolate the CPM1
+specific operations in a specific function.
 
-Since we currently don't always flush the quota_release_work queue in
-this path, we can end up with the following race:
-
- 1. dquot are added to releasing_dquots list during regular operations.
- 2. FS Freeze starts, however, this does not flush the quota_release_work queue.
- 3. Freeze completes.
- 4. Kernel eventually tries to flush the workqueue while FS is frozen which
-    hits a WARN_ON since transaction gets started during frozen state:
-
-  ext4_journal_check_start+0x28/0x110 [ext4] (unreliable)
-  __ext4_journal_start_sb+0x64/0x1c0 [ext4]
-  ext4_release_dquot+0x90/0x1d0 [ext4]
-  quota_release_workfn+0x43c/0x4d0
-
-Which is the following line:
-
-  WARN_ON(sb->s_writers.frozen == SB_FREEZE_COMPLETE);
-
-Which ultimately results in generic/390 failing due to dmesg
-noise. This was detected on powerpc machine 15 cores.
-
-To avoid this, make sure to flush the workqueue during
-dquot_writeback_dquots() so we dont have any pending workitems after
-freeze.
-
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-CC: stable@vger.kernel.org
-Fixes: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241121123855.645335-2-ojaswin@linux.ibm.com
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20240808071132.149251-27-herve.codina@bootlin.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Stable-dep-of: cb3daa51db81 ("soc: fsl: cpm1: qmc: Set the ret error code on platform_get_irq() failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/fsl/qe/qmc.c | 47 ++++++++++++++++++++++++++--------------
+ 1 file changed, 31 insertions(+), 16 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index f7ab6b44011b5..0f82db69d2d86 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -690,6 +690,8 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+index a5c9cbb99600e..f2bda8658e034 100644
+--- a/drivers/soc/fsl/qe/qmc.c
++++ b/drivers/soc/fsl/qe/qmc.c
+@@ -1265,11 +1265,38 @@ static irqreturn_t qmc_irq_handler(int irq, void *priv)
+ 	return IRQ_HANDLED;
+ }
  
- 	WARN_ON_ONCE(!rwsem_is_locked(&sb->s_umount));
- 
-+	flush_delayed_work(&quota_release_work);
++static int qmc_cpm1_init_resources(struct qmc *qmc, struct platform_device *pdev)
++{
++	struct resource *res;
 +
- 	for (cnt = 0; cnt < MAXQUOTAS; cnt++) {
- 		if (type != -1 && cnt != type)
- 			continue;
++	qmc->scc_regs = devm_platform_ioremap_resource_byname(pdev, "scc_regs");
++	if (IS_ERR(qmc->scc_regs))
++		return PTR_ERR(qmc->scc_regs);
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "scc_pram");
++	if (!res)
++		return -EINVAL;
++	qmc->scc_pram_offset = res->start - get_immrbase();
++	qmc->scc_pram = devm_ioremap_resource(qmc->dev, res);
++	if (IS_ERR(qmc->scc_pram))
++		return PTR_ERR(qmc->scc_pram);
++
++	qmc->dpram  = devm_platform_ioremap_resource_byname(pdev, "dpram");
++	if (IS_ERR(qmc->dpram))
++		return PTR_ERR(qmc->dpram);
++
++	return 0;
++}
++
++static int qmc_init_resources(struct qmc *qmc, struct platform_device *pdev)
++{
++	return qmc_cpm1_init_resources(qmc, pdev);
++}
++
+ static int qmc_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+ 	unsigned int nb_chans;
+-	struct resource *res;
+ 	struct qmc *qmc;
+ 	int irq;
+ 	int ret;
+@@ -1287,21 +1314,9 @@ static int qmc_probe(struct platform_device *pdev)
+ 				     "Failed to get TSA serial\n");
+ 	}
+ 
+-	qmc->scc_regs = devm_platform_ioremap_resource_byname(pdev, "scc_regs");
+-	if (IS_ERR(qmc->scc_regs))
+-		return PTR_ERR(qmc->scc_regs);
+-
+-	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "scc_pram");
+-	if (!res)
+-		return -EINVAL;
+-	qmc->scc_pram_offset = res->start - get_immrbase();
+-	qmc->scc_pram = devm_ioremap_resource(qmc->dev, res);
+-	if (IS_ERR(qmc->scc_pram))
+-		return PTR_ERR(qmc->scc_pram);
+-
+-	qmc->dpram  = devm_platform_ioremap_resource_byname(pdev, "dpram");
+-	if (IS_ERR(qmc->dpram))
+-		return PTR_ERR(qmc->dpram);
++	ret = qmc_init_resources(qmc, pdev);
++	if (ret)
++		return ret;
+ 
+ 	/* Parse channels informationss */
+ 	ret = qmc_of_parse_chans(qmc, np);
 -- 
 2.43.0
 
