@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D73D9EEFFB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C67569EF2E2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F06DD28D978
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7621728C877
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D743423E6C2;
-	Thu, 12 Dec 2024 16:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8099236953;
+	Thu, 12 Dec 2024 16:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tilSJIdj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnQPYFvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AA223DEB9;
-	Thu, 12 Dec 2024 16:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93416236942;
+	Thu, 12 Dec 2024 16:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019948; cv=none; b=btRuJ/rg7ebFfJVYmXpxqeL44D98p2qpsL35yD8OnpFk63VaDAY5Jv0jahugdpYXGPWmA+vaLHzx2jm2yPqmmPMlW18+QBg9nhr3tlQdDB9Bv76GUclcNg+CnFjaZPC5tabVkKx46m2JILgdRpAHkNf5vQtF430nkeKKsSqHTYM=
+	t=1734021950; cv=none; b=GSMTGT9pUzpwvVzY3eNJ8PsCpqcYSVW3kqgr5bsERqiH5gCXQAO3fADkpsmoFofgB/SEWNcsSdfdyOYDBSKMPmAWN07KsdCGWrELUvXE1drSTg/PRR03EwLnFQLt9lUBk4wCTyCrt9TMtLnI/ryHkw+73ZsTM49fo/260pLBHys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019948; c=relaxed/simple;
-	bh=UR1n2SNN2/BSCRn77xD/X1E8lD630wGmhSYefoiNbDY=;
+	s=arc-20240116; t=1734021950; c=relaxed/simple;
+	bh=Z1cP6uYQlH214bnzZaQfqwXW4Q23RB76Q9RbMFSVpmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/xfVSbunwzcBlM2xyuduXIYu6Y4A1X/B5HirlcDIWHOQimLlsye3eE+e7qkYBcHCZgU7Pz56yv5V+/+5T1nmYJblLvM81ZSOtagGdysHuy+iqvOhhNaBN96jGFIsph3oeqrofwoPLUXEN0gytZ88lamLNX8TmPPNfNYmyjeqEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tilSJIdj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7006C4CECE;
-	Thu, 12 Dec 2024 16:12:27 +0000 (UTC)
+	 MIME-Version; b=N9WsSIlWnTa7Z0B6mAdIHxZT29hJrjAaKiAePkgP9Nbe9J01gIFmJ4dz7gbKFV8xBR0uMxEyF+LLAGcOxlzHiMbsN1p/XhqhMAFMD7l5n47zTTW68TPOl95hiFW8gGP5HEAlDb2FuVZzegQZhilfxNsgbfY9b+phAwF7H8sVI0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnQPYFvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903E4C4CECE;
+	Thu, 12 Dec 2024 16:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019948;
-	bh=UR1n2SNN2/BSCRn77xD/X1E8lD630wGmhSYefoiNbDY=;
+	s=korg; t=1734021950;
+	bh=Z1cP6uYQlH214bnzZaQfqwXW4Q23RB76Q9RbMFSVpmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tilSJIdjUBs2sYsdHwpgut+dgs7vG5riwrWoY5GIGVbyrrj3nTHrT09jcJAHC0Wql
-	 +DnUjEGBBG3tF7VoZXWAHByEfZ9V/386dDIiqf0JbTcnRIQUFg2MO7jrytyJCBFfQX
-	 kLYQMUoYQkjR7rvGOsU5yL9xR5BpCW9aXNKyPUQc=
+	b=nnQPYFvZTOr0ILVm61mDWjm7VTa9JmDur8mjXF0XxMFio24MvYyW0EkP13Dmpnmox
+	 uGvRDDLvtIl2ba0MQiLuwuVBphOuzTPJmYnwf7M2E3BTU6KyHw43XuiNCPi+CVWobK
+	 6HN2sOvQ/6JGc9a6yupmGJ7wGgTg4zXjBX6MpyCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Bin Lan <bin.lan.cn@windriver.com>
-Subject: [PATCH 6.1 339/772] ntfs3: Add bounds checking to mi_enum_attr()
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 089/565] s390/syscalls: Avoid creation of arch/arch/ directory
 Date: Thu, 12 Dec 2024 15:54:44 +0100
-Message-ID: <20241212144403.919775495@linuxfoundation.org>
+Message-ID: <20241212144315.005648391@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei lu <llfamsec@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 556bdf27c2dd5c74a9caacbe524b943a6cd42d99 upstream.
+[ Upstream commit 0708967e2d56e370231fd07defa0d69f9ad125e8 ]
 
-Added bounds checking to make sure that every attr don't stray beyond
-valid memory region.
+Building the kernel with ARCH=s390 creates a weird arch/arch/ directory.
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ find arch/arch
+  arch/arch
+  arch/arch/s390
+  arch/arch/s390/include
+  arch/arch/s390/include/generated
+  arch/arch/s390/include/generated/asm
+  arch/arch/s390/include/generated/uapi
+  arch/arch/s390/include/generated/uapi/asm
+
+The root cause is 'targets' in arch/s390/kernel/syscalls/Makefile,
+where the relative path is incorrect.
+
+Strictly speaking, 'targets' was not necessary in the first place
+because this Makefile uses 'filechk' instead of 'if_changed'.
+
+However, this commit keeps it, as it will be useful when converting
+'filechk' to 'if_changed' later.
+
+Fixes: 5c75824d915e ("s390/syscalls: add Makefile to generate system call header files")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20241111134603.2063226-1-masahiroy@kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/record.c |   23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ arch/s390/kernel/syscalls/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -217,28 +217,19 @@ struct ATTRIB *mi_enum_attr(struct mft_i
- 		prev_type = 0;
- 		attr = Add2Ptr(rec, off);
- 	} else {
--		/* Check if input attr inside record. */
-+		/*
-+		 * We don't need to check previous attr here. There is
-+		 * a bounds checking in the previous round.
-+		 */
- 		off = PtrOffset(rec, attr);
--		if (off >= used)
--			return NULL;
+diff --git a/arch/s390/kernel/syscalls/Makefile b/arch/s390/kernel/syscalls/Makefile
+index b98f25029b8e6..7b77ed779c7b2 100644
+--- a/arch/s390/kernel/syscalls/Makefile
++++ b/arch/s390/kernel/syscalls/Makefile
+@@ -12,7 +12,7 @@ kapi-hdrs-y := $(kapi)/unistd_nr.h
+ uapi-hdrs-y := $(uapi)/unistd_32.h
+ uapi-hdrs-y += $(uapi)/unistd_64.h
  
- 		asize = le32_to_cpu(attr->size);
--		if (asize < SIZEOF_RESIDENT) {
--			/* Impossible 'cause we should not return such attribute. */
--			return NULL;
--		}
--
--		/* Overflow check. */
--		if (off + asize < off)
--			return NULL;
+-targets += $(addprefix ../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
++targets += $(addprefix ../../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
  
- 		prev_type = le32_to_cpu(attr->type);
- 		attr = Add2Ptr(attr, asize);
- 		off += asize;
- 	}
+ PHONY += kapi uapi
  
--	asize = le32_to_cpu(attr->size);
--
- 	/* Can we use the first field (attr->type). */
- 	if (off + 8 > used) {
- 		static_assert(ALIGN(sizeof(enum ATTR_TYPE), 8) == 8);
-@@ -259,6 +250,12 @@ struct ATTRIB *mi_enum_attr(struct mft_i
- 	if (t32 < prev_type)
- 		return NULL;
- 
-+	asize = le32_to_cpu(attr->size);
-+	if (asize < SIZEOF_RESIDENT) {
-+		/* Impossible 'cause we should not return such attribute. */
-+		return NULL;
-+	}
-+
- 	/* Check overflow and boundary. */
- 	if (off + asize < off || off + asize > used)
- 		return NULL;
+-- 
+2.43.0
+
 
 
 
