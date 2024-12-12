@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-101208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC049EEB5D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E149EECE6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62F0818833B1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18C13284E20
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED862AF0E;
-	Thu, 12 Dec 2024 15:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757C02185A8;
+	Thu, 12 Dec 2024 15:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIgqjffE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9sir+FQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4251487CD;
-	Thu, 12 Dec 2024 15:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3213E2135C1;
+	Thu, 12 Dec 2024 15:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016733; cv=none; b=OegfSCdITVz0jT5RUGof6+ider3SFi3QHfeyDHWjQ15iliDfQefdqW+K/GmC9HeDhBGQVtQbIl27ZTuJ+oULl+pPOGJ73WGRBJj0vXhSKuIhaXm/5zoFQAASdRItz6CZ3AI5IfOz6Tej6V8C7c44Mr7xQnUWenuNXXoXs/LP/lU=
+	t=1734017976; cv=none; b=haHKWUrwWxWiZxbAl7AUCEdxZ86VkuSme9uXtx10uQArPvlVFpjsGw2fiLJhe5yrYBXBDvi+tATndvhL3VugxlxVHT9SzlMKrz+wnKU1dc4MtkaXipwHj+4HnPyTl6Eoz4ahg9Q16W1+mJehBs4nsez0HTXXUdWDf7JNvOh+9O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016733; c=relaxed/simple;
-	bh=ZovdAfawvbn6omlP5QeTG1FapPXSM+gkBTR9uitTjkA=;
+	s=arc-20240116; t=1734017976; c=relaxed/simple;
+	bh=0EshoNH3hr35HGw5PD9lQkaMdZjGwIk7lQFMM+csZ1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmBHWWRQW1EzNzW2P+eSM7mT0GKJnq2f6kG1FVYjTMsCPCnE3ufo1DBml6vpHsEI86k2gohoXmMq6Pwc5zGeloR9H6xHVl4Fnx2zUV0+Yew69bnXWipQIjRs9dE239vy/9/fnaqTgr9J5b2PoC16cF3D+oOfkHajB/j7deUu0Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIgqjffE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB44C4CECE;
-	Thu, 12 Dec 2024 15:18:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L338Mz+zVuJSIvk6WDVgn1SbcvnrnZzRu2Zck7/yxyLga+L3eOmwALDzDELOv1oMoe2+WhsJN8s1YRK/GZxiDVqxBWpxq9XaBDVuxOEsmrEwChFuVWHvvzdcMst0Tekv9dmOELC5CCGt+Z2qkwn3jjbvSEveAB9sD7pwumrnskA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9sir+FQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A98C4CECE;
+	Thu, 12 Dec 2024 15:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016732;
-	bh=ZovdAfawvbn6omlP5QeTG1FapPXSM+gkBTR9uitTjkA=;
+	s=korg; t=1734017975;
+	bh=0EshoNH3hr35HGw5PD9lQkaMdZjGwIk7lQFMM+csZ1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIgqjffEo4hwWlnNvwKP6czN0EmVWHGTZRSMFx0jmh9o0C6f9SXjI5p3LiMlNh9WF
-	 UY+OQ6iqIBDWoEvrCT9qjrMPhZ5eae4ncSTMnxci6I3rfrfXIyuSo8YX9TgMc3wOd/
-	 jj7bofFzMvHm3pUtrBkwDN5JbrLBOwTO12hMg84o=
+	b=v9sir+FQbtjaZh74aRqA9hZrVyXQ3thBIX9dD7kHelXF2gShADpGw3dKQpNEIhu7m
+	 P0wW0zjeACQAiKatYyd1jsnzQHd/ri529UGpwLa6k/z6SJnXBjdeDpusTmm0HVLADC
+	 6MkjKkEZd+7konf6kchiFZ+JcVhybDcRHO+/IEtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Leo Chen <leo.chen@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 283/466] drm/amd/display: Full exit out of IPS2 when all allow signals have been cleared
+Subject: [PATCH 6.6 133/356] bpf: Handle BPF_EXIST and BPF_NOEXIST for LPM trie
 Date: Thu, 12 Dec 2024 15:57:32 +0100
-Message-ID: <20241212144317.972025241@linuxfoundation.org>
+Message-ID: <20241212144249.904473445@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Chen <leo.chen@amd.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 0fe33e115fec305c35c66b78ad26e3755ab54b9c ]
+[ Upstream commit eae6a075e9537dd69891cf77ca5a88fa8a28b4a1 ]
 
-[Why]
-A race condition occurs between cursor movement and vertical interrupt control
-thread from OS, with both threads trying to exit IPS2.
-Vertical interrupt control thread clears the prev driver allow signal while not fully
-finishing the IPS2 exit process.
+Add the currently missing handling for the BPF_EXIST and BPF_NOEXIST
+flags. These flags can be specified by users and are relevant since LPM
+trie supports exact matches during update.
 
-[How]
-We want to detect all the allow signals have been cleared before we perform the full exit.
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Leo Chen <leo.chen@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20241206110622.1161752-4-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c    | 6 ++++--
- drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h | 3 ++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ kernel/bpf/lpm_trie.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-index 1e7de0f03290a..ec5009f411eb0 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-@@ -1294,6 +1294,8 @@ static void dc_dmub_srv_notify_idle(const struct dc *dc, bool allow_idle)
- 
- 		memset(&new_signals, 0, sizeof(new_signals));
- 
-+		new_signals.bits.allow_idle = 1; /* always set */
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index daf8ffcfcdac4..0b1931ad3b1dd 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -368,6 +368,10 @@ static long trie_update_elem(struct bpf_map *map,
+ 	 * simply assign the @new_node to that slot and be done.
+ 	 */
+ 	if (!node) {
++		if (flags == BPF_EXIST) {
++			ret = -ENOENT;
++			goto out;
++		}
+ 		rcu_assign_pointer(*slot, new_node);
+ 		goto out;
+ 	}
+@@ -376,18 +380,31 @@ static long trie_update_elem(struct bpf_map *map,
+ 	 * which already has the correct data array set.
+ 	 */
+ 	if (node->prefixlen == matchlen) {
++		if (!(node->flags & LPM_TREE_NODE_FLAG_IM)) {
++			if (flags == BPF_NOEXIST) {
++				ret = -EEXIST;
++				goto out;
++			}
++			trie->n_entries--;
++		} else if (flags == BPF_EXIST) {
++			ret = -ENOENT;
++			goto out;
++		}
 +
- 		if (dc->config.disable_ips == DMUB_IPS_ENABLE ||
- 		    dc->config.disable_ips == DMUB_IPS_DISABLE_DYNAMIC) {
- 			new_signals.bits.allow_pg = 1;
-@@ -1389,7 +1391,7 @@ static void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
- 		 */
- 		dc_dmub_srv->needs_idle_wake = false;
+ 		new_node->child[0] = node->child[0];
+ 		new_node->child[1] = node->child[1];
  
--		if (prev_driver_signals.bits.allow_ips2 &&
-+		if ((prev_driver_signals.bits.allow_ips2 || prev_driver_signals.all == 0) &&
- 		    (!dc->debug.optimize_ips_handshake ||
- 		     ips_fw->signals.bits.ips2_commit || !ips_fw->signals.bits.in_idle)) {
- 			DC_LOG_IPS(
-@@ -1450,7 +1452,7 @@ static void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
- 		}
+-		if (!(node->flags & LPM_TREE_NODE_FLAG_IM))
+-			trie->n_entries--;
+-
+ 		rcu_assign_pointer(*slot, new_node);
+ 		free_node = node;
  
- 		dc_dmub_srv_notify_idle(dc, false);
--		if (prev_driver_signals.bits.allow_ips1) {
-+		if (prev_driver_signals.bits.allow_ips1 || prev_driver_signals.all == 0) {
- 			DC_LOG_IPS(
- 				"wait for IPS1 commit clear (ips1_commit=%u ips2_commit=%u)",
- 				ips_fw->signals.bits.ips1_commit,
-diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-index ebcf68bfae2b3..7835100b37c41 100644
---- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-+++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
-@@ -747,7 +747,8 @@ union dmub_shared_state_ips_driver_signals {
- 		uint32_t allow_ips1 : 1; /**< 1 is IPS1 is allowed */
- 		uint32_t allow_ips2 : 1; /**< 1 is IPS1 is allowed */
- 		uint32_t allow_z10 : 1; /**< 1 if Z10 is allowed */
--		uint32_t reserved_bits : 28; /**< Reversed bits */
-+		uint32_t allow_idle : 1; /**< 1 if driver is allowing idle */
-+		uint32_t reserved_bits : 27; /**< Reversed bits */
- 	} bits;
- 	uint32_t all;
- };
+ 		goto out;
+ 	}
+ 
++	if (flags == BPF_EXIST) {
++		ret = -ENOENT;
++		goto out;
++	}
++
+ 	/* If the new node matches the prefix completely, it must be inserted
+ 	 * as an ancestor. Simply insert it between @node and *@slot.
+ 	 */
 -- 
 2.43.0
 
