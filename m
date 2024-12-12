@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B1A9EF0DF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB179EEA96
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670A8176160
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E1FD188C063
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC6F23F9F8;
-	Thu, 12 Dec 2024 16:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532DA21660B;
+	Thu, 12 Dec 2024 15:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VidVY5uv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gkmrgjo+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D4F2054EF;
-	Thu, 12 Dec 2024 16:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1007421504F;
+	Thu, 12 Dec 2024 15:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020122; cv=none; b=QSpFHY6bJ/DsYkZEZm+UPLEVx5GBoarf/4H9KC4B73nsy4VB+d2nFvv0JRThMax9yg/ve0Nb5Mt4lNXKVZInicI0FgFbIfpygxweE3a6eJHF77XmgbwbVY5SsAv6sLps2h4LMIeZed6s30T3roFCbCGwOV2wFhXxYQbjCjtalik=
+	t=1734016320; cv=none; b=dKcDKT6YS1UNyTesDVKDYaWZRVV1ffowUTLxeEN/iNFqwX4jv6pm1O74eTzcpxUgxQc/ub2L4CiO9WGAK6kumWMUjZztTcSU2MnQjojTemVTYhW75PCaXXVg9MRrb/cPhpIVVQIHSmdYWk1LQ4JobORXmE48qHpHmyMprgCMnvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020122; c=relaxed/simple;
-	bh=Q2AkjSM5kQqcdQJaNE7ZAv7HTBFjKpT/zaNHgcml0eY=;
+	s=arc-20240116; t=1734016320; c=relaxed/simple;
+	bh=rYSV9eB/IQBNFJ+wprtOA/Veq+8P6isiVdowmteyH4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hCwV6++7WSlq8buijS+9Ae9xd5JBjKePYA0cOUp/eN445JrNO6WyOYnhNENZEsE8GwQuOEm3WOo0o5mep1bu+x8bi1s8pMloNQAroovnWgfKe2la8UAMSDjDY6LJtTYommWWmX14DZhzvTEoLkAwjlPheCtRTIp5UfFNhRKzp/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VidVY5uv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FE1C4CECE;
-	Thu, 12 Dec 2024 16:15:18 +0000 (UTC)
+	 MIME-Version; b=PEf1C9us2Bm0NQf1hYuppoUec0c2Q0Dy+LuviovxXiNd3gtvEM73cd9Qj/SwXLZPs00omzwci+lWk6kLuV9bJkUZ9P0KUt+VLq/P4MpllFv0vEXiXeMbUtDoXad40h46sB6tsTAwUx5a1x3u9jXsGTRXXKs80rzujbclVM/eMrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gkmrgjo+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F0AC4CECE;
+	Thu, 12 Dec 2024 15:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020119;
-	bh=Q2AkjSM5kQqcdQJaNE7ZAv7HTBFjKpT/zaNHgcml0eY=;
+	s=korg; t=1734016319;
+	bh=rYSV9eB/IQBNFJ+wprtOA/Veq+8P6isiVdowmteyH4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VidVY5uvZNDxRGWj0uOXA28fO6oLf+IJtjCYMOhFCEO0aQRYPuhQf9vbhDa+RZP5n
-	 4D3SZEBjw6aW9XmGL79cXDFFkkPUAJkAMJFTStO45KKVLahgVZV6WVc1bzVcLrXN99
-	 JrVAGpAl00/FYrtO1d29y8/Igcok8LD3EzuqFJCI=
+	b=Gkmrgjo+qi9lKq8GPf8Uk6M6K17aABjdfnJcPZ/BqX1zA1J1URCdCqICE/Vh5butH
+	 8kEd+2eH2krKYhdeofeKmBU1ov2kQG/rrVlNTGc+YioZBEMINwYhIR1rK9XwJxzvkW
+	 ymDpjSg7GCoARewC/guVGdbWP3rfJezOYco5yMjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrej Shadura <andrew.shadura@collabora.co.uk>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Aleksei Vetrov <vvvvvv@google.com>
-Subject: [PATCH 6.1 382/772] Bluetooth: Fix type of len in rfcomm_sock_getsockopt{,_old}()
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Ralph Boehme <slow@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 158/466] fs/smb/client: cifs_prime_dcache() for SMB3 POSIX reparse points
 Date: Thu, 12 Dec 2024 15:55:27 +0100
-Message-ID: <20241212144405.690785882@linuxfoundation.org>
+Message-ID: <20241212144313.037299920@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrej Shadura <andrew.shadura@collabora.co.uk>
+From: Ralph Boehme <slow@samba.org>
 
-commit 5fe6caa62b07fd39cd6a28acc8f92ba2955e11a6 upstream.
+commit 8cb0bc5436351de8a11eef13b7367d64cc0d6c68 upstream.
 
-Commit 9bf4e919ccad worked around an issue introduced after an innocuous
-optimisation change in LLVM main:
-
-> len is defined as an 'int' because it is assigned from
-> '__user int *optlen'. However, it is clamped against the result of
-> sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
-> platforms). This is done with min_t() because min() requires compatible
-> types, which results in both len and the result of sizeof() being casted
-> to 'unsigned int', meaning len changes signs and the result of sizeof()
-> is truncated. From there, len is passed to copy_to_user(), which has a
-> third parameter type of 'unsigned long', so it is widened and changes
-> signs again. This excessive casting in combination with the KCSAN
-> instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
-> call, failing the build.
-
-The same issue occurs in rfcomm in functions rfcomm_sock_getsockopt and
-rfcomm_sock_getsockopt_old.
-
-Change the type of len to size_t in both rfcomm_sock_getsockopt and
-rfcomm_sock_getsockopt_old and replace min_t() with min().
+Spares an extra revalidation request
 
 Cc: stable@vger.kernel.org
-Co-authored-by: Aleksei Vetrov <vvvvvv@google.com>
-Improves: 9bf4e919ccad ("Bluetooth: Fix type of len in {l2cap,sco}_sock_getsockopt_old()")
-Link: https://github.com/ClangBuiltLinux/linux/issues/2007
-Link: https://github.com/llvm/llvm-project/issues/85647
-Signed-off-by: Andrej Shadura <andrew.shadura@collabora.co.uk>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Ralph Boehme <slow@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/rfcomm/sock.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/smb/client/readdir.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -729,7 +729,8 @@ static int rfcomm_sock_getsockopt_old(st
- 	struct sock *l2cap_sk;
- 	struct l2cap_conn *conn;
- 	struct rfcomm_conninfo cinfo;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 	u32 opt;
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -71,6 +71,8 @@ cifs_prime_dcache(struct dentry *parent,
+ 	struct inode *inode;
+ 	struct super_block *sb = parent->d_sb;
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
++	bool posix = cifs_sb_master_tcon(cifs_sb)->posix_extensions;
++	bool reparse_need_reval = false;
+ 	DECLARE_WAIT_QUEUE_HEAD_ONSTACK(wq);
+ 	int rc;
  
- 	BT_DBG("sk %p", sk);
-@@ -783,7 +784,7 @@ static int rfcomm_sock_getsockopt_old(st
- 		cinfo.hci_handle = conn->hcon->handle;
- 		memcpy(cinfo.dev_class, conn->hcon->dev_class, 3);
- 
--		len = min_t(unsigned int, len, sizeof(cinfo));
-+		len = min(len, sizeof(cinfo));
- 		if (copy_to_user(optval, (char *) &cinfo, len))
- 			err = -EFAULT;
- 
-@@ -802,7 +803,8 @@ static int rfcomm_sock_getsockopt(struct
- {
- 	struct sock *sk = sock->sk;
- 	struct bt_security sec;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 
- 	BT_DBG("sk %p", sk);
- 
-@@ -827,7 +829,7 @@ static int rfcomm_sock_getsockopt(struct
- 		sec.level = rfcomm_pi(sk)->sec_level;
- 		sec.key_size = 0;
- 
--		len = min_t(unsigned int, len, sizeof(sec));
-+		len = min(len, sizeof(sec));
- 		if (copy_to_user(optval, (char *) &sec, len))
- 			err = -EFAULT;
+@@ -85,7 +87,21 @@ cifs_prime_dcache(struct dentry *parent,
+ 		 * this spares us an invalidation.
+ 		 */
+ retry:
+-		if ((fattr->cf_cifsattrs & ATTR_REPARSE) ||
++		if (posix) {
++			switch (fattr->cf_mode & S_IFMT) {
++			case S_IFLNK:
++			case S_IFBLK:
++			case S_IFCHR:
++				reparse_need_reval = true;
++				break;
++			default:
++				break;
++			}
++		} else if (fattr->cf_cifsattrs & ATTR_REPARSE) {
++			reparse_need_reval = true;
++		}
++
++		if (reparse_need_reval ||
+ 		    (fattr->cf_flags & CIFS_FATTR_NEED_REVAL))
+ 			return;
  
 
 
