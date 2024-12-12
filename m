@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3D39EED31
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:43:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E919EEB90
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFD92169518
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:40:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802A6188C1A0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA9F221DBA;
-	Thu, 12 Dec 2024 15:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655202080FC;
+	Thu, 12 Dec 2024 15:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gxf7J/Zp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfpiSB90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6A621B91D;
-	Thu, 12 Dec 2024 15:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243082AF0E;
+	Thu, 12 Dec 2024 15:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018012; cv=none; b=Z5j2CZggTOQ9pYMINn96dbnX7sM5kWTIyd3I6DxlEy19wky40DzGJTXdpC/Fupb7i7t76K2PNVdfQOX73BQS4h/eYaAsIRk48oRs2/HouFuheSdqRO7MJrAaYRzguSGCdpQYo9Tgu99iYaJGr0h65bVjPAb5jpIu7dFhFrgeZAE=
+	t=1734016912; cv=none; b=WdmUWM96SR7KR2wCkGyhf3reyGN+ncxCWiIKGJkEjcdiiKeVcSZKCsQBgahxV/yPnV+PQkSxVZxH/y4iWmA8dk1pOz45SFrE+mAXKriYDGEmarRzHVTdaXHaXbrznk7245LWRQD4cBcSKj6uzo6tQjQBUSujKFnNO5o1yS5o2J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018012; c=relaxed/simple;
-	bh=1SCLVJVkGWfH9gBnYCTTM0JS+44MHKQ1G8urEd6fKjA=;
+	s=arc-20240116; t=1734016912; c=relaxed/simple;
+	bh=HGxTVeraG11XzHhT/zkkLuWkvFsClO5muHpMjG5UIFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XLpuft9voxASV7Vaj1aoKrRn5K25vPD+tqY/PWQZh/IRYBn/tT8e+Kzpi0lKXsD9SmJysmRn3rEN6QI+Fl38oZpCHagk5HVWefOUOaIw4sMYdLkYXxCfVIYyTD8XVOSmQDuIls8IdXeQ5HkbLZkbGoXE54IoRi78PyenduufGao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gxf7J/Zp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF780C4CECE;
-	Thu, 12 Dec 2024 15:40:11 +0000 (UTC)
+	 MIME-Version; b=eQqd4wpGshjyfAW4K7qYif2X1Up+jwQ38hSelu7O8wMLSRwrFo9L8AhOwe3WVZWAzQA07TFCPzJOVnQnlcIfCabzIidxcS5k9w9ZT/F+cvKLmqcGsHW2TGXsj/2SV3oRrxdCd4d2RgBW2WGvr2NiKvneo2OFt8heltPGz2aiIn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfpiSB90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDA7C4CECE;
+	Thu, 12 Dec 2024 15:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018012;
-	bh=1SCLVJVkGWfH9gBnYCTTM0JS+44MHKQ1G8urEd6fKjA=;
+	s=korg; t=1734016912;
+	bh=HGxTVeraG11XzHhT/zkkLuWkvFsClO5muHpMjG5UIFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gxf7J/ZpGO/FN9fHy9mRxrUZ6/83HCfbE+NnwG0aSV/a/5CiSV2fOyTAlaOJ68uuP
-	 yfRbjluF1gvBM82Y2e4SaKoVlUBPuGlc0a1FazZJQDMQ17FHrKJ2P9qnrmreq/cM0C
-	 Xg43X55rN0Jx5oaztuldsSePoodAVguqMerSeaO0=
+	b=bfpiSB90LaFhSdv/IgJRRWLuyeqDqJ8qS5y1liENIYHgbuS7sCYjTs0hCF1n93fPl
+	 +WRIWmGnKlKrK039vcgqnEk2YrxXIRC37MIKoFn9p8Zx01RInP/1hYUAIloN0hJ5sO
+	 RVW4+vr5Yg5qj7gFWGngMQfAZxIOGaOKoscn8ExI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 6.6 173/356] dma-buf: fix dma_fence_array_signaled v4
+	Sean Anderson <sean.anderson@seco.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 323/466] fsl/fman: Validate cell-index value obtained from Device Tree
 Date: Thu, 12 Dec 2024 15:58:12 +0100
-Message-ID: <20241212144251.469163279@linuxfoundation.org>
+Message-ID: <20241212144319.555901164@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit 78ac1c3558810486d90aa533b0039aa70487a3da upstream.
+[ Upstream commit bd50c4125c98bd1a86f8e514872159700a9c678c ]
 
-The function silently assumed that signaling was already enabled for the
-dma_fence_array. This meant that without enabling signaling first we would
-never see forward progress.
+Cell-index value is obtained from Device Tree and then used to calculate
+the index for accessing arrays port_mfl[], mac_mfl[] and intr_mng[].
+In case of broken DT due to any error cell-index can contain any value
+and it is possible to go beyond the array boundaries which can lead
+at least to memory corruption.
 
-Fix that by falling back to testing each individual fence when signaling
-isn't enabled yet.
+Validate cell-index value obtained from Device Tree.
 
-v2: add the comment suggested by Boris why this is done this way
-v3: fix the underflow pointed out by Tvrtko
-v4: atomic_read_acquire() as suggested by Tvrtko
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Tested-by: Chia-I Wu <olvaffe@gmail.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12094
-Cc: <stable@vger.kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241112121925.18464-1-christian.koenig@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Sean Anderson <sean.anderson@seco.com>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://patch.msgid.link/20241028065824.15452-1-amishin@t-argos.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/dma-fence-array.c |   28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fman/fman.c | 1 -
+ drivers/net/ethernet/freescale/fman/fman.h | 3 +++
+ drivers/net/ethernet/freescale/fman/mac.c  | 5 +++++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/dma-buf/dma-fence-array.c
-+++ b/drivers/dma-buf/dma-fence-array.c
-@@ -103,10 +103,36 @@ static bool dma_fence_array_enable_signa
- static bool dma_fence_array_signaled(struct dma_fence *fence)
- {
- 	struct dma_fence_array *array = to_dma_fence_array(fence);
-+	int num_pending;
-+	unsigned int i;
+diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
+index d96028f01770c..fb416d60dcd72 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.c
++++ b/drivers/net/ethernet/freescale/fman/fman.c
+@@ -24,7 +24,6 @@
  
--	if (atomic_read(&array->num_pending) > 0)
-+	/*
-+	 * We need to read num_pending before checking the enable_signal bit
-+	 * to avoid racing with the enable_signaling() implementation, which
-+	 * might decrement the counter, and cause a partial check.
-+	 * atomic_read_acquire() pairs with atomic_dec_and_test() in
-+	 * dma_fence_array_enable_signaling()
-+	 *
-+	 * The !--num_pending check is here to account for the any_signaled case
-+	 * if we race with enable_signaling(), that means the !num_pending check
-+	 * in the is_signalling_enabled branch might be outdated (num_pending
-+	 * might have been decremented), but that's fine. The user will get the
-+	 * right value when testing again later.
-+	 */
-+	num_pending = atomic_read_acquire(&array->num_pending);
-+	if (test_bit(DMA_FENCE_FLAG_ENABLE_SIGNAL_BIT, &array->base.flags)) {
-+		if (num_pending <= 0)
-+			goto signal;
- 		return false;
-+	}
+ /* General defines */
+ #define FMAN_LIODN_TBL			64	/* size of LIODN table */
+-#define MAX_NUM_OF_MACS			10
+ #define FM_NUM_OF_FMAN_CTRL_EVENT_REGS	4
+ #define BASE_RX_PORTID			0x08
+ #define BASE_TX_PORTID			0x28
+diff --git a/drivers/net/ethernet/freescale/fman/fman.h b/drivers/net/ethernet/freescale/fman/fman.h
+index 2ea575a46675b..74eb62eba0d7f 100644
+--- a/drivers/net/ethernet/freescale/fman/fman.h
++++ b/drivers/net/ethernet/freescale/fman/fman.h
+@@ -74,6 +74,9 @@
+ #define BM_MAX_NUM_OF_POOLS		64 /* Buffers pools */
+ #define FMAN_PORT_MAX_EXT_POOLS_NUM	8  /* External BM pools per Rx port */
  
-+	for (i = 0; i < array->num_fences; ++i) {
-+		if (dma_fence_is_signaled(array->fences[i]) && !--num_pending)
-+			goto signal;
-+	}
-+	return false;
++/* General defines */
++#define MAX_NUM_OF_MACS			10
 +
-+signal:
- 	dma_fence_array_clear_pending_error(array);
- 	return true;
- }
+ struct fman; /* FMan data */
+ 
+ /* Enum for defining port types */
+diff --git a/drivers/net/ethernet/freescale/fman/mac.c b/drivers/net/ethernet/freescale/fman/mac.c
+index 11da139082e1b..1916a2ac48b9f 100644
+--- a/drivers/net/ethernet/freescale/fman/mac.c
++++ b/drivers/net/ethernet/freescale/fman/mac.c
+@@ -259,6 +259,11 @@ static int mac_probe(struct platform_device *_of_dev)
+ 		err = -EINVAL;
+ 		goto _return_dev_put;
+ 	}
++	if (val >= MAX_NUM_OF_MACS) {
++		dev_err(dev, "cell-index value is too big for %pOF\n", mac_node);
++		err = -EINVAL;
++		goto _return_dev_put;
++	}
+ 	priv->cell_index = (u8)val;
+ 
+ 	/* Get the MAC address */
+-- 
+2.43.0
+
 
 
 
