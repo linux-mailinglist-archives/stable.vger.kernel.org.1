@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046829EF9A0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A939EF666
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4A9170318
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82A1B17E6E4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5272253E4;
-	Thu, 12 Dec 2024 17:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C162210E3;
+	Thu, 12 Dec 2024 17:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXtuP0FP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEMcwoEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149D52248A4;
-	Thu, 12 Dec 2024 17:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15057176AA1;
+	Thu, 12 Dec 2024 17:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025441; cv=none; b=obr3E8R6ggRX0HDOyaNyvfcu28YaaB9+crU9z8wzyfDJRfs+c9XCYIWL2Fm/8NLrhCBzsqXyL85VQNG9q6/0aUWuQ5hMSEyi8GRfLmcfgqfOLA2+vEfk201+iw7rDbTSonAlent/Hz0hEgsJfsBeD3Rba6poKmOOiz8Xd1vqeWw=
+	t=1734023308; cv=none; b=AZUn04jzGuSSvvdwLmuKOpyYJZjHI1lXQh0+1aoF4fGFusBlxaACvOIE5Unzt6jxIo8OGFR17yBGjFhDjvIbs3RnOjZp9oZR7cJGfBvPe7M2ik3GqbFRzUlHGbDC7Uwvzqw82WqD+x6xFVmBTF9eS9GresKQoPbFCfcHw24ur4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025441; c=relaxed/simple;
-	bh=xPom0Tp9/HTIaEgnga5/2Gdz+y+0D9+GqF7amVtT0zc=;
+	s=arc-20240116; t=1734023308; c=relaxed/simple;
+	bh=jMaN16uJ4KqkGdCgzOt2ILQQKR0Gl/ndlNiQUsQjEkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=md2Tc1jgeF7ujA4TrPFmxDjSzAMaY5yxqqrqcCNGHImCALVgDTzxkEZOAR1Hyc+uonOD0n/AE/TXk3C7Dea0pQIHJ5Bcfi0zOJWu09ZudRRdqZHK0SR7pbEf9V3bPyQiz8KRhKGrOzX9Cl+UGP8Ts/b63znaS4UckUwJrBfizSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXtuP0FP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA6BC4CED0;
-	Thu, 12 Dec 2024 17:44:00 +0000 (UTC)
+	 MIME-Version; b=E924NkV91jboyPT6y7tsj6X1md/7nG+xYnykRxSW7jDRNkTUh0YDdYH3ioQm3hxNLKc9iySZYAHBBs1+YX7wYM0v77NvEiSUPlZsapEJyNCFkQJ7NOKHpEuwtHlOdssgmFkZyWI5KlFS4xd0Jjih1yWosub2yweQX0GWvRZoiFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEMcwoEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A705C4CECE;
+	Thu, 12 Dec 2024 17:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025440;
-	bh=xPom0Tp9/HTIaEgnga5/2Gdz+y+0D9+GqF7amVtT0zc=;
+	s=korg; t=1734023307;
+	bh=jMaN16uJ4KqkGdCgzOt2ILQQKR0Gl/ndlNiQUsQjEkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXtuP0FPVYDxR26WGjlnd5dvTKPrkSIynMRgqgshM3WntVAM5XvOuBUq6eTul9riQ
-	 ZgxbZD8PaLd/2lMnSjqlUjnDDrImC4N2Godl8dOJ0vsfY6k6qxBtojWDVIhhZBNLJy
-	 Yhs3jzprRoBYMqYc5rF3gL6senOVaJ/0bHz0IsXI=
+	b=cEMcwoEFJiUZufbETXobbAVOy3k+Ft1SZtlpa15J0LK6uZ+RH8MgZC+3gTE5CtdX0
+	 s0pmM4P+qKdwQ6ILGEIFGvGPZr7oROorJELOskZTH9n9Hb+g3uLcM/MnEuTXjAspLB
+	 bU/irSD60BJnu8Fy6QHZrCyasfVlJoBkmFf2uUXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 169/321] ALSA: hda/realtek: Update ALC225 depop procedure
+	Rosen Penev <rosenp@gmail.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 492/565] wifi: ath5k: add PCI ID for SX76X
 Date: Thu, 12 Dec 2024 16:01:27 +0100
-Message-ID: <20241212144236.656672756@linuxfoundation.org>
+Message-ID: <20241212144331.216088944@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,152 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-commit 1fd50509fe14a9adc9329e0454b986157a4c155a upstream.
+[ Upstream commit da0474012402d4729b98799d71a54c35dc5c5de3 ]
 
-Old procedure has a chance to meet Headphone no output.
+This is in two devices made by Gigaset, SX762 and SX763.
 
-Fixes: da911b1f5e98 ("ALSA: hda/realtek - update ALC225 depop optimize")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/5a27b016ba9d42b4a4e6dadce50a3ba4@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20240930180716.139894-2-rosenp@gmail.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |   95 +++++++++++++++++++-----------------------
- 1 file changed, 43 insertions(+), 52 deletions(-)
+ drivers/net/wireless/ath/ath5k/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3634,33 +3634,28 @@ static void alc225_init(struct hda_codec
- 	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 	hp2_pin_sense = snd_hda_jack_detect(codec, 0x16);
- 
--	if (hp1_pin_sense || hp2_pin_sense)
-+	if (hp1_pin_sense || hp2_pin_sense) {
- 		msleep(2);
-+		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
- 
--	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x16, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
-+		msleep(75);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x16, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
- 
--	if (hp1_pin_sense || spec->ultra_low_power)
--		snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--	if (hp2_pin_sense)
--		snd_hda_codec_write(codec, 0x16, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--
--	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
--		msleep(85);
--
--	if (hp1_pin_sense || spec->ultra_low_power)
--		snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
--	if (hp2_pin_sense)
--		snd_hda_codec_write(codec, 0x16, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
--
--	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
--		msleep(100);
--
--	alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
--	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
-+		msleep(75);
-+		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
-+	}
- }
- 
- static void alc225_shutup(struct hda_codec *codec)
-@@ -3672,36 +3667,35 @@ static void alc225_shutup(struct hda_cod
- 	if (!hp_pin)
- 		hp_pin = 0x21;
- 
--	alc_disable_headset_jack_key(codec);
--	/* 3k pull low control for Headset jack. */
--	alc_update_coef_idx(codec, 0x4a, 0, 3 << 10);
--
- 	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 	hp2_pin_sense = snd_hda_jack_detect(codec, 0x16);
- 
--	if (hp1_pin_sense || hp2_pin_sense)
-+	if (hp1_pin_sense || hp2_pin_sense) {
-+		alc_disable_headset_jack_key(codec);
-+		/* 3k pull low control for Headset jack. */
-+		alc_update_coef_idx(codec, 0x4a, 0, 3 << 10);
- 		msleep(2);
- 
--	if (hp1_pin_sense || spec->ultra_low_power)
--		snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--	if (hp2_pin_sense)
--		snd_hda_codec_write(codec, 0x16, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--
--	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
--		msleep(85);
--
--	if (hp1_pin_sense || spec->ultra_low_power)
--		snd_hda_codec_write(codec, hp_pin, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
--	if (hp2_pin_sense)
--		snd_hda_codec_write(codec, 0x16, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
--
--	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
--		msleep(100);
--
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x16, 0,
-+				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
-+
-+		msleep(75);
-+
-+		if (hp1_pin_sense)
-+			snd_hda_codec_write(codec, hp_pin, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+		if (hp2_pin_sense)
-+			snd_hda_codec_write(codec, 0x16, 0,
-+				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
-+
-+		msleep(75);
-+		alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
-+		alc_enable_headset_jack_key(codec);
-+	}
- 	alc_auto_setup_eapd(codec, false);
- 	alc_shutup_pins(codec);
- 	if (spec->ultra_low_power) {
-@@ -3712,9 +3706,6 @@ static void alc225_shutup(struct hda_cod
- 		alc_update_coef_idx(codec, 0x4a, 3<<4, 2<<4);
- 		msleep(30);
- 	}
--
--	alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
--	alc_enable_headset_jack_key(codec);
- }
- 
- static void alc_default_init(struct hda_codec *codec)
+diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
+index 86b8cb975b1ac..35a6a7b1047a3 100644
+--- a/drivers/net/wireless/ath/ath5k/pci.c
++++ b/drivers/net/wireless/ath/ath5k/pci.c
+@@ -46,6 +46,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
+ 	{ PCI_VDEVICE(ATHEROS, 0x001b) }, /* 5413 Eagle */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
++	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
+ 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
+ 	{ 0 }
+ };
+-- 
+2.43.0
+
 
 
 
