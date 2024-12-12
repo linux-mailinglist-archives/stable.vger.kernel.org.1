@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BF59EF81B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A909EF661
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B73C2293714
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D008C285231
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2453215696E;
-	Thu, 12 Dec 2024 17:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813C9215764;
+	Thu, 12 Dec 2024 17:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjKOUFPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOIJKitm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64F6216E0B;
-	Thu, 12 Dec 2024 17:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC7D176AA1;
+	Thu, 12 Dec 2024 17:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025172; cv=none; b=PSnu1xxgwGNWuO1oUh5f7+JrboaNCWg3UmX9R2MYDFXmqLYSSRYX/1LNKTTJXPtxddPn8RYXnpb+xGf99KiPO8KL+6yLb5PDKmrN1rIWov+2v2HfBB4H1LnCxwFj/dc1jphDhk5cXUYjrlXrx5tQEG4jmx68YXlr7kZlZ+AoSkE=
+	t=1734024300; cv=none; b=DdUXG8BUa+vWYr6N/mNQDZpvtyMbAFiu7nSt1pOrf6VaW76RaRCJ9tx1J+QIw3i68yWT8CnPyJcn4qJSC8DBhwrE2ZAtxtfxab+b5oSirTWxBXbDzkOH5TMGxrOsdxNWjOr+JBQVhgYOsdX2gDpROzcaeaZXyc1dIlhh9h55sdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025172; c=relaxed/simple;
-	bh=gkGIUsIYtXWj70yrPDyT/JhWG7vifmVp7Y/IpGbqzZk=;
+	s=arc-20240116; t=1734024300; c=relaxed/simple;
+	bh=DY8w0Wfa9xZarEyXYwVDPxWmCqBAzV72dO6NaD0pPAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gS5bjRtpHRFGSmkRxRi8xzSME5YZoFu34HQcnCfJonBB0ZyhGO1C1R+0yK6CSM7HN+OSHX2Zqqf2cU3uRl7kSX4+4V1UAKwBfQ6NqlfrFzAUwJMIhg6/dcB6opn7BKzkoTL+2+4P4hmB3miSRVxapXqZqNmFMFG0/qIcEaH6HNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjKOUFPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AC0C4CECE;
-	Thu, 12 Dec 2024 17:39:32 +0000 (UTC)
+	 MIME-Version; b=JzYinyOjnXOuIhbc0npjCsuB0CR/ptuRieEp/CJdP8z99Z4g8zEW1r46yb5wptl4B8kEkFGbuz9yDRaaLgqUmDEPjD6M49xFdLFWB36SuRQZ1YF00TM9JPtbeki+GpqBg+v5CttKlZh61ZBHuXp2vkUv2IccqeRe2V2+ttDjjaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOIJKitm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA722C4CECE;
+	Thu, 12 Dec 2024 17:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025172;
-	bh=gkGIUsIYtXWj70yrPDyT/JhWG7vifmVp7Y/IpGbqzZk=;
+	s=korg; t=1734024300;
+	bh=DY8w0Wfa9xZarEyXYwVDPxWmCqBAzV72dO6NaD0pPAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjKOUFPKt3hDKt5fJodbjURpJCdn5kN8GvGaz6Wk8vnvZdx2sI02a6VlZewe92/Y7
-	 CjJhLvDGkpMaiJdaWvGHpT7sSsNGQL20ev/Wu/PhR2ezYwyGwhjl49clKsGACJDjEv
-	 bRPZnngnO5uKagrA5W4ANFL/9OErp3J146rLkrog=
+	b=SOIJKitmxXlgGM1zCOnwsH9ZzYMj/5VuAWQdEjAIQemwew62+EQ2F6QQedazREV1x
+	 E8I36kkFMqaCAwkzsSZQF5cELYkvdPeGh1yCKFnaWZwAWWq3+XQpXKu5yEf2RmQlea
+	 pDX4OtbxNCfvRhMF2j6fGRtKZd836H4C07d1qkq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Shravan Kumar Ramani <shravankr@nvidia.com>,
+	Raghuram Chary J <raghuramchary.jallipalli@microchip.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 040/321] EDAC/bluefield: Fix potential integer overflow
+Subject: [PATCH 5.10 220/459] net: usb: lan78xx: Fix memory leak on device unplug by freeing PHY device
 Date: Thu, 12 Dec 2024 15:59:18 +0100
-Message-ID: <20241212144231.579468993@linuxfoundation.org>
+Message-ID: <20241212144302.263693381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 1fe774a93b46bb029b8f6fa9d1f25affa53f06c6 ]
+[ Upstream commit ae7370e61c5d8f5bcefc2d4fca724bd4e9bbf789 ]
 
-The 64-bit argument for the "get DIMM info" SMC call consists of mem_ctrl_idx
-left-shifted 16 bits and OR-ed with DIMM index.  With mem_ctrl_idx defined as
-32-bits wide the left-shift operation truncates the upper 16 bits of
-information during the calculation of the SMC argument.
+Add calls to `phy_device_free` after `fixed_phy_unregister` to fix a
+memory leak that occurs when the device is unplugged. This ensures
+proper cleanup of pseudo fixed-link PHYs.
 
-The mem_ctrl_idx stack variable must be defined as 64-bits wide to prevent any
-potential integer overflow, i.e. loss of data from upper 16 bits.
-
-Fixes: 82413e562ea6 ("EDAC, mellanox: Add ECC support for BlueField DDR4")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
-Link: https://lore.kernel.org/r/20240930151056.10158-1-davthompson@nvidia.com
+Fixes: 89b36fb5e532 ("lan78xx: Lan7801 Support for Fixed PHY")
+Cc: Raghuram Chary J <raghuramchary.jallipalli@microchip.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20241116130558.1352230-2-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/bluefield_edac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/edac/bluefield_edac.c b/drivers/edac/bluefield_edac.c
-index e4736eb37bfb3..0ef0489827682 100644
---- a/drivers/edac/bluefield_edac.c
-+++ b/drivers/edac/bluefield_edac.c
-@@ -180,7 +180,7 @@ static void bluefield_edac_check(struct mem_ctl_info *mci)
- static void bluefield_edac_init_dimms(struct mem_ctl_info *mci)
- {
- 	struct bluefield_edac_priv *priv = mci->pvt_info;
--	int mem_ctrl_idx = mci->mc_idx;
-+	u64 mem_ctrl_idx = mci->mc_idx;
- 	struct dimm_info *dimm;
- 	u64 smc_info, smc_arg;
- 	int is_empty = 1, i;
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 96d3d0bd248bc..757d5c82f3f09 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -2157,6 +2157,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
+ 		if (dev->chipid == ID_REV_CHIP_ID_7801_) {
+ 			if (phy_is_pseudo_fixed_link(phydev)) {
+ 				fixed_phy_unregister(phydev);
++				phy_device_free(phydev);
+ 			} else {
+ 				phy_unregister_fixup_for_uid(PHY_KSZ9031RNX,
+ 							     0xfffffff0);
+@@ -3835,8 +3836,10 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+ 
+ 	phy_disconnect(net->phydev);
+ 
+-	if (phy_is_pseudo_fixed_link(phydev))
++	if (phy_is_pseudo_fixed_link(phydev)) {
+ 		fixed_phy_unregister(phydev);
++		phy_device_free(phydev);
++	}
+ 
+ 	unregister_netdev(net);
+ 
 -- 
 2.43.0
 
