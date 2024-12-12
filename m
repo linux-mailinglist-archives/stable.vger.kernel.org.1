@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A219EF905
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE259EF60F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:22:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E11CC1894C98
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7F151942D6D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01B9222D6A;
-	Thu, 12 Dec 2024 17:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0152F22145E;
+	Thu, 12 Dec 2024 17:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC0gNnfw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UixLqmJ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C114221D93;
-	Thu, 12 Dec 2024 17:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30D7176AA1;
+	Thu, 12 Dec 2024 17:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025264; cv=none; b=Wshk8mbmTtJMGjcx4uBSeCXvz3n7rfuIdUcnCN/0lHQrik/WqYjcY54K5oUh1rNzS1b1jyrU5uCO9ihVMyaZVFeMxWym8hT60RgKe0FFwvNWT8z4xVc8fzAFPR4SYD+RGKG8tRi14TfKmAKngNoVOtXX1KA3ELa8VGuKs3nJ/nE=
+	t=1734023040; cv=none; b=oVd6PYPtkAYbtohLIe1p1oOMmaNFu8uPOaJpK8MmiphYvx2Vr3qhqaSuhV+ZMujBIoNACIFp56B0vz8Ei1r/o3yRPg4+0zbVGZZfNYM/XcNVwbJ/rou2RqHl2r7Ee0NzamBk4ycNjm3HwcB7pBk3pUouAhljn0m1KWn/NcxPyBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025264; c=relaxed/simple;
-	bh=TxQDqGGb60iZ4ExVxFHCssDMY17FmHns/E7JUC1zG3Y=;
+	s=arc-20240116; t=1734023040; c=relaxed/simple;
+	bh=3EB7hgkmG+HysZqHjCGHau9geX/i+glwE5lpenQ4Twc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYlhnIuBONu+/rl6c/43MN0TuGGvBnixj7rAVUDZ8zPCVOkVgpZcZ2/B1fX+vrOxODgxkFIHl8TPURznR+JUfmwh96iHgzsTYgpSuKzhsOTHzQcv6HFxqxQY2kjUEG2TcFFSQ84olpw15MRxNe7//TDCuS7RDcjEeClg9kRAdb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC0gNnfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9988C4CED3;
-	Thu, 12 Dec 2024 17:41:03 +0000 (UTC)
+	 MIME-Version; b=dAYCM4MCNnAYWZx4iJk6qwpcc7REkB+b32LJXT6cVPW52xCXJHIKp3NQSRSh9e+w14HyiyNtENIxqpkN18qqeJCh2R70kb0jpnhneyI4F9+FbdWTXOqRwI9fFR/J+xG12rWMfKJKNxMGzyU8KMCRwhikYO17pzHeynoRGo/51Hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UixLqmJ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292B1C4CED0;
+	Thu, 12 Dec 2024 17:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025264;
-	bh=TxQDqGGb60iZ4ExVxFHCssDMY17FmHns/E7JUC1zG3Y=;
+	s=korg; t=1734023040;
+	bh=3EB7hgkmG+HysZqHjCGHau9geX/i+glwE5lpenQ4Twc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SC0gNnfwW9CFXzTL8VtO3fhlk/nHKX3tRUE++7WZ999kxrggjN9UjMtWjtK8hWs7P
-	 1mR7DDnSwk2hlJadt9o2ZZYs3q6T3DcAJL9mD2Kgk8x4MMy3iGOmX8NJPcEokvDfqw
-	 7I5NyPdvsgAcXKkg2WwhrkVrLv4IUthIxWztUF9M=
+	b=UixLqmJ/JLUMIZazKkbAsySub+TMrYFNnPi5BaHRDSiTlxyTR4z83hn2X1TBz0qYs
+	 JquV3r/+mNDESdfoImosroPMi2uzCVmZSqIuokt3y963d8Qo8yNUA2fNXyCiQbLIM0
+	 8Jnt33qX6C80IIIlQVfBLSbFYgOWDBOQ8sz+VbM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 081/321] net: rfkill: gpio: Add check for clk_enable()
+Subject: [PATCH 5.15 404/565] can: m_can: m_can_handle_lec_err(): fix {rx,tx}_errors statistics
 Date: Thu, 12 Dec 2024 15:59:59 +0100
-Message-ID: <20241212144233.185197045@linuxfoundation.org>
+Message-ID: <20241212144327.628575700@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit 8251e7621b25ccdb689f1dd9553b8789e3745ea1 ]
+[ Upstream commit 988d4222bf9039a875a3d48f2fe35c317831ff68 ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+The m_can_handle_lec_err() function was incorrectly incrementing only the
+receive error counter, even in cases of bit or acknowledgment errors that
+occur during transmission.
 
-Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20241108195341.1853080-1-zmw12306@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix the issue by incrementing the appropriate counter based on the
+type of error.
+
+Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-7-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/rfkill-gpio.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/can/m_can/m_can.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
-index f74baefd855d3..2df5bf240b64a 100644
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -30,8 +30,12 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
- {
- 	struct rfkill_gpio_data *rfkill = data;
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index abc3907feb739..a4edd7ab37eb2 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -612,47 +612,60 @@ static int m_can_handle_lec_err(struct net_device *dev,
+ 	u32 timestamp = 0;
  
--	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled)
--		clk_enable(rfkill->clk);
-+	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled) {
-+		int ret = clk_enable(rfkill->clk);
+ 	cdev->can.can_stats.bus_error++;
+-	stats->rx_errors++;
+ 
+ 	/* propagate the error condition to the CAN stack */
+ 	skb = alloc_can_err_skb(dev, &cf);
+-	if (unlikely(!skb))
+-		return 0;
+ 
+ 	/* check for 'last error code' which tells us the
+ 	 * type of the last error to occur on the CAN bus
+ 	 */
+-	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
++	if (likely(skb))
++		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+ 
+ 	switch (lec_type) {
+ 	case LEC_STUFF_ERROR:
+ 		netdev_dbg(dev, "stuff error\n");
+-		cf->data[2] |= CAN_ERR_PROT_STUFF;
++		stats->rx_errors++;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_STUFF;
+ 		break;
+ 	case LEC_FORM_ERROR:
+ 		netdev_dbg(dev, "form error\n");
+-		cf->data[2] |= CAN_ERR_PROT_FORM;
++		stats->rx_errors++;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_FORM;
+ 		break;
+ 	case LEC_ACK_ERROR:
+ 		netdev_dbg(dev, "ack error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
++		stats->tx_errors++;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
+ 		break;
+ 	case LEC_BIT1_ERROR:
+ 		netdev_dbg(dev, "bit1 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT1;
++		stats->tx_errors++;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT1;
+ 		break;
+ 	case LEC_BIT0_ERROR:
+ 		netdev_dbg(dev, "bit0 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT0;
++		stats->tx_errors++;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT0;
+ 		break;
+ 	case LEC_CRC_ERROR:
+ 		netdev_dbg(dev, "CRC error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
++		stats->rx_errors++;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
+ 		break;
+ 	default:
+ 		break;
+ 	}
+ 
++	if (unlikely(!skb))
++		return 0;
 +
-+		if (ret)
-+			return ret;
-+	}
+ 	if (cdev->is_peripheral)
+ 		timestamp = m_can_get_timestamp(cdev);
  
- 	gpiod_set_value_cansleep(rfkill->shutdown_gpio, !blocked);
- 	gpiod_set_value_cansleep(rfkill->reset_gpio, !blocked);
 -- 
 2.43.0
 
