@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5527A9EF0EE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2899EEB51
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153C929DEC3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F100A16CE19
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9056A2F44;
-	Thu, 12 Dec 2024 16:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0C6216E18;
+	Thu, 12 Dec 2024 15:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pdktLKn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJEsQab9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA95205501;
-	Thu, 12 Dec 2024 16:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB15E2165F0;
+	Thu, 12 Dec 2024 15:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020514; cv=none; b=h3mlGTjZLI/oe3UpVqcvdDAZDJ5Z2WdHWX/rA96+4LhyIum5XW3KwCtPoYv0Unq2b05qS7JnlZ/qfOPrZRIfu0R4CPBAPJo8v14Z+TJRtEVDzKM7G6FUK2Clq9g5+i4wNsDIx0TB4x8ACHNeKwCls+9jEQ+T8Wu9CzzLQzuYhRI=
+	t=1734016663; cv=none; b=EhwlxGotDA8IudngLv9FXHsHSbTPNsV+aMm3N9a8ZTqEC8PCvQJ3oqoM00Px8C15EQ5NH/5e5ktpghwMelNSzuMl8siRN9NoCJN+ctsAHXXvd9/no2vu38/JGcCvjMFNgrf4wsLXDrignEEd4b4Fr2fu6qc99V+mDto9G7Oiz90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020514; c=relaxed/simple;
-	bh=0jbPgY4oYDXFAp3FlHuGy2LgV+S7+UL4SuyZpWJBxM8=;
+	s=arc-20240116; t=1734016663; c=relaxed/simple;
+	bh=yWMo+7VFjp7yV2yJ8/0fGAamJm9Eeb08WhDw5OdQRmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AvSPdMp32cw2oEVCPrPgMHTgeZs1kJe3PDCPVz9eYdT/0w4IYIhQPVZiCrBDhkCd8S8kDoNbL1+AVd6Y9gDAZyXnB/G6fumGeJ/iFTonj9J8f4zAje9tZ5dqv9QlLcNgCmag3vn7aqvCWqcWhDozAJwXsdB4q05hbTXE6obSOZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pdktLKn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A84DC4CECE;
-	Thu, 12 Dec 2024 16:21:53 +0000 (UTC)
+	 MIME-Version; b=angvomIqSs+v60aMSnFmK3ZKubI6qQLiGN4eNURb5P9ZIQqJOy0XQKe8F62RRGjIjE76QWXJ3uFYzmKJYlr6rxNuteXZuDEuXO3/y6us+RkZR4z6w/a10R5J6yQ5t8/mDtbFnPgIH2sx4VTWn7pqWiQpHhqF0VTz8JTLtwmVfzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJEsQab9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5881C4CECE;
+	Thu, 12 Dec 2024 15:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020514;
-	bh=0jbPgY4oYDXFAp3FlHuGy2LgV+S7+UL4SuyZpWJBxM8=;
+	s=korg; t=1734016663;
+	bh=yWMo+7VFjp7yV2yJ8/0fGAamJm9Eeb08WhDw5OdQRmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pdktLKnnoftSfxBqBbUnCyAIfEczK/uvwKqv0lTsQxJ7QcA73HcV9tozv/stIfv7
-	 /qZYwDLTkhhtAGkn8fKjNmUl1Ka1arrx2UHSmpVeQj3yXJcZYovG53DwiI0N93MgDD
-	 cuWxHkNTMsiYsXVDXOoSuU2HRkew0srwaHOd9Khs=
+	b=TJEsQab9t/+JXgATP3pzmMIqZk4fGQpeTiiavCM7dKiVI0QKgZbnXvMzyWjunrOVM
+	 61IjL6XsBKjW0LjRQHihOZvncEqDpufoyHjsqMqbdiaRhAojJYvMmnVvhhcO7l2lO0
+	 Tzu76qwIbTZn66Ei4VqqSZjcLZZe70Tnt9bmNUF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.1 456/772] arm64: dts: freescale: imx8mm-verdin: Fix SD regulator startup delay
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 232/466] cleanup: Adjust scoped_guard() macros to avoid potential warning
 Date: Thu, 12 Dec 2024 15:56:41 +0100
-Message-ID: <20241212144408.770043942@linuxfoundation.org>
+Message-ID: <20241212144315.946384747@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-commit 0ca7699c376743b633b6419a42888dba386d5351 upstream.
+[ Upstream commit fcc22ac5baf06dd17193de44b60dbceea6461983 ]
 
-The power switch used to power the SD card interface might have
-more than 2ms turn-on time, increase the startup delay to 20ms to
-prevent failures.
+Change scoped_guard() and scoped_cond_guard() macros to make reasoning
+about them easier for static analysis tools (smatch, compiler
+diagnostics), especially to enable them to tell if the given usage of
+scoped_guard() is with a conditional lock class (interruptible-locks,
+try-locks) or not (like simple mutex_lock()).
 
-Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
-Cc: stable@vger.kernel.org
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add compile-time error if scoped_cond_guard() is used for non-conditional
+lock class.
+
+Beyond easier tooling and a little shrink reported by bloat-o-meter
+this patch enables developer to write code like:
+
+int foo(struct my_drv *adapter)
+{
+	scoped_guard(spinlock, &adapter->some_spinlock)
+		return adapter->spinlock_protected_var;
+}
+
+Current scoped_guard() implementation does not support that,
+due to compiler complaining:
+error: control reaches end of non-void function [-Werror=return-type]
+
+Technical stuff about the change:
+scoped_guard() macro uses common idiom of using "for" statement to declare
+a scoped variable. Unfortunately, current logic is too hard for compiler
+diagnostics to be sure that there is exactly one loop step; fix that.
+
+To make any loop so trivial that there is no above warning, it must not
+depend on any non-const variable to tell if there are more steps. There is
+no obvious solution for that in C, but one could use the compound
+statement expression with "goto" jumping past the "loop", effectively
+leaving only the subscope part of the loop semantics.
+
+More impl details:
+one more level of macro indirection is now needed to avoid duplicating
+label names;
+I didn't spot any other place that is using the
+"for (...; goto label) if (0) label: break;" idiom, so it's not packed for
+reuse beyond scoped_guard() family, what makes actual macros code cleaner.
+
+There was also a need to introduce const true/false variable per lock
+class, it is used to aid compiler diagnostics reasoning about "exactly
+1 step" loops (note that converting that to function would undo the whole
+benefit).
+
+Big thanks to Andy Shevchenko for help on this patch, both internal and
+public, ranging from whitespace/formatting, through commit message
+clarifications, general improvements, ending with presenting alternative
+approaches - all despite not even liking the idea.
+
+Big thanks to Dmitry Torokhov for the idea of compile-time check for
+scoped_cond_guard() (to use it only with conditional locsk), and general
+improvements for the patch.
+
+Big thanks to David Lechner for idea to cover also scoped_cond_guard().
+
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lkml.kernel.org/r/20241018113823.171256-1-przemyslaw.kitszel@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/cleanup.h | 52 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 42 insertions(+), 10 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-@@ -141,7 +141,7 @@
- 		regulator-max-microvolt = <3300000>;
- 		regulator-min-microvolt = <3300000>;
- 		regulator-name = "+V3.3_SD";
--		startup-delay-us = <2000>;
-+		startup-delay-us = <20000>;
- 	};
+diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
+index 518bd1fd86fbe..0cc66f8d28e7b 100644
+--- a/include/linux/cleanup.h
++++ b/include/linux/cleanup.h
+@@ -285,14 +285,20 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
+  *      similar to scoped_guard(), except it does fail when the lock
+  *      acquire fails.
+  *
++ *      Only for conditional locks.
+  */
  
- 	reserved-memory {
++#define __DEFINE_CLASS_IS_CONDITIONAL(_name, _is_cond)	\
++static __maybe_unused const bool class_##_name##_is_conditional = _is_cond
++
+ #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
++	__DEFINE_CLASS_IS_CONDITIONAL(_name, false); \
+ 	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
+ 	static inline void * class_##_name##_lock_ptr(class_##_name##_t *_T) \
+ 	{ return (void *)(__force unsigned long)*_T; }
+ 
+ #define DEFINE_GUARD_COND(_name, _ext, _condlock) \
++	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true); \
+ 	EXTEND_CLASS(_name, _ext, \
+ 		     ({ void *_t = _T; if (_T && !(_condlock)) _t = NULL; _t; }), \
+ 		     class_##_name##_t _T) \
+@@ -303,17 +309,40 @@ static inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
+ 	CLASS(_name, __UNIQUE_ID(guard))
+ 
+ #define __guard_ptr(_name) class_##_name##_lock_ptr
++#define __is_cond_ptr(_name) class_##_name##_is_conditional
+ 
+-#define scoped_guard(_name, args...)					\
+-	for (CLASS(_name, scope)(args),					\
+-	     *done = NULL; __guard_ptr(_name)(&scope) && !done; done = (void *)1)
+-
+-#define scoped_cond_guard(_name, _fail, args...) \
+-	for (CLASS(_name, scope)(args), \
+-	     *done = NULL; !done; done = (void *)1) \
+-		if (!__guard_ptr(_name)(&scope)) _fail; \
+-		else
+-
++/*
++ * Helper macro for scoped_guard().
++ *
++ * Note that the "!__is_cond_ptr(_name)" part of the condition ensures that
++ * compiler would be sure that for the unconditional locks the body of the
++ * loop (caller-provided code glued to the else clause) could not be skipped.
++ * It is needed because the other part - "__guard_ptr(_name)(&scope)" - is too
++ * hard to deduce (even if could be proven true for unconditional locks).
++ */
++#define __scoped_guard(_name, _label, args...)				\
++	for (CLASS(_name, scope)(args);					\
++	     __guard_ptr(_name)(&scope) || !__is_cond_ptr(_name);	\
++	     ({ goto _label; }))					\
++		if (0) {						\
++_label:									\
++			break;						\
++		} else
++
++#define scoped_guard(_name, args...)	\
++	__scoped_guard(_name, __UNIQUE_ID(label), args)
++
++#define __scoped_cond_guard(_name, _fail, _label, args...)		\
++	for (CLASS(_name, scope)(args); true; ({ goto _label; }))	\
++		if (!__guard_ptr(_name)(&scope)) {			\
++			BUILD_BUG_ON(!__is_cond_ptr(_name));		\
++			_fail;						\
++_label:									\
++			break;						\
++		} else
++
++#define scoped_cond_guard(_name, _fail, args...)	\
++	__scoped_cond_guard(_name, _fail, __UNIQUE_ID(label), args)
+ /*
+  * Additional helper macros for generating lock guards with types, either for
+  * locks that don't have a native type (eg. RCU, preempt) or those that need a
+@@ -369,14 +398,17 @@ static inline class_##_name##_t class_##_name##_constructor(void)	\
+ }
+ 
+ #define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
++__DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
+ __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)		\
+ __DEFINE_LOCK_GUARD_1(_name, _type, _lock)
+ 
+ #define DEFINE_LOCK_GUARD_0(_name, _lock, _unlock, ...)			\
++__DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
+ __DEFINE_UNLOCK_GUARD(_name, void, _unlock, __VA_ARGS__)		\
+ __DEFINE_LOCK_GUARD_0(_name, _lock)
+ 
+ #define DEFINE_LOCK_GUARD_1_COND(_name, _ext, _condlock)		\
++	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true);		\
+ 	EXTEND_CLASS(_name, _ext,					\
+ 		     ({ class_##_name##_t _t = { .lock = l }, *_T = &_t;\
+ 		        if (_T->lock && !(_condlock)) _T->lock = NULL;	\
+-- 
+2.43.0
+
 
 
 
