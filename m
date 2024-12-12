@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3384F9EEFCA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57679EF3B8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE0A0286432
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAA4D163B5F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4459A237FFE;
-	Thu, 12 Dec 2024 16:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1032288DD;
+	Thu, 12 Dec 2024 16:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckjrkX+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AD6qQIX1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02167237FFC;
-	Thu, 12 Dec 2024 16:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E506F2FE;
+	Thu, 12 Dec 2024 16:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019880; cv=none; b=Zm5/2jelDccIenTPouFxGAOrpKSPEOLKUbpkAkipKPa/atiiZHb1lMD8U5iop3NYNEcRpN7/ZAcVe4P75daZ/krIvUO6WEBmRGe3mivaszlUN0cXGtTJoK3Nv5Hl6u9cKoIHGavHcjPBV3VxRb9o5NyyRj7lgMwfjExieZSB/WI=
+	t=1734021809; cv=none; b=EJwMds4yFG2FHNVB50PtzhVxUe65hd61NIZmzWji1EBhJJzhTE1EeI4/aS/n2XQo2LyIDOGwpKKCmXc7Ww1bKX3eFKkIrOJj+S/K577GMQ03ScJf7xY+9gxKVDie9k0ixX0dNklta6E2PZ1aeAUk00XAIVuSfbn6rWsA7IkAUdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019880; c=relaxed/simple;
-	bh=rYkOVz8NFVb1ZT9Anxh1NgqsH+Ur/ibFf3PcDiOnshM=;
+	s=arc-20240116; t=1734021809; c=relaxed/simple;
+	bh=XbHNl0G8pO7xzFle3Tm4dw19G0yefdQaWtR5wjMY0gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xv5g8Hjmc0lW+zxaq2ooQbu03PBhPxb/PU317br3ixrWWkBfYHcDHHY0CbRr/nij1iK1hVR5DThoTfT/Qrsqc+Oi5SgKpUE6c2z1javyxUvSYP3aN/uiCDkqWH8eXkSLQtduz71hJEP7SveQRXVV+/RxbjNPxm8QoF1hycs/etg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckjrkX+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D4BC4CECE;
-	Thu, 12 Dec 2024 16:11:16 +0000 (UTC)
+	 MIME-Version; b=Lwvu1gW/1vl1WUgezyVOfB4v56d7q3EvuwrAshopSyH5JA66Pgen+bV1OgMwZVw60RClCGspgqw6gsCjn/6Gjpy3Y+idJ1uVS3/O+9QaBvpP0mnGNJeeh6DiolfrTHvTsFgHdEzxCnf3FHgXUdVRzkHvsrs8zofNb5w8OmNin9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AD6qQIX1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770B8C4CED0;
+	Thu, 12 Dec 2024 16:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019877;
-	bh=rYkOVz8NFVb1ZT9Anxh1NgqsH+Ur/ibFf3PcDiOnshM=;
+	s=korg; t=1734021809;
+	bh=XbHNl0G8pO7xzFle3Tm4dw19G0yefdQaWtR5wjMY0gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckjrkX+Y76gCmqGbrq5zLFK2yqtgGf6i7FgzBbz35jRnQBCBJbOmUgXaBFTXmsfTd
-	 VQ3pu7bcPcx6OBrXGNCo7SwXGfupBxDXk/9COUn26t6+qZkpQm264qT0bJwz+a2SA4
-	 pBDhQ6NXQA9Tc5yFiUXdpcf7RvUiJY6HctwE7DoY=
+	b=AD6qQIX13/PPXNfetnLCRNLNSeLpajas5nhsfmW4KPBxDGAMP/5fuPs9lVa33inZl
+	 IQXC5Jt3CAVPCNoravDWq8Oq3ilTHKlcj5hib33eZg0tkVJY1Qz0/jg2sKObbsSH5c
+	 O5Dd2ro199oxN4s9oZii/kE00qO2TP93W75q7T2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Simon Horman <simon.horman@corigine.com>,
+	Eryk Zagorski <erykzagorski@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 319/772] crypto: api - Add crypto_tfm_get
+Subject: [PATCH 5.15 069/565] ALSA: usb-audio: Fix Yamaha P-125 Quirk Entry
 Date: Thu, 12 Dec 2024 15:54:24 +0100
-Message-ID: <20241212144403.083796496@linuxfoundation.org>
+Message-ID: <20241212144314.218210586@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Eryk Zagorski <erykzagorski@gmail.com>
 
-[ Upstream commit ae131f4970f0778f35ed06aeb15bde2fbc1d9619 ]
+[ Upstream commit 6f891ca15b017707840c9e7f5afd9fc6cfd7d8b1 ]
 
-Add a crypto_tfm_get interface to allow tfm objects to be shared.
-They can still be freed in the usual way.
+This patch switches the P-125 quirk entry to use a composite quirk as the
+P-125 supplies both MIDI and Audio like many of the other Yamaha
+keyboards
 
-This should only be done with tfm objects with no keys.  You must
-also not modify the tfm flags in any way once it becomes shared.
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 1465036b10be ("llc: Improve setsockopt() handling of malformed user input")
+Signed-off-by: Eryk Zagorski <erykzagorski@gmail.com>
+Link: https://patch.msgid.link/20241111164520.9079-2-erykzagorski@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/api.c           | 4 ++++
- crypto/internal.h      | 6 ++++++
- include/linux/crypto.h | 1 +
- 3 files changed, 11 insertions(+)
+ sound/usb/quirks-table.h | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/api.c b/crypto/api.c
-index 64f2d365a8e94..c58774586d9fb 100644
---- a/crypto/api.c
-+++ b/crypto/api.c
-@@ -409,6 +409,7 @@ struct crypto_tfm *__crypto_alloc_tfm(struct crypto_alg *alg, u32 type,
- 		goto out_err;
- 
- 	tfm->__crt_alg = alg;
-+	refcount_set(&tfm->refcnt, 1);
- 
- 	err = crypto_init_ops(tfm, type, mask);
- 	if (err)
-@@ -508,6 +509,7 @@ void *crypto_create_tfm_node(struct crypto_alg *alg,
- 	tfm = (struct crypto_tfm *)(mem + tfmsize);
- 	tfm->__crt_alg = alg;
- 	tfm->node = node;
-+	refcount_set(&tfm->refcnt, 1);
- 
- 	err = frontend->init_tfm(tfm);
- 	if (err)
-@@ -620,6 +622,8 @@ void crypto_destroy_tfm(void *mem, struct crypto_tfm *tfm)
- 	if (IS_ERR_OR_NULL(mem))
- 		return;
- 
-+	if (!refcount_dec_and_test(&tfm->refcnt))
-+		return;
- 	alg = tfm->__crt_alg;
- 
- 	if (!tfm->exit && alg->cra_exit)
-diff --git a/crypto/internal.h b/crypto/internal.h
-index c08385571853e..521bc021c54bc 100644
---- a/crypto/internal.h
-+++ b/crypto/internal.h
-@@ -10,6 +10,7 @@
- 
- #include <crypto/algapi.h>
- #include <linux/completion.h>
-+#include <linux/err.h>
- #include <linux/jump_label.h>
- #include <linux/list.h>
- #include <linux/module.h>
-@@ -166,5 +167,10 @@ static inline int crypto_is_test_larval(struct crypto_larval *larval)
- 	return larval->alg.cra_driver_name[0];
- }
- 
-+static inline struct crypto_tfm *crypto_tfm_get(struct crypto_tfm *tfm)
+diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
+index dd98b4e13edac..4690b44987c05 100644
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -350,7 +350,6 @@ YAMAHA_DEVICE(0x105a, NULL),
+ YAMAHA_DEVICE(0x105b, NULL),
+ YAMAHA_DEVICE(0x105c, NULL),
+ YAMAHA_DEVICE(0x105d, NULL),
+-YAMAHA_DEVICE(0x1718, "P-125"),
+ {
+ 	USB_DEVICE(0x0499, 0x1503),
+ 	.driver_info = (unsigned long) & (const struct snd_usb_audio_quirk) {
+@@ -485,6 +484,19 @@ YAMAHA_DEVICE(0x1718, "P-125"),
+ 		}
+ 	}
+ },
 +{
-+	return refcount_inc_not_zero(&tfm->refcnt) ? tfm : ERR_PTR(-EOVERFLOW);
-+}
-+
- #endif	/* _CRYPTO_INTERNAL_H */
- 
-diff --git a/include/linux/crypto.h b/include/linux/crypto.h
-index e3c4be29aaccb..d354a2a7ac5ff 100644
---- a/include/linux/crypto.h
-+++ b/include/linux/crypto.h
-@@ -642,6 +642,7 @@ int crypto_has_alg(const char *name, u32 type, u32 mask);
-  */
- 
- struct crypto_tfm {
-+	refcount_t refcnt;
- 
- 	u32 crt_flags;
- 
++	USB_DEVICE(0x0499, 0x1718),
++	QUIRK_DRIVER_INFO {
++		/* .vendor_name = "Yamaha", */
++		/* .product_name = "P-125", */
++		QUIRK_DATA_COMPOSITE {
++			{ QUIRK_DATA_STANDARD_AUDIO(1) },
++			{ QUIRK_DATA_STANDARD_AUDIO(2) },
++			{ QUIRK_DATA_MIDI_YAMAHA(3) },
++			QUIRK_COMPOSITE_END
++		}
++	}
++},
+ YAMAHA_DEVICE(0x2000, "DGP-7"),
+ YAMAHA_DEVICE(0x2001, "DGP-5"),
+ YAMAHA_DEVICE(0x2002, NULL),
 -- 
 2.43.0
 
