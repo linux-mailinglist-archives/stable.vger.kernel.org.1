@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-103485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF2C9EF859
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A8D9EF4E7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A59D1888C19
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3334E281D0F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BF0221D93;
-	Thu, 12 Dec 2024 17:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05C4223C4E;
+	Thu, 12 Dec 2024 17:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqfg/AOh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yL6gxYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD942153EC;
-	Thu, 12 Dec 2024 17:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C902223C42;
+	Thu, 12 Dec 2024 17:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024711; cv=none; b=q+RxDsJe00pxr5kvT0MLfzAk11lkPI7F7mdalLCKLCBtyJtcB1ytMeFpF6iiGRKM8I+omtlFTuDnKaXlR/THs7oLJdxbeR7TFtCzXPrYKQryGPSI6ZtoLVKZn3M3K3hTkrHssSOmvWwNg8FAMKFoxWdLbVhUVl4dBchFUnUSwo4=
+	t=1734023424; cv=none; b=FKv5A7clTTO2/5esn8StZb/xSy1t2roDFKjznLGGc20fR8x0XZMUJAoslrk6LawccNWQIIQNYuxS1XOmf91XMDcZX0V+5R5HmTduBNd+optnaBEpgjsOYBMJU7PisVNjTOGXZuMDnoWaOV0FaYum6WiDye7dD0XB5iz836YUHHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024711; c=relaxed/simple;
-	bh=Bd7qrqqR4+i2r6fBnEnunWEjWUj6xaK8PcmMlZJgijI=;
+	s=arc-20240116; t=1734023424; c=relaxed/simple;
+	bh=oFqVGPkvW2uof8A793hQWGJOb4P6tqbMIy+UqvYezds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hg2VVWrnetTHDA4mAgamOD0rM1vGk7HT8DBk4uc3xPB68+/J1p/0giC0UB3Z2oa8P7ddMyUYNNSYsGzfCNVksrKakK8mgeN/31fENzQZ5Yd+NHYKXBEyyLoCqaX/QcwFJSqkpslWKZMSvjiqG9sKv9pPGpNsrNEdxMK9Q6U82EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqfg/AOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F351C4CECE;
-	Thu, 12 Dec 2024 17:31:51 +0000 (UTC)
+	 MIME-Version; b=fQtRccEKYjR/Ko8BWfIrsZMVEjmittdW8RXSMuV+Z/68ka8j+WNY3OjQlIgcYPHSIwEV3pzfpiTKiVJKp/GTIOV4vc5l6H4wvOjXA/iq6jZGYu6Pm8oyp+5Z6ysZPdOMVLAt2ZAExrEcB568Cv7tcq3VKN4A39LXvwZJaF5x1F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yL6gxYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B9DC4CED0;
+	Thu, 12 Dec 2024 17:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024711;
-	bh=Bd7qrqqR4+i2r6fBnEnunWEjWUj6xaK8PcmMlZJgijI=;
+	s=korg; t=1734023424;
+	bh=oFqVGPkvW2uof8A793hQWGJOb4P6tqbMIy+UqvYezds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqfg/AOh59xGXmRoNwvOkOxRsC0bkm7clv2u3Ep/ccnbApzbbE/ZcgiJ0AJ6Iryjs
-	 FIOkDUApsjYYHmOjnKf/qJQp8dwXCdp8Qmdio2UwC5Z+LtnJ+tJpUdkTBk4MjpCHCV
-	 stLptl+0lEwMJMVb7afKL0OXY4t0Q7oQlsa6i/vE=
+	b=1yL6gxYdGheOLYyUX5Ayfr+9LFbZiv19kZJnmrv7v3d1t5y1fiRvalrO3xTnxQB4e
+	 +cWuHQFKUaK7PLuHBH9lY0KtOxztG4RM7FkidxMadoz6jsPgmz9TKA7nEB+OlmM80b
+	 H+mte8+sqXK+VU0TEtxh/HrU5+Bv4Hb3xKFAln7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 387/459] drm/mcde: Enable module autoloading
+	Vincent Donnefort <vdonnefort@google.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Alexander Lobakin <alexandr.lobakin@intel.com>
+Subject: [PATCH 5.15 530/565] modpost: Include .text.* in TEXT_SECTIONS
 Date: Thu, 12 Dec 2024 16:02:05 +0100
-Message-ID: <20241212144309.057708674@linuxfoundation.org>
+Message-ID: <20241212144332.763326429@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 8a16b5cdae26207ff4c22834559384ad3d7bc970 ]
+[ Upstream commit 19331e84c3873256537d446afec1f6c507f8c4ef ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
-on the alias from of_device_id table.
+Commit 6c730bfc894f ("modpost: handle -ffunction-sections") added
+".text.*" to the OTHER_TEXT_SECTIONS macro to fix certain section
+mismatch warnings. Unfortunately, this makes it impossible for modpost
+to warn about section mismatches with LTO, which implies
+'-ffunction-sections', as all functions are put in their own
+'.text.<func_name>' sections, which may still reference functions in
+sections they are not supposed to, such as __init.
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240902113320.903147-4-liaochen4@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fix this by moving ".text.*" into TEXT_SECTIONS, so that configurations
+with '-ffunction-sections' will see warnings about mismatched sections.
+
+Link: https://lore.kernel.org/Y39kI3MOtVI5BAnV@google.com/
+Reported-by: Vincent Donnefort <vdonnefort@google.com>
+Reviewed-and-tested-by: Alexander Lobakin <alexandr.lobakin@intel.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Tested-by: Vincent Donnefort <vdonnefort@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: 7912405643a1 ("modpost: Add .irqentry.text to OTHER_SECTIONS")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mcde/mcde_drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/mod/modpost.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mcde/mcde_drv.c b/drivers/gpu/drm/mcde/mcde_drv.c
-index 210f5e1630081..eb1c87fe65e6c 100644
---- a/drivers/gpu/drm/mcde/mcde_drv.c
-+++ b/drivers/gpu/drm/mcde/mcde_drv.c
-@@ -453,6 +453,7 @@ static const struct of_device_id mcde_of_match[] = {
- 	},
- 	{},
- };
-+MODULE_DEVICE_TABLE(of, mcde_of_match);
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index c6e655e0ed988..43bacdee5cc5d 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -936,10 +936,10 @@ static void check_section(const char *modname, struct elf_info *elf,
+ #define ALL_EXIT_SECTIONS EXIT_SECTIONS, ALL_XXXEXIT_SECTIONS
  
- static struct platform_driver mcde_driver = {
- 	.driver = {
+ #define DATA_SECTIONS ".data", ".data.rel"
+-#define TEXT_SECTIONS ".text", ".text.unlikely", ".sched.text", \
++#define TEXT_SECTIONS ".text", ".text.*", ".sched.text", \
+ 		".kprobes.text", ".cpuidle.text", ".noinstr.text"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+-		".fixup", ".entry.text", ".exception.text", ".text.*", \
++		".fixup", ".entry.text", ".exception.text", \
+ 		".coldtext", ".softirqentry.text"
+ 
+ #define INIT_SECTIONS      ".init.*"
 -- 
 2.43.0
 
