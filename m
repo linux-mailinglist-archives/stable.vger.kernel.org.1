@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A909EF661
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1554B9EF7EE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D008C285231
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB19028BF7C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813C9215764;
-	Thu, 12 Dec 2024 17:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6160622332E;
+	Thu, 12 Dec 2024 17:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOIJKitm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtEV88f+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC7D176AA1;
-	Thu, 12 Dec 2024 17:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D55C20A5EE;
+	Thu, 12 Dec 2024 17:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024300; cv=none; b=DdUXG8BUa+vWYr6N/mNQDZpvtyMbAFiu7nSt1pOrf6VaW76RaRCJ9tx1J+QIw3i68yWT8CnPyJcn4qJSC8DBhwrE2ZAtxtfxab+b5oSirTWxBXbDzkOH5TMGxrOsdxNWjOr+JBQVhgYOsdX2gDpROzcaeaZXyc1dIlhh9h55sdU=
+	t=1734025078; cv=none; b=Kw8aXheLGHXUYH3Cw7ww+iCHpTRba5uug+ZnygVE8y+xigylQ+EtWoQzhF3FQZkt+WgLgXbwRACEFRHqkc2WEhhDguflKrE11Khsyh+54mwowVMlQrNCsjMD04q79MKUL7sD7WxKQ/QdCCeKr1VQbd2oyHngHS053VMXJ6PtIsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024300; c=relaxed/simple;
-	bh=DY8w0Wfa9xZarEyXYwVDPxWmCqBAzV72dO6NaD0pPAE=;
+	s=arc-20240116; t=1734025078; c=relaxed/simple;
+	bh=x0X75XX+wit+juJuBd+9jf/yQRYKGbuGLL/2gDOWEgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzYinyOjnXOuIhbc0npjCsuB0CR/ptuRieEp/CJdP8z99Z4g8zEW1r46yb5wptl4B8kEkFGbuz9yDRaaLgqUmDEPjD6M49xFdLFWB36SuRQZ1YF00TM9JPtbeki+GpqBg+v5CttKlZh61ZBHuXp2vkUv2IccqeRe2V2+ttDjjaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOIJKitm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA722C4CECE;
-	Thu, 12 Dec 2024 17:24:59 +0000 (UTC)
+	 MIME-Version; b=scHskGdX2r7jBwmk9Sw9rKHqIbMtUH03rpxW/IoX3uppcbeoSc4vYQ35jWduZ3GEMmYWyw3Cxvbhg/17A6mPh3pumdhvt2S0dbxLfNS5q7qUek8zN8RiFahl63EJ0N/ZwwDUzx/yLNaDEt575sG2q+dYj0mfdDjMuZt5YOx57Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MtEV88f+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFE3C4CEDD;
+	Thu, 12 Dec 2024 17:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024300;
-	bh=DY8w0Wfa9xZarEyXYwVDPxWmCqBAzV72dO6NaD0pPAE=;
+	s=korg; t=1734025077;
+	bh=x0X75XX+wit+juJuBd+9jf/yQRYKGbuGLL/2gDOWEgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SOIJKitmxXlgGM1zCOnwsH9ZzYMj/5VuAWQdEjAIQemwew62+EQ2F6QQedazREV1x
-	 E8I36kkFMqaCAwkzsSZQF5cELYkvdPeGh1yCKFnaWZwAWWq3+XQpXKu5yEf2RmQlea
-	 pDX4OtbxNCfvRhMF2j6fGRtKZd836H4C07d1qkq8=
+	b=MtEV88f+2uQL/9FzxYvJnKWTEJ1mavdscR3qv2hKV6k++eeK0G3YubNoEEklYRsJc
+	 6oqDKkz1+QzpNxQwZoje+IiKrG+2R+SVimRvWkGEAdisgIh0GqW0C1256LZjEo5lwv
+	 0shA/C/BOSGcIBdOvJWC31C+eEskuYF6AvKDvxxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghuram Chary J <raghuramchary.jallipalli@microchip.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Priyanka Singh <priyanka.singh@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 220/459] net: usb: lan78xx: Fix memory leak on device unplug by freeing PHY device
-Date: Thu, 12 Dec 2024 15:59:18 +0100
-Message-ID: <20241212144302.263693381@linuxfoundation.org>
+Subject: [PATCH 5.4 041/321] EDAC/fsl_ddr: Fix bad bit shift operations
+Date: Thu, 12 Dec 2024 15:59:19 +0100
+Message-ID: <20241212144231.618601356@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Priyanka Singh <priyanka.singh@nxp.com>
 
-[ Upstream commit ae7370e61c5d8f5bcefc2d4fca724bd4e9bbf789 ]
+[ Upstream commit 9ec22ac4fe766c6abba845290d5139a3fbe0153b ]
 
-Add calls to `phy_device_free` after `fixed_phy_unregister` to fix a
-memory leak that occurs when the device is unplugged. This ensures
-proper cleanup of pseudo fixed-link PHYs.
+Fix undefined behavior caused by left-shifting a negative value in the
+expression:
 
-Fixes: 89b36fb5e532 ("lan78xx: Lan7801 Support for Fixed PHY")
-Cc: Raghuram Chary J <raghuramchary.jallipalli@microchip.com>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241116130558.1352230-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    cap_high ^ (1 << (bad_data_bit - 32))
+
+The variable bad_data_bit ranges from 0 to 63. When it is less than 32,
+bad_data_bit - 32 becomes negative, and left-shifting by a negative
+value in C is undefined behavior.
+
+Fix this by combining cap_high and cap_low into a 64-bit variable.
+
+  [ bp: Massage commit message, simplify error bits handling. ]
+
+Fixes: ea2eb9a8b620 ("EDAC, fsl-ddr: Separate FSL DDR driver from MPC85xx")
+Signed-off-by: Priyanka Singh <priyanka.singh@nxp.com>
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241016-imx95_edac-v3-3-86ae6fc2756a@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/edac/fsl_ddr_edac.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 96d3d0bd248bc..757d5c82f3f09 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2157,6 +2157,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 		if (dev->chipid == ID_REV_CHIP_ID_7801_) {
- 			if (phy_is_pseudo_fixed_link(phydev)) {
- 				fixed_phy_unregister(phydev);
-+				phy_device_free(phydev);
- 			} else {
- 				phy_unregister_fixup_for_uid(PHY_KSZ9031RNX,
- 							     0xfffffff0);
-@@ -3835,8 +3836,10 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
+index 6d8ea226010d2..61e59341a41f9 100644
+--- a/drivers/edac/fsl_ddr_edac.c
++++ b/drivers/edac/fsl_ddr_edac.c
+@@ -331,21 +331,25 @@ static void fsl_mc_check(struct mem_ctl_info *mci)
+ 	 * TODO: Add support for 32-bit wide buses
+ 	 */
+ 	if ((err_detect & DDR_EDE_SBE) && (bus_width == 64)) {
++		u64 cap = (u64)cap_high << 32 | cap_low;
++		u32 s = syndrome;
++
+ 		sbe_ecc_decode(cap_high, cap_low, syndrome,
+ 				&bad_data_bit, &bad_ecc_bit);
  
- 	phy_disconnect(net->phydev);
+-		if (bad_data_bit != -1)
+-			fsl_mc_printk(mci, KERN_ERR,
+-				"Faulty Data bit: %d\n", bad_data_bit);
+-		if (bad_ecc_bit != -1)
+-			fsl_mc_printk(mci, KERN_ERR,
+-				"Faulty ECC bit: %d\n", bad_ecc_bit);
++		if (bad_data_bit >= 0) {
++			fsl_mc_printk(mci, KERN_ERR, "Faulty Data bit: %d\n", bad_data_bit);
++			cap ^= 1ULL << bad_data_bit;
++		}
++
++		if (bad_ecc_bit >= 0) {
++			fsl_mc_printk(mci, KERN_ERR, "Faulty ECC bit: %d\n", bad_ecc_bit);
++			s ^= 1 << bad_ecc_bit;
++		}
  
--	if (phy_is_pseudo_fixed_link(phydev))
-+	if (phy_is_pseudo_fixed_link(phydev)) {
- 		fixed_phy_unregister(phydev);
-+		phy_device_free(phydev);
-+	}
+ 		fsl_mc_printk(mci, KERN_ERR,
+ 			"Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
+-			cap_high ^ (1 << (bad_data_bit - 32)),
+-			cap_low ^ (1 << bad_data_bit),
+-			syndrome ^ (1 << bad_ecc_bit));
++			upper_32_bits(cap), lower_32_bits(cap), s);
+ 	}
  
- 	unregister_netdev(net);
- 
+ 	fsl_mc_printk(mci, KERN_ERR,
 -- 
 2.43.0
 
