@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383199EF345
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 791229EEFB2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D60C8189CDE6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A464297B13
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E575722540B;
-	Thu, 12 Dec 2024 16:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B232253F1;
+	Thu, 12 Dec 2024 16:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6Mm7Rho"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yP+12CGB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B9E2210DA;
-	Thu, 12 Dec 2024 16:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025942210E1;
+	Thu, 12 Dec 2024 16:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021691; cv=none; b=g12EOjNAprOWomCzqaY5RdFqfMhI8+wXusBPLdTtnuq0ILow7Z49XT2mqr5XtmlIWNhDqHFsSjvfQoxW4lVcgOAB+0i2dJMWHAaIpe8HqTBskwiy+eOBoFHHAffbOG+XSEnGgprp7p/tTyrZgO8eR2sKkzE9ogAnGZnDqVo/t80=
+	t=1734019748; cv=none; b=KeLk5vWArs0rkq6C4NHZbtFGs3VlLFoXuWJBVKXoi1J4Jhk3spIDXbDAIMYNUN5KKWz3YMsqtjUUI9Axm9w3QNB/FX6kfp47d/XR5SjQuyLIzQRk7WWwhbjG+ShhNJ8wAX/y9kkDPMwxUIq7jr7sFWBxF1JLNpw+igLeqkov8QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021691; c=relaxed/simple;
-	bh=5uLKOlKm/6IR2dPvNaLT7Pfr85hRXTXxf20AyazI4dM=;
+	s=arc-20240116; t=1734019748; c=relaxed/simple;
+	bh=lYKxQ7QVSjOeYiM4D1MIxWY2adNWfA6crakgT5SqPCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/j9wy0ZZ1o80zp2UVAbIxmmlCE523QGklY/1Il2jhsT68sUBXYxQJXnwrrAk95GU72w1KXE1EDJryqRgA35CoW3uv0S/PzDSoHCM57KWdsSJsu0akJFZkaYeVCjqCKobk3/3AV7CqvlmUObDN78sW2UG5peNgpbveArXm/AyjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6Mm7Rho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE32C4CECE;
-	Thu, 12 Dec 2024 16:41:30 +0000 (UTC)
+	 MIME-Version; b=Gtj2ecA16USb/Bgc8NekyEd/QSUCxkxXIbEX8s0L7uWFwMFWeVy651otWuf4unw6CQJPe75JHbEWhiVAxVOCnlGAxIWWC9GUMLoFrh7iSsXxof4ldzDzns9vMWi3Ucs7hUsqVP5spSvHBxGrl/wD8DFCWoOKE11ppNIWT468+B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yP+12CGB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C0DC4CECE;
+	Thu, 12 Dec 2024 16:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021691;
-	bh=5uLKOlKm/6IR2dPvNaLT7Pfr85hRXTXxf20AyazI4dM=;
+	s=korg; t=1734019747;
+	bh=lYKxQ7QVSjOeYiM4D1MIxWY2adNWfA6crakgT5SqPCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6Mm7Rho8JztOSmrtsRzqCjpNura+ZxpsDwxCYX/4acoyYUJ0WcKnihdVJgVTzXva
-	 p2tGjU3x6+2QBfuMANRb1t8R0pg1HY08fq1GJdg4KGFcVF+88dmpCbipVfHU8xXn95
-	 d8DoPtbklJjGhtv04FLHW8SHXazS56Lj7m3U9sCU=
+	b=yP+12CGBwlpHrSxAhFqQPUwYhs+JutVOxjrRq/fuvXAygYwbqnSjtYhkbMa7aNBg6
+	 cBhNv3iS4Wq90Ba6+MKOGze2kW9NgaPvZ1l2X4IL1u/PwErjZq3iJp08B+EZuraSNQ
+	 3iZOcmQyazayg+VxV8WJDoGlEEOrQzawlkd2K4ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Parthiban Nallathambi <parthiban@linumiz.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/565] mmc: sunxi-mmc: Fix A100 compatible description
+Subject: [PATCH 6.1 286/772] remoteproc: qcom: pas: add minidump_id to SM8350 resources
 Date: Thu, 12 Dec 2024 15:53:51 +0100
-Message-ID: <20241212144312.881666886@linuxfoundation.org>
+Message-ID: <20241212144401.725788851@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 85b580afc2c215394e08974bf033de9face94955 ]
+[ Upstream commit e8983156d54f59f57e648ecd44f01c16572da842 ]
 
-It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
-blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
-And while this alone would make a trivial fix, the H616 falls back to
-the A100 compatible string, so we have to now match the H616 compatible
-string explicitly against the description advertising 64K DMA blocks.
+Specify minidump_id for the SM8350 DSPs. It was omitted for in the
+original commit e8b4e9a21af7 ("remoteproc: qcom: pas: Add SM8350 PAS
+remoteprocs").
 
-As the A100 is now compatible with the D1 description, let the A100
-compatible string point to that block instead, and introduce an explicit
-match against the H616 string, pointing to the old description.
-Also remove the redundant setting of clk_delays to NULL on the way.
-
-Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Tested-by: Parthiban Nallathambi <parthiban@linumiz.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Message-ID: <20241107014240.24669-1-andre.przywara@arm.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: e8b4e9a21af7 ("remoteproc: qcom: pas: Add SM8350 PAS remoteprocs")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241027-sar2130p-adsp-v1-2-bd204e39d24e@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sunxi-mmc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/remoteproc/qcom_q6v5_pas.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
-index cd81f9a79169e..1b6e41d55b622 100644
---- a/drivers/mmc/host/sunxi-mmc.c
-+++ b/drivers/mmc/host/sunxi-mmc.c
-@@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
- 	.needs_new_timings = true,
- };
- 
--static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
-+static const struct sunxi_mmc_cfg sun50i_h616_cfg = {
- 	.idma_des_size_bits = 16,
- 	.idma_des_shift = 2,
--	.clk_delays = NULL,
- 	.can_calibrate = true,
- 	.mask_data0 = true,
- 	.needs_new_timings = true,
-@@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
- 	{ .compatible = "allwinner,sun20i-d1-mmc", .data = &sun20i_d1_cfg },
- 	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
- 	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
--	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
-+	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun20i_d1_cfg },
- 	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
-+	{ .compatible = "allwinner,sun50i-h616-mmc", .data = &sun50i_h616_cfg },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 533cee25b18e5..631c90afb5bc5 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -632,6 +632,7 @@ static const struct adsp_data sm8250_adsp_resource = {
+ 	.crash_reason_smem = 423,
+ 	.firmware_name = "adsp.mdt",
+ 	.pas_id = 1,
++	.minidump_id = 5,
+ 	.auto_boot = true,
+ 	.proxy_pd_names = (char*[]){
+ 		"lcx",
+@@ -773,6 +774,7 @@ static const struct adsp_data sm8350_cdsp_resource = {
+ 	.crash_reason_smem = 601,
+ 	.firmware_name = "cdsp.mdt",
+ 	.pas_id = 18,
++	.minidump_id = 7,
+ 	.auto_boot = true,
+ 	.proxy_pd_names = (char*[]){
+ 		"cx",
 -- 
 2.43.0
 
