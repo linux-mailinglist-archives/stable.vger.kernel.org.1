@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-103735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9E49EF989
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31449EF718
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A8591892F6C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93302289179
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785C52288FD;
-	Thu, 12 Dec 2024 17:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D5D221D93;
+	Thu, 12 Dec 2024 17:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfL13GVg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQsSHSwh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346862288EF;
-	Thu, 12 Dec 2024 17:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D662153EC;
+	Thu, 12 Dec 2024 17:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025450; cv=none; b=fS26b0wARM4L1GWiZjVipHNHg/Jsxh9gq9fs5VpCCJQp20mPEUbokjHp3p69rpFsSwuqCE7ljhNt6aCjdZpqBXZgkNj64lSJW6/TeDyfuWvVVhUooUEHjMkOAQqcfcODhLHc8rz7ZQnydW6V5Nyk24nw0JvV6psB/KdKFocjntA=
+	t=1734024697; cv=none; b=p0TGYYCmjN6y38Ubg0eu7E+P8g4Ely7pvYYiXqMSNeYq8SvGCDYtFnR3jRywPEugR65w5LeCtSdC9hPElyeDC6vlwhaxGvhKPHrbQpjzvZ9Sd0A050bfmsO+/3P+DnJ5PI6dV5HQJOYGAVB1TiANItO5lUrElvWv3FayepsyaPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025450; c=relaxed/simple;
-	bh=5a9YNAKMNNXaAoewYZWNjaFOCNM9180pfEHMG2WO54g=;
+	s=arc-20240116; t=1734024697; c=relaxed/simple;
+	bh=Ncq3p/1YBie+qpiOSTqsXc76CEy8Cd0lithJEgFz9J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HyLCA2pv3UO+rb7+HPairHbPYtA7SyDY1xEoXzoP+xgAXE9si/43mF6/Z9cBCHWQmDu8xs3VSmzcqSG5VCeP0x4xoUC3EvXABjpFZ9A/UOHa8Am+FpsZa4msDYJnePkfjIXKBBGpj7CFIfJF0n9V3bJQY9N22ipNo1FuhN5o+H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfL13GVg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F1B1C4CED3;
-	Thu, 12 Dec 2024 17:44:09 +0000 (UTC)
+	 MIME-Version; b=BWt5VV80p4DKbtLzTgnS8YhzCCpG47j8Mcrl9u16IF8ppB+nAUGER53b+pP7hRrKqNoyaLXOn4nUDeoQlGbIfEBYTflKA0NH0Px2U9r+B5CcIWBaolFv5eZPT4JGSRSw00wj6G9haafzDYNiRVepADILrwWkyqtr81yE17x9/kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQsSHSwh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EACFC4CECE;
+	Thu, 12 Dec 2024 17:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025449;
-	bh=5a9YNAKMNNXaAoewYZWNjaFOCNM9180pfEHMG2WO54g=;
+	s=korg; t=1734024696;
+	bh=Ncq3p/1YBie+qpiOSTqsXc76CEy8Cd0lithJEgFz9J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfL13GVgOxDhp+jSyeMNqUREhjOJG8kWf3yQrdQdwqKvrGcjPkTONsPcq+ZHFKOQU
-	 BpN4wz+z5qea4EpF/IqnlLhU0qNxAJp9E9XOKd4B7Ix8sARlalkEO6j9UOv72VyBWQ
-	 fjstRcH/B4wMx8nsoqFSap+GI1hUu6L56LNUWc9s=
+	b=gQsSHSwhqFJATxlcBRrOET0LLhHljdLhWth0fxev6sWer8lV7CR6Jxm/WXkEV2K9r
+	 TuECWOC50zQ6JuC29YYo9/RVSm05gb+Y4I4N6KuLgs8Iey9fupf36ys+K4mFGbW2Kn
+	 hoXTIyiAHzxwTwefmRf7vWSP0YHjV/zy5KL2vEXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 172/321] ALSA: hda/realtek: Apply quirk for Medion E15433
+	stable@kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 352/459] i3c: master: Fix dynamic address leak when assigned-address is present
 Date: Thu, 12 Dec 2024 16:01:30 +0100
-Message-ID: <20241212144236.778222075@linuxfoundation.org>
+Message-ID: <20241212144307.562901126@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,36 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit ca0f79f0286046f6a91c099dc941cf7afae198d6 upstream.
+[ Upstream commit 851bd21cdb55e727ab29280bc9f6b678164f802a ]
 
-Medion E15433 laptop wich ALC269VC (SSID 2782:1705) needs the same
-workaround for the missing speaker as another model.
+If the DTS contains 'assigned-address', a dynamic address leak occurs
+during hotjoin events.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1233298
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241128072646.15659-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Assume a device have assigned-address 0xb.
+  - Device issue Hotjoin
+  - Call i3c_master_do_daa()
+  - Call driver xxx_do_daa()
+  - Call i3c_master_get_free_addr() to get dynamic address 0x9
+  - i3c_master_add_i3c_dev_locked(0x9)
+  -     expected_dyn_addr  = newdev->boardinfo->init_dyn_addr (0xb);
+  -     i3c_master_reattach_i3c_dev(newdev(0xb), old_dyn_addr(0x9));
+  -         if (dev->info.dyn_addr != old_dyn_addr &&
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 0xb != 0x9 -> TRUE
+                (!dev->boardinfo ||
+                 ^^^^^^^^^^^^^^^ ->  FALSE
+                 dev->info.dyn_addr != dev->boardinfo->init_dyn_addr)) {
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 0xb != 0xb      ->  FALSE
+                 ...
+                 i3c_bus_set_addr_slot_status(&master->bus, old_dyn_addr,
+                                                     I3C_ADDR_SLOT_FREE);
+		 ^^^
+                 This will be skipped. So old_dyn_addr never free
+            }
+
+  - i3c_master_get_free_addr() will return increased sequence number.
+
+Remove dev->info.dyn_addr != dev->boardinfo->init_dyn_addr condition check.
+dev->info.dyn_addr should be checked before calling this function because
+i3c_master_setnewda_locked() has already been called and the target device
+has already accepted dyn_addr. It is too late to check if dyn_addr is free
+in i3c_master_reattach_i3c_dev().
+
+Add check to ensure expected_dyn_addr is free before
+i3c_master_setnewda_locked().
+
+Fixes: cc3a392d69b6 ("i3c: master: fix for SETDASA and DAA process")
+Cc: stable@kernel.org
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241021-i3c_dts_assign-v8-3-4098b8bde01e@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i3c/master.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8550,6 +8550,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
-+	SND_PCI_QUIRK(0x2782, 0x1705, "MEDION E15433", ALC269VC_FIXUP_INFINIX_Y4_MAX),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index b86e1119df21d..0ade1ce2bbc89 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1413,16 +1413,9 @@ static int i3c_master_reattach_i3c_dev(struct i3c_dev_desc *dev,
+ 				       u8 old_dyn_addr)
+ {
+ 	struct i3c_master_controller *master = i3c_dev_get_master(dev);
+-	enum i3c_addr_slot_status status;
+ 	int ret;
+ 
+-	if (dev->info.dyn_addr != old_dyn_addr &&
+-	    (!dev->boardinfo ||
+-	     dev->info.dyn_addr != dev->boardinfo->init_dyn_addr)) {
+-		status = i3c_bus_get_addr_slot_status(&master->bus,
+-						      dev->info.dyn_addr);
+-		if (status != I3C_ADDR_SLOT_FREE)
+-			return -EBUSY;
++	if (dev->info.dyn_addr != old_dyn_addr) {
+ 		i3c_bus_set_addr_slot_status(&master->bus,
+ 					     dev->info.dyn_addr,
+ 					     I3C_ADDR_SLOT_I3C_DEV);
+@@ -1807,9 +1800,10 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+ 			goto err_rstdaa;
+ 		}
+ 
++		/* Do not mark as occupied until real device exist in bus */
+ 		i3c_bus_set_addr_slot_status_mask(&master->bus,
+ 						  i3cboardinfo->init_dyn_addr,
+-						  I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_DESIRED,
++						  I3C_ADDR_SLOT_EXT_DESIRED,
+ 						  I3C_ADDR_SLOT_EXT_STATUS_MASK);
+ 
+ 		/*
+@@ -1977,7 +1971,8 @@ int i3c_master_add_i3c_dev_locked(struct i3c_master_controller *master,
+ 	else
+ 		expected_dyn_addr = newdev->info.dyn_addr;
+ 
+-	if (newdev->info.dyn_addr != expected_dyn_addr) {
++	if (newdev->info.dyn_addr != expected_dyn_addr &&
++	    i3c_bus_get_addr_slot_status(&master->bus, expected_dyn_addr) == I3C_ADDR_SLOT_FREE) {
+ 		/*
+ 		 * Try to apply the expected dynamic address. If it fails, keep
+ 		 * the address assigned by the master.
+-- 
+2.43.0
+
 
 
 
