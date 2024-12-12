@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60DA9EF045
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 004D99EEC4F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA2DC2862B7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF4611885EDA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E022523FD22;
-	Thu, 12 Dec 2024 16:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16322135C1;
+	Thu, 12 Dec 2024 15:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHv7coAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9tdkiwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9854823FD1D;
-	Thu, 12 Dec 2024 16:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAEF2153FC;
+	Thu, 12 Dec 2024 15:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020116; cv=none; b=MQYmxYtsN5Lk+XbuBkuj/nbhDlEovmxp2VjiNhR3CIUtWJp4getuNm4WW7qY6wDJH85uLVHuXfXSQHcF8lbrB0Fv0/WireZbIcA5gHVjKYPQ4Shet39sjyU+jhrFJGbiG5Lx2+axKdqQ9ovImgTnB81wcXdLAS2M9PYkQgCgkSA=
+	t=1734017499; cv=none; b=TOxO9Q0tNbw41oRAAIbzhSJbUemD2yVirChnWReOQBl2anrjLVEC2GlP0QTLvUwPiLTL1yCAjhj+p9mI67PMNZJmmymJ7nodl2TYe/6FhulickKgDqvdIYM7BJFhnHuvwyudCaox+YXhqhsAwgk3ILZmUQKrGZ9g98/9XsAxEQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020116; c=relaxed/simple;
-	bh=fa9cYrVdgTMiCuoTpzAaZGdV06ocT+nR2VI7U2F23Us=;
+	s=arc-20240116; t=1734017499; c=relaxed/simple;
+	bh=P2HX1sHl3WExRUjbyYzOKlUYg+9kR3BgnM4TTuVmuv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=taTHulror/VWJ4t1CzQUkgeJ4jCXKSw9itjAv3ITG56kX3NX1kLI4xp9gaLuBvgmxg8JIqkKJsSdsFOh/36cDTKOUxg+QoZRCCwIb7aozOnzhyT+lwg90sT/6+5AeTyqboO9A/iOnhwKb2KHN7Ne1su1HPp8RxD+BuSwICOpEnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHv7coAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758FEC4CECE;
-	Thu, 12 Dec 2024 16:15:15 +0000 (UTC)
+	 MIME-Version; b=TpE6IJUy2UhC6reJpBsY2M8j8y+iZaW1jGSnzpahgF5JTmt2127GqJ4uelY/6jFHBWaTO6vBEbxC7Vc7S/NlTmSgPAzU6/RYDQ0Tj/frmek/I/NzupO+dY8HIahrwQSKGYT0teRvjmkTRCkheNJBWTkZhxWr2AQEZ/s6M6d0p/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9tdkiwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EFCC4CECE;
+	Thu, 12 Dec 2024 15:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020116;
-	bh=fa9cYrVdgTMiCuoTpzAaZGdV06ocT+nR2VI7U2F23Us=;
+	s=korg; t=1734017499;
+	bh=P2HX1sHl3WExRUjbyYzOKlUYg+9kR3BgnM4TTuVmuv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHv7coAA0Md6RpywmoEW1ygFhbr4cF0nRVvpx9FxFmqR6GPmzTYlSfbEUhRkfKA6y
-	 hkyKFZMQ5vAx0kWgyWbxULQIVCbKoNr/Na3COxcq1JlReKWkwaIC10ihx/JzE8wpQV
-	 Y7xURGHPGO1ghCfcSMZPQ3836a+NoAO7NDpMw6/E=
+	b=C9tdkiwKTlHevo3BgzcSjM4abInR0BnYWPW+S+E9xe4RQDId7ZZI5SKnwl9Z9qMIU
+	 TFNV59SIUOVIa85Id/WRT8ZG76ycz3SfDHlnTpl8o5kkephsbOTu3Jml4AjYjN/biM
+	 bE6j0c2zErtMeBCW4HHwBZHMKtFumoJYZlsv5SqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+01218003be74b5e1213a@syzkaller.appspotmail.com,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 6.1 381/772] exfat: fix uninit-value in __exfat_get_dentry_set
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 007/356] can: c_can: c_can_handle_bus_err(): update statistics if skb allocation fails
 Date: Thu, 12 Dec 2024 15:55:26 +0100
-Message-ID: <20241212144405.646945701@linuxfoundation.org>
+Message-ID: <20241212144244.906413354@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-commit 02dffe9ab092fc4c8800aee68cb7eafd37a980c4 upstream.
+[ Upstream commit 9e66242504f49e17481d8e197730faba7d99c934 ]
 
-There is no check if stream size and start_clu are invalid.
-If start_clu is EOF cluster and stream size is 4096, It will
-cause uninit value access. because ei->hint_femp.eidx could
-be 128(if cluster size is 4K) and wrong hint will allocate
-next cluster. and this cluster will be same with the cluster
-that is allocated by exfat_extend_valid_size(). The previous
-patch will check invalid start_clu, but for clarity, initialize
-hint_femp.eidx to zero.
+Ensure that the statistics are always updated, even if the skb
+allocation fails.
 
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+01218003be74b5e1213a@syzkaller.appspotmail.com
-Tested-by: syzbot+01218003be74b5e1213a@syzkaller.appspotmail.com
-Reviewed-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d6d26537940 ("can: c_can: fix {rx,tx}_errors statistics")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-2-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/namei.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/c_can/c_can_main.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/fs/exfat/namei.c
-+++ b/fs/exfat/namei.c
-@@ -364,6 +364,7 @@ static int exfat_find_empty_entry(struct
- 		if (ei->start_clu == EXFAT_EOF_CLUSTER) {
- 			ei->start_clu = clu.dir;
- 			p_dir->dir = clu.dir;
-+			hint_femp.eidx = 0;
- 		}
+diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
+index 511615dc33419..cc371d0c9f3c7 100644
+--- a/drivers/net/can/c_can/c_can_main.c
++++ b/drivers/net/can/c_can/c_can_main.c
+@@ -1014,49 +1014,57 @@ static int c_can_handle_bus_err(struct net_device *dev,
  
- 		/* append to the FAT chain */
+ 	/* propagate the error condition to the CAN stack */
+ 	skb = alloc_can_err_skb(dev, &cf);
+-	if (unlikely(!skb))
+-		return 0;
+ 
+ 	/* check for 'last error code' which tells us the
+ 	 * type of the last error to occur on the CAN bus
+ 	 */
+-	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
++	if (likely(skb))
++		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+ 
+ 	switch (lec_type) {
+ 	case LEC_STUFF_ERROR:
+ 		netdev_dbg(dev, "stuff error\n");
+-		cf->data[2] |= CAN_ERR_PROT_STUFF;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_STUFF;
+ 		stats->rx_errors++;
+ 		break;
+ 	case LEC_FORM_ERROR:
+ 		netdev_dbg(dev, "form error\n");
+-		cf->data[2] |= CAN_ERR_PROT_FORM;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_FORM;
+ 		stats->rx_errors++;
+ 		break;
+ 	case LEC_ACK_ERROR:
+ 		netdev_dbg(dev, "ack error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
+ 		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT1_ERROR:
+ 		netdev_dbg(dev, "bit1 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT1;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT1;
+ 		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT0_ERROR:
+ 		netdev_dbg(dev, "bit0 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT0;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT0;
+ 		stats->tx_errors++;
+ 		break;
+ 	case LEC_CRC_ERROR:
+ 		netdev_dbg(dev, "CRC error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
+ 		stats->rx_errors++;
+ 		break;
+ 	default:
+ 		break;
+ 	}
+ 
++	if (unlikely(!skb))
++		return 0;
++
+ 	netif_receive_skb(skb);
+ 	return 1;
+ }
+-- 
+2.43.0
+
 
 
 
