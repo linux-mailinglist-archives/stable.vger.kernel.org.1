@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-102702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6687A9EF332
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5189EF1DA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20A4A2810F2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490C517839F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C680E223E62;
-	Thu, 12 Dec 2024 16:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405DF22FE05;
+	Thu, 12 Dec 2024 16:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnLKHSn1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkpDEfiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82737223327;
-	Thu, 12 Dec 2024 16:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01D8223E62;
+	Thu, 12 Dec 2024 16:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022182; cv=none; b=oB3CL9v+qjuSKS3wnTUKgBr5oUAKcr7zb78bTvnvqqPzikBnKxgef4oQc3inIBKsSurjfAGoWF0Wjos9v8vbXguYepN9NJhfyMC6wHTV/R9JQyerK2XV7YahCz0gDfgvgNYXK4rxS3VkFBetK7DnfzoBoNjqot2ynPjaBBSc3vA=
+	t=1734020325; cv=none; b=IA5JjwvKBhtEEUbUt2Tdxw3OgfrJ0R4er40rJAsMqjmM3HsUZ2gSscxDOK13RuYvGlaCOK76lS/KKQ8/7iKshduSY4OKnqruwleI1zUqeTBm22LetastSzYDX9PiT0JTe2gdfEguWKPg30G94m6OIRQqlwOfezI+k1uXS5TCir4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022182; c=relaxed/simple;
-	bh=Bs0vdzr4Mn9aSGfziDxLrRSYJtXkgEowYjzBA2RmPjk=;
+	s=arc-20240116; t=1734020325; c=relaxed/simple;
+	bh=PccT+95dxrx/baZTIyVjdkp5gQiY13JFdI0E4QymdO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IujjIolcCjPcnhBE2Hpu+QGqMR+/yVrH2PrArNjRbTSRKqKZMgVYO7FY3utYxR8jUnVG+fsP3pOtzQkOB9BJqHzVG7SQQMkjWKVniZ1q5WBfr8wzNKsP5NwCUxoB1dTCmgzdakYyexLfWsF4BBOtDJnDvSTQhXXVEgW9o4ZuuDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnLKHSn1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD371C4CECE;
-	Thu, 12 Dec 2024 16:49:41 +0000 (UTC)
+	 MIME-Version; b=WZLm/WM3CoYHDI9gsXOVPtSWEb3iGBRr59vBvxKoTRUY1fT/Q0JiH/HlpMoTonIH+LRZcT4imLHt4jJsVI6N0CIKCriPceAKhW9Hvf5MB4V2XjZCavQfkUBCkHIwEgsigszYjprqMJ6Riwy6OQJrKJxAaRhTmqUk/GRw6aME9QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkpDEfiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662FAC4CECE;
+	Thu, 12 Dec 2024 16:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022182;
-	bh=Bs0vdzr4Mn9aSGfziDxLrRSYJtXkgEowYjzBA2RmPjk=;
+	s=korg; t=1734020324;
+	bh=PccT+95dxrx/baZTIyVjdkp5gQiY13JFdI0E4QymdO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LnLKHSn1lTX2QgJWywZdVs0UpnbLLMJNMZG2myBbzFmKZHXFV74F8Vdlj/qDoilas
-	 ebGYxM2ft+O89ySzQSRvqQLBdjVbKEctjVB8bXslyUDOpSf7M+XhCdyj5Ax4i16syM
-	 CIcy7ZNgEh/bPyTZWfH4E/1Rm0o9BlfIxh/gEEhw=
+	b=HkpDEfiCysVc1L8JFDotJ9lQAdBy0FNvjcdd4CBjMNMDWw+5PfoIb670mqF+GJml6
+	 C8XHv/S5HnR4HAeFvS90HrnV/D4bokR5cp8oeAeiHsi1VkWFcA1RlviU7NLt/EHSmg
+	 8kqNeK+pmRcsOoz5QIgokIZQYGc7Bv7KjxFVJNR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 171/565] drm/bridge: tc358767: Fix link properties discovery
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 421/772] ublk: fix error code for unsupported command
 Date: Thu, 12 Dec 2024 15:56:06 +0100
-Message-ID: <20241212144318.233300091@linuxfoundation.org>
+Message-ID: <20241212144407.312023455@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 2d343723c7e1f9f6d64f721f07cfdfc2993758d1 ]
+commit 34c1227035b3ab930a1ae6ab6f22fec1af8ab09e upstream.
 
-When a display controller driver uses DRM_BRIDGE_ATTACH_NO_CONNECTOR,
-tc358767 will behave properly and skip the creation of the connector.
+ENOTSUPP is for kernel use only, and shouldn't be sent to userspace.
 
-However, tc_get_display_props(), which is used to find out about the DP
-monitor and link, is only called from two places: .atomic_enable() and
-tc_connector_get_modes(). The latter is only used when tc358767 creates
-its own connector, i.e. when DRM_BRIDGE_ATTACH_NO_CONNECTOR is _not_
-set.
+Fix it by replacing it with EOPNOTSUPP.
 
-Thus, the driver never finds out the link properties before get_edid()
-is called. With num_lanes of 0 and link_rate of 0 there are not many
-valid modes...
-
-Fix this by adding tc_get_display_props() call at the beginning of
-get_edid(), so that we have up to date information before looking at the
-modes.
-
-Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
-Closes: https://lore.kernel.org/all/24282420-b4dd-45b3-bb1c-fc37fe4a8205@siemens.com/
-Fixes: de5e6c027ae6 ("drm/bridge: tc358767: add drm_panel_bridge support")
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Tested-by: Jan Kiszka <jan.kiszka@siemens.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231108-tc358767-v2-2-25c5f70a2159@ideasonboard.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: bfbcef036396 ("ublk_drv: move ublk_get_device_from_id into ublk_ctrl_uring_cmd")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241119030646.2319030-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/tc358767.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/block/ublk_drv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
-index 3436d39c90b4c..64ded2dd0c08f 100644
---- a/drivers/gpu/drm/bridge/tc358767.c
-+++ b/drivers/gpu/drm/bridge/tc358767.c
-@@ -1319,6 +1319,13 @@ static struct edid *tc_get_edid(struct drm_bridge *bridge,
- 				struct drm_connector *connector)
- {
- 	struct tc_data *tc = bridge_to_tc(bridge);
-+	int ret;
-+
-+	ret = tc_get_display_props(tc);
-+	if (ret < 0) {
-+		dev_err(tc->dev, "failed to read display props: %d\n", ret);
-+		return 0;
-+	}
- 
- 	return drm_get_edid(connector, &tc->aux.ddc);
- }
--- 
-2.43.0
-
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -2055,7 +2055,7 @@ static int ublk_ctrl_uring_cmd(struct io
+ 		ret = ublk_ctrl_end_recovery(ub, cmd);
+ 		break;
+ 	default:
+-		ret = -ENOTSUPP;
++		ret = -EOPNOTSUPP;
+ 		break;
+ 	}
+ 	if (ub)
 
 
 
