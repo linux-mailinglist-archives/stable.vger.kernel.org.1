@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2B39EF832
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 203499EF512
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C23F2189EE35
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C6828D254
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9719E222D7E;
-	Thu, 12 Dec 2024 17:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E25F213E6B;
+	Thu, 12 Dec 2024 17:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dj+7uIpe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAJIDiPf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B9B221D93;
-	Thu, 12 Dec 2024 17:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D046353365;
+	Thu, 12 Dec 2024 17:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024805; cv=none; b=UF2v64cmcbnJherNWXkJGHhLJwJ5LNoTdYSwrhVf5WYHal2EXbf49FBMkqN3Q/VSODzwJvifyz0vO3PXwEvxO51q2zA1C19dlMMesRCpNQeBkrtw0D9B43QOH3zbYfPH8riOJio5PpAr/unHyb7UVt694gxL90pM1nV7w/hUvcg=
+	t=1734023557; cv=none; b=nb5BCwskDeF9y1KX8Imqj99j8K03LxwwD43XSDwGSKSt63vMBvNMeB2b0uA1/sCr5YeK3AuxbEhhnONXY0Lgdi1EnzGwqrNT/+kW+ioh3O1m8GO/karGMHLVDLpCj0MxEcCbjcGVeTA0repnQaaC/9+IvY70XO1bvEJr4vgjFwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024805; c=relaxed/simple;
-	bh=vZgYJLUnK6D68nLBhrGX2oU2PVWnTbdNcaxAqQokZdw=;
+	s=arc-20240116; t=1734023557; c=relaxed/simple;
+	bh=7ugiDzyqmtymFq5Q80d12FBNkHrb0qy9jYJqHvtgOT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVh+SxDBjLkEkbcx/yvWWSbMITVNlgY5z4+rF1jsmPZCAVO7hmVHIzMu4Xs9xlmOZF/hYbMbdgF3SkgUBmpa/vIozKejSoA60jgGzvEuaz5puDua+kcjCUjl/GkDCXNqa8skNffgFO4rqJhv6RJRSQaSDdCwrYmAMYGHKN0lAzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dj+7uIpe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92898C4CECE;
-	Thu, 12 Dec 2024 17:33:24 +0000 (UTC)
+	 MIME-Version; b=Nrd7vajnWlmrvgeAOGKNzBvZHLBpkkOwXVGFJjE1VxcWVqfmCQ+/aPK2b/CxBS4g4SJ6EzkVQUnMvFAf3jWqNuaNs5fyRYqhvVbdOlCI+WBsrmXtnaWnYJwtFS+VFK2TeZE0erwPhMu69/ziCKpQf4bDlhBpQZkLClC6brkY5b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAJIDiPf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EDCC4CED4;
+	Thu, 12 Dec 2024 17:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024805;
-	bh=vZgYJLUnK6D68nLBhrGX2oU2PVWnTbdNcaxAqQokZdw=;
+	s=korg; t=1734023557;
+	bh=7ugiDzyqmtymFq5Q80d12FBNkHrb0qy9jYJqHvtgOT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dj+7uIpe0LgjqDLYt7oGmiq6YveWRLSzSboFcttXPzY+tn2s2gBqsNcDqgrpspf9L
-	 yb9ODKK81LuF9dCF2RCRSEYS2q++5KUsRq6wGap16mmgqv3Z4jrrQqw3EuE9jeyJoX
-	 atr1atRmUrMPCzXWNbVDl4FBUUWhpWDncfuoIU7g=
+	b=qAJIDiPfnhvt5p+lEGlJWFqQ8vaK4MQGXTje7hZOcHdJJ2RjDAeCNftT5pLOINcuP
+	 RZXdQDp119vIuSjHfk8939Zs8emqx3Hn/8xF6XtysL20TRoZ5z6f+SU2CkxfuxPEtn
+	 5tj6UZd9W6Sz3wy5xOfuBDOX/4erqT+a6+NmbiFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abaci Robot <abaci@linux.alibaba.com>,
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 410/459] wifi: ipw2x00: libipw_rx_any(): fix bad alignment
-Date: Thu, 12 Dec 2024 16:02:28 +0100
-Message-ID: <20241212144309.960611648@linuxfoundation.org>
+	Damien Le Moal <damien.lemoal@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 554/565] scsi: core: Fix scsi_mode_select() buffer length handling
+Date: Thu, 12 Dec 2024 16:02:29 +0100
+Message-ID: <20241212144333.762072965@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+From: Damien Le Moal <damien.lemoal@wdc.com>
 
-[ Upstream commit 4fa4f049dc0d9741b16c96bcbf0108c85368a2b9 ]
+commit a7d6840bed0c2b16ac3071b74b5fcf08fc488241 upstream.
 
-This patch fixes incorrect code alignment.
+The MODE SELECT(6) command allows handling mode page buffers that are up to
+255 bytes, including the 4 byte header needed in front of the page
+buffer. For requests larger than this limit, automatically use the MODE
+SELECT(10) command.
 
-./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:871:2-3: code aligned with following code on line 882.
-./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:886:2-3: code aligned with following code on line 900.
+In both cases, since scsi_mode_select() adds the mode select page header,
+checks on the buffer length value must include this header size to avoid
+overflows of the command CDB allocation length field.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11381
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241101060725.54640-1-jiapeng.chong@linux.alibaba.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While at it, use put_unaligned_be16() for setting the header block
+descriptor length and CDB allocation length when using MODE SELECT(10).
+
+[mkp: fix MODE SENSE vs. MODE SELECT confusion]
+
+Link: https://lore.kernel.org/r/20210820070255.682775-3-damien.lemoal@wdc.com
+Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/scsi_lib.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-index 5a2a723e480b0..4c6e742c56958 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-@@ -870,8 +870,8 @@ void libipw_rx_any(struct libipw_device *ieee,
- 	switch (ieee->iw_mode) {
- 	case IW_MODE_ADHOC:
- 		/* our BSS and not from/to DS */
--		if (ether_addr_equal(hdr->addr3, ieee->bssid))
--		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == 0) {
-+		if (ether_addr_equal(hdr->addr3, ieee->bssid) &&
-+		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0)) {
- 			/* promisc: get all */
- 			if (ieee->dev->flags & IFF_PROMISC)
- 				is_packet_for_us = 1;
-@@ -885,8 +885,8 @@ void libipw_rx_any(struct libipw_device *ieee,
- 		break;
- 	case IW_MODE_INFRA:
- 		/* our BSS (== from our AP) and from DS */
--		if (ether_addr_equal(hdr->addr2, ieee->bssid))
--		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS) {
-+		if (ether_addr_equal(hdr->addr2, ieee->bssid) &&
-+		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS)) {
- 			/* promisc: get all */
- 			if (ieee->dev->flags & IFF_PROMISC)
- 				is_packet_for_us = 1;
--- 
-2.43.0
-
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -2044,8 +2044,15 @@ scsi_mode_select(struct scsi_device *sde
+ 	memset(cmd, 0, sizeof(cmd));
+ 	cmd[1] = (pf ? 0x10 : 0) | (sp ? 0x01 : 0);
+ 
+-	if (sdev->use_10_for_ms) {
+-		if (len > 65535)
++	/*
++	 * Use MODE SELECT(10) if the device asked for it or if the mode page
++	 * and the mode select header cannot fit within the maximumm 255 bytes
++	 * of the MODE SELECT(6) command.
++	 */
++	if (sdev->use_10_for_ms ||
++	    len + 4 > 255 ||
++	    data->block_descriptor_length > 255) {
++		if (len > 65535 - 8)
+ 			return -EINVAL;
+ 		real_buffer = kmalloc(8 + len, GFP_KERNEL);
+ 		if (!real_buffer)
+@@ -2058,15 +2065,13 @@ scsi_mode_select(struct scsi_device *sde
+ 		real_buffer[3] = data->device_specific;
+ 		real_buffer[4] = data->longlba ? 0x01 : 0;
+ 		real_buffer[5] = 0;
+-		real_buffer[6] = data->block_descriptor_length >> 8;
+-		real_buffer[7] = data->block_descriptor_length;
++		put_unaligned_be16(data->block_descriptor_length,
++				   &real_buffer[6]);
+ 
+ 		cmd[0] = MODE_SELECT_10;
+-		cmd[7] = len >> 8;
+-		cmd[8] = len;
++		put_unaligned_be16(len, &cmd[7]);
+ 	} else {
+-		if (len > 255 || data->block_descriptor_length > 255 ||
+-		    data->longlba)
++		if (data->longlba)
+ 			return -EINVAL;
+ 
+ 		real_buffer = kmalloc(4 + len, GFP_KERNEL);
 
 
 
