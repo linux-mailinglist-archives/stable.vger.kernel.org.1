@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC989EF101
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 295BA9EED24
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D2E729E853
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 934221888EAD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3062237FF5;
-	Thu, 12 Dec 2024 16:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9932185B1;
+	Thu, 12 Dec 2024 15:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoE4y42q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5t+DYuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEBA237FEB;
-	Thu, 12 Dec 2024 16:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393092135C1;
+	Thu, 12 Dec 2024 15:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020582; cv=none; b=kP+0Y8yNP4gM0cDAe4RpSwD+kHMAZ5f8oooQafVik41eV6nliJwub/+GulSa+76SnNldu7Vz8jqgWoVkcSVeqaJUBT/5epwrLWYpm1/6QQT9NftFLV62MuSeXHg9/rJIua3mkHU1PUS8rAbeWe0jaxaHUI24TGqKRMuB84nvno4=
+	t=1734017969; cv=none; b=liv6HpMAB9p+8bj4iZK0pgYWdPSWkrUP5ntEIT2eWt2gkF/zXrCwMWQckrANQ7sznhbdt4n6zutus7ggBwWH2WEu5Fyg8iGUZEAujHcMGkMmvI3aE51G4AdOaos1Mm882OPstwwU3dOL3XV+6B2Q9yUVrQ5y+pFsbxH+pljVQ3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020582; c=relaxed/simple;
-	bh=W2MR3z9uXk/bGhlbSU/BIuWV5Lzu8Nf6a6h460hcqHg=;
+	s=arc-20240116; t=1734017969; c=relaxed/simple;
+	bh=kCegjJ3Z0+aF4LCVedvb8DmUEppJ3XS40KzPl3SUQfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6GCV6NKG7bpIfbF/B8kw4DkRxnwrDjn29EGqo3nkiuM/Z/3TT1+wHUzw8xfdeeLSQxQKToiPba9RY0LHBvjIxv8Hf05/kcAuItoV/MzGfLcjUMflETwBKSHp6DbEA/eHHSReeMVIyf3YaJ3IDI562JAq3KVXhvOOHVpuZzIN14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoE4y42q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DC8C4CECE;
-	Thu, 12 Dec 2024 16:23:01 +0000 (UTC)
+	 MIME-Version; b=dAiuZvofUwMLm+Aje0+KqDwIaSTuuumc9M+wjLC+X9AIqrOPihPBwCozhYN/VFzXOhaS7riu9yYvPsFZCBf/HDBDad1qSe1W/qrEc4vxw4bTauMH/o8M4MAzj1lWeSsiipKBfwx8Y3mSHDoPM+8UkD87JZYVBgs6w0XBl7IVAdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5t+DYuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C12C4CECE;
+	Thu, 12 Dec 2024 15:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020582;
-	bh=W2MR3z9uXk/bGhlbSU/BIuWV5Lzu8Nf6a6h460hcqHg=;
+	s=korg; t=1734017968;
+	bh=kCegjJ3Z0+aF4LCVedvb8DmUEppJ3XS40KzPl3SUQfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BoE4y42qdLYML6Q5+J4uIOPSF/KsA5oAA/6Axqr1w6+PQG9201caxO81KJgzOw5WF
-	 bvLTyscRMohMFdsjrSvfucXnC+NllGuhLJN8ZnmjWXePTd/7ZYjtMIE7yr3FlCEkqC
-	 3bTpupIeZveani9K+JVgYKT1TYycoU7av0npfGoM=
+	b=D5t+DYuCiC6ruIBLTHVaKj/ku+LpmLmrU7s4KUUm39DtXnLU/pEzU45nBBS1oL1HI
+	 m+DilkJ3VEmnrcNxc3SXYdI1JPE+L6KLt6JHLbYKvb13fsgi3luzygb5qZz7p4dxTv
+	 v6KODvNOFppRB60YcZjgJfdc2M1iz0svmVX08Bbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Lucas Stach <l.stach@pengutronix.de>
-Subject: [PATCH 6.1 505/772] drm/etnaviv: flush shader L1 cache after user commandstream
+	Randy Dunlap <rdunlap@infradead.org>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 131/356] scatterlist: fix incorrect func name in kernel-doc
 Date: Thu, 12 Dec 2024 15:57:30 +0100
-Message-ID: <20241212144410.826079974@linuxfoundation.org>
+Message-ID: <20241212144249.826944485@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 4f8dbadef085ab447a01a8d4806a3f629fea05ed upstream.
+[ Upstream commit d89c8ec0546184267cb211b579514ebaf8916100 ]
 
-The shader L1 cache is a writeback cache for shader loads/stores
-and thus must be flushed before any BOs backing the shader buffers
-are potentially freed.
+Fix a kernel-doc warning by making the kernel-doc function description
+match the function name:
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+include/linux/scatterlist.h:323: warning: expecting prototype for sg_unmark_bus_address(). Prototype was for sg_dma_unmark_bus_address() instead
+
+Link: https://lkml.kernel.org/r/20241130022406.537973-1-rdunlap@infradead.org
+Fixes: 42399301203e ("lib/scatterlist: add flag for indicating P2PDMA segments in an SGL")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_buffer.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/scatterlist.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-@@ -481,7 +481,8 @@ void etnaviv_buffer_queue(struct etnaviv
- 	} else {
- 		CMD_LOAD_STATE(buffer, VIVS_GL_FLUSH_CACHE,
- 				       VIVS_GL_FLUSH_CACHE_DEPTH |
--				       VIVS_GL_FLUSH_CACHE_COLOR);
-+				       VIVS_GL_FLUSH_CACHE_COLOR |
-+				       VIVS_GL_FLUSH_CACHE_SHADER_L1);
- 		if (has_blt) {
- 			CMD_LOAD_STATE(buffer, VIVS_BLT_ENABLE, 0x1);
- 			CMD_LOAD_STATE(buffer, VIVS_BLT_SET_COMMAND, 0x1);
+diff --git a/include/linux/scatterlist.h b/include/linux/scatterlist.h
+index 77df3d7b18a61..d45529cbd0bd5 100644
+--- a/include/linux/scatterlist.h
++++ b/include/linux/scatterlist.h
+@@ -313,7 +313,7 @@ static inline void sg_dma_mark_bus_address(struct scatterlist *sg)
+ }
+ 
+ /**
+- * sg_unmark_bus_address - Unmark the scatterlist entry as a bus address
++ * sg_dma_unmark_bus_address - Unmark the scatterlist entry as a bus address
+  * @sg:		 SG entry
+  *
+  * Description:
+-- 
+2.43.0
+
 
 
 
