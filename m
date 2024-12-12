@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0909EEDCC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C16929EEBBC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2D9F188FDCD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23AFD1674FA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EDC13792B;
-	Thu, 12 Dec 2024 15:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9EA2153F4;
+	Thu, 12 Dec 2024 15:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeMs2FhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YI9XiDcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DDD14A82;
-	Thu, 12 Dec 2024 15:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6FC209693;
+	Thu, 12 Dec 2024 15:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018318; cv=none; b=I1tYi7fCzDEuEJd9+a6Nseuhp0I/xdpYCIpoeFRUmwmDIURo0A5ulC60HDHghboReFw1Rp86Xq21iMeqm+27HURgltZM410sZXs4AbwfOpVtEB1OXydP9O0ZSImZU1YYCxd0uKscuN0hqki0P1C5a+W2TQcnRe3UjO3I7Hy+N90=
+	t=1734017089; cv=none; b=pIewy5XpqQxKgSs53ZsD7UVej+3ZeCj5IAhW1MV6zeJDKMsVuHojh/5MMrpNUlsANbaQTrJgfASTyTjFkYsb+lHS2yOuxsAuARfTjySs24+fKqfGMnHNdsEQOZ1FR02rwxzSpIwFqqoPFXJH+UpfApFrErGbY8Wli+VIJ94uRXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018318; c=relaxed/simple;
-	bh=pPB0gMALgvBR3Ee8sALepERp7jbUq5VwCD87dASfe5E=;
+	s=arc-20240116; t=1734017089; c=relaxed/simple;
+	bh=uWe27rmbNwgdjToDk9kROja4nC3rqDJ42xFKI7Q+wSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfk+HxECoZspSfIV1Oox+69zjsku0oqiOSvoleKDTrpR49kWJM3c5mNbHofO3OhXYW+lFJG6aO2xTtWoc/CF0sAunKxNpfhUfLd0GQRzx98xN0EhaO4ZNuY7wQnrNh69X32VYgRw5iDJ7O7A8ShFa4hTdJdHh+D7pEZPQpBcnU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AeMs2FhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07288C4CECE;
-	Thu, 12 Dec 2024 15:45:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uudDJpym5WrP3RGszrqyxjNemBxeHC88TLElgciy52i+vynL7JtB7Gj9OdU9BaKOoJ01kjdAANJaJW2h0ZCYW3ryJdH9DyrmK52wad/+ebQJTcD7yJgi6R8XAu3NJ7e2MzVXMCClUqbhAejSbSrExUg4uC42E4BY204UtHXhPwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YI9XiDcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD125C4CECE;
+	Thu, 12 Dec 2024 15:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018318;
-	bh=pPB0gMALgvBR3Ee8sALepERp7jbUq5VwCD87dASfe5E=;
+	s=korg; t=1734017089;
+	bh=uWe27rmbNwgdjToDk9kROja4nC3rqDJ42xFKI7Q+wSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AeMs2FhAGnVJYVkJ4/30BwoE4EEGp/ofUOaM1e4gFOzgrR9zSei9K8aHVd/bAPvYH
-	 2UOwpJb0CPyaflF3VKCbjMCv4RAd8TG7qZar0IWgNTwis7XorH6a69ToC451Oydj3a
-	 2FasgjMZol0qaLhpZOwWNXUMM4DsfMrn1bb9NU0I=
+	b=YI9XiDcKaRL1HnqY+tUEZ6D2NKIRYIqYSVKTAXstzO+Ukno3H8mspqia8nEZBEiXX
+	 MKGdpzs0Jv4yQRZnzy9JaBxH9zLNQpdIunFb7kRdAJ1DVV+8lcRuwm7EKwwctufBBb
+	 42zULgaXOokxGn6ksbay0sXhONAt8CmCMrEvdFfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/356] net: inet: do not leave a dangling sk pointer in inet_create()
+Subject: [PATCH 6.12 379/466] pinctrl: qcom-pmic-gpio: add support for PM8937
 Date: Thu, 12 Dec 2024 15:59:08 +0100
-Message-ID: <20241212144253.667444511@linuxfoundation.org>
+Message-ID: <20241212144321.745864696@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 9365fa510c6f82e3aa550a09d0c5c6b44dbc78ff ]
+[ Upstream commit 89265a58ff24e3885c2c9ca722bc3aaa47018be9 ]
 
-sock_init_data() attaches the allocated sk object to the provided sock
-object. If inet_create() fails later, the sk object is freed, but the
-sock object retains the dangling pointer, which may create use-after-free
-later.
+PM8937 has 8 GPIO-s with holes on GPIO3, GPIO4 and GPIO6.
 
-Clear the sk pointer in the sock object on error.
-
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-7-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/20241031-msm8917-v2-2-8a075faa89b1@mainlining.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/af_inet.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 3feff7f738a48..f336b2ddf9724 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -375,32 +375,30 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
- 		inet->inet_sport = htons(inet->inet_num);
- 		/* Add to protocol hash chains. */
- 		err = sk->sk_prot->hash(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- 
- 	if (sk->sk_prot->init) {
- 		err = sk->sk_prot->init(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- 
- 	if (!kern) {
- 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- out:
- 	return err;
- out_rcu_unlock:
- 	rcu_read_unlock();
- 	goto out;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- 
+diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+index a0eb4e01b3a75..1b7eecff3ffa4 100644
+--- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
++++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+@@ -1226,6 +1226,8 @@ static const struct of_device_id pmic_gpio_of_match[] = {
+ 	{ .compatible = "qcom,pm8550ve-gpio", .data = (void *) 8 },
+ 	{ .compatible = "qcom,pm8550vs-gpio", .data = (void *) 6 },
+ 	{ .compatible = "qcom,pm8916-gpio", .data = (void *) 4 },
++	/* pm8937 has 8 GPIOs with holes on 3, 4 and 6 */
++	{ .compatible = "qcom,pm8937-gpio", .data = (void *) 8 },
+ 	{ .compatible = "qcom,pm8941-gpio", .data = (void *) 36 },
+ 	/* pm8950 has 8 GPIOs with holes on 3 */
+ 	{ .compatible = "qcom,pm8950-gpio", .data = (void *) 8 },
 -- 
 2.43.0
 
