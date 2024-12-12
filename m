@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-101884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F7D9EEF29
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FAC9EEF11
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:09:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D887287A40
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:11:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E8451887FBC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B50241F20;
-	Thu, 12 Dec 2024 15:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB85E22A801;
+	Thu, 12 Dec 2024 15:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stcaYij8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cfc6Ceh0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C99E226524;
-	Thu, 12 Dec 2024 15:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F3D22A7FA;
+	Thu, 12 Dec 2024 15:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019147; cv=none; b=WnS5xiNwWRNKM3K2mq0cxSjA7Lv/pYYA/CiFoaZ5OjYkec/r3aaysp+ieRdrD5DlXXezBb1dZ31W7ZomAqrb3ihCBCkVyX+GN4tp3PCfVHfJ0dg0+/MWnGwd4P05lWO/i/Bk526zeihRwkNqAML9LdB+6Fn0w1Fsu8n0XMNbEeM=
+	t=1734019037; cv=none; b=djGmXNfl6F7/SOA99i4K2GNvpNWuU0ZisFNT55D8n73xrK0thd/hzBu1c35ernRRdIS5wnJqA2ke3v9oQBxVe+4antW2kyTPycDNAfj0r3XzXY2IwcT3XQhWZAQz/n8s438Fv3kV6h5f9Nd2mXCGOLvErov0KuUrRVIVSGbZ9gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019147; c=relaxed/simple;
-	bh=vi4ljSwieDYG6+RMICZJIiQ5mgDVY9rS5GezwJ1e3vk=;
+	s=arc-20240116; t=1734019037; c=relaxed/simple;
+	bh=dA25VX0qrZGDBBSdRQDD4692DI0QNtf6/yHoCiHiZRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsxXmLLHtpTvaLQJHB4ID0SvP0cO2T+MsQ/IAvnc3PpizlE2ZYjJLv/UkPewaIQzyzmPPK8h9gzFBCu7vThRP7Z/cNV4wwRjUOQSeG8acz7Q8KpWJXc/e93kiyzEwx4IajxXyO+39SBsxznDLwHy2UDQiXtfYN4G6FOL/MXbGUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stcaYij8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C954C4CED0;
-	Thu, 12 Dec 2024 15:59:06 +0000 (UTC)
+	 MIME-Version; b=kXHXWmj73/wMoS63czwPlrGMSe3vIXmsKGyejvGsJym9YFVcpQ0BM9xsFRAq/owawaukLrFCZ9eEZlPfaVMryR2cRP49dmLWdNXzyM/tfseR8sji42rItdDZill0Xd6SzBSng9J7Ipoyqh9yGmFm3C0hpopboVbBxAglXy3d0gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cfc6Ceh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2ACEC4CECE;
+	Thu, 12 Dec 2024 15:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019146;
-	bh=vi4ljSwieDYG6+RMICZJIiQ5mgDVY9rS5GezwJ1e3vk=;
+	s=korg; t=1734019037;
+	bh=dA25VX0qrZGDBBSdRQDD4692DI0QNtf6/yHoCiHiZRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stcaYij8ACI1ExxMCc/B/avsRliKFjFtB1B8Yq+dGiRPEbTkUVpdVDbgUVzlyLkI1
-	 3UzTQ21Lvor6VtFZerpogTNUFTBn6VcPW6jRiw7Z5BFqjv3xSVL0QdzgGlG0vwmWLZ
-	 Dr95Z/QzWN3dzvO6u0H/saDR1zRybTh6NalIgFEI=
+	b=Cfc6Ceh0rsFUWRASrTf9FJOZaV6mMzR7BYoIQbhQIMtNRgee7EPkH98kRHVtjaCxZ
+	 2cTXHtGTt14eTdoQyoeGD8YJx3zWIwMT2tJ6uFeZOljmnnQydAvZvyaHJ3X+9ICEtS
+	 836HUHRc5I72MDg4OtRQl1tl48tRn9CYVdLxwOxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/772] tpm: fix signed/unsigned bug when checking event logs
-Date: Thu, 12 Dec 2024 15:50:45 +0100
-Message-ID: <20241212144354.074982116@linuxfoundation.org>
+Subject: [PATCH 6.1 101/772] arm64: dts: mt8183: krane: Fix the address of eeprom at i2c4
+Date: Thu, 12 Dec 2024 15:50:46 +0100
+Message-ID: <20241212144354.115690209@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -67,81 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gregory Price <gourry@gourry.net>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit e6d654e9f5a97742cfe794b1c4bb5d3fb2d25e98 ]
+[ Upstream commit e9c60c34948662b5d47573490ee538439b29e462 ]
 
-A prior bugfix that fixes a signed/unsigned error causes
-another signed unsigned error.
+The address of eeprom should be 50.
 
-A situation where log_tbl->size is invalid can cause the
-size passed to memblock_reserve to become negative.
-
-log_size from the main event log is an unsigned int, and
-the code reduces to the following
-
-u64 value = (int)unsigned_value;
-
-This results in sign extension, and the value sent to
-memblock_reserve becomes effectively negative.
-
-Fixes: be59d57f9806 ("efi/tpm: Fix sanity check of unsigned tbl_size being less than zero")
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/r/20240909-eeprom-v1-1-1ed2bc5064f4@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/tpm.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index e8d69bd548f3f..9c3613e6af158 100644
---- a/drivers/firmware/efi/tpm.c
-+++ b/drivers/firmware/efi/tpm.c
-@@ -40,7 +40,8 @@ int __init efi_tpm_eventlog_init(void)
- {
- 	struct linux_efi_tpm_eventlog *log_tbl;
- 	struct efi_tcg2_final_events_table *final_tbl;
--	int tbl_size;
-+	unsigned int tbl_size;
-+	int final_tbl_size;
- 	int ret = 0;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
+index 181da69d18f46..b0469a95ddc43 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
+@@ -89,9 +89,9 @@ &i2c4 {
+ 	clock-frequency = <400000>;
+ 	vbus-supply = <&mt6358_vcn18_reg>;
  
- 	if (efi.tpm_log == EFI_INVALID_TABLE_ADDR) {
-@@ -80,26 +81,26 @@ int __init efi_tpm_eventlog_init(void)
- 		goto out;
- 	}
- 
--	tbl_size = 0;
-+	final_tbl_size = 0;
- 	if (final_tbl->nr_events != 0) {
- 		void *events = (void *)efi.tpm_final_log
- 				+ sizeof(final_tbl->version)
- 				+ sizeof(final_tbl->nr_events);
- 
--		tbl_size = tpm2_calc_event_log_size(events,
--						    final_tbl->nr_events,
--						    log_tbl->log);
-+		final_tbl_size = tpm2_calc_event_log_size(events,
-+							  final_tbl->nr_events,
-+							  log_tbl->log);
- 	}
- 
--	if (tbl_size < 0) {
-+	if (final_tbl_size < 0) {
- 		pr_err(FW_BUG "Failed to parse event in TPM Final Events Log\n");
- 		ret = -EINVAL;
- 		goto out_calc;
- 	}
- 
- 	memblock_reserve(efi.tpm_final_log,
--			 tbl_size + sizeof(*final_tbl));
--	efi_tpm_final_log_size = tbl_size;
-+			 final_tbl_size + sizeof(*final_tbl));
-+	efi_tpm_final_log_size = final_tbl_size;
- 
- out_calc:
- 	early_memunmap(final_tbl, sizeof(*final_tbl));
+-	eeprom@54 {
++	eeprom@50 {
+ 		compatible = "atmel,24c32";
+-		reg = <0x54>;
++		reg = <0x50>;
+ 		pagesize = <32>;
+ 		vcc-supply = <&mt6358_vcn18_reg>;
+ 	};
 -- 
 2.43.0
 
