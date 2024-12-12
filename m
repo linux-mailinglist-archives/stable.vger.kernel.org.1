@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3331E9EF0C2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 925D09EF2DB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B22FF1891CBD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED7FC287CCC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFDF23ED45;
-	Thu, 12 Dec 2024 16:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1C5236926;
+	Thu, 12 Dec 2024 16:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsY57tR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai5vFRLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F375521CFF0;
-	Thu, 12 Dec 2024 16:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5EB235C5E;
+	Thu, 12 Dec 2024 16:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019976; cv=none; b=hZmK1B3d52IaBLmRuzgpQj8ipPSfEku8X3lq33FCTuFZW1B2UIyh8XF5/EH0+NoRHz2GikRgTHlA3uACx1zsaVDdCplt4EQVnWPcRyE42Jtea9TMuSW6Qy+xwvnVjlOcwVL3I1WBdGn82z7yT51xAvvqh2woECLPePv2k3L++60=
+	t=1734021909; cv=none; b=Ao7XYzzaxZ36zWCe+zHT5rrnon0KnKQ2+0ZIyXfJ9UxfNaLwpuQiNbH291dAyW+sgP1sxMymmaiKAqC6B0Tc/Qgu4KML/EGyhor6rYMTgPur/DWbPS+M43Cxlrj/ZO2spHdEXEjQAzt2Nh/nRjIdXr6xH3vQZ+Q4K2WeZbOC4hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019976; c=relaxed/simple;
-	bh=0twdHZYYEV400CHqB2ib/oOYE9io30l83OHySeivKoY=;
+	s=arc-20240116; t=1734021909; c=relaxed/simple;
+	bh=J2lB091Y+m34Wd4VBLQeBtS/iNmST9Ye6lNrCfV+u28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCnk49D+fJBMTy2sRD2nUxSejKa2/5KL/rdKETAKbtTX6l2jRLrRYnVN2LVMM3/p7F5wxD1X8AaNzVxdWu+qckLadBjQTdefWYXvWdJ2kCbGLcXEAeqVWQNoDId/2AapFyl4ULEH88Vdk4ClWnYA/VD9vyxtsXAibTQLbr5UrAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsY57tR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47643C4CED0;
-	Thu, 12 Dec 2024 16:12:55 +0000 (UTC)
+	 MIME-Version; b=k9VLRQ7D8M6cyhOFVRHD0q3/UTM72gTieAPoL7ejFjQXMvY/ySfjbE4rkYzu3uZ2OYI15Li8qf7lv0Bg/XSFnV/JqCmViesIv1XtfGNAtQPPHj2QXufMdz3mrHzU4D0R2Xwa9gEUFTqKICHXzxzMNIdZ+lWzGilt/z/tLeOg+iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ai5vFRLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BAAC4CECE;
+	Thu, 12 Dec 2024 16:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019975;
-	bh=0twdHZYYEV400CHqB2ib/oOYE9io30l83OHySeivKoY=;
+	s=korg; t=1734021908;
+	bh=J2lB091Y+m34Wd4VBLQeBtS/iNmST9Ye6lNrCfV+u28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsY57tR9FiSAz9rwczbHbwN1NqUC4eQ8synFnkyOaZCB9TlMAsQND/XDaqT+jXhOR
-	 ZAupbkqMps4x4SQIQMf+PisNwnAyibhoERjH3ssEU0oWsYQelHm9xQqD7SVbkNCwF6
-	 lUbzwv+l4DFaFjKKf5UISvPInB+Oz8zdluvtyd2M=
+	b=Ai5vFRLyw2XrrWVk2Jz7DUPX8SD1GTc277OZi9IJ+FYf63QnN0iWQ6LA5zrdoINB5
+	 fEVXwApdjjt+2tCTgZ0gfu1C/NkDcL8Au+Vzul+/ha3RzWqaMBqq/5dl2Jgyivq+oV
+	 88S/25Hf13BvXam2c+SH7eDMBmkxq48I/9jLrbfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>
-Subject: [PATCH 6.1 346/772] wifi: iwlwifi: mvm: avoid NULL pointer dereference
-Date: Thu, 12 Dec 2024 15:54:51 +0100
-Message-ID: <20241212144404.208141457@linuxfoundation.org>
+	Yi Yang <yiyang13@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 097/565] crypto: pcrypt - Call crypto layer directly when padata_do_parallel() return -EBUSY
+Date: Thu, 12 Dec 2024 15:54:52 +0100
+Message-ID: <20241212144315.321000465@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-commit 557a6cd847645e667f3b362560bd7e7c09aac284 upstream.
+[ Upstream commit 662f2f13e66d3883b9238b0b96b17886179e60e2 ]
 
-iwl_mvm_tx_skb_sta() and iwl_mvm_tx_mpdu() verify that the mvmvsta
-pointer is not NULL.
-It retrieves this pointer using iwl_mvm_sta_from_mac80211, which is
-dereferencing the ieee80211_sta pointer.
-If sta is NULL, iwl_mvm_sta_from_mac80211 will dereference a NULL
-pointer.
-Fix this by checking the sta pointer before retrieving the mvmsta
-from it. If sta is not NULL, then mvmsta isn't either.
+Since commit 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for
+PADATA_RESET"), the pcrypt encryption and decryption operations return
+-EAGAIN when the CPU goes online or offline. In alg_test(), a WARN is
+generated when pcrypt_aead_decrypt() or pcrypt_aead_encrypt() returns
+-EAGAIN, the unnecessary panic will occur when panic_on_warn set 1.
+Fix this issue by calling crypto layer directly without parallelization
+in that case.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20240825191257.880921ce23b7.I340052d70ab6d3410724ce955eb00da10e08188f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for PADATA_RESET")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ crypto/pcrypt.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1105,6 +1105,9 @@ static int iwl_mvm_tx_mpdu(struct iwl_mv
- 	bool is_ampdu = false;
- 	int hdrlen;
+diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
+index 005a36cb21bc4..2d7f98709e97c 100644
+--- a/crypto/pcrypt.c
++++ b/crypto/pcrypt.c
+@@ -117,8 +117,10 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psenc, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
+-	if (err == -EBUSY)
+-		return -EAGAIN;
++	if (err == -EBUSY) {
++		/* try non-parallel mode */
++		return crypto_aead_encrypt(creq);
++	}
  
-+	if (WARN_ON_ONCE(!sta))
-+		return -1;
-+
- 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
- 	fc = hdr->frame_control;
- 	hdrlen = ieee80211_hdrlen(fc);
-@@ -1112,9 +1115,6 @@ static int iwl_mvm_tx_mpdu(struct iwl_mv
- 	if (IWL_MVM_NON_TRANSMITTING_AP && ieee80211_is_probe_resp(fc))
- 		return -1;
+ 	return err;
+ }
+@@ -166,8 +168,10 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psdec, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
+-	if (err == -EBUSY)
+-		return -EAGAIN;
++	if (err == -EBUSY) {
++		/* try non-parallel mode */
++		return crypto_aead_decrypt(creq);
++	}
  
--	if (WARN_ON_ONCE(!mvmsta))
--		return -1;
--
- 	if (WARN_ON_ONCE(mvmsta->sta_id == IWL_MVM_INVALID_STA))
- 		return -1;
- 
-@@ -1242,16 +1242,18 @@ drop:
- int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
- 		       struct ieee80211_sta *sta)
- {
--	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
-+	struct iwl_mvm_sta *mvmsta;
- 	struct ieee80211_tx_info info;
- 	struct sk_buff_head mpdus_skbs;
- 	unsigned int payload_len;
- 	int ret;
- 	struct sk_buff *orig_skb = skb;
- 
--	if (WARN_ON_ONCE(!mvmsta))
-+	if (WARN_ON_ONCE(!sta))
- 		return -1;
- 
-+	mvmsta = iwl_mvm_sta_from_mac80211(sta);
-+
- 	if (WARN_ON_ONCE(mvmsta->sta_id == IWL_MVM_INVALID_STA))
- 		return -1;
- 
+ 	return err;
+ }
+-- 
+2.43.0
+
 
 
 
