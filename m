@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F6A9EF4D2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2789EF60C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:22:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0771C340285
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE61C28C644
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5950223C5E;
-	Thu, 12 Dec 2024 16:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD052144C4;
+	Thu, 12 Dec 2024 17:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiUooD9P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yACBf64m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731F82165F0;
-	Thu, 12 Dec 2024 16:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173E920967D;
+	Thu, 12 Dec 2024 17:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022796; cv=none; b=NFrAxiYLhox6Af60MzO+vYiVSEVnatUS7P4iPkbzbx+xI2stspeLGukF1FGkm4XqLparBsSqSbyBBrYVfoEtsLvNq1ArfpQV685CoXckEe/UsZmteh9PHqrWE2UYah4IpFpgXTA8q14lUnGWgL9TBB9Q9A7QIrCjPFcjHO6hOR4=
+	t=1734024124; cv=none; b=h1fGcStLAS6l+uXNBVsUVbBkvOWxfaNbWJGUR+Ui8PpPGPfF+0TmCuP31jXHvEif8fF6Z7C/bgIM6OrPA1MvWSOoAbt0p7zpdF3yP6lx7bvbURqg8lV0QmbpBgbJySo7HUS5A7VhSgYX8ZRtmowFBLIxkHK0MkgaYHFIhzI9Re4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022796; c=relaxed/simple;
-	bh=FTvnODVrXMPdNbiv0WQfjw1L1+gZtSk+LGTl+nlHe4Y=;
+	s=arc-20240116; t=1734024124; c=relaxed/simple;
+	bh=yEcMXL+dVhN01cmXQbD4sdm3EhW2x6xDyKZYHuu7Y4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpJPrVsWH7ULPo4dbzyCoLwMq7xe6iPgFPvEfqEmZbq65y2Rl2Dtd4sPaVSXrdAtLONMPLQbCHeJF1wfpX5e8BN1nsXhy2fQJWixt3Ck/OCYPcReiH9MVIlQFGGpMvsvzjGvFS+sTp0nIbE29Isgjpm+Tv08xyzuzdTZmNwBsGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiUooD9P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCC3C4CECE;
-	Thu, 12 Dec 2024 16:59:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hr3N/jWjTNdT17kjWXpXYGS337lUfGAM3UABlgOk/7Say+8UuGkoLs178StmWOt2NbaBUanXznrPJBMxnFnKfziKZ/h27SYxN96BPbOKs/qWJcMtkokEsTuSH9HPc3nMJj+8S18c1qUG/HDf3KtfXrL68X1BCqV0+LQYuvLD41c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yACBf64m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAF1C4CECE;
+	Thu, 12 Dec 2024 17:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022796;
-	bh=FTvnODVrXMPdNbiv0WQfjw1L1+gZtSk+LGTl+nlHe4Y=;
+	s=korg; t=1734024123;
+	bh=yEcMXL+dVhN01cmXQbD4sdm3EhW2x6xDyKZYHuu7Y4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiUooD9P3Ef4B+1ROUyzBoPya6jMR2a2fe8RkY97f6rcWr41mMi5UOvQpwf7K1b9J
-	 S1Yc00SIw1BrDrnepX243cN8z7ngjQBNupAbTyDSFfnhUZrP8eXYFalt4jVOTOI+vN
-	 ESrgcuoT96lC6MgjjkL47RFSP/4btf5xKiP5irhU=
+	b=yACBf64mQ0r30yPrIEeIHMnjOqOwwr9zI3WfcQ8FjPbYFKzDE9QffUIoOBRv8jnO0
+	 /JJsQNrhDVI83DdrfFYkgwqbHjLG+E6IJEZdBA8cFAhAwdLCaYo4AMiJs8UpENKmjj
+	 Ohp3An7NKFfNu6fU6mwezpHkV9Kh2NC7uxj6nWDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.15 337/565] arm64: tls: Fix context-switching of tpidrro_el0 when kpti is enabled
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 194/459] PCI: cpqphp: Fix PCIBIOS_* return value confusion
 Date: Thu, 12 Dec 2024 15:58:52 +0100
-Message-ID: <20241212144324.918600869@linuxfoundation.org>
+Message-ID: <20241212144301.231586227@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 67ab51cbdfee02ef07fb9d7d14cc0bf6cb5a5e5c upstream.
+[ Upstream commit e2226dbc4a4919d9c8bd9293299b532090bdf020 ]
 
-Commit 18011eac28c7 ("arm64: tls: Avoid unconditional zeroing of
-tpidrro_el0 for native tasks") tried to optimise the context switching
-of tpidrro_el0 by eliding the clearing of the register when switching
-to a native task with kpti enabled, on the erroneous assumption that
-the kpti trampoline entry code would already have taken care of the
-write.
+Code in and related to PCI_RefinedAccessConfig() has three types of return
+type confusion:
 
-Although the kpti trampoline does zero the register on entry from a
-native task, the check in tls_thread_switch() is on the *next* task and
-so we can end up leaving a stale, non-zero value in the register if the
-previous task was 32-bit.
+ - PCI_RefinedAccessConfig() tests pci_bus_read_config_dword() return value
+   against -1.
 
-Drop the broken optimisation and zero tpidrro_el0 unconditionally when
-switching to a native 64-bit task.
+ - PCI_RefinedAccessConfig() returns both -1 and PCIBIOS_* return codes.
 
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: stable@vger.kernel.org
-Fixes: 18011eac28c7 ("arm64: tls: Avoid unconditional zeroing of tpidrro_el0 for native tasks")
-Signed-off-by: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20241114095332.23391-1-will@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ - Callers of PCI_RefinedAccessConfig() only test for -1.
+
+Make PCI_RefinedAccessConfig() return PCIBIOS_* codes consistently and
+adapt callers accordingly.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/r/20241022091140.3504-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/process.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/hotplug/cpqphp_pci.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/kernel/process.c
-+++ b/arch/arm64/kernel/process.c
-@@ -394,7 +394,7 @@ static void tls_thread_switch(struct tas
+diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
+index a20875da4ec70..ce6eb71a63599 100644
+--- a/drivers/pci/hotplug/cpqphp_pci.c
++++ b/drivers/pci/hotplug/cpqphp_pci.c
+@@ -135,11 +135,13 @@ int cpqhp_unconfigure_device(struct pci_func *func)
+ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 offset, u32 *value)
+ {
+ 	u32 vendID = 0;
++	int ret;
  
- 	if (is_compat_thread(task_thread_info(next)))
- 		write_sysreg(next->thread.uw.tp_value, tpidrro_el0);
--	else if (!arm64_kernel_unmapped_at_el0())
-+	else
- 		write_sysreg(0, tpidrro_el0);
+-	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
+-		return -1;
++	ret = pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID);
++	if (ret != PCIBIOS_SUCCESSFUL)
++		return PCIBIOS_DEVICE_NOT_FOUND;
+ 	if (PCI_POSSIBLE_ERROR(vendID))
+-		return -1;
++		return PCIBIOS_DEVICE_NOT_FOUND;
+ 	return pci_bus_read_config_dword(bus, devfn, offset, value);
+ }
  
- 	write_sysreg(*task_user_tls(next), tpidr_el0);
+@@ -200,13 +202,15 @@ static int PCI_ScanBusForNonBridge(struct controller *ctrl, u8 bus_num, u8 *dev_
+ {
+ 	u16 tdevice;
+ 	u32 work;
++	int ret;
+ 	u8 tbus;
+ 
+ 	ctrl->pci_bus->number = bus_num;
+ 
+ 	for (tdevice = 0; tdevice < 0xFF; tdevice++) {
+ 		/* Scan for access first */
+-		if (PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work) == -1)
++		ret = PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work);
++		if (ret)
+ 			continue;
+ 		dbg("Looking for nonbridge bus_num %d dev_num %d\n", bus_num, tdevice);
+ 		/* Yep we got one. Not a bridge ? */
+@@ -218,7 +222,8 @@ static int PCI_ScanBusForNonBridge(struct controller *ctrl, u8 bus_num, u8 *dev_
+ 	}
+ 	for (tdevice = 0; tdevice < 0xFF; tdevice++) {
+ 		/* Scan for access first */
+-		if (PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work) == -1)
++		ret = PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work);
++		if (ret)
+ 			continue;
+ 		dbg("Looking for bridge bus_num %d dev_num %d\n", bus_num, tdevice);
+ 		/* Yep we got one. bridge ? */
+-- 
+2.43.0
+
 
 
 
