@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B559EECD5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C4B9EF252
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72C6C284675
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 581C6189C785
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62C8217F34;
-	Thu, 12 Dec 2024 15:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B8622A7F6;
+	Thu, 12 Dec 2024 16:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdYOqO+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTpat5jv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40A26F2FE;
-	Thu, 12 Dec 2024 15:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141C7223326;
+	Thu, 12 Dec 2024 16:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017932; cv=none; b=WXhGS2lnauDW+JM/apV+ral3aWsC6I25L+fxfe89tlNCw+D0b+PNKKiEBhS0vAddG5hQAjVORc9AXmkm+yR6BkdJIISdU+K+7zaHM7RByG+Suog+ixTu4+Iv46UjkFExgd1kGxx756bePuZpq28NjjIoUPwnqIysXFsUsGcuJ24=
+	t=1734020768; cv=none; b=NSYxouzbX8eTLfFQCiGwbZiiLmTliMpCUJfZ61F452l33H3jHJrqO0vCdAtM+5QUmMHdUrgczJ5o5+yl++nM6Q3sfH7eQC4jLvOgSi+TBru7d3ThYXVsixWKDflxe/2SbEfNuOpr+dxLia2RRxWxZu0XMcZETbZkpM1ks5eUi3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017932; c=relaxed/simple;
-	bh=G1X4aMz4gtAKz7xfWD3BvZ1k+OUSaYdXi3mRWBw2Ke0=;
+	s=arc-20240116; t=1734020768; c=relaxed/simple;
+	bh=OJY0AoRZiGaWVvHrPbqfYY7/chqEBfNAghT83Z7QWfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C1kD6KpKD9xOandZtGjyofvmU6b4hJfKqNsBMQvwYq8PeAt1jRAktQ05Zn3WmeEW8tL/aSnGCpkp8OsdScLYYYwQ0wBMoFHEk9Xk87AXgKQDZH8S0/bo05Kq1ud9XVSP9Rge16GwfHCr7LqQDy/MpGGET270ktRt4IkjRgoDPx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdYOqO+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E49C4CECE;
-	Thu, 12 Dec 2024 15:38:51 +0000 (UTC)
+	 MIME-Version; b=B19l2hyj8p9g/rQ1PA564Xr1KiPWbzaw3N67jGXxvurhir9pcB2Rq07NWrJEKp0hzibcf+yYJgtMWYhbPe9KEhEPDBByHq7ikuGbW76khsovRnD723/R28ei5pNcK3ILjICzHO3lDFMLFSsz5/RzQuIepb3pVB2jBsF47Zi5X8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTpat5jv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F99C4CED0;
+	Thu, 12 Dec 2024 16:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017932;
-	bh=G1X4aMz4gtAKz7xfWD3BvZ1k+OUSaYdXi3mRWBw2Ke0=;
+	s=korg; t=1734020766;
+	bh=OJY0AoRZiGaWVvHrPbqfYY7/chqEBfNAghT83Z7QWfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdYOqO+JFvOkYrJmfTQ5w/f1Xhrrib1HMNQWwlIfeKzvLbHbcdpf1E/xqTYn5Bj5T
-	 oKAJneV/uCo4QG7hDJa6osvNzjEX6GWzhaTbXJf1dgk7LR16+60fNVxX1NRUsgH5jh
-	 /J5PUFy/5P/rNW9Z7y/8CINEduWfUTurCX5cvE5A=
+	b=OTpat5jvFKplZHw1gA2W31AIhJXhgcjwzAwwaMUsiR6PSk9DkGyDwdkB9tcOGEdrV
+	 Tx4kVZEo5KBMj0VPdkYwED4EAhKksHCqIQWENgGps5QcsUiH/Q/SCbnUMetJkoFQxB
+	 Wb6ybe6M9GH5iDjv+yEUCl4lJ2XBkt1o0ZCjUQfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 151/356] ALSA: hda/realtek: Add support for Samsung Galaxy Book3 360 (NP730QFG)
+	syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 525/772] netfilter: x_tables: fix LED ID check in led_tg_check()
 Date: Thu, 12 Dec 2024 15:57:50 +0100
-Message-ID: <20241212144250.606508521@linuxfoundation.org>
+Message-ID: <20241212144411.657489014@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit e2974a220594c06f536e65dfd7b2447e0e83a1cb upstream.
+[ Upstream commit 04317f4eb2aad312ad85c1a17ad81fe75f1f9bc7 ]
 
-Fixes the 3.5mm headphone jack on the Samsung Galaxy Book 3 360
-NP730QFG laptop.
-Unlike the other Galaxy Book3 series devices, this device only needs
-the ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET quirk.
-Verified changes on the device and compared with codec state in Windows.
+Syzbot has reported the following BUG detected by KASAN:
 
-[ white-space fixes by tiwai ]
+BUG: KASAN: slab-out-of-bounds in strlen+0x58/0x70
+Read of size 1 at addr ffff8881022da0c8 by task repro/5879
+...
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x241/0x360
+ ? __pfx_dump_stack_lvl+0x10/0x10
+ ? __pfx__printk+0x10/0x10
+ ? _printk+0xd5/0x120
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x183/0x530
+ print_report+0x169/0x550
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x45f/0x530
+ ? __phys_addr+0xba/0x170
+ ? strlen+0x58/0x70
+ kasan_report+0x143/0x180
+ ? strlen+0x58/0x70
+ strlen+0x58/0x70
+ kstrdup+0x20/0x80
+ led_tg_check+0x18b/0x3c0
+ xt_check_target+0x3bb/0xa40
+ ? __pfx_xt_check_target+0x10/0x10
+ ? stack_depot_save_flags+0x6e4/0x830
+ ? nft_target_init+0x174/0xc30
+ nft_target_init+0x82d/0xc30
+ ? __pfx_nft_target_init+0x10/0x10
+ ? nf_tables_newrule+0x1609/0x2980
+ ? nf_tables_newrule+0x1609/0x2980
+ ? rcu_is_watching+0x15/0xb0
+ ? nf_tables_newrule+0x1609/0x2980
+ ? nf_tables_newrule+0x1609/0x2980
+ ? __kmalloc_noprof+0x21a/0x400
+ nf_tables_newrule+0x1860/0x2980
+ ? __pfx_nf_tables_newrule+0x10/0x10
+ ? __nla_parse+0x40/0x60
+ nfnetlink_rcv+0x14e5/0x2ab0
+ ? __pfx_validate_chain+0x10/0x10
+ ? __pfx_nfnetlink_rcv+0x10/0x10
+ ? __lock_acquire+0x1384/0x2050
+ ? netlink_deliver_tap+0x2e/0x1b0
+ ? __pfx_lock_release+0x10/0x10
+ ? netlink_deliver_tap+0x2e/0x1b0
+ netlink_unicast+0x7f8/0x990
+ ? __pfx_netlink_unicast+0x10/0x10
+ ? __virt_addr_valid+0x183/0x530
+ ? __check_object_size+0x48e/0x900
+ netlink_sendmsg+0x8e4/0xcb0
+ ? __pfx_netlink_sendmsg+0x10/0x10
+ ? aa_sock_msg_perm+0x91/0x160
+ ? __pfx_netlink_sendmsg+0x10/0x10
+ __sock_sendmsg+0x223/0x270
+ ____sys_sendmsg+0x52a/0x7e0
+ ? __pfx_____sys_sendmsg+0x10/0x10
+ __sys_sendmsg+0x292/0x380
+ ? __pfx___sys_sendmsg+0x10/0x10
+ ? lockdep_hardirqs_on_prepare+0x43d/0x780
+ ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
+ ? exc_page_fault+0x590/0x8c0
+ ? do_syscall_64+0xb6/0x230
+ do_syscall_64+0xf3/0x230
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+ </TASK>
 
-Signed-off-by: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/QB1PR01MB40047D4CC1282DB7F1333124CC352@QB1PR01MB4004.CANPRD01.PROD.OUTLOOK.COM
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since an invalid (without '\0' byte at all) byte sequence may be passed
+from userspace, add an extra check to ensure that such a sequence is
+rejected as possible ID and so never passed to 'kstrdup()' and further.
+
+Reported-by: syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c8215822f35fdb35667
+Fixes: 268cb38e1802 ("netfilter: x_tables: add LED trigger target")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/xt_LED.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10180,6 +10180,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x144d, 0xc830, "Samsung Galaxy Book Ion (NT950XCJ-X716A)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc832, "Samsung Galaxy Book Flex Alpha (NP730QCJ)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
- 	SND_PCI_QUIRK(0x144d, 0xca03, "Samsung Galaxy Book2 Pro 360 (NP930QED)", ALC298_FIXUP_SAMSUNG_AMP),
-+	SND_PCI_QUIRK(0x144d, 0xca06, "Samsung Galaxy Book3 360 (NP730QFG)", ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
- 	SND_PCI_QUIRK(0x144d, 0xc868, "Samsung Galaxy Book2 Pro (NP930XED)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
+diff --git a/net/netfilter/xt_LED.c b/net/netfilter/xt_LED.c
+index 211bfa2a2ac04..c2c10a536cc68 100644
+--- a/net/netfilter/xt_LED.c
++++ b/net/netfilter/xt_LED.c
+@@ -97,7 +97,9 @@ static int led_tg_check(const struct xt_tgchk_param *par)
+ 	struct xt_led_info_internal *ledinternal;
+ 	int err;
+ 
+-	if (ledinfo->id[0] == '\0')
++	/* Bail out if empty string or not a string at all. */
++	if (ledinfo->id[0] == '\0' ||
++	    !memchr(ledinfo->id, '\0', sizeof(ledinfo->id)))
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&xt_led_mutex);
+-- 
+2.43.0
+
 
 
 
