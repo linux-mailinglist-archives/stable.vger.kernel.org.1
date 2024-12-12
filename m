@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FDF9EF0E9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F270A9EEAC0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4349F29DCC2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1FF6281D7E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619FB226523;
-	Thu, 12 Dec 2024 16:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E41215764;
+	Thu, 12 Dec 2024 15:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dd7DvdE3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5zeUQJg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCD84F218;
-	Thu, 12 Dec 2024 16:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89792EAE5;
+	Thu, 12 Dec 2024 15:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020484; cv=none; b=MFUp3Z30yrYPsLfZdI4+zItbXQs0iiOKsCOPEqwKJzUSqFJpwWtZ0YRXhNRw4k0hnp/58ce9usOQbT+VWySnDzbDw8XvWqs+qpOm19TOhy6pjHY0k0cvdWtgFn3i21d3PHSSBGbSZwdIBYCEOxVGBRFZwG9DTyyndYTwO9a9f2E=
+	t=1734016643; cv=none; b=ClCtzHcGnJucbkZgf2i9dThSu28C5A4cjGETubWzvORRAbJaVLrk5G42FiucYcoNS0OEzjnxDH52w4WReOpUb9YA0lGwXPkASWt8GCdCXAxroUI1NyqL4qrxOFDuudQSD0jn13673rCVSY+BBoIw7CNHnDmP1e09BE/pAt70L1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020484; c=relaxed/simple;
-	bh=f/kSdKQDWID50WIv6ppIrPkjbkFK2rsef4Qk1Hl18Rw=;
+	s=arc-20240116; t=1734016643; c=relaxed/simple;
+	bh=Td66NEbgNbDRkTMygdeZH9hjgDiLU13kkB4yaoxcS8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebwglmAIvar9jUDOAq/KAIA1rpv7UMluhW654Jcm0Bashz93QmwT007OQTOz1stG8Yy1BjMOPbnu/qu3R6JRUMFoizM64Ioh3mcXpmOgZVED+Agaki6trtWaSZzXKo8VNcHjGJ+kvGNd4Vs1kbTuBynnbF4fRq6MqeKK7Hzg/no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dd7DvdE3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F301C4CECE;
-	Thu, 12 Dec 2024 16:21:23 +0000 (UTC)
+	 MIME-Version; b=UDZRhzmssfdw/tjW4dWasb4yBIVAkHWEjN079vSAkWd6qsiS5NnUvcM//GpqG9rGws6cFHSb+nd73QQQD+8GAtoE57r+oGmTKfNFGMS3w9hs1Pw4+bqC993JvAg8l8xZADs7HjoXDVdamkwxTy4+YHDh40srKmNJ7sO1dBJ3OQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5zeUQJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82DDC4CEE7;
+	Thu, 12 Dec 2024 15:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020484;
-	bh=f/kSdKQDWID50WIv6ppIrPkjbkFK2rsef4Qk1Hl18Rw=;
+	s=korg; t=1734016643;
+	bh=Td66NEbgNbDRkTMygdeZH9hjgDiLU13kkB4yaoxcS8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dd7DvdE3v92zlPqM8jDqSQ7nWDJUkP7iB8SLvAN3U8O+fINJXpmsLrmYSO/I99kaX
-	 BvmgrtBsV7c9MtOvU848V+vkEQSqqp6BI1G4pKSRCs55Ff7F5NRch7N10H9YQTqPps
-	 EzcVIEJ72ZxOz/oIZCj5LRMl+lmnJyhI7AeQZwhc=
+	b=y5zeUQJgoIe4JckaAAW+JRosijg2L7/+5ZepunvZ5FHCXBFitMYhrK59/bq2mGB4k
+	 nFR2z7f2P5eTWhvMyiUcj0w09YippH4xO9geG6Cbz5ttZ3tRazA+v+n/WJNMFgb61U
+	 28ixEgxhEOogJFRoGUdmRRj0jxB2KSNPsIf1AEr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 478/772] ad7780: fix division by zero in ad7780_write_raw()
-Date: Thu, 12 Dec 2024 15:57:03 +0100
-Message-ID: <20241212144409.681884273@linuxfoundation.org>
+	Dom Cobley <popcornmix@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 255/466] drm/vc4: hdmi: Avoid log spam for audio start failure
+Date: Thu, 12 Dec 2024 15:57:04 +0100
+Message-ID: <20241212144316.863963827@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: Dom Cobley <popcornmix@gmail.com>
 
-commit c174b53e95adf2eece2afc56cd9798374919f99a upstream.
+[ Upstream commit b4e5646178e86665f5caef2894578600f597098a ]
 
-In the ad7780_write_raw() , val2 can be zero, which might lead to a
-division by zero error in DIV_ROUND_CLOSEST(). The ad7780_write_raw()
-is based on iio_info's write_raw. While val is explicitly declared that
-can be zero (in read mode), val2 is not specified to be non-zero.
+We regularly get dmesg error reports of:
+[   18.184066] hdmi-audio-codec hdmi-audio-codec.3.auto: ASoC: error at snd_soc_dai_startup on i2s-hifi: -19
+[   18.184098]  MAI: soc_pcm_open() failed (-19)
 
-Fixes: 9085daa4abcc ("staging: iio: ad7780: add gain & filter gpio support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Link: https://patch.msgid.link/20241028142027.1032332-1-quzicheng@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+These are generated for any disconnected hdmi interface when pulseaudio
+attempts to open the associated ALSA device (numerous times). Each open
+generates a kernel error message, generating general log spam.
+
+The error messages all come from _soc_pcm_ret in sound/soc/soc-pcm.c#L39
+which suggests returning ENOTSUPP, rather that ENODEV will be quiet.
+And indeed it is.
+
+Signed-off-by: Dom Cobley <popcornmix@gmail.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-5-dave.stevenson@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7780.c |    2 +-
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7780.c
-+++ b/drivers/iio/adc/ad7780.c
-@@ -152,7 +152,7 @@ static int ad7780_write_raw(struct iio_d
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 2d7d3e90f3be4..7e0a5ea7ab859 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -1924,7 +1924,7 @@ static int vc4_hdmi_audio_startup(struct device *dev, void *data)
+ 	}
  
- 	switch (m) {
- 	case IIO_CHAN_INFO_SCALE:
--		if (val != 0)
-+		if (val != 0 || val2 == 0)
- 			return -EINVAL;
+ 	if (!vc4_hdmi_audio_can_stream(vc4_hdmi)) {
+-		ret = -ENODEV;
++		ret = -ENOTSUPP;
+ 		goto out_dev_exit;
+ 	}
  
- 		vref = st->int_vref_mv * 1000000LL;
+-- 
+2.43.0
+
 
 
 
