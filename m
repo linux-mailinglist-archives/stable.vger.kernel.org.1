@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-101577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221549EED50
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309B69EEB99
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 526C116AD67
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7945165341
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042DE21C172;
-	Thu, 12 Dec 2024 15:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E252153F4;
+	Thu, 12 Dec 2024 15:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgjvQqRG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWBVsDfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F1C6F2FE;
-	Thu, 12 Dec 2024 15:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BBB2AF0E;
+	Thu, 12 Dec 2024 15:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018050; cv=none; b=Zd/pW4fMdWet5cAopjQuZp93hQIJx0VRDrBGVthtFAIroCQwFP3scjvEWPpE1y0gG2kIvf22/mU6qppq+m3Cr51zXwrKpTYn0oyKtc7YxHrX3aEcgYpidOQiV/HL6pqnm2g7ODEYXbjFamQ0OSzgnjz9CLTNZJ5Ei3ajLEuCaLc=
+	t=1734016919; cv=none; b=LtZDjUiG6hMn4uuCuWhWa6rGi0c6G/h3IBvM7f5YjXjjuUyAWFFmDZLzfy1cikKSiD3Rgq/OKHcf/5oVn5vzjoMEPK3xj/UCUv3LMaFwV3rxauvr9U+k14KVZzgpyEmdT8E5n5vHOcR+90aWXkL/qAPEWH8eokvtJTYY7Eg0tAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018050; c=relaxed/simple;
-	bh=rZ/HXjCD39AsO+XbBEO0b1C/ZusI4IIctg+YU7wVUBE=;
+	s=arc-20240116; t=1734016919; c=relaxed/simple;
+	bh=HvgtWt0/fWNGVls/UH57ptukWEgh5aKiocRrWKhvcgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/dxDAhh926GonfohetGtC9NAb4NMWUOuEByqBQk6j46DitDh+QU//Q1B6zj34NtFKXJdYUUqrGRITBouyosXktjlfA0jPo2KXt6BS6qv1epnKENQxlWuF30odLF/wN0D84MmAxK71mceXT9lGBAHX4m2IJEVkVoIZ5kZt98cd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgjvQqRG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB89C4CECE;
-	Thu, 12 Dec 2024 15:40:49 +0000 (UTC)
+	 MIME-Version; b=H/UkKxXlfegKjpTxphtFSXhrcKsdgHW+y5ciS/wUdeOJSsGjBVRAACeliinCi3BCpKZVCHsiaApxTQ4Y4o69qv25snHhG+LMmerkaDSEGMHK+yb/zzFM0MwPZnzLqeDCQxeHjFJ2/OrcPpRgOxLutsy1P2tVob0Lqq0yeWTYWfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWBVsDfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C20C4CECE;
+	Thu, 12 Dec 2024 15:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018050;
-	bh=rZ/HXjCD39AsO+XbBEO0b1C/ZusI4IIctg+YU7wVUBE=;
+	s=korg; t=1734016918;
+	bh=HvgtWt0/fWNGVls/UH57ptukWEgh5aKiocRrWKhvcgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgjvQqRGZojZHVESd9TINyTE5x7kvj0EBQwf+UdRQSN/noxCna5JOqPI4TftH8vCf
-	 AvF0sXOsmJvZf2WIM/qEIgswh6p+f/wq4Nyz05XLAM6844+DT+ZnziBEGqFtHMgyZG
-	 9C3St7Kj/FrlU+I0XQe7BpSjKjuqY/kgFVWIc4FU=
+	b=JWBVsDfVhCotj+1yveoWrNhlVP64247L7wF9cJpQOiK/Una3OWwlzDgHB7BR/p/1d
+	 4304Sjily8WeoE+mwWmE5/11zHbwsbQc5JvFFdihE65tUIxaTSfNXmL0/9mWbe4gEV
+	 poTQg/5tJkvfzPXyXYBk9aoKXHa/avcCHLMM9V2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@intel.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Rik van Riel <riel@surriel.com>
-Subject: [PATCH 6.6 183/356] x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 333/466] wifi: ipw2x00: libipw_rx_any(): fix bad alignment
 Date: Thu, 12 Dec 2024 15:58:22 +0100
-Message-ID: <20241212144251.860218464@linuxfoundation.org>
+Message-ID: <20241212144319.942657527@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-commit d0ceea662d459726487030237689835fcc0483e5 upstream.
+[ Upstream commit 4fa4f049dc0d9741b16c96bcbf0108c85368a2b9 ]
 
-The set_p4d() and set_pgd() functions (in 4-level or 5-level page table setups
-respectively) assume that the root page table is actually a 8KiB allocation,
-with the userspace root immediately after the kernel root page table (so that
-the former can enforce NX on on all the subordinate page tables, which are
-actually shared).
+This patch fixes incorrect code alignment.
 
-However, users of the kernel_ident_mapping_init() code do not give it an 8KiB
-allocation for its PGD. Both swsusp_arch_resume() and acpi_mp_setup_reset()
-allocate only a single 4KiB page. The kexec code on x86_64 currently gets
-away with it purely by chance, because it allocates 8KiB for its "control
-code page" and then actually uses the first half for the PGD, then copies the
-actual trampoline code into the second half only after the identmap code has
-finished scribbling over it.
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:871:2-3: code aligned with following code on line 882.
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:886:2-3: code aligned with following code on line 900.
 
-Fix this by defining a _PAGE_NOPTISHADOW bit (which can use the same bit as
-_PAGE_SAVED_DIRTY since one is only for the PGD/P4D root and the other is
-exclusively for leaf PTEs.). This instructs __pti_set_user_pgtbl() not to
-write to the userspace 'shadow' PGD.
-
-Strictly, the _PAGE_NOPTISHADOW bit doesn't need to be written out to the
-actual page tables; since __pti_set_user_pgtbl() returns the value to be
-written to the kernel page table, it could be filtered out. But there seems
-to be no benefit to actually doing so.
-
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/412c90a4df7aef077141d9f68d19cbe5602d6c6d.camel@infradead.org
-Cc: stable@kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11381
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241101060725.54640-1-jiapeng.chong@linux.alibaba.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/pgtable_types.h |    8 ++++++--
- arch/x86/mm/ident_map.c              |    6 +++---
- arch/x86/mm/pti.c                    |    2 +-
- 3 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -36,10 +36,12 @@
- #define _PAGE_BIT_DEVMAP	_PAGE_BIT_SOFTW4
- 
- #ifdef CONFIG_X86_64
--#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit */
-+#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit (leaf) */
-+#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW5 /* No PTI shadow (root PGD) */
- #else
- /* Shared with _PAGE_BIT_UFFD_WP which is not supported on 32 bit */
--#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit */
-+#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit (leaf) */
-+#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW2 /* No PTI shadow (root PGD) */
- #endif
- 
- /* If _PAGE_BIT_PRESENT is clear, we use these: */
-@@ -139,6 +141,8 @@
- 
- #define _PAGE_PROTNONE	(_AT(pteval_t, 1) << _PAGE_BIT_PROTNONE)
- 
-+#define _PAGE_NOPTISHADOW (_AT(pteval_t, 1) << _PAGE_BIT_NOPTISHADOW)
-+
- /*
-  * Set of bits not changed in pte_modify.  The pte's
-  * protection key is treated like _PAGE_RW, for
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -88,7 +88,7 @@ static int ident_p4d_init(struct x86_map
- 		if (result)
- 			return result;
- 
--		set_p4d(p4d, __p4d(__pa(pud) | info->kernpg_flag));
-+		set_p4d(p4d, __p4d(__pa(pud) | info->kernpg_flag | _PAGE_NOPTISHADOW));
- 	}
- 
- 	return 0;
-@@ -132,14 +132,14 @@ int kernel_ident_mapping_init(struct x86
- 		if (result)
- 			return result;
- 		if (pgtable_l5_enabled()) {
--			set_pgd(pgd, __pgd(__pa(p4d) | info->kernpg_flag));
-+			set_pgd(pgd, __pgd(__pa(p4d) | info->kernpg_flag | _PAGE_NOPTISHADOW));
- 		} else {
- 			/*
- 			 * With p4d folded, pgd is equal to p4d.
- 			 * The pgd entry has to point to the pud page table in this case.
- 			 */
- 			pud_t *pud = pud_offset(p4d, 0);
--			set_pgd(pgd, __pgd(__pa(pud) | info->kernpg_flag));
-+			set_pgd(pgd, __pgd(__pa(pud) | info->kernpg_flag | _PAGE_NOPTISHADOW));
- 		}
- 	}
- 
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -132,7 +132,7 @@ pgd_t __pti_set_user_pgtbl(pgd_t *pgdp,
- 	 * Top-level entries added to init_mm's usermode pgd after boot
- 	 * will not be automatically propagated to other mms.
- 	 */
--	if (!pgdp_maps_userspace(pgdp))
-+	if (!pgdp_maps_userspace(pgdp) || (pgd.pgd & _PAGE_NOPTISHADOW))
- 		return pgd;
- 
- 	/*
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+index 48d6870bbf4e2..9a97ab9b89ae8 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+@@ -870,8 +870,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 	switch (ieee->iw_mode) {
+ 	case IW_MODE_ADHOC:
+ 		/* our BSS and not from/to DS */
+-		if (ether_addr_equal(hdr->addr3, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == 0) {
++		if (ether_addr_equal(hdr->addr3, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
+@@ -885,8 +885,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 		break;
+ 	case IW_MODE_INFRA:
+ 		/* our BSS (== from our AP) and from DS */
+-		if (ether_addr_equal(hdr->addr2, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS) {
++		if (ether_addr_equal(hdr->addr2, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
+-- 
+2.43.0
+
 
 
 
