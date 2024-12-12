@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-103282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631339EF6B5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2899EF58A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9413F1941CB5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AFF6170B0B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4171B2165F0;
-	Thu, 12 Dec 2024 17:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDB4213E99;
+	Thu, 12 Dec 2024 16:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibMTWRrI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avuoOEFf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2586211493;
-	Thu, 12 Dec 2024 17:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698BE22333E;
+	Thu, 12 Dec 2024 16:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024094; cv=none; b=LqLsVfisqoXMtEoOqffTFs3gTdWUWDLuWwy1xOlpZrQhp0/XSuQHFLdI4vzbDI+IVNslDHv3T7UXDmmgMMmOYAic+98NpLZABQ7EqyFXdWDrVotBilU8vckAFWZbg77TMfSJfCG2vzVIdg/Fc26PaMriCPnLOpic3GTMnHoXsMY=
+	t=1734022649; cv=none; b=uwQdFn6qgQqIiGCGy+uazYhdnmSAUG6nbzrpta5y9dm8eUMFXc0MwHpUdARlbcQZw5qpDvXOeQ+QSHnyXRokPW+XOMTyJnoYUleP6yY7nBvDDNm2CoMsiq5OKsL1y340kszE7vVkVX65Qx3Yt8RwUwbsl9sK6P4N4lTgfF5aguw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024094; c=relaxed/simple;
-	bh=buwBPoZPaSFuSkYSugud5zoRWy1O/ZerTI5ItH+kbdw=;
+	s=arc-20240116; t=1734022649; c=relaxed/simple;
+	bh=z5raXxXZR1+7KYOAYku4RvGdix8UCe3cJJ330Zc5Hvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FokNRv81Bx1Zxy4m/gO3VYGnFV5Ie21I0quWqOoUa93wccyTb6wPVZ3+28iYkzVFcUOpsMigBKZsVd3T/wfvqWwMRJ/3MHA7ZkS1/eUeYwXQt10QLb4E23qd/tlFZkNAAfQv9sFsePZkdHZZZZtKlhKaYgjaIvmb4GjHJ7h/YeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibMTWRrI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F412C4CECE;
-	Thu, 12 Dec 2024 17:21:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MgMACWXw62r9LYmhJvnI7s2Is+TkloOCU1UNxujruxQ2lsLh+Ke0zZ1RMGn+1Lh2x8Db4NBFb/13cJ7ZQt+qXtf3T1Z1eck3Z5wzkU1bE9b5PHZzV6c/JHFAyKE+FUNO4bU1nhUmmyedsN5KFbp6Ziz8AYgiGiTwLuHfLi0jGYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avuoOEFf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB09C4CECE;
+	Thu, 12 Dec 2024 16:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024093;
-	bh=buwBPoZPaSFuSkYSugud5zoRWy1O/ZerTI5ItH+kbdw=;
+	s=korg; t=1734022649;
+	bh=z5raXxXZR1+7KYOAYku4RvGdix8UCe3cJJ330Zc5Hvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibMTWRrIA8C9NElcN2ZQ53gaA4p5tmNLCW3Vsr/4SgM9aPjrq3LLXVtvQDB6qZ3F5
-	 zn7lW5dPAGG6jeX8LrD3d2StG7nugl/KGY7oJj2dyQwJY2sTNBVn6DklEA2i3++QAs
-	 lWTGECZoZBCaXcjMCF0KXu9JIFE+KM99PQk8A1Wg=
+	b=avuoOEFfwDHhNspdl7NqoGxJZNIfRUi1yeIVHMOngnLKvDYz8MdbvjRKfRZ6TMWxr
+	 D+D1Nk0PQu18ogLl4q2BYnMHuU3W1jbseCLavMmuDvgx3bJfQb1gVNj+HcOW6XiyF1
+	 FcXRb9Q2P6rSKTJvIpzWgcPBVT3pkiFQvYJIBjnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 154/459] ALSA: usx2y: Cleanup probe and disconnect callbacks
-Date: Thu, 12 Dec 2024 15:58:12 +0100
-Message-ID: <20241212144259.601405832@linuxfoundation.org>
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 298/565] ALSA: usb-audio: Fix out of bounds reads when finding clock sources
+Date: Thu, 12 Dec 2024 15:58:13 +0100
+Message-ID: <20241212144323.247206912@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,174 +59,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 2ac7a12ead2be2e31bd5e796455bef31e8516845 ]
+commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6 upstream.
 
-Minor code refactoring by merging the superfluous function calls.
-The functions were split in the past for covering pre-history USB
-driver code, but this is utterly useless.
+The current USB-audio driver code doesn't check bLength of each
+descriptor at traversing for clock descriptors.  That is, when a
+device provides a bogus descriptor with a shorter bLength, the driver
+might hit out-of-bounds reads.
 
-Link: https://lore.kernel.org/r/20210517131545.27252-11-tiwai@suse.de
+For addressing it, this patch adds sanity checks to the validator
+functions for the clock descriptor traversal.  When the descriptor
+length is shorter than expected, it's skipped in the loop.
+
+For the clock source and clock multiplier descriptors, we can just
+check bLength against the sizeof() of each descriptor type.
+OTOH, the clock selector descriptor of UAC2 and UAC3 has an array
+of bNrInPins elements and two more fields at its tail, hence those
+have to be checked in addition to the sizeof() check.
+
+Reported-by: Benoît Sevens <bsevens@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/20241121140613.3651-1-bsevens@google.com
+Link: https://patch.msgid.link/20241125144629.20757-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: dafb28f02be4 ("ALSA: usx2y: Use snd_card_free_when_closed() at disconnection")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/usx2y/usbusx2y.c | 107 ++++++++++++++-----------------------
- 1 file changed, 40 insertions(+), 67 deletions(-)
+ sound/usb/clock.c |   24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
-index 373c600ba3fec..9d5a33c4ff2f3 100644
---- a/sound/usb/usx2y/usbusx2y.c
-+++ b/sound/usb/usx2y/usbusx2y.c
-@@ -149,7 +149,6 @@ MODULE_PARM_DESC(enable, "Enable "NAME_ALLCAPS".");
+--- a/sound/usb/clock.c
++++ b/sound/usb/clock.c
+@@ -36,6 +36,12 @@ union uac23_clock_multiplier_desc {
+ 	struct uac_clock_multiplier_descriptor v3;
+ };
  
- static int snd_usx2y_card_used[SNDRV_CARDS];
++/* check whether the descriptor bLength has the minimal length */
++#define DESC_LENGTH_CHECK(p, proto) \
++	((proto) == UAC_VERSION_3 ? \
++	 ((p)->v3.bLength >= sizeof((p)->v3)) :	\
++	 ((p)->v2.bLength >= sizeof((p)->v2)))
++
+ #define GET_VAL(p, proto, field) \
+ 	((proto) == UAC_VERSION_3 ? (p)->v3.field : (p)->v2.field)
  
--static void usx2y_usb_disconnect(struct usb_device *usb_device, void *ptr);
- static void snd_usx2y_card_private_free(struct snd_card *card);
- 
- /*
-@@ -363,66 +362,6 @@ static int usx2y_create_card(struct usb_device *device,
- 	return 0;
- }
- 
--static int usx2y_usb_probe(struct usb_device *device,
--			   struct usb_interface *intf,
--			   const struct usb_device_id *device_id,
--			   struct snd_card **cardp)
--{
--	int		err;
--	struct snd_card *card;
--
--	*cardp = NULL;
--	if (le16_to_cpu(device->descriptor.idVendor) != 0x1604 ||
--	    (le16_to_cpu(device->descriptor.idProduct) != USB_ID_US122 &&
--	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US224 &&
--	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US428))
--		return -EINVAL;
--
--	err = usx2y_create_card(device, intf, &card);
--	if (err < 0)
--		return err;
--	err = usx2y_hwdep_new(card, device);
--	if (err < 0)
--		goto error;
--	err = snd_card_register(card);
--	if (err < 0)
--		goto error;
--	*cardp = card;
--	return 0;
--
-- error:
--	snd_card_free(card);
--	return err;
--}
--
--/*
-- * new 2.5 USB kernel API
-- */
--static int snd_usx2y_probe(struct usb_interface *intf, const struct usb_device_id *id)
--{
--	struct snd_card *card;
--	int err;
--
--	err = usx2y_usb_probe(interface_to_usbdev(intf), intf, id, &card);
--	if (err < 0)
--		return err;
--	dev_set_drvdata(&intf->dev, card);
--	return 0;
--}
--
--static void snd_usx2y_disconnect(struct usb_interface *intf)
--{
--	usx2y_usb_disconnect(interface_to_usbdev(intf),
--			     usb_get_intfdata(intf));
--}
--
--static struct usb_driver snd_usx2y_usb_driver = {
--	.name =		"snd-usb-usx2y",
--	.probe =	snd_usx2y_probe,
--	.disconnect =	snd_usx2y_disconnect,
--	.id_table =	snd_usx2y_usb_id_table,
--};
--
- static void snd_usx2y_card_private_free(struct snd_card *card)
+@@ -58,6 +64,8 @@ static bool validate_clock_source(void *
  {
- 	struct usx2ydev *usx2y = usx2y(card);
-@@ -436,18 +375,15 @@ static void snd_usx2y_card_private_free(struct snd_card *card)
- 		snd_usx2y_card_used[usx2y->card_index] = 0;
+ 	union uac23_clock_source_desc *cs = p;
+ 
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
  }
  
--/*
-- * Frees the device.
-- */
--static void usx2y_usb_disconnect(struct usb_device *device, void *ptr)
-+static void snd_usx2y_disconnect(struct usb_interface *intf)
+@@ -65,13 +73,27 @@ static bool validate_clock_selector(void
  {
- 	struct snd_card *card;
- 	struct usx2ydev *usx2y;
- 	struct list_head *p;
+ 	union uac23_clock_selector_desc *cs = p;
  
--	if (!ptr)
-+	card = usb_get_intfdata(intf);
-+	if (!card)
- 		return;
--	card = ptr;
- 	usx2y = usx2y(card);
- 	usx2y->chip_status = USX2Y_STAT_CHIP_HUP;
- 	usx2y_unlinkseq(&usx2y->as04);
-@@ -463,4 +399,41 @@ static void usx2y_usb_disconnect(struct usb_device *device, void *ptr)
- 	snd_card_free(card);
+-	return GET_VAL(cs, proto, bClockID) == id;
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
++	if (GET_VAL(cs, proto, bClockID) != id)
++		return false;
++	/* additional length check for baCSourceID array (in bNrInPins size)
++	 * and two more fields (which sizes depend on the protocol)
++	 */
++	if (proto == UAC_VERSION_3)
++		return cs->v3.bLength >= sizeof(cs->v3) + cs->v3.bNrInPins +
++			4 /* bmControls */ + 2 /* wCSelectorDescrStr */;
++	else
++		return cs->v2.bLength >= sizeof(cs->v2) + cs->v2.bNrInPins +
++			1 /* bmControls */ + 1 /* iClockSelector */;
  }
  
-+static int snd_usx2y_probe(struct usb_interface *intf,
-+			   const struct usb_device_id *id)
-+{
-+	struct usb_device *device = interface_to_usbdev(intf);
-+	struct snd_card *card;
-+	int err;
-+
-+	if (le16_to_cpu(device->descriptor.idVendor) != 0x1604 ||
-+	    (le16_to_cpu(device->descriptor.idProduct) != USB_ID_US122 &&
-+	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US224 &&
-+	     le16_to_cpu(device->descriptor.idProduct) != USB_ID_US428))
-+		return -EINVAL;
-+
-+	err = usx2y_create_card(device, intf, &card);
-+	if (err < 0)
-+		return err;
-+	err = usx2y_hwdep_new(card, device);
-+	if (err < 0)
-+		goto error;
-+	err = snd_card_register(card);
-+	if (err < 0)
-+		goto error;
-+
-+	dev_set_drvdata(&intf->dev, card);
-+	return 0;
-+
-+ error:
-+	snd_card_free(card);
-+	return err;
-+}
-+
-+static struct usb_driver snd_usx2y_usb_driver = {
-+	.name =		"snd-usb-usx2y",
-+	.probe =	snd_usx2y_probe,
-+	.disconnect =	snd_usx2y_disconnect,
-+	.id_table =	snd_usx2y_usb_id_table,
-+};
- module_usb_driver(snd_usx2y_usb_driver);
--- 
-2.43.0
-
+ static bool validate_clock_multiplier(void *p, int id, int proto)
+ {
+ 	union uac23_clock_multiplier_desc *cs = p;
+ 
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
+ }
+ 
 
 
 
