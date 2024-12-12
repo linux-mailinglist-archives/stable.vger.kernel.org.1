@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA8C9EF388
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9059EF150
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB532189207D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B514176D03
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1840B238E23;
-	Thu, 12 Dec 2024 16:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFE42288D2;
+	Thu, 12 Dec 2024 16:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1R1Yiuq2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwFnZgJN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C235A229678;
-	Thu, 12 Dec 2024 16:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971042144C4;
+	Thu, 12 Dec 2024 16:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021988; cv=none; b=Cg/v5R45m1mzFzFdK9hFC29qmZgp2//7do39dKYbedXo7zGvkLcLW/6EB9I06s5vkaGjDfPfzCOQQu3q5fkD5SieEHR4BasbM2Z6xRW2hQika2RUOxp2osaMztx6YTu4TO4gKHvcNFhtCyCjavuPv485LhhTNgbmVY43fLqdAao=
+	t=1734020051; cv=none; b=LHVcQ/24Bae32fMyerjCxj+E9KmrTJwVwue8I8E0Rm9NxeoTcy+fFOJrsMXx0Tjf4TGZso8n4xuyHBtGDBSeZXjAWYqBHzRnMD8j/C8hA4eM/ha+1ngITkbP27uofv3PJTuCGBSoZ8k8isBoP/bX//YinCfstlAfJtByP98FmkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021988; c=relaxed/simple;
-	bh=em301b9uhZGaIC9F7AMsLwWwziqOyL1DmjYuXEwijNE=;
+	s=arc-20240116; t=1734020051; c=relaxed/simple;
+	bh=vRE5uxM5+gHDK7dMS45teS1LoliVxDCzLacJhv+pldA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKZS9lRLpiemz24CVqOEl5rhpHfyK0WW6lsBb/e+kF9jlgx81/diVGXet/JEG+lHS1oUiI2njX1KGQnNfGDs6g7E1DY9BVC/mjyqu1ZiAsvtvpk0z3ggmdktQ1PPj07PBWI+1nqJasclnNldpJkDBUaGnKxhrO/kAjxMWiXTDvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1R1Yiuq2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180FCC4CECE;
-	Thu, 12 Dec 2024 16:46:27 +0000 (UTC)
+	 MIME-Version; b=YzS9zjVibToJnYoFBVk4UyFktkc8/dtBT5ucVnVPrt0x5S5TgoKivx73c/KxijYPTusf3h/bsiYfMSUSBOCDA09hyrXrFXBd0yKRRzHxhTWN01NQ6QOB2A5QLXiQZr44c4ypuAPao6mRiHFRULDEz5PCZHu2QLyCvuT63kCJjy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwFnZgJN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FBCC4CECE;
+	Thu, 12 Dec 2024 16:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021988;
-	bh=em301b9uhZGaIC9F7AMsLwWwziqOyL1DmjYuXEwijNE=;
+	s=korg; t=1734020051;
+	bh=vRE5uxM5+gHDK7dMS45teS1LoliVxDCzLacJhv+pldA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1R1Yiuq2NYPTCxmuOiPpoAkX3HTGOik75xoJJ0BGvPzj0fSOwwjRpSTnPKtmHUsgU
-	 wG1Ipjar4k+I9Rj7ohG6LB9xNWXa7NxHEB5aic/Dl1yTbthYLCsWXVzl03hqgPGcfp
-	 6E7/IyWvm8sqcfNV2sljdoJSS8P/3qA48kR2zYaM=
+	b=BwFnZgJNOsD41AD7Sik/i5SsVCMyFi7v7PxbvIyjc7NqZRvpk0KILaFGPIfaCNrjz
+	 tjiB5LDZ6jdpSAfDEhLw8vjdDwQQAQzaLiXiIeh91gTJhBJJ0jMAXAHDNt2RnJm1hI
+	 ZS7L1tNHqS2jPcTaXGN839kFrOANGpL18cttQ5Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 116/565] arm64: dts: mt8183: krane: Fix the address of eeprom at i2c4
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 366/772] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
 Date: Thu, 12 Dec 2024 15:55:11 +0100
-Message-ID: <20241212144316.070339922@linuxfoundation.org>
+Message-ID: <20241212144405.033804005@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit e9c60c34948662b5d47573490ee538439b29e462 ]
+commit 1157733344651ca505e259d6554591ff156922fa upstream.
 
-The address of eeprom should be 50.
+An atomicity violation occurs when the validity of the variables
+da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
+assessment is not protected by a lock, the da7219 variable might still be
+in flux during the assessment, rendering this check invalid.
 
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/r/20240909-eeprom-v1-1-1ed2bc5064f4@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix this issue, we recommend adding a lock before the block
+if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
+the legitimacy check for da7219->clk_src and da7219->mclk_rate is
+protected by the lock, ensuring the validity of the check.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations.
+
+Fixes: 6d817c0e9fd7 ("ASoC: codecs: Add da7219 codec driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Link: https://patch.msgid.link/20240930101216.23723-1-chenqiuji666@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/da7219.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
-index be0ac786bcbc9..ed05212ab7f89 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
-@@ -88,9 +88,9 @@ &i2c4 {
- 	clock-frequency = <400000>;
- 	vbus-supply = <&mt6358_vcn18_reg>;
+--- a/sound/soc/codecs/da7219.c
++++ b/sound/soc/codecs/da7219.c
+@@ -1167,17 +1167,20 @@ static int da7219_set_dai_sysclk(struct
+ 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
+ 	int ret = 0;
  
--	eeprom@54 {
-+	eeprom@50 {
- 		compatible = "atmel,24c32";
--		reg = <0x54>;
-+		reg = <0x50>;
- 		pagesize = <32>;
- 		vcc-supply = <&mt6358_vcn18_reg>;
- 	};
--- 
-2.43.0
-
+-	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq))
++	mutex_lock(&da7219->pll_lock);
++
++	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) {
++		mutex_unlock(&da7219->pll_lock);
+ 		return 0;
++	}
+ 
+ 	if ((freq < 2000000) || (freq > 54000000)) {
++		mutex_unlock(&da7219->pll_lock);
+ 		dev_err(codec_dai->dev, "Unsupported MCLK value %d\n",
+ 			freq);
+ 		return -EINVAL;
+ 	}
+ 
+-	mutex_lock(&da7219->pll_lock);
+-
+ 	switch (clk_id) {
+ 	case DA7219_CLKSRC_MCLK_SQR:
+ 		snd_soc_component_update_bits(component, DA7219_PLL_CTRL,
 
 
 
