@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5029EF541
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43CA9EF71E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3ED1897D93
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 083701940441
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C8A223E7D;
-	Thu, 12 Dec 2024 16:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A852210DE;
+	Thu, 12 Dec 2024 17:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2vRRTFh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtCazSaF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F010223E6B;
-	Thu, 12 Dec 2024 16:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6531F2381;
+	Thu, 12 Dec 2024 17:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022683; cv=none; b=T5bYF9HLVBn4oNVJbppQwlBBp7mqif2JKaXO8jOqpvRoKYGX0qmNKsOx4L7pd9Y2MRQOPQ/Jl+bxCWr2YcLjIm8F6YQBaUQ9QeKYXlCCej9GvtNlxkKabogoetbyGmeXIZX1DKGZhIwm0NHSlZ2ftRAy2QnSesvEB22GoaM2Ytg=
+	t=1734024032; cv=none; b=s0c7+SL60wcgghYrpemOYGPLVXcfEpV8zkLyXSaVWd4w5CBT70QfN0hPw0R8vwhO/Y7fDZjcCl1Ax/k0KY3N0WUK2UuBKKY3JE8829x+bPFJ2U+nOJXuqg0+pSbykcdKn6dYWp3KWZIUalRcEi00f7js2vQrzlyLCdu0Q1iZEJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022683; c=relaxed/simple;
-	bh=l+IIYuRrmrpmrsRUeS7DhdYfCsZffA6d8LBz+5Tm7YU=;
+	s=arc-20240116; t=1734024032; c=relaxed/simple;
+	bh=39Yz5ekQlhvXy6S/P3SoMzgdcIRQridTVye0TJoTi28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivxhKLDkxW3N36aycHZDuyD8oOV34pExgn5eX5i5z6yIM4FbrhrJdFD7aim2bDU8ycXeZYDNxokjjqkFpBCvN6pQr5h4zBU/apXfe6ReO9HP1Vcf0hNss4Aqd8Szn3YpklM8rEotoN9y0Ze9/5lz+3BfCUDddivZPpYUBc2OZm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2vRRTFh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEFFC4CECE;
-	Thu, 12 Dec 2024 16:58:02 +0000 (UTC)
+	 MIME-Version; b=V3umkawxqTbsVtrAhNFY2+YA6q2PU6WFMbXLR07pNsgfgrVOe6lcjVox1CuiW0ML1KTUZ6uhXT8sA5gVNkyXn6NkN5lxN0qRVqenjAK3rnTffvrgDzDbxwJr/DTz29yeJ8RpUi2j3QSAO1NU6RzvapOs/hg85IxK95ea/FGBWA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtCazSaF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48B3C4CECE;
+	Thu, 12 Dec 2024 17:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022682;
-	bh=l+IIYuRrmrpmrsRUeS7DhdYfCsZffA6d8LBz+5Tm7YU=;
+	s=korg; t=1734024032;
+	bh=39Yz5ekQlhvXy6S/P3SoMzgdcIRQridTVye0TJoTi28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2vRRTFhFEiEmNxnP44+sqU+rLgI0yhBvmCrxWBOBpnmuQL0LAMhCQDDqrnVCWUJC
-	 0TkVgZJk1Z2g+gSLxMsE4nKsLMZ/+tD2oq4iwLIqBRWf/YujR11PayIx9MK1B1M0+t
-	 GpW4a3SmPE7B+80xB8xtV6KRSlOG5gaLGkaclVLU=
+	b=KtCazSaFPtvnWD/ckrIBdwrmiLjZF4rc3NdSrpKaUtX7eG1cvWebKpn7Jxk9ZGA1f
+	 psdno2b7dsvEqwb68+JDeM/aFybI4gPDOVhc6DEig9y0jOqEUdF9i/0/qsO5gUAKgz
+	 5mysXhIWSG/0gq76wDnSQFbw2I3Mk8XX/SwTImVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 307/565] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 164/459] powerpc/vdso: Flag VDSO64 entry points as functions
 Date: Thu, 12 Dec 2024 15:58:22 +0100
-Message-ID: <20241212144323.604015153@linuxfoundation.org>
+Message-ID: <20241212144259.994326765@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 1157733344651ca505e259d6554591ff156922fa upstream.
+[ Upstream commit 0161bd38c24312853ed5ae9a425a1c41c4ac674a ]
 
-An atomicity violation occurs when the validity of the variables
-da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
-assessment is not protected by a lock, the da7219 variable might still be
-in flux during the assessment, rendering this check invalid.
+On powerpc64 as shown below by readelf, vDSO functions symbols have
+type NOTYPE.
 
-To fix this issue, we recommend adding a lock before the block
-if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
-the legitimacy check for da7219->clk_src and da7219->mclk_rate is
-protected by the lock, ensuring the validity of the check.
+$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
+ELF Header:
+  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, big endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           PowerPC64
+  Version:                           0x1
+...
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations.
+Symbol table '.dynsym' contains 12 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+...
+     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
 
-Fixes: 6d817c0e9fd7 ("ASoC: codecs: Add da7219 codec driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Link: https://patch.msgid.link/20240930101216.23723-1-chenqiuji666@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Symbol table '.symtab' contains 56 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
+    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
+
+To overcome that, commit ba83b3239e65 ("selftests: vDSO: fix vDSO
+symbols lookup for powerpc64") was applied to have selftests also
+look for NOTYPE symbols, but the correct fix should be to flag VDSO
+entry points as functions.
+
+The original commit that brought VDSO support into powerpc/64 has the
+following explanation:
+
+    Note that the symbols exposed by the vDSO aren't "normal" function symbols, apps
+    can't be expected to link against them directly, the vDSO's are both seen
+    as if they were linked at 0 and the symbols just contain offsets to the
+    various functions.  This is done on purpose to avoid a relocation step
+    (ppc64 functions normally have descriptors with abs addresses in them).
+    When glibc uses those functions, it's expected to use it's own trampolines
+    that know how to reach them.
+
+The descriptors it's talking about are the OPD function descriptors
+used on ABI v1 (big endian). But it would be more correct for a text
+symbol to have type function, even if there's no function descriptor
+for it.
+
+glibc has a special case already for handling the VDSO symbols which
+creates a fake opd pointing at the kernel symbol. So changing the VDSO
+symbol type to function shouldn't affect that.
+
+For ABI v2, there is no function descriptors and VDSO functions can
+safely have function type.
+
+So lets flag VDSO entry points as functions and revert the
+selftest change.
+
+Link: https://github.com/mpe/linux-fullhistory/commit/5f2dd691b62da9d9cc54b938f8b29c22c93cb805
+Fixes: ba83b3239e65 ("selftests: vDSO: fix vDSO symbols lookup for powerpc64")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-By: Segher Boessenkool <segher@kernel.crashing.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/b6ad2f1ee9887af3ca5ecade2a56f4acda517a85.1728512263.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/vdso.h           | 1 +
+ tools/testing/selftests/vDSO/parse_vdso.c | 3 +--
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/codecs/da7219.c
-+++ b/sound/soc/codecs/da7219.c
-@@ -1167,17 +1167,20 @@ static int da7219_set_dai_sysclk(struct
- 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
- 	int ret = 0;
+diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
+index 2ff884853f975..e3768f1161d23 100644
+--- a/arch/powerpc/include/asm/vdso.h
++++ b/arch/powerpc/include/asm/vdso.h
+@@ -27,6 +27,7 @@ int vdso_getcpu_init(void);
+ #ifdef __VDSO64__
+ #define V_FUNCTION_BEGIN(name)		\
+ 	.globl name;			\
++	.type name,@function; 		\
+ 	name:				\
  
--	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq))
-+	mutex_lock(&da7219->pll_lock);
-+
-+	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		return 0;
-+	}
+ #define V_FUNCTION_END(name)		\
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index d9ccc5acac182..4ae417372e9eb 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -216,8 +216,7 @@ void *vdso_sym(const char *version, const char *name)
+ 		ELF(Sym) *sym = &vdso_info.symtab[chain];
  
- 	if ((freq < 2000000) || (freq > 54000000)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		dev_err(codec_dai->dev, "Unsupported MCLK value %d\n",
- 			freq);
- 		return -EINVAL;
- 	}
- 
--	mutex_lock(&da7219->pll_lock);
--
- 	switch (clk_id) {
- 	case DA7219_CLKSRC_MCLK_SQR:
- 		snd_soc_component_update_bits(component, DA7219_PLL_CTRL,
+ 		/* Check for a defined global or weak function w/ right name. */
+-		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
+-		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
++		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
+ 			continue;
+ 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
+ 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
+-- 
+2.43.0
+
 
 
 
