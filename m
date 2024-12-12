@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80DB9EF2FE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2A6F9EF027
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80E2A28B3B7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C90A28FBF9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8498D239BC1;
-	Thu, 12 Dec 2024 16:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E9623ED4E;
+	Thu, 12 Dec 2024 16:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtJEWS7s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVa/a2MM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B72239BA7;
-	Thu, 12 Dec 2024 16:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C8823ED45;
+	Thu, 12 Dec 2024 16:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022021; cv=none; b=Fq2ta5YCEu5grxLbu+MGWav7Ff1uxKBUuq/SDpWjTZttbowzUZMvbQjUfKD+MsZlJpCSa6qopSJ7m/r7jJ48kLOgDU1DCy83ZXaIza4JsW9u04vcQTktHrSzvtjllK/OzLfPuvJFQBiM8bUHW+xrGjwmyU99k/emXP4eiTG+jkI=
+	t=1734019972; cv=none; b=tUBybkhUf/qUAS8rjQwlGsUyzuD9nin8hr5zEQe/re/sECW4bnBj5LLPhwetQ0pRROwJX7dHw8msHS7lWMnhcvpbB+BcfsFL0790mk8A8cFM0h6aTi8AY0UYMNdg0agEDbRSIiRxeKSIpRqrx/HijILtOf8tcWhZz5ALUpQokdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022021; c=relaxed/simple;
-	bh=xCIh2w3k1GIlncFtbuHXyQettovmlh086jhVakoncHk=;
+	s=arc-20240116; t=1734019972; c=relaxed/simple;
+	bh=CgHLtzEaS5c1ah46wXom79o8CEAuQlcQKpccM4h1x1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FF5Y7ASwJn5xd2/qI2meKM1reK+62bvcM7ycJbaHr6rq8Rk1uwokwUb4l7GLeoUT8nhUSm0qt/NjU7b7mQqVG7LAlXL1JnWmBBl3G1nYw5OFVRrPYkLc9HPw9UIYti9stkeIKvnDNibltUSyuAl3MkcRfd2SoRxn9X770Akc19o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtJEWS7s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CCFC4CECE;
-	Thu, 12 Dec 2024 16:47:00 +0000 (UTC)
+	 MIME-Version; b=kNL/6OmC26B2y6WB8tirFw0W/g8O4QwGOK12qjUwNnljt3Iy/kuW/OqGtIQK4nVU2GxmuWY8gA8GV16adcMzN+EmAFJtmVv6zvYCAX8/1kl9awNcjreQ+UXTpw/0cyJ+4i2t1FOmeTuj0SjulgjqJbx1Tt4ZXYsuTIEAncmzwH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVa/a2MM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0F8C4CECE;
+	Thu, 12 Dec 2024 16:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022020;
-	bh=xCIh2w3k1GIlncFtbuHXyQettovmlh086jhVakoncHk=;
+	s=korg; t=1734019972;
+	bh=CgHLtzEaS5c1ah46wXom79o8CEAuQlcQKpccM4h1x1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZtJEWS7smtZXVuNT+HMJJkjrZmRtF5TYxoHfKyhzKfPIa4ZNbhSTGRYTxMMXiUPmf
-	 vdvHN5JinYiPOn9iCq3PynWhCIjcmvYd3S4RKtJ9MQuSwFFzv+A3uVaeM/uVOwOsCg
-	 hf7srj9jCqZ7ZPKmX0SfmUVokkFQIMAGIj9gDq+M=
+	b=JVa/a2MMv+uBadd9vNB0QqWxvjk5oiUMRFT+EVK/ptHncwatMpUccTKd+d4vdpA4L
+	 KgmHEMZxyy4P0WekvughXw5Kdyja3B9W5wU8RIV5tJxGXCUlu3LbIxgj+l7VXwX8yx
+	 ruPidYRDbYCq/aO9RYI+knW7JsxCWMzTL0fcu/9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 095/565] thermal: core: Initialize thermal zones before registering them
+	Jammy Huang <jammy_huang@aspeedtech.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Bin Lan <bin.lan.cn@windriver.com>
+Subject: [PATCH 6.1 345/772] media: aspeed: Fix memory overwrite if timing is 1600x900
 Date: Thu, 12 Dec 2024 15:54:50 +0100
-Message-ID: <20241212144315.241222380@linuxfoundation.org>
+Message-ID: <20241212144404.168783546@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Jammy Huang <jammy_huang@aspeedtech.com>
 
-[ Upstream commit 662f920f7e390db5d1a6792a2b0ffa59b6c962fc ]
+commit c281355068bc258fd619c5aefd978595bede7bfe upstream.
 
-Since user space can start interacting with a new thermal zone as soon
-as device_register() called by thermal_zone_device_register_with_trips()
-returns, it is better to initialize the thermal zone before calling
-device_register() on it.
+When capturing 1600x900, system could crash when system memory usage is
+tight.
 
-Fixes: d0df264fbd3c ("thermal/core: Remove pointless thermal_zone_device_reset() function")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/3336146.44csPzL39Z@rjwysocki.net
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The way to reproduce this issue:
+1. Use 1600x900 to display on host
+2. Mount ISO through 'Virtual media' on OpenBMC's web
+3. Run script as below on host to do sha continuously
+  #!/bin/bash
+  while [ [1] ];
+  do
+	find /media -type f -printf '"%h/%f"\n' | xargs sha256sum
+  done
+4. Open KVM on OpenBMC's web
+
+The size of macro block captured is 8x8. Therefore, we should make sure
+the height of src-buf is 8 aligned to fix this issue.
+
+Signed-off-by: Jammy Huang <jammy_huang@aspeedtech.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/thermal_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/aspeed/aspeed-video.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index ce748e03e4331..bb3a4b6720362 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -1271,6 +1271,7 @@ thermal_zone_device_register(const char *type, int num_trips, int mask,
- 		thermal_zone_destroy_device_groups(tz);
- 		goto remove_id;
- 	}
-+	thermal_zone_device_init(tz);
- 	result = device_register(&tz->device);
- 	if (result)
- 		goto release_device;
-@@ -1313,7 +1314,6 @@ thermal_zone_device_register(const char *type, int num_trips, int mask,
+--- a/drivers/media/platform/aspeed/aspeed-video.c
++++ b/drivers/media/platform/aspeed/aspeed-video.c
+@@ -1047,7 +1047,7 @@ static void aspeed_video_get_resolution(
+ static void aspeed_video_set_resolution(struct aspeed_video *video)
+ {
+ 	struct v4l2_bt_timings *act = &video->active_timings;
+-	unsigned int size = act->width * act->height;
++	unsigned int size = act->width * ALIGN(act->height, 8);
  
- 	INIT_DELAYED_WORK(&tz->poll_queue, thermal_zone_device_check);
+ 	/* Set capture/compression frame sizes */
+ 	aspeed_video_calc_compressed_size(video, size);
+@@ -1064,7 +1064,7 @@ static void aspeed_video_set_resolution(
+ 		u32 width = ALIGN(act->width, 64);
  
--	thermal_zone_device_init(tz);
- 	/* Update the new thermal zone and mark it as already updated. */
- 	if (atomic_cmpxchg(&tz->need_update, 1, 0))
- 		thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
--- 
-2.43.0
-
+ 		aspeed_video_write(video, VE_CAP_WINDOW, width << 16 | act->height);
+-		size = width * act->height;
++		size = width * ALIGN(act->height, 8);
+ 	} else {
+ 		aspeed_video_write(video, VE_CAP_WINDOW,
+ 				   act->width << 16 | act->height);
 
 
 
