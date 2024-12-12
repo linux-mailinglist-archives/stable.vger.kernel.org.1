@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624829EF519
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229CC9EF6E8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C59F2166E03
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A2D51898C61
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01390223E64;
-	Thu, 12 Dec 2024 16:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF29D21CFEA;
+	Thu, 12 Dec 2024 17:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3PyVpKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kU7ovZm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3335223E6B;
-	Thu, 12 Dec 2024 16:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB04B217664;
+	Thu, 12 Dec 2024 17:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022679; cv=none; b=CGgs90Qgl2YQUS5Z4adJRKi2sEIlMyzg8bQ3jXNh3p6gKhRs/QpJbG4s2h+qtaO7NIE2eXIxXfyjjGvUG4NfSRpgfclYcrFGMIsa0MrIa1uGLfB8ijWpRNhXVoqVEJ0fxG8AJ4J1FSNlEM7u72GzexTUUAxe8FQN2uvRlJvbc+E=
+	t=1734024029; cv=none; b=r/hqmEOnZXXeiHFGzbsHSkzpjRCydgBtTEN05ZIjz7V+aKilt8hgO/DKzNy3pa/vb4mUIuEjHN+e4Ia9BmwoEoH7mfkorp90wYvKTsi7G8/YiMOwC7F2xaWrg9IBJ5Ilhh+IX0E/xy1HaHcaYNzaLyftbuMRvv3Y1KpTkT5NMxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022679; c=relaxed/simple;
-	bh=gehzdTi3J4nxncNMvo3P65HzSfpNs7GdzidOrqNl864=;
+	s=arc-20240116; t=1734024029; c=relaxed/simple;
+	bh=YGyiDOXzd/z/jssAAXz/gq8aCTIWMOMj9sPXWhhvfD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F54PNvMevY5Ez4iOPg7GUyl9I7sdOGP4Mq5W7vmP1C77hrFAAvqj2jVbgUhNNRuKdL/KMPIXyRfh9olxgQ9CHvLo56/wHwfBRUS7eTRNLaB8fk8CDToRPb/9SMhCTu5LUrI2bap5TkVVsHiW4rZRDkxbDUNsWKX9fg1FOKkbut0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3PyVpKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324BFC4CECE;
-	Thu, 12 Dec 2024 16:57:59 +0000 (UTC)
+	 MIME-Version; b=o9YVLNROJk3oBPhckAnhgbmc6vaKh6lCaoAvjLjVgfmaThRQrd5ksLDakq1w5xUuyksSjo90RdGJVDBzqWPDCaObnVCHHLIrZIlIQwPfVIoyigxwcArU0uHtFAP0x+77s3KOleEAH1X1Uq0GpFXt5bN7jg01trrY9V5dTveuM4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kU7ovZm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD62C4CEDD;
+	Thu, 12 Dec 2024 17:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022679;
-	bh=gehzdTi3J4nxncNMvo3P65HzSfpNs7GdzidOrqNl864=;
+	s=korg; t=1734024029;
+	bh=YGyiDOXzd/z/jssAAXz/gq8aCTIWMOMj9sPXWhhvfD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3PyVpKSmGELgNThr9rainievftHycg2CL+f0MzznLK252wBcXNsHZ4/BBBBGgBdP
-	 PnhIS3ufO+9mQ8TN2f4D+ex7Hv5S7liA05pbpdm/ULfsr0b6bEVbp0FSqOEiM52JmE
-	 neGAr9LbbPfPvtromRpQu+54D+emBD7Maa190WFQ=
+	b=kU7ovZm+XAjsINozQpMb1tz2h9MndP3PgcPisBLb92Y9z1OTFqbFHHmgrgJgbd5/R
+	 55LUanLym3+VBKO5lCSRBUyyZ6+77mpZV70ffdepowI51a3OJnxdTCe8OQeTQdIpy8
+	 nt+LH/F0lLZnxNzLliFXQ/9NsmrtIlRUycxu+McM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Sadovnikov <ancowi69@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 5.15 306/565] jfs: xattr: check invalid xattr size more strictly
+	Levi Yun <yeoreum.yun@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 163/459] trace/trace_event_perf: remove duplicate samples on the first tracepoint event
 Date: Thu, 12 Dec 2024 15:58:21 +0100
-Message-ID: <20241212144323.565824895@linuxfoundation.org>
+Message-ID: <20241212144259.955741929@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <ancowi69@gmail.com>
+From: Levi Yun <yeoreum.yun@arm.com>
 
-commit d9f9d96136cba8fedd647d2c024342ce090133c2 upstream.
+[ Upstream commit afe5960dc208fe069ddaaeb0994d857b24ac19d1 ]
 
-Commit 7c55b78818cf ("jfs: xattr: fix buffer overflow for invalid xattr")
-also addresses this issue but it only fixes it for positive values, while
-ea_size is an integer type and can take negative values, e.g. in case of
-a corrupted filesystem. This still breaks validation and would overflow
-because of implicit conversion from int to size_t in print_hex_dump().
+When a tracepoint event is created with attr.freq = 1,
+'hwc->period_left' is not initialized correctly. As a result,
+in the perf_swevent_overflow() function, when the first time the event occurs,
+it calculates the event overflow and the perf_swevent_set_period() returns 3,
+this leads to the event are recorded for three duplicate times.
 
-Fix this issue by clamping the ea_size value instead.
+Step to reproduce:
+    1. Enable the tracepoint event & starting tracing
+         $ echo 1 > /sys/kernel/tracing/events/module/module_free
+         $ echo 1 > /sys/kernel/tracing/tracing_on
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+    2. Record with perf
+         $ perf record -a --strict-freq -F 1 -e "module:module_free"
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    3. Trigger module_free event.
+         $ modprobe -i sunrpc
+         $ modprobe -r sunrpc
+
+Result:
+     - Trace pipe result:
+         $ cat trace_pipe
+         modprobe-174509  [003] .....  6504.868896: module_free: sunrpc
+
+     - perf sample:
+         modprobe  174509 [003]  6504.868980: module:module_free: sunrpc
+         modprobe  174509 [003]  6504.868980: module:module_free: sunrpc
+         modprobe  174509 [003]  6504.868980: module:module_free: sunrpc
+
+By setting period_left via perf_swevent_set_period() as other sw_event did,
+This problem could be solved.
+
+After patch:
+     - Trace pipe result:
+         $ cat trace_pipe
+         modprobe 1153096 [068] 613468.867774: module:module_free: xfs
+
+     - perf sample
+         modprobe 1153096 [068] 613468.867794: module:module_free: xfs
+
+Link: https://lore.kernel.org/20240913021347.595330-1-yeoreum.yun@arm.com
+Fixes: bd2b5b12849a ("perf_counter: More aggressive frequency adjustment")
+Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_event_perf.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -559,7 +559,7 @@ static int ea_get(struct inode *inode, s
+diff --git a/kernel/trace/trace_event_perf.c b/kernel/trace/trace_event_perf.c
+index eb81ad523a553..b3a863c10c0a7 100644
+--- a/kernel/trace/trace_event_perf.c
++++ b/kernel/trace/trace_event_perf.c
+@@ -355,10 +355,16 @@ void perf_uprobe_destroy(struct perf_event *p_event)
+ int perf_trace_add(struct perf_event *p_event, int flags)
+ {
+ 	struct trace_event_call *tp_event = p_event->tp_event;
++	struct hw_perf_event *hwc = &p_event->hw;
  
-       size_check:
- 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
--		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
-+		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
+ 	if (!(flags & PERF_EF_START))
+ 		p_event->hw.state = PERF_HES_STOPPED;
  
- 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
- 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
++	if (is_sampling_event(p_event)) {
++		hwc->last_period = hwc->sample_period;
++		perf_swevent_set_period(p_event);
++	}
++
+ 	/*
+ 	 * If TRACE_REG_PERF_ADD returns false; no custom action was performed
+ 	 * and we need to take the default action of enqueueing our event on
+-- 
+2.43.0
+
 
 
 
