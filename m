@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7127C9EF6AD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E799EF8D0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BA8428A22F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2FDA18942D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE54C217F34;
-	Thu, 12 Dec 2024 17:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66A2222D67;
+	Thu, 12 Dec 2024 17:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bi+qrib1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2G7Q7UU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADC8215764;
-	Thu, 12 Dec 2024 17:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4A313CA81;
+	Thu, 12 Dec 2024 17:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024502; cv=none; b=Ilx9F5+OxXTvJXoYn9CBUL9fVjANdEV9PV8kIeeZBhB0ZriUrrVH6ifEYCc6NM+FZbTgyqVjTtQTHs4vR5Rx+fNZwyf5MiykaW2u69KqC0H33i37cUGZL5HnUcqE5Vr9YWZuXA8ee7ncI0JgfijWF5Uw1VF/mx4LOMqlzc8t2vg=
+	t=1734025273; cv=none; b=fAWdKQLqeXC5eSGkVX+Lhi0a0evMwzqO3sFdk1XGLQ2SYV5+/dpmghbh+Dbef2y+fKo8nyzEgW66QQbhpjBTc/678eoKTRBf45UheQ8GIgSlJZ6+3tezBC7qrGILS/FIpd/Wtppwzdl/x1USPqfjSUTStwESkihaAkPhdO5SQws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024502; c=relaxed/simple;
-	bh=gQ+qFUOIojTPeb/EI8hJ48noAOqdwXQr5ZVVL/XOJZM=;
+	s=arc-20240116; t=1734025273; c=relaxed/simple;
+	bh=aXYN1Dl2oOIULk1Pilcs0MdJz8pe/bAoldKrl3mzAbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WW21v8vOZSqIUfJXpABMy056Ak+KKjcVVNDcXTSQwr/J6+t1abHVU2tS5SnbOgDGhOsr6n20EnbPjqcOnQTNlcG/mqgxaDg/HhLMbXKH1k+OxgoANGh7hF9il6X43Mh3MallnefJQSmiYZECUF7R2ER0xo3pUHGFSfKyRYwahxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bi+qrib1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89CCC4CED0;
-	Thu, 12 Dec 2024 17:28:21 +0000 (UTC)
+	 MIME-Version; b=JQc2giXDYvcfn/lGdetRgCQhYTagsFZxcLGCWU2en7yxxaG+w0Cd7tz6D71LZNVa8Pg3IE4xiNFYKwfZmCZRCFXATQ6YE6cYFuAAAcY9hFROSwQHEGDr+s4s9gn6/NkJw1OKGeamqgVyFYRLjkSaF24FMRJrkaZ6AsAMVC0Z6Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2G7Q7UU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CA6C4CECE;
+	Thu, 12 Dec 2024 17:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024502;
-	bh=gQ+qFUOIojTPeb/EI8hJ48noAOqdwXQr5ZVVL/XOJZM=;
+	s=korg; t=1734025273;
+	bh=aXYN1Dl2oOIULk1Pilcs0MdJz8pe/bAoldKrl3mzAbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bi+qrib1DvI1TnscPRcGc3BArkwV4BM9cp8lNn9BG54C1Q+h/mUeAlKmloM8KnyQw
-	 QLTBhndxeq3Y/30NXlc18S3NJTQ0eq2mE3BtbHK6RF7bK7aoW5PhcXhrXeDUZeH6pU
-	 025eCNXY5dAE6X9/6zqoXHadjhOB3HO7VHud9Zec=
+	b=m2G7Q7UUrXa0alvKfPv+OMFx8Jl/0qieGCdB6qvoIYoIk8d1jHjoI3mbjTSpOsE6G
+	 KrRWdkDMNHtSJvXDyPiXH02/m6uj1JAC9BgAHmeVADdF2KBWKouhwFi8/x0EZZGoEQ
+	 g/pSVFgp5MxU2hiyMI4avDqpA6kuQGHir0FgEn4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lew <quic_clew@quicinc.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 287/459] rpmsg: glink: Propagate TX failures in intentless mode as well
+	Nuno Sa <nuno.sa@analog.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 107/321] dt-bindings: clock: axi-clkgen: include AXI clk
 Date: Thu, 12 Dec 2024 16:00:25 +0100
-Message-ID: <20241212144304.970681365@linuxfoundation.org>
+Message-ID: <20241212144234.214208045@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 7a68f9fa97357a0f2073c9c31ed4101da4fce93e upstream.
+[ Upstream commit 47f3f5a82a31527e027929c5cec3dd1ef5ef30f5 ]
 
-As support for splitting transmission over several messages using
-TX_DATA_CONT was introduced it does not immediately return the return
-value of qcom_glink_tx().
+In order to access the registers of the HW, we need to make sure that
+the AXI bus clock is enabled. Hence let's increase the number of clocks
+by one and add clock-names to differentiate between parent clocks and
+the bus clock.
 
-The result is that in the intentless case (i.e. intent == NULL), the
-code will continue to send all additional chunks. This is wasteful, and
-it's possible that the send operation could incorrectly indicate
-success, if the last chunk fits in the TX fifo.
-
-Fix the condition.
-
-Fixes: 8956927faed3 ("rpmsg: glink: Add TX_DATA_CONT command while sending")
-Reviewed-by: Chris Lew <quic_clew@quicinc.com>
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230418163018.785524-2-quic_bjorande@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-1-bc5e0733ad76@analog.com
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ .../bindings/clock/adi,axi-clkgen.yaml        | 22 +++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1355,8 +1355,9 @@ static int __qcom_glink_send(struct glin
- 	ret = qcom_glink_tx(glink, &req, sizeof(req), data, chunk_size, wait);
+diff --git a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+index 0d06387184d68..bb2eec3021a09 100644
+--- a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
++++ b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+@@ -25,9 +25,21 @@ properties:
+     description:
+       Specifies the reference clock(s) from which the output frequency is
+       derived. This must either reference one clock if only the first clock
+-      input is connected or two if both clock inputs are connected.
+-    minItems: 1
+-    maxItems: 2
++      input is connected or two if both clock inputs are connected. The last
++      clock is the AXI bus clock that needs to be enabled so we can access the
++      core registers.
++    minItems: 2
++    maxItems: 3
++
++  clock-names:
++    oneOf:
++      - items:
++          - const: clkin1
++          - const: s_axi_aclk
++      - items:
++          - const: clkin1
++          - const: clkin2
++          - const: s_axi_aclk
  
- 	/* Mark intent available if we failed */
--	if (ret && intent) {
--		intent->in_use = false;
-+	if (ret) {
-+		if (intent)
-+			intent->in_use = false;
- 		return ret;
- 	}
+   '#clock-cells':
+     const: 0
+@@ -39,6 +51,7 @@ required:
+   - compatible
+   - reg
+   - clocks
++  - clock-names
+   - '#clock-cells'
  
-@@ -1377,8 +1378,9 @@ static int __qcom_glink_send(struct glin
- 				    chunk_size, wait);
- 
- 		/* Mark intent available if we failed */
--		if (ret && intent) {
--			intent->in_use = false;
-+		if (ret) {
-+			if (intent)
-+				intent->in_use = false;
- 			break;
- 		}
- 	}
+ additionalProperties: false
+@@ -49,5 +62,6 @@ examples:
+       compatible = "adi,axi-clkgen-2.00.a";
+       #clock-cells = <0>;
+       reg = <0xff000000 0x1000>;
+-      clocks = <&osc 1>;
++      clocks = <&osc 1>, <&clkc 15>;
++      clock-names = "clkin1", "s_axi_aclk";
+     };
+-- 
+2.43.0
+
 
 
 
