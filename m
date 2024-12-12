@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B419EF99B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CBE9EF7D8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 004BE189DB4A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDA4E16D148
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98EC22967A;
-	Thu, 12 Dec 2024 17:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44524213E6F;
+	Thu, 12 Dec 2024 17:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij6hFOrY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmzsXh8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9335D229675;
-	Thu, 12 Dec 2024 17:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011C720A5EE;
+	Thu, 12 Dec 2024 17:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025488; cv=none; b=Rr/KIEFBEAavKUg0BbNZAM7l+KdpQi9IrGAExHGX12OGPezvfurqYUncHpMwgN6qkFgpsoyA0mXielSX6Fwy655fWxsglYUnUM1Dc/HY3KNalcXiY/IVAIOwWQvxFD5wF3s/A6yRFx+J8cozSBEyAONpe5NPx+yPKdi0MWw0i/M=
+	t=1734024654; cv=none; b=WISZ1FSvUwovVInexei0jsavc//BEZbIG+z7Yfs8JctiucP1S6lUzqGAzeBDnAiIeRNlvV1B4ZcW4BjUzpdOMZD9J77n7vqc/3sXpECPyVVUBoOBK7NigT4ekRxlT3o6sHKz6VMCzfMfvyFFmVdYV1PMCQ10DoPD9cdXIj4WuhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025488; c=relaxed/simple;
-	bh=ypiEEEm+xZH9En+vaWUQ5MGHUy/U3/HOB4Yb1+dc2Tk=;
+	s=arc-20240116; t=1734024654; c=relaxed/simple;
+	bh=vbXb5VsXcP1Zxm55m+D4NGyjOwb1lmMH7xZVOmgHDJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WIR87zCwTWOrlALTAZMC8fPMpzTJIr6QPuZJ5vUEYTyahCR7MYV10yTI6pp6uR59yBC0ucPGgOdFmthZxk8o+9YwklOZY5+vrrMEVomvQSJqkFKNmkuBeAFm06OxMxCF6Kf4S6pJMOrSz6sbPRjpgbG8ZHpJr5QQNvDGcXdy1aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij6hFOrY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16AD6C4CED0;
-	Thu, 12 Dec 2024 17:44:47 +0000 (UTC)
+	 MIME-Version; b=WCdrAvyiCKKVVdZvNz/l/mKraU6+77V7rZGomTyHlfllBhg2fIoWrPHPmuh/Egll2dPWlf/4L16aJOvQv7ry3roD1Z5ULLTH4jB5L6pFrH22nDVUXSUaA43IaSgaFGJL386iw4F8ES7EO/2xlHI2kyFQDhTDy4mMjgQ0edmrnJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmzsXh8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F484C4CECE;
+	Thu, 12 Dec 2024 17:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025488;
-	bh=ypiEEEm+xZH9En+vaWUQ5MGHUy/U3/HOB4Yb1+dc2Tk=;
+	s=korg; t=1734024653;
+	bh=vbXb5VsXcP1Zxm55m+D4NGyjOwb1lmMH7xZVOmgHDJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ij6hFOrYFv9pAby2vHnZJ7g1KqlSXW+Rx3sNcTYWYek/okZraNXmo9RFIao3l/pE2
-	 dWXC7+htUvjaNublVnIS7ut/6uP6LuFS1TwqD4pj6u29k4xfGtm/bjtkZWaFj1cd9P
-	 LV/5GlqUldsu0SmAsiHNcxlfBo4TC9LtkDuJND1Q=
+	b=qmzsXh8GK1eFPhrtYQAHmGKKpOVtUOjQ6SyeKVfKwOgGuU0V3zEhnwT1JXgxCiCE1
+	 hAtdg7L5jQ4Pdx/HYPE3BIvC2uaV67e26Faf7p88txqTmhxzWNX9V87mzZAmpYHpKk
+	 xJSa6JL1MIQ2hntiJo8315XUPcbqqFqV+I22tyEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongliang Gao <leonylgao@tencent.com>,
-	Jingqun Li <jingqunli@tencent.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 187/321] rtc: check if __rtc_read_time was successful in rtc_timer_do_work()
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 367/459] scsi: qla2xxx: Supported speed displayed incorrectly for VPorts
 Date: Thu, 12 Dec 2024 16:01:45 +0100
-Message-ID: <20241212144237.371500146@linuxfoundation.org>
+Message-ID: <20241212144308.170106728@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongliang Gao <leonylgao@tencent.com>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-[ Upstream commit e8ba8a2bc4f60a1065f23d6a0e7cbea945a0f40d ]
+commit e4e268f898c8a08f0a1188677e15eadbc06e98f6 upstream.
 
-If the __rtc_read_time call fails,, the struct rtc_time tm; may contain
-uninitialized data, or an illegal date/time read from the RTC hardware.
+The fc_function_template for vports was missing the
+.show_host_supported_speeds. The base port had the same.
 
-When calling rtc_tm_to_ktime later, the result may be a very large value
-(possibly KTIME_MAX). If there are periodic timers in rtc->timerqueue,
-they will continually expire, may causing kernel softlockup.
+Add .show_host_supported_speeds to the vport template as well.
 
-Fixes: 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
-Signed-off-by: Yongliang Gao <leonylgao@tencent.com>
-Acked-by: Jingqun Li <jingqunli@tencent.com>
-Link: https://lore.kernel.org/r/20241011043153.3788112-1-leonylgao@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2c3dfe3f6ad8 ("[SCSI] qla2xxx: add support for NPIV")
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/interface.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_attr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index d858cd819932f..1536d53a7af7f 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -894,13 +894,18 @@ void rtc_timer_do_work(struct work_struct *work)
- 	struct timerqueue_node *next;
- 	ktime_t now;
- 	struct rtc_time tm;
-+	int err;
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -3244,6 +3244,7 @@ struct fc_function_template qla2xxx_tran
+ 	.show_host_node_name = 1,
+ 	.show_host_port_name = 1,
+ 	.show_host_supported_classes = 1,
++	.show_host_supported_speeds = 1,
  
- 	struct rtc_device *rtc =
- 		container_of(work, struct rtc_device, irqwork);
- 
- 	mutex_lock(&rtc->ops_lock);
- again:
--	__rtc_read_time(rtc, &tm);
-+	err = __rtc_read_time(rtc, &tm);
-+	if (err) {
-+		mutex_unlock(&rtc->ops_lock);
-+		return;
-+	}
- 	now = rtc_tm_to_ktime(tm);
- 	while ((next = timerqueue_getnext(&rtc->timerqueue))) {
- 		if (next->expires > now)
--- 
-2.43.0
-
+ 	.get_host_port_id = qla2x00_get_host_port_id,
+ 	.show_host_port_id = 1,
 
 
 
