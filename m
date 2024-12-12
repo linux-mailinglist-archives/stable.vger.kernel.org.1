@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-103444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA97E9EF799
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2FD9EF5FB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3743F189FC6F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C576B17197D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B574222D46;
-	Thu, 12 Dec 2024 17:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBB3223E8C;
+	Thu, 12 Dec 2024 17:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blKZT9CK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2oa1vMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD2222145E;
-	Thu, 12 Dec 2024 17:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555272236F0;
+	Thu, 12 Dec 2024 17:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024587; cv=none; b=mtNQ6BvgbawCANCCN27ZuObK2MerqyBiWMKrauP5W9V0AhGr8QdcnUVpAY2F7PhnBr8Y90t+an30UCr2K0Ljwn23Vwsx6be+Pca8sngOQBIZCGHU2g6Pc7p1e06qaN4ZrX/SD8EyPikW4qRGQ7zmg6xHW0yBQYGvTaGD0SBImBA=
+	t=1734023387; cv=none; b=rDQ781U6rhkq5yTLUDjHO7yZaxjfe005rGbnzKLzomvqyCjdBNUbvOGjqjzUGAVyxjXAvbkvCk2Wa7zdvw8EhKe9GrxYqGJ9AyZFMHpRDsGZM6i11O1y9F5c7v4CC6bT/r5ytqpjLx3zML6uBAmH6aFyGNSXlTYwBkKgM24knaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024587; c=relaxed/simple;
-	bh=85oqSZindcOdyDkhpR3gmtFDSa6sn3R4+YSBS1QQqko=;
+	s=arc-20240116; t=1734023387; c=relaxed/simple;
+	bh=dz+pv+xOrhr6mYRYBslAHoeGFYxrt2fT3VC/Cbq4arM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XjGwyDuekQjwxcYrL0qtml7G0rvrWZPu1HFmDZQ6fPTF86444xx2BeEKpQVo6s1qKQF974iMG31bWIDbOGcqsFVC2N+qSdI+GdwRWWEaiX56szURU9IlGyV2Cy2vl3+TgCOxK0YeEx4Ebht+E977VugKN1fv6V07t5oVWmJ8kJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blKZT9CK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B751C4CECE;
-	Thu, 12 Dec 2024 17:29:46 +0000 (UTC)
+	 MIME-Version; b=HESgFpb9WlLRstE+GaAijnTXPNPG3f5qa/1KU98kMFlYENh6PsVWAnUfv8SDKL6XKi2celkCHFaRDk+DGL/jPhA0hNyzEriRhf03nZoZ1xNuiCQ05yjNuZMwJQLmkL+3OyAoiRi14yfN7yWL+W3PND4RYstw1+gjVqkwRjgF1rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2oa1vMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE351C4CECE;
+	Thu, 12 Dec 2024 17:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024586;
-	bh=85oqSZindcOdyDkhpR3gmtFDSa6sn3R4+YSBS1QQqko=;
+	s=korg; t=1734023387;
+	bh=dz+pv+xOrhr6mYRYBslAHoeGFYxrt2fT3VC/Cbq4arM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blKZT9CKGXlwATbGbDuIx0O1BVNS0xGAZDa3rVn2rH9wcIXIzgRNPyy8LEqL7NEVS
-	 C9mYg2U7XxhjVrZ/Wd6ptdZ29gsqwSrgnss33P0y/U9MmpRltWU973dzJJI+2z5Vcr
-	 yH2yXIQSsoEdfrq0y2Ou+ZjzseTcYlnAznKvgPCw=
+	b=Q2oa1vMPAbTFducIX0Z8qpJ5AVprzwzo9T1AftN5b1a2tjzAcCwjkk4Xrn0OXn2oH
+	 ILQp1kzOCv/tj+EtJ2R5pUYSIy/7f30G1NIcvONMyDL2W7T4/hkVQG4Go0URVuBRn6
+	 Yj7DX9Eif2Y+Wax0xZqkoiFDKRoXCl8PbXudNnbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3ec5271486d7cb2d242a@syzkaller.appspotmail.com,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 344/459] geneve: do not assume mac header is set in geneve_xmit_skb()
+Subject: [PATCH 5.15 487/565] Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()
 Date: Thu, 12 Dec 2024 16:01:22 +0100
-Message-ID: <20241212144307.252177323@linuxfoundation.org>
+Message-ID: <20241212144331.012380235@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 8588c99c7d47448fcae39e3227d6e2bb97aad86d ]
+[ Upstream commit 7c4f78cdb8e7501e9f92d291a7d956591bf73be9 ]
 
-We should not assume mac header is set in output path.
+bt_sock_alloc() allocates the sk object and attaches it to the provided
+sock object. On error l2cap_sock_alloc() frees the sk object, but the
+dangling pointer is still attached to the sock object, which may create
+use-after-free in other code.
 
-Use skb_eth_hdr() instead of eth_hdr() to fix the issue.
-
-sysbot reported the following :
-
- WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 skb_mac_header include/linux/skbuff.h:3052 [inline]
- WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 eth_hdr include/linux/if_ether.h:24 [inline]
- WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 geneve_xmit_skb drivers/net/geneve.c:898 [inline]
- WARNING: CPU: 0 PID: 11635 at include/linux/skbuff.h:3052 geneve_xmit+0x4c38/0x5730 drivers/net/geneve.c:1039
-Modules linked in:
-CPU: 0 UID: 0 PID: 11635 Comm: syz.4.1423 Not tainted 6.12.0-syzkaller-10296-gaaf20f870da0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
- RIP: 0010:skb_mac_header include/linux/skbuff.h:3052 [inline]
- RIP: 0010:eth_hdr include/linux/if_ether.h:24 [inline]
- RIP: 0010:geneve_xmit_skb drivers/net/geneve.c:898 [inline]
- RIP: 0010:geneve_xmit+0x4c38/0x5730 drivers/net/geneve.c:1039
-Code: 21 c6 02 e9 35 d4 ff ff e8 a5 48 4c fb 90 0f 0b 90 e9 fd f5 ff ff e8 97 48 4c fb 90 0f 0b 90 e9 d8 f5 ff ff e8 89 48 4c fb 90 <0f> 0b 90 e9 41 e4 ff ff e8 7b 48 4c fb 90 0f 0b 90 e9 cd e7 ff ff
-RSP: 0018:ffffc90003b2f870 EFLAGS: 00010283
-RAX: 000000000000037a RBX: 000000000000ffff RCX: ffffc9000dc3d000
-RDX: 0000000000080000 RSI: ffffffff86428417 RDI: 0000000000000003
-RBP: ffffc90003b2f9f0 R08: 0000000000000003 R09: 000000000000ffff
-R10: 000000000000ffff R11: 0000000000000002 R12: ffff88806603c000
-R13: 0000000000000000 R14: ffff8880685b2780 R15: 0000000000000e23
-FS:  00007fdc2deed6c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b30a1dff8 CR3: 0000000056b8c000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
-  netdev_start_xmit include/linux/netdevice.h:5011 [inline]
-  __dev_direct_xmit+0x58a/0x720 net/core/dev.c:4490
-  dev_direct_xmit include/linux/netdevice.h:3181 [inline]
-  packet_xmit+0x1e4/0x360 net/packet/af_packet.c:285
-  packet_snd net/packet/af_packet.c:3146 [inline]
-  packet_sendmsg+0x2700/0x5660 net/packet/af_packet.c:3178
-  sock_sendmsg_nosec net/socket.c:711 [inline]
-  __sock_sendmsg net/socket.c:726 [inline]
-  __sys_sendto+0x488/0x4f0 net/socket.c:2197
-  __do_sys_sendto net/socket.c:2204 [inline]
-  __se_sys_sendto net/socket.c:2200 [inline]
-  __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2200
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: a025fb5f49ad ("geneve: Allow configuration of DF behaviour")
-Reported-by: syzbot+3ec5271486d7cb2d242a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/674f4b72.050a0220.17bd51.004a.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Link: https://patch.msgid.link/20241203182122.2725517-1-edumazet@google.com
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-3-ignat@cloudflare.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/geneve.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/l2cap_sock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index d0b7d1b922218..e7412edb84dcd 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -983,7 +983,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 		if (geneve->cfg.df == GENEVE_DF_SET) {
- 			df = htons(IP_DF);
- 		} else if (geneve->cfg.df == GENEVE_DF_INHERIT) {
--			struct ethhdr *eth = eth_hdr(skb);
-+			struct ethhdr *eth = skb_eth_hdr(skb);
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 3a2be1b4a5743..57035e46f7151 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1876,6 +1876,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
+ 	chan = l2cap_chan_create();
+ 	if (!chan) {
+ 		sk_free(sk);
++		sock->sk = NULL;
+ 		return NULL;
+ 	}
  
- 			if (ntohs(eth->h_proto) == ETH_P_IPV6) {
- 				df = htons(IP_DF);
 -- 
 2.43.0
 
