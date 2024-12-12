@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-102459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6779EF300
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341A09EEE6F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA608189FA2F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59D9516BAE4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B4C226863;
-	Thu, 12 Dec 2024 16:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E882210DE;
+	Thu, 12 Dec 2024 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9V0FfER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbEXUHfQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B53226555;
-	Thu, 12 Dec 2024 16:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7622E2210D8;
+	Thu, 12 Dec 2024 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021305; cv=none; b=AoAa5arYBdOaSOOvAGfQj+bNrZj2P+tRSvRD1jTSlPXDvAtgm/mt5y09l5E8RRxBi8aUBGnJLeDYyqmg4Cw8bPIGfN5vSqomzqI/cQQf8aRqWzDbkZ6nqbLneiHVBG5SOxry4d6Lf2KfUliBXfXPc+UJE7Oeymm4KT0UWNp2z+Y=
+	t=1734018672; cv=none; b=EyXo1okUrSMk0xOJ4DSnmuKwA53d7CNDe16m9vVTKDuxLKxl07p5JwU6nzHane6TzyGNhLHPImYSDu3sqJKOk2wtzwb9KLhC2OpNnfq3SXg1w7FnTPQcVd6Db2YTQGMI1yr2MmaY5y6fHEzGALsHUOAeQRxcUWiSOktaYULCJ50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021305; c=relaxed/simple;
-	bh=QNdCFGP3mI5DPTi1VNtGZ0R6hynkqgoEFuvJ06pnrAw=;
+	s=arc-20240116; t=1734018672; c=relaxed/simple;
+	bh=u4Ww2h/PuFK1FqH9QSkXHG//5mJB2fetBCA/IXhP6b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BB0RV1mEfEfuaGPAdnvlTxyDndN2Y+UNsNGOEZf91L+W6G2mHKu+MutgmVI7j8ntNQ7nOOpIWDMMN+bV//7oruVn7wrp6dovouHvBABmLv8zH5xA9/imCSQV+CSUYcxuOsF6kcUEy2StLWZQokNmFJQ33WjVQiYx81EcBE6EhWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9V0FfER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD7DC4CED0;
-	Thu, 12 Dec 2024 16:35:04 +0000 (UTC)
+	 MIME-Version; b=R3bnuh/TpuKhlkGWNXzv1p1mU6boUTqgUPs0GCg/vE2it4+zKL5Zttvxvf+zwXYCQB6uRmtxeGPUhmCL1v9lvYnJmKEtsoN6DPTCKrDZ1IXdN1EIgTyMyH4VqxLYHBXm5UwmkF78kBcOOVpupOFeWO1recIf2vt9ssa2YKI9qHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbEXUHfQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8805C4CECE;
+	Thu, 12 Dec 2024 15:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021305;
-	bh=QNdCFGP3mI5DPTi1VNtGZ0R6hynkqgoEFuvJ06pnrAw=;
+	s=korg; t=1734018672;
+	bh=u4Ww2h/PuFK1FqH9QSkXHG//5mJB2fetBCA/IXhP6b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9V0FfER6tj/DKotl8Lcm3pw30oZ3zDSDkcLZUQNtAV44/uBM1LDOoWiZP32uk9Vl
-	 iBR21Cnw5rBLaf1xGtUcqhdOjAm5lmbVQIBdj8qufCa0IPmaWnkr1F2UyPCYsu53LG
-	 ofS+E3MebXkLXK15RQfMYge7wqBgaQ6kK8afJcVY=
+	b=NbEXUHfQSBNGSUXG9Ihrcgw7hCkxA10jaddaECZJPLd0K8EEy2zQJ78Qgz0EhJ+uq
+	 oTePVfe/jYj7DwAI/RNE4EMOUQYCh5KqZUiFfelxuhyXYFGAb41GAwMW/+x0Pd0m+R
+	 UiBQDU3q0Ifi1jRcAkAr5H1SPqlmUpMvGb0iFmmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Uros Bizjak <ubizjak@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 701/772] tracing: Use atomic64_inc_return() in trace_clock_counter()
+Subject: [PATCH 6.6 327/356] sched: Remove vruntime from trace_sched_stat_runtime()
 Date: Thu, 12 Dec 2024 16:00:46 +0100
-Message-ID: <20241212144418.864666799@linuxfoundation.org>
+Message-ID: <20241212144257.482395937@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit eb887c4567d1b0e7684c026fe7df44afa96589e6 ]
+[ Upstream commit 5fe6ec8f6ab549b6422e41551abb51802bd48bc7 ]
 
-Use atomic64_inc_return(&ref) instead of atomic64_add_return(1, &ref)
-to use optimized implementation and ease register pressure around
-the primitive for targets that implement optimized variant.
+Tracing the runtime delta makes sense, observer can sum over time.
+Tracing the absolute vruntime makes less sense, inconsistent:
+absolute-vs-delta, but also vruntime delta can be computed from
+runtime delta.
 
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241007085651.48544-1-ubizjak@gmail.com
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Removing the vruntime thing also makes the two tracepoint sites
+identical, allowing to unify the code in a later patch.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Stable-dep-of: 0664e2c311b9 ("sched/deadline: Fix warning in migrate_enable for boosted tasks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_clock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/trace/events/sched.h | 15 ++++++---------
+ kernel/sched/fair.c          |  5 ++---
+ 2 files changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/trace/trace_clock.c b/kernel/trace/trace_clock.c
-index 4702efb00ff21..4cb2ebc439be6 100644
---- a/kernel/trace/trace_clock.c
-+++ b/kernel/trace/trace_clock.c
-@@ -154,5 +154,5 @@ static atomic64_t trace_counter;
+diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
+index 010ba1b7cb0ea..bdb1e838954af 100644
+--- a/include/trace/events/sched.h
++++ b/include/trace/events/sched.h
+@@ -493,33 +493,30 @@ DEFINE_EVENT_SCHEDSTAT(sched_stat_template, sched_stat_blocked,
   */
- u64 notrace trace_clock_counter(void)
- {
--	return atomic64_add_return(1, &trace_counter);
-+	return atomic64_inc_return(&trace_counter);
- }
+ DECLARE_EVENT_CLASS(sched_stat_runtime,
+ 
+-	TP_PROTO(struct task_struct *tsk, u64 runtime, u64 vruntime),
++	TP_PROTO(struct task_struct *tsk, u64 runtime),
+ 
+-	TP_ARGS(tsk, __perf_count(runtime), vruntime),
++	TP_ARGS(tsk, __perf_count(runtime)),
+ 
+ 	TP_STRUCT__entry(
+ 		__array( char,	comm,	TASK_COMM_LEN	)
+ 		__field( pid_t,	pid			)
+ 		__field( u64,	runtime			)
+-		__field( u64,	vruntime			)
+ 	),
+ 
+ 	TP_fast_assign(
+ 		memcpy(__entry->comm, tsk->comm, TASK_COMM_LEN);
+ 		__entry->pid		= tsk->pid;
+ 		__entry->runtime	= runtime;
+-		__entry->vruntime	= vruntime;
+ 	),
+ 
+-	TP_printk("comm=%s pid=%d runtime=%Lu [ns] vruntime=%Lu [ns]",
++	TP_printk("comm=%s pid=%d runtime=%Lu [ns]",
+ 			__entry->comm, __entry->pid,
+-			(unsigned long long)__entry->runtime,
+-			(unsigned long long)__entry->vruntime)
++			(unsigned long long)__entry->runtime)
+ );
+ 
+ DEFINE_EVENT(sched_stat_runtime, sched_stat_runtime,
+-	     TP_PROTO(struct task_struct *tsk, u64 runtime, u64 vruntime),
+-	     TP_ARGS(tsk, runtime, vruntime));
++	     TP_PROTO(struct task_struct *tsk, u64 runtime),
++	     TP_ARGS(tsk, runtime));
+ 
+ /*
+  * Tracepoint for showing priority inheritance modifying a tasks
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 3e9333466438c..062447861d8e6 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1185,8 +1185,7 @@ s64 update_curr_common(struct rq *rq)
+ 	if (unlikely(delta_exec <= 0))
+ 		return delta_exec;
+ 
+-	trace_sched_stat_runtime(curr, delta_exec, 0);
+-
++	trace_sched_stat_runtime(curr, delta_exec);
+ 	account_group_exec_runtime(curr, delta_exec);
+ 	cgroup_account_cputime(curr, delta_exec);
+ 
+@@ -1215,7 +1214,7 @@ static void update_curr(struct cfs_rq *cfs_rq)
+ 	if (entity_is_task(curr)) {
+ 		struct task_struct *curtask = task_of(curr);
+ 
+-		trace_sched_stat_runtime(curtask, delta_exec, curr->vruntime);
++		trace_sched_stat_runtime(curtask, delta_exec);
+ 		cgroup_account_cputime(curtask, delta_exec);
+ 		account_group_exec_runtime(curtask, delta_exec);
+ 	}
 -- 
 2.43.0
 
