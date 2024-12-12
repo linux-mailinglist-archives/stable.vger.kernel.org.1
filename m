@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-103596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3549EF88D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F939EF702
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8759317E327
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E5A117D87A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59BE9215178;
-	Thu, 12 Dec 2024 17:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6435215764;
+	Thu, 12 Dec 2024 17:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YQjQjmO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOuGuSvC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1621A15696E;
-	Thu, 12 Dec 2024 17:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E84A21660C;
+	Thu, 12 Dec 2024 17:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025042; cv=none; b=OcHGmFEHi+cGA72PyQEXa7KtSAJPCAQfvsAa03wRz7+jdA4Pt/IlTC+CJVJkKYbg9OR9+UlK37t7eGKy4RE7eQWwAu28PT1FkKbkM6JJ8XIxF468Pzxi+++IEyfOZoz3hdM0qHwL1wz7KZ4467s2XgS1+AReMFq32VeSr1MFBig=
+	t=1734024247; cv=none; b=dOMTnQOAbRRGW6vyuhIKDmD1oL4y0alIpLBUBboIECAuv4jacDfL5VKfv+4IpmnPwZZs0p8bnannQIAmc8HnLIQwc5JZJhVDjvqaWoPYIkKYHo5/KgK7OpN73t75x4acWZ1YkyJJBemBK9D/FE7CthhmiruVp1bzF0wcEpQbqHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025042; c=relaxed/simple;
-	bh=NvGkcrj7mYeqyogxZllWF855n8J0P3rfaBxRbKF7qsY=;
+	s=arc-20240116; t=1734024247; c=relaxed/simple;
+	bh=Q/CCbxaNPCW+72Uxq1Dkc9TlsoxS3EeKa9j7qeFaSqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=up/kXX0MixBAskAAEdvpVOTw4ameHqv0ii1rFfIMpQgfsT3t8aQX/u8YKVFYMMWkH5yRwBFZvQ+zNJLwJ/k6vnZo95JY7HrUUbcrq+iOOhhtp+DBOHEi3VoJy0+gw/LSfbtKS+AmZHAGu09Pty2bHF2dZQdYKk+MTB4/MZsyMpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YQjQjmO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CA8C4CECE;
-	Thu, 12 Dec 2024 17:37:21 +0000 (UTC)
+	 MIME-Version; b=Idwz2M+e6aZZ6tYI6E97s9KuNZJneRNzUDzGF2MF7RRB5wJD0P2ckEfNyF+oehOCxWCNge7wQEw1fsKaTlDSg5nrhZt5Nhtno5FNztWtgj+GO7+ys8so7iZPmhGfWCoFEkob5UQ9bANVtKG8Ih4PN2RKNpQsgM+EQFT2Qx7ZNxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOuGuSvC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91AFC4CECE;
+	Thu, 12 Dec 2024 17:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025042;
-	bh=NvGkcrj7mYeqyogxZllWF855n8J0P3rfaBxRbKF7qsY=;
+	s=korg; t=1734024247;
+	bh=Q/CCbxaNPCW+72Uxq1Dkc9TlsoxS3EeKa9j7qeFaSqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YQjQjmOESx5lH47qlFNn6lQDGQcLV1BEqPWSqiQPymhyZ8ayRsPRhNjNLCo41ZJK
-	 H2W0OPNosB1JZy3cZNTnSYDwHQ0Z9Zb1LQyi0jHQuZ3xsfBKdyQHM8yPSsU7+gaAmI
-	 HqfbfqMKSk36QSUIzepMjtq+TzfTm8kkr5xIe56k=
+	b=pOuGuSvCQmAk9PLJx55/Xl8WDA90nNrNgdePSt5JxNZn8FQcY+qW2z8jzb4/e/UEw
+	 FnqKCdAqJHQEnxmBh6H8FSXFSpcGmvDi9LRNva89XfAejtm2lPtWVcYU+8mKRut+Vx
+	 kBmKvQN/3N+3UVdq1eVrsq2zQ9xhnaJcJdBkB41c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Eric Sandeen <sandeen@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 036/321] s390/syscalls: Avoid creation of arch/arch/ directory
+Subject: [PATCH 5.10 216/459] fs_parser: update mount_api doc to match function signature
 Date: Thu, 12 Dec 2024 15:59:14 +0100
-Message-ID: <20241212144231.428331849@linuxfoundation.org>
+Message-ID: <20241212144302.100609505@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +68,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 0708967e2d56e370231fd07defa0d69f9ad125e8 ]
+[ Upstream commit c66f759832a83cb273ba5a55c66dcc99384efa74 ]
 
-Building the kernel with ARCH=s390 creates a weird arch/arch/ directory.
+Add the missing 'name' parameter to the mount_api documentation for
+fs_validate_description().
 
-  $ find arch/arch
-  arch/arch
-  arch/arch/s390
-  arch/arch/s390/include
-  arch/arch/s390/include/generated
-  arch/arch/s390/include/generated/asm
-  arch/arch/s390/include/generated/uapi
-  arch/arch/s390/include/generated/uapi/asm
-
-The root cause is 'targets' in arch/s390/kernel/syscalls/Makefile,
-where the relative path is incorrect.
-
-Strictly speaking, 'targets' was not necessary in the first place
-because this Makefile uses 'filechk' instead of 'if_changed'.
-
-However, this commit keeps it, as it will be useful when converting
-'filechk' to 'if_changed' later.
-
-Fixes: 5c75824d915e ("s390/syscalls: add Makefile to generate system call header files")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20241111134603.2063226-1-masahiroy@kernel.org
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 96cafb9ccb15 ("fs_parser: remove fs_parameter_description name field")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20241125215021.231758-1-rdunlap@infradead.org
+Cc: Eric Sandeen <sandeen@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/syscalls/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/filesystems/mount_api.rst | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/syscalls/Makefile b/arch/s390/kernel/syscalls/Makefile
-index b98f25029b8e6..7b77ed779c7b2 100644
---- a/arch/s390/kernel/syscalls/Makefile
-+++ b/arch/s390/kernel/syscalls/Makefile
-@@ -12,7 +12,7 @@ kapi-hdrs-y := $(kapi)/unistd_nr.h
- uapi-hdrs-y := $(uapi)/unistd_32.h
- uapi-hdrs-y += $(uapi)/unistd_64.h
+diff --git a/Documentation/filesystems/mount_api.rst b/Documentation/filesystems/mount_api.rst
+index d7f53d62b5bb2..8fb03f57546d1 100644
+--- a/Documentation/filesystems/mount_api.rst
++++ b/Documentation/filesystems/mount_api.rst
+@@ -778,7 +778,8 @@ process the parameters it is given.
  
--targets += $(addprefix ../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
-+targets += $(addprefix ../../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
+    * ::
  
- PHONY += kapi uapi
+-       bool fs_validate_description(const struct fs_parameter_description *desc);
++       bool fs_validate_description(const char *name,
++                                    const struct fs_parameter_description *desc);
  
+      This performs some validation checks on a parameter description.  It
+      returns true if the description is good and false if it is not.  It will
 -- 
 2.43.0
 
