@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153D79EF879
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A37359EF759
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C74CA29519A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5FA71896737
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C352211493;
-	Thu, 12 Dec 2024 17:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B37217F34;
+	Thu, 12 Dec 2024 17:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iazug9FB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yE7w0s/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383EF6F2FE;
-	Thu, 12 Dec 2024 17:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A71215764;
+	Thu, 12 Dec 2024 17:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025355; cv=none; b=TQyteUdX3t4Qm7NNd2taSwxk7Z0qmAurhy/XWCWq9cbmtfVzd3w2zXRQq6FRoutGhCFZ7P6PpiW9Xy95foZqwVSyGdkgqj3UlVmhtZAKniPzkCucXYcQpslPAiAWj3EAtTjG3fU/hppiWU4WOWppwfAWBMX+J6FzXIrxS264IiM=
+	t=1734024427; cv=none; b=iunfgPamsPj2rBAvOwBnC+CumfQxF+riPpZ2jYB2TybWNBjeOhg7eujf6AlGpq+uRrpZLyb18WtBA0OdorIHQJEDEZw5PCgOXMnh0XR0HQnDtNhTUKU4NM9fwx7YB491AOvygh2ktdjFt94ykbKCOvGy6RycVT6tBfRFfYf5f5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025355; c=relaxed/simple;
-	bh=RhgWwyUuISPOw+pO+jfpMC+jS4UjPA4WBiyC7KoqrTk=;
+	s=arc-20240116; t=1734024427; c=relaxed/simple;
+	bh=vNXzokRIQWrPPY1QjAKOniy+3XwTHEaG3yFOyOla1i8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDNL2A/R4K8KtJvJPdcqYBzwhHc/zWbPQCvjQ60Jzn2XPp0rwtqfer+68ow7G1cEXNJATByyFvN3Iiyst/OI48Q8izSQEUHlF24nS3r6fyfBknVvj7huDR8OBdqbFXcdRkT1H/DvxxqDLgATJ6Lt9PVlpHHvpewG/XmYFZzSmok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iazug9FB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A04C4CECE;
-	Thu, 12 Dec 2024 17:42:34 +0000 (UTC)
+	 MIME-Version; b=kQXXIaNnDmawqXbQRXCEM0nue/EJkaam2JJWKJkWOdGtOXvsRkGJgGKsxZnU/w3ZnyyIslBBsgxhb6TibaA3bTxYRGwLfActVzxn0w86TzKCMUhvIN4lkqFOFfltBTEYA3+lA6mlApdKtyo59Zyej9cYkEjX7Wv7dd1WkZVZcL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yE7w0s/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEAFC4CED0;
+	Thu, 12 Dec 2024 17:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025355;
-	bh=RhgWwyUuISPOw+pO+jfpMC+jS4UjPA4WBiyC7KoqrTk=;
+	s=korg; t=1734024427;
+	bh=vNXzokRIQWrPPY1QjAKOniy+3XwTHEaG3yFOyOla1i8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iazug9FBGadkuiANox7uLJ/0N9kuO/t9OdCjWLRTfdgzJnf/g8B54S15gXfhglT6f
-	 XyBk9/nxlZixAjlxzQnUOWDjHOX3UQIgvhjIfhb+x6xcR0m+W0ijEVy9jjCZM/eyNY
-	 dg2wSX7z9A1p7alTxEfa1NqZ1+9UpzRVgQvUFs3Y=
+	b=yE7w0s/IumCMz8GSx+TQwhEzX+RG7y7a/zqjzyKXBPhZeEf621bNv+IpNusap/G2W
+	 3FPhH7juRmVvOdxuhZ97CSi037BJpFp4YC5FcfIVr+0JxfogUCgM+WkmY8ARcFT63c
+	 N6LdPrxzHETT44gKjdeJpm0e6gU+/59Q/TlPGT4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Naidu <naveennaidu479@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Jeremy Gebben <jgebben@sweptlaser.com>,
+	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/321] PCI: cpqphp: Use PCI_POSSIBLE_ERROR() to check config reads
-Date: Thu, 12 Dec 2024 16:00:30 +0100
-Message-ID: <20241212144234.407673621@linuxfoundation.org>
+Subject: [PATCH 5.10 293/459] rtc: abx80x: Fix WDT bit position of the status register
+Date: Thu, 12 Dec 2024 16:00:31 +0100
+Message-ID: <20241212144305.207832683@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: weiyufeng <weiyufeng@kylinos.cn>
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
 
-[ Upstream commit a18a025c2fb5fbf2d1d0606ea0d7441ac90e9c39 ]
+[ Upstream commit 10e078b273ee7a2b8b4f05a64ac458f5e652d18d ]
 
-When config pci_ops.read() can detect failed PCI transactions, the data
-returned to the CPU is PCI_ERROR_RESPONSE (~0 or 0xffffffff).
+The WDT bit in the status register is 5, not 6. This fixes from 6 to 5.
 
-Obviously a successful PCI config read may *also* return that data if a
-config register happens to contain ~0, so it doesn't definitively indicate
-an error unless we know the register cannot contain ~0.
-
-Use PCI_POSSIBLE_ERROR() to check the response we get when we read data
-from hardware.  This unifies PCI error response checking and makes error
-checks consistent and easier to find.
-
-Link: https://lore.kernel.org/r/b12005c0d57bb9d4c8b486724d078b7bd92f8321.1637243717.git.naveennaidu479@gmail.com
-Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: e2226dbc4a49 ("PCI: cpqphp: Fix PCIBIOS_* return value confusion")
+Link: https://abracon.com/Support/AppsManuals/Precisiontiming/AB08XX-Application-Manual.pdf
+Link: https://www.microcrystal.com/fileadmin/Media/Products/RTC/App.Manual/RV-1805-C3_App-Manual.pdf
+Fixes: 749e36d0a0d7 ("rtc: abx80x: add basic watchdog support")
+Cc: Jeremy Gebben <jgebben@sweptlaser.com>
+Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+Link: https://lore.kernel.org/r/20241008041737.1640633-1-iwamatsu@nigauri.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/cpqphp_pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-abx80x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
-index 1b2b3f3b648bc..a20875da4ec70 100644
---- a/drivers/pci/hotplug/cpqphp_pci.c
-+++ b/drivers/pci/hotplug/cpqphp_pci.c
-@@ -138,7 +138,7 @@ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 o
+diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
+index 803725b3a02c3..034b314fb3ec9 100644
+--- a/drivers/rtc/rtc-abx80x.c
++++ b/drivers/rtc/rtc-abx80x.c
+@@ -37,7 +37,7 @@
+ #define ABX8XX_REG_STATUS	0x0f
+ #define ABX8XX_STATUS_AF	BIT(2)
+ #define ABX8XX_STATUS_BLF	BIT(4)
+-#define ABX8XX_STATUS_WDT	BIT(6)
++#define ABX8XX_STATUS_WDT	BIT(5)
  
- 	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
- 		return -1;
--	if (vendID == 0xffffffff)
-+	if (PCI_POSSIBLE_ERROR(vendID))
- 		return -1;
- 	return pci_bus_read_config_dword(bus, devfn, offset, value);
- }
-@@ -251,7 +251,7 @@ static int PCI_GetBusDevHelper(struct controller *ctrl, u8 *bus_num, u8 *dev_num
- 			*dev_num = tdevice;
- 			ctrl->pci_bus->number = tbus;
- 			pci_bus_read_config_dword(ctrl->pci_bus, *dev_num, PCI_VENDOR_ID, &work);
--			if (!nobridge || (work == 0xffffffff))
-+			if (!nobridge || PCI_POSSIBLE_ERROR(work))
- 				return 0;
- 
- 			dbg("bus_num %d devfn %d\n", *bus_num, *dev_num);
+ #define ABX8XX_REG_CTRL1	0x10
+ #define ABX8XX_CTRL_WRITE	BIT(0)
 -- 
 2.43.0
 
