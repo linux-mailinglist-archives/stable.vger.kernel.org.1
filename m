@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441A89EF446
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6B39EF92B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D066E28F927
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55E741731DA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6855C223C43;
-	Thu, 12 Dec 2024 17:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E0A221D93;
+	Thu, 12 Dec 2024 17:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8K6no64"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDbe0fEG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244DE21576E;
-	Thu, 12 Dec 2024 17:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9A56F2FE;
+	Thu, 12 Dec 2024 17:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023121; cv=none; b=Md/+rYBOzqjBLhdg9Y/T8MYFi5P0gQ1CZkZeKoYodIw2DS/XQ6GU+oE2dzPK0eF+geKfvuQkzaOLEG16HQNtaBcV4s9O0yBcXF/C37FqiWZJ+YdmK9MrCFTxZgWVDgcBaMefnJOpPJ7gSz7QtxI2wfgC78aLFnS5wYSwXR2RIh4=
+	t=1734025306; cv=none; b=F8bzChTSOqSy0J8IBbEwJxCDJqU6ltxj89vpdhSadwiyxqGEdtphzWiRm/aO7H4AvL58LJK3/kE67wOXJ3wqQV7xn9RPFPrd7+LiUNDoxAxGyRE5kPvzYIQpnFy5MFXeohLMZcis1YcqOGcCLBztLw5xACD4dFArzb3Gk/ZXC0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023121; c=relaxed/simple;
-	bh=yZgl0xnJefUlaN8Eu7aMYquTjTqWtwBoFi11iV39o38=;
+	s=arc-20240116; t=1734025306; c=relaxed/simple;
+	bh=WE0qzHuGmwh+Pfvnto3FMVZBjRSlAHAB91EeLirn2xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dP52eQb9egZY7AN8f+ZX9CQvldT9HBkOjHOXPCIRBjKcNDjRDTYY86Cq/5I+4imLU9LG3SnohhG0B9N3vJlCjBiUSK6gwfWSI4xHov0Dp/tyAlZfRBok19RJm5Qu9e6Qckw3+B547HEcOirMtYCMmftNgQRAXPiU1dfeACxA2jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8K6no64; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3B0C4CECE;
-	Thu, 12 Dec 2024 17:05:20 +0000 (UTC)
+	 MIME-Version; b=WRWk4w/HEOFcR73t+03lNf1EgJhfOVeX467BTw3Vla61VTN6EvCn2s4zMc20Dx2Dr+1MBNaAoq0dy2XabhtTLZizWohs9qCBNfCUYt8dS8MEKqisuFf3YSAoZxGbc+obI7CQTUy1vmmLwaVPx0ONL/0A/aCMZqJXTZLgKUNvCTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDbe0fEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D36C4CECE;
+	Thu, 12 Dec 2024 17:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023121;
-	bh=yZgl0xnJefUlaN8Eu7aMYquTjTqWtwBoFi11iV39o38=;
+	s=korg; t=1734025305;
+	bh=WE0qzHuGmwh+Pfvnto3FMVZBjRSlAHAB91EeLirn2xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n8K6no640pm9d5HD4NNdng50y4yxAeV7ZEP+dOTdm3WuL9ry2jP+TEL0F9qoXj43P
-	 lfM8y1JKErljNd35jClwDsu6p91FXwy/niawBpuyRs0nouLW0/x402Mn6B4f+GL2Bo
-	 zZ10zBOKX3b9mVwHeebPvR/tB+mltsSMamixNXnA=
+	b=bDbe0fEG8PlLQt4NJSnSZFvdXpATHCjvEPYdI0439Oe6rGUmbkzGEy7FDso4PTp3A
+	 tM5xONM1boDYJx/KA9vvV7DmBsNLv1RFVEkdQhmyKs8FxiKqtnjfjlDKAm4XnxYnLY
+	 GuHkls0y4Ey3lFcLx5/ucPAJWWSLyE3NgYgb5gdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandru Ardelean <alexandru.ardelean@analog.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 431/565] serial: amba-pl011: Fix RX stall when DMA is used
+Subject: [PATCH 5.4 108/321] clk: axi-clkgen: use devm_platform_ioremap_resource() short-hand
 Date: Thu, 12 Dec 2024 16:00:26 +0100
-Message-ID: <20241212144328.723841879@linuxfoundation.org>
+Message-ID: <20241212144234.253660726@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-[ Upstream commit 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf ]
+[ Upstream commit 6ba7ea7630fb03c1ce01508bdf89f5bb39b38e54 ]
 
-Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
-also disables the RX DMA by clearing the RXDMAE bit of the DMACR
-register. However, to properly unthrottle RX when DMA is used, the
-function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
-the DMACR register, which it currently lacks. This causes RX to stall
-after the throttle API is called.
+No major functional change. Noticed while checking the driver code that
+this could be used.
+Saves two lines.
 
-Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
-used.
-
-Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Link: https://lore.kernel.org/r/20210201151245.21845-5-alexandru.ardelean@analog.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: c64ef7e4851d ("clk: clk-axi-clkgen: make sure to enable the AXI bus clock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/clk/clk-axi-clkgen.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
-index 16fc159bdf3b9..8ae8fb8132d5b 100644
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -1842,6 +1842,11 @@ static void pl011_unthrottle_rx(struct uart_port *port)
+diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
+index 96f351785b41b..8d0c32e81e787 100644
+--- a/drivers/clk/clk-axi-clkgen.c
++++ b/drivers/clk/clk-axi-clkgen.c
+@@ -412,7 +412,6 @@ static int axi_clkgen_probe(struct platform_device *pdev)
+ 	struct clk_init_data init;
+ 	const char *parent_names[2];
+ 	const char *clk_name;
+-	struct resource *mem;
+ 	unsigned int i;
+ 	int ret;
  
- 	pl011_write(uap->im, uap, REG_IMSC);
+@@ -427,8 +426,7 @@ static int axi_clkgen_probe(struct platform_device *pdev)
+ 	if (!axi_clkgen)
+ 		return -ENOMEM;
  
-+	if (uap->using_rx_dma) {
-+		uap->dmacr |= UART011_RXDMAE;
-+		pl011_write(uap->dmacr, uap, REG_DMACR);
-+	}
-+
- 	uart_port_unlock_irqrestore(&uap->port, flags);
- }
+-	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	axi_clkgen->base = devm_ioremap_resource(&pdev->dev, mem);
++	axi_clkgen->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(axi_clkgen->base))
+ 		return PTR_ERR(axi_clkgen->base);
  
 -- 
 2.43.0
