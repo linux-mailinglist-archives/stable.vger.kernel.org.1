@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-103260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C23A9EF5E5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7098F9EF5C9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAA712871EA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D1C189955F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F61211493;
-	Thu, 12 Dec 2024 17:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C02223E75;
+	Thu, 12 Dec 2024 16:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvCb6KjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwTK+VVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF1A4F218;
-	Thu, 12 Dec 2024 17:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A1F223E64;
+	Thu, 12 Dec 2024 16:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024028; cv=none; b=G9QYOIYKoMqCYqUpmxn27HpBpLnWfWoBY4ywuKe9Yp9z5rX2TSDPcca11tiZIo1SHifo8UBHKoA8ZN6QycY7sclfyFzqBF12GFheYUH3x6E8BK3O/Um6mn7mdORCNXEnPvixeZDM6LRwNG9zmiaQ2vJXKTuIeO2EZIIuWOpKYgY=
+	t=1734022676; cv=none; b=etOhaOeRDi01HJTQCkwsKYIG6XgmZUqnwd0IscaYEalZPET83Wd0nn9ZtI7FfJFaLn0CsRm8do/i8FNzE0UK96DTpjFPQq96oVDCsM3Ts8h5FM9X3ItD7eCMKu0s/CEZ8AA+C2XDkxEI91/dxKboCmfZRR5WYW91awaz66qZH2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024028; c=relaxed/simple;
-	bh=p5AybDFq6SO27z7homJIvaCMimggntxJdNL/CfGazqE=;
+	s=arc-20240116; t=1734022676; c=relaxed/simple;
+	bh=fODMe6G2e7ccOe6QxnAhUCxw/vFrxELq18VgxHOXw+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mH3/4CQJBtVLU4EwphHhFzXWNUK+7Ywi3gisoyFgI/+nehM6eTEA+tQ5VAtl96OC1Ir82ZqFbDDen0T5mjj9Qse+9muzF6iSxHtAxuJkm0wh4TbxyHqMhd4dqVsz6u6cMyd2jXJaCJ4ZqSKOiKSVBFAysr3OJAAfcecg24CUUV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvCb6KjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2126DC4CED3;
-	Thu, 12 Dec 2024 17:20:25 +0000 (UTC)
+	 MIME-Version; b=TLwxGbTOkP5khza2//HNwCYDcK3Joab9cmn/v9S8reaBRA2joL2zM3iafA/yvL2f9gFQC4z3i02v6xxoeqVnaL3AYj3Dd75PE0/ygINdGndD2IBc2iXB8sn/Pj11Sn5V1CrflLUeUPo2urjsaabXPVpkPBZDqot7Str7dtJhKUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwTK+VVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E3FC4CECE;
+	Thu, 12 Dec 2024 16:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024026;
-	bh=p5AybDFq6SO27z7homJIvaCMimggntxJdNL/CfGazqE=;
+	s=korg; t=1734022676;
+	bh=fODMe6G2e7ccOe6QxnAhUCxw/vFrxELq18VgxHOXw+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvCb6KjVi3TD8OLEJAVA1tBf5Fcna4g/bigETYWh1jnj6HaB75y99/FH9lhG7VYY4
-	 PbTwkoLaS7MxQaVHMi/76mvryfV//CxmZlIv+0vjfh5h22PVnzKJWY7s1UfYMQxChh
-	 ApSCs8hzjo0ZrYwOwIWbt1wIcOdFIkS76TOe/8G4=
+	b=rwTK+VVdM1fosaBJoR8LekkOnU1lic4rPV5c+0sgBmf6wgttIjyMcyZD9X+MRgqTZ
+	 ZgiUT0xsWji4csuk9MP/BHLczH/rSaNVm7+FPxvzEtHhjmglkJJhvVJU0P907XCtp5
+	 zWI9vqLldQS8kEf94eq1Wk6xQSf5nRCZx8PojMHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/459] wireguard: selftests: load nf_conntrack if not present
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 305/565] ext4: fix FS_IOC_GETFSMAP handling
 Date: Thu, 12 Dec 2024 15:58:20 +0100
-Message-ID: <20241212144259.916233570@linuxfoundation.org>
+Message-ID: <20241212144323.526624213@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +60,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 0290abc9860917f1ee8b58309c2bbd740a39ee8e ]
+commit 4a622e4d477bb12ad5ed4abbc7ad1365de1fa347 upstream.
 
-Some distros may not load nf_conntrack by default, which will cause
-subsequent nf_conntrack sets to fail. Load this module if it is not
-already loaded.
+The original implementation ext4's FS_IOC_GETFSMAP handling only
+worked when the range of queried blocks included at least one free
+(unallocated) block range.  This is because how the metadata blocks
+were emitted was as a side effect of ext4_mballoc_query_range()
+calling ext4_getfsmap_datadev_helper(), and that function was only
+called when a free block range was identified.  As a result, this
+caused generic/365 to fail.
 
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-[ Jason: add [[ -e ... ]] check so this works in the qemu harness. ]
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20241117212030.629159-4-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by creating a new function ext4_getfsmap_meta_helper() which
+gets called so that blocks before the first free block range in a
+block group can get properly reported.
+
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/wireguard/netns.sh | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/fsmap.c   |   54 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ fs/ext4/mballoc.c |   18 ++++++++++++++----
+ fs/ext4/mballoc.h |    1 +
+ 3 files changed, 68 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/wireguard/netns.sh b/tools/testing/selftests/wireguard/netns.sh
-index 93e44410f170e..4732c23e35ee5 100755
---- a/tools/testing/selftests/wireguard/netns.sh
-+++ b/tools/testing/selftests/wireguard/netns.sh
-@@ -320,6 +320,7 @@ waitiface $netns1 vethc
- waitiface $netns2 veths
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -185,6 +185,56 @@ static inline ext4_fsblk_t ext4_fsmap_ne
+ 	return fmr->fmr_physical + fmr->fmr_length;
+ }
  
- n0 bash -c 'printf 1 > /proc/sys/net/ipv4/ip_forward'
-+[[ -e /proc/sys/net/netfilter/nf_conntrack_udp_timeout ]] || modprobe nf_conntrack
- n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout'
- n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout_stream'
- n0 iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -d 10.0.0.0/24 -j SNAT --to 10.0.0.1
--- 
-2.43.0
-
++static int ext4_getfsmap_meta_helper(struct super_block *sb,
++				     ext4_group_t agno, ext4_grpblk_t start,
++				     ext4_grpblk_t len, void *priv)
++{
++	struct ext4_getfsmap_info *info = priv;
++	struct ext4_fsmap *p;
++	struct ext4_fsmap *tmp;
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
++	ext4_fsblk_t fsb, fs_start, fs_end;
++	int error;
++
++	fs_start = fsb = (EXT4_C2B(sbi, start) +
++			  ext4_group_first_block_no(sb, agno));
++	fs_end = fs_start + EXT4_C2B(sbi, len);
++
++	/* Return relevant extents from the meta_list */
++	list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
++		if (p->fmr_physical < info->gfi_next_fsblk) {
++			list_del(&p->fmr_list);
++			kfree(p);
++			continue;
++		}
++		if (p->fmr_physical <= fs_start ||
++		    p->fmr_physical + p->fmr_length <= fs_end) {
++			/* Emit the retained free extent record if present */
++			if (info->gfi_lastfree.fmr_owner) {
++				error = ext4_getfsmap_helper(sb, info,
++							&info->gfi_lastfree);
++				if (error)
++					return error;
++				info->gfi_lastfree.fmr_owner = 0;
++			}
++			error = ext4_getfsmap_helper(sb, info, p);
++			if (error)
++				return error;
++			fsb = p->fmr_physical + p->fmr_length;
++			if (info->gfi_next_fsblk < fsb)
++				info->gfi_next_fsblk = fsb;
++			list_del(&p->fmr_list);
++			kfree(p);
++			continue;
++		}
++	}
++	if (info->gfi_next_fsblk < fsb)
++		info->gfi_next_fsblk = fsb;
++
++	return 0;
++}
++
++
+ /* Transform a blockgroup's free record into a fsmap */
+ static int ext4_getfsmap_datadev_helper(struct super_block *sb,
+ 					ext4_group_t agno, ext4_grpblk_t start,
+@@ -539,6 +589,7 @@ static int ext4_getfsmap_datadev(struct
+ 		error = ext4_mballoc_query_range(sb, info->gfi_agno,
+ 				EXT4_B2C(sbi, info->gfi_low.fmr_physical),
+ 				EXT4_B2C(sbi, info->gfi_high.fmr_physical),
++				ext4_getfsmap_meta_helper,
+ 				ext4_getfsmap_datadev_helper, info);
+ 		if (error)
+ 			goto err;
+@@ -560,7 +611,8 @@ static int ext4_getfsmap_datadev(struct
+ 
+ 	/* Report any gaps at the end of the bg */
+ 	info->gfi_last = true;
+-	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster, 0, info);
++	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
++					     0, info);
+ 	if (error)
+ 		goto err;
+ 
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -6698,13 +6698,14 @@ int
+ ext4_mballoc_query_range(
+ 	struct super_block		*sb,
+ 	ext4_group_t			group,
+-	ext4_grpblk_t			start,
++	ext4_grpblk_t			first,
+ 	ext4_grpblk_t			end,
++	ext4_mballoc_query_range_fn	meta_formatter,
+ 	ext4_mballoc_query_range_fn	formatter,
+ 	void				*priv)
+ {
+ 	void				*bitmap;
+-	ext4_grpblk_t			next;
++	ext4_grpblk_t			start, next;
+ 	struct ext4_buddy		e4b;
+ 	int				error;
+ 
+@@ -6715,10 +6716,19 @@ ext4_mballoc_query_range(
+ 
+ 	ext4_lock_group(sb, group);
+ 
+-	start = max(e4b.bd_info->bb_first_free, start);
++	start = max(e4b.bd_info->bb_first_free, first);
+ 	if (end >= EXT4_CLUSTERS_PER_GROUP(sb))
+ 		end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
+-
++	if (meta_formatter && start != first) {
++		if (start > end)
++			start = end;
++		ext4_unlock_group(sb, group);
++		error = meta_formatter(sb, group, first, start - first,
++				       priv);
++		if (error)
++			goto out_unload;
++		ext4_lock_group(sb, group);
++	}
+ 	while (start <= end) {
+ 		start = mb_find_next_zero_bit(bitmap, end + 1, start);
+ 		if (start > end)
+--- a/fs/ext4/mballoc.h
++++ b/fs/ext4/mballoc.h
+@@ -246,6 +246,7 @@ ext4_mballoc_query_range(
+ 	ext4_group_t			agno,
+ 	ext4_grpblk_t			start,
+ 	ext4_grpblk_t			end,
++	ext4_mballoc_query_range_fn	meta_formatter,
+ 	ext4_mballoc_query_range_fn	formatter,
+ 	void				*priv);
+ 
 
 
 
