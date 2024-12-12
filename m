@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0528A9EF431
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460279EF2A1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AED5E28D847
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABADB17629C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5172221DA4;
-	Thu, 12 Dec 2024 17:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D34B2358BA;
+	Thu, 12 Dec 2024 16:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stMipUg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyHHCmP1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7090D176AA1;
-	Thu, 12 Dec 2024 17:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B16C2210DB;
+	Thu, 12 Dec 2024 16:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023072; cv=none; b=YipUYV/gG5Kt/mDdU/bjeU2WeOQbJsMK2IRltifJ3Q8iEffM3qZeicTrsEPSHskur5cEagz+D2TSyqRlmolJltg/d+8Xy2ks11w4ClAiamGHX9esEuaQVRfuNX6qDNX7u0Ft8fdlxa4onn/yAc2EcBlSpvRC5eEoIIMqr7V3iw4=
+	t=1734021163; cv=none; b=OtgBV2cjE4d1J1tIMJtyZyeOS0mLkYfNw6TMaV1qRo6d6WTsgiI64wuCqZG/XChCnxJi0GPE3ZwexfxaxpWbSRvVTa5yKWzatpTGwPXQ9kgUoYlbkXm1qKfoBeTqS/FxxxRhUwHyJcXl+xbleRzveXveld3Jb8zli3fnmbTmrqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023072; c=relaxed/simple;
-	bh=gTh58Kze4jEof2mmLAfgRxQaJ+2jWMaGAlGjMfti7t0=;
+	s=arc-20240116; t=1734021163; c=relaxed/simple;
+	bh=+nUdeA8gIhlGFfX2tFaALBlDzbcShm6WNq4r/L+SX8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qd/XbvlrB6abui6RPqshwTRfNpoDGZLdhOqcurN2XHZMNE4yq0ktDsxfKfup/mYwoadCEUg56ma0UfM7m3Xypex/6NPgH/7RvnIOeG8vLkqgnNqJbps3Li3re6vobztOuXg5/RYLv59po9Va534jkuQJVhxOAUm190sQNCfHW+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stMipUg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA98EC4CECE;
-	Thu, 12 Dec 2024 17:04:31 +0000 (UTC)
+	 MIME-Version; b=YlOOs8nuIdqvuhIWPu//oQTo9ZJKpyQS+5q6OntEz/IsC5ggplf/zeL4fggGEP4QSY0yfcN5CBZf+yZEqQOqYa5zw7ME0jI2gcpIHzDccn5WKZys8hRnL0/tIwERFnTLprXbLJiOGjTPMyoOm5NgxOBleUoo9/V1riyPD7C4iBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyHHCmP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D948C4CED0;
+	Thu, 12 Dec 2024 16:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023072;
-	bh=gTh58Kze4jEof2mmLAfgRxQaJ+2jWMaGAlGjMfti7t0=;
+	s=korg; t=1734021163;
+	bh=+nUdeA8gIhlGFfX2tFaALBlDzbcShm6WNq4r/L+SX8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stMipUg8MKrTNhjDkv8qys0w9lP9a8ydpnOhojmJd5PMZ8g/TYn2h6ZGVGY9FO+YQ
-	 XluGlMaj3DFTNP749cLfb61+wlbKR/K7DOa/3gniFPvScOW4SBnBCjOpx5wRSlDfk2
-	 DqIVKAOEZ77XtT1vhJqNbkQDLR53+jMVkNQv7IPA=
+	b=zyHHCmP1e+i/zRBAMwchiYR821Zn0Sd0CWPHNDf2rjjraTqCOS+DLHZa8I8F5NpQz
+	 uohWt/ZC+g+0gqnOBGvIrbjLhNUUIGkomX3sDDtnKRZc11lKBlGnXY7B2IOzY+P0HQ
+	 OghBhskXjnj40l6Re5BVmFZ65uR1M5wZfJFiuoKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Zhu Jun <zhujun2@cmss.chinamobile.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 413/565] can: j1939: j1939_session_new(): fix skb reference counting
+Subject: [PATCH 6.1 663/772] samples/bpf: Fix a resource leak
 Date: Thu, 12 Dec 2024 16:00:08 +0100
-Message-ID: <20241212144327.982974356@linuxfoundation.org>
+Message-ID: <20241212144417.311475037@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-[ Upstream commit a8c695005bfe6569acd73d777ca298ddddd66105 ]
+[ Upstream commit f3ef53174b23246fe9bc2bbc2542f3a3856fa1e2 ]
 
-Since j1939_session_skb_queue() does an extra skb_get() for each new
-skb, do the same for the initial one in j1939_session_new() to avoid
-refcount underflow.
+The opened file should be closed in show_sockopts(), otherwise resource
+leak will occur that this problem was discovered by reading code
 
-Reported-by: syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d4e8dc385d9258220c31
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241105094823.2403806-1-dmantipov@yandex.ru
-[mkl: clean up commit message]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241010014126.2573-1-zhujun2@cmss.chinamobile.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/j1939/transport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ samples/bpf/test_cgrp2_sock.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
-index 5d2097e5ca3a8..a58f6f5dfcf8e 100644
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1505,7 +1505,7 @@ static struct j1939_session *j1939_session_new(struct j1939_priv *priv,
- 	session->state = J1939_SESSION_NEW;
+diff --git a/samples/bpf/test_cgrp2_sock.c b/samples/bpf/test_cgrp2_sock.c
+index a0811df888f45..8ca2a445ffa15 100644
+--- a/samples/bpf/test_cgrp2_sock.c
++++ b/samples/bpf/test_cgrp2_sock.c
+@@ -178,8 +178,10 @@ static int show_sockopts(int family)
+ 		return 1;
+ 	}
  
- 	skb_queue_head_init(&session->skb_queue);
--	skb_queue_tail(&session->skb_queue, skb);
-+	skb_queue_tail(&session->skb_queue, skb_get(skb));
+-	if (get_bind_to_device(sd, name, sizeof(name)) < 0)
++	if (get_bind_to_device(sd, name, sizeof(name)) < 0) {
++		close(sd);
+ 		return 1;
++	}
  
- 	skcb = j1939_skb_to_cb(skb);
- 	memcpy(&session->skcb, skcb, sizeof(session->skcb));
+ 	mark = get_somark(sd);
+ 	prio = get_priority(sd);
 -- 
 2.43.0
 
