@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-101608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822FB9EED80
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A36DD9EF295
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47121188A374
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A1AC1898C0E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4322210DA;
-	Thu, 12 Dec 2024 15:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98953223E7B;
+	Thu, 12 Dec 2024 16:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0tUNadk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvyBjWXU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA2D2185A0;
-	Thu, 12 Dec 2024 15:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508D4223E80;
+	Thu, 12 Dec 2024 16:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018156; cv=none; b=cMxPtVjhIU0Z2rWa1+h4kM0/JxVF92CDb8VOXdSwmQFgCK76OdxRpdcCuhTXLb1wBhlgabYJJSquxvNMMugFiXRL8A6iuGp7c3AjbkPmkmg9Sii8DXNCh4+MncqwKHTL2UGphYxc2N21QfvcGUIy7MQmNPjZWfDsMsmH9Bmb830=
+	t=1734020995; cv=none; b=K3P7XFtm/0Amz0eXkMYMQlyjklKAg7vtBH9m0HYFI3YQpbkksci9JbrXMixjkTYH4yjnmMILrejw2YLoRYxxqbTFSjj3GytY9/WbO1S/2tu6rhDLy2SXgUB2QwjNZcrJSZE714FzCe+ZrcIrXlYAzXIT8Y77EWO3i8QXFO4WLtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018156; c=relaxed/simple;
-	bh=Ce01SXzXQ2dT49nWXF2GtND1oKpQteixkiIkWziFdTY=;
+	s=arc-20240116; t=1734020995; c=relaxed/simple;
+	bh=lDZtU9ECmeJaMRAKk5T/gyS7IHBzONX6vkeF8lh2JDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSiiH+PjwZ+pSpbZVdB2SLQQgNshOTR8iAVYg3aID/Ezv927zLRXD04FNoUfyDGKaBGT1rnTLM/ALOdcsGVHW5/qkV+IIWSNURJyT0nRNzJ4HwLeuDwXU6mD4dNEORFllvakxSmBq/ibJX2JoBatSbc2MQzF/R5rHKMmoj7yfGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0tUNadk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03ADC4CECE;
-	Thu, 12 Dec 2024 15:42:35 +0000 (UTC)
+	 MIME-Version; b=lAOkf2QBoXqO5nCCxB05apkColuwfPE3OR92r9K8snBJM2N2SjtID8oMNDxBrTAfTon1RgKbobAffbp7EPwCKeQTMKPjA/IvhkxMpP4Dp97rfsp/FyEz63XRyVBpLG9HvTeJCNje/0I8FbaifDLs1zTESoOugtLlG667AKcxJ1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvyBjWXU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90ACBC4CECE;
+	Thu, 12 Dec 2024 16:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018156;
-	bh=Ce01SXzXQ2dT49nWXF2GtND1oKpQteixkiIkWziFdTY=;
+	s=korg; t=1734020995;
+	bh=lDZtU9ECmeJaMRAKk5T/gyS7IHBzONX6vkeF8lh2JDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0tUNadkNtpW2SkZHEy2MCSExfMc1sl7XgXq5gtiVCddqrj5hcuybEvBfhPhirQKj
-	 3uX6lMmKkjtIw0A+1elMu8xV/8VYksA1zIRkhz0uhaXwyUskGlTBOmmLCbcrgXM4oe
-	 e1IUHIT1vltaQzw7ReeUlr/gKaaokpdd1BKeS9r8=
+	b=DvyBjWXUMIg0+4b8SaPE8T9z5yaclaq/sHKlA0Mrkz2vKPoHUmsCFjhWra5Vw1ViP
+	 wPZ92H2SAX5Oke0kssPYIwWss5m2995huYpOREn9fe12fvqyRDpf7WxsbVsZOb1JqF
+	 pozku/6oF0TNkZK9d8EW7G0NiJ5ui1+n23Jkc/js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Amir Mohammadi <amiremohamadi@yahoo.com>,
+	Quentin Monnet <qmo@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 213/356] wifi: rtw89: check return value of ieee80211_probereq_get() for RNR
+Subject: [PATCH 6.1 587/772] bpftool: fix potential NULL pointer dereferencing in prog_dump()
 Date: Thu, 12 Dec 2024 15:58:52 +0100
-Message-ID: <20241212144253.030188638@linuxfoundation.org>
+Message-ID: <20241212144414.195109509@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Amir Mohammadi <amirmohammadi1999.am@gmail.com>
 
-[ Upstream commit 630d5d8f2bf6b340202b6bc2c05d794bbd8e4c1c ]
+[ Upstream commit ef3ba8c258ee368a5343fa9329df85b4bcb9e8b5 ]
 
-The return value of ieee80211_probereq_get() might be NULL, so check it
-before using to avoid NULL pointer access.
+A NULL pointer dereference could occur if ksyms
+is not properly checked before usage in the prog_dump() function.
 
-Addresses-Coverity-ID: 1529805 ("Dereference null return value")
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240919081216.28505-2-pkshih@realtek.com
+Fixes: b053b439b72a ("bpf: libbpf: bpftool: Print bpf_line_info during prog dump")
+Signed-off-by: Amir Mohammadi <amiremohamadi@yahoo.com>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20241121083413.7214-1-amiremohamadi@yahoo.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/bpf/bpftool/prog.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 468cfa43ec049..a8e2efae6e526 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -3662,6 +3662,9 @@ static int rtw89_update_6ghz_rnr_chan(struct rtw89_dev *rtwdev,
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 801e564b055a0..1c3dc1dae23f6 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -820,11 +820,18 @@ prog_dump(struct bpf_prog_info *info, enum dump_mode mode,
+ 					printf("%s:\n", sym_name);
+ 				}
  
- 		skb = ieee80211_probereq_get(rtwdev->hw, rtwvif->mac_addr,
- 					     NULL, 0, req->ie_len);
-+		if (!skb)
-+			return -ENOMEM;
-+
- 		skb_put_data(skb, ies->ies[NL80211_BAND_6GHZ], ies->len[NL80211_BAND_6GHZ]);
- 		skb_put_data(skb, ies->common_ies, ies->common_ie_len);
- 		hdr = (struct ieee80211_hdr *)skb->data;
+-				if (disasm_print_insn(img, lens[i], opcodes,
+-						      name, disasm_opt, btf,
+-						      prog_linfo, ksyms[i], i,
+-						      linum))
+-					goto exit_free;
++				if (ksyms) {
++					if (disasm_print_insn(img, lens[i], opcodes,
++							      name, disasm_opt, btf,
++							      prog_linfo, ksyms[i], i,
++							      linum))
++						goto exit_free;
++				} else {
++					if (disasm_print_insn(img, lens[i], opcodes,
++							      name, disasm_opt, btf,
++							      NULL, 0, 0, false))
++						goto exit_free;
++				}
+ 
+ 				img += lens[i];
+ 
 -- 
 2.43.0
 
