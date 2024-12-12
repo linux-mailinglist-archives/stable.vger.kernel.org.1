@@ -1,197 +1,151 @@
-Return-Path: <stable+bounces-103914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9779EFB05
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:34:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BE79EFB5F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64CC616990B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50400188E6B1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420BD223302;
-	Thu, 12 Dec 2024 18:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E5E17BB24;
+	Thu, 12 Dec 2024 18:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YIvDhbLJ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Dbbnbrog"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7710A21660B;
-	Thu, 12 Dec 2024 18:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBD82F2F
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 18:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734028438; cv=none; b=u5e6imOV3SC87kfkMv/F9g39qXPntSptGo/yWAChnGH4XBBMFWGSj66xn9skOJOl2l/cgQGu+YtGS3S/duhnsq8CNHNsXy1lEju/4TV9+B2lqB5BSlOOFf/PyVTn0NKieYd+ejJrYQTPP6N7kcDnJQ+AmmIkl57YyGCLTcPFlmg=
+	t=1734029222; cv=none; b=n7hNxLpmQ4oVHSmwCF1Cjd1g3ztZPjSzLcqSsBTZZGxT/11n7NUFLK3iWvrl8f8WAxHtPzSGop1qRcdjm2Z3kE/GX67dXuhZaiMwhaaJw8cQ7rTaN7nhd7vtshlJUkc5zJ3VKa8CE1W+DhMYZ+3Z7m4V1ElGR3jZXOxxInV4B/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734028438; c=relaxed/simple;
-	bh=tZsu8TiuLR0S0KrbV0gJ11FoB48CVZZWePFjnRlLhIs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UqRQywU8+gyQwTsaRwj/URDSSrQ0J7fqThsd1rj7MXxwuyNyGYghNUfbXtcQUcyCvLQRCRreS8LDSZEYq1i3aB4ppWSQocIM/Nao6dX3z69Kl0ZBc4j2eadeuD27i86zG7z5bAzQn27nM2XAYXSkF4gmh9NFE7sxMgbnqHlPWN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YIvDhbLJ; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7b6f8524f23so55800785a.2;
-        Thu, 12 Dec 2024 10:33:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734028435; x=1734633235; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZqbWz5w80/Ao2+q+hylk/EZt96xoYzXRfCQenTqI3gE=;
-        b=YIvDhbLJTZSOmwqPVFp+0cCUWmLYyQaJ24rd1MkCOPyYO6Kbvnq0ISR4ntcKA2qfxe
-         4xTC2XYVyAxLX6hwF5IkWGEO5qHYOsf2ljCn9LouHQ3JH58fSYyMiU02JlFIvT4aHu1L
-         bAE/pWP8C492opvRB+7VkZuuZ52/sdoClgjGt5lvRyvAlkIqeKooOevr4EaPSKicdVkU
-         pGO5ZI3bShB7BEoASU+Kh3OvhRicsvoetl3HtQNnWKSadmMdyWWf88Z9Xb9NlU8zv4iX
-         sPoCoyCbnTJZLcL9RKPh/X7JB9N5dlt90HcV44z05WjGXfxL9gTj2qegamHSgaMX9t1h
-         JINA==
+	s=arc-20240116; t=1734029222; c=relaxed/simple;
+	bh=SOYf3SfjKiZ95SWaRy9LWaJhoXXb98txie33gEZoVzE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C1aWib/jM0sQFzpXQnxoOLodrnXoQQKSgciyWzIQtD3jcQaPHs9Fput4lGG50PYrJ5Zeuxx/aFPf+DUalkPiMsHT6KDRhhGWwYhBAOubGzlIcSfhCG/Xd0zSTEFMYAfEnP0vlWI4sYcvlZ0F0zaPzHdxyGoUpfCWRhOV4b4Tot4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Dbbnbrog; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BCH86HZ030073
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 18:46:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	PmOQqrjMzqeBGq34PKXHlYCtCJdL+dzG6VReuDNyzL8=; b=DbbnbrogjPRbR5Y/
+	U0XsqR6SXEAfFTeGJBKsNC0CHLjyf7O+GFWG5GTuaMhV5gfJ3pTkVTEXQma2IdAt
+	swe2QCKr9EtD1PnfW20FtPQidKQBtQmSRRKbIwG6IN2/dYJXARDhGc1Z1QaIl0rd
+	uWQHghK1GXp2dyJXg07P77v2XCb8jjThsxc1b7hSqaCF+QtXquS7JKHcdGVa4W84
+	AT2KHNVk65qyuiXwdyvQHoLfF1THBtzwOtzlJRKoVFnwHGgv3F4ty5FLSW2MwhhS
+	65aUJslk/pYPdUiveFlwzcwBooMDwjjA4BlSt+jTQsZUlWH4y7wa+WQ0N20+4fSK
+	bMWvvw==
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43dxw4cb9m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 18:46:54 +0000 (GMT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-466a20c8e57so2009181cf.0
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 10:46:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734028435; x=1734633235;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZqbWz5w80/Ao2+q+hylk/EZt96xoYzXRfCQenTqI3gE=;
-        b=kHxR9zWqbDre3DylVKsCL/RYcWbHkwmYwm/OrS8c/mpVgEEpKxY+IkbvD1+Od9Qt6r
-         Z2YVWaY3Zqy+v8IsLloRhRINJL9VU6TJris402gZKD6xRcHV9KsoTtL9HlWURuP6Dni9
-         yLDmNaybZuwS3Xam6RnaHQXGTBWKm4m0sN/WgTaQ0mT5AwHHHhEcbdJQSU4JK5mJ+n2W
-         XsjoSluP7iMHCYWtPit+UlzbXNY87rlG0zdZNR5ees9tf8+NDFrCNpzSIv632i6slem5
-         9ogGF6KBsNXkGEvs458zmaIQSBq50QZ2buUWCTXL2YraUxvb14dbrOk3EC4TizW3E2m/
-         4tIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVD6BpkMNztMwuWUW3o9/lBWRlkLB4Gk4uJsGbnSHw+j36/58MnaR+N9spT1eo96vqtiQnpecJz@vger.kernel.org, AJvYcCWGmmhgsO+FCCXG5wkuOoi1hJOOvlEjeoWefp45AahHC2v/SbL6OQl2KLrImu0J8xrG1B6lKgPeN9MIOtY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTAui903q3k9ZHnsMHB4GyhUzajRqSnFjfjKj6m/tdkPHtqtDa
-	2YJcUCzNJHWNr2NNAPm3ryFat1tCi2ggGQTuLDcOXn3uCpHRvMxg
-X-Gm-Gg: ASbGncuu5oOuojFWFhGOEtfz+PDyUkEXrAonEoVGKZ0oa+J5/MJwkvukfAeln1lj/sT
-	BLPQmtkYmaM2c0JfT+ph/2GBRmvI4KhiEXH4vN9N1jgNuVU4/F+zsjZlFS9DXLnZMoStSv/vpGR
-	SyhzIkfCMObAh9eDdy7IDePhPNoIJ2lCWpY3hGlmJUp8EvOWMVou8vyzWGrIb+Z0nivSKqy1qw9
-	Pd01FTiKVEk54PAIyYfDtdjo5fPaCPe9yS2mG5QKOJ9Ay0Yt+LPRw==
-X-Google-Smtp-Source: AGHT+IHW4lqyDD/WZ9MZc2ZAevw778ZC2oWLKzpYfIVQPXRhxGqN/JXNrTHqvV6y9ff/9LhoNEnlKQ==
-X-Received: by 2002:a05:620a:40c8:b0:7b6:f110:43d5 with SMTP id af79cd13be357-7b6f893016amr223205185a.18.1734028435127;
-        Thu, 12 Dec 2024 10:33:55 -0800 (PST)
-Received: from localhost ([2a03:2880:20ff:c::])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b6eed3d22dsm157188685a.31.2024.12.12.10.33.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 10:33:54 -0800 (PST)
-From: Usama Arif <usamaarif642@gmail.com>
-To: david@redhat.com,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	roman.gushchin@linux.dev,
-	yuzhao@google.com,
-	npache@redhat.com,
-	baohua@kernel.org,
-	ryan.roberts@arm.com,
-	rppt@kernel.org,
-	willy@infradead.org,
-	cerasuolodomenico@gmail.com,
-	ryncsn@gmail.com,
-	corbet@lwn.net,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Usama Arif <usamaarif642@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm: convert partially_mapped set/clear operations to be atomic
-Date: Thu, 12 Dec 2024 18:33:51 +0000
-Message-ID: <20241212183351.1345389-1-usamaarif642@gmail.com>
-X-Mailer: git-send-email 2.43.5
+        d=1e100.net; s=20230601; t=1734029213; x=1734634013;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PmOQqrjMzqeBGq34PKXHlYCtCJdL+dzG6VReuDNyzL8=;
+        b=jYMAeAQcpvw6iq74yJX+iogj37V2EjZFWsycJuS5S0l2eO5dLa4vzTP5TQzu+I2ftR
+         queCYB7528bxPTtYUr/Awv5u5I0aruZQ09UsvCzy7uPgARb8Oo0Ua0rO/dmGO4TKsV/b
+         9lwWrPhN640m5Pja/WA3SKZLqNq+ex4LsaADEFWzk4W6xhoZEfmrStJDqMxazCI7W6Fx
+         VOFK3eW/9C8XeC/uTLKi4cMsrhvyXBO6ktm+F3OaeQLqW93H+emQitYwHpKsBTggulEr
+         VQM12nyTtr1Gy1Mj6S7BazZQy8uXu0dw7g+NoVjW/4tFm8Y9GuJE790T35cW/KzgE5jd
+         EPtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUxONMAPMhk8JaH9d0rk74cnvFiUoN03YJqSMAEeBraIWBsRlkfmvkM3pOFL0b5h9omtGZ9mWA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDjC/gU4fvMwsMY+ze+THo4FrkByfoOhVYmBGvXZwVyY3H0H+3
+	keL7P1pd6R/sdCFdFh543PKG87md/zFxabNZeseJ73WYjWXAWWMvmdPgRYoPK1gm99on2PZfkIX
+	m2q+kh7Ea2T2bvjTryCwIIGnTSXvXumFj6L7wyCFhh4Vg1IrOy6tdS20=
+X-Gm-Gg: ASbGncsarxPWWYSDeF6GLTVQv9kTOt2HoWPdkNg29v/JSXfXhcVDTBCJqaWUic5YSn+
+	xUrm4rButEFL9aMdNQU4iCWDu5X+nIRBxlIAcaU5zQNIqyqLl6XJLuGR3LZllrH81hqd4zWyQD6
+	oKMq4DEKMRMoTn/LX1UGoWBDiIG1fhFFJ14nNl9Ls+QeSpGzswWCnhN4hDHLvqrsqq7CL8mYLxr
+	Sg8om2A8hKPLWiGK51Er/CXpX6BCnGNkaQdh9ZIkzWJtLzjDGRWUz9njr39tt2sQWr7+aYrnVc8
+	04hVS/30GtE6vCPGyj5iVDIfqlvi2d9ZGJeJ+A==
+X-Received: by 2002:a05:622a:1a87:b0:461:4467:14bb with SMTP id d75a77b69052e-467a14cf99fmr7724411cf.2.1734029213599;
+        Thu, 12 Dec 2024 10:46:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGdpfmTx2mHf6sXsAQz5sQIHlNuntc35VI2+MYkILXa1EgItZeGr7YDJrQd/P66nUPjXjjjCA==
+X-Received: by 2002:a05:622a:1a87:b0:461:4467:14bb with SMTP id d75a77b69052e-467a14cf99fmr7723591cf.2.1734029211712;
+        Thu, 12 Dec 2024 10:46:51 -0800 (PST)
+Received: from [192.168.212.120] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d3eb7722acsm7157269a12.3.2024.12.12.10.46.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Dec 2024 10:46:50 -0800 (PST)
+Message-ID: <8b2519dd-3338-4770-9f9e-d99de5648fcd@oss.qualcomm.com>
+Date: Thu, 12 Dec 2024 19:46:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/19] arm64: dts: qcom: sm8350: Fix ADSP memory base
+ and length
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Abel Vesa
+ <abel.vesa@linaro.org>,
+        Sibi Sankar <quic_sibis@quicinc.com>,
+        Luca Weiss <luca.weiss@fairphone.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241209-dts-qcom-cdsp-mpss-base-address-v2-0-d85a3bd5cced@linaro.org>
+ <20241209-dts-qcom-cdsp-mpss-base-address-v2-1-d85a3bd5cced@linaro.org>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20241209-dts-qcom-cdsp-mpss-base-address-v2-1-d85a3bd5cced@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: YZ63YsnAL-VsXGVsbo8AU-dkuX2Y4j0i
+X-Proofpoint-GUID: YZ63YsnAL-VsXGVsbo8AU-dkuX2Y4j0i
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ suspectscore=0 priorityscore=1501 adultscore=0 mlxlogscore=831
+ clxscore=1015 spamscore=0 mlxscore=0 lowpriorityscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412120136
 
-Other page flags in the 2nd page, like PG_hwpoison and
-PG_anon_exclusive can get modified concurrently.
-Changes to other page flags might be lost if they are
-happening at the same time as non-atomic partially_mapped
-operations. Hence, make partially_mapped operations atomic.
+On 9.12.2024 12:02 PM, Krzysztof Kozlowski wrote:
+> The address space in ADSP PAS (Peripheral Authentication Service)
+> remoteproc node should point to the QDSP PUB address space
+> (QDSP6...SS_PUB): 0x0300_0000 with length of 0x10000.  0x1730_0000,
+> value used so far, was copied from downstream DTS, is in the middle of
+> unused space and downstream DTS describes the PIL loader, which is a bit
+> different interface.
+> 
+> Assume existing value (thus downstream DTS) is not really describing the
+> intended ADSP PAS region.
+> 
+> Correct the base address and length, which also moves the node to
+> different place to keep things sorted by unit address.  The diff looks
+> big, but only the unit address and "reg" property were changed.  This
+> should have no functional impact on Linux users, because PAS loader does
+> not use this address space at all.
+> 
+> Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
 
-Fixes: 8422acdc97ed ("mm: introduce a pageflag for partially mapped folios")
-Cc: stable@vger.kernel.org
-Reported-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/all/e53b04ad-1827-43a2-a1ab-864c7efecf6e@redhat.com/
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
----
-v1 -> v2:
-- Collected acks
-- Added cc for stable@vger.kernel.org and link of initial report
-  (Johannes)
----
- include/linux/page-flags.h | 12 ++----------
- mm/huge_memory.c           |  8 ++++----
- 2 files changed, 6 insertions(+), 14 deletions(-)
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index cf46ac720802..691506bdf2c5 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -862,18 +862,10 @@ static inline void ClearPageCompound(struct page *page)
- 	ClearPageHead(page);
- }
- FOLIO_FLAG(large_rmappable, FOLIO_SECOND_PAGE)
--FOLIO_TEST_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
--/*
-- * PG_partially_mapped is protected by deferred_split split_queue_lock,
-- * so its safe to use non-atomic set/clear.
-- */
--__FOLIO_SET_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
--__FOLIO_CLEAR_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
-+FOLIO_FLAG(partially_mapped, FOLIO_SECOND_PAGE)
- #else
- FOLIO_FLAG_FALSE(large_rmappable)
--FOLIO_TEST_FLAG_FALSE(partially_mapped)
--__FOLIO_SET_FLAG_NOOP(partially_mapped)
--__FOLIO_CLEAR_FLAG_NOOP(partially_mapped)
-+FOLIO_FLAG_FALSE(partially_mapped)
- #endif
- 
- #define PG_head_mask ((1UL << PG_head))
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2da5520bfe24..120cd2cdc614 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3583,7 +3583,7 @@ int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
- 		    !list_empty(&folio->_deferred_list)) {
- 			ds_queue->split_queue_len--;
- 			if (folio_test_partially_mapped(folio)) {
--				__folio_clear_partially_mapped(folio);
-+				folio_clear_partially_mapped(folio);
- 				mod_mthp_stat(folio_order(folio),
- 					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
- 			}
-@@ -3695,7 +3695,7 @@ bool __folio_unqueue_deferred_split(struct folio *folio)
- 	if (!list_empty(&folio->_deferred_list)) {
- 		ds_queue->split_queue_len--;
- 		if (folio_test_partially_mapped(folio)) {
--			__folio_clear_partially_mapped(folio);
-+			folio_clear_partially_mapped(folio);
- 			mod_mthp_stat(folio_order(folio),
- 				      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
- 		}
-@@ -3739,7 +3739,7 @@ void deferred_split_folio(struct folio *folio, bool partially_mapped)
- 	spin_lock_irqsave(&ds_queue->split_queue_lock, flags);
- 	if (partially_mapped) {
- 		if (!folio_test_partially_mapped(folio)) {
--			__folio_set_partially_mapped(folio);
-+			folio_set_partially_mapped(folio);
- 			if (folio_test_pmd_mappable(folio))
- 				count_vm_event(THP_DEFERRED_SPLIT_PAGE);
- 			count_mthp_stat(folio_order(folio), MTHP_STAT_SPLIT_DEFERRED);
-@@ -3832,7 +3832,7 @@ static unsigned long deferred_split_scan(struct shrinker *shrink,
- 		} else {
- 			/* We lost race with folio_put() */
- 			if (folio_test_partially_mapped(folio)) {
--				__folio_clear_partially_mapped(folio);
-+				folio_clear_partially_mapped(folio);
- 				mod_mthp_stat(folio_order(folio),
- 					      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
- 			}
--- 
-2.43.5
-
+Konrad
 
