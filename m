@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-102091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E519EEFE8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B9E9EEA39
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6C228D020
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 613CA16AAE4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6027323A1B8;
-	Thu, 12 Dec 2024 16:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7E321578E;
+	Thu, 12 Dec 2024 15:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kE03iw/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pj1DrslM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA6D23A1B1;
-	Thu, 12 Dec 2024 16:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8F62080FC;
+	Thu, 12 Dec 2024 15:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019937; cv=none; b=tpedOXK73QsIIxpLoGOwDc+WIsggPAqeQ2J1BwFSkzm0MajrW0lt0yJM6WLonsswbeZw2GWJR52zQLsfg6HXGmK+CxvKhTFh7T5vw/Vw6hAE4VhH+P4o8y0Hm+GEC9WxBsU65S7No41/cbg0YEcp+9jSkwrlL7FtKxRfkUQFuxk=
+	t=1734016031; cv=none; b=lZtBZU1ETZEQEys2ybRj6FS7Up6PPteYqyXyZP3m/xgAJ07yjo8SwXoZMF3b4hvUDc2SuFKapc3jwr2an8g8mwtecJ/LyTSdez4vkZhRzOzxwnnYn64yNdxkaD7fceVdz4vQlMoBhlYYbwifShc1JI8ArLQb2yLjqKy8zsFF/bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019937; c=relaxed/simple;
-	bh=+mLKyfscJ4gjhxgKO7UAB2PHTg6nYRyPp6KXdyrTlgk=;
+	s=arc-20240116; t=1734016031; c=relaxed/simple;
+	bh=ZNc2fwIO5rzVsdMc1wj8eHUCYGRcFqapnuMzHBXmPp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TM6EycOHTDMc5wFB+OUyRNPKmc0NQM+PjN1uuK6FqNRJcMNbjVFPql1+X6BXRf9GlJgztn8Ew0MNexWEZxyKgGzHeV7VmvQcLHV78MFskKadGkbj7UbxF/H3U8uRDsH8/kPIeUdi/4YwaZL5NI0vXJ2lPJ4uLvtLZEZ1DttUk2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kE03iw/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7534EC4CECE;
-	Thu, 12 Dec 2024 16:12:16 +0000 (UTC)
+	 MIME-Version; b=HpuoL+v+/+sXEkotBM9e2jDvWpuPZD3CkK8u9Ir3IwX0zQwpGHHIqx/DQFt/CKJnkBfcqVhTtpDsGX/vv/qJ6EK0gEUz/4TjowUHlnefylL9dVqGpAmnJRqOMKMbp+Z3Mmn+/8KzUViiq0ADh5XuU8qF5aRzNHoW8bSYCtzfbNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pj1DrslM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F12BC4CECE;
+	Thu, 12 Dec 2024 15:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019936;
-	bh=+mLKyfscJ4gjhxgKO7UAB2PHTg6nYRyPp6KXdyrTlgk=;
+	s=korg; t=1734016031;
+	bh=ZNc2fwIO5rzVsdMc1wj8eHUCYGRcFqapnuMzHBXmPp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kE03iw/ch5WlL+SCvKDAbxB10B3DXyn0Zb+Xap1mvfDkmfFtD68lmJoUtebJUJCTt
-	 nBxDPIDeAEPEStWPlRzP8anCKszmelKIvyK226sllZLf/czIEvOUNG/9Jhz9wferDl
-	 bJEw0H0iP7ncEAFvtjkY+2ph8zIJbC5HMknYBcVk=
+	b=Pj1DrslMA87JJEJOaueEAsGjajoRo93Bnd+UQZy04h9RXxaDgcGFvC0MCzqFqW5NQ
+	 ljSq+ERXJfkha35Ge41F4ZgApMtn0OqUgaaFm9VK5HRA9t+DkMfI5CgfNhy73ZGdDU
+	 yKhvtItc3sokzIRCwKMAKTfvB49ie9DLqfsCV05Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 336/772] ASoC: amd: yc: Fix for enabling DMIC on acp6x via _DSD entry
+Subject: [PATCH 6.12 112/466] ocfs2: free inode when ocfs2_get_init_inode() fails
 Date: Thu, 12 Dec 2024 15:54:41 +0100
-Message-ID: <20241212144403.793168328@linuxfoundation.org>
+Message-ID: <20241212144311.243393303@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +69,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 4095cf872084ecfdfdb0e681f3e9ff9745acfa75 ]
+[ Upstream commit 965b5dd1894f4525f38c1b5f99b0106a07dbb5db ]
 
-Add condition check to register ACP PDM sound card by reading
-_WOV acpi entry.
+syzbot is reporting busy inodes after unmount, for commit 9c89fe0af826
+("ocfs2: Handle error from dquot_initialize()") forgot to call iput() when
+new_inode() succeeded and dquot_initialize() failed.
 
-Fixes: 5426f506b584 ("ASoC: amd: Add support for enabling DMIC on acp6x via _DSD")
-
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Link: https://patch.msgid.link/20241127112227.227106-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lkml.kernel.org/r/e68c0224-b7c6-4784-b4fa-a9fc8c675525@I-love.SAKURA.ne.jp
+Fixes: 9c89fe0af826 ("ocfs2: Handle error from dquot_initialize()")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reported-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0af00f6a2cba2058b5db
+Tested-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ fs/ocfs2/namei.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index f46158b840a51..1ff894045718d 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -439,8 +439,14 @@ static int acp6x_probe(struct platform_device *pdev)
- 	struct acp6x_pdm *machine = NULL;
- 	struct snd_soc_card *card;
- 	struct acpi_device *adev;
-+	acpi_handle handle;
-+	acpi_integer dmic_status;
- 	int ret;
-+	bool is_dmic_enable, wov_en;
+diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
+index 59c92353151a8..5550f8afa4380 100644
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -200,8 +200,10 @@ static struct inode *ocfs2_get_init_inode(struct inode *dir, umode_t mode)
+ 	mode = mode_strip_sgid(&nop_mnt_idmap, dir, mode);
+ 	inode_init_owner(&nop_mnt_idmap, inode, dir, mode);
+ 	status = dquot_initialize(inode);
+-	if (status)
++	if (status) {
++		iput(inode);
+ 		return ERR_PTR(status);
++	}
  
-+	/* IF WOV entry not found, enable dmic based on AcpDmicConnected entry*/
-+	is_dmic_enable = false;
-+	wov_en = true;
- 	/* check the parent device's firmware node has _DSD or not */
- 	adev = ACPI_COMPANION(pdev->dev.parent);
- 	if (adev) {
-@@ -448,9 +454,19 @@ static int acp6x_probe(struct platform_device *pdev)
- 
- 		if (!acpi_dev_get_property(adev, "AcpDmicConnected", ACPI_TYPE_INTEGER, &obj) &&
- 		    obj->integer.value == 1)
--			platform_set_drvdata(pdev, &acp6x_card);
-+			is_dmic_enable = true;
- 	}
- 
-+	handle = ACPI_HANDLE(pdev->dev.parent);
-+	ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
-+	if (!ACPI_FAILURE(ret))
-+		wov_en = dmic_status;
-+
-+	if (is_dmic_enable && wov_en)
-+		platform_set_drvdata(pdev, &acp6x_card);
-+	else
-+		return 0;
-+
- 	/* check for any DMI overrides */
- 	dmi_id = dmi_first_match(yc_acp_quirk_table);
- 	if (dmi_id)
+ 	return inode;
+ }
 -- 
 2.43.0
 
