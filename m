@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEE19EED01
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A42FD9EEABA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1A68169C4A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 638612825A7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A282206A5;
-	Thu, 12 Dec 2024 15:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69F21537C8;
+	Thu, 12 Dec 2024 15:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbOZYSA/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXyWTz/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35766F2FE;
-	Thu, 12 Dec 2024 15:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A172121577D;
+	Thu, 12 Dec 2024 15:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017856; cv=none; b=Mqnx/NtRb+1f+vqlXr/wUTEukWyHkMVAmepQwR63Pc02wbbNE19u8PO8s3xwRtj6AMxtLGpVGvv0vZwIY+/53LKl9M/bdoNfTSpF4ZxgFJo8OAYPRofO+YR8PrEWc0v7aTySa9j93IcA/qIGYnqsHtCf3nV6WnaLbFeIcRmJEAQ=
+	t=1734016622; cv=none; b=dp0v5Kgaau2w0t8YsamlxhpYR0kWxmRjdgbdxRrAF0+0Eafgvdo9achxP9TH2PwUU0WlUd1AHuObOpO8T5ZazsZIL4bF7sS43KrUGJ2vAShikMvyOahSMVOWkdvBS184NV0eCXNwq3/FBuNQJBJYp0Y349+WchB+qOL97tqgA28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017856; c=relaxed/simple;
-	bh=lx/szwDoenTbAVoZhEMO4/3zbbxVRirA46zV9ylCaL8=;
+	s=arc-20240116; t=1734016622; c=relaxed/simple;
+	bh=7T/nTgNkvQRaDDTad6N2deyvrMYodeWNE6dpqSR9FMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ger5LoGC9LV4G9GtykQ//hGQGLPCXVMAi5FoAAqla83wTHOEOT02Z+hgjnF3t+IZCwGC1mORkTWVvNkM0CLTbss4iG9N779WvCc0ixghWs7YCEBtJC7yoRf1yp5IAxQhf7aDjLt6hH0NkIzW3abn5tMaTfDakJPNz5uV1iQFtCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbOZYSA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99EFC4CECE;
-	Thu, 12 Dec 2024 15:37:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k/0d3b3nqHbOVVf+6DEy7o9f4IJHvjgxF0HDavnqpW0YOeM9TkLgiAwvfzU0LZlIKffjgMxrnD5qi1HqdQZOW1Y3qwo6K+8hsyZBG5wVdl+KHNJpJawvEZWP0D9N9+AcZbWLR/OyjBhRIexQlx2mrtLMZ6Nbbq/uqAngJwVgdTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXyWTz/f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E014C4CECE;
+	Thu, 12 Dec 2024 15:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017856;
-	bh=lx/szwDoenTbAVoZhEMO4/3zbbxVRirA46zV9ylCaL8=;
+	s=korg; t=1734016622;
+	bh=7T/nTgNkvQRaDDTad6N2deyvrMYodeWNE6dpqSR9FMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbOZYSA/GSC6kYu/saL911E7sSZNUWIBJlIpw0taaFsLD1v9/BjHGdjznVoZg70YR
-	 lsaFknBlQgaLTgmkNRYwaKFPK5VSyJpyypiWYE7c+NRUYvu6LkPXH78MyFHx1R+3ZV
-	 ljAIx/H8IZDdDy/ZKQrs/tP+KFOJB4V5hYe658XE=
+	b=GXyWTz/fU18FgrVna55TA2ig+YuLoQBABpYE/n87+hZAEzmH9lk8VkXKUdwiuQzYP
+	 GUpnRLEtHnxgG9UwbafdljmIvF757JMbOXffzsbJcRRzDJAsygLYSwqYQ/7CFVDGaq
+	 QvyDLsqsU7d/WZHtZAzEQL9y7Tn+KdDPLiW0PtgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/356] i3c: master: fix kernel-doc check warning
+Subject: [PATCH 6.12 250/466] selftests/resctrl: Protect against array overflow when reading strings
 Date: Thu, 12 Dec 2024 15:56:59 +0100
-Message-ID: <20241212144248.569722976@linuxfoundation.org>
+Message-ID: <20241212144316.663522986@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Reinette Chatre <reinette.chatre@intel.com>
 
-[ Upstream commit 34d946b723b53488ab39d8ac540ddf9db255317a ]
+[ Upstream commit 46058430fc5d39c114f7e1b9c6ff14c9f41bd531 ]
 
-Fix warning found by
-	'scripts/kernel-doc -v -none include/linux/i3c/master.h'
+resctrl selftests discover system properties via a variety of sysfs files.
+The MBM and MBA tests need to discover the event and umask with which to
+configure the performance event used to measure read memory bandwidth.
+This is done by parsing the contents of
+/sys/bus/event_source/devices/uncore_imc_<imc instance>/events/cas_count_read
+Similarly, the resctrl selftests discover the cache size via
+/sys/bus/cpu/devices/cpu<id>/cache/index<index>/size.
 
-include/linux/i3c/master.h:457: warning: Function parameter or member 'enable_hotjoin' not described in 'i3c_master_controller_ops'
-include/linux/i3c/master.h:457: warning: Function parameter or member 'disable_hotjoin' not described in 'i3c_master_controller_ops'
-include/linux/i3c/master.h:499: warning: Function parameter or member 'hotjoin' not described in 'i3c_master_controller'
+Take care to do bounds checking when using fscanf() to read the
+contents of files into a string buffer because by default fscanf() assumes
+arbitrarily long strings. If the file contains more bytes than the array
+can accommodate then an overflow will occur.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20240109052548.2128133-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 25bc99be5fe5 ("i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter")
+Provide a maximum field width to the conversion specifier to protect
+against array overflow. The maximum is one less than the array size because
+string input stores a terminating null byte that is not covered by the
+maximum field width.
+
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/i3c/master.h | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/resctrl/resctrl_val.c | 4 ++--
+ tools/testing/selftests/resctrl/resctrlfs.c   | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-index 65b8965968af2..1cbf0baca65fe 100644
---- a/include/linux/i3c/master.h
-+++ b/include/linux/i3c/master.h
-@@ -426,6 +426,8 @@ struct i3c_bus {
-  *		      for a future IBI
-  *		      This method is mandatory only if ->request_ibi is not
-  *		      NULL.
-+ * @enable_hotjoin: enable hot join event detect.
-+ * @disable_hotjoin: disable hot join event detect.
-  */
- struct i3c_master_controller_ops {
- 	int (*bus_init)(struct i3c_master_controller *master);
-@@ -467,6 +469,7 @@ struct i3c_master_controller_ops {
-  * @ops: master operations. See &struct i3c_master_controller_ops
-  * @secondary: true if the master is a secondary master
-  * @init_done: true when the bus initialization is done
-+ * @hotjoin: true if the master support hotjoin
-  * @boardinfo.i3c: list of I3C  boardinfo objects
-  * @boardinfo.i2c: list of I2C boardinfo objects
-  * @boardinfo: board-level information attached to devices connected on the bus
+diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
+index f118f659e8960..e92e4f463f37b 100644
+--- a/tools/testing/selftests/resctrl/resctrl_val.c
++++ b/tools/testing/selftests/resctrl/resctrl_val.c
+@@ -159,7 +159,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
+ 
+ 		return -1;
+ 	}
+-	if (fscanf(fp, "%s", cas_count_cfg) <= 0) {
++	if (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
+ 		ksft_perror("Could not get iMC cas count read");
+ 		fclose(fp);
+ 
+@@ -177,7 +177,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
+ 
+ 		return -1;
+ 	}
+-	if  (fscanf(fp, "%s", cas_count_cfg) <= 0) {
++	if  (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
+ 		ksft_perror("Could not get iMC cas count write");
+ 		fclose(fp);
+ 
+diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
+index 250c320349a78..a53cd1cb6e0c6 100644
+--- a/tools/testing/selftests/resctrl/resctrlfs.c
++++ b/tools/testing/selftests/resctrl/resctrlfs.c
+@@ -182,7 +182,7 @@ int get_cache_size(int cpu_no, const char *cache_type, unsigned long *cache_size
+ 
+ 		return -1;
+ 	}
+-	if (fscanf(fp, "%s", cache_str) <= 0) {
++	if (fscanf(fp, "%63s", cache_str) <= 0) {
+ 		ksft_perror("Could not get cache_size");
+ 		fclose(fp);
+ 
 -- 
 2.43.0
 
