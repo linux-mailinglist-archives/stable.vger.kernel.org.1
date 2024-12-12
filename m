@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6399EF0DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3ED49EEA1F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0774A177C77
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F4CC188C6FC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA2D2210FB;
-	Thu, 12 Dec 2024 16:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437692EAE5;
+	Thu, 12 Dec 2024 15:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMhCna0L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rd8Mzhs1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7662210CF;
-	Thu, 12 Dec 2024 16:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27AA211476;
+	Thu, 12 Dec 2024 15:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020020; cv=none; b=sQn4uD06Bf1KJK8pCiNPWTdjsDQtt/tQt8MLhqu1jOKmrOaDEAIkSUjm7eN3CkgquWkLAYMoFMjkjnUTCzJXzxQ5b4RixZXrkjh2nYk9ZjhATO78A+ho55FKdUoItkrVrXT9wPHw6cVEze+V0tM8tCgSufO3TiBMPVhxs3lE+3E=
+	t=1734015997; cv=none; b=SqnQwhnZVxEEXxK7xgUHscz5x9k3SYsgKBQVqH6ke+qa3/Eh/eWsp59PIKUKnvAAgwD4cR1IWCVQmfPcO9whmy1XV0ZKZ3Tq8Sn4mQD7J7rpmg1+5uu3mlKUKlxZbeNYRaOUddrRnijGl3ZXwzdFHRvB81fUQzrD60FYG3fmccE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020020; c=relaxed/simple;
-	bh=IzIIG01hrTqx1lyJLIsdIROZH/Ed+DNF5m3V0qVpICg=;
+	s=arc-20240116; t=1734015997; c=relaxed/simple;
+	bh=6xXj9nOgaEmASTzxYmgk0EKzJvWm+9vC/8nqIn4mfHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dLZ1w66OwbJbxaNQQhjQb0/KoRCly+ZfPxdxLf2OjIRvuCdhDnovMGq495bV0tObsuvj3wugEybA43RGfRiJ7dEUvAE3RLNa7oK2SgPDhjogUrMCVnNZB7nXqNp/9Ef/a2Kn3FJjP9gbnYdHzTgOlPXbs+Eb6RrfE84cU7F48yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMhCna0L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF9BC4CECE;
-	Thu, 12 Dec 2024 16:13:39 +0000 (UTC)
+	 MIME-Version; b=D/1NFX73IShCNMW+4Vrer6qSrXuI4h1InYzLfweHh0FG7MRguVfWKSqH1MUI1WhWgP/bqCqWt7yMBYBL+cWWr9IN28g5C6lGQbHiji2fBh+8w9q4Zf3e+sRd98tXU9QqCT+YDJ42q9vsyNKFY5gJ6Emc4mEznKAEFd4mLXbp7Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rd8Mzhs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5C1C4CECE;
+	Thu, 12 Dec 2024 15:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020020;
-	bh=IzIIG01hrTqx1lyJLIsdIROZH/Ed+DNF5m3V0qVpICg=;
+	s=korg; t=1734015996;
+	bh=6xXj9nOgaEmASTzxYmgk0EKzJvWm+9vC/8nqIn4mfHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vMhCna0Ly3Oway1zq+sP+ZmOLqi4v3735D+jMgWIkWRfG+19X939HJUfmQeVvqrFi
-	 j/RY7L5LOoatqK/MmgPzPTexjMSgJSzSKmDusrokbbqlj/c7AJwa6XXbk7O+in1Pt2
-	 W2jn7N8wGb4g3zq3+K6SSVO0ClOWtZWty7mr4jGY=
+	b=Rd8Mzhs1xcmDQTlRT9636pdH8dh74xNFviHj9CRiEqqDLaWAsR1MapUnXYF2DN+tn
+	 MWwjlXa9owfWjnTy+bS17U2kM9I9Ahcrhcn1Ao5GFgx7O+q1PX+O9+OlMMaB5f4sNn
+	 eTUg/4ImbrxG0J/ngsTldEPeNnKhVWQNQa1wOLFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Tao Lyu <tao.lyu@epfl.ch>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 327/772] usb: using mutex lock and supporting O_NONBLOCK flag in iowarrior_read()
+Subject: [PATCH 6.12 103/466] bpf: Dont mark STACK_INVALID as STACK_MISC in mark_stack_slot_misc
 Date: Thu, 12 Dec 2024 15:54:32 +0100
-Message-ID: <20241212144403.420024153@linuxfoundation.org>
+Message-ID: <20241212144310.882412779@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 44feafbaa66ec86232b123bb8437a6a262442025 ]
+[ Upstream commit 69772f509e084ec6bca12dbcdeeeff41b0103774 ]
 
-iowarrior_read() uses the iowarrior dev structure, but does not use any
-lock on the structure. This can cause various bugs including data-races,
-so it is more appropriate to use a mutex lock to safely protect the
-iowarrior dev structure. When using a mutex lock, you should split the
-branch to prevent blocking when the O_NONBLOCK flag is set.
+Inside mark_stack_slot_misc, we should not upgrade STACK_INVALID to
+STACK_MISC when allow_ptr_leaks is false, since invalid contents
+shouldn't be read unless the program has the relevant capabilities.
+The relaxation only makes sense when env->allow_ptr_leaks is true.
 
-In addition, it is unnecessary to check for NULL on the iowarrior dev
-structure obtained by reading file->private_data. Therefore, it is
-better to remove the check.
+However, such conversion in privileged mode becomes unnecessary, as
+invalid slots can be read without being upgraded to STACK_MISC.
 
-Fixes: 946b960d13c1 ("USB: add driver for iowarrior devices.")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://lore.kernel.org/r/20240919103403.3986-1-aha310510@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently, the condition is inverted (i.e. checking for true instead of
+false), simply remove it to restore correct behavior.
+
+Fixes: eaf18febd6eb ("bpf: preserve STACK_ZERO slots on partial reg spills")
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Reported-by: Tao Lyu <tao.lyu@epfl.ch>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20241204044757.1483141-2-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/iowarrior.c | 46 ++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 10 deletions(-)
+ kernel/bpf/verifier.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/misc/iowarrior.c b/drivers/usb/misc/iowarrior.c
-index b421f13260875..2fde8dd0b3e21 100644
---- a/drivers/usb/misc/iowarrior.c
-+++ b/drivers/usb/misc/iowarrior.c
-@@ -277,28 +277,45 @@ static ssize_t iowarrior_read(struct file *file, char __user *buffer,
- 	struct iowarrior *dev;
- 	int read_idx;
- 	int offset;
-+	int retval;
- 
- 	dev = file->private_data;
- 
-+	if (file->f_flags & O_NONBLOCK) {
-+		retval = mutex_trylock(&dev->mutex);
-+		if (!retval)
-+			return -EAGAIN;
-+	} else {
-+		retval = mutex_lock_interruptible(&dev->mutex);
-+		if (retval)
-+			return -ERESTARTSYS;
-+	}
-+
- 	/* verify that the device wasn't unplugged */
--	if (!dev || !dev->present)
--		return -ENODEV;
-+	if (!dev->present) {
-+		retval = -ENODEV;
-+		goto exit;
-+	}
- 
- 	dev_dbg(&dev->interface->dev, "minor %d, count = %zd\n",
- 		dev->minor, count);
- 
- 	/* read count must be packet size (+ time stamp) */
- 	if ((count != dev->report_size)
--	    && (count != (dev->report_size + 1)))
--		return -EINVAL;
-+	    && (count != (dev->report_size + 1))) {
-+		retval = -EINVAL;
-+		goto exit;
-+	}
- 
- 	/* repeat until no buffer overrun in callback handler occur */
- 	do {
- 		atomic_set(&dev->overflow_flag, 0);
- 		if ((read_idx = read_index(dev)) == -1) {
- 			/* queue empty */
--			if (file->f_flags & O_NONBLOCK)
--				return -EAGAIN;
-+			if (file->f_flags & O_NONBLOCK) {
-+				retval = -EAGAIN;
-+				goto exit;
-+			}
- 			else {
- 				//next line will return when there is either new data, or the device is unplugged
- 				int r = wait_event_interruptible(dev->read_wait,
-@@ -309,28 +326,37 @@ static ssize_t iowarrior_read(struct file *file, char __user *buffer,
- 								  -1));
- 				if (r) {
- 					//we were interrupted by a signal
--					return -ERESTART;
-+					retval = -ERESTART;
-+					goto exit;
- 				}
- 				if (!dev->present) {
- 					//The device was unplugged
--					return -ENODEV;
-+					retval = -ENODEV;
-+					goto exit;
- 				}
- 				if (read_idx == -1) {
- 					// Can this happen ???
--					return 0;
-+					retval = 0;
-+					goto exit;
- 				}
- 			}
- 		}
- 
- 		offset = read_idx * (dev->report_size + 1);
- 		if (copy_to_user(buffer, dev->read_queue + offset, count)) {
--			return -EFAULT;
-+			retval = -EFAULT;
-+			goto exit;
- 		}
- 	} while (atomic_read(&dev->overflow_flag));
- 
- 	read_idx = ++read_idx == MAX_INTERRUPT_BUFFER ? 0 : read_idx;
- 	atomic_set(&dev->read_idx, read_idx);
-+	mutex_unlock(&dev->mutex);
- 	return count;
-+
-+exit:
-+	mutex_unlock(&dev->mutex);
-+	return retval;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 8955259112c03..cdf8ce1e2cc4f 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -1200,14 +1200,17 @@ static bool is_spilled_scalar_reg64(const struct bpf_stack_state *stack)
+ /* Mark stack slot as STACK_MISC, unless it is already STACK_INVALID, in which
+  * case they are equivalent, or it's STACK_ZERO, in which case we preserve
+  * more precise STACK_ZERO.
+- * Note, in uprivileged mode leaving STACK_INVALID is wrong, so we take
+- * env->allow_ptr_leaks into account and force STACK_MISC, if necessary.
++ * Regardless of allow_ptr_leaks setting (i.e., privileged or unprivileged
++ * mode), we won't promote STACK_INVALID to STACK_MISC. In privileged case it is
++ * unnecessary as both are considered equivalent when loading data and pruning,
++ * in case of unprivileged mode it will be incorrect to allow reads of invalid
++ * slots.
+  */
+ static void mark_stack_slot_misc(struct bpf_verifier_env *env, u8 *stype)
+ {
+ 	if (*stype == STACK_ZERO)
+ 		return;
+-	if (env->allow_ptr_leaks && *stype == STACK_INVALID)
++	if (*stype == STACK_INVALID)
+ 		return;
+ 	*stype = STACK_MISC;
  }
- 
- /*
 -- 
 2.43.0
 
