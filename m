@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-101770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533319EEE84
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF7C9EEE82
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68ABD1887121
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCBD3166DFF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94002165F0;
-	Thu, 12 Dec 2024 15:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE17421CFF0;
+	Thu, 12 Dec 2024 15:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cChfCdCH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wzkl+P5k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76062135B0;
-	Thu, 12 Dec 2024 15:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C0F21B91D;
+	Thu, 12 Dec 2024 15:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018738; cv=none; b=Oyw0pKdMp+BlCw+5MGWpBqfwsZtDon1i9EnNvjvmh3IpbnMzg4ZKt18/BiDimH1Oq8CWZzK/HJ5aGiTDsc/zyqAH8/QNq1Or640lhVPbwAg1RXoItNC/kD4S96y2Z6T6tDB9sbqnKsy2ycIO5UM20lVlH8MI/t7w+Y9wjBZE4MQ=
+	t=1734018746; cv=none; b=db0zi1GeiOgPsumoxIHxxrlZcLgLG311eE0U52vyb+0Wrf8orhuinFZlSseM5ZqiK2zXz+mW6moJX4a7kf1EGsNMLhuO8RNgl4V4yqiizcjSOxY8g0LbdHWGRxBrCtCgbEpyJ6uYxPNIjGP7JLcGVGZzwgVVBBSXy9Mb4by9wOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018738; c=relaxed/simple;
-	bh=3MsG6oe5a8t2Wa0+4dmPDMX8AypKfrVzUNRMagMpCWw=;
+	s=arc-20240116; t=1734018746; c=relaxed/simple;
+	bh=dVRIpM7VTAFFSrZYL39ulgRz777tPcGY5Yjx38Q3uao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=js57jCVS3mv2kQ+kEGkjTGSSQ5cg9NOn2dX664HJl1gJ3vycb7ytDgWAA9ubLk8WzyPOzgwwHy0zimTqdq1i1bJvi6D/CU0LOFPxjMbouVxjJKwCwUKlRqa0LgvlzIinTwT/S9axmm9MfsOcZFQa6BrFIYBCBdt1fX5ouCmzo/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cChfCdCH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23310C4CECE;
-	Thu, 12 Dec 2024 15:52:17 +0000 (UTC)
+	 MIME-Version; b=AiUsPqITTskt1MQNEPlmg6X0fmbvtM1ysL6YqdW2FBAjdHEQzQ2c3Wq1iS/lMP6KbtTI7zIzFkqErfWAjmMA7ehTp0qIfHKkQoLHUrReQlosvrmiwDt5BTmFQGdGiQj8pFORbw8CV1LkjOpFk76dahALdX9ecP6nwgLcC/H4qXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wzkl+P5k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8140CC4CECE;
+	Thu, 12 Dec 2024 15:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018738;
-	bh=3MsG6oe5a8t2Wa0+4dmPDMX8AypKfrVzUNRMagMpCWw=;
+	s=korg; t=1734018745;
+	bh=dVRIpM7VTAFFSrZYL39ulgRz777tPcGY5Yjx38Q3uao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cChfCdCHjlmlI5WjQw1GoFNt4YCVt/2IVt3bAsKqeLkyGJPZK6jSol9LIkLzTLk9A
-	 nvvNKlICnOLSbl30VqpG+l1U7UujeXwZTPsS4MfQBHwteGLBI+fqrAn/VFzb7jUkzO
-	 JEvrj6kkRzFb1MVUTro/FNvO1/TI+QbqKoY25dBQ=
+	b=Wzkl+P5k2lxa2JaLT2hEuSoy9ANyKBVy+9WeZLFqwcY+5E7PZUv4di6pOXnWdIJN7
+	 pdNBkNypvw7wJvR0TrnKpmPFiTwInrow3k9KkeTOP6Ftn1QASqZDwtAf9usehSlAyu
+	 Bhs3WvW4GF76aq8V8Ug3z9OKe3pu3yJJ5bPPl5Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Petri <mp@mpetri.org>,
+	Luo Yifan <luoyifan@cmss.chinamobile.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/772] ASoC: amd: yc: Support dmic on another model of Lenovo Thinkpad E14 Gen 6
-Date: Thu, 12 Dec 2024 15:49:24 +0100
-Message-ID: <20241212144350.738547992@linuxfoundation.org>
+Subject: [PATCH 6.1 020/772] ASoC: stm: Prevent potential division by zero in stm32_sai_mclk_round_rate()
+Date: Thu, 12 Dec 2024 15:49:25 +0100
+Message-ID: <20241212144350.778669309@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,39 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Markus Petri <mp@mpetri.org>
+From: Luo Yifan <luoyifan@cmss.chinamobile.com>
 
-[ Upstream commit 8c21e40e1e481f7fef6e570089e317068b972c45 ]
+[ Upstream commit 63c1c87993e0e5bb11bced3d8224446a2bc62338 ]
 
-Another model of Thinkpad E14 Gen 6 (21M4)
-needs a quirk entry for the dmic to be detected.
+This patch checks if div is less than or equal to zero (div <= 0). If
+div is zero or negative, the function returns -EINVAL, ensuring the
+division operation (*prate / div) is safe to perform.
 
-Signed-off-by: Markus Petri <mp@mpetri.org>
-Link: https://patch.msgid.link/20241107094020.1050935-1-mp@localhost
+Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
+Link: https://patch.msgid.link/20241106014654.206860-1-luoyifan@cmss.chinamobile.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/stm/stm32_sai_sub.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index c18549759eab1..f46158b840a51 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -227,6 +227,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21M3"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21M4"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index eb31b49e65978..3d237f75e81f5 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -378,8 +378,8 @@ static long stm32_sai_mclk_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	int div;
+ 
+ 	div = stm32_sai_get_clk_div(sai, *prate, rate);
+-	if (div < 0)
+-		return div;
++	if (div <= 0)
++		return -EINVAL;
+ 
+ 	mclk->freq = *prate / div;
+ 
 -- 
 2.43.0
 
