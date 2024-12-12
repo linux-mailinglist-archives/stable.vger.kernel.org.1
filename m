@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-101675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907849EED89
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7619EEC1B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5122628A2FA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6767A1693FE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6D3223315;
-	Thu, 12 Dec 2024 15:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF37C2153DF;
+	Thu, 12 Dec 2024 15:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzqoFBll"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IV4k0now"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D34223313;
-	Thu, 12 Dec 2024 15:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C48820969B;
+	Thu, 12 Dec 2024 15:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018393; cv=none; b=OVRO8Uo0O6Ug9mdZDAb7z5viy03RgqmdEkimQy3s+EqpS4pw4QyVSJp5jytttB5uvOdV7kBYu+qJKkg2pXQJG6t8lb20U1Tz65E6g91x77r1KFX6c00y0bVx3D+7vUm1MWpdJ3QWeEsQBw4JHM3Cs87k5+ZJviXHx+1DhWWmMFM=
+	t=1734017368; cv=none; b=skwTjBQxTDnpwO9Yuxq0V6Z7M2yGzT0L3b0O/y7EzOF0I8+zmoJKplnByJR1JxnuM9OuTnybcWyNK7a7bP+uGB2wPau6UnwV38u4sYL9t//J7SkftgBuI8TGOjFSKIQmYE8L89MyZH4G60dan8EJ9SG7PW1AP6gRuS9DFngkrko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018393; c=relaxed/simple;
-	bh=ZPoPwSzxeyBEiaHH/+VqjqY4pleb06POjnARIIXNYc4=;
+	s=arc-20240116; t=1734017368; c=relaxed/simple;
+	bh=7ntHzSNyOsN4aJZHO3XWslkt8DF1ocyuzj801oYcl9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JeXI0v7s5egaZUpCGC7o2KE6pE+n9pHBxXpNPi/zdoOwAky7kDrpwXv4W0wAhZFt5Am8saMQrEMX9AO4IXvZH7Wi/lHaAns5lhryzgvPkqnWKebEjx6RqWhATB9Zqw/HRjhcFpHgV6EWJOCusuwI4MayZZMSEHtdjO9oUu5Q/qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzqoFBll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FA2C4CECE;
-	Thu, 12 Dec 2024 15:46:32 +0000 (UTC)
+	 MIME-Version; b=X2BX5N2z7AHPpvObvoZPl3Dz+dXxmWdhzPhzl60zUIQe/q6uKWu7GtS7PoSEoASFuGbfxv108Gd4xukYoSc49yQXjjKgI3UL1xbFapIynecbVfbiUWTzZpzV101UEJDYSHSAKpK5AB0k964hJ9spOPZFsEgRfwyQbYz+NZ7dkFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IV4k0now; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C974C4CECE;
+	Thu, 12 Dec 2024 15:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018393;
-	bh=ZPoPwSzxeyBEiaHH/+VqjqY4pleb06POjnARIIXNYc4=;
+	s=korg; t=1734017368;
+	bh=7ntHzSNyOsN4aJZHO3XWslkt8DF1ocyuzj801oYcl9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzqoFBllirj81Jqmcvv0NK6jtUy+G6aiF3ISOd+3ODIqB6YHcKP7lRmp7A0F+pGqX
-	 QDg94q9SRjwN9S4aUEolodUq+HIpf1WqdVspxBBzClHjXYPIwNEnDGEEEcyuEiNjV+
-	 PgP4+EhkxwnwJVSngEN51q7EyzSLnaKNZAJJJR9E=
+	b=IV4k0nowfUsMYy3rxl9rRIJipVre6Q/k+yj2vDi2a5kz1kVykFn4+tBd+SWHzxPmc
+	 dvnJnoJ1fNAgvd0LgKsBqV3Y3CC5Jx3JvToXTSkMt/myofZvffR6uKli6oDeVIHqQ1
+	 bJli17uJ+EmU61w1G/Y8AQAhT+SYIiuKvFGOUfHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 280/356] scsi: st: Add MTIOCGET and MTLOAD to ioctls allowed after device reset
+Subject: [PATCH 6.12 430/466] scsi: ufs: pltfrm: Dellocate HBA during ufshcd_pltfrm_remove()
 Date: Thu, 12 Dec 2024 15:59:59 +0100
-Message-ID: <20241212144255.645775253@linuxfoundation.org>
+Message-ID: <20241212144323.860823793@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +63,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 0b120edb37dc9dd8ca82893d386922eb6b16f860 ]
+[ Upstream commit 897df60c16d54ad515a3d0887edab5c63da06d1f ]
 
-Most drives rewind the tape when the device is reset. Reading and writing
-are not allowed until something is done to make the tape position match the
-user's expectation (e.g., rewind the tape). Add MTIOCGET and MTLOAD to
-operations allowed after reset. MTIOCGET is modified to not touch the tape
-if pos_unknown is non-zero. The tape location is known after MTLOAD.
+This will ensure that the scsi host is cleaned up properly using
+scsi_host_dev_release(). Otherwise, it may lead to memory leaks.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219419#c14
-Link: https://lore.kernel.org/r/20241106095723.63254-3-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
+Cc: stable@vger.kernel.org # 4.4
+Fixes: 03b1781aa978 ("[SCSI] ufs: Add Platform glue driver for ufshcd")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20241111-ufs_bug_fix-v1-5-45ad8b62f02e@linaro.org
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ drivers/ufs/host/ufshcd-pltfrm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 1537f4a9347f9..4e872f2559d13 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -3507,6 +3507,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 	int i, cmd_nr, cmd_type, bt;
- 	int retval = 0;
- 	unsigned int blk;
-+	bool cmd_mtiocget;
- 	struct scsi_tape *STp = file->private_data;
- 	struct st_modedef *STm;
- 	struct st_partstat *STps;
-@@ -3620,6 +3621,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 			 */
- 			if (mtc.mt_op != MTREW &&
- 			    mtc.mt_op != MTOFFL &&
-+			    mtc.mt_op != MTLOAD &&
- 			    mtc.mt_op != MTRETEN &&
- 			    mtc.mt_op != MTERASE &&
- 			    mtc.mt_op != MTSEEK &&
-@@ -3733,17 +3735,28 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 		goto out;
- 	}
+diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
+index b8dadd0a2f4c0..505572d4fa878 100644
+--- a/drivers/ufs/host/ufshcd-pltfrm.c
++++ b/drivers/ufs/host/ufshcd-pltfrm.c
+@@ -534,6 +534,7 @@ void ufshcd_pltfrm_remove(struct platform_device *pdev)
  
-+	cmd_mtiocget = cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET);
-+
- 	if ((i = flush_buffer(STp, 0)) < 0) {
--		retval = i;
--		goto out;
--	}
--	if (STp->can_partitions &&
--	    (i = switch_partition(STp)) < 0) {
--		retval = i;
--		goto out;
-+		if (cmd_mtiocget && STp->pos_unknown) {
-+			/* flush fails -> modify status accordingly */
-+			reset_state(STp);
-+			STp->pos_unknown = 1;
-+		} else { /* return error */
-+			retval = i;
-+			goto out;
-+		}
-+	} else { /* flush_buffer succeeds */
-+		if (STp->can_partitions) {
-+			i = switch_partition(STp);
-+			if (i < 0) {
-+				retval = i;
-+				goto out;
-+			}
-+		}
- 	}
- 
--	if (cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET)) {
-+	if (cmd_mtiocget) {
- 		struct mtget mt_status;
- 
- 		if (_IOC_SIZE(cmd_in) != sizeof(struct mtget)) {
+ 	pm_runtime_get_sync(&pdev->dev);
+ 	ufshcd_remove(hba);
++	ufshcd_dealloc_host(hba);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ }
 -- 
 2.43.0
 
