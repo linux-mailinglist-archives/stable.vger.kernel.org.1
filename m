@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013929EF815
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E60A9EF68B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD19D2930BB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A14E2288378
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02811222D73;
-	Thu, 12 Dec 2024 17:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E72216E2D;
+	Thu, 12 Dec 2024 17:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/bbN6I/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgeB+XTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13A4216E0B;
-	Thu, 12 Dec 2024 17:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F818215762;
+	Thu, 12 Dec 2024 17:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025151; cv=none; b=quOmtd3mtR71ywqbRAvUVDIgXA6WJbCbvTdnTRkel3oXUpDDweOajPoftIp3gRAP0t6orCJ4bypUp3yAV3AIQdj9EWEtTEiLgpkp80ynBKknXoKB6LxM+S9Sxsg5AfPKYDZyCnmSQJCiDEiCPwH9zncIWFMNjUwu12r8n3keK5M=
+	t=1734024397; cv=none; b=Euq6olwxhivdZNP8KGsVqECadXTpi8JL7qFcfrNIO1/8M4+IclQHthIlmNRpk1S3WFoBFtxFMDvJdh+UxIFr8VAv165BMtPfMNJSLV2o6Sh1yeRyD/LL7C2+iYASlwzJCUMKamhXM0l1Qa7AdmcL245mQdz2jFmJUltq2lZ5PFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025151; c=relaxed/simple;
-	bh=le5UrBY/3ghraRSe0FAHj46ut7xExlY4Od9KXkZd5yM=;
+	s=arc-20240116; t=1734024397; c=relaxed/simple;
+	bh=umrkegXv2DW8tDRLycMqQo/g6I3UBWp5FidmBUWBc/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uF6LQP0rDTibB5m+mBHT/eb/TS0jMPtX+ea38vHq7wwg5gtIi/HHzOurtPm38xHICWGWn2mzUay6ONwyAnJXqCt/eTl3gv24V3XcXsXkc/HKQqmzsz+KIZQjn9HUFhPTCd8bte0VO1TAnaprHFCll9MkqghgtNHVWbWgQwsIg9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/bbN6I/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF20C4CED0;
-	Thu, 12 Dec 2024 17:39:10 +0000 (UTC)
+	 MIME-Version; b=BhaGnQHQJICoboUAPalIOUFGYGxpPjwuZF2y4EhSgm0RXFzbx63IFIzlxVeX2MBmGlxPFCOajFByx+USVmWDvJtVjeI5O4UV6m8mthuMH4+lwvllvcwlBTzQdPt66+ngi4wzM9jF1QUJ2lUYGuX8vUPs2U9aysHBaFC8DdhYM6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgeB+XTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86711C4CED0;
+	Thu, 12 Dec 2024 17:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025151;
-	bh=le5UrBY/3ghraRSe0FAHj46ut7xExlY4Od9KXkZd5yM=;
+	s=korg; t=1734024396;
+	bh=umrkegXv2DW8tDRLycMqQo/g6I3UBWp5FidmBUWBc/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/bbN6I/rKjvOAm28uFiGuerAUi/Fj+iThVBhw/uXoInpztdJVoaEG66QqjGrS3jX
-	 6uOgulGeNz9Q8+woDDCUtunhuFl42AeW0ciKY6IARcySHkYXBrXqkelam7rB10jhSM
-	 xrDHb3M04S7f+nKQ3kMeJ6QeJSgastsb/Wwdsdvo=
+	b=KgeB+XTWvOQLuvPHnlD4yBHJ0MInOJxyaCGI7MZn5V8sYLnzAsI+NiILPSLpRY/20
+	 Umskt27n0PxV4Tk5nwan+hhdM+/glj9PasUlkLdcBTI2T+9qGe62W2aMHFg7VYKRUI
+	 PzRtnysoquF9B/t6M5fwZ3Z5ZA/hpfbikQxebexw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 072/321] drm/panfrost: Remove unused id_mask from struct panfrost_model
-Date: Thu, 12 Dec 2024 15:59:50 +0100
-Message-ID: <20241212144232.834283616@linuxfoundation.org>
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.10 253/459] fsnotify: fix sending inotify event with unexpected filename
+Date: Thu, 12 Dec 2024 15:59:51 +0100
+Message-ID: <20241212144303.585707155@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Price <steven.price@arm.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 581d1f8248550f2b67847e6d84f29fbe3751ea0a ]
+commit aa52c54da40d9eee3ba87c05cdcb0cd07c04fa13 upstream.
 
-The id_mask field of struct panfrost_model has never been used.
+We got a report that adding a fanotify filsystem watch prevents tail -f
+from receiving events.
 
-Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
-Signed-off-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241025140008.385081-1-steven.price@arm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reproducer:
+
+1. Create 3 windows / login sessions. Become root in each session.
+2. Choose a mounted filesystem that is pretty quiet; I picked /boot.
+3. In the first window, run: fsnotifywait -S -m /boot
+4. In the second window, run: echo data >> /boot/foo
+5. In the third window, run: tail -f /boot/foo
+6. Go back to the second window and run: echo more data >> /boot/foo
+7. Observe that the tail command doesn't show the new data.
+8. In the first window, hit control-C to interrupt fsnotifywait.
+9. In the second window, run: echo still more data >> /boot/foo
+10. Observe that the tail command in the third window has now printed
+the missing data.
+
+When stracing tail, we observed that when fanotify filesystem mark is
+set, tail does get the inotify event, but the event is receieved with
+the filename:
+
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\20\0\0\0foo\0\0\0\0\0\0\0\0\0\0\0\0\0",
+50) = 32
+
+This is unexpected, because tail is watching the file itself and not its
+parent and is inconsistent with the inotify event received by tail when
+fanotify filesystem mark is not set:
+
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0", 50) = 16
+
+The inteference between different fsnotify groups was caused by the fact
+that the mark on the sb requires the filename, so the filename is passed
+to fsnotify().  Later on, fsnotify_handle_event() tries to take care of
+not passing the filename to groups (such as inotify) that are interested
+in the filename only when the parent is watching.
+
+But the logic was incorrect for the case that no group is watching the
+parent, some groups are watching the sb and some watching the inode.
+
+Reported-by: Miklos Szeredi <miklos@szeredi.hu>
+Fixes: 7372e79c9eb9 ("fanotify: fix logic of reporting name info with watched parent")
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_gpu.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/notify/fsnotify.c |   23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-index 0d39a201c7591..c0260a14639a0 100644
---- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-@@ -153,7 +153,6 @@ static void panfrost_gpu_init_quirks(struct panfrost_device *pfdev)
- struct panfrost_model {
- 	const char *name;
- 	u32 id;
--	u32 id_mask;
- 	u64 features;
- 	u64 issues;
- 	struct {
--- 
-2.43.0
-
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -310,16 +310,19 @@ static int fsnotify_handle_event(struct
+ 	if (!inode_mark)
+ 		return 0;
+ 
+-	if (mask & FS_EVENT_ON_CHILD) {
+-		/*
+-		 * Some events can be sent on both parent dir and child marks
+-		 * (e.g. FS_ATTRIB).  If both parent dir and child are
+-		 * watching, report the event once to parent dir with name (if
+-		 * interested) and once to child without name (if interested).
+-		 * The child watcher is expecting an event without a file name
+-		 * and without the FS_EVENT_ON_CHILD flag.
+-		 */
+-		mask &= ~FS_EVENT_ON_CHILD;
++	/*
++	 * Some events can be sent on both parent dir and child marks (e.g.
++	 * FS_ATTRIB).  If both parent dir and child are watching, report the
++	 * event once to parent dir with name (if interested) and once to child
++	 * without name (if interested).
++	 *
++	 * In any case regardless whether the parent is watching or not, the
++	 * child watcher is expecting an event without the FS_EVENT_ON_CHILD
++	 * flag. The file name is expected if and only if this is a directory
++	 * event.
++	 */
++	mask &= ~FS_EVENT_ON_CHILD;
++	if (!(mask & ALL_FSNOTIFY_DIRENT_EVENTS)) {
+ 		dir = NULL;
+ 		name = NULL;
+ 	}
 
 
 
