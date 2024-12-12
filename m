@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC9889EF23A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 721C09EED20
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07816171444
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3317A285301
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7202210DF;
-	Thu, 12 Dec 2024 16:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6678221D88;
+	Thu, 12 Dec 2024 15:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4uH5q7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuabOYn1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2B32139C9;
-	Thu, 12 Dec 2024 16:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAB8222D45;
+	Thu, 12 Dec 2024 15:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020683; cv=none; b=eeb9z6ovLwpCdBrUV1yFvzsnvRNwL9FwuuO0K7j6sxhdKC8DaZ8fVrgsIFZaVoT6aeYORDQnh7F++zBMqJINRhUFESGYrH/DgwwRhCjyAUv6632OeOTEOsgtS2HUzASDaUoBlYP8B+uU518mG4nWWLp1XDFujkk0Dbp8QrsLqEs=
+	t=1734018075; cv=none; b=DG8xg3se/yk76ke1hVn3yvujn4EeVIWAjTqTFqS8nIY033fN+BT+kGDI7fIMpSN3a0BxEs+xXwpN/UIkgdAV0dGgexFZu8lgG0+wnOTB0axobiKPPrCU803YlWenHjY3PX1CGdey0fN+c98ki5N2Lbhxc6rHdGrhZ3zyqU5zhjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020683; c=relaxed/simple;
-	bh=Moxy6q0N61h9SD7ugkjXJcy7vBOkWWfP3yMm3kpaAjE=;
+	s=arc-20240116; t=1734018075; c=relaxed/simple;
+	bh=R6DI5m/0b8rssdWgHMXiEVw4LSHNKuhho+YYh682Lyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q13X7yciMoSO+qRJaTiB0VNfOwakmJE1nkKAyso4AIFagw9w54U5ThGBc/Yi16pLP//MWmNTDB+bbaY0DG1Uqt7TXcySKXYlfOIFMbOoDi5mV6EhK4dA8jTwwrnfHcc/mozPjufUDI133gyARuxqUHyMlgxE4mf17bYZmeJQPtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4uH5q7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19A6C4CECE;
-	Thu, 12 Dec 2024 16:24:42 +0000 (UTC)
+	 MIME-Version; b=f02FI75Esj8kjwBYmN2Vcfbu76hjGIH8ganzFqGUUsQNrsyjEW3td/+tI0cJlCNqTdz4gdyn6hR8iJQqFXgn0WfmsnlrZg15so1Y2EnOOZTZVRs6HER7NTGwGgHpYP2Rd4M2KKv5ViMOTWzQiDL0xD93J2ifF2Enr5/JkMgBC6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuabOYn1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CCCC4CECE;
+	Thu, 12 Dec 2024 15:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020683;
-	bh=Moxy6q0N61h9SD7ugkjXJcy7vBOkWWfP3yMm3kpaAjE=;
+	s=korg; t=1734018075;
+	bh=R6DI5m/0b8rssdWgHMXiEVw4LSHNKuhho+YYh682Lyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u4uH5q7X61uvdcmlexI0fN16e/KY0Ihm+p9HGI2K8gX0/qZzxuiAVTql3Ge5iDsIB
-	 cJM8DIWNUpQQ+w1Bx7KYqIIL0mWrj8TDoPNSacM+/GiNC55DwY8GDJ1GYWsI75MWQr
-	 CXvtjKFRlmHGlg//CZcaMkWq/55bdHZLApQS0hAE=
+	b=FuabOYn1FQCWx4aQIbyzOL27xAt/aWT/Dp5O3L2VTmggEL338QTF4eKz5y59EP9Wj
+	 RDdymGg1G2Bh9LehQlkl9tdTkcFfk6o1hXx+G0B7ulKklZ7H1k1cohJUOkiBbLIHzB
+	 Lq1x2MneTUSu48w0nl3tIt3RZREPYmFFW6e+5zAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Wiesner <jwiesner@suse.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 533/772] net/ipv6: release expired exception dst cached in socket
-Date: Thu, 12 Dec 2024 15:57:58 +0100
-Message-ID: <20241212144411.995458821@linuxfoundation.org>
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Ralph Boehme <slow@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 160/356] fs/smb/client: avoid querying SMB2_OP_QUERY_WSL_EA for SMB3 POSIX
+Date: Thu, 12 Dec 2024 15:57:59 +0100
+Message-ID: <20241212144250.960670739@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Wiesner <jwiesner@suse.de>
+From: Ralph Boehme <slow@samba.org>
 
-[ Upstream commit 3301ab7d5aeb0fe270f73a3d4810c9d1b6a9f045 ]
+commit ca4b2c4607433033e9c4f4659f809af4261d8992 upstream.
 
-Dst objects get leaked in ip6_negative_advice() when this function is
-executed for an expired IPv6 route located in the exception table. There
-are several conditions that must be fulfilled for the leak to occur:
-* an ICMPv6 packet indicating a change of the MTU for the path is received,
-  resulting in an exception dst being created
-* a TCP connection that uses the exception dst for routing packets must
-  start timing out so that TCP begins retransmissions
-* after the exception dst expires, the FIB6 garbage collector must not run
-  before TCP executes ip6_negative_advice() for the expired exception dst
+Avoid extra roundtrip
 
-When TCP executes ip6_negative_advice() for an exception dst that has
-expired and if no other socket holds a reference to the exception dst, the
-refcount of the exception dst is 2, which corresponds to the increment
-made by dst_init() and the increment made by the TCP socket for which the
-connection is timing out. The refcount made by the socket is never
-released. The refcount of the dst is decremented in sk_dst_reset() but
-that decrement is counteracted by a dst_hold() intentionally placed just
-before the sk_dst_reset() in ip6_negative_advice(). After
-ip6_negative_advice() has finished, there is no other object tied to the
-dst. The socket lost its reference stored in sk_dst_cache and the dst is
-no longer in the exception table. The exception dst becomes a leaked
-object.
-
-As a result of this dst leak, an unbalanced refcount is reported for the
-loopback device of a net namespace being destroyed under kernels that do
-not contain e5f80fcf869a ("ipv6: give an IPv6 dev to blackhole_netdev"):
-unregister_netdevice: waiting for lo to become free. Usage count = 2
-
-Fix the dst leak by removing the dst_hold() in ip6_negative_advice(). The
-patch that introduced the dst_hold() in ip6_negative_advice() was
-92f1655aa2b22 ("net: fix __dst_negative_advice() race"). But 92f1655aa2b22
-merely refactored the code with regards to the dst refcount so the issue
-was present even before 92f1655aa2b22. The bug was introduced in
-54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually
-expired.") where the expired cached route is deleted and the sk_dst_cache
-member of the socket is set to NULL by calling dst_negative_advice() but
-the refcount belonging to the socket is left unbalanced.
-
-The IPv4 version - ipv4_negative_advice() - is not affected by this bug.
-When the TCP connection times out ipv4_negative_advice() merely resets the
-sk_dst_cache of the socket while decrementing the refcount of the
-exception dst.
-
-Fixes: 92f1655aa2b22 ("net: fix __dst_negative_advice() race")
-Fixes: 54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually expired.")
-Link: https://lore.kernel.org/netdev/20241113105611.GA6723@incl/T/#u
-Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241128085950.GA4505@incl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Ralph Boehme <slow@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/client/smb2inode.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 5da0c83a3ee8f..5ae3ff6ffb7e9 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -2774,10 +2774,10 @@ static void ip6_negative_advice(struct sock *sk,
- 	if (rt->rt6i_flags & RTF_CACHE) {
- 		rcu_read_lock();
- 		if (rt6_check_expired(rt)) {
--			/* counteract the dst_release() in sk_dst_reset() */
--			dst_hold(dst);
-+			/* rt/dst can not be destroyed yet,
-+			 * because of rcu_read_lock()
-+			 */
- 			sk_dst_reset(sk);
--
- 			rt6_remove_exception_rt(rt);
- 		}
- 		rcu_read_unlock();
--- 
-2.43.0
-
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -943,7 +943,8 @@ int smb2_query_path_info(const unsigned
+ 		if (rc || !data->reparse_point)
+ 			goto out;
+ 
+-		cmds[num_cmds++] = SMB2_OP_QUERY_WSL_EA;
++		if (!tcon->posix_extensions)
++			cmds[num_cmds++] = SMB2_OP_QUERY_WSL_EA;
+ 		/*
+ 		 * Skip SMB2_OP_GET_REPARSE if symlink already parsed in create
+ 		 * response.
 
 
 
