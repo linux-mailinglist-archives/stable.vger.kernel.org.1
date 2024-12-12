@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-101531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7229EED12
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5D39EEAF5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDE201882D7A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08B23282C0F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3302222D54;
-	Thu, 12 Dec 2024 15:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CA6215F6A;
+	Thu, 12 Dec 2024 15:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDuYf33R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vx45bvmM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B5A222D4D;
-	Thu, 12 Dec 2024 15:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A261487CD;
+	Thu, 12 Dec 2024 15:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017880; cv=none; b=OagcmX1sInVDRyHVSEAZ2AZQE9FzV65MO5PdxnpvYTWK1lsythAVJz4MFsS56pdUZBYyy3suqq4Z6aSPMeiBhhatipYVyYHB7mF53pZ+GW+7Tt7SIkM6JfBR8j6Z/4ydHarEAQ6FriprhdPmAMiQBKA4j9Fqm0ifJJ4Q6oi3BdU=
+	t=1734016754; cv=none; b=QcSRuN0ChsOTIDB00/NoEZTS8tao5CU9k08K+z/MpDmaJV1SXK1BUUzuzsKiZPMZ0Kak1BE3n7b15eoduw2m+vqeb9RDC1gjhqgPRAN0Y83wopYXiowIqrur6mwd4tqEFvP0h8pGFEFeZknHy47j4/Imi0JgfNmQlKNe1GOLHNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017880; c=relaxed/simple;
-	bh=dGpQWQTgMyTlCumyuwUKlfUlreS6Gtb59zdEtFVtMu8=;
+	s=arc-20240116; t=1734016754; c=relaxed/simple;
+	bh=wS8+QfuK5Mn9lJZHrd5ufEHRcWR41O64fec9AfA69K8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgkE+6Ih35fw7J4AjUKf6rQVlZapX0IgfSHZP6IUmywkwfPqAirJqo+KwyDbtZ5341xHDuhg0TpdL/xyZVZpfN7i5c1tRaV+wbNllYasYWsfVBbB/7qP+NeMeDB2u0mQQbS9w7EpL7d9fYa+JUYFGGpBBfBTyYDnlBywTgte96A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDuYf33R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E3AC4CED4;
-	Thu, 12 Dec 2024 15:37:59 +0000 (UTC)
+	 MIME-Version; b=g0Kekfa47athxjCcnKBdDwqg8inKerzaW1DjIaCBqcUV0T6ggsNmg/RtUptuRZudWeKOM5RyUfKFbspR1z+q/8orLKTqhTwjh9xBMfCVmGUkWR0bg1O3DZ6jH5GZBXmi7bkaMG7tUg6Q63+RnEfxfJgkYoUMNaqytEK18oLQesw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vx45bvmM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2A1C4CECE;
+	Thu, 12 Dec 2024 15:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017880;
-	bh=dGpQWQTgMyTlCumyuwUKlfUlreS6Gtb59zdEtFVtMu8=;
+	s=korg; t=1734016754;
+	bh=wS8+QfuK5Mn9lJZHrd5ufEHRcWR41O64fec9AfA69K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDuYf33Re4XAIsZW6ncm7EtTrUKS/fiEmdA6GtvODRfuobWq+MQr67bzVbsib4ZoV
-	 rCwhxRIiNAqQArskEBPYQ2v1DjKnHXkkckeOj0V3R+aLOQAAXttiE/wX5gpwhB2qzB
-	 Ea9jNYmQkA+0gfxexFJ8a33lcvf8Bz7+sU5vSw6k=
+	b=vx45bvmMyL2UAewztCerqqwXOEvVIOmT3tCoUUuXBLgI1k3Im21p6XQPEuXZjzWDh
+	 IbtXQeX5mXyENbzv9mb8OeedrKaPoJCJ5xdEaVmWqzxSs2n63Up32Oh5B2i/NRsqtN
+	 yeouBn0b7CEEx7yENU8w909Jdn15kMN0SvchyLoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	syzbot+e985d3026c4fd041578e@syzkaller.appspotmail.com,
-	Hugh Dickins <hughd@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 138/356] mm: page_alloc: move mlocked flag clearance into free_pages_prepare()
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 288/466] Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()
 Date: Thu, 12 Dec 2024 15:57:37 +0100
-Message-ID: <20241212144250.095838655@linuxfoundation.org>
+Message-ID: <20241212144318.165784175@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,198 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Gushchin <roman.gushchin@linux.dev>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-commit 66edc3a5894c74f8887c8af23b97593a0dd0df4d upstream.
+[ Upstream commit 7c4f78cdb8e7501e9f92d291a7d956591bf73be9 ]
 
-Syzbot reported a bad page state problem caused by a page being freed
-using free_page() still having a mlocked flag at free_pages_prepare()
-stage:
+bt_sock_alloc() allocates the sk object and attaches it to the provided
+sock object. On error l2cap_sock_alloc() frees the sk object, but the
+dangling pointer is still attached to the sock object, which may create
+use-after-free in other code.
 
-  BUG: Bad page state in process syz.5.504  pfn:61f45
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x61f45
-  flags: 0xfff00000080204(referenced|workingset|mlocked|node=0|zone=1|lastcpupid=0x7ff)
-  raw: 00fff00000080204 0000000000000000 dead000000000122 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-  page_owner tracks the page as allocated
-  page last allocated via order 0, migratetype Unmovable, gfp_mask 0x400dc0(GFP_KERNEL_ACCOUNT|__GFP_ZERO), pid 8443, tgid 8442 (syz.5.504), ts 201884660643, free_ts 201499827394
-   set_page_owner include/linux/page_owner.h:32 [inline]
-   post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1537
-   prep_new_page mm/page_alloc.c:1545 [inline]
-   get_page_from_freelist+0x303f/0x3190 mm/page_alloc.c:3457
-   __alloc_pages_noprof+0x292/0x710 mm/page_alloc.c:4733
-   alloc_pages_mpol_noprof+0x3e8/0x680 mm/mempolicy.c:2265
-   kvm_coalesced_mmio_init+0x1f/0xf0 virt/kvm/coalesced_mmio.c:99
-   kvm_create_vm virt/kvm/kvm_main.c:1235 [inline]
-   kvm_dev_ioctl_create_vm virt/kvm/kvm_main.c:5488 [inline]
-   kvm_dev_ioctl+0x12dc/0x2240 virt/kvm/kvm_main.c:5530
-   __do_compat_sys_ioctl fs/ioctl.c:1007 [inline]
-   __se_compat_sys_ioctl+0x510/0xc90 fs/ioctl.c:950
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0xb4/0x110 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x34/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-  page last free pid 8399 tgid 8399 stack trace:
-   reset_page_owner include/linux/page_owner.h:25 [inline]
-   free_pages_prepare mm/page_alloc.c:1108 [inline]
-   free_unref_folios+0xf12/0x18d0 mm/page_alloc.c:2686
-   folios_put_refs+0x76c/0x860 mm/swap.c:1007
-   free_pages_and_swap_cache+0x5c8/0x690 mm/swap_state.c:335
-   __tlb_batch_free_encoded_pages mm/mmu_gather.c:136 [inline]
-   tlb_batch_pages_flush mm/mmu_gather.c:149 [inline]
-   tlb_flush_mmu_free mm/mmu_gather.c:366 [inline]
-   tlb_flush_mmu+0x3a3/0x680 mm/mmu_gather.c:373
-   tlb_finish_mmu+0xd4/0x200 mm/mmu_gather.c:465
-   exit_mmap+0x496/0xc40 mm/mmap.c:1926
-   __mmput+0x115/0x390 kernel/fork.c:1348
-   exit_mm+0x220/0x310 kernel/exit.c:571
-   do_exit+0x9b2/0x28e0 kernel/exit.c:926
-   do_group_exit+0x207/0x2c0 kernel/exit.c:1088
-   __do_sys_exit_group kernel/exit.c:1099 [inline]
-   __se_sys_exit_group kernel/exit.c:1097 [inline]
-   __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
-   x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 8442 Comm: syz.5.504 Not tainted 6.12.0-rc6-syzkaller #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:94 [inline]
-   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
-   bad_page+0x176/0x1d0 mm/page_alloc.c:501
-   free_page_is_bad mm/page_alloc.c:918 [inline]
-   free_pages_prepare mm/page_alloc.c:1100 [inline]
-   free_unref_page+0xed0/0xf20 mm/page_alloc.c:2638
-   kvm_destroy_vm virt/kvm/kvm_main.c:1327 [inline]
-   kvm_put_kvm+0xc75/0x1350 virt/kvm/kvm_main.c:1386
-   kvm_vcpu_release+0x54/0x60 virt/kvm/kvm_main.c:4143
-   __fput+0x23f/0x880 fs/file_table.c:431
-   task_work_run+0x24f/0x310 kernel/task_work.c:239
-   exit_task_work include/linux/task_work.h:43 [inline]
-   do_exit+0xa2f/0x28e0 kernel/exit.c:939
-   do_group_exit+0x207/0x2c0 kernel/exit.c:1088
-   __do_sys_exit_group kernel/exit.c:1099 [inline]
-   __se_sys_exit_group kernel/exit.c:1097 [inline]
-   __ia32_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
-   ia32_sys_call+0x2624/0x2630 arch/x86/include/generated/asm/syscalls_32.h:253
-   do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
-   __do_fast_syscall_32+0xb4/0x110 arch/x86/entry/common.c:386
-   do_fast_syscall_32+0x34/0x80 arch/x86/entry/common.c:411
-   entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-  RIP: 0023:0xf745d579
-  Code: Unable to access opcode bytes at 0xf745d54f.
-  RSP: 002b:00000000f75afd6c EFLAGS: 00000206 ORIG_RAX: 00000000000000fc
-  RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000000000
-  RDX: 0000000000000000 RSI: 00000000ffffff9c RDI: 00000000f744cff4
-  RBP: 00000000f717ae61 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-   </TASK>
-
-The problem was originally introduced by commit b109b87050df ("mm/munlock:
-replace clear_page_mlock() by final clearance"): it was focused on
-handling pagecache and anonymous memory and wasn't suitable for lower
-level get_page()/free_page() API's used for example by KVM, as with this
-reproducer.
-
-Fix it by moving the mlocked flag clearance down to free_page_prepare().
-
-The bug itself if fairly old and harmless (aside from generating these
-warnings), aside from a small memory leak - "bad" pages are stopped from
-being allocated again.
-
-Link: https://lkml.kernel.org/r/20241106195354.270757-1-roman.gushchin@linux.dev
-Fixes: b109b87050df ("mm/munlock: replace clear_page_mlock() by final clearance")
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Reported-by: syzbot+e985d3026c4fd041578e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6729f475.050a0220.701a.0019.GAE@google.com
-Acked-by: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-3-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c |   15 +++++++++++++++
- mm/swap.c       |   20 --------------------
- 2 files changed, 15 insertions(+), 20 deletions(-)
+ net/bluetooth/l2cap_sock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1082,12 +1082,27 @@ static __always_inline bool free_pages_p
- 	int bad = 0;
- 	bool skip_kasan_poison = should_skip_kasan_poison(page, fpi_flags);
- 	bool init = want_init_on_free();
-+	struct folio *folio = page_folio(page);
- 
- 	VM_BUG_ON_PAGE(PageTail(page), page);
- 
- 	trace_mm_page_free(page, order);
- 	kmsan_free_page(page, order);
- 
-+	/*
-+	 * In rare cases, when truncation or holepunching raced with
-+	 * munlock after VM_LOCKED was cleared, Mlocked may still be
-+	 * found set here.  This does not indicate a problem, unless
-+	 * "unevictable_pgs_cleared" appears worryingly large.
-+	 */
-+	if (unlikely(folio_test_mlocked(folio))) {
-+		long nr_pages = folio_nr_pages(folio);
-+
-+		__folio_clear_mlocked(folio);
-+		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
-+		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
-+	}
-+
- 	if (unlikely(PageHWPoison(page)) && !order) {
- 		/*
- 		 * Do not let hwpoison pages hit pcplists/buddy
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -89,14 +89,6 @@ static void __page_cache_release(struct
- 		__folio_clear_lru_flags(folio);
- 		unlock_page_lruvec_irqrestore(lruvec, flags);
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index ba437c6f6ee59..18e89e764f3b4 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1886,6 +1886,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
+ 	chan = l2cap_chan_create();
+ 	if (!chan) {
+ 		sk_free(sk);
++		sock->sk = NULL;
+ 		return NULL;
  	}
--	/* See comment on folio_test_mlocked in release_pages() */
--	if (unlikely(folio_test_mlocked(folio))) {
--		long nr_pages = folio_nr_pages(folio);
--
--		__folio_clear_mlocked(folio);
--		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
--		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
--	}
- }
  
- static void __folio_put_small(struct folio *folio)
-@@ -1021,18 +1013,6 @@ void release_pages(release_pages_arg arg
- 			__folio_clear_lru_flags(folio);
- 		}
- 
--		/*
--		 * In rare cases, when truncation or holepunching raced with
--		 * munlock after VM_LOCKED was cleared, Mlocked may still be
--		 * found set here.  This does not indicate a problem, unless
--		 * "unevictable_pgs_cleared" appears worryingly large.
--		 */
--		if (unlikely(folio_test_mlocked(folio))) {
--			__folio_clear_mlocked(folio);
--			zone_stat_sub_folio(folio, NR_MLOCK);
--			count_vm_event(UNEVICTABLE_PGCLEARED);
--		}
--
- 		list_add(&folio->lru, &pages_to_free);
- 	}
- 	if (lruvec)
+-- 
+2.43.0
+
 
 
 
