@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935789EF11C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1209EEA85
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E85A8178DB1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F05816C550
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AAE22A801;
-	Thu, 12 Dec 2024 16:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6614E21660B;
+	Thu, 12 Dec 2024 15:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMFOPuVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmmopxPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE91215762;
-	Thu, 12 Dec 2024 16:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220D8215764;
+	Thu, 12 Dec 2024 15:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020123; cv=none; b=YniVS6yQqvEYYgUPwmt3un1r2enGXBMv0pzBfqlqznswruGXQI2tbHyjwTQESJVCOA2wY7mvimdaMh0+faILlj66hK5derMScc3bL+JSPpQCgPW/W4Mkm60o3n7WfB9MsYzwFL+eIA4pIHmVrj/TkFaQGBh9aF9RcfMHruJfXvo=
+	t=1734016170; cv=none; b=qIi2gKU9BkPOZxrqMbpdaOVwEUcdBx0Rnx0bc8yRyPRO03wPu8H2bS+lcF4TrzopYwzsr/RmCkfZAkDRxjlya6MBMmcs8W9WnfjW1cgx6Y58P00TjUN1Id9NTtm8Bvg/5XwQqFMibGFRWGYB68MEJaRhQrlgjXS8yGDTc2ag+X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020123; c=relaxed/simple;
-	bh=6g2n7ij6fIfboOYcJTlqU14qImLuz9ZPiqCeFZhNbbk=;
+	s=arc-20240116; t=1734016170; c=relaxed/simple;
+	bh=A5/4NMfPVvaHvcHoI4dBUiLqk/H4wFX8bvmiXWn4W+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nt8mGCWzGoySYgNSe/6S8JssOe8R8m1gaEgoUBX17jaByK5/A1EaiZiCqzn96zXMS7TtsvC8lo+2orrwgVDbZrh55qDNvd6buf5Wcx5zUNYJCljMzIWCNcjruKfAybbCEwAyl3r2bJ0SY1y31VatgCLmC1zT/evPjxFCHO5wSfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMFOPuVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF5AC4CECE;
-	Thu, 12 Dec 2024 16:15:22 +0000 (UTC)
+	 MIME-Version; b=rPKdc7B2QDICr2sUFzxadGZo/yZwb15qWVvfnB5qOM6HsXUtnqW/YjgfFVxZN+yG8URDOMU1CdD3x8iFSgB5C6P00X7wM0Fs5/Em6/oeYQTsoh5f+/zds/KKvPECYgF4MzCZeeDvqcrEe7LVuFA+8vC2x/gTqMReJEQ7TUX+pRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmmopxPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85671C4CECE;
+	Thu, 12 Dec 2024 15:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020123;
-	bh=6g2n7ij6fIfboOYcJTlqU14qImLuz9ZPiqCeFZhNbbk=;
+	s=korg; t=1734016170;
+	bh=A5/4NMfPVvaHvcHoI4dBUiLqk/H4wFX8bvmiXWn4W+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMFOPuVq05BSXcscXM5Y/M0UvmNdSvSwUodIRVLGNlZHk157UTUqtw4rEW01dMPsv
-	 nxV6tZ8QIZkKGlm4g/Z61lhC6csz5VWzNQyfCUUB+tOA/eEZtf413sIoEgjZlnL1Q1
-	 d/awYF5+eV/r51kzkcMwi/VWQRuKBDtZO1y09SaE=
+	b=UmmopxPmtk+XYRM/ehGf8oZw4nx9Usj/jQj/HCWWSP3uYtUav81GIlljHspjJRNBm
+	 d7ZrgveKRpwFQLK6j5xcflcuyJyIIUol+zniiEuFnFgAapMYDxLhCLKDY57XGh0V+s
+	 4lchR9uJ1ez/FZl7gLP9HWxD2aHwhxL2uTtKVMAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <koichiro.den@canonical.com>,
-	Chen-Yu Tsai <wenst@chromium.org>
-Subject: [PATCH 6.1 356/772] Revert "arm64: dts: mediatek: mt8195-cherry: Mark USB 3.0 on xhci1 as disabled"
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 132/466] net :mana :Request a V2 response version for MANA_QUERY_GF_STAT
 Date: Thu, 12 Dec 2024 15:55:01 +0100
-Message-ID: <20241212144404.620563684@linuxfoundation.org>
+Message-ID: <20241212144312.021613148@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
 
-This reverts commit edca00ad79aa1dfd1b88ace1df1e9dfa21a3026f.
+commit 31f1b55d5d7e531cd827419e5d71c19f24de161c upstream.
 
-The hunk was applied to the wrong device node when the commit was
-backported to the 6.1 stable branch.
+The current requested response version(V1) for MANA_QUERY_GF_STAT query
+results in STATISTICS_FLAGS_TX_ERRORS_GDMA_ERROR value being set to
+0 always.
+In order to get the correct value for this counter we request the response
+version to be V2.
 
-Revert it to re-do the backport correctly.
-
-Reported-by: Koichiro Den <koichiro.den@canonical.com>
-Closes: https://lore.kernel.org/stable/6itvivhxbjlpky5hn6x2hmc3kzz4regcvmsk226t6ippjad7yk@26xug5lrdqdw/
-Fixes: edca00ad79aa ("arm64: dts: mediatek: mt8195-cherry: Mark USB 3.0 on xhci1 as disabled")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Cc: stable@vger.kernel.org
+Fixes: e1df5202e879 ("net :mana :Add remaining GDMA stats for MANA to ethtool")
+Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1733291300-12593-1-git-send-email-shradhagupta@linux.microsoft.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -922,7 +922,6 @@
- 	usb2-lpm-disable;
- 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
- 	vbus-supply = <&usb_vbus>;
--	mediatek,u3p-dis-msk = <1>;
- };
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2439,6 +2439,7 @@ void mana_query_gf_stats(struct mana_por
  
- #include <arm/cros-ec-keyboard.dtsi>
+ 	mana_gd_init_req_hdr(&req.hdr, MANA_QUERY_GF_STAT,
+ 			     sizeof(req), sizeof(resp));
++	req.hdr.resp.msg_version = GDMA_MESSAGE_V2;
+ 	req.req_stats = STATISTICS_FLAGS_RX_DISCARDS_NO_WQE |
+ 			STATISTICS_FLAGS_RX_ERRORS_VPORT_DISABLED |
+ 			STATISTICS_FLAGS_HC_RX_BYTES |
 
 
 
