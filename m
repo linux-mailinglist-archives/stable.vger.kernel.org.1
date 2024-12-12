@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82629EF625
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564669EF464
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F4A1188D7F1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4578F18921D3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE9B216E14;
-	Thu, 12 Dec 2024 17:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11C2223C62;
+	Thu, 12 Dec 2024 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O57nKSeg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4nJfWdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B65622330D;
-	Thu, 12 Dec 2024 17:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E22F2236EA;
+	Thu, 12 Dec 2024 16:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023704; cv=none; b=cPKNsrRrpZlwGJgWRnlU03hbf8B3vO7H9T190JQkIq2caI6kl+gMuruDeTL9sEI+3ceKUeix7R4O+KQ+Ofy+YHNHZowQV49GnXeFPPNzNF9yr8meCu0MhyXxt/Cycr9bszAhKrhTjBF6tiU/uOMXFRLOaUb+ClJtTx9/KmvP3tQ=
+	t=1734022167; cv=none; b=dvDCNCn0s1rLDgbCpgfqi5R6o8eM2yOIm8HmPBtrITh9zZiPumFFKwCmgfWdDEiUrHloVIYDK67hEh1iY+Fl9wkiRiF66VqPbE6pJ02JxOYKJbhcU5eBcCuTTj+bCg5hnSJJssH+MVGaMNlCCtY4P3KkCSJs4/lMnsTZ8n7Q6pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023704; c=relaxed/simple;
-	bh=Sy5w069IoTpGhW7NA9GM+eTqO3RXpvC5QMPwkhF5sSM=;
+	s=arc-20240116; t=1734022167; c=relaxed/simple;
+	bh=R/crO/NKGt7Abr2wMLExJe30ngcV9ZnL4w4YhUnTVto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dpo43Spiq0YZeGht1HwLT3j6fQM56NKOg7z9k53CY3qglWeulCFtizieJVg1cR9iT/PF+1rwYqlmx2ZaMe42zYDDqsDhZYCyjVKtwxSTtjMnQw80IDUlv+fTJU5pAg3WYTHbjc/VwM83KPDxV5A3MnbskoyhHwJNQ7sFFbbC0dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O57nKSeg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F88AC4CECE;
-	Thu, 12 Dec 2024 17:15:03 +0000 (UTC)
+	 MIME-Version; b=GNY4/EnYHonMg52yKT0AxOkLSzSLfWpUq45ruCN3cvxkr2HXtKV8KXvd1V8LH4cL3v1kEWSH2J9wSHNdjDymqBZ9PzscBLjj1JsQuQJuJ3oW352F6DY5fyu0Pa9GEDUrnnNpapQADY2mrNkrHCJl0k35iNnFfZGjQeboWLFOOFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4nJfWdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82BEC4CECE;
+	Thu, 12 Dec 2024 16:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023704;
-	bh=Sy5w069IoTpGhW7NA9GM+eTqO3RXpvC5QMPwkhF5sSM=;
+	s=korg; t=1734022167;
+	bh=R/crO/NKGt7Abr2wMLExJe30ngcV9ZnL4w4YhUnTVto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O57nKSegsu8O11LilWyYK4+zzMc7Iub6AiyJIRehr5GACmQvQ4N9UWMpWhmXInw66
-	 TSneqaOw0UqgKHq05yP4WvOaYs8UBdt1YHawFxFZqlI/Fhm1Bi71AGGjP3w/jA7G92
-	 46h7p3rNnFyf5PPS0HbYNtHe6UXjCMykrlf9lcK4=
+	b=x4nJfWdbdqK4LY57+Dr3oR/r2JKfdWIJIyGfwMvfBJ6XCmFNgL4Dwq8dIGtwFLjZ3
+	 23/1Y+ZQ3Q0h4yxIFKeBH+/oJHY0LNJpMk/A3OXHIkXqaOKbHEFSL0aegrr0tkAjbW
+	 S9Wy6LuvJE7K2gLeVHhU/2H28/lZ1yvDQ2hKtBG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 024/459] mmc: core: fix return value check in devm_mmc_alloc_host()
+	Raed Salem <raeds@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 167/565] xfrm: rename xfrm_state_offload struct to allow reuse
 Date: Thu, 12 Dec 2024 15:56:02 +0100
-Message-ID: <20241212144254.480026240@linuxfoundation.org>
+Message-ID: <20241212144318.078123712@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 71d04535e853305a76853b28a01512a62006351d upstream.
+[ Upstream commit 87e0a94e60ea2e29be9dec6bc146fbc9861a4055 ]
 
-mmc_alloc_host() returns NULL pointer not PTR_ERR(), if it
-fails, so replace the IS_ERR() check with NULL pointer check.
+The struct xfrm_state_offload has all fields needed to hold information
+for offloaded policies too. In order to do not create new struct with
+same fields, let's rename existing one and reuse it later.
 
-In commit 418f7c2de133 ("mmc: meson-gx: use devm_mmc_alloc_host"),
-it checks NULL pointer not PTR_ERR, if devm_mmc_alloc_host() fails,
-so make it to return NULL pointer to keep same with mmc_alloc_host(),
-the drivers don't need to change the error handle when switch to
-use devm_mmc_alloc_host().
-
-Fixes: 80df83c2c57e ("mmc: core: add devm_mmc_alloc_host")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/20230217024333.4018279-1-yangyingliang@huawei.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Raed Salem <raeds@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Acked-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Stable-dep-of: 2cf567f421db ("netdevsim: copy addresses for both in and out paths")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/host.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/xfrm.h     | 10 +++++-----
+ net/xfrm/xfrm_device.c |  2 +-
+ net/xfrm/xfrm_state.c  |  4 ++--
+ net/xfrm/xfrm_user.c   |  2 +-
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/mmc/core/host.c
-+++ b/drivers/mmc/core/host.c
-@@ -523,12 +523,12 @@ struct mmc_host *devm_mmc_alloc_host(str
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 20ce2e1b3f61e..395d85eeb5d88 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -126,7 +126,7 @@ struct xfrm_state_walk {
+ 	struct xfrm_address_filter *filter;
+ };
  
- 	dr = devres_alloc(devm_mmc_host_release, sizeof(*dr), GFP_KERNEL);
- 	if (!dr)
--		return ERR_PTR(-ENOMEM);
-+		return NULL;
+-struct xfrm_state_offload {
++struct xfrm_dev_offload {
+ 	struct net_device	*dev;
+ 	struct net_device	*real_dev;
+ 	unsigned long		offload_handle;
+@@ -246,7 +246,7 @@ struct xfrm_state {
+ 	struct xfrm_lifetime_cur curlft;
+ 	struct hrtimer		mtimer;
  
- 	host = mmc_alloc_host(extra, dev);
--	if (IS_ERR(host)) {
-+	if (!host) {
- 		devres_free(dr);
--		return host;
-+		return NULL;
- 	}
+-	struct xfrm_state_offload xso;
++	struct xfrm_dev_offload xso;
  
- 	*dr = host;
+ 	/* used to fix curlft->add_time when changing date */
+ 	long		saved_tmo;
+@@ -1885,7 +1885,7 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x);
+ 
+ static inline void xfrm_dev_state_advance_esn(struct xfrm_state *x)
+ {
+-	struct xfrm_state_offload *xso = &x->xso;
++	struct xfrm_dev_offload *xso = &x->xso;
+ 
+ 	if (xso->dev && xso->dev->xfrmdev_ops->xdo_dev_state_advance_esn)
+ 		xso->dev->xfrmdev_ops->xdo_dev_state_advance_esn(x);
+@@ -1911,7 +1911,7 @@ static inline bool xfrm_dst_offload_ok(struct dst_entry *dst)
+ 
+ static inline void xfrm_dev_state_delete(struct xfrm_state *x)
+ {
+-	struct xfrm_state_offload *xso = &x->xso;
++	struct xfrm_dev_offload *xso = &x->xso;
+ 
+ 	if (xso->dev)
+ 		xso->dev->xfrmdev_ops->xdo_dev_state_delete(x);
+@@ -1919,7 +1919,7 @@ static inline void xfrm_dev_state_delete(struct xfrm_state *x)
+ 
+ static inline void xfrm_dev_state_free(struct xfrm_state *x)
+ {
+-	struct xfrm_state_offload *xso = &x->xso;
++	struct xfrm_dev_offload *xso = &x->xso;
+ 	struct net_device *dev = xso->dev;
+ 
+ 	if (dev && dev->xfrmdev_ops) {
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index 4d13f7a372ab6..61aa0fd9d2a0c 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -225,7 +225,7 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
+ 	int err;
+ 	struct dst_entry *dst;
+ 	struct net_device *dev;
+-	struct xfrm_state_offload *xso = &x->xso;
++	struct xfrm_dev_offload *xso = &x->xso;
+ 	xfrm_address_t *saddr;
+ 	xfrm_address_t *daddr;
+ 
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 60f3ea5561ddf..ff8159bae7bbf 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -750,7 +750,7 @@ xfrm_dev_state_flush_secctx_check(struct net *net, struct net_device *dev, bool
+ 
+ 	for (i = 0; i <= net->xfrm.state_hmask; i++) {
+ 		struct xfrm_state *x;
+-		struct xfrm_state_offload *xso;
++		struct xfrm_dev_offload *xso;
+ 
+ 		hlist_for_each_entry(x, net->xfrm.state_bydst+i, bydst) {
+ 			xso = &x->xso;
+@@ -834,7 +834,7 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
+ 	err = -ESRCH;
+ 	for (i = 0; i <= net->xfrm.state_hmask; i++) {
+ 		struct xfrm_state *x;
+-		struct xfrm_state_offload *xso;
++		struct xfrm_dev_offload *xso;
+ restart:
+ 		hlist_for_each_entry(x, net->xfrm.state_bydst+i, bydst) {
+ 			xso = &x->xso;
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 1ebd54afe34c9..bb63b0dab87bd 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -843,7 +843,7 @@ static int copy_sec_ctx(struct xfrm_sec_ctx *s, struct sk_buff *skb)
+ 	return 0;
+ }
+ 
+-static int copy_user_offload(struct xfrm_state_offload *xso, struct sk_buff *skb)
++static int copy_user_offload(struct xfrm_dev_offload *xso, struct sk_buff *skb)
+ {
+ 	struct xfrm_user_offload *xuo;
+ 	struct nlattr *attr;
+-- 
+2.43.0
+
 
 
 
