@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD3A9EF36F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F61B9EEAB1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1392728EC70
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3A07281D68
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9327D2210FB;
-	Thu, 12 Dec 2024 16:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9EE216E2D;
+	Thu, 12 Dec 2024 15:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqcPoI1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuFpPDjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD8521B90F;
-	Thu, 12 Dec 2024 16:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F2221579F;
+	Thu, 12 Dec 2024 15:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022342; cv=none; b=Ibfvgb0sgsTeTScQyVElfikvILMhKf9wI1l471ZYyk8jjES9aMPcslk0+9vstKJ0oDmt8KeGeNdKHdIqeP2Q6TfOkoZElPnF+cFBPHgIH8gLXLjYyS7MGOZSRmQ2Y2DPs0GV6XsqM505P0TsHr+lOZSZEG+OMCT9nroXxkhQWGs=
+	t=1734016588; cv=none; b=uFav1BP1OjX+4/+hvTolRzAnGFHXSaxIdQJEPQ6flDwvT1b+ei8b41Dgl6GvcCyO5m3fhcs34PsP7vJj+2a4Npc4pgGs1ufqePW+2ejHvpO5vvtooaEl2wNsFJvLoeN+YEZkzbk1AkOVZgviGbs94Y2683BGc3hz4LMb6ESo8lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022342; c=relaxed/simple;
-	bh=+QTGn8MJuo54yx20h+F3WlwdSB9rN9uv4MQS0WjhsSk=;
+	s=arc-20240116; t=1734016588; c=relaxed/simple;
+	bh=cHZniohbqTcyIf+pJHhfgmaNjW3orAipTriHLkEVDps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZjZFvvDf/HEERmXsAj2Fetuj2smGtnshDTwrh9uIcHDVxJyQrdxbKDI6a3YI5sB6guFyQ6Ryrf7x+xQUE9YGgDXE0pOXBuPtIFGKh2voSAdVROQDLdXRbfEWLbHyzJ9urwDJyX2+GBezGP26VkLGhYgs9t11NZIgSwJLjpYUU5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqcPoI1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9F2C4CECE;
-	Thu, 12 Dec 2024 16:52:21 +0000 (UTC)
+	 MIME-Version; b=kq7DR6i3vvM/XRmT/ZtS7PpRRvUIqyiQ1TXyL3/bkXqlIsma5MfrTbX6V+M1FSeKv3mOG0aNjznLccwZrODeTY+eT//yNSHBwXPui/dWIDF3MjPXssZT+AC8TRSAlXlw8EAeZcinoXaJoN6Km5v22vp6QUwgzQGDCcXBHwkBYLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuFpPDjk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68266C4CECE;
+	Thu, 12 Dec 2024 15:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022341;
-	bh=+QTGn8MJuo54yx20h+F3WlwdSB9rN9uv4MQS0WjhsSk=;
+	s=korg; t=1734016588;
+	bh=cHZniohbqTcyIf+pJHhfgmaNjW3orAipTriHLkEVDps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UqcPoI1XRhn1Mwu2PGLVzJ9EWvZrplDJT0GIUnRw5iHSNS2OBWvzNGcSM4usgf1ro
-	 TbM2VMMpG2yAzPMRkocuslxhNZk+gm9Y3peI4UAbvaTq6i3iDBtq4RlU40XtwR5Vwh
-	 nnafLT8U0CeC50lDoiVG4Px+xNNTxraOpm8q3JUk=
+	b=PuFpPDjkdsodu5f1PxKu+niwOJFiRKwiTEH1MejEbMxiusyewDbqddHDinUlK4Prc
+	 +JcWYWcTxOy0ChaoWJ94OMvZw8CD2dwvlfQzjAWDqrs9mxobWhFZBo5S8EqzgqJC76
+	 K8Zg7Nlu4AAbEYUId5HCPGX7WBoZlUQq7xEyP/+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
+	Dmitry Perchanov <dmitry.perchanov@intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 214/565] mfd: intel_soc_pmic_bxtwc: Use dev_err_probe()
-Date: Thu, 12 Dec 2024 15:56:49 +0100
-Message-ID: <20241212144319.954712418@linuxfoundation.org>
+Subject: [PATCH 6.12 241/466] media: uvcvideo: RealSense D421 Depth module metadata
+Date: Thu, 12 Dec 2024 15:56:50 +0100
+Message-ID: <20241212144316.303276077@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,191 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Dmitry Perchanov <dmitry.perchanov@intel.com>
 
-[ Upstream commit d30e2c30a43de950cfd3690f24342a39034221c4 ]
+[ Upstream commit c6104297c965a5ee9d4b9d0d5d9cdd224d8fd59e ]
 
-Simplify the mux error path a bit by using dev_err_probe().
+RealSense(R) D421 Depth module is low cost solution for 3D-stereo
+vision. The module supports extended sensor metadata format D4XX.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
-Link: https://lore.kernel.org/r/20220628221747.33956-4-andriy.shevchenko@linux.intel.com
-Stable-dep-of: 686fb77712a4 ("mfd: intel_soc_pmic_bxtwc: Use IRQ domain for USB Type-C device")
+Signed-off-by: Dmitry Perchanov <dmitry.perchanov@intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/d1fbfbbff5c8247a3130499985a53218c5b55c61.camel@intel.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_bxtwc.c | 86 +++++++++---------------------
- 1 file changed, 26 insertions(+), 60 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
-index bc069c4daa603..8e699844f23ba 100644
---- a/drivers/mfd/intel_soc_pmic_bxtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
-@@ -410,12 +410,9 @@ static int bxtwc_add_chained_irq_chip(struct intel_soc_pmic *pmic,
- 	int irq;
- 
- 	irq = regmap_irq_get_virq(pdata, pirq);
--	if (irq < 0) {
--		dev_err(pmic->dev,
--			"Failed to get parent vIRQ(%d) for chip %s, ret:%d\n",
--			pirq, chip->name, irq);
--		return irq;
--	}
-+	if (irq < 0)
-+		return dev_err_probe(pmic->dev, irq, "Failed to get parent vIRQ(%d) for chip %s\n",
-+				     pirq, chip->name);
- 
- 	return devm_regmap_add_irq_chip(pmic->dev, pmic->regmap, irq, irq_flags,
- 					0, chip, data);
-@@ -423,6 +420,7 @@ static int bxtwc_add_chained_irq_chip(struct intel_soc_pmic *pmic,
- 
- static int bxtwc_probe(struct platform_device *pdev)
- {
-+	struct device *dev = &pdev->dev;
- 	int ret;
- 	acpi_handle handle;
- 	acpi_status status;
-@@ -431,15 +429,10 @@ static int bxtwc_probe(struct platform_device *pdev)
- 
- 	handle = ACPI_HANDLE(&pdev->dev);
- 	status = acpi_evaluate_integer(handle, "_HRV", NULL, &hrv);
--	if (ACPI_FAILURE(status)) {
--		dev_err(&pdev->dev, "Failed to get PMIC hardware revision\n");
--		return -ENODEV;
--	}
--	if (hrv != BROXTON_PMIC_WC_HRV) {
--		dev_err(&pdev->dev, "Invalid PMIC hardware revision: %llu\n",
--			hrv);
--		return -ENODEV;
--	}
-+	if (ACPI_FAILURE(status))
-+		return dev_err_probe(dev, -ENODEV, "Failed to get PMIC hardware revision\n");
-+	if (hrv != BROXTON_PMIC_WC_HRV)
-+		return dev_err_probe(dev, -ENODEV, "Invalid PMIC hardware revision: %llu\n", hrv);
- 
- 	pmic = devm_kzalloc(&pdev->dev, sizeof(*pmic), GFP_KERNEL);
- 	if (!pmic)
-@@ -459,40 +452,31 @@ static int bxtwc_probe(struct platform_device *pdev)
- 
- 	pmic->regmap = devm_regmap_init(&pdev->dev, NULL, pmic,
- 					&bxtwc_regmap_config);
--	if (IS_ERR(pmic->regmap)) {
--		ret = PTR_ERR(pmic->regmap);
--		dev_err(&pdev->dev, "Failed to initialise regmap: %d\n", ret);
--		return ret;
--	}
-+	if (IS_ERR(pmic->regmap))
-+		return dev_err_probe(dev, PTR_ERR(pmic->regmap), "Failed to initialise regmap\n");
- 
- 	ret = devm_regmap_add_irq_chip(&pdev->dev, pmic->regmap, pmic->irq,
- 				       IRQF_ONESHOT | IRQF_SHARED,
- 				       0, &bxtwc_regmap_irq_chip,
- 				       &pmic->irq_chip_data);
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to add IRQ chip\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add IRQ chip\n");
- 
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
- 					 BXTWC_PWRBTN_LVL1_IRQ,
- 					 IRQF_ONESHOT,
- 					 &bxtwc_regmap_irq_chip_pwrbtn,
- 					 &pmic->irq_chip_data_pwrbtn);
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to add PWRBTN IRQ chip\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
- 
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
- 					 BXTWC_TMU_LVL1_IRQ,
- 					 IRQF_ONESHOT,
- 					 &bxtwc_regmap_irq_chip_tmu,
- 					 &pmic->irq_chip_data_tmu);
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to add TMU IRQ chip\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add TMU IRQ chip\n");
- 
- 	/* Add chained IRQ handler for BCU IRQs */
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
-@@ -500,12 +484,8 @@ static int bxtwc_probe(struct platform_device *pdev)
- 					 IRQF_ONESHOT,
- 					 &bxtwc_regmap_irq_chip_bcu,
- 					 &pmic->irq_chip_data_bcu);
--
--
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to add BUC IRQ chip\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add BUC IRQ chip\n");
- 
- 	/* Add chained IRQ handler for ADC IRQs */
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
-@@ -513,12 +493,8 @@ static int bxtwc_probe(struct platform_device *pdev)
- 					 IRQF_ONESHOT,
- 					 &bxtwc_regmap_irq_chip_adc,
- 					 &pmic->irq_chip_data_adc);
--
--
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to add ADC IRQ chip\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
- 
- 	/* Add chained IRQ handler for CHGR IRQs */
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
-@@ -526,12 +502,8 @@ static int bxtwc_probe(struct platform_device *pdev)
- 					 IRQF_ONESHOT,
- 					 &bxtwc_regmap_irq_chip_chgr,
- 					 &pmic->irq_chip_data_chgr);
--
--
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to add CHGR IRQ chip\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add CHGR IRQ chip\n");
- 
- 	/* Add chained IRQ handler for CRIT IRQs */
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
-@@ -539,19 +511,13 @@ static int bxtwc_probe(struct platform_device *pdev)
- 					 IRQF_ONESHOT,
- 					 &bxtwc_regmap_irq_chip_crit,
- 					 &pmic->irq_chip_data_crit);
--
--
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to add CRIT IRQ chip\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add CRIT IRQ chip\n");
- 
- 	ret = devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_NONE, bxt_wc_dev,
- 				   ARRAY_SIZE(bxt_wc_dev), NULL, 0, NULL);
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to add devices\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add devices\n");
- 
- 	ret = sysfs_create_group(&pdev->dev.kobj, &bxtwc_group);
- 	if (ret) {
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 675be4858366f..03aa6e5f117c7 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -3118,6 +3118,15 @@ static const struct usb_device_id uvc_ids[] = {
+ 	  .bInterfaceSubClass	= 1,
+ 	  .bInterfaceProtocol	= 0,
+ 	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
++	/* Intel D421 Depth Module */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x8086,
++	  .idProduct		= 0x1155,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= 0,
++	  .driver_info		= UVC_INFO_META(V4L2_META_FMT_D4XX) },
+ 	/* Generic USB Video Class */
+ 	{ USB_INTERFACE_INFO(USB_CLASS_VIDEO, 1, UVC_PC_PROTOCOL_UNDEFINED) },
+ 	{ USB_INTERFACE_INFO(USB_CLASS_VIDEO, 1, UVC_PC_PROTOCOL_15) },
 -- 
 2.43.0
 
