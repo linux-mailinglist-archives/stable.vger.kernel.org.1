@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718B29EF380
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9289EF10D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ECBB28F784
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ABE329EF50
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FE12288E5;
-	Thu, 12 Dec 2024 16:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9DE239BA8;
+	Thu, 12 Dec 2024 16:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1JzWtNd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hX9Pc+ND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E221D222D57;
-	Thu, 12 Dec 2024 16:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C985C2397B6;
+	Thu, 12 Dec 2024 16:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022434; cv=none; b=WjnQiWKeTgN1n4sqOSPjInexcJpC1LnuJuOdYrGHS9LJrHFbEeeCWWCdu0mZ2JHm7F00uHznDRx/GudakzdS1TXcjw/KxZHWPFCJH0ytwFNCiA8WI315L0wV4VPkG929HvAVKpjzsjvaYa01ufYRFIJ4P5ATeLrao7DrLfhkKCo=
+	t=1734020629; cv=none; b=aZOWaIfz0RGBCOKGPwt3B1Hvek/d8e8WNiig7cXX72TBw54xyioWSVgAP9YmspG70sMWgUsowP4sR7rOrKq94mn1x4pAVZLqh5cFNtBmyjlV9ICnMmXmtaV4Jaa6VVXeDMQmwQo2lspgF5aTs3bFX5pOaDYErY2VZrutSZI8aTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022434; c=relaxed/simple;
-	bh=XqyRH3f3GfOiWryebxJwE/5opZw0Gz43WxfC9drRVG4=;
+	s=arc-20240116; t=1734020629; c=relaxed/simple;
+	bh=kljfqyTZwidfIjTynyiaCld+tSR30Wqd9rJSZ6kJrXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOUQZM7lznz9NebtNuzFEpW36TL/IkWdPAL231qcY+AGUU05SQ5WdWqSO5Dhw3Fh9wfeIK1NFsU7VDu+pIGPdm957JzCIK+9hYpNCsomkorM7nyNC0ECtwDebZd7eYNMZG7AERymVsYTo10M9C7xZAxyoiSadarcof0xy2NwQCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1JzWtNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E49C4CECE;
-	Thu, 12 Dec 2024 16:53:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=StUd1QLph12ouZaJgR70e7SkKTJhHLZ0B3a+FkUtZ140EGYmPOwypFlBdYCkAu5TGgDYyuGKtGHu5oLtlBNoaJ2mA6HzQAIIcn+Pgp127kWZuu7Ykr+KqiJ12Vc6bNZwkLZy/fEYEdw6xGIvRYue0hAiRvyjlPuJbiF0VQZL8DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hX9Pc+ND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A26C4CECE;
+	Thu, 12 Dec 2024 16:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022433;
-	bh=XqyRH3f3GfOiWryebxJwE/5opZw0Gz43WxfC9drRVG4=;
+	s=korg; t=1734020629;
+	bh=kljfqyTZwidfIjTynyiaCld+tSR30Wqd9rJSZ6kJrXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1JzWtNdq2hkApcpIw2OhxrIt/K1OKe4391QulixNvNdk4uU6h0MiYdg/HXatFBEO
-	 2bEeQyNbkKdfo+aepAnq9VAv39/zNgOag8TyxkdIWUxFrj6QyR54IknmMfCkN2vebi
-	 wt+BJsh3A9vt/UftbIK8mvBlUI46+GOe49tcvviU=
+	b=hX9Pc+NDBB60ZZkyVmmW9kWckaaHcmKo/9wegKgWyGhBfkq2iK5b6Y5zaH6pmt3Zh
+	 ulRVqqIehmK0fmeRmp1q50m5OTLfqGpMc4SnAZXe+zKrxF+ERy5unwwjK3zs4dAvQ4
+	 p8AowMNrACQ6ah7phe4lPqkumOKGyCoNYIbi7IGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 239/565] pinctrl: k210: Undef K210_PC_DEFAULT
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.1 489/772] PCI: keystone: Add link up check to ks_pcie_other_map_bus()
 Date: Thu, 12 Dec 2024 15:57:14 +0100
-Message-ID: <20241212144320.928614606@linuxfoundation.org>
+Message-ID: <20241212144410.163108496@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-[ Upstream commit 7e86490c5dee5c41a55f32d0dc34269e200e6909 ]
+commit 9e9ec8d8692a6f64d81ef67d4fb6255af6be684b upstream.
 
-When the temporary macro K210_PC_DEFAULT is not needed anymore,
-use its name in the #undef statement instead of
-the incorrect "DEFAULT" name.
+K2G forwards the error triggered by a link-down state (e.g., no connected
+endpoint device) on the system bus for PCI configuration transactions;
+these errors are reported as an SError at system level, which is fatal and
+hangs the system.
 
-Fixes: d4c34d09ab03 ("pinctrl: Add RISC-V Canaan Kendryte K210 FPIOA driver")
-Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/20241113071201.5440-1-zhangjiao2@cmss.chinamobile.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So, apply fix similar to how it was done in the DesignWare Core driver
+commit 15b23906347c ("PCI: dwc: Add link up check in dw_child_pcie_ops.map_bus()").
+
+Fixes: 10a797c6e54a ("PCI: dwc: keystone: Use pci_ops for config space accessors")
+Link: https://lore.kernel.org/r/20240524105714.191642-3-s-vadapalli@ti.com
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+[kwilczynski: commit log, added tag for stable releases]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-k210.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pci-keystone.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/pinctrl/pinctrl-k210.c b/drivers/pinctrl/pinctrl-k210.c
-index ad4db99094a79..e75c96c6b3daf 100644
---- a/drivers/pinctrl/pinctrl-k210.c
-+++ b/drivers/pinctrl/pinctrl-k210.c
-@@ -181,7 +181,7 @@ static const u32 k210_pinconf_mode_id_to_mode[] = {
- 	[K210_PC_DEFAULT_INT13] = K210_PC_MODE_IN | K210_PC_PU,
- };
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -465,6 +465,17 @@ static void __iomem *ks_pcie_other_map_b
+ 	struct keystone_pcie *ks_pcie = to_keystone_pcie(pci);
+ 	u32 reg;
  
--#undef DEFAULT
-+#undef K210_PC_DEFAULT
- 
- /*
-  * Pin functions configuration information.
--- 
-2.43.0
-
++	/*
++	 * Checking whether the link is up here is a last line of defense
++	 * against platforms that forward errors on the system bus as
++	 * SError upon PCI configuration transactions issued when the link
++	 * is down. This check is racy by definition and does not stop
++	 * the system from triggering an SError if the link goes down
++	 * after this check is performed.
++	 */
++	if (!dw_pcie_link_up(pci))
++		return NULL;
++
+ 	reg = CFG_BUS(bus->number) | CFG_DEVICE(PCI_SLOT(devfn)) |
+ 		CFG_FUNC(PCI_FUNC(devfn));
+ 	if (!pci_is_root_bus(bus->parent))
 
 
 
