@@ -1,48 +1,52 @@
-Return-Path: <stable+bounces-100902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E65B9EE632
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:04:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D669EE61A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:03:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3ADC168C82
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 12:03:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0BAF1888FAF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 12:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092D12139C8;
-	Thu, 12 Dec 2024 12:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A84212F96;
+	Thu, 12 Dec 2024 11:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="WNRfxvdk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [195.16.41.108])
+Received: from pv50p00im-zteg10011401.me.com (pv50p00im-zteg10011401.me.com [17.58.6.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340B921148E;
-	Thu, 12 Dec 2024 12:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.16.41.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8D8212F99
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 11:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734004873; cv=none; b=sk+i5adYk/AC9gMC77nWEa8KSdPcsq8cHdJQPFHujI9GD1SBk+g4ah+6LQ7mUqJZ5MSIu+hiRNJA+dDVWNTlnidvN939TQbXzeRpycdCG4wbChkxJkikK4dnhdp4zCbJsSOUpWNg83AWCIQ8hiIlPWIOtqh/M1yO6VGxtsAZerE=
+	t=1734004629; cv=none; b=HI5ONAFBzKLrtH8GdeF7tOPcNslSYNevzbo0NpgOGn6b8b8vJQiyJNj1ZysdFjMGzaO8G6kpGoALlU2o4q6i3Sop1QRKZpzMNmILkFTPu2i+zzKl8egbo4kKz0JMNSnaA1mRZJdPJh0NUALNRij7RDnq0yiHZP4hWMTPGkcoHYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734004873; c=relaxed/simple;
-	bh=oRKnZBLoKIqnGH9CpV9Mrk6QPMZVHbvlgIvNDD8MwEk=;
+	s=arc-20240116; t=1734004629; c=relaxed/simple;
+	bh=4SOitpeJSxsCi3uUZNQXvqSx7dPK8Xu9nPdWBZ3pXZ0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DJUtK5JZcQ0OoaHIvN9AT8c+w1CbYJSzQKdOdyy1cWps0JoWue6poDM42Jqwm4fyY8RSduGNzXgWoketFn58NsiH+CWzTtmrz33t9eu3QKUp7jTQanhr+3dklPqcm/Fw21sQ1KtFZ+nI8RXvlk+CDMCdhnupIOjRk+RBaeAmIFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=195.16.41.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 07DA31F4D5;
-	Thu, 12 Dec 2024 14:55:38 +0300 (MSK)
-Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail04.astralinux.ru [10.177.185.109])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Thu, 12 Dec 2024 14:55:37 +0300 (MSK)
-Received: from [10.198.20.57] (unknown [10.198.20.57])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4Y89s23mbzzkWxV;
-	Thu, 12 Dec 2024 14:55:34 +0300 (MSK)
-Message-ID: <1599fa5a-5507-4b9c-8b18-2d5e5c7fe694@astralinux.ru>
-Date: Thu, 12 Dec 2024 14:55:27 +0300
+	 In-Reply-To:Content-Type; b=SxkBbZ7RYAR3oxYWg6P86W2Gl7N6UG5P34iYoG/TqzAcojcvfzazW2oYU++nGUDBXqm+UuziZDTxeIHmy1UOa5GjyKX2SK9jR7T+Jhk8fV06Pw96iF9IT97A50g/JyrFviPOgXzrebLXw2aEp6Y+SE5XQoSRy2WNiUHVhyPMMJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=WNRfxvdk; arc=none smtp.client-ip=17.58.6.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1734004627;
+	bh=1eMLf26XKrrfXj3aFM14LgTUGaE6UhvpHVb/22mBwUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
+	 x-icloud-hme;
+	b=WNRfxvdkGS3XfHsQHHV3QBZCEvGQbIOa2a+WsJ82Fgs1q1vdMYE1sED/Zr1kJady4
+	 JNR2c0a9ZnlTwNIJWlbof5RrnsVqI3wjxb8yVSotRAplZYJu44r/IYdSCA6A19y3Qj
+	 I0F+IRZxU/rFNOxI/hNrOhkvfXNFwUSO4W2PCdwH81yUcCkkRUPyjVtrx4l3OAmCer
+	 +5VNN4Kefo8mYNpNa78jgfdB1LH4RiPuaqv0wWSeUW7MKHGFlWCaascN3rJyDWpE33
+	 XiNFdYko2/5bakjuafEqHcJklwp6fAF1gavRpWZ1+5rA46E24aFA0PDT28VbuzIPi1
+	 OXS/2x8JA5DHQ==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-zteg10011401.me.com (Postfix) with ESMTPSA id 0B15D34BA577;
+	Thu, 12 Dec 2024 11:57:01 +0000 (UTC)
+Message-ID: <d5ea10a7-7bb9-4fbe-a7b7-1871e5f697ff@icloud.com>
+Date: Thu, 12 Dec 2024 19:56:58 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,77 +54,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 1/1] cpufreq: amd-pstate: add check for
- cpufreq_cpu_get's return value
-Content-Language: ru
-To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: lvc-project@linuxtesting.org, Huang Rui <ray.huang@amd.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Perry Yuan <perry.yuan@amd.com>,
- "Limonciello, Mario" <Mario.Limonciello@amd.com>,
- "Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>
-References: <20241106182000.40167-1-abelova@astralinux.ru>
- <20241106182000.40167-2-abelova@astralinux.ru>
-From: Anastasia Belova <abelova@astralinux.ru>
-In-Reply-To: <20241106182000.40167-2-abelova@astralinux.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: abelova@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 44 0.3.44 5149b91aab9eaefa5f6630aab0c7a7210c633ab6, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 189792 [Dec 12 2024]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.7
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2024/12/12 07:32:00 #26886604
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+Subject: Re: [PATCH v3 0/3] PCI: endpoint: fix bug for 2 APIs and simplify 1
+ API
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Joao Pinto <jpinto@synopsys.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Wei Yongjun <weiyongjun1@huawei.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
+ stable@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+References: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
+ <1fac71d8-dcfe-4924-ab01-dc85a822b740@stanley.mountain>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <1fac71d8-dcfe-4924-ab01-dc85a822b740@stanley.mountain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: KGwKBQwZIGmJw-R1yRjzVFkBZhgqDO3-
+X-Proofpoint-GUID: KGwKBQwZIGmJw-R1yRjzVFkBZhgqDO3-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-12_06,2024-12-12_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ adultscore=0 mlxscore=0 mlxlogscore=682 phishscore=0 spamscore=0
+ bulkscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2412120085
 
-Just a friendly reminder.
+On 2024/12/12 17:35, Dan Carpenter wrote:
+> On Tue, Dec 10, 2024 at 10:00:17PM +0800, Zijun Hu wrote:
+>> This patch series is to fix bug for APIs
+>> - devm_pci_epc_destroy().
+>> - pci_epf_remove_vepf().
+>>
+>> and simplify APIs below:
+>> - pci_epc_get().
+>>
+>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+>> ---
+> 
+> This is very good.  This is Config FS.  Is there a kself test for configfs
+> or did you create your own test?
+> 
 
-Cc'ing Mario Limonciello and Gautham Ranjal Shenoy.
+no.
 
-On 11/6/24 9:19 PM, Anastasia Belova wrote:
-> From: Anastasia Belova <abelova@astralinux.ru>
->
-> commit 5493f9714e4cdaf0ee7cec15899a231400cb1a9f upstream.
->
-> cpufreq_cpu_get may return NULL. To avoid NULL-dereference check it
-> and return in case of error.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-> Reviewed-by: Perry Yuan <perry.yuan@amd.com>
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->   drivers/cpufreq/amd-pstate.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-> index 8c16d67b98bf..0fc5495c935a 100644
-> --- a/drivers/cpufreq/amd-pstate.c
-> +++ b/drivers/cpufreq/amd-pstate.c
-> @@ -579,9 +579,14 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
->   	unsigned long max_perf, min_perf, des_perf,
->   		      cap_perf, lowest_nonlinear_perf, max_freq;
->   	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-> -	struct amd_cpudata *cpudata = policy->driver_data;
-> +	struct amd_cpudata *cpudata;
->   	unsigned int target_freq;
->   
-> +	if (!policy)
-> +		return;
-> +
-> +	cpudata = policy->driver_data;
-> +
->   	if (policy->min != cpudata->min_limit_freq || policy->max != cpudata->max_limit_freq)
->   		amd_pstate_update_min_max_limit(policy);
->   
+In order to investigate devres_release() usage for patch 1/3, i read
+2 PCI source files and then find a few obvious bugs. (^^)
+
+> regards,
+> dan carpenter
+> 
+> 
+
 
