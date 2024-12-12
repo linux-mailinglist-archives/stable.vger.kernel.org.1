@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52009EF587
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A1C9EF547
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4388B2836F0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:17:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4244A189130A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1FE1F2381;
-	Thu, 12 Dec 2024 17:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE35229671;
+	Thu, 12 Dec 2024 16:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+D5ry6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4F1CDLF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A758813CA93;
-	Thu, 12 Dec 2024 17:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16DD216E14;
+	Thu, 12 Dec 2024 16:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023851; cv=none; b=T8O9JoL9cGyfOm0pkKqYHoBKQWTV3SKTSPtX6PjChlxhQhzgc8wzHfg4T9tgN3UfceDQ5760XBKlNcg9x9lFCf1RVOdlY5sWR8qeD2+IETGNn43QmMZGC8fUkb9ilJbAAIGvNYFmLDLM659kPz+L0HBCY+Roau7ote3CdIUN/Rs=
+	t=1734022461; cv=none; b=AM/a4G+fZOER0aK1itXNxphoUSlGjh5cqW7LBRl5POIHaagw3A5PldWOHbsHnZNhT0LFpjusUZyf36eOdrpbuT0wioVCjQgM8J+Ga3NMGSSD56cdSEnWTn1USIPTQg9fy5a/kTEdFTsHuiWPxlbQg+cLVJLvtKKmmoeBDDiWKB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023851; c=relaxed/simple;
-	bh=Xe52mUzsx50wZL3TOY+DKWiNKLdTGBp0XUkMyWgdRBQ=;
+	s=arc-20240116; t=1734022461; c=relaxed/simple;
+	bh=SMXr52G3UIWNzMVCQNW15iletGQDmsNya3meIDXvhjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQepCW8oIvcdZbfgIGUhbjCgS+13iUZMx7gW+p03OVaWKHaDp/JwgGyESYasMub1eNtzSJa66zPhTcGJJXKPWs3VyDueRnjrQT9MBY6NvqDwO7jfFp67QpttcW5YsoXyYm9TNWqG6E/KxV3GgXQyK7JqIeR+D3T/qRPs0hIZ/lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+D5ry6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2846DC4CECE;
-	Thu, 12 Dec 2024 17:17:30 +0000 (UTC)
+	 MIME-Version; b=hxP16AH04Eez9bFSoCAhz2xpv1MRDWVUnRRXSQS2RYL1mKl9u9JCjkKAGCMTk64dWj2TBD06w8kvAgXvSpUE4KZvjY08cIfepfPDyCGQeHcfwNwrKSfNzsIi9y8d0OMNRQJrdRnpEy3n/m6GDtcL/Ho00SolfNzcclaMRyOTAdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4F1CDLF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B324C4CED3;
+	Thu, 12 Dec 2024 16:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023851;
-	bh=Xe52mUzsx50wZL3TOY+DKWiNKLdTGBp0XUkMyWgdRBQ=;
+	s=korg; t=1734022461;
+	bh=SMXr52G3UIWNzMVCQNW15iletGQDmsNya3meIDXvhjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+D5ry6Ez8gb5jOtSK1w4uUTKsMh1tUrZPawfBL8NR4yWvbsbzXi0pgQB+pcL8T62
-	 r3+2Cx+CUNYsm0XEQFEETY7moQhApmiUdVyJEV29YI+aFLHhe5m/P/8lVAJTjPgw4+
-	 6kmb96vV0SlDdrTJzjvoUIsZ1pb6aCY8njOhnmEg=
+	b=v4F1CDLFCEYWywrVcDsg+5aWJ3QauyWO7Af5lb5ecl8xHr/b6gYDnMoB9EAiKrV8l
+	 yvDl6S7in9uYWa7Xt7NHTMalls+d+9IVpX7cw4EXyGIwp+Hx2ahCc18AMc4zvJbbTd
+	 UNeBxaEUM47wXR3/RcZbfabf+RPXZnI0/QWw9PbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	LongPing Wei <weilongping@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/459] drm/imx/ipuv3: Use IRQF_NO_AUTOEN flag in request_irq()
+Subject: [PATCH 5.15 247/565] f2fs: fix the wrong f2fs_bug_on condition in f2fs_do_replace_block
 Date: Thu, 12 Dec 2024 15:57:22 +0100
-Message-ID: <20241212144257.619635464@linuxfoundation.org>
+Message-ID: <20241212144321.238808444@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: LongPing Wei <weilongping@oppo.com>
 
-[ Upstream commit 40004709a3d3b07041a473a163ca911ef04ab8bd ]
+[ Upstream commit c3af1f13476ec23fd99c98d060a89be28c1e8871 ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+This f2fs_bug_on was introduced by commit 2c1905042c8c ("f2fs: check
+segment type in __f2fs_replace_block") when there were only 6 curseg types.
+After commit d0b9e42ab615 ("f2fs: introduce inmem curseg") was introduced,
+the condition should be changed to checking curseg->seg_type.
 
-Fixes: 47b1be5c0f4e ("staging: imx/drm: request irq only after adding the crtc")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240912083020.3720233-4-ruanjinjie@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: d0b9e42ab615 ("f2fs: introduce inmem curseg")
+Signed-off-by: LongPing Wei <weilongping@oppo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/ipuv3-crtc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/f2fs/segment.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3-crtc.c b/drivers/gpu/drm/imx/ipuv3-crtc.c
-index fd9d8e51837fa..d6e5821c14c1d 100644
---- a/drivers/gpu/drm/imx/ipuv3-crtc.c
-+++ b/drivers/gpu/drm/imx/ipuv3-crtc.c
-@@ -406,14 +406,12 @@ static int ipu_crtc_init(struct ipu_crtc *ipu_crtc,
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index dc33b4e5c07b8..9e6c4a475d6d0 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -3698,8 +3698,8 @@ void f2fs_do_replace_block(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+ 		}
  	}
  
- 	ipu_crtc->irq = ipu_plane_irq(ipu_crtc->plane[0]);
--	ret = devm_request_irq(ipu_crtc->dev, ipu_crtc->irq, ipu_irq_handler, 0,
--			"imx_drm", ipu_crtc);
-+	ret = devm_request_irq(ipu_crtc->dev, ipu_crtc->irq, ipu_irq_handler,
-+			       IRQF_NO_AUTOEN, "imx_drm", ipu_crtc);
- 	if (ret < 0) {
- 		dev_err(ipu_crtc->dev, "irq request failed with %d.\n", ret);
- 		goto err_put_plane1_res;
- 	}
--	/* Only enable IRQ when we actually need it to trigger work. */
--	disable_irq(ipu_crtc->irq);
+-	f2fs_bug_on(sbi, !IS_DATASEG(type));
+ 	curseg = CURSEG_I(sbi, type);
++	f2fs_bug_on(sbi, !IS_DATASEG(curseg->seg_type));
  
- 	return 0;
- 
+ 	mutex_lock(&curseg->curseg_mutex);
+ 	down_write(&sit_i->sentry_lock);
 -- 
 2.43.0
 
