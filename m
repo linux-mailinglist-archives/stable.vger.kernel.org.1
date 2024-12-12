@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF529EF0D1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB329EEC62
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2310E29D04B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E40118816E5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B232253F9;
-	Thu, 12 Dec 2024 16:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A6421765E;
+	Thu, 12 Dec 2024 15:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQKrlvWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lzqvfp8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805052210E1;
-	Thu, 12 Dec 2024 16:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B726B2153FC;
+	Thu, 12 Dec 2024 15:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020395; cv=none; b=OC4QHXNAg0riCsqhPjDBArVlWPGP7ksK09OjKsoYMeOGjlE3VCe8fX5T4ZHzYJoRTAr8H+IZy9xpzMln3gHu5Xjv6r8DhfgL8FjSAkgjpdmQlO30ReH5xY/vvqk7DQfn/vzU87SmWDgJrPeeq5FwRVbP+RNLsJ3KYcI0JomRM50=
+	t=1734017574; cv=none; b=qzjrjOITJLu5Ji1tq1FJRBF+yeneZ1AwYUcE4+EBOVts48onyFz9MP/gvhZNbHqHuxpohLAwzSYT40IKeBqLOqLWsBatX7B3D5uLe/k7mgRrHMz0tRNRKU8fe1Kwdb1pFI+SGOLtSSAyPUoEucuJ/mx1nV+9Z3HbLOmTQmkoHS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020395; c=relaxed/simple;
-	bh=k4D0/DIT6CgsnOtR1BSEr5PVoGELu+2nsHHy0QXdxYw=;
+	s=arc-20240116; t=1734017574; c=relaxed/simple;
+	bh=RXk/DCPR5qRv5KPeOrDDQrQe/ub5nxb4g+on17t9dgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEDjEaBlZN2CxVQVf4mj6FlbcpjtK/o6RbywUR8iCDCIquB5K4qys3uAp2y1nzHomdvNK/MNW/FGLmt/EK9exIisWQbrRbqe7wyF3o8ptnPwrS8EsxLV1Twd0wAd1B5eXguYKJuYv88gRv6GIzzYii2QYYDL0LViWU/Ur5oLlfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQKrlvWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E197AC4CECE;
-	Thu, 12 Dec 2024 16:19:54 +0000 (UTC)
+	 MIME-Version; b=PTSrUqE8xP6CNL3tRB43YmWN/KhkKDjHsI2TcHwM7OK2b4ZlOZO5ZANk9/5MgW0vG49Y8AGtTMk80DkReRnPwXBuTeJ6Pd2nf8ykVMcA0Ye1lIv7bdr31YVOQh/Y8sWSJpPJ665DUX0BcC3FzUaPaZKpaQ+N8AYVFUmCazS0unE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lzqvfp8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398A9C4CECE;
+	Thu, 12 Dec 2024 15:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020395;
-	bh=k4D0/DIT6CgsnOtR1BSEr5PVoGELu+2nsHHy0QXdxYw=;
+	s=korg; t=1734017574;
+	bh=RXk/DCPR5qRv5KPeOrDDQrQe/ub5nxb4g+on17t9dgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQKrlvWE0qZQ5rkbJDjEQnRObJHzzVA1aOiIomd4JpZBU01PyZiHhfLh4bJx+SRNj
-	 E1y23eceBmpBnxAO+sigCJaz4UmO7q08DTKumg3TFDdvV4oBXTOFdm/bBcxpeegbLw
-	 ZxSLa/Km6rNYfgsz2WY8NihlSdJxpCNWpRh0E9Ig=
+	b=Lzqvfp8VH6zjq8Qv9b/9LX/3IQ3WA3+lH/mLLa7GHIqMWesY3Bbadw+Rn4RHcADEq
+	 XXIPq76L985/n4lDmWj40O1uxOXB8RIoEnS8RMtfXdW6c5f3lNlCGU0tibPP0B4Hkk
+	 55AvRZUqKs41eFhA79UahFucjVUi3IU3h5bC/xiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Laurent Fasnacht <laurent.fasnacht@proton.ch>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 426/772] um: Fix potential integer overflow during physmem setup
+Subject: [PATCH 6.6 052/356] netfilter: nft_set_hash: skip duplicated elements pending gc run
 Date: Thu, 12 Dec 2024 15:56:11 +0100
-Message-ID: <20241212144407.524457727@linuxfoundation.org>
+Message-ID: <20241212144246.686214991@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit a98b7761f697e590ed5d610d87fa12be66f23419 ]
+[ Upstream commit 7ffc7481153bbabf3332c6a19b289730c7e1edf5 ]
 
-This issue happens when the real map size is greater than LONG_MAX,
-which can be easily triggered on UML/i386.
+rhashtable does not provide stable walk, duplicated elements are
+possible in case of resizing. I considered that checking for errors when
+calling rhashtable_walk_next() was sufficient to detect the resizing.
+However, rhashtable_walk_next() returns -EAGAIN only at the end of the
+iteration, which is too late, because a gc work containing duplicated
+elements could have been already scheduled for removal to the worker.
 
-Fixes: fe205bdd1321 ("um: Print minimum physical memory requirement")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20240916045950.508910-3-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Add a u32 gc worker sequence number per set, bump it on every workqueue
+run. Annotate gc worker sequence number on the expired element. Use it
+to skip those already seen in this gc workqueue run.
+
+Note that this new field is never reset in case gc transaction fails, so
+next gc worker run on the expired element overrides it. Wraparound of gc
+worker sequence number should not be an issue with stale gc worker
+sequence number in the element, that would just postpone the element
+removal in one gc run.
+
+Note that it is not possible to use flags to annotate that element is
+pending gc run to detect duplicates, given that gc transaction can be
+invalidated in case of update from the control plane, therefore, not
+allowing to clear such flag.
+
+On x86_64, pahole reports no changes in the size of nft_rhash_elem.
+
+Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
+Reported-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
+Tested-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/physmem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nft_set_hash.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/um/kernel/physmem.c b/arch/um/kernel/physmem.c
-index 91485119ae67a..4339580f5a4f6 100644
---- a/arch/um/kernel/physmem.c
-+++ b/arch/um/kernel/physmem.c
-@@ -80,10 +80,10 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 			  unsigned long len, unsigned long long highmem)
- {
- 	unsigned long reserve = reserve_end - start;
--	long map_size = len - reserve;
-+	unsigned long map_size = len - reserve;
- 	int err;
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 3a96d4a77a228..cc1ae18485faf 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -24,10 +24,12 @@
+ struct nft_rhash {
+ 	struct rhashtable		ht;
+ 	struct delayed_work		gc_work;
++	u32				wq_gc_seq;
+ };
  
--	if(map_size <= 0) {
-+	if (len <= reserve) {
- 		os_warn("Too few physical memory! Needed=%lu, given=%lu\n",
- 			reserve, len);
- 		exit(1);
-@@ -94,7 +94,7 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 	err = os_map_memory((void *) reserve_end, physmem_fd, reserve,
- 			    map_size, 1, 1, 1);
- 	if (err < 0) {
--		os_warn("setup_physmem - mapping %ld bytes of memory at 0x%p "
-+		os_warn("setup_physmem - mapping %lu bytes of memory at 0x%p "
- 			"failed - errno = %d\n", map_size,
- 			(void *) reserve_end, err);
- 		exit(1);
+ struct nft_rhash_elem {
+ 	struct rhash_head		node;
++	u32				wq_gc_seq;
+ 	struct nft_set_ext		ext;
+ };
+ 
+@@ -331,6 +333,10 @@ static void nft_rhash_gc(struct work_struct *work)
+ 	if (!gc)
+ 		goto done;
+ 
++	/* Elements never collected use a zero gc worker sequence number. */
++	if (unlikely(++priv->wq_gc_seq == 0))
++		priv->wq_gc_seq++;
++
+ 	rhashtable_walk_enter(&priv->ht, &hti);
+ 	rhashtable_walk_start(&hti);
+ 
+@@ -348,6 +354,14 @@ static void nft_rhash_gc(struct work_struct *work)
+ 			goto try_later;
+ 		}
+ 
++		/* rhashtable walk is unstable, already seen in this gc run?
++		 * Then, skip this element. In case of (unlikely) sequence
++		 * wraparound and stale element wq_gc_seq, next gc run will
++		 * just find this expired element.
++		 */
++		if (he->wq_gc_seq == priv->wq_gc_seq)
++			continue;
++
+ 		if (nft_set_elem_is_dead(&he->ext))
+ 			goto dead_elem;
+ 
+@@ -364,6 +378,8 @@ static void nft_rhash_gc(struct work_struct *work)
+ 		if (!gc)
+ 			goto try_later;
+ 
++		/* annotate gc sequence for this attempt. */
++		he->wq_gc_seq = priv->wq_gc_seq;
+ 		nft_trans_gc_elem_add(gc, he);
+ 	}
+ 
 -- 
 2.43.0
 
