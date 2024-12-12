@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-103716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA2F9EF97B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3901A9EF834
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BF99189E0FC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26ACE189F40D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE63221D93;
-	Thu, 12 Dec 2024 17:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47D32210DB;
+	Thu, 12 Dec 2024 17:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSRjGbTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKf6/nxk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1986D211493;
-	Thu, 12 Dec 2024 17:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC9F217F34;
+	Thu, 12 Dec 2024 17:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025393; cv=none; b=aT9UV1g32aw2woxqlVDzEyBeTHXud44fQ0y1r5MA9KiGJCC+Edfkwp8WHg5wRq88SGz9oadWX2QMq+6+mnvQir81eRr140XGndT+4aNXamSiy3SCaF0iP4HSuJVM6X08wJmYYMNC3rq9A8ZuKEbR/AAWDq3TZDo4dUiG/i0pICs=
+	t=1734024556; cv=none; b=JKWrq4trfZYTMTESsecEmT2EQwKDLSXlvp3WeTa+Gpy97BWeK8uCUHrzGOAAHG3uMBTsoTyqxZotHnPXQmUOduPRtI5PqZNDZ+54sQdHqCz3y3Z0YhylpJU8kNGGVi7+DtjPpJFx7yHmjdvqQfcubr9cjiAvh2hv3mWavYAzeOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025393; c=relaxed/simple;
-	bh=16qrS8YSbhvl12VMIMrtcQ+eWMSf4LGD86dTbfsriE0=;
+	s=arc-20240116; t=1734024556; c=relaxed/simple;
+	bh=wWP+qPP+4WtjU1uoIx56BryHTjSYNH3wDW8L3Z6fKOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSq84QznQqMSXgJbmZMshcmXNXmgYKoP4LmNzkG/C0wyvJPSYeg9e+zZ45+nlY9K0FDDJqM+ydOfyDZ83P9ZWKFsiaEYvIyzGZ5nQHoYaOlvWz94qGBM+quMRRNYPnFzu4QMAUhom385ZbxDge4H45vISduh2dWy5iqQhE7EOfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSRjGbTr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277AFC4CEE6;
-	Thu, 12 Dec 2024 17:43:11 +0000 (UTC)
+	 MIME-Version; b=d5L2fqEvYrVgSx6fE98SfP+LVY+5DaNMCkxEf9SKgPZwWexa42m9rR5PcBW3onco5d0OgkcE2+eowS/OKenj6XDnlfNUEvJPhMn9QGCUgIPEjMARvE8AnPi7FNlgY1OOV/4qU4Ac/iDEGoQMRrPv/92cTMJ2b2LQ/MNo1X3i7o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKf6/nxk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E60C4CED3;
+	Thu, 12 Dec 2024 17:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025392;
-	bh=16qrS8YSbhvl12VMIMrtcQ+eWMSf4LGD86dTbfsriE0=;
+	s=korg; t=1734024556;
+	bh=wWP+qPP+4WtjU1uoIx56BryHTjSYNH3wDW8L3Z6fKOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSRjGbTr5vNqGi7yd639lY3H+ItSYVi7CSh6LWJhCQfE8fzsJGeCMHeSx3vIGDv/c
-	 FCFvunTwgf+V2m7HzVlpsIvecJ7VYL09CqKDd0yI70CjoyP7MHJ9oH01uTRr5KA2xv
-	 b0NhTJW0T01dt7M2R/w9RYXBVeJWpDNRs8IbGbgQ=
+	b=kKf6/nxkznapdYnCmg+DiaRMptRt1r2dR3AJFYX7HV5pmthKq52B+lSjcpMWUjUXc
+	 Pkm3m2MqjBbO1bUOZqcMHB2asZU74VKKJTX9oO2IDOYKw3lvEqAegaCNUlUa5lqKDv
+	 rLysYxlkpU1UP7csdZ2njWi7yY8SXy2Vph+ORSRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.4 155/321] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+	Jiri Wiesner <jwiesner@suse.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 335/459] net/ipv6: release expired exception dst cached in socket
 Date: Thu, 12 Dec 2024 16:01:13 +0100
-Message-ID: <20241212144236.099411447@linuxfoundation.org>
+Message-ID: <20241212144306.896296456@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Jiri Wiesner <jwiesner@suse.de>
 
-commit 3791ea69a4858b81e0277f695ca40f5aae40f312 upstream.
+[ Upstream commit 3301ab7d5aeb0fe270f73a3d4810c9d1b6a9f045 ]
 
-The early_console_setup() function initializes the sci_ports[0].port with
-an object of type struct uart_port obtained from the object of type
-struct earlycon_device received as argument by the early_console_setup().
+Dst objects get leaked in ip6_negative_advice() when this function is
+executed for an expired IPv6 route located in the exception table. There
+are several conditions that must be fulfilled for the leak to occur:
+* an ICMPv6 packet indicating a change of the MTU for the path is received,
+  resulting in an exception dst being created
+* a TCP connection that uses the exception dst for routing packets must
+  start timing out so that TCP begins retransmissions
+* after the exception dst expires, the FIB6 garbage collector must not run
+  before TCP executes ip6_negative_advice() for the expired exception dst
 
-It may happen that later, when the rest of the serial ports are probed,
-the serial port that was used as earlycon (e.g., port A) to be mapped to a
-different position in sci_ports[] and the slot 0 to be used by a different
-serial port (e.g., port B), as follows:
+When TCP executes ip6_negative_advice() for an exception dst that has
+expired and if no other socket holds a reference to the exception dst, the
+refcount of the exception dst is 2, which corresponds to the increment
+made by dst_init() and the increment made by the TCP socket for which the
+connection is timing out. The refcount made by the socket is never
+released. The refcount of the dst is decremented in sk_dst_reset() but
+that decrement is counteracted by a dst_hold() intentionally placed just
+before the sk_dst_reset() in ip6_negative_advice(). After
+ip6_negative_advice() has finished, there is no other object tied to the
+dst. The socket lost its reference stored in sk_dst_cache and the dst is
+no longer in the exception table. The exception dst becomes a leaked
+object.
 
-sci_ports[0] = port A
-sci_ports[X] = port B
+As a result of this dst leak, an unbalanced refcount is reported for the
+loopback device of a net namespace being destroyed under kernels that do
+not contain e5f80fcf869a ("ipv6: give an IPv6 dev to blackhole_netdev"):
+unregister_netdevice: waiting for lo to become free. Usage count = 2
 
-In this case, the new port mapped at index zero will have associated data
-that was used for earlycon.
+Fix the dst leak by removing the dst_hold() in ip6_negative_advice(). The
+patch that introduced the dst_hold() in ip6_negative_advice() was
+92f1655aa2b22 ("net: fix __dst_negative_advice() race"). But 92f1655aa2b22
+merely refactored the code with regards to the dst refcount so the issue
+was present even before 92f1655aa2b22. The bug was introduced in
+54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually
+expired.") where the expired cached route is deleted and the sk_dst_cache
+member of the socket is set to NULL by calling dst_negative_advice() but
+the refcount belonging to the socket is left unbalanced.
 
-In case this happens, after Linux boot, any access to the serial port that
-maps on sci_ports[0] (port A) will block the serial port that was used as
-earlycon (port B).
+The IPv4 version - ipv4_negative_advice() - is not affected by this bug.
+When the TCP connection times out ipv4_negative_advice() merely resets the
+sk_dst_cache of the socket while decrementing the refcount of the
+exception dst.
 
-To fix this, add early_console_exit() that clean the sci_ports[0] at
-earlycon exit time.
-
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20241106120118.1719888-4-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 92f1655aa2b22 ("net: fix __dst_negative_advice() race")
+Fixes: 54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually expired.")
+Link: https://lore.kernel.org/netdev/20241113105611.GA6723@incl/T/#u
+Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241128085950.GA4505@incl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c |   28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ net/ipv6/route.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -3457,6 +3457,32 @@ early_platform_init_buffer("earlyprintk"
- #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
- static struct plat_sci_port port_cfg __initdata;
- 
-+static int early_console_exit(struct console *co)
-+{
-+	struct sci_port *sci_port = &sci_ports[0];
-+	struct uart_port *port = &sci_port->port;
-+	unsigned long flags;
-+	int locked = 1;
-+
-+	if (port->sysrq)
-+		locked = 0;
-+	else if (oops_in_progress)
-+		locked = uart_port_trylock_irqsave(port, &flags);
-+	else
-+		uart_port_lock_irqsave(port, &flags);
-+
-+	/*
-+	 * Clean the slot used by earlycon. A new SCI device might
-+	 * map to this slot.
-+	 */
-+	memset(sci_ports, 0, sizeof(*sci_port));
-+
-+	if (locked)
-+		uart_port_unlock_irqrestore(port, flags);
-+
-+	return 0;
-+}
-+
- static int __init early_console_setup(struct earlycon_device *device,
- 				      int type)
- {
-@@ -3475,6 +3501,8 @@ static int __init early_console_setup(st
- 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
- 
- 	device->con->write = serial_console_write;
-+	device->con->exit = early_console_exit;
-+
- 	return 0;
- }
- static int __init sci_early_console_setup(struct earlycon_device *device,
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 37e05a77fe49e..5dbf60dd4aa2c 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -2641,10 +2641,10 @@ static void ip6_negative_advice(struct sock *sk,
+ 	if (rt->rt6i_flags & RTF_CACHE) {
+ 		rcu_read_lock();
+ 		if (rt6_check_expired(rt)) {
+-			/* counteract the dst_release() in sk_dst_reset() */
+-			dst_hold(dst);
++			/* rt/dst can not be destroyed yet,
++			 * because of rcu_read_lock()
++			 */
+ 			sk_dst_reset(sk);
+-
+ 			rt6_remove_exception_rt(rt);
+ 		}
+ 		rcu_read_unlock();
+-- 
+2.43.0
+
 
 
 
