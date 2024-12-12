@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99999EF893
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CDB9EF9CA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E9A2189625D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6B98188DC73
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F21223E93;
-	Thu, 12 Dec 2024 17:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA52223C48;
+	Thu, 12 Dec 2024 17:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZba50d5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5E3kxNh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623B7223C67;
-	Thu, 12 Dec 2024 17:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1764F215783;
+	Thu, 12 Dec 2024 17:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024846; cv=none; b=DzeUatahTRXLdlrdiAAA5RYHwSGLRXmKnHsd1JYGF3OgeeclhlCO0YC/ltuJ7+xVC4VlUsSgC3p7W1VR8fYftrI1/em6TLPymGJSsFaeOukRBw09dPz/VuDKeZu7e/O5dZABm8R04AkKzZ6r0Mhn/TQASLop8G88449g76BS5Bg=
+	t=1734025678; cv=none; b=O7DMaI8xp4yUrOzvqDd+gXvwakMRjVdniAfs/2YEFjo2OvrV/fIRO0Hz5Pai2Y9SLYWi02ayoFdHeShWA9pqbsyMPKghQSejbSxSYbI/3W1ofzJf6+/OiprsymzasYDDZK2ww93OavCUtDvUFQs+rlHdp8bBjKEf//FifPp8qbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024846; c=relaxed/simple;
-	bh=sX1qxrL9aPE3AUA5r+fl9zCbp5bOgWeB6RbioPgnqQQ=;
+	s=arc-20240116; t=1734025678; c=relaxed/simple;
+	bh=XTQg/HJ9u97Do0MWMUhgUPen+QLhujZdbTOSCPWRW6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VCpEk+Be/kcngZinkwYxqQk4pJn4KxChdI+P1DP0ps62zoNJf8+BY0EQGq3r8og0+a2qMIE4ps8aO6QUVo1HH3XXXpoWeTOiLzUIce9kQ7gvOEbVYrwCx/XB67EkM7i51qJWGlQZCo0HbTcSAkJ9atiybZctzYhyYxqILBEcEpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZba50d5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD30BC4CECE;
-	Thu, 12 Dec 2024 17:34:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wr0M9bvY9LW32H1Q37MR3oct2HBP+GfP678NEB/PZvk36Y6+1Gi8fByR8WfIg0Dnx2EdtUI1KW4wL+SMAPVJPE1/HDx4jNKrZSHxBfeK5fC1ZWejwZwU+Npt47tB4C4Q6FRkw8A4szbZod88CVWdxpRh9RvZJOYuSWaiB0n4iMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5E3kxNh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CE2C4CECE;
+	Thu, 12 Dec 2024 17:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024846;
-	bh=sX1qxrL9aPE3AUA5r+fl9zCbp5bOgWeB6RbioPgnqQQ=;
+	s=korg; t=1734025678;
+	bh=XTQg/HJ9u97Do0MWMUhgUPen+QLhujZdbTOSCPWRW6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZba50d5FZwIC4DzWRzWduvfqxov2b8z8I69qjXrm5QiZ3QDMSyhMrdBR2CRWW1Vg
-	 XmyCud+N353SFaQMaOXOPOMRoYtpSiZAywB+4ebGSPMY7knmmLGygdKWaaWg7p7ads
-	 rF1Z+r7t1MGe7uCLrK+6FXKQRwTmfRcLG66tvIXs=
+	b=Y5E3kxNhzq+Gc2nug7FBfZtKGV5MA0NlmFbuaDhrJRSMyccMJIxNblfdrSL/NRzgi
+	 jW9DeCbLNApVABa6ihnu6cNK1kJGYQs62To/btkZL3CUN9qsWnFOnnHeuRCz97kLcs
+	 paYhxy4MXuhkgFEC/2EBYSsfS1mPBz8EEh6TziDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Rob Herring <robh@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 431/459] powerpc/prom_init: Fixup missing powermac #size-cells
+Subject: [PATCH 5.4 251/321] bpf: Handle BPF_EXIST and BPF_NOEXIST for LPM trie
 Date: Thu, 12 Dec 2024 16:02:49 +0100
-Message-ID: <20241212144310.785442487@linuxfoundation.org>
+Message-ID: <20241212144239.885545206@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
+[ Upstream commit eae6a075e9537dd69891cf77ca5a88fa8a28b4a1 ]
 
-On some powermacs `escc` nodes are missing `#size-cells` properties,
-which is deprecated and now triggers a warning at boot since commit
-045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
-handling").
+Add the currently missing handling for the BPF_EXIST and BPF_NOEXIST
+flags. These flags can be specified by users and are relevant since LPM
+trie supports exact matches during update.
 
-For example:
-
-  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
-  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
-  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
-  ...
-  Call Trace:
-    of_bus_n_size_cells+0x98/0x108 (unreliable)
-    of_bus_default_count_cells+0x40/0x60
-    __of_get_address+0xc8/0x21c
-    __of_address_to_resource+0x5c/0x228
-    pmz_init_port+0x5c/0x2ec
-    pmz_probe.isra.0+0x144/0x1e4
-    pmz_console_init+0x10/0x48
-    console_init+0xcc/0x138
-    start_kernel+0x5c4/0x694
-
-As powermacs boot via prom_init it's possible to add the missing
-properties to the device tree during boot, avoiding the warning. Note
-that `escc-legacy` nodes are also missing `#size-cells` properties, but
-they are skipped by the macio driver, so leave them alone.
-
-Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20241206110622.1161752-4-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ kernel/bpf/lpm_trie.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 6f7ad80763159..9a753c4dafab6 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2894,7 +2894,7 @@ static void __init fixup_device_tree_chrp(void)
- #endif
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index c372be6df264e..1f92d531b4466 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -364,6 +364,10 @@ static int trie_update_elem(struct bpf_map *map,
+ 	 * simply assign the @new_node to that slot and be done.
+ 	 */
+ 	if (!node) {
++		if (flags == BPF_EXIST) {
++			ret = -ENOENT;
++			goto out;
++		}
+ 		rcu_assign_pointer(*slot, new_node);
+ 		goto out;
+ 	}
+@@ -372,18 +376,31 @@ static int trie_update_elem(struct bpf_map *map,
+ 	 * which already has the correct data array set.
+ 	 */
+ 	if (node->prefixlen == matchlen) {
++		if (!(node->flags & LPM_TREE_NODE_FLAG_IM)) {
++			if (flags == BPF_NOEXIST) {
++				ret = -EEXIST;
++				goto out;
++			}
++			trie->n_entries--;
++		} else if (flags == BPF_EXIST) {
++			ret = -ENOENT;
++			goto out;
++		}
++
+ 		new_node->child[0] = node->child[0];
+ 		new_node->child[1] = node->child[1];
  
- #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
--static void __init fixup_device_tree_pmac(void)
-+static void __init fixup_device_tree_pmac64(void)
- {
- 	phandle u3, i2c, mpic;
- 	u32 u3_rev;
-@@ -2934,7 +2934,31 @@ static void __init fixup_device_tree_pmac(void)
- 		     &parent, sizeof(parent));
- }
- #else
--#define fixup_device_tree_pmac()
-+#define fixup_device_tree_pmac64()
-+#endif
-+
-+#ifdef CONFIG_PPC_PMAC
-+static void __init fixup_device_tree_pmac(void)
-+{
-+	__be32 val = 1;
-+	char type[8];
-+	phandle node;
-+
-+	// Some pmacs are missing #size-cells on escc nodes
-+	for (node = 0; prom_next_node(&node); ) {
-+		type[0] = '\0';
-+		prom_getprop(node, "device_type", type, sizeof(type));
-+		if (prom_strcmp(type, "escc"))
-+			continue;
-+
-+		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
-+			continue;
-+
-+		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
+-		if (!(node->flags & LPM_TREE_NODE_FLAG_IM))
+-			trie->n_entries--;
+-
+ 		rcu_assign_pointer(*slot, new_node);
+ 		kfree_rcu(node, rcu);
+ 
+ 		goto out;
+ 	}
+ 
++	if (flags == BPF_EXIST) {
++		ret = -ENOENT;
++		goto out;
 +	}
-+}
-+#else
-+static inline void fixup_device_tree_pmac(void) { }
- #endif
- 
- #ifdef CONFIG_PPC_EFIKA
-@@ -3159,6 +3183,7 @@ static void __init fixup_device_tree(void)
- 	fixup_device_tree_maple_memory_controller();
- 	fixup_device_tree_chrp();
- 	fixup_device_tree_pmac();
-+	fixup_device_tree_pmac64();
- 	fixup_device_tree_efika();
- 	fixup_device_tree_pasemi();
- }
++
+ 	/* If the new node matches the prefix completely, it must be inserted
+ 	 * as an ancestor. Simply insert it between @node and *@slot.
+ 	 */
 -- 
 2.43.0
 
