@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-101074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE729EEA83
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2169EF12C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54B4716C4CF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 190511882856
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81E2217656;
-	Thu, 12 Dec 2024 15:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B222967F;
+	Thu, 12 Dec 2024 16:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duRl2bnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFJ+gYpl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E6A215F5A;
-	Thu, 12 Dec 2024 15:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CB9229676;
+	Thu, 12 Dec 2024 16:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016166; cv=none; b=aRoLrH7YqDv0w3EJSL2Cibmyi2tvJkoHDVlMnDllCdShHP9nGoldrf3u/TqVZfl9iSM3veYQAIv/GweKzQKWmZ8E7Fl1vA+qfUExpvwO2AU5CQnfd+Od8PEPvNOWP5n6tUHrCd2dZtw9Hu8KyVQ2Npc9/cFXWXdCG8geP2VJPgU=
+	t=1734020080; cv=none; b=U5DialLD3MyrXBVpmDfiEjWD+LD3kHQ99ySXMxHMAcds/MgfVPR2frNNipqTm304QmhLSgH+l6q72W3qqFGjmyVFehXYuAmuxP25/jFDgv1IioNJiZdhuvGQY6YtWXSbU8/cLMkD0+Tw1fmFQeQyfwLRq0bEUFn3nNbfXwgAv5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016166; c=relaxed/simple;
-	bh=7CTzYORPT/jt9qUceaWlujAS/81gWEd99vrGHq2if6Q=;
+	s=arc-20240116; t=1734020080; c=relaxed/simple;
+	bh=q4H3kR7vuHJH/pRb45XxkjtAhBgEby/OqOvNLS6q0rU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dp6wIiW0iBTdbw/2kXBijqtFKbQdjpVbfBBG5MxdylVd7zKi+mqipdyOn9wCzWvbnk9aG0p4RcpJ8Ax2OywL5Xua6JN67CdN2J6NNtB6/e23akPyhHIZsYSuQfXVyZc9DA1S2B8sF35OLVxNiP/6w8gzMGaT+leG56SqZ/dPLqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duRl2bnK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101B5C4CECE;
-	Thu, 12 Dec 2024 15:09:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nWqu6Y2UW4h5bfcytg2vNCNpV3AxGDqyJmWQX0Dfoasw+9SrM1iETQS0uPSXYoURSonPcNIgmg1AuqB+KK7Y0ACnzpvMetomCgf8XyjOOYChbW/bjWRH4YK1CFYxSO+wG+4aWVzURBo1Z9L6a7R3xSNJrGehTkPStxMIAPyQmdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFJ+gYpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7BFC4CED0;
+	Thu, 12 Dec 2024 16:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016166;
-	bh=7CTzYORPT/jt9qUceaWlujAS/81gWEd99vrGHq2if6Q=;
+	s=korg; t=1734020079;
+	bh=q4H3kR7vuHJH/pRb45XxkjtAhBgEby/OqOvNLS6q0rU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duRl2bnKAs8yrsGFSY+26NQmHhh1DK7VZWv5F8vq/Lrq8a0D8fRPE/cR8VIiwZaLH
-	 N2njBDcWXu2wVbOE/PazbYT/uWQqZfIiWkpCKjBqtyzd+JVKjy9brFgiKQY2697yR7
-	 ejNLV06JolMxoWL3lfl+3YFVgWldpa3qJuOpp8aY=
+	b=RFJ+gYpl48dSEg5NJ22ayewgzqKsyx9Ph4+m1eCkCdLQWS5hjFMjd+YjqQLnIGTAX
+	 pYzfKCiID9BKgD7rjexGTElGAEjuEn0HcDgRC9cLb4gkh9xfPlUQ0zspzX+oDSYFjU
+	 ywmETnt93FbLmpIaZrFAAfa2dmHQrfNYa6kisRws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 131/466] tracing: Fix cmp_entries_dup() to respect sort() comparison rules
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	stable@kernel.org,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 355/772] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
 Date: Thu, 12 Dec 2024 15:55:00 +0100
-Message-ID: <20241212144311.978300514@linuxfoundation.org>
+Message-ID: <20241212144404.581816469@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,59 +60,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Benoît Sevens <bsevens@google.com>
 
-commit e63fbd5f6810ed756bbb8a1549c7d4132968baa9 upstream.
+commit b909df18ce2a998afef81d58bbd1a05dc0788c40 upstream.
 
-The cmp_entries_dup() function used as the comparator for sort()
-violated the symmetry and transitivity properties required by the
-sorting algorithm. Specifically, it returned 1 whenever memcmp() was
-non-zero, which broke the following expectations:
+A bogus device can provide a bNumConfigurations value that exceeds the
+initial value used in usb_get_configuration for allocating dev->config.
 
-* Symmetry: If x < y, then y > x.
-* Transitivity: If x < y and y < z, then x < z.
+This can lead to out-of-bounds accesses later, e.g. in
+usb_destroy_configuration.
 
-These violations could lead to incorrect sorting and failure to
-correctly identify duplicate elements.
-
-Fix the issue by directly returning the result of memcmp(), which
-adheres to the required comparison properties.
-
-Cc: stable@vger.kernel.org
-Fixes: 08d43a5fa063 ("tracing: Add lock-free tracing_map")
-Link: https://lore.kernel.org/20241203202228.1274403-1-visitorckw@gmail.com
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Benoît Sevens <bsevens@google.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/tracing_map.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ sound/usb/quirks.c |   27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -845,15 +845,11 @@ int tracing_map_init(struct tracing_map
- static int cmp_entries_dup(const void *A, const void *B)
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -553,6 +553,7 @@ int snd_usb_create_quirk(struct snd_usb_
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
  {
- 	const struct tracing_map_sort_entry *a, *b;
--	int ret = 0;
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
  
- 	a = *(const struct tracing_map_sort_entry **)A;
- 	b = *(const struct tracing_map_sort_entry **)B;
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
+@@ -564,10 +565,14 @@ static int snd_usb_extigy_boot_quirk(str
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
+ 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&dev->descriptor, sizeof(dev->descriptor));
+-		config = dev->actconfig;
++				&new_device_descriptor, sizeof(new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++				new_device_descriptor.bNumConfigurations);
++		else
++			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 		err = usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -899,6 +904,7 @@ static void mbox2_setup_48_24_magic(stru
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -934,10 +940,14 @@ static int snd_usb_mbox2_boot_quirk(stru
+ 	dev_dbg(&dev->dev, "device initialised!\n");
  
--	if (memcmp(a->key, b->key, a->elt->map->key_size))
--		ret = 1;
--
--	return ret;
-+	return memcmp(a->key, b->key, a->elt->map->key_size);
- }
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&dev->descriptor, sizeof(dev->descriptor));
+-	config = dev->actconfig;
++		&new_device_descriptor, sizeof(new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++			new_device_descriptor.bNumConfigurations);
++	else
++		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
  
- static int cmp_entries_sum(const void *A, const void *B)
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
+@@ -1251,6 +1261,7 @@ static void mbox3_setup_48_24_magic(stru
+ static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
+ 	int descriptor_size;
+ 
+@@ -1264,10 +1275,14 @@ static int snd_usb_mbox3_boot_quirk(stru
+ 	dev_dbg(&dev->dev, "device initialised!\n");
+ 
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&dev->descriptor, sizeof(dev->descriptor));
+-	config = dev->actconfig;
++		&new_device_descriptor, sizeof(new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++			new_device_descriptor.bNumConfigurations);
++	else
++		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
 
 
 
