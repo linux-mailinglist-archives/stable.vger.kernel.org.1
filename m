@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316079EF232
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81629EED64
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D92F189D140
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A02AC188EE11
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B969322A7FA;
-	Thu, 12 Dec 2024 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B01217656;
+	Thu, 12 Dec 2024 15:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rfewotgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKb7bIUw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76488222D63;
-	Thu, 12 Dec 2024 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC78E215764;
+	Thu, 12 Dec 2024 15:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020802; cv=none; b=Dhlr4VKQGjSA4vnx9yM62it2L6poZ8K9j2hKe5UggKVeU6990njFzrvfeEMK3JSXgKcnw119jwJFcrOoTD+gFOO+/vqUfvY6QEZDuwKND/raEcOAturUum1iTUFe437rdWtZ4Ka50PeojHUvjg9I//KcWdc4JiFCSGQTsZE+Fz4=
+	t=1734018099; cv=none; b=kbovUQi1wH3AAzRU1/VV3uU9Qw5b8orEi7+jlXO7s7WiG/7HdQAuV8ZceiQyhuqNxRiOEYVGYzXOg8ExQCWHKQFjDtX/iRLt913yYU99Z/anRQqxoyt5zlOAIlv5NIhvVX4NIPhDzS6fBWubaLsQ2KjxuVVHMNE58waIwU7Q7ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020802; c=relaxed/simple;
-	bh=/ZW/C7LAHBzb1BD5NWrCHKmzoKQ4nexyFgPrNtEnBR8=;
+	s=arc-20240116; t=1734018099; c=relaxed/simple;
+	bh=ehKb/PMjJ/+g3tivDd4axmdmOZixscbC/oiTFsBUPzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQXlous2TEHC5fP4vZk+lXsocQYbnY3drjRnPKVt16ie3KtzBMBlqaPoRHTHSKdIUOLSoKq1/bhnrmnC6ZZlY5+Du9PCn4RbUcPsYUDjJHARVW/nO3gARXVLz6DHe9ABvichpYiuZkG1nJCtVkrFX+xUOYxSvifu3wwuHHxjDIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rfewotgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6216C4CECE;
-	Thu, 12 Dec 2024 16:26:41 +0000 (UTC)
+	 MIME-Version; b=bJSGDI1EFNIncIvdR8cc27jAN+8Q89ChzF6UcswRybjuHoKw5XX8KhWp9UQxW2bLbu/OrwGaAdFbp8QdTAer+KZ74hUv1DPkpP7xvxfVAxVYPMLjVp3Wvx9MQmbMvA5MfRtmJYy58insCnytwrb2oJZ1/nb+nQrQTEs+faExizY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKb7bIUw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FE1C4CECE;
+	Thu, 12 Dec 2024 15:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020802;
-	bh=/ZW/C7LAHBzb1BD5NWrCHKmzoKQ4nexyFgPrNtEnBR8=;
+	s=korg; t=1734018099;
+	bh=ehKb/PMjJ/+g3tivDd4axmdmOZixscbC/oiTFsBUPzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RfewotgkG9bizlD4d/Rf8oIOADRU5HKbVAwP2Gzow+s67mpDKQuJ6k06P+x6ryGfY
-	 rLcWWgnr7fNl+mrAjtI8TUWRlpwzDwLfct7TZLWI3iMZxCbCVKEErb9HZVDXU98NVr
-	 xpHAsFgQ+gBF2JUcEaXp4CTeIFsE/9kaN5o3PflA=
+	b=CKb7bIUwKMe+EH8UWgzEFB65AL4Fg9BQgx3g8coXEemX4C/H1DFHqUUXteWZjdJ9J
+	 6ny4pHKpyN9NNJNWz1c+AK9WrrfKXjg3lr3Det7hlTqPk6niH9lYE13y03GjQ2pilf
+	 +ohr7I1F8jYbZyowds0V5Y+8HksonmnOo6t0O/Ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@google.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 564/772] driver core: fw_devlink: Improve logs for cycle detection
+Subject: [PATCH 6.6 190/356] kselftest/arm64: Dont leak pipe fds in pac.exec_sign_all()
 Date: Thu, 12 Dec 2024 15:58:29 +0100
-Message-ID: <20241212144413.264564461@linuxfoundation.org>
+Message-ID: <20241212144252.137293819@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 6e7ad1aebb4fc9fed0217dd50ef6e58a53f17d81 ]
+[ Upstream commit 27141b690547da5650a420f26ec369ba142a9ebb ]
 
-The links in a cycle are not all logged in a consistent manner or not
-logged at all. Make them consistent by adding a "cycle:" string and log all
-the link in the cycles (even the child ==> parent dependency) so that it's
-easier to debug cycle detection code. Also, mark the start and end of a
-cycle so it's easy to tell when multiple cycles are logged back to back.
+The PAC exec_sign_all() test spawns some child processes, creating pipes
+to be stdin and stdout for the child. It cleans up most of the file
+descriptors that are created as part of this but neglects to clean up the
+parent end of the child stdin and stdout. Add the missing close() calls.
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Tested-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20240202095636.868578-4-saravanak@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241111-arm64-pac-test-collisions-v1-1-171875f37e44@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tools/testing/selftests/arm64/pauth/pac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 30204e62497c2..f0a66fec4fa75 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -137,7 +137,7 @@ static void __fwnode_link_del(struct fwnode_link *link)
-  */
- static void __fwnode_link_cycle(struct fwnode_link *link)
- {
--	pr_debug("%pfwf: Relaxing link with %pfwf\n",
-+	pr_debug("%pfwf: cycle: depends on %pfwf\n",
- 		 link->consumer, link->supplier);
- 	link->flags |= FWLINK_FLAG_CYCLE;
- }
-@@ -1956,6 +1956,7 @@ static bool __fw_devlink_relax_cycles(struct device *con,
- 
- 	/* Termination condition. */
- 	if (sup_dev == con) {
-+		pr_debug("----- cycle: start -----\n");
- 		ret = true;
- 		goto out;
+diff --git a/tools/testing/selftests/arm64/pauth/pac.c b/tools/testing/selftests/arm64/pauth/pac.c
+index b743daa772f55..5a07b3958fbf2 100644
+--- a/tools/testing/selftests/arm64/pauth/pac.c
++++ b/tools/testing/selftests/arm64/pauth/pac.c
+@@ -182,6 +182,9 @@ int exec_sign_all(struct signatures *signed_vals, size_t val)
+ 		return -1;
  	}
-@@ -1987,8 +1988,11 @@ static bool __fw_devlink_relax_cycles(struct device *con,
- 	else
- 		par_dev = fwnode_get_next_parent_dev(sup_handle);
  
--	if (par_dev && __fw_devlink_relax_cycles(con, par_dev->fwnode))
-+	if (par_dev && __fw_devlink_relax_cycles(con, par_dev->fwnode)) {
-+		pr_debug("%pfwf: cycle: child of %pfwf\n", sup_handle,
-+			 par_dev->fwnode);
- 		ret = true;
-+	}
++	close(new_stdin[1]);
++	close(new_stdout[0]);
++
+ 	return 0;
+ }
  
- 	if (!sup_dev)
- 		goto out;
-@@ -2004,6 +2008,8 @@ static bool __fw_devlink_relax_cycles(struct device *con,
- 
- 		if (__fw_devlink_relax_cycles(con,
- 					      dev_link->supplier->fwnode)) {
-+			pr_debug("%pfwf: cycle: depends on %pfwf\n", sup_handle,
-+				 dev_link->supplier->fwnode);
- 			fw_devlink_relax_link(dev_link);
- 			dev_link->flags |= DL_FLAG_CYCLE;
- 			ret = true;
-@@ -2083,6 +2089,7 @@ static int fw_devlink_create_devlink(struct device *con,
- 		if (__fw_devlink_relax_cycles(con, sup_handle)) {
- 			__fwnode_link_cycle(link);
- 			flags = fw_devlink_get_flags(link->flags);
-+			pr_debug("----- cycle: end -----\n");
- 			dev_info(con, "Fixed dependency cycle(s) with %pfwf\n",
- 				 sup_handle);
- 		}
 -- 
 2.43.0
 
