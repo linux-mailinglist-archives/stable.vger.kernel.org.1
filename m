@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2389EF26B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769569EEE1F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950C51787A9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F30531887B8B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C3022540B;
-	Thu, 12 Dec 2024 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A31D222D4E;
+	Thu, 12 Dec 2024 15:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASuayulc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlsWYhzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6766D213E6B;
-	Thu, 12 Dec 2024 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC47D4F218;
+	Thu, 12 Dec 2024 15:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021212; cv=none; b=qM+hjq/KnoHcbTX0xKNNU6GXo3zuJ06UNHgumlL6y1O1/gzFLupWD5CUydVY9BZdTRAtSztd3UZ4Nbi29n2z/uIps0sCqqjWrSh8s4GwCrgJg1NT74hGztsWwq3kxAVIhEgJ0qw6oYpN1tIPuYKkDZCYs1lo9h9DRqrxxiL5wJM=
+	t=1734018469; cv=none; b=QdQtympsLXNi0qoYQ1LY3lpnzr4vfBxi+w1SudzvuctF6v1CWQ2VI6xNwB7k8o9bWwr2pYgIjoaRbIeHOLZ1TErpBj0m3fltTuTj1SXA5l/MH3dmLcmf0KCr5qFCAF2QCJ3b50fv5NAejO+RhOwU/ZcbjDnYw6OxV//VVIkCAVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021212; c=relaxed/simple;
-	bh=I7tgmevK8Uwp1CAr5G11rvL7aspCPZZPGhRpI8tr2oo=;
+	s=arc-20240116; t=1734018469; c=relaxed/simple;
+	bh=3yEMbT22CAtHUTN+nG2iWu4swCHHn6k5elL1Xi0OAOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBf1eIxJ4mj/w7rvVu19NWmjcN9Io096tCf0661Fv/kU3fagxF6KNzDotgajBY4GGt6t/UeZ+Tj+4sfLNEWKMoxUkAeiwQGuK/Ext1Qw+Q7aH6LBw0PWrD/iYf6aJmvi61LC/+zUfAaHoeLeUqQsydk88Y9n7TE7/yvqOH3Gjw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASuayulc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED57C4CECE;
-	Thu, 12 Dec 2024 16:33:31 +0000 (UTC)
+	 MIME-Version; b=QZbOFsY+7RfiU2KyAVk+J3uM6Q9urpY4LmOY6yHNrxfKchcPeStqKjhKyH9pVJN075f1o8S/u7whseHiV6YQ+qDLm/RIrA1xMHXt3O1Thq5Acwvt6xMHIsAlOEqEr2/fKCqCVcKHciZyguwQQipxxnKIPWY+S700PxbGOp+jvJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlsWYhzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CF8C4CECE;
+	Thu, 12 Dec 2024 15:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021212;
-	bh=I7tgmevK8Uwp1CAr5G11rvL7aspCPZZPGhRpI8tr2oo=;
+	s=korg; t=1734018468;
+	bh=3yEMbT22CAtHUTN+nG2iWu4swCHHn6k5elL1Xi0OAOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ASuayulceiZ9Kj0LqFw9l788TZjL1rVPp2nACg7CMy2QlJiA0mqCQDmjUyDrmbzcW
-	 yjL4SlQLv+FlCkmnSQG2h7nchZjqLqUTRw8m6iGQyI6ZepRkvqknmUFQKpvX5Ry0Y8
-	 Y2Z8UQCEis5dfwhhtrLFz5tiw8YxqUG8SkqRUmYY=
+	b=WlsWYhzmOpzmtkpAxHUsgUSZe1sRb7l+SLajVdBavNrxdWry6uajBDth3wvWVbp2H
+	 2zbXYcDYMxJaTaBWTMw4RouKSbeB6JWu8ZO4eFgpVbXGuLz/dS9YdokpC7VnaCCjc9
+	 LkofH5beJTgJELegYAoaxyWVIPfjP1vCJgfU6C9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikandan Muralidharan <manikandan.m@microchip.com>,
-	Dharma Balasubiramani <dharma.b@microchip.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	syzbot+7f3761b790fa41d0f3d5@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 676/772] drm/panel: simple: Add Microchip AC69T88A LVDS Display panel
+Subject: [PATCH 6.6 302/356] fs/ntfs3: Fix case when unmarked clusters intersect with zone
 Date: Thu, 12 Dec 2024 16:00:21 +0100
-Message-ID: <20241212144417.852695307@linuxfoundation.org>
+Message-ID: <20241212144256.496286011@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikandan Muralidharan <manikandan.m@microchip.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 40da1463cd6879f542238b36c1148f517927c595 ]
+[ Upstream commit 5fc982fe7eca9d0cf7b25832450ebd4f7c8e1c36 ]
 
-Add support for Microchip AC69T88A 5 inch TFT LCD 800x480
-Display module with LVDS interface.The panel uses the Sitronix
-ST7262 800x480 Display driver
-
-Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240919091548.430285-2-manikandan.m@microchip.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reported-by: syzbot+7f3761b790fa41d0f3d5@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ fs/ntfs3/run.c | 40 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index b560d62b6e219..a35e94e2ffd06 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -3908,6 +3908,31 @@ static const struct panel_desc yes_optoelectronics_ytc700tlag_05_201c = {
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
+index cb8cf0161177b..44e93ad491ba7 100644
+--- a/fs/ntfs3/run.c
++++ b/fs/ntfs3/run.c
+@@ -1053,8 +1053,8 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ {
+ 	int ret, err;
+ 	CLST next_vcn, lcn, len;
+-	size_t index;
+-	bool ok;
++	size_t index, done;
++	bool ok, zone;
+ 	struct wnd_bitmap *wnd;
  
-+static const struct drm_display_mode mchp_ac69t88a_mode = {
-+	.clock = 25000,
-+	.hdisplay = 800,
-+	.hsync_start = 800 + 88,
-+	.hsync_end = 800 + 88 + 5,
-+	.htotal = 800 + 88 + 5 + 40,
-+	.vdisplay = 480,
-+	.vsync_start = 480 + 23,
-+	.vsync_end = 480 + 23 + 5,
-+	.vtotal = 480 + 23 + 5 + 1,
-+};
+ 	ret = run_unpack(run, sbi, ino, svcn, evcn, vcn, run_buf, run_buf_size);
+@@ -1085,8 +1085,9 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ 			continue;
+ 
+ 		down_read_nested(&wnd->rw_lock, BITMAP_MUTEX_CLUSTERS);
++		zone = max(wnd->zone_bit, lcn) < min(wnd->zone_end, lcn + len);
+ 		/* Check for free blocks. */
+-		ok = wnd_is_used(wnd, lcn, len);
++		ok = !zone && wnd_is_used(wnd, lcn, len);
+ 		up_read(&wnd->rw_lock);
+ 		if (ok)
+ 			continue;
+@@ -1094,14 +1095,33 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
+ 		/* Looks like volume is corrupted. */
+ 		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
+ 
+-		if (down_write_trylock(&wnd->rw_lock)) {
+-			/* Mark all zero bits as used in range [lcn, lcn+len). */
+-			size_t done;
+-			err = wnd_set_used_safe(wnd, lcn, len, &done);
+-			up_write(&wnd->rw_lock);
+-			if (err)
+-				return err;
++		if (!down_write_trylock(&wnd->rw_lock))
++			continue;
 +
-+static const struct panel_desc mchp_ac69t88a = {
-+	.modes = &mchp_ac69t88a_mode,
-+	.num_modes = 1,
-+	.bpc = 8,
-+	.size = {
-+		.width = 108,
-+		.height = 65,
-+	},
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+};
++		if (zone) {
++			/*
++			 * Range [lcn, lcn + len) intersects with zone.
++			 * To avoid complex with zone just turn it off.
++			 */
++			wnd_zone_set(wnd, 0, 0);
++		}
 +
- static const struct drm_display_mode arm_rtsm_mode[] = {
- 	{
- 		.clock = 65000,
-@@ -4325,6 +4350,9 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "yes-optoelectronics,ytc700tlag-05-201c",
- 		.data = &yes_optoelectronics_ytc700tlag_05_201c,
-+	}, {
-+		.compatible = "microchip,ac69t88a",
-+		.data = &mchp_ac69t88a,
- 	}, {
- 		/* Must be the last entry */
- 		.compatible = "panel-dpi",
++		/* Mark all zero bits as used in range [lcn, lcn+len). */
++		err = wnd_set_used_safe(wnd, lcn, len, &done);
++		if (zone) {
++			/* Restore zone. Lock mft run. */
++			struct rw_semaphore *lock;
++			lock = is_mounted(sbi) ? &sbi->mft.ni->file.run_lock :
++						 NULL;
++			if (lock)
++				down_read(lock);
++			ntfs_refresh_zone(sbi);
++			if (lock)
++				up_read(lock);
+ 		}
++		up_write(&wnd->rw_lock);
++		if (err)
++			return err;
+ 	}
+ 
+ 	return ret;
 -- 
 2.43.0
 
