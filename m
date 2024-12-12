@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00FE9EF84C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E98D9EF932
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5089A176AB8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39F228A6D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FE42210F1;
-	Thu, 12 Dec 2024 17:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90086225A5E;
+	Thu, 12 Dec 2024 17:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHjJ4PvJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzbfEvy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571562153DD;
-	Thu, 12 Dec 2024 17:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2AC22540B;
+	Thu, 12 Dec 2024 17:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024769; cv=none; b=Wb+kZxpWbku4lVGUEwGQoiqulrOnH6Aj+cC9K6qvKSScqC1rZy/jvqIaTcTWDYya67xNBnGyMNGxev9VoLpnAraxtV1fwJ3hTWDpj5ruGWMzR7q3B/EZ2ccvB018Ph+8UAd21dAswZ6t7KryFPRhskHGLDvUukuC81LiPSvUVqI=
+	t=1734025608; cv=none; b=iMNR+SbS2JM1X0UD2pv7JE0UymEvF84vC6+KR/5G65/vH69VBvyBNw51T1cwMbYsz4S+t7cAE6l12PtxYvxv7JxZF2rTUnFDh4r8A+OcNRdOlqohxiYbq1FHPn/nv30mJA6XeVt69Wmg8Ap33Y5MGwMaXb4JTEa6rgtqipsMcBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024769; c=relaxed/simple;
-	bh=+Nj/pP4t6fuxgrSyBtbQ+Nuu94+Nr1b+e24PKajKleM=;
+	s=arc-20240116; t=1734025608; c=relaxed/simple;
+	bh=sVnp4+04EqbjpHBW9PRbeKoPc/tb99MTDSsDlum64jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZolTBRB7gIdIoEPGEQ7zrdRlZ9z68FYMU76SFtd9vb+HHBMw3Ep0HeyNFV/t6vPF5AO6MEm8ABbpMtorasBfiuan10dLBwgFGh8KBGggB+K3Ld9BQGJDPGLkZeSzymb8Nh/KKZ6Yr7eqZbQGZRNqmipT11qwk1Hae+h4wUK3KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHjJ4PvJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1705C4CECE;
-	Thu, 12 Dec 2024 17:32:48 +0000 (UTC)
+	 MIME-Version; b=V1xRCSFkpF2mPsykNK1flJfxt3XAGqgWC9bAH+wkgjwlh8tP3LAra/orXNwMI5hYKvs9sA2a8kiQ4AItFuGjKdkynSAMu1fb7KAG8Ra1hRr29gK4H680YI29TEl4K6tiTKlpoEg4W+j9hSOCjQaciAN5IYx1+CT0IqMmsDOhDXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzbfEvy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72D6C4CECE;
+	Thu, 12 Dec 2024 17:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024769;
-	bh=+Nj/pP4t6fuxgrSyBtbQ+Nuu94+Nr1b+e24PKajKleM=;
+	s=korg; t=1734025608;
+	bh=sVnp4+04EqbjpHBW9PRbeKoPc/tb99MTDSsDlum64jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHjJ4PvJX1c/Qpl9vEqI3BbazpBB/MldpyuO3ydm0lejdk8JTh9+4H8XX033lYbIv
-	 QF3xLmwnWsCx5a5J9FK7CanFh+bRRkaGne7flu0JTJQy22FMspWqXdlxK8ec0VhSFM
-	 ftLhfOBeqBNHi84jIQM4pYL07khfX4d/4ZhaRAuw=
+	b=SzbfEvy1UKAnKharcuGy/xMkOKeaMuiiNfaLy+aCtn77B1mY2URJx7mmUeUxpyfwW
+	 aMAxCcX9oBzZpT47nVLvY/rBfqP3V1eT7DVqc0tBVoAif4yUi2YGsQotkruBaslzBz
+	 uq5QShBi08jp7DVhsYduIDpt0gulv/GQJtsii9hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 405/459] jfs: fix shift-out-of-bounds in dbSplit
-Date: Thu, 12 Dec 2024 16:02:23 +0100
-Message-ID: <20241212144309.766105949@linuxfoundation.org>
+Subject: [PATCH 5.4 226/321] can: j1939: j1939_session_new(): fix skb reference counting
+Date: Thu, 12 Dec 2024 16:02:24 +0100
+Message-ID: <20241212144238.904098361@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ]
+[ Upstream commit a8c695005bfe6569acd73d777ca298ddddd66105 ]
 
-When dmt_budmin is less than zero, it causes errors
-in the later stages. Added a check to return an error beforehand
-in dbAllocCtl itself.
+Since j1939_session_skb_queue() does an extra skb_get() for each new
+skb, do the same for the initial one in j1939_session_new() to avoid
+refcount underflow.
 
-Reported-by: syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b5ca8a249162c4b9a7d0
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Reported-by: syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d4e8dc385d9258220c31
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20241105094823.2403806-1-dmantipov@yandex.ru
+[mkl: clean up commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/can/j1939/transport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 559f6ebebfc0c..c61fcf0e88d29 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1886,6 +1886,9 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
- 			return -EIO;
- 		dp = (struct dmap *) mp->data;
+diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
+index 1d926a0372e61..7cef19287a3ff 100644
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1489,7 +1489,7 @@ static struct j1939_session *j1939_session_new(struct j1939_priv *priv,
+ 	session->state = J1939_SESSION_NEW;
  
-+		if (dp->tree.budmin < 0)
-+			return -EIO;
-+
- 		/* try to allocate the blocks.
- 		 */
- 		rc = dbAllocDmapLev(bmp, dp, (int) nblocks, l2nb, results);
+ 	skb_queue_head_init(&session->skb_queue);
+-	skb_queue_tail(&session->skb_queue, skb);
++	skb_queue_tail(&session->skb_queue, skb_get(skb));
+ 
+ 	skcb = j1939_skb_to_cb(skb);
+ 	memcpy(&session->skcb, skcb, sizeof(session->skcb));
 -- 
 2.43.0
 
