@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15FF29EF3BC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8F59EEA1A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCFC41941134
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4302284604
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78957237FD4;
-	Thu, 12 Dec 2024 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE5A217656;
+	Thu, 12 Dec 2024 15:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpOmb88/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NluXTxVb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D2B237FC7;
-	Thu, 12 Dec 2024 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C082139B2;
+	Thu, 12 Dec 2024 15:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021973; cv=none; b=CCxQju3aazxX/sRdlxKrN49OjlJIDS/WdhMcUwTv39FCDJe+PCRSyerX7zZ9f1sG0S7LP9x+I4i4YY/NEjlPZE8EiMZYA2TF0AsHHCzFvRC/dY8I6oPq8ZxbiNGsDipArVFRl2oR43XITmnphKM9/qg4C9sVZqVuB/hrFM2ckD4=
+	t=1734016117; cv=none; b=AQG2tdit2lswFQ9yRJ9UZM81E+qi2r4DUvVm+L2AMW/Egr1ub+PjUj1b+Ug6MU2Ct7tp1Ay43L6c53PqkYGVSUAIwzrl5XFalmiVFWgkrM4Fw9+s1c6x9v78seRsOWwgCoWMD4sA6561j2ruT770Y/aYdBCpbFVLtoAFUM/8q24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021973; c=relaxed/simple;
-	bh=36gR7IawedQHFHLnkAMHbwU4u/TZRSpw7w9KlMvMxGQ=;
+	s=arc-20240116; t=1734016117; c=relaxed/simple;
+	bh=6wnUgyBA2RE/avQYIak0Gk5U7+UF0V0h2C8LpOzhnJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4bV9r51PqTvIDX3BA6mfkUtqiDqFUkgwMnvJlAYk0foiRiM7b1+4gmTwr0D2yVAV0+mxbj9lyjh3GvZsUJgiGSgGzkgXD/qVRCmGeZ4nYmK0KWTKFliCkYF7tUskXWzirpPUOgs5gWdqlIlaUlmVR7u66ZsDco5fTEH+tTTEGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpOmb88/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5E8C4CED0;
-	Thu, 12 Dec 2024 16:46:12 +0000 (UTC)
+	 MIME-Version; b=XfYnxGDvIlsmGqEP/aPIGPkl6lG2w74V+Hrkq78NftfVbjz6TPdvrZxVULfRzvsNuop9SO8lRCknhKRPssCzIIf0LYk9f36ZohY0JnF81fuRbElP70JIry3bB7fZgxlRyyI9fA7Td1GKN7rqWtcH/4d6Z2VWPT7Sco1v2CX1Fqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NluXTxVb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD70C4CECE;
+	Thu, 12 Dec 2024 15:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021973;
-	bh=36gR7IawedQHFHLnkAMHbwU4u/TZRSpw7w9KlMvMxGQ=;
+	s=korg; t=1734016117;
+	bh=6wnUgyBA2RE/avQYIak0Gk5U7+UF0V0h2C8LpOzhnJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpOmb88/PE3Z2t1L8w+b5+aUEqUGsztOEg1VgypjTiiUZq9dHDRSIJIGh37FzmQiJ
-	 zK0V8wBES9K+298+dhJ1TaVmwYdJ6W48aQrCzUQGzPR4f2AeL6ur48gQNCMNkG4kmL
-	 p6fMuMMWkguNvayt348lcWf6RBYkqx/Z6VZJR8jM=
+	b=NluXTxVbTzme7Dx1r088EPNdWJ2EQuRolwmE887qh7LIK4lcrgAqL2MKoPGPH2jaS
+	 KSyKbqT4GvqP4s1SdUqcMH14E7hXhaZQFMtjMGCXhYhTRg30Pu8UyLcTpyisCOZj7o
+	 5GeJCqDIYTT3xjvenasGi1TUVczPlZNKHJ4yZPb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 112/565] soc: ti: smartreflex: Use IRQF_NO_AUTOEN flag in request_irq()
+	Mark Rutland <mark.rutland@arm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 138/466] arm64: ptrace: fix partial SETREGSET for NT_ARM_POE
 Date: Thu, 12 Dec 2024 15:55:07 +0100
-Message-ID: <20241212144315.908190399@linuxfoundation.org>
+Message-ID: <20241212144312.253529951@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 16a0a69244240cfa32c525c021c40f85e090557a ]
+commit 594bfc4947c4fcabba1318d8384c61a29a6b89fb upstream.
 
-If request_irq() fails in sr_late_init(), there is no need to enable
-the irq, and if it succeeds, disable_irq() after request_irq() still has
-a time gap in which interrupts can come.
+Currently poe_set() doesn't initialize the temporary 'ctrl' variable,
+and a SETREGSET call with a length of zero will leave this
+uninitialized. Consequently an arbitrary value will be written back to
+target->thread.por_el0, potentially leaking up to 64 bits of memory from
+the kernel stack. The read is limited to a specific slot on the stack,
+and the issue does not provide a write mechanism.
 
-request_irq() with IRQF_NO_AUTOEN flag will disable IRQ auto-enable when
-request IRQ.
+Fix this by initializing the temporary value before copying the regset
+from userspace, as for other regsets (e.g. NT_PRSTATUS, NT_PRFPREG,
+NT_ARM_SYSTEM_CALL). In the case of a zero-length write, the existing
+contents of POR_EL1 will be retained.
 
-Fixes: 1279ba5916f6 ("OMAP3+: SR: disable interrupt by default")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240912034147.3014213-1-ruanjinjie@huawei.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before this patch:
+
+| # ./poe-test
+| Attempting to write NT_ARM_POE::por_el0 = 0x900d900d900d900d
+| SETREGSET(nt=0x40f, len=8) wrote 8 bytes
+|
+| Attempting to read NT_ARM_POE::por_el0
+| GETREGSET(nt=0x40f, len=8) read 8 bytes
+| Read NT_ARM_POE::por_el0 = 0x900d900d900d900d
+|
+| Attempting to write NT_ARM_POE (zero length)
+| SETREGSET(nt=0x40f, len=0) wrote 0 bytes
+|
+| Attempting to read NT_ARM_POE::por_el0
+| GETREGSET(nt=0x40f, len=8) read 8 bytes
+| Read NT_ARM_POE::por_el0 = 0xffff8000839c3d50
+
+After this patch:
+
+| # ./poe-test
+| Attempting to write NT_ARM_POE::por_el0 = 0x900d900d900d900d
+| SETREGSET(nt=0x40f, len=8) wrote 8 bytes
+|
+| Attempting to read NT_ARM_POE::por_el0
+| GETREGSET(nt=0x40f, len=8) read 8 bytes
+| Read NT_ARM_POE::por_el0 = 0x900d900d900d900d
+|
+| Attempting to write NT_ARM_POE (zero length)
+| SETREGSET(nt=0x40f, len=0) wrote 0 bytes
+|
+| Attempting to read NT_ARM_POE::por_el0
+| GETREGSET(nt=0x40f, len=8) read 8 bytes
+| Read NT_ARM_POE::por_el0 = 0x900d900d900d900d
+
+Fixes: 175198199262 ("arm64/ptrace: add support for FEAT_POE")
+Cc: <stable@vger.kernel.org> # 6.12.x
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241205121655.1824269-4-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/ti/smartreflex.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/ptrace.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/ti/smartreflex.c b/drivers/soc/ti/smartreflex.c
-index 4d15587324d4f..f3122101d3a15 100644
---- a/drivers/soc/ti/smartreflex.c
-+++ b/drivers/soc/ti/smartreflex.c
-@@ -203,10 +203,10 @@ static int sr_late_init(struct omap_sr *sr_info)
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -1469,6 +1469,8 @@ static int poe_set(struct task_struct *t
+ 	if (!system_supports_poe())
+ 		return -EINVAL;
  
- 	if (sr_class->notify && sr_class->notify_flags && sr_info->irq) {
- 		ret = devm_request_irq(&sr_info->pdev->dev, sr_info->irq,
--				       sr_interrupt, 0, sr_info->name, sr_info);
-+				       sr_interrupt, IRQF_NO_AUTOEN,
-+				       sr_info->name, sr_info);
- 		if (ret)
- 			goto error;
--		disable_irq(sr_info->irq);
- 	}
- 
- 	if (pdata && pdata->enable_on_init)
--- 
-2.43.0
-
++	ctrl = target->thread.por_el0;
++
+ 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &ctrl, 0, -1);
+ 	if (ret)
+ 		return ret;
 
 
 
