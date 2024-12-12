@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4A59EF16B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0403A9EF3C9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BE2A28A6D6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90191284DC9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FE022B8C6;
-	Thu, 12 Dec 2024 16:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9D4225412;
+	Thu, 12 Dec 2024 16:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/+i54Hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A29gjP1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB4C2236FC;
-	Thu, 12 Dec 2024 16:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854282F44;
+	Thu, 12 Dec 2024 16:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020853; cv=none; b=k0BplB47/4BWIV3oIA6wnjIJcffCPLQXW4StteLT+a6fI6vsN0W3WOo+hbjQ/k0DSM8Ze7jqlaE69meNvx76WG+8t8jDvXyDzWk9gOXRcEE2pa5BfZPwoLsEnWL5HuzXEoPRo+POz01nL3OcCv/xi3J6N+xhRJw24JxPCa5RgMw=
+	t=1734022750; cv=none; b=c/Rc1BtkGOJ6Taf+KpTDXdxR28W/rBYOJZZFa8+NnMyDFaFkmud0+trgzZfMIFl+xWAphIJ90gmA7vUvicTe29nQf8Ri16S9d9KXsPUnza9AbHroJL5Eg59Uuzec0A/ATZh6j33rQodP7APblaBU3jiWZh6BfUmtO6Tl17xgy0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020853; c=relaxed/simple;
-	bh=rw6saT5Eof2uVmLlOAVN3lkAF7eBIQ83Cwpnb/1pcuI=;
+	s=arc-20240116; t=1734022750; c=relaxed/simple;
+	bh=Y1Zb6ay5QWCGLsbplNjEcHsFy6ZiKnZEDCmyjoe7KEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eL/3uqAKdOVqAdeJ30OSrQzPv2uAzmjs9aBgve9V4DC70zIYI7Ikk8HFrsvwf45R7LU+QHFSvso/2V8yxSHc0icAkkMsEKcNeLOWe8TzJBfbo7e2+M8tRLo21n5ME/jzfEoQQW0DmFIpf5wRoKAR5FwPA1gjFCw7/NYWt/rJ5AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/+i54Hz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A96C4CECE;
-	Thu, 12 Dec 2024 16:27:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c/rsYIpx/tgVMsQuhqQJeW7AqHB0fDYYHEUVJDF1Wd3BYKdwvSCti/QCJw/eA7BJ7f/IlJGBa45L/GXvQe8dRhKfGmJA4V0GT+2K2qwNUYGeQpaj6rVGTxqZnMkBS/NnX5UkLIiSkyt8Weoo5zN++5XwA5Amw+MbworMXajOwBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A29gjP1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CE4C4CECE;
+	Thu, 12 Dec 2024 16:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020853;
-	bh=rw6saT5Eof2uVmLlOAVN3lkAF7eBIQ83Cwpnb/1pcuI=;
+	s=korg; t=1734022750;
+	bh=Y1Zb6ay5QWCGLsbplNjEcHsFy6ZiKnZEDCmyjoe7KEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/+i54HzP+eafcHZNez514oUdz+5oezq4eaC9kcioGVHmgI0CvvKLiOqWTWnm/ig2
-	 kD0N15i7UDfWRj2uO53+USdU0rL5iupArVYQ2F22I5Rr1ERIOh33Cr3VdCouRYxKfF
-	 aW2rCiVW78hdJPH0UlVP+ujs96B4GcS9GMACqvvE=
+	b=A29gjP1q1o4Vq4N6InMOdpE0EDmuQv3p/mTQb9uRpcb+Ktl+wZpd745+xb9dOgske
+	 n3f+HClSus/MBhcgXs5GPLCjPxkHqN8/Xzcg0idpcf/2lXs7svUeftjW6pxaRF1G8S
+	 g4/GHojZVR08HLUlRNwZiD4iHjBl1Zmu1o+scTtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 577/772] PCI: endpoint: Use a separate lock for protecting epc->pci_epf list
+	Hans de Goede <hdegoede@redhat.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Subject: [PATCH 5.15 327/565] spi: Fix acpi deferred irq probe
 Date: Thu, 12 Dec 2024 15:58:42 +0100
-Message-ID: <20241212144413.792823056@linuxfoundation.org>
+Message-ID: <20241212144324.524533763@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +64,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
 
-[ Upstream commit d6dd5bafaabf98a99a76227ab8dc9a89e76a198f ]
+commit d24cfee7f63d6b44d45a67c5662bd1cc48e8b3ca upstream.
 
-The EPC controller maintains a list of EPF drivers added to it. For
-protecting this list against the concurrent accesses, the epc->lock
-(used for protecting epc_ops) has been used so far. Since there were
-no users trying to use epc_ops and modify the pci_epf list simultaneously,
-this was not an issue.
+When probing spi device take care of deferred probe of ACPI irq gpio
+similar like for OF/DT case.
 
-But with the addition of callback mechanism for passing the events, this
-will be a problem. Because the pci_epf list needs to be iterated first
-for getting hold of the EPF driver and then the relevant event specific
-callback needs to be called for the driver.
+>From practical standpoint this fixes issue with vsc-tp driver on
+Dell XP 9340 laptop, which try to request interrupt with spi->irq
+equal to -EPROBE_DEFER and fail to probe with the following error:
 
-If the same epc->lock is used, then it will result in a deadlock scenario.
+vsc-tp spi-INTC10D0:00: probe with driver vsc-tp failed with error -22
 
-For instance,
-
-...
-	mutex_lock(&epc->lock);
-	list_for_each_entry(epf, &epc->pci_epf, list) {
-		epf->event_ops->core_init(epf);
-		|
-		|-> pci_epc_set_bar();
-			|
-			|-> mutex_lock(&epc->lock) # DEADLOCK
-...
-
-So to fix this issue, use a separate lock called "list_lock" for
-protecting the pci_epf list against the concurrent accesses. This lock
-will also be used by the callback mechanism.
-
-Link: https://lore.kernel.org/linux-pci/20230124071158.5503-4-manivannan.sadhasivam@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Kishon Vijay Abraham I <kishon@ti.com>
-Stable-dep-of: 688d2eb4c6fc ("PCI: endpoint: Clear secondary (not primary) EPC in pci_epc_remove_epf()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 33ada67da352 ("ACPI / spi: attach GPIO IRQ from ACPI description to SPI device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com> # Dell XPS9320, ov01a10
+Link: https://patch.msgid.link/20241122094224.226773-1-stanislaw.gruszka@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/pci-epc-core.c | 9 +++++----
- include/linux/pci-epc.h             | 2 ++
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/spi/spi.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index 3bc9273d0a082..6cce430d431b1 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -613,7 +613,7 @@ int pci_epc_add_epf(struct pci_epc *epc, struct pci_epf *epf,
- 	if (type == SECONDARY_INTERFACE && epf->sec_epc)
- 		return -EBUSY;
- 
--	mutex_lock(&epc->lock);
-+	mutex_lock(&epc->list_lock);
- 	func_no = find_first_zero_bit(&epc->function_num_map,
- 				      BITS_PER_LONG);
- 	if (func_no >= BITS_PER_LONG) {
-@@ -640,7 +640,7 @@ int pci_epc_add_epf(struct pci_epc *epc, struct pci_epf *epf,
- 
- 	list_add_tail(list, &epc->pci_epf);
- ret:
--	mutex_unlock(&epc->lock);
-+	mutex_unlock(&epc->list_lock);
- 
- 	return ret;
- }
-@@ -672,11 +672,11 @@ void pci_epc_remove_epf(struct pci_epc *epc, struct pci_epf *epf,
- 		list = &epf->sec_epc_list;
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -400,6 +400,16 @@ static int spi_probe(struct device *dev)
+ 			spi->irq = 0;
  	}
  
--	mutex_lock(&epc->lock);
-+	mutex_lock(&epc->list_lock);
- 	clear_bit(func_no, &epc->function_num_map);
- 	list_del(list);
- 	epf->epc = NULL;
--	mutex_unlock(&epc->lock);
-+	mutex_unlock(&epc->list_lock);
- }
- EXPORT_SYMBOL_GPL(pci_epc_remove_epf);
++	if (has_acpi_companion(dev) && spi->irq < 0) {
++		struct acpi_device *adev = to_acpi_device_node(dev->fwnode);
++
++		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
++		if (spi->irq == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
++		if (spi->irq < 0)
++			spi->irq = 0;
++	}
++
+ 	ret = dev_pm_domain_attach(dev, true);
+ 	if (ret)
+ 		return ret;
+@@ -2406,9 +2416,6 @@ static acpi_status acpi_register_spi_dev
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
  
-@@ -773,6 +773,7 @@ __pci_epc_create(struct device *dev, const struct pci_epc_ops *ops,
- 	}
+-	if (spi->irq < 0)
+-		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
+-
+ 	acpi_device_set_enumerated(adev);
  
- 	mutex_init(&epc->lock);
-+	mutex_init(&epc->list_lock);
- 	INIT_LIST_HEAD(&epc->pci_epf);
- 	ATOMIC_INIT_NOTIFIER_HEAD(&epc->notifier);
- 
-diff --git a/include/linux/pci-epc.h b/include/linux/pci-epc.h
-index a48778e1a4ee3..fe729dfe509b8 100644
---- a/include/linux/pci-epc.h
-+++ b/include/linux/pci-epc.h
-@@ -122,6 +122,7 @@ struct pci_epc_mem {
-  * struct pci_epc - represents the PCI EPC device
-  * @dev: PCI EPC device
-  * @pci_epf: list of endpoint functions present in this EPC device
-+ * list_lock: Mutex for protecting pci_epf list
-  * @ops: function pointers for performing endpoint operations
-  * @windows: array of address space of the endpoint controller
-  * @mem: first window of the endpoint controller, which corresponds to
-@@ -139,6 +140,7 @@ struct pci_epc_mem {
- struct pci_epc {
- 	struct device			dev;
- 	struct list_head		pci_epf;
-+	struct mutex			list_lock;
- 	const struct pci_epc_ops	*ops;
- 	struct pci_epc_mem		**windows;
- 	struct pci_epc_mem		*mem;
--- 
-2.43.0
-
+ 	adev->power.flags.ignore_parent = true;
 
 
 
