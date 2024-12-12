@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-103813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CDB9EF9CA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAF69EFA04
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6B98188DC73
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45FD0179EE2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA52223C48;
-	Thu, 12 Dec 2024 17:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD03223C5D;
+	Thu, 12 Dec 2024 17:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5E3kxNh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8NQqnsS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1764F215783;
-	Thu, 12 Dec 2024 17:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED78622333B;
+	Thu, 12 Dec 2024 17:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025678; cv=none; b=O7DMaI8xp4yUrOzvqDd+gXvwakMRjVdniAfs/2YEFjo2OvrV/fIRO0Hz5Pai2Y9SLYWi02ayoFdHeShWA9pqbsyMPKghQSejbSxSYbI/3W1ofzJf6+/OiprsymzasYDDZK2ww93OavCUtDvUFQs+rlHdp8bBjKEf//FifPp8qbc=
+	t=1734025681; cv=none; b=DtQseseci2apF5JP1kvWWNjF+r8+iYkmC1Ec2SskgGjgShOwh+74yWasznx4j7YbuzReHdOi/E0bD5jKpauPuMqnH42fDSgLY3F22LDoZbTOnL2HQXJkjT3aFdu17MuQmdkdk4GI+gruJ6Yk6WB8u0ZbqLW1Lu4EjritO6M1UlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025678; c=relaxed/simple;
-	bh=XTQg/HJ9u97Do0MWMUhgUPen+QLhujZdbTOSCPWRW6Q=;
+	s=arc-20240116; t=1734025681; c=relaxed/simple;
+	bh=vxZZ2XB7HIQfLAJlkGRg1eByhRbThcQQGdZ/2wfHAr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wr0M9bvY9LW32H1Q37MR3oct2HBP+GfP678NEB/PZvk36Y6+1Gi8fByR8WfIg0Dnx2EdtUI1KW4wL+SMAPVJPE1/HDx4jNKrZSHxBfeK5fC1ZWejwZwU+Npt47tB4C4Q6FRkw8A4szbZod88CVWdxpRh9RvZJOYuSWaiB0n4iMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5E3kxNh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CE2C4CECE;
-	Thu, 12 Dec 2024 17:47:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qmOVJKz9161MvTu7wt2JMeRD4fygBkhMV2V7zbII0oj/MwTmYIgtCXnRMBsXVP3k+UYG+hQYJcKgPh7NXCX/01Aq8tnMiNceJC+XMUFI0Tp5iAwPfqetD4KXP+nE0+7zmBocQwZNsYZEPOPlIRl7X3wMIqmfXS9EPjwZtRp+K2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8NQqnsS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73889C4CECE;
+	Thu, 12 Dec 2024 17:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025678;
-	bh=XTQg/HJ9u97Do0MWMUhgUPen+QLhujZdbTOSCPWRW6Q=;
+	s=korg; t=1734025680;
+	bh=vxZZ2XB7HIQfLAJlkGRg1eByhRbThcQQGdZ/2wfHAr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5E3kxNhzq+Gc2nug7FBfZtKGV5MA0NlmFbuaDhrJRSMyccMJIxNblfdrSL/NRzgi
-	 jW9DeCbLNApVABa6ihnu6cNK1kJGYQs62To/btkZL3CUN9qsWnFOnnHeuRCz97kLcs
-	 paYhxy4MXuhkgFEC/2EBYSsfS1mPBz8EEh6TziDo=
+	b=M8NQqnsSsC2/z3nQzffMHLwhYXBrbnr34Gd32Dk5DuUFWdfe6BJl+smuURFnm5iuh
+	 aeb2vSDJh6FzQ2KpXEqVnrq3BQtJhgY9pj1BgbhKtW+/s4XFGVSGBJ79Ls9Rlkvqki
+	 Ge52EkR+eCCfTrmjI2d8lBvR6UA65zge1NiZmEL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
 	Hou Tao <houtao1@huawei.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 251/321] bpf: Handle BPF_EXIST and BPF_NOEXIST for LPM trie
-Date: Thu, 12 Dec 2024 16:02:49 +0100
-Message-ID: <20241212144239.885545206@linuxfoundation.org>
+Subject: [PATCH 5.4 252/321] bpf: Fix exact match conditions in trie_get_next_key()
+Date: Thu, 12 Dec 2024 16:02:50 +0100
+Message-ID: <20241212144239.924637019@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -71,73 +70,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit eae6a075e9537dd69891cf77ca5a88fa8a28b4a1 ]
+[ Upstream commit 27abc7b3fa2e09bbe41e2924d328121546865eda ]
 
-Add the currently missing handling for the BPF_EXIST and BPF_NOEXIST
-flags. These flags can be specified by users and are relevant since LPM
-trie supports exact matches during update.
+trie_get_next_key() uses node->prefixlen == key->prefixlen to identify
+an exact match, However, it is incorrect because when the target key
+doesn't fully match the found node (e.g., node->prefixlen != matchlen),
+these two nodes may also have the same prefixlen. It will return
+expected result when the passed key exist in the trie. However when a
+recently-deleted key or nonexistent key is passed to
+trie_get_next_key(), it may skip keys and return incorrect result.
 
-Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Fix it by using node->prefixlen == matchlen to identify exact matches.
+When the condition is true after the search, it also implies
+node->prefixlen equals key->prefixlen, otherwise, the search would
+return NULL instead.
+
+Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
 Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241206110622.1161752-4-houtao@huaweicloud.com
+Link: https://lore.kernel.org/r/20241206110622.1161752-6-houtao@huaweicloud.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ kernel/bpf/lpm_trie.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index c372be6df264e..1f92d531b4466 100644
+index 1f92d531b4466..f726ceb8d7e96 100644
 --- a/kernel/bpf/lpm_trie.c
 +++ b/kernel/bpf/lpm_trie.c
-@@ -364,6 +364,10 @@ static int trie_update_elem(struct bpf_map *map,
- 	 * simply assign the @new_node to that slot and be done.
- 	 */
- 	if (!node) {
-+		if (flags == BPF_EXIST) {
-+			ret = -ENOENT;
-+			goto out;
-+		}
- 		rcu_assign_pointer(*slot, new_node);
- 		goto out;
+@@ -655,7 +655,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
+ 	struct lpm_trie_node **node_stack = NULL;
+ 	int err = 0, stack_ptr = -1;
+ 	unsigned int next_bit;
+-	size_t matchlen;
++	size_t matchlen = 0;
+ 
+ 	/* The get_next_key follows postorder. For the 4 node example in
+ 	 * the top of this file, the trie_get_next_key() returns the following
+@@ -694,7 +694,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
+ 		next_bit = extract_bit(key->data, node->prefixlen);
+ 		node = rcu_dereference(node->child[next_bit]);
  	}
-@@ -372,18 +376,31 @@ static int trie_update_elem(struct bpf_map *map,
- 	 * which already has the correct data array set.
- 	 */
- 	if (node->prefixlen == matchlen) {
-+		if (!(node->flags & LPM_TREE_NODE_FLAG_IM)) {
-+			if (flags == BPF_NOEXIST) {
-+				ret = -EEXIST;
-+				goto out;
-+			}
-+			trie->n_entries--;
-+		} else if (flags == BPF_EXIST) {
-+			ret = -ENOENT;
-+			goto out;
-+		}
-+
- 		new_node->child[0] = node->child[0];
- 		new_node->child[1] = node->child[1];
+-	if (!node || node->prefixlen != key->prefixlen ||
++	if (!node || node->prefixlen != matchlen ||
+ 	    (node->flags & LPM_TREE_NODE_FLAG_IM))
+ 		goto find_leftmost;
  
--		if (!(node->flags & LPM_TREE_NODE_FLAG_IM))
--			trie->n_entries--;
--
- 		rcu_assign_pointer(*slot, new_node);
- 		kfree_rcu(node, rcu);
- 
- 		goto out;
- 	}
- 
-+	if (flags == BPF_EXIST) {
-+		ret = -ENOENT;
-+		goto out;
-+	}
-+
- 	/* If the new node matches the prefix completely, it must be inserted
- 	 * as an ancestor. Simply insert it between @node and *@slot.
- 	 */
 -- 
 2.43.0
 
