@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C199EEE77
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2D89EF2B4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD58F16C8D2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 499DC188CB99
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90C9222D62;
-	Thu, 12 Dec 2024 15:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC339226546;
+	Thu, 12 Dec 2024 16:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iPvbxrr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMGFkrY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E63217F34;
-	Thu, 12 Dec 2024 15:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7218226542;
+	Thu, 12 Dec 2024 16:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018690; cv=none; b=o4y57SPv5HlYTbQBHWq1JNlBgnsqSa2kjlGBW0gTT7l6buBxiAkCzjnjY16VuI1XbEsEylBxMnwK2mcmT7cn38jGCXPNtAQKZD7xcrW2T8ebERtCYcdr5T+u8o1noTkgzN//thaGfIY/97UE3a+s8/Ud3C95lSxNRE4tpu1a7qc=
+	t=1734021283; cv=none; b=btH/SYyoa7oYPYTuE5j122xKg1cMuELedqlmXzEjFg9NxU+kSVlMqhsBrFVFS7SnGAgNF+h+KJEDkr/QDhJPgYzqwUYGqQut46L+kFDJHsfGR+RNTCYB7HYAHMqGGrlNLY8YEKhgsYADNwk7vRSeyV52m6/c+rQWPofWztixssE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018690; c=relaxed/simple;
-	bh=0lLFVIeb+ieAeLfjSeH9zx5AKaw9tdoP7NAfbIQggTM=;
+	s=arc-20240116; t=1734021283; c=relaxed/simple;
+	bh=qmZg6E1n6p8wyf4Amg9GGSFok4AT0jCnu1zCzkFeQ0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBNXZTfwRi8mhjPnLzstxbGCt3mW/2mpxFf/g6PG6c+XXWorgpdWGRSw0ABaD9FOHGOIOZoWGG0zbThg2enp2WXPnZtMXo2h3IHBugsdOPfmF9y1P0o7D5LfTqg3XG43ws4K5+E8RVGO9VabhyGYqKQd0qFcKfDFhY+dmxxsDWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iPvbxrr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45FDC4CED0;
-	Thu, 12 Dec 2024 15:51:29 +0000 (UTC)
+	 MIME-Version; b=SridjSlF1dY6aNKn9gLKA/qOYW7et9NwGgcbWZ1+OPLAQuBY4tdsTfPYNThd6WMHiN8DkN24IKKxrsenPdN29jg2xW8YEmdAj2cHU4B0bpuXmQxkzwn5sdLK0Wu4i7tyogXduVuS4enEQZbX2M3nMebtShZmfahP8udwkV4YpG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMGFkrY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D269EC4CECE;
+	Thu, 12 Dec 2024 16:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018690;
-	bh=0lLFVIeb+ieAeLfjSeH9zx5AKaw9tdoP7NAfbIQggTM=;
+	s=korg; t=1734021283;
+	bh=qmZg6E1n6p8wyf4Amg9GGSFok4AT0jCnu1zCzkFeQ0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0iPvbxrr/d05UDlKtIyoojRcjbUuekO70f5uGolkAvaRYQ97loEc5MXuSldl1StY7
-	 8BmToezDHS70OEj2ZeoPCywPKgpgGR/cNyTxyrL8qyUA4jDCkAB8PVtmBMdOjMk6Rp
-	 Yd0IXqz4bRTPE0mWtdspCmbECwveIB+iJw75AuP8=
+	b=JMGFkrY7ymSqJTPbDy/ujEa98GdSNUJwPqglbQFCSNIYVXlVl77racErBne/u6M5X
+	 R7b2eG3847CUEhjWb9CZ5j4sB6il76mH2Ias8I8ni6ko8iJnfua61ymrozSuzIGdSR
+	 yM3ShZ4haMMnjGgXVOAenowU3/w4zOKcro2W4twc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 322/356] sched/core: Prevent wakeup of ksoftirqd during idle load balance
+Subject: [PATCH 6.1 696/772] rocker: fix link status detection in rocker_carrier_init()
 Date: Thu, 12 Dec 2024 16:00:41 +0100
-Message-ID: <20241212144257.279481594@linuxfoundation.org>
+Message-ID: <20241212144418.665729808@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit e932c4ab38f072ce5894b2851fea8bc5754bb8e5 ]
+[ Upstream commit e64285ff41bb7a934bd815bd38f31119be62ac37 ]
 
-Scheduler raises a SCHED_SOFTIRQ to trigger a load balancing event on
-from the IPI handler on the idle CPU. If the SMP function is invoked
-from an idle CPU via flush_smp_call_function_queue() then the HARD-IRQ
-flag is not set and raise_softirq_irqoff() needlessly wakes ksoftirqd
-because soft interrupts are handled before ksoftirqd get on the CPU.
+Since '1 << rocker_port->pport' may be undefined for port >= 32,
+cast the left operand to 'unsigned long long' like it's done in
+'rocker_port_set_enable()' above. Compile tested only.
 
-Adding a trace_printk() in nohz_csd_func() at the spot of raising
-SCHED_SOFTIRQ and enabling trace events for sched_switch, sched_wakeup,
-and softirq_entry (for SCHED_SOFTIRQ vector alone) helps observing the
-current behavior:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-       <idle>-0   [000] dN.1.:  nohz_csd_func: Raising SCHED_SOFTIRQ from nohz_csd_func
-       <idle>-0   [000] dN.4.:  sched_wakeup: comm=ksoftirqd/0 pid=16 prio=120 target_cpu=000
-       <idle>-0   [000] .Ns1.:  softirq_entry: vec=7 [action=SCHED]
-       <idle>-0   [000] .Ns1.:  softirq_exit: vec=7  [action=SCHED]
-       <idle>-0   [000] d..2.:  sched_switch: prev_comm=swapper/0 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=ksoftirqd/0 next_pid=16 next_prio=120
-  ksoftirqd/0-16  [000] d..2.:  sched_switch: prev_comm=ksoftirqd/0 prev_pid=16 prev_prio=120 prev_state=S ==> next_comm=swapper/0 next_pid=0 next_prio=120
-       ...
-
-Use __raise_softirq_irqoff() to raise the softirq. The SMP function call
-is always invoked on the requested CPU in an interrupt handler. It is
-guaranteed that soft interrupts are handled at the end.
-
-Following are the observations with the changes when enabling the same
-set of events:
-
-       <idle>-0       [000] dN.1.: nohz_csd_func: Raising SCHED_SOFTIRQ for nohz_idle_balance
-       <idle>-0       [000] dN.1.: softirq_raise: vec=7 [action=SCHED]
-       <idle>-0       [000] .Ns1.: softirq_entry: vec=7 [action=SCHED]
-
-No unnecessary ksoftirqd wakeups are seen from idle task's context to
-service the softirq.
-
-Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
-Closes: https://lore.kernel.org/lkml/fcf823f-195e-6c9a-eac3-25f870cb35ac@inria.fr/ [1]
-Reported-by: Julia Lawall <julia.lawall@inria.fr>
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20241119054432.6405-5-kprateek.nayak@amd.com
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241114151946.519047-1-dmantipov@yandex.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 2 +-
+ drivers/net/ethernet/rocker/rocker_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 8abd1bf31864e..da14c7450156b 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1183,7 +1183,7 @@ static void nohz_csd_func(void *info)
- 	rq->idle_balance = idle_cpu(cpu);
- 	if (rq->idle_balance) {
- 		rq->nohz_idle_balance = flags;
--		raise_softirq_irqoff(SCHED_SOFTIRQ);
-+		__raise_softirq_irqoff(SCHED_SOFTIRQ);
- 	}
- }
+diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
+index 9e59669a93dd3..2e2826c901fcc 100644
+--- a/drivers/net/ethernet/rocker/rocker_main.c
++++ b/drivers/net/ethernet/rocker/rocker_main.c
+@@ -2504,7 +2504,7 @@ static void rocker_carrier_init(const struct rocker_port *rocker_port)
+ 	u64 link_status = rocker_read64(rocker, PORT_PHYS_LINK_STATUS);
+ 	bool link_up;
  
+-	link_up = link_status & (1 << rocker_port->pport);
++	link_up = link_status & (1ULL << rocker_port->pport);
+ 	if (link_up)
+ 		netif_carrier_on(rocker_port->dev);
+ 	else
 -- 
 2.43.0
 
