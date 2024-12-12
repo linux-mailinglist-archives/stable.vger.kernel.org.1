@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27ADB9EF558
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11379EF664
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0023189F81D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0476D163351
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47A62358B9;
-	Thu, 12 Dec 2024 16:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB28211493;
+	Thu, 12 Dec 2024 17:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKWeusBe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QucwxiBP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B5522969E;
-	Thu, 12 Dec 2024 16:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2604F218;
+	Thu, 12 Dec 2024 17:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022528; cv=none; b=ER58Mn+fbPg6A2Jl+Iq3eVGk75iByXWhBzSqujEGcRrYz1gMT80Oa7WuKwVpRNIiEHYgjQmkxp8ynMwiTEjvbO7s7LxtUTw25+NUEvVKy+eVZp4lHTtafpkVOBaDIH91W7BTZd8M1zHDYG/rnVm6nl7gyKul/7yetjtbTebLOJY=
+	t=1734023999; cv=none; b=eBCw+WhToPLAVS2chUvltlrsC5dKMQtpn8w8NOvuIr5weokQ734lMTbdFCV7mSjExPxz8weJrE33zMQPlbsBAfE9ixe7V1rhkY+WsoY/UVxS+qEIE/srZOBeXOgGZbNHc8UJtkMTduCyZxRENqHJsfH1d7f670H2FTVj/w6IBUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022528; c=relaxed/simple;
-	bh=DJBI4wOHV/oYlS0IzCgkvcd37mjDVb9p/VSvyf+5zWI=;
+	s=arc-20240116; t=1734023999; c=relaxed/simple;
+	bh=wER+7Ap+Zgf+ID5c+Bo+Y7erjgvIZC5eqFBr3I7sSSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svO/nMpxyuJIRVGV29MWHQyH+6AOUMwUHq1qHRIjdtW/rd6bOYS9upYnicmLIhEe7dS8F6LHFzfHt6X9WFgwcv/IttFTlve79M9zkPvoMBpXihsDpMy9vY/2zPDYdHk4XpCzv4SH4veuVaQ9rdXOscsbg/OIChSaJ7p2OISDVYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKWeusBe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B45C4CECE;
-	Thu, 12 Dec 2024 16:55:26 +0000 (UTC)
+	 MIME-Version; b=tfuqdU5QZP21+cmfsJA86hhdXK91ZhyYbtI+UFgAaz2BnXUtUk/gWWbg1LS/xNNPSYcSBhGvB+8SBoIEpgDXyIhj86XwQcjuntGwZiFjnZqPxupgM6eTqEbNV+zwRoTRVUlb6FHlvGzix71mXEEPhKaPK5ViQyXnpHFxE0SKQ2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QucwxiBP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24C7C4CECE;
+	Thu, 12 Dec 2024 17:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022526;
-	bh=DJBI4wOHV/oYlS0IzCgkvcd37mjDVb9p/VSvyf+5zWI=;
+	s=korg; t=1734023999;
+	bh=wER+7Ap+Zgf+ID5c+Bo+Y7erjgvIZC5eqFBr3I7sSSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKWeusBerI33JJvnn8DxH2tev+KaraTrVexQxjaOf1a5igVku7CZ6BSd7qgKWEwXa
-	 cYNjXrf7Ht9poTiUr1h48qCVW5InsZUVzvA220lhYc17++0sbH9ALmTf2szc0Asmcc
-	 at5wlMA71zi0T3z6HtLkZq2GBGbQdRfnTJyEJAP8=
+	b=QucwxiBPH0NGAwmBs+Fg2ppt6DvIXbJa6YamVfteEbASvILOGvzp9hGf8V3SQWxAy
+	 4ENXH9TOg7Ke6bnOyNqgGmY95IPi4kG90WTVJHZ2FA0uZyzlmXsYXMLNfrXbfkxXK8
+	 TYAkz4JmXTgHhYSckVRKRe+AA2/SvGuB+NgAIAY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 266/565] svcrdma: fix miss destroy percpu_counter in svc_rdma_proc_init()
+Subject: [PATCH 5.10 123/459] drm/fsl-dcu: Convert to Linux IRQ interfaces
 Date: Thu, 12 Dec 2024 15:57:41 +0100
-Message-ID: <20241212144321.982018151@linuxfoundation.org>
+Message-ID: <20241212144258.367259360@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit ce89e742a4c12b20f09a43fec1b21db33f2166cd ]
+[ Upstream commit 03ac16e584e496230903ba20f2b4bbfd942a16b4 ]
 
-There's issue as follows:
-RPC: Registered rdma transport module.
-RPC: Registered rdma backchannel transport module.
-RPC: Unregistered rdma transport module.
-RPC: Unregistered rdma backchannel transport module.
-BUG: unable to handle page fault for address: fffffbfff80c609a
-PGD 123fee067 P4D 123fee067 PUD 123fea067 PMD 10c624067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN NOPTI
-RIP: 0010:percpu_counter_destroy_many+0xf7/0x2a0
-Call Trace:
- <TASK>
- __die+0x1f/0x70
- page_fault_oops+0x2cd/0x860
- spurious_kernel_fault+0x36/0x450
- do_kern_addr_fault+0xca/0x100
- exc_page_fault+0x128/0x150
- asm_exc_page_fault+0x26/0x30
- percpu_counter_destroy_many+0xf7/0x2a0
- mmdrop+0x209/0x350
- finish_task_switch.isra.0+0x481/0x840
- schedule_tail+0xe/0xd0
- ret_from_fork+0x23/0x80
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+Drop the DRM IRQ midlayer in favor of Linux IRQ interfaces. DRM's
+IRQ helpers are mostly useful for UMS drivers. Modern KMS drivers
+don't benefit from using it. DRM IRQ callbacks are now being called
+directly or inlined.
 
-If register_sysctl() return NULL, then svc_rdma_proc_cleanup() will not
-destroy the percpu counters which init in svc_rdma_proc_init().
-If CONFIG_HOTPLUG_CPU is enabled, residual nodes may be in the
-'percpu_counters' list. The above issue may occur once the module is
-removed. If the CONFIG_HOTPLUG_CPU configuration is not enabled, memory
-leakage occurs.
-To solve above issue just destroy all percpu counters when
-register_sysctl() return NULL.
-
-Fixes: 1e7e55731628 ("svcrdma: Restore read and write stats")
-Fixes: 22df5a22462e ("svcrdma: Convert rdma_stat_sq_starve to a per-CPU counter")
-Fixes: df971cd853c0 ("svcrdma: Convert rdma_stat_recv to a per-CPU counter")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20210803090704.32152-5-tzimmermann@suse.de
+Stable-dep-of: ffcde9e44d3e ("drm: fsl-dcu: enable PIXCLK on LS1021A")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 78 +++++++++++++----------
+ 1 file changed, 46 insertions(+), 32 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma.c b/net/sunrpc/xprtrdma/svc_rdma.c
-index f0d5eeed4c886..e1d4e426b21fa 100644
---- a/net/sunrpc/xprtrdma/svc_rdma.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma.c
-@@ -234,25 +234,34 @@ static int svc_rdma_proc_init(void)
+diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+index abbc1ddbf27f0..11b4a81bacc68 100644
+--- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
++++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+@@ -23,7 +23,6 @@
+ #include <drm/drm_fb_cma_helper.h>
+ #include <drm/drm_fb_helper.h>
+ #include <drm/drm_gem_cma_helper.h>
+-#include <drm/drm_irq.h>
+ #include <drm/drm_modeset_helper.h>
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_vblank.h>
+@@ -51,7 +50,7 @@ static const struct regmap_config fsl_dcu_regmap_config = {
+ 	.volatile_reg = fsl_dcu_drm_is_volatile_reg,
+ };
  
- 	rc = percpu_counter_init(&svcrdma_stat_read, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err;
- 	rc = percpu_counter_init(&svcrdma_stat_recv, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err_read;
- 	rc = percpu_counter_init(&svcrdma_stat_sq_starve, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err_recv;
- 	rc = percpu_counter_init(&svcrdma_stat_write, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err_sq;
+-static void fsl_dcu_irq_uninstall(struct drm_device *dev)
++static void fsl_dcu_irq_reset(struct drm_device *dev)
+ {
+ 	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
  
- 	svcrdma_table_header = register_sysctl("sunrpc/svc_rdma",
- 					       svcrdma_parm_table);
-+	if (!svcrdma_table_header)
-+		goto err_write;
-+
- 	return 0;
- 
--out_err:
-+err_write:
-+	rc = -ENOMEM;
-+	percpu_counter_destroy(&svcrdma_stat_write);
-+err_sq:
- 	percpu_counter_destroy(&svcrdma_stat_sq_starve);
-+err_recv:
- 	percpu_counter_destroy(&svcrdma_stat_recv);
-+err_read:
- 	percpu_counter_destroy(&svcrdma_stat_read);
-+err:
- 	return rc;
+@@ -59,6 +58,45 @@ static void fsl_dcu_irq_uninstall(struct drm_device *dev)
+ 	regmap_write(fsl_dev->regmap, DCU_INT_MASK, ~0);
  }
  
++static irqreturn_t fsl_dcu_drm_irq(int irq, void *arg)
++{
++	struct drm_device *dev = arg;
++	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
++	unsigned int int_status;
++	int ret;
++
++	ret = regmap_read(fsl_dev->regmap, DCU_INT_STATUS, &int_status);
++	if (ret) {
++		dev_err(dev->dev, "read DCU_INT_STATUS failed\n");
++		return IRQ_NONE;
++	}
++
++	if (int_status & DCU_INT_STATUS_VBLANK)
++		drm_handle_vblank(dev, 0);
++
++	regmap_write(fsl_dev->regmap, DCU_INT_STATUS, int_status);
++
++	return IRQ_HANDLED;
++}
++
++static int fsl_dcu_irq_install(struct drm_device *dev, unsigned int irq)
++{
++	if (irq == IRQ_NOTCONNECTED)
++		return -ENOTCONN;
++
++	fsl_dcu_irq_reset(dev);
++
++	return request_irq(irq, fsl_dcu_drm_irq, 0, dev->driver->name, dev);
++}
++
++static void fsl_dcu_irq_uninstall(struct drm_device *dev)
++{
++	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
++
++	fsl_dcu_irq_reset(dev);
++	free_irq(fsl_dev->irq, dev);
++}
++
+ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
+ {
+ 	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
+@@ -73,13 +111,13 @@ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
+ 	ret = drm_vblank_init(dev, dev->mode_config.num_crtc);
+ 	if (ret < 0) {
+ 		dev_err(dev->dev, "failed to initialize vblank\n");
+-		goto done;
++		goto done_vblank;
+ 	}
+ 
+-	ret = drm_irq_install(dev, fsl_dev->irq);
++	ret = fsl_dcu_irq_install(dev, fsl_dev->irq);
+ 	if (ret < 0) {
+ 		dev_err(dev->dev, "failed to install IRQ handler\n");
+-		goto done;
++		goto done_irq;
+ 	}
+ 
+ 	if (legacyfb_depth != 16 && legacyfb_depth != 24 &&
+@@ -90,11 +128,11 @@ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
+ 	}
+ 
+ 	return 0;
+-done:
++done_irq:
+ 	drm_kms_helper_poll_fini(dev);
+ 
+ 	drm_mode_config_cleanup(dev);
+-	drm_irq_uninstall(dev);
++done_vblank:
+ 	dev->dev_private = NULL;
+ 
+ 	return ret;
+@@ -106,41 +144,17 @@ static void fsl_dcu_unload(struct drm_device *dev)
+ 	drm_kms_helper_poll_fini(dev);
+ 
+ 	drm_mode_config_cleanup(dev);
+-	drm_irq_uninstall(dev);
++	fsl_dcu_irq_uninstall(dev);
+ 
+ 	dev->dev_private = NULL;
+ }
+ 
+-static irqreturn_t fsl_dcu_drm_irq(int irq, void *arg)
+-{
+-	struct drm_device *dev = arg;
+-	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
+-	unsigned int int_status;
+-	int ret;
+-
+-	ret = regmap_read(fsl_dev->regmap, DCU_INT_STATUS, &int_status);
+-	if (ret) {
+-		dev_err(dev->dev, "read DCU_INT_STATUS failed\n");
+-		return IRQ_NONE;
+-	}
+-
+-	if (int_status & DCU_INT_STATUS_VBLANK)
+-		drm_handle_vblank(dev, 0);
+-
+-	regmap_write(fsl_dev->regmap, DCU_INT_STATUS, int_status);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ DEFINE_DRM_GEM_CMA_FOPS(fsl_dcu_drm_fops);
+ 
+ static struct drm_driver fsl_dcu_drm_driver = {
+ 	.driver_features	= DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC,
+ 	.load			= fsl_dcu_load,
+ 	.unload			= fsl_dcu_unload,
+-	.irq_handler		= fsl_dcu_drm_irq,
+-	.irq_preinstall		= fsl_dcu_irq_uninstall,
+-	.irq_uninstall		= fsl_dcu_irq_uninstall,
+ 	DRM_GEM_CMA_DRIVER_OPS,
+ 	.fops			= &fsl_dcu_drm_fops,
+ 	.name			= "fsl-dcu-drm",
 -- 
 2.43.0
 
