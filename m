@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245449EF1E5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 300769EEB38
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55DF518969E2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB4992827C6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CF9222D54;
-	Thu, 12 Dec 2024 16:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7CA212B0F;
+	Thu, 12 Dec 2024 15:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR1MROd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4M/vTTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F9D53365;
-	Thu, 12 Dec 2024 16:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189792AF0E;
+	Thu, 12 Dec 2024 15:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020799; cv=none; b=X3F9zSCoeMwBWYCkpo4Dyxgm4hYvw2sc5Ft08kz4a8Xj3h2MkSo4HPIkaLTJ/DNAbSwdZm3CNZKmAp9To3M+QvCW5wN5cbsp1nVGJMKrIyTO4ykP2+niLMsbIY+LbQwuM42VD73rrupd2zrFdpzojuk/ONW/KqYHrfOAS4JH7rw=
+	t=1734016944; cv=none; b=bWgokGX2LdvPzTVptjUf9dWBWqflbLvB7MVUBHX1qhs2GCw92HwNIAbvDs4lqMkT6sdC/9LTu+Es34vOX8eecwFrrcZi+34bb9OBcpxWCqTxrGqniWA0tpFyg8RSBYaJDerg4i3tN3E+cwHTalAEkFr1LgJyilXB65PHBcdNHaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020799; c=relaxed/simple;
-	bh=b29VWsrxub5jlesOLcU7qV5dF8FcTQ08UJp7HAhOwQo=;
+	s=arc-20240116; t=1734016944; c=relaxed/simple;
+	bh=E0uzK/boG5F+M4Qjwx5lFBugQg/IjLfT1YSgPxmb7cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4ZBbypi5QngpN/yRustNHnZpG3NZhlLcHNKpWWOuImvh6fbxFVSBpHb/z6tNPYa0od8nKRnB0VxC901X5uGrMFamJYQJeuVy9kauYCLHPAUPXzJtYGDW4M8QlqCDZvCwdDsuDPVyitt4uqUModRT/HaOnWkRxJClWePYtuT+iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR1MROd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F83C4CECE;
-	Thu, 12 Dec 2024 16:26:38 +0000 (UTC)
+	 MIME-Version; b=TRFkdtYWdTKq8Gp/5m1HyPExXo0k8R8B/KjYGsA8ftN3f9ACm977bkzxReDEnUAw2VWWZgnaWljRS7+xmELujSbR0x67kn0ihtq87jCOloJIJfiqnVTKS1kfKJop2m8uo9t16TzAdJIrMvrliSMDdUBFLfFmJ0hiVFqvs0Bb1RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4M/vTTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF4AC4CECE;
+	Thu, 12 Dec 2024 15:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020798;
-	bh=b29VWsrxub5jlesOLcU7qV5dF8FcTQ08UJp7HAhOwQo=;
+	s=korg; t=1734016944;
+	bh=E0uzK/boG5F+M4Qjwx5lFBugQg/IjLfT1YSgPxmb7cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xR1MROd7rEtnVpEWzvADfuRfeluP4t+QJ5L7g8QFeEJgJs3CfbfiQreSY9ADcClVb
-	 ZgykGDYStAnRjE9AVoDLRKKizb2Jbek66uXRVFEGJOc9nvjFZ2IEdcDlZEVtIxM73s
-	 kAwh0xs3hlE5waQvxIEQJgOynsqHM1lekyuR63go=
+	b=V4M/vTTcj2HKxtvidvJedKzFCeEgFbWFAGSdIzXJM88BbH9bcjmx6JyEMF7XYVH6X
+	 xc6Nu8v2mFMZK7Qi9pkHUZvQyUwazHyeZVaYx/kSVZ8OQa1IbT22mkHarFnfDLRpFY
+	 cbxim9OlNZ1baODL1eYIrOxaBOWz2sSn6vnaU9tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Dalmas <marcelo.dalmas@ge.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 563/772] ntp: Remove invalid cast in time offset math
-Date: Thu, 12 Dec 2024 15:58:28 +0100
-Message-ID: <20241212144413.225253540@linuxfoundation.org>
+	Hilda Wu <hildawu@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 340/466] Bluetooth: btusb: Add RTL8852BE device 0489:e123 to device tables
+Date: Thu, 12 Dec 2024 15:58:29 +0100
+Message-ID: <20241212144320.215030414@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Dalmas <marcelo.dalmas@ge.com>
+From: Hilda Wu <hildawu@realtek.com>
 
-commit f5807b0606da7ac7c1b74a386b22134ec7702d05 upstream.
+[ Upstream commit 69b84ffce260ff13826dc10aeb3c3e5c2288a552 ]
 
-Due to an unsigned cast, adjtimex() returns the wrong offest when using
-ADJ_MICRO and the offset is negative. In this case a small negative offset
-returns approximately 4.29 seconds (~ 2^32/1000 milliseconds) due to the
-unsigned cast of the negative offset.
+Add the support ID 0489:e123 to usb_device_id table for
+Realtek RTL8852B chip.
 
-This cast was added when the kernel internal struct timex was changed to
-use type long long for the time offset value to address the problem of a
-64bit/32bit division on 32bit systems.
+The device info from /sys/kernel/debug/usb/devices as below.
 
-The correct cast would have been (s32), which is correct as time_offset can
-only be in the range of [INT_MIN..INT_MAX] because the shift constant used
-for calculating it is 32. But that's non-obvious.
+T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=04 Dev#=  7 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e123 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 
-Remove the cast and use div_s64() to cure the issue.
-
-[ tglx: Fix white space damage, use div_s64() and amend the change log ]
-
-Fixes: ead25417f82e ("timex: use __kernel_timex internally")
-Signed-off-by: Marcelo Dalmas <marcelo.dalmas@ge.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/SJ0P101MB03687BF7D5A10FD3C49C51E5F42E2@SJ0P101MB0368.NAMP101.PROD.OUTLOOK.COM
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/ntp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/time/ntp.c
-+++ b/kernel/time/ntp.c
-@@ -796,7 +796,7 @@ int __do_adjtimex(struct __kernel_timex
- 		txc->offset = shift_right(time_offset * NTP_INTERVAL_FREQ,
- 				  NTP_SCALE_SHIFT);
- 		if (!(time_status & STA_NANO))
--			txc->offset = (u32)txc->offset / NSEC_PER_USEC;
-+			txc->offset = div_s64(txc->offset, NSEC_PER_USEC);
- 	}
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 4ccaddb46ddd8..c247fffbd6361 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -524,6 +524,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe123), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
  
- 	result = time_state;	/* mostly `TIME_OK' */
+-- 
+2.43.0
+
 
 
 
