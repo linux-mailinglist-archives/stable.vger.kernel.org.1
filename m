@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 412B89EF668
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BE99EF79E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9D01764E8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F03C817BDAB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B3122A7E2;
-	Thu, 12 Dec 2024 17:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40253222D57;
+	Thu, 12 Dec 2024 17:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwgeMowR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bd+UCc2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBEB2253E0;
-	Thu, 12 Dec 2024 17:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2435216E2D;
+	Thu, 12 Dec 2024 17:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022850; cv=none; b=J1Yz923YNO9g9FTHgzQlRocO3/LFrWvq2cx0EqJvt62Ng6Bfq3c6IhPPdFm0tLo8uQpD6+0arbpNYzTPHq1K7WAfGCvDVdYmaRDAcFHbGv3daqDp2WyXeXwkOIkWgd8xTRQ5I4jDQBmNE2E/hkturyCdosu8Xe6XtQZIgGHHNNg=
+	t=1734024082; cv=none; b=DZ+Q/prIMnKSStkkpj+54rn4jpxJLVDkr+EizkbeJX09j8xZ64VwJpRnPAyoi+oDEqhRgI+SF10ip796+5GTF6tz6vCQ7H6UI0UfNnc/CWcq/bZ59ujT+s5aG4kyDx6mY3bX6Ptxb/EpgPgDGBuioYxC+kO2YoRh/5YKtl2OG08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022850; c=relaxed/simple;
-	bh=CVJ8fBMmFb1Y3ORSkw/jd0nCIG83rI9O30oq09VS5eM=;
+	s=arc-20240116; t=1734024082; c=relaxed/simple;
+	bh=SWpvaHfx0npzIOs9QZM8dshFOb5pM0Y76bM+6ieXT10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivIqgw8Nsthr4/PexpwaE/EOYhUdvMI8geewpj61rvq+uhy0ypMoIPeRTqsUIOThmxXobTtIIWpI92UuEdrilbwvtf7FgwOzkz6Ttc1tfIoTgiZYOvFAnekkRw0Te5oHBOrryQ0y9DqMn/8NUfkAPHWOswn2aJRAKldvRI6DY2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwgeMowR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB06BC4CED0;
-	Thu, 12 Dec 2024 17:00:49 +0000 (UTC)
+	 MIME-Version; b=g0Yu0ME/XbSMFPL5SWF2a0b2r2ch+Cw4kuBc+RK62T9vH/Gxv369PIP/VtvTjpR1qHCewvgaVf0R5VD2xefB6hvBPxsGH6oBBEQh/WdDWV2NJDdE7b82Sv3siN6untkpxIJguwSiNuo1AoX5Xw0rB/qGUZ7UmLNBKKOshnmM8Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bd+UCc2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F588C4CECE;
+	Thu, 12 Dec 2024 17:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022850;
-	bh=CVJ8fBMmFb1Y3ORSkw/jd0nCIG83rI9O30oq09VS5eM=;
+	s=korg; t=1734024081;
+	bh=SWpvaHfx0npzIOs9QZM8dshFOb5pM0Y76bM+6ieXT10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UwgeMowRiHeg2wokdDzCAFvtJuJ7raf1R9LVYhsibe37h4vWhHDJHcgKqQs0Bh/hS
-	 Yj5bfOempc7L2FLdbBfrUasNT7mA6AQO58Uev2RRI5v8pvtzZ71x5R+StgjBz5xcqW
-	 6Lf6b1oMl2rvK9VloqAI4N1Ax3CrjM9kG+Q7QYec=
+	b=Bd+UCc2+1iEXl7x6dPABh4dA0zyIp/XHPdfZCFkrCj1/DX60uhehltV5In7IFmy7W
+	 gBUfrWYEUWcode77u/00iCzDW4X2bOwbTlIM2zPDfuPc0CO8X6SOs2uOJYb4VPiR4a
+	 IpE/do9lGlx6dfpJ/12gaVTSOT9Rv7O5dLWzU5eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Vrastil <michal.vrastil@hidglobal.com>,
-	Elson Roy Serrao <quic_eserrao@quicinc.com>,
-	Peter korsgaard <peter@korsgaard.com>
-Subject: [PATCH 5.15 322/565] Revert "usb: gadget: composite: fix OS descriptors w_value logic"
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 179/459] scsi: qedi: Fix a possible memory leak in qedi_alloc_and_init_sb()
 Date: Thu, 12 Dec 2024 15:58:37 +0100
-Message-ID: <20241212144324.329399368@linuxfoundation.org>
+Message-ID: <20241212144300.617223124@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Vrastil <michal.vrastil@hidglobal.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-commit 51cdd69d6a857f527d6d0697a2e1f0fa8bca1005 upstream.
+[ Upstream commit 95bbdca4999bc59a72ebab01663d421d6ce5775d ]
 
-This reverts commit ec6ce7075ef879b91a8710829016005dc8170f17.
+Hook "qedi_ops->common->sb_init = qed_sb_init" does not release the DMA
+memory sb_virt when it fails. Add dma_free_coherent() to free it. This
+is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
 
-Fix installation of WinUSB driver using OS descriptors. Without the
-fix the drivers are not installed correctly and the property
-'DeviceInterfaceGUID' is missing on host side.
-
-The original change was based on the assumption that the interface
-number is in the high byte of wValue but it is in the low byte,
-instead. Unfortunately, the fix is based on MS documentation which is
-also wrong.
-
-The actual USB request for OS descriptors (using USB analyzer) looks
-like:
-
-Offset  0   1   2   3   4   5   6   7
-0x000   C1  A1  02  00  05  00  0A  00
-
-C1: bmRequestType (device to host, vendor, interface)
-A1: nas magic number
-0002: wValue (2: nas interface)
-0005: wIndex (5: get extended property i.e. nas interface GUID)
-008E: wLength (142)
-
-The fix was tested on Windows 10 and Windows 11.
-
-Cc: stable@vger.kernel.org
-Fixes: ec6ce7075ef8 ("usb: gadget: composite: fix OS descriptors w_value logic")
-Signed-off-by: Michal Vrastil <michal.vrastil@hidglobal.com>
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Acked-by: Peter korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20241113235433.20244-1-quic_eserrao@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20241026125711.484-3-thunder.leizhen@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/scsi/qedi/qedi_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2017,8 +2017,20 @@ unknown:
- 			memset(buf, 0, w_length);
- 			buf[5] = 0x01;
- 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
-+			/*
-+			 * The Microsoft CompatID OS Descriptor Spec(w_index = 0x4) and
-+			 * Extended Prop OS Desc Spec(w_index = 0x5) state that the
-+			 * HighByte of wValue is the InterfaceNumber and the LowByte is
-+			 * the PageNumber. This high/low byte ordering is incorrectly
-+			 * documented in the Spec. USB analyzer output on the below
-+			 * request packets show the high/low byte inverted i.e LowByte
-+			 * is the InterfaceNumber and the HighByte is the PageNumber.
-+			 * Since we dont support >64KB CompatID/ExtendedProp descriptors,
-+			 * PageNumber is set to 0. Hence verify that the HighByte is 0
-+			 * for below two cases.
-+			 */
- 			case USB_RECIP_DEVICE:
--				if (w_index != 0x4 || (w_value & 0xff))
-+				if (w_index != 0x4 || (w_value >> 8))
- 					break;
- 				buf[6] = w_index;
- 				/* Number of ext compat interfaces */
-@@ -2034,9 +2046,9 @@ unknown:
- 				}
- 				break;
- 			case USB_RECIP_INTERFACE:
--				if (w_index != 0x5 || (w_value & 0xff))
-+				if (w_index != 0x5 || (w_value >> 8))
- 					break;
--				interface = w_value >> 8;
-+				interface = w_value & 0xFF;
- 				if (interface >= MAX_CONFIG_INTERFACES ||
- 				    !os_desc_cfg->interface[interface])
- 					break;
+diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
+index 96e470746767a..3bf75d466b2c6 100644
+--- a/drivers/scsi/qedi/qedi_main.c
++++ b/drivers/scsi/qedi/qedi_main.c
+@@ -371,6 +371,7 @@ static int qedi_alloc_and_init_sb(struct qedi_ctx *qedi,
+ 	ret = qedi_ops->common->sb_init(qedi->cdev, sb_info, sb_virt, sb_phys,
+ 				       sb_id, QED_SB_TYPE_STORAGE);
+ 	if (ret) {
++		dma_free_coherent(&qedi->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
+ 		QEDI_ERR(&qedi->dbg_ctx,
+ 			 "Status block initialization failed for id = %d.\n",
+ 			  sb_id);
+-- 
+2.43.0
+
 
 
 
