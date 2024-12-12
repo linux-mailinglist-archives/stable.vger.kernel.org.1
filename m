@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-101751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341A09EEE6F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CBF9EF313
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59D9516BAE4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40A37189FAB1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E882210DE;
-	Thu, 12 Dec 2024 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0709F236F85;
+	Thu, 12 Dec 2024 16:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbEXUHfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CifB7XHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7622E2210D8;
-	Thu, 12 Dec 2024 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B116723695D;
+	Thu, 12 Dec 2024 16:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018672; cv=none; b=EyXo1okUrSMk0xOJ4DSnmuKwA53d7CNDe16m9vVTKDuxLKxl07p5JwU6nzHane6TzyGNhLHPImYSDu3sqJKOk2wtzwb9KLhC2OpNnfq3SXg1w7FnTPQcVd6Db2YTQGMI1yr2MmaY5y6fHEzGALsHUOAeQRxcUWiSOktaYULCJ50=
+	t=1734021308; cv=none; b=Zmp5iLLa3n5zh5FYP5Z768vQDPkgRBHedlFjv/lrgI3Corsbv6eGu9/9KY46CEot5jQyc8sqLdpHctc/gQH7ubqEwbXE6K+iD03fa8L+5EfGYAcoKVzIeID4+Z+avBAGxZS+0V5Pty1A1EjRJcAg2ux5oXm8CQRBvLaf0FdMwVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018672; c=relaxed/simple;
-	bh=u4Ww2h/PuFK1FqH9QSkXHG//5mJB2fetBCA/IXhP6b8=;
+	s=arc-20240116; t=1734021308; c=relaxed/simple;
+	bh=mI5rrJmEzzD3koz9wPQV3eCb/p8TDs15vuDbS20WHYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3bnuh/TpuKhlkGWNXzv1p1mU6boUTqgUPs0GCg/vE2it4+zKL5Zttvxvf+zwXYCQB6uRmtxeGPUhmCL1v9lvYnJmKEtsoN6DPTCKrDZ1IXdN1EIgTyMyH4VqxLYHBXm5UwmkF78kBcOOVpupOFeWO1recIf2vt9ssa2YKI9qHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbEXUHfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8805C4CECE;
-	Thu, 12 Dec 2024 15:51:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gbQn+WJe4Gl5SbxrMzpX8PQptvoZdLH/wXA/+gvUlP8mldl64cTXj46dTo3S7wSGgLGtnQYibJE1GoLwdNuDoNRGFvEdtI42RMiLe+Ofo3l8E4m9xQYlP7cGcxM/0H9P2Xr7ovmoB+R1vVstHnMNqdTFQPxILhv4qla6EZit1RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CifB7XHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EA7C4CEE1;
+	Thu, 12 Dec 2024 16:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018672;
-	bh=u4Ww2h/PuFK1FqH9QSkXHG//5mJB2fetBCA/IXhP6b8=;
+	s=korg; t=1734021308;
+	bh=mI5rrJmEzzD3koz9wPQV3eCb/p8TDs15vuDbS20WHYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbEXUHfQSBNGSUXG9Ihrcgw7hCkxA10jaddaECZJPLd0K8EEy2zQJ78Qgz0EhJ+uq
-	 oTePVfe/jYj7DwAI/RNE4EMOUQYCh5KqZUiFfelxuhyXYFGAb41GAwMW/+x0Pd0m+R
-	 UiBQDU3q0Ifi1jRcAkAr5H1SPqlmUpMvGb0iFmmQ=
+	b=CifB7XHLncQR7fKv3BNBi9zcpoXk4r1U9xVEiiy7VSGxf8g6Z3nNjgGIug4xBTZ9F
+	 L1oDxlYGI/6EKwg+3XDNDQyjkz04VGTamN0O7d07rB5qP6ZHWhE++N1O4euP0CxbtP
+	 bpzV5VuZ62KDfNWmaARlj9pdk0Cc30UmD3ndM1e4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Jan Stancek <jstancek@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 327/356] sched: Remove vruntime from trace_sched_stat_runtime()
-Date: Thu, 12 Dec 2024 16:00:46 +0100
-Message-ID: <20241212144257.482395937@linuxfoundation.org>
+Subject: [PATCH 6.1 702/772] tools/rtla: fix collision with glibc sched_attr/sched_set_attr
+Date: Thu, 12 Dec 2024 16:00:47 +0100
+Message-ID: <20241212144418.904020641@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,99 +60,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Jan Stancek <jstancek@redhat.com>
 
-[ Upstream commit 5fe6ec8f6ab549b6422e41551abb51802bd48bc7 ]
+[ Upstream commit 0eecee340672c4b512f6f4a8c6add26df05d130c ]
 
-Tracing the runtime delta makes sense, observer can sum over time.
-Tracing the absolute vruntime makes less sense, inconsistent:
-absolute-vs-delta, but also vruntime delta can be computed from
-runtime delta.
+glibc commit 21571ca0d703 ("Linux: Add the sched_setattr
+and sched_getattr functions") now also provides 'struct sched_attr'
+and sched_setattr() which collide with the ones from rtla.
 
-Removing the vruntime thing also makes the two tracepoint sites
-identical, allowing to unify the code in a later patch.
+  In file included from src/trace.c:11:
+  src/utils.h:49:8: error: redefinition of ‘struct sched_attr’
+     49 | struct sched_attr {
+        |        ^~~~~~~~~~
+  In file included from /usr/include/bits/sched.h:60,
+                   from /usr/include/sched.h:43,
+                   from /usr/include/tracefs/tracefs.h:10,
+                   from src/trace.c:4:
+  /usr/include/linux/sched/types.h:98:8: note: originally defined here
+     98 | struct sched_attr {
+        |        ^~~~~~~~~~
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Stable-dep-of: 0664e2c311b9 ("sched/deadline: Fix warning in migrate_enable for boosted tasks")
+Define 'struct sched_attr' conditionally, similar to what strace did:
+  https://lore.kernel.org/all/20240930222913.3981407-1-raj.khem@gmail.com/
+and rename rtla's version of sched_setattr() to avoid collision.
+
+Link: https://lore.kernel.org/8088f66a7a57c1b209cd8ae0ae7c336a7f8c930d.1728572865.git.jstancek@redhat.com
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/sched.h | 15 ++++++---------
- kernel/sched/fair.c          |  5 ++---
- 2 files changed, 8 insertions(+), 12 deletions(-)
+ tools/tracing/rtla/src/utils.c | 4 ++--
+ tools/tracing/rtla/src/utils.h | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index 010ba1b7cb0ea..bdb1e838954af 100644
---- a/include/trace/events/sched.h
-+++ b/include/trace/events/sched.h
-@@ -493,33 +493,30 @@ DEFINE_EVENT_SCHEDSTAT(sched_stat_template, sched_stat_blocked,
-  */
- DECLARE_EVENT_CLASS(sched_stat_runtime,
+diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
+index 8c8d63c7196cf..02194773ef12d 100644
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -238,7 +238,7 @@ long parse_ns_duration(char *val)
  
--	TP_PROTO(struct task_struct *tsk, u64 runtime, u64 vruntime),
-+	TP_PROTO(struct task_struct *tsk, u64 runtime),
+ #define SCHED_DEADLINE		6
  
--	TP_ARGS(tsk, __perf_count(runtime), vruntime),
-+	TP_ARGS(tsk, __perf_count(runtime)),
+-static inline int sched_setattr(pid_t pid, const struct sched_attr *attr,
++static inline int syscall_sched_setattr(pid_t pid, const struct sched_attr *attr,
+ 				unsigned int flags) {
+ 	return syscall(__NR_sched_setattr, pid, attr, flags);
+ }
+@@ -248,7 +248,7 @@ int __set_sched_attr(int pid, struct sched_attr *attr)
+ 	int flags = 0;
+ 	int retval;
  
- 	TP_STRUCT__entry(
- 		__array( char,	comm,	TASK_COMM_LEN	)
- 		__field( pid_t,	pid			)
- 		__field( u64,	runtime			)
--		__field( u64,	vruntime			)
- 	),
+-	retval = sched_setattr(pid, attr, flags);
++	retval = syscall_sched_setattr(pid, attr, flags);
+ 	if (retval < 0) {
+ 		err_msg("Failed to set sched attributes to the pid %d: %s\n",
+ 			pid, strerror(errno));
+diff --git a/tools/tracing/rtla/src/utils.h b/tools/tracing/rtla/src/utils.h
+index 92da41aaf4c4c..e445ccf15e701 100644
+--- a/tools/tracing/rtla/src/utils.h
++++ b/tools/tracing/rtla/src/utils.h
+@@ -44,6 +44,7 @@ update_sum(unsigned long long *a, unsigned long long *b)
+ 	*a += *b;
+ }
  
- 	TP_fast_assign(
- 		memcpy(__entry->comm, tsk->comm, TASK_COMM_LEN);
- 		__entry->pid		= tsk->pid;
- 		__entry->runtime	= runtime;
--		__entry->vruntime	= vruntime;
- 	),
++#ifndef SCHED_ATTR_SIZE_VER0
+ struct sched_attr {
+ 	uint32_t size;
+ 	uint32_t sched_policy;
+@@ -54,6 +55,7 @@ struct sched_attr {
+ 	uint64_t sched_deadline;
+ 	uint64_t sched_period;
+ };
++#endif /* SCHED_ATTR_SIZE_VER0 */
  
--	TP_printk("comm=%s pid=%d runtime=%Lu [ns] vruntime=%Lu [ns]",
-+	TP_printk("comm=%s pid=%d runtime=%Lu [ns]",
- 			__entry->comm, __entry->pid,
--			(unsigned long long)__entry->runtime,
--			(unsigned long long)__entry->vruntime)
-+			(unsigned long long)__entry->runtime)
- );
- 
- DEFINE_EVENT(sched_stat_runtime, sched_stat_runtime,
--	     TP_PROTO(struct task_struct *tsk, u64 runtime, u64 vruntime),
--	     TP_ARGS(tsk, runtime, vruntime));
-+	     TP_PROTO(struct task_struct *tsk, u64 runtime),
-+	     TP_ARGS(tsk, runtime));
- 
- /*
-  * Tracepoint for showing priority inheritance modifying a tasks
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 3e9333466438c..062447861d8e6 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1185,8 +1185,7 @@ s64 update_curr_common(struct rq *rq)
- 	if (unlikely(delta_exec <= 0))
- 		return delta_exec;
- 
--	trace_sched_stat_runtime(curr, delta_exec, 0);
--
-+	trace_sched_stat_runtime(curr, delta_exec);
- 	account_group_exec_runtime(curr, delta_exec);
- 	cgroup_account_cputime(curr, delta_exec);
- 
-@@ -1215,7 +1214,7 @@ static void update_curr(struct cfs_rq *cfs_rq)
- 	if (entity_is_task(curr)) {
- 		struct task_struct *curtask = task_of(curr);
- 
--		trace_sched_stat_runtime(curtask, delta_exec, curr->vruntime);
-+		trace_sched_stat_runtime(curtask, delta_exec);
- 		cgroup_account_cputime(curtask, delta_exec);
- 		account_group_exec_runtime(curtask, delta_exec);
- 	}
+ int parse_prio(char *arg, struct sched_attr *sched_param);
+ int set_comm_sched_attr(const char *comm_prefix, struct sched_attr *attr);
 -- 
 2.43.0
 
