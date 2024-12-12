@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F919EF089
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D7D9EF36E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06EC1785F3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE6A18993DF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF222223E9D;
-	Thu, 12 Dec 2024 16:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160D7227561;
+	Thu, 12 Dec 2024 16:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CA9wuNje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nd1jleaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6928D222D68;
-	Thu, 12 Dec 2024 16:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C601F22689C;
+	Thu, 12 Dec 2024 16:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019712; cv=none; b=Eh3K/6GudeYgh9ELIZAXeYoX/Of5JBc9TW0d/vN5Tztyr1vm5RmxpF3d/0lfm01Puo1hBUFg2g8ebmsg9P9nNn1Hg8dGgmYBxSIQ+zpwPMjgCim1YLvSiQJG+pitfHIkuErGgNZlCIrXSPBInm6Bgw5p7JhgzoU6hB7iKE/7gK8=
+	t=1734021766; cv=none; b=g3xpVAMxrGIerMCuSWlAFXIoLj6QZsoj1sCUlmTUwvWWH5VRbK/qLyoJ6zYoS0VZ7u2MtvkICRsr63mYIWHH3EtGzqwT35V79I5ZcbkuleJ9mFOGQYWCk4v8+6OHdQiWqC9QA/3Cx3M/iulUGiGZS4Y0TxLIbvIAUP2muOKc1Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019712; c=relaxed/simple;
-	bh=g69dOTKkVTdiOuK/hJGBiVKUIIjuCZmhvuO4ZyHs3ZY=;
+	s=arc-20240116; t=1734021766; c=relaxed/simple;
+	bh=SQj51b5sYxOt+OsST4mIHos7uvsAMGa07CC0pO72ep4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gs6C8/BXA1R6vTvAVfXyo0u9mZUm8Pv4GfWQsrIOLKYTsE7DeV6hCDKmDtW4v3+x5sNcOS0mCKYn7lG+ptZrUaf/iq5MG4VhfZH8JlWFPZjUcaYA2+wPOm1G4Sshs4OCEHsW2XuByqyJMsvv5Gl9plo46IwMJCqo80+UDfjo2Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CA9wuNje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3EBC4CECE;
-	Thu, 12 Dec 2024 16:08:31 +0000 (UTC)
+	 MIME-Version; b=fFUlCFIbrO84Udo3EuFWkb8HvE9JHQvncocoY0gc8vQmOlbITHo3ppLVzD9fe2LV/XULYjQXiSZABq2nrP3MGZLhscDP7m86z9OLmdcITdavK70hRHO5J2hcUjzQonGz9Vmzshw0XbfQYdoYA1eJj0eJNtgQM5yz60pQMaDhoQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nd1jleaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418F8C4CECE;
+	Thu, 12 Dec 2024 16:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019712;
-	bh=g69dOTKkVTdiOuK/hJGBiVKUIIjuCZmhvuO4ZyHs3ZY=;
+	s=korg; t=1734021766;
+	bh=SQj51b5sYxOt+OsST4mIHos7uvsAMGa07CC0pO72ep4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CA9wuNjeu90YGw8bEodYPIhhP7RrS0QdSrZztQ1bOPm0SuaT/I6ZpcmKDH2xCnrTk
-	 ZoiBUkwanVzpr2PR/ZEqNZzYqeNsIT+xqDioj8Dot7Xcd8RSwlG+kXEhcI9K8AabzD
-	 kKZIUf7R7Y+JMVXTJwBzYRii3VgOMjOmuJ6ZHZLo=
+	b=nd1jleaHk39v0UnlvvdgKFLRTwkrq3sN6aWVZE2YbYuc0VzFGstD91Wu1V6bVwJSo
+	 uwnggxFbH4wVbeRiFXZqVWHR6us3xliV5wUD1lQDv8wuQh4dBFa05ABgK8u9dNlNLS
+	 Lp+cFmSv27trgoadOEvKstcpui2Qh+Im8adzYJ5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 277/772] f2fs: fix to avoid use GC_AT when setting gc_mode as GC_URGENT_LOW or GC_URGENT_MID
+	Si-Wei Liu <si-wei.liu@oracle.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>
+Subject: [PATCH 5.15 027/565] vdpa/mlx5: Fix PA offset with unaligned starting iotlb map
 Date: Thu, 12 Dec 2024 15:53:42 +0100
-Message-ID: <20241212144401.355218270@linuxfoundation.org>
+Message-ID: <20241212144312.525742019@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-[ Upstream commit 296b8cb34e65fa93382cf919be5a056f719c9a26 ]
+commit 29ce8b8a4fa74e841342c8b8f8941848a3c6f29f upstream.
 
-If gc_mode is set to GC_URGENT_LOW or GC_URGENT_MID, cost benefit GC
-approach should be used, but if ATGC is enabled at the same time,
-Age-threshold approach will be selected, which can only do amount of
-GC and it is much less than the numbers of CB approach.
+When calculating the physical address range based on the iotlb and mr
+[start,end) ranges, the offset of mr->start relative to map->start
+is not taken into account. This leads to some incorrect and duplicate
+mappings.
 
-some traces:
-  f2fs_gc-254:48-396     [007] ..... 2311600.684028: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1053, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
-  f2fs_gc-254:48-396     [007] ..... 2311600.684527: f2fs_get_victim: dev = (254,48), type = No TYPE, policy = (Background GC, LFS-mode, Age-threshold), victim = 10, cost = 4294364975, ofs_unit = 1, pre_victim_secno = -1, prefree = 0, free = 44898
-  f2fs_gc-254:48-396     [007] ..... 2311600.714835: f2fs_gc_end: dev = (254,48), ret = 0, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
-  f2fs_gc-254:48-396     [007] ..... 2311600.714843: f2fs_background_gc: dev = (254,48), wait_ms = 50, prefree = 0, free = 44898
-  f2fs_gc-254:48-396     [007] ..... 2311600.771785: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:
-  f2fs_gc-254:48-396     [007] ..... 2311600.772275: f2fs_gc_end: dev = (254,48), ret = -61, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
+For the case when mr->start < map->start the code is already correct:
+the range in [mr->start, map->start) was handled by a different
+iteration.
 
-Fixes: 0e5e81114de1 ("f2fs: add GC_URGENT_LOW mode in gc_urgent")
-Fixes: d98af5f45520 ("f2fs: introduce gc_urgent_mid mode")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Message-Id: <20241021134040.975221-2-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-fs-f2fs | 7 +++++--
- fs/f2fs/gc.c                            | 2 ++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/vdpa/mlx5/core/mr.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
-index 483639fb727b2..a411ce2c75016 100644
---- a/Documentation/ABI/testing/sysfs-fs-f2fs
-+++ b/Documentation/ABI/testing/sysfs-fs-f2fs
-@@ -303,10 +303,13 @@ Description:	Do background GC aggressively when set. Set to 0 by default.
- 		GC approach and turns SSR mode on.
- 		gc urgent low(2): lowers the bar of checking I/O idling in
- 		order to process outstanding discard commands and GC a
--		little bit aggressively. uses cost benefit GC approach.
-+		little bit aggressively. always uses cost benefit GC approach,
-+		and will override age-threshold GC approach if ATGC is enabled
-+		at the same time.
- 		gc urgent mid(3): does GC forcibly in a period of given
- 		gc_urgent_sleep_time and executes a mid level of I/O idling check.
--		uses cost benefit GC approach.
-+		always uses cost benefit GC approach, and will override
-+		age-threshold GC approach if ATGC is enabled at the same time.
- 
- What:		/sys/fs/f2fs/<disk>/gc_urgent_sleep_time
- Date:		August 2017
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 5a661a0e76632..687b2ce82c854 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -227,6 +227,8 @@ static int select_gc_type(struct f2fs_sb_info *sbi, int gc_type)
- 
- 	switch (sbi->gc_mode) {
- 	case GC_IDLE_CB:
-+	case GC_URGENT_LOW:
-+	case GC_URGENT_MID:
- 		gc_mode = GC_CB;
- 		break;
- 	case GC_IDLE_GREEDY:
--- 
-2.43.0
-
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -232,7 +232,7 @@ static int map_direct_mr(struct mlx5_vdp
+ 	struct page *pg;
+ 	unsigned int nsg;
+ 	int sglen;
+-	u64 pa;
++	u64 pa, offset;
+ 	u64 paend;
+ 	struct scatterlist *sg;
+ 	struct device *dma = mvdev->vdev.dma_dev;
+@@ -255,8 +255,10 @@ static int map_direct_mr(struct mlx5_vdp
+ 	sg = mr->sg_head.sgl;
+ 	for (map = vhost_iotlb_itree_first(iotlb, mr->start, mr->end - 1);
+ 	     map; map = vhost_iotlb_itree_next(map, mr->start, mr->end - 1)) {
+-		paend = map->addr + maplen(map, mr);
+-		for (pa = map->addr; pa < paend; pa += sglen) {
++		offset = mr->start > map->start ? mr->start - map->start : 0;
++		pa = map->addr + offset;
++		paend = map->addr + offset + maplen(map, mr);
++		for (; pa < paend; pa += sglen) {
+ 			pg = pfn_to_page(__phys_to_pfn(pa));
+ 			if (!sg) {
+ 				mlx5_vdpa_warn(mvdev, "sg null. start 0x%llx, end 0x%llx\n",
 
 
 
