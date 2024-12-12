@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E005D9EEBDE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5B19EF1A5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B91A18856B1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6335F290E02
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F74B2153DF;
-	Thu, 12 Dec 2024 15:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9008231A22;
+	Thu, 12 Dec 2024 16:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWfCUcek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+w8XF4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC27209693;
-	Thu, 12 Dec 2024 15:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B742144C0;
+	Thu, 12 Dec 2024 16:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017175; cv=none; b=TSpYB/WttNgnDvBBaru1rxMVs9hGzPT+isP28pdu4JcZujmfbwsJ85VpHpdvUA4SJUHR3r92wlb/xpK53y1n7BUEmFE6vgnsJrsFc0FCQWpPeefou8MihAd91ZNGNymmVkP6zmhBb9GeAoi9l9p00r/M0bmqo+mm30VVvm70tmw=
+	t=1734021034; cv=none; b=NYUZH6yDnL1K8PQQlSqeBWkDLp/klWIgB/MpG9G++JMQyybt4MVLdVQ43vOqBR2knvC0g5nl7Q5Bg6d1SqaYC6FWpvLqhYfQ9whgfOvH3oKEW0QDsr2fG1LXsFzhizfQWYG1jGP2xwX6zRV6YeTb4TRwa0F8AT8Yk13jaBpkbw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017175; c=relaxed/simple;
-	bh=RowwPHW47Z+ZuWlh8+YnKab9s+qOqL75ZMZf1EmYh1Q=;
+	s=arc-20240116; t=1734021034; c=relaxed/simple;
+	bh=zN20qWO812ga7kalFoC91qFEVP4UiiRZiN/iKVPVBn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hsljln2KT5h1ftgmMWi+sEF3k5eAIGNdJggSbBYBNaJCNZIjMtO29m6q6Il0tw6EZDfaEmKLhYq2/qSLdqU4OywD+MzMTx8fAvmNv68mx1C9se9Ggq/YmPh6EXVngMjhxu6INgDjM0MfOS+hhUUcBd/95OhvHxTPNoO0lE/Cr9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWfCUcek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9642EC4CECE;
-	Thu, 12 Dec 2024 15:26:14 +0000 (UTC)
+	 MIME-Version; b=HQNH1/5qzX/pAY+aunB5J2QkttKW1lYZKgiXEcKUKypfuit1x9O8tGfg2WUGxiI1ubPn+tFeD1qZLJG6nvFPh8bw7GrtTJWgkMpdB/AoJHDb8N3LFfnIH+2rYsFx8axLCvA8HdoA5K/ZdW1vjqZwSrf+QxYL2HNlBkCWJ1/0wUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+w8XF4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C651EC4CECE;
+	Thu, 12 Dec 2024 16:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017175;
-	bh=RowwPHW47Z+ZuWlh8+YnKab9s+qOqL75ZMZf1EmYh1Q=;
+	s=korg; t=1734021034;
+	bh=zN20qWO812ga7kalFoC91qFEVP4UiiRZiN/iKVPVBn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWfCUcekmNUgMlobI73VVL0ZWrKkLMvp3UzQIz7q6IaG50IhrLZkhkYIOxP9yWnSa
-	 RUp1b9H4FLOqy+qFzGOp4pIqocvHHhnDC85KEdChTZOByuao/C2bwe43ne8DimnJ3c
-	 xKX3I2d6CJ0xTc9OsnoisdaxBsVc8KHkXPbpjWuY=
+	b=s+w8XF4CKal0oUnl/kahRQ4B9qYeCLAVdIKBP0tTpBCOGqGso9wv4ydZFbxi7+mNh
+	 fzkER4h905RzGnIKJMpTsPtQqujp6C4bcESNyimZgxaNpr7aColn6NoYZ++ni8hJG2
+	 WKlqdCcecQE3B4RuG+pxp2zaYqKbjzz2ghmwFsMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 404/466] ACPI: x86: Clean up Asus entries in acpi_quirk_skip_dmi_ids[]
+	David Belanger <david.belanger@amd.com>,
+	Frank Min <frank.min@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 628/772] drm/amdgpu/hdp5.2: do a posting read when flushing HDP
 Date: Thu, 12 Dec 2024 15:59:33 +0100
-Message-ID: <20241212144322.714487909@linuxfoundation.org>
+Message-ID: <20241212144415.885385279@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit bd8aa15848f5f21951cd0b0d01510b3ad1f777d4 ]
+commit f756dbac1ce1d5f9a2b35e3b55fa429cf6336437 upstream.
 
-The Asus entries in the acpi_quirk_skip_dmi_ids[] table are the only
-entries without a comment which model they apply to. Add these comments.
+Need to read back to make sure the write goes through.
 
-The Asus TF103C entry also is in the wrong place for what is supposed to
-be an alphabetically sorted list. Move it up so that the list is properly
-sorted and add a comment that the list is alphabetically sorted.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241116095825.11660-2-hdegoede@redhat.com
-[ rjw: Changelog and subject edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: David Belanger <david.belanger@amd.com>
+Reviewed-by: Frank Min <frank.min@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/x86/utils.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 1bb425b78032a..cb45ef5240dab 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -296,6 +296,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 	/*
- 	 * 2. Devices which also have the skip i2c/serdev quirks and which
- 	 *    need the x86-android-tablets module to properly work.
-+	 *    Sorted alphabetically.
- 	 */
- #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
- 	{
-@@ -321,6 +322,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
-+		/* Asus ME176C tablet */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ME176C"),
-@@ -331,23 +333,24 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
--		/* Lenovo Yoga Book X90F/L */
-+		/* Asus TF103C transformer 2-in-1 */
- 		.matches = {
--			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
--					ACPI_QUIRK_UART1_SKIP |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
- 	{
-+		/* Lenovo Yoga Book X90F/L */
- 		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "TF103C"),
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_UART1_SKIP |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
- 					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
- 	},
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
+@@ -31,13 +31,15 @@
+ static void hdp_v5_2_flush_hdp(struct amdgpu_device *adev,
+ 				struct amdgpu_ring *ring)
+ {
+-	if (!ring || !ring->funcs->emit_wreg)
++	if (!ring || !ring->funcs->emit_wreg) {
+ 		WREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
+ 			0);
+-	else
++		RREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
++	} else {
+ 		amdgpu_ring_emit_wreg(ring,
+ 			(adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
+ 			0);
++	}
+ }
+ 
+ static void hdp_v5_2_update_mem_power_gating(struct amdgpu_device *adev,
 
 
 
