@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FE49EF24A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0959EEBCA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 574C2189BED2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474CA18873DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF8B22E9FB;
-	Thu, 12 Dec 2024 16:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB16520969B;
+	Thu, 12 Dec 2024 15:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MduxQlrE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NogG6TXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC637222D77;
-	Thu, 12 Dec 2024 16:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8992B13792B;
+	Thu, 12 Dec 2024 15:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020968; cv=none; b=EFAs1pHdx9prxVyBqA00x4U5EwwnmOPzkPc+gYK1cePDhwreKDalwDdbalUKiOkGIVx+DuoM5pMh9ZWiI12eXvl8QgHy2mbjobHYFUpK6sPWxuXM9evOdrQw7HhR1AeOBaQeQbKLooI1u/QuwuZA5INv+W4l7182nPPRg/zopp4=
+	t=1734017117; cv=none; b=CYrmcyFUBigzY7vX16WZW5Ml/ZQvctE/m8dx26iwz69Ui3z9ghksHF3z/KPhBJ8gauHXMidr6vJL5ocCg4OqNvlzfLUtdRNvbO2ZfWGjeTGDCz/dabEpGubQV1neGfcOM+sQap3d7/HTsAMFm0w7Fftuq83Ea8se4suG7PuRFZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020968; c=relaxed/simple;
-	bh=8+8p1D/BS0ZHcBX1Zr1eCEGQ1tBaID/Me34jQk+eYwM=;
+	s=arc-20240116; t=1734017117; c=relaxed/simple;
+	bh=Gbf6l7BYBSss6zHf8AFb7dUQlJRiE52/Op8FxzonVRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gIVvQLtaEcYWgTF6/CSL6CqQmpI6DtRBWDzboGpzhTwOzTf1zK27wpC1FzoxvSQ8JpUjdyf4SyqiYXM2Rb4ZdhyiIGcq4T0Qb++EdjoRkcLxm9GRjEqaqEf5OisBAIVMg7TbKJiForVmUhq8Rz8OLFxJBZPfBdXRgDYoHPL1Lqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MduxQlrE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B715C4CED0;
-	Thu, 12 Dec 2024 16:29:27 +0000 (UTC)
+	 MIME-Version; b=m7vhhT6mE6cxgw3KA+VzclL638Pe1TkPtdLV1lBPhKMk8sCMVj7zq/nbL/PI6eiSHa5r1AuJuVmBaHs3SDE4VykT4/MHG8ux0Xj4ougYwJlsC2eY8mvYdghXLOrBiYLxwiLEvKAk3NyZzcPMszM4DXGYhpSSjKHVgHeYfFa/ZtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NogG6TXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC08C4CED0;
+	Thu, 12 Dec 2024 15:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020968;
-	bh=8+8p1D/BS0ZHcBX1Zr1eCEGQ1tBaID/Me34jQk+eYwM=;
+	s=korg; t=1734017117;
+	bh=Gbf6l7BYBSss6zHf8AFb7dUQlJRiE52/Op8FxzonVRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MduxQlrEDwj/n5SN4ovUOLeJe1UkXRaYXsd7QiZJ+Fk6+NtNir+ErzkHYW4jRjMaq
-	 maZEL869WuTsEQjVmMd45MhTT6fcwoSBGuCCNKuiWxnrrTechhEctz7Kj6Yv08OUQt
-	 eGB0DNokmd4K9x62mgWoGTK0lodXF43RWS6K7Rgk=
+	b=NogG6TXVbjX1Mw0VTSaZJOqqNl4hq9KvfWt0EfnOLIQ9U6Q8S4QafZfaAHIqZugV4
+	 a4Xg29ORs8g+MepB3aNdyTeJvVykyXpzTK+IPiXBO3fpN0oNmVwzDTEdBqTo1rHnVI
+	 2mdx+kfLoSzbqxrDfs+RfFW4liGXMKDS+RGd+fgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 610/772] tracing: Fix cmp_entries_dup() to respect sort() comparison rules
+	Gabriele Monaco <gmonaco@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 386/466] verification/dot2: Improve dot parser robustness
 Date: Thu, 12 Dec 2024 15:59:15 +0100
-Message-ID: <20241212144415.126122604@linuxfoundation.org>
+Message-ID: <20241212144322.019373075@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-commit e63fbd5f6810ed756bbb8a1549c7d4132968baa9 upstream.
+[ Upstream commit 571f8b3f866a6d990a50fe5c89fe0ea78784d70b ]
 
-The cmp_entries_dup() function used as the comparator for sort()
-violated the symmetry and transitivity properties required by the
-sorting algorithm. Specifically, it returned 1 whenever memcmp() was
-non-zero, which broke the following expectations:
+This patch makes the dot parser used by dot2c and dot2k slightly more
+robust, namely:
+* allows parsing files with the gv extension (GraphViz)
+* correctly parses edges with any indentation
+    * used to work only with a single character (e.g. '\t')
+Additionally it fixes a couple of warnings reported by pylint such as
+wrong indentation and comparison to False instead of `not ...`
 
-* Symmetry: If x < y, then y > x.
-* Transitivity: If x < y and y < z, then x < z.
-
-These violations could lead to incorrect sorting and failure to
-correctly identify duplicate elements.
-
-Fix the issue by directly returning the result of memcmp(), which
-adheres to the required comparison properties.
-
-Cc: stable@vger.kernel.org
-Fixes: 08d43a5fa063 ("tracing: Add lock-free tracing_map")
-Link: https://lore.kernel.org/20241203202228.1274403-1-visitorckw@gmail.com
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/20241017064238.41394-2-gmonaco@redhat.com
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/tracing_map.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ tools/verification/dot2/automata.py | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -845,15 +845,11 @@ int tracing_map_init(struct tracing_map
- static int cmp_entries_dup(const void *A, const void *B)
- {
- 	const struct tracing_map_sort_entry *a, *b;
--	int ret = 0;
+diff --git a/tools/verification/dot2/automata.py b/tools/verification/dot2/automata.py
+index baffeb960ff0b..bdeb98baa8b06 100644
+--- a/tools/verification/dot2/automata.py
++++ b/tools/verification/dot2/automata.py
+@@ -29,11 +29,11 @@ class Automata:
  
- 	a = *(const struct tracing_map_sort_entry **)A;
- 	b = *(const struct tracing_map_sort_entry **)B;
+     def __get_model_name(self):
+         basename = ntpath.basename(self.__dot_path)
+-        if basename.endswith(".dot") == False:
++        if not basename.endswith(".dot") and not basename.endswith(".gv"):
+             print("not a dot file")
+             raise Exception("not a dot file: %s" % self.__dot_path)
  
--	if (memcmp(a->key, b->key, a->elt->map->key_size))
--		ret = 1;
--
--	return ret;
-+	return memcmp(a->key, b->key, a->elt->map->key_size);
- }
+-        model_name = basename[0:-4]
++        model_name = ntpath.splitext(basename)[0]
+         if model_name.__len__() == 0:
+             raise Exception("not a dot file: %s" % self.__dot_path)
  
- static int cmp_entries_sum(const void *A, const void *B)
+@@ -68,9 +68,9 @@ class Automata:
+     def __get_cursor_begin_events(self):
+         cursor = 0
+         while self.__dot_lines[cursor].split()[0] != "{node":
+-           cursor += 1
++            cursor += 1
+         while self.__dot_lines[cursor].split()[0] == "{node":
+-           cursor += 1
++            cursor += 1
+         # skip initial state transition
+         cursor += 1
+         return cursor
+@@ -94,11 +94,11 @@ class Automata:
+                 initial_state = state[7:]
+             else:
+                 states.append(state)
+-                if self.__dot_lines[cursor].__contains__("doublecircle") == True:
++                if "doublecircle" in self.__dot_lines[cursor]:
+                     final_states.append(state)
+                     has_final_states = True
+ 
+-                if self.__dot_lines[cursor].__contains__("ellipse") == True:
++                if "ellipse" in self.__dot_lines[cursor]:
+                     final_states.append(state)
+                     has_final_states = True
+ 
+@@ -110,7 +110,7 @@ class Automata:
+         # Insert the initial state at the bein og the states
+         states.insert(0, initial_state)
+ 
+-        if has_final_states == False:
++        if not has_final_states:
+             final_states.append(initial_state)
+ 
+         return states, initial_state, final_states
+@@ -120,7 +120,7 @@ class Automata:
+         cursor = self.__get_cursor_begin_events()
+ 
+         events = []
+-        while self.__dot_lines[cursor][1] == '"':
++        while self.__dot_lines[cursor].lstrip()[0] == '"':
+             # transitions have the format:
+             # "all_fired" -> "both_fired" [ label = "disable_irq" ];
+             #  ------------ event is here ------------^^^^^
+@@ -161,7 +161,7 @@ class Automata:
+         # and we are back! Let's fill the matrix
+         cursor = self.__get_cursor_begin_events()
+ 
+-        while self.__dot_lines[cursor][1] == '"':
++        while self.__dot_lines[cursor].lstrip()[0] == '"':
+             if self.__dot_lines[cursor].split()[1] == "->":
+                 line = self.__dot_lines[cursor].split()
+                 origin_state = line[0].replace('"','').replace(',','_')
+-- 
+2.43.0
+
 
 
 
