@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E678F9EF825
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EB09EF7E3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0402293A57
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BF2B1899A62
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A5A222D67;
-	Thu, 12 Dec 2024 17:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFBE215762;
+	Thu, 12 Dec 2024 17:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJnYMUlV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfSyhPVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625C1216E0B;
-	Thu, 12 Dec 2024 17:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9651E211493;
+	Thu, 12 Dec 2024 17:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025193; cv=none; b=uTNvAg+lrgyX4vBafQR2UjcT8f2CUT1uNHzTpS8j/0lpGzp87f7mHNZRs4ZSPPtu7vXER7GanQpQs+RsWCr+x+mXyNVc+rNnu+CcK763DLskQBCG50wK2UuW2XhIXWeyuWFcma5a+MvkNpxqpAixIZqxyHNBTyc9BqSxR9qwx6s=
+	t=1734024354; cv=none; b=OQO4F1FhCBm5j+52v66lU5NmNvwSk+/OPQjyOOhmTo9ACL5ZQBcrTxCu9Pjgun6VkD8nyvzMyYiUrl/FK1cWBBTvXL40/X4KYrpOeNzxIxChlsx40x0V0/VDTBI18npYhxc7oYWiY7PJ31BRwvoFo01HLKTj3uqZRzA/+qpJFuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025193; c=relaxed/simple;
-	bh=pGqdGPKvg8M6hSOJG2C5GoG+NDFj3rmjGZMf/PaqaIE=;
+	s=arc-20240116; t=1734024354; c=relaxed/simple;
+	bh=P6bnw46EBaKR+nzb0bmb40QmuruxPY85nJmyyVRV0SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXPpVKVD1UARy+gLqgASIfZwo0KY/dpcIt7OOz7rYcM401slije5y0nVRnxDvH6G/qyn+QGu1DPdbwEFbVJH/nF/t4yjI1t/LM9QepPFUqlXPYAEgR53+dRPN2iOtej8Y1nHR1ebgwvXTi2T3GpV4XerXU5ebShrGIz1nZppeHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJnYMUlV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC06DC4CECE;
-	Thu, 12 Dec 2024 17:39:52 +0000 (UTC)
+	 MIME-Version; b=bINyatYcNzAZWqxG19JCObigcWSxA3Xa13TTut6QivId8yOO3TkIZ01BTTGe1GL/d54Tz4Bc5e98MOlcC+i8mKXDQjOlLNJ2YgjbZmDXu4wsTWBvTCzAloM8ucED614wfMq9SF0blg5wUQZaklZ+DQpJiEN7jxNsW4ixkLmMx30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfSyhPVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177BAC4CED3;
+	Thu, 12 Dec 2024 17:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025193;
-	bh=pGqdGPKvg8M6hSOJG2C5GoG+NDFj3rmjGZMf/PaqaIE=;
+	s=korg; t=1734024354;
+	bh=P6bnw46EBaKR+nzb0bmb40QmuruxPY85nJmyyVRV0SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJnYMUlVFYVG8ib6ZuSTDoyFRSKPrFoN02HvqAJbb1SyHpj0eIQeT8Vp0ZEoDCYzJ
-	 z+4wAB9F21NcBdU5d37hSnoAGxiFHBaMVjDyfVrho4YK6Q4tCa+OQ3LIsKtrmTB1lA
-	 RaCiwJsRfccLfLhsIYb8uKDQJ7EeGZ0RahFO+xvA=
+	b=IfSyhPVH/kM5oW0Sp6YOhSFJWuMhUTR9q77v+SRzODPaYWWHL40+5aAPr7ZOn80ak
+	 FD2HZX5BMRLELnjMco6+Lsi0r3wcFBYTMDo6pS91hYhFQlMLma9K6Z8CRzpI9h/Ums
+	 h1sKPKH1VIwREqtI9VKzTCezroj3hjULqgw5O7HE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 088/321] mfd: tps65010: Use IRQF_NO_AUTOEN flag in request_irq() to fix race
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 268/459] um: ubd: Do not use drvdata in release
 Date: Thu, 12 Dec 2024 16:00:06 +0100
-Message-ID: <20241212144233.462408218@linuxfoundation.org>
+Message-ID: <20241212144304.191439077@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 2174f9a8c9db50f74df769edd5a4ab822c73b6d2 ]
+commit 5bee35e5389f450a7eea7318deb9073e9414d3b1 upstream.
 
-As the comment said, disable_irq() after request_irq() still has a
-time gap in which interrupts can come. request_irq() with IRQF_NO_AUTOEN
-flag will disable IRQ auto-enable when request IRQ.
+The drvdata is not available in release. Let's just use container_of()
+to get the ubd instance. Otherwise, removing a ubd device will result
+in a crash:
 
-Fixes: 72cd799544f2 ("[PATCH] I2C: add i2c driver for TPS6501x")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240912031530.2211654-1-ruanjinjie@huawei.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+RIP: 0033:blk_mq_free_tag_set+0x1f/0xba
+RSP: 00000000e2083bf0  EFLAGS: 00010246
+RAX: 000000006021463a RBX: 0000000000000348 RCX: 0000000062604d00
+RDX: 0000000004208060 RSI: 00000000605241a0 RDI: 0000000000000348
+RBP: 00000000e2083c10 R08: 0000000062414010 R09: 00000000601603f7
+R10: 000000000000133a R11: 000000006038c4bd R12: 0000000000000000
+R13: 0000000060213a5c R14: 0000000062405d20 R15: 00000000604f7aa0
+Kernel panic - not syncing: Segfault with no mm
+CPU: 0 PID: 17 Comm: kworker/0:1 Not tainted 6.8.0-rc3-00107-gba3f67c11638 #1
+Workqueue: events mc_work_proc
+Stack:
+ 00000000 604f7ef0 62c5d000 62405d20
+ e2083c30 6002c776 6002c755 600e47ff
+ e2083c60 6025ffe3 04208060 603d36e0
+Call Trace:
+ [<6002c776>] ubd_device_release+0x21/0x55
+ [<6002c755>] ? ubd_device_release+0x0/0x55
+ [<600e47ff>] ? kfree+0x0/0x100
+ [<6025ffe3>] device_release+0x70/0xba
+ [<60381d6a>] kobject_put+0xb5/0xe2
+ [<6026027b>] put_device+0x19/0x1c
+ [<6026a036>] platform_device_put+0x26/0x29
+ [<6026ac5a>] platform_device_unregister+0x2c/0x2e
+ [<6002c52e>] ubd_remove+0xb8/0xd6
+ [<6002bb74>] ? mconsole_reply+0x0/0x50
+ [<6002b926>] mconsole_remove+0x160/0x1cc
+ [<6002bbbc>] ? mconsole_reply+0x48/0x50
+ [<6003379c>] ? um_set_signals+0x3b/0x43
+ [<60061c55>] ? update_min_vruntime+0x14/0x70
+ [<6006251f>] ? dequeue_task_fair+0x164/0x235
+ [<600620aa>] ? update_cfs_group+0x0/0x40
+ [<603a0e77>] ? __schedule+0x0/0x3ed
+ [<60033761>] ? um_set_signals+0x0/0x43
+ [<6002af6a>] mc_work_proc+0x77/0x91
+ [<600520b4>] process_scheduled_works+0x1af/0x2c3
+ [<6004ede3>] ? assign_work+0x0/0x58
+ [<600527a1>] worker_thread+0x2f7/0x37a
+ [<6004ee3b>] ? set_pf_worker+0x0/0x64
+ [<6005765d>] ? arch_local_irq_save+0x0/0x2d
+ [<60058e07>] ? kthread_exit+0x0/0x3a
+ [<600524aa>] ? worker_thread+0x0/0x37a
+ [<60058f9f>] kthread+0x130/0x135
+ [<6002068e>] new_thread_handler+0x85/0xb6
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://patch.msgid.link/20241104163203.435515-3-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/tps65010.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/um/drivers/ubd_kern.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/tps65010.c b/drivers/mfd/tps65010.c
-index 65fcc58c02da8..412662f7b9ede 100644
---- a/drivers/mfd/tps65010.c
-+++ b/drivers/mfd/tps65010.c
-@@ -550,17 +550,13 @@ static int tps65010_probe(struct i2c_client *client,
- 	 */
- 	if (client->irq > 0) {
- 		status = request_irq(client->irq, tps65010_irq,
--				     IRQF_TRIGGER_FALLING, DRIVER_NAME, tps);
-+				     IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN,
-+				     DRIVER_NAME, tps);
- 		if (status < 0) {
- 			dev_dbg(&client->dev, "can't get IRQ %d, err %d\n",
- 					client->irq, status);
- 			return status;
- 		}
--		/* annoying race here, ideally we'd have an option
--		 * to claim the irq now and enable it later.
--		 * FIXME genirq IRQF_NOAUTOEN now solves that ...
--		 */
--		disable_irq(client->irq);
- 		set_bit(FLAG_IRQ_ENABLE, &tps->flags);
- 	} else
- 		dev_warn(&client->dev, "IRQ not configured!\n");
--- 
-2.43.0
-
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -861,7 +861,7 @@ static int ubd_open_dev(struct ubd *ubd_
+ 
+ static void ubd_device_release(struct device *dev)
+ {
+-	struct ubd *ubd_dev = dev_get_drvdata(dev);
++	struct ubd *ubd_dev = container_of(dev, struct ubd, pdev.dev);
+ 
+ 	blk_cleanup_queue(ubd_dev->queue);
+ 	blk_mq_free_tag_set(&ubd_dev->tag_set);
 
 
 
