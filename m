@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379019EEE10
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E43E9EF304
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1031A166C3A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54CC216A881
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D74213E6B;
-	Thu, 12 Dec 2024 15:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C3E235C23;
+	Thu, 12 Dec 2024 16:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITsYlIyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgsB3B8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4A66F2FE;
-	Thu, 12 Dec 2024 15:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8256223C49;
+	Thu, 12 Dec 2024 16:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018422; cv=none; b=Qrmqe+LVnlp42/hZ5js97JRVBwdWIcjjEvK2So5201yDIfnPjYDkDkubA9tmehM3fdW0m1+dAGBCL7x5EPipUH3sg+IJNApvwO6p9nIp5ZRCnfrt6jxzLEMGx74ifX32eNhU5MZVnbWAklghGpTr5wJV+yfm9f1G/DrtBbC09jo=
+	t=1734021159; cv=none; b=i9ShYrcZiLiz2gEQNawbOnBnCQeIY3akDSYJGNcNAv2/LLhz3V5ecFkaL/CunoA3wJTnhB3zCWu6M0eiJtAdKA6zhS78k2y0WYCrlaWcuK8O4ANJ5LsQ7O2IAjmXCbrNgQCsU75q3MiMqD0nYCq5spq8AHqFcgeUMxR9bOeygKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018422; c=relaxed/simple;
-	bh=w/sLeYgMa6GBHheOaMvfVrDC7N7vp9jsLGaedIMo5HY=;
+	s=arc-20240116; t=1734021159; c=relaxed/simple;
+	bh=elWaj7ZYSS0zBIfwZN/ArimQJ1UsZuPcwuw8+h3se1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVLSlh64VwtUjIoy3bAiV79G7B/yeRvpKbip5I1Lh2hU7RH2VF3oK/JElJRMPsyBNeguTaAKF78o3KhqIErdp//aJRz+NuFVx1D0qelBykYf/QaSSbrATHaH8bDzePgTtD8XApE5QOnyMb/IVluHGTJ/HWGtw1VWBwEWdCdupxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITsYlIyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A440C4CECE;
-	Thu, 12 Dec 2024 15:47:01 +0000 (UTC)
+	 MIME-Version; b=U6X9nSziNAkwwGgpxjAmejoG0x0vcGl+2vt/Ypq+DEfR/F9GTciIfIqVLvd84OuSe9mQ+3NmkzCPQziqnvsji7fVW+Of6FTYxV7IsMy3ruHL/+OHJWmdhr8aFoGOiPbZc7wmKoNHPllYmIk5HbpqvxiJrqKLEtBzRXYEOMDQRRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgsB3B8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573FFC4CECE;
+	Thu, 12 Dec 2024 16:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018422;
-	bh=w/sLeYgMa6GBHheOaMvfVrDC7N7vp9jsLGaedIMo5HY=;
+	s=korg; t=1734021159;
+	bh=elWaj7ZYSS0zBIfwZN/ArimQJ1UsZuPcwuw8+h3se1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ITsYlIyF0ObpXlR3sYqMGcybEgfpzs7Qsscaf0452HqJECnj5DHkm/KyohgTP0SBF
-	 sNMyj4lY5L5aKHvHmXUqJotAPpBk5A1nMb8BagVzrGVtGtEULn939JuNfS0fuQqwZ2
-	 J93vfY6il3MLUFTS4NIa0cAlbtE3AeybS0vNK2MU=
+	b=XgsB3B8Due9Q0spBIXKX9Ex89MvgL8LdEyLswUaRK3p+DKiXhvZsMWoVNs35u4jYG
+	 Q0fFG4Lz59qyWvkmPvslsbZIeBWLkfP73KWCuZM0OHgahf7NMFdTrv78nhNueq2Z2R
+	 xxgWttlchpbSW4QBbg2S84V0a/r0YQg1uwELi1dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Han <hanqi@vivo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 287/356] f2fs: fix f2fs_bug_on when uninstalling filesystem call f2fs_evict_inode.
-Date: Thu, 12 Dec 2024 16:00:06 +0100
-Message-ID: <20241212144255.915451527@linuxfoundation.org>
+Subject: [PATCH 6.1 662/772] r8169: dont apply UDP padding quirk on RTL8126A
+Date: Thu, 12 Dec 2024 16:00:07 +0100
+Message-ID: <20241212144417.271073623@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Han <hanqi@vivo.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit d5c367ef8287fb4d235c46a2f8c8d68715f3a0ca ]
+[ Upstream commit 87e26448dbda4523b73a894d96f0f788506d3795 ]
 
-creating a large files during checkpoint disable until it runs out of
-space and then delete it, then remount to enable checkpoint again, and
-then unmount the filesystem triggers the f2fs_bug_on as below:
+Vendor drivers r8125/r8126 indicate that this quirk isn't needed
+any longer for RTL8126A. Mimic this in r8169.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/inode.c:896!
-CPU: 2 UID: 0 PID: 1286 Comm: umount Not tainted 6.11.0-rc7-dirty #360
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-RIP: 0010:f2fs_evict_inode+0x58c/0x610
-Call Trace:
- __die_body+0x15/0x60
- die+0x33/0x50
- do_trap+0x10a/0x120
- f2fs_evict_inode+0x58c/0x610
- do_error_trap+0x60/0x80
- f2fs_evict_inode+0x58c/0x610
- exc_invalid_op+0x53/0x60
- f2fs_evict_inode+0x58c/0x610
- asm_exc_invalid_op+0x16/0x20
- f2fs_evict_inode+0x58c/0x610
- evict+0x101/0x260
- dispose_list+0x30/0x50
- evict_inodes+0x140/0x190
- generic_shutdown_super+0x2f/0x150
- kill_block_super+0x11/0x40
- kill_f2fs_super+0x7d/0x140
- deactivate_locked_super+0x2a/0x70
- cleanup_mnt+0xb3/0x140
- task_work_run+0x61/0x90
-
-The root cause is: creating large files during disable checkpoint
-period results in not enough free segments, so when writing back root
-inode will failed in f2fs_enable_checkpoint. When umount the file
-system after enabling checkpoint, the root inode is dirty in
-f2fs_evict_inode function, which triggers BUG_ON. The steps to
-reproduce are as follows:
-
-dd if=/dev/zero of=f2fs.img bs=1M count=55
-mount f2fs.img f2fs_dir -o checkpoint=disable:10%
-dd if=/dev/zero of=big bs=1M count=50
-sync
-rm big
-mount -o remount,checkpoint=enable f2fs_dir
-umount f2fs_dir
-
-Let's redirty inode when there is not free segments during checkpoint
-is disable.
-
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/d1317187-aa81-4a69-b831-678436e4de62@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index a3e0c92735433..7ad4a92417591 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -788,8 +788,10 @@ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
- 		!is_inode_flag_set(inode, FI_DIRTY_INODE))
- 		return 0;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index a74e33bf0302e..4b461e93ffe9d 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4139,8 +4139,8 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
+ {
+ 	unsigned int padto = 0, len = skb->len;
  
--	if (!f2fs_is_checkpoint_ready(sbi))
-+	if (!f2fs_is_checkpoint_ready(sbi)) {
-+		f2fs_mark_inode_dirty_sync(inode, true);
- 		return -ENOSPC;
+-	if (rtl_is_8125(tp) && len < 128 + RTL_MIN_PATCH_LEN &&
+-	    rtl_skb_is_udp(skb) && skb_transport_header_was_set(skb)) {
++	if (len < 128 + RTL_MIN_PATCH_LEN && rtl_skb_is_udp(skb) &&
++	    skb_transport_header_was_set(skb)) {
+ 		unsigned int trans_data_len = skb_tail_pointer(skb) -
+ 					      skb_transport_header(skb);
+ 
+@@ -4164,9 +4164,15 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
+ static unsigned int rtl_quirk_packet_padto(struct rtl8169_private *tp,
+ 					   struct sk_buff *skb)
+ {
+-	unsigned int padto;
++	unsigned int padto = 0;
+ 
+-	padto = rtl8125_quirk_udp_padto(tp, skb);
++	switch (tp->mac_version) {
++	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
++		padto = rtl8125_quirk_udp_padto(tp, skb);
++		break;
++	default:
++		break;
 +	}
  
- 	/*
- 	 * We need to balance fs here to prevent from producing dirty node pages
+ 	switch (tp->mac_version) {
+ 	case RTL_GIGA_MAC_VER_34:
 -- 
 2.43.0
 
