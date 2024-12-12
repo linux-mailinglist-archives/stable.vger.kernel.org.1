@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-102499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A301B9EF424
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 926479EF258
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A0CC176DAF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FA21290DE0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF4523E6E8;
-	Thu, 12 Dec 2024 16:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A8522A801;
+	Thu, 12 Dec 2024 16:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bB1vGSJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hfl8ZZAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5FE23E6E3;
-	Thu, 12 Dec 2024 16:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662FD2054EF;
+	Thu, 12 Dec 2024 16:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021454; cv=none; b=dqpPPBzuifVoHrB0TXtMkcOlkFjDx5mUfK8k8Gtx+Yrr2ipJ5e8GnLgXuCgRsYoZSm9cdYaaK3EjGfI1OrEylpJsY0fdGpDgklN4EYQB9fadHajcld2aPEzHfVG1VfL1uasJQUc3LvYZd+1OJh+H2GhP1h2Jp+bC8pECR1ZMORM=
+	t=1734021461; cv=none; b=SHs4rTMc/NIvYvgQkKPigZPgawP4GOJHApZbi21HaNItP7vceVkWs7X/FN9LlYxU2ttFJyVepTktxQJzlAXBumNj9UYEnfvOLuBwyey7A+mwHds9iYn36wQKkvvzYqz8HJyxQ5ffjAKIBLyr/WdP+DOGpur6RmaMG6VXy4m7vwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021454; c=relaxed/simple;
-	bh=zwnCMkt+7oTdWAuvIyR4XOXGb7V1AvJmgoZFobATmpU=;
+	s=arc-20240116; t=1734021461; c=relaxed/simple;
+	bh=oDz54dkru8uxY8MigODuxHkeXkhi2CPJoADuUP3ECp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIx1TJh7RGbqQtsbiYug3X5zlbQ8nW5bOM4QlOUaGvCmJ9X3PY2wZPMagmwP4fQJQFbnzLMzYCgniZ/7+2VauAuJdzBWq+UcE6fvZ2I7JwgSpGxqdTmEXWFlFlQ2ookB1DUeLO07V3ZuzB6FNPdNn5y/LuNhXahvzCIV3jerA3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bB1vGSJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD5AC4CECE;
-	Thu, 12 Dec 2024 16:37:33 +0000 (UTC)
+	 MIME-Version; b=d34R0BKag9k+icJWGNF9ky2r6mksgU/0sWJEd4hwXyV2poztQ1DAgrAUboB6TljH6CfhmjtUdgIno1CjKz0wBxqt5tcMS9TLCe7vFmufkBaL5Cp6foJRrJigr6qOzy2w6uJzeaVynI1Dv+Sa8vkyKr13pSPZGYWHmtWDsSS9WC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hfl8ZZAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1704C4CECE;
+	Thu, 12 Dec 2024 16:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021454;
-	bh=zwnCMkt+7oTdWAuvIyR4XOXGb7V1AvJmgoZFobATmpU=;
+	s=korg; t=1734021461;
+	bh=oDz54dkru8uxY8MigODuxHkeXkhi2CPJoADuUP3ECp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bB1vGSJASVrhM38VUghw0SlcbzRIikg5ClMfdpal61tSFdA1F4bHEODbjlHAj6Qwi
-	 u9Rm9HNogpjGPcK7jfF9zb18El/MJEmYNKhXSzsT1hvAsF0kUJ5fEemogBHPR1HO1B
-	 Wq/PkoQNJsD/NHezoFI2tZTBsRPFhqrsZ7L+8ntU=
+	b=Hfl8ZZAA5AUAgXFmimx0Oeb8mlUr61YFJyxGt3LTAqqUpCO3xU9nPn2NUw92jDdzJ
+	 bafmRqrbqQ2o7TJwT6c01rZQnZ51naHV4Gna3zRftShn/llWEJL6vFsnHMv7t0Yd1t
+	 U7C1/0/4+Ejx/SXjJXe2gg1BJ7cmdZGJ/P6YMJMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunkun Jiang <jiangkunkun@huawei.com>,
-	Jing Zhang <jingzhangos@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.1 741/772] KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
-Date: Thu, 12 Dec 2024 16:01:26 +0100
-Message-ID: <20241212144420.550242680@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 6.1 742/772] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
+Date: Thu, 12 Dec 2024 16:01:27 +0100
+Message-ID: <20241212144420.595677651@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,51 +65,108 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kunkun Jiang <jiangkunkun@huawei.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-commit 7602ffd1d5e8927fadd5187cb4aed2fdc9c47143 upstream.
+Since 5.16 and prior to 6.13 KVM can't be used with FSDAX
+guest memory (PMD pages). To reproduce the issue you need to reserve
+guest memory with `memmap=` cmdline, create and mount FS in DAX mode
+(tested both XFS and ext4), see doc link below. ndctl command for test:
+ndctl create-namespace -v -e namespace1.0 --map=dev --mode=fsdax -a 2M
+Then pass memory object to qemu like:
+-m 8G -object memory-backend-file,id=ram0,size=8G,\
+mem-path=/mnt/pmem/guestmem,share=on,prealloc=on,dump=off,align=2097152 \
+-numa node,memdev=ram0,cpus=0-1
+QEMU fails to run guest with error: kvm run failed Bad address
+and there are two warnings in dmesg:
+WARN_ON_ONCE(!page_count(page)) in kvm_is_zone_device_page() and
+WARN_ON_ONCE(folio_ref_count(folio) <= 0) in try_grab_folio() (v6.6.63)
 
-When DISCARD frees an ITE, it does not invalidate the
-corresponding ITE. In the scenario of continuous saves and
-restores, there may be a situation where an ITE is not saved
-but is restored. This is unreasonable and may cause restore
-to fail. This patch clears the corresponding ITE when DISCARD
-frees an ITE.
+It looks like in the past assumption was made that pfn won't change from
+faultin_pfn() to release_pfn_clean(), e.g. see
+commit 4cd071d13c5c ("KVM: x86/mmu: Move calls to thp_adjust() down a level")
+But kvm_page_fault structure made pfn part of mutable state, so
+now release_pfn_clean() can take hugepage-adjusted pfn.
+And it works for all cases (/dev/shm, hugetlb, devdax) except fsdax.
+Apparently in fsdax mode faultin-pfn and adjusted-pfn may refer to
+different folios, so we're getting get_page/put_page imbalance.
 
-Cc: stable@vger.kernel.org
-Fixes: eff484e0298d ("KVM: arm64: vgic-its: ITT save and restore")
-Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
-[Jing: Update with entry write helper]
-Signed-off-by: Jing Zhang <jingzhangos@google.com>
-Link: https://lore.kernel.org/r/20241107214137.428439-6-jingzhangos@google.com
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+To solve this preserve faultin pfn in separate local variable
+and pass it in kvm_release_pfn_clean().
+
+Patch tested for all mentioned guest memory backends with tdp_mmu={0,1}.
+
+No bug in upstream as it was solved fundamentally by
+commit 8dd861cc07e2 ("KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns")
+and related patch series.
+
+Link: https://nvdimm.docs.kernel.org/2mib_fs_dax.html
+Fixes: 2f6305dd5676 ("KVM: MMU: change kvm_tdp_mmu_map() arguments to kvm_page_fault")
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/kvm/mmu/mmu.c         |    5 ++++-
+ arch/x86/kvm/mmu/paging_tmpl.h |    5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -855,6 +855,9 @@ static int vgic_its_cmd_handle_discard(s
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4245,6 +4245,7 @@ static int direct_page_fault(struct kvm_
+ 	bool is_tdp_mmu_fault = is_tdp_mmu(vcpu->arch.mmu);
  
- 	ite = find_ite(its, device_id, event_id);
- 	if (ite && its_is_collection_mapped(ite->collection)) {
-+		struct its_device *device = find_its_device(its, device_id);
-+		int ite_esz = vgic_its_get_abi(its)->ite_esz;
-+		gpa_t gpa = device->itt_addr + ite->event_id * ite_esz;
- 		/*
- 		 * Though the spec talks about removing the pending state, we
- 		 * don't bother here since we clear the ITTE anyway and the
-@@ -863,7 +866,8 @@ static int vgic_its_cmd_handle_discard(s
- 		vgic_its_invalidate_cache(kvm);
+ 	unsigned long mmu_seq;
++	kvm_pfn_t orig_pfn;
+ 	int r;
  
- 		its_free_ite(kvm, ite);
--		return 0;
+ 	fault->gfn = fault->addr >> PAGE_SHIFT;
+@@ -4272,6 +4273,8 @@ static int direct_page_fault(struct kvm_
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
++	orig_pfn = fault->pfn;
 +
-+		return vgic_its_write_entry_lock(its, gpa, 0, ite_esz);
+ 	r = RET_PF_RETRY;
+ 
+ 	if (is_tdp_mmu_fault)
+@@ -4296,7 +4299,7 @@ out_unlock:
+ 		read_unlock(&vcpu->kvm->mmu_lock);
+ 	else
+ 		write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -790,6 +790,7 @@ FNAME(is_self_change_mapping)(struct kvm
+ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ {
+ 	struct guest_walker walker;
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 	unsigned long mmu_seq;
+ 	bool is_self_change_mapping;
+@@ -868,6 +869,8 @@ static int FNAME(page_fault)(struct kvm_
+ 			walker.pte_access &= ~ACC_EXEC_MASK;
  	}
  
- 	return E_ITS_DISCARD_UNMAPPED_INTERRUPT;
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	write_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -881,7 +884,7 @@ static int FNAME(page_fault)(struct kvm_
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
 
 
 
