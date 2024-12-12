@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-103158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472DA9EF559
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 720349EF4BA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C858928F9D8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2314D171496
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B3A2139C9;
-	Thu, 12 Dec 2024 17:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87E2223304;
+	Thu, 12 Dec 2024 16:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNFVg5zx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SILjXTnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561E420967D;
-	Thu, 12 Dec 2024 17:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721782054EF;
+	Thu, 12 Dec 2024 16:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023719; cv=none; b=ZvvzWMG03T7+qOOuRqJfM3wnLAIkzYtG3EvK+S9jzdOxLSOTny0lRI4eJiWhLcRzIl/r+NiShi2J8sQORT+Z90NbH5WJ2Gk/G9nAJXPYNdHOTfajH+dROLjw1BiCxoPcYI0wwlgQtXMRZwsvI/qETKF/s8HzqloRqScuToyEh+4=
+	t=1734022149; cv=none; b=OMHGRakr8M0teiS8QGlXBZ85hGsi5oOS826oOpREk003agXypTkr71Tic5HkMl6pApkH5NoTdCwbO+T0FU6FhHkZBnW4QUQzLn++EClt7cFdx/HzpaLZNPVioV5wFwIpKrZtOea7o2z3wcS4qWujAYKZ33GAThyDbrA3HvplhFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023719; c=relaxed/simple;
-	bh=1OUYFxImqGcp+VmgMbJh43DObtmp6E8b8/X7CrXkl6Q=;
+	s=arc-20240116; t=1734022149; c=relaxed/simple;
+	bh=Uk2AS9IQb2QKhKVsERXTeKIFoFHgv5kU0mzhYVc6948=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrPLkri1iGbcd0fzW5TwII1l7qW8Wq1WNIC5h+fid1DJgDAW6qy7BtTJ7ueGqnr2pwKo/l3dRacvZE6c6oYRPAPb2sUwwcKkf8WN4or7jUgoHX5wK5ar3tu6/GR4xWqdIC5E9LvanlXXIAD3zi2d1xMeSFYni8G4Qfxo2Pg0V20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNFVg5zx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3755C4CECE;
-	Thu, 12 Dec 2024 17:15:18 +0000 (UTC)
+	 MIME-Version; b=dMmbl5GcQeUVhGHJgm4rEacvqdyNCl59eZ5N9bx3xq0XD+hJWzyWnRjsZB+ua6BXf46aWCLKVlshSOZ9xd4wG9M0BE/PeUEmdzS0jAYz9LwomUyFjyhRke/rrcnbYREipjmol/jXKXwNKjgB4tJtJl8iBx1gbB4Vz2lqpP2mpo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SILjXTnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C15C4CECE;
+	Thu, 12 Dec 2024 16:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023719;
-	bh=1OUYFxImqGcp+VmgMbJh43DObtmp6E8b8/X7CrXkl6Q=;
+	s=korg; t=1734022149;
+	bh=Uk2AS9IQb2QKhKVsERXTeKIFoFHgv5kU0mzhYVc6948=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNFVg5zxAupGVS8AqKgOxF508ihB65B6ztZ8DOKBIXY6fjXslPxipEsZCT99pVF1D
-	 DLNcYQYXFfEZBBfAnGHpgj/HPkDflCbw8BKHlYMD1ir709vRFuQ63iBQlBuYlRtHnY
-	 0TV6QaOCSNOWoKOwIkufRHGpbFxbJMJxR1F/oZjc=
+	b=SILjXTnK+B+X6hEqEnwn+fL7ZC/kZMeR87vjsy/YHwGFzuhrxztpgMaAKZTE5u6jc
+	 OsqIlSaihnXjXR0m/w+2Li8wR7365xmWT2TM2XQN8lUXA+OoLPEzTES5xo3bzaWdFO
+	 Af0mh+SDPgaeTrp91aBLr4jJOoiA5Scw6ml6NLOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Ubisectech Sirius <bugreport@valiantsec.com>,
-	syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 019/459] nilfs2: fix null-ptr-deref in block_touch_buffer tracepoint
+	Jiaxin Yu <jiaxin.yu@mediatek.com>,
+	Macpaul Lin <macpaul.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 162/565] ASoC: dt-bindings: mt6359: Update generic node name and dmic-mode
 Date: Thu, 12 Dec 2024 15:55:57 +0100
-Message-ID: <20241212144254.286696123@linuxfoundation.org>
+Message-ID: <20241212144317.879676949@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Macpaul Lin <macpaul.lin@mediatek.com>
 
-commit cd45e963e44b0f10d90b9e6c0e8b4f47f3c92471 upstream.
+[ Upstream commit 4649cbd97fdae5069e9a71cd7669b62b90e03669 ]
 
-Patch series "nilfs2: fix null-ptr-deref bugs on block tracepoints".
+Some fix and updates in the following items:
+1. examples:
+   Update generic node name to 'audio-codec' to comply with the
+   coming change in 'mt6359.dtsi'. This change is necessary to fix the
+   dtbs_check error:
+   pmic: 'mt6359codec' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-This series fixes null pointer dereference bugs that occur when using
-nilfs2 and two block-related tracepoints.
+2. mediatek,dmic-mode:
+   After inspecting the .dts and .dtsi files using 'mt6359-codec', it was
+   discovered that the definitions of 'two wires' and 'one wire' are
+   inverted compared to the DT schema.
+   For example, the following boards using MT6359 PMIC:
+    - mt8192-asurada.dtsi
+    - mt8195-cherry.dtsi
+   These boards use the same definitions of 'dmic-mode' as other boards
+   using MT6358 PMIC. The meaning of '0' or '1' has been noted as comments
+   in the device trees.
 
+   Upon examining the code in [1] and [2], it was confirmed that the
+   definitions of 'dmic-mode' are consistent between "MT6359 PMIC" and
+   "MT6358 PMIC". Therefore, the DT Schema should be correct as is.
 
-This patch (of 2):
+References:
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/codecs/mt6358.c#n1875
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/codecs/mt6359.c#L1515
 
-It has been reported that when using "block:block_touch_buffer"
-tracepoint, touch_buffer() called from __nilfs_get_folio_block() causes a
-NULL pointer dereference, or a general protection fault when KASAN is
-enabled.
-
-This happens because since the tracepoint was added in touch_buffer(), it
-references the dev_t member bh->b_bdev->bd_dev regardless of whether the
-buffer head has a pointer to a block_device structure.  In the current
-implementation, the block_device structure is set after the function
-returns to the caller.
-
-Here, touch_buffer() is used to mark the folio/page that owns the buffer
-head as accessed, but the common search helper for folio/page used by the
-caller function was optimized to mark the folio/page as accessed when it
-was reimplemented a long time ago, eliminating the need to call
-touch_buffer() here in the first place.
-
-So this solves the issue by eliminating the touch_buffer() call itself.
-
-Link: https://lkml.kernel.org/r/20241106160811.3316-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20241106160811.3316-2-konishi.ryusuke@gmail.com
-Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: Ubisectech Sirius <bugreport@valiantsec.com>
-Closes: https://lkml.kernel.org/r/86bd3013-887e-4e38-960f-ca45c657f032.bugreport@valiantsec.com
-Reported-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9982fb8d18eba905abe2
-Tested-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 539237d1c609 ("dt-bindings: mediatek: mt6359: add codec document")
+Signed-off-by: Jiaxin Yu <jiaxin.yu@mediatek.com>
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20240930075451.14196-1-macpaul.lin@mediatek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/page.c |    1 -
- 1 file changed, 1 deletion(-)
+ Documentation/devicetree/bindings/sound/mt6359.yaml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -39,7 +39,6 @@ __nilfs_get_page_block(struct page *page
- 	first_block = (unsigned long)index << (PAGE_SHIFT - blkbits);
- 	bh = nilfs_page_get_nth_block(page, block - first_block);
+diff --git a/Documentation/devicetree/bindings/sound/mt6359.yaml b/Documentation/devicetree/bindings/sound/mt6359.yaml
+index a54f466f769d4..74330f54d6db4 100644
+--- a/Documentation/devicetree/bindings/sound/mt6359.yaml
++++ b/Documentation/devicetree/bindings/sound/mt6359.yaml
+@@ -23,8 +23,8 @@ properties:
+       Indicates how many data pins are used to transmit two channels of PDM
+       signal. 0 means two wires, 1 means one wire. Default value is 0.
+     enum:
+-      - 0 # one wire
+-      - 1 # two wires
++      - 0 # two wires
++      - 1 # one wire
  
--	touch_buffer(bh);
- 	wait_on_buffer(bh);
- 	return bh;
- }
+   mediatek,mic-type-0:
+     $ref: /schemas/types.yaml#/definitions/uint32
+@@ -53,9 +53,9 @@ additionalProperties: false
+ 
+ examples:
+   - |
+-    mt6359codec: mt6359codec {
+-      mediatek,dmic-mode = <0>;
+-      mediatek,mic-type-0 = <2>;
++    mt6359codec: audio-codec {
++        mediatek,dmic-mode = <0>;
++        mediatek,mic-type-0 = <2>;
+     };
+ 
+ ...
+-- 
+2.43.0
+
 
 
 
