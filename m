@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C73939EF186
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617649EEBAE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8898F290164
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E3D116779E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E79022D4FA;
-	Thu, 12 Dec 2024 16:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4BA2153F4;
+	Thu, 12 Dec 2024 15:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgYfCl9w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7MpvXR+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF2220967D;
-	Thu, 12 Dec 2024 16:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693D52054F8;
+	Thu, 12 Dec 2024 15:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020906; cv=none; b=m55gbeww4n0Mn3SDG/bvgmFe9XM9+FVFXe1p2Uz9Pe0TuAST5ZCFslasOwbyCutIEwcedQpcrg5/VMefDbbmZNJV5MgRyJxItU5EDxydcpFT0ITMOvAjRQL25dJrthe4cU4ckhKyHMZfmvtndsbNuYJXmZ+2ITPJQK+t28MHGHA=
+	t=1734017055; cv=none; b=tO3Lr4ZaDv8Sc7v46XSlmVzyR5wscDj0Dml2jr6NubY1XenWnviHkVTtZLEFTTBKkxA0Tygog3WcS8Ok73CwshLuVCtS5NaSs5PT1lOkcSB/mnC2KRo5MywZNFJW/bVIcqqcCgQuuU/n8YQtu2+R4/BS1oZzyYzgt0RPH26knNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020906; c=relaxed/simple;
-	bh=yqAfXRkUiASummIQQJ3ktqL2SdArnUnz6BuFEWLbMzw=;
+	s=arc-20240116; t=1734017055; c=relaxed/simple;
+	bh=5BKIWpM0xaJQnBbl76TTKNqQwRwuvK138vTt7iTsTHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JwmAltflcW4Ofm66E1k70tLmX5HL0PrLIt+DGSgQljAaB8mXCOC6nofnC9R6q7uEesTRfskih375brxASd3W2671qFH2/lyyOGr9DSaD3nq8gHnkNdj5QPsWRfdF4hkVfttXeJIYgl8ElKi/sFyhkbqQDELTWiSVoQnNSdLjFyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgYfCl9w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA8CC4CED0;
-	Thu, 12 Dec 2024 16:28:25 +0000 (UTC)
+	 MIME-Version; b=KQWc6SXryO2oQ8B5dZkP3ihyWV3xoE4wZ8J9ezhL98im6+5d5FSWJauSi5LYktKJLMfJ+MYLDzKb0/Jm4rO8Or4fcpQis9HqQ4Dz3EXagcTIioxVdHiI6RWGMZiHLTixGlgds7bQJA3dW8dZ2oh0y/i7aeSQNpf7v0Hp7MrASnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7MpvXR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF831C4CECE;
+	Thu, 12 Dec 2024 15:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020906;
-	bh=yqAfXRkUiASummIQQJ3ktqL2SdArnUnz6BuFEWLbMzw=;
+	s=korg; t=1734017055;
+	bh=5BKIWpM0xaJQnBbl76TTKNqQwRwuvK138vTt7iTsTHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgYfCl9wDgtxBWib29p3ni9KjD6Ssn2ynmeiFeRcIDDTaR740bMsferlMSecKXhI9
-	 1in6h+zYF8Lbd0GPB0+kCv4TBUBbrSRBWyWB9ziCYHDP1UR8L6CdqJYVEWhg0aPUnM
-	 Ztdc5xjyh/XijkStETONNcCs0xy5VL7RsMnX3+sU=
+	b=l7MpvXR+mJ0DQ9cfxHNyUIepsvU9OQhCNok3qaC9ol9lbH7qdhG/cd0kMRKQWk0kD
+	 t8vjsMlKeUgb4S9V1FTRK0CcuJp1e8yNRhORyFSVzHmkCYIs0k5KBA37wfIVpCL7U0
+	 c4I9du/u95tLLxitDbSblGRfTcIccQiyLWIdImkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 594/772] drm/v3d: Enable Performance Counters before clearing them
+Subject: [PATCH 6.12 370/466] scsi: lpfc: Prevent NDLP reference count underflow in dev_loss_tmo callback
 Date: Thu, 12 Dec 2024 15:58:59 +0100
-Message-ID: <20241212144414.474306352@linuxfoundation.org>
+Message-ID: <20241212144321.392625531@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit c98b10496b2f3c4f576af3482c71aadcfcbf765e ]
+[ Upstream commit 4281f44ea8bfedd25938a0031bebba1473ece9ad ]
 
-On the Raspberry Pi 5, performance counters are not being cleared
-when `v3d_perfmon_start()` is called, even though we write to the
-CLR register. As a result, their values accumulate until they
-overflow.
+Current dev_loss_tmo handling checks whether there has been a previous
+call to unregister with SCSI transport.  If so, the NDLP kref count is
+decremented a second time in dev_loss_tmo as the final kref release.
+However, this can sometimes result in a reference count underflow if
+there is also a race to unregister with NVMe transport as well.  Add a
+check for NVMe transport registration before decrementing the final
+kref.  If NVMe transport is still registered, then the NVMe transport
+unregistration is designated as the final kref decrement.
 
-The expected behavior is for performance counters to reset to zero
-at the start of a job. When the job finishes and the perfmon is
-stopped, the counters should accurately reflect the values for that
-specific job.
-
-To ensure this behavior, the performance counters are now enabled
-before being cleared. This allows the CLR register to function as
-intended, zeroing the counter values when the job begins.
-
-Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241204122831.17015-1-mcanal@igalia.com
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20241031223219.152342-8-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_perfmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 36 +++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_perfmon.c b/drivers/gpu/drm/v3d/v3d_perfmon.c
-index cb56627328bb0..101332775b6a7 100644
---- a/drivers/gpu/drm/v3d/v3d_perfmon.c
-+++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
-@@ -49,9 +49,9 @@ void v3d_perfmon_start(struct v3d_dev *v3d, struct v3d_perfmon *perfmon)
- 		V3D_CORE_WRITE(0, V3D_V4_PCTR_0_SRC_X(source), channel);
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 9241075f72fa4..6e8d8a96c54fb 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -155,6 +155,7 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
+ 	struct lpfc_hba   *phba;
+ 	struct lpfc_work_evt *evtp;
+ 	unsigned long iflags;
++	bool nvme_reg = false;
+ 
+ 	ndlp = ((struct lpfc_rport_data *)rport->dd_data)->pnode;
+ 	if (!ndlp)
+@@ -177,38 +178,49 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
+ 	/* Don't schedule a worker thread event if the vport is going down. */
+ 	if (test_bit(FC_UNLOADING, &vport->load_flag) ||
+ 	    !test_bit(HBA_SETUP, &phba->hba_flag)) {
++
+ 		spin_lock_irqsave(&ndlp->lock, iflags);
+ 		ndlp->rport = NULL;
+ 
++		if (ndlp->fc4_xpt_flags & NVME_XPT_REGD)
++			nvme_reg = true;
++
+ 		/* The scsi_transport is done with the rport so lpfc cannot
+-		 * call to unregister. Remove the scsi transport reference
+-		 * and clean up the SCSI transport node details.
++		 * call to unregister.
+ 		 */
+-		if (ndlp->fc4_xpt_flags & (NLP_XPT_REGD | SCSI_XPT_REGD)) {
++		if (ndlp->fc4_xpt_flags & SCSI_XPT_REGD) {
+ 			ndlp->fc4_xpt_flags &= ~SCSI_XPT_REGD;
+ 
+-			/* NVME transport-registered rports need the
+-			 * NLP_XPT_REGD flag to complete an unregister.
++			/* If NLP_XPT_REGD was cleared in lpfc_nlp_unreg_node,
++			 * unregister calls were made to the scsi and nvme
++			 * transports and refcnt was already decremented. Clear
++			 * the NLP_XPT_REGD flag only if the NVME Rport is
++			 * confirmed unregistered.
+ 			 */
+-			if (!(ndlp->fc4_xpt_flags & NVME_XPT_REGD))
++			if (!nvme_reg && ndlp->fc4_xpt_flags & NLP_XPT_REGD) {
+ 				ndlp->fc4_xpt_flags &= ~NLP_XPT_REGD;
++				spin_unlock_irqrestore(&ndlp->lock, iflags);
++				lpfc_nlp_put(ndlp); /* may free ndlp */
++			} else {
++				spin_unlock_irqrestore(&ndlp->lock, iflags);
++			}
++		} else {
+ 			spin_unlock_irqrestore(&ndlp->lock, iflags);
+-			lpfc_nlp_put(ndlp);
+-			spin_lock_irqsave(&ndlp->lock, iflags);
+ 		}
+ 
++		spin_lock_irqsave(&ndlp->lock, iflags);
++
+ 		/* Only 1 thread can drop the initial node reference.  If
+ 		 * another thread has set NLP_DROPPED, this thread is done.
+ 		 */
+-		if (!(ndlp->fc4_xpt_flags & NVME_XPT_REGD) &&
+-		    !(ndlp->nlp_flag & NLP_DROPPED)) {
+-			ndlp->nlp_flag |= NLP_DROPPED;
++		if (nvme_reg || (ndlp->nlp_flag & NLP_DROPPED)) {
+ 			spin_unlock_irqrestore(&ndlp->lock, iflags);
+-			lpfc_nlp_put(ndlp);
+ 			return;
+ 		}
+ 
++		ndlp->nlp_flag |= NLP_DROPPED;
+ 		spin_unlock_irqrestore(&ndlp->lock, iflags);
++		lpfc_nlp_put(ndlp);
+ 		return;
  	}
  
-+	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_EN, mask);
- 	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_CLR, mask);
- 	V3D_CORE_WRITE(0, V3D_PCTR_0_OVERFLOW, mask);
--	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_EN, mask);
- 
- 	v3d->active_perfmon = perfmon;
- }
 -- 
 2.43.0
 
