@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195959EF6C7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9829EF506
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 745F11766A0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44C0619427F3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B16215764;
-	Thu, 12 Dec 2024 17:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD251216E14;
+	Thu, 12 Dec 2024 17:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixluNsUV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPFyVFhL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513CF176AA1;
-	Thu, 12 Dec 2024 17:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CB522966E;
+	Thu, 12 Dec 2024 17:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024142; cv=none; b=tFqS8O+WsBLQSFbBAEE6Il7cdJAu/S2+P88mWSOi8+W6cfOWPSphxfwEHldxNZPoH6lzdW5yBd9HxTAJk9YE+u7SOVcBxb558eNKijBDHhhTmPVSj++Mg/RpCHTRW8J7Z0dyUIDsLMvROWZ+UmCAUyc0Eb8kB07VxyMUbWEtADI=
+	t=1734022819; cv=none; b=sMXadP9NZr9g54x82MqnOxY5oc6zcAPZCLRBuj61kj7TA1RUhebd4liqQ6hrZd9LCSXhHJHowhJi0sa11toN1+9qAGEPcXbeW/w7JKUaDofmWFwmTCTZUAhXbIOmITVdHylZPESIOdN2H8yi+T0RlshXQ1aoZ0NiIqGT0F0q6nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024142; c=relaxed/simple;
-	bh=jnBXcu/XPez81SoOIcxF/cRcn8yX5rFK6A8tceNbrSw=;
+	s=arc-20240116; t=1734022819; c=relaxed/simple;
+	bh=7AeK2c9ThierBOuPMw3gaJFrPK4KxFby4vAsSNBnMa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyXn4+o3cdt8Q1EOaf1D+dBUw3XYkVNkeWLlQ0bLOjQT71Y5HRS4gNmmlHAZqI2f4WW8CMDPvKRJWxwAYFtRNqBl2Ab1S+Y3h9xxaRj7RSD5yAh0UA+3wmixQoHYkV6i2nAi/YouKpZrq3+zRlDrVDuhKFwLqw0mTmyNlIUZZko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixluNsUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE673C4CECE;
-	Thu, 12 Dec 2024 17:22:21 +0000 (UTC)
+	 MIME-Version; b=BsUoAmxxx8R6r2qgahSbNeWUF3SNAo7sptHtG5oJtcuXddY93edZA+VF1S+zLqML+lnPo+YCQOjMoGr82FEKNZX4qTR9Obf2dLB7AOSqOrGUrHMzDXVTsGduScSm5b6uBzlXBw+Z3Qz7wwzcckpV4OP2QEIQVIvexTsmbQDjhBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPFyVFhL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D637CC4CECE;
+	Thu, 12 Dec 2024 17:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024142;
-	bh=jnBXcu/XPez81SoOIcxF/cRcn8yX5rFK6A8tceNbrSw=;
+	s=korg; t=1734022819;
+	bh=7AeK2c9ThierBOuPMw3gaJFrPK4KxFby4vAsSNBnMa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixluNsUVhq52PccwF8b3oCrcYOJngHUo4TBo6xhd3Ra9pat5Xij9ucgyPKo07V0rC
-	 uJ/QZByZrIsVAQz/5O+caJ3EGwxX3F+9LkigzwdRprkhNmJjVgkRnU7r6qi8BDmZuO
-	 WOGbNp+/Ug4azzEwXm4P0dCkIlkDXP7GzMGOYpBw=
+	b=PPFyVFhLiOKtkxL3VFadDr3QfV5S4w1u9YGni3qUFleQAAE78n1/bpUPSm4PV/wXL
+	 ios4Ac/9AzynEOJ6DkMjMffTbS7G/8IEwn11TKduJWrjJzQE4FtxaXABf7EXbF0cbM
+	 TJE+uFia5lCYO7ezMxvGEPuaz7onfTrdFBajRVH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongpeng Yang <yangyongpeng1@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 200/459] f2fs: check curseg->inited before write_sum_page in change_curseg
+	syzbot+4bf62a7b1d0f4fdb7ae2@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 343/565] ALSA: pcm: Add sanity NULL check for the default mmap fault handler
 Date: Thu, 12 Dec 2024 15:58:58 +0100
-Message-ID: <20241212144301.467819232@linuxfoundation.org>
+Message-ID: <20241212144325.155954496@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng1@oppo.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 43563069e1c1df417d2eed6eca8a22fc6b04691d ]
+commit d2913a07d9037fe7aed4b7e680684163eaed6bc4 upstream.
 
-In the __f2fs_init_atgc_curseg->get_atssr_segment calling,
-curseg->segno is NULL_SEGNO, indicating that there is no summary
-block that needs to be written.
+A driver might allow the mmap access before initializing its
+runtime->dma_area properly.  Add a proper NULL check before passing to
+virt_to_page() for avoiding a panic.
 
-Fixes: 093749e296e2 ("f2fs: support age threshold based garbage collection")
-Signed-off-by: Yongpeng Yang <yangyongpeng1@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+4bf62a7b1d0f4fdb7ae2@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241120141104.7060-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/core/pcm_native.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index d99c9e6a0b3e4..a6d05264f1365 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2691,7 +2691,8 @@ static void change_curseg(struct f2fs_sb_info *sbi, int type)
- 	struct f2fs_summary_block *sum_node;
- 	struct page *sum_page;
- 
--	write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
-+	if (curseg->inited)
-+		write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
- 
- 	__set_test_and_inuse(sbi, new_segno);
- 
--- 
-2.43.0
-
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -3757,9 +3757,11 @@ static vm_fault_t snd_pcm_mmap_data_faul
+ 		return VM_FAULT_SIGBUS;
+ 	if (substream->ops->page)
+ 		page = substream->ops->page(substream, offset);
+-	else if (!snd_pcm_get_dma_buf(substream))
++	else if (!snd_pcm_get_dma_buf(substream)) {
++		if (WARN_ON_ONCE(!runtime->dma_area))
++			return VM_FAULT_SIGBUS;
+ 		page = virt_to_page(runtime->dma_area + offset);
+-	else
++	} else
+ 		page = snd_sgbuf_get_page(snd_pcm_get_dma_buf(substream), offset);
+ 	if (!page)
+ 		return VM_FAULT_SIGBUS;
 
 
 
