@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-101809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F191E9EEE4F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993959EEEC9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9139284E16
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:56:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFC3116A0BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B64522333A;
-	Thu, 12 Dec 2024 15:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634262210E5;
+	Thu, 12 Dec 2024 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voCMWuJq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOPCP1rH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E6D14A82;
-	Thu, 12 Dec 2024 15:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2139214A82;
+	Thu, 12 Dec 2024 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018876; cv=none; b=WYn1V6AFs64ULhoFXpPR5cPH6ZUBnj7L80Yq5JVQBAPooNSbTWb5e3vkidHU8X7OJt11IOz2kG9TMdY/GIkXkKN5zc5oO4Rm17JgxrMtz/rzlysUKftIStQD/HsIyrOn6hb2WgH9OtjS8CV8Mb6v7KJa6wLVFE5WSeCBmY2JZaU=
+	t=1734018886; cv=none; b=QylWnqGSOI0RnqVjIYdoNfUW5ICGpKPHeaW4tjpLKU9kE6YHfk5mbaWDv4wXuRgLbYmYy8au8w5bXaKD53ygBtrwW3Ii+GZey2Zt7Ne204NPhvKDgTjl5t/FH3xRV//XTVMYh99XcAqwoqLjXY61mQXFOmbPCgqzPIVJLzEYitE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018876; c=relaxed/simple;
-	bh=te40OVqwEpDUAjNFXRG0ZZcM5vRdV02+uT55jEMtXqQ=;
+	s=arc-20240116; t=1734018886; c=relaxed/simple;
+	bh=OFqJSFV8eiIAdkY/Z2KrG1JaLC2OfLt92xHoZdBWmkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BTOkLJXDDhQI/zb5wQA1kyDhVSOvg0kmhcLkEA2kpChlT3junLOms7KBAQvnNphtfJmpXlrByreBVnSwiAHQ2JIHv4gWq9CWfUy6+dH4zv7Bb4pTnPTNk/f8BFMgHbNveo5caMxeXOZ6lhqJIkPcPOPPLJ+1rUR1DUZSUrCwDFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voCMWuJq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4FDC4CED0;
-	Thu, 12 Dec 2024 15:54:34 +0000 (UTC)
+	 MIME-Version; b=tyPS4hOiiR9xGq5kqpcSoYzlnq/WtYFjuq3ZefCSPO1+1N68kCNi9gOWK7YM2vfJ5a73ieQniswWQNixvcuLWJZ686sRaj6PcVqlPYkk5b6a94yPQvL8R2NBOoazkys//Vu6YyiQGQz1XeIJ+WeDG7aLbyxYDYiuR3H2uxHlOuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOPCP1rH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B42C4CED0;
+	Thu, 12 Dec 2024 15:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018875;
-	bh=te40OVqwEpDUAjNFXRG0ZZcM5vRdV02+uT55jEMtXqQ=;
+	s=korg; t=1734018886;
+	bh=OFqJSFV8eiIAdkY/Z2KrG1JaLC2OfLt92xHoZdBWmkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=voCMWuJqHHeltqIah1yCx4Zcp37CA2VmqLu1nfaK7Ufo22kSjwcf7g47WKxriynP0
-	 hsQhL8RutMEl+z9BfiaKa3JXGSv2xQMPxGo0bBtXiJyjN074EOprXKaVClZGOlBVik
-	 18xtSisujre2kmSR1AtFX95lnGfjvD/2yHKBivy0=
+	b=MOPCP1rHpn7hshFbM2aANqhKGfQd8UcVZlwWfEdxjkXsKxLPtcqrUa23JjI3lVRyM
+	 hvBMGH7OEAdM71ZyYuyOSTw6eniq5iuTlVaVLf5VTsdqH9cF+mnnuD97sCM8m24oi/
+	 3MFu6qdWsed95sak/Bm+nR/fXFTm5ArlgyrhNDcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Bin Lan <bin.lan.cn@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/772] net: fix crash when config small gso_max_size/gso_ipv4_max_size
-Date: Thu, 12 Dec 2024 15:49:35 +0100
-Message-ID: <20241212144351.192674743@linuxfoundation.org>
+Subject: [PATCH 6.1 031/772] serial: sc16is7xx: fix invalid FIFO access with special register set
+Date: Thu, 12 Dec 2024 15:49:36 +0100
+Message-ID: <20241212144351.233233367@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -68,50 +66,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 9ab5cf19fb0e4680f95e506d6c544259bf1111c4 ]
+[ Upstream commit 7d3b793faaab1305994ce568b59d61927235f57b ]
 
-Config a small gso_max_size/gso_ipv4_max_size will lead to an underflow
-in sk_dst_gso_max_size(), which may trigger a BUG_ON crash,
-because sk->sk_gso_max_size would be much bigger than device limits.
-Call Trace:
-tcp_write_xmit
-    tso_segs = tcp_init_tso_segs(skb, mss_now);
-        tcp_set_skb_tso_segs
-            tcp_skb_pcount_set
-                // skb->len = 524288, mss_now = 8
-                // u16 tso_segs = 524288/8 = 65535 -> 0
-                tso_segs = DIV_ROUND_UP(skb->len, mss_now)
-    BUG_ON(!tso_segs)
-Add check for the minimum value of gso_max_size and gso_ipv4_max_size.
+When enabling access to the special register set, Receiver time-out and
+RHR interrupts can happen. In this case, the IRQ handler will try to read
+from the FIFO thru the RHR register at address 0x00, but address 0x00 is
+mapped to DLL register, resulting in erroneous FIFO reading.
 
-Fixes: 46e6b992c250 ("rtnetlink: allow GSO maximums to be set on device creation")
-Fixes: 9eefedd58ae1 ("net: add gso_ipv4_max_size and gro_ipv4_max_size per device")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241023035213.517386-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Resolve minor conflicts to fix CVE-2024-50258 ]
+Call graph example:
+    sc16is7xx_startup(): entry
+    sc16is7xx_ms_proc(): entry
+    sc16is7xx_set_termios(): entry
+    sc16is7xx_set_baud(): DLH/DLL = $009C --> access special register set
+    sc16is7xx_port_irq() entry            --> IIR is 0x0C
+    sc16is7xx_handle_rx() entry
+    sc16is7xx_fifo_read(): --> unable to access FIFO (RHR) because it is
+                               mapped to DLL (LCR=LCR_CONF_MODE_A)
+    sc16is7xx_set_baud(): exit --> Restore access to general register set
+
+Fix the problem by claiming the efr_lock mutex when accessing the Special
+register set.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240723125302.1305372-3-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Resolve minor conflicts ]
 Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index afb52254a47ec..45c54fb9ad03f 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -1939,7 +1939,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
- 	[IFLA_NUM_TX_QUEUES]	= { .type = NLA_U32 },
- 	[IFLA_NUM_RX_QUEUES]	= { .type = NLA_U32 },
- 	[IFLA_GSO_MAX_SEGS]	= { .type = NLA_U32 },
--	[IFLA_GSO_MAX_SIZE]	= { .type = NLA_U32 },
-+	[IFLA_GSO_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
- 	[IFLA_PHYS_PORT_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
- 	[IFLA_CARRIER_CHANGES]	= { .type = NLA_U32 },  /* ignored */
- 	[IFLA_PHYS_SWITCH_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index a723df9b37dd9..c07baf5d5a9ce 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -545,6 +545,9 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 			      SC16IS7XX_MCR_CLKSEL_BIT,
+ 			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
+ 
++
++	mutex_lock(&one->efr_lock);
++
+ 	/* Open the LCR divisors for configuration */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+ 			     SC16IS7XX_LCR_CONF_MODE_A);
+@@ -558,6 +561,8 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	/* Put LCR back to the normal mode */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+ 
++	mutex_unlock(&one->efr_lock);
++
+ 	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
+ }
+ 
 -- 
 2.43.0
 
