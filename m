@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA0C9EF1B2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B139EEBE7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CC9028C959
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AC42162735
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E63223E92;
-	Thu, 12 Dec 2024 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5544209693;
+	Thu, 12 Dec 2024 15:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvszRw4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBgnl+LA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651E6223E71;
-	Thu, 12 Dec 2024 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AF413792B;
+	Thu, 12 Dec 2024 15:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021068; cv=none; b=u13FxnFuMVozZ8jFBauyZ7lpWhQE//qP3ismKQDxAgsgNa4bXTI+cRezTXeAOAkXGc/nOtkUaSjazLZiQtF9HM44i4l5RvK9GFSTvNNvgrFJxenRFftXsW9Ov4Y6UGEh18tJWreEPxN6h5YDVC3qREe1QRBj87h6qJPMDAlwzX4=
+	t=1734017207; cv=none; b=Z1V9k9Cw8jE/BxHLNKEVeyRJE8Nyk2OIPxOe5Rq8it110bTeZTh8/RnPvnznL5rDrrTTyWdx9B7c8UNrtd4D149WO3nu7vNjW7iEnSFxDMW1c5po7d5j0vfQCpv/5LWrrKn6FF6UpDOkwYmMrL8JXaPhPqQoPCQZexoxeGwa1dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021068; c=relaxed/simple;
-	bh=f6Z4VyjYy2ccpd+VBl5vib7Ba9RdgEX6DMohkVYTc7g=;
+	s=arc-20240116; t=1734017207; c=relaxed/simple;
+	bh=oOHGbAPO6l+2OzNsRKtNM4gscLagA4vxgv9nUsESgVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AbDJS6kbCMbYxlPsKTEkifkBkRYAM5bfgNI8Qu00rODguTp/s/8ymQIopGE/y2rYvSqwZ53I9zfbE2+4NW9zUDiwiJCTDedVahueDhD8429k8fpHzKarKN0h56NTaxjjOKEIX+IqkF0vaBMfGp9qeJkbOAaTXY3ENL1eO4wEGTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvszRw4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52A2C4CECE;
-	Thu, 12 Dec 2024 16:31:07 +0000 (UTC)
+	 MIME-Version; b=uuLOThiQK9/6+sm9TiZiea25iBQI7FC4d/t0I75ETYZiDMSAoLM4g3db970/2a1Sb/95vfb5dzFluiOJKdujLOFRQzAis9v9xMQnCfiMRym8OAG4a+3Yol4ZXRLUZsKF3Je0SzKI0GibprdV4PrenAdUWn1vzdCr+p5T0zcsuL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBgnl+LA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D73C4CECE;
+	Thu, 12 Dec 2024 15:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021068;
-	bh=f6Z4VyjYy2ccpd+VBl5vib7Ba9RdgEX6DMohkVYTc7g=;
+	s=korg; t=1734017207;
+	bh=oOHGbAPO6l+2OzNsRKtNM4gscLagA4vxgv9nUsESgVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvszRw4p1IpAZqMntHJMEgAaeUwiJQ1G/2/ejLQ+n5Tu25ctD6DIIVz7tAJbvkPTz
-	 HX27DRAfLA8ZtCET/zAp83xYqHy5MRA4p2m5XZuBUQw6269a+ULNy3oG+f/zr6zDPa
-	 CYxvmOkLhZmxi5JAF0S4U/BFTH9QDjfAaIYS0tY8=
+	b=dBgnl+LAnWzQa4eGt4rxH57n77C5aTWG2D1CJeO2N0qY9T2tB3Falc2M7bZHTut4g
+	 Hxth0GE4DUFF9oJHLTESjvRX01UlyARTJ9My0+07v7nw4Hh8WIAJLeYJlsrqx3inW6
+	 nt+Mb8aettsZtJNJkubVOCW4w7+NeV0v6c/w3oAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 636/772] mmc: sdhci-pci: Add DMI quirk for missing CD GPIO on Vexia Edu Atla 10 tablet
+	Peter Chen <peter.chen@kernel.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 412/466] usb: chipidea: udc: handle USB Error Interrupt if IOC not set
 Date: Thu, 12 Dec 2024 15:59:41 +0100
-Message-ID: <20241212144416.215561117@linuxfoundation.org>
+Message-ID: <20241212144323.036742807@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,160 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 7f0fa47ceebcff0e3591bb7e32a71a2cd7846149 upstream.
+[ Upstream commit 548f48b66c0c5d4b9795a55f304b7298cde2a025 ]
 
-The Vexia Edu Atla 10 tablet distributed to schools in the Spanish
-Andalucía region has no ACPI fwnode associated with the SDHCI controller
-for its microsd-slot and thus has no ACPI GPIO resource info.
+As per USBSTS register description about UEI:
 
-This causes the following error to be logged and the slot to not work:
-[   10.572113] sdhci-pci 0000:00:12.0: failed to setup card detect gpio
+  When completion of a USB transaction results in an error condition, this
+  bit is set by the Host/Device Controller. This bit is set along with the
+  USBINT bit, if the TD on which the error interrupt occurred also had its
+  interrupt on complete (IOC) bit set.
 
-Add a DMI quirk table for providing gpiod_lookup_tables with manually
-provided CD GPIO info and use this DMI table to provide the CD GPIO info
-on this tablet. This fixes the microsd-slot not working.
+UI is set only when IOC set. Add checking UEI to fix miss call
+isr_tr_complete_handler() when IOC have not set and transfer error happen.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Message-ID: <20241118210049.311079-1-hdegoede@redhat.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Acked-by: Peter Chen <peter.chen@kernel.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240926022906.473319-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-core.c |   72 ++++++++++++++++++++++++++++++++++++++
- drivers/mmc/host/sdhci-pci.h      |    1 
- 2 files changed, 73 insertions(+)
+ drivers/usb/chipidea/udc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-pci-core.c
-+++ b/drivers/mmc/host/sdhci-pci-core.c
-@@ -21,6 +21,7 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/gpio.h>
-+#include <linux/gpio/machine.h>
- #include <linux/pm_runtime.h>
- #include <linux/pm_qos.h>
- #include <linux/debugfs.h>
-@@ -1239,6 +1240,29 @@ static const struct sdhci_pci_fixes sdhc
- 	.priv_size	= sizeof(struct intel_host),
- };
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index f0fcaf2b1f334..fd6032874bf33 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -2217,7 +2217,7 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
+ 			}
+ 		}
  
-+/* DMI quirks for devices with missing or broken CD GPIO info */
-+static const struct gpiod_lookup_table vexia_edu_atla10_cd_gpios = {
-+	.dev_id = "0000:00:12.0",
-+	.table = {
-+		GPIO_LOOKUP("INT33FC:00", 38, "cd", GPIO_ACTIVE_HIGH),
-+		{ }
-+	},
-+};
-+
-+static const struct dmi_system_id sdhci_intel_byt_cd_gpio_override[] = {
-+	{
-+		/* Vexia Edu Atla 10 tablet 9V version */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
-+		},
-+		.driver_data = (void *)&vexia_edu_atla10_cd_gpios,
-+	},
-+	{ }
-+};
-+
- static const struct sdhci_pci_fixes sdhci_intel_byt_sd = {
- #ifdef CONFIG_PM_SLEEP
- 	.resume		= byt_resume,
-@@ -1257,6 +1281,7 @@ static const struct sdhci_pci_fixes sdhc
- 	.add_host	= byt_add_host,
- 	.remove_slot	= byt_remove_slot,
- 	.ops		= &sdhci_intel_byt_ops,
-+	.cd_gpio_override = sdhci_intel_byt_cd_gpio_override,
- 	.priv_size	= sizeof(struct intel_host),
- };
+-		if (USBi_UI  & intr)
++		if ((USBi_UI | USBi_UEI) & intr)
+ 			isr_tr_complete_handler(ci);
  
-@@ -2036,6 +2061,42 @@ static const struct dev_pm_ops sdhci_pci
-  *                                                                           *
- \*****************************************************************************/
- 
-+static struct gpiod_lookup_table *sdhci_pci_add_gpio_lookup_table(
-+	struct sdhci_pci_chip *chip)
-+{
-+	struct gpiod_lookup_table *cd_gpio_lookup_table;
-+	const struct dmi_system_id *dmi_id = NULL;
-+	size_t count;
-+
-+	if (chip->fixes && chip->fixes->cd_gpio_override)
-+		dmi_id = dmi_first_match(chip->fixes->cd_gpio_override);
-+
-+	if (!dmi_id)
-+		return NULL;
-+
-+	cd_gpio_lookup_table = dmi_id->driver_data;
-+	for (count = 0; cd_gpio_lookup_table->table[count].key; count++)
-+		;
-+
-+	cd_gpio_lookup_table = kmemdup(dmi_id->driver_data,
-+				       /* count + 1 terminating entry */
-+				       struct_size(cd_gpio_lookup_table, table, count + 1),
-+				       GFP_KERNEL);
-+	if (!cd_gpio_lookup_table)
-+		return ERR_PTR(-ENOMEM);
-+
-+	gpiod_add_lookup_table(cd_gpio_lookup_table);
-+	return cd_gpio_lookup_table;
-+}
-+
-+static void sdhci_pci_remove_gpio_lookup_table(struct gpiod_lookup_table *lookup_table)
-+{
-+	if (lookup_table) {
-+		gpiod_remove_lookup_table(lookup_table);
-+		kfree(lookup_table);
-+	}
-+}
-+
- static struct sdhci_pci_slot *sdhci_pci_probe_slot(
- 	struct pci_dev *pdev, struct sdhci_pci_chip *chip, int first_bar,
- 	int slotno)
-@@ -2111,8 +2172,19 @@ static struct sdhci_pci_slot *sdhci_pci_
- 		device_init_wakeup(&pdev->dev, true);
- 
- 	if (slot->cd_idx >= 0) {
-+		struct gpiod_lookup_table *cd_gpio_lookup_table;
-+
-+		cd_gpio_lookup_table = sdhci_pci_add_gpio_lookup_table(chip);
-+		if (IS_ERR(cd_gpio_lookup_table)) {
-+			ret = PTR_ERR(cd_gpio_lookup_table);
-+			goto remove;
-+		}
-+
- 		ret = mmc_gpiod_request_cd(host->mmc, "cd", slot->cd_idx,
- 					   slot->cd_override_level, 0);
-+
-+		sdhci_pci_remove_gpio_lookup_table(cd_gpio_lookup_table);
-+
- 		if (ret && ret != -EPROBE_DEFER)
- 			ret = mmc_gpiod_request_cd(host->mmc, NULL,
- 						   slot->cd_idx,
---- a/drivers/mmc/host/sdhci-pci.h
-+++ b/drivers/mmc/host/sdhci-pci.h
-@@ -151,6 +151,7 @@ struct sdhci_pci_fixes {
- #endif
- 
- 	const struct sdhci_ops	*ops;
-+	const struct dmi_system_id *cd_gpio_override;
- 	size_t			priv_size;
- };
- 
+ 		if ((USBi_SLI & intr) && !(ci->suspended)) {
+-- 
+2.43.0
+
 
 
 
