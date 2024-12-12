@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-101908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04AF9EEF92
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DC79EEF51
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:14:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B931176027
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8657295287
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52352288E5;
-	Thu, 12 Dec 2024 16:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A08122968E;
+	Thu, 12 Dec 2024 16:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+0216Ya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGdHV+dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5126F2FE;
-	Thu, 12 Dec 2024 16:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EB722968C;
+	Thu, 12 Dec 2024 16:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019236; cv=none; b=ROJV9sprqqHhjp6UKksHKVpcJcorlIZmokoeu2SHV6NyqPxt0oFl8NIJV9igEjffM6d5GmzW19JZMKWFP7xPCAAG2TUdf/Uolir3ftnHH37s/QqZSMYt3Q0LSSiV06VnpbvXt+ZfDQ1B9niqTcfZ4fabKNRWn0wONFYD5WVQc5Y=
+	t=1734019250; cv=none; b=MbbeA8ZaKJoxzL7o2S3LvhtIhgNsisVaPgeg/GFJXWJmX94S9jCp5efGoYs7FG/REW1Wz0W7fBMk4BaYQCoEelpFly9gCtSWyJUwpkRR8rUF4JlK0RGiqp32B7vjowr6SnKSHEEv7noIpVd7F1FBhbPyOpSiZtiY34/v9TIIIeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019236; c=relaxed/simple;
-	bh=hLrf19LJ8FWF3KZdtsXgnH/i1fPhezgK+YlvXUGneQ8=;
+	s=arc-20240116; t=1734019250; c=relaxed/simple;
+	bh=CZK/c8WhWprIwTvjLKfDNfBzAkX06DlifeeYUzDinlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9CblI4HhvFy6VaXp0h+dNfNILbSbtv+74ZVm+Pkm/yIA0pbOAH3Sg2zyjJY4KDjbnAODiBHRurpuUm+qawgEVybqAtqCx7I6Anw8raUJY0GDnnBRBZzMLFsYqNHSEmaOWKo1y9IAYtmEsQqMJdrOdg71PtRNsMr5/NnzI6qDL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+0216Ya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A70C4CED3;
-	Thu, 12 Dec 2024 16:00:35 +0000 (UTC)
+	 MIME-Version; b=gQ25WEKSIzvGkrpc//ZUcdA+y0NytuPEygj6vCoUApEdeQpwCSb+kbHxLQcjQ4evArkkZkE7dIsyAjIDms+mtnioFQn7vmnGwJgC41VnN3cxMit6m9ARkWUHk74wbd0y+TO+GJjWkbrdvYJVmXVOr5yIZ3OM2v/kVZUS12pYEqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGdHV+dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15878C4CECE;
+	Thu, 12 Dec 2024 16:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019235;
-	bh=hLrf19LJ8FWF3KZdtsXgnH/i1fPhezgK+YlvXUGneQ8=;
+	s=korg; t=1734019250;
+	bh=CZK/c8WhWprIwTvjLKfDNfBzAkX06DlifeeYUzDinlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+0216YaBIrZSmDT45V75g+4GSFOXm9hXlmirQy5YCwh8vjvoj0e4SstOeOMTYBuW
-	 GE/LfWAbYoaLXckagrmN06LbzjstvMN2uICGTys+JEL8W37nWTQwhOwQtgk6bQrV8t
-	 4qKgnmHA7Yj1WotP2xeDXVheMRJEdW65CMSKErIY=
+	b=fGdHV+dkCO8CD+qDZQWBcGGZ/jSUtHGz8Gu2Wz8TfdrmaGwVswW+YNDPrkhGBhO1f
+	 8z68n3P0W3TkhWtVmTaoNdbVVz7ycWccw3u9K8Tru/Yz8dbHO+fTv2m3xpYyihPHXy
+	 kEakdm5HPd1Ux8mLjBPF3lY3VSODTDe2AEf1ZX7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dom Cobley <popcornmix@gmail.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/772] drm/vc4: hdmi: Avoid hang with debug registers when suspended
-Date: Thu, 12 Dec 2024 15:51:12 +0100
-Message-ID: <20241212144355.175587513@linuxfoundation.org>
+Subject: [PATCH 6.1 128/772] drm/vc4: hvs: Fix dlist debug not resetting the next entry pointer
+Date: Thu, 12 Dec 2024 15:51:13 +0100
+Message-ID: <20241212144355.215250282@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -67,51 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dom Cobley <popcornmix@gmail.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 223ee2567a55e4f80315c768d2969e6a3b9fb23d ]
+[ Upstream commit 6d5f76e0544b04ec5bdd2a09c19d90aeeb2cd479 ]
 
-Trying to read /sys/kernel/debug/dri/1/hdmi1_regs
-when the hdmi is disconnected results in a fatal system hang.
+The debug function to display the dlists didn't reset next_entry_start
+when starting each display, so resulting in not stopping the
+list at the correct place.
 
-This is due to the pm suspend code disabling the dvp clock.
-That is just a gate of the 108MHz clock in DVP_HT_RPI_MISC_CONFIG,
-which results in accesses hanging AXI bus.
-
-Protect against this.
-
-Fixes: 25eb441d55d4 ("drm/vc4: hdmi: Add all the vc5 HDMI registers into the debugfs dumps")
-Signed-off-by: Dom Cobley <popcornmix@gmail.com>
+Fixes: c6dac00340fc ("drm/vc4: hvs: Add debugfs node that dumps the current display lists")
 Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-17-dave.stevenson@raspberrypi.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-18-dave.stevenson@raspberrypi.com
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/vc4/vc4_hvs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 971801acbde60..649fd5c03f21d 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -170,6 +170,8 @@ static int vc4_hdmi_debugfs_regs(struct seq_file *m, void *unused)
- 	if (!drm_dev_enter(drm, &idx))
- 		return -ENODEV;
+diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
+index cf017b59114e9..a049899a17636 100644
+--- a/drivers/gpu/drm/vc4/vc4_hvs.c
++++ b/drivers/gpu/drm/vc4/vc4_hvs.c
+@@ -108,7 +108,7 @@ static int vc4_hvs_debugfs_dlist(struct seq_file *m, void *data)
+ 	struct vc4_dev *vc4 = to_vc4_dev(dev);
+ 	struct vc4_hvs *hvs = vc4->hvs;
+ 	struct drm_printer p = drm_seq_file_printer(m);
+-	unsigned int next_entry_start = 0;
++	unsigned int next_entry_start;
+ 	unsigned int i, j;
+ 	u32 dlist_word, dispstat;
  
-+	WARN_ON(pm_runtime_resume_and_get(&vc4_hdmi->pdev->dev));
-+
- 	drm_print_regset32(&p, &vc4_hdmi->hdmi_regset);
- 	drm_print_regset32(&p, &vc4_hdmi->hd_regset);
- 	drm_print_regset32(&p, &vc4_hdmi->cec_regset);
-@@ -179,6 +181,8 @@ static int vc4_hdmi_debugfs_regs(struct seq_file *m, void *unused)
- 	drm_print_regset32(&p, &vc4_hdmi->ram_regset);
- 	drm_print_regset32(&p, &vc4_hdmi->rm_regset);
+@@ -122,6 +122,7 @@ static int vc4_hvs_debugfs_dlist(struct seq_file *m, void *data)
+ 		}
  
-+	pm_runtime_put(&vc4_hdmi->pdev->dev);
-+
- 	drm_dev_exit(idx);
+ 		drm_printf(&p, "HVS chan %u:\n", i);
++		next_entry_start = 0;
  
- 	return 0;
+ 		for (j = HVS_READ(SCALER_DISPLISTX(i)); j < 256; j++) {
+ 			dlist_word = readl((u32 __iomem *)vc4->hvs->dlist + j);
 -- 
 2.43.0
 
