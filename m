@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DB29EF7BE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D229EF740
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 984E128854C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C66D188E8CC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC190223E71;
-	Thu, 12 Dec 2024 17:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42035211493;
+	Thu, 12 Dec 2024 17:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnkyG8+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ih1KnGqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665C622332D;
-	Thu, 12 Dec 2024 17:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F389B176AA1;
+	Thu, 12 Dec 2024 17:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024982; cv=none; b=aVOVEuTxe6VQuAQWN/DhLd7FGnnLsDpVs0B2s/sB72SJJVEtcffkHhVoIhgcTZSgJ9+F7zjhQpzZHftdAD0XSF/3oo5DeamLXwlDbfF/P6HG+cheCZGHTqD8LBnS7wdlUmsgsK4WXeaXwsMDyMJP8BxbO3Y/KGkXCe8rApZ+rr0=
+	t=1734024133; cv=none; b=suRH5g2lWvWVBFYNWpjDp6LPWl7gyValgH6eoGfPw6kQY+CWOyTbi/f6vJziQoVBYejhsPMulCEhE34X5wSt8vwoRIZ8v8loDRdW7/ZBS0RS6of99AH3zNhChW4g3wI+m7sJtELO92b7/bNwinyuMmQn1kZaia+wqeQwQTTCBfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024982; c=relaxed/simple;
-	bh=a9Qa8MNysxVOdPX5kI1gIdmLZYE4ShE7wvA/q25M+bA=;
+	s=arc-20240116; t=1734024133; c=relaxed/simple;
+	bh=Kn1/IU91qTG6sLE3Zb06fy9ThfWYDdJS6hJ0lTiwaYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CQxCCTWEc+u7cQYXbP7zVRHLWyAw1JwtQmLcuIqOu0A1FN9PvdE7htcHkPtKKxOHf4/Zqhu6VEaJbMndKHkP5DpHQq/iif0jTtFVSy5YLUMAxWZl8Pgj/ysIpXdaM/2W+qUNKZbxOBQC9zVo9bhw2OlyyK/UK/y+1dG8XAIMdkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnkyG8+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95822C4CED0;
-	Thu, 12 Dec 2024 17:36:21 +0000 (UTC)
+	 MIME-Version; b=DsURgN2hlh2Dpg9qrV5vH1xpbJ6ByVuVWwjg8w2KIbu0woCLyPmi0nSDWE1uzphliCMkksgzT2OrSLzo+1sNUoJd7BbmYrdZ9jdSc1waH6hFiU5WCY4wsNTpSg5cUUcsOXzpZ65iG86UaXV7sfDvUuZQF0oC0xb4opRhNEfP2oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ih1KnGqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A053C4CECE;
+	Thu, 12 Dec 2024 17:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024982;
-	bh=a9Qa8MNysxVOdPX5kI1gIdmLZYE4ShE7wvA/q25M+bA=;
+	s=korg; t=1734024132;
+	bh=Kn1/IU91qTG6sLE3Zb06fy9ThfWYDdJS6hJ0lTiwaYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qnkyG8+yB0xSsdJEKW2eR4kkRVd9679kCi7inEPOmai3Tv+ULu68r8DPLd0wfVdB0
-	 HJrb5jrqt0FJ2alMwd/vdtyL0NdCH4WmQZ7hDJAVaqickBeaTshw2to8Ix2EkTCg5O
-	 qM7lD0WLm1pDLmBiOCmsbkdoocydRFJjYihfj0jk=
+	b=ih1KnGqt2EHeUrsGy6fJHsHAxW0eX1mK/06ue1ols6ZAjsKz2KY6TsSC4MpONIgGs
+	 8h5GwQhHeGhGEJh0QQzyov2teMu2U4r0E98fQlfw564MKElfpozJPlUX46sZBnyj/1
+	 n7PGsIoeWT1YCIBxEjEwLWkGGZVgXzifUnQuhLqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 017/321] x86/amd_nb: Fix compile-testing without CONFIG_AMD_NB
+Subject: [PATCH 5.10 197/459] f2fs: remove struct segment_allocation default_salloc_ops
 Date: Thu, 12 Dec 2024 15:58:55 +0100
-Message-ID: <20241212144230.326395659@linuxfoundation.org>
+Message-ID: <20241212144301.351493198@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit fce9642c765a18abd1db0339a7d832c29b68456a ]
+[ Upstream commit 1c8a8ec0a0e9a1176022a35c4daf04fe1594d270 ]
 
-node_to_amd_nb() is defined to NULL in non-AMD configs:
+There is only  single instance of these ops, so remove the indirection
+and call allocate_segment_by_default directly.
 
-  drivers/platform/x86/amd/hsmp/plat.c: In function 'init_platform_device':
-  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: dereferencing 'void *' pointer [-Werror]
-    165 |                 sock->root                      = node_to_amd_nb(i)->root;
-        |                                                                    ^~
-  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: request for member 'root' in something not a structure or union
-
-Users of the interface who also allow COMPILE_TEST will cause the above build
-error so provide an inline stub to fix that.
-
-  [ bp: Massage commit message. ]
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20241029092329.3857004-1-arnd@kernel.org
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 43563069e1c1 ("f2fs: check curseg->inited before write_sum_page in change_curseg")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/amd_nb.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/f2fs/segment.c | 11 ++---------
+ fs/f2fs/segment.h |  6 ------
+ 2 files changed, 2 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/include/asm/amd_nb.h b/arch/x86/include/asm/amd_nb.h
-index 1ae4e5791afaf..a4f98a2fb5353 100644
---- a/arch/x86/include/asm/amd_nb.h
-+++ b/arch/x86/include/asm/amd_nb.h
-@@ -118,7 +118,10 @@ static inline bool amd_gart_present(void)
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index d2aad633529eb..82f8a86d7d701 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2953,7 +2953,7 @@ static void __allocate_new_segment(struct f2fs_sb_info *sbi, int type,
+ 		return;
+ alloc:
+ 	old_segno = curseg->segno;
+-	SIT_I(sbi)->s_ops->allocate_segment(sbi, type, true);
++	allocate_segment_by_default(sbi, type, true);
+ 	locate_dirty_segment(sbi, old_segno);
+ }
  
- #define amd_nb_num(x)		0
- #define amd_nb_has_feature(x)	false
--#define node_to_amd_nb(x)	NULL
-+static inline struct amd_northbridge *node_to_amd_nb(int node)
-+{
-+	return NULL;
-+}
- #define amd_gart_present(x)	false
+@@ -2984,10 +2984,6 @@ void f2fs_allocate_new_segments(struct f2fs_sb_info *sbi)
+ 	up_read(&SM_I(sbi)->curseg_lock);
+ }
  
+-static const struct segment_allocation default_salloc_ops = {
+-	.allocate_segment = allocate_segment_by_default,
+-};
+-
+ bool f2fs_exist_trim_candidates(struct f2fs_sb_info *sbi,
+ 						struct cp_control *cpc)
+ {
+@@ -3401,7 +3397,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
+ 			get_atssr_segment(sbi, type, se->type,
+ 						AT_SSR, se->mtime);
+ 		else
+-			sit_i->s_ops->allocate_segment(sbi, type, false);
++			allocate_segment_by_default(sbi, type, false);
+ 	}
+ 	/*
+ 	 * segment dirty status should be updated after segment allocation,
+@@ -4337,9 +4333,6 @@ static int build_sit_info(struct f2fs_sb_info *sbi)
+ 		return -ENOMEM;
  #endif
+ 
+-	/* init SIT information */
+-	sit_i->s_ops = &default_salloc_ops;
+-
+ 	sit_i->sit_base_addr = le32_to_cpu(raw_super->sit_blkaddr);
+ 	sit_i->sit_blocks = sit_segs << sbi->log_blocks_per_seg;
+ 	sit_i->written_valid_blocks = 0;
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index 665e0e186687d..720951ce2f9d1 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -227,10 +227,6 @@ struct sec_entry {
+ 	unsigned int valid_blocks;	/* # of valid blocks in a section */
+ };
+ 
+-struct segment_allocation {
+-	void (*allocate_segment)(struct f2fs_sb_info *, int, bool);
+-};
+-
+ #define MAX_SKIP_GC_COUNT			16
+ 
+ struct inmem_pages {
+@@ -240,8 +236,6 @@ struct inmem_pages {
+ };
+ 
+ struct sit_info {
+-	const struct segment_allocation *s_ops;
+-
+ 	block_t sit_base_addr;		/* start block address of SIT area */
+ 	block_t sit_blocks;		/* # of blocks used by SIT area */
+ 	block_t written_valid_blocks;	/* # of valid blocks in main area */
 -- 
 2.43.0
 
