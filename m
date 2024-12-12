@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-101232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2099EEB7A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C04E99EF22C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CD19165259
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2776165AA4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AC81537C8;
-	Thu, 12 Dec 2024 15:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BBE2210FB;
+	Thu, 12 Dec 2024 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FILyoj1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+kZ5Jzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FA92EAE5;
-	Thu, 12 Dec 2024 15:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2142210D8;
+	Thu, 12 Dec 2024 16:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016827; cv=none; b=FNJOG7QeguS2glZZfmMkqr0teb+lShLq8jN3OFmC+7Y3c5iEFGNr0B+QD5+byLV3sxnwEdRxBFqfHYvB7AiQmMo6DDaIANUPSUMY7KPTnifvILtlw+wQnrGI1wmEP3OPUBvbrZx1aOMHMMb9OpwX3W0lIc4fyLCRymu3cIsV7LI=
+	t=1734020679; cv=none; b=E+hWjO2BAixECTllm4K9/X6DFRgVVJS6gaUJSxPPQcYfayB7DNTsh6fY1grbe2ZUwEXIQ7osQYaz63bvUwSlxDHCCwKUBRXlpKaVgpVu8/cBh5k1wOhulDqp4ALTAbhbHnvS5dCUjiFvVKailz7MmY4pNEJ4+JYYAuIHHzBBQyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016827; c=relaxed/simple;
-	bh=na1GvMrllmTXY4oQYD6aXcJKDqdmAqFAs52npUOrmwU=;
+	s=arc-20240116; t=1734020679; c=relaxed/simple;
+	bh=pAgdX5guFUKKbo0XreHrUl/v4GRbnwLLwBMg+/Tw8rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ak+7CcQT20/njub1QxTzRTOdMJv06HwC6mjkWBMK458hMmAuk9ggUxc13aU2z6ACU3P5zb3j3u/V71PeH4C/PCBnyz/54n1T/a/eOg9tJk7jjb8hkrRZMh4O3TDevXIgqibclk6aXFELlHPr4Cre+Yf/afr3S3w5/GaPbruIFX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FILyoj1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5FBC4CECE;
-	Thu, 12 Dec 2024 15:20:26 +0000 (UTC)
+	 MIME-Version; b=YjZ510CrYD8VuVifbVjxgXBh7xDOtD3uOKzeX8QXNJK1RQ9QTkVHfp5lH133uoebTVDnGX5K63y0MwIYtHLVvRXxvafE7tNmKHsM/l62bk0ZLGlyOpGi0c34izjENvQZeDqedwcRuTRMOgNADRMJ5RVQWi4c4ODomT/aBf8Ibe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+kZ5Jzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12C1C4CECE;
+	Thu, 12 Dec 2024 16:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016827;
-	bh=na1GvMrllmTXY4oQYD6aXcJKDqdmAqFAs52npUOrmwU=;
+	s=korg; t=1734020679;
+	bh=pAgdX5guFUKKbo0XreHrUl/v4GRbnwLLwBMg+/Tw8rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FILyoj1MR0mRRlcjTo3kUKOXAWCc6ZY0E3OBRU0bIlZnTfynZpcfJYklngYysOhyC
-	 kFEZHw2M/dXs3ZmvRf3og1FQP1uTE2Q2VS+NFUCxQ2CFy3xowW34dTnpPaZerq8wjw
-	 WWgE2VZwBFVKIA8iMMQMWy1suC56Rs5dEam8PjLA=
+	b=b+kZ5JzxMR9kE2fBOOrBr5ln4ACKPmVyBmP/lFYINGimnvLzxmRXosLb+h2iv5hV2
+	 RbdCQD2dniUITCDjowHNUrZtWUQ83DE9OVjCvNGnQas58nCnup1uoO4Ux0sAFZ1q0q
+	 BoWv026OzVpLIiIu0cuLFbDmx4HByMlUnIOlV1RA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Leo Chen <leo.chen@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Vadim Fedorenko <vadfed@meta.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 308/466] drm/amd/display: Adding array index check to prevent memory corruption
+Subject: [PATCH 6.1 532/772] net-timestamp: make sk_tskey more predictable in error path
 Date: Thu, 12 Dec 2024 15:57:57 +0100
-Message-ID: <20241212144318.951363624@linuxfoundation.org>
+Message-ID: <20241212144411.954878308@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +64,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Chen <leo.chen@amd.com>
+From: Vadim Fedorenko <vadfed@meta.com>
 
-[ Upstream commit 2c437d9a0b496168e1a1defd17b531f0a526dbe9 ]
+[ Upstream commit 488b6d91b07112eaaaa4454332c1480894d4e06e ]
 
-[Why & How]
-Array indices out of bound caused memory corruption. Adding checks to
-ensure that array index stays in bound.
+When SOF_TIMESTAMPING_OPT_ID is used to ambiguate timestamped datagrams,
+the sk_tskey can become unpredictable in case of any error happened
+during sendmsg(). Move increment later in the code and make decrement of
+sk_tskey in error path. This solution is still racy in case of multiple
+threads doing snedmsg() over the very same socket in parallel, but still
+makes error path much more predictable.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Leo Chen <leo.chen@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 09c2d251b707 ("net-timestamp: add key to disambiguate concurrent datagrams")
+Reported-by: Andy Lutomirski <luto@amacapital.net>
+Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240213110428.1681540-1-vadfed@meta.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 3301ab7d5aeb ("net/ipv6: release expired exception dst cached in socket")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c    | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv4/ip_output.c  | 13 ++++++++-----
+ net/ipv6/ip6_output.c | 13 ++++++++-----
+ 2 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index b46a3afe48ca7..7d68006137a97 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -257,11 +257,11 @@ static void dcn35_notify_host_router_bw(struct clk_mgr *clk_mgr_base, struct dc_
- 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
- 	uint32_t host_router_bw_kbps[MAX_HOST_ROUTERS_NUM] = { 0 };
- 	int i;
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index a6d460aaee794..c82107bbd9810 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -980,8 +980,8 @@ static int __ip_append_data(struct sock *sk,
+ 	unsigned int maxfraglen, fragheaderlen, maxnonfragsize;
+ 	int csummode = CHECKSUM_NONE;
+ 	struct rtable *rt = (struct rtable *)cork->dst;
++	bool paged, hold_tskey, extra_uref = false;
+ 	unsigned int wmem_alloc_delta = 0;
+-	bool paged, extra_uref = false;
+ 	u32 tskey = 0;
+ 
+ 	skb = skb_peek_tail(queue);
+@@ -990,10 +990,6 @@ static int __ip_append_data(struct sock *sk,
+ 	mtu = cork->gso_size ? IP_MAX_MTU : cork->fragsize;
+ 	paged = !!cork->gso_size;
+ 
+-	if (cork->tx_flags & SKBTX_ANY_TSTAMP &&
+-	    READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_OPT_ID)
+-		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
 -
- 	for (i = 0; i < context->stream_count; ++i) {
- 		const struct dc_stream_state *stream = context->streams[i];
- 		const struct dc_link *link = stream->link;
--		uint8_t lowest_dpia_index = 0, hr_index = 0;
-+		uint8_t lowest_dpia_index = 0;
-+		unsigned int hr_index = 0;
+ 	hh_len = LL_RESERVED_SPACE(rt->dst.dev);
  
- 		if (!link)
- 			continue;
-@@ -271,6 +271,8 @@ static void dcn35_notify_host_router_bw(struct clk_mgr *clk_mgr_base, struct dc_
- 			continue;
+ 	fragheaderlen = sizeof(struct iphdr) + (opt ? opt->optlen : 0);
+@@ -1051,6 +1047,11 @@ static int __ip_append_data(struct sock *sk,
  
- 		hr_index = (link->link_index - lowest_dpia_index) / 2;
-+		if (hr_index >= MAX_HOST_ROUTERS_NUM)
-+			continue;
- 		host_router_bw_kbps[hr_index] += dc_bandwidth_in_kbps_from_timing(
- 			&stream->timing, dc_link_get_highest_encoding_format(link));
+ 	cork->length += length;
+ 
++	hold_tskey = cork->tx_flags & SKBTX_ANY_TSTAMP &&
++		     READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_OPT_ID;
++	if (hold_tskey)
++		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
++
+ 	/* So, what's going on in the loop below?
+ 	 *
+ 	 * We use calculated fragment length to generate chained skb,
+@@ -1255,6 +1256,8 @@ static int __ip_append_data(struct sock *sk,
+ 	cork->length -= length;
+ 	IP_INC_STATS(sock_net(sk), IPSTATS_MIB_OUTDISCARDS);
+ 	refcount_add(wmem_alloc_delta, &sk->sk_wmem_alloc);
++	if (hold_tskey)
++		atomic_dec(&sk->sk_tskey);
+ 	return err;
+ }
+ 
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index f2227e662d1cf..4082470803615 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1499,11 +1499,11 @@ static int __ip6_append_data(struct sock *sk,
+ 	bool zc = false;
+ 	u32 tskey = 0;
+ 	struct rt6_info *rt = (struct rt6_info *)cork->dst;
++	bool paged, hold_tskey, extra_uref = false;
+ 	struct ipv6_txoptions *opt = v6_cork->opt;
+ 	int csummode = CHECKSUM_NONE;
+ 	unsigned int maxnonfragsize, headersize;
+ 	unsigned int wmem_alloc_delta = 0;
+-	bool paged, extra_uref = false;
+ 
+ 	skb = skb_peek_tail(queue);
+ 	if (!skb) {
+@@ -1515,10 +1515,6 @@ static int __ip6_append_data(struct sock *sk,
+ 	mtu = cork->gso_size ? IP6_MAX_MTU : cork->fragsize;
+ 	orig_mtu = mtu;
+ 
+-	if (cork->tx_flags & SKBTX_ANY_TSTAMP &&
+-	    READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_OPT_ID)
+-		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
+-
+ 	hh_len = LL_RESERVED_SPACE(rt->dst.dev);
+ 
+ 	fragheaderlen = sizeof(struct ipv6hdr) + rt->rt6i_nfheader_len +
+@@ -1606,6 +1602,11 @@ static int __ip6_append_data(struct sock *sk,
+ 		}
  	}
+ 
++	hold_tskey = cork->tx_flags & SKBTX_ANY_TSTAMP &&
++		     READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_OPT_ID;
++	if (hold_tskey)
++		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
++
+ 	/*
+ 	 * Let's try using as much space as possible.
+ 	 * Use MTU if total length of the message fits into the MTU.
+@@ -1844,6 +1845,8 @@ static int __ip6_append_data(struct sock *sk,
+ 	cork->length -= length;
+ 	IP6_INC_STATS(sock_net(sk), rt->rt6i_idev, IPSTATS_MIB_OUTDISCARDS);
+ 	refcount_add(wmem_alloc_delta, &sk->sk_wmem_alloc);
++	if (hold_tskey)
++		atomic_dec(&sk->sk_tskey);
+ 	return err;
+ }
+ 
 -- 
 2.43.0
 
