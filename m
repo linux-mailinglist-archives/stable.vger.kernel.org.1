@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE989EF436
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3279EF1B8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDE1D28DEE7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 141D12914CC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C84213E9F;
-	Thu, 12 Dec 2024 17:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F974233123;
+	Thu, 12 Dec 2024 16:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivdXosxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TglzQnOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D653420967D;
-	Thu, 12 Dec 2024 17:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0F8223E93;
+	Thu, 12 Dec 2024 16:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023087; cv=none; b=Mg8fb76ZvjWLuNImPoSQUvBGOGMSbaaJoLmHLgl4L4XWJhY1VXjyVtRYtGObrOT56/vhUATvsZGjnKYKsXpKjhjynjfLHlQIGv7TQeIhGcpfadnNWozVT4FBFHtHdalIlD9UjO11JUGtsVpWdfWkQ5afRMguV/hpYut8SRqex6Y=
+	t=1734021087; cv=none; b=emDuc52SB7U9MAd4ykVrzqEpyg++LH9nEaQazHpte+blC1uEJuDSM4Lgy3ceidQQjB9as5f32PIZ57pwGn1lUDnKuc7k9ah6ulaXLG5b9Hbz4oNZ1cXeDCJJuXy9CfugzYAdW4jQbyhfAapqDKkvE2yRKBBfZM57OU04KVc6t8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023087; c=relaxed/simple;
-	bh=w2ZhdYFcC2o/EFsLTbBdodz8fleFSrSc3HinsjsYERQ=;
+	s=arc-20240116; t=1734021087; c=relaxed/simple;
+	bh=AXN+Lg+h4fZYHkVP/CM4iIU/0wZBo3C5DKlu3w7tdLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bEGkIVcu2lDz0CGcoen4nwCaJ355Rkx6od91u54ndYXzmjPR3fTGFzYGF22TDDsz1LtGqS8y6c5uviEBy3L8bZwgzkSf5tht3jNqztwO276dEWm12pOIiRmswSAJd1XzpbN3a7qN/HwKcxhouNCrHaVRjttKaVzpuYok9gu5J2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivdXosxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C164C4CECE;
-	Thu, 12 Dec 2024 17:04:47 +0000 (UTC)
+	 MIME-Version; b=b7segwDfgPoEdfIbB2eDmwlqhgeKwrffb+vttadbOBVZJ/6+M178XZHc30mXFEjdxkXTvd9Y1j5sy0T+7w/rlbkcN0OVmbgNptHNKvMVx0hq3/K0N1Jo2jLlT/JksieMT3VcUy8lOhjM7rQljE+z6d7XLEoNHPHkKGM19+eHNJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TglzQnOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC45C4CECE;
+	Thu, 12 Dec 2024 16:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023087;
-	bh=w2ZhdYFcC2o/EFsLTbBdodz8fleFSrSc3HinsjsYERQ=;
+	s=korg; t=1734021086;
+	bh=AXN+Lg+h4fZYHkVP/CM4iIU/0wZBo3C5DKlu3w7tdLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ivdXosxAu22G82aJ9EKJAslyIy2ZDZacq7hfp60jvlb/jULh/0BlpWmxX5pEmBsXR
-	 rlBXF5vxCLJ+SUKWXjCFI2tzMGePSAp0pFUO1lZY+EfRlH3MUNr4j2o+8Dx22bVkYI
-	 Iz8RiV+AVEm/F6EvNILOWGy5bkPsOVDmr6GRWPqQ=
+	b=TglzQnOOEA1IXs24m1gz1fSY5mhHBjv0XE6A/z2k14M2T1m1SufYkM9ufpVQbYDrN
+	 zkprFqTP3lggjZ28i3MJDagjacVsSuEt/mlWxbpbgTKhJFsJazbY73m0zM3gE3FWmn
+	 Ob/e7bTOGOoaDB2r0v6+bHL3rExDQkLhX8oD50H4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.15 390/565] PCI: rockchip-ep: Fix address translation unit programming
-Date: Thu, 12 Dec 2024 15:59:45 +0100
-Message-ID: <20241212144327.060067372@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 641/772] epoll: annotate racy check
+Date: Thu, 12 Dec 2024 15:59:46 +0100
+Message-ID: <20241212144416.417384959@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,103 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 64f093c4d99d797b68b407a9d8767aadc3e3ea7a upstream.
+[ Upstream commit 6474353a5e3d0b2cf610153cea0c61f576a36d0a ]
 
-The Rockchip PCIe endpoint controller handles PCIe transfers addresses
-by masking the lower bits of the programmed PCI address and using the
-same number of lower bits masked from the CPU address space used for the
-mapping. For a PCI mapping of <size> bytes starting from <pci_addr>,
-the number of bits masked is the number of address bits changing in the
-address range [pci_addr..pci_addr + size - 1].
+Epoll relies on a racy fastpath check during __fput() in
+eventpoll_release() to avoid the hit of pointlessly acquiring a
+semaphore. Annotate that race by using WRITE_ONCE() and READ_ONCE().
 
-However, rockchip_pcie_prog_ep_ob_atu() calculates num_pass_bits only
-using the size of the mapping, resulting in an incorrect number of mask
-bits depending on the value of the PCI address to map.
-
-Fix this by introducing the helper function
-rockchip_pcie_ep_ob_atu_num_bits() to correctly calculate the number of
-mask bits to use to program the address translation unit. The number of
-mask bits is calculated depending on both the PCI address and size of
-the mapping, and clamped between 8 and 20 using the macros
-ROCKCHIP_PCIE_AT_MIN_NUM_BITS and ROCKCHIP_PCIE_AT_MAX_NUM_BITS. As
-defined in the Rockchip RK3399 TRM V1.3 Part2, Sections 17.5.5.1.1 and
-17.6.8.2.1, this clamping is necessary because:
-
-  1) The lower 8 bits of the PCI address to be mapped by the outbound
-     region are ignored. So a minimum of 8 address bits are needed and
-     imply that the PCI address must be aligned to 256.
-
-  2) The outbound memory regions are 1MB in size. So while we can specify
-     up to 63-bits for the PCI address (num_bits filed uses bits 0 to 5 of
-     the outbound address region 0 register), we must limit the number of
-     valid address bits to 20 to match the memory window maximum size (1
-     << 20 = 1MB).
-
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Link: https://lore.kernel.org/r/20241017015849.190271-2-dlemoal@kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/66edfb3c.050a0220.3195df.001a.GAE@google.com
+Link: https://lore.kernel.org/r/20240925-fungieren-anbauen-79b334b00542@brauner
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reported-by: syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |   16 +++++++++++++---
- drivers/pci/controller/pcie-rockchip.h    |    4 ++++
- 2 files changed, 17 insertions(+), 3 deletions(-)
+ fs/eventpoll.c            | 6 ++++--
+ include/linux/eventpoll.h | 2 +-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -63,15 +63,25 @@ static void rockchip_pcie_clear_ep_ob_at
- 			    ROCKCHIP_PCIE_AT_OB_REGION_DESC1(region));
- }
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 7221072f39fad..f296ffb57d052 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -703,7 +703,8 @@ static int ep_remove(struct eventpoll *ep, struct epitem *epi)
+ 	to_free = NULL;
+ 	head = file->f_ep;
+ 	if (head->first == &epi->fllink && !epi->fllink.next) {
+-		file->f_ep = NULL;
++		/* See eventpoll_release() for details. */
++		WRITE_ONCE(file->f_ep, NULL);
+ 		if (!is_file_epoll(file)) {
+ 			struct epitems_head *v;
+ 			v = container_of(head, struct epitems_head, epitems);
+@@ -1467,7 +1468,8 @@ static int attach_epitem(struct file *file, struct epitem *epi)
+ 			spin_unlock(&file->f_lock);
+ 			goto allocate;
+ 		}
+-		file->f_ep = head;
++		/* See eventpoll_release() for details. */
++		WRITE_ONCE(file->f_ep, head);
+ 		to_free = NULL;
+ 	}
+ 	hlist_add_head_rcu(&epi->fllink, file->f_ep);
+diff --git a/include/linux/eventpoll.h b/include/linux/eventpoll.h
+index 3337745d81bd6..0c0d00fcd131f 100644
+--- a/include/linux/eventpoll.h
++++ b/include/linux/eventpoll.h
+@@ -42,7 +42,7 @@ static inline void eventpoll_release(struct file *file)
+ 	 * because the file in on the way to be removed and nobody ( but
+ 	 * eventpoll ) has still a reference to this file.
+ 	 */
+-	if (likely(!file->f_ep))
++	if (likely(!READ_ONCE(file->f_ep)))
+ 		return;
  
-+static int rockchip_pcie_ep_ob_atu_num_bits(struct rockchip_pcie *rockchip,
-+					    u64 pci_addr, size_t size)
-+{
-+	int num_pass_bits = fls64(pci_addr ^ (pci_addr + size - 1));
-+
-+	return clamp(num_pass_bits,
-+		     ROCKCHIP_PCIE_AT_MIN_NUM_BITS,
-+		     ROCKCHIP_PCIE_AT_MAX_NUM_BITS);
-+}
-+
- static void rockchip_pcie_prog_ep_ob_atu(struct rockchip_pcie *rockchip, u8 fn,
- 					 u32 r, u64 cpu_addr, u64 pci_addr,
- 					 size_t size)
- {
--	int num_pass_bits = fls64(size - 1);
-+	int num_pass_bits;
- 	u32 addr0, addr1, desc0;
- 
--	if (num_pass_bits < 8)
--		num_pass_bits = 8;
-+	num_pass_bits = rockchip_pcie_ep_ob_atu_num_bits(rockchip,
-+							 pci_addr, size);
- 
- 	addr0 = ((num_pass_bits - 1) & PCIE_CORE_OB_REGION_ADDR0_NUM_BITS) |
- 		(lower_32_bits(pci_addr) & PCIE_CORE_OB_REGION_ADDR0_LO_ADDR);
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -246,6 +246,10 @@
- 	(PCIE_EP_PF_CONFIG_REGS_BASE + (((fn) << 12) & GENMASK(19, 12)))
- #define ROCKCHIP_PCIE_EP_VIRT_FUNC_BASE(fn) \
- 	(PCIE_EP_PF_CONFIG_REGS_BASE + 0x10000 + (((fn) << 12) & GENMASK(19, 12)))
-+
-+#define ROCKCHIP_PCIE_AT_MIN_NUM_BITS  8
-+#define ROCKCHIP_PCIE_AT_MAX_NUM_BITS  20
-+
- #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR0(fn, bar) \
- 	(PCIE_CORE_AXI_CONF_BASE + 0x0828 + (fn) * 0x0040 + (bar) * 0x0008)
- #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR1(fn, bar) \
+ 	/*
+-- 
+2.43.0
+
 
 
 
