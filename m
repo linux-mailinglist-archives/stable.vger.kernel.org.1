@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDB89EEB3F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032F69EF1FB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:44:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCC7C168991
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E86C1891646
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5212E2054F8;
-	Thu, 12 Dec 2024 15:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC44B242EE8;
+	Thu, 12 Dec 2024 16:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhmGOg2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2CfyBkk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0996F2153FC;
-	Thu, 12 Dec 2024 15:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FBD235C3B;
+	Thu, 12 Dec 2024 16:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016647; cv=none; b=S7sqYZOrAQcC5R9Vckk2pJ9OJNx5ojYXAC4OBCgzjmRqqWdClcsYGwXz9kpDM7TQF++1wu+M7NkHX8aPiE+gM3WBS3BWlBJRDzPkRxbEf8llyLgIsLMLgip0aLWWr5CziYHxIPFtoq2BtXIL+5ne5emp6OFOIw7ne+ZG/2gi0cI=
+	t=1734020381; cv=none; b=pXjex7MwzJ8bF+GZMYSXJQoKLCTd16h4sdQ+0zopbLTbZGybm9UCIBy1xe00FxyFZjfusDZbcCkx3KR9qwm85X7S+6z5b/JXiCg9K/tfFvv4/bA7UC9vAYZQWqscIZ1GR6ztLUWcJwzkQT9Qd2XPH2S0FNYAMdQR27SHDmr82fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016647; c=relaxed/simple;
-	bh=A0XYsUuBLyWrIx3EqjooKB7Pxr1XF4NBomJRQzQ4Q0E=;
+	s=arc-20240116; t=1734020381; c=relaxed/simple;
+	bh=BwWQeu5WYgoNe3ZL0EvAi5/GgSGVwVh9DliZP3hBntQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2EcrjPGM7VR7oTQfPPyhiRcW2dpwDAqkfwuimUie68ARiUNno1G4lzgox2iILKnSIfZ7IxF3eTNjqb9799x4L1AFUoOVuuuw4POGi2OtZAp3C2vcSGMjdBpOsIBJuZP4GAxB56HuYeEgzgMvItSYgq8mxV67+NrjXNnxtTnxWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhmGOg2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68937C4CED4;
-	Thu, 12 Dec 2024 15:17:26 +0000 (UTC)
+	 MIME-Version; b=odoXzK+WRZv0AlfBPaxWm6sKl7gUe3dq/1Qv0EEF1YimzKO3qfDT89O5M5SoExatzHBYsh2POCIY7GE4NxWrK4ZAvvybUT6QDtqAIzkGr7XE5DuNiCC49cDB+Ekg8hcmS3WezHcG+OEGKq/yGw40fZ0k97jg9QtP2/fFC7qC+Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2CfyBkk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E09C4CECE;
+	Thu, 12 Dec 2024 16:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016646;
-	bh=A0XYsUuBLyWrIx3EqjooKB7Pxr1XF4NBomJRQzQ4Q0E=;
+	s=korg; t=1734020381;
+	bh=BwWQeu5WYgoNe3ZL0EvAi5/GgSGVwVh9DliZP3hBntQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhmGOg2Je41TK27qANi2+rFb4m7oDDwlL1CasdP2qmVCiv9DtPIKAzTvnWnTrfXDt
-	 pQgero5n9ZKWKIUxz7pLMt72sJ3h0n1z3dH6W5G83wMYH9E+w2Tt+oXQcn1nHRbR7P
-	 Rjr8tNTbC+KCwb5YMQyM8ZennoE/Nyw82DGiPTpg=
+	b=W2CfyBkkr+IVHP+RFy460F/LVfwK8Nth2Cz/Vl+T2kWbUl6TJJbGMdOllCayjx+2Z
+	 h6QYc182C2iZOE8xZJgxE9tvDrZyenru18qyom8qP0+zp5/fhhXbnEOYXD8jyGvmLK
+	 KO5n71ab8yi2I7LYMjLRDqJFAlJNF+Ke+Wgs+AvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommy Giesler <tommy.giesler@hetzner.com>,
-	Sarah Maedel <sarah.maedel@hetzner-cloud.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 227/466] hwmon: (nct6775) Add 665-ACE/600M-CL to ASUS WMI monitoring list
+Subject: [PATCH 6.1 451/772] btrfs: dont loop for nowait writes when checking for cross references
 Date: Thu, 12 Dec 2024 15:56:36 +0100
-Message-ID: <20241212144315.743092426@linuxfoundation.org>
+Message-ID: <20241212144408.564802633@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarah Maedel <sarah.maedel@hetzner-cloud.de>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ccae49e5cf6ebda1a7fa5d2ca99500987c7420c4 ]
+[ Upstream commit ed67f2a913a4f0fc505db29805c41dd07d3cb356 ]
 
-Boards such as
-* Pro WS 665-ACE
-* Pro WS 600M-CL
-have got a nct6775 chip, but by default there's no use of it
-because of resource conflict with WMI method.
+When checking for delayed refs when verifying if there are cross
+references for a data extent, we stop if the path has nowait set and we
+can't try lock the delayed ref head's mutex, returning -EAGAIN with the
+goal of making a write fallback to a blocking context. However we ignore
+the -EAGAIN at btrfs_cross_ref_exist() when check_delayed_ref() returns
+it, and keep looping instead of immediately returning the -EAGAIN to the
+caller.
 
-Add affected boards to the WMI monitoring list.
+Fix this by not looping if we get -EAGAIN and we have a nowait path.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=204807
-Co-developed-by: Tommy Giesler <tommy.giesler@hetzner.com>
-Signed-off-by: Tommy Giesler <tommy.giesler@hetzner.com>
-Signed-off-by: Sarah Maedel <sarah.maedel@hetzner-cloud.de>
-Message-ID: <20241018074611.358619-1-sarah.maedel@hetzner-cloud.de>
-[groeck: Change commit message to imperative mood]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 26ce91144631 ("btrfs: make can_nocow_extent nowait compatible")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-platform.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/extent-tree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
-index 096f1daa8f2bc..1218a3b449a80 100644
---- a/drivers/hwmon/nct6775-platform.c
-+++ b/drivers/hwmon/nct6775-platform.c
-@@ -1350,6 +1350,8 @@ static const char * const asus_msi_boards[] = {
- 	"Pro H610M-CT D4",
- 	"Pro H610T D4",
- 	"Pro Q670M-C",
-+	"Pro WS 600M-CL",
-+	"Pro WS 665-ACE",
- 	"Pro WS W680-ACE",
- 	"Pro WS W680-ACE IPMI",
- 	"Pro WS W790-ACE",
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 0d97c8ee6b4fb..2ac060dc65000 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -2372,7 +2372,7 @@ int btrfs_cross_ref_exist(struct btrfs_root *root, u64 objectid, u64 offset,
+ 			goto out;
+ 
+ 		ret = check_delayed_ref(root, path, objectid, offset, bytenr);
+-	} while (ret == -EAGAIN);
++	} while (ret == -EAGAIN && !path->nowait);
+ 
+ out:
+ 	btrfs_release_path(path);
 -- 
 2.43.0
 
