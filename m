@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A766F9EF7D5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2409EF968
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5B8D189F5CB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAA4D18949D8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D7A222D46;
-	Thu, 12 Dec 2024 17:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A185A223E65;
+	Thu, 12 Dec 2024 17:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrnsIth+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVJIvj7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE7821660B;
-	Thu, 12 Dec 2024 17:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F517222D59;
+	Thu, 12 Dec 2024 17:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024569; cv=none; b=PJp4M8exNnHriNZSlV/5jBOeEnMN5jC5VIZTmFinkbk+5eax2jm4pmDizw+eX8iExX6fR2rJUTj2Kt38nxOEszEeyz00kt+I4Kdz20cmbPyOUo80/lOvF6YOjQIH/QKIzEr+sV3qIjHAT/mJPRX7X0B0CYBKsCRs8sOo/iB5joE=
+	t=1734025409; cv=none; b=U1/Ex2PPuwZrq/cgOE4TLag8GNGuz6j3LI3bqb7ULux3hHLoVzYggUoPUYO9fBM+bx6ZgphHSNpe90xsPRKbuLVbSNkMt9KA0wm3NBMi5Lv0bqtn3MEgycIcClsCpTkssw5Y+5p5jYtWz7US5tKdpEAtaUGVGslPVURV+aSbKD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024569; c=relaxed/simple;
-	bh=341aEGF+F8lH+/C8i8/DKbhrOwuqmzCS532CuikGd2o=;
+	s=arc-20240116; t=1734025409; c=relaxed/simple;
+	bh=MnqGzP6ulTuReXT3XeIL8DuR1hzoevbov9uyuiEeheU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbVgnsoF/0FUvv4FYXLuAg4EVPTOiOZDowBNu6NKgsWasympI7nZR2v2gFAH3UK4+jP0ehbcrx1vOi40uUtSVyVnD0gPe1mFaKEpq3HBvSvgnOeGcVOQDZZx8ZSiSS/AHyA5TtSk2MLEnt5yz7hE8gj71XaGbvvM3k85tfvMzpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrnsIth+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6FDC4CED0;
-	Thu, 12 Dec 2024 17:29:28 +0000 (UTC)
+	 MIME-Version; b=fmPE2c/DO+6jg4c68dM421k/kQC5Sj3mIZYApj9Hu8bCeDDN71wrodRw7hF30wYJZ9Om+CV2Al/KM7aVkw1D+0oZc/p+w+MwBRNxxA5BEl7vDkgToVfp2EpKl/pNdt4ogf1FXpXYxV7CDQ5qgAXVvm2pQchYNT4CZe1lmhoOVGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVJIvj7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCF9C4CECE;
+	Thu, 12 Dec 2024 17:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024568;
-	bh=341aEGF+F8lH+/C8i8/DKbhrOwuqmzCS532CuikGd2o=;
+	s=korg; t=1734025407;
+	bh=MnqGzP6ulTuReXT3XeIL8DuR1hzoevbov9uyuiEeheU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zrnsIth+ZDZ9Ri3dka4zPJV5KuQefnwWq8IW4ygQBm223F3pRlwBzwHl0YpY3VArB
-	 A74kAuViQ1pflF7VyWPgTFFNHKX5LAigiHlW4XysvU+6W/r1ZNDkl71RTGnpt67aV5
-	 NOt+4FDUHJFWaP554eWojfiy607sitpmcdAfx4lQ=
+	b=GVJIvj7lpTbY5oLdX+Ut1nYbkKQr4OPR+gzdiPY3pLwumh9j/PS5P1rfeNWu/4aK/
+	 X4+9gZ4XMOcEH+5qcj9zalgeVUA3IAGNKmanLTZOEq2ntWLSAFxsXrQaCuG5tJ0pQx
+	 xS3oFRMu86HA74BfvzIkZv3rQiMyNH5RJwfXB9EI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 339/459] igb: Fix potential invalid memory access in igb_init_module()
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.4 159/321] ubi: wl: Put source PEB into correct list if trying locking LEB failed
 Date: Thu, 12 Dec 2024 16:01:17 +0100
-Message-ID: <20241212144307.053988148@linuxfoundation.org>
+Message-ID: <20241212144236.259899970@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 0566f83d206c7a864abcd741fe39d6e0ae5eef29 ]
+commit d610020f030bec819f42de327c2bd5437d2766b3 upstream.
 
-The pci_register_driver() can fail and when this happened, the dca_notifier
-needs to be unregistered, otherwise the dca_notifier can be called when
-igb fails to install, resulting to invalid memory access.
+During wear-leveing work, the source PEB will be moved into scrub list
+when source LEB cannot be locked in ubi_eba_copy_leb(), which is wrong
+for non-scrub type source PEB. The problem could bring extra and
+ineffective wear-leveing jobs, which makes more or less negative effects
+for the life time of flash. Specifically, the process is divided 2 steps:
+1. wear_leveling_worker // generate false scrub type PEB
+     ubi_eba_copy_leb // MOVE_RETRY is returned
+       leb_write_trylock // trylock failed
+     scrubbing = 1;
+     e1 is put into ubi->scrub
+2. wear_leveling_worker // schedule false scrub type PEB for wl
+     scrubbing = 1
+     e1 = rb_entry(rb_first(&ubi->scrub))
 
-Fixes: bbd98fe48a43 ("igb: Fix DCA errors and do not use context index for 82576")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem can be reproduced easily by running fsstress on a small
+UBIFS partition(<64M, simulated by nandsim) for 5~10mins
+(CONFIG_MTD_UBI_FASTMAP=y,CONFIG_MTD_UBI_WL_THRESHOLD=50). Following
+message is shown:
+ ubi0: scrubbed PEB 66 (LEB 0:10), data moved to PEB 165
+
+Since scrub type source PEB has set variable scrubbing as '1', and
+variable scrubbing is checked before variable keep, so the problem can
+be fixed by setting keep variable as 1 directly if the source LEB cannot
+be locked.
+
+Fixes: e801e128b220 ("UBI: fix missing scrub when there is a bit-flip")
+CC: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/ubi/wl.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 17cdda3fe415a..7b89dadd41baf 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -666,6 +666,10 @@ static int __init igb_init_module(void)
- 	dca_register_notify(&dca_notifier);
- #endif
- 	ret = pci_register_driver(&igb_driver);
-+#ifdef CONFIG_IGB_DCA
-+	if (ret)
-+		dca_unregister_notify(&dca_notifier);
-+#endif
- 	return ret;
- }
- 
--- 
-2.43.0
-
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -824,7 +824,14 @@ static int wear_leveling_worker(struct u
+ 			goto out_not_moved;
+ 		}
+ 		if (err == MOVE_RETRY) {
+-			scrubbing = 1;
++			/*
++			 * For source PEB:
++			 * 1. The scrubbing is set for scrub type PEB, it will
++			 *    be put back into ubi->scrub list.
++			 * 2. Non-scrub type PEB will be put back into ubi->used
++			 *    list.
++			 */
++			keep = 1;
+ 			dst_leb_clean = 1;
+ 			goto out_not_moved;
+ 		}
 
 
 
