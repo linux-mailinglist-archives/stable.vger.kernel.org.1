@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CBF9EF791
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4E79EF7E2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C446A189E413
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91B02288EE1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CAF216E14;
-	Thu, 12 Dec 2024 17:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429A5216E2D;
+	Thu, 12 Dec 2024 17:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLCkQhFG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6v0m6i4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046F1176AA1;
-	Thu, 12 Dec 2024 17:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FD615696E;
+	Thu, 12 Dec 2024 17:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024121; cv=none; b=FdhClYyjc0F+FwEVEcvO1INXs773rDF3/SA8fHokdC1gX2mtieHCMX11laWO2Vw8MJrdbVaG+sQOno6OvDRzn8RsxksSBEz5eYrFIH1fAhcWldAmgly6oSC+GZXk0ES4Dhe/Xnc6641ltB1EMflW3VTRQXJl5W1k1w/rk+C/pr0=
+	t=1734025063; cv=none; b=Qw3bF6pDQrqZm8D/GerdoMwy2u9CEQKr+VIUQ0R2WYw09AzSzommZsz+DiV6Ivp9mtf9JX4qkaEUj+tNE76oksfX/wh8RGKB5vbdLd/TGKB3uyj4cAfL2Cu5+vpepPH06NaxR0d0iIkVnW6HlIjJxC0O78Tl2zcs3Fj5p6NG1A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024121; c=relaxed/simple;
-	bh=VzOns1C5QKy6L/czwlKvPgByiUdER0yJW7S+Oz/DErU=;
+	s=arc-20240116; t=1734025063; c=relaxed/simple;
+	bh=8KjGUY/DOrGhoGsGDfATZPCNf6L5qnT82nFbVnxS/Qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2qIM+vSSLI7TyMG0FYDBdLvlz34//i7LXA5ItFgMlSkQywjyhoJbASXs1qKhz78FcfP6HiE7wu3bTI+wxVgQD/4ltEvMTpP8HJUJq6ajaLWUsjF5fDNjwqaJC9iSRZO/0PiT0nmVkzHsycW9uEE/pk0YemjA4IGCZaB/NN65jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLCkQhFG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D856C4CECE;
-	Thu, 12 Dec 2024 17:22:00 +0000 (UTC)
+	 MIME-Version; b=NhU8pCa9LmgxcN2j/9TbOboi9scaO7ROysHutcZL+ZrVbXgZfy7gVGuM+uImyrvzvDnM5i5TbhlUeBaYJE9UeUuXomBQsC08H6BnuRixezBd8fz0vr6eo7RJ9ZAQ4ihV3uOFfXcil6WmSB77Q1n2vRHSjHUo05hEFrVVdLTSZnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6v0m6i4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E03CC4CED0;
+	Thu, 12 Dec 2024 17:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024120;
-	bh=VzOns1C5QKy6L/czwlKvPgByiUdER0yJW7S+Oz/DErU=;
+	s=korg; t=1734025062;
+	bh=8KjGUY/DOrGhoGsGDfATZPCNf6L5qnT82nFbVnxS/Qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLCkQhFGhF7jODNE7FU6mWXmd7I2A5bc7TneFRBMqfcKHwr39S5lMKAt6TveHsRgH
-	 i3NYjudTGMZ3skCPPn3dT8QTgYop2P9MI1ibIxoVSeba9EkS3I/ZgUbGhtb5LsskSs
-	 58PRj3kHg1bUgCvR8+UHnAgaT4cd3yFm+bOTY8eA=
+	b=j6v0m6i4IHEZ9BOgDyQAl9dfw9fXv+OqATgS/YF5Cw+d84O3HmdJAMVEFTw+jmC4m
+	 h2N3NUQAq3BqM21wj+Dm/VfWEikvwZICWLk7BmgB8ef5CLrDWTtvWHkPhVNYQQs+bw
+	 +Ohk+PeLCrHiRDprbKeqCu5axgB7Dyim/JoSduy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Naidu <naveennaidu479@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 193/459] PCI: cpqphp: Use PCI_POSSIBLE_ERROR() to check config reads
+Subject: [PATCH 5.4 013/321] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet
 Date: Thu, 12 Dec 2024 15:58:51 +0100
-Message-ID: <20241212144301.192563854@linuxfoundation.org>
+Message-ID: <20241212144230.172084295@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: weiyufeng <weiyufeng@kylinos.cn>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit a18a025c2fb5fbf2d1d0606ea0d7441ac90e9c39 ]
+[ Upstream commit 0107f28f135231da22a9ad5756bb16bd5cada4d5 ]
 
-When config pci_ops.read() can detect failed PCI transactions, the data
-returned to the CPU is PCI_ERROR_RESPONSE (~0 or 0xffffffff).
+The Vexia Edu Atla 10 tablet mostly uses the BYTCR tablet defaults,
+but as happens on more models it is using IN1 instead of IN3 for
+its internal mic and JD_SRC_JD2_IN4N instead of JD_SRC_JD1_IN4P
+for jack-detection.
 
-Obviously a successful PCI config read may *also* return that data if a
-config register happens to contain ~0, so it doesn't definitively indicate
-an error unless we know the register cannot contain ~0.
+Add a DMI quirk for this to fix the internal-mic and jack-detection.
 
-Use PCI_POSSIBLE_ERROR() to check the response we get when we read data
-from hardware.  This unifies PCI error response checking and makes error
-checks consistent and easier to find.
-
-Link: https://lore.kernel.org/r/b12005c0d57bb9d4c8b486724d078b7bd92f8321.1637243717.git.naveennaidu479@gmail.com
-Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: e2226dbc4a49 ("PCI: cpqphp: Fix PCIBIOS_* return value confusion")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241024211615.79518-2-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/cpqphp_pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
-index 1b2b3f3b648bc..a20875da4ec70 100644
---- a/drivers/pci/hotplug/cpqphp_pci.c
-+++ b/drivers/pci/hotplug/cpqphp_pci.c
-@@ -138,7 +138,7 @@ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 o
- 
- 	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
- 		return -1;
--	if (vendID == 0xffffffff)
-+	if (PCI_POSSIBLE_ERROR(vendID))
- 		return -1;
- 	return pci_bus_read_config_dword(bus, devfn, offset, value);
- }
-@@ -251,7 +251,7 @@ static int PCI_GetBusDevHelper(struct controller *ctrl, u8 *bus_num, u8 *dev_num
- 			*dev_num = tdevice;
- 			ctrl->pci_bus->number = tbus;
- 			pci_bus_read_config_dword(ctrl->pci_bus, *dev_num, PCI_VENDOR_ID, &work);
--			if (!nobridge || (work == 0xffffffff))
-+			if (!nobridge || PCI_POSSIBLE_ERROR(work))
- 				return 0;
- 
- 			dbg("bus_num %d devfn %d\n", *bus_num, *dev_num);
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 057ecfe2c8b5c..53a15be38b56f 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -909,6 +909,21 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{	/* Vexia Edu Atla 10 tablet */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
++		},
++		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF2 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{	/* Voyo Winpad A15 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
 -- 
 2.43.0
 
