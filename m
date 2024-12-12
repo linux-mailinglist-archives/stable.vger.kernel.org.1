@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248849EF201
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:44:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F579EF366
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20934189877A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90506291B46
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD1D22652F;
-	Thu, 12 Dec 2024 16:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4615B231A36;
+	Thu, 12 Dec 2024 16:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFXwA+BQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXE6BdPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999A021576E;
-	Thu, 12 Dec 2024 16:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C28226530;
+	Thu, 12 Dec 2024 16:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020518; cv=none; b=IYc7DIZPsfHhyQEeK36e/6xHqfLkDSIVYiqecbhxt9ElQOa5L8VvseEab6CBrTGEc/Kkjy8pzLN9qNgzmZfQmeIazIRcnNh6uACDJElmfDMcFUOOgvDHiiM6IDn+oL9G/c7uZ9g02hwMoYLCEm42CAuNmEdNIUpKtGlgcVq5aNs=
+	t=1734022317; cv=none; b=G0RnHmgJBjhEYwV4eYTMiQMNI1Wp0csecOrreHgXgAj1kVzM/+rCev0vyoCvd/FuA0RyZMiCinaVgOzBXMx0/+lPjEBVCr+ZJTY1aAcz+KDszwrrd1sh/tt5llwjP3RXIopPimJ3bQqHAWngBt2MbILSc2oEMJEbRA4fuRuczWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020518; c=relaxed/simple;
-	bh=d3NkqjA7Jvt3FrxXCL2A3iESOTioO+9CeFGIix/uGY8=;
+	s=arc-20240116; t=1734022317; c=relaxed/simple;
+	bh=LFJttg6w/h8j31oz+12kE9JaLEhF/FJpNqsfCrduiQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Li8rtAm84hV5dhi+5REUeixm9G0LAfoIHiVoilj+yECFtVEzQ1AF49niZJGg04UujoFHmQ2HuKIdOrVta/Rr/dn4Yjf7IK2fYbEcdUcKDDqISAZXM9tPFVQCf2ePUw7ONC4xtzAmPAMJjiLfsVO+tV/3kA+KT61w/e3H0MiOW6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFXwA+BQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF06C4CECE;
-	Thu, 12 Dec 2024 16:21:57 +0000 (UTC)
+	 MIME-Version; b=RE9XrUSgPCzR11GHJZRnhEllVEbEZH7h8jSXa+y9xDeCwA+MYM7i8z3wJto3IAA8AgCe9P11inSUR1XihDnkurrLTqKWCciL4ywbr7njqPmt4IFycle8jqFilE0fmYgM92jqlgpx9mqCtl+zr5b+dyb6iCUdIi6+1Qm53mILGrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXE6BdPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2E3C4CED0;
+	Thu, 12 Dec 2024 16:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020518;
-	bh=d3NkqjA7Jvt3FrxXCL2A3iESOTioO+9CeFGIix/uGY8=;
+	s=korg; t=1734022316;
+	bh=LFJttg6w/h8j31oz+12kE9JaLEhF/FJpNqsfCrduiQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFXwA+BQ+3S3tGvzvXg9DmaMxijAu3fQMEF2zPhYL3YT8ksww/agVY+Nq9g9XWwYX
-	 693ET32EzhAJUwJUKSC6vH22FL3sV5lWFfLX6C/7XJcyOrep2iWo8rFQeCwADtWj1d
-	 7XLzZylj+7HjsJqaCJll+OB2P+TgoK4zW1xwLYho=
+	b=zXE6BdPjvlsPFh5+VK+rvGbJny5nzmU2whKEw9jkLORTXsNlPkI0Lesa3ra09wqKl
+	 aVND4FQY5HsmGxTuY/tgh7qXt5aHsRgKNjN2L72HakHxyID+1hY/kw2y2MWtm+Nn6S
+	 G7ICFzKTt3Jk20Y7dn5Mww1I0EsrAZgV1NmQjRCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@nxp.com>,
-	TaoJiang <tao.jiang_2@nxp.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 457/772] media: amphion: Set video drvdata before register video device
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 207/565] wireguard: selftests: load nf_conntrack if not present
 Date: Thu, 12 Dec 2024 15:56:42 +0100
-Message-ID: <20241212144408.811283841@linuxfoundation.org>
+Message-ID: <20241212144319.675198938@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 8cbb1a7bd5973b57898b26eb804fe44af440bb63 upstream.
+[ Upstream commit 0290abc9860917f1ee8b58309c2bbd740a39ee8e ]
 
-The video drvdata should be set before the video device is registered,
-otherwise video_drvdata() may return NULL in the open() file ops, and led
-to oops.
+Some distros may not load nf_conntrack by default, which will cause
+subsequent nf_conntrack sets to fail. Load this module if it is not
+already loaded.
 
-Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Reviewed-by: TaoJiang <tao.jiang_2@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+[ Jason: add [[ -e ... ]] check so this works in the qemu harness. ]
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20241117212030.629159-4-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_v4l2.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/wireguard/netns.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -740,6 +740,7 @@ int vpu_add_func(struct vpu_dev *vpu, st
- 		vfd->fops = vdec_get_fops();
- 		vfd->ioctl_ops = vdec_get_ioctl_ops();
- 	}
-+	video_set_drvdata(vfd, vpu);
+diff --git a/tools/testing/selftests/wireguard/netns.sh b/tools/testing/selftests/wireguard/netns.sh
+index 93e44410f170e..4732c23e35ee5 100755
+--- a/tools/testing/selftests/wireguard/netns.sh
++++ b/tools/testing/selftests/wireguard/netns.sh
+@@ -320,6 +320,7 @@ waitiface $netns1 vethc
+ waitiface $netns2 veths
  
- 	ret = video_register_device(vfd, VFL_TYPE_VIDEO, -1);
- 	if (ret) {
-@@ -747,7 +748,6 @@ int vpu_add_func(struct vpu_dev *vpu, st
- 		v4l2_m2m_release(func->m2m_dev);
- 		return ret;
- 	}
--	video_set_drvdata(vfd, vpu);
- 	func->vfd = vfd;
- 
- 	ret = v4l2_m2m_register_media_controller(func->m2m_dev, func->vfd, func->function);
+ n0 bash -c 'printf 1 > /proc/sys/net/ipv4/ip_forward'
++[[ -e /proc/sys/net/netfilter/nf_conntrack_udp_timeout ]] || modprobe nf_conntrack
+ n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout'
+ n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout_stream'
+ n0 iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -d 10.0.0.0/24 -j SNAT --to 10.0.0.1
+-- 
+2.43.0
+
 
 
 
