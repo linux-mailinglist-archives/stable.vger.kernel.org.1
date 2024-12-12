@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-103123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E340D9EF5D7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 090189EF51D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82C7418879FE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:14:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9069C291738
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B074521B8E1;
-	Thu, 12 Dec 2024 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9382210F2;
+	Thu, 12 Dec 2024 17:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+wh4c3t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ne9mxIOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE7021766D;
-	Thu, 12 Dec 2024 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF112210E3;
+	Thu, 12 Dec 2024 17:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023616; cv=none; b=mjznVK6bgPrH+Q9SY6mlwl1V3k36OMcDnQ3vR5nqEULGc+gQqOa3v5PUQ/JKKXY0ctaOYp89lptRQs6V239KJjTDsb+SY1Lcw2v+OE6lvKB2HBAtKgpvd6fqdoR1NA/XgVZPPDmD07mX+LYHNBOs+g/w0C3ewqfQ/egps88ZV74=
+	t=1734023566; cv=none; b=p4ieFvVRe8d6R2kSzN7Hij9AzFWXRSdEexLoL3Hj0lMFQDX4NascxtgULqLQ8A7wbVT6LK54yJq75vkxKSysgmzSuS9lCiwMNo9kcZAZlBpq3C7kkAMKWWXkU+uydPZHFOj+NJJIpJP/bLrO7PsICNTaJrA3D5j7CAKBu9TR6lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023616; c=relaxed/simple;
-	bh=vsSh4lF4dQS0I6+i62LIxC9qaq2yK6GONrrO0OlgXlQ=;
+	s=arc-20240116; t=1734023566; c=relaxed/simple;
+	bh=T13E6lUa/mRPR5ZG4ox9E5HAIM3BnaLEgXN4rTR2IdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jU+PHyKg9wDH+Wt0sk0hJdZ0aZVEu/f1t/gWN/8hN3LSJQimGpbvJu3cdg44oqfyLJlXv9LYYKWNxtnVx3r+0wSghDC8ODFNeBQ8KS5GxzVo8c1vt+c6/8Pz0oLVmpMzomCKti9/x8NqbbOFSFYqKIzbFO9wkSgH9Ks/mKpL0Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+wh4c3t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCC1C4CECE;
-	Thu, 12 Dec 2024 17:13:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X1ZP4GIr0QY23c3GalQx/HGfpTufHS+suKBurS67LsMTsBzaw1yVAwSNZtm87EAdBltyDi2/8N/KUv4xP6SdkrS1kJRN+SrZP8bx0pjl8R6amqaOtfBvDusuC4xs9llLobGv110/SLTjR1Nu1eXMnZW+l61mZaggoCVqtOhBidE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ne9mxIOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62534C4CED0;
+	Thu, 12 Dec 2024 17:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023615;
-	bh=vsSh4lF4dQS0I6+i62LIxC9qaq2yK6GONrrO0OlgXlQ=;
+	s=korg; t=1734023566;
+	bh=T13E6lUa/mRPR5ZG4ox9E5HAIM3BnaLEgXN4rTR2IdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+wh4c3t72uS4cfIs4Gb/d4pEoHJ2ahmjhnzuVwEQV2kb39YASAao6YGbJW3xD0Dt
-	 oREJjwA1FzKVEToMVGr4f6rE1LtNGz/khidhyZk5v5fzKKOxez+upx5hcN6dtr8xUM
-	 g9U5bsZMyxp7t+G9azSQzrWNj0v15VO1YjkQS69U=
+	b=Ne9mxIOeLjAY8pg5cNSHvzkg9T/Dtlyfh2OyO3RkNP1Z3VtqxVn/DVI2yV5Syv31Q
+	 yD+TG0FKe+K4gF8/X3jxE9uPjNEMpspV9d+VBoxg1dtZwr9DQwf5PTfoB4sZhsKOkw
+	 O5bzmuhwT4kBLt+TjNRfdNwf0T7rXOfzp/R8zDSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	guoweikang <guoweikang.kernel@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 009/459] ftrace: Fix regression with module command in stack_trace_filter
-Date: Thu, 12 Dec 2024 15:55:47 +0100
-Message-ID: <20241212144253.895789317@linuxfoundation.org>
+	=?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.10 010/459] leds: lp55xx: Remove redundant test for invalid channel number
+Date: Thu, 12 Dec 2024 15:55:48 +0100
+Message-ID: <20241212144253.933033973@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
 References: <20241212144253.511169641@linuxfoundation.org>
@@ -62,50 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: guoweikang <guoweikang.kernel@gmail.com>
+From: Michal Vokáč <michal.vokac@ysoft.com>
 
-commit 45af52e7d3b8560f21d139b3759735eead8b1653 upstream.
+commit 09b1ef9813a0742674f7efe26104403ca94a1b4a upstream.
 
-When executing the following command:
+Since commit 92a81562e695 ("leds: lp55xx: Add multicolor framework
+support to lp55xx") there are two subsequent tests if the chan_nr
+(reg property) is in valid range. One in the lp55xx_init_led()
+function and one in the lp55xx_parse_common_child() function that
+was added with the mentioned commit.
 
-    # echo "write*:mod:ext3" > /sys/kernel/tracing/stack_trace_filter
+There are two issues with that.
 
-The current mod command causes a null pointer dereference. While commit
-0f17976568b3f ("ftrace: Fix regression with module command in stack_trace_filter")
-has addressed part of the issue, it left a corner case unhandled, which still
-results in a kernel crash.
+First is in the lp55xx_parse_common_child() function where the reg
+property is tested right after it is read from the device tree.
+Test for the upper range is not correct though. Valid reg values are
+0 to (max_channel - 1) so it should be >=.
 
+Second issue is that in case the parsed value is out of the range
+the probe just fails and no error message is shown as the code never
+reaches the second test that prints and error message.
+
+Remove the test form lp55xx_parse_common_child() function completely
+and keep the one in lp55xx_init_led() function to deal with it.
+
+Fixes: 92a81562e695 ("leds: lp55xx: Add multicolor framework support to lp55xx")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241120052750.275463-1-guoweikang.kernel@gmail.com
-Fixes: 04ec7bb642b77 ("tracing: Have the trace_array hold the list of registered func probes");
-Signed-off-by: guoweikang <guoweikang.kernel@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
+Link: https://lore.kernel.org/r/20241017150812.3563629-1-michal.vokac@ysoft.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/leds/leds-lp55xx-common.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -4311,6 +4311,9 @@ ftrace_mod_callback(struct trace_array *
- 	char *func;
- 	int ret;
+--- a/drivers/leds/leds-lp55xx-common.c
++++ b/drivers/leds/leds-lp55xx-common.c
+@@ -578,9 +578,6 @@ static int lp55xx_parse_common_child(str
+ 	if (ret)
+ 		return ret;
  
-+	if (!tr)
-+		return -ENODEV;
-+
- 	/* match_records() modifies func, and we need the original */
- 	func = kstrdup(func_orig, GFP_KERNEL);
- 	if (!func)
+-	if (*chan_nr < 0 || *chan_nr > cfg->max_channel)
+-		return -EINVAL;
+-
+ 	return 0;
+ }
+ 
 
 
 
