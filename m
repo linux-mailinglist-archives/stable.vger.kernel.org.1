@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431A39EEC07
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF4F9EED81
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3618C168CB3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F3B3289BCA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C92E2153F4;
-	Thu, 12 Dec 2024 15:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3045E223E95;
+	Thu, 12 Dec 2024 15:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4Evhudc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ik1B7KJu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CFB748A;
-	Thu, 12 Dec 2024 15:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CB2221D93;
+	Thu, 12 Dec 2024 15:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017302; cv=none; b=ibIfA+AEbwDgyB1yrwJV+0tvAY/O0f4DXWjBQcz1NmUNPPKEwOpN3DwA2ieRLxgRGdwUv8P9FhIBelOUVWs7X6x0J1724vBomlX+SIaweHlT7ctiRG4zKVCr/I75G/UT2vrdYtYVe2HnmP8XSJrT6GnHCS/oJqXGzd5ckMPfxDI=
+	t=1734018365; cv=none; b=iFMUPE04yLhYByFQ00NfG8gV8n53vQPScut+UCxyzp1iq7jyeuYT7+O3fWA6BvOyrmvuVtZm37MnmLtlo0BRJYx83wl9LRVWPWDs85XkiAmgrpJY4DQExsPPahJERFiVp519398zCH2xyzI5hr3WBs9l4uUQ96DKZ0zAAhqWlAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017302; c=relaxed/simple;
-	bh=cLP37izQaU+oj9pk6NgZq3HPrnFWjOawTGCYw2pw1M4=;
+	s=arc-20240116; t=1734018365; c=relaxed/simple;
+	bh=ACOjbtd4wAxIpaFi1vgkM/KBkzhr3cKn/jVVhOrFF/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dWCBM2csWyVk9MHvaMQZwnkTtVkzIpuuqWxEBLBVyMZ4PWQLr0xrkGuf+dUV5aPwMpPl2md2VpJsJE7ReQMkCphn3agadypqZoU39v9/SpENasuXC1zJFziHLIh/XAY4co19uKbB0W7eqlCWs+Kvesc1UVHbdv1TrdhBraHg/x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4Evhudc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F536C4CECE;
-	Thu, 12 Dec 2024 15:28:21 +0000 (UTC)
+	 MIME-Version; b=ZVtEpalLZo/VUZISa+M0yhSzY4OLJSeVxOZpQGeSt2vMHl+DYMOVhukWH2lEpJLxYCYyTN9RLIs3C0vHqoKxCiuHlXwi3w5u3ftQwGZvFpccDrI6qImfDSnngqfpWBcMS9H1eEsxY/H+h8AwAAcCwzPXx+ExeB0iDeu5Ln4JYzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ik1B7KJu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A109C4CED4;
+	Thu, 12 Dec 2024 15:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017301;
-	bh=cLP37izQaU+oj9pk6NgZq3HPrnFWjOawTGCYw2pw1M4=;
+	s=korg; t=1734018364;
+	bh=ACOjbtd4wAxIpaFi1vgkM/KBkzhr3cKn/jVVhOrFF/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4EvhudcM46iZgrj9M9fY2OQZ5jPYoOFy64+z55U8C18Hy1tCVEV0P8yPgsloCq43
-	 Ooc4IkJUNH405z/R0MIcjAmnFVlsK4UxdrwU/NSncvPEPzjbB61OdOjIZxc88UcOAl
-	 XbO/bNWrLoC55/W/iC194lehUAMdUXo0eYVEiAsU=
+	b=Ik1B7KJu6Fz35CAoOeyRqipCDnn/FrYxLqDKmjFoY5lFEWVbHwe2QYeB81UwyMQjZ
+	 5h/h2v7sxzlmcI9GjwJRZJNNzU6IhhYljJjLJBsweterUfNyhcHy1lWFezHbW96yh4
+	 PeJAU789wRwpo8BrIurn1pbvCM2w1QH35ooYIygw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jordan Rife <jrife@google.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 423/466] rtc: cmos: avoid taking rtc_lock for extended period of time
+Subject: [PATCH 6.6 273/356] bpf: put bpf_links program when link is safe to be deallocated
 Date: Thu, 12 Dec 2024 15:59:52 +0100
-Message-ID: <20241212144323.467812439@linuxfoundation.org>
+Message-ID: <20241212144255.374426659@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 0a6efab33eab4e973db26d9f90c3e97a7a82e399 ]
+[ Upstream commit f44ec8733a8469143fde1984b5e6931b2e2f6f3f ]
 
-On my device reading entirety of /sys/devices/pnp0/00:03/cmos_nvram0/nvmem
-takes about 9 msec during which time interrupts are off on the CPU that
-does the read and the thread that performs the read can not be migrated
-or preempted by another higher priority thread (RT or not).
+In general, BPF link's underlying BPF program should be considered to be
+reachable through attach hook -> link -> prog chain, and, pessimistically,
+we have to assume that as long as link's memory is not safe to free,
+attach hook's code might hold a pointer to BPF program and use it.
 
-Allow readers and writers be preempted by taking and releasing rtc_lock
-spinlock for each individual byte read or written rather than once per
-read/write request.
+As such, it's not (generally) correct to put link's program early before
+waiting for RCU GPs to go through. More eager bpf_prog_put() that we
+currently do is mostly correct due to BPF program's release code doing
+similar RCU GP waiting, but as will be shown in the following patches,
+BPF program can be non-sleepable (and, thus, reliant on only "classic"
+RCU GP), while BPF link's attach hook can have sleepable semantics and
+needs to be protected by RCU Tasks Trace, and for such cases BPF link
+has to go through RCU Tasks Trace + "classic" RCU GPs before being
+deallocated. And so, if we put BPF program early, we might free BPF
+program before we free BPF link, leading to use-after-free situation.
 
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Link: https://lore.kernel.org/r/Zxv8QWR21AV4ztC5@google.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+So, this patch defers bpf_prog_put() until we are ready to perform
+bpf_link's deallocation. At worst, this delays BPF program freeing by
+one extra RCU GP, but that seems completely acceptable. Alternatively,
+we'd need more elaborate ways to determine BPF hook, BPF link, and BPF
+program lifetimes, and how they relate to each other, which seems like
+an unnecessary complication.
+
+Note, for most BPF links we still will perform eager bpf_prog_put() and
+link dealloc, so for those BPF links there are no observable changes
+whatsoever. Only BPF links that use deferred dealloc might notice
+slightly delayed freeing of BPF programs.
+
+Also, to reduce code and logic duplication, extract program put + link
+dealloc logic into bpf_link_dealloc() helper.
+
+Link: https://lore.kernel.org/20241101181754.782341-1-andrii@kernel.org
+Tested-by: Jordan Rife <jrife@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-cmos.c | 31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ kernel/bpf/syscall.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index 35dca2accbb8d..5849d2970bba4 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -645,18 +645,17 @@ static int cmos_nvram_read(void *priv, unsigned int off, void *val,
- 	unsigned char *buf = val;
- 
- 	off += NVRAM_OFFSET;
--	spin_lock_irq(&rtc_lock);
--	for (; count; count--, off++) {
-+	for (; count; count--, off++, buf++) {
-+		guard(spinlock_irq)(&rtc_lock);
- 		if (off < 128)
--			*buf++ = CMOS_READ(off);
-+			*buf = CMOS_READ(off);
- 		else if (can_bank2)
--			*buf++ = cmos_read_bank2(off);
-+			*buf = cmos_read_bank2(off);
- 		else
--			break;
-+			return -EIO;
- 	}
--	spin_unlock_irq(&rtc_lock);
- 
--	return count ? -EIO : 0;
-+	return 0;
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 252aed82d45ea..ba38c08a9a059 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2870,12 +2870,24 @@ void bpf_link_inc(struct bpf_link *link)
+ 	atomic64_inc(&link->refcnt);
  }
  
- static int cmos_nvram_write(void *priv, unsigned int off, void *val,
-@@ -671,23 +670,23 @@ static int cmos_nvram_write(void *priv, unsigned int off, void *val,
- 	 * NVRAM to update, updating checksums is also part of its job.
- 	 */
- 	off += NVRAM_OFFSET;
--	spin_lock_irq(&rtc_lock);
--	for (; count; count--, off++) {
-+	for (; count; count--, off++, buf++) {
- 		/* don't trash RTC registers */
- 		if (off == cmos->day_alrm
- 				|| off == cmos->mon_alrm
- 				|| off == cmos->century)
--			buf++;
--		else if (off < 128)
--			CMOS_WRITE(*buf++, off);
-+			continue;
++static void bpf_link_dealloc(struct bpf_link *link)
++{
++	/* now that we know that bpf_link itself can't be reached, put underlying BPF program */
++	if (link->prog)
++		bpf_prog_put(link->prog);
 +
-+		guard(spinlock_irq)(&rtc_lock);
-+		if (off < 128)
-+			CMOS_WRITE(*buf, off);
- 		else if (can_bank2)
--			cmos_write_bank2(*buf++, off);
-+			cmos_write_bank2(*buf, off);
- 		else
--			break;
-+			return -EIO;
- 	}
--	spin_unlock_irq(&rtc_lock);
++	/* free bpf_link and its containing memory */
++	if (link->ops->dealloc_deferred)
++		link->ops->dealloc_deferred(link);
++	else
++		link->ops->dealloc(link);
++}
++
+ static void bpf_link_defer_dealloc_rcu_gp(struct rcu_head *rcu)
+ {
+ 	struct bpf_link *link = container_of(rcu, struct bpf_link, rcu);
  
--	return count ? -EIO : 0;
-+	return 0;
+-	/* free bpf_link and its containing memory */
+-	link->ops->dealloc_deferred(link);
++	bpf_link_dealloc(link);
  }
  
- /*----------------------------------------------------------------*/
+ static void bpf_link_defer_dealloc_mult_rcu_gp(struct rcu_head *rcu)
+@@ -2897,7 +2909,6 @@ static void bpf_link_free(struct bpf_link *link)
+ 		sleepable = link->prog->aux->sleepable;
+ 		/* detach BPF program, clean up used resources */
+ 		ops->release(link);
+-		bpf_prog_put(link->prog);
+ 	}
+ 	if (ops->dealloc_deferred) {
+ 		/* schedule BPF link deallocation; if underlying BPF program
+@@ -2908,8 +2919,9 @@ static void bpf_link_free(struct bpf_link *link)
+ 			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_mult_rcu_gp);
+ 		else
+ 			call_rcu(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
+-	} else if (ops->dealloc)
+-		ops->dealloc(link);
++	} else if (ops->dealloc) {
++		bpf_link_dealloc(link);
++	}
+ }
+ 
+ static void bpf_link_put_deferred(struct work_struct *work)
 -- 
 2.43.0
 
