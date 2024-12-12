@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B059EF73B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A49829EF56F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF8D5178F0B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:17:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D46CF189B233
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DCA211493;
-	Thu, 12 Dec 2024 17:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA52B229132;
+	Thu, 12 Dec 2024 16:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bl5czQET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uk191Bw/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28041487CD;
-	Thu, 12 Dec 2024 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86312216E14;
+	Thu, 12 Dec 2024 16:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023833; cv=none; b=WSAXYWqmcwrl3p3xelNufyyENeMl0OJp8Z3yDdldjHP9A2lox04gK9QpMlkktj+6XhCqvzx67znJVyoN2x95JebnV04m9ZgRFDwOU4T6nG28jSf6cqswfQrhnYCIMUWNDm3CgbYfbY0nVx9NAOZJkZmg+SeTvHzDS1Y/KUNXsKU=
+	t=1734022444; cv=none; b=qMsWWVZYP6zsTQ1SCUYY1r5ya4aFTL3zwL/ZnhyodVcRaN6pX3nvRLfvlu0MfuH02q5ecpeetg/ZoAVoRoqqnmDEeos1RH6zIas42Zv9IF9FQxBy2tWAoqjAArYUGr+bG1kbd6LlullipErnmeD9BePwYphF6JYNWqZPiY2YE5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023833; c=relaxed/simple;
-	bh=hAhDP4pZwv8m11z8znIRXclH86hq4arMq/2RmQXm8Q8=;
+	s=arc-20240116; t=1734022444; c=relaxed/simple;
+	bh=fwrOdF1q3ItXED9f9JZDdusB3cghkRFrdc1yJRI0pk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uACEANagLc4vuVOYLz0ezr5Jx3O9KycZUeyYW4YeK4Va4r8z6vYogcpwcUTlTrUjW+XY+5tEZX+XY+jOB/RtqLr6iZ4y0q/mHw4b9SrTg9SHlECIFLZ3G6PBVeLGsYWll1ISNadTca4lgKEIm3E/5SISwcrDvHvh9QXdSQzeEI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bl5czQET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51011C4CECE;
-	Thu, 12 Dec 2024 17:17:13 +0000 (UTC)
+	 MIME-Version; b=FS2Bu0hu+4MSXbm6wKt27oIulsYnIzv0VSQqIY1Tjj/y7PRP8D+PIAuIh2dX/ezmy4JKRr1840TIT/CRQsr4zZBksDy1/FnxmHUzAw9zxW28TP2oqfSXenFfZOpyXvn1+IwCG1TT1KNKAxzBEBhUcXW0CGVKy523M5KTt48nNwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uk191Bw/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73531C4CECE;
+	Thu, 12 Dec 2024 16:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023833;
-	bh=hAhDP4pZwv8m11z8znIRXclH86hq4arMq/2RmQXm8Q8=;
+	s=korg; t=1734022444;
+	bh=fwrOdF1q3ItXED9f9JZDdusB3cghkRFrdc1yJRI0pk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bl5czQET262A3IYoEBXOZPXQ12Hd0hw2LrDVS1/cd+sd1J+ws9jLuG+19eSvvPaP0
-	 znC+islGZCtHnOeSUCoKKWl+/iimaisPWArOinvEhPhLQAin8V+2HhQgEtQHPtlt8Z
-	 tP7yeTQAwRq9By8EHHlc3HZTE0LLHML4vAjZGw0A=
+	b=Uk191Bw/f7PZ7TL5BgQO+ACQZ+KOF4mV6hgTcrvG6V3LAHI70ba5uTbRgXqUzS+Ko
+	 nVAh5wgB3DZcrBtv7/pPoZloIeRgJlSyl2uQctGt0B4Czcyn+RKYKTNCc10QkNbpsN
+	 3Jp/nZ0emBqZmpV86HZsHHs34Gd5BBPX4xDItC3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Todd Kjos <tkjos@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/459] drm/mm: Mark drm_mm_interval_tree*() functions with __maybe_unused
-Date: Thu, 12 Dec 2024 15:57:16 +0100
-Message-ID: <20241212144257.381678821@linuxfoundation.org>
+Subject: [PATCH 5.15 242/565] PCI: Fix reset_method_store() memory leak
+Date: Thu, 12 Dec 2024 15:57:17 +0100
+Message-ID: <20241212144321.044066016@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Todd Kjos <tkjos@google.com>
 
-[ Upstream commit 53bd7c1c0077db533472ae32799157758302ef48 ]
+[ Upstream commit 2985b1844f3f3447f2d938eff1ef6762592065a5 ]
 
-The INTERVAL_TREE_DEFINE() uncoditionally provides a bunch of helper
-functions which in some cases may be not used. This, in particular,
-prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
+In reset_method_store(), a string is allocated via kstrndup() and assigned
+to the local "options". options is then used in with strsep() to find
+spaces:
 
-.../drm/drm_mm.c:152:1: error: unused function 'drm_mm_interval_tree_insert' [-Werror,-Wunused-function]
-  152 | INTERVAL_TREE_DEFINE(struct drm_mm_node, rb,
-      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  153 |                      u64, __subtree_last,
-      |                      ~~~~~~~~~~~~~~~~~~~~
-  154 |                      START, LAST, static inline, drm_mm_interval_tree)
-      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  while ((name = strsep(&options, " ")) != NULL) {
 
-Fix this by marking drm_mm_interval_tree*() functions with __maybe_unused.
+If there are no remaining spaces, then options is set to NULL by strsep(),
+so the subsequent kfree(options) doesn't free the memory allocated via
+kstrndup().
 
-See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
+Fix by using a separate tmp_options to iterate with strsep() so options is
+preserved.
 
-Fixes: 202b52b7fbf7 ("drm: Track drm_mm nodes with an interval tree")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240829154640.1120050-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lore.kernel.org/r/20241001231147.3583649-1-tkjos@google.com
+Fixes: d88f521da3ef ("PCI: Allow userspace to query and set device reset mechanism")
+Signed-off-by: Todd Kjos <tkjos@google.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_mm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pci.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_mm.c b/drivers/gpu/drm/drm_mm.c
-index a4a04d2461353..7c25a8e38830b 100644
---- a/drivers/gpu/drm/drm_mm.c
-+++ b/drivers/gpu/drm/drm_mm.c
-@@ -154,7 +154,7 @@ static void show_leaks(struct drm_mm *mm) { }
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index ee1d74f89a05f..09d1b69746602 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5214,7 +5214,7 @@ static ssize_t reset_method_store(struct device *dev,
+ 				  const char *buf, size_t count)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+-	char *options, *name;
++	char *options, *tmp_options, *name;
+ 	int m, n;
+ 	u8 reset_methods[PCI_NUM_RESET_METHODS] = { 0 };
  
- INTERVAL_TREE_DEFINE(struct drm_mm_node, rb,
- 		     u64, __subtree_last,
--		     START, LAST, static inline, drm_mm_interval_tree)
-+		     START, LAST, static inline __maybe_unused, drm_mm_interval_tree)
+@@ -5234,7 +5234,8 @@ static ssize_t reset_method_store(struct device *dev,
+ 		return -ENOMEM;
  
- struct drm_mm_node *
- __drm_mm_interval_first(const struct drm_mm *mm, u64 start, u64 last)
+ 	n = 0;
+-	while ((name = strsep(&options, " ")) != NULL) {
++	tmp_options = options;
++	while ((name = strsep(&tmp_options, " ")) != NULL) {
+ 		if (sysfs_streq(name, ""))
+ 			continue;
+ 
 -- 
 2.43.0
 
