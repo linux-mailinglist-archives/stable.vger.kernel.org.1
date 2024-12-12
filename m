@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0EE39EF7F4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA1C9EF75E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9036B28C340
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 955C21890A0C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CCC222D75;
-	Thu, 12 Dec 2024 17:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2A6215764;
+	Thu, 12 Dec 2024 17:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKWXBTec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLoxZapf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453C8222D7C;
-	Thu, 12 Dec 2024 17:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF0F176AA1;
+	Thu, 12 Dec 2024 17:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025084; cv=none; b=VJbvMTwtGPTzd4peLndl+BkLCLsXn2fA0HmJt6gp2R4zu2Py0rfuNu2BzeOUs3BArdSzCHB56CPwVpYnDxCFXHSk5e5fKhoh7vTSEDOXyMw+S+IhxM9SrPydJ4Oi7jAZlSFR0V4/WvG2EbNOYXeqcAWdNsYoAYDeA0x9aO+JTTY=
+	t=1734024238; cv=none; b=TmzJn852U6MtsyNBCDb/OE7V7FNiQ0fKKLakw7g3Lht8vdHDI6rQkkYiYiZkkobuR6MhNIZJItq+QCAinTPtmPWtxoNJQN6NeUcnnJhBC3KyiQECGrQA3t0G2qRO4SbeRVrsJWb/LsdBWrCj/lL+OqSIds3x9D/evts8ABC30ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025084; c=relaxed/simple;
-	bh=2N4K+dZDRCR8+U94ZWB3OnruyYrmTnLakWSKF+hlVAE=;
+	s=arc-20240116; t=1734024238; c=relaxed/simple;
+	bh=egcScF98ThhCF7I0QLICepJnYc5yjjaoWhv7d6Dj5No=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oH57vNDTEkH/VtMBUdBuRb80FPG2KBCx0+tTrpe6fz5K/R582flBsfR+OEMmkXo13qFRCEnl5AWBniVHcxOolQuxKowfrHGfECpFZVi/y21rRU1+ZMQjR5Ia3k+w5/hmrYAJr7sSYyeEceS28jSscMBZ9jy7VqPTgHYug9a0inQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKWXBTec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF87CC4CED0;
-	Thu, 12 Dec 2024 17:38:03 +0000 (UTC)
+	 MIME-Version; b=txNpVPMXxTp3SbIXbxvJ+lICuolbx/youPOjYIx3EQQ3exqPr0h0mSMdrbiz6aYq8sjjzdcAPmkgRHBqhc3wUOwoMIOarn1aSa5omOQwxu8CZ0ZXrODtZuz/0MOY78hRHvblBW0H7fY4oBP20xPIJmrfTs8wHecMJTUY8S1eEE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLoxZapf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E6CC4CED0;
+	Thu, 12 Dec 2024 17:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025084;
-	bh=2N4K+dZDRCR8+U94ZWB3OnruyYrmTnLakWSKF+hlVAE=;
+	s=korg; t=1734024237;
+	bh=egcScF98ThhCF7I0QLICepJnYc5yjjaoWhv7d6Dj5No=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKWXBTec8LErxDvt9mkfA0ChFVxHdzmMS1EOiHeyTMUz1UBERWZaoTPJRZCFucWZg
-	 3BRK3MAZ+53tekY5h/BpS7pLq+SVFFlV28u6fPT9+7jZu0oEMQ+6jVzYuHEzqmwA/Z
-	 5yfbV34g+R1kwDAyMS72wX27L2HT4gdzmF51/KbI=
+	b=zLoxZapfQImw4eTLVKrna/VexFCTuhaDqm4+djPRhyjz4On29zioChPcHKu6cfB5a
+	 MWZICC3GnWP6Msf1R7s6jNhJGOdnKy+jep8TxFSX+XdCjI3JuC+TMEssjZebcuIrHX
+	 IPShjsGx2MMYEqaS5G1rTPmEwApTLVgz+IsZzWn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gourry@gourry.net>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 051/321] tpm: fix signed/unsigned bug when checking event logs
+Subject: [PATCH 5.10 231/459] iio: light: al3010: Fix an error handling path in al3010_probe()
 Date: Thu, 12 Dec 2024 15:59:29 +0100
-Message-ID: <20241212144232.010735572@linuxfoundation.org>
+Message-ID: <20241212144302.693688569@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Price <gourry@gourry.net>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit e6d654e9f5a97742cfe794b1c4bb5d3fb2d25e98 ]
+[ Upstream commit a4b7064d34186cf4970fe0333c3b27346cf8f819 ]
 
-A prior bugfix that fixes a signed/unsigned error causes
-another signed unsigned error.
+If i2c_smbus_write_byte_data() fails in al3010_init(),
+al3010_set_pwr(false) is not called.
 
-A situation where log_tbl->size is invalid can cause the
-size passed to memblock_reserve to become negative.
+In order to avoid such a situation, move the devm_add_action_or_reset()
+witch calls al3010_set_pwr(false) right after a successful
+al3010_set_pwr(true).
 
-log_size from the main event log is an unsigned int, and
-the code reduces to the following
-
-u64 value = (int)unsigned_value;
-
-This results in sign extension, and the value sent to
-memblock_reserve becomes effectively negative.
-
-Fixes: be59d57f9806 ("efi/tpm: Fix sanity check of unsigned tbl_size being less than zero")
-Signed-off-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: c36b5195ab70 ("iio: light: add Dyna-Image AL3010 driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/ee5d10a2dd2b70f29772d5df33774d3974a80f30.1725993353.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/tpm.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/iio/light/al3010.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
-index e8d69bd548f3f..9c3613e6af158 100644
---- a/drivers/firmware/efi/tpm.c
-+++ b/drivers/firmware/efi/tpm.c
-@@ -40,7 +40,8 @@ int __init efi_tpm_eventlog_init(void)
- {
- 	struct linux_efi_tpm_eventlog *log_tbl;
- 	struct efi_tcg2_final_events_table *final_tbl;
--	int tbl_size;
-+	unsigned int tbl_size;
-+	int final_tbl_size;
- 	int ret = 0;
+diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
+index b4e9924094cd1..bd83e73e68026 100644
+--- a/drivers/iio/light/al3010.c
++++ b/drivers/iio/light/al3010.c
+@@ -87,7 +87,12 @@ static int al3010_init(struct al3010_data *data)
+ 	int ret;
  
- 	if (efi.tpm_log == EFI_INVALID_TABLE_ADDR) {
-@@ -80,26 +81,26 @@ int __init efi_tpm_eventlog_init(void)
- 		goto out;
+ 	ret = al3010_set_pwr(data->client, true);
++	if (ret < 0)
++		return ret;
+ 
++	ret = devm_add_action_or_reset(&data->client->dev,
++				       al3010_set_pwr_off,
++				       data);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -191,12 +196,6 @@ static int al3010_probe(struct i2c_client *client,
+ 		return ret;
  	}
  
--	tbl_size = 0;
-+	final_tbl_size = 0;
- 	if (final_tbl->nr_events != 0) {
- 		void *events = (void *)efi.tpm_final_log
- 				+ sizeof(final_tbl->version)
- 				+ sizeof(final_tbl->nr_events);
+-	ret = devm_add_action_or_reset(&client->dev,
+-					al3010_set_pwr_off,
+-					data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	return devm_iio_device_register(&client->dev, indio_dev);
+ }
  
--		tbl_size = tpm2_calc_event_log_size(events,
--						    final_tbl->nr_events,
--						    log_tbl->log);
-+		final_tbl_size = tpm2_calc_event_log_size(events,
-+							  final_tbl->nr_events,
-+							  log_tbl->log);
- 	}
- 
--	if (tbl_size < 0) {
-+	if (final_tbl_size < 0) {
- 		pr_err(FW_BUG "Failed to parse event in TPM Final Events Log\n");
- 		ret = -EINVAL;
- 		goto out_calc;
- 	}
- 
- 	memblock_reserve(efi.tpm_final_log,
--			 tbl_size + sizeof(*final_tbl));
--	efi_tpm_final_log_size = tbl_size;
-+			 final_tbl_size + sizeof(*final_tbl));
-+	efi_tpm_final_log_size = final_tbl_size;
- 
- out_calc:
- 	early_memunmap(final_tbl, sizeof(*final_tbl));
 -- 
 2.43.0
 
