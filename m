@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9DC9EF90C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26EF9EF53C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 530E0178C03
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90E17189F4A7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9CF223E70;
-	Thu, 12 Dec 2024 17:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55BC223313;
+	Thu, 12 Dec 2024 17:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQxXg1u4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhDG/U8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E03222D68;
-	Thu, 12 Dec 2024 17:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628E04F218;
+	Thu, 12 Dec 2024 17:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025102; cv=none; b=cQs/t2nTFC1QzQ0WVwm6Bf3JmUQiad8HICj/angdSuuly80LHjoD8v/JGab+ZPSuALagkd6qpOhpv2R7hftEo5cR1NZzryfMSkdSw+gVegUCooRVR2r3VHV7Uk/JMHwZ0UcD+QW6iXsyEbULsgQruJgV4u10NOZCXkXLopKTPJE=
+	t=1734022964; cv=none; b=l93TzOPOgfJhZnmYtoc7PFsdZMfPIdW4g3Osqf8qgnGNWDALUH9K8OBLAtlgemxdRBedznQg8w9jIQGhGSYqAQnFuExeP7jXqD4qZP03CV58fj81oxWbI9pAJUcLpFZ3zxpssDM43/z/QZsqEug2Hy3xPG4nk3G+LWxfzlr4smI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025102; c=relaxed/simple;
-	bh=5tY5HBpzk4cMhjZ+9+2PJL6HCm0eJzqiJCvh0FgeYOs=;
+	s=arc-20240116; t=1734022964; c=relaxed/simple;
+	bh=fi7ePMHERJajQPV/eUbYdIcuBmvPcQz38a12nsvyrEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZzwUlCTiuypFHNRxw09+wUiXQ0uBfyUG4a2ULC5AqkHp6SmNQWfCKE4AstlxhfUQCBBHAt9LHHjcw5mv0PQrxPGR8q3Gu0bYM7n3SNHkqleGR/HkIy2iKt7ebjMDQOTIWxNqRYzo4joimlf9bfIp7/shLYecZDmpbQCv+8HSHio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQxXg1u4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788F0C4AF09;
-	Thu, 12 Dec 2024 17:38:21 +0000 (UTC)
+	 MIME-Version; b=Ceb1PhP1I0rAGySoeA8RseGWUZ+l+4S3DRUIualVDaGFX1+I1/gkPCI0Fu2X3YHP9y0EGurY3Qr6Rlh/7iv6w/RuUE0Qf8uVuYxtIFLyn6q4uFPWVy/SwwgFwN0fpLOpWhjSk6bNd/9DGgNGEH+FV8eMjy4qGJmSxEBhBAcyOyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhDG/U8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA16FC4CECE;
+	Thu, 12 Dec 2024 17:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025101;
-	bh=5tY5HBpzk4cMhjZ+9+2PJL6HCm0eJzqiJCvh0FgeYOs=;
+	s=korg; t=1734022964;
+	bh=fi7ePMHERJajQPV/eUbYdIcuBmvPcQz38a12nsvyrEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQxXg1u4LVm6VvrHDLvVLBSFw4A4EJQsiBGDfgpklj4hUlOnt3w2urfMNvCEaSA7e
-	 HluZdv5q7/WXGqpJLm8u6WdhXTtWFMVfWgcihV1KIvqYdFVZjHKGtnajvKes+3xcQG
-	 kMtLmY/0ONZBfrbmoZSDs8FqKP1BNlHp/gmf3byY=
+	b=WhDG/U8w7NyHa1mlrCYtrmUHv510v9T/6HWCh3XU7zXpEL8jY7JUKRb6PHKUP+9IV
+	 Wi/FAMOneMoJO6FoIa6oDRbV2Fs8Kmr9yo8OOdxM2XWLOLh2NGXmL7XDm0MPHZY+EB
+	 92b9dwus4zbsL60pFPz7aIS9knvqLrPvBxSTodq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	syzbot+3030e17bd57a73d39bd7@syzkaller.appspotmail.com,
+	Qu Wenruo <wqu@suse.com>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 057/321] drm/omap: Fix locking in omap_gem_new_dmabuf()
+Subject: [PATCH 5.15 380/565] btrfs: add a sanity check for btrfs root in btrfs_search_slot()
 Date: Thu, 12 Dec 2024 15:59:35 +0100
-Message-ID: <20241212144232.246483799@linuxfoundation.org>
+Message-ID: <20241212144326.650079691@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit e6a1c4037227539373c8cf484ace83833e2ad6a2 ]
+[ Upstream commit 3ed51857a50f530ac7a1482e069dfbd1298558d4 ]
 
-omap_gem_new_dmabuf() creates the new gem object, and then takes and
-holds the omap_obj->lock for the rest of the function. This has two
-issues:
+Syzbot reports a null-ptr-deref in btrfs_search_slot().
 
-- omap_gem_free_object(), which is called in the error paths, also takes
-  the same lock, leading to deadlock
-- Even if the above wouldn't happen, in the error cases
-  omap_gem_new_dmabuf() still unlocks omap_obj->lock, even after the
-  omap_obj has already been freed.
+The reproducer is using rescue=ibadroots, and the extent tree root is
+corrupted thus the extent tree is NULL.
 
-Furthermore, I don't think there's any reason to take the lock at all,
-as the object was just created and not yet shared with anyone else.
+When scrub tries to search the extent tree to gather the needed extent
+info, btrfs_search_slot() doesn't check if the target root is NULL or
+not, resulting the null-ptr-deref.
 
-To fix all this, drop taking the lock.
+Add sanity check for btrfs root before using it in btrfs_search_slot().
 
-Fixes: 3cbd0c587b12 ("drm/omap: gem: Replace struct_mutex usage with omap_obj private lock")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/511b99d7-aade-4f92-bd3e-63163a13d617@stanley.mountain/
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240806-omapdrm-misc-fixes-v1-3-15d31aea0831@ideasonboard.com
+Reported-by: syzbot+3030e17bd57a73d39bd7@syzkaller.appspotmail.com
+Fixes: 42437a6386ff ("btrfs: introduce mount option rescue=ignorebadroots")
+Link: https://syzkaller.appspot.com/bug?extid=3030e17bd57a73d39bd7
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Tested-by: syzbot+3030e17bd57a73d39bd7@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/omapdrm/omap_gem.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ fs/btrfs/ctree.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
-index 08f539efddfb1..b5c6cf84835c1 100644
---- a/drivers/gpu/drm/omapdrm/omap_gem.c
-+++ b/drivers/gpu/drm/omapdrm/omap_gem.c
-@@ -1244,8 +1244,6 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index af6ddf1f913ae..345f205af6198 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -1763,7 +1763,7 @@ int btrfs_search_slot(struct btrfs_trans_handle *trans, struct btrfs_root *root,
+ 		      const struct btrfs_key *key, struct btrfs_path *p,
+ 		      int ins_len, int cow)
+ {
+-	struct btrfs_fs_info *fs_info = root->fs_info;
++	struct btrfs_fs_info *fs_info;
+ 	struct extent_buffer *b;
+ 	int slot;
+ 	int ret;
+@@ -1776,6 +1776,10 @@ int btrfs_search_slot(struct btrfs_trans_handle *trans, struct btrfs_root *root,
+ 	int min_write_lock_level;
+ 	int prev_cmp;
  
- 	omap_obj = to_omap_bo(obj);
++	if (!root)
++		return -EINVAL;
++
++	fs_info = root->fs_info;
+ 	might_sleep();
  
--	mutex_lock(&omap_obj->lock);
--
- 	omap_obj->sgt = sgt;
- 
- 	if (sgt->orig_nents == 1) {
-@@ -1261,8 +1259,7 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
- 		pages = kcalloc(npages, sizeof(*pages), GFP_KERNEL);
- 		if (!pages) {
- 			omap_gem_free_object(obj);
--			obj = ERR_PTR(-ENOMEM);
--			goto done;
-+			return ERR_PTR(-ENOMEM);
- 		}
- 
- 		omap_obj->pages = pages;
-@@ -1275,13 +1272,10 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
- 
- 		if (WARN_ON(i != npages)) {
- 			omap_gem_free_object(obj);
--			obj = ERR_PTR(-ENOMEM);
--			goto done;
-+			return ERR_PTR(-ENOMEM);
- 		}
- 	}
- 
--done:
--	mutex_unlock(&omap_obj->lock);
- 	return obj;
- }
- 
+ 	lowest_level = p->lowest_level;
 -- 
 2.43.0
 
