@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861EF9EEB7B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A834E9EF203
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:44:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F49C188AFD6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF432189CA72
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037A2215048;
-	Thu, 12 Dec 2024 15:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61542221DBE;
+	Thu, 12 Dec 2024 16:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiX1TrXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQx/9/XO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AB11487CD;
-	Thu, 12 Dec 2024 15:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1552210CF;
+	Thu, 12 Dec 2024 16:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016847; cv=none; b=JcFBL+ud2dUVBZ+CS+skNKcgYWbgRFT1e2iFVUx7H8AsFy+N2JEAy8AMLWyUNgP/2H5ZzmfibhR2R7WzszboSoqoIOxMBIBN0hrAhQs/7Q8FMfbz06UKycpjr7N4eFDYdTI4mkakXZjOck+VKU+9ziBiMgMal2bvpUCMWtimjt4=
+	t=1734020702; cv=none; b=mA8wu7dY00ZCMYX92yvpicMvFePJkN1kNfHpwD0Hgei3qm7sg146dsDKEH2e4/EiU2Dm+7gpnPP4ym01zzSaJ1C1M+KWJ+uVLLGBIuIU3clPjM5Qxahw7NjbFwrqJM6WrZGAu3hN3plHycE5i26eg+u3OIMt/gwVRkXBBzKO3VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016847; c=relaxed/simple;
-	bh=GXFl2thFBj0amLQd2tyX9rjpTJYQG9uZp1OoNg3ZA/s=;
+	s=arc-20240116; t=1734020702; c=relaxed/simple;
+	bh=CJtDW593F2IzLLtTfq0aqYqFXIPQkqVrhZKW4T9Rpyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcaIiuDmmRZj0PyMBbTJECLVs1sAumH2znOiGmvLlWGYNY2lTWS3Z3FT3FldQjmckfdJEe6kqnoDqohysGBmzfucBFhI/D3f7TnqGOMDx2Vo1nz8M4MhxzAR2BK/BRvSBgoNdnysmSU/e1S9y8W+PqGgY80risQN2kszKYCzYq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiX1TrXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C43C4CED7;
-	Thu, 12 Dec 2024 15:20:46 +0000 (UTC)
+	 MIME-Version; b=eBkyrM+IeZM9OkPqRXxfKYkVUo7QZSh8JKPVra8/Dz3euxTla8o9QQPb6bcvZp8chNY3c8nARRK5OesU3tLmYFrjpY28SWCoY3a28e/TaiHJk7Jm1qnvJ6eFS7LBObcD3RmOQPpaH8dGCAjScOyvjIeahimhzv/H2h5Fm8nEeh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQx/9/XO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68545C4CECE;
+	Thu, 12 Dec 2024 16:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016847;
-	bh=GXFl2thFBj0amLQd2tyX9rjpTJYQG9uZp1OoNg3ZA/s=;
+	s=korg; t=1734020702;
+	bh=CJtDW593F2IzLLtTfq0aqYqFXIPQkqVrhZKW4T9Rpyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZiX1TrXFtaUM6Eh02mvndLEyiJtouC3To496zahC+ACYDlC/m2sd8QrYI5HTXauHc
-	 NcgHPw5BlPc5BOQ5vZ3VwnD0PCO9f6utVMAB/q0nlnQo3U2z+KL9mhxwsNwpvliomh
-	 pVldGIw7CvC4G6VoKqAYoi5PMvzPMZS152YbAni4=
+	b=uQx/9/XO9thkbLjeDgbFe19fTujb7RLv72JGGwbehMqONwEQUrUujNZYb+ApvpVv2
+	 oLf7p6C6SC9v/7/mNO587MDIKI29jNf/ImJWK7Hh4Ejlcx0Cs1qnu+oL+eKoZ8ZamR
+	 rQfYxP3lBUoQIlr+CHj/thaWsVP+Y17xCHB/NOh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lang Yu <lang.yu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Florian Forestier <florian@forestier.re>,
+	Louis Leseur <louis.leseur@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 313/466] drm/amdgpu: refine error handling in amdgpu_ttm_tt_pin_userptr
+Subject: [PATCH 6.1 537/772] net/qed: allow old cards not supporting "num_images" to work
 Date: Thu, 12 Dec 2024 15:58:02 +0100
-Message-ID: <20241212144319.144587921@linuxfoundation.org>
+Message-ID: <20241212144412.161334020@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lang Yu <lang.yu@amd.com>
+From: Louis Leseur <louis.leseur@gmail.com>
 
-[ Upstream commit 46186667f98fb7158c98f4ff5da62c427761ffcd ]
+[ Upstream commit 7a0ea70da56ee8c2716d0b79e9959d3c47efab62 ]
 
-Free sg table when dma_map_sgtable() failed to avoid memory leak.
+Commit 43645ce03e00 ("qed: Populate nvm image attribute shadow.")
+added support for populating flash image attributes, notably
+"num_images". However, some cards were not able to return this
+information. In such cases, the driver would return EINVAL, causing the
+driver to exit.
 
-Signed-off-by: Lang Yu <lang.yu@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add check to return EOPNOTSUPP instead of EINVAL when the card is not
+able to return these information. The caller function already handles
+EOPNOTSUPP without error.
+
+Fixes: 43645ce03e00 ("qed: Populate nvm image attribute shadow.")
+Co-developed-by: Florian Forestier <florian@forestier.re>
+Signed-off-by: Florian Forestier <florian@forestier.re>
+Signed-off-by: Louis Leseur <louis.leseur@gmail.com>
+Link: https://patch.msgid.link/20241128083633.26431-1-louis.leseur@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 4 +++-
+ drivers/net/ethernet/qlogic/qed/qed_mcp.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index 74adb983ab03e..0637414fc70e0 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -812,7 +812,7 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
- 	/* Map SG to device */
- 	r = dma_map_sgtable(adev->dev, ttm->sg, direction, 0);
- 	if (r)
--		goto release_sg;
-+		goto release_sg_table;
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_mcp.c b/drivers/net/ethernet/qlogic/qed/qed_mcp.c
+index 16e6bd4661433..6218d9c268554 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_mcp.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_mcp.c
+@@ -3314,7 +3314,9 @@ int qed_mcp_bist_nvm_get_num_images(struct qed_hwfn *p_hwfn,
+ 	if (rc)
+ 		return rc;
  
- 	/* convert SG to linear array of pages and dma addresses */
- 	drm_prime_sg_to_dma_addr_array(ttm->sg, gtt->ttm.dma_address,
-@@ -820,6 +820,8 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
+-	if (((rsp & FW_MSG_CODE_MASK) != FW_MSG_CODE_OK))
++	if (((rsp & FW_MSG_CODE_MASK) == FW_MSG_CODE_UNSUPPORTED))
++		rc = -EOPNOTSUPP;
++	else if (((rsp & FW_MSG_CODE_MASK) != FW_MSG_CODE_OK))
+ 		rc = -EINVAL;
  
- 	return 0;
- 
-+release_sg_table:
-+	sg_free_table(ttm->sg);
- release_sg:
- 	kfree(ttm->sg);
- 	ttm->sg = NULL;
+ 	return rc;
 -- 
 2.43.0
 
