@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5209EF7E4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB2E9EF5A6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D6F728933B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A57340299
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9F2222D45;
-	Thu, 12 Dec 2024 17:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6D322145E;
+	Thu, 12 Dec 2024 17:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqLIPplY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QtoPRqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF01320A5EE;
-	Thu, 12 Dec 2024 17:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9E92153C1;
+	Thu, 12 Dec 2024 16:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025068; cv=none; b=DHDpHmEBXJeTYSznxm1xhFRtuo6B67HZFcdmzoHwAydSK8LtYf//yqLS+/dx3dZESBzZOIyHbTsb0T9G+1MAsvo9ynO7paIxFsJc+Kns434cc7+r/gOWRUzrAekFGfAKkS50/2oZJQ8g746m+GWOQwRH5AurbEeWHaKTIpKc5Xg=
+	t=1734022800; cv=none; b=ESR7sz0ozTfDtoUtq7KYRjEvnU0jVAFJ62cC/mqE/UMT+V+m37aBTSc+fvw5mg1FcuR1ci4RWqkC9q9h/qDfECTbjFDkRdavoHv8cWkeuFtPYe/uNBg/jZ93D3lT3RvLWsZLYdT9ZlLLfQ/Sygu99kQRNfjsAnAxmoXNtrT5dB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025068; c=relaxed/simple;
-	bh=woMTMZVZTWjWqsBKbKQMMoiSLUZsghH6iBCvoy99U08=;
+	s=arc-20240116; t=1734022800; c=relaxed/simple;
+	bh=RsK917zXAp13wGpmFmkH4TiAJ9yvtqAuBlh/m6TsfIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mdflJ3CNVMIjiBvgzvtvk6y0zXkOdJmu3ZAs+VCifadED+psiA1chmRH19aQkLs0JVK4dGN8xfCqUCXDrI94m9rHtAB1350dC0XkTbN3NZjFZmuWMEBpuFOhFH+zzFpTakQzhZ/vA+A++ILgtK96dlIUzpWGFazbVnqE0Fpaj40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqLIPplY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350BBC4CECE;
-	Thu, 12 Dec 2024 17:37:48 +0000 (UTC)
+	 MIME-Version; b=sqI/YnyO/8rS870vB5mFaA6RaewMJ9BE4iloxGxeSfFAD3TihjeS5bZ6pZGAp4qJbGUTofB1+iCrXIxbXsMddvy/46p9ZpsD9yMUr2Ws29ffGQMRxRH00dtp7rHJJaQZc8dcGFwYyUFOo0W+s8PYh0DcwvO+QJked0ZLlGdptfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QtoPRqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C673C4CECE;
+	Thu, 12 Dec 2024 16:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025068;
-	bh=woMTMZVZTWjWqsBKbKQMMoiSLUZsghH6iBCvoy99U08=;
+	s=korg; t=1734022799;
+	bh=RsK917zXAp13wGpmFmkH4TiAJ9yvtqAuBlh/m6TsfIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqLIPplY5sbVkGjlIs5/1ZyP9OQeCi6ES+6cLFcRc4HJQgkSP4Gz/B5NefoTss6hP
-	 wITHfviDq/+eE9zlGw9TwJyKFb/wtZO3UkTltxCe3HhPJr1AZh+DU77kvodwEsoOHb
-	 5HVq5AlXp03PHFiQDoZoWddEWMel/dxx7mgmrGpM=
+	b=0QtoPRqMjxors/M9qGO4cu2/e0JjcU4anwHVM8Z2CwXnQGjn3K/SRK2bkM7dyMTbM
+	 ckOLBT9U1yj8kD8Z7OkTDuSl+dqsjtB+hoYGZLnB0Uavyp1Uetf95rB3b0QyehNQzK
+	 BKc+pstI36MIAthaPQU+u7wMBst/1ww/5Q9QnEN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 015/321] selftests/watchdog-test: Fix system accidentally reset after watchdog-test
+	Muchun Song <muchun.song@linux.dev>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 338/565] block: fix ordering between checking BLK_MQ_S_STOPPED request adding
 Date: Thu, 12 Dec 2024 15:58:53 +0100
-Message-ID: <20241212144230.249734773@linuxfoundation.org>
+Message-ID: <20241212144324.957206015@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Muchun Song <songmuchun@bytedance.com>
 
-[ Upstream commit dc1308bee1ed03b4d698d77c8bd670d399dcd04d ]
+commit 96a9fe64bfd486ebeeacf1e6011801ffe89dae18 upstream.
 
-When running watchdog-test with 'make run_tests', the watchdog-test will
-be terminated by a timeout signal(SIGTERM) due to the test timemout.
+Supposing first scenario with a virtio_blk driver.
 
-And then, a system reboot would happen due to watchdog not stop. see
-the dmesg as below:
-```
-[ 1367.185172] watchdog: watchdog0: watchdog did not stop!
-```
+CPU0                        CPU1
 
-Fix it by registering more signals(including SIGTERM) in watchdog-test,
-where its signal handler will stop the watchdog.
+blk_mq_try_issue_directly()
+  __blk_mq_issue_directly()
+    q->mq_ops->queue_rq()
+      virtio_queue_rq()
+        blk_mq_stop_hw_queue()
+                            virtblk_done()
+  blk_mq_request_bypass_insert()  1) store
+                              blk_mq_start_stopped_hw_queue()
+                                clear_bit(BLK_MQ_S_STOPPED)       3) store
+                                blk_mq_run_hw_queue()
+                                  if (!blk_mq_hctx_has_pending()) 4) load
+                                    return
+                                  blk_mq_sched_dispatch_requests()
+  blk_mq_run_hw_queue()
+    if (!blk_mq_hctx_has_pending())
+      return
+    blk_mq_sched_dispatch_requests()
+      if (blk_mq_hctx_stopped())  2) load
+        return
+      __blk_mq_sched_dispatch_requests()
 
-After that
- # timeout 1 ./watchdog-test
- Watchdog Ticking Away!
- .
- Stopping watchdog ticks...
+Supposing another scenario.
 
-Link: https://lore.kernel.org/all/20241029031324.482800-1-lizhijian@fujitsu.com/
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU0                        CPU1
+
+blk_mq_requeue_work()
+  blk_mq_insert_request() 1) store
+                            virtblk_done()
+                              blk_mq_start_stopped_hw_queue()
+  blk_mq_run_hw_queues()        clear_bit(BLK_MQ_S_STOPPED)       3) store
+                                blk_mq_run_hw_queue()
+                                  if (!blk_mq_hctx_has_pending()) 4) load
+                                    return
+                                  blk_mq_sched_dispatch_requests()
+    if (blk_mq_hctx_stopped())  2) load
+      continue
+    blk_mq_run_hw_queue()
+
+Both scenarios are similar, the full memory barrier should be inserted
+between 1) and 2), as well as between 3) and 4) to make sure that either
+CPU0 sees BLK_MQ_S_STOPPED is cleared or CPU1 sees dispatch list.
+Otherwise, either CPU will not rerun the hardware queue causing
+starvation of the request.
+
+The easy way to fix it is to add the essential full memory barrier into
+helper of blk_mq_hctx_stopped(). In order to not affect the fast path
+(hardware queue is not stopped most of the time), we only insert the
+barrier into the slow path. Actually, only slow path needs to care about
+missing of dispatching the request to the low-level device driver.
+
+Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
+Cc: stable@vger.kernel.org
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241014092934.53630-4-songmuchun@bytedance.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ block/blk-mq.c |    6 ++++++
+ block/blk-mq.h |   13 +++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
-index f45e510500c0d..09773695d219f 100644
---- a/tools/testing/selftests/watchdog/watchdog-test.c
-+++ b/tools/testing/selftests/watchdog/watchdog-test.c
-@@ -242,7 +242,13 @@ int main(int argc, char *argv[])
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -1813,6 +1813,12 @@ void blk_mq_start_stopped_hw_queue(struc
+ 		return;
  
- 	printf("Watchdog Ticking Away!\n");
- 
+ 	clear_bit(BLK_MQ_S_STOPPED, &hctx->state);
 +	/*
-+	 * Register the signals
++	 * Pairs with the smp_mb() in blk_mq_hctx_stopped() to order the
++	 * clearing of BLK_MQ_S_STOPPED above and the checking of dispatch
++	 * list in the subsequent routine.
 +	 */
- 	signal(SIGINT, term);
-+	signal(SIGTERM, term);
-+	signal(SIGKILL, term);
-+	signal(SIGQUIT, term);
++	smp_mb__after_atomic();
+ 	blk_mq_run_hw_queue(hctx, async);
+ }
+ EXPORT_SYMBOL_GPL(blk_mq_start_stopped_hw_queue);
+--- a/block/blk-mq.h
++++ b/block/blk-mq.h
+@@ -177,6 +177,19 @@ static inline struct blk_mq_tags *blk_mq
  
- 	while (1) {
- 		keep_alive();
--- 
-2.43.0
-
+ static inline bool blk_mq_hctx_stopped(struct blk_mq_hw_ctx *hctx)
+ {
++	/* Fast path: hardware queue is not stopped most of the time. */
++	if (likely(!test_bit(BLK_MQ_S_STOPPED, &hctx->state)))
++		return false;
++
++	/*
++	 * This barrier is used to order adding of dispatch list before and
++	 * the test of BLK_MQ_S_STOPPED below. Pairs with the memory barrier
++	 * in blk_mq_start_stopped_hw_queue() so that dispatch code could
++	 * either see BLK_MQ_S_STOPPED is cleared or dispatch list is not
++	 * empty to avoid missing dispatching requests.
++	 */
++	smp_mb();
++
+ 	return test_bit(BLK_MQ_S_STOPPED, &hctx->state);
+ }
+ 
 
 
 
