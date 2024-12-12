@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0B69EF734
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C729EF92F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 392A9289D2D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B1DC28F278
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09BE2210F1;
-	Thu, 12 Dec 2024 17:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955502253F1;
+	Thu, 12 Dec 2024 17:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUHfzjwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R12bcIkJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702BB213E6F;
-	Thu, 12 Dec 2024 17:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50760222D59;
+	Thu, 12 Dec 2024 17:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024757; cv=none; b=qbtFreZdGo03kXP/stLTMuCm3N5qVic5fblvFda32gFGl7n3Ngy9/k/BcmtdXrtappMIFAhb9oozVTpd9FZpsdMGorkuNmNjXbHHHV/hrOKi6yDiePCJyEkk0QcqAGDStn2hBVmTh81HWy4y8ykmsIgXj/cViAgQHIIt9txWuH0=
+	t=1734025592; cv=none; b=bMCgeM0pJmyUGGoRjZ2x8hT5EC9BeWf+RzJhdSZYwv+JVIoCEPGHB0LD0NCqdSqJMSPbhmpybyiU95c/V2pNbZxIjDmtLOuGz4gNEt1f+yvOU4CcWcg8G/PGCsZELKd5slYyeTB0I25Ygemt/TRIjUUf59Eue9qdVG0jJvAhWoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024757; c=relaxed/simple;
-	bh=GxjP/WVnM2eIj0u/MPXt5AnjpfpS2sxpDelpOlud2JE=;
+	s=arc-20240116; t=1734025592; c=relaxed/simple;
+	bh=+CVOWJEybh3oDyZCx9DWeKYMwQ3bABCGOwqk7EolnkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3Wy9vG4TO8U6/5KE0HC1dCdesaYE5NKTwAEfbDeFxVnhwNY3VZxZptJetQ2jvSRnia4MLw0dz0d18GRlhHWNMTKqDUjB7svwdpj0fI0mWKnkb8HRN27VkPUD62dSa7UNJaHYhaIHEtlqS0kvsLbDImh6wTfIl87fGDX005WJro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUHfzjwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C8CC4CED0;
-	Thu, 12 Dec 2024 17:32:36 +0000 (UTC)
+	 MIME-Version; b=XAEKnuIYfFS6kWW3gBx/w1bjfPs1crzqznoqTD7I/BD4UedDWi2O6n5tHm90XFXPwO7i594Y3Zf3J9vqQm7vXUYUy2lWUj3iLRzaDPRjAoWJHs2/gBjJsAYIyEJGT6GZ036ifcYgDB03B5jwWo/tFn5gmc9Jq87l18QoHZKHV/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R12bcIkJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81294C4CECE;
+	Thu, 12 Dec 2024 17:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024757;
-	bh=GxjP/WVnM2eIj0u/MPXt5AnjpfpS2sxpDelpOlud2JE=;
+	s=korg; t=1734025590;
+	bh=+CVOWJEybh3oDyZCx9DWeKYMwQ3bABCGOwqk7EolnkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUHfzjwzX0PtwUdSK6O7V+75JYSG9dBdI/OvO8o3jZ+e537CKRSZXZxrUWIA/cJ7m
-	 7TJ8ToWwaAGBl95zXeXMU1hBU6LfBXrK2VYjTS6rgv4KyxprMFFMePHxcxri72aDNo
-	 KT3OCTfsJoAIJ2eq9uEz8KCbCUZ5dXGhoyRUgZNc=
+	b=R12bcIkJZXBRJpxJv5wYc5WCtSd8fYJ5orFpTfYT2zp458Jf+cKjVYCErZspFeIRJ
+	 bF7dbQuNhe9Ph/4yVDE289/kigBUqj/Upx7c20PIeb/S9MASCQJEB6TxqFUgUDA5r6
+	 CTmy3+H6Km+XZGGgqU+rUUYu0CTYLx21abqSdlhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 401/459] wifi: ath5k: add PCI ID for Arcadyan devices
+Subject: [PATCH 5.4 221/321] can: sun4i_can: sun4i_can_err(): call can_change_state() even if cf is NULL
 Date: Thu, 12 Dec 2024 16:02:19 +0100
-Message-ID: <20241212144309.605659246@linuxfoundation.org>
+Message-ID: <20241212144238.707861105@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit f3ced9bb90b0a287a1fa6184d16b0f104a78fa90 ]
+[ Upstream commit ee6bf3677ae03569d833795064e17f605c2163c7 ]
 
-Arcadyan made routers with this PCI ID containing an AR2417.
+Call the function can_change_state() if the allocation of the skb
+fails, as it handles the cf parameter when it is null.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20240930180716.139894-3-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Additionally, this ensures that the statistics related to state error
+counters (i. e. warning, passive, and bus-off) are updated.
+
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-3-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath5k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/sun4i_can.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-index 0892970a99637..e8f557423ac2d 100644
---- a/drivers/net/wireless/ath/ath5k/pci.c
-+++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -47,6 +47,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
- 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
- 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
- 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
-+	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
- 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
- 	{ 0 }
- };
+diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
+index c519b6f63b33a..d627fb2948be8 100644
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -614,10 +614,10 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
+ 		tx_state = txerr >= rxerr ? state : 0;
+ 		rx_state = txerr <= rxerr ? state : 0;
+ 
+-		if (likely(skb))
+-			can_change_state(dev, cf, tx_state, rx_state);
+-		else
+-			priv->can.state = state;
++		/* The skb allocation might fail, but can_change_state()
++		 * handles cf == NULL.
++		 */
++		can_change_state(dev, cf, tx_state, rx_state);
+ 		if (state == CAN_STATE_BUS_OFF)
+ 			can_bus_off(dev);
+ 	}
 -- 
 2.43.0
 
