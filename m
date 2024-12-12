@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-102884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935A69EF524
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A99499EF7C1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11357340586
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4212C340FA1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546D722B8D7;
-	Thu, 12 Dec 2024 17:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A67A217F40;
+	Thu, 12 Dec 2024 17:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnMF7O1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7b6sMLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C5E229677;
-	Thu, 12 Dec 2024 17:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7F22165F0;
+	Thu, 12 Dec 2024 17:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022854; cv=none; b=KfVEwpLNkXacxYCVmsD9bnpF5q5JUOnSMNDz4gYW0D/8+5kedbLOkj2OteB157TS7sDv+zmLGnXVjQycqGY+Vswqms2bv6BTTIkRrKObIQsxqZ+dXEXblgUs8E0T54bgkIMz49beuM2MGOfBEXWLolnZkcKCp8zJgp8pekXduBA=
+	t=1734024087; cv=none; b=U75YdjXSPYQKsKaXf+Q9pVZD+nJ9XQX0OcwmEtKUIIBUX91ZHx2zFe+uf5fSPuKonXsJC0KG/EXoUIoZUtufPojMQme+lrbP69PICF/HVxkNjI/iZefNC9BXFhWospKBpAKv/xHAMofLzBp7hlCBXf4mbvxF0NrgmU76m94LlEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022854; c=relaxed/simple;
-	bh=lZgEywa1T1Ig5x65ep2AJzY8TvJlBXT1+wF6geV5mxk=;
+	s=arc-20240116; t=1734024087; c=relaxed/simple;
+	bh=0UswBmEI5aCUzRVjdF7QyVqrRxw753op41C5d4hWV4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFEGLCZNU9gtITPv9PgfdcvsMhvi6ywfUuEIaJySjOc/LPqxkabP7jOxvUQZCJlR8Ez1cnNbZ0kkmNtt+HLxjs05oCV7ScfYL40BEbvFflL9G41fKhxAMca4ZY9KRk1a/BCmvE+BETav758HcVHE6XEwbT5sI+W3kKAUJxsXvDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnMF7O1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CAB2C4CECE;
-	Thu, 12 Dec 2024 17:00:53 +0000 (UTC)
+	 MIME-Version; b=o/dN/yS9+m/DgCVxtWkISLh8ebNIbYNyXy8wVAtPc6lbJxxCDs9zdg9lZq1wt+5mtyxLkrgATkczS7Dy3ebZ3RDbYY91OaxT5Mh8ItfSn+HWdO93j3fV0h113BChArTKhKK7cXS8QuW+pEzjZi7DSCnwgDJY7oZn04goBTM1ckc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7b6sMLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B67FC4CECE;
+	Thu, 12 Dec 2024 17:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022853;
-	bh=lZgEywa1T1Ig5x65ep2AJzY8TvJlBXT1+wF6geV5mxk=;
+	s=korg; t=1734024087;
+	bh=0UswBmEI5aCUzRVjdF7QyVqrRxw753op41C5d4hWV4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VnMF7O1/PgMltAeigvjApcNtLZUQ3XBDzx2WnSafNqmXImQmjbChPnzPnNWf0Lnwy
-	 spaqYvr7GEEUM4t0k6NtZMQ2nxgP6InZIfcab/wJug5PJUCsc9YJfCVEOV6q50AwaJ
-	 13iv2LUF2V+5JDNQE5k9NpzooPXfdHFNaQZ9GVzw=
+	b=R7b6sMLEAEwpwd0ghKLikzUCApY7M+j6JQQnjatPwfTMl6z280oq4BwTlMhumHQc1
+	 0nsy0DZqKHgRQL9fgQb3f/vvnpGo+rvTtW/DXo6pCFhcGqW5304HfFrri2XNxamUV1
+	 8hQcQO+HSLW0QYkKlU0OOGzSYYNkQ4CpCZTdhwp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.15 323/565] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 180/459] RDMA/hns: Fix NULL pointer derefernce in hns_roce_map_mr_sg()
 Date: Thu, 12 Dec 2024 15:58:38 +0100
-Message-ID: <20241212144324.368772208@linuxfoundation.org>
+Message-ID: <20241212144300.658307083@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-commit 3791ea69a4858b81e0277f695ca40f5aae40f312 upstream.
+[ Upstream commit 6b526d17eed850352d880b93b9bf20b93006bd92 ]
 
-The early_console_setup() function initializes the sci_ports[0].port with
-an object of type struct uart_port obtained from the object of type
-struct earlycon_device received as argument by the early_console_setup().
+ib_map_mr_sg() allows ULPs to specify NULL as the sg_offset argument.
+The driver needs to check whether it is a NULL pointer before
+dereferencing it.
 
-It may happen that later, when the rest of the serial ports are probed,
-the serial port that was used as earlycon (e.g., port A) to be mapped to a
-different position in sci_ports[] and the slot 0 to be used by a different
-serial port (e.g., port B), as follows:
-
-sci_ports[0] = port A
-sci_ports[X] = port B
-
-In this case, the new port mapped at index zero will have associated data
-that was used for earlycon.
-
-In case this happens, after Linux boot, any access to the serial port that
-maps on sci_ports[0] (port A) will block the serial port that was used as
-earlycon (port B).
-
-To fix this, add early_console_exit() that clean the sci_ports[0] at
-earlycon exit time.
-
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20241106120118.1719888-4-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d387d4b54eb8 ("RDMA/hns: Fix missing pagesize and alignment check in FRMR")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241108075743.2652258-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c |   28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_mr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -3433,6 +3433,32 @@ sh_early_platform_init_buffer("earlyprin
- #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
- static struct plat_sci_port port_cfg __initdata;
- 
-+static int early_console_exit(struct console *co)
-+{
-+	struct sci_port *sci_port = &sci_ports[0];
-+	struct uart_port *port = &sci_port->port;
-+	unsigned long flags;
-+	int locked = 1;
-+
-+	if (port->sysrq)
-+		locked = 0;
-+	else if (oops_in_progress)
-+		locked = uart_port_trylock_irqsave(port, &flags);
-+	else
-+		uart_port_lock_irqsave(port, &flags);
-+
-+	/*
-+	 * Clean the slot used by earlycon. A new SCI device might
-+	 * map to this slot.
-+	 */
-+	memset(sci_ports, 0, sizeof(*sci_port));
-+
-+	if (locked)
-+		uart_port_unlock_irqrestore(port, flags);
-+
-+	return 0;
-+}
-+
- static int __init early_console_setup(struct earlycon_device *device,
- 				      int type)
- {
-@@ -3451,6 +3477,8 @@ static int __init early_console_setup(st
- 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
- 
- 	device->con->write = serial_console_write;
-+	device->con->exit = early_console_exit;
-+
- 	return 0;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index 5f038bd5571d1..b062301258683 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -478,15 +478,16 @@ static int hns_roce_set_page(struct ib_mr *ibmr, u64 addr)
  }
- static int __init sci_early_console_setup(struct earlycon_device *device,
+ 
+ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+-		       unsigned int *sg_offset)
++		       unsigned int *sg_offset_p)
+ {
++	unsigned int sg_offset = sg_offset_p ? *sg_offset_p : 0;
+ 	struct hns_roce_dev *hr_dev = to_hr_dev(ibmr->device);
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+ 	int ret, sg_num = 0;
+ 
+-	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
++	if (!IS_ALIGNED(sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
+ 	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
+ 	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
+ 		return sg_num;
+@@ -497,7 +498,7 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	if (!mr->page_list)
+ 		return sg_num;
+ 
+-	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
++	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset_p, hns_roce_set_page);
+ 	if (sg_num < 1) {
+ 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
+ 			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
+-- 
+2.43.0
+
 
 
 
