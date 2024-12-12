@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA599EF907
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FCA9EF7C3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8582628C0B0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53552189CC51
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1689422A812;
-	Thu, 12 Dec 2024 17:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AB9222D4A;
+	Thu, 12 Dec 2024 17:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TdVRbxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU5tlisb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6248223C4A;
-	Thu, 12 Dec 2024 17:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90035213E6F;
+	Thu, 12 Dec 2024 17:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025519; cv=none; b=UDDg/ZAbJjoVnFFD2BQ8nGcktv+wXGp98lhe+P0KZr5DXBPG3XN2d4CyEZVkWhj54MBnQ9JAxq58uKeVtneJLgxhvbnR0N6eT+YM1vEqlgTmJo9BnUc4U+iYvpQ4dIziEtlQQSObE5rvMqlXLuykCNj3XjX/+/aopecuqzgXv1Y=
+	t=1734024684; cv=none; b=koU793t9GTO4Uy/YY8nWx+IyPi3TWnZnFERGLQLlpYCRu5S+kJq0mb0VLbRzAxmuo8HiSCuJEzg8vC09Jsm8awvJP4ovjB9GJ5ls0CF8m/kuumzpOs70JVsNaoy0Q6hvBdkFoEwOrBMuBxfmWG2M3ITcVl39KeiyfTghLhv7ARo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025519; c=relaxed/simple;
-	bh=5FczFLXdmjSQNK0VRafhHIAfg0XgoUl8KWL20SXsA0Q=;
+	s=arc-20240116; t=1734024684; c=relaxed/simple;
+	bh=CSUHbPe+swbeJg1sOVupj2BE4INH9hYN/tVkEAdZdCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kZW+8th8TXJq7Lt+mTevpADApeZXcXvtNVytKXEBI2yTqUXvyCF70TU45a/LAbuVtsMOkc+GZcAIksQIyW+GMGkK4f+6iXrwpXN2c3qsDQI3t+Tb1SAOfk+L4O3e7aVZoo8lmCe4+ZtNmCd1kYSG6nTbDr2jYOByIaMV8SLfy2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TdVRbxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AF9C4CECE;
-	Thu, 12 Dec 2024 17:45:19 +0000 (UTC)
+	 MIME-Version; b=ZHWciQo5AHBv6ZX8vOWyK68t2x/5QEEgeToI6spGVBcEkaO4NWa+CbrwqX6RqO0WuvJEG6PraMJ3EKJYB806PVg+zfRdXfU1vkjXmJUbGsyx84YrDvUp6nxJPKk+bKP22jd7ljg8mkmypMmfLcnRAq3duXqwjlPO3yycU836MY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU5tlisb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19887C4CECE;
+	Thu, 12 Dec 2024 17:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025519;
-	bh=5FczFLXdmjSQNK0VRafhHIAfg0XgoUl8KWL20SXsA0Q=;
+	s=korg; t=1734024684;
+	bh=CSUHbPe+swbeJg1sOVupj2BE4INH9hYN/tVkEAdZdCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TdVRbxg6hTPuCOyK7PA1Huyy6FdvauKIYXxkTOn7/m3oAfQKEoNNfV7jjuPuvHqK
-	 uXxchXZkA+Xd1Lol3SHgFh+wecIApwOKVvPsb1wm4qxycm4qegLKpG2S16pRxj1d37
-	 u/l3ZU1xqlB0KLx9Tb84nYUxRzDdjsuSCAPKyqmg=
+	b=yU5tlisbryAqsGpK5hej/x5PKf3D24SvYKSZBu+kvRJqxbu3Lpkjn1em9yjmewGMZ
+	 aUho8d2g7LjWCsznfgqsOdj9770KjzjBQSLTOOGrDfBFVC2Jxl9VCxiqlC5tyZifjv
+	 7A0sCRfdpjo1VeXQ0vdqoMvPudOzgEYeSnVgz/HM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 196/321] modpost: remove incorrect code in do_eisa_entry()
+	Anthony Pighin <anthony.pighin@nokia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>
+Subject: [PATCH 5.10 376/459] mmc: core: Further prevent card detect during shutdown
 Date: Thu, 12 Dec 2024 16:01:54 +0100
-Message-ID: <20241212144237.722903272@linuxfoundation.org>
+Message-ID: <20241212144308.520246763@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,91 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 0c3e091319e4748cb36ac9a50848903dc6f54054 ]
+commit 87a0d90fcd31c0f36da0332428c9e1a1e0f97432 upstream.
 
-This function contains multiple bugs after the following commits:
+Disabling card detect from the host's ->shutdown_pre() callback turned out
+to not be the complete solution. More precisely, beyond the point when the
+mmc_bus->shutdown() has been called, to gracefully power off the card, we
+need to prevent card detect. Otherwise the mmc_rescan work may poll for the
+card with a CMD13, to see if it's still alive, which then will fail and
+hang as the card has already been powered off.
 
- - ac551828993e ("modpost: i2c aliases need no trailing wildcard")
- - 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+To fix this problem, let's disable mmc_rescan prior to power off the card
+during shutdown.
 
-Commit ac551828993e inserted the following code to do_eisa_entry():
-
-    else
-            strcat(alias, "*");
-
-This is incorrect because 'alias' is uninitialized. If it is not
-NULL-terminated, strcat() could cause a buffer overrun.
-
-Even if 'alias' happens to be zero-filled, it would output:
-
-    MODULE_ALIAS("*");
-
-This would match anything. As a result, the module could be loaded by
-any unrelated uevent from an unrelated subsystem.
-
-Commit ac551828993e introduced another bug.            
-
-Prior to that commit, the conditional check was:
-
-    if (eisa->sig[0])
-
-This checked if the first character of eisa_device_id::sig was not '\0'.
-
-However, commit ac551828993e changed it as follows:
-
-    if (sig[0])
-
-sig[0] is NOT the first character of the eisa_device_id::sig. The
-type of 'sig' is 'char (*)[8]', meaning that the type of 'sig[0]' is
-'char [8]' instead of 'char'. 'sig[0]' and 'symval' refer to the same
-address, which never becomes NULL.
-
-The correct conversion would have been:
-
-    if ((*sig)[0])
-
-However, this if-conditional was meaningless because the earlier change
-in commit ac551828993e was incorrect.
-
-This commit removes the entire incorrect code, which should never have
-been executed.
-
-Fixes: ac551828993e ("modpost: i2c aliases need no trailing wildcard")
-Fixes: 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Anthony Pighin <anthony.pighin@nokia.com>
+Fixes: 66c915d09b94 ("mmc: core: Disable card detect during shutdown")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Closes: https://lore.kernel.org/all/BN0PR08MB695133000AF116F04C3A9FFE83212@BN0PR08MB6951.namprd08.prod.outlook.com/
+Tested-by: Anthony Pighin <anthony.pighin@nokia.com>
+Message-ID: <20241125122446.18684-1-ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mod/file2alias.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/mmc/core/bus.c  |    2 ++
+ drivers/mmc/core/core.c |    3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 7b845483717b6..f973010943a05 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -786,10 +786,7 @@ static int do_eisa_entry(const char *filename, void *symval,
- 		char *alias)
- {
- 	DEF_FIELD_ADDR(symval, eisa_device_id, sig);
--	if (sig[0])
--		sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
--	else
--		strcat(alias, "*");
-+	sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
- 	return 1;
- }
+--- a/drivers/mmc/core/bus.c
++++ b/drivers/mmc/core/bus.c
+@@ -160,6 +160,8 @@ static void mmc_bus_shutdown(struct devi
+ 	if (dev->driver && drv->shutdown)
+ 		drv->shutdown(card);
  
--- 
-2.43.0
-
++	__mmc_stop_host(host);
++
+ 	if (host->bus_ops->shutdown) {
+ 		ret = host->bus_ops->shutdown(host);
+ 		if (ret)
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -2345,6 +2345,9 @@ void mmc_start_host(struct mmc_host *hos
+ 
+ void __mmc_stop_host(struct mmc_host *host)
+ {
++	if (host->rescan_disable)
++		return;
++
+ 	if (host->slot.cd_irq >= 0) {
+ 		mmc_gpio_set_cd_wake(host, false);
+ 		disable_irq(host->slot.cd_irq);
 
 
 
