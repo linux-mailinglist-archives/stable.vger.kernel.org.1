@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B5F9EF108
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F789EEC12
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:58 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC1D16EFC1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F676282759
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A9E229665;
-	Thu, 12 Dec 2024 16:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F05218EB5;
+	Thu, 12 Dec 2024 15:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfYFidwr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrpzMhRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6382122969A;
-	Thu, 12 Dec 2024 16:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5A42153F0;
+	Thu, 12 Dec 2024 15:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020087; cv=none; b=oJCS5D+yebdVcZKPvAFqyliPGi+PzZulhB2x/26UY1CDUmfPlzE3nPtZMMgyu2CiJuiEX36DPppRAAlmlojTZN0pCp4OH1tQIzdUZvyxqjaIULbEBXMIIj/dxazBLjv2iGNEi1gvTWYWfNGGg2WIzYY+mJsbodz4Wizj9LQz7qQ=
+	t=1734017424; cv=none; b=ZyFZ6BtXoaESa635RpVB7TpSJ3et0tmGUqGlwh5tV1XBs061k03cmgTNmpI1X+CJI5Wa/921AukJY5t6faTfmV+g2E3p7ee/zF2k/68FE6xeazRVQp4LCqQLEFHgImv1eo6qddMme1GzBY6NLESVSAQa32SlWLDwrj7M8dqYUO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020087; c=relaxed/simple;
-	bh=1dHYo5BrLtqrve83hhg6UWQTZbVxlU6Ke0bOURb3C2g=;
+	s=arc-20240116; t=1734017424; c=relaxed/simple;
+	bh=w6fAE0lHvRP6rPNNndR56I6Dj6X2BQdLYTDjPi0E/7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzUHsTY0ShsGDacMHfAs+NJvnqlJ+MLSjkFtUtxr+7KVDJJcgvNNbJGSUAC+RqNlWhvs7U1x+wOmhT+4A62bIs0b8BfMHQrocMFk1NM1uh3yI9wmUohscjklfSzg8CVKIrBPDdD+WUs4vjCVTsQbGJdDkg7ThkrNMMFnxbfcp8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfYFidwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7633C4CECE;
-	Thu, 12 Dec 2024 16:14:46 +0000 (UTC)
+	 MIME-Version; b=D/044OxjqNOwzzcJ3E/BtQIX6KJ9vp1zY00lzAycdtZIws88ImhWpqKlyGps7oyfwRy9/tmxry45ld6FH0JkVyDTvHStp/1P+GbIESida2vYPK4iK0SlblTnWnOe8yl+SsDNMBSanwnX6ptJeF369YRvR4FIlD3+n279GT4VBhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrpzMhRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA21C4CECE;
+	Thu, 12 Dec 2024 15:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020087;
-	bh=1dHYo5BrLtqrve83hhg6UWQTZbVxlU6Ke0bOURb3C2g=;
+	s=korg; t=1734017423;
+	bh=w6fAE0lHvRP6rPNNndR56I6Dj6X2BQdLYTDjPi0E/7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nfYFidwrAINxIC/5c9uBqweucusau79D1MfbSzLizk+JX8Jyh8iGPDJhYnxcuvMJD
-	 D5xYC0BIBMjOC/XVyHzkbFs5dseCD2rj3cFvbacjsJvHO1McglTTcX94ecWYHJ2Lps
-	 FDDBkf487xtQKs9n/Xex2kK6/eBb5AH9/JaoBtPU=
+	b=LrpzMhRaTH02JwDICQIz9QDS3K9WCf+BaFgZAbERrR5wkRPEcqMiQ3olOJTUiZWOc
+	 JQTbpcF2nYe39HVWbQ6V9J7LZqqWDA0FOVzhRPH+7KLIBGZBECFm2C5Z/Mld2F3wnJ
+	 P/KH5W1witW72OQpKCsHfwVKKTiH+Jd/cVFB7j2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.1 374/772] fsnotify: fix sending inotify event with unexpected filename
-Date: Thu, 12 Dec 2024 15:55:19 +0100
-Message-ID: <20241212144405.363770994@linuxfoundation.org>
+	Oleksandr Ocheretnyi <oocheret@cisco.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 001/356] iTCO_wdt: mask NMI_NOW bit for update_no_reboot_bit() call
+Date: Thu, 12 Dec 2024 15:55:20 +0100
+Message-ID: <20241212144244.666739043@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Oleksandr Ocheretnyi <oocheret@cisco.com>
 
-commit aa52c54da40d9eee3ba87c05cdcb0cd07c04fa13 upstream.
+[ Upstream commit daa814d784ac034c62ab3fb0ef83daeafef527e2 ]
 
-We got a report that adding a fanotify filsystem watch prevents tail -f
-from receiving events.
+Commit da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake
+PCH iTCO") does not mask NMI_NOW bit during TCO1_CNT register's
+value comparison for update_no_reboot_bit() call causing following
+failure:
 
-Reproducer:
+   ...
+   iTCO_vendor_support: vendor-support=0
+   iTCO_wdt iTCO_wdt: unable to reset NO_REBOOT flag, device
+                                    disabled by hardware/BIOS
+   ...
 
-1. Create 3 windows / login sessions. Become root in each session.
-2. Choose a mounted filesystem that is pretty quiet; I picked /boot.
-3. In the first window, run: fsnotifywait -S -m /boot
-4. In the second window, run: echo data >> /boot/foo
-5. In the third window, run: tail -f /boot/foo
-6. Go back to the second window and run: echo more data >> /boot/foo
-7. Observe that the tail command doesn't show the new data.
-8. In the first window, hit control-C to interrupt fsnotifywait.
-9. In the second window, run: echo still more data >> /boot/foo
-10. Observe that the tail command in the third window has now printed
-the missing data.
+and this can lead to unexpected NMIs later during regular
+crashkernel's workflow because of watchdog probe call failures.
 
-When stracing tail, we observed that when fanotify filesystem mark is
-set, tail does get the inotify event, but the event is receieved with
-the filename:
+This change masks NMI_NOW bit for TCO1_CNT register values to
+avoid unexpected NMI_NOW bit inversions.
 
-read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\20\0\0\0foo\0\0\0\0\0\0\0\0\0\0\0\0\0",
-50) = 32
-
-This is unexpected, because tail is watching the file itself and not its
-parent and is inconsistent with the inotify event received by tail when
-fanotify filesystem mark is not set:
-
-read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0", 50) = 16
-
-The inteference between different fsnotify groups was caused by the fact
-that the mark on the sb requires the filename, so the filename is passed
-to fsnotify().  Later on, fsnotify_handle_event() tries to take care of
-not passing the filename to groups (such as inotify) that are interested
-in the filename only when the parent is watching.
-
-But the logic was incorrect for the case that no group is watching the
-parent, some groups are watching the sb and some watching the inode.
-
-Reported-by: Miklos Szeredi <miklos@szeredi.hu>
-Fixes: 7372e79c9eb9 ("fanotify: fix logic of reporting name info with watched parent")
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake PCH iTCO")
+Signed-off-by: Oleksandr Ocheretnyi <oocheret@cisco.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/r/20240913191403.2560805-1-oocheret@cisco.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fsnotify.c |   23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/watchdog/iTCO_wdt.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -310,16 +310,19 @@ static int fsnotify_handle_event(struct
- 	if (!inode_mark)
- 		return 0;
+diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
+index 264857d314da8..dd297dcd524c9 100644
+--- a/drivers/watchdog/iTCO_wdt.c
++++ b/drivers/watchdog/iTCO_wdt.c
+@@ -82,6 +82,13 @@
+ #define TCO2_CNT(p)	(TCOBASE(p) + 0x0a) /* TCO2 Control Register	*/
+ #define TCOv2_TMR(p)	(TCOBASE(p) + 0x12) /* TCOv2 Timer Initial Value*/
  
--	if (mask & FS_EVENT_ON_CHILD) {
--		/*
--		 * Some events can be sent on both parent dir and child marks
--		 * (e.g. FS_ATTRIB).  If both parent dir and child are
--		 * watching, report the event once to parent dir with name (if
--		 * interested) and once to child without name (if interested).
--		 * The child watcher is expecting an event without a file name
--		 * and without the FS_EVENT_ON_CHILD flag.
--		 */
--		mask &= ~FS_EVENT_ON_CHILD;
++/*
++ * NMI_NOW is bit 8 of TCO1_CNT register
++ * Read/Write
++ * This bit is implemented as RW but has no effect on HW.
++ */
++#define NMI_NOW		BIT(8)
++
+ /* internal variables */
+ struct iTCO_wdt_private {
+ 	struct watchdog_device wddev;
+@@ -219,13 +226,23 @@ static int update_no_reboot_bit_cnt(void *priv, bool set)
+ 	struct iTCO_wdt_private *p = priv;
+ 	u16 val, newval;
+ 
+-	val = inw(TCO1_CNT(p));
 +	/*
-+	 * Some events can be sent on both parent dir and child marks (e.g.
-+	 * FS_ATTRIB).  If both parent dir and child are watching, report the
-+	 * event once to parent dir with name (if interested) and once to child
-+	 * without name (if interested).
++	 * writing back 1b1 to NMI_NOW of TCO1_CNT register
++	 * causes NMI_NOW bit inversion what consequently does
++	 * not allow to perform the register's value comparison
++	 * properly.
 +	 *
-+	 * In any case regardless whether the parent is watching or not, the
-+	 * child watcher is expecting an event without the FS_EVENT_ON_CHILD
-+	 * flag. The file name is expected if and only if this is a directory
-+	 * event.
++	 * NMI_NOW bit masking for TCO1_CNT register values
++	 * helps to avoid possible NMI_NOW bit inversions on
++	 * following write operation.
 +	 */
-+	mask &= ~FS_EVENT_ON_CHILD;
-+	if (!(mask & ALL_FSNOTIFY_DIRENT_EVENTS)) {
- 		dir = NULL;
- 		name = NULL;
- 	}
++	val = inw(TCO1_CNT(p)) & ~NMI_NOW;
+ 	if (set)
+ 		val |= BIT(0);
+ 	else
+ 		val &= ~BIT(0);
+ 	outw(val, TCO1_CNT(p));
+-	newval = inw(TCO1_CNT(p));
++	newval = inw(TCO1_CNT(p)) & ~NMI_NOW;
+ 
+ 	/* make sure the update is successful */
+ 	return val != newval ? -EIO : 0;
+-- 
+2.43.0
+
 
 
 
