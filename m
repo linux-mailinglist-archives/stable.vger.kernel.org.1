@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7C99EF77B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4278A9EF847
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82C69188E937
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D859228DE1A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D572215764;
-	Thu, 12 Dec 2024 17:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B84A222D70;
+	Thu, 12 Dec 2024 17:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMFFuoIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qg7aBth7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F862144C4;
-	Thu, 12 Dec 2024 17:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD966222D68;
+	Thu, 12 Dec 2024 17:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024318; cv=none; b=od2hDcaFy0oeb2Z8NJRgLPIBzIvJi/IivUaT4ApEy6Ul9t+oqveZ33dRror04I+AxsDAbLyNi08FkAN7AbwmzBxZPRQQ0RAlxWWTcDvI0TGvPiKiEQXzHY4rX4L6L6vSrJFCjuxDusxWszRwYybelp1m44g5e7drury+DU3g2O0=
+	t=1734025252; cv=none; b=cPHGlUdON7dhLZ1/EBJmgnvE8VVcaH2kZAn+He52857OOg/t2ZfJ4CyAdWfaJj70z+llRqMgLvXWr1g4vS60amRjx79oBr4NFyCH7ieNCJWN6Xc/OsaifU1att4A1AFrTPmaYmIlU8NZEqgzimKMW2yTOwTSpgkdccKcoRdoU68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024318; c=relaxed/simple;
-	bh=NQQxk9ARyrFvjyVL4TBjI7rrc0IQgu5unzgLrgInSe8=;
+	s=arc-20240116; t=1734025252; c=relaxed/simple;
+	bh=4/6EXXldmrZPIqv/xMMtIpQytbrIdSm7LWYCXe4b4PU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tR5+uqv4wScyFQhyts8593TLYDe0ECPn4kMcrNkGocbG/nJwEWlNlLtfBUFuQfeTDCdKQ+SlI9JdEPk8TxlW2wMloHFgOnyGx0O+uBCuL9sKVqNthSaF3XX7xLrj2EwsRZzqPVzVYip3KztMKQPo86/zGUwHhaj7FSTSOrKPpis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMFFuoIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C16AC4CECE;
-	Thu, 12 Dec 2024 17:25:17 +0000 (UTC)
+	 MIME-Version; b=Zixc3h9BpdY2skujK9/UH/Qr9cxYK7yplioYx6kVZ06CHEF5hHqWYKEZUZv5MoQMyep1tHtonHOy5CJE+PUbWAqNqHW3MilS5AErhya8iicYhnKtzOFhKmfauohd+F6D8d2zAD0Y5cR6jfCa7Y2VjlKxk/Al1sL3CKYdfPZoqO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qg7aBth7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB18C4CED0;
+	Thu, 12 Dec 2024 17:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024318;
-	bh=NQQxk9ARyrFvjyVL4TBjI7rrc0IQgu5unzgLrgInSe8=;
+	s=korg; t=1734025252;
+	bh=4/6EXXldmrZPIqv/xMMtIpQytbrIdSm7LWYCXe4b4PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMFFuoIcwucO3S/viBAPUht2O7HmUmLOMXms0xq0CTWOPU7fUtYSoDSRS1E0p8HKA
-	 OOlIW7R+n5Fgnsc/tGw8eW/HimCGIvUcjUCR5IYnjdhRMSdhIIpI/AFxcHbV4VJEKy
-	 ES2ZtgOocNzHwXx6lvOrZ2ZW13Jc/D+BCCEJ2AAU=
+	b=qg7aBth7FXOqYQPjOZgZGVMjeYa1q6SBFCEVivocjWdwCNa/3MBXuolxRPdce+Pw1
+	 76VOAZ6YsxbAOZ+IN6GJcrfJGl2hxQzIBb7JDOs37hai3yJnpMj4wKGVEGfhhJq4GQ
+	 CUAQU2dF0PWhXmOWGq9c+TUW0bZkr5SQiNuRL80I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
-	Ahmed Ehab <bottaawesome633@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 5.10 257/459] locking/lockdep: Avoid creating new name string literals in lockdep_set_subclass()
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 077/321] bpf, sockmap: Several fixes to bpf_msg_push_data
 Date: Thu, 12 Dec 2024 15:59:55 +0100
-Message-ID: <20241212144303.751132906@linuxfoundation.org>
+Message-ID: <20241212144233.030010677@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Ehab <bottaawesome633@gmail.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-commit d7fe143cb115076fed0126ad8cf5ba6c3e575e43 upstream.
+[ Upstream commit 15ab0548e3107665c34579ae523b2b6e7c22082a ]
 
-Syzbot reports a problem that a warning will be triggered while
-searching a lock class in look_up_lock_class().
+Several fixes to bpf_msg_push_data,
+1. test_sockmap has tests where bpf_msg_push_data is invoked to push some
+data at the end of a message, but -EINVAL is returned. In this case, in
+bpf_msg_push_data, after the first loop, i will be set to msg->sg.end, add
+the logic to handle it.
+2. In the code block of "if (start - offset)", it's possible that "i"
+points to the last of sk_msg_elem. In this case, "sk_msg_iter_next(msg,
+end)" might still be called twice, another invoking is in "if (!copy)"
+code block, but actually only one is needed. Add the logic to handle it,
+and reconstruct the code to make the logic more clear.
 
-The cause of the issue is that a new name is created and used by
-lockdep_set_subclass() instead of using the existing one. This results
-in a lock instance has a different name pointer than previous registered
-one stored in lock class, and WARN_ONCE() is triggered because of that
-in look_up_lock_class().
-
-To fix this, change lockdep_set_subclass() to use the existing name
-instead of a new one. Hence, no new name will be created by
-lockdep_set_subclass(). Hence, the warning is avoided.
-
-[boqun: Reword the commit log to state the correct issue]
-
-Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
-Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/lkml/20240824221031.7751-1-bottaawesome633@gmail.com/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Link: https://lore.kernel.org/r/20241106222520.527076-7-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/lockdep.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/filter.c | 53 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 33 insertions(+), 20 deletions(-)
 
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -233,7 +233,7 @@ static inline void lockdep_init_map(stru
- 			      (lock)->dep_map.lock_type)
+diff --git a/net/core/filter.c b/net/core/filter.c
+index f82c27668623c..1fe76d49d7f2c 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2392,7 +2392,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		sk_msg_iter_var_next(i);
+ 	} while (i != msg->sg.end);
  
- #define lockdep_set_subclass(lock, sub)					\
--	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
-+	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
- 			      (lock)->dep_map.wait_type_inner,		\
- 			      (lock)->dep_map.wait_type_outer,		\
- 			      (lock)->dep_map.lock_type)
+-	if (start >= offset + l)
++	if (start > offset + l)
+ 		return -EINVAL;
+ 
+ 	space = MAX_MSG_FRAGS - sk_msg_elem_used(msg);
+@@ -2417,6 +2417,8 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 
+ 		raw = page_address(page);
+ 
++		if (i == msg->sg.end)
++			sk_msg_iter_var_prev(i);
+ 		psge = sk_msg_elem(msg, i);
+ 		front = start - offset;
+ 		back = psge->length - front;
+@@ -2433,7 +2435,13 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		}
+ 
+ 		put_page(sg_page(psge));
+-	} else if (start - offset) {
++		new = i;
++		goto place_new;
++	}
++
++	if (start - offset) {
++		if (i == msg->sg.end)
++			sk_msg_iter_var_prev(i);
+ 		psge = sk_msg_elem(msg, i);
+ 		rsge = sk_msg_elem_cpy(msg, i);
+ 
+@@ -2444,39 +2452,44 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		sk_msg_iter_var_next(i);
+ 		sg_unmark_end(psge);
+ 		sg_unmark_end(&rsge);
+-		sk_msg_iter_next(msg, end);
+ 	}
+ 
+ 	/* Slot(s) to place newly allocated data */
++	sk_msg_iter_next(msg, end);
+ 	new = i;
++	sk_msg_iter_var_next(i);
++
++	if (i == msg->sg.end) {
++		if (!rsge.length)
++			goto place_new;
++		sk_msg_iter_next(msg, end);
++		goto place_new;
++	}
+ 
+ 	/* Shift one or two slots as needed */
+-	if (!copy) {
+-		sge = sk_msg_elem_cpy(msg, i);
++	sge = sk_msg_elem_cpy(msg, new);
++	sg_unmark_end(&sge);
+ 
++	nsge = sk_msg_elem_cpy(msg, i);
++	if (rsge.length) {
+ 		sk_msg_iter_var_next(i);
+-		sg_unmark_end(&sge);
++		nnsge = sk_msg_elem_cpy(msg, i);
+ 		sk_msg_iter_next(msg, end);
++	}
+ 
+-		nsge = sk_msg_elem_cpy(msg, i);
++	while (i != msg->sg.end) {
++		msg->sg.data[i] = sge;
++		sge = nsge;
++		sk_msg_iter_var_next(i);
+ 		if (rsge.length) {
+-			sk_msg_iter_var_next(i);
++			nsge = nnsge;
+ 			nnsge = sk_msg_elem_cpy(msg, i);
+-		}
+-
+-		while (i != msg->sg.end) {
+-			msg->sg.data[i] = sge;
+-			sge = nsge;
+-			sk_msg_iter_var_next(i);
+-			if (rsge.length) {
+-				nsge = nnsge;
+-				nnsge = sk_msg_elem_cpy(msg, i);
+-			} else {
+-				nsge = sk_msg_elem_cpy(msg, i);
+-			}
++		} else {
++			nsge = sk_msg_elem_cpy(msg, i);
+ 		}
+ 	}
+ 
++place_new:
+ 	/* Place newly allocated data buffer */
+ 	sk_mem_charge(msg->sk, len);
+ 	msg->sg.size += len;
+-- 
+2.43.0
+
 
 
 
