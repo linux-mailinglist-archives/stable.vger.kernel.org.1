@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254949EF6FA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 585689EF503
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC2A21886B50
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8A391941255
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17F020969B;
-	Thu, 12 Dec 2024 17:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E163225404;
+	Thu, 12 Dec 2024 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYg6jBep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X561ISe/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D98A4F218;
-	Thu, 12 Dec 2024 17:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BE9221D93;
+	Thu, 12 Dec 2024 16:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023993; cv=none; b=MMzEJ6yFE38tEsjIbl93XGqoF8mwdtCiIYkGuEz/Y28yqeTLK0L7yxEfGv0ghTZs49HN+FlyczlnpilerahqFR5U7rH0nDyX2Ba7lZZwSfC7hAaSpOhOOncpD1ggRNDwY+gpsv7qcxOpjGVOy5ychV36UOqrJL2y4SG9sXcbyyM=
+	t=1734022739; cv=none; b=hXeK+aDEsqVjB2VksxPfcIfUobMimr/SozCUgK0aExpuBH1zTzYoAQS15Eqpx6D0dhAa2Hs5r2oQf9L9ydWQdRQO+7lO5hO9i7bBQNggUOq3s2DUC8vqvj+A6r+gzH6ipw59xGWiwzaNYdjZi76LFVl1dgUvMuhJya82luIs5IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023993; c=relaxed/simple;
-	bh=P6e0krtkgBbbzgdEXCcQApvTuRv2+6TRzV9pXO/jZW0=;
+	s=arc-20240116; t=1734022739; c=relaxed/simple;
+	bh=j2ZCfIoC/miUnN113aiN4icgT2pkfqbfZdzBipICShk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPkgCjaDHrSHZQzR742Le0rKNxN6yb8Z3W3lmq+5wldYW/xCxgyNmGEBG1+E0BsgQqCxp+SnkYb2RDPMS4I3cO1RhR21z0RyjmHxrUYP4xCiKcPE+liT4UZW0oq4X3d9eS3AIlrWoXL3xPB7Nj63OxS0yTTb+WLLcoc90I3J8fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYg6jBep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8A5C4CECE;
-	Thu, 12 Dec 2024 17:19:52 +0000 (UTC)
+	 MIME-Version; b=XhqNn87poU+B41KZwQoTfY4ov0b6ICBhqodqocofESM8sxTywuIcgP58G1OlXJb3OOMck6eM9QJcKqSj/B2IjUPhLMbcgLjP1SUBCiqo+sCIvIKvaqZdhkBgcaFNnDlBivOCwapl4v83UFUizeOWVRIq2JW3X1qWyv1IujkaF1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X561ISe/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EB8C4CECE;
+	Thu, 12 Dec 2024 16:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023993;
-	bh=P6e0krtkgBbbzgdEXCcQApvTuRv2+6TRzV9pXO/jZW0=;
+	s=korg; t=1734022739;
+	bh=j2ZCfIoC/miUnN113aiN4icgT2pkfqbfZdzBipICShk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYg6jBepq893Z0ynRD2G3BE0AT8/dCCpa/5tu8YfttzTKdgUZVMK4j1oxG2UaPi5P
-	 7cQYx8TC3MdXVvmvhDBoR2JvUIlTE3z2IzJojrp62v2VII/zPcsqcFH4xcxABAzMQw
-	 D3I7Cy+PKlQ7e01jZ+0nTaaoDYJIsoZ3m74Vxu2o=
+	b=X561ISe/7tFua1PUsp5Cg2q/4EX2QeqBJVB0QS8Zc2CoehMplnskhm4ZgvSifbd5Y
+	 jnht3JXZpMOtfDLcyQ1UFclg2uRRxthH0jDs4IyBn64tD51ZLKyLeA3ILu3vOtvdZF
+	 0zmpcNogRjcZvpCmB3F7Ykc6pWKxRsSBFyrawRXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 149/459] selftests: net: really check for bg process completion
-Date: Thu, 12 Dec 2024 15:58:07 +0100
-Message-ID: <20241212144259.398469299@linuxfoundation.org>
+Subject: [PATCH 5.15 293/565] ALSA: hda/realtek: Update ALC256 depop procedure
+Date: Thu, 12 Dec 2024 15:58:08 +0100
+Message-ID: <20241212144323.048495341@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 52ed077aa6336dbef83a2d6d21c52d1706fb7f16 ]
+[ Upstream commit cc3d0b5dd989d3238d456f9fd385946379a9c13d ]
 
-A recent refactor transformed the check for process completion
-in a true statement, due to a typo.
+Old procedure has a chance to meet Headphone no output.
 
-As a result, the relevant test-case is unable to catch the
-regression it was supposed to detect.
-
-Restore the correct condition.
-
-Fixes: 691bb4e49c98 ("selftests: net: avoid just another constant wait")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/0e6f213811f8e93a235307e683af8225cc6277ae.1730828007.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4a219ef8f370 ("ALSA: hda/realtek - Add ALC256 HP depop function")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/463c5f93715d4714967041a0a8cec28e@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/pmtu.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 42 ++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 23 deletions(-)
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index 9cd5cf800a5b5..f4116f0723e3f 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -1587,7 +1587,7 @@ check_running() {
- 	pid=${1}
- 	cmd=${2}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 637180c774d7d..abba6c71fa2e1 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3593,25 +3593,22 @@ static void alc256_init(struct hda_codec *codec)
  
--	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "{cmd}" ]
-+	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "${cmd}" ]
- }
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
  
- test_cleanup_vxlanX_exception() {
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+ 
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+-
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp_pin_sense || spec->ultra_low_power)
+-		msleep(85);
+-
+-	snd_hda_codec_write(codec, hp_pin, 0,
++		snd_hda_codec_write(codec, hp_pin, 0,
+ 			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+ 
+-	if (hp_pin_sense || spec->ultra_low_power)
+-		msleep(100);
++		msleep(75);
++
++		snd_hda_codec_write(codec, hp_pin, 0,
++			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
+ 
++		msleep(75);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
++	}
+ 	alc_update_coef_idx(codec, 0x46, 3 << 12, 0);
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
+ 	alc_update_coefex_idx(codec, 0x53, 0x02, 0x8000, 1 << 15); /* Clear bit */
+ 	alc_update_coefex_idx(codec, 0x53, 0x02, 0x8000, 0 << 15);
+ 	/*
+@@ -3635,29 +3632,28 @@ static void alc256_shutup(struct hda_codec *codec)
+ 	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
+ 
+-	snd_hda_codec_write(codec, hp_pin, 0,
++		snd_hda_codec_write(codec, hp_pin, 0,
+ 			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+ 
+-	if (hp_pin_sense || spec->ultra_low_power)
+-		msleep(85);
++		msleep(75);
+ 
+ 	/* 3k pull low control for Headset jack. */
+ 	/* NOTE: call this before clearing the pin, otherwise codec stalls */
+ 	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
+ 	 * when booting with headset plugged. So skip setting it for the codec alc257
+ 	 */
+-	if (spec->en_3kpull_low)
+-		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
++		if (spec->en_3kpull_low)
++			alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
+ 
+-	if (!spec->no_shutup_pins)
+-		snd_hda_codec_write(codec, hp_pin, 0,
++		if (!spec->no_shutup_pins)
++			snd_hda_codec_write(codec, hp_pin, 0,
+ 				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+ 
+-	if (hp_pin_sense || spec->ultra_low_power)
+-		msleep(100);
++		msleep(75);
++	}
+ 
+ 	alc_auto_setup_eapd(codec, false);
+ 	alc_shutup_pins(codec);
 -- 
 2.43.0
 
