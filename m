@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983EC9EEB77
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CBF9EECE9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22A3E1649B8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A4942849D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699F1212B0F;
-	Thu, 12 Dec 2024 15:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E626218AB3;
+	Thu, 12 Dec 2024 15:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocPPKA5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uG4U6bI/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C2E1487CD;
-	Thu, 12 Dec 2024 15:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5AD6F2FE;
+	Thu, 12 Dec 2024 15:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016824; cv=none; b=n8Go1I+SE9cWtmVRtldfQ0Gd+HvzCPtSIcH4y4NBY+c8HNlTJZJZPDPDAIBhGz23eWiHlNTx4Tgrs91ripFd3lUqH4st5BOyRKTQR6dReitGFNJHiGIyygjn0O2I4g1AtOorWMRRczJ+mrcw+1xOqqaa1WklPBzFEWvP/Z4tDKk=
+	t=1734017983; cv=none; b=TYu0ArjspneIu0ssm+44hNcoTalXEA2jApRb/9STE7sdCDzg5aEjkpSgrNX4rCQjBknhKM+yvwlN5SzEItKCgGElzaQIRU7MItJGGJZL64Bqd3ZHrGZjgv03LsG/ppgIcYhOlWpOKcGVMQhI1AkOweeNGvQgEADHrpT2rOzcPW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016824; c=relaxed/simple;
-	bh=fup1lN4VSEo2DLTAWUjtIYU5+Sw8VqQVdZdEH4447TQ=;
+	s=arc-20240116; t=1734017983; c=relaxed/simple;
+	bh=aeQZywb7YmM9ED57E/T/KDNgJlwPyu0jH4zks9kRUr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c8NxKWpV1vVEN7HzHLTBKPvmLwKtO62BFerV7vtJefML/TxfDbQlziUUQ0uCTYQYWtWVlGlUm8fXid5UzQuHpTISGGFfAGBLES9yWp+8qkDY2F2uH2zhs8Wm6F/bS5gsgEZj7uLzKt6YCibd73ESKX0XuaVLMc1Swq+mCqhmFxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocPPKA5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD62C4CECE;
-	Thu, 12 Dec 2024 15:20:22 +0000 (UTC)
+	 MIME-Version; b=LwzDx7+Wes2Iq2YEF99UZGH9BD/dJ6Gn0R4IGSLwmhrF8sS+k5/sdqNm3w3t1sKVe7wgqxx8aWRox+HaiYQTkr9/Ntj+u+L/ROo3hSUZGw0/Dc9CXyRG1RgPv56vgaqKauCVcMedUhGCGnMSe3rLSw3DUv/72uSLS76Qd5Mhw24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uG4U6bI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFD6C4CECE;
+	Thu, 12 Dec 2024 15:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016823;
-	bh=fup1lN4VSEo2DLTAWUjtIYU5+Sw8VqQVdZdEH4447TQ=;
+	s=korg; t=1734017982;
+	bh=aeQZywb7YmM9ED57E/T/KDNgJlwPyu0jH4zks9kRUr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ocPPKA5ilh3FAaAyUmgGnJ7P0f/hYvc0BDQk9X5Xm/XFEpZLwCpRScJkvuIxLEp2y
-	 Keq4HR9pq2+++knhgmZw7r2hSRKedD22SX6vsPeqdbWKbkJ1zai3nSNlo/LkHyOlJk
-	 3BihuF1zs06Dt3U23sXAjKF5TT0pJzlf1TKdWBv4=
+	b=uG4U6bI/JB9lDIr6KTJDlaPrvlprUONckH7WBfYFePf9dMdTyeJIlf/mIkkfF27xI
+	 +mdTbsEEErY2GsPl74SA0P8uLXBX6cd1DXSSXpjbB5JMhUbObtFpwY6fPReY01z5Oz
+	 TLYzkincq9t3ge9jvUzCAx9hU1F28bUKRq9fe3gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Stanner <pstanner@redhat.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 307/466] drm/sched: memset() job in drm_sched_job_init()
+	Gwendal Grignou <gwendal@chromium.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 157/356] scsi: ufs: core: sysfs: Prevent div by zero
 Date: Thu, 12 Dec 2024 15:57:56 +0100
-Message-ID: <20241212144318.911949473@linuxfoundation.org>
+Message-ID: <20241212144250.841202964@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <pstanner@redhat.com>
+From: Gwendal Grignou <gwendal@chromium.org>
 
-[ Upstream commit 2320c9e6a768d135c7b0039995182bb1a4e4fd22 ]
+commit eb48e9fc0028bed94a40a9352d065909f19e333c upstream.
 
-drm_sched_job_init() has no control over how users allocate struct
-drm_sched_job. Unfortunately, the function can also not set some struct
-members such as job->sched.
+Prevent a division by 0 when monitoring is not enabled.
 
-This could theoretically lead to UB by users dereferencing the struct's
-pointer members too early.
-
-It is easier to debug such issues if these pointers are initialized to
-NULL, so dereferencing them causes a NULL pointer exception.
-Accordingly, drm_sched_entity_init() does precisely that and initializes
-its struct with memset().
-
-Initialize parameter "job" to 0 in drm_sched_job_init().
-
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021105028.19794-2-pstanner@redhat.com
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1d8613a23f3c ("scsi: ufs: core: Introduce HBA performance monitor sysfs nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+Link: https://lore.kernel.org/r/20241120062522.917157-1-gwendal@chromium.org
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/ufs/core/ufs-sysfs.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-index e97c6c60bc96e..416590ea0dc3d 100644
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -803,6 +803,14 @@ int drm_sched_job_init(struct drm_sched_job *job,
- 		return -EINVAL;
- 	}
+--- a/drivers/ufs/core/ufs-sysfs.c
++++ b/drivers/ufs/core/ufs-sysfs.c
+@@ -485,6 +485,9 @@ static ssize_t read_req_latency_avg_show
+ 	struct ufs_hba *hba = dev_get_drvdata(dev);
+ 	struct ufs_hba_monitor *m = &hba->monitor;
  
-+	/*
-+	 * We don't know for sure how the user has allocated. Thus, zero the
-+	 * struct so that unallowed (i.e., too early) usage of pointers that
-+	 * this function does not set is guaranteed to lead to a NULL pointer
-+	 * exception instead of UB.
-+	 */
-+	memset(job, 0, sizeof(*job));
++	if (!m->nr_req[READ])
++		return sysfs_emit(buf, "0\n");
 +
- 	job->entity = entity;
- 	job->credits = credits;
- 	job->s_fence = drm_sched_fence_alloc(entity, owner);
--- 
-2.43.0
-
+ 	return sysfs_emit(buf, "%llu\n", div_u64(ktime_to_us(m->lat_sum[READ]),
+ 						 m->nr_req[READ]));
+ }
+@@ -552,6 +555,9 @@ static ssize_t write_req_latency_avg_sho
+ 	struct ufs_hba *hba = dev_get_drvdata(dev);
+ 	struct ufs_hba_monitor *m = &hba->monitor;
+ 
++	if (!m->nr_req[WRITE])
++		return sysfs_emit(buf, "0\n");
++
+ 	return sysfs_emit(buf, "%llu\n", div_u64(ktime_to_us(m->lat_sum[WRITE]),
+ 						 m->nr_req[WRITE]));
+ }
 
 
 
