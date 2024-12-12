@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-102315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0439EF24E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3259EED1E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC38718974B7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDCB3284649
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA79B2054EF;
-	Thu, 12 Dec 2024 16:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E6A2210CF;
+	Thu, 12 Dec 2024 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdg9GMSi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7orQqzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656F022A803;
-	Thu, 12 Dec 2024 16:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6371F217F34;
+	Thu, 12 Dec 2024 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020782; cv=none; b=QjZxvT88ArUd0XADrhtQRxMAF5bnqcD9+GSjoU3XgtV8C3ueKXzGXCWCqIqEj7OXV1D3z42Jt+HX+XpVnLYedclHfRYr6h0CMRrO0+rfXQ9ZVxkSUgx9Nt9wY9R+WWm+ProFGGu/mbsJnVM1YjHXe/XRr20TB6Fpk28ledwakv8=
+	t=1734018057; cv=none; b=YssGaHlKuxtrjRLL/VtYLCTFkPQYuLiY2/thWljPF1Mb5s8YO9sQyMz3KHFLf43bB3K73RH/wBWQyU3gDSz8sjvwjDe53qfry5I91U8KlNQT//pdySL5a8z6DLrkeiwJdXpGPUkV4f/W0FbXPGez02gUaZ4BA7n9wdecH3hqL1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020782; c=relaxed/simple;
-	bh=QSvtpMEiATseWQOoa/p1//zeh74G0UPozH+2yIvtVj4=;
+	s=arc-20240116; t=1734018057; c=relaxed/simple;
+	bh=SIOH4DvyNCtk8sucXaN6ljvUsQ6qpsSYs2aXNnXmOO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McZUWR2+xiHZOK+HPQOU4Y2ZDAYakHtCU+O1VHnckUrKvc5sVpew/g+kG5gahmduqHGF/OlCJCLYcjRwGqUVhGaQpZOSP8SR9ASmwZvrc9yRk6usG94upKD3OwlMpJxPwTuiGrZAP9Roi14lLyS14Xu66e3pZE7VLoaOkgoC2OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdg9GMSi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5EFC4CECE;
-	Thu, 12 Dec 2024 16:26:21 +0000 (UTC)
+	 MIME-Version; b=Aj1Hg5WRH8W6WoBw7Fr7Sn5CoQcgm+3RjjJ/x4fI1j7zlauj70aZ3fEc7Ix75jK5b6nB0qYSWz2YfbzNSUAXFYPuWJnu+rM6N9FLS2RtolBThZeW1ZxIrVjCVNhBl9BQ/MIKQWp9E+qmyW4dAvekkTMFGu6zfvgrj2x+zxVR/f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7orQqzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB69CC4CECE;
+	Thu, 12 Dec 2024 15:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020782;
-	bh=QSvtpMEiATseWQOoa/p1//zeh74G0UPozH+2yIvtVj4=;
+	s=korg; t=1734018057;
+	bh=SIOH4DvyNCtk8sucXaN6ljvUsQ6qpsSYs2aXNnXmOO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdg9GMSi38kspiDFUXs6cvuZMw58MSFYv8R1j9WuhduWae7yNIQLBqlsSfnt3hFqb
-	 IMjsH/Nj2egQIxfa94GzhyGGfD3h3A90vWZzS4seNmxFMGsskOW9UtLxOiBDxIsEhH
-	 dU0KtMsgokCjzj5NjcVaHqKetusu24BjRxhKzd+s=
+	b=x7orQqzEASBCjbz9VPF8sJDkxrynQm1i2ZF2EikjXKMFrxX0yD+iE30x5il6ULzoI
+	 YBjFquGX1v1EZnZkGgJM5fSwNM+PkCI0rndhpwE2WVriBgTjnnL2zutYbCHZEeRN9R
+	 LUInA4Ik4sej2EyvHhIGDkP+BLAoqebIvt1V5N10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 559/772] powerpc/vdso: Remove an unsupported flag from vgettimeofday-32.o with clang
+Subject: [PATCH 6.6 185/356] kselftest/arm64: Log fp-stress child startup errors to stdout
 Date: Thu, 12 Dec 2024 15:58:24 +0100
-Message-ID: <20241212144413.062784249@linuxfoundation.org>
+Message-ID: <20241212144251.937348915@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 05e05bfc92d196669a3d087fc34d3998b6ddb758 ]
+[ Upstream commit dca93d29845dfed60910ba13dbfb6ae6a0e19f6d ]
 
-When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
-warns:
+Currently if we encounter an error between fork() and exec() of a child
+process we log the error to stderr. This means that the errors don't get
+annotated with the child information which makes diagnostics harder and
+means that if we miss the exit signal from the child we can deadlock
+waiting for output from the child. Improve robustness and output quality
+by logging to stdout instead.
 
-  clang-16: error: argument unused during compilation: '-fno-stack-clash-protection' [-Werror,-Wunused-command-line-argument]
-
-This warning happens because vgettimeofday-32.c gets its base CFLAGS
-from the main kernel, which may contain flags that are only supported on
-a 64-bit target but not a 32-bit one, which is the case here.
--fstack-clash-protection and its negation are only suppported by the
-64-bit powerpc target but that flag is included in an invocation for a
-32-bit powerpc target, so clang points out that while the flag is one
-that it recognizes, it is not actually used by this compiler job.
-
-To eliminate the warning, remove -fno-stack-clash-protection from
-vgettimeofday-32.c's CFLAGS when using clang, as has been done for other
-flags previously.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Stable-dep-of: d677ce521334 ("powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241023-arm64-fp-stress-exec-fail-v1-1-ee3c62932c15@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/vdso/Makefile | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/arm64/fp/fp-stress.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index d4023bceec348..7e69e87fbf744 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -16,6 +16,11 @@ ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday-32.o += -ffreestanding -fasynchronous-unwind-tables
-   CFLAGS_REMOVE_vgettimeofday-32.o = $(CC_FLAGS_FTRACE)
-   CFLAGS_REMOVE_vgettimeofday-32.o += -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
-+  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
-+  # an unused command line flag warning for this file.
-+  ifdef CONFIG_CC_IS_CLANG
-+  CFLAGS_REMOVE_vgettimeofday-32.o += -fno-stack-clash-protection
-+  endif
-   CFLAGS_vgettimeofday-64.o += -include $(c-gettimeofday-y)
-   CFLAGS_vgettimeofday-64.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
-   CFLAGS_vgettimeofday-64.o += $(call cc-option, -fno-stack-protector)
+diff --git a/tools/testing/selftests/arm64/fp/fp-stress.c b/tools/testing/selftests/arm64/fp/fp-stress.c
+index dd31647b00a22..cf9d7b2e4630c 100644
+--- a/tools/testing/selftests/arm64/fp/fp-stress.c
++++ b/tools/testing/selftests/arm64/fp/fp-stress.c
+@@ -79,7 +79,7 @@ static void child_start(struct child_data *child, const char *program)
+ 		 */
+ 		ret = dup2(pipefd[1], 1);
+ 		if (ret == -1) {
+-			fprintf(stderr, "dup2() %d\n", errno);
++			printf("dup2() %d\n", errno);
+ 			exit(EXIT_FAILURE);
+ 		}
+ 
+@@ -89,7 +89,7 @@ static void child_start(struct child_data *child, const char *program)
+ 		 */
+ 		ret = dup2(startup_pipe[0], 3);
+ 		if (ret == -1) {
+-			fprintf(stderr, "dup2() %d\n", errno);
++			printf("dup2() %d\n", errno);
+ 			exit(EXIT_FAILURE);
+ 		}
+ 
+@@ -107,16 +107,15 @@ static void child_start(struct child_data *child, const char *program)
+ 		 */
+ 		ret = read(3, &i, sizeof(i));
+ 		if (ret < 0)
+-			fprintf(stderr, "read(startp pipe) failed: %s (%d)\n",
+-				strerror(errno), errno);
++			printf("read(startp pipe) failed: %s (%d)\n",
++			       strerror(errno), errno);
+ 		if (ret > 0)
+-			fprintf(stderr, "%d bytes of data on startup pipe\n",
+-				ret);
++			printf("%d bytes of data on startup pipe\n", ret);
+ 		close(3);
+ 
+ 		ret = execl(program, program, NULL);
+-		fprintf(stderr, "execl(%s) failed: %d (%s)\n",
+-			program, errno, strerror(errno));
++		printf("execl(%s) failed: %d (%s)\n",
++		       program, errno, strerror(errno));
+ 
+ 		exit(EXIT_FAILURE);
+ 	} else {
 -- 
 2.43.0
 
