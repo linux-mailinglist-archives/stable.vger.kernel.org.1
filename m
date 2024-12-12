@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-102847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8AB9EF5A2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A9E9EF717
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A5B018974E1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AA9E1718AB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBC02054EF;
-	Thu, 12 Dec 2024 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E755F221D9F;
+	Thu, 12 Dec 2024 17:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcKzTa8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbONKA3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C27A223E93;
-	Thu, 12 Dec 2024 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A381021660B;
+	Thu, 12 Dec 2024 17:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022710; cv=none; b=qdpuRBQZg3ZMFIjtozjlfzD2+Y2BQYv6JG9z66kuBwKgUuwjcj7pRz8q2/aycLPxA6y5dHivqLMkkWXDNa/ANDmAvPqsAcZ8kjgftDxPMMRa03JVez+9CoeuKqCgwjIairQphIm/5P5uQ0WAhKeWoqPjs6d+nIG/YcNA5RyoSSU=
+	t=1734024057; cv=none; b=ECApwVrZkxQ+swqtVncu2Tws+iqmk10wM1xS48jTs93e5fjue9rYgFQA+W2HHlRFosi1ybZnCzUQBp6tUQWh3Fih3IRQL5Wc2I2+sHVxkhfCXss/2/rhvlpk/V7JRUKI4YnOX5hF0c75qI/RvQvXJqmXEiDZSZyyUrliRa3ETlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022710; c=relaxed/simple;
-	bh=kAHpfcfswwhTUVNBpzC6GRGOMIHWHOgJ8Wp27rw7z3U=;
+	s=arc-20240116; t=1734024057; c=relaxed/simple;
+	bh=474OyoAA377XTanm+JQV3+L07br42q5PirsoCxa9qek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AR1dFkw7mXVMqg34A52dwomP7AI8xY/hDvDA3RNbpnVDtXjISQCOzx4dZZwOZd20lW7OMezC3JMD2tXkpdhgty37FWJedd5XzPweV95qaB2P/ZHVS8Ko2gA3v6zxCr0VMGtU+xD0kfmh4cS/DPfCcX41qiLe5qDorVpRipAd3lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcKzTa8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8C6C4CECE;
-	Thu, 12 Dec 2024 16:58:29 +0000 (UTC)
+	 MIME-Version; b=cNYzy2wxs17/8L8I8TwBD7cknKZPrQsqnjpsxcTpi3kOOhCenUW/X3LPni2QyCfolFSMG+5Cgzy3TPoEYtoPwZ5aOxfoZX3BCIUbzqs/F3DDw6Z5x5LuZgaUk8klS3H+XfW4FAHqZoEZ38wZSitldZhaiyjZjdTfGR5Ywoy7/6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbONKA3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F82CC4CECE;
+	Thu, 12 Dec 2024 17:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022710;
-	bh=kAHpfcfswwhTUVNBpzC6GRGOMIHWHOgJ8Wp27rw7z3U=;
+	s=korg; t=1734024057;
+	bh=474OyoAA377XTanm+JQV3+L07br42q5PirsoCxa9qek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcKzTa8wLyvuf53cPwcEyYtMlbwuTypOF6qT5dH1P4Yqs5noLAKJEUrO4UNnpSC0Y
-	 ophbatTVTkGMtIFMKVNf9PumLjN0TTmYRaUJ+ToTDmFDLs5V6N+RRKWuz7Ex28oJW+
-	 NUkd1xXC9Ghp0qd0isqsC8zmjnnZxLsS7giUW7kk=
+	b=BbONKA3YSCApzp7VBLdhgyeJC6FD6vpSBKDt3zFfbwGP3aEIP7z5Hs//p3KR3vu9j
+	 FOlttdpN3Q61mWrBSRGQPPFmlasvVk9AN3sVq0ofZxRXrId3ia34jQopGZpK3sMNCJ
+	 NaWvdUyajTMdlDMp9/TbALW7cPfTQhWhe4VXidH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 5.15 314/565] comedi: Flush partial mappings in error case
+	Yuan Can <yuancan@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 171/459] cpufreq: loongson2: Unregister platform_driver on failure
 Date: Thu, 12 Dec 2024 15:58:29 +0100
-Message-ID: <20241212144324.019818266@linuxfoundation.org>
+Message-ID: <20241212144300.266234154@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit ce8f9fb651fac95dd41f69afe54d935420b945bd upstream.
+[ Upstream commit 5f856d71ccdf89b4bac0ff70ebb0bb582e7f7f18 ]
 
-If some remap_pfn_range() calls succeeded before one failed, we still have
-buffer pages mapped into the userspace page tables when we drop the buffer
-reference with comedi_buf_map_put(bm). The userspace mappings are only
-cleaned up later in the mmap error path.
+When cpufreq_register_driver() returns error, the cpufreq_init() returns
+without unregister platform_driver, fix by add missing
+platform_driver_unregister() when cpufreq_register_driver() failed.
 
-Fix it by explicitly flushing all mappings in our VMA on the error path.
-
-See commit 79a61cc3fc04 ("mm: avoid leaving partial pfn mappings around in
-error case").
-
-Cc: stable@vger.kernel.org
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20241017-comedi-tlb-v3-1-16b82f9372ce@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f8ede0f700f5 ("MIPS: Loongson 2F: Add CPU frequency scaling support")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/comedi_fops.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/cpufreq/loongson2_cpufreq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -2402,6 +2402,18 @@ static int comedi_mmap(struct file *file
+diff --git a/drivers/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
+index d05e761d95721..e1893e33b1a94 100644
+--- a/drivers/cpufreq/loongson2_cpufreq.c
++++ b/drivers/cpufreq/loongson2_cpufreq.c
+@@ -155,7 +155,9 @@ static int __init cpufreq_init(void)
  
- 			start += PAGE_SIZE;
- 		}
-+
-+#ifdef CONFIG_MMU
-+		/*
-+		 * Leaving behind a partial mapping of a buffer we're about to
-+		 * drop is unsafe, see remap_pfn_range_notrack().
-+		 * We need to zap the range here ourselves instead of relying
-+		 * on the automatic zapping in remap_pfn_range() because we call
-+		 * remap_pfn_range() in a loop.
-+		 */
-+		if (retval)
-+			zap_vma_ptes(vma, vma->vm_start, size);
-+#endif
+ 	ret = cpufreq_register_driver(&loongson2_cpufreq_driver);
+ 
+-	if (!ret && !nowait) {
++	if (ret) {
++		platform_driver_unregister(&platform_driver);
++	} else if (!nowait) {
+ 		saved_cpu_wait = cpu_wait;
+ 		cpu_wait = loongson2_cpu_wait;
  	}
- 
- 	if (retval == 0) {
+-- 
+2.43.0
+
 
 
 
