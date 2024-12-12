@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998249EF8C6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CC99EF784
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E36861894FB1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74536189B129
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8357D222D67;
-	Thu, 12 Dec 2024 17:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD0A215762;
+	Thu, 12 Dec 2024 17:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5gr61B+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3tV/aSa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408B9216E2D;
-	Thu, 12 Dec 2024 17:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C3F211493;
+	Thu, 12 Dec 2024 17:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025036; cv=none; b=ZlkB/UMtc+19QMQqpZeeDgKjUIsBpcxNQlKboG6l3zrr7F0p5EvuuNDd+4hsOb3Ywg8ZeCV5If6Vmeku9J83rlRmTkroqElOy7ip0G/T2d4blBeS191cvgrywKh7YOykAdrkt13aGDb9cIyRKVMF3ayse2OxFLUCMeiCjsgdutI=
+	t=1734024312; cv=none; b=L2mrtpIAHwTQ61ATvZ/V1up9OGtIJ76Ozi4TJv4Ipo2MqUbpS2NB6swjlqEIrgYp1yl5N8wq58wyjwZ7IDYSdB/FK3OZWT3W0wzmq/yWZ0z6G/CfljiHPRJSGcVcCmKWCrQiQ6IUGk/tzrrH9xsSNu3/A1RIsXHRFVJXvNq37Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025036; c=relaxed/simple;
-	bh=QpSIIDOt1sudgxpbQP4aWdYTpZfvVeFDvriDbBZvQ4Y=;
+	s=arc-20240116; t=1734024312; c=relaxed/simple;
+	bh=BxSdHezyxRvY2TiJk7vvFahtQebubTiuc5WI6jxQWQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKqBVz7wfbe+foECh+RbjREO27dviNCjhbmPi3XlJridFfLr/9wo+2QdVCRqfPBNVrIDUOVJpC8rHtw+aN04lNJi9kaYK4V9fqV2xUP/aqSZ4rAF1g7V+CfjUIsas4liy06qvxljnkTzEsS8Gc5dcMIPG9gIMM8oZKLJU6EXaog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5gr61B+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF81C4CECE;
-	Thu, 12 Dec 2024 17:37:15 +0000 (UTC)
+	 MIME-Version; b=IlDkuqNWVuTmf5rUGLb1hQNFLpp83axRnykRFGfaCSXEBMHtY9t6oOCNEBfr5OxTX8il1xg1FmM6qXk8y4A6rZxbQdANeUjV9pA/eMUyQ1uYlzlKEYYfVyupDzINke3burTbC8mD+/zHANtO2a3PuIpoKrt5e30444ov2PR9aH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3tV/aSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FB3C4CECE;
+	Thu, 12 Dec 2024 17:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025036;
-	bh=QpSIIDOt1sudgxpbQP4aWdYTpZfvVeFDvriDbBZvQ4Y=;
+	s=korg; t=1734024311;
+	bh=BxSdHezyxRvY2TiJk7vvFahtQebubTiuc5WI6jxQWQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5gr61B+QDQEu0FA81F4c7rbRp4oN+cl4wUFUGXyWWGP/gY65u406rhiSplXg+SO4
-	 +QMFMSIO0qVbRWqhY5yKmSI7JTtR1548Y2TDJK31PhvqlcqUWOIiVkkIG7jbC1DKot
-	 R585jnCpbcO4cYxxnC/Pxpoy0TVflw8+oWQV/q98=
+	b=y3tV/aSa2KJmSHaQ34jV6UzPwFog8427L6UklgUpX9PuCeS1YC3/X+dGnuZ39btFN
+	 X2lIeO60vb+ed+Cyf9jy07k1VK7Ygx05/wS/fqBMBBDIMjPVyGkzoF7zIf0X4S/Mne
+	 j7iX/9Lp4Pnm158VExmME7nLIPzf379+g3Uf4Vio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Si-Wei Liu <si-wei.liu@oracle.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/321] m68k: mvme147: Reinstate early console
+Subject: [PATCH 5.10 214/459] vdpa/mlx5: Fix suboptimal range on iotlb iteration
 Date: Thu, 12 Dec 2024 15:59:12 +0100
-Message-ID: <20241212144231.352095931@linuxfoundation.org>
+Message-ID: <20241212144302.024428766@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-[ Upstream commit 077b33b9e2833ff25050d986178a2c4c4036cbac ]
+[ Upstream commit 35025963326e44d8bced3eecd42d2f040f4f0024 ]
 
-Commit a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused
-functions"), removed the console functionality for the mvme147 instead
-of wiring it up to an early console.  Put the console write function
-back and wire it up like mvme16x does so it's possible to see Linux boot
-on this fine hardware once more.
+The starting iova address to iterate iotlb map entry within a range
+was set to an irrelevant value when passing to the itree_next()
+iterator, although luckily it doesn't affect the outcome of finding
+out the granule of the smallest iotlb map size. Fix the code to make
+it consistent with the following for-loop.
 
-Fixes: a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused functions")
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Co-developed-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/a82e8f0068a8722996a0ccfe666abb5e0a5c120d.1730850684.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Message-Id: <20241021134040.975221-3-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/kernel/early_printk.c |  5 ++++-
- arch/m68k/mvme147/config.c      | 30 ++++++++++++++++++++++++++++++
- arch/m68k/mvme147/mvme147.h     |  6 ++++++
- 3 files changed, 40 insertions(+), 1 deletion(-)
- create mode 100644 arch/m68k/mvme147/mvme147.h
+ drivers/vdpa/mlx5/core/mr.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
-index 3cc944df04f65..f11ef9f1f56fc 100644
---- a/arch/m68k/kernel/early_printk.c
-+++ b/arch/m68k/kernel/early_printk.c
-@@ -13,6 +13,7 @@
- #include <asm/setup.h>
+diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
+index 48489beb6e0a7..4615f827cd0cb 100644
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -226,7 +226,6 @@ static int map_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr
+ 	unsigned long lgcd = 0;
+ 	int log_entity_size;
+ 	unsigned long size;
+-	u64 start = 0;
+ 	int err;
+ 	struct page *pg;
+ 	unsigned int nsg;
+@@ -237,10 +236,9 @@ static int map_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr
+ 	struct device *dma = mvdev->mdev->device;
  
- 
-+#include "../mvme147/mvme147.h"
- #include "../mvme16x/mvme16x.h"
- 
- asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
-@@ -22,7 +23,9 @@ static void __ref debug_cons_write(struct console *c,
- {
- #if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
-       defined(CONFIG_COLDFIRE))
--	if (MACH_IS_MVME16x)
-+	if (MACH_IS_MVME147)
-+		mvme147_scc_write(c, s, n);
-+	else if (MACH_IS_MVME16x)
- 		mvme16x_cons_write(c, s, n);
- 	else
- 		debug_cons_nputs(s, n);
-diff --git a/arch/m68k/mvme147/config.c b/arch/m68k/mvme147/config.c
-index 245376630c3de..8829ad3d25e0f 100644
---- a/arch/m68k/mvme147/config.c
-+++ b/arch/m68k/mvme147/config.c
-@@ -36,6 +36,7 @@
- #include <asm/machdep.h>
- #include <asm/mvme147hw.h>
- 
-+#include "mvme147.h"
- 
- static void mvme147_get_model(char *model);
- extern void mvme147_sched_init(irq_handler_t handler);
-@@ -189,3 +190,32 @@ int mvme147_hwclk(int op, struct rtc_time *t)
+ 	for (map = vhost_iotlb_itree_first(iotlb, mr->start, mr->end - 1);
+-	     map; map = vhost_iotlb_itree_next(map, start, mr->end - 1)) {
++	     map; map = vhost_iotlb_itree_next(map, mr->start, mr->end - 1)) {
+ 		size = maplen(map, mr);
+ 		lgcd = gcd(lgcd, size);
+-		start += size;
  	}
- 	return 0;
- }
-+
-+static void scc_delay(void)
-+{
-+	__asm__ __volatile__ ("nop; nop;");
-+}
-+
-+static void scc_write(char ch)
-+{
-+	do {
-+		scc_delay();
-+	} while (!(in_8(M147_SCC_A_ADDR) & BIT(2)));
-+	scc_delay();
-+	out_8(M147_SCC_A_ADDR, 8);
-+	scc_delay();
-+	out_8(M147_SCC_A_ADDR, ch);
-+}
-+
-+void mvme147_scc_write(struct console *co, const char *str, unsigned int count)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	while (count--)	{
-+		if (*str == '\n')
-+			scc_write('\r');
-+		scc_write(*str++);
-+	}
-+	local_irq_restore(flags);
-+}
-diff --git a/arch/m68k/mvme147/mvme147.h b/arch/m68k/mvme147/mvme147.h
-new file mode 100644
-index 0000000000000..140bc98b0102a
---- /dev/null
-+++ b/arch/m68k/mvme147/mvme147.h
-@@ -0,0 +1,6 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+struct console;
-+
-+/* config.c */
-+void mvme147_scc_write(struct console *co, const char *str, unsigned int count);
+ 	log_entity_size = ilog2(lgcd);
+ 
 -- 
 2.43.0
 
