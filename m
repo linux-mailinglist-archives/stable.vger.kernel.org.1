@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-102010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3E89EEF95
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B96C99EEFB6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1D1E29798A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6455C297B9D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213D92358AF;
-	Thu, 12 Dec 2024 16:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3661C23692B;
+	Thu, 12 Dec 2024 16:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MB9Rse7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPnlPS/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D293D223E71;
-	Thu, 12 Dec 2024 16:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3274236926;
+	Thu, 12 Dec 2024 16:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019624; cv=none; b=oYAv/Blh53DQZIM1BMCrFXiwAArjnNUYuI+kS4ocoy9ZDdqHlvrhWoimXSfbsUCU1RCwgP5/oTG4IelcSYTqu6wTz1iM3mOLKiBgeY/gKz9O5C2wtJewJaKdfcIWc7obp/IIDPW6t48h1ZkFMnAU6a5uZaAjbySr2IjKCPiYbK0=
+	t=1734019779; cv=none; b=sLxQ97OlLpz+uwI+ykXsQbMDQyUJDfYyeKkjKTa4xjEWyXbdAHiK6w2Zfer1pamcx3bfLRbigvo+suQmtWoHjRkkf8uuaxS7HlwRnMntnk5Vy/gHZYy8zGSiIMdMZ0MbqmxHqyj0juoyF+DkVcJk75K73aol3Bbp0CId0KlMPac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019624; c=relaxed/simple;
-	bh=FN2O969cVFomAMxihUl+tBmlN6E7kKt7iMIVfyskqSE=;
+	s=arc-20240116; t=1734019779; c=relaxed/simple;
+	bh=Ts8Raz3E9xXSM7qNpW2/9mJlKbS4NO0joJHObbJiIy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhGzU8j7cgQBHrKxA6htbOAYxtHNH9RWC7hXWie1K5ZPamTi6U6B+FxKV/zw4Fps2xT29G4obAWMYV4/NanicEmc83CU7X7AONdS5IK5m68AlEsOoA2aitmEBRJ1lxAd+onseeeEf8XKBh07fHqDjaYkBztFO5+EksAmQW6BE/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MB9Rse7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFE1C4CECE;
-	Thu, 12 Dec 2024 16:07:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bWUzWeK3UCUK98fyFeLBjoD0J8bcvH3KLfVfmBBeM7bnvasJWbgTqDvJGFqb/naknA0rA4zN6LA8NlKhpmXpZVKoXW/G9VYM9txFn4CinDmwfb33O/NUkI5PeZfRE/LLQ71JagbYPP6E5i7JAALVquTNndIy5s6nzshV2RLZu/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPnlPS/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23E9C4CECE;
+	Thu, 12 Dec 2024 16:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019624;
-	bh=FN2O969cVFomAMxihUl+tBmlN6E7kKt7iMIVfyskqSE=;
+	s=korg; t=1734019778;
+	bh=Ts8Raz3E9xXSM7qNpW2/9mJlKbS4NO0joJHObbJiIy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MB9Rse7mBMBAge27IbdwcnCsTOB6hWgEUYfhSCZSaHK0Fh5OWYYozwoSobSNnj2VL
-	 eubWHSr4yO3VNDfAhqkVo/qHhAxXs20z5By4YMr7eXGbBpuW0HuGDjjcfnSV52KQgh
-	 jx0N0qkFF1aWmCTqM7IC13tcjwxD/Xc/16qH/Oy0=
+	b=jPnlPS/l4g6lJMkTcJgF6YP7i4rO6n+iApOIo2l0jwpmb/v9zfbOc2KuSM1LvY5Zs
+	 ez8/AafQ5/bqg0BFG4RHNG4IYJgasBsGMaxDfQEkNfHbiVKMepXa6QR8laM8Oijxbl
+	 Dfix7UNJBqqJ98L1o2udOsIuVE2LBEbHI9fJ0F1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Helge Deller <deller@gmx.de>,
+	Charles Han <hanchunchao@inspur.com>,
+	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 254/772] fbdev: sh7760fb: Fix a possible memory leak in sh7760fb_alloc_mem()
-Date: Thu, 12 Dec 2024 15:53:19 +0100
-Message-ID: <20241212144400.414721658@linuxfoundation.org>
+Subject: [PATCH 6.1 255/772] clk: clk-apple-nco: Add NULL check in applnco_probe
+Date: Thu, 12 Dec 2024 15:53:20 +0100
+Message-ID: <20241212144400.454690485@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -61,47 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit f89d17ae2ac42931be2a0153fecbf8533280c927 ]
+[ Upstream commit 969c765e2b508cca9099d246c010a1e48dcfd089 ]
 
-When information such as info->screen_base is not ready, calling
-sh7760fb_free_mem() does not release memory correctly. Call
-dma_free_coherent() instead.
+Add NULL check in applnco_probe, to handle kernel NULL pointer
+dereference error.
 
-Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 6641057d5dba ("clk: clk-apple-nco: Add driver for Apple NCO")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20241114072820.3071-1-hanchunchao@inspur.com
+Reviewed-by: Martin Povišer <povik+lin@cutebit.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sh7760fb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/clk/clk-apple-nco.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
-index 6adf048c1bae8..62e28d315d815 100644
---- a/drivers/video/fbdev/sh7760fb.c
-+++ b/drivers/video/fbdev/sh7760fb.c
-@@ -409,12 +409,11 @@ static int sh7760fb_alloc_mem(struct fb_info *info)
- 		vram = PAGE_SIZE;
- 
- 	fbmem = dma_alloc_coherent(info->device, vram, &par->fbdma, GFP_KERNEL);
--
- 	if (!fbmem)
- 		return -ENOMEM;
- 
- 	if ((par->fbdma & SH7760FB_DMA_MASK) != SH7760FB_DMA_MASK) {
--		sh7760fb_free_mem(info);
-+		dma_free_coherent(info->device, vram, fbmem, par->fbdma);
- 		dev_err(info->device, "kernel gave me memory at 0x%08lx, which is"
- 			"unusable for the LCDC\n", (unsigned long)par->fbdma);
- 		return -ENOMEM;
+diff --git a/drivers/clk/clk-apple-nco.c b/drivers/clk/clk-apple-nco.c
+index 39472a51530a3..457a48d489412 100644
+--- a/drivers/clk/clk-apple-nco.c
++++ b/drivers/clk/clk-apple-nco.c
+@@ -297,6 +297,9 @@ static int applnco_probe(struct platform_device *pdev)
+ 		memset(&init, 0, sizeof(init));
+ 		init.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 						"%s-%d", np->name, i);
++		if (!init.name)
++			return -ENOMEM;
++
+ 		init.ops = &applnco_ops;
+ 		init.parent_data = &pdata;
+ 		init.num_parents = 1;
 -- 
 2.43.0
 
