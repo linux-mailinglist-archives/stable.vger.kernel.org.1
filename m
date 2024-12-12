@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BD09EF0F0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDCDD9EEA65
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:42 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4860918993DF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75635280D13
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DBE223C46;
-	Thu, 12 Dec 2024 16:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6132D217707;
+	Thu, 12 Dec 2024 15:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2S+XsF1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0UA36lE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBED5222D74;
-	Thu, 12 Dec 2024 16:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136FF21766D;
+	Thu, 12 Dec 2024 15:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020282; cv=none; b=jYjkI0kNEzLef3xHHEBjAUuMnZD58+ZqUBSlBypv01PL1Ov9PNRRdXWyw73dnoS3e8+BVP7fxSN0eVWBm2gTovPrbUj/8r9xeU9ZwHKfNnkctWcmg99hNZiJVlbKWo1aDRSolLV995MaQCEUvZyucrC5vP7BuMG+qIZnM+GXgmI=
+	t=1734016415; cv=none; b=RCpfx6CWOcYdrCL3Bhm6N+v+KU4tIZ7xCJujMKBGa0TZFgRq7J3NwBrUZYw+/z0kWuz02ZdHWssotQMibZEdfnpF3q4Q8NkWFj8ZU7qyPFFQEqP/1IeO29YAvaU5rl861ukI/J1A8kBpDIzpcU6Djini5rAM3IfMLxPGVTsMKm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020282; c=relaxed/simple;
-	bh=tQ45xstaTwyuTEt73o/og8F5u3RhjbaT5GIDgBINeqs=;
+	s=arc-20240116; t=1734016415; c=relaxed/simple;
+	bh=nbYBYQeX6Vx9TS5XyJKadgqip5Z5TSDAqkB0INzEhLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kiJKXOtaOgdu00Pl3ys2fYFrJsgtkC41RDAVUuTLyju8w0K4gfiY43Dotq9CFW7ubdjoDwk/lCHLQf6Uf3XnsYNC9O5Kr9NvVh1kL7iCnH0WNbaeuSkt5yMuCzHyAGKgo08p1hNYulJJF6fM/UxiO2LwIEiy3afT9y2+TuVVjQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2S+XsF1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C1EC4CECE;
-	Thu, 12 Dec 2024 16:18:02 +0000 (UTC)
+	 MIME-Version; b=Y9wM7/45IVdrMOzW0tiPUwGf0RA5/y4JT2gneSW7ZjG1Onu7pxN804SYTrhL6IFfu4OYperrzH4dIyZtylG2+BTqeEzZr9s6zRPfrUh3kojZZBEUx2oVCWhyj25WHLDIX1P2B302O7qrZ5s+PNrIjsdVAnl5t3djVnpuJMq94zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0UA36lE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E82C4CED0;
+	Thu, 12 Dec 2024 15:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020282;
-	bh=tQ45xstaTwyuTEt73o/og8F5u3RhjbaT5GIDgBINeqs=;
+	s=korg; t=1734016414;
+	bh=nbYBYQeX6Vx9TS5XyJKadgqip5Z5TSDAqkB0INzEhLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2S+XsF1Mp8fu8bialuM4xlpGwEJ7asNoTqN2e/zrfPbxtjusAQMV34htDO7HRMu2i
-	 9mpbcOZOOJBqQewLlbPUOuhUzckP9rjXF6/ZJBAZlk8lyE5CAObDytng7iEUNsmzvb
-	 wkzATkXL3E6b6ExJh+vVYlxMAzC2mcscLWjwBNCw=
+	b=p0UA36lEln7LN6eRbwTDztKMVJbV3UR7+vHFnyzSaSY21hVWGwbXs5nY3UG2FcsAq
+	 qbYhh8d5nnfO5fk+0lMiB3rmjfYsMBwxY/QGiS8VE9K1j2YF5MNJ7hTSLXLvRxPlxJ
+	 1U1JmW42Zet8ITz6SzJxoXAWozM4sqEk5ij4+s+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.1 386/772] wifi: brcmfmac: release root node in all execution paths
+	Anders Blomdell <anders.blomdell@gmail.com>,
+	Philippe Troin <phil@fifi.org>,
+	Jan Kara <jack@suse.cz>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 162/466] Revert "readahead: properly shorten readahead when falling back to do_page_cache_ra()"
 Date: Thu, 12 Dec 2024 15:55:31 +0100
-Message-ID: <20241212144405.861910526@linuxfoundation.org>
+Message-ID: <20241212144313.202242815@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 2e19a3b590ebf2e351fc9d0e7c323430e65b6b6d upstream.
+commit a220d6b95b1ae12c7626283d7609f0a1438e6437 upstream.
 
-The fixed patch introduced an additional condition to enter the scope
-where the 'root' device_node is released (!settings->board_type,
-currently 'err'), which avoid decrementing the refcount with a call to
-of_node_put() if that second condition is not satisfied.
+This reverts commit 7c877586da3178974a8a94577b6045a48377ff25.
 
-Move the call to of_node_put() to the point where 'root' is no longer
-required to avoid leaking the resource if err is not zero.
+Anders and Philippe have reported that recent kernels occasionally hang
+when used with NFS in readahead code.  The problem has been bisected to
+7c877586da3 ("readahead: properly shorten readahead when falling back to
+do_page_cache_ra()").  The cause of the problem is that ra->size can be
+shrunk by read_pages() call and subsequently we end up calling
+do_page_cache_ra() with negative (read huge positive) number of pages.
+Let's revert 7c877586da3 for now until we can find a proper way how the
+logic in read_pages() and page_cache_ra_order() can coexist.  This can
+lead to reduced readahead throughput due to readahead window confusion but
+that's better than outright hangs.
 
-Cc: stable@vger.kernel.org
-Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241030-brcmfmac-of-cleanup-v1-1-0b90eefb4279@gmail.com
+Link: https://lkml.kernel.org/r/20241126145208.985-1-jack@suse.cz
+Fixes: 7c877586da31 ("readahead: properly shorten readahead when falling back to do_page_cache_ra()")
+Reported-by: Anders Blomdell <anders.blomdell@gmail.com>
+Reported-by: Philippe Troin <phil@fifi.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Tested-by: Philippe Troin <phil@fifi.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/readahead.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -102,9 +102,8 @@ void brcmf_of_probe(struct device *dev,
- 		}
- 		strreplace(board_type, '/', '-');
- 		settings->board_type = board_type;
--
--		of_node_put(root);
- 	}
-+	of_node_put(root);
- 
- 	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -453,8 +453,7 @@ void page_cache_ra_order(struct readahea
+ 		struct file_ra_state *ra, unsigned int new_order)
+ {
+ 	struct address_space *mapping = ractl->mapping;
+-	pgoff_t start = readahead_index(ractl);
+-	pgoff_t index = start;
++	pgoff_t index = readahead_index(ractl);
+ 	unsigned int min_order = mapping_min_folio_order(mapping);
+ 	pgoff_t limit = (i_size_read(mapping->host) - 1) >> PAGE_SHIFT;
+ 	pgoff_t mark = index + ra->size - ra->async_size;
+@@ -517,7 +516,7 @@ void page_cache_ra_order(struct readahea
+ 	if (!err)
  		return;
+ fallback:
+-	do_page_cache_ra(ractl, ra->size - (index - start), ra->async_size);
++	do_page_cache_ra(ractl, ra->size, ra->async_size);
+ }
+ 
+ static unsigned long ractl_max_pages(struct readahead_control *ractl,
 
 
 
