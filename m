@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDCA9EF174
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6A09EEB20
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74EC5189C8B2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26678166A7E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A57236F85;
-	Thu, 12 Dec 2024 16:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3246B21C195;
+	Thu, 12 Dec 2024 15:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHi+g2Az"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xd8NVzmr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D39C2253EC;
-	Thu, 12 Dec 2024 16:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17B41487CD;
+	Thu, 12 Dec 2024 15:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020525; cv=none; b=F6Er3yAalHnIUtEa12+nG7aacr1jX8ynzGebBPuhy1IkCQ1NE7OPChsDLUw9hJU0Wqj5VaHLeWZ/Xehw6aF/SlJbaM9z0Acn8vJHqFkcQgTse+g/GtFXmTdH8ZSN02bGfTsdfjSwN+u9JUGoOMWOtHCDLr/X5cm3D9u9nQdgUsg=
+	t=1734016566; cv=none; b=MvGFMDNtkJB6UxbgT4wGlkiEDGPRjC3F06xXo3VF5dr6p6qYbGWW70QGeXuCrJFHoOm7c1jPCVM25NX7lM1IjvEvPxY9XgeD0A52Sg/q6btJaYjc423fU218g+7ZcqkMefPEZIXYmShvcyQiUv1nSPwZjvEFP1k0E9p+XtLrpws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020525; c=relaxed/simple;
-	bh=JEAoMkbZKIWxnGLXnASydz6Q1zP9PMRa9iws7PMYOGk=;
+	s=arc-20240116; t=1734016566; c=relaxed/simple;
+	bh=eeHMsiPu65vh6XQVQ3uc2wi7Pot/ecLSeYZZWSxeX2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/Uvl9uBtzPCGdESrdEZDyqqOwd5ihk/14tx5IOp/5gh7a8XV9ug6SyK4Ea12PWf+z08dLirC1Kgtg/YdmabETqY6Bz6P/nKWskbBHSVGL2XPjDe2hEucSZXl2g2TUIYbhtrfIGF7f0Adoa/gAlV0lrbKbL2njSTDD/J+8BKkg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHi+g2Az; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FA7C4CECE;
-	Thu, 12 Dec 2024 16:22:04 +0000 (UTC)
+	 MIME-Version; b=mj5wrC1HKUy6BEQogjXzx4UJEUiuoq0zS8EuuvC00vYlB2GvHGate9EBh4MDnDhPkW7PjYHRy4XreXYj95lUHwUu8W/NKYEJ4lnHQ3TWuRFVaDwtG2cH2E1gK7xZY1KgY4l9G8UERnzUWw1hFRpWvshs0FHkGW6/XNyL5mpjfug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xd8NVzmr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9C9C4CECE;
+	Thu, 12 Dec 2024 15:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020524;
-	bh=JEAoMkbZKIWxnGLXnASydz6Q1zP9PMRa9iws7PMYOGk=;
+	s=korg; t=1734016565;
+	bh=eeHMsiPu65vh6XQVQ3uc2wi7Pot/ecLSeYZZWSxeX2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHi+g2AzEk313nNWZvRH8ZNtn3vcj+SO7Oajtf2qrWsH41I8UdmRagUHx1thasjOH
-	 mvBizwQEYkQWANJ64UB4caywgIkHl8cara05k0u3x3QbkuNTcqVD+oacKqovh52xCZ
-	 9A3RKntgAFhz51aDKPgXlvwYVqkmMIBYbvZy7Hoo=
+	b=Xd8NVzmrIk2DMkN4GUnrZLCXMmzs3o0rcEtLI/1EN6usGs7t1eVHOpf0P5nw0QWd7
+	 2zmHBBm9bp12E7DD/Oam+zlcuxagUvr1i5T8d1xJuxUkjCQHhe92WCbxhM6LN/Ov/3
+	 HIA9IhEI8Z4cUPiDkKrodbrfc3qcPT3Gv2J0fHpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 459/772] media: i2c: dw9768: Fix pm_runtime_set_suspended() with runtime pm enabled
+	Herve Codina <herve.codina@bootlin.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 235/466] gpio: free irqs that are still requested when the chip is being removed
 Date: Thu, 12 Dec 2024 15:56:44 +0100
-Message-ID: <20241212144408.896299631@linuxfoundation.org>
+Message-ID: <20241212144316.066251568@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit d6594d50761728d09f23238cf9c368bab6260ef3 upstream.
+[ Upstream commit ec8b6f55b98146c41dcf15e8189eb43291e35e89 ]
 
-It is not valid to call pm_runtime_set_suspended() and
-pm_runtime_set_active() for devices with runtime PM enabled because it
-returns -EAGAIN if it is enabled already and working. So, adjust the
-order to fix it.
+If we remove a GPIO chip that is also an interrupt controller with users
+not having freed some interrupts, we'll end up leaking resources as
+indicated by the following warning:
 
-Cc: stable@vger.kernel.org
-Fixes: 5f9a089b6de3 ("dw9768: Enable low-power probe on ACPI")
-Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'gpio'
+
+As there's no way of notifying interrupt users about the irqchip going
+away and the interrupt subsystem is not plugged into the driver model and
+so not all cases can be handled by devlinks, we need to make sure to free
+all interrupts before the complete the removal of the provider.
+
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20240919135104.3583-1-brgl@bgdev.pl
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/dw9768.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpio/gpiolib.c | 41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
---- a/drivers/media/i2c/dw9768.c
-+++ b/drivers/media/i2c/dw9768.c
-@@ -476,10 +476,9 @@ static int dw9768_probe(struct i2c_clien
- 	 * to be powered on in an ACPI system. Similarly for power off in
- 	 * remove.
- 	 */
--	pm_runtime_enable(dev);
- 	full_power = (is_acpi_node(dev_fwnode(dev)) &&
- 		      acpi_dev_state_d0(dev)) ||
--		     (is_of_node(dev_fwnode(dev)) && !pm_runtime_enabled(dev));
-+		     (is_of_node(dev_fwnode(dev)) && !IS_ENABLED(CONFIG_PM));
- 	if (full_power) {
- 		ret = dw9768_runtime_resume(dev);
- 		if (ret < 0) {
-@@ -489,6 +488,7 @@ static int dw9768_probe(struct i2c_clien
- 		pm_runtime_set_active(dev);
- 	}
- 
-+	pm_runtime_enable(dev);
- 	ret = v4l2_async_register_subdev(&dw9768->sd);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to register V4L2 subdev: %d", ret);
-@@ -500,12 +500,12 @@ static int dw9768_probe(struct i2c_clien
- 	return 0;
- 
- err_power_off:
-+	pm_runtime_disable(dev);
- 	if (full_power) {
- 		dw9768_runtime_suspend(dev);
- 		pm_runtime_set_suspended(dev);
- 	}
- err_clean_entity:
--	pm_runtime_disable(dev);
- 	media_entity_cleanup(&dw9768->sd.entity);
- err_free_handler:
- 	v4l2_ctrl_handler_free(&dw9768->ctrls);
-@@ -522,12 +522,12 @@ static void dw9768_remove(struct i2c_cli
- 	v4l2_async_unregister_subdev(&dw9768->sd);
- 	v4l2_ctrl_handler_free(&dw9768->ctrls);
- 	media_entity_cleanup(&dw9768->sd.entity);
-+	pm_runtime_disable(dev);
- 	if ((is_acpi_node(dev_fwnode(dev)) && acpi_dev_state_d0(dev)) ||
--	    (is_of_node(dev_fwnode(dev)) && !pm_runtime_enabled(dev))) {
-+	    (is_of_node(dev_fwnode(dev)) && !IS_ENABLED(CONFIG_PM))) {
- 		dw9768_runtime_suspend(dev);
- 		pm_runtime_set_suspended(dev);
- 	}
--	pm_runtime_disable(dev);
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 2b02655abb56e..44372f8647d51 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -14,6 +14,7 @@
+ #include <linux/idr.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
++#include <linux/irqdesc.h>
+ #include <linux/kernel.h>
+ #include <linux/list.h>
+ #include <linux/lockdep.h>
+@@ -713,6 +714,45 @@ bool gpiochip_line_is_valid(const struct gpio_chip *gc,
  }
+ EXPORT_SYMBOL_GPL(gpiochip_line_is_valid);
  
- static const struct of_device_id dw9768_of_table[] = {
++static void gpiod_free_irqs(struct gpio_desc *desc)
++{
++	int irq = gpiod_to_irq(desc);
++	struct irq_desc *irqd = irq_to_desc(irq);
++	void *cookie;
++
++	for (;;) {
++		/*
++		 * Make sure the action doesn't go away while we're
++		 * dereferencing it. Retrieve and store the cookie value.
++		 * If the irq is freed after we release the lock, that's
++		 * alright - the underlying maple tree lookup will return NULL
++		 * and nothing will happen in free_irq().
++		 */
++		scoped_guard(mutex, &irqd->request_mutex) {
++			if (!irq_desc_has_action(irqd))
++				return;
++
++			cookie = irqd->action->dev_id;
++		}
++
++		free_irq(irq, cookie);
++	}
++}
++
++/*
++ * The chip is going away but there may be users who had requested interrupts
++ * on its GPIO lines who have no idea about its removal and have no way of
++ * being notified about it. We need to free any interrupts still in use here or
++ * we'll leak memory and resources (like procfs files).
++ */
++static void gpiochip_free_remaining_irqs(struct gpio_chip *gc)
++{
++	struct gpio_desc *desc;
++
++	for_each_gpio_desc_with_flag(gc, desc, FLAG_USED_AS_IRQ)
++		gpiod_free_irqs(desc);
++}
++
+ static void gpiodev_release(struct device *dev)
+ {
+ 	struct gpio_device *gdev = to_gpio_device(dev);
+@@ -1125,6 +1165,7 @@ void gpiochip_remove(struct gpio_chip *gc)
+ 	/* FIXME: should the legacy sysfs handling be moved to gpio_device? */
+ 	gpiochip_sysfs_unregister(gdev);
+ 	gpiochip_free_hogs(gc);
++	gpiochip_free_remaining_irqs(gc);
+ 
+ 	scoped_guard(mutex, &gpio_devices_lock)
+ 		list_del_rcu(&gdev->list);
+-- 
+2.43.0
+
 
 
 
