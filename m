@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-102028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805529EF09F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E68769EF2BC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3808B188F8B6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 852382891A9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2446E223E90;
-	Thu, 12 Dec 2024 16:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9068C226864;
+	Thu, 12 Dec 2024 16:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgqaJffI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktStaDg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D438E222D72;
-	Thu, 12 Dec 2024 16:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF1F216E3B;
+	Thu, 12 Dec 2024 16:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019692; cv=none; b=l+gb6d3bPkzCMdnV0xln/kI5PPxX9cjIdQU8riGGHSVI8P6UxTLzzJIzl+O+qZV+obyy1IOGLwzQwP1NPKxMBj2t1z7WbG1T1RVeeUXkxUdAUkJn0l5OfUe3Rrbf+WNcTU+wmubsfdBe89JFpBBvJ37kJFBsUqNUMbvwGQnoiPs=
+	t=1734021753; cv=none; b=hH/b5kK2BRaJauyKxI14Gzxd/+wv/R6Kk45DbOj26T3hwqHrL/AkckcpOMbYPRyz6RWlMFbrue2jOHwE5XkCGU62bK34zjI4JAuU2Z3TWiyVslM4bIB0kP5xD3xkuWriXdEUnVSzGKVIcEPjp/uTIrHWjALlyuq9JDrBN+Lo9gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019692; c=relaxed/simple;
-	bh=YJoB2touhNwOSsfYdLqWO6sPxhewwJJUzViP2ifqJBc=;
+	s=arc-20240116; t=1734021753; c=relaxed/simple;
+	bh=V0GxRHg4r9bATzze6jmJFeOUBsII/lFCmZRnYPePzLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZvJqi/exBaAC/4IJbkeJK49sbPKjCtN3guxgSCyFQCIKkkyEfuqjr+QTUOIS1Ll7rCXhFpTlD9DMWHWBOlajuuR2mjuHfoCBZjBpQLq+xWAwzLaawJsYYsQ37Pyytkob3pMhoA2uiM9HDDN8AFaOQwFciLKu6zyys8C5x+2Jb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgqaJffI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBA3C4CECE;
-	Thu, 12 Dec 2024 16:08:12 +0000 (UTC)
+	 MIME-Version; b=ZCGr/BPx0QCnq/zHFA+67Qa2AZn3ytR+sJBLcBmpnL1E7W46irQRFjNBBtXlvnTR0LQLxrbSk+3VoEYknTsDQcivpSb96cANUaoc+FvPgJpKkZAus0g9Q6Op2bHg2vSjQoQYTVysUg6Okz+BsSzawwZiTVPfRupgPeyZamZ27+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktStaDg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42CCC4CECE;
+	Thu, 12 Dec 2024 16:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019692;
-	bh=YJoB2touhNwOSsfYdLqWO6sPxhewwJJUzViP2ifqJBc=;
+	s=korg; t=1734021753;
+	bh=V0GxRHg4r9bATzze6jmJFeOUBsII/lFCmZRnYPePzLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgqaJffIbUJRbMAQfVSdttQmBI0YeGvq/hMW7v8ryosM/36wzSDCk9CLQHenDEQHQ
-	 6CHEE9Zrd4GnV2YyF6vKc9nB8sUJgD5MGcMlKgiDRmMBM9leAEOEDuiBOGdS+rx69T
-	 YtXDWj78W+69IxLjgYgmYrYfH6ZWTztVUEn/JXeA=
+	b=ktStaDg63j/CvTLpAMpspi3/dGw26XyBrP5+g3XeO4+jIbseU1NhF6IE9khcedLEt
+	 rMTE5Y2Ea6KogOWtywQqjCHDRxey2CvJE6bvjuiaJp2YL91ZjcwPgtVWh4r2do/Kbm
+	 ffXEQiThRlaeot2wHtaYeqRbDlGJlgPoJtgZaBMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 274/772] f2fs: open code allocate_segment_by_default
-Date: Thu, 12 Dec 2024 15:53:39 +0100
-Message-ID: <20241212144401.230509500@linuxfoundation.org>
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Alexander Lobakin <alobakin@pm.me>,
+	David Hildenbrand <david@redhat.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Nanyong Sun <sunnanyong@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 025/565] mm: fix NULL pointer dereference in alloc_pages_bulk_noprof
+Date: Thu, 12 Dec 2024 15:53:40 +0100
+Message-ID: <20241212144312.443254232@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +67,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit 8442d94b8ac8d5d8300725a9ffa9def526b71170 ]
+commit 8ce41b0f9d77cca074df25afd39b86e2ee3aa68e upstream.
 
-allocate_segment_by_default has just two callers, which use very
-different code pathes inside it based on the force paramter.  Just
-open code the logic in the two callers using a new helper to decided
-if a new segment should be allocated.
+We triggered a NULL pointer dereference for ac.preferred_zoneref->zone in
+alloc_pages_bulk_noprof() when the task is migrated between cpusets.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 43563069e1c1 ("f2fs: check curseg->inited before write_sum_page in change_curseg")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When cpuset is enabled, in prepare_alloc_pages(), ac->nodemask may be
+&current->mems_allowed.  when first_zones_zonelist() is called to find
+preferred_zoneref, the ac->nodemask may be modified concurrently if the
+task is migrated between different cpusets.  Assuming we have 2 NUMA Node,
+when traversing Node1 in ac->zonelist, the nodemask is 2, and when
+traversing Node2 in ac->zonelist, the nodemask is 1.  As a result, the
+ac->preferred_zoneref points to NULL zone.
+
+In alloc_pages_bulk_noprof(), for_each_zone_zonelist_nodemask() finds a
+allowable zone and calls zonelist_node_idx(ac.preferred_zoneref), leading
+to NULL pointer dereference.
+
+__alloc_pages_noprof() fixes this issue by checking NULL pointer in commit
+ea57485af8f4 ("mm, page_alloc: fix check for NULL preferred_zone") and
+commit df76cee6bbeb ("mm, page_alloc: remove redundant checks from alloc
+fastpath").
+
+To fix it, check NULL pointer for preferred_zoneref->zone.
+
+Link: https://lkml.kernel.org/r/20241113083235.166798-1-tujinjiang@huawei.com
+Fixes: 387ba26fb1cb ("mm/page_alloc: add a bulk page allocator")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Alexander Lobakin <alobakin@pm.me>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.c | 50 +++++++++++++++++++++++------------------------
- 1 file changed, 24 insertions(+), 26 deletions(-)
+ mm/page_alloc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index bfc3c9ba6ef40..a40322964c1e0 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2859,31 +2859,20 @@ static int get_ssr_segment(struct f2fs_sb_info *sbi, int type,
- 	return 0;
- }
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5336,7 +5336,8 @@ unsigned long __alloc_pages_bulk(gfp_t g
+ 	gfp = alloc_gfp;
  
--/*
-- * flush out current segment and replace it with new segment
-- * This function should be returned with success, otherwise BUG
-- */
--static void allocate_segment_by_default(struct f2fs_sb_info *sbi,
--						int type, bool force)
-+static bool need_new_seg(struct f2fs_sb_info *sbi, int type)
- {
- 	struct curseg_info *curseg = CURSEG_I(sbi, type);
+ 	/* Find an allowed local zone that meets the low watermark. */
+-	for_each_zone_zonelist_nodemask(zone, z, ac.zonelist, ac.highest_zoneidx, ac.nodemask) {
++	z = ac.preferred_zoneref;
++	for_next_zone_zonelist_nodemask(zone, z, ac.highest_zoneidx, ac.nodemask) {
+ 		unsigned long mark;
  
--	if (force)
--		new_curseg(sbi, type, true);
--	else if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
--					curseg->seg_type == CURSEG_WARM_NODE)
--		new_curseg(sbi, type, false);
--	else if (curseg->alloc_type == LFS &&
--			is_next_segment_free(sbi, curseg, type) &&
--			likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
--		new_curseg(sbi, type, false);
--	else if (f2fs_need_SSR(sbi) &&
--			get_ssr_segment(sbi, type, SSR, 0))
--		change_curseg(sbi, type, true);
--	else
--		new_curseg(sbi, type, false);
--
--	stat_inc_seg_type(sbi, curseg);
-+	if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
-+	    curseg->seg_type == CURSEG_WARM_NODE)
-+		return true;
-+	if (curseg->alloc_type == LFS &&
-+	    is_next_segment_free(sbi, curseg, type) &&
-+	    likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
-+		return true;
-+	if (!f2fs_need_SSR(sbi) || !get_ssr_segment(sbi, type, SSR, 0))
-+		return true;
-+	return false;
- }
- 
- void f2fs_allocate_segment_for_resize(struct f2fs_sb_info *sbi, int type,
-@@ -2936,7 +2925,8 @@ static void __allocate_new_segment(struct f2fs_sb_info *sbi, int type,
- 		return;
- alloc:
- 	old_segno = curseg->segno;
--	allocate_segment_by_default(sbi, type, true);
-+	new_curseg(sbi, type, true);
-+	stat_inc_seg_type(sbi, curseg);
- 	locate_dirty_segment(sbi, old_segno);
- }
- 
-@@ -3287,11 +3277,19 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
- 	update_sit_entry(sbi, old_blkaddr, -1);
- 
- 	if (!__has_curseg_space(sbi, curseg)) {
--		if (from_gc)
-+		/*
-+		 * Flush out current segment and replace it with new segment.
-+		 */
-+		if (from_gc) {
- 			get_atssr_segment(sbi, type, se->type,
- 						AT_SSR, se->mtime);
--		else
--			allocate_segment_by_default(sbi, type, false);
-+		} else {
-+			if (need_new_seg(sbi, type))
-+				new_curseg(sbi, type, false);
-+			else
-+				change_curseg(sbi, type, true);
-+			stat_inc_seg_type(sbi, curseg);
-+		}
- 	}
- 	/*
- 	 * segment dirty status should be updated after segment allocation,
--- 
-2.43.0
-
+ 		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
 
 
 
