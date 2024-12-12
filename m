@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B4D9EF9B2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75AE9EF6B8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F7D9189A6A6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03C22173C8C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF8622541D;
-	Thu, 12 Dec 2024 17:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C366222D7B;
+	Thu, 12 Dec 2024 17:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9mpJghy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHt15GkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B9D22540B;
-	Thu, 12 Dec 2024 17:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5C4215762;
+	Thu, 12 Dec 2024 17:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025602; cv=none; b=sy3a6mdeNa/aaRWe1vd+ChfmCzzMn8kY7oBM1fAWNFtVM4I7fY3oGVHK9SAT7MooxSLk3eimtmaVHFFd5Dq03asLvGthNl/09f6PTwWCqajlC23irqGEqo+a+vxNq+h+AYxA5oG+Ff4xWXlchFis/8GI90uFQpa62b3yl88O4ks=
+	t=1734023539; cv=none; b=UI+BoIhB3eFsRyjY7254zzJnyMzbhshyYYMxqX2CbuGApy4mprL+n+sg+r2n/dN94bww65kiL3LlIoRAjw7A58LI5B46RqxRWU/Cl4rI8C2syEvPXYr7jU5Ur7Z6qJWFXv2lzwBxA2I90K1LRICknJwoWAgEowlds9jhqjxqqpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025602; c=relaxed/simple;
-	bh=368lU46KYietBa8DuHf7eEcpz3b0E49RSKM1UFL2IsU=;
+	s=arc-20240116; t=1734023539; c=relaxed/simple;
+	bh=Bbc9MGE65AQE3Z8YccsBb8IAFdq7maCLKrtmZYN0N6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OgZyEMqpziNMpQg9GHTo0LwaNcTyL5Ywrjbp1uOooPHaGOoW+LjoBtSuW9KM3ErIYLJSX+uWVyACPdKMCCEkAWT/qDx7+eeZC8vXg3n6AyPr75ARH9NftEpsWHs7ei24PL7NkDIZ6Nxh69HVtRag8+V6WrStjqEyUl20wac5M20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9mpJghy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12802C4CECE;
-	Thu, 12 Dec 2024 17:46:41 +0000 (UTC)
+	 MIME-Version; b=bTQDqH8t+lfDqgOOwzu+msyG5aYyhKPNhnPvTRcoHZ7asD34eicBxWDcQuwpGzkaOpvidPW0ZTzGS26OWGg5BeQohDG50EYOPTA7x8ngac8FO0MRZeW29fMjiW61AqTihslTNYGCEiv+NhRFhfkZFNP0hJh2Zb9WH5d0k4v2JmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHt15GkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9F5C4CED0;
+	Thu, 12 Dec 2024 17:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025602;
-	bh=368lU46KYietBa8DuHf7eEcpz3b0E49RSKM1UFL2IsU=;
+	s=korg; t=1734023538;
+	bh=Bbc9MGE65AQE3Z8YccsBb8IAFdq7maCLKrtmZYN0N6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9mpJghybKi/ROHN0GP3B5tfMAYIsPH4LU4LBoWmuzG0E03329qtNJ1W2ro32LjWR
-	 eTrOxuCepNo6LHxPes0NDNypJQMVWXSi0uLDPAGELWdDOIGiZjWpdPVqa7L3BDQbHy
-	 tZiKC/5EjpuIPuD1SimEeP6hsnxlnz+BJrPBj9zs=
+	b=EHt15GkDwJ3Xor050uQO5ROlP9MkQKFPsIhwKmtsTtT1Ab20lkWz9wCw967RObo2m
+	 zuBXpNLnaXgxCN3hDx7Xdcv/nO9KKFLZsksV/oIkMmMvbBz1vIYFn+crvoi7W4SHtS
+	 IKmBCxueyQECbGRtBk+3Wl6VfSlOipnkrDsMNnH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Ottens <martin.ottens@fau.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 225/321] net/sched: tbf: correct backlog statistic for GSO packets
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH 5.15 548/565] drm/amd/display: Check BIOS images before it is used
 Date: Thu, 12 Dec 2024 16:02:23 +0100
-Message-ID: <20241212144238.864826430@linuxfoundation.org>
+Message-ID: <20241212144333.517450355@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Ottens <martin.ottens@fau.de>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 1596a135e3180c92e42dd1fbcad321f4fb3e3b17 ]
+commit 8b0ddf19cca2a352b2a7e01d99d3ba949a99c84c upstream.
 
-When the length of a GSO packet in the tbf qdisc is larger than the burst
-size configured the packet will be segmented by the tbf_segment function.
-Whenever this function is used to enqueue SKBs, the backlog statistic of
-the tbf is not increased correctly. This can lead to underflows of the
-'backlog' byte-statistic value when these packets are dequeued from tbf.
+BIOS images may fail to load and null checks are added before they are
+used.
 
-Reproduce the bug:
-Ensure that the sender machine has GSO enabled. Configured the tbf on
-the outgoing interface of the machine as follows (burstsize = 1 MTU):
-$ tc qdisc add dev <oif> root handle 1: tbf rate 50Mbit burst 1514 latency 50ms
+This fixes 6 NULL_RETURNS issues reported by Coverity.
 
-Send bulk TCP traffic out via this interface, e.g., by running an iPerf3
-client on this machine. Check the qdisc statistics:
-$ tc -s qdisc show dev <oif>
-
-The 'backlog' byte-statistic has incorrect values while traffic is
-transferred, e.g., high values due to u32 underflows. When the transfer
-is stopped, the value is != 0, which should never happen.
-
-This patch fixes this bug by updating the statistics correctly, even if
-single SKBs of a GSO SKB cannot be enqueued.
-
-Fixes: e43ac79a4bc6 ("sch_tbf: segment too big GSO packets")
-Signed-off-by: Martin Ottens <martin.ottens@fau.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241125174608.1484356-1-martin.ottens@fau.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_tbf.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/net/sched/sch_tbf.c b/net/sched/sch_tbf.c
-index a7f60bb2dd513..259a39ca99bfb 100644
---- a/net/sched/sch_tbf.c
-+++ b/net/sched/sch_tbf.c
-@@ -146,7 +146,7 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
- 	struct tbf_sched_data *q = qdisc_priv(sch);
- 	struct sk_buff *segs, *nskb;
- 	netdev_features_t features = netif_skb_features(skb);
--	unsigned int len = 0, prev_len = qdisc_pkt_len(skb);
-+	unsigned int len = 0, prev_len = qdisc_pkt_len(skb), seg_len;
- 	int ret, nb;
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+@@ -664,6 +664,9 @@ static enum bp_result get_ss_info_v3_1(
  
- 	segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
-@@ -158,22 +158,28 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
- 	while (segs) {
- 		nskb = segs->next;
- 		skb_mark_not_on_list(segs);
--		qdisc_skb_cb(segs)->pkt_len = segs->len;
--		len += segs->len;
-+		seg_len = segs->len;
-+		qdisc_skb_cb(segs)->pkt_len = seg_len;
- 		ret = qdisc_enqueue(segs, q->qdisc, to_free);
- 		if (ret != NET_XMIT_SUCCESS) {
- 			if (net_xmit_drop_count(ret))
- 				qdisc_qstats_drop(sch);
- 		} else {
- 			nb++;
-+			len += seg_len;
- 		}
- 		segs = nskb;
- 	}
- 	sch->q.qlen += nb;
--	if (nb > 1)
-+	sch->qstats.backlog += len;
-+	if (nb > 0) {
- 		qdisc_tree_reduce_backlog(sch, 1 - nb, prev_len - len);
--	consume_skb(skb);
--	return nb > 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
-+		consume_skb(skb);
-+		return NET_XMIT_SUCCESS;
-+	}
+ 	ss_table_header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V3,
+ 		DATA_TABLES(ASIC_InternalSS_Info));
++	if (!ss_table_header_include)
++		return BP_RESULT_UNSUPPORTED;
 +
-+	kfree_skb(skb);
-+	return NET_XMIT_DROP;
- }
+ 	table_size =
+ 		(le16_to_cpu(ss_table_header_include->sHeader.usStructureSize)
+ 				- sizeof(ATOM_COMMON_TABLE_HEADER))
+@@ -1031,6 +1034,8 @@ static enum bp_result get_ss_info_from_i
  
- static int tbf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
--- 
-2.43.0
-
+ 	header = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V2,
+ 		DATA_TABLES(ASIC_InternalSS_Info));
++	if (!header)
++		return result;
+ 
+ 	memset(info, 0, sizeof(struct spread_spectrum_info));
+ 
+@@ -1104,6 +1109,8 @@ static enum bp_result get_ss_info_from_s
+ 	get_atom_data_table_revision(header, &revision);
+ 
+ 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO, DATA_TABLES(SS_Info));
++	if (!tbl)
++		return result;
+ 
+ 	if (1 != revision.major || 2 > revision.minor)
+ 		return result;
+@@ -1631,6 +1638,8 @@ static uint32_t get_ss_entry_number_from
+ 
+ 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO,
+ 			DATA_TABLES(SS_Info));
++	if (!tbl)
++		return number;
+ 
+ 	if (1 != revision.major || 2 > revision.minor)
+ 		return number;
+@@ -1711,6 +1720,8 @@ static uint32_t get_ss_entry_number_from
+ 
+ 	header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V2,
+ 			DATA_TABLES(ASIC_InternalSS_Info));
++	if (!header_include)
++		return 0;
+ 
+ 	size = (le16_to_cpu(header_include->sHeader.usStructureSize)
+ 			- sizeof(ATOM_COMMON_TABLE_HEADER))
+@@ -1748,6 +1759,9 @@ static uint32_t get_ss_entry_number_from
+ 
+ 	header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V3,
+ 			DATA_TABLES(ASIC_InternalSS_Info));
++	if (!header_include)
++		return number;
++
+ 	size = (le16_to_cpu(header_include->sHeader.usStructureSize) -
+ 			sizeof(ATOM_COMMON_TABLE_HEADER)) /
+ 					sizeof(ATOM_ASIC_SS_ASSIGNMENT_V3);
 
 
 
