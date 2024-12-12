@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4E79EF7E2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BAAE9EF580
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91B02288EE1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9A2319426D0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429A5216E2D;
-	Thu, 12 Dec 2024 17:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E55216E3B;
+	Thu, 12 Dec 2024 16:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6v0m6i4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6d1yBGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FD615696E;
-	Thu, 12 Dec 2024 17:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72C8205501;
+	Thu, 12 Dec 2024 16:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025063; cv=none; b=Qw3bF6pDQrqZm8D/GerdoMwy2u9CEQKr+VIUQ0R2WYw09AzSzommZsz+DiV6Ivp9mtf9JX4qkaEUj+tNE76oksfX/wh8RGKB5vbdLd/TGKB3uyj4cAfL2Cu5+vpepPH06NaxR0d0iIkVnW6HlIjJxC0O78Tl2zcs3Fj5p6NG1A4=
+	t=1734022788; cv=none; b=ZeSJhJYGIcSAgb00+KJXomaCRLSpKdHBqQPJMtdEgXAteCSgqp+h7S+P98J4IdaqEzNn21i/+N2gpvH9hEykH6C693Z8YR4RGxAgPLWocC8xjG15w1oaYNDtVP5ie0NtMdFb3jGrKn8keNn7A74VO+Bm94OMtxF4qwXYkjOmbuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025063; c=relaxed/simple;
-	bh=8KjGUY/DOrGhoGsGDfATZPCNf6L5qnT82nFbVnxS/Qk=;
+	s=arc-20240116; t=1734022788; c=relaxed/simple;
+	bh=fdooQ5UR39K47E8PpeUWk7uQ34Ye3Z+neS+RTYfoZCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhU8pCa9LmgxcN2j/9TbOboi9scaO7ROysHutcZL+ZrVbXgZfy7gVGuM+uImyrvzvDnM5i5TbhlUeBaYJE9UeUuXomBQsC08H6BnuRixezBd8fz0vr6eo7RJ9ZAQ4ihV3uOFfXcil6WmSB77Q1n2vRHSjHUo05hEFrVVdLTSZnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6v0m6i4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E03CC4CED0;
-	Thu, 12 Dec 2024 17:37:42 +0000 (UTC)
+	 MIME-Version; b=fAKceSCSh2XaEQsdm/yY0K57C6qHb9B/TGPFg17K8MtonP1eaazXLidN3ZbSpzyMgev+EDsNHziWAlmcAqbq3TjKJUMzVG77A+B5RujJTpAWc/KdIoJC7rfNCoLI5Tdq7E/Z9YBgqsnbpHEjfce0ifSptOgTl5VTDPCV9j2h1yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6d1yBGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273E4C4CECE;
+	Thu, 12 Dec 2024 16:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025062;
-	bh=8KjGUY/DOrGhoGsGDfATZPCNf6L5qnT82nFbVnxS/Qk=;
+	s=korg; t=1734022788;
+	bh=fdooQ5UR39K47E8PpeUWk7uQ34Ye3Z+neS+RTYfoZCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6v0m6i4IHEZ9BOgDyQAl9dfw9fXv+OqATgS/YF5Cw+d84O3HmdJAMVEFTw+jmC4m
-	 h2N3NUQAq3BqM21wj+Dm/VfWEikvwZICWLk7BmgB8ef5CLrDWTtvWHkPhVNYQQs+bw
-	 +Ohk+PeLCrHiRDprbKeqCu5axgB7Dyim/JoSduy0=
+	b=k6d1yBGAMfTuE9dHTBhX2ksddexYNDRe8oxuUxCqBMsuSL2cYACMS2gg2T2/E9LSr
+	 FlB6KcQV9bD6xMR0dmzcIdcPOSABgdGVSHmGisYybpCkSuT4hFxC1oFiUCoCbQK1n6
+	 JTyBBxOmaMxBMdq2HQd6pxUMg0WsndaZ41dKlYNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 013/321] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet
+	Huacai Chen <chenhuacai@loongson.cn>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: [PATCH 5.15 336/565] sh: cpuinfo: Fix a warning for CONFIG_CPUMASK_OFFSTACK
 Date: Thu, 12 Dec 2024 15:58:51 +0100
-Message-ID: <20241212144230.172084295@linuxfoundation.org>
+Message-ID: <20241212144324.880130052@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 0107f28f135231da22a9ad5756bb16bd5cada4d5 ]
+commit 3c891f7c6a4e90bb1199497552f24b26e46383bc upstream.
 
-The Vexia Edu Atla 10 tablet mostly uses the BYTCR tablet defaults,
-but as happens on more models it is using IN1 instead of IN3 for
-its internal mic and JD_SRC_JD2_IN4N instead of JD_SRC_JD1_IN4P
-for jack-detection.
+When CONFIG_CPUMASK_OFFSTACK and CONFIG_DEBUG_PER_CPU_MAPS are selected,
+cpu_max_bits_warn() generates a runtime warning similar as below when
+showing /proc/cpuinfo. Fix this by using nr_cpu_ids (the runtime limit)
+instead of NR_CPUS to iterate CPUs.
 
-Add a DMI quirk for this to fix the internal-mic and jack-detection.
+[    3.052463] ------------[ cut here ]------------
+[    3.059679] WARNING: CPU: 3 PID: 1 at include/linux/cpumask.h:108 show_cpuinfo+0x5e8/0x5f0
+[    3.070072] Modules linked in: efivarfs autofs4
+[    3.076257] CPU: 0 PID: 1 Comm: systemd Not tainted 5.19-rc5+ #1052
+[    3.099465] Stack : 9000000100157b08 9000000000f18530 9000000000cf846c 9000000100154000
+[    3.109127]         9000000100157a50 0000000000000000 9000000100157a58 9000000000ef7430
+[    3.118774]         90000001001578e8 0000000000000040 0000000000000020 ffffffffffffffff
+[    3.128412]         0000000000aaaaaa 1ab25f00eec96a37 900000010021de80 900000000101c890
+[    3.138056]         0000000000000000 0000000000000000 0000000000000000 0000000000aaaaaa
+[    3.147711]         ffff8000339dc220 0000000000000001 0000000006ab4000 0000000000000000
+[    3.157364]         900000000101c998 0000000000000004 9000000000ef7430 0000000000000000
+[    3.167012]         0000000000000009 000000000000006c 0000000000000000 0000000000000000
+[    3.176641]         9000000000d3de08 9000000001639390 90000000002086d8 00007ffff0080286
+[    3.186260]         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1c
+[    3.195868]         ...
+[    3.199917] Call Trace:
+[    3.203941] [<90000000002086d8>] show_stack+0x38/0x14c
+[    3.210666] [<9000000000cf846c>] dump_stack_lvl+0x60/0x88
+[    3.217625] [<900000000023d268>] __warn+0xd0/0x100
+[    3.223958] [<9000000000cf3c90>] warn_slowpath_fmt+0x7c/0xcc
+[    3.231150] [<9000000000210220>] show_cpuinfo+0x5e8/0x5f0
+[    3.238080] [<90000000004f578c>] seq_read_iter+0x354/0x4b4
+[    3.245098] [<90000000004c2e90>] new_sync_read+0x17c/0x1c4
+[    3.252114] [<90000000004c5174>] vfs_read+0x138/0x1d0
+[    3.258694] [<90000000004c55f8>] ksys_read+0x70/0x100
+[    3.265265] [<9000000000cfde9c>] do_syscall+0x7c/0x94
+[    3.271820] [<9000000000202fe4>] handle_syscall+0xc4/0x160
+[    3.281824] ---[ end trace 8b484262b4b8c24c ]---
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241024211615.79518-2-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/sh/kernel/cpu/proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 057ecfe2c8b5c..53a15be38b56f 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -909,6 +909,21 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{	/* Vexia Edu Atla 10 tablet */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
-+		},
-+		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
-+					BYT_RT5640_JD_SRC_JD2_IN4N |
-+					BYT_RT5640_OVCD_TH_2000UA |
-+					BYT_RT5640_OVCD_SF_0P75 |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF2 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{	/* Voyo Winpad A15 */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
--- 
-2.43.0
-
+--- a/arch/sh/kernel/cpu/proc.c
++++ b/arch/sh/kernel/cpu/proc.c
+@@ -132,7 +132,7 @@ static int show_cpuinfo(struct seq_file
+ 
+ static void *c_start(struct seq_file *m, loff_t *pos)
+ {
+-	return *pos < NR_CPUS ? cpu_data + *pos : NULL;
++	return *pos < nr_cpu_ids ? cpu_data + *pos : NULL;
+ }
+ static void *c_next(struct seq_file *m, void *v, loff_t *pos)
+ {
 
 
 
