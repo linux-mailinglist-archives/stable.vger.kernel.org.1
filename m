@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-101737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBB89EEE68
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0632C9EF3BE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F02D7188FF20
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:51:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FBCA18934C7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2585A223C5D;
-	Thu, 12 Dec 2024 15:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00635222D59;
+	Thu, 12 Dec 2024 16:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9gYFrdI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8MNTxUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70342210FB;
-	Thu, 12 Dec 2024 15:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15772210F8;
+	Thu, 12 Dec 2024 16:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018622; cv=none; b=qlUzvLylLJoNyGK6vgMbgTI7xup/Z7B2cu9b3KPexJUmn/tuQQ8K73+hn78GnNX1oS5EwwluqgBs7KKHKxiyy24B6LhwCKB+d0g/rzXA76A2SSIN8aS7l/67X/mf9zKPupOWAuYn9Ompz4ZnC6jK41kTA5LQGLFSuOGFMPQl348=
+	t=1734021468; cv=none; b=r2w0BAbB1xMvNqUEBh/gTflUMmlq0WAhc+rQRP5YJjJtV54Rkf5ssQAOujJFUSeex47kXYWBOBjJV3gEOuA3fqUOE6sDCsR9EfIH6Akvp3J6UZDdO4cC4AEkHFPqdp8QFttAXSAuaH9EXgRy0gxi7tWZVYq+Lr1fThjrd0qwWbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018622; c=relaxed/simple;
-	bh=2nNpABws69uasDsd1CuJgbO3WjorKreCrZsGJyJfuiQ=;
+	s=arc-20240116; t=1734021468; c=relaxed/simple;
+	bh=xTVmgbXZvD8kbM+OsF51aLTLD0a7YuiIzFRb3JhrSQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3IMHBuapDX7z0DvOyrkn1zQUKFX6fssE3lNyisVP1sKZCTAnzkxVBg4Kx5SWkqU4L/YihEzdf1JFQ9Jz7FbxZDt+tee4dP5o1fMPjTEWZnO5SrJEDgnCkyU0ILD//2DYZzQKT97Q9TIwxD4puqU2yh9xJk9el4bfkOfGcu02MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9gYFrdI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41ED3C4CECE;
-	Thu, 12 Dec 2024 15:50:21 +0000 (UTC)
+	 MIME-Version; b=BQPpKQKkSQvzq+6w39BawQ/nIYyuvHNZULxQJBErAtba+YNPETgzz2vjW6j27DS+BGmDRk6/H411HfglUUHGCL+w0awhromKMJH9C0xgxt4PH4EiIM8KYvHHwGmma6eq545F1wC++gjCC66YAcTYrpV68bI+GtfrqGI1gSbVGv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8MNTxUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A68C4CECE;
+	Thu, 12 Dec 2024 16:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018622;
-	bh=2nNpABws69uasDsd1CuJgbO3WjorKreCrZsGJyJfuiQ=;
+	s=korg; t=1734021468;
+	bh=xTVmgbXZvD8kbM+OsF51aLTLD0a7YuiIzFRb3JhrSQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9gYFrdISafq+LmVlrOB/DYsyT4iYkCAbcjei6jNTC9GCGOfENWBrkSs0ggGSWFrO
-	 E6JgXqpPPq3FkZJ00g4r0FEChGTfqmZDCNoEcsEpLuUvI8BKP42vsrE6r4yDuJzM/R
-	 UZD+uPezS7mJzCQCTkH5NVqekm+f6nGZs1+UMYTY=
+	b=C8MNTxUUFsyJ6LVN98Cq1AFdzDOWAg7qoCFUusMHSoRJw/6uiFOpH9BhZfDvDz9vc
+	 9irxx86TopqfjCkoLd2OY9Wpbo0pjUxDI9fIxL5cwUklnaFzVpN+qnoAisxctj6M9Q
+	 5oaZuw85VfWgsdOQZLsSE+SKejHdkMwGHGudMdBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian@huaweicloud.com>,
-	SeongJae Park <sj@kernel.org>,
-	Fernand Sieber <sieberf@amazon.com>,
-	Leonard Foerster <foersleo@amazon.de>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Ye Weihua <yeweihua4@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 342/356] mm/damon/vaddr: fix issue in damon_va_evenly_split_region()
+	Keith Busch <kbusch@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Amey Narkhede <ameynarkhede03@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 716/772] PCI: Add reset_subordinate to reset hierarchy below bridge
 Date: Thu, 12 Dec 2024 16:01:01 +0100
-Message-ID: <20241212144258.080988235@linuxfoundation.org>
+Message-ID: <20241212144419.474689306@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,127 +64,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian@huaweicloud.com>
+From: Keith Busch <kbusch@kernel.org>
 
-commit f3c7a1ede435e2e45177d7a490a85fb0a0ec96d1 upstream.
+[ Upstream commit 2fa046449a82a7d0f6d9721dd83e348816038444 ]
 
-Patch series "mm/damon/vaddr: Fix issue in
-damon_va_evenly_split_region()".  v2.
+The "bus" and "cxl_bus" reset methods reset a device by asserting Secondary
+Bus Reset on the bridge leading to the device.  These only work if the
+device is the only device below the bridge.
 
-According to the logic of damon_va_evenly_split_region(), currently
-following split case would not meet the expectation:
+Add a sysfs 'reset_subordinate' attribute on bridges that can assert
+Secondary Bus Reset regardless of how many devices are below the bridge.
 
-  Suppose DAMON_MIN_REGION=0x1000,
-  Case: Split [0x0, 0x3000) into 2 pieces, then the result would be
-        acutually 3 regions:
-          [0x0, 0x1000), [0x1000, 0x2000), [0x2000, 0x3000)
-        but NOT the expected 2 regions:
-          [0x0, 0x1000), [0x1000, 0x3000) !!!
+This resets all the devices below a bridge in a single command, including
+the locking and config space save/restore that reset methods normally do.
 
-The root cause is that when calculating size of each split piece in
-damon_va_evenly_split_region():
+This may be the only way to reset devices that don't support other reset
+methods (ACPI, FLR, PM reset, etc).
 
-  `sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION);`
-
-both the dividing and the ALIGN_DOWN may cause loss of precision, then
-each time split one piece of size 'sz_piece' from origin 'start' to 'end'
-would cause more pieces are split out than expected!!!
-
-To fix it, count for each piece split and make sure no more than
-'nr_pieces'.  In addition, add above case into damon_test_split_evenly().
-
-And add 'nr_piece == 1' check in damon_va_evenly_split_region() for better
-code readability and add a corresponding kunit testcase.
-
-
-This patch (of 2):
-
-According to the logic of damon_va_evenly_split_region(), currently
-following split case would not meet the expectation:
-
-  Suppose DAMON_MIN_REGION=0x1000,
-  Case: Split [0x0, 0x3000) into 2 pieces, then the result would be
-        acutually 3 regions:
-          [0x0, 0x1000), [0x1000, 0x2000), [0x2000, 0x3000)
-        but NOT the expected 2 regions:
-          [0x0, 0x1000), [0x1000, 0x3000) !!!
-
-The root cause is that when calculating size of each split piece in
-damon_va_evenly_split_region():
-
-  `sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION);`
-
-both the dividing and the ALIGN_DOWN may cause loss of precision,
-then each time split one piece of size 'sz_piece' from origin 'start' to
-'end' would cause more pieces are split out than expected!!!
-
-To fix it, count for each piece split and make sure no more than
-'nr_pieces'. In addition, add above case into damon_test_split_evenly().
-
-After this patch, damon-operations test passed:
-
- # ./tools/testing/kunit/kunit.py run damon-operations
- [...]
- ============== damon-operations (6 subtests) ===============
- [PASSED] damon_test_three_regions_in_vmas
- [PASSED] damon_test_apply_three_regions1
- [PASSED] damon_test_apply_three_regions2
- [PASSED] damon_test_apply_three_regions3
- [PASSED] damon_test_apply_three_regions4
- [PASSED] damon_test_split_evenly
- ================ [PASSED] damon-operations =================
-
-Link: https://lkml.kernel.org/r/20241022083927.3592237-1-zhengyejian@huaweicloud.com
-Link: https://lkml.kernel.org/r/20241022083927.3592237-2-zhengyejian@huaweicloud.com
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: Fernand Sieber <sieberf@amazon.com>
-Cc: Leonard Foerster <foersleo@amazon.de>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Ye Weihua <yeweihua4@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20241025222755.3756162-1-kbusch@meta.com
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+[bhelgaas: commit log, add capable(CAP_SYS_ADMIN) check]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Amey Narkhede <ameynarkhede03@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/vaddr-test.h |    1 +
- mm/damon/vaddr.c      |    4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ Documentation/ABI/testing/sysfs-bus-pci | 11 +++++++++++
+ drivers/pci/pci-sysfs.c                 | 26 +++++++++++++++++++++++++
+ drivers/pci/pci.c                       |  2 +-
+ drivers/pci/pci.h                       |  1 +
+ 4 files changed, 39 insertions(+), 1 deletion(-)
 
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -300,6 +300,7 @@ static void damon_test_split_evenly(stru
- 	damon_test_split_evenly_fail(test, 0, 100, 0);
- 	damon_test_split_evenly_succ(test, 0, 100, 10);
- 	damon_test_split_evenly_succ(test, 5, 59, 5);
-+	damon_test_split_evenly_succ(test, 0, 3, 2);
- 	damon_test_split_evenly_fail(test, 5, 6, 2);
- }
+diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
+index 840727fc75dcf..6c5ca95a94105 100644
+--- a/Documentation/ABI/testing/sysfs-bus-pci
++++ b/Documentation/ABI/testing/sysfs-bus-pci
+@@ -163,6 +163,17 @@ Description:
+ 		will be present in sysfs.  Writing 1 to this file
+ 		will perform reset.
  
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -67,6 +67,7 @@ static int damon_va_evenly_split_region(
- 	unsigned long sz_orig, sz_piece, orig_end;
- 	struct damon_region *n = NULL, *next;
- 	unsigned long start;
-+	unsigned int i;
++What:		/sys/bus/pci/devices/.../reset_subordinate
++Date:		October 2024
++Contact:	linux-pci@vger.kernel.org
++Description:
++		This is visible only for bridge devices. If you want to reset
++		all devices attached through the subordinate bus of a specific
++		bridge device, writing 1 to this will try to do it.  This will
++		affect all devices attached to the system through this bridge
++		similiar to writing 1 to their individual "reset" file, so use
++		with caution.
++
+ What:		/sys/bus/pci/devices/.../vpd
+ Date:		February 2008
+ Contact:	Ben Hutchings <bwh@kernel.org>
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index df1c44a5c886c..e1a980179dc14 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -517,6 +517,31 @@ static ssize_t bus_rescan_store(struct device *dev,
+ static struct device_attribute dev_attr_bus_rescan = __ATTR(rescan, 0200, NULL,
+ 							    bus_rescan_store);
  
- 	if (!r || !nr_pieces)
- 		return -EINVAL;
-@@ -80,8 +81,7 @@ static int damon_va_evenly_split_region(
++static ssize_t reset_subordinate_store(struct device *dev,
++				struct device_attribute *attr,
++				const char *buf, size_t count)
++{
++	struct pci_dev *pdev = to_pci_dev(dev);
++	struct pci_bus *bus = pdev->subordinate;
++	unsigned long val;
++
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
++
++	if (kstrtoul(buf, 0, &val) < 0)
++		return -EINVAL;
++
++	if (val) {
++		int ret = __pci_reset_bus(bus);
++
++		if (ret)
++			return ret;
++	}
++
++	return count;
++}
++static DEVICE_ATTR_WO(reset_subordinate);
++
+ #if defined(CONFIG_PM) && defined(CONFIG_ACPI)
+ static ssize_t d3cold_allowed_store(struct device *dev,
+ 				    struct device_attribute *attr,
+@@ -621,6 +646,7 @@ static struct attribute *pci_dev_attrs[] = {
+ static struct attribute *pci_bridge_attrs[] = {
+ 	&dev_attr_subordinate_bus_number.attr,
+ 	&dev_attr_secondary_bus_number.attr,
++	&dev_attr_reset_subordinate.attr,
+ 	NULL,
+ };
  
- 	r->ar.end = r->ar.start + sz_piece;
- 	next = damon_next_region(r);
--	for (start = r->ar.end; start + sz_piece <= orig_end;
--			start += sz_piece) {
-+	for (start = r->ar.end, i = 1; i < nr_pieces; start += sz_piece, i++) {
- 		n = damon_new_region(start, start + sz_piece);
- 		if (!n)
- 			return -ENOMEM;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index e08354b811073..8a35a9887302d 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5933,7 +5933,7 @@ EXPORT_SYMBOL_GPL(pci_probe_reset_bus);
+  *
+  * Same as above except return -EAGAIN if the bus cannot be locked
+  */
+-static int __pci_reset_bus(struct pci_bus *bus)
++int __pci_reset_bus(struct pci_bus *bus)
+ {
+ 	int rc;
+ 
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 5d5813aa5b458..38ad75ce52c32 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -37,6 +37,7 @@ bool pci_reset_supported(struct pci_dev *dev);
+ void pci_init_reset_methods(struct pci_dev *dev);
+ int pci_bridge_secondary_bus_reset(struct pci_dev *dev);
+ int pci_bus_error_reset(struct pci_dev *dev);
++int __pci_reset_bus(struct pci_bus *bus);
+ 
+ struct pci_cap_saved_data {
+ 	u16		cap_nr;
+-- 
+2.43.0
+
 
 
 
