@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-101626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6171E9EED8E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227F89EEBBA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33D3D1697F3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C40E9188D1FA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528AA22333D;
-	Thu, 12 Dec 2024 15:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A3A212D6A;
+	Thu, 12 Dec 2024 15:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2v86oUM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmW5HxvH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AAB223335;
-	Thu, 12 Dec 2024 15:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92ED72054F8;
+	Thu, 12 Dec 2024 15:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018218; cv=none; b=EA74XriMpCEjrXvutCyPtIhIJ2yDpb5bibuQjI613AAwDr/5je4EY5tpqLFPK9elDR/sECBQCymrDLZCnjSTt255lzGyQd7nz47TQHYGLDvdrme4x5ymJh9QEtV0OqqFdR6XYm2N2v4xPmIFdh86cAy12G//ZrSapjroBhQKTcA=
+	t=1734017069; cv=none; b=hGvL3P5fiJx/JcSzltNUzhqhOr+m+4VrmKUYzH8UaMkMhDWjrQIlAMv37Y9VJZUOVFYCuq9p3PauaCbxaIq8R8vmbvrW7woFTovnAEvqQeauPb1Ty10ZAqNTC9v4NPsDlKzZEeK5M0m4PprJwQusowxkqP+bvOr+reZickPut/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018218; c=relaxed/simple;
-	bh=QeF++zrA2uFT/o5t5UGd2k78P+2IBx09HKuKm5IL2pA=;
+	s=arc-20240116; t=1734017069; c=relaxed/simple;
+	bh=h2KL4ohGEM0pF88tzoMv5+dSjRX1EUCZU+oySuldiZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFgs/F9a7sUCvc9uT0VRSUjHRZ7d6Yjbd6dkfMZgiab35gzLBXPWxOy4Zc0x5d1VM7RK+BBY7XjZbdXR7Uu/lX6xEilEJ1xlioVRvOg9cclQGkFpv+6ZQ52xZK0L7ZkGgiG2mlkPNrQFIr/t844ULJLAumsNJUaJhMqJafdYg2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2v86oUM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DBDC4CED0;
-	Thu, 12 Dec 2024 15:43:36 +0000 (UTC)
+	 MIME-Version; b=urZ4lVb1OXMLrjoTIuIhwmozqz4qzQUwLXZtt+dW38KLKfymC83uV0jHL52brwSlHfbuxSAq08nvqxPv+Q8GUh/5SAe31/FgtA1dm+jSsxWi7izLvlKZfmO6+JbUHVhUxM07saOazyBe6TEWJ+u6nuYTvz9Ar9hpsJ6Z0/IlzMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmW5HxvH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9403C4CECE;
+	Thu, 12 Dec 2024 15:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018217;
-	bh=QeF++zrA2uFT/o5t5UGd2k78P+2IBx09HKuKm5IL2pA=;
+	s=korg; t=1734017069;
+	bh=h2KL4ohGEM0pF88tzoMv5+dSjRX1EUCZU+oySuldiZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2v86oUMIZ3k/X4pU6Sq9WbUV6LxoHGzRq3Yp6GZHmXo1oMfGMkHSG9QUCuEU+jqA
-	 RSjlg2ll3oteQ2p/A7I75Cu8ppVwHZ7dlVSyMHDZFM1zqzzDICI5+eon4I3TR52qxT
-	 2lqXFGJE3Dnck0MsuMMolDX3JLsFGlmQPzCFKz1o=
+	b=XmW5HxvHGcitsjzZ4BeozFjFo3b9yO4r1CN71BTas8JK31a+tMP01mcxCfQ/V4MfY
+	 G0ppMAfdTBStbiGxN/p3Yf0dHoiVDmRi4CvRfTUuONkQQpKEypuRr5n2aKhJPHiqW9
+	 FM0SgK5DdImvDMK21FOI2PkOAKor5W1++CW0qPNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/356] af_packet: avoid erroring out after sock_init_data() in packet_create()
+Subject: [PATCH 6.12 374/466] clk: qcom: dispcc-sm8550: enable support for SAR2130P
 Date: Thu, 12 Dec 2024 15:59:03 +0100
-Message-ID: <20241212144253.464171950@linuxfoundation.org>
+Message-ID: <20241212144321.552825176@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
+[ Upstream commit 1335c7eb7012f23dc073b8ae4ffcfc1f6e69cfb3 ]
 
-After sock_init_data() the allocated sk object is attached to the provided
-sock object. On error, packet_create() frees the sk object leaving the
-dangling pointer in the sock object on return. Some other code may try
-to use this pointer and cause use-after-free.
+The display clock controller on SAR2130P is very close to the clock
+controller on SM8550 (and SM8650). Reuse existing driver to add support
+for the controller on SAR2130P.
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241027-sar2130p-clocks-v5-10-ecad2a1432ba@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/clk/qcom/Kconfig         |  4 ++--
+ drivers/clk/qcom/dispcc-sm8550.c | 18 ++++++++++++++++--
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 3e5703537e4eb..56e3ae3b6be93 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3428,17 +3428,17 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	if (sock->type == SOCK_PACKET)
- 		sock->ops = &packet_ops_spkt;
+diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
+index 4444dafa4e3df..9ba675f229b14 100644
+--- a/drivers/clk/qcom/Kconfig
++++ b/drivers/clk/qcom/Kconfig
+@@ -959,10 +959,10 @@ config SM_DISPCC_8450
+ config SM_DISPCC_8550
+ 	tristate "SM8550 Display Clock Controller"
+ 	depends on ARM64 || COMPILE_TEST
+-	depends on SM_GCC_8550 || SM_GCC_8650
++	depends on SM_GCC_8550 || SM_GCC_8650 || SAR_GCC_2130P
+ 	help
+ 	  Support for the display clock controller on Qualcomm Technologies, Inc
+-	  SM8550 or SM8650 devices.
++	  SAR2130P, SM8550 or SM8650 devices.
+ 	  Say Y if you want to support display devices and functionality such as
+ 	  splash screen.
  
-+	po = pkt_sk(sk);
-+	err = packet_alloc_pending(po);
-+	if (err)
-+		goto out_sk_free;
+diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
+index 7f9021ca0ecb0..e41d4104d7702 100644
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -75,7 +75,7 @@ static struct pll_vco lucid_ole_vco[] = {
+ 	{ 249600000, 2000000000, 0 },
+ };
+ 
+-static const struct alpha_pll_config disp_cc_pll0_config = {
++static struct alpha_pll_config disp_cc_pll0_config = {
+ 	.l = 0xd,
+ 	.alpha = 0x6492,
+ 	.config_ctl_val = 0x20485699,
+@@ -106,7 +106,7 @@ static struct clk_alpha_pll disp_cc_pll0 = {
+ 	},
+ };
+ 
+-static const struct alpha_pll_config disp_cc_pll1_config = {
++static struct alpha_pll_config disp_cc_pll1_config = {
+ 	.l = 0x1f,
+ 	.alpha = 0x4000,
+ 	.config_ctl_val = 0x20485699,
+@@ -594,6 +594,13 @@ static const struct freq_tbl ftbl_disp_cc_mdss_mdp_clk_src[] = {
+ 	{ }
+ };
+ 
++static const struct freq_tbl ftbl_disp_cc_mdss_mdp_clk_src_sar2130p[] = {
++	F(200000000, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
++	F(325000000, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
++	F(514000000, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
++	{ }
++};
 +
- 	sock_init_data(sock, sk);
+ static const struct freq_tbl ftbl_disp_cc_mdss_mdp_clk_src_sm8650[] = {
+ 	F(19200000, P_BI_TCXO, 1, 0, 0),
+ 	F(85714286, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
+@@ -1750,6 +1757,7 @@ static struct qcom_cc_desc disp_cc_sm8550_desc = {
+ };
  
--	po = pkt_sk(sk);
- 	init_completion(&po->skb_completion);
- 	sk->sk_family = PF_PACKET;
- 	po->num = proto;
+ static const struct of_device_id disp_cc_sm8550_match_table[] = {
++	{ .compatible = "qcom,sar2130p-dispcc" },
+ 	{ .compatible = "qcom,sm8550-dispcc" },
+ 	{ .compatible = "qcom,sm8650-dispcc" },
+ 	{ }
+@@ -1780,6 +1788,12 @@ static int disp_cc_sm8550_probe(struct platform_device *pdev)
+ 		disp_cc_mdss_mdp_clk_src.freq_tbl = ftbl_disp_cc_mdss_mdp_clk_src_sm8650;
+ 		disp_cc_mdss_dptx1_usb_router_link_intf_clk.clkr.hw.init->parent_hws[0] =
+ 			&disp_cc_mdss_dptx1_link_div_clk_src.clkr.hw;
++	} else if (of_device_is_compatible(pdev->dev.of_node, "qcom,sar2130p-dispcc")) {
++		disp_cc_pll0_config.l = 0x1f;
++		disp_cc_pll0_config.alpha = 0x4000;
++		disp_cc_pll0_config.user_ctl_val = 0x1;
++		disp_cc_pll1_config.user_ctl_val = 0x1;
++		disp_cc_mdss_mdp_clk_src.freq_tbl = ftbl_disp_cc_mdss_mdp_clk_src_sar2130p;
+ 	}
  
--	err = packet_alloc_pending(po);
--	if (err)
--		goto out2;
--
- 	packet_cached_dev_reset(po);
- 
- 	sk->sk_destruct = packet_sock_destruct;
-@@ -3470,7 +3470,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	sock_prot_inuse_add(net, &packet_proto, 1);
- 
- 	return 0;
--out2:
-+out_sk_free:
- 	sk_free(sk);
- out:
- 	return err;
+ 	clk_lucid_ole_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
 -- 
 2.43.0
 
