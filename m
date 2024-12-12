@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360C29EEC9D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3143D9EEB0C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8980188A5B7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BD6F188E410
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8DD216E12;
-	Thu, 12 Dec 2024 15:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7102217670;
+	Thu, 12 Dec 2024 15:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGxrV7ob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXepV0Sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBD4222D45;
-	Thu, 12 Dec 2024 15:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522EA21CFF0;
+	Thu, 12 Dec 2024 15:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017644; cv=none; b=rhLoSosVfmRox5WH8N+ScbXC9K4WvyfTbXYk0h9t5CsCtufyjW3f4JmBqqtfjfDRjJDncr08GOimAMIrEVV+oiws3/sZpu1udc5BFOyKWM+NiiCK98vWAYpCP7teud0jSl4Rs+RMyb2XUIJzgWZKXzlH1Pw54UxqOQPU8YaDWaw=
+	t=1734016521; cv=none; b=flTZOcQpwHlJL3oCjzhdEjMCo/U0axBoSqvecR4AyubYL1Y8OFCK/0/Ms82i8mkIBAFiOGTJ+aNwNWUg/KlFEwBzWCdWOKFPfek3X5Xkl+Nny7I6IsvcCD5fLlJQGkBNbzx/6nwyzt7Xz2Hv693FYjto8hkVFNoFQDH0kxkNLq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017644; c=relaxed/simple;
-	bh=FrGEi5f5KUP4GmGJHQ4QrwwUzmEit1Ek4ICRn9VXGxM=;
+	s=arc-20240116; t=1734016521; c=relaxed/simple;
+	bh=xUw9BMKU61PSD0hloi0/GuTEMOZoPuC4cf+Y7iS5GY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WX7g9rTXcW3h/fGBNa6gIrSZU77VqI/i7bNGuXfgxMuPSeHy9TEBYyYHbhTt1tqXEZ8iEfT+GaCi8ZC5yDxdgzprfv7EqiQWipJrHQIsM04weXdNTqSU50wrVylSFIJj1p4+oy8ijGMM6zKMajT0/NQiQ+Mi+kUBeDX7KwvrnlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGxrV7ob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E7EC4CED7;
-	Thu, 12 Dec 2024 15:34:02 +0000 (UTC)
+	 MIME-Version; b=Y8SmjCKnrGmxgpwB0sVWKBpTEW8b6FRdso1i9Ctj8k7a3NSI0xLnyNEQ6jlQn3odmmUPrFGuiBGmRwxufbMSKy3KzX1d/t2OvPNM7VOVOjpWduv8nj6HbLcF4AYJB1rT8PlSZC8h/EnqdlfeSY4LfZFCbUsAxyaEGLuz4bWyqFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXepV0Sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF698C4CECE;
+	Thu, 12 Dec 2024 15:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017643;
-	bh=FrGEi5f5KUP4GmGJHQ4QrwwUzmEit1Ek4ICRn9VXGxM=;
+	s=korg; t=1734016521;
+	bh=xUw9BMKU61PSD0hloi0/GuTEMOZoPuC4cf+Y7iS5GY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGxrV7obmM6h0JHqOCI2Gvpj0d9efVkpxGdA3uBmoMBTAY4QqxaZubRKfJ+si7qLH
-	 hKi/R6FlBS75gnYuBFsJB0orwpMDVAxB4qMoN6gmoYJ+R1OsRWF8hCXfxslwaANovF
-	 +HVuntF4NVzS06XeMumbH5wRqsgo+yy9o7E9tHDQ=
+	b=pXepV0SjNswEbSyx8ZGDcVpFuqxqf4I/93UzcDHyQO3c1dd4GmtXd8JtypUUYe6V6
+	 SXViS3Uq/rsbDuz/aKyohCZS574MVp5WPtSKuO4a4xrsJGwWKFB2JSMgLZNQrpp94T
+	 L/mN1JJyrc8nkf7CoarGIK6bPIeDKYYs/W0W1NV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	Fabian Vogt <fvogt@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/356] gpio: grgpio: Add NULL check in grgpio_probe
+Subject: [PATCH 6.12 221/466] btrfs: canonicalize the device path before adding it
 Date: Thu, 12 Dec 2024 15:56:30 +0100
-Message-ID: <20241212144247.434905610@linuxfoundation.org>
+Message-ID: <20241212144315.516231970@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 050b23d081da0f29474de043e9538c1f7a351b3b ]
+[ Upstream commit 7e06de7c83a746e58d4701e013182af133395188 ]
 
-devm_kasprintf() can return a NULL pointer on failure,but this
-returned value in grgpio_probe is not checked.
-Add NULL check in grgpio_probe, to handle kernel NULL
-pointer dereference error.
+[PROBLEM]
+Currently btrfs accepts any file path for its device, resulting some
+weird situation:
 
-Cc: stable@vger.kernel.org
-Fixes: 7eb6ce2f2723 ("gpio: Convert to using %pOF instead of full_name")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20241114091822.78199-1-hanchunchao@inspur.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+ # ./mount_by_fd /dev/test/scratch1  /mnt/btrfs/
+
+The program has the following source code:
+
+ #include <fcntl.h>
+ #include <stdio.h>
+ #include <sys/mount.h>
+
+ int main(int argc, char *argv[]) {
+	int fd = open(argv[1], O_RDWR);
+	char path[256];
+	snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
+	return mount(path, argv[2], "btrfs", 0, NULL);
+ }
+
+Then we can have the following weird device path:
+
+ BTRFS: device fsid 2378be81-fe12-46d2-a9e8-68cf08dd98d5 devid 1 transid 7 /proc/self/fd/3 (253:2) scanned by mount_by_fd (18440)
+
+Normally it's not a big deal, and later udev can trigger a device path
+rename. But if udev didn't trigger, the device path "/proc/self/fd/3"
+will show up in mtab.
+
+[CAUSE]
+For filename "/proc/self/fd/3", it means the opened file descriptor 3.
+In above case, it's exactly the device we want to open, aka points to
+"/dev/test/scratch1" which is another symlink pointing to "/dev/dm-2".
+
+Inside kernel we solve the mount source using LOOKUP_FOLLOW, which
+follows the symbolic link and grab the proper block device.
+
+But inside btrfs we also save the filename into btrfs_device::name, and
+utilize that member to report our mount source, which leads to the above
+situation.
+
+[FIX]
+Instead of unconditionally trust the path, check if the original file
+(not following the symbolic link) is inside "/dev/", if not, then
+manually lookup the path to its final destination, and use that as our
+device path.
+
+This allows us to still use symbolic links, like
+"/dev/mapper/test-scratch" from LVM2, which is required for fstests runs
+with LVM2 setup.
+
+And for really weird names, like the above case, we solve it to
+"/dev/dm-2" instead.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1230641
+Reported-by: Fabian Vogt <fvogt@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-grgpio.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/volumes.c | 87 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 86 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-grgpio.c b/drivers/gpio/gpio-grgpio.c
-index fe919d9bd46a3..637a4d45f8c77 100644
---- a/drivers/gpio/gpio-grgpio.c
-+++ b/drivers/gpio/gpio-grgpio.c
-@@ -362,6 +362,9 @@ static int grgpio_probe(struct platform_device *ofdev)
- 	gc->owner = THIS_MODULE;
- 	gc->to_irq = grgpio_to_irq;
- 	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
-+	if (!gc->label)
-+		return -ENOMEM;
-+
- 	gc->base = -1;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 5e75a4e3a5be5..5895397364aac 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -732,6 +732,78 @@ const u8 *btrfs_sb_fsid_ptr(const struct btrfs_super_block *sb)
+ 	return has_metadata_uuid ? sb->metadata_uuid : sb->fsid;
+ }
  
- 	err = of_property_read_u32(np, "nbits", &prop);
++/*
++ * We can have very weird soft links passed in.
++ * One example is "/proc/self/fd/<fd>", which can be a soft link to
++ * a block device.
++ *
++ * But it's never a good idea to use those weird names.
++ * Here we check if the path (not following symlinks) is a good one inside
++ * "/dev/".
++ */
++static bool is_good_dev_path(const char *dev_path)
++{
++	struct path path = { .mnt = NULL, .dentry = NULL };
++	char *path_buf = NULL;
++	char *resolved_path;
++	bool is_good = false;
++	int ret;
++
++	if (!dev_path)
++		goto out;
++
++	path_buf = kmalloc(PATH_MAX, GFP_KERNEL);
++	if (!path_buf)
++		goto out;
++
++	/*
++	 * Do not follow soft link, just check if the original path is inside
++	 * "/dev/".
++	 */
++	ret = kern_path(dev_path, 0, &path);
++	if (ret)
++		goto out;
++	resolved_path = d_path(&path, path_buf, PATH_MAX);
++	if (IS_ERR(resolved_path))
++		goto out;
++	if (strncmp(resolved_path, "/dev/", strlen("/dev/")))
++		goto out;
++	is_good = true;
++out:
++	kfree(path_buf);
++	path_put(&path);
++	return is_good;
++}
++
++static int get_canonical_dev_path(const char *dev_path, char *canonical)
++{
++	struct path path = { .mnt = NULL, .dentry = NULL };
++	char *path_buf = NULL;
++	char *resolved_path;
++	int ret;
++
++	if (!dev_path) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	path_buf = kmalloc(PATH_MAX, GFP_KERNEL);
++	if (!path_buf) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	ret = kern_path(dev_path, LOOKUP_FOLLOW, &path);
++	if (ret)
++		goto out;
++	resolved_path = d_path(&path, path_buf, PATH_MAX);
++	ret = strscpy(canonical, resolved_path, PATH_MAX);
++out:
++	kfree(path_buf);
++	path_put(&path);
++	return ret;
++}
++
+ static bool is_same_device(struct btrfs_device *device, const char *new_path)
+ {
+ 	struct path old = { .mnt = NULL, .dentry = NULL };
+@@ -1419,12 +1491,23 @@ struct btrfs_device *btrfs_scan_one_device(const char *path, blk_mode_t flags,
+ 	bool new_device_added = false;
+ 	struct btrfs_device *device = NULL;
+ 	struct file *bdev_file;
++	char *canonical_path = NULL;
+ 	u64 bytenr;
+ 	dev_t devt;
+ 	int ret;
+ 
+ 	lockdep_assert_held(&uuid_mutex);
+ 
++	if (!is_good_dev_path(path)) {
++		canonical_path = kmalloc(PATH_MAX, GFP_KERNEL);
++		if (canonical_path) {
++			ret = get_canonical_dev_path(path, canonical_path);
++			if (ret < 0) {
++				kfree(canonical_path);
++				canonical_path = NULL;
++			}
++		}
++	}
+ 	/*
+ 	 * Avoid an exclusive open here, as the systemd-udev may initiate the
+ 	 * device scan which may race with the user's mount or mkfs command,
+@@ -1469,7 +1552,8 @@ struct btrfs_device *btrfs_scan_one_device(const char *path, blk_mode_t flags,
+ 		goto free_disk_super;
+ 	}
+ 
+-	device = device_list_add(path, disk_super, &new_device_added);
++	device = device_list_add(canonical_path ? : path, disk_super,
++				 &new_device_added);
+ 	if (!IS_ERR(device) && new_device_added)
+ 		btrfs_free_stale_devices(device->devt, device);
+ 
+@@ -1478,6 +1562,7 @@ struct btrfs_device *btrfs_scan_one_device(const char *path, blk_mode_t flags,
+ 
+ error_bdev_put:
+ 	fput(bdev_file);
++	kfree(canonical_path);
+ 
+ 	return device;
+ }
 -- 
 2.43.0
 
