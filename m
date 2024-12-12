@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-103366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EF99EF678
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF8E9EF8BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:44:58 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24868287878
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 145D318994FD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF8421660B;
-	Thu, 12 Dec 2024 17:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A7F222D6A;
+	Thu, 12 Dec 2024 17:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5ywvCEA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Js06+2Hu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8701B211493;
-	Thu, 12 Dec 2024 17:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75063222D68;
+	Thu, 12 Dec 2024 17:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024351; cv=none; b=Zk5Dn6YYS1ALmsEFPfi8vIWyKIH81ow7cQhURlfKEruffDqGV7JooejB/FB2MohSSTxqJR/41uIWAaRCR4ra6HRp/N/mqPq8fWmGF3sTCdtrEjEbEXGHu+/Y/+LvUU/5cAnXAL7NELB29Lokmy/hQxDr1JTJWwanREkA8fMnZQs=
+	t=1734025190; cv=none; b=dydmgUvJ2THMtQLh96eBQBpa9Fh4CAjJoIrFPJcCxWJNIcJSYQd01k5JaY4iVv3H5AGwcIILnSB+R6YNVT8r7oJzFYyrHl5ED5ySY76iz/SM85QwRbSARMheRhfJeu44pWhr3K7huNEjScikvgdTJJ5EVsLZyeR3XcPK8NoNYss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024351; c=relaxed/simple;
-	bh=OF9UU8MxkfnmQG2mhhpnAEfEyzF1AaCjW/63SSI2sbk=;
+	s=arc-20240116; t=1734025190; c=relaxed/simple;
+	bh=8r5Vw9d+JPmKOnhKlhwtgf2F1oxjF5MbYPROELkdKWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSCzsZsj/gTLnSdk4XSJKFtHCMTWque5dwvFxI7vOl2uiBcpXgYR0Mzorafs3tac126/D9yVHKXo3xPFxwsPcA737JMVf/8RLsoSkkTRWIMrjPEQdJqdIgBsUP7mwVfeGfpNnnWHFmOlnoB7bj97BLOQGey+WY8AuX5hTLLjbD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5ywvCEA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0270BC4CECE;
-	Thu, 12 Dec 2024 17:25:50 +0000 (UTC)
+	 MIME-Version; b=up3sJ9/sicU577F4fUfqZyTgiFGFJ7CLTCSomakxBeVNVcWWUfNHnYhzK4thI2I1O5Ct9eX8IgtR5e4cMoCyY58hQ79S8WwajM4JAmpKHaVJWEpBL1ZWVOMgPm8xiSbdQAGZGvfiT0SJB8KCNLDlyOw3Tl6ax6LnS5IeVcJSAL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Js06+2Hu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F33D4C4CECE;
+	Thu, 12 Dec 2024 17:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024351;
-	bh=OF9UU8MxkfnmQG2mhhpnAEfEyzF1AaCjW/63SSI2sbk=;
+	s=korg; t=1734025190;
+	bh=8r5Vw9d+JPmKOnhKlhwtgf2F1oxjF5MbYPROELkdKWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5ywvCEA/+KKwGsT/dsg2BOPbIVKzZ477gwEmXmgvLjw7j99pP1sNPGOx9qV9juRJ
-	 e80I199TLjoY4jFnuXkpiyvLpUiitFbcajZoLtngkP8v2Hp0AWzEG5Ec/gbKyvXPCS
-	 2RG8i6SmkI/zXP1PgnBdWgBr62ksa8xo/VVE1d6E=
+	b=Js06+2HuVlBUSlaltFiaz6Cnzkj+3xRh9ZEOMtIY9+EahjpKk3d739WWMh3J1B6r7
+	 2CFoPr/dLEZvH3fd7dqCORRGFH8BClUW301l6uvAYYo96IfWiypvF9f8iCVfSvSxAm
+	 OWSSy6uP1/hiWof0sCivto8o1BXC9dqERR0qNzkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.10 267/459] ubi: wl: Put source PEB into correct list if trying locking LEB failed
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 087/321] powerpc/vdso: Flag VDSO64 entry points as functions
 Date: Thu, 12 Dec 2024 16:00:05 +0100
-Message-ID: <20241212144304.152016267@linuxfoundation.org>
+Message-ID: <20241212144233.423764633@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit d610020f030bec819f42de327c2bd5437d2766b3 upstream.
+[ Upstream commit 0161bd38c24312853ed5ae9a425a1c41c4ac674a ]
 
-During wear-leveing work, the source PEB will be moved into scrub list
-when source LEB cannot be locked in ubi_eba_copy_leb(), which is wrong
-for non-scrub type source PEB. The problem could bring extra and
-ineffective wear-leveing jobs, which makes more or less negative effects
-for the life time of flash. Specifically, the process is divided 2 steps:
-1. wear_leveling_worker // generate false scrub type PEB
-     ubi_eba_copy_leb // MOVE_RETRY is returned
-       leb_write_trylock // trylock failed
-     scrubbing = 1;
-     e1 is put into ubi->scrub
-2. wear_leveling_worker // schedule false scrub type PEB for wl
-     scrubbing = 1
-     e1 = rb_entry(rb_first(&ubi->scrub))
+On powerpc64 as shown below by readelf, vDSO functions symbols have
+type NOTYPE.
 
-The problem can be reproduced easily by running fsstress on a small
-UBIFS partition(<64M, simulated by nandsim) for 5~10mins
-(CONFIG_MTD_UBI_FASTMAP=y,CONFIG_MTD_UBI_WL_THRESHOLD=50). Following
-message is shown:
- ubi0: scrubbed PEB 66 (LEB 0:10), data moved to PEB 165
+$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
+ELF Header:
+  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, big endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           PowerPC64
+  Version:                           0x1
+...
 
-Since scrub type source PEB has set variable scrubbing as '1', and
-variable scrubbing is checked before variable keep, so the problem can
-be fixed by setting keep variable as 1 directly if the source LEB cannot
-be locked.
+Symbol table '.dynsym' contains 12 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+...
+     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
 
-Fixes: e801e128b220 ("UBI: fix missing scrub when there is a bit-flip")
-CC: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Symbol table '.symtab' contains 56 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
+    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
+
+To overcome that, commit ba83b3239e65 ("selftests: vDSO: fix vDSO
+symbols lookup for powerpc64") was applied to have selftests also
+look for NOTYPE symbols, but the correct fix should be to flag VDSO
+entry points as functions.
+
+The original commit that brought VDSO support into powerpc/64 has the
+following explanation:
+
+    Note that the symbols exposed by the vDSO aren't "normal" function symbols, apps
+    can't be expected to link against them directly, the vDSO's are both seen
+    as if they were linked at 0 and the symbols just contain offsets to the
+    various functions.  This is done on purpose to avoid a relocation step
+    (ppc64 functions normally have descriptors with abs addresses in them).
+    When glibc uses those functions, it's expected to use it's own trampolines
+    that know how to reach them.
+
+The descriptors it's talking about are the OPD function descriptors
+used on ABI v1 (big endian). But it would be more correct for a text
+symbol to have type function, even if there's no function descriptor
+for it.
+
+glibc has a special case already for handling the VDSO symbols which
+creates a fake opd pointing at the kernel symbol. So changing the VDSO
+symbol type to function shouldn't affect that.
+
+For ABI v2, there is no function descriptors and VDSO functions can
+safely have function type.
+
+So lets flag VDSO entry points as functions and revert the
+selftest change.
+
+Link: https://github.com/mpe/linux-fullhistory/commit/5f2dd691b62da9d9cc54b938f8b29c22c93cb805
+Fixes: ba83b3239e65 ("selftests: vDSO: fix vDSO symbols lookup for powerpc64")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-By: Segher Boessenkool <segher@kernel.crashing.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/b6ad2f1ee9887af3ca5ecade2a56f4acda517a85.1728512263.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/ubi/wl.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/vdso.h           | 1 +
+ tools/testing/selftests/vDSO/parse_vdso.c | 3 +--
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -830,7 +830,14 @@ static int wear_leveling_worker(struct u
- 			goto out_not_moved;
- 		}
- 		if (err == MOVE_RETRY) {
--			scrubbing = 1;
-+			/*
-+			 * For source PEB:
-+			 * 1. The scrubbing is set for scrub type PEB, it will
-+			 *    be put back into ubi->scrub list.
-+			 * 2. Non-scrub type PEB will be put back into ubi->used
-+			 *    list.
-+			 */
-+			keep = 1;
- 			dst_leb_clean = 1;
- 			goto out_not_moved;
- 		}
+diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
+index b5e1f8f8a05c2..64bf8612f479e 100644
+--- a/arch/powerpc/include/asm/vdso.h
++++ b/arch/powerpc/include/asm/vdso.h
+@@ -49,6 +49,7 @@ int vdso_getcpu_init(void);
+ 
+ #define V_FUNCTION_BEGIN(name)		\
+ 	.globl name;			\
++	.type name,@function; 		\
+ 	name:				\
+ 
+ #define V_FUNCTION_END(name)		\
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 540f9a284e9f0..9ef3ad3789c17 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -238,8 +238,7 @@ void *vdso_sym(const char *version, const char *name)
+ 		ELF(Sym) *sym = &vdso_info.symtab[chain];
+ 
+ 		/* Check for a defined global or weak function w/ right name. */
+-		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
+-		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
++		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
+ 			continue;
+ 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
+ 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
+-- 
+2.43.0
+
 
 
 
