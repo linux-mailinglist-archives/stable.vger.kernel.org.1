@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-102628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925D09EF2DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FBD9EF0BF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED7FC287CCC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0874118989F1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1C5236926;
-	Thu, 12 Dec 2024 16:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A531023ED6A;
+	Thu, 12 Dec 2024 16:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai5vFRLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnekHaFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5EB235C5E;
-	Thu, 12 Dec 2024 16:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C28223ED64;
+	Thu, 12 Dec 2024 16:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021909; cv=none; b=Ao7XYzzaxZ36zWCe+zHT5rrnon0KnKQ2+0ZIyXfJ9UxfNaLwpuQiNbH291dAyW+sgP1sxMymmaiKAqC6B0Tc/Qgu4KML/EGyhor6rYMTgPur/DWbPS+M43Cxlrj/ZO2spHdEXEjQAzt2Nh/nRjIdXr6xH3vQZ+Q4K2WeZbOC4hM=
+	t=1734019979; cv=none; b=ez8H3AXFjORPGO5CT/GJNa/DxawTXNQtmA1eObztz3wwKzx7umf1/8rU7ev3d+fONFhIwIf6zR7cczWiG2tAgD9Fb9Gb+HoELgGP7XaanD5v3bOFTnpnnI02bC44++hitim2niwbBkvQiVvd6HZVCtU1+2Y27cMDHfqT+mNp6Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021909; c=relaxed/simple;
-	bh=J2lB091Y+m34Wd4VBLQeBtS/iNmST9Ye6lNrCfV+u28=;
+	s=arc-20240116; t=1734019979; c=relaxed/simple;
+	bh=Je+0CY9TZvC5Kqrl9HnRuKYgYRg1lJ1bE3NoYzKSlqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9VLRQ7D8M6cyhOFVRHD0q3/UTM72gTieAPoL7ejFjQXMvY/ySfjbE4rkYzu3uZ2OYI15Li8qf7lv0Bg/XSFnV/JqCmViesIv1XtfGNAtQPPHj2QXufMdz3mrHzU4D0R2Xwa9gEUFTqKICHXzxzMNIdZ+lWzGilt/z/tLeOg+iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ai5vFRLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BAAC4CECE;
-	Thu, 12 Dec 2024 16:45:08 +0000 (UTC)
+	 MIME-Version; b=ow/qtl3+Qjn0v5zRB4/SmX2s4R3dmISQkvIJaSfZWWK+byhTToreqOF9d08vVI8+OEzBQYHRxk0WCiq/8UFp1SdRbCCf3vXrXWsjmIUy1/d7W40YwuMtWYQFWfUT4s8eeuS7mDN1H2/sFgmENje83ntkpPsfH2eeTFGIsetyUF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnekHaFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849F3C4CECE;
+	Thu, 12 Dec 2024 16:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021908;
-	bh=J2lB091Y+m34Wd4VBLQeBtS/iNmST9Ye6lNrCfV+u28=;
+	s=korg; t=1734019979;
+	bh=Je+0CY9TZvC5Kqrl9HnRuKYgYRg1lJ1bE3NoYzKSlqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ai5vFRLyw2XrrWVk2Jz7DUPX8SD1GTc277OZi9IJ+FYf63QnN0iWQ6LA5zrdoINB5
-	 fEVXwApdjjt+2tCTgZ0gfu1C/NkDcL8Au+Vzul+/ha3RzWqaMBqq/5dl2Jgyivq+oV
-	 88S/25Hf13BvXam2c+SH7eDMBmkxq48I/9jLrbfU=
+	b=hnekHaFeBjhQB40REwvChbLHZbV9gvuY6QQpk99ig4k1nvzp0sr8gpjoUkNeGRKur
+	 7M6sD9efZXWd5ciGXkEE3sf9FG5REGZ55SnsaOUIsvXOhIu7drt+gzc1g4ygwJmynH
+	 1FUuYrFIKUTMl6bqWyshUN2TUCYv6Cr5loTmZ3yY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/565] crypto: pcrypt - Call crypto layer directly when padata_do_parallel() return -EBUSY
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>
+Subject: [PATCH 6.1 347/772] drm/amd/display: Add NULL check for clk_mgr and clk_mgr->funcs in dcn30_init_hw
 Date: Thu, 12 Dec 2024 15:54:52 +0100
-Message-ID: <20241212144315.321000465@linuxfoundation.org>
+Message-ID: <20241212144404.252465476@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +70,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 662f2f13e66d3883b9238b0b96b17886179e60e2 ]
+commit cba7fec864172dadd953daefdd26e01742b71a6a upstream.
 
-Since commit 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for
-PADATA_RESET"), the pcrypt encryption and decryption operations return
--EAGAIN when the CPU goes online or offline. In alg_test(), a WARN is
-generated when pcrypt_aead_decrypt() or pcrypt_aead_encrypt() returns
--EAGAIN, the unnecessary panic will occur when panic_on_warn set 1.
-Fix this issue by calling crypto layer directly without parallelization
-in that case.
+This commit addresses a potential null pointer dereference issue in the
+`dcn30_init_hw` function. The issue could occur when `dc->clk_mgr` or
+`dc->clk_mgr->funcs` is null.
 
-Fixes: 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for PADATA_RESET")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The fix adds a check to ensure `dc->clk_mgr` and `dc->clk_mgr->funcs` is
+not null before accessing its functions. This prevents a potential null
+pointer dereference.
+
+Reported by smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:789 dcn30_init_hw() error: we previously assumed 'dc->clk_mgr' could be null (see line 628)
+
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Xiangyu: BP to fix CVE: CVE-2024-49917, modified the source path]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/pcrypt.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
-index 005a36cb21bc4..2d7f98709e97c 100644
---- a/crypto/pcrypt.c
-+++ b/crypto/pcrypt.c
-@@ -117,8 +117,10 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
- 	err = padata_do_parallel(ictx->psenc, padata, &ctx->cb_cpu);
- 	if (!err)
- 		return -EINPROGRESS;
--	if (err == -EBUSY)
--		return -EAGAIN;
-+	if (err == -EBUSY) {
-+		/* try non-parallel mode */
-+		return crypto_aead_encrypt(creq);
-+	}
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
+@@ -448,7 +448,7 @@ void dcn30_init_hw(struct dc *dc)
+ 	int edp_num;
+ 	uint32_t backlight = MAX_BACKLIGHT_LEVEL;
  
- 	return err;
- }
-@@ -166,8 +168,10 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
- 	err = padata_do_parallel(ictx->psdec, padata, &ctx->cb_cpu);
- 	if (!err)
- 		return -EINPROGRESS;
--	if (err == -EBUSY)
--		return -EAGAIN;
-+	if (err == -EBUSY) {
-+		/* try non-parallel mode */
-+		return crypto_aead_decrypt(creq);
-+	}
+-	if (dc->clk_mgr && dc->clk_mgr->funcs->init_clocks)
++	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->init_clocks)
+ 		dc->clk_mgr->funcs->init_clocks(dc->clk_mgr);
  
- 	return err;
- }
--- 
-2.43.0
-
+ 	// Initialize the dccg
+@@ -631,11 +631,12 @@ void dcn30_init_hw(struct dc *dc)
+ 	if (!dcb->funcs->is_accelerated_mode(dcb) && dc->res_pool->hubbub->funcs->init_watermarks)
+ 		dc->res_pool->hubbub->funcs->init_watermarks(dc->res_pool->hubbub);
+ 
+-	if (dc->clk_mgr->funcs->notify_wm_ranges)
++	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->notify_wm_ranges)
+ 		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
+ 
+ 	//if softmax is enabled then hardmax will be set by a different call
+-	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
++	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->set_hard_max_memclk &&
++	    !dc->clk_mgr->dc_mode_softmax_enabled)
+ 		dc->clk_mgr->funcs->set_hard_max_memclk(dc->clk_mgr);
+ 
+ 	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
 
 
 
