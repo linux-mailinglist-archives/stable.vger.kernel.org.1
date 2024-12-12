@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657B59EF109
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE8A9EEC4E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F13116F73B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6562C1642BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876E822331C;
-	Thu, 12 Dec 2024 16:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F80221B90F;
+	Thu, 12 Dec 2024 15:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4NsWTfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CT3xYFqV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BE4223301;
-	Thu, 12 Dec 2024 16:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D02121765E;
+	Thu, 12 Dec 2024 15:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020170; cv=none; b=JYEE2jFf1jG6fVMVQYNzeCZDwFgZlolGQKlv4yjrTX/j9FkOgeaTASTkeKPTtTMGJ0/FMV3rhZZX9SfwAHglsZ26uRjobgA1m0yupx4DHVdaNqEqg88GvVJI8vXrwGEJsgSts+f7fcPfavTnUDUuYZswI8PNAENglH7Ugt9PwAs=
+	t=1734017472; cv=none; b=fRN/fod2lKpvsD4bRMj+HCzHJ4Yx8t3ykIAJoWspVxIfhFQG7ZjQU2XNZhKdUTr9yYxZt6kjwT3t6XTzKASTi7yMeEiYL7wW4LAL5yeeyh4Y0WV9FnfqgjjxoJpg1+iivrYc+mO+E2gq/r6DdzquKtnMiR6fIz4BBEyzh9NoG/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020170; c=relaxed/simple;
-	bh=5IUqh0i+ua8CeE6IbI+akS4aa6XC/r6DJIqZbZEs0iU=;
+	s=arc-20240116; t=1734017472; c=relaxed/simple;
+	bh=Mz0u0Jgp++5M9UGZCMQXySy0zx2rONY+8vNtb4nEsX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJwqN03zNFkzbA8xrduTcVdx/lQ8nr/PCXaZ4ZlEbtpl/jbxShFYJcLUEYyacDmIrK/EZgRJ4qhKYJyX5+g0ei5vOa9NvLGCZfuBUb0J1e06WnpvYyTT2G9O/jab53JdUYyM3+lhwMM5VEk6ulxXmMBTCJyjHMOyKlQCIw7NGG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4NsWTfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BCFC4CECE;
-	Thu, 12 Dec 2024 16:16:09 +0000 (UTC)
+	 MIME-Version; b=hNsAv3llaanpNjubPUyTV/twovRqLglmwltkDqFMIa31mlJD78vsmt/6jh15wF2t+YEhfKyCpJNPfX2vIQLF0FE9K7dls3jHJOAXwRMu8LZvVOE3Ab3na6N4Z/ItoZJ/MQAN8Y30rJOfQYg7LN10m/m9D3VXiwH8ETDV84NqzAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CT3xYFqV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D1AC4CECE;
+	Thu, 12 Dec 2024 15:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020169;
-	bh=5IUqh0i+ua8CeE6IbI+akS4aa6XC/r6DJIqZbZEs0iU=;
+	s=korg; t=1734017471;
+	bh=Mz0u0Jgp++5M9UGZCMQXySy0zx2rONY+8vNtb4nEsX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4NsWTfcfI7CSV/aMj5BlDZ2vzgPtzQhcTE7kZCj7U2gu0iyR3DcZvO5p4DeLPl5j
-	 7fPh4YCidYErrzdNa2LMrCS2eVkQ24XTUgGTUd+nhPXsr8kuySF+ANt5hgjsJIDJ2d
-	 s66HOK5V/yjAd5O5gydgFjlKOv9Z5o868LbEK6HU=
+	b=CT3xYFqVbdaN+D3arhc/8c+/F/fDDDmVMiLsnmvUtYhbY9WcZKbZLbWrrOaLIt0Vs
+	 vhlKgTKibtWr3LLXIxGs4/w4QhADJeyRrPw9u80RpULlSca47B9BOrEwrkdWC+oOEu
+	 0vviO3OcyoJmSZiu9G4bCe7m/B6SOd7oIPR2HDOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.1 396/772] platform/chrome: cros_ec_typec: fix missing fwnode reference decrement
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 022/356] ptp: Add error handling for adjfine callback in ptp_clock_adjtime
 Date: Thu, 12 Dec 2024 15:55:41 +0100
-Message-ID: <20241212144406.280387503@linuxfoundation.org>
+Message-ID: <20241212144245.496590417@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Ajay Kaher <ajay.kaher@broadcom.com>
 
-commit 9c41f371457bd9a24874e3c7934d9745e87fbc58 upstream.
+[ Upstream commit 98337d7c87577ded71114f6976edb70a163e27bc ]
 
-The device_for_each_child_node() macro requires explicit calls to
-fwnode_handle_put() upon early exits (return, break, goto) to decrement
-the fwnode's refcount, and avoid levaing a node reference behind.
+ptp_clock_adjtime sets ptp->dialed_frequency even when adjfine
+callback returns an error. This causes subsequent reads to return
+an incorrect value.
 
-Add the missing fwnode_handle_put() after the common label for all error
-paths.
+Fix this by adding error check before ptp->dialed_frequency is set.
 
-Cc: stable@vger.kernel.org
-Fixes: fdc6b21e2444 ("platform/chrome: Add Type C connector class driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241013-cross_ec_typec_fwnode_handle_put-v2-1-9182b2cd7767@gmail.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 39a8cbd9ca05 ("ptp: remember the adjusted frequency")
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://patch.msgid.link/20241125105954.1509971-1-ajay.kaher@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_typec.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/ptp/ptp_clock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/chrome/cros_ec_typec.c
-+++ b/drivers/platform/chrome/cros_ec_typec.c
-@@ -446,6 +446,7 @@ static int cros_typec_init_ports(struct
- 	return 0;
- 
- unregister_ports:
-+	fwnode_handle_put(fwnode);
- 	cros_unregister_ports(typec);
- 	return ret;
- }
+diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+index 9a50bfb56453c..b586da2e30023 100644
+--- a/drivers/ptp/ptp_clock.c
++++ b/drivers/ptp/ptp_clock.c
+@@ -133,7 +133,8 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
+ 		if (ppb > ops->max_adj || ppb < -ops->max_adj)
+ 			return -ERANGE;
+ 		err = ops->adjfine(ops, tx->freq);
+-		ptp->dialed_frequency = tx->freq;
++		if (!err)
++			ptp->dialed_frequency = tx->freq;
+ 	} else if (tx->modes & ADJ_OFFSET) {
+ 		if (ops->adjphase) {
+ 			s32 max_phase_adj = ops->getmaxphase(ops);
+-- 
+2.43.0
+
 
 
 
