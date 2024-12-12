@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DA09EED0E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0CD9EF114
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58BF1666CB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB6BF29F226
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31EA217F28;
-	Thu, 12 Dec 2024 15:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA1D239BC0;
+	Thu, 12 Dec 2024 16:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddTSQlwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlKSVFoq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA652135C1;
-	Thu, 12 Dec 2024 15:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298AF2397B6;
+	Thu, 12 Dec 2024 16:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017901; cv=none; b=UvxK0FexKKjcfGCxG9/wobsvWdPnuiS+21kNu4s+CUU21RfszjqzFV9hXDCQNd5+9GruobPi5OupQI8HK8AesV76yT/2lKp5JLrGSY8hCbzlr+BL/8vv04JgrRUVcNJTi4s78J1MFbLrdPd2AYMwrtttgVfvwFhqqIxHpjgTj6k=
+	t=1734020657; cv=none; b=iYZ4NlgJ6IgzOxJ+Y7r1MtI05jnk/Qtp1ePd2NQrdfcP8MpYrrXIl8FfD++mXi9LV5iGTIVIoZ3uN750jO9MZkSNWofaffJjZReSG6FlPJHx4OLyjzcfmy8I1TAchiZh6eE7pu2PcHim83qnh8pxt7uaAx+/XG+TQ3m1T4QjsHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017901; c=relaxed/simple;
-	bh=Tv4fYvDcbPcstNKkQQgEPoUgEsOKRLZRCneMU2tThrY=;
+	s=arc-20240116; t=1734020657; c=relaxed/simple;
+	bh=CdXJzt7eBAftLzFxcqpQL+S+8mcE4lnl72PvGdplDpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtjiRFNq2fencBl2y8Nw9njWWSO7PVxdCeRX1CCg+cjfEUl3llpalt1KLEdZ0oyYogH97zeu/RGhe8WnS4g0JIBoVxqqZcekftWJ+d9pqFreMqCdpx+v9huUracZFd+iIFNzOTUjc8yIgahjpLbbYrHtD+CZCDfTjHNKAs7RvUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddTSQlwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6D5C4CECE;
-	Thu, 12 Dec 2024 15:38:20 +0000 (UTC)
+	 MIME-Version; b=dOdXEjj4+oQY/o7oYhJe1Tq2fVemGSrLU4hV5w4mHEa4Aw+tKmsH5jJ6L6UfeFPQRyM0FmWBcvvq1gh+xuOagcbI6Q4TUqF0nitF3RvTGWlY73u2fPbAa7gTbZu6A+sxraMMXhi7Ow+zotv9c5FbWO7fOyHjpta3wRwbb1STpVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlKSVFoq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581A6C4CED3;
+	Thu, 12 Dec 2024 16:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017901;
-	bh=Tv4fYvDcbPcstNKkQQgEPoUgEsOKRLZRCneMU2tThrY=;
+	s=korg; t=1734020656;
+	bh=CdXJzt7eBAftLzFxcqpQL+S+8mcE4lnl72PvGdplDpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddTSQlwzdyMhvZ+3PUBk2EtLFiQdsR2VMxBYy1ckspQecDgcscmMsNNbPsEFAubQC
-	 5X7PAYWR2L1TPysmYB2xSLGivkzXLB7/+jyLVjba7v3Z6sDmbRRy79GT3Jg0yPS30A
-	 wZ6NSztECaf6MYeUYMMdPIIy+iA6eWzzli1+43cU=
+	b=UlKSVFoqYaGX2ksX69AjFq9Wmq9d+arwF6voMl+qKkLaH1tTUQ8PUYHOd53d6pXIz
+	 A4IL7KCutDsjppIPC1EwxLcGC1Rxz9uL+Ebjm7PYVigmUoY1N6CyyDqc6ypaWN/cTC
+	 7xX6wMzANm9/2dD+lgfLEprwzMUuTp8NvWSzjK0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>
-Subject: [PATCH 6.6 143/356] watchdog: rti: of: honor timeout-sec property
-Date: Thu, 12 Dec 2024 15:57:42 +0100
-Message-ID: <20241212144250.293038825@linuxfoundation.org>
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 518/772] can: m_can: m_can_handle_lec_err(): fix {rx,tx}_errors statistics
+Date: Thu, 12 Dec 2024 15:57:43 +0100
+Message-ID: <20241212144411.369456650@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-commit 4962ee045d8f06638714d801ab0fb72f89c16690 upstream.
+[ Upstream commit 988d4222bf9039a875a3d48f2fe35c317831ff68 ]
 
-Currently "timeout-sec" Device Tree property is being silently ignored:
-even though watchdog_init_timeout() is being used, the driver always passes
-"heartbeat" == DEFAULT_HEARTBEAT == 60 as argument.
+The m_can_handle_lec_err() function was incorrectly incrementing only the
+receive error counter, even in cases of bit or acknowledgment errors that
+occur during transmission.
 
-Fix this by setting struct watchdog_device::timeout to DEFAULT_HEARTBEAT
-and passing real module parameter value to watchdog_init_timeout() (which
-may now be 0 if not specified).
+Fix the issue by incrementing the appropriate counter based on the
+type of error.
 
-Cc: stable@vger.kernel.org
-Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241107203830.1068456-1-alexander.sverdlin@siemens.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-7-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rti_wdt.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/m_can/m_can.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
---- a/drivers/watchdog/rti_wdt.c
-+++ b/drivers/watchdog/rti_wdt.c
-@@ -61,7 +61,7 @@
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index e77b4b60f4e61..f28bdb5badd05 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -607,47 +607,60 @@ static int m_can_handle_lec_err(struct net_device *dev,
+ 	u32 timestamp = 0;
  
- #define MAX_HW_ERROR		250
+ 	cdev->can.can_stats.bus_error++;
+-	stats->rx_errors++;
  
--static int heartbeat = DEFAULT_HEARTBEAT;
-+static int heartbeat;
+ 	/* propagate the error condition to the CAN stack */
+ 	skb = alloc_can_err_skb(dev, &cf);
+-	if (unlikely(!skb))
+-		return 0;
  
- /*
-  * struct to hold data for each WDT device
-@@ -252,6 +252,7 @@ static int rti_wdt_probe(struct platform
- 	wdd->min_timeout = 1;
- 	wdd->max_hw_heartbeat_ms = (WDT_PRELOAD_MAX << WDT_PRELOAD_SHIFT) /
- 		wdt->freq * 1000;
-+	wdd->timeout = DEFAULT_HEARTBEAT;
- 	wdd->parent = dev;
+ 	/* check for 'last error code' which tells us the
+ 	 * type of the last error to occur on the CAN bus
+ 	 */
+-	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
++	if (likely(skb))
++		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
  
- 	watchdog_set_drvdata(wdd, wdt);
+ 	switch (lec_type) {
+ 	case LEC_STUFF_ERROR:
+ 		netdev_dbg(dev, "stuff error\n");
+-		cf->data[2] |= CAN_ERR_PROT_STUFF;
++		stats->rx_errors++;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_STUFF;
+ 		break;
+ 	case LEC_FORM_ERROR:
+ 		netdev_dbg(dev, "form error\n");
+-		cf->data[2] |= CAN_ERR_PROT_FORM;
++		stats->rx_errors++;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_FORM;
+ 		break;
+ 	case LEC_ACK_ERROR:
+ 		netdev_dbg(dev, "ack error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
++		stats->tx_errors++;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
+ 		break;
+ 	case LEC_BIT1_ERROR:
+ 		netdev_dbg(dev, "bit1 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT1;
++		stats->tx_errors++;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT1;
+ 		break;
+ 	case LEC_BIT0_ERROR:
+ 		netdev_dbg(dev, "bit0 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT0;
++		stats->tx_errors++;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT0;
+ 		break;
+ 	case LEC_CRC_ERROR:
+ 		netdev_dbg(dev, "CRC error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
++		stats->rx_errors++;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
+ 		break;
+ 	default:
+ 		break;
+ 	}
+ 
++	if (unlikely(!skb))
++		return 0;
++
+ 	if (cdev->is_peripheral)
+ 		timestamp = m_can_get_timestamp(cdev);
+ 
+-- 
+2.43.0
+
 
 
 
