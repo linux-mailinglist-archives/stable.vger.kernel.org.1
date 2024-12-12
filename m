@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842D79EF91B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5619EF5C0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C43E188C94F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 896E3178D73
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53473222D59;
-	Thu, 12 Dec 2024 17:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B45223C5C;
+	Thu, 12 Dec 2024 17:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdddNkVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmdNw2lV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFBC20A5EE;
-	Thu, 12 Dec 2024 17:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CD3222D4A;
+	Thu, 12 Dec 2024 17:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025291; cv=none; b=BJvBuepcCj1a1kXSQpZgd4n1H46Pgl6oFrqc4xp2GgkQuihRJPJcIjQG/KMW1M2Cu9Uu3nXotEPn2YreRHtH4c5rCLHz9T8G6WAgkgEYwOOk2LDhsmIayNQgTi9sjH/K9DLkKIJyCDClm4QonAj7IHLXXXaH0LMEbdZq4ljrMDU=
+	t=1734023167; cv=none; b=JnRPEgl3p6rWW1qgMQzJSVYntYMHpY4iOSlsggVTtvMau9OVMPDdK/+aNh8AuS9Agyk/3ow2z8RZujkD1ToJ8WNs3KK6dWVzTCf+v+byPQ7OP02+qRwIBRwMe0Qs6Vp7ZjnfCxMZsTnSpPMas996Dzcj5Q1BI0WiNzY5SM7OVTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025291; c=relaxed/simple;
-	bh=mTFxcyZdkNNNV46g+Nu+JfpnkvdRemPlwTnHJ2+OVh8=;
+	s=arc-20240116; t=1734023167; c=relaxed/simple;
+	bh=8daFoqQRroYR0HCSWaB4uuZ1DVY8w/mafNHl++u5HeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tw1fw2TYnwgA3RQFypP898EQ+kRykQp7vkA1I/QJA+2Mh0lytPeJf3omHeJ/AwpFWdRyEBNhI3CITvOplx9F18EFWxO0dMbQUpNr1sVjl8ac5c/I3l4a5VKKGtFCz+7fgxP0JO7jnjtGw/b/rDYI5SX/h4Aj23UfUuHvv+AzKD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdddNkVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B189C4CECE;
-	Thu, 12 Dec 2024 17:41:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UDk6SCLiHGAzTRcovC0hIizdkbQF+w+cVbl1oDqM5Mf/lGtK9imsmSLYd+4rSac1V1EjUJ1I7K90AG4klGyOwHk3RhWNc1y6YyLmORjLrSXBEF48JZAugalIDfKbl+SGDGwEOi8Pd2vRQIlMPZ70XCZqeqqiTTplFJibMURq9io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmdNw2lV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1C3C4CED0;
+	Thu, 12 Dec 2024 17:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025290;
-	bh=mTFxcyZdkNNNV46g+Nu+JfpnkvdRemPlwTnHJ2+OVh8=;
+	s=korg; t=1734023167;
+	bh=8daFoqQRroYR0HCSWaB4uuZ1DVY8w/mafNHl++u5HeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qdddNkVkvQDacWrg6kJvL0suAJ8jWolmabdtahwCNcwpS88Lb52Gh5+Q1Ej0qW29w
-	 yXVSyuwfumi9FDikIktouEVN/8V79tEHmVhhzxnyhKfGr4zlVH1tCN7NJLnN55nV25
-	 JTJwQ40utl8oJvFMHiz/N1O0qPGYIn+TmO1Or9ao=
+	b=cmdNw2lV2jr2/EbSmNkTprJRUcbY7fl+R8v8HCAkJHILFow4XiZGQBCD4ok8OLpuO
+	 BlL34Fx4LARKXTUeuYT+8307ebe5s9OT9MgrhghF+S6mQGELAoVr0CZnK4Gh5BhGBE
+	 LAAk8D3HV1gm9RVzRNhxQG8Yp/2iT9K+7/UnI8lU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 121/321] rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length
+Subject: [PATCH 5.15 444/565] bpf: Fix exact match conditions in trie_get_next_key()
 Date: Thu, 12 Dec 2024 16:00:39 +0100
-Message-ID: <20241212144234.759620663@linuxfoundation.org>
+Message-ID: <20241212144329.253045156@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 06c59d97f63c1b8af521fa5aef8a716fb988b285 ]
+[ Upstream commit 27abc7b3fa2e09bbe41e2924d328121546865eda ]
 
-The name len field of the CMD_OPEN packet is only 16-bits and the upper
-16-bits of "param2" are a different "prio" field, which can be nonzero in
-certain situations, and CMD_OPEN packets can be unexpectedly dropped
-because of this.
+trie_get_next_key() uses node->prefixlen == key->prefixlen to identify
+an exact match, However, it is incorrect because when the target key
+doesn't fully match the found node (e.g., node->prefixlen != matchlen),
+these two nodes may also have the same prefixlen. It will return
+expected result when the passed key exist in the trie. However when a
+recently-deleted key or nonexistent key is passed to
+trie_get_next_key(), it may skip keys and return incorrect result.
 
-Fix this by masking out the upper 16 bits of param2.
+Fix it by using node->prefixlen == matchlen to identify exact matches.
+When the condition is true after the search, it also implies
+node->prefixlen equals key->prefixlen, otherwise, the search would
+return NULL instead.
 
-Fixes: b4f8e52b89f6 ("rpmsg: Introduce Qualcomm RPM glink driver")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241007235935.6216-1-jonathan@marek.ca
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20241206110622.1161752-6-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/lpm_trie.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-index 4766c21f96901..47ffaca8d86b5 100644
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1045,7 +1045,8 @@ static irqreturn_t qcom_glink_native_intr(int irq, void *data)
- 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
- 			break;
- 		case GLINK_CMD_OPEN:
--			ret = qcom_glink_rx_defer(glink, param2);
-+			/* upper 16 bits of param2 are the "prio" field */
-+			ret = qcom_glink_rx_defer(glink, param2 & 0xffff);
- 			break;
- 		case GLINK_CMD_TX_DATA:
- 		case GLINK_CMD_TX_DATA_CONT:
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 0ab0ad989eaff..37669d6988664 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -639,7 +639,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
+ 	struct lpm_trie_node **node_stack = NULL;
+ 	int err = 0, stack_ptr = -1;
+ 	unsigned int next_bit;
+-	size_t matchlen;
++	size_t matchlen = 0;
+ 
+ 	/* The get_next_key follows postorder. For the 4 node example in
+ 	 * the top of this file, the trie_get_next_key() returns the following
+@@ -678,7 +678,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
+ 		next_bit = extract_bit(key->data, node->prefixlen);
+ 		node = rcu_dereference(node->child[next_bit]);
+ 	}
+-	if (!node || node->prefixlen != key->prefixlen ||
++	if (!node || node->prefixlen != matchlen ||
+ 	    (node->flags & LPM_TREE_NODE_FLAG_IM))
+ 		goto find_leftmost;
+ 
 -- 
 2.43.0
 
