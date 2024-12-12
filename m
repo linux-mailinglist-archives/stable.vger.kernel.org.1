@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-103169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308189EF710
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5539EF730
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C29A16EA78
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5014167FBB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593702153DD;
-	Thu, 12 Dec 2024 17:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA249216E14;
+	Thu, 12 Dec 2024 17:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3O2tl5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yv6JlDHV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5142210F2;
-	Thu, 12 Dec 2024 17:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938312165F0;
+	Thu, 12 Dec 2024 17:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023753; cv=none; b=XaThK+CyE8pPTfKzqfBW741mKplo+PYIliASSo1naGb1sxo8ODPbv21VC/R+PK65gxGuo/ysTTg5/BGsy4FevZsXD3CuqHGN3DNvFT6ERmHrTUSplOFVEDo1WehPSFFrUcR3Dx2uCwpku8zZSxX56783GsRD1dQMfj9X+An0Krk=
+	t=1734023758; cv=none; b=uMbw4sa91XifA9FrfJQzZen0iLVyvs/YpvalIf3yKDOf+xFD/sjIZvl41JekykQSzbIYf1LimFFvVFkQE6c1sCwrhOwXLMP+u+pkE3LvpoSpYf90n8bDRGCCOhpCks1zQTRN+X1A/h9ys7jsD6HlXNeYatExRY/FVITM7f1K7E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023753; c=relaxed/simple;
-	bh=jNdcefpTRRhwVQeCjvR0ef83DtXAGw1xYfYQegO+uxE=;
+	s=arc-20240116; t=1734023758; c=relaxed/simple;
+	bh=tIUtHpcACms0X59mwwrDJzWI4KrKfMoJYw6SchcAlz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgxRDnI3ha8xty6RJXF28aRemkeZmyHCY4TOkXMA+2OCptrTG4+3wS6Nuf83HhuQJnMYCI+jVddDnL28iFqv9jZpaNbDHhsATU6388vmeMpLX0xaCthXnU8HBcqutQbKt96IV0uqIRtG3siSRKx04gAvWV++aQmD920ZFcc+4aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3O2tl5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB63C4CECE;
-	Thu, 12 Dec 2024 17:15:52 +0000 (UTC)
+	 MIME-Version; b=DTQbodwbGo6E5SMeIO84o7JxAqdBPYif2Ru5lPRINjPhNUqvPE9lucm/gtWb54fUQfbLRyaiHgEkq0qoLWa4iZgaFyzDj7D5YtaLmUWDNLdu0zlbDxrXTBPjz5mo/IL5Eeq5BT87YFQF0bJKSyxwfIzQebOUVe06k6U3FWsxYgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yv6JlDHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17374C4CED3;
+	Thu, 12 Dec 2024 17:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023752;
-	bh=jNdcefpTRRhwVQeCjvR0ef83DtXAGw1xYfYQegO+uxE=;
+	s=korg; t=1734023758;
+	bh=tIUtHpcACms0X59mwwrDJzWI4KrKfMoJYw6SchcAlz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V3O2tl5FGBIYZrecd19FNccLAxokEcvdMhGPl43fnAvooR+Er6hen8OadL7OY5Mz5
-	 u6bPdLgYfEUNuEA6dkJ5oSW+Jd0jBE9wC5aq5UgjCZslCKcrU3NHIVaMB4CTAfwsCa
-	 GIegYBFA70Mu7H2qKDaQobHHHWEoZbbe3n4AELpo=
+	b=Yv6JlDHVqcjSHbzqyMWaVg6qH+19dYWyCF6/Bo1nevfoyXPUIRqK3lzvq7F9U53lA
+	 Scvne5/ECCbubUhtHTxrFUtoGViLa5G3pYHHe8Mpmwoymxs5iSqZLnQUKrimbn5mRc
+	 ikZ88Oizq7UPHQJbftuRTi7G4RmWPwn5/gw5kFmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
+	"Everest K.C." <everestkc@everestkc.com.np>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/459] crypto: pcrypt - Call crypto layer directly when padata_do_parallel() return -EBUSY
-Date: Thu, 12 Dec 2024 15:56:49 +0100
-Message-ID: <20241212144256.327915210@linuxfoundation.org>
+Subject: [PATCH 5.10 072/459] crypto: cavium - Fix the if condition to exit loop after timeout
+Date: Thu, 12 Dec 2024 15:56:50 +0100
+Message-ID: <20241212144256.368165865@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
 References: <20241212144253.511169641@linuxfoundation.org>
@@ -66,56 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Everest K.C <everestkc@everestkc.com.np>
 
-[ Upstream commit 662f2f13e66d3883b9238b0b96b17886179e60e2 ]
+[ Upstream commit 53d91ca76b6c426c546542a44c78507b42008c9e ]
 
-Since commit 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for
-PADATA_RESET"), the pcrypt encryption and decryption operations return
--EAGAIN when the CPU goes online or offline. In alg_test(), a WARN is
-generated when pcrypt_aead_decrypt() or pcrypt_aead_encrypt() returns
--EAGAIN, the unnecessary panic will occur when panic_on_warn set 1.
-Fix this issue by calling crypto layer directly without parallelization
-in that case.
+The while loop breaks in the first run because of incorrect
+if condition. It also causes the statements after the if to
+appear dead.
+Fix this by changing the condition from if(timeout--) to
+if(!timeout--).
 
-Fixes: 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for PADATA_RESET")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
+This bug was reported by Coverity Scan.
+Report:
+CID 1600859: (#1 of 1): Logically dead code (DEADCODE)
+dead_error_line: Execution cannot reach this statement: udelay(30UL);
+
+Fixes: 9e2c7d99941d ("crypto: cavium - Add Support for Octeon-tx CPT Engine")
+Signed-off-by: Everest K.C. <everestkc@everestkc.com.np>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/pcrypt.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/crypto/cavium/cpt/cptpf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
-index 005a36cb21bc4..2d7f98709e97c 100644
---- a/crypto/pcrypt.c
-+++ b/crypto/pcrypt.c
-@@ -117,8 +117,10 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
- 	err = padata_do_parallel(ictx->psenc, padata, &ctx->cb_cpu);
- 	if (!err)
- 		return -EINPROGRESS;
--	if (err == -EBUSY)
--		return -EAGAIN;
-+	if (err == -EBUSY) {
-+		/* try non-parallel mode */
-+		return crypto_aead_encrypt(creq);
-+	}
+diff --git a/drivers/crypto/cavium/cpt/cptpf_main.c b/drivers/crypto/cavium/cpt/cptpf_main.c
+index d9362199423f2..b3db27b142afb 100644
+--- a/drivers/crypto/cavium/cpt/cptpf_main.c
++++ b/drivers/crypto/cavium/cpt/cptpf_main.c
+@@ -45,7 +45,7 @@ static void cpt_disable_cores(struct cpt_device *cpt, u64 coremask,
+ 		dev_err(dev, "Cores still busy %llx", coremask);
+ 		grp = cpt_read_csr64(cpt->reg_base,
+ 				     CPTX_PF_EXEC_BUSY(0));
+-		if (timeout--)
++		if (!timeout--)
+ 			break;
  
- 	return err;
- }
-@@ -166,8 +168,10 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
- 	err = padata_do_parallel(ictx->psdec, padata, &ctx->cb_cpu);
- 	if (!err)
- 		return -EINPROGRESS;
--	if (err == -EBUSY)
--		return -EAGAIN;
-+	if (err == -EBUSY) {
-+		/* try non-parallel mode */
-+		return crypto_aead_decrypt(creq);
-+	}
+ 		udelay(CSR_DELAY);
+@@ -395,7 +395,7 @@ static void cpt_disable_all_cores(struct cpt_device *cpt)
+ 		dev_err(dev, "Cores still busy");
+ 		grp = cpt_read_csr64(cpt->reg_base,
+ 				     CPTX_PF_EXEC_BUSY(0));
+-		if (timeout--)
++		if (!timeout--)
+ 			break;
  
- 	return err;
- }
+ 		udelay(CSR_DELAY);
 -- 
 2.43.0
 
