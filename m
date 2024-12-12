@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-103407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FEF9EF743
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C76A9EF92E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FECE17ABF9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704BD1774D2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A7E21CFEA;
-	Thu, 12 Dec 2024 17:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB6022331C;
+	Thu, 12 Dec 2024 17:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSISjClB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDMcMAP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D97217F40;
-	Thu, 12 Dec 2024 17:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8908C222D73;
+	Thu, 12 Dec 2024 17:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024475; cv=none; b=mSuL7JhCdo7WALdTN2Ord8nFO0cvJYFM4FQVPRKkY2MRjJERnCph1/ow7J1Ca6JRB1nAhxaDdv3JO34pH5C6Re3c26QD+RFw22/XW3PC5d6uM+Y/7mS0sLwX+Vm3KAyxzG8XcY5WBD6KIY/kR1jk6FxkSWEQs0/FCIn+Kt5He3s=
+	t=1734025314; cv=none; b=ivSmIeh4V5n6qGrUq3pPLmO1rOfWIHid4JxGEUTtIoV/LBz//sOOplIltwLAlLqzpJ5a2Md+emDpenZzKmElxcLwdshvWmHpQgly3wvDhJdyLspQvauqfjAq6jiAhTer/nLbJmkMBTrlmmkJyV8jShAkLnzFmF9xpqrwkeuUu70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024475; c=relaxed/simple;
-	bh=Ws7HaOAx6Y5pVuolDF0CH31rEkOYNHVBox+VrMfF3v8=;
+	s=arc-20240116; t=1734025314; c=relaxed/simple;
+	bh=UFEiyvnFP4tLwMCfC/rSwx9itOas1DMsiNSax8oXdgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GY9Gn/Gmdj82ZXR/YGuPcIIOQ1ov8Q2VySnESXqwTgNOB/4khFucrBwRS31aMSOSx0gK9H7+revJM6yP/T7G8bkjS/6vd+gAyp1O645E2kMi8tqtN9yoCWjr60t0Kl8eGc/DsTTnMVLr1Hqf7u7tKlmPeAl7M3UX6+KU1jnSptQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSISjClB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75D9C4CED3;
-	Thu, 12 Dec 2024 17:27:54 +0000 (UTC)
+	 MIME-Version; b=LeqIJBbIQMKEvnUoJxh+QCPmyXKz502mlB3k1kE0x62XHm3Q7GYyn5o3Wa4e400L1u8AgAv+M7xxcZki6Hw/5ilXmKQbTKtPYfaNX6nuuifKE0fEQYNUQEC3lNOaL7+LnEjQJoQB9p+S8zenrfm56QEwJ5ULysELm4VcANd9Yq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDMcMAP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B58CC4CECE;
+	Thu, 12 Dec 2024 17:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024475;
-	bh=Ws7HaOAx6Y5pVuolDF0CH31rEkOYNHVBox+VrMfF3v8=;
+	s=korg; t=1734025314;
+	bh=UFEiyvnFP4tLwMCfC/rSwx9itOas1DMsiNSax8oXdgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSISjClBFvj2IdhHDHlqfBnw4ZnYL7HY79DE9LBVGVE6hJ96or/d/21kc2tXeUenM
-	 1BdtVYwAYWwHxd2C1V1U6FyEWRAMot1AZe3SbIkKO3PVqFVOn48I5LGSDqeL6NxVYr
-	 Fs31V8/aRcqT5Y3xVbNP9ZFLy2MLNEaj5rf86HTM=
+	b=yDMcMAP9lRgorE+MBEr0tjLI635piuCvmY2o67cvdSdhpWsUk0ogMFIeHkuP6cjl7
+	 obprs5KdVtyYTy+3JubkuHIpwpj6OWp/sy/d2WVPLQwNsaCZo8UAKIFsl5y/B51AxE
+	 KZtw1A5EAaW+9DOw8C5Z9JK6IdcWEWzOKxFKFTJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Salam Noureddine <noureddine@arista.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 308/459] SUNRPC: Replace internal use of SOCKWQ_ASYNC_NOSPACE
+Subject: [PATCH 5.4 128/321] tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets
 Date: Thu, 12 Dec 2024 16:00:46 +0100
-Message-ID: <20241212144305.811502279@linuxfoundation.org>
+Message-ID: <20241212144235.031549501@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-[ Upstream commit 2790a624d43084de590884934969e19c7a82316a ]
+[ Upstream commit 614f4d166eeeb9bd709b0ad29552f691c0f45776 ]
 
-The socket's SOCKWQ_ASYNC_NOSPACE can be cleared by various actors in
-the socket layer, so replace it with our own flag in the transport
-sock_state field.
+The hardware on Broadcom 1G chipsets have a known limitation
+where they cannot handle DMA addresses that cross over 4GB.
+When such an address is encountered, the hardware sets the
+address overflow error bit in the DMA status register and
+triggers a reset.
 
-Reported-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
+However, BCM57766 hardware is setting the overflow bit and
+triggering a reset in some cases when there is no actual
+underlying address overflow. The hardware team analyzed the
+issue and concluded that it is happening when the status
+block update has an address with higher (b16 to b31) bits
+as 0xffff following a previous update that had lowest bits
+as 0xffff.
+
+To work around this bug in the BCM57766 hardware, set the
+coherent dma mask from the current 64b to 31b. This will
+ensure that upper bits of the status block DMA address are
+always at most 0x7fff, thus avoiding the improper overflow
+check described above. This work around is intended for only
+status block and ring memories and has no effect on TX and
+RX buffers as they do not require coherent memory.
+
+Fixes: 72f2afb8a685 ("[TG3]: Add DMA address workaround")
+Reported-by: Salam Noureddine <noureddine@arista.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://patch.msgid.link/20241119055741.147144-1-pavan.chebbi@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/xprtsock.h |  1 +
- net/sunrpc/xprtsock.c           | 22 ++++------------------
- 2 files changed, 5 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/broadcom/tg3.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/sunrpc/xprtsock.h b/include/linux/sunrpc/xprtsock.h
-index 689062afdd610..3eb0079669c50 100644
---- a/include/linux/sunrpc/xprtsock.h
-+++ b/include/linux/sunrpc/xprtsock.h
-@@ -90,5 +90,6 @@ struct sock_xprt {
- #define XPRT_SOCK_WAKE_PENDING	(6)
- #define XPRT_SOCK_WAKE_DISCONNECT	(7)
- #define XPRT_SOCK_CONNECT_SENT	(8)
-+#define XPRT_SOCK_NOSPACE	(9)
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 4847441cf161d..b060e1fe3bab4 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -17815,6 +17815,9 @@ static int tg3_init_one(struct pci_dev *pdev,
+ 	} else
+ 		persist_dma_mask = dma_mask = DMA_BIT_MASK(64);
  
- #endif /* _LINUX_SUNRPC_XPRTSOCK_H */
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 93e59d5a363d0..278d044e1fd4a 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -770,14 +770,8 @@ static int xs_nospace(struct rpc_rqst *req, struct sock_xprt *transport)
- 
- 	/* Don't race with disconnect */
- 	if (xprt_connected(xprt)) {
--		struct socket_wq *wq;
--
--		rcu_read_lock();
--		wq = rcu_dereference(sk->sk_wq);
--		set_bit(SOCKWQ_ASYNC_NOSPACE, &wq->flags);
--		rcu_read_unlock();
--
- 		/* wait for more buffer space */
-+		set_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
- 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
- 		sk->sk_write_pending++;
- 		xprt_wait_for_buffer_space(xprt);
-@@ -1134,6 +1128,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
- 	clear_bit(XPRT_SOCK_WAKE_ERROR, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
-+	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
- }
- 
- static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
-@@ -1497,7 +1492,6 @@ static void xs_tcp_state_change(struct sock *sk)
- 
- static void xs_write_space(struct sock *sk)
- {
--	struct socket_wq *wq;
- 	struct sock_xprt *transport;
- 	struct rpc_xprt *xprt;
- 
-@@ -1508,15 +1502,10 @@ static void xs_write_space(struct sock *sk)
- 	if (unlikely(!(xprt = xprt_from_sock(sk))))
- 		return;
- 	transport = container_of(xprt, struct sock_xprt, xprt);
--	rcu_read_lock();
--	wq = rcu_dereference(sk->sk_wq);
--	if (!wq || test_and_clear_bit(SOCKWQ_ASYNC_NOSPACE, &wq->flags) == 0)
--		goto out;
--
-+	if (!test_and_clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state))
-+		return;
- 	xs_run_error_worker(transport, XPRT_SOCK_WAKE_WRITE);
- 	sk->sk_write_pending--;
--out:
--	rcu_read_unlock();
- }
- 
- /**
-@@ -1860,7 +1849,6 @@ static int xs_local_finish_connecting(struct rpc_xprt *xprt,
- 		sk->sk_user_data = xprt;
- 		sk->sk_data_ready = xs_data_ready;
- 		sk->sk_write_space = xs_udp_write_space;
--		sock_set_flag(sk, SOCK_FASYNC);
- 		sk->sk_error_report = xs_error_report;
- 
- 		xprt_clear_connected(xprt);
-@@ -2058,7 +2046,6 @@ static void xs_udp_finish_connecting(struct rpc_xprt *xprt, struct socket *sock)
- 		sk->sk_user_data = xprt;
- 		sk->sk_data_ready = xs_data_ready;
- 		sk->sk_write_space = xs_udp_write_space;
--		sock_set_flag(sk, SOCK_FASYNC);
- 
- 		xprt_set_connected(xprt);
- 
-@@ -2214,7 +2201,6 @@ static int xs_tcp_finish_connecting(struct rpc_xprt *xprt, struct socket *sock)
- 		sk->sk_data_ready = xs_data_ready;
- 		sk->sk_state_change = xs_tcp_state_change;
- 		sk->sk_write_space = xs_tcp_write_space;
--		sock_set_flag(sk, SOCK_FASYNC);
- 		sk->sk_error_report = xs_error_report;
- 
- 		/* socket options */
++	if (tg3_asic_rev(tp) == ASIC_REV_57766)
++		persist_dma_mask = DMA_BIT_MASK(31);
++
+ 	/* Configure DMA attributes. */
+ 	if (dma_mask > DMA_BIT_MASK(32)) {
+ 		err = pci_set_dma_mask(pdev, dma_mask);
 -- 
 2.43.0
 
