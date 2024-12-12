@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-101516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE1A9EECF4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC989EF0F4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED33418857CA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CD3E29E1EB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C389221DAB;
-	Thu, 12 Dec 2024 15:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C4D236FA0;
+	Thu, 12 Dec 2024 16:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vknXUBqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJ3mZaqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A415217F48;
-	Thu, 12 Dec 2024 15:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E25E2253EC;
+	Thu, 12 Dec 2024 16:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017829; cv=none; b=QTRpbIkPqO73fH6BQOmfntTHsXaru9c/Gvn3cOb6H2tZKaQttGLU2oNkr/XyXM/4LS3loQj457GakrMAVqnM4wLIAZrtCVM/ZwLGTdiojaL7RRvjj07Z27Qfml7YFfVjiLXNlFWCVYSOkIYXbR/7oJc7USjV8ElXlGxJ6Yf6RF4=
+	t=1734020544; cv=none; b=VfKP+KBOsQbeuykFyWImUFcTvCa0EmwNC/JtnoQ+4K+TTyo8p4QkNOyVFe40g235iEfFBe6bFZagH6aW/ShJiywXhdlzNs8H8rKvdjKY8ShuY77c7A0Za9CczU0Ioqm6yk5eFQN0OOLJS3UWABiNi8wh3J4PbuFoPX96u+MQZV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017829; c=relaxed/simple;
-	bh=opKDVIxjUHZxlesfnA1HsOkw4bbOwFvQwYS8WRBwXKQ=;
+	s=arc-20240116; t=1734020544; c=relaxed/simple;
+	bh=yrbjlVqYIrcPGyy+AIWiZnLUgkuC0RDmCIzBVIuboUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ndhT1LZatoHX2+IRf7f9eEG/DnR+9uSGVnodgCNVsy5uXh+P+wgWAjbR2qrIFzj+qyk3Qm7vLdlhlfG/Jy3SoruZe4b6iWeoVp84HH6s76oCnrpOFSAorzLWfUV03VYznFryArdpiYVuveZXBorZ23/QvEevsI4AvmBjMVbKOms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vknXUBqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC91C4CED0;
-	Thu, 12 Dec 2024 15:37:08 +0000 (UTC)
+	 MIME-Version; b=Qw+FqMwEI8eHsJa2ErsPYPsXMEUPtxQhHfml1uRlx32F93j0X8gX5TeySklrL0A91nwGLws7OzHBUY+UY1R6JIaraMXueme1TBjnQCsVrJNTlJUUB72fiX7tMQtOKuZOJS8FzfEXnv/De5ybgMEA9uQUfc/v/z+p9FatPodBZyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJ3mZaqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6297AC4CECE;
+	Thu, 12 Dec 2024 16:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017828;
-	bh=opKDVIxjUHZxlesfnA1HsOkw4bbOwFvQwYS8WRBwXKQ=;
+	s=korg; t=1734020544;
+	bh=yrbjlVqYIrcPGyy+AIWiZnLUgkuC0RDmCIzBVIuboUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vknXUBqQ31ebhX7blc5VrR/KR9cliMMpX0Zwot6c9+rn6D9fEtBU4nFhTuYTFL34C
-	 tHOEQ9A1IhvBXwnZSZBkrfKrl6zYCiibrOIpcTf7o9eaRstAwg6vMKmqc987roT9bW
-	 zu04LdkYKNyuiA0CsgiKB2QT7ZdMzrNXrfVsfmkE=
+	b=xJ3mZaqPfsVCueFCn/ysEbfGO9Zr9U+ZgervomRmGMqHRln8XyaO4QYQrPCIBlGMA
+	 bFVF+qkqU1jIoBvDdPh1ooOVoLRr0mrmmRmvvkb+4el9nWRTXxcAksFV+fuB/n1xAP
+	 lQwDjkAz0NWgBaq5OMT5YbpdL6MdwLRlQuAyCGwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Quentin Monnet <qmo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/356] tools: Override makefile ARCH variable if defined, but empty
+	Yang Erkun <yangerkun@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 495/772] nfsd: make sure exp active before svc_export_show
 Date: Thu, 12 Dec 2024 15:57:20 +0100
-Message-ID: <20241212144249.432884961@linuxfoundation.org>
+Message-ID: <20241212144410.404219301@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,64 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 537a2525eaf76ea9b0dca62b994500d8670b39d5 ]
+commit be8f982c369c965faffa198b46060f8853e0f1f0 upstream.
 
-There are a number of tools (bpftool, selftests), that require a
-"bootstrap" build. Here, a bootstrap build is a build host variant of
-a target. E.g., assume that you're performing a bpftool cross-build on
-x86 to riscv, a bootstrap build would then be an x86 variant of
-bpftool. The typical way to perform the host build variant, is to pass
-"ARCH=" in a sub-make. However, if a variable has been set with a
-command argument, then ordinary assignments in the makefile are
-ignored.
+The function `e_show` was called with protection from RCU. This only
+ensures that `exp` will not be freed. Therefore, the reference count for
+`exp` can drop to zero, which will trigger a refcount use-after-free
+warning when `exp_get` is called. To resolve this issue, use
+`cache_get_rcu` to ensure that `exp` remains active.
 
-This side-effect results in that ARCH, and variables depending on ARCH
-are not set. Workaround by overriding ARCH to the host arch, if ARCH
-is empty.
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 3 PID: 819 at lib/refcount.c:25
+refcount_warn_saturate+0xb1/0x120
+CPU: 3 UID: 0 PID: 819 Comm: cat Not tainted 6.12.0-rc3+ #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.16.1-2.fc37 04/01/2014
+RIP: 0010:refcount_warn_saturate+0xb1/0x120
+...
+Call Trace:
+ <TASK>
+ e_show+0x20b/0x230 [nfsd]
+ seq_read_iter+0x589/0x770
+ seq_read+0x1e5/0x270
+ vfs_read+0x125/0x530
+ ksys_read+0xc1/0x160
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: 8859b0da5aac ("tools/bpftool: Fix cross-build")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/bpf/20241127101748.165693-1-bjorn@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf18f163e89c ("NFSD: Using exp_get for export getting")
+Cc: stable@vger.kernel.org # 4.20+
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/scripts/Makefile.arch | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/export.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/scripts/Makefile.arch b/tools/scripts/Makefile.arch
-index f6a50f06dfc45..eabfe9f411d91 100644
---- a/tools/scripts/Makefile.arch
-+++ b/tools/scripts/Makefile.arch
-@@ -7,8 +7,8 @@ HOSTARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
-                                   -e s/sh[234].*/sh/ -e s/aarch64.*/arm64/ \
-                                   -e s/riscv.*/riscv/ -e s/loongarch.*/loongarch/)
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1324,9 +1324,12 @@ static int e_show(struct seq_file *m, vo
+ 		return 0;
+ 	}
  
--ifndef ARCH
--ARCH := $(HOSTARCH)
-+ifeq ($(strip $(ARCH)),)
-+override ARCH := $(HOSTARCH)
- endif
- 
- SRCARCH := $(ARCH)
--- 
-2.43.0
-
+-	exp_get(exp);
++	if (!cache_get_rcu(&exp->h))
++		return 0;
++
+ 	if (cache_check(cd, &exp->h, NULL))
+ 		return 0;
++
+ 	exp_put(exp);
+ 	return svc_export_show(m, cd, cp);
+ }
 
 
 
