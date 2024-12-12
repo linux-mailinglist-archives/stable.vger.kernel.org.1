@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-102121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9059EF150
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043F29EEA1D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B514176D03
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7B0B2846B8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFE42288D2;
-	Thu, 12 Dec 2024 16:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF28021764F;
+	Thu, 12 Dec 2024 15:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwFnZgJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bP+vmib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971042144C4;
-	Thu, 12 Dec 2024 16:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7DD213E97;
+	Thu, 12 Dec 2024 15:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020051; cv=none; b=LHVcQ/24Bae32fMyerjCxj+E9KmrTJwVwue8I8E0Rm9NxeoTcy+fFOJrsMXx0Tjf4TGZso8n4xuyHBtGDBSeZXjAWYqBHzRnMD8j/C8hA4eM/ha+1ngITkbP27uofv3PJTuCGBSoZ8k8isBoP/bX//YinCfstlAfJtByP98FmkE=
+	t=1734016131; cv=none; b=mDlH/mrGIJakq8rNqcg0iTmfsw5NOSWC6sM+iqp1ke9QrQadDE7JmtWOn+n1T+5Kqdf/1BWvz5rj6vbyEU4Y1Ok6Hr/Hi/IF3oEYcrCtkdlhUiepXXQYYFaNso5Y+cpKuGC6XpSo+0cVCzWI//UZV12qAfJhRfV5lt0BdEgoG9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020051; c=relaxed/simple;
-	bh=vRE5uxM5+gHDK7dMS45teS1LoliVxDCzLacJhv+pldA=;
+	s=arc-20240116; t=1734016131; c=relaxed/simple;
+	bh=P8Et4STGpsUtjSJoN0PT/CjG6vebdr0UGHOdJDD47Ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YzS9zjVibToJnYoFBVk4UyFktkc8/dtBT5ucVnVPrt0x5S5TgoKivx73c/KxijYPTusf3h/bsiYfMSUSBOCDA09hyrXrFXBd0yKRRzHxhTWN01NQ6QOB2A5QLXiQZr44c4ypuAPao6mRiHFRULDEz5PCZHu2QLyCvuT63kCJjy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwFnZgJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FBCC4CECE;
-	Thu, 12 Dec 2024 16:14:10 +0000 (UTC)
+	 MIME-Version; b=D3gGwtL0ZIKR89kHyg/rtqPJGBvg/EleMiOH8h0I2rIqRYVEC302TEIEsT9XVkfldYiFXWkIoUc6jeI7qyZcsiK+JExPaC10bvt0Rfm0zxg3CIbce2CDoYkYG2BEZmdkAcyiarwPubopG9THkZ5+2JHQSBeuADnocW5lEQh9F+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bP+vmib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA92BC4CECE;
+	Thu, 12 Dec 2024 15:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020051;
-	bh=vRE5uxM5+gHDK7dMS45teS1LoliVxDCzLacJhv+pldA=;
+	s=korg; t=1734016131;
+	bh=P8Et4STGpsUtjSJoN0PT/CjG6vebdr0UGHOdJDD47Ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BwFnZgJNOsD41AD7Sik/i5SsVCMyFi7v7PxbvIyjc7NqZRvpk0KILaFGPIfaCNrjz
-	 tjiB5LDZ6jdpSAfDEhLw8vjdDwQQAQzaLiXiIeh91gTJhBJJ0jMAXAHDNt2RnJm1hI
-	 ZS7L1tNHqS2jPcTaXGN839kFrOANGpL18cttQ5Ck=
+	b=0bP+vmibcQsjq4uOlKrBGHJMzWe6UoyAiDeIZX5vVDnBYr/MMm7U6yRVaVw+86nIT
+	 mEKqpNUzTp5mTg1UDWWUbOoy5AKHxGQZ+nA2fTgQV+G8aJhyOPdFOrSj0Vw1ed8qU5
+	 /yVfHUCOJaYcZt9vHM7uUFzI9Suu+3THA07MrY6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 366/772] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
+	Marie Ramlow <me@nycode.dev>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 142/466] ALSA: usb-audio: add mixer mapping for Corsair HS80
 Date: Thu, 12 Dec 2024 15:55:11 +0100
-Message-ID: <20241212144405.033804005@linuxfoundation.org>
+Message-ID: <20241212144312.407167949@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Marie Ramlow <me@nycode.dev>
 
-commit 1157733344651ca505e259d6554591ff156922fa upstream.
+commit a7de2b873f3dbcda02d504536f1ec6dc50e3f6c4 upstream.
 
-An atomicity violation occurs when the validity of the variables
-da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
-assessment is not protected by a lock, the da7219 variable might still be
-in flux during the assessment, rendering this check invalid.
+The Corsair HS80 RGB Wireless is a USB headset with a mic and a sidetone
+feature. It has the same quirk as the Virtuoso series.
+This labels the mixers appropriately, so applications don't
+move the sidetone volume when they actually intend to move the main
+headset volume.
 
-To fix this issue, we recommend adding a lock before the block
-if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
-the legitimacy check for da7219->clk_src and da7219->mclk_rate is
-protected by the lock, ensuring the validity of the check.
-
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations.
-
-Fixes: 6d817c0e9fd7 ("ASoC: codecs: Add da7219 codec driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Link: https://patch.msgid.link/20240930101216.23723-1-chenqiuji666@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Marie Ramlow <me@nycode.dev>
+cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241130165240.17838-1-me@nycode.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/da7219.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/usb/mixer_maps.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/sound/soc/codecs/da7219.c
-+++ b/sound/soc/codecs/da7219.c
-@@ -1167,17 +1167,20 @@ static int da7219_set_dai_sysclk(struct
- 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
- 	int ret = 0;
- 
--	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq))
-+	mutex_lock(&da7219->pll_lock);
-+
-+	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		return 0;
-+	}
- 
- 	if ((freq < 2000000) || (freq > 54000000)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		dev_err(codec_dai->dev, "Unsupported MCLK value %d\n",
- 			freq);
- 		return -EINVAL;
- 	}
- 
--	mutex_lock(&da7219->pll_lock);
--
- 	switch (clk_id) {
- 	case DA7219_CLKSRC_MCLK_SQR:
- 		snd_soc_component_update_bits(component, DA7219_PLL_CTRL,
+--- a/sound/usb/mixer_maps.c
++++ b/sound/usb/mixer_maps.c
+@@ -621,6 +621,16 @@ static const struct usbmix_ctl_map usbmi
+ 		.id = USB_ID(0x1b1c, 0x0a42),
+ 		.map = corsair_virtuoso_map,
+ 	},
++	{
++		/* Corsair HS80 RGB Wireless (wired mode) */
++		.id = USB_ID(0x1b1c, 0x0a6a),
++		.map = corsair_virtuoso_map,
++	},
++	{
++		/* Corsair HS80 RGB Wireless (wireless mode) */
++		.id = USB_ID(0x1b1c, 0x0a6b),
++		.map = corsair_virtuoso_map,
++	},
+ 	{	/* Gigabyte TRX40 Aorus Master (rear panel + front mic) */
+ 		.id = USB_ID(0x0414, 0xa001),
+ 		.map = aorus_master_alc1220vb_map,
 
 
 
