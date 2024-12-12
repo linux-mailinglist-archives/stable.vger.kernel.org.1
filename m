@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661D09EF51C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727219EF569
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DE0E1898BBF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1807B283EDB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28F1225A2F;
-	Thu, 12 Dec 2024 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EF61F2381;
+	Thu, 12 Dec 2024 17:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7AZLydB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCeqsQ3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDE92253FE;
-	Thu, 12 Dec 2024 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8AF53365;
+	Thu, 12 Dec 2024 17:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022289; cv=none; b=k2aAqesg9KfSzZjI1VzHIPgpIfcHKZ6AF19Bzw3tD272gm8/1/eK0sh+A7jVsoPG5ciwaOvUGr9KgbcIRhB6Zq0W2PBIDgEr6hfdIq4TnH2tqgA7nu8Sha9PFSnlD8iCpTWTnlxPs1+m2qEfIsXvtkLTEfG5fboooLH016spmQ8=
+	t=1734023806; cv=none; b=PQvR94gaStE8nfwqsRdq38CMs3MRcM00A8apw7S9UBTwVKWQ/hoPtPsTkNdAOnjDSVrQp4KX1TGeVVHZ9kDHPVqJ00aQg3DZYxjkupCwUD88Tj6CnRu4vTEDkhlioY7wUCGGFZgehrYgJAwCa9h5OgePYh1eymhaSzwGWqEp1Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022289; c=relaxed/simple;
-	bh=KnsQ1YxgOLUUTzI+bMEZQia4Vpq3UIOl2VCEweJKSsc=;
+	s=arc-20240116; t=1734023806; c=relaxed/simple;
+	bh=Mp8CjAe/+2K8ASnb8LEYRkbhn1GuWxFMRl4Dancgnc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BoRmK5oZZ13Suv30qRznNb9zIfSTqffXgQuF23CXUm0sTNJ9V0yyZiAadhGwEI9kN33ttWPsT6pLd2uvvGh324CEYqBu58y5E55TRwOljEoXiMllrjIs7GT5Iszu8ePHEBArjxIFGMZVmMrjWfBVxS7mMcxT4xxFaLVyXDzyXMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7AZLydB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D9DC4CECE;
-	Thu, 12 Dec 2024 16:51:28 +0000 (UTC)
+	 MIME-Version; b=JHrkbXGy5nl1szbC0truT3Dw7ce6G8tglC4r85AqLkrjoqhD5/K2HmsV+y895/4fYpOSBI/hh5CaoHY2C1ESTlWIskMmfGJvC/OIakMw46YgRIsgVhwTU47x5pG7HYBMGlRVetwdvVH24gxCS1Ym7Sl9d3CvOI2w5EwQVbCoKag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCeqsQ3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAD9C4CECE;
+	Thu, 12 Dec 2024 17:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022289;
-	bh=KnsQ1YxgOLUUTzI+bMEZQia4Vpq3UIOl2VCEweJKSsc=;
+	s=korg; t=1734023806;
+	bh=Mp8CjAe/+2K8ASnb8LEYRkbhn1GuWxFMRl4Dancgnc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7AZLydB1m0MbxWD4zlwOmqOUKm2M0+F63VtiSkyneAN2J+BG48rRGgjg4ZHU9Wpv
-	 6qP6u231VCcrmENCsancZlOYm3ppsAVmy9QwQDpKBCU1XhTkByQiiF8EJ9VnewOvLg
-	 daCKFF/3vwbJmjjt2+nk4RxGprFMrbndJTkX6aHw=
+	b=NCeqsQ3ECpXfKrN5maxvN5lnDS3EL5MwRlLlP/Y6xitKdftUY+sIV5l1r9NDJgLOI
+	 HjPVKi1JThcsK717e/uati3YZfLjLFByeMPnRkWx6jPS7mrjjHkD4iWjdEFkKNbQvm
+	 cj2t5sjLhtQ8sG+RnWMQSR7JEHSqGYONKZ8r+j+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	David Disseldorp <ddiss@suse.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 201/565] ALSA: us122l: Use snd_card_free_when_closed() at disconnection
+Subject: [PATCH 5.10 058/459] initramfs: avoid filename buffer overrun
 Date: Thu, 12 Dec 2024 15:56:36 +0100
-Message-ID: <20241212144319.438558376@linuxfoundation.org>
+Message-ID: <20241212144255.810931505@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: David Disseldorp <ddiss@suse.de>
 
-[ Upstream commit b7df09bb348016943f56b09dcaafe221e3f73947 ]
+[ Upstream commit e017671f534dd3f568db9e47b0583e853d2da9b5 ]
 
-The USB disconnect callback is supposed to be short and not too-long
-waiting.  OTOH, the current code uses snd_card_free() at
-disconnection, but this waits for the close of all used fds, hence it
-can take long.  It eventually blocks the upper layer USB ioctls, which
-may trigger a soft lockup.
+The initramfs filename field is defined in
+Documentation/driver-api/early-userspace/buffer-format.rst as:
 
-An easy workaround is to replace snd_card_free() with
-snd_card_free_when_closed().  This variant returns immediately while
-the release of resources is done asynchronously by the card device
-release at the last close.
+ 37 cpio_file := ALGN(4) + cpio_header + filename + "\0" + ALGN(4) + data
+...
+ 55 ============= ================== =========================
+ 56 Field name    Field size         Meaning
+ 57 ============= ================== =========================
+...
+ 70 c_namesize    8 bytes            Length of filename, including final \0
 
-The loop of us122l->mmap_count check is dropped as well.  The check is
-useless for the asynchronous operation with *_when_closed().
+When extracting an initramfs cpio archive, the kernel's do_name() path
+handler assumes a zero-terminated path at @collected, passing it
+directly to filp_open() / init_mkdir() / init_mknod().
 
-Fixes: 030a07e44129 ("ALSA: Add USB US122L driver")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-3-tiwai@suse.de
+If a specially crafted cpio entry carries a non-zero-terminated filename
+and is followed by uninitialized memory, then a file may be created with
+trailing characters that represent the uninitialized memory. The ability
+to create an initramfs entry would imply already having full control of
+the system, so the buffer overrun shouldn't be considered a security
+vulnerability.
+
+Append the output of the following bash script to an existing initramfs
+and observe any created /initramfs_test_fname_overrunAA* path. E.g.
+  ./reproducer.sh | gzip >> /myinitramfs
+
+It's easiest to observe non-zero uninitialized memory when the output is
+gzipped, as it'll overflow the heap allocated @out_buf in __gunzip(),
+rather than the initrd_start+initrd_size block.
+
+---- reproducer.sh ----
+nilchar="A"	# change to "\0" to properly zero terminate / pad
+magic="070701"
+ino=1
+mode=$(( 0100777 ))
+uid=0
+gid=0
+nlink=1
+mtime=1
+filesize=0
+devmajor=0
+devminor=1
+rdevmajor=0
+rdevminor=0
+csum=0
+fname="initramfs_test_fname_overrun"
+namelen=$(( ${#fname} + 1 ))	# plus one to account for terminator
+
+printf "%s%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%s" \
+	$magic $ino $mode $uid $gid $nlink $mtime $filesize \
+	$devmajor $devminor $rdevmajor $rdevminor $namelen $csum $fname
+
+termpadlen=$(( 1 + ((4 - ((110 + $namelen) & 3)) % 4) ))
+printf "%.s${nilchar}" $(seq 1 $termpadlen)
+---- reproducer.sh ----
+
+Symlink filename fields handled in do_symlink() won't overrun past the
+data segment, due to the explicit zero-termination of the symlink
+target.
+
+Fix filename buffer overrun by aborting the initramfs FSM if any cpio
+entry doesn't carry a zero-terminator at the expected (name_len - 1)
+offset.
+
+Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
+Signed-off-by: David Disseldorp <ddiss@suse.de>
+Link: https://lore.kernel.org/r/20241030035509.20194-2-ddiss@suse.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/usx2y/us122l.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ init/initramfs.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
-index e558931cce16e..23d7d542a3de6 100644
---- a/sound/usb/usx2y/us122l.c
-+++ b/sound/usb/usx2y/us122l.c
-@@ -617,10 +617,7 @@ static void snd_us122l_disconnect(struct usb_interface *intf)
- 	usb_put_intf(usb_ifnum_to_if(us122l->dev, 1));
- 	usb_put_dev(us122l->dev);
+diff --git a/init/initramfs.c b/init/initramfs.c
+index ff09460727237..a56fc491c276d 100644
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -325,6 +325,15 @@ static int __init do_name(void)
+ {
+ 	state = SkipIt;
+ 	next_state = Reset;
++
++	/* name_len > 0 && name_len <= PATH_MAX checked in do_header */
++	if (collected[name_len - 1] != '\0') {
++		pr_err("initramfs name without nulterm: %.*s\n",
++		       (int)name_len, collected);
++		error("malformed archive");
++		return 1;
++	}
++
+ 	if (strcmp(collected, "TRAILER!!!") == 0) {
+ 		free_hash();
+ 		return 0;
+@@ -390,6 +399,12 @@ static int __init do_copy(void)
  
--	while (atomic_read(&us122l->mmap_count))
--		msleep(500);
--
--	snd_card_free(card);
-+	snd_card_free_when_closed(card);
- }
- 
- static int snd_us122l_suspend(struct usb_interface *intf, pm_message_t message)
+ static int __init do_symlink(void)
+ {
++	if (collected[name_len - 1] != '\0') {
++		pr_err("initramfs symlink without nulterm: %.*s\n",
++		       (int)name_len, collected);
++		error("malformed archive");
++		return 1;
++	}
+ 	collected[N_ALIGN(name_len) + body_len] = '\0';
+ 	clean_path(collected, 0);
+ 	init_symlink(collected + N_ALIGN(name_len), collected);
 -- 
 2.43.0
 
