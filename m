@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871619EEB6C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308369EF173
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEDEC1889E59
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCD8518998CC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6269221578F;
-	Thu, 12 Dec 2024 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0A123695B;
+	Thu, 12 Dec 2024 16:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHnV0J8S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZtN2r/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9AB2EAE5;
-	Thu, 12 Dec 2024 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174CA4F218;
+	Thu, 12 Dec 2024 16:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016787; cv=none; b=m40oOqWYLKFMd1esZ20lFx2kLgFQm+Fpd+aT5YdFcreWi1nZz0G2WQ68rQ8FH6WDAmQOqlJ4IKtv2epl71XzBEIB8zGwnEFMHa8vBv+B4SF+sWa7lM3OYwgAtHz2mlX+qt++k1h3azVuw8nrF+Ij538oeND+FmWqO8ZXexTBwjI=
+	t=1734020495; cv=none; b=oQOb0bkVRtu/BF2oX6sgLrWDzGqFVqxzhwxsZA4G3RoH5ZiXjw+uBx3OXUKs93BY16ZwmAQBmoP8S/yKNFbuOhbnEoF/GAoPxqUk0ULOM31pbBpLGMqpcMY3esV1qRIghf15qOt5UutZ0nP+BDk5qOTk/oZ8qvKehyQKpovnvdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016787; c=relaxed/simple;
-	bh=9WDONNCABOl5vQk/XU6vZl6agovRsrcjSK/yF7dcTPw=;
+	s=arc-20240116; t=1734020495; c=relaxed/simple;
+	bh=yd+thalTRgK4Jh09fgf5sXg2XyD4G98MiV9Xqsx82Bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKbUPZjG9G4COQ8HTTYynPF3LlfkyNglKpL3HfwcaC/t/tElKYJsWFKhOEKlhwO6BxyP0XJQsjLRx9yfpltcMSi65dISQzgDSEb7RWfeNQBP1Gu6ppUnU8/nI5iCxUDxfaQDAyZOqhEX3hq5589i00vIdb2qI5CELh1gID9mrMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHnV0J8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A933C4CECE;
-	Thu, 12 Dec 2024 15:19:46 +0000 (UTC)
+	 MIME-Version; b=cn7XbwjDkK7ZcSz8trxshYVgNajmh4bkEFzFM3JqEqC0hrE1sR+KhBkOukyEWMc9ZGrxR8hKV3dGgEhHe0D8Zctijb1sH3LTL1PpcFDnHEG0CDVguo3LvpyEc7tjosDVRRujP9dvOA53IyTDsMxMwko8FJk+o1t1F+nFuE5CiGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZtN2r/o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597B9C4CECE;
+	Thu, 12 Dec 2024 16:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016787;
-	bh=9WDONNCABOl5vQk/XU6vZl6agovRsrcjSK/yF7dcTPw=;
+	s=korg; t=1734020494;
+	bh=yd+thalTRgK4Jh09fgf5sXg2XyD4G98MiV9Xqsx82Bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHnV0J8SUYS5IUA4CSuY6NbdGeVwLAIRnTXyHl/9kQOl+kUEdHEF4nGUZWx33UiLx
-	 SfpdTi7QuMPCcJA1h473uf83JVFRyiZoZT8+6utrFlH8h9XLRQ7hVFZQMUV1gWqM72
-	 7NEWAdiN+eneC6vOrGoEFUN4pjztOmTDkq+zvXms=
+	b=oZtN2r/oBCfGegWoIV57nhIhFWCBFYKH8Gckq39971qg9H3uVk6gSLOU8J0eNk8Tr
+	 cBhvzBXXcZ5g1FvhANnqFS8ZYWbjc6CKf7lR7glUz38h2fl2SoPmle1Ni5xIHI+GE8
+	 yYcdgufizgdUTypS/U+H7eTPoj0dxyd1R7qiGMmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 256/466] drm/vc4: hvs: Set AXI panic modes for the HVS
-Date: Thu, 12 Dec 2024 15:57:05 +0100
-Message-ID: <20241212144316.910983147@linuxfoundation.org>
+	Clement LE GOFFIC <clement.legoffic@foss.st.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.1 481/772] ARM: 9430/1: entry: Do a dummy read from VMAP shadow
+Date: Thu, 12 Dec 2024 15:57:06 +0100
+Message-ID: <20241212144409.810872514@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 014eccc9da7bfc76a3107fceea37dd60f1d63630 ]
+commit 44e9a3bb76e5f2eecd374c8176b2c5163c8bb2e2 upstream.
 
-The HVS can change AXI request mode based on how full the COB
-FIFOs are.
-Until now the vc4 driver has been relying on the firmware to
-have set these to sensible values.
+When switching task, in addition to a dummy read from the new
+VMAP stack, also do a dummy read from the VMAP stack's
+corresponding KASAN shadow memory to sync things up in
+the new MM context.
 
-With HVS channel 2 now being used for live video, change the
-panic mode for all channels to be explicitly set by the driver,
-and the same for all channels.
-
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-7-dave.stevenson@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a1c510d0adc6 ("ARM: implement support for vmap'ed stacks")
+Link: https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b098de9db6d@foss.st.com/
+Reported-by: Clement LE GOFFIC <clement.legoffic@foss.st.com>
+Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/kernel/entry-armv.S |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index 863539e1f7e04..c389e82463bfd 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -963,6 +963,17 @@ static int vc4_hvs_bind(struct device *dev, struct device *master, void *data)
- 			      SCALER_DISPCTRL_SCLEIRQ);
+--- a/arch/arm/kernel/entry-armv.S
++++ b/arch/arm/kernel/entry-armv.S
+@@ -25,6 +25,7 @@
+ #include <asm/tls.h>
+ #include <asm/system_info.h>
+ #include <asm/uaccess-asm.h>
++#include <asm/kasan_def.h>
  
+ #include "entry-header.S"
+ #include <asm/probes.h>
+@@ -787,6 +788,13 @@ ENTRY(__switch_to)
+ 	@ entries covering the vmalloc region.
+ 	@
+ 	ldr	r2, [ip]
++#ifdef CONFIG_KASAN_VMALLOC
++	@ Also dummy read from the KASAN shadow memory for the new stack if we
++	@ are using KASAN
++	mov_l	r2, KASAN_SHADOW_OFFSET
++	add	r2, r2, ip, lsr #KASAN_SHADOW_SCALE_SHIFT
++	ldr	r2, [r2]
++#endif
+ #endif
  
-+	/* Set AXI panic mode.
-+	 * VC4 panics when < 2 lines in FIFO.
-+	 * VC5 panics when less than 1 line in the FIFO.
-+	 */
-+	dispctrl &= ~(SCALER_DISPCTRL_PANIC0_MASK |
-+		      SCALER_DISPCTRL_PANIC1_MASK |
-+		      SCALER_DISPCTRL_PANIC2_MASK);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC0);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
-+
- 	/* Set AXI panic mode.
- 	 * VC4 panics when < 2 lines in FIFO.
- 	 * VC5 panics when less than 1 line in the FIFO.
--- 
-2.43.0
-
+ 	@ When CONFIG_THREAD_INFO_IN_TASK=n, the update of SP itself is what
 
 
 
