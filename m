@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2029C9EEA37
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E519EEFE8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48FDA16AAA7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6C228D020
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E21215795;
-	Thu, 12 Dec 2024 15:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6027323A1B8;
+	Thu, 12 Dec 2024 16:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/PZI206"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kE03iw/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5230215764;
-	Thu, 12 Dec 2024 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA6D23A1B1;
+	Thu, 12 Dec 2024 16:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016027; cv=none; b=RO96KvZ3LCGdE6wAYJ0CUlkzKVGkPUXbhnSHCUvwb1gquNaiN6PeGTPhufY+tLvJFiAdRK4GwareUDUn8dTCbo0xv8YYFOPyBVpbzb8Ue58rn+qfVhccKTknQQsbTbkSxEiOvJ8icHnx6Y3gOxaPvyPqAQzT6F1jGY0tZQ/N124=
+	t=1734019937; cv=none; b=tpedOXK73QsIIxpLoGOwDc+WIsggPAqeQ2J1BwFSkzm0MajrW0lt0yJM6WLonsswbeZw2GWJR52zQLsfg6HXGmK+CxvKhTFh7T5vw/Vw6hAE4VhH+P4o8y0Hm+GEC9WxBsU65S7No41/cbg0YEcp+9jSkwrlL7FtKxRfkUQFuxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016027; c=relaxed/simple;
-	bh=sVQvCDNye3u6crr3EocavLBYHvi/QHvVVgkD+WACR30=;
+	s=arc-20240116; t=1734019937; c=relaxed/simple;
+	bh=+mLKyfscJ4gjhxgKO7UAB2PHTg6nYRyPp6KXdyrTlgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MJHD7kiq8MOMyQk92w7WHiwxpBCNPTybLDfbLC3IJfkIem/kl03jMLcwS+p501b0ucn+0nD/OaXtwQ9FzsttSjaqvkBeVQnRZ4hEgj7FFOwtmK8quFsL3MvK7nCfhlzMk+nuZgkARJR8bs2+Tc2UXrCFIo0ea7mWNOFFUcclOck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/PZI206; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33573C4CECE;
-	Thu, 12 Dec 2024 15:07:07 +0000 (UTC)
+	 MIME-Version; b=TM6EycOHTDMc5wFB+OUyRNPKmc0NQM+PjN1uuK6FqNRJcMNbjVFPql1+X6BXRf9GlJgztn8Ew0MNexWEZxyKgGzHeV7VmvQcLHV78MFskKadGkbj7UbxF/H3U8uRDsH8/kPIeUdi/4YwaZL5NI0vXJ2lPJ4uLvtLZEZ1DttUk2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kE03iw/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7534EC4CECE;
+	Thu, 12 Dec 2024 16:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016027;
-	bh=sVQvCDNye3u6crr3EocavLBYHvi/QHvVVgkD+WACR30=;
+	s=korg; t=1734019936;
+	bh=+mLKyfscJ4gjhxgKO7UAB2PHTg6nYRyPp6KXdyrTlgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/PZI206EhUYVXAPn5eZ3JBgE10VIEXLyTkc7t0gh9wIOGCpLtW/POyAYkJCgsDEv
-	 6ji7GVS4kJmY7CkAH1HMUYPl3/49adzSQTXO2PoAsSpwR8bqKMCpy4P+ctKYpZ+SbO
-	 c/iSpCeQImaWY8hiAVTMgNd7yFw+8yd75eDYb9gI=
+	b=kE03iw/ch5WlL+SCvKDAbxB10B3DXyn0Zb+Xap1mvfDkmfFtD68lmJoUtebJUJCTt
+	 nBxDPIDeAEPEStWPlRzP8anCKszmelKIvyK226sllZLf/czIEvOUNG/9Jhz9wferDl
+	 bJEw0H0iP7ncEAFvtjkY+2ph8zIJbC5HMknYBcVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/466] drm/v3d: Enable Performance Counters before clearing them
-Date: Thu, 12 Dec 2024 15:54:40 +0100
-Message-ID: <20241212144311.203032828@linuxfoundation.org>
+Subject: [PATCH 6.1 336/772] ASoC: amd: yc: Fix for enabling DMIC on acp6x via _DSD entry
+Date: Thu, 12 Dec 2024 15:54:41 +0100
+Message-ID: <20241212144403.793168328@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
 
-[ Upstream commit c98b10496b2f3c4f576af3482c71aadcfcbf765e ]
+[ Upstream commit 4095cf872084ecfdfdb0e681f3e9ff9745acfa75 ]
 
-On the Raspberry Pi 5, performance counters are not being cleared
-when `v3d_perfmon_start()` is called, even though we write to the
-CLR register. As a result, their values accumulate until they
-overflow.
+Add condition check to register ACP PDM sound card by reading
+_WOV acpi entry.
 
-The expected behavior is for performance counters to reset to zero
-at the start of a job. When the job finishes and the perfmon is
-stopped, the counters should accurately reflect the values for that
-specific job.
+Fixes: 5426f506b584 ("ASoC: amd: Add support for enabling DMIC on acp6x via _DSD")
 
-To ensure this behavior, the performance counters are now enabled
-before being cleared. This allows the CLR register to function as
-intended, zeroing the counter values when the job begins.
-
-Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241204122831.17015-1-mcanal@igalia.com
+Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Link: https://patch.msgid.link/20241127112227.227106-1-venkataprasad.potturu@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_perfmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/amd/yc/acp6x-mach.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_perfmon.c b/drivers/gpu/drm/v3d/v3d_perfmon.c
-index 00cd081d78732..6ee56cbd3f1bf 100644
---- a/drivers/gpu/drm/v3d/v3d_perfmon.c
-+++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
-@@ -254,9 +254,9 @@ void v3d_perfmon_start(struct v3d_dev *v3d, struct v3d_perfmon *perfmon)
- 		V3D_CORE_WRITE(0, V3D_V4_PCTR_0_SRC_X(source), channel);
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index f46158b840a51..1ff894045718d 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -439,8 +439,14 @@ static int acp6x_probe(struct platform_device *pdev)
+ 	struct acp6x_pdm *machine = NULL;
+ 	struct snd_soc_card *card;
+ 	struct acpi_device *adev;
++	acpi_handle handle;
++	acpi_integer dmic_status;
+ 	int ret;
++	bool is_dmic_enable, wov_en;
+ 
++	/* IF WOV entry not found, enable dmic based on AcpDmicConnected entry*/
++	is_dmic_enable = false;
++	wov_en = true;
+ 	/* check the parent device's firmware node has _DSD or not */
+ 	adev = ACPI_COMPANION(pdev->dev.parent);
+ 	if (adev) {
+@@ -448,9 +454,19 @@ static int acp6x_probe(struct platform_device *pdev)
+ 
+ 		if (!acpi_dev_get_property(adev, "AcpDmicConnected", ACPI_TYPE_INTEGER, &obj) &&
+ 		    obj->integer.value == 1)
+-			platform_set_drvdata(pdev, &acp6x_card);
++			is_dmic_enable = true;
  	}
  
-+	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_EN, mask);
- 	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_CLR, mask);
- 	V3D_CORE_WRITE(0, V3D_PCTR_0_OVERFLOW, mask);
--	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_EN, mask);
- 
- 	v3d->active_perfmon = perfmon;
- }
++	handle = ACPI_HANDLE(pdev->dev.parent);
++	ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
++	if (!ACPI_FAILURE(ret))
++		wov_en = dmic_status;
++
++	if (is_dmic_enable && wov_en)
++		platform_set_drvdata(pdev, &acp6x_card);
++	else
++		return 0;
++
+ 	/* check for any DMI overrides */
+ 	dmi_id = dmi_first_match(yc_acp_quirk_table);
+ 	if (dmi_id)
 -- 
 2.43.0
 
