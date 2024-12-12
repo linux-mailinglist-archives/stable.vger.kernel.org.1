@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A4A9EF1D2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA9D9EECFA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2843189C26C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21E8D188D4E4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80FB225A2C;
-	Thu, 12 Dec 2024 16:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498AE218AB3;
+	Thu, 12 Dec 2024 15:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZDxJo+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rO0I/RX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648F42210DE;
-	Thu, 12 Dec 2024 16:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065782185B1;
+	Thu, 12 Dec 2024 15:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020441; cv=none; b=Y4F7W2MvnZDxt7nT9Es9aphHIM1XlrTD2VN+QyFh3O7Tmif0h8OXYYIfc6XnrBQh4HBK+681Z0ovQifmdpccPU8FllClQfu2L0h832hDHpxIoOOpwAqjMG/KGFPLRAn8Rq7j9ZhORRydEGhrtXEVED7TluB3NVDm2UaEJWS2r+c=
+	t=1734017840; cv=none; b=jncAvj3sUIY5y/SFmfR6lEkjAAaEV0W+a8f166wdmRKOV+kpBSVe6JJCkwF/Igo1zeNQARNXk7rZ1nbqw8j6jGy95QyqryoPKIKhQ03locWy6J0Ar2D37W6XId7tmkjL7++2BeN8Ek9hVrx3U/oKEo9xJYdsBnFTWHnjfMeMwIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020441; c=relaxed/simple;
-	bh=0IHJOOqWqjKNyb+JotBGkrvJAFJx/+DQJWGkuG0fQv8=;
+	s=arc-20240116; t=1734017840; c=relaxed/simple;
+	bh=Il58N4Q2z4nTllO6ifQc54yconmmvB1CLMrgIxGWsX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHRl4LMN8etKx6hoPOQZLNhhjNjCsfn9haz34ShNxQfiLqNfXSYPAsMq1iSou0yf2MnCIN+KUOkMZb04UgVgwm83lmBssfEbmOLngeb//oJpbnlRRrXoR4SoNkgzlHyR4oqBU2nTqkc9qzDs1mbH+6kopQ3tM4DWhTKtbImvmo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZDxJo+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADB8C4CECE;
-	Thu, 12 Dec 2024 16:20:39 +0000 (UTC)
+	 MIME-Version; b=HW1liQ8wFJ9jCUqYZlDQSAHRzMEFMgoGZaNPXFZoHWedNCCCOHZBQEGHT2JSCA8CNUsiRN/ITlBQFQlMger6TyrwU6yCuAXnMHt5YIMfPtoTfQSNzAYKzyRjmftQ+9l/1pqkna24yqncpTWDy+almNybV5sBI9V2ohJVqQcpOxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rO0I/RX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DC9C4CECE;
+	Thu, 12 Dec 2024 15:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020439;
-	bh=0IHJOOqWqjKNyb+JotBGkrvJAFJx/+DQJWGkuG0fQv8=;
+	s=korg; t=1734017839;
+	bh=Il58N4Q2z4nTllO6ifQc54yconmmvB1CLMrgIxGWsX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZDxJo+j4jzaXXtHyh80qI4UqYklmuo1nBhgzCuyJoPo48Yt6TiP41ZRicf0tTdc5
-	 Zab4CPKThiejNTyBhZzk+oaAhkduBW36MT0gHGmKccL1zPMFE4lyVXsTfrdGDqDaFz
-	 ME3FP43IknM+s7y/oSX4solwqEA6zvpAbsGuvG7k=
+	b=rO0I/RX6OQQmxoafmc44K07D8KFuKEyCH0CA3OSjOhGvh7tgtFnoH216yxFswTWBe
+	 xBh5SmzZG4zzJfS6a5G830TWpwOFNfo781dLw0atsxKKfUl/bC6lyIpcRlDwSZjf6d
+	 y88Mg0FtEXKg2G0/msB6NE7UPOjfecrySKJR/WLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.1 469/772] media: uvcvideo: Stop stream during unregister
+	Saravana Kannan <saravanak@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 095/356] driver core: Add FWLINK_FLAG_IGNORE to completely ignore a fwnode link
 Date: Thu, 12 Dec 2024 15:56:54 +0100
-Message-ID: <20241212144409.312181245@linuxfoundation.org>
+Message-ID: <20241212144248.369520124@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Saravana Kannan <saravanak@google.com>
 
-commit c9ec6f1736363b2b2bb4e266997389740f628441 upstream.
+[ Upstream commit b7e1241d8f77ed64404a5e4450f43a319310fc91 ]
 
-uvc_unregister_video() can be called asynchronously from
-uvc_disconnect(). If the device is still streaming when that happens, a
-plethora of race conditions can occur.
+A fwnode link between specific supplier-consumer fwnodes can be added
+multiple times for multiple reasons. If that dependency doesn't exist,
+deleting the fwnode link once doesn't guarantee that it won't get created
+again.
 
-Make sure that the device has stopped streaming before exiting this
-function.
+So, add FWLINK_FLAG_IGNORE flag to mark a fwnode link as one that needs to
+be completely ignored. Since a fwnode link's flags is an OR of all the
+flags passed to all the fwnode_link_add() calls to create that specific
+fwnode link, the FWLINK_FLAG_IGNORE flag is preserved and can be used to
+mark a fwnode link as on that need to be completely ignored until it is
+deleted.
 
-If the user still holds handles to the driver's file descriptors, any
-ioctl will return -ENODEV from the v4l2 core.
-
-This change makes uvc more consistent with the rest of the v4l2 drivers
-using the vb2_fop_* and vb2_ioctl_* helpers.
-
-This driver (and many other usb drivers) always had this problem, but it
-wasn't possible to easily fix this until the vb2_video_unregister_device()
-helper was added. So the Fixes tag points to the creation of that helper.
-
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Suggested-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Fixes: f729ef5796d8 ("media: videobuf2-v4l2.c: add vb2_video_unregister_device helper function")
-Cc: stable@vger.kernel.org # 5.10.x
-[hverkuil: add note regarding Fixes version]
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20240305050458.1400667-3-saravanak@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |   32 +++++++++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+ drivers/base/core.c    | 9 ++++++++-
+ include/linux/fwnode.h | 2 ++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -1886,11 +1886,41 @@ static void uvc_unregister_video(struct
- 	struct uvc_streaming *stream;
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 499904f1ba6b3..3aaf234dbb088 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -1025,7 +1025,8 @@ static struct fwnode_handle *fwnode_links_check_suppliers(
+ 		return NULL;
  
- 	list_for_each_entry(stream, &dev->streams, list) {
-+		/* Nothing to do here, continue. */
- 		if (!video_is_registered(&stream->vdev))
- 			continue;
+ 	list_for_each_entry(link, &fwnode->suppliers, c_hook)
+-		if (!(link->flags & FWLINK_FLAG_CYCLE))
++		if (!(link->flags &
++		      (FWLINK_FLAG_CYCLE | FWLINK_FLAG_IGNORE)))
+ 			return link->supplier;
  
-+		/*
-+		 * For stream->vdev we follow the same logic as:
-+		 * vb2_video_unregister_device().
-+		 */
-+
-+		/* 1. Take a reference to vdev */
-+		get_device(&stream->vdev.dev);
-+
-+		/* 2. Ensure that no new ioctls can be called. */
- 		video_unregister_device(&stream->vdev);
--		video_unregister_device(&stream->meta.vdev);
-+
-+		/* 3. Wait for old ioctls to finish. */
-+		mutex_lock(&stream->mutex);
-+
-+		/* 4. Stop streaming. */
-+		uvc_queue_release(&stream->queue);
-+
-+		mutex_unlock(&stream->mutex);
-+
-+		put_device(&stream->vdev.dev);
-+
-+		/*
-+		 * For stream->meta.vdev we can directly call:
-+		 * vb2_video_unregister_device().
-+		 */
-+		vb2_video_unregister_device(&stream->meta.vdev);
-+
-+		/*
-+		 * Now both vdevs are not streaming and all the ioctls will
-+		 * return -ENODEV.
-+		 */
- 
- 		uvc_debugfs_cleanup_stream(stream);
+ 	return NULL;
+@@ -1976,6 +1977,9 @@ static bool __fw_devlink_relax_cycles(struct device *con,
  	}
+ 
+ 	list_for_each_entry(link, &sup_handle->suppliers, c_hook) {
++		if (link->flags & FWLINK_FLAG_IGNORE)
++			continue;
++
+ 		if (__fw_devlink_relax_cycles(con, link->supplier)) {
+ 			__fwnode_link_cycle(link);
+ 			ret = true;
+@@ -2054,6 +2058,9 @@ static int fw_devlink_create_devlink(struct device *con,
+ 	int ret = 0;
+ 	u32 flags;
+ 
++	if (link->flags & FWLINK_FLAG_IGNORE)
++		return 0;
++
+ 	if (con->fwnode == link->consumer)
+ 		flags = fw_devlink_get_flags(link->flags);
+ 	else
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 5700451b300fb..525cc031596b6 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -51,8 +51,10 @@ struct fwnode_handle {
+  * fwnode link flags
+  *
+  * CYCLE:	The fwnode link is part of a cycle. Don't defer probe.
++ * IGNORE:	Completely ignore this link, even during cycle detection.
+  */
+ #define FWLINK_FLAG_CYCLE			BIT(0)
++#define FWLINK_FLAG_IGNORE			BIT(1)
+ 
+ struct fwnode_link {
+ 	struct fwnode_handle *supplier;
+-- 
+2.43.0
+
 
 
 
