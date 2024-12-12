@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81629EED64
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFC99EF1F6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:43:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A02AC188EE11
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CADAF1784C1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B01217656;
-	Thu, 12 Dec 2024 15:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A549222D6D;
+	Thu, 12 Dec 2024 16:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKb7bIUw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lY+h9KcC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC78E215764;
-	Thu, 12 Dec 2024 15:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB52953365;
+	Thu, 12 Dec 2024 16:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018099; cv=none; b=kbovUQi1wH3AAzRU1/VV3uU9Qw5b8orEi7+jlXO7s7WiG/7HdQAuV8ZceiQyhuqNxRiOEYVGYzXOg8ExQCWHKQFjDtX/iRLt913yYU99Z/anRQqxoyt5zlOAIlv5NIhvVX4NIPhDzS6fBWubaLsQ2KjxuVVHMNE58waIwU7Q7ZY=
+	t=1734020805; cv=none; b=Oy1C9LEdWpzfr5lrIk+0k/QszdbeLnaeU/quljJx5o7Yo9HM1VX1e/bb2S8pePAFT96efxNYic5evAK1Ey78VzT2Gc5VLyNSjdHkbNIFGI5UofaKHGmgbLnwYEPVDPAsZEn5ESWyDSAw9KYtODHClCZ8bqnbe7Q2kqSp96Hsf+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018099; c=relaxed/simple;
-	bh=ehKb/PMjJ/+g3tivDd4axmdmOZixscbC/oiTFsBUPzY=;
+	s=arc-20240116; t=1734020805; c=relaxed/simple;
+	bh=y5kGi0Cpr3TriYG7xH5GJx5hCVMwVmWeoTJ0L+oTYUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJSGDI1EFNIncIvdR8cc27jAN+8Q89ChzF6UcswRybjuHoKw5XX8KhWp9UQxW2bLbu/OrwGaAdFbp8QdTAer+KZ74hUv1DPkpP7xvxfVAxVYPMLjVp3Wvx9MQmbMvA5MfRtmJYy58insCnytwrb2oJZ1/nb+nQrQTEs+faExizY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKb7bIUw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FE1C4CECE;
-	Thu, 12 Dec 2024 15:41:38 +0000 (UTC)
+	 MIME-Version; b=lWBeL184yg1XXdbaL2CCFjGSKPL5OkKzqnLjVWNBSK3JnTJHFkNTT8ZhY1YqwcIKKKB+oRvdCpA1zZSy4KD6eQFCdKj2nsY7/0VwvVAjI8VaqzGrYjCxmQ2LgAslB6JoVS4v41y3y6ZfdtgY0wO0KaoZwQEiuy8dbHLT5o5penY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lY+h9KcC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077D7C4CECE;
+	Thu, 12 Dec 2024 16:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018099;
-	bh=ehKb/PMjJ/+g3tivDd4axmdmOZixscbC/oiTFsBUPzY=;
+	s=korg; t=1734020805;
+	bh=y5kGi0Cpr3TriYG7xH5GJx5hCVMwVmWeoTJ0L+oTYUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CKb7bIUwKMe+EH8UWgzEFB65AL4Fg9BQgx3g8coXEemX4C/H1DFHqUUXteWZjdJ9J
-	 6ny4pHKpyN9NNJNWz1c+AK9WrrfKXjg3lr3Det7hlTqPk6niH9lYE13y03GjQ2pilf
-	 +ohr7I1F8jYbZyowds0V5Y+8HksonmnOo6t0O/Ak=
+	b=lY+h9KcCbi/h8RPnspDCas7tZA5/p3PXEtJH0uc8dawSUO75HaVxy1QQKyTi08ZjA
+	 IQNKKhGkprSnq/57B/lTzAVMK9C2ldylbDb+Wu3hvtfongekHiFxCIx/KwGcwdQPzg
+	 utuZFNBkxFKQ966obht45ztXTjSUCUgTBOAzbHHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Saravana Kannan <saravanak@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 190/356] kselftest/arm64: Dont leak pipe fds in pac.exec_sign_all()
-Date: Thu, 12 Dec 2024 15:58:29 +0100
-Message-ID: <20241212144252.137293819@linuxfoundation.org>
+Subject: [PATCH 6.1 565/772] driver core: Add FWLINK_FLAG_IGNORE to completely ignore a fwnode link
+Date: Thu, 12 Dec 2024 15:58:30 +0100
+Message-ID: <20241212144413.305926739@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Saravana Kannan <saravanak@google.com>
 
-[ Upstream commit 27141b690547da5650a420f26ec369ba142a9ebb ]
+[ Upstream commit b7e1241d8f77ed64404a5e4450f43a319310fc91 ]
 
-The PAC exec_sign_all() test spawns some child processes, creating pipes
-to be stdin and stdout for the child. It cleans up most of the file
-descriptors that are created as part of this but neglects to clean up the
-parent end of the child stdin and stdout. Add the missing close() calls.
+A fwnode link between specific supplier-consumer fwnodes can be added
+multiple times for multiple reasons. If that dependency doesn't exist,
+deleting the fwnode link once doesn't guarantee that it won't get created
+again.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20241111-arm64-pac-test-collisions-v1-1-171875f37e44@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+So, add FWLINK_FLAG_IGNORE flag to mark a fwnode link as one that needs to
+be completely ignored. Since a fwnode link's flags is an OR of all the
+flags passed to all the fwnode_link_add() calls to create that specific
+fwnode link, the FWLINK_FLAG_IGNORE flag is preserved and can be used to
+mark a fwnode link as on that need to be completely ignored until it is
+deleted.
+
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20240305050458.1400667-3-saravanak@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/pauth/pac.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/base/core.c    | 9 ++++++++-
+ include/linux/fwnode.h | 2 ++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/arm64/pauth/pac.c b/tools/testing/selftests/arm64/pauth/pac.c
-index b743daa772f55..5a07b3958fbf2 100644
---- a/tools/testing/selftests/arm64/pauth/pac.c
-+++ b/tools/testing/selftests/arm64/pauth/pac.c
-@@ -182,6 +182,9 @@ int exec_sign_all(struct signatures *signed_vals, size_t val)
- 		return -1;
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index f0a66fec4fa75..e1436e351826c 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -1082,7 +1082,8 @@ static struct fwnode_handle *fwnode_links_check_suppliers(
+ 		return NULL;
+ 
+ 	list_for_each_entry(link, &fwnode->suppliers, c_hook)
+-		if (!(link->flags & FWLINK_FLAG_CYCLE))
++		if (!(link->flags &
++		      (FWLINK_FLAG_CYCLE | FWLINK_FLAG_IGNORE)))
+ 			return link->supplier;
+ 
+ 	return NULL;
+@@ -1973,6 +1974,9 @@ static bool __fw_devlink_relax_cycles(struct device *con,
  	}
  
-+	close(new_stdin[1]);
-+	close(new_stdout[0]);
+ 	list_for_each_entry(link, &sup_handle->suppliers, c_hook) {
++		if (link->flags & FWLINK_FLAG_IGNORE)
++			continue;
 +
- 	return 0;
- }
+ 		if (__fw_devlink_relax_cycles(con, link->supplier)) {
+ 			__fwnode_link_cycle(link);
+ 			ret = true;
+@@ -2051,6 +2055,9 @@ static int fw_devlink_create_devlink(struct device *con,
+ 	int ret = 0;
+ 	u32 flags;
  
++	if (link->flags & FWLINK_FLAG_IGNORE)
++		return 0;
++
+ 	if (con->fwnode == link->consumer)
+ 		flags = fw_devlink_get_flags(link->flags);
+ 	else
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 5700451b300fb..525cc031596b6 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -51,8 +51,10 @@ struct fwnode_handle {
+  * fwnode link flags
+  *
+  * CYCLE:	The fwnode link is part of a cycle. Don't defer probe.
++ * IGNORE:	Completely ignore this link, even during cycle detection.
+  */
+ #define FWLINK_FLAG_CYCLE			BIT(0)
++#define FWLINK_FLAG_IGNORE			BIT(1)
+ 
+ struct fwnode_link {
+ 	struct fwnode_handle *supplier;
 -- 
 2.43.0
 
