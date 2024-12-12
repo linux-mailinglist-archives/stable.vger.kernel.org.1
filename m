@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2743E9EF387
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7B19EECFC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF694286A7D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FAC71697B6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008A4229667;
-	Thu, 12 Dec 2024 16:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBD92210D8;
+	Thu, 12 Dec 2024 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcfIGyuR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/kXFClx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18BE22912F;
-	Thu, 12 Dec 2024 16:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8B62185A0;
+	Thu, 12 Dec 2024 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022454; cv=none; b=IaL+WeAlV+FzzdMYH6J3PwBGeK3WNRPPo5vc3uR3iNh75qWeL5sLOibm8Y0C2zj3ofGb5JO9JnZ9VTYq5Wycf0O1LAS6VSW2ht8+vIg3zx5V77DW5sk+pRmc/4NYGtSuUzLEiIQpKQSHxmsq7zZsRP3xHEcEarn2Ds9K4RM+dtw=
+	t=1734017832; cv=none; b=s0wXFOUtkrDxwOhZtikrbGJqOKBVA5nLR/CBLT1/Z6rNPsKW6ICGqD9ClUmHe3dtvLB8qRyPrh8M481KozOGvszI8xgoJibWiKJQnNRDi1xhygAnGS7rTyWfEpuIs1cj7B0NubNKNE5qMQ9nl9TK24Iw1FivABO6ymlfJAsVURI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022454; c=relaxed/simple;
-	bh=zaN0CjDcegDhe90Zinx6BDHaPxzA7rGgpTe/hn43R1I=;
+	s=arc-20240116; t=1734017832; c=relaxed/simple;
+	bh=dhk/JcFF7ISGjWf0jqshyt4/YB4Gz3vgn54aYcPn/+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hz8Ppmywz1Xl4YaMvXvTRD3VEb/BFG2Du0HSAduXf9WIss1tGQekTWbG3EU3yCvo/CvvtaKRY96XqCgIgg7GaK2qnRTkxwk7UaOsdKDQRKYvSJ0erNRvrWoxzgMe9MtxGuK1doCyzfUo3Xhq4M0D/6GBCrDaWQFZSaULYDoUoIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcfIGyuR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECDFC4CECE;
-	Thu, 12 Dec 2024 16:54:13 +0000 (UTC)
+	 MIME-Version; b=hdlUtW8/JW/LETnIOO1VHpamVtO8tam/LuihsXtEFC4/8ZzXacazPDF+LB2KSxGr40lHlsZDgAPQJ0mEQ8QmiVaaSUcQqf0x8UkeTarTilcyzT4qgGUxdJBI5Ae/8zmezJ0pG5bgt+swrMBdyL4sK8VNKUi6Fk2XVW5GrYM4T1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/kXFClx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A8DC4CECE;
+	Thu, 12 Dec 2024 15:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022454;
-	bh=zaN0CjDcegDhe90Zinx6BDHaPxzA7rGgpTe/hn43R1I=;
+	s=korg; t=1734017832;
+	bh=dhk/JcFF7ISGjWf0jqshyt4/YB4Gz3vgn54aYcPn/+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fcfIGyuRkgXhLkpY2oE52qokp008aJVH8IxJqf06YSJ4xgvYmugxarzcmnVnNjlPy
-	 qaBUTeRfK1WY701GWOPnypf1gQN+IlC9Gma64CELLQddj0g6nKhIYSQgqNd47My9OK
-	 bPL5fL7nNJrBKMFu45vpgAx+UUuTYnr/m+wLQKfg=
+	b=i/kXFClxInGYb6XIrogAZN5WP+ekdEBDPbWVE/ZzV1ccSVU8KqEZ+yyBU/oQFvTBS
+	 72U/Fu9ZNcpjgU0e3QtJ/NODbjpTY6evJRAqDOErT8/7VPJM41g3RYjfaQ8rzWq3cK
+	 0JT8Zqh562S5ObleY8UxONc35xtx0pfd2sE94B8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Naidu <naveennaidu479@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 245/565] PCI: cpqphp: Use PCI_POSSIBLE_ERROR() to check config reads
-Date: Thu, 12 Dec 2024 15:57:20 +0100
-Message-ID: <20241212144321.159878774@linuxfoundation.org>
+Subject: [PATCH 6.6 122/356] spi: mpc52xx: Add cancel_work_sync before module remove
+Date: Thu, 12 Dec 2024 15:57:21 +0100
+Message-ID: <20241212144249.472191972@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: weiyufeng <weiyufeng@kylinos.cn>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit a18a025c2fb5fbf2d1d0606ea0d7441ac90e9c39 ]
+[ Upstream commit 984836621aad98802d92c4a3047114cf518074c8 ]
 
-When config pci_ops.read() can detect failed PCI transactions, the data
-returned to the CPU is PCI_ERROR_RESPONSE (~0 or 0xffffffff).
+If we remove the module which will call mpc52xx_spi_remove
+it will free 'ms' through spi_unregister_controller.
+while the work ms->work will be used. The sequence of operations
+that may lead to a UAF bug.
 
-Obviously a successful PCI config read may *also* return that data if a
-config register happens to contain ~0, so it doesn't definitively indicate
-an error unless we know the register cannot contain ~0.
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in mpc52xx_spi_remove.
 
-Use PCI_POSSIBLE_ERROR() to check the response we get when we read data
-from hardware.  This unifies PCI error response checking and makes error
-checks consistent and easier to find.
-
-Link: https://lore.kernel.org/r/b12005c0d57bb9d4c8b486724d078b7bd92f8321.1637243717.git.naveennaidu479@gmail.com
-Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: e2226dbc4a49 ("PCI: cpqphp: Fix PCIBIOS_* return value confusion")
+Fixes: ca632f556697 ("spi: reorganize drivers")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/1f16f8ae0e50ca9adb1dc849bf2ac65a40c9ceb9.1732783000.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/cpqphp_pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mpc52xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
-index 1b2b3f3b648bc..a20875da4ec70 100644
---- a/drivers/pci/hotplug/cpqphp_pci.c
-+++ b/drivers/pci/hotplug/cpqphp_pci.c
-@@ -138,7 +138,7 @@ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 o
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index ab7df5f64342a..b8e2d9263fc88 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -519,6 +519,7 @@ static void mpc52xx_spi_remove(struct platform_device *op)
+ 	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
+ 	int i;
  
- 	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
- 		return -1;
--	if (vendID == 0xffffffff)
-+	if (PCI_POSSIBLE_ERROR(vendID))
- 		return -1;
- 	return pci_bus_read_config_dword(bus, devfn, offset, value);
- }
-@@ -251,7 +251,7 @@ static int PCI_GetBusDevHelper(struct controller *ctrl, u8 *bus_num, u8 *dev_num
- 			*dev_num = tdevice;
- 			ctrl->pci_bus->number = tbus;
- 			pci_bus_read_config_dword(ctrl->pci_bus, *dev_num, PCI_VENDOR_ID, &work);
--			if (!nobridge || (work == 0xffffffff))
-+			if (!nobridge || PCI_POSSIBLE_ERROR(work))
- 				return 0;
++	cancel_work_sync(&ms->work);
+ 	free_irq(ms->irq0, ms);
+ 	free_irq(ms->irq1, ms);
  
- 			dbg("bus_num %d devfn %d\n", *bus_num, *dev_num);
 -- 
 2.43.0
 
