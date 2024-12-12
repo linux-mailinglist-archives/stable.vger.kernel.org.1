@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788ED9EF14F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6D89EEA56
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:12:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF77A189ACE2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EAB6280E2C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293A0223C43;
-	Thu, 12 Dec 2024 16:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDA621639F;
+	Thu, 12 Dec 2024 15:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thqkB8m4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLcaZxvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA75D2236FC;
-	Thu, 12 Dec 2024 16:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2D721504F;
+	Thu, 12 Dec 2024 15:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020191; cv=none; b=K2wCESEaiQy7GCS1ScpoSJ410jcvYN+fl/FqH1KOll1EOj3dXWRRY8CSHVRcev0rTd4Nnru631ZWUGytAITij0IuaPlPirzsGgDCBeN8LnqZbzWkcQsdntabUzv57s8g0qklvzmi7JgCFbi/YxC2qp+swWElCLkKPfz/4qKW2/Y=
+	t=1734016370; cv=none; b=V6E6HcmAvHnoF5gPJPdH55NIonXHiivkKtzQP4pBf4LIhkpkN9SMJgUIvvKuqON2Tw/zA+n3Z4UQeLC4/8REvvOGe2vAyMEjfjAFw5lOx1SSfBHZRdlmBvCms5zsrwoqgG4TPF5dSjgYF+h1Y6JXmUxzwWQiOk61fuDqtWo4VMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020191; c=relaxed/simple;
-	bh=MdEdgCnwqW/NRT9XKR7pyi0lls/N26JC71kKjx1Z4n0=;
+	s=arc-20240116; t=1734016370; c=relaxed/simple;
+	bh=Gp2U2Mgs9G4/ZeF81ZxLucwyvW78lkakZdcYYlgrriE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9jtrFAKgIHTgtJmyc276L3L2lXUlkHaR1axIW3aKwvDKFF8Tk0va8a8KUoWV9UdL4Thfyll5Lck3wjke82YumJ8XG+VJMgMsx9BAvo+8hoTNbSpZJqljCCP3/OdWoxqICyJzprD6GQ5yoROwLppKWv5P0YnD5ne5ml7zEyonyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thqkB8m4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7942C4CECE;
-	Thu, 12 Dec 2024 16:16:30 +0000 (UTC)
+	 MIME-Version; b=iBPx2tu+hl+j5Yhk5C9Gna+umfByxPlCD82sy2j38IDurVZ5KvevD5h7RWHHtO6pKxi/34YATzqCqO6GXWS5QnxoXrW7ok2R3GeZr0E88Bteze6lEt2XiJRH5roY1OdTgdRMeM7tfMLiXwLbaDeCq3qvyIDfqSLTCHThOZmsVVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLcaZxvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165C3C4CED0;
+	Thu, 12 Dec 2024 15:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020191;
-	bh=MdEdgCnwqW/NRT9XKR7pyi0lls/N26JC71kKjx1Z4n0=;
+	s=korg; t=1734016369;
+	bh=Gp2U2Mgs9G4/ZeF81ZxLucwyvW78lkakZdcYYlgrriE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=thqkB8m41Wz5b/zF7LtxZXaL2/V8vEysfCnEoN02J9kPdfON1sHDeenC1lTkPYRda
-	 +Vy5YGj48euIYj5g9EiD54YuUabcA/pHPJqVJINe+REoaua0BGNNrSvQ+bByM5+m3K
-	 xmvkg3IAklKpyYGxapzu7AOyOjZuVZfZyX97ffBY=
+	b=NLcaZxvwZxS/xB0al2QnJ92NVb4MG2a/B0vePjYZqO8gI0tzWHgxpeQ2S6sz0O1Qh
+	 mzEsewu4d+J4UZrgfJdTq6W/3tgqKsDhDiVpVrUonAsJlraJm8Aq+W04TqrqflHf9P
+	 Grir29tRL23CnGFbO1JcnuEcaaHmreXFRCWTt6Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Judith Mendez <jm@ti.com>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 6.1 402/772] serial: 8250: omap: Move pm_runtime_get_sync
-Date: Thu, 12 Dec 2024 15:55:47 +0100
-Message-ID: <20241212144406.531174683@linuxfoundation.org>
+	David Belanger <david.belanger@amd.com>,
+	Frank Min <frank.min@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 179/466] drm/amdgpu/hdp5.0: do a posting read when flushing HDP
+Date: Thu, 12 Dec 2024 15:55:48 +0100
+Message-ID: <20241212144313.864600664@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bin Liu <b-liu@ti.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit bcc7ba668818dcadd2f1db66b39ed860a63ecf97 upstream.
+commit cf424020e040be35df05b682b546b255e74a420f upstream.
 
-Currently in omap_8250_shutdown, the dma->rx_running flag is
-set to zero in omap_8250_rx_dma_flush. Next pm_runtime_get_sync
-is called, which is a runtime resume call stack which can
-re-set the flag. When the call omap_8250_shutdown returns, the
-flag is expected to be UN-SET, but this is not the case. This
-is causing issues the next time UART is re-opened and
-omap_8250_rx_dma is called. Fix by moving pm_runtime_get_sync
-before the omap_8250_rx_dma_flush.
+Need to read back to make sure the write goes through.
 
-cc: stable@vger.kernel.org
-Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
-Signed-off-by: Bin Liu <b-liu@ti.com>
-[Judith: Add commit message]
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Tested-by: Kevin Hilman <khilman@baylibre.com>
-Link: https://lore.kernel.org/r/20241031172315.453750-1-jm@ti.com
+Cc: David Belanger <david.belanger@amd.com>
+Reviewed-by: Frank Min <frank.min@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_omap.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -749,12 +749,12 @@ static void omap_8250_shutdown(struct ua
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	struct omap8250_priv *priv = port->private_data;
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c
+@@ -31,10 +31,12 @@
+ static void hdp_v5_0_flush_hdp(struct amdgpu_device *adev,
+ 				struct amdgpu_ring *ring)
+ {
+-	if (!ring || !ring->funcs->emit_wreg)
++	if (!ring || !ring->funcs->emit_wreg) {
+ 		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
+-	else
++		RREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
++	} else {
+ 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
++	}
+ }
  
-+	pm_runtime_get_sync(port->dev);
-+
- 	flush_work(&priv->qos_work);
- 	if (up->dma)
- 		omap_8250_rx_dma_flush(up);
- 
--	pm_runtime_get_sync(port->dev);
--
- 	serial_out(up, UART_OMAP_WER, 0);
- 	if (priv->habit & UART_HAS_EFR2)
- 		serial_out(up, UART_OMAP_EFR2, 0x0);
+ static void hdp_v5_0_invalidate_hdp(struct amdgpu_device *adev,
+@@ -42,6 +44,7 @@ static void hdp_v5_0_invalidate_hdp(stru
+ {
+ 	if (!ring || !ring->funcs->emit_wreg) {
+ 		WREG32_SOC15_NO_KIQ(HDP, 0, mmHDP_READ_CACHE_INVALIDATE, 1);
++		RREG32_SOC15_NO_KIQ(HDP, 0, mmHDP_READ_CACHE_INVALIDATE);
+ 	} else {
+ 		amdgpu_ring_emit_wreg(ring, SOC15_REG_OFFSET(
+ 					HDP, 0, mmHDP_READ_CACHE_INVALIDATE), 1);
 
 
 
