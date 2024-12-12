@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4144E9EF628
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A320A9EF9BF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5751D16D2F5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40DD31762A3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFA6223E82;
-	Thu, 12 Dec 2024 17:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C92D22967C;
+	Thu, 12 Dec 2024 17:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ttmzyDo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOmRUcPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E94223E7D;
-	Thu, 12 Dec 2024 17:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF206229679;
+	Thu, 12 Dec 2024 17:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023365; cv=none; b=krdKSe5UAmtOK0aX6GsisDhtkqAGmwZ7UDWMcU+Ks5zgUcNGaf0K9+R/jk4JKJdHugNZIHporDLnZ6j+kUCiqJyGVmqlGz/JixdBLZZopBq62S6xiyun58Q27x3AId6RjKYBtp6sJk6v6VMZwpS/N3EE3oUq6Q0KJ0lBX+75JTA=
+	t=1734025486; cv=none; b=dQMLk6O84BHeEKUrilqsEIwSerBQndvp19c4ZIU72e2OSGNrSuRvV8F6Hc/64xkHar38ue0HiDaOJj+vxmXnb7cqLbD2t4FlAK4OecLI4La/0+sCd1UrBKWMIuHMVdFlmAccgLLcFhO1XuGrNdXneL2E4nba67COubPaqNSVPjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023365; c=relaxed/simple;
-	bh=FjTrg7NMfg3O7yR47/SNaOtkPh/en7ZZFzvDUfZNB3U=;
+	s=arc-20240116; t=1734025486; c=relaxed/simple;
+	bh=KCk3j4rJPTefhYnCQPH9ONRtRfnXNAJHQQ8DqIwMtOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QpQe5C8KLqOt3gEq2RxxHXc2/3HvaEBf0+oMc4hNV+Df4T5kNSzu2zzcJH6W4HGQT1JQLFF2rwTxIkNBwRo9zT2vGkMbhZcRPi2xJ+hiyqjUmAQLLMj08DxmhcnWAQiIxbKzpLHsyMVD6ScXCXrQcDTRDmRCrWnwweOF3lwIowI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ttmzyDo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE56C4CED4;
-	Thu, 12 Dec 2024 17:09:24 +0000 (UTC)
+	 MIME-Version; b=blkL33rKuZ+J40PtiIw8DLC9o/IMOjdtKxHvCUYIAYDG7DWJ87PZME7jYTNO8+3l7dR5dzFus+VG+BV54Cgi+VLPXYAVvwMhcrgV4v+auG4pmUIYaK31d0ZUOL1dCbjDmlh2SwWstyf1QxQi9QuasRv4HE5mFwsa5nw+nhyzYY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOmRUcPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03857C4CECE;
+	Thu, 12 Dec 2024 17:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023364;
-	bh=FjTrg7NMfg3O7yR47/SNaOtkPh/en7ZZFzvDUfZNB3U=;
+	s=korg; t=1734025485;
+	bh=KCk3j4rJPTefhYnCQPH9ONRtRfnXNAJHQQ8DqIwMtOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ttmzyDoQw5eStYNBjhTv7TM72gaqIA63GVVfRM0KTFt3zpPQJI8Wl3vTImBM/RBb
-	 xS1AbHsaHBg7xGXxCv+6woAQYbWPUvtTY5baNAkoqEebr+FJBCsfafKxXjQxJGWn6q
-	 JmPU7Z5xy8DMifeRuotC2mHi26zMdbxZoNZkz8A0=
+	b=pOmRUcPCewRbl4Aa4RZIBpl0y/QQoGoHDpUNCzmfuJhvuKeWngsUKec2h0C+A+zmy
+	 xZIoE5DKWx2p5Tu2nZ9OGyTgALSApmIAQceoYgkU6soZTmLf6NPoxZ7g81bXGmbrNz
+	 GM5Pnc5S355nniz094ZUQOf+eaQjAedgjgsk+btQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jeremy Gebben <jgebben@sweptlaser.com>,
+	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 509/565] rocker: fix link status detection in rocker_carrier_init()
+Subject: [PATCH 5.4 186/321] rtc: abx80x: Fix WDT bit position of the status register
 Date: Thu, 12 Dec 2024 16:01:44 +0100
-Message-ID: <20241212144331.889511391@linuxfoundation.org>
+Message-ID: <20241212144237.332965111@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
 
-[ Upstream commit e64285ff41bb7a934bd815bd38f31119be62ac37 ]
+[ Upstream commit 10e078b273ee7a2b8b4f05a64ac458f5e652d18d ]
 
-Since '1 << rocker_port->pport' may be undefined for port >= 32,
-cast the left operand to 'unsigned long long' like it's done in
-'rocker_port_set_enable()' above. Compile tested only.
+The WDT bit in the status register is 5, not 6. This fixes from 6 to 5.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20241114151946.519047-1-dmantipov@yandex.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://abracon.com/Support/AppsManuals/Precisiontiming/AB08XX-Application-Manual.pdf
+Link: https://www.microcrystal.com/fileadmin/Media/Products/RTC/App.Manual/RV-1805-C3_App-Manual.pdf
+Fixes: 749e36d0a0d7 ("rtc: abx80x: add basic watchdog support")
+Cc: Jeremy Gebben <jgebben@sweptlaser.com>
+Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+Link: https://lore.kernel.org/r/20241008041737.1640633-1-iwamatsu@nigauri.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/rocker/rocker_main.c | 2 +-
+ drivers/rtc/rtc-abx80x.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
-index 3364b6a56bd1e..e1509becb7536 100644
---- a/drivers/net/ethernet/rocker/rocker_main.c
-+++ b/drivers/net/ethernet/rocker/rocker_main.c
-@@ -2516,7 +2516,7 @@ static void rocker_carrier_init(const struct rocker_port *rocker_port)
- 	u64 link_status = rocker_read64(rocker, PORT_PHYS_LINK_STATUS);
- 	bool link_up;
+diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
+index 73830670a41f1..51cfe72787ce3 100644
+--- a/drivers/rtc/rtc-abx80x.c
++++ b/drivers/rtc/rtc-abx80x.c
+@@ -36,7 +36,7 @@
+ #define ABX8XX_REG_STATUS	0x0f
+ #define ABX8XX_STATUS_AF	BIT(2)
+ #define ABX8XX_STATUS_BLF	BIT(4)
+-#define ABX8XX_STATUS_WDT	BIT(6)
++#define ABX8XX_STATUS_WDT	BIT(5)
  
--	link_up = link_status & (1 << rocker_port->pport);
-+	link_up = link_status & (1ULL << rocker_port->pport);
- 	if (link_up)
- 		netif_carrier_on(rocker_port->dev);
- 	else
+ #define ABX8XX_REG_CTRL1	0x10
+ #define ABX8XX_CTRL_WRITE	BIT(0)
 -- 
 2.43.0
 
