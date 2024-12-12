@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33B69EEC27
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF619EF242
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B949F165622
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDAA0189E670
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C502165EA;
-	Thu, 12 Dec 2024 15:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472F3235C35;
+	Thu, 12 Dec 2024 16:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEstcfP/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5dtd82H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A433021578E;
-	Thu, 12 Dec 2024 15:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A08226546;
+	Thu, 12 Dec 2024 16:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017389; cv=none; b=G4Xf2xlZxRJBmRpgIK6gum9KoqIDFGPzNregSQe/s92zPZnvraykGKyv8w9Wmq1gt8pbPEb9Vewm4YbunZLBSLg/1gK0nAAVAbOw+pZ/VsYHMZq9LB1TqhGJL/RwMT9a+UWihTDfKFE+RAAzwRPgM2NCW+gYLYTrgajP4XJn2D8=
+	t=1734021262; cv=none; b=Mk0O16yQr76vq4WJfCSyoUn10/cv3DRLq/NI4qtnTTpmMp7K5ARpwRsc7rkr8hAk3TFT/LocwsYQpWgLjYUF7fjG4tlT5ROwRFpTK87G9oFwbclKe1SuPIfjnkUguejq0WwBsVo+0uoHYXK5OJC1e7NSRtFRZ1InAKGQzXgL76E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017389; c=relaxed/simple;
-	bh=tshHOAJC3CUVRDnU11F55AG0RBFqNcras+6nQj3/cJ8=;
+	s=arc-20240116; t=1734021262; c=relaxed/simple;
+	bh=ic3qY5G7JNM4Na/CQQZe8DPfm7ugiBay1B8J9sE9j5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHC16HDsGU/Mu57yHAJbvDRPTcFE0XpsndQtRVh5lzCtQ9/RwNZPQGK21hFnza/bhHp4U/hcnYnLnVH9zSfOuoh0FhSqvW7VH1YdrXzgZSI3UgfkxVY+wlkBZcldMXlUkCo/ScXkelz0iyvAwN7/KA9PfEq4xm+C5X02O/5JIIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEstcfP/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A841C4CECE;
-	Thu, 12 Dec 2024 15:29:48 +0000 (UTC)
+	 MIME-Version; b=NKXuPfQlMwXg8vBURS4iCGxAkxcwvypMT0UPB6RoYdrFzcReyPBdaK0AEFkUej870SHZ8njxVJmHjgIK6ebCyzsJjQv/7IUsqa34U9iS1ZT0DLu033G1pEKFG3WYlg6e5YzGzPmudiRlMyOXhjw4HF8RvOnxsKRTL9BWKWelzxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5dtd82H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07789C4CECE;
+	Thu, 12 Dec 2024 16:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017389;
-	bh=tshHOAJC3CUVRDnU11F55AG0RBFqNcras+6nQj3/cJ8=;
+	s=korg; t=1734021260;
+	bh=ic3qY5G7JNM4Na/CQQZe8DPfm7ugiBay1B8J9sE9j5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEstcfP/ploYBffbXyo6vhTQQaKA0tM0PCUfaA11ijnCdzG+HzmDPhLhmutFSUEDZ
-	 Tx3UJQQ5zAiFv/jWX4cYGE0NgFvD10gPFY18wCCRA72LhyMrOzrHGcky0gf0cfDZY0
-	 D0nAhN413Q3wFMzRYG3kXQNvvapeQ4Gpe5kZH2s0=
+	b=v5dtd82HDARhIkAKZtWyq7vUN1TX5XowBpWdVB4VwHqRPlqkHD5R/tNpdB1kvK9EQ
+	 uwYKYxTB27Er5Mqym3HdAFzxzBg+Icr6O44vBy0ujLf6+nSBMpcDYCv57/RsjfA/5s
+	 rZNcK4vLByczYlS8KdzIGFvDu/W0CLd2rLUFn/gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.12 466/466] clocksource: Make negative motion detection more robust
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 690/772] wifi: ipw2x00: libipw_rx_any(): fix bad alignment
 Date: Thu, 12 Dec 2024 16:00:35 +0100
-Message-ID: <20241212144325.277833274@linuxfoundation.org>
+Message-ID: <20241212144418.422545818@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,152 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-commit 76031d9536a076bf023bedbdb1b4317fc801dd67 upstream.
+[ Upstream commit 4fa4f049dc0d9741b16c96bcbf0108c85368a2b9 ]
 
-Guenter reported boot stalls on a emulated ARM 32-bit platform, which has a
-24-bit wide clocksource.
+This patch fixes incorrect code alignment.
 
-It turns out that the calculated maximal idle time, which limits idle
-sleeps to prevent clocksource wrap arounds, is close to the point where the
-negative motion detection triggers.
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:871:2-3: code aligned with following code on line 882.
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:886:2-3: code aligned with following code on line 900.
 
-  max_idle_ns:                    597268854 ns
-  negative motion tripping point: 671088640 ns
-
-If the idle wakeup is delayed beyond that point, the clocksource
-advances far enough to trigger the negative motion detection. This
-prevents the clock to advance and in the worst case the system stalls
-completely if the consecutive sleeps based on the stale clock are
-delayed as well.
-
-Cure this by calculating a more robust cut-off value for negative motion,
-which covers 87.5% of the actual clocksource counter width. Compare the
-delta against this value to catch negative motion. This is specifically for
-clock sources with a small counter width as their wrap around time is close
-to the half counter width. For clock sources with wide counters this is not
-a problem because the maximum idle time is far from the half counter width
-due to the math overflow protection constraints.
-
-For the case at hand this results in a tripping point of 1174405120ns.
-
-Note, that this cannot prevent issues when the delay exceeds the 87.5%
-margin, but that's not different from the previous unchecked version which
-allowed arbitrary time jumps.
-
-Systems with small counter width are prone to invalid results, but this
-problem is unlikely to be seen on real hardware. If such a system
-completely stalls for more than half a second, then there are other more
-urgent problems than the counter wrapping around.
-
-Fixes: c163e40af9b2 ("timekeeping: Always check for negative motion")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/all/8734j5ul4x.ffs@tglx
-Closes: https://lore.kernel.org/all/387b120b-d68a-45e8-b6ab-768cd95d11c2@roeck-us.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11381
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241101060725.54640-1-jiapeng.chong@linux.alibaba.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/clocksource.h        |    2 ++
- kernel/time/clocksource.c          |   11 ++++++++++-
- kernel/time/timekeeping.c          |    6 ++++--
- kernel/time/timekeeping_internal.h |    8 ++++----
- 4 files changed, 20 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/include/linux/clocksource.h
-+++ b/include/linux/clocksource.h
-@@ -49,6 +49,7 @@ struct module;
-  * @archdata:		Optional arch-specific data
-  * @max_cycles:		Maximum safe cycle value which won't overflow on
-  *			multiplication
-+ * @max_raw_delta:	Maximum safe delta value for negative motion detection
-  * @name:		Pointer to clocksource name
-  * @list:		List head for registration (internal)
-  * @freq_khz:		Clocksource frequency in khz.
-@@ -109,6 +110,7 @@ struct clocksource {
- 	struct arch_clocksource_data archdata;
- #endif
- 	u64			max_cycles;
-+	u64			max_raw_delta;
- 	const char		*name;
- 	struct list_head	list;
- 	u32			freq_khz;
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -22,7 +22,7 @@
- 
- static noinline u64 cycles_to_nsec_safe(struct clocksource *cs, u64 start, u64 end)
- {
--	u64 delta = clocksource_delta(end, start, cs->mask);
-+	u64 delta = clocksource_delta(end, start, cs->mask, cs->max_raw_delta);
- 
- 	if (likely(delta < cs->max_cycles))
- 		return clocksource_cyc2ns(delta, cs->mult, cs->shift);
-@@ -985,6 +985,15 @@ static inline void clocksource_update_ma
- 	cs->max_idle_ns = clocks_calc_max_nsecs(cs->mult, cs->shift,
- 						cs->maxadj, cs->mask,
- 						&cs->max_cycles);
-+
-+	/*
-+	 * Threshold for detecting negative motion in clocksource_delta().
-+	 *
-+	 * Allow for 0.875 of the counter width so that overly long idle
-+	 * sleeps, which go slightly over mask/2, do not trigger the
-+	 * negative motion detection.
-+	 */
-+	cs->max_raw_delta = (cs->mask >> 1) + (cs->mask >> 2) + (cs->mask >> 3);
- }
- 
- static struct clocksource *clocksource_find_best(bool oneshot, bool skipcur)
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -793,7 +793,8 @@ static void timekeeping_forward_now(stru
- 	u64 cycle_now, delta;
- 
- 	cycle_now = tk_clock_read(&tk->tkr_mono);
--	delta = clocksource_delta(cycle_now, tk->tkr_mono.cycle_last, tk->tkr_mono.mask);
-+	delta = clocksource_delta(cycle_now, tk->tkr_mono.cycle_last, tk->tkr_mono.mask,
-+				  tk->tkr_mono.clock->max_raw_delta);
- 	tk->tkr_mono.cycle_last = cycle_now;
- 	tk->tkr_raw.cycle_last  = cycle_now;
- 
-@@ -2292,7 +2293,8 @@ static bool timekeeping_advance(enum tim
- 		goto out;
- 
- 	offset = clocksource_delta(tk_clock_read(&tk->tkr_mono),
--				   tk->tkr_mono.cycle_last, tk->tkr_mono.mask);
-+				   tk->tkr_mono.cycle_last, tk->tkr_mono.mask,
-+				   tk->tkr_mono.clock->max_raw_delta);
- 
- 	/* Check if there's really nothing to do */
- 	if (offset < real_tk->cycle_interval && mode == TK_ADV_TICK)
---- a/kernel/time/timekeeping_internal.h
-+++ b/kernel/time/timekeeping_internal.h
-@@ -15,15 +15,15 @@ extern void tk_debug_account_sleep_time(
- #define tk_debug_account_sleep_time(x)
- #endif
- 
--static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
-+static inline u64 clocksource_delta(u64 now, u64 last, u64 mask, u64 max_delta)
- {
- 	u64 ret = (now - last) & mask;
- 
- 	/*
--	 * Prevent time going backwards by checking the MSB of mask in
--	 * the result. If set, return 0.
-+	 * Prevent time going backwards by checking the result against
-+	 * @max_delta. If greater, return 0.
- 	 */
--	return ret & ~(mask >> 1) ? 0 : ret;
-+	return ret > max_delta ? 0 : ret;
- }
- 
- /* Semi public for serialization of non timekeeper VDSO updates. */
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+index 48d6870bbf4e2..9a97ab9b89ae8 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+@@ -870,8 +870,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 	switch (ieee->iw_mode) {
+ 	case IW_MODE_ADHOC:
+ 		/* our BSS and not from/to DS */
+-		if (ether_addr_equal(hdr->addr3, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == 0) {
++		if (ether_addr_equal(hdr->addr3, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
+@@ -885,8 +885,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 		break;
+ 	case IW_MODE_INFRA:
+ 		/* our BSS (== from our AP) and from DS */
+-		if (ether_addr_equal(hdr->addr2, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS) {
++		if (ether_addr_equal(hdr->addr2, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
+-- 
+2.43.0
+
 
 
 
