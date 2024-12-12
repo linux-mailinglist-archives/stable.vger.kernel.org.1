@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-101512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108CC9EECA7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58BB9EEB48
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5BBA2836DC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB094188D4EA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9323921B91D;
-	Thu, 12 Dec 2024 15:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02E220E034;
+	Thu, 12 Dec 2024 15:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiqlpaXL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/yp2Gsx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E766F2FE;
-	Thu, 12 Dec 2024 15:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA402EAE5;
+	Thu, 12 Dec 2024 15:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017815; cv=none; b=k5MQMuJPs07g71KRQ/0iqhG7xlIP5ykQeAaMd8onsRmRlo0dJkcBxOyDoay6+mLjxnpkxLbwyD12kX4/iooMqlgJGuiw1Dvd0m246WU0OmDLMaOkCCQy6EqCZTItZrPCXql/jx7L8ZBjqlRl1z5rFk5zlqSsIvky4Tc3b1nhu6E=
+	t=1734016680; cv=none; b=SX3rTNGylzBSSIJAu7VRfXQ32OWBlJSufnf2+q0H5nc3ZGvbvZexYsNHIkb/Hyfsi+qvGEMnI1bEgyVE1SA9Is64maNIhVFh9qJctmWHzwIXu+xMYZFptAKZdQjwqVcCr4oIvJsrKHjSmpbbRf1/Tygj4KBu4gBmkwTXZEseeQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017815; c=relaxed/simple;
-	bh=O/MXXwEFl3DHzIq4yLn2l0sJsaaxy9dtB53qW6V4eoI=;
+	s=arc-20240116; t=1734016680; c=relaxed/simple;
+	bh=edUPj1ynblmpy/izSsG39R9bOiMbEQNa6esSaNq0qHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxEGIBEmiG9ikEEI516zNwP7QChr2vHu0kBXOf/iYiS2w0CP+4uhhwmAQs+Az4P7TQ37/ujxyHwI0YMa0lcn17HKk7vLaAJO8km5hV9PppexLrg8lmwHGfQVd7Bwh5M0u2JvcF6wG4k7T3mFjtXIeTklcv3kgdLAAeHUR6XF5MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiqlpaXL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A56C4CECE;
-	Thu, 12 Dec 2024 15:36:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ax7gBvOiGlJ3Cfc99yacjHUHGQbbsCJLOxzk16APNmIPMl4aOS+werulbILBcJknKvUcj+4qpC48oRb6NQ0du//ZKjGJ5wpmI0OJalFlViEj9BHiEqfrnyfXr7/zXI8jIJrq69ay+36lCFg3CJ48M2lnb5QiZwXA31xIt3o8ZHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/yp2Gsx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FC5C4CECE;
+	Thu, 12 Dec 2024 15:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017814;
-	bh=O/MXXwEFl3DHzIq4yLn2l0sJsaaxy9dtB53qW6V4eoI=;
+	s=korg; t=1734016680;
+	bh=edUPj1ynblmpy/izSsG39R9bOiMbEQNa6esSaNq0qHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EiqlpaXLGTUsVjPVTXCuB+pGRCBbIgUZOBrnlakkQ8SYC39hTnqmphz5qIcXOz62m
-	 WoqZVq3ZH54v0APDSz8rnfZQt0rU1BfyZj1f0rWNUWmu9jawnIGEWMPNT7PitM/EBp
-	 Zt6uYuy9h+AKYRf6wRvnASdSO9qEpDgW3jN/il9k=
+	b=k/yp2Gsxrdp5dNYNFiQgIuHggqn34sS91tAjb0XuJR8IyIJjxsjXwOmDvG2B5f3s5
+	 3wMze9znuYt+4D8B1ofwyNEjvxOZhLqQIlcGpk1oU3fjXCULjnltBt+1VuD+Ji6tv5
+	 JmVa37x5ySMc0ZOkJRoe2minn6pgWP4rwxaNFrpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Balamurugan C <balamurugan.c@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/356] ALSA: ump: Update substream name from assigned FB names
+Subject: [PATCH 6.12 268/466] ASoC: Intel: sof_rt5682: Add HDMI-In capture with rt5682 support for MTL.
 Date: Thu, 12 Dec 2024 15:57:17 +0100
-Message-ID: <20241212144249.311530470@linuxfoundation.org>
+Message-ID: <20241212144317.377956912@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,337 +63,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Balamurugan C <balamurugan.c@intel.com>
 
-[ Upstream commit 0642a3c5cacc0321c755d45ae48f2c84475469a6 ]
+[ Upstream commit 0f5d2228a99a4733b2a6652e16255be9caf2616a ]
 
-We had a nice name scheme in ALSA sequencer UMP binding for each
-sequencer port referring to each assigned Function Block name, while
-the legacy rawmidi refers only to the UMP Endpoint name.  It's better
-to align both.
+Added match table entry on mtl machines to support HDMI-In capture
+with rt5682 I2S audio codec. also added the respective quirk
+configuration in rt5682 machine driver.
 
-This patch moves the UMP Group attribute update functions into the
-core UMP code from the sequencer binding code, and improve the
-substream name of the legacy rawmidi.
-
-Link: https://patch.msgid.link/20240729141315.18253-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: aaa55faa2495 ("ALSA: seq: ump: Fix seq port updates per FB info notify")
+Signed-off-by: Balamurugan C <balamurugan.c@intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20241004030135.67968-2-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/ump.h             | 10 +++++
- sound/core/seq/seq_ump_client.c | 75 +++-----------------------------
- sound/core/ump.c                | 76 ++++++++++++++++++++++++++++++---
- 3 files changed, 87 insertions(+), 74 deletions(-)
+ sound/soc/intel/boards/sof_rt5682.c               | 7 +++++++
+ sound/soc/intel/common/soc-acpi-intel-mtl-match.c | 7 +++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/include/sound/ump.h b/include/sound/ump.h
-index 91238dabe3075..7f68056acdffe 100644
---- a/include/sound/ump.h
-+++ b/include/sound/ump.h
-@@ -13,6 +13,14 @@ struct snd_ump_ops;
- struct ump_cvt_to_ump;
- struct snd_seq_ump_ops;
- 
-+struct snd_ump_group {
-+	int group;			/* group index (0-based) */
-+	unsigned int dir_bits;		/* directions */
-+	bool active;			/* activeness */
-+	bool valid;			/* valid group (referred by blocks) */
-+	char name[64];			/* group name */
-+};
-+
- struct snd_ump_endpoint {
- 	struct snd_rawmidi core;	/* raw UMP access */
- 
-@@ -41,6 +49,8 @@ struct snd_ump_endpoint {
- 
- 	struct mutex open_mutex;
- 
-+	struct snd_ump_group groups[SNDRV_UMP_MAX_GROUPS]; /* table of groups */
-+
- #if IS_ENABLED(CONFIG_SND_UMP_LEGACY_RAWMIDI)
- 	spinlock_t legacy_locks[2];
- 	struct snd_rawmidi *legacy_rmidi;
-diff --git a/sound/core/seq/seq_ump_client.c b/sound/core/seq/seq_ump_client.c
-index b4c7543a24249..91773f8ca7828 100644
---- a/sound/core/seq/seq_ump_client.c
-+++ b/sound/core/seq/seq_ump_client.c
-@@ -23,15 +23,6 @@ enum {
- 	STR_OUT = SNDRV_RAWMIDI_STREAM_OUTPUT
- };
- 
--/* object per UMP group; corresponding to a sequencer port */
--struct seq_ump_group {
--	int group;			/* group index (0-based) */
--	unsigned int dir_bits;		/* directions */
--	bool active;			/* activeness */
--	bool valid;			/* valid group (referred by blocks) */
--	char name[64];			/* seq port name */
--};
--
- /* context for UMP input parsing, per EP */
- struct seq_ump_input_buffer {
- 	unsigned char len;		/* total length in words */
-@@ -48,7 +39,6 @@ struct seq_ump_client {
- 	int opened[2];			/* current opens for each direction */
- 	struct snd_rawmidi_file out_rfile; /* rawmidi for output */
- 	struct seq_ump_input_buffer input; /* input parser context */
--	struct seq_ump_group groups[SNDRV_UMP_MAX_GROUPS]; /* table of groups */
- 	void *ump_info[SNDRV_UMP_MAX_BLOCKS + 1]; /* shadow of seq client ump_info */
- 	struct work_struct group_notify_work; /* FB change notification */
- };
-@@ -178,7 +168,7 @@ static int seq_ump_unuse(void *pdata, struct snd_seq_port_subscribe *info)
- /* fill port_info from the given UMP EP and group info */
- static void fill_port_info(struct snd_seq_port_info *port,
- 			   struct seq_ump_client *client,
--			   struct seq_ump_group *group)
-+			   struct snd_ump_group *group)
- {
- 	unsigned int rawmidi_info = client->ump->core.info_flags;
- 
-@@ -215,7 +205,7 @@ static void fill_port_info(struct snd_seq_port_info *port,
- }
- 
- /* skip non-existing group for static blocks */
--static bool skip_group(struct seq_ump_client *client, struct seq_ump_group *group)
-+static bool skip_group(struct seq_ump_client *client, struct snd_ump_group *group)
- {
- 	return !group->valid &&
- 		(client->ump->info.flags & SNDRV_UMP_EP_INFO_STATIC_BLOCKS);
-@@ -224,7 +214,7 @@ static bool skip_group(struct seq_ump_client *client, struct seq_ump_group *grou
- /* create a new sequencer port per UMP group */
- static int seq_ump_group_init(struct seq_ump_client *client, int group_index)
- {
--	struct seq_ump_group *group = &client->groups[group_index];
-+	struct snd_ump_group *group = &client->ump->groups[group_index];
- 	struct snd_seq_port_info *port __free(kfree) = NULL;
- 	struct snd_seq_port_callback pcallbacks;
- 
-@@ -264,7 +254,7 @@ static void update_port_infos(struct seq_ump_client *client)
- 		return;
- 
- 	for (i = 0; i < SNDRV_UMP_MAX_GROUPS; i++) {
--		if (skip_group(client, &client->groups[i]))
-+		if (skip_group(client, &client->ump->groups[i]))
- 			continue;
- 
- 		old->addr.client = client->seq_client;
-@@ -274,7 +264,7 @@ static void update_port_infos(struct seq_ump_client *client)
- 						old);
- 		if (err < 0)
- 			return;
--		fill_port_info(new, client, &client->groups[i]);
-+		fill_port_info(new, client, &client->ump->groups[i]);
- 		if (old->capability == new->capability &&
- 		    !strcmp(old->name, new->name))
- 			continue;
-@@ -288,57 +278,6 @@ static void update_port_infos(struct seq_ump_client *client)
- 	}
- }
- 
--/* update dir_bits and active flag for all groups in the client */
--static void update_group_attrs(struct seq_ump_client *client)
--{
--	struct snd_ump_block *fb;
--	struct seq_ump_group *group;
--	int i;
--
--	for (i = 0; i < SNDRV_UMP_MAX_GROUPS; i++) {
--		group = &client->groups[i];
--		*group->name = 0;
--		group->dir_bits = 0;
--		group->active = 0;
--		group->group = i;
--		group->valid = false;
--	}
--
--	list_for_each_entry(fb, &client->ump->block_list, list) {
--		if (fb->info.first_group + fb->info.num_groups > SNDRV_UMP_MAX_GROUPS)
--			break;
--		group = &client->groups[fb->info.first_group];
--		for (i = 0; i < fb->info.num_groups; i++, group++) {
--			group->valid = true;
--			if (fb->info.active)
--				group->active = 1;
--			switch (fb->info.direction) {
--			case SNDRV_UMP_DIR_INPUT:
--				group->dir_bits |= (1 << STR_IN);
--				break;
--			case SNDRV_UMP_DIR_OUTPUT:
--				group->dir_bits |= (1 << STR_OUT);
--				break;
--			case SNDRV_UMP_DIR_BIDIRECTION:
--				group->dir_bits |= (1 << STR_OUT) | (1 << STR_IN);
--				break;
--			}
--			if (!*fb->info.name)
--				continue;
--			if (!*group->name) {
--				/* store the first matching name */
--				strscpy(group->name, fb->info.name,
--					sizeof(group->name));
--			} else {
--				/* when overlapping, concat names */
--				strlcat(group->name, ", ", sizeof(group->name));
--				strlcat(group->name, fb->info.name,
--					sizeof(group->name));
--			}
--		}
--	}
--}
--
- /* create a UMP Endpoint port */
- static int create_ump_endpoint_port(struct seq_ump_client *client)
- {
-@@ -435,7 +374,7 @@ static void setup_client_group_filter(struct seq_ump_client *client)
- 		return;
- 	filter = ~(1U << 0); /* always allow groupless messages */
- 	for (p = 0; p < SNDRV_UMP_MAX_GROUPS; p++) {
--		if (client->groups[p].active)
-+		if (client->ump->groups[p].active)
- 			filter &= ~(1U << (p + 1));
- 	}
- 	cptr->group_filter = filter;
-@@ -448,7 +387,6 @@ static void handle_group_notify(struct work_struct *work)
- 	struct seq_ump_client *client =
- 		container_of(work, struct seq_ump_client, group_notify_work);
- 
--	update_group_attrs(client);
- 	update_port_infos(client);
- 	setup_client_group_filter(client);
- }
-@@ -511,7 +449,6 @@ static int snd_seq_ump_probe(struct device *_dev)
- 		client->ump_info[fb->info.block_id + 1] = &fb->info;
- 
- 	setup_client_midi_version(client);
--	update_group_attrs(client);
- 
- 	for (p = 0; p < SNDRV_UMP_MAX_GROUPS; p++) {
- 		err = seq_ump_group_init(client, p);
-diff --git a/sound/core/ump.c b/sound/core/ump.c
-index b1ce4756961a5..248fb1c8cad07 100644
---- a/sound/core/ump.c
-+++ b/sound/core/ump.c
-@@ -524,6 +524,58 @@ static void snd_ump_proc_read(struct snd_info_entry *entry,
- 	}
- }
- 
-+/* update dir_bits and active flag for all groups in the client */
-+static void update_group_attrs(struct snd_ump_endpoint *ump)
-+{
-+	struct snd_ump_block *fb;
-+	struct snd_ump_group *group;
-+	int i;
-+
-+	for (i = 0; i < SNDRV_UMP_MAX_GROUPS; i++) {
-+		group = &ump->groups[i];
-+		*group->name = 0;
-+		group->dir_bits = 0;
-+		group->active = 0;
-+		group->group = i;
-+		group->valid = false;
-+	}
-+
-+	list_for_each_entry(fb, &ump->block_list, list) {
-+		if (fb->info.first_group + fb->info.num_groups > SNDRV_UMP_MAX_GROUPS)
-+			break;
-+		group = &ump->groups[fb->info.first_group];
-+		for (i = 0; i < fb->info.num_groups; i++, group++) {
-+			group->valid = true;
-+			if (fb->info.active)
-+				group->active = 1;
-+			switch (fb->info.direction) {
-+			case SNDRV_UMP_DIR_INPUT:
-+				group->dir_bits |= (1 << SNDRV_RAWMIDI_STREAM_INPUT);
-+				break;
-+			case SNDRV_UMP_DIR_OUTPUT:
-+				group->dir_bits |= (1 << SNDRV_RAWMIDI_STREAM_OUTPUT);
-+				break;
-+			case SNDRV_UMP_DIR_BIDIRECTION:
-+				group->dir_bits |= (1 << SNDRV_RAWMIDI_STREAM_INPUT) |
-+					(1 << SNDRV_RAWMIDI_STREAM_OUTPUT);
-+				break;
-+			}
-+			if (!*fb->info.name)
-+				continue;
-+			if (!*group->name) {
-+				/* store the first matching name */
-+				strscpy(group->name, fb->info.name,
-+					sizeof(group->name));
-+			} else {
-+				/* when overlapping, concat names */
-+				strlcat(group->name, ", ", sizeof(group->name));
-+				strlcat(group->name, fb->info.name,
-+					sizeof(group->name));
-+			}
-+		}
-+	}
-+}
-+
- /*
-  * UMP endpoint and function block handling
-  */
-@@ -795,8 +847,10 @@ static int ump_handle_fb_info_msg(struct snd_ump_endpoint *ump,
- 
- 	if (fb) {
- 		fill_fb_info(ump, &fb->info, buf);
--		if (ump->parsed)
-+		if (ump->parsed) {
-+			update_group_attrs(ump);
- 			seq_notify_fb_change(ump, fb);
-+		}
- 	}
- 
- 	return 1; /* finished */
-@@ -825,8 +879,10 @@ static int ump_handle_fb_name_msg(struct snd_ump_endpoint *ump,
- 	ret = ump_append_string(ump, fb->info.name, sizeof(fb->info.name),
- 				buf->raw, 3);
- 	/* notify the FB name update to sequencer, too */
--	if (ret > 0 && ump->parsed)
-+	if (ret > 0 && ump->parsed) {
-+		update_group_attrs(ump);
- 		seq_notify_fb_change(ump, fb);
-+	}
- 	return ret;
- }
- 
-@@ -998,6 +1054,9 @@ int snd_ump_parse_endpoint(struct snd_ump_endpoint *ump)
- 			continue;
- 	}
- 
-+	/* initialize group attributions */
-+	update_group_attrs(ump);
-+
-  error:
- 	ump->parsed = true;
- 	ump_request_close(ump);
-@@ -1186,10 +1245,17 @@ static void fill_substream_names(struct snd_ump_endpoint *ump,
- 				 struct snd_rawmidi *rmidi, int dir)
- {
- 	struct snd_rawmidi_substream *s;
--
--	list_for_each_entry(s, &rmidi->streams[dir].substreams, list)
-+	const char *name;
-+	int idx;
-+
-+	list_for_each_entry(s, &rmidi->streams[dir].substreams, list) {
-+		idx = ump->legacy_mapping[s->number];
-+		name = ump->groups[idx].name;
-+		if (!*name)
-+			name = ump->info.name;
- 		snprintf(s->name, sizeof(s->name), "Group %d (%.16s)",
--			 ump->legacy_mapping[s->number] + 1, ump->info.name);
-+			 idx + 1, name);
-+	}
- }
- 
- int snd_ump_attach_legacy_rawmidi(struct snd_ump_endpoint *ump,
+diff --git a/sound/soc/intel/boards/sof_rt5682.c b/sound/soc/intel/boards/sof_rt5682.c
+index bc581fea0e3a1..866589fece7a3 100644
+--- a/sound/soc/intel/boards/sof_rt5682.c
++++ b/sound/soc/intel/boards/sof_rt5682.c
+@@ -870,6 +870,13 @@ static const struct platform_device_id board_ids[] = {
+ 					SOF_SSP_PORT_BT_OFFLOAD(2) |
+ 					SOF_BT_OFFLOAD_PRESENT),
+ 	},
++	{
++		.name = "mtl_rt5682_c1_h02",
++		.driver_data = (kernel_ulong_t)(SOF_RT5682_MCLK_EN |
++					SOF_SSP_PORT_CODEC(1) |
++					/* SSP 0 and SSP 2 are used for HDMI IN */
++					SOF_SSP_MASK_HDMI_CAPTURE(0x5)),
++	},
+ 	{
+ 		.name = "arl_rt5682_c1_h02",
+ 		.driver_data = (kernel_ulong_t)(SOF_RT5682_MCLK_EN |
+diff --git a/sound/soc/intel/common/soc-acpi-intel-mtl-match.c b/sound/soc/intel/common/soc-acpi-intel-mtl-match.c
+index d4435a34a3a3f..fd02c864e25ef 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-mtl-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-mtl-match.c
+@@ -42,6 +42,13 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_mtl_machines[] = {
+ 					SND_SOC_ACPI_TPLG_INTEL_SSP_MSB |
+ 					SND_SOC_ACPI_TPLG_INTEL_DMIC_NUMBER,
+ 	},
++	{
++		.comp_ids = &mtl_rt5682_rt5682s_hp,
++		.drv_name = "mtl_rt5682_c1_h02",
++		.machine_quirk = snd_soc_acpi_codec_list,
++		.quirk_data = &mtl_lt6911_hdmi,
++		.sof_tplg_filename = "sof-mtl-rt5682-ssp1-hdmi-ssp02.tplg",
++	},
+ 	/* place boards for each headphone codec: sof driver will complete the
+ 	 * tplg name and machine driver will detect the amp type
+ 	 */
 -- 
 2.43.0
 
