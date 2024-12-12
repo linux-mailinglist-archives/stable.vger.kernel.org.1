@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C81C9EF05A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 084099EF32E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDB631892953
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00A361891C10
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DF0235C28;
-	Thu, 12 Dec 2024 16:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B590422EA1C;
+	Thu, 12 Dec 2024 16:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVu/D15Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WCnWRQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBF3223E71;
-	Thu, 12 Dec 2024 16:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7213C22EA12;
+	Thu, 12 Dec 2024 16:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019659; cv=none; b=Sv90TuS+AEh04uzl01vTlfgzgG06LzY6GF+H1xKZ5ni9zMX9n8+uQ9IG109f8q5POoMDzJ3MWE4mADo2GptVYSUayOPrCWawK4Lpi4vbqMz/wfo6NZr+IVfePcqZgk2FQ0Iuxerl3S6+mPVos1b5b7CBR82ucphPIzIbCzLB25s=
+	t=1734021616; cv=none; b=NsAht5+VsQP1dKOAwmvOwfnE+UraGrYG6VGZTxNKrxZs3LKsy2b1dj1ZmoCoY6dgcf2B45GtuCygJjlAuus+r/151yXak3HMvrbLh/D8LM9bw+ce7Il+wMp3KS7mG3cvo56m81NBFABpYyTGDzWkFfj9bgTkR9EM9oE1xSa3g5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019659; c=relaxed/simple;
-	bh=hJYDUKstk0Dp5mxWZtfeIiqPOFwxl59MJw3jc8uKd6A=;
+	s=arc-20240116; t=1734021616; c=relaxed/simple;
+	bh=Fjds5y4nU0Q2HkEPcMH0JhYy0XiwIC3mvXXIYSccuqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTefGNE6qvX5jGzhsS1qcWJ/DVm5ux8uYVXgizOrP29f0Xs6dfqsqWlY8C/fNxprN6xIdpsFo9l7oCS0aBWk7mQwfJAWXwl/of889Z4QRd4hJEN78gXBS/lS/MUxubG4/VYBMT8eZw4XXwX/Dsjb8s4Jxwvx5fNysF0tIs/NKlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVu/D15Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC81C4CECE;
-	Thu, 12 Dec 2024 16:07:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JnuZ6SN4LZBeCevTTOhb+g9DfhbNp93TejS9qEGmIIDAj2duaIw0PH2FhSVqjof0gbDkzosjcClvNyGW8/TWKTTc4beS0RjQ8Bi0s6RACGjyvNwTD2bnmB+utVHXan/Mm4Un9D0dUAhRqLnueowvBkFy5AQ/iUQU955Nr+0QANY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WCnWRQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96D6C4CED3;
+	Thu, 12 Dec 2024 16:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019658;
-	bh=hJYDUKstk0Dp5mxWZtfeIiqPOFwxl59MJw3jc8uKd6A=;
+	s=korg; t=1734021616;
+	bh=Fjds5y4nU0Q2HkEPcMH0JhYy0XiwIC3mvXXIYSccuqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVu/D15Q/aTon1k2heTei/hms8yH8vxTso7rSKVvtusQzSXr17ZQZMoelFZ7bg6iH
-	 6iCIIN1g3W+ClDNECdYvwfcxMudD0Uc1M5NNClp5mvllOTRcElA67dALZ/d8ntBXlu
-	 YqvO4AIH7BRtv7EloCSIi4ff+EyZONDt9KHPssQQ=
+	b=1WCnWRQQmAOQAqR2rabd5jnELqeI4a/1zpnMKwooJK0xVqxfKX6ZAGrvwdkR/ozff
+	 e9+40d69JwCtDKB/wsZekDYi7M6nIXllFXnLIr74MFtdqyzFo8elkgtzUyo4FIuF3O
+	 HC/u6WeGGiuWxG3T7844W+vxbHZf3dYIYGlU3Kwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Han <hanqi@vivo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 265/772] f2fs: compress: fix inconsistent update of i_blocks in release_compress_blocks and reserve_compress_blocks
+	=?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.15 015/565] leds: lp55xx: Remove redundant test for invalid channel number
 Date: Thu, 12 Dec 2024 15:53:30 +0100
-Message-ID: <20241212144400.862396912@linuxfoundation.org>
+Message-ID: <20241212144312.055094607@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Han <hanqi@vivo.com>
+From: Michal Vokáč <michal.vokac@ysoft.com>
 
-[ Upstream commit 26413ce18e85de3dda2cd3d72c3c3e8ab8f4f996 ]
+commit 09b1ef9813a0742674f7efe26104403ca94a1b4a upstream.
 
-After release a file and subsequently reserve it, the FSCK flag is set
-when the file is deleted, as shown in the following backtrace:
+Since commit 92a81562e695 ("leds: lp55xx: Add multicolor framework
+support to lp55xx") there are two subsequent tests if the chan_nr
+(reg property) is in valid range. One in the lp55xx_init_led()
+function and one in the lp55xx_parse_common_child() function that
+was added with the mentioned commit.
 
-F2FS-fs (dm-48): Inconsistent i_blocks, ino:401231, iblocks:1448, sectors:1472
-fs_rec_info_write_type+0x58/0x274
-f2fs_rec_info_write+0x1c/0x2c
-set_sbi_flag+0x74/0x98
-dec_valid_block_count+0x150/0x190
-f2fs_truncate_data_blocks_range+0x2d4/0x3cc
-f2fs_do_truncate_blocks+0x2fc/0x5f0
-f2fs_truncate_blocks+0x68/0x100
-f2fs_truncate+0x80/0x128
-f2fs_evict_inode+0x1a4/0x794
-evict+0xd4/0x280
-iput+0x238/0x284
-do_unlinkat+0x1ac/0x298
-__arm64_sys_unlinkat+0x48/0x68
-invoke_syscall+0x58/0x11c
+There are two issues with that.
 
-For clusters of the following type, i_blocks are decremented by 1 and
-i_compr_blocks are incremented by 7 in release_compress_blocks, while
-updates to i_blocks and i_compr_blocks are skipped in reserve_compress_blocks.
+First is in the lp55xx_parse_common_child() function where the reg
+property is tested right after it is read from the device tree.
+Test for the upper range is not correct though. Valid reg values are
+0 to (max_channel - 1) so it should be >=.
 
-raw node:
-D D D D D D D D
-after compress:
-C D D D D D D D
-after reserve:
-C D D D D D D D
+Second issue is that in case the parsed value is out of the range
+the probe just fails and no error message is shown as the code never
+reaches the second test that prints and error message.
 
-Let's update i_blocks and i_compr_blocks properly in reserve_compress_blocks.
+Remove the test form lp55xx_parse_common_child() function completely
+and keep the one in lp55xx_init_led() function to deal with it.
 
-Fixes: eb8fbaa53374 ("f2fs: compress: fix to check unreleased compressed cluster")
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 92a81562e695 ("leds: lp55xx: Add multicolor framework support to lp55xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
+Link: https://lore.kernel.org/r/20241017150812.3563629-1-michal.vokac@ysoft.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/leds-lp55xx-common.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 6a2b5fcbe6799..a25b9bff76ffc 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3703,7 +3703,7 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
- 		to_reserved = cluster_size - compr_blocks - reserved;
+--- a/drivers/leds/leds-lp55xx-common.c
++++ b/drivers/leds/leds-lp55xx-common.c
+@@ -580,9 +580,6 @@ static int lp55xx_parse_common_child(str
+ 	if (ret)
+ 		return ret;
  
- 		/* for the case all blocks in cluster were reserved */
--		if (to_reserved == 1) {
-+		if (reserved && to_reserved == 1) {
- 			dn->ofs_in_node += cluster_size;
- 			goto next;
- 		}
--- 
-2.43.0
-
+-	if (*chan_nr < 0 || *chan_nr > cfg->max_channel)
+-		return -EINVAL;
+-
+ 	return 0;
+ }
+ 
 
 
 
