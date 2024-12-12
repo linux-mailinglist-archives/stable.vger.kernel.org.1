@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB31C9EF21A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2198D9EECB5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 963B7188257E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F9D51885A16
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596E1236F8E;
-	Thu, 12 Dec 2024 16:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBD9217739;
+	Thu, 12 Dec 2024 15:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVurO18d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwSXejiC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AB4226529;
-	Thu, 12 Dec 2024 16:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB7021E0AA;
+	Thu, 12 Dec 2024 15:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020529; cv=none; b=E/yua1hRrCuBMicXZJvQ+/Bh/BMrP0VLw9n9I2UQESCOwLA08y54ceqWQB4PtsOrftSmm+SxGXDeKqwiziM0Pd61S0pAWZH8APVE1kIwjXgS30s5NvDdvxKeTxS+EgudfRowxn5PbSFj5MxEm+OmIYGv+3Tx2LoKDeLWMLDUjqs=
+	t=1734017699; cv=none; b=TEXPTJDVr/xgc0mPOhnVcJ40j8a3TROJ0F67NtWL1jmRiYC5RCiJAjQ9ryB+aFLkWgT8xUeJPk9fpGhfYVA8l9YjY7cmMefM/jlnhHoQbF3frNCO1OuI/yTv+T65L+/mA/mmcyXKYBie4N3TzlbuakFCtYwou5OyQZp+fMvc9NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020529; c=relaxed/simple;
-	bh=MUvijHd+/CF0kifBpgfUeFTz8rIfmCLJS455+RSV7jg=;
+	s=arc-20240116; t=1734017699; c=relaxed/simple;
+	bh=ugbCeKDnnJ+VuKZS7pK4HbcAFG+NSV1THlSwNyjpCnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XJ/+wMPRmo49r7qL6eIJk8rEbfbrMXstr00ECzNGkOs3GYKbch/whTf6iqXT8lzqCGHbKWApGqqIlrgCLkcbPhWlp/b9rKKYjJs+kZm6polfWn7UHO8J59QGDR05NdcK7EnCS5sKNbv4/lZBi9Ax/78nx7cYycpey1AjiMBQgOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVurO18d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5894EC4CECE;
-	Thu, 12 Dec 2024 16:22:08 +0000 (UTC)
+	 MIME-Version; b=V6BO1dnWr3myC6hiYZ2HLMtDofenFMgdDJearSlSqTWA07GDm11wdScbdouF/t8VN7aIFUF4RiZFrcKX4U8qA/FUOg3q3lpPPb1zBynozj6Jn9dPd1z/uWDpC/RKX0wUPoafCcGfWfDU5C/llrCfl79T2e+c4kmpXYD6r391oGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwSXejiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D8BC4CECE;
+	Thu, 12 Dec 2024 15:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020528;
-	bh=MUvijHd+/CF0kifBpgfUeFTz8rIfmCLJS455+RSV7jg=;
+	s=korg; t=1734017699;
+	bh=ugbCeKDnnJ+VuKZS7pK4HbcAFG+NSV1THlSwNyjpCnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVurO18dGVtUyBX0gWifndsH7QuqDXgXzNe/5KbdJk3MTjRaGrZpIn4nmmxMyLets
-	 ncLNd0PWwonB039wKCtUN7F80srv9zWoA7fHJuB1mzPRL89fpNV04qQfqJsDPACJmp
-	 92FGe4px0yyU0yCqBHMaa6Qc464z2+RQtGnH+K48=
+	b=zwSXejiCe3rt+jh5eAGpHVi9x8BM9wkVizZeIredWakK6n3IAkeHnp5C5rs9qF8s3
+	 WKzvNLTuue1GG0JrX4gbcX5wl3bjQ/MCpe7nO/R+TP8xrtJFIfryKn6594kauC3hGP
+	 sJlcmZiawsSlmqUgC+BwCz04J3xe3N0oxqX6/NPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.1 460/772] arm64: dts: freescale: imx8mp-verdin: Fix SD regulator startup delay
+	Andy-ld Lu <andy-ld.lu@mediatek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 086/356] mmc: mtk-sd: Fix MMC_CAP2_CRYPTO flag setting
 Date: Thu, 12 Dec 2024 15:56:45 +0100
-Message-ID: <20241212144408.935165146@linuxfoundation.org>
+Message-ID: <20241212144248.019722528@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Andy-ld Lu <andy-ld.lu@mediatek.com>
 
-commit 6c5789c9d2c06968532243daa235f6ff809ad71e upstream.
+[ Upstream commit 2508925fb346661bad9f50b497d7ac7d0b6085d0 ]
 
-The power switch used to power the SD card interface might have
-more than 2ms turn-on time, increase the startup delay to 20ms to
-prevent failures.
+Currently, the MMC_CAP2_CRYPTO flag is set by default for eMMC hosts.
+However, this flag should not be set for hosts that do not support inline
+encryption.
 
-Fixes: a39ed23bdf6e ("arm64: dts: freescale: add initial support for verdin imx8m plus")
+The 'crypto' clock, as described in the documentation, is used for data
+encryption and decryption. Therefore, only hosts that are configured with
+this 'crypto' clock should have the MMC_CAP2_CRYPTO flag set.
+
+Fixes: 7b438d0377fb ("mmc: mtk-sd: add Inline Crypto Engine clock control")
+Fixes: ed299eda8fbb ("mmc: mtk-sd: fix devm_clk_get_optional usage")
+Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Message-ID: <20241111085039.26527-1-andy-ld.lu@mediatek.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/mtk-sd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -133,7 +133,7 @@
- 		regulator-max-microvolt = <3300000>;
- 		regulator-min-microvolt = <3300000>;
- 		regulator-name = "+V3.3_SD";
--		startup-delay-us = <2000>;
-+		startup-delay-us = <20000>;
- 	};
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index c5e96a2c079e5..1896bf6746071 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2712,7 +2712,8 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 		host->crypto_clk = devm_clk_get_optional(&pdev->dev, "crypto");
+ 		if (IS_ERR(host->crypto_clk))
+ 			return PTR_ERR(host->crypto_clk);
+-		mmc->caps2 |= MMC_CAP2_CRYPTO;
++		else if (host->crypto_clk)
++			mmc->caps2 |= MMC_CAP2_CRYPTO;
+ 	}
  
- 	reserved-memory {
+ 	host->irq = platform_get_irq(pdev, 0);
+-- 
+2.43.0
+
 
 
 
