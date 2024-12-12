@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-103278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BE99EF79E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 935A69EF524
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F03C817BDAB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11357340586
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40253222D57;
-	Thu, 12 Dec 2024 17:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546D722B8D7;
+	Thu, 12 Dec 2024 17:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bd+UCc2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnMF7O1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2435216E2D;
-	Thu, 12 Dec 2024 17:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C5E229677;
+	Thu, 12 Dec 2024 17:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024082; cv=none; b=DZ+Q/prIMnKSStkkpj+54rn4jpxJLVDkr+EizkbeJX09j8xZ64VwJpRnPAyoi+oDEqhRgI+SF10ip796+5GTF6tz6vCQ7H6UI0UfNnc/CWcq/bZ59ujT+s5aG4kyDx6mY3bX6Ptxb/EpgPgDGBuioYxC+kO2YoRh/5YKtl2OG08=
+	t=1734022854; cv=none; b=KfVEwpLNkXacxYCVmsD9bnpF5q5JUOnSMNDz4gYW0D/8+5kedbLOkj2OteB157TS7sDv+zmLGnXVjQycqGY+Vswqms2bv6BTTIkRrKObIQsxqZ+dXEXblgUs8E0T54bgkIMz49beuM2MGOfBEXWLolnZkcKCp8zJgp8pekXduBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024082; c=relaxed/simple;
-	bh=SWpvaHfx0npzIOs9QZM8dshFOb5pM0Y76bM+6ieXT10=;
+	s=arc-20240116; t=1734022854; c=relaxed/simple;
+	bh=lZgEywa1T1Ig5x65ep2AJzY8TvJlBXT1+wF6geV5mxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0Yu0ME/XbSMFPL5SWF2a0b2r2ch+Cw4kuBc+RK62T9vH/Gxv369PIP/VtvTjpR1qHCewvgaVf0R5VD2xefB6hvBPxsGH6oBBEQh/WdDWV2NJDdE7b82Sv3siN6untkpxIJguwSiNuo1AoX5Xw0rB/qGUZ7UmLNBKKOshnmM8Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bd+UCc2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F588C4CECE;
-	Thu, 12 Dec 2024 17:21:21 +0000 (UTC)
+	 MIME-Version; b=TFEGLCZNU9gtITPv9PgfdcvsMhvi6ywfUuEIaJySjOc/LPqxkabP7jOxvUQZCJlR8Ez1cnNbZ0kkmNtt+HLxjs05oCV7ScfYL40BEbvFflL9G41fKhxAMca4ZY9KRk1a/BCmvE+BETav758HcVHE6XEwbT5sI+W3kKAUJxsXvDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnMF7O1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CAB2C4CECE;
+	Thu, 12 Dec 2024 17:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024081;
-	bh=SWpvaHfx0npzIOs9QZM8dshFOb5pM0Y76bM+6ieXT10=;
+	s=korg; t=1734022853;
+	bh=lZgEywa1T1Ig5x65ep2AJzY8TvJlBXT1+wF6geV5mxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bd+UCc2+1iEXl7x6dPABh4dA0zyIp/XHPdfZCFkrCj1/DX60uhehltV5In7IFmy7W
-	 gBUfrWYEUWcode77u/00iCzDW4X2bOwbTlIM2zPDfuPc0CO8X6SOs2uOJYb4VPiR4a
-	 IpE/do9lGlx6dfpJ/12gaVTSOT9Rv7O5dLWzU5eM=
+	b=VnMF7O1/PgMltAeigvjApcNtLZUQ3XBDzx2WnSafNqmXImQmjbChPnzPnNWf0Lnwy
+	 spaqYvr7GEEUM4t0k6NtZMQ2nxgP6InZIfcab/wJug5PJUCsc9YJfCVEOV6q50AwaJ
+	 13iv2LUF2V+5JDNQE5k9NpzooPXfdHFNaQZ9GVzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 179/459] scsi: qedi: Fix a possible memory leak in qedi_alloc_and_init_sb()
-Date: Thu, 12 Dec 2024 15:58:37 +0100
-Message-ID: <20241212144300.617223124@linuxfoundation.org>
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.15 323/565] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+Date: Thu, 12 Dec 2024 15:58:38 +0100
+Message-ID: <20241212144324.368772208@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 95bbdca4999bc59a72ebab01663d421d6ce5775d ]
+commit 3791ea69a4858b81e0277f695ca40f5aae40f312 upstream.
 
-Hook "qedi_ops->common->sb_init = qed_sb_init" does not release the DMA
-memory sb_virt when it fails. Add dma_free_coherent() to free it. This
-is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
+The early_console_setup() function initializes the sci_ports[0].port with
+an object of type struct uart_port obtained from the object of type
+struct earlycon_device received as argument by the early_console_setup().
 
-Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/r/20241026125711.484-3-thunder.leizhen@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It may happen that later, when the rest of the serial ports are probed,
+the serial port that was used as earlycon (e.g., port A) to be mapped to a
+different position in sci_ports[] and the slot 0 to be used by a different
+serial port (e.g., port B), as follows:
+
+sci_ports[0] = port A
+sci_ports[X] = port B
+
+In this case, the new port mapped at index zero will have associated data
+that was used for earlycon.
+
+In case this happens, after Linux boot, any access to the serial port that
+maps on sci_ports[0] (port A) will block the serial port that was used as
+earlycon (port B).
+
+To fix this, add early_console_exit() that clean the sci_ports[0] at
+earlycon exit time.
+
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20241106120118.1719888-4-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qedi/qedi_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/sh-sci.c |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index 96e470746767a..3bf75d466b2c6 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -371,6 +371,7 @@ static int qedi_alloc_and_init_sb(struct qedi_ctx *qedi,
- 	ret = qedi_ops->common->sb_init(qedi->cdev, sb_info, sb_virt, sb_phys,
- 				       sb_id, QED_SB_TYPE_STORAGE);
- 	if (ret) {
-+		dma_free_coherent(&qedi->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
- 		QEDI_ERR(&qedi->dbg_ctx,
- 			 "Status block initialization failed for id = %d.\n",
- 			  sb_id);
--- 
-2.43.0
-
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3433,6 +3433,32 @@ sh_early_platform_init_buffer("earlyprin
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+ static struct plat_sci_port port_cfg __initdata;
+ 
++static int early_console_exit(struct console *co)
++{
++	struct sci_port *sci_port = &sci_ports[0];
++	struct uart_port *port = &sci_port->port;
++	unsigned long flags;
++	int locked = 1;
++
++	if (port->sysrq)
++		locked = 0;
++	else if (oops_in_progress)
++		locked = uart_port_trylock_irqsave(port, &flags);
++	else
++		uart_port_lock_irqsave(port, &flags);
++
++	/*
++	 * Clean the slot used by earlycon. A new SCI device might
++	 * map to this slot.
++	 */
++	memset(sci_ports, 0, sizeof(*sci_port));
++
++	if (locked)
++		uart_port_unlock_irqrestore(port, flags);
++
++	return 0;
++}
++
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
+ {
+@@ -3451,6 +3477,8 @@ static int __init early_console_setup(st
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
+ 
+ 	device->con->write = serial_console_write;
++	device->con->exit = early_console_exit;
++
+ 	return 0;
+ }
+ static int __init sci_early_console_setup(struct earlycon_device *device,
 
 
 
