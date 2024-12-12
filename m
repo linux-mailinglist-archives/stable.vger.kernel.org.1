@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27A19EF588
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1639EF6EF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA24B176C69
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11E28188F739
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75D9223E92;
-	Thu, 12 Dec 2024 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A2D2165F0;
+	Thu, 12 Dec 2024 17:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5G/94Y8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUF0GkNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6431C223E6B;
-	Thu, 12 Dec 2024 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF50223C4E;
+	Thu, 12 Dec 2024 17:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022693; cv=none; b=EmyhhmWDZZNMn1Y81HvPm5debwv493bFFxJRto169i92UEO5IPY9ms4Kz+V2G6ddOoohK1XXitdnOUBswy9/IVUnKD8WBOAgidLGxOPgcbuWA+TW5NXmELW9PdpzvnLvCX+SCFVrja7e09Q66NCdCA74ugE6GIF8h2dUuYKMNoc=
+	t=1734024045; cv=none; b=jLm5gi4l4Q7kVPwyIOfqppbut8ikh6Pfl/YuHj9stknqhp7j6V1PUrwhQJMOtrySjtNe8zFfHQ06zOxDwPj/ktR6jPdBOXQURyCBblpkOFMLqJroJCz5LPvmO8MzbYg5C6yYVNzYQuW2My96Snwd7cqsUN8WhZqONrWWeOp0e8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022693; c=relaxed/simple;
-	bh=kj+i1eh151Pk5U77DnQiCpFLD9m1i1vVBfSLKnUWECU=;
+	s=arc-20240116; t=1734024045; c=relaxed/simple;
+	bh=W2X0ltOSNBcELJmWSgJtqc8efTCNZSHdmrOUxJaVMs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIJPQalDT0ivOUYuHdSdP7gZLyUID8GobRvYJd/WcYQltUsYdRirb82NaXMq+qwP/BR/gRIF61v3Z4iP+2AlkivIkYWeLx3bHohRg579uSZTI6iwvrQFlUCd5CECPc+J94GUMeNUr59BTpMOzUs8pjXreUAZYFSDGbHRyn2WaYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5G/94Y8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8979C4CECE;
-	Thu, 12 Dec 2024 16:58:12 +0000 (UTC)
+	 MIME-Version; b=fsx7BlzSEg/xBA6B4Tup3HUV7IOhk5x6IF+9ZsUiVKsX4fz6rKAqU7u8PhyUoIcddgvL5780FrXHW3eNjOGdqVZcNwJykRpPsIVddcqRnKrJrcWo17/hpayN/4fEkaXqKtPb2z0lK0g8T2KZPo3e6i/Z1A4pSAj/LnYbVa2A7t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUF0GkNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A2DC4CECE;
+	Thu, 12 Dec 2024 17:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022693;
-	bh=kj+i1eh151Pk5U77DnQiCpFLD9m1i1vVBfSLKnUWECU=;
+	s=korg; t=1734024045;
+	bh=W2X0ltOSNBcELJmWSgJtqc8efTCNZSHdmrOUxJaVMs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V5G/94Y8DrkC85d4367J7rOwrmLTSzbmMc36P4jgGmAi4ghpRL4xB2rzfCb8RFO9V
-	 1y7dDj4bg9zoPB/Zo6KcjZf/88tfm87ADyOYcO308gE4HaCZe3tkgQSAX6jl3CZEeE
-	 b1DNpaOz1Yng8cryrUgTbRG33fLlRBTrVtBocWhE=
+	b=kUF0GkNu4iSy2U5aJq3LzfoCWbODAg2DpqqYQftBTloEqrj8Rno0pU6/tXkLUzDzS
+	 ASFgtixDJSIJGCUSpYMLyKTvY4bXqGHK2e8AyRnWYutmcha7h9MfORg4UBMiGKXj84
+	 SsoxFAxGVhp+nzBsQeg+4UP6KiTJ6IAMpr5tHa8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.15 310/565] powerpc/pseries: Fix KVM guest detection for disabling hardlockup detector
-Date: Thu, 12 Dec 2024 15:58:25 +0100
-Message-ID: <20241212144323.859718960@linuxfoundation.org>
+	Zhang Ning <zhangn1985@outlook.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 168/459] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for USB Type-C device
+Date: Thu, 12 Dec 2024 15:58:26 +0100
+Message-ID: <20241212144300.149555633@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 44e5d21e6d3fd2a1fed7f0327cf72e99397e2eaf upstream.
+[ Upstream commit 686fb77712a4bc94b76a0c5ae74c60118b7a0d79 ]
 
-As per the kernel documentation[1], hardlockup detector should
-be disabled in KVM guests as it may give false positives. On
-PPC, hardlockup detector is enabled inside KVM guests because
-disable_hardlockup_detector() is marked as early_initcall and it
-relies on kvm_guest static key (is_kvm_guest()) which is initialized
-later during boot by check_kvm_guest(), which is a core_initcall.
-check_kvm_guest() is also called in pSeries_smp_probe(), which is called
-before initcalls, but it is skipped if KVM guest does not have doorbell
-support or if the guest is launched with SMT=1.
+While design wise the idea of converting the driver to use
+the hierarchy of the IRQ chips is correct, the implementation
+has (inherited) flaws. This was unveiled when platform_get_irq()
+had started WARN() on IRQ 0 that is supposed to be a Linux
+IRQ number (also known as vIRQ).
 
-Call check_kvm_guest() in disable_hardlockup_detector() so that
-is_kvm_guest() check goes through fine and hardlockup detector can be
-disabled inside the KVM guest.
+Rework the driver to respect IRQ domain when creating each MFD
+device separately, as the domain is not the same for all of them.
 
-[1]: Documentation/admin-guide/sysctl/kernel.rst
-
-Fixes: 633c8e9800f3 ("powerpc/pseries: Enable hardlockup watchdog for PowerVM partitions")
-Cc: stable@vger.kernel.org # v5.14+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241108094839.33084-1-gautam@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9c6235c86332 ("mfd: intel_soc_pmic_bxtwc: Add bxt_wcove_usbc device")
+Fixes: d2061f9cc32d ("usb: typec: add driver for Intel Whiskey Cove PMIC USB Type-C PHY")
+Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
+Reported-by: Zhang Ning <zhangn1985@outlook.com>
+Closes: https://lore.kernel.org/r/TY2PR01MB3322FEDCDC048B7D3794F922CDBA2@TY2PR01MB3322.jpnprd01.prod.outlook.com
+Tested-by: Zhang Ning <zhangn1985@outlook.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20241005193029.1929139-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/setup_64.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mfd/intel_soc_pmic_bxtwc.c | 57 +++++++++++++++++++++---------
+ drivers/usb/typec/tcpm/wcove.c     |  4 ---
+ 2 files changed, 40 insertions(+), 21 deletions(-)
 
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -952,6 +952,7 @@ static int __init disable_hardlockup_det
- 	hardlockup_detector_disable();
- #else
- 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
-+		check_kvm_guest();
- 		if (is_kvm_guest())
- 			hardlockup_detector_disable();
- 	}
+diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
+index 3b41cc2d1ec01..82c71b475a7e0 100644
+--- a/drivers/mfd/intel_soc_pmic_bxtwc.c
++++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
+@@ -240,16 +240,6 @@ static struct mfd_cell bxt_wc_dev[] = {
+ 		.num_resources = ARRAY_SIZE(thermal_resources),
+ 		.resources = thermal_resources,
+ 	},
+-	{
+-		.name = "bxt_wcove_usbc",
+-		.num_resources = ARRAY_SIZE(usbc_resources),
+-		.resources = usbc_resources,
+-	},
+-	{
+-		.name = "bxt_wcove_ext_charger",
+-		.num_resources = ARRAY_SIZE(charger_resources),
+-		.resources = charger_resources,
+-	},
+ 	{
+ 		.name = "bxt_wcove_bcu",
+ 		.num_resources = ARRAY_SIZE(bcu_resources),
+@@ -271,6 +261,19 @@ static struct mfd_cell bxt_wc_dev[] = {
+ 	},
+ };
+ 
++static struct mfd_cell bxt_wc_chgr_dev[] = {
++	{
++		.name = "bxt_wcove_usbc",
++		.num_resources = ARRAY_SIZE(usbc_resources),
++		.resources = usbc_resources,
++	},
++	{
++		.name = "bxt_wcove_ext_charger",
++		.num_resources = ARRAY_SIZE(charger_resources),
++		.resources = charger_resources,
++	},
++};
++
+ static int regmap_ipc_byte_reg_read(void *context, unsigned int reg,
+ 				    unsigned int *val)
+ {
+@@ -418,6 +421,26 @@ static int bxtwc_add_chained_irq_chip(struct intel_soc_pmic *pmic,
+ 					0, chip, data);
+ }
+ 
++static int bxtwc_add_chained_devices(struct intel_soc_pmic *pmic,
++				     const struct mfd_cell *cells, int n_devs,
++				     struct regmap_irq_chip_data *pdata,
++				     int pirq, int irq_flags,
++				     const struct regmap_irq_chip *chip,
++				     struct regmap_irq_chip_data **data)
++{
++	struct device *dev = pmic->dev;
++	struct irq_domain *domain;
++	int ret;
++
++	ret = bxtwc_add_chained_irq_chip(pmic, pdata, pirq, irq_flags, chip, data);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to add %s IRQ chip\n", chip->name);
++
++	domain = regmap_irq_get_domain(*data);
++
++	return devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE, cells, n_devs, NULL, 0, domain);
++}
++
+ static int bxtwc_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -496,14 +519,14 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
+ 
+-	/* Add chained IRQ handler for CHGR IRQs */
+-	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+-					 BXTWC_CHGR_LVL1_IRQ,
+-					 IRQF_ONESHOT,
+-					 &bxtwc_regmap_irq_chip_chgr,
+-					 &pmic->irq_chip_data_chgr);
++	ret = bxtwc_add_chained_devices(pmic, bxt_wc_chgr_dev, ARRAY_SIZE(bxt_wc_chgr_dev),
++					pmic->irq_chip_data,
++					BXTWC_CHGR_LVL1_IRQ,
++					IRQF_ONESHOT,
++					&bxtwc_regmap_irq_chip_chgr,
++					&pmic->irq_chip_data_chgr);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "Failed to add CHGR IRQ chip\n");
++		return ret;
+ 
+ 	/* Add chained IRQ handler for CRIT IRQs */
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+diff --git a/drivers/usb/typec/tcpm/wcove.c b/drivers/usb/typec/tcpm/wcove.c
+index 7e9c279bf49df..22fe8d60fe368 100644
+--- a/drivers/usb/typec/tcpm/wcove.c
++++ b/drivers/usb/typec/tcpm/wcove.c
+@@ -620,10 +620,6 @@ static int wcove_typec_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return irq;
+ 
+-	irq = regmap_irq_get_virq(pmic->irq_chip_data_chgr, irq);
+-	if (irq < 0)
+-		return irq;
+-
+ 	ret = guid_parse(WCOVE_DSM_UUID, &wcove->guid);
+ 	if (ret)
+ 		return ret;
+-- 
+2.43.0
+
 
 
 
