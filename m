@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE999EF716
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3272B9EF4CB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97349289CC6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2BE4289356
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46ED3222D45;
-	Thu, 12 Dec 2024 17:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFB0222D5E;
+	Thu, 12 Dec 2024 17:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDTVNVCy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzDNvgx9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01051215710;
-	Thu, 12 Dec 2024 17:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB78176AA1;
+	Thu, 12 Dec 2024 17:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024694; cv=none; b=N+Sp2ou/GDF9lhjBpd2gCo4TlaY2uek70Fk733/n+LMofwc1l3mmTLixurs5x0Uxs+dpEl/JzyPtKlXjUQ3vJzDbb0veuRcbgP9OuWX1p2XQ9kHq6tbqdB1Zdm2Ym1V6c8N0Lz+gvg/HDgr9UqZESwoar3JU6IVtjY5neVxp3lw=
+	t=1734023314; cv=none; b=j6zrTT+89AGow3kEkbMRxt1ru62zIMXzSGSLvQlPJ/3ZNxP+SZjJEjW9oyDJ+A3OqtREzmF00Hxwg56sLzDeBMrt9+3kshjhdd/HubM+IPEYNlQesk61gohY0pbLX2PO8VtAM+9E+9RfK37budW7C3i1juRZdahERtPMNTfAzAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024694; c=relaxed/simple;
-	bh=gGEe+wc0sQC/dKpoa1o5ioq1t6Zhc0nz4ilpCoPpiic=;
+	s=arc-20240116; t=1734023314; c=relaxed/simple;
+	bh=isMdDs09m2rQKImS/eHayU82W+v5oyHmR5KdUNNxijo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OJAhFDRB5P3Ea8p9picXfqDoRgegIE/1PWWz5FG8AcuAUtUe5uZtP29OZrjv6NYiuXT74FQsCS+lOOPs4XUpspWGbM5ulIIeJiQMHym+o0VI+8EpxAi6uNZNMxhsaneR9nLsyVIwP1l1zpJILdi+wjctvxcgCe0Yg5S6vBJjL3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDTVNVCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E02C4CECE;
-	Thu, 12 Dec 2024 17:31:33 +0000 (UTC)
+	 MIME-Version; b=I/vGhsBPgfmEylDnQ4WFWzYTTP3fiOCBF7e/GHQ41ytY5Rs4xpgNPQwYotLq9XoQWIXSDZa2ohDWzjW7ZuJCplHZSy91VhgIjR3WTegf+DVRQv8XnW9FsokDfLEDumclwAcRfaNuoqfvs1oZJf66nPWDIQBSRrh9VQ0SbK6dH/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzDNvgx9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F45C4CECE;
+	Thu, 12 Dec 2024 17:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024693;
-	bh=gGEe+wc0sQC/dKpoa1o5ioq1t6Zhc0nz4ilpCoPpiic=;
+	s=korg; t=1734023313;
+	bh=isMdDs09m2rQKImS/eHayU82W+v5oyHmR5KdUNNxijo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDTVNVCywYwsX802zqlto4TVAhnU9hORKf3fxr6/JJX9S8CNJ2MeJ5t0L+6ASpZbz
-	 9LqbgV1dVGg+5JAqAGT6lmkqLs7vOO8jKRQQekanyUDn9AgyFLFsBpqsxScxKOvUyg
-	 eYL2HlH78hfHaEApFmQ0BvVxoVzNKCfEqjG0nSO0=
+	b=MzDNvgx9fSPv/KHTRjFGVU+x/m1eGhgoP0oHHbewLFN6ZQPBdjHYve+bDNlHbNSkk
+	 ULDwlHPMJ8lkPmxhI3UGIFe5yYxs9JGi8Ydry+LUp3MM7ht6fzAfKlAv/9sujw821A
+	 l/b+6g3OUoWczXNcXAa8Zo1o9ykvCx+HFVOhVIg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Manikandan Muralidharan <manikandan.m@microchip.com>,
+	Dharma Balasubiramani <dharma.b@microchip.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 351/459] i3c: master: Extend address status bit to 4 and add I3C_ADDR_SLOT_EXT_DESIRED
+Subject: [PATCH 5.15 494/565] drm/panel: simple: Add Microchip AC69T88A LVDS Display panel
 Date: Thu, 12 Dec 2024 16:01:29 +0100
-Message-ID: <20241212144307.524381650@linuxfoundation.org>
+Message-ID: <20241212144331.296955771@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,198 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Manikandan Muralidharan <manikandan.m@microchip.com>
 
-[ Upstream commit 2f552fa280590e61bd3dbe66a7b54b99caa642a4 ]
+[ Upstream commit 40da1463cd6879f542238b36c1148f517927c595 ]
 
-Extend the address status bit to 4 and introduce the
-I3C_ADDR_SLOT_EXT_DESIRED macro to indicate that a device prefers a
-specific address. This is generally set by the 'assigned-address' in the
-device tree source (dts) file.
+Add support for Microchip AC69T88A 5 inch TFT LCD 800x480
+Display module with LVDS interface.The panel uses the Sitronix
+ST7262 800x480 Display driver
 
- ┌────┬─────────────┬───┬─────────┬───┐
- │S/Sr│ 7'h7E RnW=0 │ACK│ ENTDAA  │ T ├────┐
- └────┴─────────────┴───┴─────────┴───┘    │
- ┌─────────────────────────────────────────┘
- │  ┌──┬─────────────┬───┬─────────────────┬────────────────┬───┬─────────┐
- └─►│Sr│7'h7E RnW=1  │ACK│48bit UID BCR DCR│Assign 7bit Addr│PAR│ ACK/NACK│
-    └──┴─────────────┴───┴─────────────────┴────────────────┴───┴─────────┘
-
-Some master controllers (such as HCI) need to prepare the entire above
-transaction before sending it out to the I3C bus. This means that a 7-bit
-dynamic address needs to be allocated before knowing the target device's
-UID information.
-
-However, some I3C targets may request specific addresses (called as
-"init_dyn_addr"), which is typically specified by the DT-'s
-assigned-address property. Lower addresses having higher IBI priority. If
-it is available, i3c_bus_get_free_addr() preferably return a free address
-that is not in the list of desired addresses (called as "init_dyn_addr").
-This allows the device with the "init_dyn_addr" to switch to its
-"init_dyn_addr" when it hot-joins the I3C bus. Otherwise, if the
-"init_dyn_addr" is already in use by another I3C device, the target device
-will not be able to switch to its desired address.
-
-If the previous step fails, fallback returning one of the remaining
-unassigned address, regardless of its state in the desired list.
-
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241021-i3c_dts_assign-v8-2-4098b8bde01e@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 851bd21cdb55 ("i3c: master: Fix dynamic address leak when 'assigned-address' is present")
+Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
+Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240919091548.430285-2-manikandan.m@microchip.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c       | 65 +++++++++++++++++++++++++++++++-------
- include/linux/i3c/master.h |  7 ++--
- 2 files changed, 59 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 49a744577f4ea..b86e1119df21d 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -345,7 +345,7 @@ struct bus_type i3c_bus_type = {
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 26c99ffe787cd..67412115b4b30 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -4453,6 +4453,31 @@ static const struct panel_desc yes_optoelectronics_ytc700tlag_05_201c = {
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
  };
  
- static enum i3c_addr_slot_status
--i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
-+i3c_bus_get_addr_slot_status_mask(struct i3c_bus *bus, u16 addr, u32 mask)
- {
- 	unsigned long status;
- 	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
-@@ -356,11 +356,17 @@ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
- 	status = bus->addrslots[bitpos / BITS_PER_LONG];
- 	status >>= bitpos % BITS_PER_LONG;
- 
--	return status & I3C_ADDR_SLOT_STATUS_MASK;
-+	return status & mask;
- }
- 
--static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
--					 enum i3c_addr_slot_status status)
-+static enum i3c_addr_slot_status
-+i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
-+{
-+	return i3c_bus_get_addr_slot_status_mask(bus, addr, I3C_ADDR_SLOT_STATUS_MASK);
-+}
++static const struct drm_display_mode mchp_ac69t88a_mode = {
++	.clock = 25000,
++	.hdisplay = 800,
++	.hsync_start = 800 + 88,
++	.hsync_end = 800 + 88 + 5,
++	.htotal = 800 + 88 + 5 + 40,
++	.vdisplay = 480,
++	.vsync_start = 480 + 23,
++	.vsync_end = 480 + 23 + 5,
++	.vtotal = 480 + 23 + 5 + 1,
++};
 +
-+static void i3c_bus_set_addr_slot_status_mask(struct i3c_bus *bus, u16 addr,
-+					      enum i3c_addr_slot_status status, u32 mask)
- {
- 	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
- 	unsigned long *ptr;
-@@ -369,9 +375,14 @@ static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
- 		return;
- 
- 	ptr = bus->addrslots + (bitpos / BITS_PER_LONG);
--	*ptr &= ~((unsigned long)I3C_ADDR_SLOT_STATUS_MASK <<
--						(bitpos % BITS_PER_LONG));
--	*ptr |= (unsigned long)status << (bitpos % BITS_PER_LONG);
-+	*ptr &= ~((unsigned long)mask << (bitpos % BITS_PER_LONG));
-+	*ptr |= ((unsigned long)status & mask) << (bitpos % BITS_PER_LONG);
-+}
++static const struct panel_desc mchp_ac69t88a = {
++	.modes = &mchp_ac69t88a_mode,
++	.num_modes = 1,
++	.bpc = 8,
++	.size = {
++		.width = 108,
++		.height = 65,
++	},
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_JEIDA,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++};
 +
-+static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
-+					 enum i3c_addr_slot_status status)
-+{
-+	i3c_bus_set_addr_slot_status_mask(bus, addr, status, I3C_ADDR_SLOT_STATUS_MASK);
- }
- 
- static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
-@@ -383,13 +394,44 @@ static bool i3c_bus_dev_addr_is_avail(struct i3c_bus *bus, u8 addr)
- 	return status == I3C_ADDR_SLOT_FREE;
- }
- 
-+/*
-+ * ┌────┬─────────────┬───┬─────────┬───┐
-+ * │S/Sr│ 7'h7E RnW=0 │ACK│ ENTDAA  │ T ├────┐
-+ * └────┴─────────────┴───┴─────────┴───┘    │
-+ * ┌─────────────────────────────────────────┘
-+ * │  ┌──┬─────────────┬───┬─────────────────┬────────────────┬───┬─────────┐
-+ * └─►│Sr│7'h7E RnW=1  │ACK│48bit UID BCR DCR│Assign 7bit Addr│PAR│ ACK/NACK│
-+ *    └──┴─────────────┴───┴─────────────────┴────────────────┴───┴─────────┘
-+ * Some master controllers (such as HCI) need to prepare the entire above transaction before
-+ * sending it out to the I3C bus. This means that a 7-bit dynamic address needs to be allocated
-+ * before knowing the target device's UID information.
-+ *
-+ * However, some I3C targets may request specific addresses (called as "init_dyn_addr"), which is
-+ * typically specified by the DT-'s assigned-address property. Lower addresses having higher IBI
-+ * priority. If it is available, i3c_bus_get_free_addr() preferably return a free address that is
-+ * not in the list of desired addresses (called as "init_dyn_addr"). This allows the device with
-+ * the "init_dyn_addr" to switch to its "init_dyn_addr" when it hot-joins the I3C bus. Otherwise,
-+ * if the "init_dyn_addr" is already in use by another I3C device, the target device will not be
-+ * able to switch to its desired address.
-+ *
-+ * If the previous step fails, fallback returning one of the remaining unassigned address,
-+ * regardless of its state in the desired list.
-+ */
- static int i3c_bus_get_free_addr(struct i3c_bus *bus, u8 start_addr)
- {
- 	enum i3c_addr_slot_status status;
- 	u8 addr;
- 
- 	for (addr = start_addr; addr < I3C_MAX_ADDR; addr++) {
--		status = i3c_bus_get_addr_slot_status(bus, addr);
-+		status = i3c_bus_get_addr_slot_status_mask(bus, addr,
-+							   I3C_ADDR_SLOT_EXT_STATUS_MASK);
-+		if (status == I3C_ADDR_SLOT_FREE)
-+			return addr;
-+	}
-+
-+	for (addr = start_addr; addr < I3C_MAX_ADDR; addr++) {
-+		status = i3c_bus_get_addr_slot_status_mask(bus, addr,
-+							   I3C_ADDR_SLOT_STATUS_MASK);
- 		if (status == I3C_ADDR_SLOT_FREE)
- 			return addr;
- 	}
-@@ -1765,9 +1807,10 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
- 			goto err_rstdaa;
- 		}
- 
--		i3c_bus_set_addr_slot_status(&master->bus,
--					     i3cboardinfo->init_dyn_addr,
--					     I3C_ADDR_SLOT_I3C_DEV);
-+		i3c_bus_set_addr_slot_status_mask(&master->bus,
-+						  i3cboardinfo->init_dyn_addr,
-+						  I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_DESIRED,
-+						  I3C_ADDR_SLOT_EXT_STATUS_MASK);
- 
- 		/*
- 		 * Only try to create/attach devices that have a static
-diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-index 06cba906e4e41..ea3781d730064 100644
---- a/include/linux/i3c/master.h
-+++ b/include/linux/i3c/master.h
-@@ -276,7 +276,8 @@ enum i3c_bus_mode {
-  * @I3C_ADDR_SLOT_I2C_DEV: address is assigned to an I2C device
-  * @I3C_ADDR_SLOT_I3C_DEV: address is assigned to an I3C device
-  * @I3C_ADDR_SLOT_STATUS_MASK: address slot mask
-- *
-+ * @I3C_ADDR_SLOT_EXT_DESIRED: the bitmask represents addresses that are preferred by some devices,
-+ *			       such as the "assigned-address" property in a device tree source.
-  * On an I3C bus, addresses are assigned dynamically, and we need to know which
-  * addresses are free to use and which ones are already assigned.
-  *
-@@ -289,9 +290,11 @@ enum i3c_addr_slot_status {
- 	I3C_ADDR_SLOT_I2C_DEV,
- 	I3C_ADDR_SLOT_I3C_DEV,
- 	I3C_ADDR_SLOT_STATUS_MASK = 3,
-+	I3C_ADDR_SLOT_EXT_STATUS_MASK = 7,
-+	I3C_ADDR_SLOT_EXT_DESIRED = BIT(2),
- };
- 
--#define I3C_ADDR_SLOT_STATUS_BITS 2
-+#define I3C_ADDR_SLOT_STATUS_BITS 4
- 
- /**
-  * struct i3c_bus - I3C bus object
+ static const struct drm_display_mode arm_rtsm_mode[] = {
+ 	{
+ 		.clock = 65000,
+@@ -4915,6 +4940,9 @@ static const struct of_device_id platform_of_match[] = {
+ 	}, {
+ 		.compatible = "yes-optoelectronics,ytc700tlag-05-201c",
+ 		.data = &yes_optoelectronics_ytc700tlag_05_201c,
++	}, {
++		.compatible = "microchip,ac69t88a",
++		.data = &mchp_ac69t88a,
+ 	}, {
+ 		/* Must be the last entry */
+ 		.compatible = "panel-dpi",
 -- 
 2.43.0
 
