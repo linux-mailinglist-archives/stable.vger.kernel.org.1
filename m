@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E98F9EF90B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3569EF61A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:22:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 834241777F6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66DF2189FF7E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA3C2210EA;
-	Thu, 12 Dec 2024 17:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418CE217F40;
+	Thu, 12 Dec 2024 17:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSxITUWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6tsipaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8859115696E;
-	Thu, 12 Dec 2024 17:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F314D1487CD;
+	Thu, 12 Dec 2024 17:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025205; cv=none; b=q9P39mBatBdIgwfz6l32N+CvPpOsvfAST9TrRiqrqycc7iuszzvDKOhffLWLbUyTQuLqK7vJM4lqTRZWnVG9A2Rcx5p/Xen3AvXgC2rpPMIePH6y3/G1UJe0prpL1BHgdy6TQXZ+iwF65PIPI3BbdGJilHO6Qu7IQex/KSouu08=
+	t=1734023097; cv=none; b=HDpLS+nn9cMop5IOkneOc/C5GoE3vxYheB8B/WQL+nsSe5O34ugP9O3I/B0xsD9a89U3QQCryDqZ6opN+WRETmWQJo6q/hov9w657K3p84txrjnSZwzSomDfBAEQ2l5LWxg6wsr5xtug3lqRqRm0wgVJS9+47+HkYpUJJ73hH4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025205; c=relaxed/simple;
-	bh=Rz+t02jKp5C7aOIZtrXB5HQE5rkrJf+pdW2nuQG8qWU=;
+	s=arc-20240116; t=1734023097; c=relaxed/simple;
+	bh=eKei7FCmYqXXTGok65qM6gt48Mc9NBwZRXoDAAIWJ5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKiOQ5KmIR6eqzXkqp7ZSdF1f1XxpsFWVSw+vNeIB6FOmANrmejpDGDsYOYvNSeJQAfFVkJZwH95C63Sxql0BFdfM4J/rxt935HICOt/z1KgwTsul+/GgENx3U85pJupw7tvgSNnw/8KInX8ZNneM92oO4R/f2DJddNQnBzuzSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSxITUWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01490C4CED0;
-	Thu, 12 Dec 2024 17:40:04 +0000 (UTC)
+	 MIME-Version; b=rrilzTLWcBCFcCWIP+SeA7QiaCyQbZGEygO04ydXnBXhqBVGabidR3n1waCNo/YRREms3Y6W5u5icBGiRPx+aD2mBizQY3intOhMIknyC8xA8SBnIvncxV1sYj2YhWuQA7n7GEC34m4As2mwadw+MTzKOuJ8OdTJ4qSI6fJjbcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6tsipaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7687DC4CECE;
+	Thu, 12 Dec 2024 17:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025205;
-	bh=Rz+t02jKp5C7aOIZtrXB5HQE5rkrJf+pdW2nuQG8qWU=;
+	s=korg; t=1734023096;
+	bh=eKei7FCmYqXXTGok65qM6gt48Mc9NBwZRXoDAAIWJ5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSxITUWLV2URJHfNUiEMA2EL6Sd7UJx1Q7h/4JbwdlW5rfD3VCvibesCLavPDq1GB
-	 Kru3Ead3NRjq6rGLjWC0vhxz2mLnfRF2EBHxXM+pcFI/74Uq6dd7b1BZ67EQh5tY8f
-	 xjmlBFgdjTXz9dxfc3DOE5ROSWq7Onzq2hha1i9s=
+	b=M6tsipaPQlwaHhg9JYbrQLBZW/w9HCvbViberrZWOSJP8x4ixTpKhF6LUqLrWfC53
+	 2cmj+bJggo+uRbstUGTntscrP3oCkexlHqeXx6Vkwr+vMec4iNBUyngczxBNXiPeVG
+	 2bRnvJUT3nkWPRgDPvnSxY0WI/3I1YvXsxyZyq+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Ning <zhangn1985@outlook.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
+	Ivan Solodovnikov <solodovnikov.ia@phystech.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 092/321] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for TMU device
+Subject: [PATCH 5.15 415/565] dccp: Fix memory leak in dccp_feat_change_recv
 Date: Thu, 12 Dec 2024 16:00:10 +0100
-Message-ID: <20241212144233.623967304@linuxfoundation.org>
+Message-ID: <20241212144328.063139978@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,149 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
 
-[ Upstream commit 9b79d59e6b2b515eb9a22bc469ef7b8f0904fc73 ]
+[ Upstream commit 22be4727a8f898442066bcac34f8a1ad0bc72e14 ]
 
-While design wise the idea of converting the driver to use
-the hierarchy of the IRQ chips is correct, the implementation
-has (inherited) flaws. This was unveiled when platform_get_irq()
-had started WARN() on IRQ 0 that is supposed to be a Linux
-IRQ number (also known as vIRQ).
+If dccp_feat_push_confirm() fails after new value for SP feature was accepted
+without reconciliation ('entry == NULL' branch), memory allocated for that value
+with dccp_feat_clone_sp_val() is never freed.
 
-Rework the driver to respect IRQ domain when creating each MFD
-device separately, as the domain is not the same for all of them.
+Here is the kmemleak stack for this:
 
-Fixes: 957ae5098185 ("platform/x86: Add Whiskey Cove PMIC TMU support")
-Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
-Reported-by: Zhang Ning <zhangn1985@outlook.com>
-Closes: https://lore.kernel.org/r/TY2PR01MB3322FEDCDC048B7D3794F922CDBA2@TY2PR01MB3322.jpnprd01.prod.outlook.com
-Tested-by: Zhang Ning <zhangn1985@outlook.com>
-Acked-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241005193029.1929139-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+unreferenced object 0xffff88801d4ab488 (size 8):
+  comm "syz-executor310", pid 1127, jiffies 4295085598 (age 41.666s)
+  hex dump (first 8 bytes):
+    01 b4 4a 1d 80 88 ff ff                          ..J.....
+  backtrace:
+    [<00000000db7cabfe>] kmemdup+0x23/0x50 mm/util.c:128
+    [<0000000019b38405>] kmemdup include/linux/string.h:465 [inline]
+    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:371 [inline]
+    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:367 [inline]
+    [<0000000019b38405>] dccp_feat_change_recv net/dccp/feat.c:1145 [inline]
+    [<0000000019b38405>] dccp_feat_parse_options+0x1196/0x2180 net/dccp/feat.c:1416
+    [<00000000b1f6d94a>] dccp_parse_options+0xa2a/0x1260 net/dccp/options.c:125
+    [<0000000030d7b621>] dccp_rcv_state_process+0x197/0x13d0 net/dccp/input.c:650
+    [<000000001f74c72e>] dccp_v4_do_rcv+0xf9/0x1a0 net/dccp/ipv4.c:688
+    [<00000000a6c24128>] sk_backlog_rcv include/net/sock.h:1041 [inline]
+    [<00000000a6c24128>] __release_sock+0x139/0x3b0 net/core/sock.c:2570
+    [<00000000cf1f3a53>] release_sock+0x54/0x1b0 net/core/sock.c:3111
+    [<000000008422fa23>] inet_wait_for_connect net/ipv4/af_inet.c:603 [inline]
+    [<000000008422fa23>] __inet_stream_connect+0x5d0/0xf70 net/ipv4/af_inet.c:696
+    [<0000000015b6f64d>] inet_stream_connect+0x53/0xa0 net/ipv4/af_inet.c:735
+    [<0000000010122488>] __sys_connect_file+0x15c/0x1a0 net/socket.c:1865
+    [<00000000b4b70023>] __sys_connect+0x165/0x1a0 net/socket.c:1882
+    [<00000000f4cb3815>] __do_sys_connect net/socket.c:1892 [inline]
+    [<00000000f4cb3815>] __se_sys_connect net/socket.c:1889 [inline]
+    [<00000000f4cb3815>] __x64_sys_connect+0x6e/0xb0 net/socket.c:1889
+    [<00000000e7b1e839>] do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+    [<0000000055e91434>] entry_SYSCALL_64_after_hwframe+0x67/0xd1
+
+Clean up the allocated memory in case of dccp_feat_push_confirm() failure
+and bail out with an error reset code.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: e77b8363b2ea ("dccp: Process incoming Change feature-negotiation options")
+Signed-off-by: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
+Link: https://patch.msgid.link/20241126143902.190853-1-solodovnikov.ia@phystech.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_bxtwc.c     | 31 ++++++++++++++------------
- drivers/platform/x86/intel_bxtwc_tmu.c | 22 +++++-------------
- 2 files changed, 23 insertions(+), 30 deletions(-)
+ net/dccp/feat.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
-index 9b5edc1b47d89..ba441fd9c4ed4 100644
---- a/drivers/mfd/intel_soc_pmic_bxtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
-@@ -241,12 +241,6 @@ static struct mfd_cell bxt_wc_dev[] = {
- 		.num_resources = ARRAY_SIZE(bcu_resources),
- 		.resources = bcu_resources,
- 	},
--	{
--		.name = "bxt_wcove_tmu",
--		.num_resources = ARRAY_SIZE(tmu_resources),
--		.resources = tmu_resources,
--	},
--
- 	{
- 		.name = "bxt_wcove_gpio",
- 		.num_resources = ARRAY_SIZE(gpio_resources),
-@@ -257,6 +251,14 @@ static struct mfd_cell bxt_wc_dev[] = {
- 	},
- };
+diff --git a/net/dccp/feat.c b/net/dccp/feat.c
+index 54086bb05c42c..f7554dcdaaba9 100644
+--- a/net/dccp/feat.c
++++ b/net/dccp/feat.c
+@@ -1166,8 +1166,12 @@ static u8 dccp_feat_change_recv(struct list_head *fn, u8 is_mandatory, u8 opt,
+ 			goto not_valid_or_not_known;
+ 		}
  
-+static const struct mfd_cell bxt_wc_tmu_dev[] = {
-+	{
-+		.name = "bxt_wcove_tmu",
-+		.num_resources = ARRAY_SIZE(tmu_resources),
-+		.resources = tmu_resources,
-+	},
-+};
-+
- static struct mfd_cell bxt_wc_chgr_dev[] = {
- 	{
- 		.name = "bxt_wcove_usbc",
-@@ -485,6 +487,15 @@ static int bxtwc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add IRQ chip\n");
+-		return dccp_feat_push_confirm(fn, feat, local, &fval);
++		if (dccp_feat_push_confirm(fn, feat, local, &fval)) {
++			kfree(fval.sp.vec);
++			return DCCP_RESET_CODE_TOO_BUSY;
++		}
  
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_tmu_dev, ARRAY_SIZE(bxt_wc_tmu_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_TMU_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_tmu,
-+					&pmic->irq_chip_data_tmu);
-+	if (ret)
-+		return ret;
-+
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
- 					 BXTWC_PWRBTN_LVL1_IRQ,
- 					 IRQF_ONESHOT,
-@@ -493,14 +504,6 @@ static int bxtwc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
- 
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_TMU_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_tmu,
--					 &pmic->irq_chip_data_tmu);
--	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add TMU IRQ chip\n");
--
- 	/* Add chained IRQ handler for BCU IRQs */
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
- 					 BXTWC_BCU_LVL1_IRQ,
-diff --git a/drivers/platform/x86/intel_bxtwc_tmu.c b/drivers/platform/x86/intel_bxtwc_tmu.c
-index 7ccf583649e6b..3c9778366d930 100644
---- a/drivers/platform/x86/intel_bxtwc_tmu.c
-+++ b/drivers/platform/x86/intel_bxtwc_tmu.c
-@@ -48,9 +48,8 @@ static irqreturn_t bxt_wcove_tmu_irq_handler(int irq, void *data)
- static int bxt_wcove_tmu_probe(struct platform_device *pdev)
- {
- 	struct intel_soc_pmic *pmic = dev_get_drvdata(pdev->dev.parent);
--	struct regmap_irq_chip_data *regmap_irq_chip;
- 	struct wcove_tmu *wctmu;
--	int ret, virq, irq;
-+	int ret;
- 
- 	wctmu = devm_kzalloc(&pdev->dev, sizeof(*wctmu), GFP_KERNEL);
- 	if (!wctmu)
-@@ -59,27 +58,18 @@ static int bxt_wcove_tmu_probe(struct platform_device *pdev)
- 	wctmu->dev = &pdev->dev;
- 	wctmu->regmap = pmic->regmap;
- 
--	irq = platform_get_irq(pdev, 0);
--	if (irq < 0)
--		return irq;
-+	wctmu->irq = platform_get_irq(pdev, 0);
-+	if (wctmu->irq < 0)
-+		return wctmu->irq;
- 
--	regmap_irq_chip = pmic->irq_chip_data_tmu;
--	virq = regmap_irq_get_virq(regmap_irq_chip, irq);
--	if (virq < 0) {
--		dev_err(&pdev->dev,
--			"failed to get virtual interrupt=%d\n", irq);
--		return virq;
--	}
--
--	ret = devm_request_threaded_irq(&pdev->dev, virq,
-+	ret = devm_request_threaded_irq(&pdev->dev, wctmu->irq,
- 					NULL, bxt_wcove_tmu_irq_handler,
- 					IRQF_ONESHOT, "bxt_wcove_tmu", wctmu);
- 	if (ret) {
- 		dev_err(&pdev->dev, "request irq failed: %d,virq: %d\n",
--							ret, virq);
-+			ret, wctmu->irq);
- 		return ret;
++		return 0;
+ 	} else if (entry->state == FEAT_UNSTABLE) {	/* 6.6.2 */
+ 		return 0;
  	}
--	wctmu->irq = virq;
- 
- 	/* Unmask TMU second level Wake & System alarm */
- 	regmap_update_bits(wctmu->regmap, BXTWC_MTMUIRQ_REG,
 -- 
 2.43.0
 
