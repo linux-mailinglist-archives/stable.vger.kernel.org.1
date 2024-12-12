@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-101257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309B69EEB99
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0519EF2D0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7945165341
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C3731895658
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E252153F4;
-	Thu, 12 Dec 2024 15:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FAF22967C;
+	Thu, 12 Dec 2024 16:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWBVsDfV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbcKgBUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BBB2AF0E;
-	Thu, 12 Dec 2024 15:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DDB20969B;
+	Thu, 12 Dec 2024 16:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016919; cv=none; b=LtZDjUiG6hMn4uuCuWhWa6rGi0c6G/h3IBvM7f5YjXjjuUyAWFFmDZLzfy1cikKSiD3Rgq/OKHcf/5oVn5vzjoMEPK3xj/UCUv3LMaFwV3rxauvr9U+k14KVZzgpyEmdT8E5n5vHOcR+90aWXkL/qAPEWH8eokvtJTYY7Eg0tAA=
+	t=1734020886; cv=none; b=By2AY+eCHbuPPKhLbiBMH3Lpnh5twuYWUs+mnThYeeT/oIxajI+/O0TG1VmsqhIEyOKyljLUonL0uOABiJ+CpkcdCu3JPycoUd7LWv4oKze8d+vjYnUOQWrscJ0ShfzHu0WFLQDN7AOJnAdVHrf2jy7rZD89BfVdY6h5Xzvbu0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016919; c=relaxed/simple;
-	bh=HvgtWt0/fWNGVls/UH57ptukWEgh5aKiocRrWKhvcgM=;
+	s=arc-20240116; t=1734020886; c=relaxed/simple;
+	bh=QhXZg64Ig6KJmSZGcupjzC7icSlf6aYOcXjcFjf6wug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/UkKxXlfegKjpTxphtFSXhrcKsdgHW+y5ciS/wUdeOJSsGjBVRAACeliinCi3BCpKZVCHsiaApxTQ4Y4o69qv25snHhG+LMmerkaDSEGMHK+yb/zzFM0MwPZnzLqeDCQxeHjFJ2/OrcPpRgOxLutsy1P2tVob0Lqq0yeWTYWfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWBVsDfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C20C4CECE;
-	Thu, 12 Dec 2024 15:21:58 +0000 (UTC)
+	 MIME-Version; b=UxnGRG6zhp1lmm23sJW3neUGsFiSbWIYeKP9Bd27RYGU6Jyuc+j0hj9j2p4oFEtyLrQ6T3fazqClbxgLWkj8sGp2D6nGxLmd9blQXN0s0q0SBbqbqb+eeUadZKVhB3VEgUE5NeqjexoHrzK7sdHbvo74C/s7QlaceSMvfLH8ApE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbcKgBUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A920C4CECE;
+	Thu, 12 Dec 2024 16:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016918;
-	bh=HvgtWt0/fWNGVls/UH57ptukWEgh5aKiocRrWKhvcgM=;
+	s=korg; t=1734020886;
+	bh=QhXZg64Ig6KJmSZGcupjzC7icSlf6aYOcXjcFjf6wug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWBVsDfVhCotj+1yveoWrNhlVP64247L7wF9cJpQOiK/Una3OWwlzDgHB7BR/p/1d
-	 4304Sjily8WeoE+mwWmE5/11zHbwsbQc5JvFFdihE65tUIxaTSfNXmL0/9mWbe4gEV
-	 poTQg/5tJkvfzPXyXYBk9aoKXHa/avcCHLMM9V2k=
+	b=ZbcKgBUxSfNWu8du2OJKnLWCoA2ZUdEmyn5C0YJ9B5vNbUJkNYUUHrQbyjkWY6M7a
+	 jBMsZN3ImILlydQwfuePz7f5eIdEPzg9fcrMLqrklcPTJT6mRxweHXI5JFrPM4JDw+
+	 CFVrfLhXtSOnrT95flS75WcjGQ1mvJaKSMT4PYWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abaci Robot <abaci@linux.alibaba.com>,
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 333/466] wifi: ipw2x00: libipw_rx_any(): fix bad alignment
+Subject: [PATCH 6.1 557/772] powerpc/vdso: Remove unused -s flag from ASFLAGS
 Date: Thu, 12 Dec 2024 15:58:22 +0100
-Message-ID: <20241212144319.942657527@linuxfoundation.org>
+Message-ID: <20241212144412.982712495@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +67,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 4fa4f049dc0d9741b16c96bcbf0108c85368a2b9 ]
+[ Upstream commit 024734d132846dcb27f07deb1ec5be64d4cbfae9 ]
 
-This patch fixes incorrect code alignment.
+When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
+warns:
 
-./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:871:2-3: code aligned with following code on line 882.
-./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:886:2-3: code aligned with following code on line 900.
+  clang-16: error: argument unused during compilation: '-s' [-Werror,-Wunused-command-line-argument]
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11381
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241101060725.54640-1-jiapeng.chong@linux.alibaba.com
+The compiler's '-s' flag is a linking option (it is passed along to the
+linker directly), which means it does nothing when the linker is not
+invoked by the compiler. The kernel builds all .o files with '-c', which
+stops the compilation pipeline before linking, so '-s' can be safely
+dropped from ASFLAGS.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: d677ce521334 ("powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/vdso/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-index 48d6870bbf4e2..9a97ab9b89ae8 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-@@ -870,8 +870,8 @@ void libipw_rx_any(struct libipw_device *ieee,
- 	switch (ieee->iw_mode) {
- 	case IW_MODE_ADHOC:
- 		/* our BSS and not from/to DS */
--		if (ether_addr_equal(hdr->addr3, ieee->bssid))
--		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == 0) {
-+		if (ether_addr_equal(hdr->addr3, ieee->bssid) &&
-+		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0)) {
- 			/* promisc: get all */
- 			if (ieee->dev->flags & IFF_PROMISC)
- 				is_packet_for_us = 1;
-@@ -885,8 +885,8 @@ void libipw_rx_any(struct libipw_device *ieee,
- 		break;
- 	case IW_MODE_INFRA:
- 		/* our BSS (== from our AP) and from DS */
--		if (ether_addr_equal(hdr->addr2, ieee->bssid))
--		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS) {
-+		if (ether_addr_equal(hdr->addr2, ieee->bssid) &&
-+		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS)) {
- 			/* promisc: get all */
- 			if (ieee->dev->flags & IFF_PROMISC)
- 				is_packet_for_us = 1;
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index 6a977b0d8ffc3..45c0cc5d34b64 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -51,10 +51,10 @@ ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
+ ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
+ 
+ CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
+-AS32FLAGS := -D__VDSO32__ -s
++AS32FLAGS := -D__VDSO32__
+ 
+ CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
+-AS64FLAGS := -D__VDSO64__ -s
++AS64FLAGS := -D__VDSO64__
+ 
+ targets += vdso32.lds
+ CPPFLAGS_vdso32.lds += -P -C -Upowerpc
 -- 
 2.43.0
 
