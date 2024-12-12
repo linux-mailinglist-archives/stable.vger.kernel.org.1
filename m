@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-103332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F939EF702
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2289EF571
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E5A117D87A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B2911765E5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6435215764;
-	Thu, 12 Dec 2024 17:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56857217664;
+	Thu, 12 Dec 2024 17:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOuGuSvC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNhouiAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E84A21660C;
-	Thu, 12 Dec 2024 17:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C29223326;
+	Thu, 12 Dec 2024 17:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024247; cv=none; b=dOMTnQOAbRRGW6vyuhIKDmD1oL4y0alIpLBUBboIECAuv4jacDfL5VKfv+4IpmnPwZZs0p8bnannQIAmc8HnLIQwc5JZJhVDjvqaWoPYIkKYHo5/KgK7OpN73t75x4acWZ1YkyJJBemBK9D/FE7CthhmiruVp1bzF0wcEpQbqHQ=
+	t=1734022882; cv=none; b=U4qcMCVFSEepYslRdI5APT0JkSqO6attWMNdPWeQZU+T2lweWHw6J7VkVzwwYPa3FRAfIEviUctxE31pLHD2TtZEsQFmT3Rw7f+c4YtU37B6kr9ATiEea/L1xt6PZUx5SSh19veB6pcOn02H1jqs9g+a7Ilrt6PDjLgrnVEPgW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024247; c=relaxed/simple;
-	bh=Q/CCbxaNPCW+72Uxq1Dkc9TlsoxS3EeKa9j7qeFaSqM=;
+	s=arc-20240116; t=1734022882; c=relaxed/simple;
+	bh=9dwRpKNZzeU8bP53oaQ8l9iAeAWZCr78a48qaLPtSvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Idwz2M+e6aZZ6tYI6E97s9KuNZJneRNzUDzGF2MF7RRB5wJD0P2ckEfNyF+oehOCxWCNge7wQEw1fsKaTlDSg5nrhZt5Nhtno5FNztWtgj+GO7+ys8so7iZPmhGfWCoFEkob5UQ9bANVtKG8Ih4PN2RKNpQsgM+EQFT2Qx7ZNxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOuGuSvC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91AFC4CECE;
-	Thu, 12 Dec 2024 17:24:06 +0000 (UTC)
+	 MIME-Version; b=ZXA7EtwVQJywR7n1D6lErJaPXj14l5KJYHJH0C03VoKIxdPwfoAobRlxQkb4yx+VlXQw0+fjbmIJ+aVk6oYQQu8uvKqQg+wKcdPP9AcjIirWhPimi7jmFYqpCu1NQIuD7Us8p5yizPMoIYfteyH3rQ0eBzJ3Gt8nEOF4Rw4Dljc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNhouiAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3ECC4CECE;
+	Thu, 12 Dec 2024 17:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024247;
-	bh=Q/CCbxaNPCW+72Uxq1Dkc9TlsoxS3EeKa9j7qeFaSqM=;
+	s=korg; t=1734022881;
+	bh=9dwRpKNZzeU8bP53oaQ8l9iAeAWZCr78a48qaLPtSvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOuGuSvCQmAk9PLJx55/Xl8WDA90nNrNgdePSt5JxNZn8FQcY+qW2z8jzb4/e/UEw
-	 FnqKCdAqJHQEnxmBh6H8FSXFSpcGmvDi9LRNva89XfAejtm2lPtWVcYU+8mKRut+Vx
-	 kBmKvQN/3N+3UVdq1eVrsq2zQ9xhnaJcJdBkB41c=
+	b=TNhouiAxaTE/5MjQfxZ8YHxWrlby3+ZTlyuZdtFtqEVnyQIfIE4ZKDxv04U+RtvnJ
+	 nW7e0rDoHIqm/Ju4nF7eE6jenG9Z4KpaYggYQGRmxonTeD4Uw8IpwC6HkV7Bz0TAW4
+	 jHp+4WPJmQZkxsj581E7twAyuNsVzPSQTWtdhSVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Eric Sandeen <sandeen@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org,
+	Yongliang Gao <leonylgao@tencent.com>,
+	Jingqun Li <jingqunli@tencent.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 216/459] fs_parser: update mount_api doc to match function signature
-Date: Thu, 12 Dec 2024 15:59:14 +0100
-Message-ID: <20241212144302.100609505@linuxfoundation.org>
+Subject: [PATCH 5.15 360/565] rtc: check if __rtc_read_time was successful in rtc_timer_do_work()
+Date: Thu, 12 Dec 2024 15:59:15 +0100
+Message-ID: <20241212144325.842764285@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,47 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Yongliang Gao <leonylgao@tencent.com>
 
-[ Upstream commit c66f759832a83cb273ba5a55c66dcc99384efa74 ]
+[ Upstream commit e8ba8a2bc4f60a1065f23d6a0e7cbea945a0f40d ]
 
-Add the missing 'name' parameter to the mount_api documentation for
-fs_validate_description().
+If the __rtc_read_time call fails,, the struct rtc_time tm; may contain
+uninitialized data, or an illegal date/time read from the RTC hardware.
 
-Fixes: 96cafb9ccb15 ("fs_parser: remove fs_parameter_description name field")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20241125215021.231758-1-rdunlap@infradead.org
-Cc: Eric Sandeen <sandeen@redhat.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+When calling rtc_tm_to_ktime later, the result may be a very large value
+(possibly KTIME_MAX). If there are periodic timers in rtc->timerqueue,
+they will continually expire, may causing kernel softlockup.
+
+Fixes: 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
+Signed-off-by: Yongliang Gao <leonylgao@tencent.com>
+Acked-by: Jingqun Li <jingqunli@tencent.com>
+Link: https://lore.kernel.org/r/20241011043153.3788112-1-leonylgao@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/filesystems/mount_api.rst | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/rtc/interface.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/filesystems/mount_api.rst b/Documentation/filesystems/mount_api.rst
-index d7f53d62b5bb2..8fb03f57546d1 100644
---- a/Documentation/filesystems/mount_api.rst
-+++ b/Documentation/filesystems/mount_api.rst
-@@ -778,7 +778,8 @@ process the parameters it is given.
+diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+index 29c12947e73fc..7c62b13077627 100644
+--- a/drivers/rtc/interface.c
++++ b/drivers/rtc/interface.c
+@@ -893,13 +893,18 @@ void rtc_timer_do_work(struct work_struct *work)
+ 	struct timerqueue_node *next;
+ 	ktime_t now;
+ 	struct rtc_time tm;
++	int err;
  
-    * ::
+ 	struct rtc_device *rtc =
+ 		container_of(work, struct rtc_device, irqwork);
  
--       bool fs_validate_description(const struct fs_parameter_description *desc);
-+       bool fs_validate_description(const char *name,
-+                                    const struct fs_parameter_description *desc);
- 
-      This performs some validation checks on a parameter description.  It
-      returns true if the description is good and false if it is not.  It will
+ 	mutex_lock(&rtc->ops_lock);
+ again:
+-	__rtc_read_time(rtc, &tm);
++	err = __rtc_read_time(rtc, &tm);
++	if (err) {
++		mutex_unlock(&rtc->ops_lock);
++		return;
++	}
+ 	now = rtc_tm_to_ktime(tm);
+ 	while ((next = timerqueue_getnext(&rtc->timerqueue))) {
+ 		if (next->expires > now)
 -- 
 2.43.0
 
