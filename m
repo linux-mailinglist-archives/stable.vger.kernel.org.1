@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B8D9EEDAF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735C29EF18B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C15AA16D7CA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2574A28F25A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36213222D66;
-	Thu, 12 Dec 2024 15:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC0F22E3F3;
+	Thu, 12 Dec 2024 16:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJOpN+c3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dahr8e0z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF10B4F218;
-	Thu, 12 Dec 2024 15:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B584223E6C;
+	Thu, 12 Dec 2024 16:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018257; cv=none; b=WAU7h1roG9pdBk/2Lne3E1x8GL0bCnkvELsfLDhJwatxg49PPicQSNZsxn3sBHZyt2YTv76nN6cdKjvXfjSuIVs5CVasZSYd0l0UEmEivrK3mp31kvT1iSaIicxoqcePYyYhn5zGhAtvW80yMr+Bzg4DThMpKbtIS/6g6l3VOag=
+	t=1734020926; cv=none; b=QXS85NBFTlRzVAS7qB1DKV1SzDvnfV42KgNGnrI9jNhjZUauj6/4de/Qvaa1Cg6nYLO9ZKIMp5jijoTg6YGA18d5e8mSn+s3loRMPE0ZKMoReETZce9WmV/DAGF+9xm/h64K2Y6ohqbrCnWKaiErXDaay6KNUPWt8KLGj6MmZSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018257; c=relaxed/simple;
-	bh=kV9G2O1n4OMMtzYZghh+nIYNxXIackMO+zu9pcHA24k=;
+	s=arc-20240116; t=1734020926; c=relaxed/simple;
+	bh=gBaXZs/F6GlsCG3bLIcSAxGatxz5oM3/UcHrDSJdkGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Op+w9srd9V7VKN03MRkYPflcx53BVQsY3kU0BeqS6qIZz10V8atwtdBWcs7jP0vGu+fvQH9IoG/ZseAoamGKM6DafndXKEhrfgJDku8pg/g0Edc087xfuBn91wy/v62FSFFreJKKqIogb7YmjcUkViXn1MMaZevu8gkMMWZmVNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJOpN+c3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10937C4CECE;
-	Thu, 12 Dec 2024 15:44:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A1eN7alrvBsacCVOhVl/xJwhFYI1ygA2qaLnYKjBCv1IirM8Bm3m9eiNpjXcB09yL3v8oISKDIx2PuASBm86n9v5DJpVg5vNjTIX7qzThiye4EjD3POh6AElTPl4jLxjfd+EmQ0cRJfaGG2wKCM5obe7kdhqVGh4fcqFEelr7rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dahr8e0z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0599C4CED0;
+	Thu, 12 Dec 2024 16:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018256;
-	bh=kV9G2O1n4OMMtzYZghh+nIYNxXIackMO+zu9pcHA24k=;
+	s=korg; t=1734020926;
+	bh=gBaXZs/F6GlsCG3bLIcSAxGatxz5oM3/UcHrDSJdkGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJOpN+c3kF6Fxd69A2rGANlOLpprvmj9uWp+XHXTUyFjAMzMWUKZSXsrVe9TyWp2x
-	 Gcv9UPfzYwaH4BQV5SjkgNhyDbmIV6wxDP/rDrzVk6iU/RJYZ+ZhrUa6haEjYFdZmO
-	 uk4vPuny/7C1PuVNk5jQwScnKsAdQpPiZ8E+2Alw=
+	b=Dahr8e0zVileP4u90rC17P7KiVrh/FTEMA0C2+VT0/XLzfr5tGHHbAd8zbml0QI+A
+	 VQ1aYBUXMti5IAx01/lArGCRPsi+SiH5JZf3mDz8FmBWOUbIZHCa7AisgwF13y2+KN
+	 BESO3433yS2sedu0zT3gDLwHY4XeKnAICvxeCUdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/356] Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()
-Date: Thu, 12 Dec 2024 15:59:04 +0100
-Message-ID: <20241212144253.510815303@linuxfoundation.org>
+Subject: [PATCH 6.1 600/772] bpf: Handle in-place update for full LPM trie correctly
+Date: Thu, 12 Dec 2024 15:59:05 +0100
+Message-ID: <20241212144414.720781961@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 7c4f78cdb8e7501e9f92d291a7d956591bf73be9 ]
+[ Upstream commit 532d6b36b2bfac5514426a97a4df8d103d700d43 ]
 
-bt_sock_alloc() allocates the sk object and attaches it to the provided
-sock object. On error l2cap_sock_alloc() frees the sk object, but the
-dangling pointer is still attached to the sock object, which may create
-use-after-free in other code.
+When a LPM trie is full, in-place updates of existing elements
+incorrectly return -ENOSPC.
 
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-3-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by deferring the check of trie->n_entries. For new insertions,
+n_entries must not exceed max_entries. However, in-place updates are
+allowed even when the trie is full.
+
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20241206110622.1161752-5-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/lpm_trie.c | 44 +++++++++++++++++++++----------------------
+ 1 file changed, 21 insertions(+), 23 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index f04ce84267988..379ca86c41cd5 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1885,6 +1885,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
- 	chan = l2cap_chan_create();
- 	if (!chan) {
- 		sk_free(sk);
-+		sock->sk = NULL;
- 		return NULL;
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 694fbf9891f4f..c5fa2a74de771 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -302,6 +302,16 @@ static struct lpm_trie_node *lpm_trie_node_alloc(const struct lpm_trie *trie,
+ 	return node;
+ }
+ 
++static int trie_check_add_elem(struct lpm_trie *trie, u64 flags)
++{
++	if (flags == BPF_EXIST)
++		return -ENOENT;
++	if (trie->n_entries == trie->map.max_entries)
++		return -ENOSPC;
++	trie->n_entries++;
++	return 0;
++}
++
+ /* Called from syscall or from eBPF program */
+ static int trie_update_elem(struct bpf_map *map,
+ 			    void *_key, void *value, u64 flags)
+@@ -325,20 +335,12 @@ static int trie_update_elem(struct bpf_map *map,
+ 	spin_lock_irqsave(&trie->lock, irq_flags);
+ 
+ 	/* Allocate and fill a new node */
+-
+-	if (trie->n_entries == trie->map.max_entries) {
+-		ret = -ENOSPC;
+-		goto out;
+-	}
+-
+ 	new_node = lpm_trie_node_alloc(trie, value);
+ 	if (!new_node) {
+ 		ret = -ENOMEM;
+ 		goto out;
  	}
+ 
+-	trie->n_entries++;
+-
+ 	new_node->prefixlen = key->prefixlen;
+ 	RCU_INIT_POINTER(new_node->child[0], NULL);
+ 	RCU_INIT_POINTER(new_node->child[1], NULL);
+@@ -368,10 +370,10 @@ static int trie_update_elem(struct bpf_map *map,
+ 	 * simply assign the @new_node to that slot and be done.
+ 	 */
+ 	if (!node) {
+-		if (flags == BPF_EXIST) {
+-			ret = -ENOENT;
++		ret = trie_check_add_elem(trie, flags);
++		if (ret)
+ 			goto out;
+-		}
++
+ 		rcu_assign_pointer(*slot, new_node);
+ 		goto out;
+ 	}
+@@ -385,10 +387,10 @@ static int trie_update_elem(struct bpf_map *map,
+ 				ret = -EEXIST;
+ 				goto out;
+ 			}
+-			trie->n_entries--;
+-		} else if (flags == BPF_EXIST) {
+-			ret = -ENOENT;
+-			goto out;
++		} else {
++			ret = trie_check_add_elem(trie, flags);
++			if (ret)
++				goto out;
+ 		}
+ 
+ 		new_node->child[0] = node->child[0];
+@@ -400,10 +402,9 @@ static int trie_update_elem(struct bpf_map *map,
+ 		goto out;
+ 	}
+ 
+-	if (flags == BPF_EXIST) {
+-		ret = -ENOENT;
++	ret = trie_check_add_elem(trie, flags);
++	if (ret)
+ 		goto out;
+-	}
+ 
+ 	/* If the new node matches the prefix completely, it must be inserted
+ 	 * as an ancestor. Simply insert it between @node and *@slot.
+@@ -417,6 +418,7 @@ static int trie_update_elem(struct bpf_map *map,
+ 
+ 	im_node = lpm_trie_node_alloc(trie, NULL);
+ 	if (!im_node) {
++		trie->n_entries--;
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -438,12 +440,8 @@ static int trie_update_elem(struct bpf_map *map,
+ 	rcu_assign_pointer(*slot, im_node);
+ 
+ out:
+-	if (ret) {
+-		if (new_node)
+-			trie->n_entries--;
++	if (ret)
+ 		kfree(new_node);
+-	}
+-
+ 	spin_unlock_irqrestore(&trie->lock, irq_flags);
+ 	kfree_rcu(free_node, rcu);
  
 -- 
 2.43.0
