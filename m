@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE4F9EF10A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DAA9EEA84
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4E5189DBAC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 440A7280AAB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8638B22FE0A;
-	Thu, 12 Dec 2024 16:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC073217F5D;
+	Thu, 12 Dec 2024 15:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QY6AeevB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcknDqUQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43097222D77;
-	Thu, 12 Dec 2024 16:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6995C217F40;
+	Thu, 12 Dec 2024 15:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020329; cv=none; b=cHAQ6Iy+bc/jFetEjGwrjkrS5HbXMb25ribn02u1svEbi/XJz8il1O03d8gsX148xXaXnt2+k7/bAVcGfbXTxvUjv3nn5qODSQ0v1DW/8eaXaa7JTdPLXSA3vcNJCjRCAJOjNiMCn/QgvomcSTHm0Wwd62p+Pw4YO5OIthIzVGk=
+	t=1734016498; cv=none; b=O7/iC5BdMUVpasLSU8HTquYlpNyyqC+fSghSUhaiI+qe+2iDsgWXYdmCf3SepGZoPt4S9StBRiFq/d4b/j3L46/36MQP+WvbThvX53GK7bEAA/ffugMSF1TBN+EfIX9n6MTZKgppxEL7cEMeqRpsTFp/boa6tvS2d//obAAVOF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020329; c=relaxed/simple;
-	bh=JN/TtIt4BpF3276YdcUtce1oIQ1MH5JvAqZa9EIgewQ=;
+	s=arc-20240116; t=1734016498; c=relaxed/simple;
+	bh=BiFtqM/2WTQJcPS42EB4AirtF5iYysIgdwpk4OVNhn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2i3xt4RS+D3a8igxFLm7fAWQaka/DOt0m9RM7NJST/oZZ4VYfjTwfm45H5MzyzOvMJZtTGSy8VVKPf6VWRIDRWMev+ZQezQYwqkZA1KJYj5H63PtlKBdoPkvKPyIPK6HpN3s8zuBRP14Y/zHpOG9Rc0KSzivf5gV0J4Ed5MJsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QY6AeevB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A090C4CED0;
-	Thu, 12 Dec 2024 16:18:47 +0000 (UTC)
+	 MIME-Version; b=MhWUll4GoQWQ51VmGXy2dIIsShdvx2Whvn3TGG6vbJjA5laDVA5NIkPIVBzbPmyH9n74LgVbsJxVXuId5gm1PUMsBOUo7FmOIELZJoXadmT+HTVzoY/p1XRyw/IhiwnRMrGI2kvwEyo14H8qsRA7djKH/SF+CULeBq2+eKurFn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcknDqUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8EAC4CEDF;
+	Thu, 12 Dec 2024 15:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020328;
-	bh=JN/TtIt4BpF3276YdcUtce1oIQ1MH5JvAqZa9EIgewQ=;
+	s=korg; t=1734016498;
+	bh=BiFtqM/2WTQJcPS42EB4AirtF5iYysIgdwpk4OVNhn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QY6AeevBC19Xot4c0JX+Z5YH7f/89XGvtyTY+51rGCW5Pt3/CvYd+rIzTCdkzQHWJ
-	 07HnlNIxEx7+HIhhXXbo3jCfXuskvYuXfa7pmVGOdQG0ZGMDg1kmJerTk6zSO5yD2e
-	 FW7bGxeehYhfD7e+auiUFKYgN+PltPLmm+XUm6AE=
+	b=bcknDqUQfYLXZXNnuveW8hDadE71G3nAI5g0Iu93Ax8un/PjBu4fFza1cRcoZXvpp
+	 xl899t/3pOudn6/eHSZlTviZvWlXvztkANHLGftkg+BT5bupFcdLTlX9C6VH77RS5C
+	 LWHJkdLlfXXNLH/XnDDjkZfB2BDsNJ52vZaO9zyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jan Kara <jack@suse.cz>,
+	syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 439/772] block: return unsigned int from bdev_io_min
+Subject: [PATCH 6.12 215/466] epoll: annotate racy check
 Date: Thu, 12 Dec 2024 15:56:24 +0100
-Message-ID: <20241212144408.066759589@linuxfoundation.org>
+Message-ID: <20241212144315.283393122@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 46fd48ab3ea3eb3bb215684bd66ea3d260b091a9 ]
+[ Upstream commit 6474353a5e3d0b2cf610153cea0c61f576a36d0a ]
 
-The underlying limit is defined as an unsigned int, so return that from
-bdev_io_min as well.
+Epoll relies on a racy fastpath check during __fput() in
+eventpoll_release() to avoid the hit of pointlessly acquiring a
+semaphore. Annotate that race by using WRITE_ONCE() and READ_ONCE().
 
-Fixes: ac481c20ef8f ("block: Topology ioctls")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241119072602.1059488-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/66edfb3c.050a0220.3195df.001a.GAE@google.com
+Link: https://lore.kernel.org/r/20240925-fungieren-anbauen-79b334b00542@brauner
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reported-by: syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/eventpoll.c            | 6 ++++--
+ include/linux/eventpoll.h | 2 +-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index f77e8785802e2..de013fc37ef83 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1201,7 +1201,7 @@ static inline unsigned int queue_io_min(const struct request_queue *q)
- 	return q->limits.io_min;
- }
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 1ae4542f0bd88..90fbab6b6f036 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -823,7 +823,8 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+ 	to_free = NULL;
+ 	head = file->f_ep;
+ 	if (head->first == &epi->fllink && !epi->fllink.next) {
+-		file->f_ep = NULL;
++		/* See eventpoll_release() for details. */
++		WRITE_ONCE(file->f_ep, NULL);
+ 		if (!is_file_epoll(file)) {
+ 			struct epitems_head *v;
+ 			v = container_of(head, struct epitems_head, epitems);
+@@ -1603,7 +1604,8 @@ static int attach_epitem(struct file *file, struct epitem *epi)
+ 			spin_unlock(&file->f_lock);
+ 			goto allocate;
+ 		}
+-		file->f_ep = head;
++		/* See eventpoll_release() for details. */
++		WRITE_ONCE(file->f_ep, head);
+ 		to_free = NULL;
+ 	}
+ 	hlist_add_head_rcu(&epi->fllink, file->f_ep);
+diff --git a/include/linux/eventpoll.h b/include/linux/eventpoll.h
+index 3337745d81bd6..0c0d00fcd131f 100644
+--- a/include/linux/eventpoll.h
++++ b/include/linux/eventpoll.h
+@@ -42,7 +42,7 @@ static inline void eventpoll_release(struct file *file)
+ 	 * because the file in on the way to be removed and nobody ( but
+ 	 * eventpoll ) has still a reference to this file.
+ 	 */
+-	if (likely(!file->f_ep))
++	if (likely(!READ_ONCE(file->f_ep)))
+ 		return;
  
--static inline int bdev_io_min(struct block_device *bdev)
-+static inline unsigned int bdev_io_min(struct block_device *bdev)
- {
- 	return queue_io_min(bdev_get_queue(bdev));
- }
+ 	/*
 -- 
 2.43.0
 
