@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-103375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A668E9EF796
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 602309EF58D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37ADD1890FE3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF03918963DE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CB421660C;
-	Thu, 12 Dec 2024 17:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FD1223C6F;
+	Thu, 12 Dec 2024 17:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxseBijx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOYJiBHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDBE211493;
-	Thu, 12 Dec 2024 17:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37285223C62;
+	Thu, 12 Dec 2024 17:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024378; cv=none; b=EOH8HAGuYDQ5rdYsicF/E/SViAVyHct+eEGgBOlUu/VzwtJ7trv250Gml5rw2kX+ItiV08cxbaRgTFKiLYOCt8Qr+iFTCnTKFgvFpTn93z6pmcjihx4afVQK08LfQNzuvYFuHZeqxLdhnonavpba92xk0qn3rjmSgSE6q8T/FG8=
+	t=1734023183; cv=none; b=Z+J3Ck75bqNS2mRv8eurwq7keOrrO2PATsQ4t0AxwrvlobKcnOnmqpz3zViNZ4o6kL5FyLpe7gFW7NPNfH4mKsna0qMn6KAN8APa3zZ4JXxPDHfracLDzsfmmme/IYoAFyMZeaPxBGcc9lSUg6QosgRRmySap2P2FzbfB6YR8A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024378; c=relaxed/simple;
-	bh=BtoeXyAJpfaKLStH7DWEL7dphnABrvDdi61ScStBvh0=;
+	s=arc-20240116; t=1734023183; c=relaxed/simple;
+	bh=pqPNmIN8NJciJ08ByRKcSixNI5NeJ4fbQ7iFh09RAy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQF0tqFHVDFyMn5oZWzaUu9EsDRcNXbp4OLhoNgirLnpHBa2loYbhuG5OAkkrLFR9hc7kFAUFCAoB8XKiTscaLHBj4DYzOUUfiGAZvVafcAbhx94Eyfso/O8HCLRS9lS0KcqJhRLOD/S3Yr/5QSgOeQToXpfIBnVpZHZvalpsoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxseBijx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437D8C4CED4;
-	Thu, 12 Dec 2024 17:26:18 +0000 (UTC)
+	 MIME-Version; b=WL+DsmLfTk409ycQxKLsckEAhpJMp8V8ZI4OdjunKUMAaDRu+Nbk/mKOYNDD7xb63xkbpmwrB4tANqoGxXTy0HfsMK2zEOyC+2SGnTkeMCqnkH7hyg7xfmEedXXhjqU+O7ig8dqMwncEvz3bjKVR/t13tA09ozl/vuYeiht5ris=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOYJiBHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0928C4CECE;
+	Thu, 12 Dec 2024 17:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024378;
-	bh=BtoeXyAJpfaKLStH7DWEL7dphnABrvDdi61ScStBvh0=;
+	s=korg; t=1734023183;
+	bh=pqPNmIN8NJciJ08ByRKcSixNI5NeJ4fbQ7iFh09RAy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxseBijxyOE9gZI+ccPGw2opdGPJqydFwGm0EMqNOHlN4MiUZokAlVODDH8IyyL4D
-	 qhxXaav/fbxYfkYLeT5/T6srvwAOzXPKBf6KW8vDU2PwV1m/T+UO9iL0M4vxMj/0VN
-	 LMrs0yW3tfSHcd2acqaT0ayHS1TnDLRDbivg7KRk=
+	b=rOYJiBHkMWwurejfdzYnYYITIKLq5Dz+6qBNHCNeNeM/HQOWVrZRyWktPltTJzN0X
+	 h46gyPzlkdJA0g8EFh/HToDnpGXX9h0y+vvLrnSRfvCFm0hsMEJYGiSJs037Rnqc5F
+	 CXNo922q1dIvrqhzYkCi2pLp4E9UsXV/pzu0lCFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.10 276/459] media: wl128x: Fix atomicity violation in fmc_send_cmd()
-Date: Thu, 12 Dec 2024 16:00:14 +0100
-Message-ID: <20241212144304.521960330@linuxfoundation.org>
+	Yuan Can <yuancan@huawei.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 420/565] igb: Fix potential invalid memory access in igb_init_module()
+Date: Thu, 12 Dec 2024 16:00:15 +0100
+Message-ID: <20241212144328.266385381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit ca59f9956d4519ab18ab2270be47c6b8c6ced091 upstream.
+[ Upstream commit 0566f83d206c7a864abcd741fe39d6e0ae5eef29 ]
 
-Atomicity violation occurs when the fmc_send_cmd() function is executed
-simultaneously with the modification of the fmdev->resp_skb value.
-Consider a scenario where, after passing the validity check within the
-function, a non-null fmdev->resp_skb variable is assigned a null value.
-This results in an invalid fmdev->resp_skb variable passing the validity
-check. As seen in the later part of the function, skb = fmdev->resp_skb;
-when the invalid fmdev->resp_skb passes the check, a null pointer
-dereference error may occur at line 478, evt_hdr = (void *)skb->data;
+The pci_register_driver() can fail and when this happened, the dca_notifier
+needs to be unregistered, otherwise the dca_notifier can be called when
+igb fails to install, resulting to invalid memory access.
 
-To address this issue, it is recommended to include the validity check of
-fmdev->resp_skb within the locked section of the function. This
-modification ensures that the value of fmdev->resp_skb does not change
-during the validation process, thereby maintaining its validity.
-
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations.
-
-Fixes: e8454ff7b9a4 ("[media] drivers:media:radio: wl128x: FM Driver Common sources")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bbd98fe48a43 ("igb: Fix DCA errors and do not use context index for 82576")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/radio/wl128x/fmdrv_common.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/media/radio/wl128x/fmdrv_common.c
-+++ b/drivers/media/radio/wl128x/fmdrv_common.c
-@@ -465,11 +465,12 @@ int fmc_send_cmd(struct fmdev *fmdev, u8
- 			   jiffies_to_msecs(FM_DRV_TX_TIMEOUT) / 1000);
- 		return -ETIMEDOUT;
- 	}
-+	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
- 	if (!fmdev->resp_skb) {
-+		spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
- 		fmerr("Response SKB is missing\n");
- 		return -EFAULT;
- 	}
--	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
- 	skb = fmdev->resp_skb;
- 	fmdev->resp_skb = NULL;
- 	spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index f3a433b4c7cdb..7712df5b93147 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -667,6 +667,10 @@ static int __init igb_init_module(void)
+ 	dca_register_notify(&dca_notifier);
+ #endif
+ 	ret = pci_register_driver(&igb_driver);
++#ifdef CONFIG_IGB_DCA
++	if (ret)
++		dca_unregister_notify(&dca_notifier);
++#endif
+ 	return ret;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
