@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C27F9EEFBD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 750789EF37F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2647297AFC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C374A179A62
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CDF236953;
-	Thu, 12 Dec 2024 16:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC51723588C;
+	Thu, 12 Dec 2024 16:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZ2MysOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVtDgRqQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAD022540E;
-	Thu, 12 Dec 2024 16:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BA222687A;
+	Thu, 12 Dec 2024 16:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019797; cv=none; b=oygFOhEgcuUsmrFJKKYllZkzv8Bz8wYr66z/K6EYZVH8/pOON4N3rGSRRHSP0tQR3vtFgkfkGZhSBlohgoKA4+NxKyDdUBnTB1niLSMzJn6kCqhnco4HrpGkgTXbtBrvKgAEu5NVrUgzPvIZSJqQYp0RFVdbGbCCQrYEbChEEZg=
+	t=1734021756; cv=none; b=cLaEGCL66fALABLPB15H0PFhNjIukI6f6TRTz/2dTnEw2oN7lqXpFw4FYWivyH8qGZqL8a2+B/w/YSySS19RwV7l2TW4+2ktfHDDk7pxfJAzKT7pyr3zmoSb0LytNEyUtL4kHq88OhQ5qR6I4vhJa5ZRBrWw4fnbnjr+/pKpMjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019797; c=relaxed/simple;
-	bh=Y79HnsDe02EpDdqUIQVwZGXadnh/pzu9tDgoEhGpsq4=;
+	s=arc-20240116; t=1734021756; c=relaxed/simple;
+	bh=eXcVip5XV+xa1ZjtIH3YOEZjw2bpgiGhQKw8B7yhFhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuk+OK1BZTLl+5f6eT2hroP9VEgPC4DpxxvL4tcoYWNDK5VhrqF0YRcnguh7FPgOTjYU/ah3ELfWBbA5RjGoVlUDwnYy7XRE8JGoWrFbFDd75EtkXNRpnmumIvxsRdLaz0lrd0tvFc4fmG+AeEovJHDCJ8yHjBXtOE4KwEy/wnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZ2MysOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7397C4CED0;
-	Thu, 12 Dec 2024 16:09:56 +0000 (UTC)
+	 MIME-Version; b=Civ9zy+PwugM3xXiw8tVuKy7UsMHU93hlJNMGPIiFFP9fNHKgCvr9X2npZN6Un2ivL/VV0IJ7k+eLnSUmOMQAtK4OOxKO+8R4lRQzk/GADyYEgG8fFUNps2/BFnLKKjwBYaGOzEWCgd46a6FSbDCmABJtChK8oiXTnU0e9+8dYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVtDgRqQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB42C4CECE;
+	Thu, 12 Dec 2024 16:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019797;
-	bh=Y79HnsDe02EpDdqUIQVwZGXadnh/pzu9tDgoEhGpsq4=;
+	s=korg; t=1734021756;
+	bh=eXcVip5XV+xa1ZjtIH3YOEZjw2bpgiGhQKw8B7yhFhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZ2MysOI5uA955ucV9XWnJ5VyWPVoF/s/USimlOM4KzWD27HrBGlu0TeIynHi8maQ
-	 e9CsBIgwfoMH/LRArIVe0P/BP0D6MsfFHywMiGZVlC0Qk7dqwn52Zou5diFs7P9GX2
-	 4ZzvUzs2ISEyLG0WKB2mrDHNF2iynA7tCWbdAoGQ=
+	b=jVtDgRqQ7cBQORvSU2+ereYdBdZ2wJp1uwJepmW0lmdP2EUB4kCfFB5YUuvMOX4QR
+	 BCr96SR+YuKLXS5L4Dru1ehXlBr+ehGqcWQx+6DknY295IbG3/jwMQTYO/UI2P7d9C
+	 5omSOfgOqn6rgkA5FZiVaXhW5jTYoC7cAo5YN95U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 301/772] LoongArch: Fix build failure with GCC 15 (-std=gnu23)
-Date: Thu, 12 Dec 2024 15:54:06 +0100
-Message-ID: <20241212144402.342400034@linuxfoundation.org>
+Subject: [PATCH 5.15 052/565] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet
+Date: Thu, 12 Dec 2024 15:54:07 +0100
+Message-ID: <20241212144313.552743097@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 947d5d036c788156f09e83e7f16322ffe8124384 ]
+[ Upstream commit 0107f28f135231da22a9ad5756bb16bd5cada4d5 ]
 
-Whenever I try to build the kernel with upcoming GCC 15 which defaults
-to -std=gnu23 I get a build failure:
+The Vexia Edu Atla 10 tablet mostly uses the BYTCR tablet defaults,
+but as happens on more models it is using IN1 instead of IN3 for
+its internal mic and JD_SRC_JD2_IN4N instead of JD_SRC_JD1_IN4P
+for jack-detection.
 
-  CC      arch/loongarch/vdso/vgetcpu.o
-In file included from ./include/uapi/linux/posix_types.h:5,
-                 from ./include/uapi/linux/types.h:14,
-                 from ./include/linux/types.h:6,
-                 from ./include/linux/kasan-checks.h:5,
-                 from ./include/asm-generic/rwonce.h:26,
-                 from ./arch/loongarch/include/generated/asm/rwonce.h:1,
-                 from ./include/linux/compiler.h:317,
-                 from ./include/asm-generic/bug.h:5,
-                 from ./arch/loongarch/include/asm/bug.h:60,
-                 from ./include/linux/bug.h:5,
-                 from ./include/linux/mmdebug.h:5,
-                 from ./include/linux/mm.h:6,
-                 from ./arch/loongarch/include/asm/vdso.h:10,
-                 from arch/loongarch/vdso/vgetcpu.c:6:
-./include/linux/stddef.h:11:9: error: expected identifier before 'false'
-   11 |         false   = 0,
-      |         ^~~~~
-./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
-   35 | typedef _Bool                   bool;
-      |                                 ^~~~
-./include/linux/types.h:35:1: warning: useless type name in empty declaration
-   35 | typedef _Bool                   bool;
-      | ^~~~~~~
+Add a DMI quirk for this to fix the internal-mic and jack-detection.
 
-The kernel builds explicitly with -std=gnu11 in top Makefile, but
-arch/loongarch/vdso does not use KBUILD_CFLAGS from the rest of the
-kernel, just add -std=gnu11 flag to arch/loongarch/vdso/Makefile.
-
-By the way, commit e8c07082a810 ("Kbuild: move to -std=gnu11") did a
-similar change for arch/arm64/kernel/vdso32/Makefile.
-
-Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241024211615.79518-2-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/vdso/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index 67cfb4934bcf8..ed196e42972c7 100644
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -23,7 +23,7 @@ endif
- cflags-vdso := $(ccflags-vdso) \
- 	-isystem $(shell $(CC) -print-file-name=include) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
--	-O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
-+	-std=gnu11 -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
- 	$(call cc-option, -fno-asynchronous-unwind-tables) \
- 	$(call cc-option, -fno-stack-protector)
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 899a8435a1eb8..8706fef8ccce8 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -1102,6 +1102,21 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{	/* Vexia Edu Atla 10 tablet */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
++		},
++		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF2 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{	/* Voyo Winpad A15 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
 -- 
 2.43.0
 
