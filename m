@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378DC9EEC56
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141EA9EEB08
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED335282A2E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:33:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6AD0188BB16
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852522153FC;
-	Thu, 12 Dec 2024 15:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FCC21487CD;
+	Thu, 12 Dec 2024 15:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCrvnoEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKDe0GqR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF142054F8;
-	Thu, 12 Dec 2024 15:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFDB215776;
+	Thu, 12 Dec 2024 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017632; cv=none; b=YrkMiTyMZMG1S9uZsOHK95A5dA+d+mH8ruGV2S7ryJC/Lk6uLx6em/rqiu4DInC41vO5i4gRIHpQLXF8LFg4eclasNsE40QlPC8m8I6bVd38Jk/5gUmPcrE/+DtjUtyneihTIRzqqIYfImqldSA93LWah5kkNmYAzb7SsuVML+4=
+	t=1734016512; cv=none; b=ZxWhJeCBHoAbMC3iNxX6KsEqv+SOSafGPhjGXDGZyk+1JXr6KaxuC8cW4b1GzmLifV2Xw/7fyiX8H+mMITzDHYVr+9PALHX8+ljgmVeAbXX4islH1zXrBWOIUubnGRedAKPG+HmoJWzuGo040rmAUlm4s9SLZQ0F49CLN86rwC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017632; c=relaxed/simple;
-	bh=TctZw45DbYGne/MQtz+V3cJ9LiJT2qcEW2FioAPvl0s=;
+	s=arc-20240116; t=1734016512; c=relaxed/simple;
+	bh=DxsdTPEMjuUe7WhBpXTfw2SleFTLzlS1MwRVxznIC2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsdpt5eVY0s+mQPZ0IlgOyE92N/ivEVQn2gM8cMhK1AHRqpgF2cDxtZ2VidigbOMFn70Zob7pevjEiOWLhMY9mvYrV8xZUBO2Ly/7Q9Om4sffcIRgX/62PdwbxDekTb6CClSZpzd3st4XkPQUzOqGmB4MXG1sIGtzSx1etYNbfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCrvnoEh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC3CC4CECE;
-	Thu, 12 Dec 2024 15:33:51 +0000 (UTC)
+	 MIME-Version; b=ALLahqD42p4ZmDgt0vlg2ppW0wy9DlNuvjjydSO/cfOP4yKRF1qsATE8Irrl38c6ykla/Ia91MXPPAP7j+8Q5zbfz0U1hccAE4ymOGohLEsahatE7Hlx3PTbCCEvHirwU88Cfp5KbgbAnPCc+1db99Gx0FNfeEdiWh5IPImtqC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKDe0GqR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF4DC4CED4;
+	Thu, 12 Dec 2024 15:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017631;
-	bh=TctZw45DbYGne/MQtz+V3cJ9LiJT2qcEW2FioAPvl0s=;
+	s=korg; t=1734016511;
+	bh=DxsdTPEMjuUe7WhBpXTfw2SleFTLzlS1MwRVxznIC2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCrvnoEh5jgDyJMRk2ai1uK5HJYZfwyBfgkGF3Skw0GRGQY3fSuwbMGzVHabkfJEW
-	 Jo4aOkRdEUrXH7n0onL9Mnk0opXtoyfxsACzpO8TOF8bgU2cX0JXY+JBE6wgADRZBU
-	 v9RbfjZsRn9i738NWhLGuaZkqG+yyTMj4We6jeKk=
+	b=oKDe0GqROaqMn0mh98yhH+I1ASYVJx29Rdube0fMvdgQbK9neHW46/jHaGbXflarY
+	 k/4j2XUCA9Ot3K6S8gi2cm1sYDwVBbJbx7b6KaMgJw9wOs4ncIjWamyiD6Hkq3P0l2
+	 Lkua/QOsXfit8gtO7CsZ1ErdSlV1cJwx+krbl6LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuangyi Chiang <ki.chiang65@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/356] xhci: Fix control transfer error on Etron xHCI host
+Subject: [PATCH 6.12 219/466] btrfs: dont take dev_replace rwsem on task already holding it
 Date: Thu, 12 Dec 2024 15:56:28 +0100
-Message-ID: <20241212144247.357715799@linuxfoundation.org>
+Message-ID: <20241212144315.437147370@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +63,243 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 5e1c67abc9301d05130b7e267c204e7005503b33 ]
+[ Upstream commit 8cca35cb29f81eba3e96ec44dad8696c8a2f9138 ]
 
-Performing a stability stress test on a USB3.0 2.5G ethernet adapter
-results in errors like this:
+Running fstests btrfs/011 with MKFS_OPTIONS="-O rst" to force the usage of
+the RAID stripe-tree, we get the following splat from lockdep:
 
-[   91.441469] r8152 2-3:1.0 eth3: get_registers -71
-[   91.458659] r8152 2-3:1.0 eth3: get_registers -71
-[   91.475911] r8152 2-3:1.0 eth3: get_registers -71
-[   91.493203] r8152 2-3:1.0 eth3: get_registers -71
-[   91.510421] r8152 2-3:1.0 eth3: get_registers -71
+ BTRFS info (device sdd): dev_replace from /dev/sdd (devid 1) to /dev/sdb started
 
-The r8152 driver will periodically issue lots of control-IN requests
-to access the status of ethernet adapter hardware registers during
-the test.
+ ============================================
+ WARNING: possible recursive locking detected
+ 6.11.0-rc3-btrfs-for-next #599 Not tainted
+ --------------------------------------------
+ btrfs/2326 is trying to acquire lock:
+ ffff88810f215c98 (&fs_info->dev_replace.rwsem){++++}-{3:3}, at: btrfs_map_block+0x39f/0x2250
 
-This happens when the xHCI driver enqueue a control TD (which cross
-over the Link TRB between two ring segments, as shown) in the endpoint
-zero's transfer ring. Seems the Etron xHCI host can not perform this
-TD correctly, causing the USB transfer error occurred, maybe the upper
-driver retry that control-IN request can solve problem, but not all
-drivers do this.
+ but task is already holding lock:
+ ffff88810f215c98 (&fs_info->dev_replace.rwsem){++++}-{3:3}, at: btrfs_map_block+0x39f/0x2250
 
-|     |
--------
-| TRB | Setup Stage
--------
-| TRB | Link
--------
--------
-| TRB | Data Stage
--------
-| TRB | Status Stage
--------
-|     |
+ other info that might help us debug this:
+  Possible unsafe locking scenario:
 
-To work around this, the xHCI driver should enqueue a No Op TRB if
-next available TRB is the Link TRB in the ring segment, this can
-prevent the Setup and Data Stage TRB to be breaked by the Link TRB.
+        CPU0
+        ----
+   lock(&fs_info->dev_replace.rwsem);
+   lock(&fs_info->dev_replace.rwsem);
 
-Check if the XHCI_ETRON_HOST quirk flag is set before invoking the
-workaround in xhci_queue_ctrl_tx().
+  *** DEADLOCK ***
 
-Fixes: d0e96f5a71a0 ("USB: xhci: Control transfer support.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-20-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  May be due to missing lock nesting notation
+
+ 1 lock held by btrfs/2326:
+  #0: ffff88810f215c98 (&fs_info->dev_replace.rwsem){++++}-{3:3}, at: btrfs_map_block+0x39f/0x2250
+
+ stack backtrace:
+ CPU: 1 UID: 0 PID: 2326 Comm: btrfs Not tainted 6.11.0-rc3-btrfs-for-next #599
+ Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x5b/0x80
+  __lock_acquire+0x2798/0x69d0
+  ? __pfx___lock_acquire+0x10/0x10
+  ? __pfx___lock_acquire+0x10/0x10
+  lock_acquire+0x19d/0x4a0
+  ? btrfs_map_block+0x39f/0x2250
+  ? __pfx_lock_acquire+0x10/0x10
+  ? find_held_lock+0x2d/0x110
+  ? lock_is_held_type+0x8f/0x100
+  down_read+0x8e/0x440
+  ? btrfs_map_block+0x39f/0x2250
+  ? __pfx_down_read+0x10/0x10
+  ? do_raw_read_unlock+0x44/0x70
+  ? _raw_read_unlock+0x23/0x40
+  btrfs_map_block+0x39f/0x2250
+  ? btrfs_dev_replace_by_ioctl+0xd69/0x1d00
+  ? btrfs_bio_counter_inc_blocked+0xd9/0x2e0
+  ? __kasan_slab_alloc+0x6e/0x70
+  ? __pfx_btrfs_map_block+0x10/0x10
+  ? __pfx_btrfs_bio_counter_inc_blocked+0x10/0x10
+  ? kmem_cache_alloc_noprof+0x1f2/0x300
+  ? mempool_alloc_noprof+0xed/0x2b0
+  btrfs_submit_chunk+0x28d/0x17e0
+  ? __pfx_btrfs_submit_chunk+0x10/0x10
+  ? bvec_alloc+0xd7/0x1b0
+  ? bio_add_folio+0x171/0x270
+  ? __pfx_bio_add_folio+0x10/0x10
+  ? __kasan_check_read+0x20/0x20
+  btrfs_submit_bio+0x37/0x80
+  read_extent_buffer_pages+0x3df/0x6c0
+  btrfs_read_extent_buffer+0x13e/0x5f0
+  read_tree_block+0x81/0xe0
+  read_block_for_search+0x4bd/0x7a0
+  ? __pfx_read_block_for_search+0x10/0x10
+  btrfs_search_slot+0x78d/0x2720
+  ? __pfx_btrfs_search_slot+0x10/0x10
+  ? lock_is_held_type+0x8f/0x100
+  ? kasan_save_track+0x14/0x30
+  ? __kasan_slab_alloc+0x6e/0x70
+  ? kmem_cache_alloc_noprof+0x1f2/0x300
+  btrfs_get_raid_extent_offset+0x181/0x820
+  ? __pfx_lock_acquire+0x10/0x10
+  ? __pfx_btrfs_get_raid_extent_offset+0x10/0x10
+  ? down_read+0x194/0x440
+  ? __pfx_down_read+0x10/0x10
+  ? do_raw_read_unlock+0x44/0x70
+  ? _raw_read_unlock+0x23/0x40
+  btrfs_map_block+0x5b5/0x2250
+  ? __pfx_btrfs_map_block+0x10/0x10
+  scrub_submit_initial_read+0x8fe/0x11b0
+  ? __pfx_scrub_submit_initial_read+0x10/0x10
+  submit_initial_group_read+0x161/0x3a0
+  ? lock_release+0x20e/0x710
+  ? __pfx_submit_initial_group_read+0x10/0x10
+  ? __pfx_lock_release+0x10/0x10
+  scrub_simple_mirror.isra.0+0x3eb/0x580
+  scrub_stripe+0xe4d/0x1440
+  ? lock_release+0x20e/0x710
+  ? __pfx_scrub_stripe+0x10/0x10
+  ? __pfx_lock_release+0x10/0x10
+  ? do_raw_read_unlock+0x44/0x70
+  ? _raw_read_unlock+0x23/0x40
+  scrub_chunk+0x257/0x4a0
+  scrub_enumerate_chunks+0x64c/0xf70
+  ? __mutex_unlock_slowpath+0x147/0x5f0
+  ? __pfx_scrub_enumerate_chunks+0x10/0x10
+  ? bit_wait_timeout+0xb0/0x170
+  ? __up_read+0x189/0x700
+  ? scrub_workers_get+0x231/0x300
+  ? up_write+0x490/0x4f0
+  btrfs_scrub_dev+0x52e/0xcd0
+  ? create_pending_snapshots+0x230/0x250
+  ? __pfx_btrfs_scrub_dev+0x10/0x10
+  btrfs_dev_replace_by_ioctl+0xd69/0x1d00
+  ? lock_acquire+0x19d/0x4a0
+  ? __pfx_btrfs_dev_replace_by_ioctl+0x10/0x10
+  ? lock_release+0x20e/0x710
+  ? btrfs_ioctl+0xa09/0x74f0
+  ? __pfx_lock_release+0x10/0x10
+  ? do_raw_spin_lock+0x11e/0x240
+  ? __pfx_do_raw_spin_lock+0x10/0x10
+  btrfs_ioctl+0xa14/0x74f0
+  ? lock_acquire+0x19d/0x4a0
+  ? find_held_lock+0x2d/0x110
+  ? __pfx_btrfs_ioctl+0x10/0x10
+  ? lock_release+0x20e/0x710
+  ? do_sigaction+0x3f0/0x860
+  ? __pfx_do_vfs_ioctl+0x10/0x10
+  ? do_raw_spin_lock+0x11e/0x240
+  ? lockdep_hardirqs_on_prepare+0x270/0x3e0
+  ? _raw_spin_unlock_irq+0x28/0x50
+  ? do_sigaction+0x3f0/0x860
+  ? __pfx_do_sigaction+0x10/0x10
+  ? __x64_sys_rt_sigaction+0x18e/0x1e0
+  ? __pfx___x64_sys_rt_sigaction+0x10/0x10
+  ? __x64_sys_close+0x7c/0xd0
+  __x64_sys_ioctl+0x137/0x190
+  do_syscall_64+0x71/0x140
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f0bd1114f9b
+ Code: Unable to access opcode bytes at 0x7f0bd1114f71.
+ RSP: 002b:00007ffc8a8c3130 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+ RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f0bd1114f9b
+ RDX: 00007ffc8a8c35e0 RSI: 00000000ca289435 RDI: 0000000000000003
+ RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000007
+ R10: 0000000000000008 R11: 0000000000000246 R12: 00007ffc8a8c6c85
+ R13: 00000000398e72a0 R14: 0000000000004361 R15: 0000000000000004
+  </TASK>
+
+This happens because on RAID stripe-tree filesystems we recurse back into
+btrfs_map_block() on scrub to perform the logical to device physical
+mapping.
+
+But as the device replace task is already holding the dev_replace::rwsem
+we deadlock.
+
+So don't take the dev_replace::rwsem in case our task is the task performing
+the device replace.
+
+Suggested-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/btrfs/dev-replace.c | 2 ++
+ fs/btrfs/fs.h          | 2 ++
+ fs/btrfs/volumes.c     | 8 +++++---
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 99759926daac6..50f5880114004 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -3828,6 +3828,20 @@ int xhci_queue_ctrl_tx(struct xhci_hcd *xhci, gfp_t mem_flags,
- 	if (!urb->setup_packet)
- 		return -EINVAL;
+diff --git a/fs/btrfs/dev-replace.c b/fs/btrfs/dev-replace.c
+index 83d5cdd77f293..604399e59a3d1 100644
+--- a/fs/btrfs/dev-replace.c
++++ b/fs/btrfs/dev-replace.c
+@@ -641,6 +641,7 @@ static int btrfs_dev_replace_start(struct btrfs_fs_info *fs_info,
+ 		return ret;
  
-+	if ((xhci->quirks & XHCI_ETRON_HOST) &&
-+	    urb->dev->speed >= USB_SPEED_SUPER) {
-+		/*
-+		 * If next available TRB is the Link TRB in the ring segment then
-+		 * enqueue a No Op TRB, this can prevent the Setup and Data Stage
-+		 * TRB to be breaked by the Link TRB.
-+		 */
-+		if (trb_is_link(ep_ring->enqueue + 1)) {
-+			field = TRB_TYPE(TRB_TR_NOOP) | ep_ring->cycle_state;
-+			queue_trb(xhci, ep_ring, false, 0, 0,
-+					TRB_INTR_TARGET(0), field);
-+		}
-+	}
+ 	down_write(&dev_replace->rwsem);
++	dev_replace->replace_task = current;
+ 	switch (dev_replace->replace_state) {
+ 	case BTRFS_IOCTL_DEV_REPLACE_STATE_NEVER_STARTED:
+ 	case BTRFS_IOCTL_DEV_REPLACE_STATE_FINISHED:
+@@ -994,6 +995,7 @@ static int btrfs_dev_replace_finishing(struct btrfs_fs_info *fs_info,
+ 	list_add(&tgt_device->dev_alloc_list, &fs_devices->alloc_list);
+ 	fs_devices->rw_devices++;
+ 
++	dev_replace->replace_task = NULL;
+ 	up_write(&dev_replace->rwsem);
+ 	btrfs_rm_dev_replace_blocked(fs_info);
+ 
+diff --git a/fs/btrfs/fs.h b/fs/btrfs/fs.h
+index 79f64e383eddf..cbfb225858a59 100644
+--- a/fs/btrfs/fs.h
++++ b/fs/btrfs/fs.h
+@@ -317,6 +317,8 @@ struct btrfs_dev_replace {
+ 
+ 	struct percpu_counter bio_counter;
+ 	wait_queue_head_t replace_wait;
 +
- 	/* 1 TRB for setup, 1 for status */
- 	num_trbs = 2;
++	struct task_struct *replace_task;
+ };
+ 
+ /*
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index eb51b609190fb..920df7585b0d1 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -6481,13 +6481,15 @@ int btrfs_map_block(struct btrfs_fs_info *fs_info, enum btrfs_map_op op,
+ 	max_len = btrfs_max_io_len(map, map_offset, &io_geom);
+ 	*length = min_t(u64, map->chunk_len - map_offset, max_len);
+ 
+-	down_read(&dev_replace->rwsem);
++	if (dev_replace->replace_task != current)
++		down_read(&dev_replace->rwsem);
++
+ 	dev_replace_is_ongoing = btrfs_dev_replace_is_ongoing(dev_replace);
  	/*
+ 	 * Hold the semaphore for read during the whole operation, write is
+ 	 * requested at commit time but must wait.
+ 	 */
+-	if (!dev_replace_is_ongoing)
++	if (!dev_replace_is_ongoing && dev_replace->replace_task != current)
+ 		up_read(&dev_replace->rwsem);
+ 
+ 	switch (map->type & BTRFS_BLOCK_GROUP_PROFILE_MASK) {
+@@ -6627,7 +6629,7 @@ int btrfs_map_block(struct btrfs_fs_info *fs_info, enum btrfs_map_op op,
+ 	bioc->mirror_num = io_geom.mirror_num;
+ 
+ out:
+-	if (dev_replace_is_ongoing) {
++	if (dev_replace_is_ongoing && dev_replace->replace_task != current) {
+ 		lockdep_assert_held(&dev_replace->rwsem);
+ 		/* Unlock and let waiting writers proceed */
+ 		up_read(&dev_replace->rwsem);
 -- 
 2.43.0
 
