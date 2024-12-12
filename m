@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-101027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCF59EEA31
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BD49EF076
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8A2E16852A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C00D1727D3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3737C21578C;
-	Thu, 12 Dec 2024 15:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C8B22652F;
+	Thu, 12 Dec 2024 16:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbI85SEI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9pIFs7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E747321576C;
-	Thu, 12 Dec 2024 15:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33CD2253EC;
+	Thu, 12 Dec 2024 16:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016004; cv=none; b=q1D5hOrifMQC5Ye7tQ2uSpY3hgzoz3tn+psMXP8zIxibLQk2LxV1zhhSTGZGE+d3S3mCTMBwerwJpMD+WfHmp0T1bSF1Q4UmQud3+aGbE9jik8sSCTO6c8UEKystMBeGa0Z1DzbtNtvZ0hLEdNe8gFLOJaqu7mN8URRbH5UK86Q=
+	t=1734019913; cv=none; b=fXOpcQF/zF5bdKoMpd5rx7pGp7mA6QEN9CHYrtDcIWK7/xSmsxllawVcydA9o+DhPyEC0lcwAUMAMfQuhcoaCCswsPlF0KnTgyhpHQJNzUHO0ghfXOElJlyHvhCCM8pi9KDBQvQZtRqX953nwt+lwTpLFJN70i9na4zepS97rbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016004; c=relaxed/simple;
-	bh=0hPJ8J68dfzh5vzjzOO5QMv5REGXmxQb8FI4OUArdAk=;
+	s=arc-20240116; t=1734019913; c=relaxed/simple;
+	bh=BRbn+DYvmuFcM+giVPfdjkD9YmuTvU1rEyahOfVDbgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXv3NDeMHlRr+rziW/+a0UGP314ny3UBe6qpehoa9i/zHk3ppUiYb0Wr41vODh706QGq58ChfpmxSdHBWhCCmP/JbR47ZQIUYGStoOMM2Io7hPZZdBA08/5niozTPyceSUjTyVDfM0OIgYZS3DKg+9nmFMlmEoLheUTUT3gYNhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbI85SEI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7DFC4CED7;
-	Thu, 12 Dec 2024 15:06:43 +0000 (UTC)
+	 MIME-Version; b=sjEdiyMG6ZqL6UuSKdm2Nk0LqeTaTpovhm+2trsVVuuoSMQBLk+QlySndJPf1b6R1j8JTCY7JqWLJRnYZzrT7bJVmpmAmDzicPNccjP/uSaTRt5sMB4qRBXCoHDLU4YgVPsGzScvhfB812/ZESg0iXCDJJO0LGAzHF0ecwvNpl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9pIFs7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CE3C4CED0;
+	Thu, 12 Dec 2024 16:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016003;
-	bh=0hPJ8J68dfzh5vzjzOO5QMv5REGXmxQb8FI4OUArdAk=;
+	s=korg; t=1734019913;
+	bh=BRbn+DYvmuFcM+giVPfdjkD9YmuTvU1rEyahOfVDbgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VbI85SEIWG9RU/19qyUzLWjLYNVJozq9jX7BGW1V74kcecivRQiQRI7/E3hCMG8Yy
-	 wVY9gK/6kKj7SABIEvOyIlGYd1WXz8xEDPxaiScJa1z3abuvtaEKAzyqim+qMN++t/
-	 YC/GWBCx9AIAqRHYgIia9yvRw1ZaJHcbPbqG6C/8=
+	b=A9pIFs7quIQLw27YzG+zX2dejtjGgRwC+vLjYiWloYApzKzC2SlOGE6rJMKWTrlyv
+	 0xzrZcislJOLRgW16wcOIAkPFFGNFoES0KD8qCsbjxIm2DjyekKccS3/tH+IdH0+GB
+	 0mHwHcQBKDnlnaBP9rzZXW9JYzySUp6xSUze/m5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	syzbot+685e14d04fe35692d3bc@syzkaller.appspotmail.com,
+	syzbot+1f8ca5ee82576ec01f12@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+5f1ce62e956b7b19610e@syzkaller.appspotmail.com,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/466] nvme-fabrics: handle zero MAXCMD without closing the connection
-Date: Thu, 12 Dec 2024 15:54:34 +0100
-Message-ID: <20241212144310.964726207@linuxfoundation.org>
+Subject: [PATCH 6.1 330/772] USB: chaoskey: Fix possible deadlock chaoskey_list_lock
+Date: Thu, 12 Dec 2024 15:54:35 +0100
+Message-ID: <20241212144403.538676002@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +65,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 88c23a32b851e36adc4ab36f796d9b711f47e2bb ]
+[ Upstream commit d73dc7b182be4238b75278bfae16afb4c5564a58 ]
 
-The NVMe specification states that MAXCMD is mandatory
-for NVMe-over-Fabrics implementations. However, some NVMe/TCP
-and NVMe/FC arrays from major vendors have buggy firmware
-that reports MAXCMD as zero in the Identify Controller data structure.
+[Syzbot reported two possible deadlocks]
+The first possible deadlock is:
+WARNING: possible recursive locking detected
+6.12.0-rc1-syzkaller-00027-g4a9fe2a8ac53 #0 Not tainted
+--------------------------------------------
+syz-executor363/2651 is trying to acquire lock:
+ffffffff89b120e8 (chaoskey_list_lock){+.+.}-{3:3}, at: chaoskey_release+0x15d/0x2c0 drivers/usb/misc/chaoskey.c:322
 
-Currently, the implementation closes the connection in such cases,
-completely preventing the host from connecting to the target.
+but task is already holding lock:
+ffffffff89b120e8 (chaoskey_list_lock){+.+.}-{3:3}, at: chaoskey_release+0x7f/0x2c0 drivers/usb/misc/chaoskey.c:299
 
-Fix the issue by printing a clear error message about the firmware bug
-and allowing the connection to proceed. It assumes that the
-target supports a MAXCMD value of SQSIZE + 1. If any issues arise,
-the user can manually adjust SQSIZE to mitigate them.
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-Fixes: 4999568184e5 ("nvme-fabrics: check max outstanding commands")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+       CPU0
+       ----
+  lock(chaoskey_list_lock);
+  lock(chaoskey_list_lock);
+
+ *** DEADLOCK ***
+
+The second possible deadlock is:
+WARNING: possible circular locking dependency detected
+6.12.0-rc1-syzkaller-00027-g4a9fe2a8ac53 #0 Not tainted
+------------------------------------------------------
+kworker/0:2/804 is trying to acquire lock:
+ffffffff899dadb0 (minor_rwsem){++++}-{3:3}, at: usb_deregister_dev+0x7c/0x1e0 drivers/usb/core/file.c:186
+
+but task is already holding lock:
+ffffffff89b120e8 (chaoskey_list_lock){+.+.}-{3:3}, at: chaoskey_disconnect+0xa8/0x2a0 drivers/usb/misc/chaoskey.c:235
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (chaoskey_list_lock){+.+.}-{3:3}:
+       __mutex_lock_common kernel/locking/mutex.c:608 [inline]
+       __mutex_lock+0x175/0x9c0 kernel/locking/mutex.c:752
+       chaoskey_open+0xdd/0x220 drivers/usb/misc/chaoskey.c:274
+       usb_open+0x186/0x220 drivers/usb/core/file.c:47
+       chrdev_open+0x237/0x6a0 fs/char_dev.c:414
+       do_dentry_open+0x6cb/0x1390 fs/open.c:958
+       vfs_open+0x82/0x3f0 fs/open.c:1088
+       do_open fs/namei.c:3774 [inline]
+       path_openat+0x1e6a/0x2d60 fs/namei.c:3933
+       do_filp_open+0x1dc/0x430 fs/namei.c:3960
+       do_sys_openat2+0x17a/0x1e0 fs/open.c:1415
+       do_sys_open fs/open.c:1430 [inline]
+       __do_sys_openat fs/open.c:1446 [inline]
+       __se_sys_openat fs/open.c:1441 [inline]
+       __x64_sys_openat+0x175/0x210 fs/open.c:1441
+       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+       do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (minor_rwsem){++++}-{3:3}:
+       check_prev_add kernel/locking/lockdep.c:3161 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3280 [inline]
+       validate_chain kernel/locking/lockdep.c:3904 [inline]
+       __lock_acquire+0x250b/0x3ce0 kernel/locking/lockdep.c:5202
+       lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5825
+       down_write+0x93/0x200 kernel/locking/rwsem.c:1577
+       usb_deregister_dev+0x7c/0x1e0 drivers/usb/core/file.c:186
+       chaoskey_disconnect+0xb7/0x2a0 drivers/usb/misc/chaoskey.c:236
+       usb_unbind_interface+0x1e8/0x970 drivers/usb/core/driver.c:461
+       device_remove drivers/base/dd.c:569 [inline]
+       device_remove+0x122/0x170 drivers/base/dd.c:561
+       __device_release_driver drivers/base/dd.c:1273 [inline]
+       device_release_driver_internal+0x44a/0x610 drivers/base/dd.c:1296
+       bus_remove_device+0x22f/0x420 drivers/base/bus.c:576
+       device_del+0x396/0x9f0 drivers/base/core.c:3864
+       usb_disable_device+0x36c/0x7f0 drivers/usb/core/message.c:1418
+       usb_disconnect+0x2e1/0x920 drivers/usb/core/hub.c:2304
+       hub_port_connect drivers/usb/core/hub.c:5361 [inline]
+       hub_port_connect_change drivers/usb/core/hub.c:5661 [inline]
+       port_event drivers/usb/core/hub.c:5821 [inline]
+       hub_event+0x1bed/0x4f40 drivers/usb/core/hub.c:5903
+       process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
+       process_scheduled_works kernel/workqueue.c:3310 [inline]
+       worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+       kthread+0x2c1/0x3a0 kernel/kthread.c:389
+       ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(chaoskey_list_lock);
+                               lock(minor_rwsem);
+                               lock(chaoskey_list_lock);
+  lock(minor_rwsem);
+
+ *** DEADLOCK ***
+[Analysis]
+The first is AA lock, it because wrong logic, it need a unlock.
+The second is AB lock, it needs to rearrange the order of lock usage.
+
+Fixes: 422dc0a4d12d ("USB: chaoskey: fail open after removal")
+Reported-by: syzbot+685e14d04fe35692d3bc@syzkaller.appspotmail.com
+Reported-by: syzbot+1f8ca5ee82576ec01f12@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=685e14d04fe35692d3bc
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Tested-by: syzbot+685e14d04fe35692d3bc@syzkaller.appspotmail.com
+Reported-by: syzbot+5f1ce62e956b7b19610e@syzkaller.appspotmail.com
+Tested-by: syzbot+5f1ce62e956b7b19610e@syzkaller.appspotmail.com
+Tested-by: syzbot+1f8ca5ee82576ec01f12@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/tencent_84EB865C89862EC22EE94CB3A7C706C59206@qq.com
+Cc: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/misc/chaoskey.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index fe83d31ac928b..ec03b25eacbbc 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3251,8 +3251,9 @@ static int nvme_check_ctrl_fabric_info(struct nvme_ctrl *ctrl, struct nvme_id_ct
- 	}
+diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
+index 32fa7fd50c380..d99d424c05a7a 100644
+--- a/drivers/usb/misc/chaoskey.c
++++ b/drivers/usb/misc/chaoskey.c
+@@ -233,10 +233,10 @@ static void chaoskey_disconnect(struct usb_interface *interface)
+ 	if (dev->hwrng_registered)
+ 		hwrng_unregister(&dev->hwrng);
  
- 	if (!ctrl->maxcmd) {
--		dev_err(ctrl->device, "Maximum outstanding commands is 0\n");
--		return -EINVAL;
-+		dev_warn(ctrl->device,
-+			"Firmware bug: maximum outstanding commands is 0\n");
-+		ctrl->maxcmd = ctrl->sqsize + 1;
- 	}
+-	mutex_lock(&chaoskey_list_lock);
+ 	usb_deregister_dev(interface, &chaoskey_class);
  
- 	return 0;
+ 	usb_set_intfdata(interface, NULL);
++	mutex_lock(&chaoskey_list_lock);
+ 	mutex_lock(&dev->lock);
+ 
+ 	dev->present = false;
+@@ -320,7 +320,7 @@ static int chaoskey_release(struct inode *inode, struct file *file)
+ bail:
+ 	mutex_unlock(&dev->lock);
+ destruction:
+-	mutex_lock(&chaoskey_list_lock);
++	mutex_unlock(&chaoskey_list_lock);
+ 	usb_dbg(interface, "release success");
+ 	return rv;
+ }
 -- 
 2.43.0
 
