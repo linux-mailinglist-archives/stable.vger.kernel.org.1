@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768409EF505
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 750179EF885
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C469290748
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0D85189579D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6FE22331C;
-	Thu, 12 Dec 2024 17:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48893223313;
+	Thu, 12 Dec 2024 17:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6wtVHmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/MB5qBg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3B7223302;
-	Thu, 12 Dec 2024 17:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0269320A5EE;
+	Thu, 12 Dec 2024 17:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023502; cv=none; b=bhDkgZETaKoDlL9RYmpI4KCpLcKr0q6HQU3wsRDsplEfhweJ/FK+sxsl5XldPNAvXSw38VAzOOh5xqlYa8DPRM6kMiZBe+RDVjJKvaKBVCtOQmBTfIoa9WjUWmfLqvAYkMkgM3v/4LV3fWZFhsviJhWNY2FvOcuWuNXkSNKV/4E=
+	t=1734024870; cv=none; b=gh3ajIh/cfheKS3egecl/9t/w3SgE+3vTAVl7a1xPkP7MqnQjNPfvd+sq50UO4Gt124Qm9yCDwNdNlg2n/KqOlWorpOk/J7ug2WphvGwBLk5MaJBM/Fke/qK3p8w03YItY5DKY8NBNAnnlKqxvLuNsBTIJ1M4u3wEv96G36uqbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023502; c=relaxed/simple;
-	bh=o5L2ZGXgv4GKcllwKCttSAIFGQFLbH7UeJQZ6oUeQxY=;
+	s=arc-20240116; t=1734024870; c=relaxed/simple;
+	bh=+c+BzxRrduTvdPPPfwUVI+tGbtwEGxzgKV763BtDnII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAyYeqbIjkuqVsCzmgkRcqyZEC/dbXgyc6UZpONHuHy+62P3m5ghegAEbI63EuK28dRJDhOzwJI558Ea/ASJz4x+rdJe3JbEOdMZP3rVImantmSEnZT/ucO2OmzrJehmSjYuW98Xf5a7dvVDR+PCePvZD9xs6YFiUbI8oPLij74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6wtVHmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CD1C4CED0;
-	Thu, 12 Dec 2024 17:11:41 +0000 (UTC)
+	 MIME-Version; b=c1RLzb90FeCwYexQkQs030UrXw5rODSgjVy/ktjQETOBxZPLuYo5T/cQ6GQ/nX92iasvb8SNfwtV36rDMkqb6jq67yJ8NKTnbMosx1FjyfVfBfXKfJ3Rxb1kuNnOjCDtqhaR7owW3voFFe1XK+8j4QlfMlrDqxX2HxQeQBlFgY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/MB5qBg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F509C4CECE;
+	Thu, 12 Dec 2024 17:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023502;
-	bh=o5L2ZGXgv4GKcllwKCttSAIFGQFLbH7UeJQZ6oUeQxY=;
+	s=korg; t=1734024869;
+	bh=+c+BzxRrduTvdPPPfwUVI+tGbtwEGxzgKV763BtDnII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6wtVHmWxlnI0+ELTBvycObBaHSFa1Dav/XVhDFzMRm8fhUj5UEr2wV7mw0KYu1oW
-	 60Y0EVK0E+HHwLnfo+Dy+TX44FzpCzVwVRC9QUaqw1KBaL4BN/BqDybwLbH31Rh8Me
-	 QsXoa+bfcviqqemap1RRdsDIg6CAg0wqeoterYYU=
+	b=W/MB5qBgjLW9ogMHfpMmvwatvC3pw9AV/a/RsrSVWUofzsKyD2DI3VajemOH9ESZS
+	 wlnddG3pvVHYkW8ZU7wECsEbrYhIhnG9ETVuUEHZ4ERVhNt80RtpNVMXLdRSPpgKBe
+	 DZpx6wtyKZdAUkEYxfvFMUXOod6YvOa7eYxk8+NY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziwei Xiao <ziweixiao@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Praveen Kaligineedi <pkaligineedi@google.com>
-Subject: [PATCH 5.15 555/565] gve: Fixes for napi_poll when budget is 0
+	Hilda Wu <hildawu@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 412/459] Bluetooth: btusb: Add RTL8852BE device 0489:e123 to device tables
 Date: Thu, 12 Dec 2024 16:02:30 +0100
-Message-ID: <20241212144333.800452202@linuxfoundation.org>
+Message-ID: <20241212144310.036814987@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziwei Xiao <ziweixiao@google.com>
+From: Hilda Wu <hildawu@realtek.com>
 
-commit 278a370c1766060d2144d6cf0b06c101e1043b6d upstream.
+[ Upstream commit 69b84ffce260ff13826dc10aeb3c3e5c2288a552 ]
 
-Netpoll will explicilty pass the polling call with a budget of 0 to
-indicate it's clearing the Tx path only. For the gve_rx_poll and
-gve_xdp_poll, they were mistakenly taking the 0 budget as the indication
-to do all the work. Add check to avoid the rx path and xdp path being
-called when budget is 0. And also avoid napi_complete_done being called
-when budget is 0 for netpoll.
+Add the support ID 0489:e123 to usb_device_id table for
+Realtek RTL8852B chip.
 
-Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
-Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-Link: https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The device info from /sys/kernel/debug/usb/devices as below.
+
+T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=04 Dev#=  7 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e123 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+
+Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c |    7 +++++++
- drivers/net/ethernet/google/gve/gve_rx.c   |    4 ----
- drivers/net/ethernet/google/gve/gve_tx.c   |    4 ----
- 3 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -201,6 +201,10 @@ static int gve_napi_poll(struct napi_str
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index d34c7758b93de..cf0a0b3eaf886 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -430,6 +430,8 @@ static const struct usb_device_id blacklist_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe123), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
  
- 	if (block->tx)
- 		reschedule |= gve_tx_poll(block, budget);
-+
-+	if (!budget)
-+		return 0;
-+
- 	if (block->rx)
- 		reschedule |= gve_rx_poll(block, budget);
- 
-@@ -236,6 +240,9 @@ static int gve_napi_poll_dqo(struct napi
- 	if (block->tx)
- 		reschedule |= gve_tx_poll_dqo(block, /*do_clean=*/true);
- 
-+	if (!budget)
-+		return 0;
-+
- 	if (block->rx) {
- 		work_done = gve_rx_poll_dqo(block, budget);
- 		reschedule |= work_done == budget;
---- a/drivers/net/ethernet/google/gve/gve_rx.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx.c
-@@ -606,10 +606,6 @@ bool gve_rx_poll(struct gve_notify_block
- 
- 	feat = block->napi.dev->features;
- 
--	/* If budget is 0, do all the work */
--	if (budget == 0)
--		budget = INT_MAX;
--
- 	if (budget > 0)
- 		repoll |= gve_clean_rx_done(rx, budget, feat);
- 	else
---- a/drivers/net/ethernet/google/gve/gve_tx.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx.c
-@@ -686,10 +686,6 @@ bool gve_tx_poll(struct gve_notify_block
- 	u32 nic_done;
- 	u32 to_do;
- 
--	/* If budget is 0, do all the work */
--	if (budget == 0)
--		budget = INT_MAX;
--
- 	/* Find out how much work there is to be done */
- 	tx->last_nic_done = gve_tx_load_event_counter(priv, tx);
- 	nic_done = be32_to_cpu(tx->last_nic_done);
+-- 
+2.43.0
+
 
 
 
