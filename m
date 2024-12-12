@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359569EF358
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFEB9EF1C4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC0AB290243
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41DBB18986D3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C648231A2B;
-	Thu, 12 Dec 2024 16:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33551223E99;
+	Thu, 12 Dec 2024 16:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBuC5h+p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxzzmIRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5996E2253FE;
-	Thu, 12 Dec 2024 16:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E373B222D68;
+	Thu, 12 Dec 2024 16:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022283; cv=none; b=raN+qM8aO8OSnRQg8T1TnLKwp/+b+zNJyr1evwPC1yisorQJD4aEKgnXE28DuEzNtBwQw8+t+UXLkmcKM48pAcP1wR4oAYz9hWetkZsEZPZZgdnpICH0LlLzwqRWfGwn9lUBUaus/Bs5aQXjCue+wtIEbkiITAZrkPsFdkcZoSM=
+	t=1734020373; cv=none; b=JhV7Lfyk/rL/RLOuhoAyq3ucxHh7l6gQ0LI7JqNOwTyKJThYfqdkFwfl9Q8srGy82opZik4u92mRqB29i7CDBQeh6wNevRgqTLrwDqVftSlsXxDG3aQQsxP6YqBn4NsaJ59jk3jJaptkLcydfuJJ6tTP4vHwi8rtmoT3mZvlHSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022283; c=relaxed/simple;
-	bh=fH+ZqloMN0cVIYHz3EM2sJJeabjBOVuBCsMa4UFnczo=;
+	s=arc-20240116; t=1734020373; c=relaxed/simple;
+	bh=qgJhTaSHitTXg6R9sRhf9d6NokqnWG2O8cf5QGDvdic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNi69fpTANV+HwIgZSPTUxLfhrXcBx3Fx6a/7vrRVvN3EWYv6tTMq52Ix4KjXAC1mKJdcnaDDkjO+SKiK71EMaf6sOLQRjELZTTXXWvT8v5fIXNpThmArosON+EY2kPTN0SrNjA6iO5XAEmtxVabb17sHfk2T6HbdRHnBeEPPaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBuC5h+p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0CFC4CECE;
-	Thu, 12 Dec 2024 16:51:22 +0000 (UTC)
+	 MIME-Version; b=YWHtvx9OtbNWbAAr/ArDv/nPhUVj+AVljU6tIyB/dtfLQwBgoFT4mUCLbzhz3lz1n40AZiBBC8OBDcvS4TgsA0soZquPsv1ezf9vaujhL1foKZT8xYrJtSl3BnlqCc4ujZdXEWhkQ4U4oV01kRhyzXqqIHMfqQxhMGhz87qJj9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxzzmIRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD5FC4CECE;
+	Thu, 12 Dec 2024 16:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022282;
-	bh=fH+ZqloMN0cVIYHz3EM2sJJeabjBOVuBCsMa4UFnczo=;
+	s=korg; t=1734020372;
+	bh=qgJhTaSHitTXg6R9sRhf9d6NokqnWG2O8cf5QGDvdic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBuC5h+pzJYiwCXgjWnWEIuIl/NK7hZP30xn+mJZqIe2D3nqsIrulyqsdvq832RC5
-	 LLaZAOS8P3x1Gu9X0xvvUxrfJsZoAHLFKa4mu5VqAr1NbW1z9mxZ7dCOgAHe2pnrIL
-	 QEXRlh4Rx46ClsLKeoy4RJZTy/Nbe7KSjXFG1VYQ=
+	b=zxzzmIRhWeKcnMsTQW0MS0YhJB0jkvXs9rF13PW5LU7NSey6sJFnrU/4U30W2aNLc
+	 Oa8/D17Wqb2RzivLuWemarP47a/cw2wiPBlhmR8cm1ugeRLjLDVYuVnR4z/riNZWHp
+	 YtX8MoCQ0Ri2zc0/NbNv5xvo7BUZO64yx+ITvlrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 199/565] net: rfkill: gpio: Add check for clk_enable()
+Subject: [PATCH 6.1 449/772] xfs: remove unknown compat feature check in superblock write validation
 Date: Thu, 12 Dec 2024 15:56:34 +0100
-Message-ID: <20241212144319.354268101@linuxfoundation.org>
+Message-ID: <20241212144408.479440854@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit 8251e7621b25ccdb689f1dd9553b8789e3745ea1 ]
+[ Upstream commit 652f03db897ba24f9c4b269e254ccc6cc01ff1b7 ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+Compat features are new features that older kernels can safely ignore,
+allowing read-write mounts without issues. The current sb write validation
+implementation returns -EFSCORRUPTED for unknown compat features,
+preventing filesystem write operations and contradicting the feature's
+definition.
 
-Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20241108195341.1853080-1-zmw12306@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Additionally, if the mounted image is unclean, the log recovery may need
+to write to the superblock. Returning an error for unknown compat features
+during sb write validation can cause mount failures.
+
+Although XFS currently does not use compat feature flags, this issue
+affects current kernels' ability to mount images that may use compat
+feature flags in the future.
+
+Since superblock read validation already warns about unknown compat
+features, it's unnecessary to repeat this warning during write validation.
+Therefore, the relevant code in write validation is being removed.
+
+Fixes: 9e037cb7972f ("xfs: check for unknown v5 feature bits in superblock write verifier")
+Cc: stable@vger.kernel.org # v4.19+
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/rfkill-gpio.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/xfs/libxfs/xfs_sb.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
-index f74baefd855d3..2df5bf240b64a 100644
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -30,8 +30,12 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
- {
- 	struct rfkill_gpio_data *rfkill = data;
- 
--	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled)
--		clk_enable(rfkill->clk);
-+	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled) {
-+		int ret = clk_enable(rfkill->clk);
-+
-+		if (ret)
-+			return ret;
-+	}
- 
- 	gpiod_set_value_cansleep(rfkill->shutdown_gpio, !blocked);
- 	gpiod_set_value_cansleep(rfkill->reset_gpio, !blocked);
+diff --git a/fs/xfs/libxfs/xfs_sb.c b/fs/xfs/libxfs/xfs_sb.c
+index c24a38272cb7c..d214233ef532f 100644
+--- a/fs/xfs/libxfs/xfs_sb.c
++++ b/fs/xfs/libxfs/xfs_sb.c
+@@ -259,13 +259,6 @@ xfs_validate_sb_write(
+ 	 * the kernel cannot support since we checked for unsupported bits in
+ 	 * the read verifier, which means that memory is corrupt.
+ 	 */
+-	if (xfs_sb_has_compat_feature(sbp, XFS_SB_FEAT_COMPAT_UNKNOWN)) {
+-		xfs_warn(mp,
+-"Corruption detected in superblock compatible features (0x%x)!",
+-			(sbp->sb_features_compat & XFS_SB_FEAT_COMPAT_UNKNOWN));
+-		return -EFSCORRUPTED;
+-	}
+-
+ 	if (!xfs_is_readonly(mp) &&
+ 	    xfs_sb_has_ro_compat_feature(sbp, XFS_SB_FEAT_RO_COMPAT_UNKNOWN)) {
+ 		xfs_alert(mp,
 -- 
 2.43.0
 
