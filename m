@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-102509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977D59EF341
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8489B9EF323
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED91B1889230
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0649416BB25
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D6722332B;
-	Thu, 12 Dec 2024 16:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D4923FA0D;
+	Thu, 12 Dec 2024 16:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zl3pRAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttX0273V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C7C223320;
-	Thu, 12 Dec 2024 16:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C0D23FD2B;
+	Thu, 12 Dec 2024 16:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021489; cv=none; b=ME7pO3dthN0S7GxS8K447tJnjMBRwTgNJzWTrlz+1xJRDjDrURcuSiuNb1/NCegDLSfHUlcNV8veY6iQC3yFEdAfRyQtTRDYaNIPKjvsebeLVcYy9lx1Zt2ErjEMMkQwp4fD3UzLCDzvvZPhuIaO73TwjCxf/oZ0p5J2YJRuR+w=
+	t=1734021375; cv=none; b=CbDpM3ID+PZWix79W7Mc+AyxET0Jykwf73MdOrTnpAqiCqh8dd2Xu7W5ar9uCZOitGnqZUaabCDg+YBxFAmUjysjH/B75B6mcIqvoc5zqO8lqinQEbNuiaSGQuTmIYmLaM8bHzV7pvJDEruz8lAA2xlVxjtA3EBI+kfM2h/fVNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021489; c=relaxed/simple;
-	bh=qPEf6Pke8uiOepmv0PDEv79gAOag3OTKaWNoYZUiYns=;
+	s=arc-20240116; t=1734021375; c=relaxed/simple;
+	bh=rem8Z/PSDZwreTRqGX+oYq91cBbOT15iN5zfIVDgVfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFesVA2ciFHxdDqFiAA1IfZTi4J5eIMjhJr7UvLB4H/+LBzF++ZiPnx1FubMf8dTvzy4q+NlJMrqRM3xh1E7G/OuqVMGONqbF3RVHOKcIA0ZhZlNHhnaBQV8K0jZYirhNX1WLOB7jFxisB0UMk5jPP+HOFf+ICfuPGuqgwQTlII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zl3pRAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB4BC4CECE;
-	Thu, 12 Dec 2024 16:38:08 +0000 (UTC)
+	 MIME-Version; b=U4h2MVpotRAc4a8Zm+I8v1Qa7AS7Em562ycK88BYlLsdBmJErJe7ktYlVd8wQEAadq/6sxTsDZGo5Foa54IbpxTejahJ/VjcsPChRqSTw9LGaqTwP770hrLjj8oBKmUb9CdQEnVV/pDglwRzz7m8qjxfslXG5ntCtsPeCOu0id4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttX0273V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9632DC4CECE;
+	Thu, 12 Dec 2024 16:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021489;
-	bh=qPEf6Pke8uiOepmv0PDEv79gAOag3OTKaWNoYZUiYns=;
+	s=korg; t=1734021375;
+	bh=rem8Z/PSDZwreTRqGX+oYq91cBbOT15iN5zfIVDgVfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1zl3pRAAPMw9ki84N3IluBn26uHf3tz6/b0IKrD2l23YBC4KpTUtQkB8g1gmzY4Ln
-	 K0pJvr4lFDjde7HaU64W0uvbf1HVn4GTZBWpkck/Ah0jnBWT6L7y7YaAM6fLb9+nOn
-	 jjOchZnXs8FF2DTvSsu6YVtPZbgYVV/92agmqErk=
+	b=ttX0273V8ZToIRn/jPfQwlTtE1znDzmoaQfgOwPef4inYUpYRDV/owf0QVWyq+K9V
+	 RSMBL7SuPyWtPZzg9IdyTaWjIZqgc1pvzRaqkCVE2U47jrOhtoGa0nmnB56n3bkTUP
+	 D7u+nfRJCtuPoPwK3VPTKoYRzuBxdm2geROXV+oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Qi Han <hanqi@vivo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 712/772] verification/dot2: Improve dot parser robustness
-Date: Thu, 12 Dec 2024 16:00:57 +0100
-Message-ID: <20241212144419.316451617@linuxfoundation.org>
+Subject: [PATCH 6.1 713/772] f2fs: fix f2fs_bug_on when uninstalling filesystem call f2fs_evict_inode.
+Date: Thu, 12 Dec 2024 16:00:58 +0100
+Message-ID: <20241212144419.355378200@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,97 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Qi Han <hanqi@vivo.com>
 
-[ Upstream commit 571f8b3f866a6d990a50fe5c89fe0ea78784d70b ]
+[ Upstream commit d5c367ef8287fb4d235c46a2f8c8d68715f3a0ca ]
 
-This patch makes the dot parser used by dot2c and dot2k slightly more
-robust, namely:
-* allows parsing files with the gv extension (GraphViz)
-* correctly parses edges with any indentation
-    * used to work only with a single character (e.g. '\t')
-Additionally it fixes a couple of warnings reported by pylint such as
-wrong indentation and comparison to False instead of `not ...`
+creating a large files during checkpoint disable until it runs out of
+space and then delete it, then remount to enable checkpoint again, and
+then unmount the filesystem triggers the f2fs_bug_on as below:
 
-Link: https://lore.kernel.org/20241017064238.41394-2-gmonaco@redhat.com
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/inode.c:896!
+CPU: 2 UID: 0 PID: 1286 Comm: umount Not tainted 6.11.0-rc7-dirty #360
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+RIP: 0010:f2fs_evict_inode+0x58c/0x610
+Call Trace:
+ __die_body+0x15/0x60
+ die+0x33/0x50
+ do_trap+0x10a/0x120
+ f2fs_evict_inode+0x58c/0x610
+ do_error_trap+0x60/0x80
+ f2fs_evict_inode+0x58c/0x610
+ exc_invalid_op+0x53/0x60
+ f2fs_evict_inode+0x58c/0x610
+ asm_exc_invalid_op+0x16/0x20
+ f2fs_evict_inode+0x58c/0x610
+ evict+0x101/0x260
+ dispose_list+0x30/0x50
+ evict_inodes+0x140/0x190
+ generic_shutdown_super+0x2f/0x150
+ kill_block_super+0x11/0x40
+ kill_f2fs_super+0x7d/0x140
+ deactivate_locked_super+0x2a/0x70
+ cleanup_mnt+0xb3/0x140
+ task_work_run+0x61/0x90
+
+The root cause is: creating large files during disable checkpoint
+period results in not enough free segments, so when writing back root
+inode will failed in f2fs_enable_checkpoint. When umount the file
+system after enabling checkpoint, the root inode is dirty in
+f2fs_evict_inode function, which triggers BUG_ON. The steps to
+reproduce are as follows:
+
+dd if=/dev/zero of=f2fs.img bs=1M count=55
+mount f2fs.img f2fs_dir -o checkpoint=disable:10%
+dd if=/dev/zero of=big bs=1M count=50
+sync
+rm big
+mount -o remount,checkpoint=enable f2fs_dir
+umount f2fs_dir
+
+Let's redirty inode when there is not free segments during checkpoint
+is disable.
+
+Signed-off-by: Qi Han <hanqi@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/verification/dot2/automata.py | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/f2fs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/verification/dot2/automata.py b/tools/verification/dot2/automata.py
-index baffeb960ff0b..bdeb98baa8b06 100644
---- a/tools/verification/dot2/automata.py
-+++ b/tools/verification/dot2/automata.py
-@@ -29,11 +29,11 @@ class Automata:
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 5b672df194a99..0f350368dea73 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -719,8 +719,10 @@ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 		!is_inode_flag_set(inode, FI_DIRTY_INODE))
+ 		return 0;
  
-     def __get_model_name(self):
-         basename = ntpath.basename(self.__dot_path)
--        if basename.endswith(".dot") == False:
-+        if not basename.endswith(".dot") and not basename.endswith(".gv"):
-             print("not a dot file")
-             raise Exception("not a dot file: %s" % self.__dot_path)
+-	if (!f2fs_is_checkpoint_ready(sbi))
++	if (!f2fs_is_checkpoint_ready(sbi)) {
++		f2fs_mark_inode_dirty_sync(inode, true);
+ 		return -ENOSPC;
++	}
  
--        model_name = basename[0:-4]
-+        model_name = ntpath.splitext(basename)[0]
-         if model_name.__len__() == 0:
-             raise Exception("not a dot file: %s" % self.__dot_path)
- 
-@@ -68,9 +68,9 @@ class Automata:
-     def __get_cursor_begin_events(self):
-         cursor = 0
-         while self.__dot_lines[cursor].split()[0] != "{node":
--           cursor += 1
-+            cursor += 1
-         while self.__dot_lines[cursor].split()[0] == "{node":
--           cursor += 1
-+            cursor += 1
-         # skip initial state transition
-         cursor += 1
-         return cursor
-@@ -94,11 +94,11 @@ class Automata:
-                 initial_state = state[7:]
-             else:
-                 states.append(state)
--                if self.__dot_lines[cursor].__contains__("doublecircle") == True:
-+                if "doublecircle" in self.__dot_lines[cursor]:
-                     final_states.append(state)
-                     has_final_states = True
- 
--                if self.__dot_lines[cursor].__contains__("ellipse") == True:
-+                if "ellipse" in self.__dot_lines[cursor]:
-                     final_states.append(state)
-                     has_final_states = True
- 
-@@ -110,7 +110,7 @@ class Automata:
-         # Insert the initial state at the bein og the states
-         states.insert(0, initial_state)
- 
--        if has_final_states == False:
-+        if not has_final_states:
-             final_states.append(initial_state)
- 
-         return states, initial_state, final_states
-@@ -120,7 +120,7 @@ class Automata:
-         cursor = self.__get_cursor_begin_events()
- 
-         events = []
--        while self.__dot_lines[cursor][1] == '"':
-+        while self.__dot_lines[cursor].lstrip()[0] == '"':
-             # transitions have the format:
-             # "all_fired" -> "both_fired" [ label = "disable_irq" ];
-             #  ------------ event is here ------------^^^^^
-@@ -161,7 +161,7 @@ class Automata:
-         # and we are back! Let's fill the matrix
-         cursor = self.__get_cursor_begin_events()
- 
--        while self.__dot_lines[cursor][1] == '"':
-+        while self.__dot_lines[cursor].lstrip()[0] == '"':
-             if self.__dot_lines[cursor].split()[1] == "->":
-                 line = self.__dot_lines[cursor].split()
-                 origin_state = line[0].replace('"','').replace(',','_')
+ 	/*
+ 	 * We need to balance fs here to prevent from producing dirty node pages
 -- 
 2.43.0
 
