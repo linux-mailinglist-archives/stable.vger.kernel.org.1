@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-101126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0A59EEAD4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A039EF0D2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0667188D775
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40CD029CF81
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643AF216E28;
-	Thu, 12 Dec 2024 15:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE072253F4;
+	Thu, 12 Dec 2024 16:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwkvHao/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agsoqHvM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE8121578A;
-	Thu, 12 Dec 2024 15:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3732210E1;
+	Thu, 12 Dec 2024 16:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016451; cv=none; b=ZTjKomJCG/p0kzcHGMkPC5PCD+Q4U2sxwzfWvxWqUviTlTROEMqf3wozemddy11CAnvQdLbHE8jcWaau6L5xdJcnP5uHEHplKWhPv9UvSS3YjTuBq2cfGQuCHfGC0ap3aNycK/TN5GOIjirM+PC2X0002Un4oRgJ1i79+MqCHgo=
+	t=1734020399; cv=none; b=Nxoq6mghmnfTztKuvgRJavoFJmrl5YbAll+SPgmqWIaPuyP5g+OF+ARez3aVH0xEimkSswUbtD4aUI75SvNiuaDFftZ9AFCjKjKeoVr/TUPGk9qKyV8OByok1zosR9aRpgCwWlRbqym0wqvJ4xSP+TNj9vsrzqZwEey7ZdOGrO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016451; c=relaxed/simple;
-	bh=+3kUKYTdtrOLB8B/iE1vk3b3BzkE3R7VH/GPeEjcIMo=;
+	s=arc-20240116; t=1734020399; c=relaxed/simple;
+	bh=dPqBVv37FtB8KWueQIddzLQ04nzTzuJiu5Pr5OIhaYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWVVrt1yF8gyiR764niacN7zmfhzxG4Y9vh8nB7eS9DTdnM23UN3iMOQvyP4Su3petZT7HK16C3XXzxaKLlSIjepr/eIWzvr2H100cHmfV+ovt0hInE2O6kn/EvawbstL0WVsun6BFJZQXiO4RY+trHAJYyxg5OKzsPL4qbPF7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwkvHao/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B3CC4CED0;
-	Thu, 12 Dec 2024 15:14:10 +0000 (UTC)
+	 MIME-Version; b=eDCGayLQlyAXlJ4VX66iWatDbsDn9fkQZEvetQhE05fY+bH7njmw4P78saHx8RDZyRcff2ey44iaq/q0pFmJMiissttiwy606d4mvadkY2XFRBPvwng9rxlkeAoBn6wDe6j7TuIEQjN0jfwANxB+qK1BBNYLYC7bYnerYXj0ysQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agsoqHvM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B69C4CECE;
+	Thu, 12 Dec 2024 16:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016451;
-	bh=+3kUKYTdtrOLB8B/iE1vk3b3BzkE3R7VH/GPeEjcIMo=;
+	s=korg; t=1734020399;
+	bh=dPqBVv37FtB8KWueQIddzLQ04nzTzuJiu5Pr5OIhaYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwkvHao/tVETOmxwYip8NX1ngPSMPEdPFn4/KSavOOVFwnddpcOCLp+wz1JMm2bEx
-	 v+/IO7WckhV4lqL4MXk2+nbpH+2L4sZ2/oVTJvHAG4WQ+37MayG4lBjpR52j5N8OCz
-	 UkQCzCkPuO1v+oFycqpx3i2YnEg6PxJ9/MATmMR4=
+	b=agsoqHvMR0S0hwzaQ+i/IRtwbJFBbrybRzXx3Em/6qS/CXoucBGHwQZ+TTATr1LP7
+	 xu9KZufXWuaoX34bj8e8WaFtSlPeDQL6uvTtNm+tIQ63O0YgGT9QjSzTMIBSP2c33/
+	 dPXgShwJb4g+/cJIqRzpUcqIasrL1QOQP2HijqcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 203/466] mm/damon: fix order of arguments in damos_before_apply tracepoint
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 427/772] um: Fix the return value of elf_core_copy_task_fpregs
 Date: Thu, 12 Dec 2024 15:56:12 +0100
-Message-ID: <20241212144314.806956260@linuxfoundation.org>
+Message-ID: <20241212144407.565416708@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akinobu Mita <akinobu.mita@gmail.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-commit 6535b8669c1a74078098517174e53fc907ce9d56 upstream.
+[ Upstream commit 865e3845eeaa21e9a62abc1361644e67124f1ec0 ]
 
-Since the order of the scheme_idx and target_idx arguments in TP_ARGS is
-reversed, they are stored in the trace record in reverse.
+This function is expected to return a boolean value, which should be
+true on success and false on failure.
 
-Link: https://lkml.kernel.org/r/20241115182023.43118-1-sj@kernel.org
-Link: https://patch.msgid.link/20241112154828.40307-1-akinobu.mita@gmail.com
-Fixes: c603c630b509 ("mm/damon/core: add a tracepoint for damos apply target regions")
-Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d1254b12c93e ("uml: fix x86_64 core dump crash")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20240913023302.130300-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/damon.h | 2 +-
+ arch/um/kernel/process.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/trace/events/damon.h b/include/trace/events/damon.h
-index 23200aabccac..da4bd9fd1162 100644
---- a/include/trace/events/damon.h
-+++ b/include/trace/events/damon.h
-@@ -15,7 +15,7 @@ TRACE_EVENT_CONDITION(damos_before_apply,
- 		unsigned int target_idx, struct damon_region *r,
- 		unsigned int nr_regions, bool do_trace),
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index a351c87db2488..c5281ce31685d 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -397,6 +397,6 @@ int elf_core_copy_fpregs(struct task_struct *t, elf_fpregset_t *fpu)
+ {
+ 	int cpu = current_thread_info()->cpu;
  
--	TP_ARGS(context_idx, target_idx, scheme_idx, r, nr_regions, do_trace),
-+	TP_ARGS(context_idx, scheme_idx, target_idx, r, nr_regions, do_trace),
- 
- 	TP_CONDITION(do_trace),
+-	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu);
++	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu) == 0;
+ }
  
 -- 
-2.47.1
+2.43.0
 
 
 
