@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35489EF147
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1D49EEAA6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A488916C741
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 354D3163844
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EF322A7F1;
-	Thu, 12 Dec 2024 16:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5F421578A;
+	Thu, 12 Dec 2024 15:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BImCNXat"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6AJARZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036B1229698;
-	Thu, 12 Dec 2024 16:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CBE21504F;
+	Thu, 12 Dec 2024 15:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020096; cv=none; b=i09knnHqZJqWyI3g77q+ah//1Xg6Xg+r5cQ5qEPCFea2qJo6dom1P5iTzfO/CQxucphD0wKqYzCunutXkziGBbNb+s8a382aIo2EcqC0Ht5xDyUq0uaF88ONEX0/dTdu0yaqLPW9KGPZ0CMqDDJh98ecNldYTf4RsvG/5G2aYTM=
+	t=1734016302; cv=none; b=RFZ7LUbkHV8CuFNWDIIa5YVl9fSyPV/G6U36gtAVjPCGF67Dx1LogYxRitG/JOBjyXQiKy49YffULDbU7b1iN3k8geVF36xB3imNrWW/o+nGkpIp5Lc/faNA8ZeAK+nWTzVn5JU4nzt/jcXq75rxsrmE8pFxV3g/6uz7PlyyvQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020096; c=relaxed/simple;
-	bh=r+eZd26v3z0d/Bfpn3qfNsl9WcJotGHK1TfSJgI9Adw=;
+	s=arc-20240116; t=1734016302; c=relaxed/simple;
+	bh=QK7FYRaIIulbTDNt0yxBlGPiOwaAknEugRUG29XPTDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3UO8AIEMjtOP1nVVqjIYA03IGDGOPBcrBSYFTtdjBdjY9OpGA6kbOfHQ/l4PzMWi1D/amxotpVSo62Yf5/NlbIXrogoEwIq2hk0sjLWPDs4DFOkFCKtcHAZfWqlgGY032XNxG4JqWUS9z0CmgbO873lXa5gkhytGrAer2WzMP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BImCNXat; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC5FC4CECE;
-	Thu, 12 Dec 2024 16:14:55 +0000 (UTC)
+	 MIME-Version; b=U4qU3jcO5Pwo06DHd+okRXxJHAAQbPjxvj+j6caG4xStjdH+Uqt0sLSAfnsOea/RHqHphv2vVz9Ax6hWJSnZAIPKykPafb7inNNQjtw91KvibrsyAfd2Pd4dhytkVzB+9wwAVSn2bBWFsqqMluPV6Cn55W9iCjCzkt4GS3DRS4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6AJARZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D3CC4CED0;
+	Thu, 12 Dec 2024 15:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020095;
-	bh=r+eZd26v3z0d/Bfpn3qfNsl9WcJotGHK1TfSJgI9Adw=;
+	s=korg; t=1734016302;
+	bh=QK7FYRaIIulbTDNt0yxBlGPiOwaAknEugRUG29XPTDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BImCNXatHaCv1CpYmizVoNgE70dQSpVzYzbfGfuItpCNaF0fHndEl/54m4z6jh1nF
-	 LpSRb7rcPqccPtsoFDBavpEdHjAnlBRwxlxfa5TvTzoXxiQ5OStH8Y95T2vW4cADt3
-	 3rsLvlWz6E0bnaw5EysOfRmuW5DmjkdX5whXazfw=
+	b=e6AJARZZcRlyRUbTa/QHLZMPVTIHzRtSxPRkkp+kGWGQiYR7FuXx7rtVRHpTOYGNp
+	 uTOwfdo9jFxKMo3IX552YYkdqruYpYH95riycJSlHr+/nKPuVz/QXEo5qaz3aKfyBM
+	 yeT9SY+e9U7nShqtR+AVhsn5t2ObsSdHXiOUYUr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.1 376/772] apparmor: test: Fix memory leak for aa_unpack_strdup()
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 152/466] scsi: ufs: qcom: Only free platform MSIs when ESI is enabled
 Date: Thu, 12 Dec 2024 15:55:21 +0100
-Message-ID: <20241212144405.440700738@linuxfoundation.org>
+Message-ID: <20241212144312.803398611@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-commit 7290f59231910ccba427d441a6e8b8c6f6112448 upstream.
+commit 64506b3d23a337e98a74b18dcb10c8619365f2bd upstream.
 
-The string allocated by kmemdup() in aa_unpack_strdup() is not
-freed and cause following memory leaks, free them to fix it.
+Otherwise, it will result in a NULL pointer dereference as below:
 
-	unreferenced object 0xffffff80c6af8a50 (size 8):
-	  comm "kunit_try_catch", pid 225, jiffies 4294894407
-	  hex dump (first 8 bytes):
-	    74 65 73 74 69 6e 67 00                          testing.
-	  backtrace (crc 5eab668b):
-	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
-	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
-	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
-	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
-	    [<000000008ecde918>] policy_unpack_test_unpack_strdup_with_null_name+0xf8/0x3ec
-	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<00000000adf936cf>] kthread+0x2e8/0x374
-	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
-	unreferenced object 0xffffff80c2a29090 (size 8):
-	  comm "kunit_try_catch", pid 227, jiffies 4294894409
-	  hex dump (first 8 bytes):
-	    74 65 73 74 69 6e 67 00                          testing.
-	  backtrace (crc 5eab668b):
-	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
-	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
-	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
-	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
-	    [<0000000046a45c1a>] policy_unpack_test_unpack_strdup_with_name+0xd0/0x3c4
-	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
-	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
-	    [<00000000adf936cf>] kthread+0x2e8/0x374
-	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+Call trace:
+ mutex_lock+0xc/0x54
+ platform_device_msi_free_irqs_all+0x14/0x20
+ ufs_qcom_remove+0x34/0x48 [ufs_qcom]
+ platform_remove+0x28/0x44
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0xd8/0x178
+ driver_detach+0x50/0x9c
+ bus_remove_driver+0x6c/0xbc
+ driver_unregister+0x30/0x60
+ platform_driver_unregister+0x14/0x20
+ ufs_qcom_pltform_exit+0x18/0xb94 [ufs_qcom]
+ __arm64_sys_delete_module+0x180/0x260
+ invoke_syscall+0x44/0x100
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x34/0xdc
+ el0t_64_sync_handler+0xc0/0xc4
+ el0t_64_sync+0x190/0x194
 
-Cc: stable@vger.kernel.org
-Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Cc: stable@vger.kernel.org # 6.3
+Fixes: 519b6274a777 ("scsi: ufs: qcom: Add MCQ ESI config vendor specific ops")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20241111-ufs_bug_fix-v1-2-45ad8b62f02e@linaro.org
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy_unpack_test.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/ufs/host/ufs-qcom.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/security/apparmor/policy_unpack_test.c
-+++ b/security/apparmor/policy_unpack_test.c
-@@ -286,6 +286,8 @@ static void policy_unpack_test_unpack_st
- 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
- 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
- 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
-+
-+	kfree(string);
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -1843,10 +1843,12 @@ static int ufs_qcom_probe(struct platfor
+ static void ufs_qcom_remove(struct platform_device *pdev)
+ {
+ 	struct ufs_hba *hba =  platform_get_drvdata(pdev);
++	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+ 
+ 	pm_runtime_get_sync(&(pdev)->dev);
+ 	ufshcd_remove(hba);
+-	platform_device_msi_free_irqs_all(hba->dev);
++	if (host->esi_enabled)
++		platform_device_msi_free_irqs_all(hba->dev);
  }
  
- static void policy_unpack_test_unpack_strdup_with_name(struct kunit *test)
-@@ -301,6 +303,8 @@ static void policy_unpack_test_unpack_st
- 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
- 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
- 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
-+
-+	kfree(string);
- }
- 
- static void policy_unpack_test_unpack_strdup_out_of_bounds(struct kunit *test)
-@@ -318,6 +322,8 @@ static void policy_unpack_test_unpack_st
- 	KUNIT_EXPECT_EQ(test, size, 0);
- 	KUNIT_EXPECT_NULL(test, string);
- 	KUNIT_EXPECT_PTR_EQ(test, puf->e->pos, start);
-+
-+	kfree(string);
- }
- 
- static void policy_unpack_test_unpack_nameX_with_null_name(struct kunit *test)
+ static const struct of_device_id ufs_qcom_of_match[] __maybe_unused = {
 
 
 
