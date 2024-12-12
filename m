@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9BF9EF4DA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3DA59EF7DE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE4AB340A88
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02B7B16FBF3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B2D222D7C;
-	Thu, 12 Dec 2024 17:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1AF2165F0;
+	Thu, 12 Dec 2024 17:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqxamKPj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mP5Qkdp+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E1322145E;
-	Thu, 12 Dec 2024 17:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462EF211493;
+	Thu, 12 Dec 2024 17:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023036; cv=none; b=MVt2RzHYR6gl9+rFq3cH9cy8AcAK9aOQ5canoHP6rks2v15akGkIuaOQD/bHoYyp52H44SSYVrBk/cI5pFrbu8GqYy2uidNzNry9gX8Vi4cqz6E8xQzLR/82Z1cLXV2Vz4lGkZb5nYESvuDMJ4Tgsh+P+DGUm6t6ysOEbTp33bY=
+	t=1734024327; cv=none; b=gmVdy1U5pS/KxHCohKLnnWgWCXBA87JSKCowcjhgQOCJsKP5Dvs4F+2pD6zRB+EXG4USQ8loJISpeoLpMGUp7UzNCo9/wr2rWii7el0tz2a6lwaOZ78DQWXh8w+a2aNvu04mkTYmnmvIFXHPzHu3hGxcvDVhpMXUNoc3S7bG6gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023036; c=relaxed/simple;
-	bh=5/6pXRi5GzFGJQU/W0PQzLc2RSbbpklfozAbiE3Flg8=;
+	s=arc-20240116; t=1734024327; c=relaxed/simple;
+	bh=/0NqUIomGTEqMap8TPmu4NfErR5UmDQ0mwh6yP2KXUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZVd98xxeQ3UMrGFQrI8kU5pGaMMH+8rPtf+OWbOBjALjVfyIAIYz0p6ZmP9q9h/wKHCwX3TWandQIYVLsxeIFFDkMTY9T+zjjrel6mttp9KkuZOeUIO9QVsvjuqTRoy89BIdOmCYfOUNpyrK4CbZ75gyQyz2D2akGJQLoWUUY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqxamKPj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EF6C4CECE;
-	Thu, 12 Dec 2024 17:03:56 +0000 (UTC)
+	 MIME-Version; b=tJPWVouWMJ/GrS+YObFiav0aSq/RlF7Fjv2pIIOzbm2hfYjgmWTqMBu2cIjg2xx2FAvu5uJryzlMr9TIwARfQG8RFXmg+xX5N5bBVfHhy7xy22H+7bl8/vHb6mU6YPVCWaYxxuS/pUeXVnSSm7SeRUvi/FqiyhEOO1i46/kvw0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mP5Qkdp+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96ACC4CECE;
+	Thu, 12 Dec 2024 17:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023036;
-	bh=5/6pXRi5GzFGJQU/W0PQzLc2RSbbpklfozAbiE3Flg8=;
+	s=korg; t=1734024327;
+	bh=/0NqUIomGTEqMap8TPmu4NfErR5UmDQ0mwh6yP2KXUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqxamKPjJ6OoZK1/xUph3r8L3Xb/2FfDq+3k1DDSRH0eSk3Pe3LizOsBWp82Mjd5z
-	 FPTMh09oOwUTHpN9yytYNDQ6XdYrZL0EKZByMQ1YS2cjM13ZJ/QG3iqt92ucHMRRsf
-	 I2gIp31lLPHgn/SFOyAdhfqMp5OrhyOmphFHws0g=
+	b=mP5Qkdp+1O+POxsTRd5gm5ldOvg0VtiJ7eCii4Ohrd6WXrl9qT30oR9XhpwOU04Sr
+	 23Qg2mW5Cwbm4x81HFe1QmhyiY4pz6LdLzjUPI+rLUh6S3RJaly5L81RrQ345yOznf
+	 kEZ0VnyAp6hLrqsYMpwZBOmgIXQPKWkHbuPE3bJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 403/565] can: sun4i_can: sun4i_can_err(): call can_change_state() even if cf is NULL
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
+Subject: [PATCH 5.10 260/459] driver core: bus: Fix double free in driver API bus_register()
 Date: Thu, 12 Dec 2024 15:59:58 +0100
-Message-ID: <20241212144327.587584499@linuxfoundation.org>
+Message-ID: <20241212144303.868976790@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit ee6bf3677ae03569d833795064e17f605c2163c7 ]
+commit bfa54a793ba77ef696755b66f3ac4ed00c7d1248 upstream.
 
-Call the function can_change_state() if the allocation of the skb
-fails, as it handles the cf parameter when it is null.
+For bus_register(), any error which happens after kset_register() will
+cause that @priv are freed twice, fixed by setting @priv with NULL after
+the first free.
 
-Additionally, this ensures that the statistics related to state error
-counters (i. e. warning, passive, and bus-off) are updated.
-
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-3-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20240727-bus_register_fix-v1-1-fed8dd0dba7a@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Brennan : Backport requires bus->p = NULL instead of priv = NULL ]
+Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sun4i_can.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/base/bus.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index ab9adfe92a94b..aad1882a9be11 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -613,10 +613,10 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
- 		tx_state = txerr >= rxerr ? state : 0;
- 		rx_state = txerr <= rxerr ? state : 0;
- 
--		if (likely(skb))
--			can_change_state(dev, cf, tx_state, rx_state);
--		else
--			priv->can.state = state;
-+		/* The skb allocation might fail, but can_change_state()
-+		 * handles cf == NULL.
-+		 */
-+		can_change_state(dev, cf, tx_state, rx_state);
- 		if (state == CAN_STATE_BUS_OFF)
- 			can_bus_off(dev);
- 	}
--- 
-2.43.0
-
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -874,6 +874,8 @@ bus_devices_fail:
+ 	bus_remove_file(bus, &bus_attr_uevent);
+ bus_uevent_fail:
+ 	kset_unregister(&bus->p->subsys);
++	/* Above kset_unregister() will kfree @bus->p */
++	bus->p = NULL;
+ out:
+ 	kfree(bus->p);
+ 	bus->p = NULL;
 
 
 
