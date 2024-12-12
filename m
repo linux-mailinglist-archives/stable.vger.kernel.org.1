@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E919EF61C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:22:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E754B9EF91C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEA44189FA79
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2B7F179AE5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECCD2165EA;
-	Thu, 12 Dec 2024 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D002222D68;
+	Thu, 12 Dec 2024 17:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQUbCIiX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9z6HMM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE0C1487CD;
-	Thu, 12 Dec 2024 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2880A2210F1;
+	Thu, 12 Dec 2024 17:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022928; cv=none; b=SRLXV/LpyHsJpO25sWvf5frAAYfewE++MMqtrB7hKXYyu0o7MNeAnDdK5BeQkTlm3mfaDYe2qnfAvb5FMYR3c9EMvx3glVsFHzgEyt3gywyTVTqaDdeC0PqaIrcrIePbud6MOoAxNDHnDy9DahzsRNEqIgsW8mvttqYt9992e7w=
+	t=1734025170; cv=none; b=cSY5kDNvwUmzS51Xz0nt3vl65qYBz0f8t03hOCUrS/o0VmmAH4QIH1mnAGmt37FX0/AGUlu+kiseTin435ytxz5FBN6L2n++M8Y6L8S/dxDgxZKObnBOMgl7kIayjld1jaOw++wKnmZT0X08K2c+VZ8A/5dX8BFvSZr3Q3O76XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022928; c=relaxed/simple;
-	bh=v4VVzs+PtZS894MBKe8Azg+p2Eja7JYrQoEtlid/mh4=;
+	s=arc-20240116; t=1734025170; c=relaxed/simple;
+	bh=9TrfIawr1is2Hfs5ZHxhoBHFsBcnEg1DFbxsrCkVgq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CDLJItHxpn1wU7H58x8PLnaLXth01xsp+x3h2Nwz7X/yjsZtlMYUX2C63JNPMkyYX6tnDfJ+/AuLEwwod2GKPix6kr9/pvxZ29bYKLuP3SxI9Q78JDcOGg8De5KuQvozLdgSkWBhziSPwFMlbFSqf/7XpOvzXGnm0lZ0b9Z9Lwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQUbCIiX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB9FC4CECE;
-	Thu, 12 Dec 2024 17:02:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e1sCul0sh0gfu3jEr6jAUOha9RxTjgmH2JcNUWE78XPiLoM0caFTnobn0BFqjv2GDRbTNkFmOzhCbABY1ztITK3VWplm0FXrwj3/Bl5nUVnkrjjSOWUClJMFKCUDBGNWgRx2eDehUExxjhCSzuh6R149FpSVFzB7cVRNjbiKils=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9z6HMM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA2FC4CED0;
+	Thu, 12 Dec 2024 17:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022928;
-	bh=v4VVzs+PtZS894MBKe8Azg+p2Eja7JYrQoEtlid/mh4=;
+	s=korg; t=1734025169;
+	bh=9TrfIawr1is2Hfs5ZHxhoBHFsBcnEg1DFbxsrCkVgq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQUbCIiXyp3vzzETt/IvWxJnkBjzHTMHD8uheN7ZXqxfMV4ItX2ccT+MRiM37Ivdb
-	 iwaQKBV7itKRBtas23uTJy5dwnUrXnMW/Ih5WdwKS8u3F+vPmWfoqdPvJ69SGG/+RB
-	 YgI+E/DCZQwSCXYfdCC5INqOsm/ukrMw/Uu18US4=
+	b=Z9z6HMM/GFcPIwmPmFqpjx8cetOhj5u9WWwtztQ1oeBWkPzpSQXSYSz4hsCet8yBv
+	 yHv1YOkGN8JXEkKBpHwVKr+A9SSY685/mvyF336xVlHCPJOlHeloszaCpRptuEtT1O
+	 xrWyHRgjNXmkzHCPRwVdha7Q7ILwCxSUjjXhr3vY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thiago Rafael Becker <trbecker@gmail.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 371/565] sunrpc: remove unnecessary test in rpc_task_set_client()
-Date: Thu, 12 Dec 2024 15:59:26 +0100
-Message-ID: <20241212144326.288698009@linuxfoundation.org>
+Subject: [PATCH 5.4 049/321] mmc: mmc_spi: drop buggy snprintf()
+Date: Thu, 12 Dec 2024 15:59:27 +0100
+Message-ID: <20241212144231.932223959@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thiago Rafael Becker <trbecker@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 023859ce6f88f7cfc223752fb56ec453a147b852 ]
+[ Upstream commit 328bda09cc91b3d93bc64f4a4dadc44313dd8140 ]
 
-In rpc_task_set_client(), testing for a NULL clnt is not necessary, as
-clnt should always be a valid pointer to a rpc_client.
+GCC 13 complains about the truncated output of snprintf():
 
-Signed-off-by: Thiago Rafael Becker <trbecker@gmail.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
+drivers/mmc/host/mmc_spi.c: In function ‘mmc_spi_response_get’:
+drivers/mmc/host/mmc_spi.c:227:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+      |                                                                ^
+drivers/mmc/host/mmc_spi.c:227:9: note: ‘snprintf’ output between 26 and 43 bytes into a destination of size 32
+  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  228 |                 cmd->opcode, maptype(cmd));
+
+Drop it and fold the string it generates into the only place where it's
+emitted - the dev_dbg() call at the end of the function.
+
+Fixes: 15a0580ced08 ("mmc_spi host driver")
+Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20241008160134.69934-1-brgl@bgdev.pl
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/clnt.c | 33 +++++++++++++++------------------
- 1 file changed, 15 insertions(+), 18 deletions(-)
+ drivers/mmc/host/mmc_spi.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 38071a6780211..5de2fc7af268a 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -1096,24 +1096,21 @@ void rpc_task_set_transport(struct rpc_task *task, struct rpc_clnt *clnt)
- static
- void rpc_task_set_client(struct rpc_task *task, struct rpc_clnt *clnt)
- {
+diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+index 7874b266a4448..e8937d8166fb4 100644
+--- a/drivers/mmc/host/mmc_spi.c
++++ b/drivers/mmc/host/mmc_spi.c
+@@ -255,10 +255,6 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
+ 	u8 	leftover = 0;
+ 	unsigned short rotator;
+ 	int 	i;
+-	char	tag[32];
 -
--	if (clnt != NULL) {
--		rpc_task_set_transport(task, clnt);
--		task->tk_client = clnt;
--		refcount_inc(&clnt->cl_count);
--		if (clnt->cl_softrtry)
--			task->tk_flags |= RPC_TASK_SOFT;
--		if (clnt->cl_softerr)
--			task->tk_flags |= RPC_TASK_TIMEOUT;
--		if (clnt->cl_noretranstimeo)
--			task->tk_flags |= RPC_TASK_NO_RETRANS_TIMEOUT;
--		if (atomic_read(&clnt->cl_swapper))
--			task->tk_flags |= RPC_TASK_SWAPPER;
--		/* Add to the client's list of all tasks */
--		spin_lock(&clnt->cl_lock);
--		list_add_tail(&task->tk_task, &clnt->cl_tasks);
--		spin_unlock(&clnt->cl_lock);
--	}
-+	rpc_task_set_transport(task, clnt);
-+	task->tk_client = clnt;
-+	refcount_inc(&clnt->cl_count);
-+	if (clnt->cl_softrtry)
-+		task->tk_flags |= RPC_TASK_SOFT;
-+	if (clnt->cl_softerr)
-+		task->tk_flags |= RPC_TASK_TIMEOUT;
-+	if (clnt->cl_noretranstimeo)
-+		task->tk_flags |= RPC_TASK_NO_RETRANS_TIMEOUT;
-+	if (atomic_read(&clnt->cl_swapper))
-+		task->tk_flags |= RPC_TASK_SWAPPER;
-+	/* Add to the client's list of all tasks */
-+	spin_lock(&clnt->cl_lock);
-+	list_add_tail(&task->tk_task, &clnt->cl_tasks);
-+	spin_unlock(&clnt->cl_lock);
- }
+-	snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+-		cmd->opcode, maptype(cmd));
  
- static void
+ 	/* Except for data block reads, the whole response will already
+ 	 * be stored in the scratch buffer.  It's somewhere after the
+@@ -408,8 +404,9 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
+ 	}
+ 
+ 	if (value < 0)
+-		dev_dbg(&host->spi->dev, "%s: resp %04x %08x\n",
+-			tag, cmd->resp[0], cmd->resp[1]);
++		dev_dbg(&host->spi->dev,
++			"  ... CMD%d response SPI_%s: resp %04x %08x\n",
++			cmd->opcode, maptype(cmd), cmd->resp[0], cmd->resp[1]);
+ 
+ 	/* disable chipselect on errors and some success cases */
+ 	if (value >= 0 && cs_on)
 -- 
 2.43.0
 
