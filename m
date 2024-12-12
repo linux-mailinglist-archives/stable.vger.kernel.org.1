@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB479EF517
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DFE9EF8CE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43906188BE62
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55A2B16DD22
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B219176AA1;
-	Thu, 12 Dec 2024 17:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3302210F1;
+	Thu, 12 Dec 2024 17:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+DwV7fG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/g32Tmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34C9222D64;
-	Thu, 12 Dec 2024 17:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F2420A5EE;
+	Thu, 12 Dec 2024 17:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023081; cv=none; b=hLTGqLlMQVdXPcTFf+geWYMGNL32xuCCZUNwUP4v6BDhZFwcZTwo2V5AYKTm+iCvqmuGTuh/j7TXlh0d30cQc1T0uRO0mWDmnXey5oVRsv+ECmMfZ965J/4VyVgIDouOMWVJz3kQPbXnr1FZF6kgGwygNcUpSEBXI4momsK9aU8=
+	t=1734025131; cv=none; b=K4Ee1c2+NQJfjiRDzA+SF8Jp+CCwNv+OaQndLamK3cMTkMecb4w8QE0CUQwFylR3DR9Fvmj8ZMwMNrp8kR30meHEFrGtHj5PS+NqT4nPRwuspOGdUE3CXSU7CiJK8abp8y+ktn6xNVdwGji4ZKzlUUCC2IDG8yRMP4Kll+8br1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023081; c=relaxed/simple;
-	bh=zazexL0u/dtF/LDIzEWaGdBTeUvmZPCcmWl8qcv7iac=;
+	s=arc-20240116; t=1734025131; c=relaxed/simple;
+	bh=jfQfEevJEzj0W7CqA27fBVZsqQa9l8/A2REnwbLW/R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3qseMWaDy600WeTMCk7xyZDt20o7LVNJ36WD8Iw8iId3HQ6WJvzDjJn3D82QWHo0MSDyvup3krZMxin4DLAbmcXgNN2p4GKEHL4DqUIHthGf1QgybgIrtzFOZhP0JAYpii8g318mNkq8M784+h/rM4VGG5LBZ1N/4jNqZPzeNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+DwV7fG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344F8C4CEDF;
-	Thu, 12 Dec 2024 17:04:41 +0000 (UTC)
+	 MIME-Version; b=UrmHrYbeRqUOdYOPWj4YahXnGQC4z6cFndD767y5KdEczxVQl2ynN5xx02FuPa/97VDaWbtDKs74ly8e5lVCay/QC/kkKjBgzRuMT9zsehFVXiweGL+fvYAvrWBBMU9KDE259NA8co5zKlAbQejxRA7fhtKJjlOp7rRibI09U44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/g32Tmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913B8C4CED0;
+	Thu, 12 Dec 2024 17:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023081;
-	bh=zazexL0u/dtF/LDIzEWaGdBTeUvmZPCcmWl8qcv7iac=;
+	s=korg; t=1734025131;
+	bh=jfQfEevJEzj0W7CqA27fBVZsqQa9l8/A2REnwbLW/R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+DwV7fGM4rQru0zRBaZcKQZxHTInM9pSuF5MlPGQU8UFcyShFhINh00IFiDPYYWg
-	 WwNLGGH8FlRyuqKqjIOT+TCQ2Zn+D7ApGPOOjnWJVzZf+7nrultHsXYlM9Qq91TdVV
-	 cfwDEFntF+UMppYQ8KNsn7xL9UKdxXElymxQr0Qo=
+	b=j/g32Tmc/o9ntAZ9KtmN1WoVgOjOqDs6BPLPC8GrHFv9U5P0SK6sbp+fhc7XQjsAR
+	 YpbG5EorepjovE2xDbWinZrZ3Iktb1y7UEphgFILVOWug4/O7h1y2TSE7FHkeCTlws
+	 KxvI3hY3ZfMtmSq1RzmfNjWwUmz0x1vIOC5gMIcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Tymoshenko <ovt@google.com>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 5.15 388/565] ovl: properly handle large files in ovl_security_fileattr
-Date: Thu, 12 Dec 2024 15:59:43 +0100
-Message-ID: <20241212144326.977965022@linuxfoundation.org>
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 066/321] bpf: Fix the xdp_adjust_tail sample prog issue
+Date: Thu, 12 Dec 2024 15:59:44 +0100
+Message-ID: <20241212144232.599261425@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Tymoshenko <ovt@google.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-commit 3b6b99ef15ea37635604992ede9ebcccef38a239 upstream.
+[ Upstream commit 4236f114a3ffbbfd217436c08852e94cae372f57 ]
 
-dentry_open in ovl_security_fileattr fails for any file
-larger than 2GB if open method of the underlying filesystem
-calls generic_file_open (e.g. fusefs).
+During the xdp_adjust_tail test, probabilistic failure occurs and SKB package
+is discarded by the kernel. After checking the issues by tracking SKB package,
+it is identified that they were caused by checksum errors. Refer to checksum
+of the arch/arm64/include/asm/checksum.h for fixing.
 
-The issue can be reproduce using the following script:
-(passthrough_ll is an example app from libfuse).
+v2: Based on Alexei Starovoitov's suggestions, it is necessary to keep the code
+ implementation consistent.
 
-  $ D=/opt/test/mnt
-  $ mkdir -p ${D}/{source,base,top/uppr,top/work,ovlfs}
-  $ dd if=/dev/zero of=${D}/source/zero.bin bs=1G count=2
-  $ passthrough_ll -o source=${D}/source ${D}/base
-  $ mount -t overlay overlay \
-      -olowerdir=${D}/base,upperdir=${D}/top/uppr,workdir=${D}/top/work \
-      ${D}/ovlfs
-  $ chmod 0777 ${D}/mnt/ovlfs/zero.bin
-
-Running this script results in "Value too large for defined data type"
-error message from chmod.
-
-Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
-Fixes: 72db82115d2b ("ovl: copy up sync/noatime fileattr flags")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c6ffd1ff7856 (bpf: add bpf_xdp_adjust_tail sample prog)
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240930024115.52841-1-chenyuan_fl@163.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/inode.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ samples/bpf/xdp_adjust_tail_kern.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -519,8 +519,13 @@ static int ovl_security_fileattr(struct
- 	struct file *file;
- 	unsigned int cmd;
- 	int err;
-+	unsigned int flags;
+diff --git a/samples/bpf/xdp_adjust_tail_kern.c b/samples/bpf/xdp_adjust_tail_kern.c
+index cd9ff2a40a398..d9c409190c2c2 100644
+--- a/samples/bpf/xdp_adjust_tail_kern.c
++++ b/samples/bpf/xdp_adjust_tail_kern.c
+@@ -54,6 +54,7 @@ static __always_inline void swap_mac(void *data, struct ethhdr *orig_eth)
  
--	file = dentry_open(realpath, O_RDONLY, current_cred());
-+	flags = O_RDONLY;
-+	if (force_o_largefile())
-+		flags |= O_LARGEFILE;
-+
-+	file = dentry_open(realpath, flags, current_cred());
- 	if (IS_ERR(file))
- 		return PTR_ERR(file);
+ static __always_inline __u16 csum_fold_helper(__u32 csum)
+ {
++	csum = (csum & 0xffff) + (csum >> 16);
+ 	return ~((csum & 0xffff) + (csum >> 16));
+ }
  
+-- 
+2.43.0
+
 
 
 
