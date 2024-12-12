@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE989EEB2A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C23159EF249
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BB9D188A2BE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8D9C179E22
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FD92080FC;
-	Thu, 12 Dec 2024 15:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7E62253EB;
+	Thu, 12 Dec 2024 16:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KulT993h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhZTIi1i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BE52EAE5;
-	Thu, 12 Dec 2024 15:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185712210E5;
+	Thu, 12 Dec 2024 16:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016598; cv=none; b=QUi7P5C2TPyvXX5ZBBkY3Ik9EVGj+/WJx/K8U47i/c3+WFmRF4Jv1y8Y94iWpC6IuPdjn29jjpngnXSKouqSFdqChTXhoqqNTVaH0SL/f1NbN81JyfP0MT+CwE6aYyyHCEbYOz+oJww8BFbr5W93eQOkKMVkD/6Wy7hvrhW/7+w=
+	t=1734020433; cv=none; b=QfIGpUp3+3fk5t6DhjH4TuDRTJsz9ZkwG0IVU5mtz8k2M5iAlzBYH4LQP8RWWJewXEYbjX9JqETw4U2rfTC/aJ7t/ZYcSXwjFvVjIHSsLd5PQb4NKZ8W42hQfCNObbayX1d4grE/ytC1ajOECzThZ/n2alZG8w8hUo509jr74W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016598; c=relaxed/simple;
-	bh=sQ/pFhZAxKM2KLImzB/SFX6m0xBTWmKIXfHfd96rgLU=;
+	s=arc-20240116; t=1734020433; c=relaxed/simple;
+	bh=yizy/JhUdBmArzSQOO2jRU1LdgDUshjRe4pg7zcpdG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ig+nZ3dO4k7lTV0wnLfsmhfcA1vR4QuQd3SKHBO/vSZ0cfn4hGTNdrBI3fed6Z9zqSpKI+IeUjQIcPmJDkdRNG/0CdLN9jgn4SwLk8IUSxp1UsiFUcjenEuMdD8pm7w4QhlZszwWEGz98LHw/URiYOmPqK/tZt8gHUQAuL6ldYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KulT993h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A33C4CECE;
-	Thu, 12 Dec 2024 15:16:37 +0000 (UTC)
+	 MIME-Version; b=JD68LwGukTc4gMkjJqyll+msg6IhXQDUoDIyM+g42I7ZbYeqs7zrTFJHZ7xYgBSfkWCiJut5lVIdR2GKlVS8w6iINLX/kv95A2cNqWT44rja0AfJ+IkiLcJGvh5fAyvYHdgQXGrsiJY4IVDHKjuH6ImiZ+fs3i8dLyBmP1KcOFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhZTIi1i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01943C4CED3;
+	Thu, 12 Dec 2024 16:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016598;
-	bh=sQ/pFhZAxKM2KLImzB/SFX6m0xBTWmKIXfHfd96rgLU=;
+	s=korg; t=1734020432;
+	bh=yizy/JhUdBmArzSQOO2jRU1LdgDUshjRe4pg7zcpdG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KulT993h2NXqrG6+F7v7mJYlk6xt5R1wbDc1KTFGjryGW8MyTyP6dYB9aGJSQBZbs
-	 n2fUJr1cSnwWSuVFD/R9l7CgtChdB7yXgCLpiM9zyci3/RhNpoZyLDEMj+QmSE3wAa
-	 HKNTcLC8euKKnW0WyZeAnhLwJRDjR3HGW5BmtXB0=
+	b=qhZTIi1i+q51569WtzKzfSQ1SkwDfpgwWGIo65w7KRS3Ik8Qsad4wy1ZR4DFeNM3S
+	 qEGBeQZaMjanpErenSHd37bIm+YnMV7HJum3LW+ZrBVyKIR0Pes9073+XiFI2SH6yx
+	 fXoJppvgMkwCh5522xIqQFcHWcM0G4TqDntGr+Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giuliano Lotta <giuliano.lotta@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 243/466] media: uvcvideo: Force UVC version to 1.0a for 0408:4033
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 467/772] media: gspca: ov534-ov772x: Fix off-by-one error in set_frame_rate()
 Date: Thu, 12 Dec 2024 15:56:52 +0100
-Message-ID: <20241212144316.385830644@linuxfoundation.org>
+Message-ID: <20241212144409.229615379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit c9df99302fff53b6007666136b9f43fbac7ee3d8 ]
+commit d2842dec577900031826dc44e9bf0c66416d7173 upstream.
 
-The Quanta ACER HD User Facing camera reports a UVC 1.50 version, but
-implements UVC 1.0a as shown by the UVC probe control being 26 bytes
-long. Force the UVC version for that device.
+In set_frame_rate(), select a rate in rate_0 or rate_1 by checking
+sd->frame_rate >= r->fps in a loop, but the loop condition terminates when
+the index reaches zero, which fails to check the last elememt in rate_0 or
+rate_1.
 
-Reported-by: Giuliano Lotta <giuliano.lotta@gmail.com>
-Closes: https://lore.kernel.org/linux-media/fce4f906-d69b-417d-9f13-bf69fe5c81e3@koyu.space/
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240924-uvc-quanta-v1-1-2de023863767@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Check for >= 0 so that the last one in rate_0 or rate_1 is also checked.
+
+Fixes: 189d92af707e ("V4L/DVB (13422): gspca - ov534: ov772x changes from Richard Kaswy.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/media/usb/gspca/ov534.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 17aa313613356..9f38a9b23c018 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2479,6 +2479,17 @@ static const struct uvc_device_info uvc_quirk_force_y8 = {
-  */
- static const struct usb_device_id uvc_ids[] = {
- 	/* Quanta ACER HD User Facing */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x0408,
-+	  .idProduct		= 0x4033,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= UVC_PC_PROTOCOL_15,
-+	  .driver_info		= (kernel_ulong_t)&(const struct uvc_device_info){
-+		.uvc_version = 0x010a,
-+	  } },
-+	/* Quanta ACER HD User Facing */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
- 	  .idVendor		= 0x0408,
--- 
-2.43.0
-
+--- a/drivers/media/usb/gspca/ov534.c
++++ b/drivers/media/usb/gspca/ov534.c
+@@ -847,7 +847,7 @@ static void set_frame_rate(struct gspca_
+ 		r = rate_1;
+ 		i = ARRAY_SIZE(rate_1);
+ 	}
+-	while (--i > 0) {
++	while (--i >= 0) {
+ 		if (sd->frame_rate >= r->fps)
+ 			break;
+ 		r++;
 
 
 
