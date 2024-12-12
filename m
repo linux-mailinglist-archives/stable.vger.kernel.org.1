@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD0F9EEC9F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A319EEB14
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0927A16A86F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6881D1886498
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FA2217739;
-	Thu, 12 Dec 2024 15:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF99C2210D8;
+	Thu, 12 Dec 2024 15:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NSjJbIG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHJH1Fkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1163921765E;
-	Thu, 12 Dec 2024 15:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C91521764F;
+	Thu, 12 Dec 2024 15:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017651; cv=none; b=d5RPOn7Ogi+ac0aTojfMRXRxNyqRveASNVznYA985fuONOTvAiJjT5Zk8+XlM+6ckO36pQRl0GFb9avPoYXzxob310houBnMOoRfE64cM+hJAZd7jmRbcFovKPoc60gVDpqOx/n/5Ryt2uiKSsCV3uKLNGZMHOL2rDb4lBBDtnc=
+	t=1734016555; cv=none; b=OiFOl1z60looOu9RdT1MxYDwAYe/5qwUR7Bdw2DtXTXFwofIojCeUOIEri4Dlb6O/Eh3zFy2zVs+trnv6GTYoqhRhkCxwAarQKKRrJoN02vwN2cl1kxdIqP93v1L4reCu2BwypglWgFHupJbPO8o6Uyb6+3OrKZsiPifdHmziDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017651; c=relaxed/simple;
-	bh=0EIzCWmAMei+HYe4zNCPlH1KH07UjIg8+IISAOfM5ss=;
+	s=arc-20240116; t=1734016555; c=relaxed/simple;
+	bh=T3GAmQm2DdNIdMxlGiwB+roJhCIB+VkW39ZwQuPX5Oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IqHfabfDd+wEYxW75QfwHHKBnm5AR9ybwUGduksYHIhBn2yY2NcWD4clp87YI+a/y0zJjCycTlabVIdOqwy8fCTsvWIuNDP8062c6Q8MA18gH4GVhbPwOo8HZu0QOh75DYlFKtnd50kyGwCVYugyl9zW2ZchHg5iT/gHpx1ZYdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NSjJbIG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293F5C4CECE;
-	Thu, 12 Dec 2024 15:34:09 +0000 (UTC)
+	 MIME-Version; b=mWaka8ZTAComI6uDDCfaI53raCsCL6M9LvjilOiIYC/xs/h94brljbW0CqG8wDW02Tp0Y6CtUMVJ+XRLC75XKpkE+lJekTArti159TeQbDcdTJZPoUHoNaCqZvfOZrTwcdT8b0IBoO87hMtVPq0I4K7vP3By+bT2+v8EB4KwGs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHJH1Fkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF31DC4CECE;
+	Thu, 12 Dec 2024 15:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017650;
-	bh=0EIzCWmAMei+HYe4zNCPlH1KH07UjIg8+IISAOfM5ss=;
+	s=korg; t=1734016555;
+	bh=T3GAmQm2DdNIdMxlGiwB+roJhCIB+VkW39ZwQuPX5Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2NSjJbIGyCpGVTV6xLP9is70pw6WcUnyHQzbBlLEqm75EU1ASpdEmBVLQ/D9Rx2jL
-	 qrz27k3fKXID6c98Du9/WtuN5MF2MvrH2dim102HPzwYXJrXCwE9To7z7NiJxx2nVo
-	 VADc0QnOwEviYgvY3MkRcjflQNj5TpHsO/g6iYA4=
+	b=FHJH1FkdeZ2hPhRIkK13Ju8ZUwxWpHWc9J5Eim0GoIsGZp2xMMI3CiQKbIBL/n6BX
+	 XKUcCsmgHXNp6KudZVyubOa+N9XCmSjUZPnry5LeUFMkARLiSJmMhXNicz0czZDXpH
+	 9t4rw96iF+9vaPb6zoC4dREba3XHF0pzVz5zMWMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Brian Foster <bfoster@redhat.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/356] serial: amba-pl011: Fix RX stall when DMA is used
-Date: Thu, 12 Dec 2024 15:56:32 +0100
-Message-ID: <20241212144247.514807793@linuxfoundation.org>
+Subject: [PATCH 6.12 224/466] ext4: partial zero eof block on unaligned inode size extension
+Date: Thu, 12 Dec 2024 15:56:33 +0100
+Message-ID: <20241212144315.628883438@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Brian Foster <bfoster@redhat.com>
 
-[ Upstream commit 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf ]
+[ Upstream commit c7fc0366c65628fd69bfc310affec4918199aae2 ]
 
-Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
-also disables the RX DMA by clearing the RXDMAE bit of the DMACR
-register. However, to properly unthrottle RX when DMA is used, the
-function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
-the DMACR register, which it currently lacks. This causes RX to stall
-after the throttle API is called.
+Using mapped writes, it's technically possible to expose stale
+post-eof data on a truncate up operation. Consider the following
+example:
 
-Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
-used.
+$ xfs_io -fc "pwrite 0 2k" -c "mmap 0 4k" -c "mwrite 2k 2k" \
+	-c "truncate 8k" -c "pread -v 2k 16" <file>
+...
+00000800:  58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58  XXXXXXXXXXXXXXXX
+...
 
-Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This shows that the post-eof data written via mwrite lands within
+EOF after a truncate up. While this is deliberate of the test case,
+behavior is somewhat unpredictable because writeback does post-eof
+zeroing, and writeback can occur at any time in the background. For
+example, an fsync inserted between the mwrite and truncate causes
+the subsequent read to instead return zeroes. This basically means
+that there is a race window in this situation between any subsequent
+extending operation and writeback that dictates whether post-eof
+data is exposed to the file or zeroed.
+
+To prevent this problem, perform partial block zeroing as part of
+the various inode size extending operations that are susceptible to
+it. For truncate extension, zero around the original eof similar to
+how truncate down does partial zeroing of the new eof. For extension
+via writes and fallocate related operations, zero the newly exposed
+range of the file to cover any partial zeroing that must occur at
+the original and new eof blocks.
+
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Link: https://patch.msgid.link/20240919160741.208162-2-bfoster@redhat.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ext4/extents.c |  7 ++++++-
+ fs/ext4/inode.c   | 51 +++++++++++++++++++++++++++++++++--------------
+ 2 files changed, 42 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
-index 16c7703110694..08f80188f73dd 100644
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -1837,6 +1837,11 @@ static void pl011_unthrottle_rx(struct uart_port *port)
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 88f98dc440275..60909af2d4a53 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4482,7 +4482,7 @@ static int ext4_alloc_file_blocks(struct file *file, ext4_lblk_t offset,
+ 	int depth = 0;
+ 	struct ext4_map_blocks map;
+ 	unsigned int credits;
+-	loff_t epos;
++	loff_t epos, old_size = i_size_read(inode);
  
- 	pl011_write(uap->im, uap, REG_IMSC);
+ 	BUG_ON(!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS));
+ 	map.m_lblk = offset;
+@@ -4541,6 +4541,11 @@ static int ext4_alloc_file_blocks(struct file *file, ext4_lblk_t offset,
+ 			if (ext4_update_inode_size(inode, epos) & 0x1)
+ 				inode_set_mtime_to_ts(inode,
+ 						      inode_get_ctime(inode));
++			if (epos > old_size) {
++				pagecache_isize_extended(inode, old_size, epos);
++				ext4_zero_partial_blocks(handle, inode,
++						     old_size, epos - old_size);
++			}
+ 		}
+ 		ret2 = ext4_mark_inode_dirty(handle, inode);
+ 		ext4_update_inode_fsync_trans(handle, inode, 1);
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 99d09cd9c6a37..67a5b937f5a92 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1307,8 +1307,10 @@ static int ext4_write_end(struct file *file,
+ 	folio_unlock(folio);
+ 	folio_put(folio);
  
-+	if (uap->using_rx_dma) {
-+		uap->dmacr |= UART011_RXDMAE;
-+		pl011_write(uap->dmacr, uap, REG_DMACR);
+-	if (old_size < pos && !verity)
++	if (old_size < pos && !verity) {
+ 		pagecache_isize_extended(inode, old_size, pos);
++		ext4_zero_partial_blocks(handle, inode, old_size, pos - old_size);
 +	}
-+
- 	uart_port_unlock_irqrestore(&uap->port, flags);
- }
+ 	/*
+ 	 * Don't mark the inode dirty under folio lock. First, it unnecessarily
+ 	 * makes the holding time of folio lock longer. Second, it forces lock
+@@ -1423,8 +1425,10 @@ static int ext4_journalled_write_end(struct file *file,
+ 	folio_unlock(folio);
+ 	folio_put(folio);
  
+-	if (old_size < pos && !verity)
++	if (old_size < pos && !verity) {
+ 		pagecache_isize_extended(inode, old_size, pos);
++		ext4_zero_partial_blocks(handle, inode, old_size, pos - old_size);
++	}
+ 
+ 	if (size_changed) {
+ 		ret2 = ext4_mark_inode_dirty(handle, inode);
+@@ -2985,7 +2989,8 @@ static int ext4_da_do_write_end(struct address_space *mapping,
+ 	struct inode *inode = mapping->host;
+ 	loff_t old_size = inode->i_size;
+ 	bool disksize_changed = false;
+-	loff_t new_i_size;
++	loff_t new_i_size, zero_len = 0;
++	handle_t *handle;
+ 
+ 	if (unlikely(!folio_buffers(folio))) {
+ 		folio_unlock(folio);
+@@ -3029,18 +3034,21 @@ static int ext4_da_do_write_end(struct address_space *mapping,
+ 	folio_unlock(folio);
+ 	folio_put(folio);
+ 
+-	if (old_size < pos)
++	if (pos > old_size) {
+ 		pagecache_isize_extended(inode, old_size, pos);
++		zero_len = pos - old_size;
++	}
+ 
+-	if (disksize_changed) {
+-		handle_t *handle;
++	if (!disksize_changed && !zero_len)
++		return copied;
+ 
+-		handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
+-		if (IS_ERR(handle))
+-			return PTR_ERR(handle);
+-		ext4_mark_inode_dirty(handle, inode);
+-		ext4_journal_stop(handle);
+-	}
++	handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
++	if (IS_ERR(handle))
++		return PTR_ERR(handle);
++	if (zero_len)
++		ext4_zero_partial_blocks(handle, inode, old_size, zero_len);
++	ext4_mark_inode_dirty(handle, inode);
++	ext4_journal_stop(handle);
+ 
+ 	return copied;
+ }
+@@ -5426,6 +5434,14 @@ int ext4_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 		}
+ 
+ 		if (attr->ia_size != inode->i_size) {
++			/* attach jbd2 jinode for EOF folio tail zeroing */
++			if (attr->ia_size & (inode->i_sb->s_blocksize - 1) ||
++			    oldsize & (inode->i_sb->s_blocksize - 1)) {
++				error = ext4_inode_attach_jinode(inode);
++				if (error)
++					goto err_out;
++			}
++
+ 			handle = ext4_journal_start(inode, EXT4_HT_INODE, 3);
+ 			if (IS_ERR(handle)) {
+ 				error = PTR_ERR(handle);
+@@ -5436,12 +5452,17 @@ int ext4_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 				orphan = 1;
+ 			}
+ 			/*
+-			 * Update c/mtime on truncate up, ext4_truncate() will
+-			 * update c/mtime in shrink case below
++			 * Update c/mtime and tail zero the EOF folio on
++			 * truncate up. ext4_truncate() handles the shrink case
++			 * below.
+ 			 */
+-			if (!shrink)
++			if (!shrink) {
+ 				inode_set_mtime_to_ts(inode,
+ 						      inode_set_ctime_current(inode));
++				if (oldsize & (inode->i_sb->s_blocksize - 1))
++					ext4_block_truncate_page(handle,
++							inode->i_mapping, oldsize);
++			}
+ 
+ 			if (shrink)
+ 				ext4_fc_track_range(handle, inode,
 -- 
 2.43.0
 
