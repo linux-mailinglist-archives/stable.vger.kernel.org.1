@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459189EF4B9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2FD9EF686
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F4004189BC49
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 093DA17FD65
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC5421766D;
-	Thu, 12 Dec 2024 16:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B3F21766D;
+	Thu, 12 Dec 2024 17:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSQoN/5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0JYh8az"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED06520967D;
-	Thu, 12 Dec 2024 16:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F8A1F2381;
+	Thu, 12 Dec 2024 17:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022609; cv=none; b=EW1PSD+yinpBiFTt77LkfQxBkvGywzKzLmVkuasXmoBqXWKxuojko+rj32Q6dhwmSILw+C6muOoK/U4xUy+vytDqVjmMy77laJuVULU5338lzmP2Jh/XIU5UiBEFXMCVqT/g4axrttt9vCLhNe2lvhnDUI69LDgsYyCnjmRcax0=
+	t=1734023891; cv=none; b=YlLIqvHAZOJC5s/ZD29vlNlJR3lQoMfoNndxd0tkT5vadmvoP8glMQpWZXII2dxOVZeGzyzagOHRrixsOxs3HXEPYQAZ9Kv9mR+AkOv2lXuHE6tn7T7h6Dq2YbL6PZZxR/uiU1OHRedvK3nWdx+ZP7ekVrpzTfzOhM1dZ0do+NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022609; c=relaxed/simple;
-	bh=kx0lY1XUchCJfx2EfFuR57zFYrDFVHvEF95ocRyBl0Y=;
+	s=arc-20240116; t=1734023891; c=relaxed/simple;
+	bh=gtH36b3X3tmiDMwXgjnCAzO29icPx189TIHc5uvmV8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdl52eHai5056ovaaw/iVSwUUQHoneomEpYfC1fZ7EVekrHYQQm/8TK+XYm42oSVcTegRBBCI0WZA/OHymVH9WMz8jTMl6bo9j9lW3jtNa4TfL7Fejo+GL+9wp4G/1BKcDzBcjwXRdLzWQcM4IpPn5XeGfY1zD6MI6KnoWYt9wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSQoN/5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522E6C4CECE;
-	Thu, 12 Dec 2024 16:56:48 +0000 (UTC)
+	 MIME-Version; b=FCHh+1HEEBSYZRk798inwRPhmybSUQiEPtk0BzpI2eNB/KrEuvuhkFw3P+3rSylgEL13jOTcbLSmsmxId7adhDMUYqzhNidajn0lgA5h41yYUppdMwvzwMy2/a9/YwtkOGMCrQeIiYrVXk5gMRGZX74ITlLddMDAYThbyN3TzXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0JYh8az; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F409C4CECE;
+	Thu, 12 Dec 2024 17:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022608;
-	bh=kx0lY1XUchCJfx2EfFuR57zFYrDFVHvEF95ocRyBl0Y=;
+	s=korg; t=1734023890;
+	bh=gtH36b3X3tmiDMwXgjnCAzO29icPx189TIHc5uvmV8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSQoN/5GC86Jdt2kRQ3GweE2y1KBJ4i1fPzF/L6MSl8tHR/RN4QFPvun/ty4+j+zu
-	 DTdVv65EtjHid8r2p7N0iCsgkNue2wW+JXI9rBX4o0tjN9ofbVreFHcrv8Ngzv+O+U
-	 btfZYI+HHbNq+iF+cdAW+fcgHy3VNykqhUhV4W4M=
+	b=Y0JYh8azQw5eP7w8UnTqyZtasXE/PuNnlv1n5Evjb7H/Oq1vks0tO4UgOAj/Fj0t7
+	 hxP0eNSNZs+CyKcT7e2PC/8AAclGg0/nGnvIO62A/HEjYEKtonSMxFDfGNhMJeIklH
+	 FZ2uoN4N9xSj48Zqd67I6b17hiWjczb0pHp0n1sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arun Kumar Neelakantam <aneela@codeaurora.org>,
-	Deepak Kumar Singh <deesin@codeaurora.org>,
-	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	Raed Salem <raeds@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 258/565] rpmsg: glink: Add TX_DATA_CONT command while sending
+Subject: [PATCH 5.10 115/459] xfrm: rename xfrm_state_offload struct to allow reuse
 Date: Thu, 12 Dec 2024 15:57:33 +0100
-Message-ID: <20241212144321.669806477@linuxfoundation.org>
+Message-ID: <20241212144258.056124839@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun Kumar Neelakantam <aneela@codeaurora.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 8956927faed366b60b0355f4a4317a10e281ced7 ]
+[ Upstream commit 87e0a94e60ea2e29be9dec6bc146fbc9861a4055 ]
 
-With current design the transport can send packets of size upto
-FIFO_SIZE which is 16k and return failure for all packets above 16k.
+The struct xfrm_state_offload has all fields needed to hold information
+for offloaded policies too. In order to do not create new struct with
+same fields, let's rename existing one and reuse it later.
 
-Add TX_DATA_CONT command to send packets greater than 16k by splitting
-into 8K chunks.
-
-Signed-off-by: Arun Kumar Neelakantam <aneela@codeaurora.org>
-Signed-off-by: Deepak Kumar Singh <deesin@codeaurora.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Link: https://lore.kernel.org/r/1596086296-28529-4-git-send-email-deesin@codeaurora.org
-Stable-dep-of: 06c59d97f63c ("rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length")
+Reviewed-by: Raed Salem <raeds@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Acked-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Stable-dep-of: 2cf567f421db ("netdevsim: copy addresses for both in and out paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c | 38 +++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ include/net/xfrm.h     | 10 +++++-----
+ net/xfrm/xfrm_device.c |  2 +-
+ net/xfrm/xfrm_state.c  |  4 ++--
+ net/xfrm/xfrm_user.c   |  2 +-
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-index 35e7291aa9696..ecfa04bc9a78d 100644
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1276,6 +1276,8 @@ static int __qcom_glink_send(struct glink_channel *channel,
- 	} __packed req;
- 	int ret;
- 	unsigned long flags;
-+	int chunk_size = len;
-+	int left_size = 0;
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 798df30c2d253..987c603806aee 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -126,7 +126,7 @@ struct xfrm_state_walk {
+ 	struct xfrm_address_filter *filter;
+ };
  
- 	if (!glink->intentless) {
- 		while (!intent) {
-@@ -1309,18 +1311,46 @@ static int __qcom_glink_send(struct glink_channel *channel,
- 		iid = intent->id;
- 	}
+-struct xfrm_state_offload {
++struct xfrm_dev_offload {
+ 	struct net_device	*dev;
+ 	struct net_device	*real_dev;
+ 	unsigned long		offload_handle;
+@@ -240,7 +240,7 @@ struct xfrm_state {
+ 	struct xfrm_lifetime_cur curlft;
+ 	struct hrtimer		mtimer;
  
-+	if (wait && chunk_size > SZ_8K) {
-+		chunk_size = SZ_8K;
-+		left_size = len - chunk_size;
-+	}
- 	req.msg.cmd = cpu_to_le16(RPM_CMD_TX_DATA);
- 	req.msg.param1 = cpu_to_le16(channel->lcid);
- 	req.msg.param2 = cpu_to_le32(iid);
--	req.chunk_size = cpu_to_le32(len);
--	req.left_size = cpu_to_le32(0);
-+	req.chunk_size = cpu_to_le32(chunk_size);
-+	req.left_size = cpu_to_le32(left_size);
+-	struct xfrm_state_offload xso;
++	struct xfrm_dev_offload xso;
  
--	ret = qcom_glink_tx(glink, &req, sizeof(req), data, len, wait);
-+	ret = qcom_glink_tx(glink, &req, sizeof(req), data, chunk_size, wait);
+ 	/* used to fix curlft->add_time when changing date */
+ 	long		saved_tmo;
+@@ -1892,7 +1892,7 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x);
  
- 	/* Mark intent available if we failed */
--	if (ret && intent)
-+	if (ret && intent) {
- 		intent->in_use = false;
-+		return ret;
-+	}
+ static inline void xfrm_dev_state_advance_esn(struct xfrm_state *x)
+ {
+-	struct xfrm_state_offload *xso = &x->xso;
++	struct xfrm_dev_offload *xso = &x->xso;
  
-+	while (left_size > 0) {
-+		data = (void *)((char *)data + chunk_size);
-+		chunk_size = left_size;
-+		if (chunk_size > SZ_8K)
-+			chunk_size = SZ_8K;
-+		left_size -= chunk_size;
-+
-+		req.msg.cmd = cpu_to_le16(RPM_CMD_TX_DATA_CONT);
-+		req.msg.param1 = cpu_to_le16(channel->lcid);
-+		req.msg.param2 = cpu_to_le32(iid);
-+		req.chunk_size = cpu_to_le32(chunk_size);
-+		req.left_size = cpu_to_le32(left_size);
-+
-+		ret = qcom_glink_tx(glink, &req, sizeof(req), data,
-+				    chunk_size, wait);
-+
-+		/* Mark intent available if we failed */
-+		if (ret && intent) {
-+			intent->in_use = false;
-+			break;
-+		}
-+	}
- 	return ret;
+ 	if (xso->dev && xso->dev->xfrmdev_ops->xdo_dev_state_advance_esn)
+ 		xso->dev->xfrmdev_ops->xdo_dev_state_advance_esn(x);
+@@ -1918,7 +1918,7 @@ static inline bool xfrm_dst_offload_ok(struct dst_entry *dst)
+ 
+ static inline void xfrm_dev_state_delete(struct xfrm_state *x)
+ {
+-	struct xfrm_state_offload *xso = &x->xso;
++	struct xfrm_dev_offload *xso = &x->xso;
+ 
+ 	if (xso->dev)
+ 		xso->dev->xfrmdev_ops->xdo_dev_state_delete(x);
+@@ -1926,7 +1926,7 @@ static inline void xfrm_dev_state_delete(struct xfrm_state *x)
+ 
+ static inline void xfrm_dev_state_free(struct xfrm_state *x)
+ {
+-	struct xfrm_state_offload *xso = &x->xso;
++	struct xfrm_dev_offload *xso = &x->xso;
+ 	struct net_device *dev = xso->dev;
+ 
+ 	if (dev && dev->xfrmdev_ops) {
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index 4d13f7a372ab6..61aa0fd9d2a0c 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -225,7 +225,7 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
+ 	int err;
+ 	struct dst_entry *dst;
+ 	struct net_device *dev;
+-	struct xfrm_state_offload *xso = &x->xso;
++	struct xfrm_dev_offload *xso = &x->xso;
+ 	xfrm_address_t *saddr;
+ 	xfrm_address_t *daddr;
+ 
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index ba73014805a4f..94179ff475f2f 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -726,7 +726,7 @@ xfrm_dev_state_flush_secctx_check(struct net *net, struct net_device *dev, bool
+ 
+ 	for (i = 0; i <= net->xfrm.state_hmask; i++) {
+ 		struct xfrm_state *x;
+-		struct xfrm_state_offload *xso;
++		struct xfrm_dev_offload *xso;
+ 
+ 		hlist_for_each_entry(x, net->xfrm.state_bydst+i, bydst) {
+ 			xso = &x->xso;
+@@ -810,7 +810,7 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
+ 	err = -ESRCH;
+ 	for (i = 0; i <= net->xfrm.state_hmask; i++) {
+ 		struct xfrm_state *x;
+-		struct xfrm_state_offload *xso;
++		struct xfrm_dev_offload *xso;
+ restart:
+ 		hlist_for_each_entry(x, net->xfrm.state_bydst+i, bydst) {
+ 			xso = &x->xso;
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index e28e49499713f..b12a305a2d7a4 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -843,7 +843,7 @@ static int copy_sec_ctx(struct xfrm_sec_ctx *s, struct sk_buff *skb)
+ 	return 0;
  }
  
+-static int copy_user_offload(struct xfrm_state_offload *xso, struct sk_buff *skb)
++static int copy_user_offload(struct xfrm_dev_offload *xso, struct sk_buff *skb)
+ {
+ 	struct xfrm_user_offload *xuo;
+ 	struct nlattr *attr;
 -- 
 2.43.0
 
