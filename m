@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-101049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183EC9EEA51
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:12:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56BEC9EF025
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2B54169AD4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F95F28C19B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F3D217F46;
-	Thu, 12 Dec 2024 15:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98321221DBE;
+	Thu, 12 Dec 2024 16:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcLO1JEJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oU8i0OaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCBA217F26;
-	Thu, 12 Dec 2024 15:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56391218592;
+	Thu, 12 Dec 2024 16:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016081; cv=none; b=X29Ww8rYTRQPVTlXjrGDLEOYPmUkTIcoCeeBfI3/PWJe3dHLeHQ2oYEAi6Y+kjPkkSYrw1QUSTCjHavfCtHeKj1h0NDsazTG2ffRmwFWt/WnLVfxRt1676xix13tjVNML/RLTjgQ6W7qMbxF0m8+lEmKVkaysHvUNoXgGmdmqKs=
+	t=1734020032; cv=none; b=tvPAUn831KW58oNKmt6AUzzZZcRitWgW6HDijToXHa4tIIUpxoij+YEi6J4jI5yPneu3akqqMUveL8s5EV3PK9yBDYcUw2SBtDYfcJ5HA3OUbNusToDJ1cF0DopEX0UAL1pYVfWIreQTwl7OBZ2Qoc4bkeVOOyVtVc+CxVuAKeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016081; c=relaxed/simple;
-	bh=IMYAPhrBHwVtW2QeybTLFIoTM9qqZB32gw5Vl1dX1zs=;
+	s=arc-20240116; t=1734020032; c=relaxed/simple;
+	bh=Z5OpGX3JcheUDWtVG42vW7XQG/m5U0gNjtSeuJ4s2ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyb0HZEIgcnjAVqCgPnKhk07iLyUrdRwQApubzytAzgBxKcqgQkobuHfMln85kR0rmQm6lpaiNG+chcsBeSDDbjDVuOQ5ZAsG4jkFjkqEebidin06jaF6036d5MPmItIZWQ5oCSla5np7VOUkRLfopjsDFxnJ/xmp0B/20heAZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcLO1JEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA578C4CED7;
-	Thu, 12 Dec 2024 15:08:00 +0000 (UTC)
+	 MIME-Version; b=Jr8QgAWEMbws9Otx0H3hPji9i7VQFFiu4RvRsP79Vffjusqv+Bo1KSzchxGr+9TY5JvjHg8jjwrpM5MQbhQM9ww2PQcQd4CS6NHmC1ENlqtmQ2CJ1B9/uFdbxFtqynjk6tcv8d1mAKbjWmuoRQhWnJbO+T5vT3UN+QNIjeZEsOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oU8i0OaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EFBC4CECE;
+	Thu, 12 Dec 2024 16:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016081;
-	bh=IMYAPhrBHwVtW2QeybTLFIoTM9qqZB32gw5Vl1dX1zs=;
+	s=korg; t=1734020032;
+	bh=Z5OpGX3JcheUDWtVG42vW7XQG/m5U0gNjtSeuJ4s2ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcLO1JEJMdX3GdYK8A8Ks2pb5BJ0QtZGp5JFzdJMXYeSls5mRRFlIKh2/blVBnx7m
-	 7lKa35TwfY39aJf1YPV13T3N4yO5Zh1fjiRwwqYNKNS778Z6x25NfUv+C6XPUh/m8q
-	 h+hmlmBFE2f9TRKn1qqXO0mS7StQlV56lstyv/hY=
+	b=oU8i0OaU47PbQoin6wHWKwSubB3DRF12chyz3aKMh3KyGe1Nn0NZRRsXkc/ht/eN+
+	 ylGQZd/9ZPLotXgq0M8lVD1fZvEawJGl11mOlYYv/PVL5g5mZ3/YwO8ftcuYnSFQOC
+	 jCirHnh50D39TqSRNhBBicFz7sOxekahj0Uri2iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Simon Horman <simon.horman@corigine.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/466] pmdomain: core: Fix error path in pm_genpd_init() when ida alloc fails
+Subject: [PATCH 6.1 320/772] crypto: api - Add crypto_clone_tfm
 Date: Thu, 12 Dec 2024 15:54:25 +0100
-Message-ID: <20241212144310.606798184@linuxfoundation.org>
+Message-ID: <20241212144403.123258296@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 3e3b71d35a02cee4b2cc3d4255668a6609165518 ]
+[ Upstream commit 3c3a24cb0ae46c9c45e4ce2272f84f0504831f59 ]
 
-When the ida allocation fails we need to free up the previously allocated
-memory before returning the error code. Let's fix this and while at it,
-let's also move the ida allocation to genpd_alloc_data() and the freeing to
-genpd_free_data(), as it better belongs there.
+This patch adds the helper crypto_clone_tfm.  The purpose is to
+allocate a tfm object with GFP_ATOMIC.  As we cannot sleep, the
+object has to be cloned from an existing tfm object.
 
-Fixes: 899f44531fe6 ("pmdomain: core: Add GENPD_FLAG_DEV_NAME_FW flag")
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Message-ID: <20241122134207.157283-3-ulf.hansson@linaro.org>
+This allows code paths that cannot otherwise allocate a crypto_tfm
+object to do so.  Once a new tfm has been obtained its key could
+then be changed without impacting other users.
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: 1465036b10be ("llc: Improve setsockopt() handling of malformed user input")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/core.c | 36 +++++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 17 deletions(-)
+ crypto/api.c      | 59 +++++++++++++++++++++++++++++++++++++++--------
+ crypto/internal.h |  2 ++
+ 2 files changed, 52 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-index e330490d8d7c8..778ff187ac59e 100644
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -2171,8 +2171,24 @@ static int genpd_alloc_data(struct generic_pm_domain *genpd)
- 	}
+diff --git a/crypto/api.c b/crypto/api.c
+index c58774586d9fb..4308b1c8ca2ea 100644
+--- a/crypto/api.c
++++ b/crypto/api.c
+@@ -489,28 +489,44 @@ struct crypto_tfm *crypto_alloc_base(const char *alg_name, u32 type, u32 mask)
+ }
+ EXPORT_SYMBOL_GPL(crypto_alloc_base);
  
- 	genpd->gd = gd;
--	return 0;
-+	device_initialize(&genpd->dev);
+-void *crypto_create_tfm_node(struct crypto_alg *alg,
+-			const struct crypto_type *frontend,
+-			int node)
++static void *crypto_alloc_tfmmem(struct crypto_alg *alg,
++				 const struct crypto_type *frontend, int node,
++				 gfp_t gfp)
+ {
+-	char *mem;
+-	struct crypto_tfm *tfm = NULL;
++	struct crypto_tfm *tfm;
+ 	unsigned int tfmsize;
+ 	unsigned int total;
+-	int err = -ENOMEM;
++	char *mem;
+ 
+ 	tfmsize = frontend->tfmsize;
+ 	total = tfmsize + sizeof(*tfm) + frontend->extsize(alg);
+ 
+-	mem = kzalloc_node(total, GFP_KERNEL, node);
++	mem = kzalloc_node(total, gfp, node);
+ 	if (mem == NULL)
+-		goto out_err;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	tfm = (struct crypto_tfm *)(mem + tfmsize);
+ 	tfm->__crt_alg = alg;
+ 	tfm->node = node;
+ 	refcount_set(&tfm->refcnt, 1);
+ 
++	return mem;
++}
 +
-+	if (!genpd_is_dev_name_fw(genpd)) {
-+		dev_set_name(&genpd->dev, "%s", genpd->name);
-+	} else {
-+		ret = ida_alloc(&genpd_ida, GFP_KERNEL);
-+		if (ret < 0)
-+			goto put;
++void *crypto_create_tfm_node(struct crypto_alg *alg,
++			     const struct crypto_type *frontend,
++			     int node)
++{
++	struct crypto_tfm *tfm;
++	char *mem;
++	int err;
++
++	mem = crypto_alloc_tfmmem(alg, frontend, node, GFP_KERNEL);
++	if (IS_ERR(mem))
++		goto out;
++
++	tfm = (struct crypto_tfm *)(mem + frontend->tfmsize);
++
+ 	err = frontend->init_tfm(tfm);
+ 	if (err)
+ 		goto out_free_tfm;
+@@ -526,13 +542,38 @@ void *crypto_create_tfm_node(struct crypto_alg *alg,
+ 	if (err == -EAGAIN)
+ 		crypto_shoot_alg(alg);
+ 	kfree(mem);
+-out_err:
+ 	mem = ERR_PTR(err);
+ out:
+ 	return mem;
+ }
+ EXPORT_SYMBOL_GPL(crypto_create_tfm_node);
  
-+		genpd->device_id = ret;
-+		dev_set_name(&genpd->dev, "%s_%u", genpd->name, genpd->device_id);
++void *crypto_clone_tfm(const struct crypto_type *frontend,
++		       struct crypto_tfm *otfm)
++{
++	struct crypto_alg *alg = otfm->__crt_alg;
++	struct crypto_tfm *tfm;
++	char *mem;
++
++	mem = ERR_PTR(-ESTALE);
++	if (unlikely(!crypto_mod_get(alg)))
++		goto out;
++
++	mem = crypto_alloc_tfmmem(alg, frontend, otfm->node, GFP_ATOMIC);
++	if (IS_ERR(mem)) {
++		crypto_mod_put(alg);
++		goto out;
 +	}
 +
-+	return 0;
-+put:
-+	put_device(&genpd->dev);
-+	if (genpd->free_states == genpd_free_default_power_state)
-+		kfree(genpd->states);
- free:
- 	if (genpd_is_cpu_domain(genpd))
- 		free_cpumask_var(genpd->cpus);
-@@ -2183,6 +2199,8 @@ static int genpd_alloc_data(struct generic_pm_domain *genpd)
- static void genpd_free_data(struct generic_pm_domain *genpd)
- {
- 	put_device(&genpd->dev);
-+	if (genpd->device_id != -ENXIO)
-+		ida_free(&genpd_ida, genpd->device_id);
- 	if (genpd_is_cpu_domain(genpd))
- 		free_cpumask_var(genpd->cpus);
- 	if (genpd->free_states)
-@@ -2271,20 +2289,6 @@ int pm_genpd_init(struct generic_pm_domain *genpd,
- 	if (ret)
- 		return ret;
++	tfm = (struct crypto_tfm *)(mem + frontend->tfmsize);
++	tfm->crt_flags = otfm->crt_flags;
++	tfm->exit = otfm->exit;
++
++out:
++	return mem;
++}
++EXPORT_SYMBOL_GPL(crypto_clone_tfm);
++
+ struct crypto_alg *crypto_find_alg(const char *alg_name,
+ 				   const struct crypto_type *frontend,
+ 				   u32 type, u32 mask)
+diff --git a/crypto/internal.h b/crypto/internal.h
+index 521bc021c54bc..e81cd7594b35e 100644
+--- a/crypto/internal.h
++++ b/crypto/internal.h
+@@ -86,6 +86,8 @@ struct crypto_tfm *__crypto_alloc_tfm(struct crypto_alg *alg, u32 type,
+ 				      u32 mask);
+ void *crypto_create_tfm_node(struct crypto_alg *alg,
+ 			const struct crypto_type *frontend, int node);
++void *crypto_clone_tfm(const struct crypto_type *frontend,
++		       struct crypto_tfm *otfm);
  
--	device_initialize(&genpd->dev);
--
--	if (!genpd_is_dev_name_fw(genpd)) {
--		dev_set_name(&genpd->dev, "%s", genpd->name);
--	} else {
--		ret = ida_alloc(&genpd_ida, GFP_KERNEL);
--		if (ret < 0) {
--			put_device(&genpd->dev);
--			return ret;
--		}
--		genpd->device_id = ret;
--		dev_set_name(&genpd->dev, "%s_%u", genpd->name, genpd->device_id);
--	}
--
- 	mutex_lock(&gpd_list_lock);
- 	list_add(&genpd->gpd_list_node, &gpd_list);
- 	mutex_unlock(&gpd_list_lock);
-@@ -2325,8 +2329,6 @@ static int genpd_remove(struct generic_pm_domain *genpd)
- 	genpd_unlock(genpd);
- 	genpd_debug_remove(genpd);
- 	cancel_work_sync(&genpd->power_off_work);
--	if (genpd->device_id != -ENXIO)
--		ida_free(&genpd_ida, genpd->device_id);
- 	genpd_free_data(genpd);
- 
- 	pr_debug("%s: removed %s\n", __func__, dev_name(&genpd->dev));
+ static inline void *crypto_create_tfm(struct crypto_alg *alg,
+ 			const struct crypto_type *frontend)
 -- 
 2.43.0
 
