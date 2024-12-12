@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-102357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2B39EF18D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0A89EED73
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AD0F28C16D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2DCE288F49
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22455223E70;
-	Thu, 12 Dec 2024 16:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D686D223C55;
+	Thu, 12 Dec 2024 15:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmiVS618"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piu6HFcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D4C221D9F;
-	Thu, 12 Dec 2024 16:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921ED2236FA;
+	Thu, 12 Dec 2024 15:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020929; cv=none; b=BmkngmIo6lek55ysZRymFAgWa5Fz7TMa1qm0L34K5xUNCTXGAF2mi4X0mcGcHaRRUqUnfpt2pFE7lopYLqxfJ1ZiQV4e/kJ/7Cz1VTZu6EaxdTnFV9EywRbZgG+tIjyWNi/qhMHbnAftSdRj9yBsLhVhEvpedfM3ndY8eXld2vI=
+	t=1734018311; cv=none; b=bN7DcqWOhxIAkKaWN7qXo9zxHnPAQgatfh3FTlG8EEyVyHBzoyqsG/saISrCHMMYQ0imUqKBds27X4C2D2NcQ1V1hpQpDv/AJyiN5GFMtAYCKlm14ciFa7tNawwnGA7E3rZTyaLm7qxypf3JOTIKpGsu7R317X+D9MaLZcKbN8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020929; c=relaxed/simple;
-	bh=DD1G4otlBHHbB7BNJD7v8RgVxPwqCZeAxHfLcL1BrEU=;
+	s=arc-20240116; t=1734018311; c=relaxed/simple;
+	bh=H2SxPZjMXisHqihJR/xwF+xlfHyW86NuTIouEn46CU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b/wl+28qO2Zm6wbJpjoQTCLOjnqGHkJGNCAaraeO1Q7KM9CzFCJIX44MGkUDWGMRDsIdZd3NifyRieSPOnG4AhovGtRxkSzklW5InIkGGwM3R7LUpp2hFDRkjgCx5cZuiMZkw6R824I6U9qRKrovihi1p1Ms2Fzt3P3vlPBm/zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmiVS618; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293A3C4CED0;
-	Thu, 12 Dec 2024 16:28:48 +0000 (UTC)
+	 MIME-Version; b=JmYKIg3p6eM6QxSUUUdZNMndEV27wKOZLcGi/hNPbmDqalXVehws09/dDAyqarBwqv8O9a0mVRIVkfUKA4zR5OpT41b8pOB27AU3EnHQshGHAw0Xs4ntrVY5LvpQ96dYflc4fp1KgT3G+QtAThsFBnro2YISR4qTg+ihbp9jfoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piu6HFcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F325C4CED0;
+	Thu, 12 Dec 2024 15:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020929;
-	bh=DD1G4otlBHHbB7BNJD7v8RgVxPwqCZeAxHfLcL1BrEU=;
+	s=korg; t=1734018311;
+	bh=H2SxPZjMXisHqihJR/xwF+xlfHyW86NuTIouEn46CU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SmiVS618RmcCxjTt3Daz+xrCo6hRVg/DqqyjqisTL9yBQXeBayvxmye3OphuRsyFk
-	 /bYo5Js1nC5XXxGGo5pUKM4BVOzlFmtbL6j9G2GslwYmO505t47D/xc2NP6J0e2I5W
-	 LvcF/KoXIwl0udBuha+j/BhEhhftzSCaZFErximE=
+	b=piu6HFcfgA5ab74Lextbzm6uPzoWovYEq6cAO6+G2QLblVvb49ZRYzqMgOWZ012OX
+	 4SIABhBwC4q52NwwgJmlZNPS7uiBXQbh3P2FxZo1xPIs3tLVQh7nnIJcXRiGP6hGYH
+	 4mYomP7tSQBRfvlz8VVc/tE0SgXZ3SWrelOxf6p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 601/772] bpf: Fix exact match conditions in trie_get_next_key()
+Subject: [PATCH 6.6 227/356] net: af_can: do not leave a dangling sk pointer in can_create()
 Date: Thu, 12 Dec 2024 15:59:06 +0100
-Message-ID: <20241212144414.759470057@linuxfoundation.org>
+Message-ID: <20241212144253.587909035@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 27abc7b3fa2e09bbe41e2924d328121546865eda ]
+[ Upstream commit 811a7ca7320c062e15d0f5b171fe6ad8592d1434 ]
 
-trie_get_next_key() uses node->prefixlen == key->prefixlen to identify
-an exact match, However, it is incorrect because when the target key
-doesn't fully match the found node (e.g., node->prefixlen != matchlen),
-these two nodes may also have the same prefixlen. It will return
-expected result when the passed key exist in the trie. However when a
-recently-deleted key or nonexistent key is passed to
-trie_get_next_key(), it may skip keys and return incorrect result.
+On error can_create() frees the allocated sk object, but sock_init_data()
+has already attached it to the provided sock object. This will leave a
+dangling sk pointer in the sock object and may cause use-after-free later.
 
-Fix it by using node->prefixlen == matchlen to identify exact matches.
-When the condition is true after the search, it also implies
-node->prefixlen equals key->prefixlen, otherwise, the search would
-return NULL instead.
-
-Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241206110622.1161752-6-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://patch.msgid.link/20241014153808.51894-5-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/can/af_can.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index c5fa2a74de771..fd6e31e722908 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -641,7 +641,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 	struct lpm_trie_node **node_stack = NULL;
- 	int err = 0, stack_ptr = -1;
- 	unsigned int next_bit;
--	size_t matchlen;
-+	size_t matchlen = 0;
- 
- 	/* The get_next_key follows postorder. For the 4 node example in
- 	 * the top of this file, the trie_get_next_key() returns the following
-@@ -680,7 +680,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 		next_bit = extract_bit(key->data, node->prefixlen);
- 		node = rcu_dereference(node->child[next_bit]);
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index 7343fd487dbea..c469fc187f0c7 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -171,6 +171,7 @@ static int can_create(struct net *net, struct socket *sock, int protocol,
+ 		/* release sk on errors */
+ 		sock_orphan(sk);
+ 		sock_put(sk);
++		sock->sk = NULL;
  	}
--	if (!node || node->prefixlen != key->prefixlen ||
-+	if (!node || node->prefixlen != matchlen ||
- 	    (node->flags & LPM_TREE_NODE_FLAG_IM))
- 		goto find_leftmost;
  
+  errout:
 -- 
 2.43.0
 
