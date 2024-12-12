@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60959EEB83
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6DA49EED2B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48A3118833DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7F491882A59
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336DB2054F8;
-	Thu, 12 Dec 2024 15:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447842185A8;
+	Thu, 12 Dec 2024 15:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYhkhv5b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6RgFQ7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53FD2AF0E;
-	Thu, 12 Dec 2024 15:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01866217F28;
+	Thu, 12 Dec 2024 15:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016869; cv=none; b=oi1Mdzo9JW65WekpFUpemRITuwBuqc4gkmltEh9Xb4f4aZkj6AwF2G8vZY4lpSaS2HRYctPBLaAnmRAPj+LJZyU2SMISffZe0rEEOGVqh7otnIeWz7m9PgT5LxoBaRvgwHhHxvqH5rMOcysaeXleB31/tW/SSszOqT7ORiyg9yw=
+	t=1734017998; cv=none; b=RTHVZYZFoCiDf5wOM0/B2IhHtxdnZFSo5wvYakl88HgtV1Q/d4E8A8KleeD6Rar8qDCdAS8eMD+ukdHk8qfJBVqK4PzgpoNbnVVtStITYBAAwYFPN/C5QmfmOveI46Fr+Gj9xg544nCwaJriSArCI0yx3sRn7ZgUr2QQ+1F244k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016869; c=relaxed/simple;
-	bh=7aaRRzxpobB2TYWAvuUXjpFgqjv/wbi0LL1cNzEsdVc=;
+	s=arc-20240116; t=1734017998; c=relaxed/simple;
+	bh=oVKW0QxO0eMnLIsmh706IwHp87GKmKOpn308ITeF1IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7IZGjULMpNh7K8r3iBOq2GV97EWDVvkoNfJ72MOLVCUXPZ06JtSZgeWmdKOUxrp0cRxiQto5MR3kqsGYNWTCaTDtac37wR5SDHDe5kXknMIfuOd2zzBsIOQHDuzLCNrO7/fI8BBiixW3pkFs4azPN3sLB0fFqFecr8ljzpjqzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYhkhv5b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50861C4CED4;
-	Thu, 12 Dec 2024 15:21:08 +0000 (UTC)
+	 MIME-Version; b=FBSz86bsoYZg5X/GTaiuHQHtVKNWkBvgMvkCsX719LZdi7LiIia90XM49jASoMMD7QrIFcZR+ZtqBOfyokgrief+NRHt7Uys4ycSL3PUbb1vCHkOPaNg0zfCnrSYIrQ+ztIXd35tffEgSD9skZEcFC/cpOKYrbmAlL6coa42E+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6RgFQ7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64CC9C4CED0;
+	Thu, 12 Dec 2024 15:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016868;
-	bh=7aaRRzxpobB2TYWAvuUXjpFgqjv/wbi0LL1cNzEsdVc=;
+	s=korg; t=1734017997;
+	bh=oVKW0QxO0eMnLIsmh706IwHp87GKmKOpn308ITeF1IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYhkhv5b1HDbR/RbLQKRFMoVxmc+iI5T8vWu/REnHD+Q+9aK34derTrnSOP/gxDPG
-	 L+x5LjN1pAK1u2gvNNtxGA/MRzh+DqCtY5/2YevMyAgSqPpIpFQSCxuxoWCLyaUDxI
-	 zTqQYWl2UmGymI43oyCEsRLp8PbSXKw6gy8dBYA4=
+	b=F6RgFQ7DUTEoQvMrtsymX1JzXICFno+hzBZsJo//5nC5qkeH3IGxiOgB85Yt6ElHJ
+	 4RW5Fej0ocaA2irdwbnClQjyVHZyyxcq73xj/hTrodr+4ZVmn5gzqF5aIpxLDZP9Y7
+	 oDGZWr9JDu59t/U62sI8bAFb6NEJ8R40364Kg+yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 319/466] jfs: array-index-out-of-bounds fix in dtReadFirst
+	David Belanger <david.belanger@amd.com>,
+	Frank Min <frank.min@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 169/356] drm/amdgpu/hdp5.2: do a posting read when flushing HDP
 Date: Thu, 12 Dec 2024 15:58:08 +0100
-Message-ID: <20241212144319.398731008@linuxfoundation.org>
+Message-ID: <20241212144251.311316549@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit ca84a2c9be482836b86d780244f0357e5a778c46 ]
+commit f756dbac1ce1d5f9a2b35e3b55fa429cf6336437 upstream.
 
-The value of stbl can be sometimes out of bounds due
-to a bad filesystem. Added a check with appopriate return
-of error code in that case.
+Need to read back to make sure the write goes through.
 
-Reported-by: syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=65fa06e29859e41a83f3
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: David Belanger <david.belanger@amd.com>
+Reviewed-by: Frank Min <frank.min@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 5d3127ca68a42..69fd936fbdb37 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -3086,6 +3086,13 @@ static int dtReadFirst(struct inode *ip, struct btstack * btstack)
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
+@@ -31,13 +31,15 @@
+ static void hdp_v5_2_flush_hdp(struct amdgpu_device *adev,
+ 				struct amdgpu_ring *ring)
+ {
+-	if (!ring || !ring->funcs->emit_wreg)
++	if (!ring || !ring->funcs->emit_wreg) {
+ 		WREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
+ 			0);
+-	else
++		RREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
++	} else {
+ 		amdgpu_ring_emit_wreg(ring,
+ 			(adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
+ 			0);
++	}
+ }
  
- 		/* get the leftmost entry */
- 		stbl = DT_GETSTBL(p);
-+
-+		if (stbl[0] < 0 || stbl[0] > 127) {
-+			DT_PUTPAGE(mp);
-+			jfs_error(ip->i_sb, "stbl[0] out of bound\n");
-+			return -EIO;
-+		}
-+
- 		xd = (pxd_t *) & p->slot[stbl[0]];
- 
- 		/* get the child page block address */
--- 
-2.43.0
-
+ static void hdp_v5_2_update_mem_power_gating(struct amdgpu_device *adev,
 
 
 
