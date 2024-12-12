@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-101897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AAB9EEF40
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04AF9EEF92
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07727294784
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B931176027
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F8822689C;
-	Thu, 12 Dec 2024 15:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52352288E5;
+	Thu, 12 Dec 2024 16:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJrVYaos"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+0216Ya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0B5217640;
-	Thu, 12 Dec 2024 15:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5126F2FE;
+	Thu, 12 Dec 2024 16:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019195; cv=none; b=JDT64r650ujEDBjtm2s1hwh8NJd6MCacAn8HGWydF1EaUroQRCD8CESWgDCm4J0/Pb8jj0KJ6SNZVNx3WHPB0tw6oWio5O7C4pS02z7Syz1Mmi/b4k22kTyKXNuLTsZVG8AfhinsUd/hd9Ry13MYbvlz8sz1RhEKq06X2rZAIxI=
+	t=1734019236; cv=none; b=ROJV9sprqqHhjp6UKksHKVpcJcorlIZmokoeu2SHV6NyqPxt0oFl8NIJV9igEjffM6d5GmzW19JZMKWFP7xPCAAG2TUdf/Uolir3ftnHH37s/QqZSMYt3Q0LSSiV06VnpbvXt+ZfDQ1B9niqTcfZ4fabKNRWn0wONFYD5WVQc5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019195; c=relaxed/simple;
-	bh=o5xwaTu/1HuC5C+Ju7FgcZihfDzYPp2Ml+WdWvb8p7c=;
+	s=arc-20240116; t=1734019236; c=relaxed/simple;
+	bh=hLrf19LJ8FWF3KZdtsXgnH/i1fPhezgK+YlvXUGneQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/h1ClWDh5R1Myfod5HQvekwLIWwCFEU83D+gDE6x8xPxeC016YSeDplEa3CzOHn5fK0stJUKP/v71ysSdDQq9S7H/C2GnnMY1ZUsSO5uXl74wEoXGx5/gksn0pBDZt9r5nQFOq+TKhEqBHIODo/8aVwOJeQnU5aaymOFy5uf/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJrVYaos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E585C4CECE;
-	Thu, 12 Dec 2024 15:59:54 +0000 (UTC)
+	 MIME-Version; b=N9CblI4HhvFy6VaXp0h+dNfNILbSbtv+74ZVm+Pkm/yIA0pbOAH3Sg2zyjJY4KDjbnAODiBHRurpuUm+qawgEVybqAtqCx7I6Anw8raUJY0GDnnBRBZzMLFsYqNHSEmaOWKo1y9IAYtmEsQqMJdrOdg71PtRNsMr5/NnzI6qDL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+0216Ya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A70C4CED3;
+	Thu, 12 Dec 2024 16:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019195;
-	bh=o5xwaTu/1HuC5C+Ju7FgcZihfDzYPp2Ml+WdWvb8p7c=;
+	s=korg; t=1734019235;
+	bh=hLrf19LJ8FWF3KZdtsXgnH/i1fPhezgK+YlvXUGneQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJrVYaosBG5s6w8AltwptYebLmzUV4cTHviaQ81/YigL0XnQ/vDvkBGUubCZLbSz6
-	 WPAUJkuN2iiMN7CyidzBKOly6sRjeTKtIFK/hpGdxXRPA6qemNZwXLyCRl97iu3ngK
-	 4LGJpvuf+HfLfMDMhrk75nuLx1lVnL1wakBxAgqs=
+	b=K+0216YaBIrZSmDT45V75g+4GSFOXm9hXlmirQy5YCwh8vjvoj0e4SstOeOMTYBuW
+	 GE/LfWAbYoaLXckagrmN06LbzjstvMN2uICGTys+JEL8W37nWTQwhOwQtgk6bQrV8t
+	 4qKgnmHA7Yj1WotP2xeDXVheMRJEdW65CMSKErIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dom Cobley <popcornmix@gmail.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/772] drm/vc4: hvs: Dont write gamma luts on 2711
-Date: Thu, 12 Dec 2024 15:51:11 +0100
-Message-ID: <20241212144355.134091877@linuxfoundation.org>
+Subject: [PATCH 6.1 127/772] drm/vc4: hdmi: Avoid hang with debug registers when suspended
+Date: Thu, 12 Dec 2024 15:51:12 +0100
+Message-ID: <20241212144355.175587513@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,39 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Dom Cobley <popcornmix@gmail.com>
 
-[ Upstream commit 52efe364d1968ee3e3ed45eb44eb924b63635315 ]
+[ Upstream commit 223ee2567a55e4f80315c768d2969e6a3b9fb23d ]
 
-The gamma block has changed in 2711, therefore writing the lut
-in vc4_hvs_lut_load is incorrect.
+Trying to read /sys/kernel/debug/dri/1/hdmi1_regs
+when the hdmi is disconnected results in a fatal system hang.
 
-Whilst the gamma property isn't created for 2711, it is called
-from vc4_hvs_init_channel, so abort if attempted.
+This is due to the pm suspend code disabling the dvp clock.
+That is just a gate of the 108MHz clock in DVP_HT_RPI_MISC_CONFIG,
+which results in accesses hanging AXI bus.
 
-Fixes: c54619b0bfb3 ("drm/vc4: Add support for the BCM2711 HVS5")
+Protect against this.
+
+Fixes: 25eb441d55d4 ("drm/vc4: hdmi: Add all the vc5 HDMI registers into the debugfs dumps")
+Signed-off-by: Dom Cobley <popcornmix@gmail.com>
 Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-15-dave.stevenson@raspberrypi.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-17-dave.stevenson@raspberrypi.com
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index 47990ecbfc4df..cf017b59114e9 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -220,6 +220,9 @@ static void vc4_hvs_lut_load(struct vc4_hvs *hvs,
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 971801acbde60..649fd5c03f21d 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -170,6 +170,8 @@ static int vc4_hdmi_debugfs_regs(struct seq_file *m, void *unused)
  	if (!drm_dev_enter(drm, &idx))
- 		return;
+ 		return -ENODEV;
  
-+	if (hvs->vc4->is_vc5)
-+		return;
++	WARN_ON(pm_runtime_resume_and_get(&vc4_hdmi->pdev->dev));
 +
- 	/* The LUT memory is laid out with each HVS channel in order,
- 	 * each of which takes 256 writes for R, 256 for G, then 256
- 	 * for B.
+ 	drm_print_regset32(&p, &vc4_hdmi->hdmi_regset);
+ 	drm_print_regset32(&p, &vc4_hdmi->hd_regset);
+ 	drm_print_regset32(&p, &vc4_hdmi->cec_regset);
+@@ -179,6 +181,8 @@ static int vc4_hdmi_debugfs_regs(struct seq_file *m, void *unused)
+ 	drm_print_regset32(&p, &vc4_hdmi->ram_regset);
+ 	drm_print_regset32(&p, &vc4_hdmi->rm_regset);
+ 
++	pm_runtime_put(&vc4_hdmi->pdev->dev);
++
+ 	drm_dev_exit(idx);
+ 
+ 	return 0;
 -- 
 2.43.0
 
