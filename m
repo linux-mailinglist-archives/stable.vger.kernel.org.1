@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-101698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DE59EEE14
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D630C9EEC1D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9897216D4DD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 532C31882DFD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460BB222D5C;
-	Thu, 12 Dec 2024 15:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D1A21578E;
+	Thu, 12 Dec 2024 15:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqdVu0ME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5mT5ZLY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00073222D55;
-	Thu, 12 Dec 2024 15:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0018E2153DF;
+	Thu, 12 Dec 2024 15:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018476; cv=none; b=FbdMCnIXgj48e6PC1MWOHBIiHuVtzEkqj7/TScpp6uc61w6m5cyftM+BNZObDEsz3ohsfSnGjjkYcmLxXcLY08AsUebExL+pK/rquw5VMF78v+ptXfbAi+23T6F/22MHyXCndUhGrYjMFsm+yoFmaGwEwQf6UgknXitoX0SaHq4=
+	t=1734017376; cv=none; b=dhWaPGw19PY3wnvYYEtRoSgHM0EJQX0vm6uz6dpjbui37DciQEpaW2EjernQuLXoJxbXDHvtrho9waJbA4zT7y6IPmQ5fM5Rr6XfVour0cKH5GibcQGizrvHBPf3LBJg8xq2nHg56ehaSoLqhi5jn82xLLjvhsuAslQoVjzVfqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018476; c=relaxed/simple;
-	bh=r8oplk/Oc9j7Oz/Dh+PcR7U7OugP2u8ofa7F0ek328Y=;
+	s=arc-20240116; t=1734017376; c=relaxed/simple;
+	bh=paG7idZL37d3pRzaiGjlOwCuKmmfFJv5Dht1yvCRU1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFg1HAcUnwMaSzFOCKeyekVJ77NtqODarNlndQ8dTkGnE0DFEtdEtPaBvp6CxPgQ40yb9SBxtzA4wsgRZiVMOu/EE7RTcCqCN09Jt2Wdv2O+/nUOZ1BXyM49nXg6urjxduLb8VoruIB9kZtTdFGX+YgSCaDCQIRyPFChOQSKe9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqdVu0ME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A60C4CECE;
-	Thu, 12 Dec 2024 15:47:54 +0000 (UTC)
+	 MIME-Version; b=fRwrkDg/YKHTF0n7oZ1aAAqPL6LaxuBOUqHS0/r+Rp6c14zsmQuQ73/wWgR4VzuNToST1V8sHIoMF3zX+0m4BEDFZ6BEL8iHEgnVzHk7sFgZdMJQKvzT2DM1ENA28P8viF78bCXY+AOqC1ars+GUz/p0JmiDxbVi1DDtRtl4jB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5mT5ZLY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFBBC4CECE;
+	Thu, 12 Dec 2024 15:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018475;
-	bh=r8oplk/Oc9j7Oz/Dh+PcR7U7OugP2u8ofa7F0ek328Y=;
+	s=korg; t=1734017375;
+	bh=paG7idZL37d3pRzaiGjlOwCuKmmfFJv5Dht1yvCRU1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cqdVu0MEwROxcDY7+m+0M5mjeqk0c/mAP6UEEx4C1EcuFDbDkyYGRjtIsgBHWahiX
-	 0y5X2+WKGw02HUsjSmU6TYaN7utCQ3m0Q8G8rOFMJzEXDSCPigFqHZwKZeoU5T5rie
-	 4OU7ImcELHi3+rRabE9a1+0LWO3c37Fm+E1QTreQ=
+	b=L5mT5ZLY62bxj2LY767SJx0TXqoUmAoZ6XZHlxuLlNBw9FowUSrgCfWOUShMJSWzI
+	 pg0N/BrEqxV9NO3HK2DQESEAUGV3OqK6fT/lsv9C3yfZxbwnQttjPASyjIkqxIfMEe
+	 lYFA+4vr1Vx6biEHOhuDHSW4p96n2utGrRLragc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 304/356] iio: light: ltr501: Add LTER0303 to the supported devices
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 6.12 454/466] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
 Date: Thu, 12 Dec 2024 16:00:23 +0100
-Message-ID: <20241212144256.575174852@linuxfoundation.org>
+Message-ID: <20241212144324.807059904@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit c26acb09ccbef47d1fddaf0783c1392d0462122c ]
+Since 5.16 and prior to 6.13 KVM can't be used with FSDAX
+guest memory (PMD pages). To reproduce the issue you need to reserve
+guest memory with `memmap=` cmdline, create and mount FS in DAX mode
+(tested both XFS and ext4), see doc link below. ndctl command for test:
+ndctl create-namespace -v -e namespace1.0 --map=dev --mode=fsdax -a 2M
+Then pass memory object to qemu like:
+-m 8G -object memory-backend-file,id=ram0,size=8G,\
+mem-path=/mnt/pmem/guestmem,share=on,prealloc=on,dump=off,align=2097152 \
+-numa node,memdev=ram0,cpus=0-1
+QEMU fails to run guest with error: kvm run failed Bad address
+and there are two warnings in dmesg:
+WARN_ON_ONCE(!page_count(page)) in kvm_is_zone_device_page() and
+WARN_ON_ONCE(folio_ref_count(folio) <= 0) in try_grab_folio() (v6.6.63)
 
-It has been found that the (non-vendor issued) ACPI ID for Lite-On
-LTR303 is present in Microsoft catalog. Add it to the list of the
-supported devices.
+It looks like in the past assumption was made that pfn won't change from
+faultin_pfn() to release_pfn_clean(), e.g. see
+commit 4cd071d13c5c ("KVM: x86/mmu: Move calls to thp_adjust() down a level")
+But kvm_page_fault structure made pfn part of mutable state, so
+now release_pfn_clean() can take hugepage-adjusted pfn.
+And it works for all cases (/dev/shm, hugetlb, devdax) except fsdax.
+Apparently in fsdax mode faultin-pfn and adjusted-pfn may refer to
+different folios, so we're getting get_page/put_page imbalance.
 
-Link: https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303
-Closes: https://lore.kernel.org/r/9cdda3e0-d56e-466f-911f-96ffd6f602c8@redhat.com
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20241024191200.229894-24-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To solve this preserve faultin pfn in separate local variable
+and pass it in kvm_release_pfn_clean().
+
+Patch tested for all mentioned guest memory backends with tdp_mmu={0,1}.
+
+No bug in upstream as it was solved fundamentally by
+commit 8dd861cc07e2 ("KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns")
+and related patch series.
+
+Link: https://nvdimm.docs.kernel.org/2mib_fs_dax.html
+Fixes: 2f6305dd5676 ("KVM: MMU: change kvm_tdp_mmu_map() arguments to kvm_page_fault")
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/ltr501.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/mmu/mmu.c         |   10 ++++++++--
+ arch/x86/kvm/mmu/paging_tmpl.h |    5 ++++-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 061c122fdc5e7..498cff9327132 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -1612,6 +1612,8 @@ static const struct acpi_device_id ltr_acpi_match[] = {
- 	{ "LTER0501", ltr501 },
- 	{ "LTER0559", ltr559 },
- 	{ "LTER0301", ltr301 },
-+	/* https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303 */
-+	{ "LTER0303", ltr303 },
- 	{ },
- };
- MODULE_DEVICE_TABLE(acpi, ltr_acpi_match);
--- 
-2.43.0
-
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4580,6 +4580,7 @@ static bool is_page_fault_stale(struct k
+ 
+ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ {
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 
+ 	/* Dummy roots are used only for shadowing bad guest roots. */
+@@ -4601,6 +4602,8 @@ static int direct_page_fault(struct kvm_
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	write_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -4615,7 +4618,7 @@ static int direct_page_fault(struct kvm_
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
+@@ -4675,6 +4678,7 @@ EXPORT_SYMBOL_GPL(kvm_handle_page_fault)
+ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
+ 				  struct kvm_page_fault *fault)
+ {
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 
+ 	if (page_fault_handle_page_track(vcpu, fault))
+@@ -4692,6 +4696,8 @@ static int kvm_tdp_mmu_page_fault(struct
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	read_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -4702,7 +4708,7 @@ static int kvm_tdp_mmu_page_fault(struct
+ 
+ out_unlock:
+ 	read_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ #endif
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -778,6 +778,7 @@ static int FNAME(fetch)(struct kvm_vcpu
+ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ {
+ 	struct guest_walker walker;
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 
+ 	WARN_ON_ONCE(fault->is_tdp);
+@@ -836,6 +837,8 @@ static int FNAME(page_fault)(struct kvm_
+ 			walker.pte_access &= ~ACC_EXEC_MASK;
+ 	}
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	write_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -849,7 +852,7 @@ static int FNAME(page_fault)(struct kvm_
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
 
 
 
