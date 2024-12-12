@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-102429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 683029EF29C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F5E9EEDC3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E46991880352
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA99528B6AC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BDE2210E3;
-	Thu, 12 Dec 2024 16:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324F521C166;
+	Thu, 12 Dec 2024 15:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/k+6D+/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwL8CRnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62202210DA;
-	Thu, 12 Dec 2024 16:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43ED2135B0;
+	Thu, 12 Dec 2024 15:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021194; cv=none; b=bxCeQBBicsTID/nQcO1j2QWuyDKIUreboX3Nx6SZq9cT6se1PoMkYwNLWPHppqhJ4rS9zCeYv+IPHcDWTta4o9UnD4bpQYXoIk82275O0ziyT3fC6j9yca0x7wcbt/MRfhio3KRg9iVOcu86bzUbR2fuWYWXSV4+EX6XQfS5NT4=
+	t=1734018566; cv=none; b=nHTTxUeZuiGkWfAOtz4aLd/66G2uKT4ysFCcMFlhvcRtYyMXIKu5DGPNh6UlOFv24Ehoy4ZtDCFZvLHtO7PvBCrBYcw5QcU7atQ/ej0wFd4wR75hccqIon2LKKtsahsbt6SQIKV7mEzVPLe2IufYtLm5YQQwVzeFBlfWQHymizo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021194; c=relaxed/simple;
-	bh=UmHa6mRlTpACfJ2LJ2OohwO0GENuLVPHvchSa6Wo8o8=;
+	s=arc-20240116; t=1734018566; c=relaxed/simple;
+	bh=KzYJAcLbPaKzkhjlRfrDAoNVGzCf+6OzLbxnLYxZens=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l46dwpQMZYXI9EEplxUZ1EtTMWISUKFP8RLPiZ3CS5V/Bl1zidscda2TgipXeODi1o7WcC1qW/5RxihQ85wrtBGQ1srDfRudQgt2JtVDO/Lo4j7JKH7YwLJB0fks9zC+reZlDUEoOGtQywOrm+e8YkPmUAYIao4QEg9GYCFFS5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/k+6D+/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7C0C4CECE;
-	Thu, 12 Dec 2024 16:33:13 +0000 (UTC)
+	 MIME-Version; b=XfiHCsVvvxybnHOfAYZ5sfz/7aQS1TCmiYkDpSkuaR9ttrIPgcjf9LEpzlkothf+HsDiHK0L2sG/wFheioptwLT98avyWfdrelOHpZmv0R8DNY3Qq2/lmOuHQ8h9mK8AK4d8UpIBl92zObvaLJ4Bu/vvg26blozjM5jSMxKHChw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwL8CRnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50510C4CECE;
+	Thu, 12 Dec 2024 15:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021194;
-	bh=UmHa6mRlTpACfJ2LJ2OohwO0GENuLVPHvchSa6Wo8o8=;
+	s=korg; t=1734018565;
+	bh=KzYJAcLbPaKzkhjlRfrDAoNVGzCf+6OzLbxnLYxZens=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/k+6D+/zkpnbf0OaAJhYK0PLIfMdWoD9YP/Nlc+r5/FreJAG31oplCn9RYDi8EjO
-	 lulPUeWViz7G4YIrjtFV3AP8ORUGaplYi7UP3mjfocBTHT333r96l0J118w7ClDXzb
-	 PuIRyYuOZNwArO6z1sLWV2FzWijGHF63GApSp7w0=
+	b=zwL8CRnNnIqowKjykUm3yMZHUv4yBDzieH5Q2sGLqrCE//EQ6mSXhNE+S/hMF9geH
+	 IA0G2KNOFpvyxdVqMLTpvXzeZm7XSz+0juDUCOXhKFL+mHrp4iHHAqQIPTmJQG2PCM
+	 +3cErvikYgvPNo1y2yFeeEc6azVQ6RVH4XxZGOy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 671/772] net: ieee802154: do not leave a dangling sk pointer in ieee802154_create()
+Subject: [PATCH 6.6 297/356] f2fs: print message if fscorrupted was found in f2fs_new_node_page()
 Date: Thu, 12 Dec 2024 16:00:16 +0100
-Message-ID: <20241212144417.641153738@linuxfoundation.org>
+Message-ID: <20241212144256.301939891@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit b4fcd63f6ef79c73cafae8cf4a114def5fc3d80d ]
+[ Upstream commit 81520c684ca67aea6a589461a3caebb9b11dcc90 ]
 
-sock_init_data() attaches the allocated sk object to the provided sock
-object. If ieee802154_create() fails later, the allocated sk object is
-freed, but the dangling pointer remains in the provided sock object, which
-may allow use-after-free.
+If fs corruption occurs in f2fs_new_node_page(), let's print
+more information about corrupted metadata into kernel log.
 
-Clear the sk pointer in the sock object on error.
+Meanwhile, it updates to record ERROR_INCONSISTENT_NAT instead
+of ERROR_INVALID_BLKADDR if blkaddr in nat entry is not
+NULL_ADDR which means nat bitmap and nat entry is inconsistent.
 
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-6-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ieee802154/socket.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/f2fs/node.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
-index 1fa2fe041ec03..9f74be2aad000 100644
---- a/net/ieee802154/socket.c
-+++ b/net/ieee802154/socket.c
-@@ -1046,19 +1046,21 @@ static int ieee802154_create(struct net *net, struct socket *sock,
- 
- 	if (sk->sk_prot->hash) {
- 		rc = sk->sk_prot->hash(sk);
--		if (rc) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (rc)
-+			goto out_sk_release;
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index a9ab93d30dceb..dedba481b66d0 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1331,7 +1331,12 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 		err = -EFSCORRUPTED;
+ 		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+-		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
++		f2fs_warn_ratelimited(sbi,
++			"f2fs_new_node_page: inconsistent nat entry, "
++			"ino:%u, nid:%u, blkaddr:%u, ver:%u, flag:%u",
++			new_ni.ino, new_ni.nid, new_ni.blk_addr,
++			new_ni.version, new_ni.flag);
++		f2fs_handle_error(sbi, ERROR_INCONSISTENT_NAT);
+ 		goto fail;
  	}
- 
- 	if (sk->sk_prot->init) {
- 		rc = sk->sk_prot->init(sk);
- 		if (rc)
--			sk_common_release(sk);
-+			goto out_sk_release;
- 	}
- out:
- 	return rc;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- static const struct net_proto_family ieee802154_family_ops = {
+ #endif
 -- 
 2.43.0
 
