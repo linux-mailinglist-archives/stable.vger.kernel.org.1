@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-100955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB32F9EE99D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:02:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B259EE984
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:01:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0F6616605A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:02:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E500C281C0B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1BB20A5EF;
-	Thu, 12 Dec 2024 15:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78958211476;
+	Thu, 12 Dec 2024 15:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzS5n1dZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZMhGFMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279172080FC;
-	Thu, 12 Dec 2024 15:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300BD209F27;
+	Thu, 12 Dec 2024 15:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015749; cv=none; b=JBzCA835LcMzalKfxGTLAug2+dsjAFa4nlKqB3xmWGznswcj6IdktTorXL+pNV3bm7J+YPMy0ijJkVp92VAqFTuUm4Q55VkyWJNDUbC7TtJ4cBLWyYM3PtrePgFP6nyvTKcFN36nzIuUcEyKlk4yNkAhXxuaIv7zgXXuAddIj74=
+	t=1734015660; cv=none; b=pwjYEBiyccfFtpSrgzZyaRydl0HyuQi/yikguOOon+2mppdJn3DBW2eTSr4ECo4owerM6WGlG2VB8RWYLI6pRtR/bNesJOob4WofhuYnzGS1V9mfyf2/ge8Jz9GXaiMuMcpsmLHcXH6HKU7hS54UUqXA55cIK5SyHbVHmREZZ/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015749; c=relaxed/simple;
-	bh=yA2gsTYoOiyuMWGihVxbon3gNPRBsQnLiy0Lr03d0/k=;
+	s=arc-20240116; t=1734015660; c=relaxed/simple;
+	bh=R9OoLGUMUDbjML+zFSxEtZlUFHlw24xBEPEMTiidxl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BgHinEOjVisKNMFQT4/h0l84r5B1mt6bKwA5+PzMCxEl6/YTulNNfSTOyLX5olD4hCUytAy8Ugfe56W1MVzgttqOx2VKtJsI1llFUe5+4fvcZ2VSasULFYn7a4vriPDmFNY8KmIjI+S6/anl3+0FZPAZoTOuNHH/C+2XAFWp0FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzS5n1dZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9FEC4CECE;
-	Thu, 12 Dec 2024 15:02:25 +0000 (UTC)
+	 MIME-Version; b=Rm4EWqF0vvMmg1QxX3GSuS6GZ8TQ6yiPrKgVx1dNKkC3zQLarfJMEQqn3s6q+9F3pqFy7IuHimAyYkEzCepLp+mJOUvwWMPBZ2zHcQjep6bSn1FQbVbH/iI9x/XHYrqRNHmgII309LAGhdpo/ZZCiIbSqvJ1g03L9XzcnAXdkys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZMhGFMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E141C4CECE;
+	Thu, 12 Dec 2024 15:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015746;
-	bh=yA2gsTYoOiyuMWGihVxbon3gNPRBsQnLiy0Lr03d0/k=;
+	s=korg; t=1734015658;
+	bh=R9OoLGUMUDbjML+zFSxEtZlUFHlw24xBEPEMTiidxl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pzS5n1dZISp2CHYRbieu1POjd01T+IYcTdUi2eMzoXcfuiWl8utAbLkzFHt9dMhNO
-	 AjwukmjRdMHQrG9TxorZsRFLSIiMssSwhQZjQZnTxiLBICmJ2zvv7kOAQ58M2RGASd
-	 Asqz/KURuvm8HlGgGkkE1bU1KHkBiIGi53gwf95E=
+	b=EZMhGFMIpqpaOQUSQQjRPzNud8uaWzQdMk8vR1/oRhz1185lu/BxuonBV3ZnNKqoI
+	 pdcmD7AE4WxkpB4ei5TbWu6z+lFPQphJ2SHRgTNs8MAI74VEFQMU9LmFKXj31ADofJ
+	 u5vel/7H61d+ILmB17T62bdgwPLMNCyVuZIHf/GI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Ocheretnyi <oocheret@cisco.com>,
+	Harini T <harini.t@amd.com>,
 	Guenter Roeck <linux@roeck-us.net>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/466] iTCO_wdt: mask NMI_NOW bit for update_no_reboot_bit() call
-Date: Thu, 12 Dec 2024 15:52:50 +0100
-Message-ID: <20241212144306.714925079@linuxfoundation.org>
+Subject: [PATCH 6.12 002/466] watchdog: xilinx_wwdt: Calculate max_hw_heartbeat_ms using clock frequency
+Date: Thu, 12 Dec 2024 15:52:51 +0100
+Message-ID: <20241212144306.754077023@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -68,83 +67,178 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oleksandr Ocheretnyi <oocheret@cisco.com>
+From: Harini T <harini.t@amd.com>
 
-[ Upstream commit daa814d784ac034c62ab3fb0ef83daeafef527e2 ]
+[ Upstream commit 006778844c2c132c28cfa90e3570560351e01b9a ]
 
-Commit da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake
-PCH iTCO") does not mask NMI_NOW bit during TCO1_CNT register's
-value comparison for update_no_reboot_bit() call causing following
-failure:
+In the current implementation, the value of max_hw_heartbeat_ms is set
+to the timeout period expressed in milliseconds and fails to verify if
+the close window percentage exceeds the maximum value that the hardware
+supports.
 
-   ...
-   iTCO_vendor_support: vendor-support=0
-   iTCO_wdt iTCO_wdt: unable to reset NO_REBOOT flag, device
-                                    disabled by hardware/BIOS
-   ...
+1. Calculate max_hw_heartbeat_ms based on input clock frequency.
+2. Update frequency check to require a minimum frequency of 1Mhz.
+3. Limit the close and open window percent to hardware supported value
+to avoid truncation.
+4. If the user input timeout exceeds the maximum timeout supported, use
+only open window and the framework supports the higher timeouts.
 
-and this can lead to unexpected NMIs later during regular
-crashkernel's workflow because of watchdog probe call failures.
-
-This change masks NMI_NOW bit for TCO1_CNT register values to
-avoid unexpected NMI_NOW bit inversions.
-
-Fixes: da23b6faa8bf ("watchdog: iTCO: Add support for Cannon Lake PCH iTCO")
-Signed-off-by: Oleksandr Ocheretnyi <oocheret@cisco.com>
+Fixes: 12984cea1b8c ("watchdog: xilinx_wwdt: Add Versal window watchdog support")
+Signed-off-by: Harini T <harini.t@amd.com>
 Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/r/20240913191403.2560805-1-oocheret@cisco.com
+Link: https://lore.kernel.org/r/20240913113230.1939373-1-harini.t@amd.com
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/iTCO_wdt.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/watchdog/xilinx_wwdt.c | 75 ++++++++++++++++++++++++++++------
+ 1 file changed, 63 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
-index 35b358bcf94ce..f01ed38aba675 100644
---- a/drivers/watchdog/iTCO_wdt.c
-+++ b/drivers/watchdog/iTCO_wdt.c
-@@ -82,6 +82,13 @@
- #define TCO2_CNT(p)	(TCOBASE(p) + 0x0a) /* TCO2 Control Register	*/
- #define TCOv2_TMR(p)	(TCOBASE(p) + 0x12) /* TCOv2 Timer Initial Value*/
+diff --git a/drivers/watchdog/xilinx_wwdt.c b/drivers/watchdog/xilinx_wwdt.c
+index d271e2e8d6e27..3d2a156f71800 100644
+--- a/drivers/watchdog/xilinx_wwdt.c
++++ b/drivers/watchdog/xilinx_wwdt.c
+@@ -2,7 +2,7 @@
+ /*
+  * Window watchdog device driver for Xilinx Versal WWDT
+  *
+- * Copyright (C) 2022 - 2023, Advanced Micro Devices, Inc.
++ * Copyright (C) 2022 - 2024, Advanced Micro Devices, Inc.
+  */
  
-+/*
-+ * NMI_NOW is bit 8 of TCO1_CNT register
-+ * Read/Write
-+ * This bit is implemented as RW but has no effect on HW.
-+ */
-+#define NMI_NOW		BIT(8)
+ #include <linux/clk.h>
+@@ -36,6 +36,12 @@
+ 
+ #define XWWDT_CLOSE_WINDOW_PERCENT	50
+ 
++/* Maximum count value of each 32 bit window */
++#define XWWDT_MAX_COUNT_WINDOW		GENMASK(31, 0)
 +
- /* internal variables */
- struct iTCO_wdt_private {
- 	struct watchdog_device wddev;
-@@ -219,13 +226,23 @@ static int update_no_reboot_bit_cnt(void *priv, bool set)
- 	struct iTCO_wdt_private *p = priv;
- 	u16 val, newval;
++/* Maximum count value of closed and open window combined */
++#define XWWDT_MAX_COUNT_WINDOW_COMBINED	GENMASK_ULL(32, 1)
++
+ static int wwdt_timeout;
+ static int closed_window_percent;
  
--	val = inw(TCO1_CNT(p));
-+	/*
-+	 * writing back 1b1 to NMI_NOW of TCO1_CNT register
-+	 * causes NMI_NOW bit inversion what consequently does
-+	 * not allow to perform the register's value comparison
-+	 * properly.
-+	 *
-+	 * NMI_NOW bit masking for TCO1_CNT register values
-+	 * helps to avoid possible NMI_NOW bit inversions on
-+	 * following write operation.
-+	 */
-+	val = inw(TCO1_CNT(p)) & ~NMI_NOW;
- 	if (set)
- 		val |= BIT(0);
- 	else
- 		val &= ~BIT(0);
- 	outw(val, TCO1_CNT(p));
--	newval = inw(TCO1_CNT(p));
-+	newval = inw(TCO1_CNT(p)) & ~NMI_NOW;
+@@ -54,6 +60,8 @@ MODULE_PARM_DESC(closed_window_percent,
+  * @xilinx_wwdt_wdd: watchdog device structure
+  * @freq: source clock frequency of WWDT
+  * @close_percent: Closed window percent
++ * @closed_timeout: Closed window timeout in ticks
++ * @open_timeout: Open window timeout in ticks
+  */
+ struct xwwdt_device {
+ 	void __iomem *base;
+@@ -61,27 +69,22 @@ struct xwwdt_device {
+ 	struct watchdog_device xilinx_wwdt_wdd;
+ 	unsigned long freq;
+ 	u32 close_percent;
++	u64 closed_timeout;
++	u64 open_timeout;
+ };
  
- 	/* make sure the update is successful */
- 	return val != newval ? -EIO : 0;
+ static int xilinx_wwdt_start(struct watchdog_device *wdd)
+ {
+ 	struct xwwdt_device *xdev = watchdog_get_drvdata(wdd);
+ 	struct watchdog_device *xilinx_wwdt_wdd = &xdev->xilinx_wwdt_wdd;
+-	u64 time_out, closed_timeout, open_timeout;
+ 	u32 control_status_reg;
+ 
+-	/* Calculate timeout count */
+-	time_out = xdev->freq * wdd->timeout;
+-	closed_timeout = div_u64(time_out * xdev->close_percent, 100);
+-	open_timeout = time_out - closed_timeout;
+-	wdd->min_hw_heartbeat_ms = xdev->close_percent * 10 * wdd->timeout;
+-
+ 	spin_lock(&xdev->spinlock);
+ 
+ 	iowrite32(XWWDT_MWR_MASK, xdev->base + XWWDT_MWR_OFFSET);
+ 	iowrite32(~(u32)XWWDT_ESR_WEN_MASK, xdev->base + XWWDT_ESR_OFFSET);
+-	iowrite32((u32)closed_timeout, xdev->base + XWWDT_FWR_OFFSET);
+-	iowrite32((u32)open_timeout, xdev->base + XWWDT_SWR_OFFSET);
++	iowrite32((u32)xdev->closed_timeout, xdev->base + XWWDT_FWR_OFFSET);
++	iowrite32((u32)xdev->open_timeout, xdev->base + XWWDT_SWR_OFFSET);
+ 
+ 	/* Enable the window watchdog timer */
+ 	control_status_reg = ioread32(xdev->base + XWWDT_ESR_OFFSET);
+@@ -133,7 +136,12 @@ static int xwwdt_probe(struct platform_device *pdev)
+ 	struct watchdog_device *xilinx_wwdt_wdd;
+ 	struct device *dev = &pdev->dev;
+ 	struct xwwdt_device *xdev;
++	u64 max_per_window_ms;
++	u64 min_per_window_ms;
++	u64 timeout_count;
+ 	struct clk *clk;
++	u32 timeout_ms;
++	u64 ms_count;
+ 	int ret;
+ 
+ 	xdev = devm_kzalloc(dev, sizeof(*xdev), GFP_KERNEL);
+@@ -154,12 +162,13 @@ static int xwwdt_probe(struct platform_device *pdev)
+ 		return PTR_ERR(clk);
+ 
+ 	xdev->freq = clk_get_rate(clk);
+-	if (!xdev->freq)
++	if (xdev->freq < 1000000)
+ 		return -EINVAL;
+ 
+ 	xilinx_wwdt_wdd->min_timeout = XWWDT_MIN_TIMEOUT;
+ 	xilinx_wwdt_wdd->timeout = XWWDT_DEFAULT_TIMEOUT;
+-	xilinx_wwdt_wdd->max_hw_heartbeat_ms = 1000 * xilinx_wwdt_wdd->timeout;
++	xilinx_wwdt_wdd->max_hw_heartbeat_ms =
++		div64_u64(XWWDT_MAX_COUNT_WINDOW_COMBINED, xdev->freq) * 1000;
+ 
+ 	if (closed_window_percent == 0 || closed_window_percent >= 100)
+ 		xdev->close_percent = XWWDT_CLOSE_WINDOW_PERCENT;
+@@ -167,6 +176,48 @@ static int xwwdt_probe(struct platform_device *pdev)
+ 		xdev->close_percent = closed_window_percent;
+ 
+ 	watchdog_init_timeout(xilinx_wwdt_wdd, wwdt_timeout, &pdev->dev);
++
++	/* Calculate ticks for 1 milli-second */
++	ms_count = div_u64(xdev->freq, 1000);
++	timeout_ms = xilinx_wwdt_wdd->timeout * 1000;
++	timeout_count = timeout_ms * ms_count;
++
++	if (timeout_ms > xilinx_wwdt_wdd->max_hw_heartbeat_ms) {
++		/*
++		 * To avoid ping restrictions until the minimum hardware heartbeat,
++		 * we will solely rely on the open window and
++		 * adjust the minimum hardware heartbeat to 0.
++		 */
++		xdev->closed_timeout = 0;
++		xdev->open_timeout = XWWDT_MAX_COUNT_WINDOW;
++		xilinx_wwdt_wdd->min_hw_heartbeat_ms = 0;
++		xilinx_wwdt_wdd->max_hw_heartbeat_ms = xilinx_wwdt_wdd->max_hw_heartbeat_ms / 2;
++	} else {
++		xdev->closed_timeout  = div64_u64(timeout_count * xdev->close_percent, 100);
++		xilinx_wwdt_wdd->min_hw_heartbeat_ms =
++			div64_u64(timeout_ms * xdev->close_percent, 100);
++
++		if (timeout_ms > xilinx_wwdt_wdd->max_hw_heartbeat_ms / 2) {
++			max_per_window_ms = xilinx_wwdt_wdd->max_hw_heartbeat_ms / 2;
++			min_per_window_ms = timeout_ms - max_per_window_ms;
++
++			if (xilinx_wwdt_wdd->min_hw_heartbeat_ms > max_per_window_ms) {
++				dev_info(xilinx_wwdt_wdd->parent,
++					 "Closed window cannot be set to %d%%. Using maximum supported value.\n",
++					xdev->close_percent);
++				xdev->closed_timeout = max_per_window_ms * ms_count;
++				xilinx_wwdt_wdd->min_hw_heartbeat_ms = max_per_window_ms;
++			} else if (xilinx_wwdt_wdd->min_hw_heartbeat_ms < min_per_window_ms) {
++				dev_info(xilinx_wwdt_wdd->parent,
++					 "Closed window cannot be set to %d%%. Using minimum supported value.\n",
++					xdev->close_percent);
++				xdev->closed_timeout = min_per_window_ms * ms_count;
++				xilinx_wwdt_wdd->min_hw_heartbeat_ms = min_per_window_ms;
++			}
++		}
++		xdev->open_timeout = timeout_count - xdev->closed_timeout;
++	}
++
+ 	spin_lock_init(&xdev->spinlock);
+ 	watchdog_set_drvdata(xilinx_wwdt_wdd, xdev);
+ 	watchdog_set_nowayout(xilinx_wwdt_wdd, 1);
 -- 
 2.43.0
 
