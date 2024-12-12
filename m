@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FEE9EF352
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13DDE9EF1DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFFCF288B5A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BA6C18945E6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A6B23098A;
-	Thu, 12 Dec 2024 16:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D39235C36;
+	Thu, 12 Dec 2024 16:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BRso1Ja"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSW5SgVB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CEE215799;
-	Thu, 12 Dec 2024 16:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538AF223E81;
+	Thu, 12 Dec 2024 16:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022281; cv=none; b=bi0CQnGYOYg6Gutf2OQQcdNNQpXr1jDd/agZvm1Pge0vXJnyNH57slcL83FchgvFUae8eLAunA8bHJT8T+QFGxcPAeQ0+nSHPC4FcABYMKJApvvct0jZ7MFttXxHOsMvPKsPRKCSPO6xEaIWbosJp6vkM5WrlJpPy5zg6LoZR6s=
+	t=1734020365; cv=none; b=Jnx3l0ewm5llEKLLq3ZuWrua0sGJULEAuCrIW/77XobMu6a4i4WKDKCaw2H1FXhLudalY8H1XOeLp5CsKfBMlAds8aE+N2HYFyNKWHByYpOP2t/PCH4yZMK5Tl0CeTaKMDH23LWjjZFV4RqEy/UgL2OePx4t2Pdrrnhd2h8JZ/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022281; c=relaxed/simple;
-	bh=3lNxiGEJ7KkmRYPElCAU8H1ak7/gmAX5lTyRFb1F6NU=;
+	s=arc-20240116; t=1734020365; c=relaxed/simple;
+	bh=ex5dRL/V0Uid0vXFx3i+2pthC2MITxOAHn3mDCFNt04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knBPDoDgO5y2A0Ws77htj3skYLPB874VpfxaYNJrHtJuJe/jA4i7RQ3MQmOPy6PGKY7/uhPhj90r9zkFPitClrz/UZ8L/67klU1D2PD2aQxt55TCXV1GUYYI/boAdV10zelc9Ml72DtZ1s//xrQp+r9+f5piDExv5HbEAJT7WAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BRso1Ja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1B8C4CED0;
-	Thu, 12 Dec 2024 16:51:19 +0000 (UTC)
+	 MIME-Version; b=XBd0jiLcW7bnk2dB+J5jOrTOVIvLp5G8c7GW0EB8qJvtbFIsFvnEmKpxzYJzb10ia4vV1RNBs0jmezkVoxm3EAS3nvsgPae7fIDlCmCTW3weE9E86Ug61bB6GbypQZ8E7j+ZzzyB67EGrfJFFVY7zl4ysfHefE85VXJrs0hrvWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSW5SgVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC39C4CECE;
+	Thu, 12 Dec 2024 16:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022280;
-	bh=3lNxiGEJ7KkmRYPElCAU8H1ak7/gmAX5lTyRFb1F6NU=;
+	s=korg; t=1734020365;
+	bh=ex5dRL/V0Uid0vXFx3i+2pthC2MITxOAHn3mDCFNt04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BRso1JaCRhRqRTZn/eD+dBfLlMAPgFs2avXxjLIhXUaAVL+W6eQHEmKqaGi7axIl
-	 4XrfKk6nC/sAGGslIp+uuchghM+sRT/YhLlOPDDoLt50/Yjd87jFz7AdLLa76jTyjR
-	 9nIiR5RNgtSTJNXfAk1CPBPJM5aBiMfA3fO2zc5U=
+	b=vSW5SgVBqZErU+6ETKaao95wFojlUAr57QPC9KFo3pIXxCSREOxkW88Jpd8a7VfG1
+	 a+DKIDx4ckDfp2pcJEYfxQKGWiERreLH7O9WSCfHyqQ5vtr37k1Hj9//H5Xgc3fSCy
+	 wMpr2vIGi2kLoNrq90PMtl9ULFZmkd6gf7XBQ+w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 198/565] drm/amdkfd: Fix wrong usage of INIT_WORK()
+Subject: [PATCH 6.1 448/772] sh: intc: Fix use-after-free bug in register_intc_controller()
 Date: Thu, 12 Dec 2024 15:56:33 +0100
-Message-ID: <20241212144319.315204058@linuxfoundation.org>
+Message-ID: <20241212144408.434216922@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 21cae8debc6a1d243f64fa82cd1b41cb612b5c61 ]
+[ Upstream commit 63e72e551942642c48456a4134975136cdcb9b3c ]
 
-In kfd_procfs_show(), the sdma_activity_work_handler is a local variable
-and the sdma_activity_work_handler.sdma_activity_work should initialize
-with INIT_WORK_ONSTACK() instead of INIT_WORK().
+In the error handling for this function, d is freed without ever
+removing it from intc_list which would lead to a use after free.
+To fix this, let's only add it to the list after everything has
+succeeded.
 
-Fixes: 32cb59f31362 ("drm/amdkfd: Track SDMA utilization per process")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 2dcec7a988a1 ("sh: intc: set_irq_wake() support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/sh/intc/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index 7f69031f2b61a..49810642bc2b8 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -311,8 +311,8 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
- 							      attr_sdma);
- 		struct kfd_sdma_activity_handler_workarea sdma_activity_work_handler;
+diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
+index ca4f4ca413f11..b19388b349be3 100644
+--- a/drivers/sh/intc/core.c
++++ b/drivers/sh/intc/core.c
+@@ -209,7 +209,6 @@ int __init register_intc_controller(struct intc_desc *desc)
+ 		goto err0;
  
--		INIT_WORK(&sdma_activity_work_handler.sdma_activity_work,
--					kfd_sdma_activity_worker);
-+		INIT_WORK_ONSTACK(&sdma_activity_work_handler.sdma_activity_work,
-+				  kfd_sdma_activity_worker);
+ 	INIT_LIST_HEAD(&d->list);
+-	list_add_tail(&d->list, &intc_list);
  
- 		sdma_activity_work_handler.pdd = pdd;
- 		sdma_activity_work_handler.sdma_activity_counter = 0;
-@@ -320,6 +320,7 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
- 		schedule_work(&sdma_activity_work_handler.sdma_activity_work);
+ 	raw_spin_lock_init(&d->lock);
+ 	INIT_RADIX_TREE(&d->tree, GFP_ATOMIC);
+@@ -369,6 +368,7 @@ int __init register_intc_controller(struct intc_desc *desc)
  
- 		flush_work(&sdma_activity_work_handler.sdma_activity_work);
-+		destroy_work_on_stack(&sdma_activity_work_handler.sdma_activity_work);
+ 	d->skip_suspend = desc->skip_syscore_suspend;
  
- 		return snprintf(buffer, PAGE_SIZE, "%llu\n",
- 				(sdma_activity_work_handler.sdma_activity_counter)/
++	list_add_tail(&d->list, &intc_list);
+ 	nr_intc_controllers++;
+ 
+ 	return 0;
 -- 
 2.43.0
 
