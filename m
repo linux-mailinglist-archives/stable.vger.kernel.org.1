@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-103472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848579EF870
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F529EF9BC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C33216C411
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D909A16DC7A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36032210F1;
-	Thu, 12 Dec 2024 17:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF21122B58A;
+	Thu, 12 Dec 2024 17:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkUsUmQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cATcRSTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE2B2153EC;
-	Thu, 12 Dec 2024 17:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C96C22A81B;
+	Thu, 12 Dec 2024 17:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024672; cv=none; b=OWMX9yhaZlaT4mP8KqRVbMUUOu3BpMcMqan3bapI6yP9bzlBDtZ0mTaHQzVd4D0z6Q+xtnLqwOKBQrRMTasso9HULCDa6mn1HauSddKINSYN82uQ3Y+Lmpmr2++4UlabsoZpUZX39bfM57+yw9PngRgvh4VOmWoa/ljdP4SsZRI=
+	t=1734025510; cv=none; b=NvJYOGVFn82urynXY4oDaZiGJEwKH/dsNkWULKOKt0SzEAdwmNHVwFBFk8CjKaMeGFMzJCXYZ+7d35M/sijPyqzqQ2WXf7ZxESrVeIYgxCkGf4gfKVLCkGU7i2FtPmOmSRq1sDjFtL5dkFvwQQn3OKqxkC6QYyD3igG8v1xC9gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024672; c=relaxed/simple;
-	bh=3GyJTIqCsYLlhsp8uK9CMO/JJCg163x7bCZuVCdWvXI=;
+	s=arc-20240116; t=1734025510; c=relaxed/simple;
+	bh=DXsn0FbtWQnxXSkHpdgcmFKZxBpgazyrreYgW8WkVJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hf0wC3WPdn1ob1tHes5X4O0EQbmnBncR/3zFN5Rkb5cC4LI7inR+ql77W+L8EZb9BMmZyBm2iAXDi9w+whUHCFAf2ZNI2G2YuG5R7w7eblTNFKn1JMokvVpDJXDvw5A2l7TpqlemJ8CPibb2p+CMbwcIZw8Al6F/5CTFzHAcreA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkUsUmQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7182C4CECE;
-	Thu, 12 Dec 2024 17:31:11 +0000 (UTC)
+	 MIME-Version; b=X+6HyC1qL2Dzt7pvrxegvsjmNsRNrhPed1fF/HW19lkgDVS7Oy+guhr7NmOWdFMLD87GUbuZvt5EZnf9Aur6JSP0MOpULNuKb4haOqz+FK0WFMJOZAMT8Je3t1uReJsukyTuz8LbWYlwJQnLJ9wzu47J1bOkuok+KZQ/q6/ZOkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cATcRSTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C00C4CECE;
+	Thu, 12 Dec 2024 17:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024672;
-	bh=3GyJTIqCsYLlhsp8uK9CMO/JJCg163x7bCZuVCdWvXI=;
+	s=korg; t=1734025510;
+	bh=DXsn0FbtWQnxXSkHpdgcmFKZxBpgazyrreYgW8WkVJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkUsUmQqDyWZPMFn1OHpf+K1eUTbmyqExOLH3wVQJxa4bCror9WkWGXY88BSxuo1c
-	 AjKc63liTTpRPjQgcWfdRVziVXTD21hHprzy45xZjW1kdIjn1fls1cOw5cyQMrlOWY
-	 JeL9oBGsTifvoyt3OZJUSy2CJ0WWYSs2Z3SNOKzw=
+	b=cATcRSTUK/Eqc0O3Jf+8SXGHXw3Uv76W4fArcGs2gJ5aHDyu127T3mEVczzim9TTQ
+	 CHoIs5MIwQicXABlzHs82QtQmV9hmtmdrrb8ENe37vVDfmdv5w5RWdyCHT2K9Qrs+M
+	 n9bDTA9QcBdHUnLJBSbsOKYVW4q5kIJ559qPQEXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 5.10 373/459] dma-buf: fix dma_fence_array_signaled v4
+	Alex Zenla <alex@edera.dev>,
+	Alexander Merritt <alexander@edera.dev>,
+	Ariadne Conill <ariadne@ariadne.space>,
+	Juergen Gross <jgross@suse.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 193/321] 9p/xen: fix init sequence
 Date: Thu, 12 Dec 2024 16:01:51 +0100
-Message-ID: <20241212144308.404002138@linuxfoundation.org>
+Message-ID: <20241212144237.607027615@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Alex Zenla <alex@edera.dev>
 
-commit 78ac1c3558810486d90aa533b0039aa70487a3da upstream.
+[ Upstream commit 7ef3ae82a6ebbf4750967d1ce43bcdb7e44ff74b ]
 
-The function silently assumed that signaling was already enabled for the
-dma_fence_array. This meant that without enabling signaling first we would
-never see forward progress.
+Large amount of mount hangs observed during hotplugging of 9pfs devices. The
+9pfs Xen driver attempts to initialize itself more than once, causing the
+frontend and backend to disagree: the backend listens on a channel that the
+frontend does not send on, resulting in stalled processing.
 
-Fix that by falling back to testing each individual fence when signaling
-isn't enabled yet.
+Only allow initialization of 9p frontend once.
 
-v2: add the comment suggested by Boris why this is done this way
-v3: fix the underflow pointed out by Tvrtko
-v4: atomic_read_acquire() as suggested by Tvrtko
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Tested-by: Chia-I Wu <olvaffe@gmail.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12094
-Cc: <stable@vger.kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241112121925.18464-1-christian.koenig@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c15fe55d14b3b ("9p/xen: fix connection sequence")
+Signed-off-by: Alex Zenla <alex@edera.dev>
+Signed-off-by: Alexander Merritt <alexander@edera.dev>
+Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241119211633.38321-1-alexander@edera.dev>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/dma-fence-array.c |   28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ net/9p/trans_xen.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/dma-buf/dma-fence-array.c
-+++ b/drivers/dma-buf/dma-fence-array.c
-@@ -103,10 +103,36 @@ static bool dma_fence_array_enable_signa
- static bool dma_fence_array_signaled(struct dma_fence *fence)
- {
- 	struct dma_fence_array *array = to_dma_fence_array(fence);
-+	int num_pending;
-+	unsigned int i;
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index 4a16c5dd1576d..f5b8f009b8a95 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -480,6 +480,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 		goto error;
+ 	}
  
--	if (atomic_read(&array->num_pending) > 0)
-+	/*
-+	 * We need to read num_pending before checking the enable_signal bit
-+	 * to avoid racing with the enable_signaling() implementation, which
-+	 * might decrement the counter, and cause a partial check.
-+	 * atomic_read_acquire() pairs with atomic_dec_and_test() in
-+	 * dma_fence_array_enable_signaling()
-+	 *
-+	 * The !--num_pending check is here to account for the any_signaled case
-+	 * if we race with enable_signaling(), that means the !num_pending check
-+	 * in the is_signalling_enabled branch might be outdated (num_pending
-+	 * might have been decremented), but that's fine. The user will get the
-+	 * right value when testing again later.
-+	 */
-+	num_pending = atomic_read_acquire(&array->num_pending);
-+	if (test_bit(DMA_FENCE_FLAG_ENABLE_SIGNAL_BIT, &array->base.flags)) {
-+		if (num_pending <= 0)
-+			goto signal;
- 		return false;
-+	}
++	xenbus_switch_state(dev, XenbusStateInitialised);
+ 	return 0;
  
-+	for (i = 0; i < array->num_fences; ++i) {
-+		if (dma_fence_is_signaled(array->fences[i]) && !--num_pending)
-+			goto signal;
-+	}
-+	return false;
+  error_xenbus:
+@@ -527,8 +528,10 @@ static void xen_9pfs_front_changed(struct xenbus_device *dev,
+ 		break;
+ 
+ 	case XenbusStateInitWait:
+-		if (!xen_9pfs_front_init(dev))
+-			xenbus_switch_state(dev, XenbusStateInitialised);
++		if (dev->state != XenbusStateInitialising)
++			break;
 +
-+signal:
- 	dma_fence_array_clear_pending_error(array);
- 	return true;
- }
++		xen_9pfs_front_init(dev);
+ 		break;
+ 
+ 	case XenbusStateConnected:
+-- 
+2.43.0
+
 
 
 
