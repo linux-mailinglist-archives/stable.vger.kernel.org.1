@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA749EEFD4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6A89EEA2B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B5B2288BED
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA37E188CCE6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65186239BBC;
-	Thu, 12 Dec 2024 16:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C503216E28;
+	Thu, 12 Dec 2024 15:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3cXiRhK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdCD7X6L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EEE2253EC;
-	Thu, 12 Dec 2024 16:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A3B215F5A;
+	Thu, 12 Dec 2024 15:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019918; cv=none; b=ip+fv6w0bo6yZNJcp7ZcSZ4lJo0Y0N/KNnGFHjnwjG99HIoz5WdQ5lK5BCUvj0KgqgKmwKkJ5fSRv/iza9XE6PyAHvR8GZ3yPMycOaPM2xkqVWZKIDQkPhO9q8PtfBZ2g7Ub4FZylNOAc5w1X1+0xpii2QT/i9BYIJ5nGyzQVnE=
+	t=1734016014; cv=none; b=DDNyC8T2LNgHL64lK51VD6qXrzpG9QghJysPmTFa0bwy1MFlpXcB5U9vRza+4vAVtculbgXKEj67z9X4GHTFdV7dIP9I5p82OjNtIRIwL5weRITsTsjgz0Iza7vF3lO87tiSEoAztICu5lRHbj+XBDTPnm1xTGzQYCkXwBZRWE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019918; c=relaxed/simple;
-	bh=QHxFY6zcDqAX9cghiE8DdapD50Wh+MO6wQX9AuPAlHQ=;
+	s=arc-20240116; t=1734016014; c=relaxed/simple;
+	bh=I/141KjWyUzlpdRZHgNSWfMGeerL4ZE2udK2uRjW54U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAUSdR5Qbm/RSsa3RtX03PLvgNPt7AMzp1n3awrNQj+Ird8AhG9+L+YtbAiN4bHY5eO0RzKTjV53xq9eAjFY/umXI6vXEcJ1B1oqZ8cdV0zNVwodk2knWe9bMT5ukGaT5dscAM6cBIVctukkw2zsUV9+RXM8Sgj71RbKhQeP1XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3cXiRhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AF8C4CECE;
-	Thu, 12 Dec 2024 16:11:57 +0000 (UTC)
+	 MIME-Version; b=dZngVvvPOerz7FwlnXa6JwSbWsF3I659IvBHSLRe/qxO/5yry86grzKXyykRXxDeHOpvHqb/ymwtn3bkT/F/LiMxKMWfDVra65L1Frtdo5II6Cpipu8ajxlzSmmvwvMd0h1AE+86h0q59BYg4UCzg3IacBrWX24Otyyrg7dsFug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdCD7X6L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBF7C4CED0;
+	Thu, 12 Dec 2024 15:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019918;
-	bh=QHxFY6zcDqAX9cghiE8DdapD50Wh+MO6wQX9AuPAlHQ=;
+	s=korg; t=1734016013;
+	bh=I/141KjWyUzlpdRZHgNSWfMGeerL4ZE2udK2uRjW54U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3cXiRhKy/JnLISXkJztudXtoY1bimyJBEVOoKTCjn1Sqd7gaCjStnLBi6/Hw43uO
-	 K6dFA5kjJiCQ3/rrKVf+vS0KuYqctYDv9Se1X0ETvJteufu5etMsG5seQ0dc3FLSe5
-	 fMYf+e3zGM4Wa+xHi1UHyhDKizGlksLAfs/DRtTo=
+	b=qdCD7X6LfblNdZ436v5Xcx57n3dCjdADR+QLHYDpWfNSPDoBUZZFBn8dl4A/gxvwm
+	 GOlqUBLdQPV3/YVVmreWvggx9KHuOdO7rxJVcDoIIV+lU4EFXTNBNFMByXEt85asio
+	 ZFHkmy74nA1A2JsxSrdXgrfZ75nTE8ta7xsiBWto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
+	syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com,
+	Suraj Sonawane <surajsonawane0215@gmail.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 331/772] misc: apds990x: Fix missing pm_runtime_disable()
-Date: Thu, 12 Dec 2024 15:54:36 +0100
-Message-ID: <20241212144403.577701786@linuxfoundation.org>
+Subject: [PATCH 6.12 108/466] scsi: sg: Fix slab-use-after-free read in sg_release()
+Date: Thu, 12 Dec 2024 15:54:37 +0100
+Message-ID: <20241212144311.086141528@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
 
-[ Upstream commit 3c5d8b819d27012264edd17e6ae7fffda382fe44 ]
+[ Upstream commit f10593ad9bc36921f623361c9e3dd96bd52d85ee ]
 
-The pm_runtime_disable() is missing in probe error path,
-so add it to fix it.
+Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN:
 
-Fixes: 92b1f84d46b2 ("drivers/misc: driver for APDS990X ALS and proximity sensors")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240923035556.3009105-1-ruanjinjie@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30
+kernel/locking/lockdep.c:5838
+__mutex_unlock_slowpath+0xe2/0x750 kernel/locking/mutex.c:912
+sg_release+0x1f4/0x2e0 drivers/scsi/sg.c:407
+
+In sg_release(), the function kref_put(&sfp->f_ref, sg_remove_sfp) is
+called before releasing the open_rel_lock mutex. The kref_put() call may
+decrement the reference count of sfp to zero, triggering its cleanup
+through sg_remove_sfp(). This cleanup includes scheduling deferred work
+via sg_remove_sfp_usercontext(), which ultimately frees sfp.
+
+After kref_put(), sg_release() continues to unlock open_rel_lock and may
+reference sfp or sdp. If sfp has already been freed, this results in a
+slab-use-after-free error.
+
+Move the kref_put(&sfp->f_ref, sg_remove_sfp) call after unlocking the
+open_rel_lock mutex. This ensures:
+
+ - No references to sfp or sdp occur after the reference count is
+   decremented.
+
+ - Cleanup functions such as sg_remove_sfp() and
+   sg_remove_sfp_usercontext() can safely execute without impacting the
+   mutex handling in sg_release().
+
+The fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures proper
+sequencing of resource cleanup and mutex operations, eliminating the
+risk of use-after-free errors in sg_release().
+
+Reported-by: syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7efb5850a17ba6ce098b
+Tested-by: syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com
+Fixes: cc833acbee9d ("sg: O_EXCL and other lock handling")
+Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+Link: https://lore.kernel.org/r/20241120125944.88095-1-surajsonawane0215@gmail.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/apds990x.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/scsi/sg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/apds990x.c b/drivers/misc/apds990x.c
-index e2100cc42ce86..668609d22fe18 100644
---- a/drivers/misc/apds990x.c
-+++ b/drivers/misc/apds990x.c
-@@ -1148,7 +1148,7 @@ static int apds990x_probe(struct i2c_client *client,
- 		err = chip->pdata->setup_resources();
- 		if (err) {
- 			err = -EINVAL;
--			goto fail3;
-+			goto fail4;
- 		}
- 	}
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 84334ab39c810..94127868bedf8 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -386,7 +386,6 @@ sg_release(struct inode *inode, struct file *filp)
+ 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp, "sg_release\n"));
  
-@@ -1156,7 +1156,7 @@ static int apds990x_probe(struct i2c_client *client,
- 				apds990x_attribute_group);
- 	if (err < 0) {
- 		dev_err(&chip->client->dev, "Sysfs registration failed\n");
--		goto fail4;
-+		goto fail5;
- 	}
+ 	mutex_lock(&sdp->open_rel_lock);
+-	kref_put(&sfp->f_ref, sg_remove_sfp);
+ 	sdp->open_cnt--;
  
- 	err = request_threaded_irq(client->irq, NULL,
-@@ -1167,15 +1167,17 @@ static int apds990x_probe(struct i2c_client *client,
- 	if (err) {
- 		dev_err(&client->dev, "could not get IRQ %d\n",
- 			client->irq);
--		goto fail5;
-+		goto fail6;
+ 	/* possibly many open()s waiting on exlude clearing, start many;
+@@ -398,6 +397,7 @@ sg_release(struct inode *inode, struct file *filp)
+ 		wake_up_interruptible(&sdp->open_wait);
  	}
- 	return err;
--fail5:
-+fail6:
- 	sysfs_remove_group(&chip->client->dev.kobj,
- 			&apds990x_attribute_group[0]);
--fail4:
-+fail5:
- 	if (chip->pdata && chip->pdata->release_resources)
- 		chip->pdata->release_resources();
-+fail4:
-+	pm_runtime_disable(&client->dev);
- fail3:
- 	regulator_bulk_disable(ARRAY_SIZE(chip->regs), chip->regs);
- fail2:
+ 	mutex_unlock(&sdp->open_rel_lock);
++	kref_put(&sfp->f_ref, sg_remove_sfp);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
