@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FF49EEB6D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 718B29EF380
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98CD718896E9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ECBB28F784
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25523215776;
-	Thu, 12 Dec 2024 15:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FE12288E5;
+	Thu, 12 Dec 2024 16:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6xQfEF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1JzWtNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9E5212B0F;
-	Thu, 12 Dec 2024 15:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E221D222D57;
+	Thu, 12 Dec 2024 16:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016783; cv=none; b=JhWwWA3dU/AKClTa2fqJMaejShBZ1+vLvwp2OVBZzNzhKblHCMT6cj+dwx2aO2GSe8jYg0xt1NepwvO9BN+fBlo6xms30SZHhawTvVeWBk3TXYOoRbsgiGn8KPTn+iFKqYlXcfEXRgV/WTvj9pt66SEuUuaLE/VH+CYjZtbsTxg=
+	t=1734022434; cv=none; b=WjnQiWKeTgN1n4sqOSPjInexcJpC1LnuJuOdYrGHS9LJrHFbEeeCWWCdu0mZ2JHm7F00uHznDRx/GudakzdS1TXcjw/KxZHWPFCJH0ytwFNCiA8WI315L0wV4VPkG929HvAVKpjzsjvaYa01ufYRFIJ4P5ATeLrao7DrLfhkKCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016783; c=relaxed/simple;
-	bh=sGDn3iKuQAotg/XRykcXU6R4Tyik4Uun5GKIxygQ4ys=;
+	s=arc-20240116; t=1734022434; c=relaxed/simple;
+	bh=XqyRH3f3GfOiWryebxJwE/5opZw0Gz43WxfC9drRVG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5ik3r8Pxq1wTN3jXidhgQi5lM4Rl+5Cp5qoNBNGD+Kfb3fnzboTTuNXewyS7juyKRfEZ0t9iS+mPYNKWK7M1Q7+WSeI8VDBK100DOdkL91ajdncRb0QPeA0WJDUrcTgzJq0NwfkIRnoFla4S2W/4/IneewAamHF6zarWRS37RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6xQfEF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37F4C4CECE;
-	Thu, 12 Dec 2024 15:19:42 +0000 (UTC)
+	 MIME-Version; b=iOUQZM7lznz9NebtNuzFEpW36TL/IkWdPAL231qcY+AGUU05SQ5WdWqSO5Dhw3Fh9wfeIK1NFsU7VDu+pIGPdm957JzCIK+9hYpNCsomkorM7nyNC0ECtwDebZd7eYNMZG7AERymVsYTo10M9C7xZAxyoiSadarcof0xy2NwQCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1JzWtNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E49C4CECE;
+	Thu, 12 Dec 2024 16:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016783;
-	bh=sGDn3iKuQAotg/XRykcXU6R4Tyik4Uun5GKIxygQ4ys=;
+	s=korg; t=1734022433;
+	bh=XqyRH3f3GfOiWryebxJwE/5opZw0Gz43WxfC9drRVG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6xQfEF2uFhzgC9I41aU2qHMfUSxIquz/2LeifhDHp3eWm5c7T20Gcxiy/SuxTlfQ
-	 EQjlqOwOjCoLtDEoHgFnAZMkYitF9u4Z3mUTtyvVE97ffjY28ca9vcmNXwFxv1voSh
-	 H2xNuT4gbQpAKHFKg9yXsKN7D9+d5AyZagtCRX38=
+	b=P1JzWtNdq2hkApcpIw2OhxrIt/K1OKe4391QulixNvNdk4uU6h0MiYdg/HXatFBEO
+	 2bEeQyNbkKdfo+aepAnq9VAv39/zNgOag8TyxkdIWUxFrj6QyR54IknmMfCkN2vebi
+	 wt+BJsh3A9vt/UftbIK8mvBlUI46+GOe49tcvviU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 265/466] wifi: rtw89: check return value of ieee80211_probereq_get() for RNR
+Subject: [PATCH 5.15 239/565] pinctrl: k210: Undef K210_PC_DEFAULT
 Date: Thu, 12 Dec 2024 15:57:14 +0100
-Message-ID: <20241212144317.265521393@linuxfoundation.org>
+Message-ID: <20241212144320.928614606@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-[ Upstream commit 630d5d8f2bf6b340202b6bc2c05d794bbd8e4c1c ]
+[ Upstream commit 7e86490c5dee5c41a55f32d0dc34269e200e6909 ]
 
-The return value of ieee80211_probereq_get() might be NULL, so check it
-before using to avoid NULL pointer access.
+When the temporary macro K210_PC_DEFAULT is not needed anymore,
+use its name in the #undef statement instead of
+the incorrect "DEFAULT" name.
 
-Addresses-Coverity-ID: 1529805 ("Dereference null return value")
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240919081216.28505-2-pkshih@realtek.com
+Fixes: d4c34d09ab03 ("pinctrl: Add RISC-V Canaan Kendryte K210 FPIOA driver")
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/20241113071201.5440-1-zhangjiao2@cmss.chinamobile.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/pinctrl-k210.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 13a7c39ceb6f5..e6bceef691e9b 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -6074,6 +6074,9 @@ static int rtw89_update_6ghz_rnr_chan(struct rtw89_dev *rtwdev,
+diff --git a/drivers/pinctrl/pinctrl-k210.c b/drivers/pinctrl/pinctrl-k210.c
+index ad4db99094a79..e75c96c6b3daf 100644
+--- a/drivers/pinctrl/pinctrl-k210.c
++++ b/drivers/pinctrl/pinctrl-k210.c
+@@ -181,7 +181,7 @@ static const u32 k210_pinconf_mode_id_to_mode[] = {
+ 	[K210_PC_DEFAULT_INT13] = K210_PC_MODE_IN | K210_PC_PU,
+ };
  
- 		skb = ieee80211_probereq_get(rtwdev->hw, rtwvif_link->mac_addr,
- 					     NULL, 0, req->ie_len);
-+		if (!skb)
-+			return -ENOMEM;
-+
- 		skb_put_data(skb, ies->ies[NL80211_BAND_6GHZ], ies->len[NL80211_BAND_6GHZ]);
- 		skb_put_data(skb, ies->common_ies, ies->common_ie_len);
- 		hdr = (struct ieee80211_hdr *)skb->data;
+-#undef DEFAULT
++#undef K210_PC_DEFAULT
+ 
+ /*
+  * Pin functions configuration information.
 -- 
 2.43.0
 
