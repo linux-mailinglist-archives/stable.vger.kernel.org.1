@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004D99EEC4F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E979EEA6A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF4611885EDA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7196D280CB5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16322135C1;
-	Thu, 12 Dec 2024 15:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A9121661F;
+	Thu, 12 Dec 2024 15:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9tdkiwK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcB6j9W1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAEF2153FC;
-	Thu, 12 Dec 2024 15:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FE121504F;
+	Thu, 12 Dec 2024 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017499; cv=none; b=TOxO9Q0tNbw41oRAAIbzhSJbUemD2yVirChnWReOQBl2anrjLVEC2GlP0QTLvUwPiLTL1yCAjhj+p9mI67PMNZJmmymJ7nodl2TYe/6FhulickKgDqvdIYM7BJFhnHuvwyudCaox+YXhqhsAwgk3ILZmUQKrGZ9g98/9XsAxEQY=
+	t=1734016433; cv=none; b=iwcjUi3m4D+BMilTKFk6C3kqK3wx/3WDFuGiS1x8C0B/dYzRsUdMroYmj88L6Lb/hQJHrUwGYjVow35EEhgbuNk73IZlDUodzFvRWff56tENK3TMzC++yagBmBk4yQnQxaJB/iXfQul9ayB3D9KhxA638QTB1ozSTlnqgUjTRSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017499; c=relaxed/simple;
-	bh=P2HX1sHl3WExRUjbyYzOKlUYg+9kR3BgnM4TTuVmuv4=;
+	s=arc-20240116; t=1734016433; c=relaxed/simple;
+	bh=pFcPm2LqaQp6XjRDIWka+JQRQ+8j2WVHSNTSBWaT/aU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpE6IJUy2UhC6reJpBsY2M8j8y+iZaW1jGSnzpahgF5JTmt2127GqJ4uelY/6jFHBWaTO6vBEbxC7Vc7S/NlTmSgPAzU6/RYDQ0Tj/frmek/I/NzupO+dY8HIahrwQSKGYT0teRvjmkTRCkheNJBWTkZhxWr2AQEZ/s6M6d0p/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9tdkiwK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EFCC4CECE;
-	Thu, 12 Dec 2024 15:31:38 +0000 (UTC)
+	 MIME-Version; b=dpKkr5qB77c0GJSVlCrtRbSRlsKiiRVoBZZWWre7zvRzDSljFDi+QRYpk0R1EzchqwhMM3hpU0mZcLHW4MRMBPg7mmj3n1ZdWW67yXdzE21aCclBGmtMQBI68qJYdAAtHF1HdzT4d8gi8vPP0uzlqP+W9YmBuUjlpxGP8EbEpF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcB6j9W1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EF4C4CEDF;
+	Thu, 12 Dec 2024 15:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017499;
-	bh=P2HX1sHl3WExRUjbyYzOKlUYg+9kR3BgnM4TTuVmuv4=;
+	s=korg; t=1734016432;
+	bh=pFcPm2LqaQp6XjRDIWka+JQRQ+8j2WVHSNTSBWaT/aU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C9tdkiwKTlHevo3BgzcSjM4abInR0BnYWPW+S+E9xe4RQDId7ZZI5SKnwl9Z9qMIU
-	 TFNV59SIUOVIa85Id/WRT8ZG76ycz3SfDHlnTpl8o5kkephsbOTu3Jml4AjYjN/biM
-	 bE6j0c2zErtMeBCW4HHwBZHMKtFumoJYZlsv5SqQ=
+	b=KcB6j9W1DfHrflPwFwROBY4Rf+3GEeBN9GOBdLwtnsPonfPkrFUX4PM3VnuljMjFk
+	 RlvSf1SJN+xcvXumTYwAtoBriKEv2JTMCg3zzEZ6MKBVZEEetdSITYIYc5uusnn9NI
+	 Y8fPJUxdyhaP9OxZXPkI2RJnzeHXAeEFRm/QT+kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/356] can: c_can: c_can_handle_bus_err(): update statistics if skb allocation fails
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Ralph Boehme <slow@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 157/466] fs/smb/client: Implement new SMB3 POSIX type
 Date: Thu, 12 Dec 2024 15:55:26 +0100
-Message-ID: <20241212144244.906413354@linuxfoundation.org>
+Message-ID: <20241212144312.998395337@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,351 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Ralph Boehme <slow@samba.org>
 
-[ Upstream commit 9e66242504f49e17481d8e197730faba7d99c934 ]
+commit 6a832bc8bbb22350f7ffe6ecb2d36f261bb96023 upstream.
 
-Ensure that the statistics are always updated, even if the skb
-allocation fails.
+Fixes special files against current Samba.
 
-Fixes: 4d6d26537940 ("can: c_can: fix {rx,tx}_errors statistics")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-2-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On the Samba server:
+
+insgesamt 20
+131958 brw-r--r--  1 root  root  0, 0 15. Nov 12:04 blockdev
+131965 crw-r--r--  1 root  root  1, 1 15. Nov 12:04 chardev
+131966 prw-r--r--  1 samba samba    0 15. Nov 12:05 fifo
+131953 -rw-rwxrw-+ 2 samba samba    4 18. Nov 11:37 file
+131953 -rw-rwxrw-+ 2 samba samba    4 18. Nov 11:37 hardlink
+131957 lrwxrwxrwx  1 samba samba    4 15. Nov 12:03 symlink -> file
+131954 -rwxrwxr-x+ 1 samba samba    0 18. Nov 15:28 symlinkoversmb
+
+Before:
+
+ls: cannot access '/mnt/smb3unix/posix/blockdev': No data available
+ls: cannot access '/mnt/smb3unix/posix/chardev': No data available
+ls: cannot access '/mnt/smb3unix/posix/symlinkoversmb': No data available
+ls: cannot access '/mnt/smb3unix/posix/fifo': No data available
+ls: cannot access '/mnt/smb3unix/posix/symlink': No data available
+total 16
+     ? -????????? ? ?    ?     ?            ? blockdev
+     ? -????????? ? ?    ?     ?            ? chardev
+     ? -????????? ? ?    ?     ?            ? fifo
+131953 -rw-rwxrw- 2 root samba 4 Nov 18 11:37 file
+131953 -rw-rwxrw- 2 root samba 4 Nov 18 11:37 hardlink
+     ? -????????? ? ?    ?     ?            ? symlink
+     ? -????????? ? ?    ?     ?            ? symlinkoversmb
+
+After:
+
+insgesamt 21
+131958 brw-r--r-- 1 root root  0, 0 15. Nov 12:04 blockdev
+131965 crw-r--r-- 1 root root  1, 1 15. Nov 12:04 chardev
+131966 prw-r--r-- 1 root samba    0 15. Nov 12:05 fifo
+131953 -rw-rwxrw- 2 root samba    4 18. Nov 11:37 file
+131953 -rw-rwxrw- 2 root samba    4 18. Nov 11:37 hardlink
+131957 lrwxrwxrwx 1 root samba    4 15. Nov 12:03 symlink -> file
+131954 lrwxrwxr-x 1 root samba   23 18. Nov 15:28 symlinkoversmb -> mnt/smb3unix/posix/file
+
+Cc: stable@vger.kernel.org
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Ralph Boehme <slow@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/c_can/c_can_main.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ fs/smb/client/cifsproto.h |    1 
+ fs/smb/client/inode.c     |   89 +++++++++++++++++++++++++++++++++++++++++-----
+ fs/smb/client/readdir.c   |   35 ++++++++----------
+ fs/smb/client/reparse.c   |   84 ++++++++++++++++++++++++++-----------------
+ 4 files changed, 149 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
-index 511615dc33419..cc371d0c9f3c7 100644
---- a/drivers/net/can/c_can/c_can_main.c
-+++ b/drivers/net/can/c_can/c_can_main.c
-@@ -1014,49 +1014,57 @@ static int c_can_handle_bus_err(struct net_device *dev,
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -677,6 +677,7 @@ int __cifs_sfu_make_node(unsigned int xi
+ int cifs_sfu_make_node(unsigned int xid, struct inode *inode,
+ 		       struct dentry *dentry, struct cifs_tcon *tcon,
+ 		       const char *full_path, umode_t mode, dev_t dev);
++umode_t wire_mode_to_posix(u32 wire);
  
- 	/* propagate the error condition to the CAN stack */
- 	skb = alloc_can_err_skb(dev, &cf);
--	if (unlikely(!skb))
--		return 0;
+ #ifdef CONFIG_CIFS_DFS_UPCALL
+ static inline int get_dfs_path(const unsigned int xid, struct cifs_ses *ses,
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -724,6 +724,84 @@ static int cifs_sfu_mode(struct cifs_fat
+ #endif
+ }
  
- 	/* check for 'last error code' which tells us the
- 	 * type of the last error to occur on the CAN bus
- 	 */
--	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-+	if (likely(skb))
-+		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
++#define POSIX_TYPE_FILE    0
++#define POSIX_TYPE_DIR     1
++#define POSIX_TYPE_SYMLINK 2
++#define POSIX_TYPE_CHARDEV 3
++#define POSIX_TYPE_BLKDEV  4
++#define POSIX_TYPE_FIFO    5
++#define POSIX_TYPE_SOCKET  6
++
++#define POSIX_X_OTH      0000001
++#define POSIX_W_OTH      0000002
++#define POSIX_R_OTH      0000004
++#define POSIX_X_GRP      0000010
++#define POSIX_W_GRP      0000020
++#define POSIX_R_GRP      0000040
++#define POSIX_X_USR      0000100
++#define POSIX_W_USR      0000200
++#define POSIX_R_USR      0000400
++#define POSIX_STICKY     0001000
++#define POSIX_SET_GID    0002000
++#define POSIX_SET_UID    0004000
++
++#define POSIX_OTH_MASK      0000007
++#define POSIX_GRP_MASK      0000070
++#define POSIX_USR_MASK      0000700
++#define POSIX_PERM_MASK     0000777
++#define POSIX_FILETYPE_MASK 0070000
++
++#define POSIX_FILETYPE_SHIFT 12
++
++static u32 wire_perms_to_posix(u32 wire)
++{
++	u32 mode = 0;
++
++	mode |= (wire & POSIX_X_OTH) ? S_IXOTH : 0;
++	mode |= (wire & POSIX_W_OTH) ? S_IWOTH : 0;
++	mode |= (wire & POSIX_R_OTH) ? S_IROTH : 0;
++	mode |= (wire & POSIX_X_GRP) ? S_IXGRP : 0;
++	mode |= (wire & POSIX_W_GRP) ? S_IWGRP : 0;
++	mode |= (wire & POSIX_R_GRP) ? S_IRGRP : 0;
++	mode |= (wire & POSIX_X_USR) ? S_IXUSR : 0;
++	mode |= (wire & POSIX_W_USR) ? S_IWUSR : 0;
++	mode |= (wire & POSIX_R_USR) ? S_IRUSR : 0;
++	mode |= (wire & POSIX_STICKY) ? S_ISVTX : 0;
++	mode |= (wire & POSIX_SET_GID) ? S_ISGID : 0;
++	mode |= (wire & POSIX_SET_UID) ? S_ISUID : 0;
++
++	return mode;
++}
++
++static u32 posix_filetypes[] = {
++	S_IFREG,
++	S_IFDIR,
++	S_IFLNK,
++	S_IFCHR,
++	S_IFBLK,
++	S_IFIFO,
++	S_IFSOCK
++};
++
++static u32 wire_filetype_to_posix(u32 wire_type)
++{
++	if (wire_type >= ARRAY_SIZE(posix_filetypes)) {
++		pr_warn("Unexpected type %u", wire_type);
++		return 0;
++	}
++	return posix_filetypes[wire_type];
++}
++
++umode_t wire_mode_to_posix(u32 wire)
++{
++	u32 wire_type;
++	u32 mode;
++
++	wire_type = (wire & POSIX_FILETYPE_MASK) >> POSIX_FILETYPE_SHIFT;
++	mode = (wire_perms_to_posix(wire) | wire_filetype_to_posix(wire_type));
++	return (umode_t)mode;
++}
++
+ /* Fill a cifs_fattr struct with info from POSIX info struct */
+ static void smb311_posix_info_to_fattr(struct cifs_fattr *fattr,
+ 				       struct cifs_open_info_data *data,
+@@ -760,20 +838,13 @@ static void smb311_posix_info_to_fattr(s
+ 	fattr->cf_bytes = le64_to_cpu(info->AllocationSize);
+ 	fattr->cf_createtime = le64_to_cpu(info->CreationTime);
+ 	fattr->cf_nlink = le32_to_cpu(info->HardLinks);
+-	fattr->cf_mode = (umode_t) le32_to_cpu(info->Mode);
++	fattr->cf_mode = wire_mode_to_posix(le32_to_cpu(info->Mode));
  
- 	switch (lec_type) {
- 	case LEC_STUFF_ERROR:
- 		netdev_dbg(dev, "stuff error\n");
--		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_STUFF;
- 		stats->rx_errors++;
+ 	if (cifs_open_data_reparse(data) &&
+ 	    cifs_reparse_point_to_fattr(cifs_sb, fattr, data))
+ 		goto out_reparse;
+ 
+-	fattr->cf_mode &= ~S_IFMT;
+-	if (fattr->cf_cifsattrs & ATTR_DIRECTORY) {
+-		fattr->cf_mode |= S_IFDIR;
+-		fattr->cf_dtype = DT_DIR;
+-	} else { /* file */
+-		fattr->cf_mode |= S_IFREG;
+-		fattr->cf_dtype = DT_REG;
+-	}
++	fattr->cf_dtype = S_DT(fattr->cf_mode);
+ 
+ out_reparse:
+ 	if (S_ISLNK(fattr->cf_mode)) {
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -241,31 +241,28 @@ cifs_posix_to_fattr(struct cifs_fattr *f
+ 	fattr->cf_nlink = le32_to_cpu(info->HardLinks);
+ 	fattr->cf_cifsattrs = le32_to_cpu(info->DosAttributes);
+ 
+-	/*
+-	 * Since we set the inode type below we need to mask off
+-	 * to avoid strange results if bits set above.
+-	 * XXX: why not make server&client use the type bits?
+-	 */
+-	fattr->cf_mode = le32_to_cpu(info->Mode) & ~S_IFMT;
++	if (fattr->cf_cifsattrs & ATTR_REPARSE)
++		fattr->cf_cifstag = le32_to_cpu(info->ReparseTag);
++
++	/* The Mode field in the response can now include the file type as well */
++	fattr->cf_mode = wire_mode_to_posix(le32_to_cpu(info->Mode));
++	fattr->cf_dtype = S_DT(le32_to_cpu(info->Mode));
++
++	switch (fattr->cf_mode & S_IFMT) {
++	case S_IFLNK:
++	case S_IFBLK:
++	case S_IFCHR:
++		fattr->cf_flags |= CIFS_FATTR_NEED_REVAL;
++		break;
++	default:
++		break;
++	}
+ 
+ 	cifs_dbg(FYI, "posix fattr: dev %d, reparse %d, mode %o\n",
+ 		 le32_to_cpu(info->DeviceId),
+ 		 le32_to_cpu(info->ReparseTag),
+ 		 le32_to_cpu(info->Mode));
+ 
+-	if (fattr->cf_cifsattrs & ATTR_DIRECTORY) {
+-		fattr->cf_mode |= S_IFDIR;
+-		fattr->cf_dtype = DT_DIR;
+-	} else {
+-		/*
+-		 * mark anything that is not a dir as regular
+-		 * file. special files should have the REPARSE
+-		 * attribute and will be marked as needing revaluation
+-		 */
+-		fattr->cf_mode |= S_IFREG;
+-		fattr->cf_dtype = DT_REG;
+-	}
+-
+ 	sid_to_id(cifs_sb, &parsed.owner, fattr, SIDOWNER);
+ 	sid_to_id(cifs_sb, &parsed.group, fattr, SIDGROUP);
+ }
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -730,44 +730,60 @@ out:
+ 	fattr->cf_dtype = S_DT(fattr->cf_mode);
+ }
+ 
+-bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+-				 struct cifs_fattr *fattr,
+-				 struct cifs_open_info_data *data)
++static bool posix_reparse_to_fattr(struct cifs_sb_info *cifs_sb,
++				   struct cifs_fattr *fattr,
++				   struct cifs_open_info_data *data)
+ {
+ 	struct reparse_posix_data *buf = data->reparse.posix;
+-	u32 tag = data->reparse.tag;
+ 
+-	if (tag == IO_REPARSE_TAG_NFS && buf) {
+-		if (le16_to_cpu(buf->ReparseDataLength) < sizeof(buf->InodeType))
++
++	if (buf == NULL)
++		return true;
++
++	if (le16_to_cpu(buf->ReparseDataLength) < sizeof(buf->InodeType)) {
++		WARN_ON_ONCE(1);
++		return false;
++	}
++
++	switch (le64_to_cpu(buf->InodeType)) {
++	case NFS_SPECFILE_CHR:
++		if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8) {
++			WARN_ON_ONCE(1);
+ 			return false;
+-		switch (le64_to_cpu(buf->InodeType)) {
+-		case NFS_SPECFILE_CHR:
+-			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
+-				return false;
+-			fattr->cf_mode |= S_IFCHR;
+-			fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
+-			break;
+-		case NFS_SPECFILE_BLK:
+-			if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8)
+-				return false;
+-			fattr->cf_mode |= S_IFBLK;
+-			fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
+-			break;
+-		case NFS_SPECFILE_FIFO:
+-			fattr->cf_mode |= S_IFIFO;
+-			break;
+-		case NFS_SPECFILE_SOCK:
+-			fattr->cf_mode |= S_IFSOCK;
+-			break;
+-		case NFS_SPECFILE_LNK:
+-			fattr->cf_mode |= S_IFLNK;
+-			break;
+-		default:
++		}
++		fattr->cf_mode |= S_IFCHR;
++		fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
++		break;
++	case NFS_SPECFILE_BLK:
++		if (le16_to_cpu(buf->ReparseDataLength) != sizeof(buf->InodeType) + 8) {
+ 			WARN_ON_ONCE(1);
+ 			return false;
+ 		}
+-		goto out;
++		fattr->cf_mode |= S_IFBLK;
++		fattr->cf_rdev = reparse_mkdev(buf->DataBuffer);
++		break;
++	case NFS_SPECFILE_FIFO:
++		fattr->cf_mode |= S_IFIFO;
++		break;
++	case NFS_SPECFILE_SOCK:
++		fattr->cf_mode |= S_IFSOCK;
++		break;
++	case NFS_SPECFILE_LNK:
++		fattr->cf_mode |= S_IFLNK;
++		break;
++	default:
++		WARN_ON_ONCE(1);
++		return false;
+ 	}
++	return true;
++}
++
++bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
++				 struct cifs_fattr *fattr,
++				 struct cifs_open_info_data *data)
++{
++	u32 tag = data->reparse.tag;
++	bool ok;
+ 
+ 	switch (tag) {
+ 	case IO_REPARSE_TAG_INTERNAL:
+@@ -787,15 +803,19 @@ bool cifs_reparse_point_to_fattr(struct
+ 	case IO_REPARSE_TAG_LX_BLK:
+ 		wsl_to_fattr(data, cifs_sb, tag, fattr);
  		break;
- 	case LEC_FORM_ERROR:
- 		netdev_dbg(dev, "form error\n");
--		cf->data[2] |= CAN_ERR_PROT_FORM;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_FORM;
- 		stats->rx_errors++;
- 		break;
- 	case LEC_ACK_ERROR:
- 		netdev_dbg(dev, "ack error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
- 		stats->tx_errors++;
- 		break;
- 	case LEC_BIT1_ERROR:
- 		netdev_dbg(dev, "bit1 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT1;
- 		stats->tx_errors++;
- 		break;
- 	case LEC_BIT0_ERROR:
- 		netdev_dbg(dev, "bit0 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT0;
- 		stats->tx_errors++;
- 		break;
- 	case LEC_CRC_ERROR:
- 		netdev_dbg(dev, "CRC error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
- 		stats->rx_errors++;
++	case IO_REPARSE_TAG_NFS:
++		ok = posix_reparse_to_fattr(cifs_sb, fattr, data);
++		if (!ok)
++			return false;
++		break;
+ 	case 0: /* SMB1 symlink */
+ 	case IO_REPARSE_TAG_SYMLINK:
+-	case IO_REPARSE_TAG_NFS:
+ 		fattr->cf_mode |= S_IFLNK;
  		break;
  	default:
- 		break;
+ 		return false;
  	}
- 
-+	if (unlikely(!skb))
-+		return 0;
+-out:
 +
- 	netif_receive_skb(skb);
- 	return 1;
+ 	fattr->cf_dtype = S_DT(fattr->cf_mode);
+ 	return true;
  }
--- 
-2.43.0
-
 
 
 
