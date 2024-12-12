@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63639EF0A6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549D29EF2D6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C3C01893A87
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 039B2289FC3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1493022541E;
-	Thu, 12 Dec 2024 16:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D21235C25;
+	Thu, 12 Dec 2024 16:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xI4SmcF3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7JTnu2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D462210DE;
-	Thu, 12 Dec 2024 16:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FE222967A;
+	Thu, 12 Dec 2024 16:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019828; cv=none; b=OcXlnf1bErGhc4ej5vAVmsPFxWUgCj/akjkjLuSgfC7jcGzgljB2FYdmAUij65vjHXyybqKdQB0oIM/WpRt+LZ1qMrKPHRI61CrO6XqXaYix10ZVq3MmJfdy6tavV2jGD7riTKXlheuSVH8pR0ZjPTTpqZmez1YjqJ1FA09kIvI=
+	t=1734021883; cv=none; b=LfDubAIFZtqLqPCyMzO5tQgCrKAEXJxCxNow9GN65LqZFmIP5s5TYYjO8FBNy8p215NCUz+bADbCYZn50IstfJmpaE3ZsYLVcOyrnnFMq3z2JT1WqZ+K/SLFkayOcr8Z+rEiW0q39H9ZJL5D3wh3J840RYtO4AbSj5AgLtGlHWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019828; c=relaxed/simple;
-	bh=s33D+rVaXs5Rr9Ll/lKZ/uUFfmXd+4zkUWghJdHiPYk=;
+	s=arc-20240116; t=1734021883; c=relaxed/simple;
+	bh=hFpvapvm+SIzti9zNVzcYOHscKm8f3a6OnyET0mTd8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=piHY234hb3Qrq5viJ3a9CjImOxzyLnSIsWxF5mWa3+O7FJmYO8i7w+NHVgbbaKgPr74pVbZ6WiBl/tYvF8uBbYeBL66SILruB8F6F9Q66Xr3eudRKB0M8P26T3YsJcnu5ayUVEbW/fRMouqweE+S6S5daciIL+yuOZEcs/St9Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xI4SmcF3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA71DC4CECE;
-	Thu, 12 Dec 2024 16:10:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CORL+GGKzuZiYhxhO/7nxFt6o4gOR4nTibPjNEkzQ5mwmYApRamOfEvL+8knekXLVTpF60/wzh2Xg8eZCSMjjg1QVa4iEZpCSV7igYU5ZLCdXSY977AGBcjFil04ZWr2c/nGUUvy6VS5qja/YJiOp8h1JOLCb3gF3J1ESnYXzOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7JTnu2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA41EC4CECE;
+	Thu, 12 Dec 2024 16:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019828;
-	bh=s33D+rVaXs5Rr9Ll/lKZ/uUFfmXd+4zkUWghJdHiPYk=;
+	s=korg; t=1734021883;
+	bh=hFpvapvm+SIzti9zNVzcYOHscKm8f3a6OnyET0mTd8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xI4SmcF3UfVJ+x4elXO3dvCVR03tg3BwfkyCLRb7J8fGQAfrn+bs6QpLXEubsJ2Xg
-	 vvwf4u0i5x9W8JKwsKHm4Ka5J5cxWQiFIMV/EsGiYI21zFZuGITGiJ0m/3oDSHx8+H
-	 ex5w1bwNrQ/IkTopBObg+N6XL0ljNjHch/Y1TvTQ=
+	b=L7JTnu2vrYXS0iliuQ+2ceZkH0CISTv1hNHO8gBVZ79gaxzQFi+JtM3u4QffihB/i
+	 nsGvCqEt9FOPylAULHBPvwKO0gcK0pdH6GhyeTPxVMU+9wWYo82sDF5IseVbaChnnR
+	 NDzGouRBnv7dcZYwkuupbO6sMAIo+wby01373WdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 308/772] net: usb: lan78xx: Fix refcounting and autosuspend on invalid WoL configuration
-Date: Thu, 12 Dec 2024 15:54:13 +0100
-Message-ID: <20241212144402.623081597@linuxfoundation.org>
+Subject: [PATCH 5.15 059/565] x86/amd_nb: Fix compile-testing without CONFIG_AMD_NB
+Date: Thu, 12 Dec 2024 15:54:14 +0100
+Message-ID: <20241212144313.827119431@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e863ff806f72098bccaf8fa89c80d9ad6187c3b0 ]
+[ Upstream commit fce9642c765a18abd1db0339a7d832c29b68456a ]
 
-Validate Wake-on-LAN (WoL) options in `lan78xx_set_wol` before calling
-`usb_autopm_get_interface`. This prevents USB autopm refcounting issues
-and ensures the adapter can properly enter autosuspend when invalid WoL
-options are provided.
+node_to_amd_nb() is defined to NULL in non-AMD configs:
 
-Fixes: eb9ad088f966 ("lan78xx: Check for supported Wake-on-LAN modes")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://patch.msgid.link/20241118140351.2398166-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  drivers/platform/x86/amd/hsmp/plat.c: In function 'init_platform_device':
+  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: dereferencing 'void *' pointer [-Werror]
+    165 |                 sock->root                      = node_to_amd_nb(i)->root;
+        |                                                                    ^~
+  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: request for member 'root' in something not a structure or union
+
+Users of the interface who also allow COMPILE_TEST will cause the above build
+error so provide an inline stub to fix that.
+
+  [ bp: Massage commit message. ]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20241029092329.3857004-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/amd_nb.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index ee3c13bbf6c02..feff1265cad6f 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1657,13 +1657,13 @@ static int lan78xx_set_wol(struct net_device *netdev,
- 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
- 	int ret;
+diff --git a/arch/x86/include/asm/amd_nb.h b/arch/x86/include/asm/amd_nb.h
+index 455066a06f607..d561f7866fa16 100644
+--- a/arch/x86/include/asm/amd_nb.h
++++ b/arch/x86/include/asm/amd_nb.h
+@@ -118,7 +118,10 @@ static inline bool amd_gart_present(void)
  
-+	if (wol->wolopts & ~WAKE_ALL)
-+		return -EINVAL;
-+
- 	ret = usb_autopm_get_interface(dev->intf);
- 	if (ret < 0)
- 		return ret;
+ #define amd_nb_num(x)		0
+ #define amd_nb_has_feature(x)	false
+-#define node_to_amd_nb(x)	NULL
++static inline struct amd_northbridge *node_to_amd_nb(int node)
++{
++	return NULL;
++}
+ #define amd_gart_present(x)	false
  
--	if (wol->wolopts & ~WAKE_ALL)
--		return -EINVAL;
--
- 	pdata->wol = wol->wolopts;
- 
- 	device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
+ #endif
 -- 
 2.43.0
 
