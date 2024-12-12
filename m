@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D3F9EEB8E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F31EF9EF212
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16F9A188CBE0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8B0C173E1F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7C22165EA;
-	Thu, 12 Dec 2024 15:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196CE23A59D;
+	Thu, 12 Dec 2024 16:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bc5XQ0FD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DlBiL9np"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D92215764;
-	Thu, 12 Dec 2024 15:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3E9229665;
+	Thu, 12 Dec 2024 16:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016894; cv=none; b=Lg0Mr+lvUbpbVB3666sR8TW4Y2y5OJlvS3z+q/TNxS5BI3C9z1IER4HFYR5ocraUrPlk4OgJnibjisNHo0T/25hslRrgoW+7LV4XoQBOdETYz8UY8/vTQr/bHfQVbxzR3suE3ZOpxopQ0TOL0oZxpoQIKfgFZB33uGU4QVOccsQ=
+	t=1734020740; cv=none; b=Ze9FZnhZNaawQfR9O3TWBTDAhcMp73Z4iAqUrMpsCB/S8WYdMxvNXanPVhHE2IW+vTlfs3+hKlxHTcHyzdGbikS4kQphCRAfl2QVwxmuLcrRwtat+EneFqOUtDflREhD9jFy4Y2guJdns8MMjUlgp/mrYnUdzq53hysMygQ/pLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016894; c=relaxed/simple;
-	bh=XKa3Pzrvkg3T4biLG+HXER//Go1XftwJENesiAjq5zc=;
+	s=arc-20240116; t=1734020740; c=relaxed/simple;
+	bh=RMfvk7U8uL0opvXdUvW3mGQHFUGSPuFl5nAzMMHS0nM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jfe46QXl0Dd/9Qz0MO2LWU8qbF7y1dLDPr43x5oNVfb/wIO5Q2fG54tBREiQmt2dIZz5QqsqZKplqzKu1PMS3OTqG/BCGrGyHpVhlvYv9zSucprWTBAjJDhk4UIXF+UtT6Rdb+hzLqpcgcHch04GqNLkuuDBe5tdxkfSknOB0/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bc5XQ0FD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB638C4CED4;
-	Thu, 12 Dec 2024 15:21:33 +0000 (UTC)
+	 MIME-Version; b=BLmn6EgfBGXh7OgJxt+4Ijw7YnQRES1WG2WvKIDd7k04nWCYuv+Ek/FoeGi/WjToPvL7I9/3Jk/MMkh3FKE9QZMCRCpjdwuj8zO4NntdBXZryuwVGO5qi2/oQy2bXLddhsyu84ULAjdXfb9CeyxP681mNU1/YnI6mH/WGh2+3Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DlBiL9np; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E147C4CECE;
+	Thu, 12 Dec 2024 16:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016894;
-	bh=XKa3Pzrvkg3T4biLG+HXER//Go1XftwJENesiAjq5zc=;
+	s=korg; t=1734020740;
+	bh=RMfvk7U8uL0opvXdUvW3mGQHFUGSPuFl5nAzMMHS0nM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bc5XQ0FDocgsg1tWHytyfqSYZs/tGtmQsboAkvsiVb1vkYxlioHViITcWFtzNFk01
-	 Hpo4QMlMWvszV71kpZNBV+yh1+tJYwvgMAMAHltcZhrlr3ZHujJxicTgZXMkT2a77n
-	 tiYKZu/7u0DUcpuIw2Gm7ODiync3JrgBMwa/F9Eg=
+	b=DlBiL9npXas1PufNZELjK2GYZa9PWmfYWNqbSY2w3rP8r+bLX3Xn+6F978E6E4LX2
+	 nk9CnUzYWeyVQuHIXgyxPEWEYzXvIpRdGdJf/gFvX44jGkzOkD4Q8Ij2ksm9ckOV4p
+	 n5P0hWk7Fa8sos+C910nQLjERkKlecT38nIfMSz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 296/466] wifi: ath5k: add PCI ID for Arcadyan devices
+Subject: [PATCH 6.1 520/772] can: hi311x: hi3110_can_ist(): fix {rx,tx}_errors statistics
 Date: Thu, 12 Dec 2024 15:57:45 +0100
-Message-ID: <20241212144318.476457230@linuxfoundation.org>
+Message-ID: <20241212144411.453922544@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit f3ced9bb90b0a287a1fa6184d16b0f104a78fa90 ]
+[ Upstream commit 3e4645931655776e757f9fb5ae29371cd7cb21a2 ]
 
-Arcadyan made routers with this PCI ID containing an AR2417.
+The hi3110_can_ist() function was incorrectly incrementing only the
+receive error counter, even in cases of bit or acknowledgment errors that
+occur during transmission.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20240930180716.139894-3-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+The fix the issue by incrementing the appropriate counter based on the
+type of error.
+
+Fixes: 57e83fb9b746 ("can: hi311x: Add Holt HI-311x CAN driver")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-9-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath5k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/spi/hi311x.c | 47 ++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-index b3137f60e8791..f5ca2fe0d0749 100644
---- a/drivers/net/wireless/ath/ath5k/pci.c
-+++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -47,6 +47,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
- 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
- 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
- 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
-+	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
- 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
- 	{ 0 }
- };
+diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
+index fb58e294f7b79..b757555ed4c4f 100644
+--- a/drivers/net/can/spi/hi311x.c
++++ b/drivers/net/can/spi/hi311x.c
+@@ -697,27 +697,38 @@ static irqreturn_t hi3110_can_ist(int irq, void *dev_id)
+ 			/* Check for protocol errors */
+ 			if (eflag & HI3110_ERR_PROTOCOL_MASK) {
+ 				skb = alloc_can_err_skb(net, &cf);
+-				if (!skb)
+-					break;
++				if (skb)
++					cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+ 
+-				cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+ 				priv->can.can_stats.bus_error++;
+-				priv->net->stats.rx_errors++;
+-				if (eflag & HI3110_ERR_BITERR)
+-					cf->data[2] |= CAN_ERR_PROT_BIT;
+-				else if (eflag & HI3110_ERR_FRMERR)
+-					cf->data[2] |= CAN_ERR_PROT_FORM;
+-				else if (eflag & HI3110_ERR_STUFERR)
+-					cf->data[2] |= CAN_ERR_PROT_STUFF;
+-				else if (eflag & HI3110_ERR_CRCERR)
+-					cf->data[3] |= CAN_ERR_PROT_LOC_CRC_SEQ;
+-				else if (eflag & HI3110_ERR_ACKERR)
+-					cf->data[3] |= CAN_ERR_PROT_LOC_ACK;
+-
+-				cf->data[6] = hi3110_read(spi, HI3110_READ_TEC);
+-				cf->data[7] = hi3110_read(spi, HI3110_READ_REC);
++				if (eflag & HI3110_ERR_BITERR) {
++					priv->net->stats.tx_errors++;
++					if (skb)
++						cf->data[2] |= CAN_ERR_PROT_BIT;
++				} else if (eflag & HI3110_ERR_FRMERR) {
++					priv->net->stats.rx_errors++;
++					if (skb)
++						cf->data[2] |= CAN_ERR_PROT_FORM;
++				} else if (eflag & HI3110_ERR_STUFERR) {
++					priv->net->stats.rx_errors++;
++					if (skb)
++						cf->data[2] |= CAN_ERR_PROT_STUFF;
++				} else if (eflag & HI3110_ERR_CRCERR) {
++					priv->net->stats.rx_errors++;
++					if (skb)
++						cf->data[3] |= CAN_ERR_PROT_LOC_CRC_SEQ;
++				} else if (eflag & HI3110_ERR_ACKERR) {
++					priv->net->stats.tx_errors++;
++					if (skb)
++						cf->data[3] |= CAN_ERR_PROT_LOC_ACK;
++				}
++
+ 				netdev_dbg(priv->net, "Bus Error\n");
+-				netif_rx(skb);
++				if (skb) {
++					cf->data[6] = hi3110_read(spi, HI3110_READ_TEC);
++					cf->data[7] = hi3110_read(spi, HI3110_READ_REC);
++					netif_rx(skb);
++				}
+ 			}
+ 		}
+ 
 -- 
 2.43.0
 
