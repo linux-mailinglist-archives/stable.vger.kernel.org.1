@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720719EF33B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF709EEA78
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA159291294
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 138F8281138
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D069222B58A;
-	Thu, 12 Dec 2024 16:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6870D216E2D;
+	Thu, 12 Dec 2024 15:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zhbe2rd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znBPaE3c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0E5223E96;
-	Thu, 12 Dec 2024 16:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2496521504F;
+	Thu, 12 Dec 2024 15:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022234; cv=none; b=lC067NgfgJMPcArBXwB9DW26Pb3hygXfgX2JLEAf1teHliXlKdvtGc8eOEPyQ5OCy7Kz1jrtrxtpnY3T/ZpY/bAr3KECh1kdc3IBkEGOgzLs2+OAa89cJ50SKtlvBtlDeAvClJPj/ThrLLkORHcnjIQGmj80BbXcZGO+EmQfABQ=
+	t=1734016473; cv=none; b=dRUYFnHpTItUnglVlhDLnil33wAnO31JcCxibIH5rvOfbf3/E+weJxxQEsscrJ7Qu8s3A32NrAtPNjeDnhvyZPvc8vZKQpeULytAI07UHkoM8xKgIae8ZhH9H02aRPUTL88TJJ8HLzxTsCF8GD5l7Eztint6xGtSPvjsALjDDD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022234; c=relaxed/simple;
-	bh=Ir/j1z/dPvDrRQ+ijvoTc45BI1gsW13qttpRaIvmnR4=;
+	s=arc-20240116; t=1734016473; c=relaxed/simple;
+	bh=NSv79MCFDIxHg8NI5cl8omOIc3hwpjeWf2s4fHJXFyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnhS4E+R+8pm+neMLLgTiJxvtFkXsvie64ys6+u9rVj2oTdih4wpZ0XFoqeSHgjqXkIF3lR3dh0eW9007X+81BYWCuOSE8qc85fz5l8LfW5TuDAKUfiDIISytri3kCcWDL55GJqi0s7GyqwU1ypRmcaBEUhOx5FtJ3mOWXn1hjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zhbe2rd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D150C4CECE;
-	Thu, 12 Dec 2024 16:50:33 +0000 (UTC)
+	 MIME-Version; b=dGN1M++KSYPEvud2QF5S2rjfqNCIoia/AHKNobTWNxcGbgaiZpzz1b6pgCl44SaaFzyNHhoWWua/cMRpFtxCLmtmcXcjsseGf5po/Q9S40lPQ0JColLO6N6pBRmPZEoHqs2XdDyEqm9bG0tlmQUbeqcBIq+CTe1l5+8T/LD7VAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znBPaE3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819E4C4CECE;
+	Thu, 12 Dec 2024 15:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022234;
-	bh=Ir/j1z/dPvDrRQ+ijvoTc45BI1gsW13qttpRaIvmnR4=;
+	s=korg; t=1734016473;
+	bh=NSv79MCFDIxHg8NI5cl8omOIc3hwpjeWf2s4fHJXFyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zhbe2rd2NxM7mjBWqQAlJU453lJV+Cd5Nzyu8Xyv03DHjrwyLKA8uJNTzDE1SyJkI
-	 tme0jFMyO7VnrsBTU9pOmW/g/sNb9zEVqrOqqBRhoIGDg3C2+xzFntGeQ4oOjYtV1d
-	 vZakR89GW7IDxGl6rKzYIRKK75C1XDTFDxSsBN/I=
+	b=znBPaE3cbhGoQf9weH+jDb9x2PVlhsGGM4UO2SM28v6k5WY3MvCX4VgNJvVY4oBaU
+	 vdsATg09kYzzG4bsQwR5sNK8jES51lZTBGtdqAm1u1cDqN3somQVpbvqoqA5O81zjP
+	 KeDrl/BSqRoTaBguWl2NRBsyZ1s1I6vMcEkfhvRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/565] drm/etnaviv: hold GPU lock across perfmon sampling
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Bean Huo <beanhuo@micron.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 209/466] scsi: ufs: pltfrm: Drop PM runtime reference count after ufshcd_remove()
 Date: Thu, 12 Dec 2024 15:56:18 +0100
-Message-ID: <20241212144318.706924853@linuxfoundation.org>
+Message-ID: <20241212144315.044253607@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 37dc4737447a7667f8e9ec790dac251da057eb27 ]
+commit 1745dcdb7227102e16248a324c600b9121c8f6df upstream.
 
-The perfmon sampling mutates shared GPU state (e.g. VIVS_HI_CLOCK_CONTROL
-to select the pipe for the perf counter reads). To avoid clashing with
-other functions mutating the same state (e.g. etnaviv_gpu_update_clock)
-the perfmon sampling needs to hold the GPU lock.
+During the remove stage of glue drivers, some of them are incrementing the
+reference count using pm_runtime_get_sync(), before removing the ufshcd
+using ufshcd_remove(). But they are not dropping that reference count after
+ufshcd_remove() to balance the refcount.
 
-Fixes: 68dc0b295dcb ("drm/etnaviv: use 'sync points' for performance monitor requests")
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So drop the reference count by calling pm_runtime_put_noidle() after
+ufshcd_remove(). Since the behavior is applicable to all glue drivers, move
+the PM handling to ufshcd_pltfrm_remove().
+
+Cc: stable@vger.kernel.org # 3.12
+Fixes: 62694735ca95 ("[SCSI] ufs: Add runtime PM support for UFS host controller driver")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20241111-ufs_bug_fix-v1-4-45ad8b62f02e@linaro.org
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/ufs/host/tc-dwc-g210-pltfrm.c |    1 -
+ drivers/ufs/host/ufs-exynos.c         |    1 -
+ drivers/ufs/host/ufs-mediatek.c       |    1 -
+ drivers/ufs/host/ufs-qcom.c           |    1 -
+ drivers/ufs/host/ufs-sprd.c           |    1 -
+ drivers/ufs/host/ufshcd-pltfrm.c      |    2 ++
+ 6 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index 9def75f04e5b6..0fff51dc97755 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -1292,6 +1292,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+--- a/drivers/ufs/host/tc-dwc-g210-pltfrm.c
++++ b/drivers/ufs/host/tc-dwc-g210-pltfrm.c
+@@ -76,7 +76,6 @@ static int tc_dwc_g210_pltfm_probe(struc
+  */
+ static void tc_dwc_g210_pltfm_remove(struct platform_device *pdev)
  {
- 	u32 val;
- 
-+	mutex_lock(&gpu->lock);
-+
- 	/* disable clock gating */
- 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val &= ~VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
-@@ -1303,6 +1305,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
- 	gpu_write(gpu, VIVS_HI_CLOCK_CONTROL, val);
- 
- 	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_PRE);
-+
-+	mutex_unlock(&gpu->lock);
+-	pm_runtime_get_sync(&(pdev)->dev);
+ 	ufshcd_pltfrm_remove(pdev);
  }
  
- static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
-@@ -1312,13 +1316,9 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
- 	unsigned int i;
- 	u32 val;
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -1963,7 +1963,6 @@ static void exynos_ufs_remove(struct pla
+ 	struct ufs_hba *hba =  platform_get_drvdata(pdev);
+ 	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
  
--	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
--
--	for (i = 0; i < submit->nr_pmrs; i++) {
--		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
-+	mutex_lock(&gpu->lock);
+-	pm_runtime_get_sync(&(pdev)->dev);
+ 	ufshcd_pltfrm_remove(pdev);
  
--		*pmr->bo_vma = pmr->sequence;
--	}
-+	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
- 
- 	/* disable debug register */
- 	val = gpu_read(gpu, VIVS_HI_CLOCK_CONTROL);
-@@ -1329,6 +1329,14 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
- 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val |= VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
- 	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, val);
-+
-+	mutex_unlock(&gpu->lock);
-+
-+	for (i = 0; i < submit->nr_pmrs; i++) {
-+		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
-+
-+		*pmr->bo_vma = pmr->sequence;
-+	}
+ 	phy_power_off(ufs->phy);
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -1869,7 +1869,6 @@ out:
+  */
+ static void ufs_mtk_remove(struct platform_device *pdev)
+ {
+-	pm_runtime_get_sync(&(pdev)->dev);
+ 	ufshcd_pltfrm_remove(pdev);
  }
  
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -1845,7 +1845,6 @@ static void ufs_qcom_remove(struct platf
+ 	struct ufs_hba *hba =  platform_get_drvdata(pdev);
+ 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
  
--- 
-2.43.0
-
+-	pm_runtime_get_sync(&(pdev)->dev);
+ 	ufshcd_pltfrm_remove(pdev);
+ 	if (host->esi_enabled)
+ 		platform_device_msi_free_irqs_all(hba->dev);
+--- a/drivers/ufs/host/ufs-sprd.c
++++ b/drivers/ufs/host/ufs-sprd.c
+@@ -427,7 +427,6 @@ static int ufs_sprd_probe(struct platfor
+ 
+ static void ufs_sprd_remove(struct platform_device *pdev)
+ {
+-	pm_runtime_get_sync(&(pdev)->dev);
+ 	ufshcd_pltfrm_remove(pdev);
+ }
+ 
+--- a/drivers/ufs/host/ufshcd-pltfrm.c
++++ b/drivers/ufs/host/ufshcd-pltfrm.c
+@@ -532,8 +532,10 @@ void ufshcd_pltfrm_remove(struct platfor
+ {
+ 	struct ufs_hba *hba =  platform_get_drvdata(pdev);
+ 
++	pm_runtime_get_sync(&pdev->dev);
+ 	ufshcd_remove(hba);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
+ }
+ EXPORT_SYMBOL_GPL(ufshcd_pltfrm_remove);
+ 
 
 
 
