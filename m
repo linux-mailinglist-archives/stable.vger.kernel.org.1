@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-101963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B419EEF75
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C62079EF018
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E99FB2976E3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0702017124B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9AD22E9FF;
-	Thu, 12 Dec 2024 16:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0AB22FDF9;
+	Thu, 12 Dec 2024 16:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCF9QEbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dh7vNY7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4658A22E9FD;
-	Thu, 12 Dec 2024 16:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765CE223C65;
+	Thu, 12 Dec 2024 16:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019446; cv=none; b=dtr5+tSb2nvYsZdOKy9nVpsxZYFuchN1HSz2rnBRukSY6354PZiZrLMocJ2xyQe1ZmqXATik+LetLhZd5OsY+jOmgwMnpW/xyiV2HUJ7wyM0B4JqEKKxGXYOYHV0U3m8A3CfErz1mp1hftomeS37fR49t51tUU6JV7NMYjNTZzw=
+	t=1734019488; cv=none; b=GPPN3Fxfj/b5COi+OP2rbuB+ObZlOxQA0HbIx5/u48bdC8d1GIOY6mwgR+dndR0XLXaRS8mpeHtKdBkPveE93c12nPT136xijU6tDEgiX7c+J2kpWLYKPu3Qecu+Hjn619qXhGtrAAcQKzaBvoXwXEtvSl1GAvmqCmz8GnjnlOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019446; c=relaxed/simple;
-	bh=11ktYjF89PxgRu6MRCA7TpoJPgxrAzP0z4/z/1EG340=;
+	s=arc-20240116; t=1734019488; c=relaxed/simple;
+	bh=STQsrYBYxYjRGYPd0BGLpHza6ztcuzF6Ht5EE2wD9MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3QXstTnkKVkuXhRYv22H0E3dmeDkGlrZrbebhgYKN2kdLkRuQd2fc9nT2fmbvHyIC6uqAT1b9SPaAY82jR5k6N207SYZeOg03L1wFOjkaPc6ClNyGzl1YLKgSGWBCQRwa3kuQco7n/54VyBHhRUeHAOj8wHIGRj452EBiaH6jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCF9QEbA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE31C4CED0;
-	Thu, 12 Dec 2024 16:04:04 +0000 (UTC)
+	 MIME-Version; b=HPfZ9mord1Rj5DJiygdpMxW2sCta/QUcSI/CQZEEn62lQ0BzRywgV00z3twjR6WywQO8pNpBrC76is010BGVNRnoEdsnVJV/p03fflsHZZHlyUcSb0On0rqVIAthcTI0LSOSSJ5PnbKv4xprnmf5q6xQ+zwoLbygrOPqz+gBCEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dh7vNY7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA073C4CED3;
+	Thu, 12 Dec 2024 16:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019445;
-	bh=11ktYjF89PxgRu6MRCA7TpoJPgxrAzP0z4/z/1EG340=;
+	s=korg; t=1734019488;
+	bh=STQsrYBYxYjRGYPd0BGLpHza6ztcuzF6Ht5EE2wD9MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JCF9QEbAa+FYsUvdAxNB/sL9PL/eXUqAct8IvhVMiVddrMQiquOg/pcnyCb1DnZV6
-	 vRxt1ULxB7Nebb/+ePsU1B+3bohQ4QqO4UjshzBeCVpFFw3YmPU/k8ZVB+i23akqG5
-	 QuQihu/3xSdqWEFVPmkQvopCUuvhiJR3u8wcozPI=
+	b=dh7vNY7ocJQjnQRnlf6qTVOwIY/lCl9wrNYITi6ti7SwWYOLkVreLf3SaQEP2r+lZ
+	 hcPAgtCp7E7AuV336rZtRpXne7FH3wgQROmGeG/aFc3QfHkUQE6e4Hb2jJ+k0aYqcG
+	 tt3MeN3wOPJgdC8+S01PoKG5CS5Vfc7pztYiaVXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+73582d08864d8268b6fd@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 192/772] net: rfkill: gpio: Add check for clk_enable()
-Date: Thu, 12 Dec 2024 15:52:17 +0100
-Message-ID: <20241212144357.878033491@linuxfoundation.org>
+Subject: [PATCH 6.1 193/772] ALSA: usx2y: Use snd_card_free_when_closed() at disconnection
+Date: Thu, 12 Dec 2024 15:52:18 +0100
+Message-ID: <20241212144357.917022934@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -67,42 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 8251e7621b25ccdb689f1dd9553b8789e3745ea1 ]
+[ Upstream commit dafb28f02be407e07a6f679e922a626592b481b0 ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+The USB disconnect callback is supposed to be short and not too-long
+waiting.  OTOH, the current code uses snd_card_free() at
+disconnection, but this waits for the close of all used fds, hence it
+can take long.  It eventually blocks the upper layer USB ioctls, which
+may trigger a soft lockup.
 
-Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20241108195341.1853080-1-zmw12306@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+An easy workaround is to replace snd_card_free() with
+snd_card_free_when_closed().  This variant returns immediately while
+the release of resources is done asynchronously by the card device
+release at the last close.
+
+Fixes: 230cd5e24853 ("[ALSA] prevent oops & dead keyboard on usb unplugging while the device is be ing used")
+Reported-by: syzbot+73582d08864d8268b6fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=73582d08864d8268b6fd
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241113111042.15058-2-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/rfkill-gpio.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ sound/usb/usx2y/usbusx2y.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
-index f74baefd855d3..2df5bf240b64a 100644
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -30,8 +30,12 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
- {
- 	struct rfkill_gpio_data *rfkill = data;
+diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
+index 52f4e6652407d..4c4ce0319d624 100644
+--- a/sound/usb/usx2y/usbusx2y.c
++++ b/sound/usb/usx2y/usbusx2y.c
+@@ -423,7 +423,7 @@ static void snd_usx2y_disconnect(struct usb_interface *intf)
+ 	}
+ 	if (usx2y->us428ctls_sharedmem)
+ 		wake_up(&usx2y->us428ctls_wait_queue_head);
+-	snd_card_free(card);
++	snd_card_free_when_closed(card);
+ }
  
--	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled)
--		clk_enable(rfkill->clk);
-+	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled) {
-+		int ret = clk_enable(rfkill->clk);
-+
-+		if (ret)
-+			return ret;
-+	}
- 
- 	gpiod_set_value_cansleep(rfkill->shutdown_gpio, !blocked);
- 	gpiod_set_value_cansleep(rfkill->reset_gpio, !blocked);
+ static int snd_usx2y_probe(struct usb_interface *intf,
 -- 
 2.43.0
 
