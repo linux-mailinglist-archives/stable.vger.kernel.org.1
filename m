@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-103235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B379EF6ED
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E99299EF5C1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 110801896803
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58A4E28BD51
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3E51632E6;
-	Thu, 12 Dec 2024 17:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19046205501;
+	Thu, 12 Dec 2024 17:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRxql9qh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYbFErYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF354F218;
-	Thu, 12 Dec 2024 17:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBE62206A5;
+	Thu, 12 Dec 2024 17:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023950; cv=none; b=biRwQPPHDzkxJWAHCAdOlQXO3R2ECYsvO/aJper0icfBFWAk+zCfnrK6T2HDVPvIY5EErYBYX9oDQSafhvEGx4OLSFS8OQ2z62/88MwZF+oJNf+HVBcin3ZqQhx99VrCGfr/0daoixHg73sI50Gi3c/oJPfx8L8QIXSvcalMpVQ=
+	t=1734023956; cv=none; b=UWszgODesvUS9wbYBEM6rmRtxWKxs221g+7YXW9H3R8OypUAuNIDlc4/VQrSkiJGOWtDdmCNXydU5VDL3hI0/zSwhwwPFt/GA+jMhJckjRYjRlV/q1UkekNmYmQsH3Xa6WqAp4ZzSSl19BmOgSnHgoFH0KzkrQwwad4FtKsUeV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023950; c=relaxed/simple;
-	bh=culJFWfK6gEMxJ8HAL4gTnvUA5i+VQl9wDCjutpCVuY=;
+	s=arc-20240116; t=1734023956; c=relaxed/simple;
+	bh=zypSsm86xXGEcuS7ur8s+lMNzJKGtpAJnSsQRjxddKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GW8ovJDCUXuJDq5wemBJga6m+u4fsJNWZujt4LLUw4IQp7dsvO/gpxkpScXRg2UbpIbkO3C0fsoiMPDludF2KUGaRszYZ0kwtEEvMXW5VTq/wrnF0COgEKHy3Vm+B1MvsCXNonsDaFoyYUHcyytAjhe/qubzjf/1UMGW2jTSqqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRxql9qh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165A6C4CED0;
-	Thu, 12 Dec 2024 17:19:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S0OlvtQmzQxFh4OZWAdgoUlD3fCMFNFiCpx2OeInNz0PA2pmtSejCr9uPTBDq3T0ro+MLZr0L6N/OH8le17q8X2dm1S25CMTcBb7CbeOiPJkOGWOhI6srFilsUMCdpOFfdMwukrswOt3UsDkNu7favc+VRIfWbOd423eIhfLFEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYbFErYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EE4C4CED3;
+	Thu, 12 Dec 2024 17:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023950;
-	bh=culJFWfK6gEMxJ8HAL4gTnvUA5i+VQl9wDCjutpCVuY=;
+	s=korg; t=1734023956;
+	bh=zypSsm86xXGEcuS7ur8s+lMNzJKGtpAJnSsQRjxddKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRxql9qhh5/romask01kYYsflHYjkpdVqjxOCOv6SPc/XQ1aRxx8+KjwaVOI8YBBs
-	 umkYFFarolpvPEcrsMX/OZ36NxUGGPJjZFc2Pb2Jd3Xj86BOFyj6lODF+Z43PaYo8+
-	 bAT56P1cy315WZ/ld3yvaKW4yH4pg07UR6L7duWI=
+	b=GYbFErYkk4xLVlqDSuNiN/WeOQPJInteHq5aXt+m0zj7U5WgrgyA9k7N1Ug5avYTa
+	 mv7R4PAkRCDSt/lEF6J++uFw4qKyCeDz6PLbalJezFUC5OYekXsAGWXm0XmcEAUWiF
+	 Zc3CxxMz9lOi67dVHnUIEoXHk6PSHFJCtAXG/AbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Yuan Can <yuancan@huawei.com>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 137/459] drm/etnaviv: hold GPU lock across perfmon sampling
-Date: Thu, 12 Dec 2024 15:57:55 +0100
-Message-ID: <20241212144258.922693942@linuxfoundation.org>
+Subject: [PATCH 5.10 138/459] wifi: wfx: Fix error handling in wfx_core_init()
+Date: Thu, 12 Dec 2024 15:57:56 +0100
+Message-ID: <20241212144258.960085156@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
 References: <20241212144253.511169641@linuxfoundation.org>
@@ -60,82 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 37dc4737447a7667f8e9ec790dac251da057eb27 ]
+[ Upstream commit 3b88a9876779b55478a4dde867e73f7a100ffa23 ]
 
-The perfmon sampling mutates shared GPU state (e.g. VIVS_HI_CLOCK_CONTROL
-to select the pipe for the perf counter reads). To avoid clashing with
-other functions mutating the same state (e.g. etnaviv_gpu_update_clock)
-the perfmon sampling needs to hold the GPU lock.
+The wfx_core_init() returns without checking the retval from
+sdio_register_driver().
+If the sdio_register_driver() failed, the module failed to install,
+leaving the wfx_spi_driver not unregistered.
 
-Fixes: 68dc0b295dcb ("drm/etnaviv: use 'sync points' for performance monitor requests")
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Fixes: a7a91ca5a23d ("staging: wfx: add infrastructure for new driver")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Reviewed-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241022090453.84679-1-yuancan@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/staging/wfx/main.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index e944bcd30a2ba..407a15e1469f2 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -1274,6 +1274,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+diff --git a/drivers/staging/wfx/main.c b/drivers/staging/wfx/main.c
+index d5dacd5583c6e..5a54dd22fad53 100644
+--- a/drivers/staging/wfx/main.c
++++ b/drivers/staging/wfx/main.c
+@@ -477,10 +477,23 @@ static int __init wfx_core_init(void)
  {
- 	u32 val;
+ 	int ret = 0;
  
-+	mutex_lock(&gpu->lock);
-+
- 	/* disable clock gating */
- 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val &= ~VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
-@@ -1285,6 +1287,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
- 	gpu_write(gpu, VIVS_HI_CLOCK_CONTROL, val);
- 
- 	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_PRE);
-+
-+	mutex_unlock(&gpu->lock);
- }
- 
- static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
-@@ -1294,13 +1298,9 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
- 	unsigned int i;
- 	u32 val;
- 
--	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
--
--	for (i = 0; i < submit->nr_pmrs; i++) {
--		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
-+	mutex_lock(&gpu->lock);
- 
--		*pmr->bo_vma = pmr->sequence;
--	}
-+	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
- 
- 	/* disable debug register */
- 	val = gpu_read(gpu, VIVS_HI_CLOCK_CONTROL);
-@@ -1311,6 +1311,14 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
- 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val |= VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
- 	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, val);
-+
-+	mutex_unlock(&gpu->lock);
-+
-+	for (i = 0; i < submit->nr_pmrs; i++) {
-+		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
-+
-+		*pmr->bo_vma = pmr->sequence;
+-	if (IS_ENABLED(CONFIG_SPI))
++	if (IS_ENABLED(CONFIG_SPI)) {
+ 		ret = spi_register_driver(&wfx_spi_driver);
+-	if (IS_ENABLED(CONFIG_MMC) && !ret)
++		if (ret)
++			goto out;
 +	}
++	if (IS_ENABLED(CONFIG_MMC)) {
+ 		ret = sdio_register_driver(&wfx_sdio_driver);
++		if (ret)
++			goto unregister_spi;
++	}
++
++	return 0;
++
++unregister_spi:
++	if (IS_ENABLED(CONFIG_SPI))
++		spi_unregister_driver(&wfx_spi_driver);
++out:
+ 	return ret;
  }
- 
- 
+ module_init(wfx_core_init);
 -- 
 2.43.0
 
