@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-101644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B0A9EED6D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F989EF3FE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4731A28868E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA65228D351
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D7B22330D;
-	Thu, 12 Dec 2024 15:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D92B222D7D;
+	Thu, 12 Dec 2024 17:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asRa8d7Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3SYQMN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27EF223302;
-	Thu, 12 Dec 2024 15:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AFD53365;
+	Thu, 12 Dec 2024 17:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018282; cv=none; b=f3Q2x0r/1syVu9XZvXIJGiy6rZKwVKxoCODnIJg57y1oZEurJ6cfeZfuuym3QwOclHv5vOhStaP9ydJH2OUBUO6Sv9/gez0l5RrJT2o95+ZarU7obUq5nsnDdqpuiKTkDFPyyyctoSdkZ6ifMSC88a/1MED4vyCzh52RxtAeMBU=
+	t=1734022940; cv=none; b=MEM3n0Tfb5r96jl00ktaWVF3ie0fOBPGKwkCx4rVUzsnU3DKlSvH7tn1SFCB0WyhmTBdIAeAbt6733GBYNURVv6o+mDY3XfAYYrCJTcmgOjATy5NxPa2BeqAigXrOC/QxMVo0IMzG4TtQROovDAV4MX6Gy+yUDUopdSaV+wcfxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018282; c=relaxed/simple;
-	bh=xpsv5ml1yJ68KsNoIBgfph2KZyP61XWM/aIjaYNMRHU=;
+	s=arc-20240116; t=1734022940; c=relaxed/simple;
+	bh=kfyhCfGCD/KoQv/Cg+P4mPoCIDOTzVN5Gea6Mqs/XhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbOP7BplPaSEkwxrad7nroJDPq0zy4N8WqIjR9LLzehmHaaaXtEaQJFBvBzrPSc+cyvXSRoRwJXLA/yeNuBhMRmoMBlzP8gEADGuQrLwJDIdSwfwkZ/GeqNSOV4tVfWpgvINI/i6k3SONPy06zM5taaSnb5SuwFQSpcbZjXmtp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asRa8d7Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C461C4CECE;
-	Thu, 12 Dec 2024 15:44:40 +0000 (UTC)
+	 MIME-Version; b=GG9PSXLv5FpG6h19Gc6u4m3ypiZjmzhSuusKQf8QrtLjijKaQwKLLlbnYGk3bxbBByyWDosTJfKiW5crjdtJVkngMWVZMvCXEt20toHoQqH57g1HE59caOP3nsCIX7mbNLA3ygcXIA0rquV+1AR+ITGu4ima11viHhkGncQMDSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3SYQMN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B40DC4CECE;
+	Thu, 12 Dec 2024 17:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018281;
-	bh=xpsv5ml1yJ68KsNoIBgfph2KZyP61XWM/aIjaYNMRHU=;
+	s=korg; t=1734022940;
+	bh=kfyhCfGCD/KoQv/Cg+P4mPoCIDOTzVN5Gea6Mqs/XhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asRa8d7ZPl0mYVDPKxkxnZIhUa4NZk6PH/Ep5htvD5kf2+uK3/os1BH4NE7SLIXh6
-	 iyfB7nYkfGKy3o2AwQ84j49dpi+kYeRkhfFD+eQfQoLUgU7yk0iTW2pZ689UG8t7W4
-	 iPVHasT5rV5vQ+EtnTSDhLTRkA77OXLI0lms7EGw=
+	b=b3SYQMN0fZDskkvTkks+JD+5x8TXEZ3Tvn+cxD2SKo12pXXK8v/SQUI+3p8Z8wuu9
+	 UCKlrN5yTYBY6HvSN41c42F6WQRxC9TUabLGwKAVFO0rfnXspgfgceJ7HVLTQFYhnO
+	 s+C6OlcMsjcSmDn+GKGEmhv4WkTIlk6vg5YwT3/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Si-Wei Liu" <si-wei.liu@oracle.com>,
-	Darren Kenny <darren.kenny@oracle.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 249/356] virtio-net: fix overflow inside virtnet_rq_alloc
-Date: Thu, 12 Dec 2024 15:59:28 +0100
-Message-ID: <20241212144254.442545847@linuxfoundation.org>
+Subject: [PATCH 5.15 374/565] sh: intc: Fix use-after-free bug in register_intc_controller()
+Date: Thu, 12 Dec 2024 15:59:29 +0100
+Message-ID: <20241212144326.409063057@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 6aacd1484468361d1d04badfe75f264fa5314864 ]
+[ Upstream commit 63e72e551942642c48456a4134975136cdcb9b3c ]
 
-When the frag just got a page, then may lead to regression on VM.
-Specially if the sysctl net.core.high_order_alloc_disable value is 1,
-then the frag always get a page when do refill.
+In the error handling for this function, d is freed without ever
+removing it from intc_list which would lead to a use after free.
+To fix this, let's only add it to the list after everything has
+succeeded.
 
-Which could see reliable crashes or scp failure (scp a file 100M in size
-to VM).
-
-The issue is that the virtnet_rq_dma takes up 16 bytes at the beginning
-of a new frag. When the frag size is larger than PAGE_SIZE,
-everything is fine. However, if the frag is only one page and the
-total size of the buffer and virtnet_rq_dma is larger than one page, an
-overflow may occur.
-
-The commit f9dac92ba908 ("virtio_ring: enable premapped mode whatever
-use_dma_api") introduced this problem. And we reverted some commits to
-fix this in last linux version. Now we try to enable it and fix this
-bug directly.
-
-Here, when the frag size is not enough, we reduce the buffer len to fix
-this problem.
-
-Reported-by: "Si-Wei Liu" <si-wei.liu@oracle.com>
-Tested-by: Darren Kenny <darren.kenny@oracle.com>
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 2dcec7a988a1 ("sh: intc: set_irq_wake() support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/sh/intc/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 426c05d5b1381..3bf394b24d971 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -676,9 +676,6 @@ static void *virtnet_rq_alloc(struct receive_queue *rq, u32 size, gfp_t gfp)
- 	void *buf, *head;
- 	dma_addr_t addr;
+diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
+index ca4f4ca413f11..b19388b349be3 100644
+--- a/drivers/sh/intc/core.c
++++ b/drivers/sh/intc/core.c
+@@ -209,7 +209,6 @@ int __init register_intc_controller(struct intc_desc *desc)
+ 		goto err0;
  
--	if (unlikely(!skb_page_frag_refill(size, alloc_frag, gfp)))
--		return NULL;
--
- 	head = page_address(alloc_frag->page);
+ 	INIT_LIST_HEAD(&d->list);
+-	list_add_tail(&d->list, &intc_list);
  
- 	if (rq->do_dma) {
-@@ -1860,6 +1857,9 @@ static int add_recvbuf_small(struct virtnet_info *vi, struct receive_queue *rq,
- 	len = SKB_DATA_ALIGN(len) +
- 	      SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+ 	raw_spin_lock_init(&d->lock);
+ 	INIT_RADIX_TREE(&d->tree, GFP_ATOMIC);
+@@ -369,6 +368,7 @@ int __init register_intc_controller(struct intc_desc *desc)
  
-+	if (unlikely(!skb_page_frag_refill(len, &rq->alloc_frag, gfp)))
-+		return -ENOMEM;
-+
- 	buf = virtnet_rq_alloc(rq, len, gfp);
- 	if (unlikely(!buf))
- 		return -ENOMEM;
-@@ -1962,6 +1962,12 @@ static int add_recvbuf_mergeable(struct virtnet_info *vi,
- 	 */
- 	len = get_mergeable_buf_len(rq, &rq->mrg_avg_pkt_len, room);
+ 	d->skip_suspend = desc->skip_syscore_suspend;
  
-+	if (unlikely(!skb_page_frag_refill(len + room, alloc_frag, gfp)))
-+		return -ENOMEM;
-+
-+	if (!alloc_frag->offset && len + room + sizeof(struct virtnet_rq_dma) > alloc_frag->size)
-+		len -= sizeof(struct virtnet_rq_dma);
-+
- 	buf = virtnet_rq_alloc(rq, len + room, gfp);
- 	if (unlikely(!buf))
- 		return -ENOMEM;
++	list_add_tail(&d->list, &intc_list);
+ 	nr_intc_controllers++;
+ 
+ 	return 0;
 -- 
 2.43.0
 
