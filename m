@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2CF9EF672
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FEF9EF743
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAB32177DE6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FECE17ABF9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1568E6F2FE;
-	Thu, 12 Dec 2024 17:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A7E21CFEA;
+	Thu, 12 Dec 2024 17:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ED445Vuc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSISjClB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5607221DA4;
-	Thu, 12 Dec 2024 17:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D97217F40;
+	Thu, 12 Dec 2024 17:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023274; cv=none; b=gzWp5YdKYYd4JMsHxQWwZ2iRjjA7GSJzWY/RAeSYe/NHbKy23Z6VytZ0JEOIumfaO7TbUnlQTuYBUovS9du5FBGScAgBTJ2XRTARbCko8lIKuAjAbPGdHRVR1UbL8PtbyHKsUWTa67/TFw7wfutl9tsbdVhj+PmtcIsgbvoCpRA=
+	t=1734024475; cv=none; b=mSuL7JhCdo7WALdTN2Ord8nFO0cvJYFM4FQVPRKkY2MRjJERnCph1/ow7J1Ca6JRB1nAhxaDdv3JO34pH5C6Re3c26QD+RFw22/XW3PC5d6uM+Y/7mS0sLwX+Vm3KAyxzG8XcY5WBD6KIY/kR1jk6FxkSWEQs0/FCIn+Kt5He3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023274; c=relaxed/simple;
-	bh=EjGJR0EHtTX4bWezpDrBQPsieeSB8MdSDCUXqwCaA1w=;
+	s=arc-20240116; t=1734024475; c=relaxed/simple;
+	bh=Ws7HaOAx6Y5pVuolDF0CH31rEkOYNHVBox+VrMfF3v8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gus+R5LXozPTSwv9IMPjVmL6zgbWnPky1AJzkDjIi6PxVXVRIyN7pI9C5to4EJzNtxywRhLcb6ORkJY285hT3sOVUx1sVdrDB7ZD7IANMix2VspEV9dwc2vEP+PsU/h0tZ8g8+5r4V840AWAksDFW8I9P+u8YYOFPbveMFzLJQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ED445Vuc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0CAC4CECE;
-	Thu, 12 Dec 2024 17:07:54 +0000 (UTC)
+	 MIME-Version; b=GY9Gn/Gmdj82ZXR/YGuPcIIOQ1ov8Q2VySnESXqwTgNOB/4khFucrBwRS31aMSOSx0gK9H7+revJM6yP/T7G8bkjS/6vd+gAyp1O645E2kMi8tqtN9yoCWjr60t0Kl8eGc/DsTTnMVLr1Hqf7u7tKlmPeAl7M3UX6+KU1jnSptQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSISjClB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75D9C4CED3;
+	Thu, 12 Dec 2024 17:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023274;
-	bh=EjGJR0EHtTX4bWezpDrBQPsieeSB8MdSDCUXqwCaA1w=;
+	s=korg; t=1734024475;
+	bh=Ws7HaOAx6Y5pVuolDF0CH31rEkOYNHVBox+VrMfF3v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ED445VuckiX2A7uwyMycVoGbQJj7eUK515s9MOIyGmYCtsCMz9+RyYfF6oVOW7kno
-	 I5Buc2oUqQ3Uy9haIHVIk3miAQsx7Ba3bkhIsrbBODmWy6YRgzZ6qxVHjfzg0+WiLd
-	 O1rVlVYB7V+puf2/N6dnC2KNlNrGKaAh8hTBlxf0=
+	b=VSISjClBFvj2IdhHDHlqfBnw4ZnYL7HY79DE9LBVGVE6hJ96or/d/21kc2tXeUenM
+	 1BdtVYwAYWwHxd2C1V1U6FyEWRAMot1AZe3SbIkKO3PVqFVOn48I5LGSDqeL6NxVYr
+	 Fs31V8/aRcqT5Y3xVbNP9ZFLy2MLNEaj5rf86HTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nazar Bilinskyi <nbilinskyi@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 451/565] ALSA: hda/realtek: Enable mute and micmute LED on HP ProBook 430 G8
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 308/459] SUNRPC: Replace internal use of SOCKWQ_ASYNC_NOSPACE
 Date: Thu, 12 Dec 2024 16:00:46 +0100
-Message-ID: <20241212144329.548523771@linuxfoundation.org>
+Message-ID: <20241212144305.811502279@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nazar Bilinskyi <nbilinskyi@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 3a83f7baf1346aca885cb83cb888e835fef7c472 upstream.
+[ Upstream commit 2790a624d43084de590884934969e19c7a82316a ]
 
-HP ProBook 430 G8 has a mute and micmute LEDs that can be made to work
-using quirk ALC236_FIXUP_HP_GPIO_LED. Enable already existing quirk.
+The socket's SOCKWQ_ASYNC_NOSPACE can be cleared by various actors in
+the socket layer, so replace it with our own flag in the transport
+sock_state field.
 
-Signed-off-by: Nazar Bilinskyi <nbilinskyi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241130231631.8929-1-nbilinskyi@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/sunrpc/xprtsock.h |  1 +
+ net/sunrpc/xprtsock.c           | 22 ++++------------------
+ 2 files changed, 5 insertions(+), 18 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9212,6 +9212,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-+	SND_PCI_QUIRK(0x103c, 0x87df, "HP ProBook 430 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f1, "HP ProBook 630 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/include/linux/sunrpc/xprtsock.h b/include/linux/sunrpc/xprtsock.h
+index 689062afdd610..3eb0079669c50 100644
+--- a/include/linux/sunrpc/xprtsock.h
++++ b/include/linux/sunrpc/xprtsock.h
+@@ -90,5 +90,6 @@ struct sock_xprt {
+ #define XPRT_SOCK_WAKE_PENDING	(6)
+ #define XPRT_SOCK_WAKE_DISCONNECT	(7)
+ #define XPRT_SOCK_CONNECT_SENT	(8)
++#define XPRT_SOCK_NOSPACE	(9)
+ 
+ #endif /* _LINUX_SUNRPC_XPRTSOCK_H */
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 93e59d5a363d0..278d044e1fd4a 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -770,14 +770,8 @@ static int xs_nospace(struct rpc_rqst *req, struct sock_xprt *transport)
+ 
+ 	/* Don't race with disconnect */
+ 	if (xprt_connected(xprt)) {
+-		struct socket_wq *wq;
+-
+-		rcu_read_lock();
+-		wq = rcu_dereference(sk->sk_wq);
+-		set_bit(SOCKWQ_ASYNC_NOSPACE, &wq->flags);
+-		rcu_read_unlock();
+-
+ 		/* wait for more buffer space */
++		set_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
+ 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
+ 		sk->sk_write_pending++;
+ 		xprt_wait_for_buffer_space(xprt);
+@@ -1134,6 +1128,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
+ 	clear_bit(XPRT_SOCK_WAKE_ERROR, &transport->sock_state);
+ 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
+ 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
++	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
+ }
+ 
+ static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
+@@ -1497,7 +1492,6 @@ static void xs_tcp_state_change(struct sock *sk)
+ 
+ static void xs_write_space(struct sock *sk)
+ {
+-	struct socket_wq *wq;
+ 	struct sock_xprt *transport;
+ 	struct rpc_xprt *xprt;
+ 
+@@ -1508,15 +1502,10 @@ static void xs_write_space(struct sock *sk)
+ 	if (unlikely(!(xprt = xprt_from_sock(sk))))
+ 		return;
+ 	transport = container_of(xprt, struct sock_xprt, xprt);
+-	rcu_read_lock();
+-	wq = rcu_dereference(sk->sk_wq);
+-	if (!wq || test_and_clear_bit(SOCKWQ_ASYNC_NOSPACE, &wq->flags) == 0)
+-		goto out;
+-
++	if (!test_and_clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state))
++		return;
+ 	xs_run_error_worker(transport, XPRT_SOCK_WAKE_WRITE);
+ 	sk->sk_write_pending--;
+-out:
+-	rcu_read_unlock();
+ }
+ 
+ /**
+@@ -1860,7 +1849,6 @@ static int xs_local_finish_connecting(struct rpc_xprt *xprt,
+ 		sk->sk_user_data = xprt;
+ 		sk->sk_data_ready = xs_data_ready;
+ 		sk->sk_write_space = xs_udp_write_space;
+-		sock_set_flag(sk, SOCK_FASYNC);
+ 		sk->sk_error_report = xs_error_report;
+ 
+ 		xprt_clear_connected(xprt);
+@@ -2058,7 +2046,6 @@ static void xs_udp_finish_connecting(struct rpc_xprt *xprt, struct socket *sock)
+ 		sk->sk_user_data = xprt;
+ 		sk->sk_data_ready = xs_data_ready;
+ 		sk->sk_write_space = xs_udp_write_space;
+-		sock_set_flag(sk, SOCK_FASYNC);
+ 
+ 		xprt_set_connected(xprt);
+ 
+@@ -2214,7 +2201,6 @@ static int xs_tcp_finish_connecting(struct rpc_xprt *xprt, struct socket *sock)
+ 		sk->sk_data_ready = xs_data_ready;
+ 		sk->sk_state_change = xs_tcp_state_change;
+ 		sk->sk_write_space = xs_tcp_write_space;
+-		sock_set_flag(sk, SOCK_FASYNC);
+ 		sk->sk_error_report = xs_error_report;
+ 
+ 		/* socket options */
+-- 
+2.43.0
+
 
 
 
