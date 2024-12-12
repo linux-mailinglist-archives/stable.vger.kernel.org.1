@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F193A9EF43F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E3D9EEC1E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12E381890A92
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18299284249
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09ED23A580;
-	Thu, 12 Dec 2024 16:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229D0217F30;
+	Thu, 12 Dec 2024 15:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYXq2XWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mq0A5cun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED0E22A7E4;
-	Thu, 12 Dec 2024 16:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2680215799;
+	Thu, 12 Dec 2024 15:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022082; cv=none; b=lU29rdd/Aiha9qkPQFlgzH35fk3ndqvUbIRQsgbE1xGfItm6z1645kbyLw3RX5sCx2KStfiiFGW9H4HOuez7SsTFCAdkH17ZMukHwfjnKcNKDFZH4aXDteHN6zd2o4w5o6t3P+ZNwTLLHCjGc5DEbWkL5ZnCztST1r9HKdBuoc4=
+	t=1734017454; cv=none; b=B8pyfkn7bS6fHXvHVOQmZY1eXS9tu1ZPHBlewId/x1qXwQ4oK/9I8hwfcynWO1jZxZ9S7K5CJv0JMDuZAP90A9We3KBDCvH8sqOxalRcD2SXHfQ8Z+dNw17ImBYZRfiFDTpdUOguSv2+3fMLt3tOLCbMLfW7nwQdnn/cKUSbs2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022082; c=relaxed/simple;
-	bh=to2ElEYT1dP/EB2PMkrk3YR3lvHqS9u/udmpJfjz6mc=;
+	s=arc-20240116; t=1734017454; c=relaxed/simple;
+	bh=vOUkoSGkjZVEL8BSL+6eVmZPU/BTaEsrC0j1dlnr4MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eRoe634kX14kNu/mZzSU/38b8Mwmsg+e1jxKeNwLn5/yRwzUJqrTEZ+JQpfwSQSeF1KEW49VjRJbZ/DENC3Uh9a8ilEAhlGSvGdLuEGmRAjJgiWFf4B2zrOLImwhWJTUcwxlCLL9CUTU/mtM9NZjI65f0GQ5JLfp03y5/Ce/7/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYXq2XWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19EAC4CECE;
-	Thu, 12 Dec 2024 16:48:01 +0000 (UTC)
+	 MIME-Version; b=lXn2RKvoHkF4Rae2zJShN+nXRt/qVA4Kor0k+6wdF7LR3K/wg5gcjsAvM6+2+775ngieCn2e5F4enGF6pxaw3Cl3CEZBDPenleswuodOymtcJ8HJUF0U5iBPckuPGU8wU+Mbm2AHROPhmvXVNZ6LTfIeWI9viSQ8T6xe8GxPMEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mq0A5cun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57584C4CECE;
+	Thu, 12 Dec 2024 15:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022082;
-	bh=to2ElEYT1dP/EB2PMkrk3YR3lvHqS9u/udmpJfjz6mc=;
+	s=korg; t=1734017454;
+	bh=vOUkoSGkjZVEL8BSL+6eVmZPU/BTaEsrC0j1dlnr4MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZYXq2XWWF7ygmUNClMTIF1BsWGe4/PYogwafzj3Cc7j8TM7rta0kwcFw46qzFame6
-	 TPFbNumQT2lMpz1Lb9nnGDLbLDjNSR27ooiDtr49r9wMRcjtE+lfW3WmNNUJjtdBCx
-	 Ng3lwBWhgMnCnicoFD81as9JtUwa4AZLlQAa2BGk=
+	b=Mq0A5cunUIR1Dh2s9rrrR9NabT0CQR9diQdhvgjoLbyV6Sl66h6ULtjfMA8DDRDGy
+	 D1xZq1RSghbmX4avF3ET3NLnc9uRtXWBxU065qVOoLzgWSHEMFBPmVoihAkLyPjEG/
+	 eOyoAq/zAskuiZwX6x3LpldVJ6p4ccbYD5MVQUB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 142/565] media: atomisp: remove #ifdef HAS_NO_HMEM
+Subject: [PATCH 6.6 018/356] netfilter: x_tables: fix LED ID check in led_tg_check()
 Date: Thu, 12 Dec 2024 15:55:37 +0100
-Message-ID: <20241212144317.101164085@linuxfoundation.org>
+Message-ID: <20241212144245.342253743@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,152 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 63705da3dfc8922a2dbfc3c805a5faadb4416954 ]
+[ Upstream commit 04317f4eb2aad312ad85c1a17ad81fe75f1f9bc7 ]
 
-This is not defined anywhere, so, solve the ifdefs, getting
-rid of them.
+Syzbot has reported the following BUG detected by KASAN:
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: ed61c5913950 ("media: atomisp: Add check for rgby_data memory allocation failure")
+BUG: KASAN: slab-out-of-bounds in strlen+0x58/0x70
+Read of size 1 at addr ffff8881022da0c8 by task repro/5879
+...
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x241/0x360
+ ? __pfx_dump_stack_lvl+0x10/0x10
+ ? __pfx__printk+0x10/0x10
+ ? _printk+0xd5/0x120
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x183/0x530
+ print_report+0x169/0x550
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x45f/0x530
+ ? __phys_addr+0xba/0x170
+ ? strlen+0x58/0x70
+ kasan_report+0x143/0x180
+ ? strlen+0x58/0x70
+ strlen+0x58/0x70
+ kstrdup+0x20/0x80
+ led_tg_check+0x18b/0x3c0
+ xt_check_target+0x3bb/0xa40
+ ? __pfx_xt_check_target+0x10/0x10
+ ? stack_depot_save_flags+0x6e4/0x830
+ ? nft_target_init+0x174/0xc30
+ nft_target_init+0x82d/0xc30
+ ? __pfx_nft_target_init+0x10/0x10
+ ? nf_tables_newrule+0x1609/0x2980
+ ? nf_tables_newrule+0x1609/0x2980
+ ? rcu_is_watching+0x15/0xb0
+ ? nf_tables_newrule+0x1609/0x2980
+ ? nf_tables_newrule+0x1609/0x2980
+ ? __kmalloc_noprof+0x21a/0x400
+ nf_tables_newrule+0x1860/0x2980
+ ? __pfx_nf_tables_newrule+0x10/0x10
+ ? __nla_parse+0x40/0x60
+ nfnetlink_rcv+0x14e5/0x2ab0
+ ? __pfx_validate_chain+0x10/0x10
+ ? __pfx_nfnetlink_rcv+0x10/0x10
+ ? __lock_acquire+0x1384/0x2050
+ ? netlink_deliver_tap+0x2e/0x1b0
+ ? __pfx_lock_release+0x10/0x10
+ ? netlink_deliver_tap+0x2e/0x1b0
+ netlink_unicast+0x7f8/0x990
+ ? __pfx_netlink_unicast+0x10/0x10
+ ? __virt_addr_valid+0x183/0x530
+ ? __check_object_size+0x48e/0x900
+ netlink_sendmsg+0x8e4/0xcb0
+ ? __pfx_netlink_sendmsg+0x10/0x10
+ ? aa_sock_msg_perm+0x91/0x160
+ ? __pfx_netlink_sendmsg+0x10/0x10
+ __sock_sendmsg+0x223/0x270
+ ____sys_sendmsg+0x52a/0x7e0
+ ? __pfx_____sys_sendmsg+0x10/0x10
+ __sys_sendmsg+0x292/0x380
+ ? __pfx___sys_sendmsg+0x10/0x10
+ ? lockdep_hardirqs_on_prepare+0x43d/0x780
+ ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
+ ? exc_page_fault+0x590/0x8c0
+ ? do_syscall_64+0xb6/0x230
+ do_syscall_64+0xf3/0x230
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+ </TASK>
+
+Since an invalid (without '\0' byte at all) byte sequence may be passed
+from userspace, add an extra check to ensure that such a sequence is
+rejected as possible ID and so never passed to 'kstrdup()' and further.
+
+Reported-by: syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c8215822f35fdb35667
+Fixes: 268cb38e1802 ("netfilter: x_tables: add LED trigger target")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c   |  2 --
- .../raw_aa_binning_1.0/ia_css_raa.host.c               |  2 --
- .../pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c      |  5 -----
- .../media/atomisp/pci/runtime/binary/src/binary.c      |  4 ----
- drivers/staging/media/atomisp/pci/sh_css_params.c      | 10 ----------
- 5 files changed, 23 deletions(-)
+ net/netfilter/xt_LED.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c b/drivers/staging/media/atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c
-index 82aa69b74677c..2091f001502d4 100644
---- a/drivers/staging/media/atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c
-+++ b/drivers/staging/media/atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c
-@@ -13,7 +13,6 @@
-  * more details.
-  */
+diff --git a/net/netfilter/xt_LED.c b/net/netfilter/xt_LED.c
+index f7b0286d106ac..8a80fd76fe45b 100644
+--- a/net/netfilter/xt_LED.c
++++ b/net/netfilter/xt_LED.c
+@@ -96,7 +96,9 @@ static int led_tg_check(const struct xt_tgchk_param *par)
+ 	struct xt_led_info_internal *ledinternal;
+ 	int err;
  
--#if !defined(HAS_NO_HMEM)
+-	if (ledinfo->id[0] == '\0')
++	/* Bail out if empty string or not a string at all. */
++	if (ledinfo->id[0] == '\0' ||
++	    !memchr(ledinfo->id, '\0', sizeof(ledinfo->id)))
+ 		return -EINVAL;
  
- #include "ia_css_types.h"
- #include "sh_css_internal.h"
-@@ -63,4 +62,3 @@ ia_css_bh_encode(
- 	    uDIGIT_FITTING(from->ae_y_coef_b, 16, SH_CSS_AE_YCOEF_SHIFT);
- }
- 
--#endif
-diff --git a/drivers/staging/media/atomisp/pci/isp/kernels/raw_aa_binning/raw_aa_binning_1.0/ia_css_raa.host.c b/drivers/staging/media/atomisp/pci/isp/kernels/raw_aa_binning/raw_aa_binning_1.0/ia_css_raa.host.c
-index 29c707ecf9f3b..9b756daddee06 100644
---- a/drivers/staging/media/atomisp/pci/isp/kernels/raw_aa_binning/raw_aa_binning_1.0/ia_css_raa.host.c
-+++ b/drivers/staging/media/atomisp/pci/isp/kernels/raw_aa_binning/raw_aa_binning_1.0/ia_css_raa.host.c
-@@ -13,7 +13,6 @@
-  * more details.
-  */
- 
--#if !defined(HAS_NO_HMEM)
- 
- #include "ia_css_types.h"
- #include "sh_css_internal.h"
-@@ -32,4 +31,3 @@ ia_css_raa_encode(
- 	(void)from;
- }
- 
--#endif
-diff --git a/drivers/staging/media/atomisp/pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c b/drivers/staging/media/atomisp/pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c
-index ba52c80df4a58..bd7b89d9475bf 100644
---- a/drivers/staging/media/atomisp/pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c
-+++ b/drivers/staging/media/atomisp/pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c
-@@ -227,10 +227,6 @@ ia_css_s3a_hmem_decode(
-     struct ia_css_3a_statistics *host_stats,
-     const struct ia_css_bh_table *hmem_buf)
- {
--#if defined(HAS_NO_HMEM)
--	(void)host_stats;
--	(void)hmem_buf;
--#else
- 	struct ia_css_3a_rgby_output	*out_ptr;
- 	int			i;
- 
-@@ -291,7 +287,6 @@ ia_css_s3a_hmem_decode(
- 	out_ptr[0].g -= diff;
- 	out_ptr[0].b -= diff;
- 	out_ptr[0].y -= diff;
--#endif
- }
- 
- void
-diff --git a/drivers/staging/media/atomisp/pci/runtime/binary/src/binary.c b/drivers/staging/media/atomisp/pci/runtime/binary/src/binary.c
-index 060d387495704..002bd8cf28634 100644
---- a/drivers/staging/media/atomisp/pci/runtime/binary/src/binary.c
-+++ b/drivers/staging/media/atomisp/pci/runtime/binary/src/binary.c
-@@ -805,11 +805,7 @@ ia_css_binary_3a_grid_info(const struct ia_css_binary *binary,
- 	s3a_info->deci_factor_log2  = binary->deci_factor_log2;
- 	s3a_info->elem_bit_depth    = SH_CSS_BAYER_BITS;
- 	s3a_info->use_dmem          = binary->info->sp.s3a.s3atbl_use_dmem;
--#if defined(HAS_NO_HMEM)
--	s3a_info->has_histogram     = 1;
--#else
- 	s3a_info->has_histogram     = 0;
--#endif
- 	IA_CSS_LEAVE_ERR_PRIVATE(err);
- 	return err;
- }
-diff --git a/drivers/staging/media/atomisp/pci/sh_css_params.c b/drivers/staging/media/atomisp/pci/sh_css_params.c
-index deecffd438aeb..013eac639f669 100644
---- a/drivers/staging/media/atomisp/pci/sh_css_params.c
-+++ b/drivers/staging/media/atomisp/pci/sh_css_params.c
-@@ -16,12 +16,10 @@
- #include "gdc_device.h"		/* gdc_lut_store(), ... */
- #include "isp.h"			/* ISP_VEC_ELEMBITS */
- #include "vamem.h"
--#if !defined(HAS_NO_HMEM)
- #ifndef __INLINE_HMEM__
- #define __INLINE_HMEM__
- #endif
- #include "hmem.h"
--#endif /* !defined(HAS_NO_HMEM) */
- #define IA_CSS_INCLUDE_PARAMETERS
- #define IA_CSS_INCLUDE_ACC_PARAMETERS
- 
-@@ -1510,10 +1508,8 @@ ia_css_translate_3a_statistics(
- 		ia_css_s3a_vmem_decode(host_stats, isp_stats->vmem_stats_hi,
- 				       isp_stats->vmem_stats_lo);
- 	}
--#if !defined(HAS_NO_HMEM)
- 	IA_CSS_LOG("3A: HMEM");
- 	ia_css_s3a_hmem_decode(host_stats, isp_stats->hmem_stats);
--#endif
- 
- 	IA_CSS_LEAVE("void");
- }
-@@ -2250,9 +2246,7 @@ ia_css_isp_3a_statistics_allocate(const struct ia_css_3a_grid_info *grid)
- 		me->vmem_size = ISP_S3ATBL_HI_LO_STRIDE_BYTES *
- 				grid->aligned_height;
- 	}
--#if !defined(HAS_NO_HMEM)
- 	me->hmem_size = sizeof_hmem(HMEM0_ID);
--#endif
- 
- 	/* All subsections need to be aligned to the system bus width */
- 	me->dmem_size = CEIL_MUL(me->dmem_size, HIVE_ISP_DDR_WORD_BYTES);
-@@ -4339,12 +4333,8 @@ ia_css_3a_statistics_allocate(const struct ia_css_3a_grid_info *grid)
- 	me->data = kvmalloc(grid_size * sizeof(*me->data), GFP_KERNEL);
- 	if (!me->data)
- 		goto err;
--#if !defined(HAS_NO_HMEM)
- 	/* No weighted histogram, no structure, treat the histogram data as a byte dump in a byte array */
- 	me->rgby_data = kvmalloc(sizeof_hmem(HMEM0_ID), GFP_KERNEL);
--#else
--	me->rgby_data = NULL;
--#endif
- 
- 	IA_CSS_LEAVE("return=%p", me);
- 	return me;
+ 	mutex_lock(&xt_led_mutex);
 -- 
 2.43.0
 
