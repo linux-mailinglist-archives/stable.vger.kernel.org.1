@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D61F9EF5C5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFC69EF90D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2212A17E306
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DFD528BE62
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E318D2253EE;
-	Thu, 12 Dec 2024 17:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD22A22331E;
+	Thu, 12 Dec 2024 17:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JheigrGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hh4GpyeL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4D2222D62;
-	Thu, 12 Dec 2024 17:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0CE223C55;
+	Thu, 12 Dec 2024 17:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023405; cv=none; b=sQlWo/1GvG/+vsYjD55oWTPCfMJSoPSr4YRNOmeqemmlC0iGlsRSLITE3LJlXOn6MSSA+nlUKKUWLsV2RsDogt4U/pUC3tubPWAJNikr8rsLebfW9QBDOVqqrhih7hUuDlIiXBtWQFYS0p4rH+hzgmikJX4Qu5D5bQTzdlbO1hU=
+	t=1734025538; cv=none; b=OXRLsNKpOOjowNM5ld35pwTpZyIt7ktwKAazeErWgnZutbsRo/FC39eBIXULiqr8R/hYbuwTAE0uWMP3DxmaU6/VLhLCBWuc/uNfmF4r0D+c52sEZGj1apmsuQA1dJ4Rx5hGWvEpAKz0GP5LN6+SETAtOlsECCyK3Pg3ElD2qs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023405; c=relaxed/simple;
-	bh=zC3idkyTMko8F7/bXVhVNLo8AxOwJYvDY8PnrOyXDiU=;
+	s=arc-20240116; t=1734025538; c=relaxed/simple;
+	bh=n8C0TOess7nUBYbBQxU7/r98/O5okIe6HWsfVjRAdJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpvoYunbzmePz8oVUV3eHgQ5QwHqpTYgMDPIUXrt4lQ/B2Kll04qCjgsRs4Y2KxYxB2QD+om+2E8XVMH9IdITGqAwh8xpnaOVVrqwJul2W2w4Moq4gP5NegWTR8+i8TXD5NXTr+G3k2reXNvVBm5yXL2urYObNJaTCE1mZ4d27w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JheigrGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25EA8C4CECE;
-	Thu, 12 Dec 2024 17:10:04 +0000 (UTC)
+	 MIME-Version; b=qhz7y57P1zeLK9rcJ8FZBVyQXoE2ky3W2dwZYHdmTIB0TiEXF8/HqRIVHLACUIRQoKfDYXpWgoVB2DprCb/60J5b2SwjLug7iAY13jOPE8yj1Jo2yJoc2jCqTS4BvDbIw/eiflvbb0GO8hrt63zCsrdcYlAEpMfMh00l3tEnnpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hh4GpyeL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8536C4CECE;
+	Thu, 12 Dec 2024 17:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023405;
-	bh=zC3idkyTMko8F7/bXVhVNLo8AxOwJYvDY8PnrOyXDiU=;
+	s=korg; t=1734025538;
+	bh=n8C0TOess7nUBYbBQxU7/r98/O5okIe6HWsfVjRAdJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JheigrGSXNFP4DuJlMqNLvFZJ5mS3rRXiw4LDKBgyNso9WOtMR9G77Q/bmotogIKu
-	 bxv2IUfq+5JASzCUY4V3yvaBFGPgR+IGg4ID/ntnKVEoaSGG6bhnA+fRKFkhnfeVEB
-	 Egoz5lCID2cQrZ/H3u5XoUoiupx2SWpcZ5McKZsM=
+	b=hh4GpyeLLQjYXzGAtytB5JaPln9f3T/midJuvL9SbZ2D+cgVma/PY0DwXJ0HVv6nN
+	 oRe/3em/mcfUimQbalmPQ+dzk4Mmm+Y+LDcrhkzZOSFEmys7y+g/EUN+X/xJnc+haC
+	 e27S7M6pAJ2AyOFbxlelbeZVYlzfqYJhxV3STDBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Disha Goel <disgoel@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 524/565] PCI: Add ACS quirk for Wangxun FF5xxx NICs
-Date: Thu, 12 Dec 2024 16:01:59 +0100
-Message-ID: <20241212144332.517763565@linuxfoundation.org>
+Subject: [PATCH 5.4 202/321] quota: flush quota_release_work upon quota writeback
+Date: Thu, 12 Dec 2024 16:02:00 +0100
+Message-ID: <20241212144237.959751462@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit aa46a3736afcb7b0793766d22479b8b99fc1b322 ]
+[ Upstream commit ac6f420291b3fee1113f21d612fa88b628afab5b ]
 
-Wangxun FF5xxx NICs are similar to SFxxx, RP1000 and RP2000 NICs.  They may
-be multi-function devices, but they do not advertise an ACS capability.
+One of the paths quota writeback is called from is:
 
-But the hardware does isolate FF5xxx functions as though it had an ACS
-capability and PCI_ACS_RR and PCI_ACS_CR were set in the ACS Control
-register, i.e., all peer-to-peer traffic is directed upstream instead of
-being routed internally.
+freeze_super()
+  sync_filesystem()
+    ext4_sync_fs()
+      dquot_writeback_dquots()
 
-Add ACS quirk for FF5xxx NICs in pci_quirk_wangxun_nic_acs() so the
-functions can be in independent IOMMU groups.
+Since we currently don't always flush the quota_release_work queue in
+this path, we can end up with the following race:
 
-Link: https://lore.kernel.org/r/E16053DB2B80E9A5+20241115024604.30493-1-mengyuanlou@net-swift.com
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+ 1. dquot are added to releasing_dquots list during regular operations.
+ 2. FS Freeze starts, however, this does not flush the quota_release_work queue.
+ 3. Freeze completes.
+ 4. Kernel eventually tries to flush the workqueue while FS is frozen which
+    hits a WARN_ON since transaction gets started during frozen state:
+
+  ext4_journal_check_start+0x28/0x110 [ext4] (unreliable)
+  __ext4_journal_start_sb+0x64/0x1c0 [ext4]
+  ext4_release_dquot+0x90/0x1d0 [ext4]
+  quota_release_workfn+0x43c/0x4d0
+
+Which is the following line:
+
+  WARN_ON(sb->s_writers.frozen == SB_FREEZE_COMPLETE);
+
+Which ultimately results in generic/390 failing due to dmesg
+noise. This was detected on powerpc machine 15 cores.
+
+To avoid this, make sure to flush the workqueue during
+dquot_writeback_dquots() so we dont have any pending workitems after
+freeze.
+
+Reported-by: Disha Goel <disgoel@linux.ibm.com>
+CC: stable@vger.kernel.org
+Fixes: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20241121123855.645335-2-ojaswin@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ fs/quota/dquot.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 4ce4ca3df7432..6b76154626e25 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4855,18 +4855,21 @@ static int pci_quirk_brcm_acs(struct pci_dev *dev, u16 acs_flags)
- }
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 14c0dd5b65a43..42c2ac0cc8fc9 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -681,6 +681,8 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
  
- /*
-- * Wangxun 10G/1G NICs have no ACS capability, and on multi-function
-- * devices, peer-to-peer transactions are not be used between the functions.
-- * So add an ACS quirk for below devices to isolate functions.
-+ * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
-+ * multi-function devices, the hardware isolates the functions by
-+ * directing all peer-to-peer traffic upstream as though PCI_ACS_RR and
-+ * PCI_ACS_CR were set.
-  * SFxxx 1G NICs(em).
-  * RP1000/RP2000 10G NICs(sp).
-+ * FF5xxx 40G/25G/10G NICs(aml).
-  */
- static int  pci_quirk_wangxun_nic_acs(struct pci_dev *dev, u16 acs_flags)
- {
- 	switch (dev->device) {
--	case 0x0100 ... 0x010F:
--	case 0x1001:
--	case 0x2001:
-+	case 0x0100 ... 0x010F: /* EM */
-+	case 0x1001: case 0x2001: /* SP */
-+	case 0x5010: case 0x5025: case 0x5040: /* AML */
-+	case 0x5110: case 0x5125: case 0x5140: /* AML */
- 		return pci_acs_ctrl_enabled(acs_flags,
- 			PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
- 	}
+ 	WARN_ON_ONCE(!rwsem_is_locked(&sb->s_umount));
+ 
++	flush_delayed_work(&quota_release_work);
++
+ 	for (cnt = 0; cnt < MAXQUOTAS; cnt++) {
+ 		if (type != -1 && cnt != type)
+ 			continue;
 -- 
 2.43.0
 
