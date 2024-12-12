@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AE79EEB1E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A31079EF0EF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8CFD1632EF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 637BD29DFCA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7087D212D6A;
-	Thu, 12 Dec 2024 15:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE685226530;
+	Thu, 12 Dec 2024 16:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fX0OkJtA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CA5w1kk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2878A21B91D;
-	Thu, 12 Dec 2024 15:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9D1205501;
+	Thu, 12 Dec 2024 16:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016559; cv=none; b=aX5Q9UaRltgqZLBlGx5/dxdPADGPvKd5own3LRSzw0mT+vu/8yezzpXObmOrD41qKP80OM1pg+Z7hTGr0u2wAgNM9f+ol31ENYUpgiIWWppq0YzeXyE4hDr2DcUtKZxReG/qS9IFSiI9jpmlVfVMJ2JxUNyucd6n+avMk9XYPWY=
+	t=1734020521; cv=none; b=WBTKy3QxJkXqy9rdtGn03Rn7/WlVQma8Fl2SATMMUlUVqBUTx1FqeeSg/WZhDR6lT2quK77d+F0IiaKikFLUMDoO1WyjgHva+UAdJaaSTmw3FZ9ky2b298JtHbhKOVPnkwb4tLNsVE9JmP5c9d+leiKixFg+gyneUzdxQLoSbnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016559; c=relaxed/simple;
-	bh=MRBerEFv3EaQJZuDsbobaSa9OHWmR+W48bptJ4ecSTY=;
+	s=arc-20240116; t=1734020521; c=relaxed/simple;
+	bh=yTtdragbncvIRJ+zN09+KkVoejArjbvcjRytYbBJKFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oE2sx6tZLNvfMrDgTFxvO+QYZxIFfy9lNff3lB0Ba/mC1NJPKKUWX1sGFxRpXUyWRrWIX5lLsjHLin1IR0hCv7bwmzq5e/v9ggQLJALa8GTGJ/XruepIhmE2vOIgMb7/0Fdi0f+/I19aB3dcJmyU/BBkDHUKZC1TFkC+m1Wk3Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fX0OkJtA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A333C4CECE;
-	Thu, 12 Dec 2024 15:15:58 +0000 (UTC)
+	 MIME-Version; b=g2ecf6Wx2DUXXEUPcfKeqDTOxcdTeB1/HAEJTv64GCDop+YYqe85hXL3ZvT3rbD+hquVFnj+E8lJ2wm8xLnEaZ/6+kI9WqbUDaeM+pfSxO3NuumSBE0z84yxzizupI0BXNYBb3Pzbrb3lh2ybG2vvByD7u1izMnCAiGkDfP8Z10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CA5w1kk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D45DC4CECE;
+	Thu, 12 Dec 2024 16:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016559;
-	bh=MRBerEFv3EaQJZuDsbobaSa9OHWmR+W48bptJ4ecSTY=;
+	s=korg; t=1734020521;
+	bh=yTtdragbncvIRJ+zN09+KkVoejArjbvcjRytYbBJKFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fX0OkJtAgZFSfcMpw/sqTRR8rtJ7mBBpFsBm6l8ZSkqbbuUUwf1k9gcif4AdqL96C
-	 R+BuGz79UmrwUCTMo3M4Mo30CTUX0eF7wFMRn+PiqTt+NlC/alYXiev50CAz9ji+UT
-	 Lx/XJ83dwzgGpY4c+6CuKUVs+UrgaOUAbSnh2QpQ=
+	b=CA5w1kk+az2A4lpq+V1Qeq2sAoLG16Qz5vJj+x9pMExpgvNT3lowcyMjHn2PeVfn5
+	 TwN50mnkT7IYkP/KSRqKjZqMUboJtoK5a7JRTworjgLNEC2rLa5kNNrdZ4pOGLHPmP
+	 Byq6ZRJeSCI89ShxqUFZlFmKAwISrYioofOL5w00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 233/466] iio: magnetometer: fix if () scoped_guard() formatting
-Date: Thu, 12 Dec 2024 15:56:42 +0100
-Message-ID: <20241212144315.985907188@linuxfoundation.org>
+	Ming Qian <ming.qian@nxp.com>,
+	TaoJiang <tao.jiang_2@nxp.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 458/772] media: imx-jpeg: Set video drvdata before register video device
+Date: Thu, 12 Dec 2024 15:56:43 +0100
+Message-ID: <20241212144408.852060942@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Rothwell <sfr@canb.auug.org.au>
+From: Ming Qian <ming.qian@nxp.com>
 
-commit 9a884bdb6e9560c6da44052d5248e89d78c983a6 upstream.
+commit d2b7ecc26bd5406d5ba927be1748aa99c568696c upstream.
 
-Add mising braces after an if condition that contains scoped_guard().
+The video drvdata should be set before the video device is registered,
+otherwise video_drvdata() may return NULL in the open() file ops, and led
+to oops.
 
-This style is both preferred and necessary here, to fix warning after
-scoped_guard() change in commit fcc22ac5baf0 ("cleanup: Adjust
-scoped_guard() macros to avoid potential warning") to have if-else inside
-of the macro. Current (no braces) use in af8133j_set_scale() yields
-the following warnings:
-af8133j.c:315:12: warning: suggest explicit braces to avoid ambiguous 'else' [-Wdangling-else]
-af8133j.c:316:3: warning: add explicit braces to avoid dangling else [-Wdangling-else]
-
-Fixes: fcc22ac5baf0 ("cleanup: Adjust scoped_guard() macros to avoid potential warning")
-Closes: https://lore.kernel.org/oe-kbuild-all/202409270848.tTpyEAR7-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20241108154258.21411-1-przemyslaw.kitszel@intel.com
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Reviewed-by: TaoJiang <tao.jiang_2@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/magnetometer/af8133j.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/magnetometer/af8133j.c
-+++ b/drivers/iio/magnetometer/af8133j.c
-@@ -312,10 +312,11 @@ static int af8133j_set_scale(struct af81
- 	 * When suspended, just store the new range to data->range to be
- 	 * applied later during power up.
- 	 */
--	if (!pm_runtime_status_suspended(dev))
-+	if (!pm_runtime_status_suspended(dev)) {
- 		scoped_guard(mutex, &data->mutex)
- 			ret = regmap_write(data->regmap,
- 					   AF8133J_REG_RANGE, range);
-+	}
- 
- 	pm_runtime_enable(dev);
- 
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -2252,6 +2252,7 @@ static int mxc_jpeg_probe(struct platfor
+ 	jpeg->dec_vdev->vfl_dir = VFL_DIR_M2M;
+ 	jpeg->dec_vdev->device_caps = V4L2_CAP_STREAMING |
+ 					V4L2_CAP_VIDEO_M2M_MPLANE;
++	video_set_drvdata(jpeg->dec_vdev, jpeg);
+ 	if (mode == MXC_JPEG_ENCODE) {
+ 		v4l2_disable_ioctl(jpeg->dec_vdev, VIDIOC_DECODER_CMD);
+ 		v4l2_disable_ioctl(jpeg->dec_vdev, VIDIOC_TRY_DECODER_CMD);
+@@ -2264,7 +2265,6 @@ static int mxc_jpeg_probe(struct platfor
+ 		dev_err(dev, "failed to register video device\n");
+ 		goto err_vdev_register;
+ 	}
+-	video_set_drvdata(jpeg->dec_vdev, jpeg);
+ 	if (mode == MXC_JPEG_ENCODE)
+ 		v4l2_info(&jpeg->v4l2_dev,
+ 			  "encoder device registered as /dev/video%d (%d,%d)\n",
 
 
 
