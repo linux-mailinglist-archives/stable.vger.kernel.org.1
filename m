@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278199EF444
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45DA09EED0E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBA18189BB9F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58BF1666CB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC39222969E;
-	Thu, 12 Dec 2024 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31EA217F28;
+	Thu, 12 Dec 2024 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyrqOgMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddTSQlwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D202358BF;
-	Thu, 12 Dec 2024 16:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA652135C1;
+	Thu, 12 Dec 2024 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022530; cv=none; b=XRnaJIV3VI5p8EjXg5smSgZQ5Ebgc5vmer+BDoAkdmAvWNqJzhg6wBtCzaDMvH/SF10TQidxHfWORH/K2Vv8gnAr0n/rFgF76xBsJrGzdcsF/BY5lhXy/b316mmxNl9irrEsWEdqRTxf38K7Ona+dWTOh8UlRsBeo+92jzXfVKA=
+	t=1734017901; cv=none; b=UvxK0FexKKjcfGCxG9/wobsvWdPnuiS+21kNu4s+CUU21RfszjqzFV9hXDCQNd5+9GruobPi5OupQI8HK8AesV76yT/2lKp5JLrGSY8hCbzlr+BL/8vv04JgrRUVcNJTi4s78J1MFbLrdPd2AYMwrtttgVfvwFhqqIxHpjgTj6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022530; c=relaxed/simple;
-	bh=8GwtE/lOkUosBLm57g0ZHBlMKM+CUtijXpAFVEdZXQA=;
+	s=arc-20240116; t=1734017901; c=relaxed/simple;
+	bh=Tv4fYvDcbPcstNKkQQgEPoUgEsOKRLZRCneMU2tThrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RG9d8tSekU5difRj44+h72E+jB5hMvsLRL5PvXSeiOGRL3zdrX3q/FFggR32p9TKTm8AQIkE+PD/alEUJjjLdea8DIvCSjLcqHwZtvC9NMAFlgE7agHlYHhTAUtN+WPGyUHvXDx+uCIKAFvXdN9LSvvvz3GNN8yMEfpxASZAsBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyrqOgMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D2FC4CECE;
-	Thu, 12 Dec 2024 16:55:29 +0000 (UTC)
+	 MIME-Version; b=gtjiRFNq2fencBl2y8Nw9njWWSO7PVxdCeRX1CCg+cjfEUl3llpalt1KLEdZ0oyYogH97zeu/RGhe8WnS4g0JIBoVxqqZcekftWJ+d9pqFreMqCdpx+v9huUracZFd+iIFNzOTUjc8yIgahjpLbbYrHtD+CZCDfTjHNKAs7RvUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddTSQlwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6D5C4CECE;
+	Thu, 12 Dec 2024 15:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022530;
-	bh=8GwtE/lOkUosBLm57g0ZHBlMKM+CUtijXpAFVEdZXQA=;
+	s=korg; t=1734017901;
+	bh=Tv4fYvDcbPcstNKkQQgEPoUgEsOKRLZRCneMU2tThrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zyrqOgMdeGLAeBp1dQ3szUkMFE5aBLfs+sOwSVHjPDrcJg0Dx5a9EquAWNBPG8125
-	 rX1CwCU9QU2u0Q2Zuwo+jrq+lWxvbS4PF7wjD471y1Pt/INcpzLOprkPXKh0IELqYL
-	 rtKh8U1x2mPnim0EdNuG9suHdnhiblfTl9SFoAgA=
+	b=ddTSQlwzdyMhvZ+3PUBk2EtLFiQdsR2VMxBYy1ckspQecDgcscmMsNNbPsEFAubQC
+	 5X7PAYWR2L1TPysmYB2xSLGivkzXLB7/+jyLVjba7v3Z6sDmbRRy79GT3Jg0yPS30A
+	 wZ6NSztECaf6MYeUYMMdPIIy+iA6eWzzli1+43cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 267/565] NFSD: Fix nfsd4_shutdown_copy()
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>
+Subject: [PATCH 6.6 143/356] watchdog: rti: of: honor timeout-sec property
 Date: Thu, 12 Dec 2024 15:57:42 +0100
-Message-ID: <20241212144322.021439001@linuxfoundation.org>
+Message-ID: <20241212144250.293038825@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 62a8642ba00aa8ceb0a02ade942f5ec52e877c95 ]
+commit 4962ee045d8f06638714d801ab0fb72f89c16690 upstream.
 
-nfsd4_shutdown_copy() is just this:
+Currently "timeout-sec" Device Tree property is being silently ignored:
+even though watchdog_init_timeout() is being used, the driver always passes
+"heartbeat" == DEFAULT_HEARTBEAT == 60 as argument.
 
-	while ((copy = nfsd4_get_copy(clp)) != NULL)
-		nfsd4_stop_copy(copy);
+Fix this by setting struct watchdog_device::timeout to DEFAULT_HEARTBEAT
+and passing real module parameter value to watchdog_init_timeout() (which
+may now be 0 if not specified).
 
-nfsd4_get_copy() bumps @copy's reference count, preventing
-nfsd4_stop_copy() from releasing @copy.
-
-A while loop like this usually works by removing the first element
-of the list, but neither nfsd4_get_copy() nor nfsd4_stop_copy()
-alters the async_copies list.
-
-Best I can tell, then, is that nfsd4_shutdown_copy() continues to
-loop until other threads manage to remove all the items from this
-list. The spinning loop blocks shutdown until these items are gone.
-
-Possibly the reason we haven't seen this issue in the field is
-because client_has_state() prevents __destroy_client() from calling
-nfsd4_shutdown_copy() if there are any items on this list. In a
-subsequent patch I plan to remove that restriction.
-
-Fixes: e0639dc5805a ("NFSD introduce async copy feature")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241107203830.1068456-1-alexander.sverdlin@siemens.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/watchdog/rti_wdt.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 0b698e25826fa..c48c1a3be5d2f 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1256,7 +1256,7 @@ static void nfsd4_stop_copy(struct nfsd4_copy *copy)
- 	nfs4_put_copy(copy);
- }
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -61,7 +61,7 @@
  
--static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
-+static struct nfsd4_copy *nfsd4_unhash_copy(struct nfs4_client *clp)
- {
- 	struct nfsd4_copy *copy = NULL;
+ #define MAX_HW_ERROR		250
  
-@@ -1265,6 +1265,9 @@ static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
- 		copy = list_first_entry(&clp->async_copies, struct nfsd4_copy,
- 					copies);
- 		refcount_inc(&copy->refcount);
-+		copy->cp_clp = NULL;
-+		if (!list_empty(&copy->copies))
-+			list_del_init(&copy->copies);
- 	}
- 	spin_unlock(&clp->async_lock);
- 	return copy;
-@@ -1274,7 +1277,7 @@ void nfsd4_shutdown_copy(struct nfs4_client *clp)
- {
- 	struct nfsd4_copy *copy;
+-static int heartbeat = DEFAULT_HEARTBEAT;
++static int heartbeat;
  
--	while ((copy = nfsd4_get_copy(clp)) != NULL)
-+	while ((copy = nfsd4_unhash_copy(clp)) != NULL)
- 		nfsd4_stop_copy(copy);
- }
- #ifdef CONFIG_NFSD_V4_2_INTER_SSC
--- 
-2.43.0
-
+ /*
+  * struct to hold data for each WDT device
+@@ -252,6 +252,7 @@ static int rti_wdt_probe(struct platform
+ 	wdd->min_timeout = 1;
+ 	wdd->max_hw_heartbeat_ms = (WDT_PRELOAD_MAX << WDT_PRELOAD_SHIFT) /
+ 		wdt->freq * 1000;
++	wdd->timeout = DEFAULT_HEARTBEAT;
+ 	wdd->parent = dev;
+ 
+ 	watchdog_set_drvdata(wdd, wdt);
 
 
 
