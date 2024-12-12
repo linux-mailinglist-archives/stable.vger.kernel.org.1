@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E919EF77F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 439029EF4C0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57F20179E14
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E964528D3CD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88997221D93;
-	Thu, 12 Dec 2024 17:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01709221D9C;
+	Thu, 12 Dec 2024 17:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUJj0nXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICbMKJPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C9F21660B;
-	Thu, 12 Dec 2024 17:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2BF2144C4;
+	Thu, 12 Dec 2024 17:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024472; cv=none; b=BNp/ZUEq+R/89Q82/l2wr6riSuVV8kSGJfmU/CuG4F+Oqas/srGbQUaSXSiteJI+0nsKQweOW/3pKw9Lb1QcfVWaOcN0BSZGaqvyVkZ+TmkFlWriKGVJg4R6grDQD1WWQkaejzd4sX5AqOXXLuLNQRbJQRFmRM4ZFyEI+YjB6tg=
+	t=1734023265; cv=none; b=q7YEaL1ZBKxKGObKn2fD57sqWLtIhj7GsSanB3Fn7IZP51pEdjGHaOEi9BQkzyDwE/eNbkExuvIQDT0FzgiOmTMh9vuDxWV3vsi6HjVAFLHrk7n94Ukk75hltDScHEIIghIZNZrPZuXCIs0+upIuIxFyFAO4YD3x1/huUkyop8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024472; c=relaxed/simple;
-	bh=FP0GY/1ncDyN2pzC6h4pDUuqwCiE8O5rGg7YoLaK8hg=;
+	s=arc-20240116; t=1734023265; c=relaxed/simple;
+	bh=+B8zHS7qa0xaUKTxmIUoN2laaHmk4xHmvc9iBnDweoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tph8KYbf/CrPtSLt6MWDGY3SFzA6FtWA51CYb9O5HiJAzn/2kyAUscIVuXFHw9QAziJdTzZshgOx9crNIggZFQMvTucfklfCm6eAJodjZxuv5E+KXUAHAx/I5dUR96f/GnSDBmcsSp5ZDfAGfRVZcrVoW/FKDQC7cK7gXFAzw6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUJj0nXm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8FCC4CECE;
-	Thu, 12 Dec 2024 17:27:51 +0000 (UTC)
+	 MIME-Version; b=SHuudx55EfZuhDKMSA8DP7U9uT1h4Z8bK1lwQnkqf7p/UUH7puA94BzkzrPZ8r4NRPa/jNBGZ7iFj7W9qHyUlbrRcl2Gd9VC3+lwnsPYtcYgw/2sgECJ16oF3bjXEUqft6tlrMnwNwadn4KUnR4Uj6gPOMZhdLpqk15DEW5FusY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICbMKJPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A1AC4CECE;
+	Thu, 12 Dec 2024 17:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024472;
-	bh=FP0GY/1ncDyN2pzC6h4pDUuqwCiE8O5rGg7YoLaK8hg=;
+	s=korg; t=1734023265;
+	bh=+B8zHS7qa0xaUKTxmIUoN2laaHmk4xHmvc9iBnDweoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUJj0nXmEP7wp9WPybnS3tH0hzg0Cpn/Z1VAJ2UPNM/Mam1MsZsga1VBnYuwSSGi8
-	 B1wWtuob8uBn0nZaHseeice9H+/5iq2DpwYrJgzVlSB+G9h8WoSIsbZaamxMnQ8hNu
-	 Imkg4a6hEvAmF5Vo3M7IgGYy+yd50IvQMCRHcrjE=
+	b=ICbMKJPkufbt6MFseXxiyIgA+JmfpxEjUFKa/6con/PtL+jT00wfYdlxhi/h4tvNj
+	 iq6F3i2wrY14HalnLJh3Q6LDBgHNcp4wK1Xxu0ayCTbNuuYiCjqfmvKgHclkKIg+1C
+	 +5TpLYVWmzJCIXhNh6qU281Wo6+ARpViOTpHZXpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thiago Rafael Becker <trbecker@gmail.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 307/459] sunrpc: remove unnecessary test in rpc_task_set_client()
+	Marie Ramlow <me@nycode.dev>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 450/565] ALSA: usb-audio: add mixer mapping for Corsair HS80
 Date: Thu, 12 Dec 2024 16:00:45 +0100
-Message-ID: <20241212144305.772346876@linuxfoundation.org>
+Message-ID: <20241212144329.509212829@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thiago Rafael Becker <trbecker@gmail.com>
+From: Marie Ramlow <me@nycode.dev>
 
-[ Upstream commit 023859ce6f88f7cfc223752fb56ec453a147b852 ]
+commit a7de2b873f3dbcda02d504536f1ec6dc50e3f6c4 upstream.
 
-In rpc_task_set_client(), testing for a NULL clnt is not necessary, as
-clnt should always be a valid pointer to a rpc_client.
+The Corsair HS80 RGB Wireless is a USB headset with a mic and a sidetone
+feature. It has the same quirk as the Virtuoso series.
+This labels the mixers appropriately, so applications don't
+move the sidetone volume when they actually intend to move the main
+headset volume.
 
-Signed-off-by: Thiago Rafael Becker <trbecker@gmail.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Marie Ramlow <me@nycode.dev>
+cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241130165240.17838-1-me@nycode.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/clnt.c | 33 +++++++++++++++------------------
- 1 file changed, 15 insertions(+), 18 deletions(-)
+ sound/usb/mixer_maps.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 457042b653bba..7ec5b0bc48ebf 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -1077,24 +1077,21 @@ void rpc_task_set_transport(struct rpc_task *task, struct rpc_clnt *clnt)
- static
- void rpc_task_set_client(struct rpc_task *task, struct rpc_clnt *clnt)
- {
--
--	if (clnt != NULL) {
--		rpc_task_set_transport(task, clnt);
--		task->tk_client = clnt;
--		refcount_inc(&clnt->cl_count);
--		if (clnt->cl_softrtry)
--			task->tk_flags |= RPC_TASK_SOFT;
--		if (clnt->cl_softerr)
--			task->tk_flags |= RPC_TASK_TIMEOUT;
--		if (clnt->cl_noretranstimeo)
--			task->tk_flags |= RPC_TASK_NO_RETRANS_TIMEOUT;
--		if (atomic_read(&clnt->cl_swapper))
--			task->tk_flags |= RPC_TASK_SWAPPER;
--		/* Add to the client's list of all tasks */
--		spin_lock(&clnt->cl_lock);
--		list_add_tail(&task->tk_task, &clnt->cl_tasks);
--		spin_unlock(&clnt->cl_lock);
--	}
-+	rpc_task_set_transport(task, clnt);
-+	task->tk_client = clnt;
-+	refcount_inc(&clnt->cl_count);
-+	if (clnt->cl_softrtry)
-+		task->tk_flags |= RPC_TASK_SOFT;
-+	if (clnt->cl_softerr)
-+		task->tk_flags |= RPC_TASK_TIMEOUT;
-+	if (clnt->cl_noretranstimeo)
-+		task->tk_flags |= RPC_TASK_NO_RETRANS_TIMEOUT;
-+	if (atomic_read(&clnt->cl_swapper))
-+		task->tk_flags |= RPC_TASK_SWAPPER;
-+	/* Add to the client's list of all tasks */
-+	spin_lock(&clnt->cl_lock);
-+	list_add_tail(&task->tk_task, &clnt->cl_tasks);
-+	spin_unlock(&clnt->cl_lock);
- }
- 
- static void
--- 
-2.43.0
-
+--- a/sound/usb/mixer_maps.c
++++ b/sound/usb/mixer_maps.c
+@@ -574,6 +574,16 @@ static const struct usbmix_ctl_map usbmi
+ 		.id = USB_ID(0x1b1c, 0x0a42),
+ 		.map = corsair_virtuoso_map,
+ 	},
++	{
++		/* Corsair HS80 RGB Wireless (wired mode) */
++		.id = USB_ID(0x1b1c, 0x0a6a),
++		.map = corsair_virtuoso_map,
++	},
++	{
++		/* Corsair HS80 RGB Wireless (wireless mode) */
++		.id = USB_ID(0x1b1c, 0x0a6b),
++		.map = corsair_virtuoso_map,
++	},
+ 	{	/* Gigabyte TRX40 Aorus Master (rear panel + front mic) */
+ 		.id = USB_ID(0x0414, 0xa001),
+ 		.map = aorus_master_alc1220vb_map,
 
 
 
