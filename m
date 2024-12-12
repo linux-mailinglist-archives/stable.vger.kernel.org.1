@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-101509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AB39EECDF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FF49EEB6D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76F3E16488E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98CD718896E9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB31217739;
-	Thu, 12 Dec 2024 15:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25523215776;
+	Thu, 12 Dec 2024 15:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5rao4xX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6xQfEF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE0E216606;
-	Thu, 12 Dec 2024 15:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9E5212B0F;
+	Thu, 12 Dec 2024 15:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017804; cv=none; b=AstyGI1xcDk260407dvyMGwE89HdSV8KXpLSkDvs7Yoqs3l+ENFyBV8sCm/ia+sAKocDt9/s5ni6A11iUVZBR9zXKq5UScr8JkXn7WpqOgxGlhfRFu0g8KmMsh6AtUHSWSeRa71vF1tL6zppH+1RKiUe+YcsD9l+McTnahpkhuM=
+	t=1734016783; cv=none; b=JhWwWA3dU/AKClTa2fqJMaejShBZ1+vLvwp2OVBZzNzhKblHCMT6cj+dwx2aO2GSe8jYg0xt1NepwvO9BN+fBlo6xms30SZHhawTvVeWBk3TXYOoRbsgiGn8KPTn+iFKqYlXcfEXRgV/WTvj9pt66SEuUuaLE/VH+CYjZtbsTxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017804; c=relaxed/simple;
-	bh=GK9HxURILctyIOjj9XyfNzRWYW+/+8l4tu/NsY7CpMA=;
+	s=arc-20240116; t=1734016783; c=relaxed/simple;
+	bh=sGDn3iKuQAotg/XRykcXU6R4Tyik4Uun5GKIxygQ4ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZjbpiLLXC8Vfose4QHpaTvgA01zqFCVsKZTBB5NOFnE8qRQKkYrx3pL0hnbeBzdfgiMDm51dEhFzpVIBqjAdTtsS9vg4s3ZdKl9ISE5wwH0AuIDNt1lvJkqNXtWiV+FBXDR3W4u+d3zqjSQOITqJ3SEyRTRtlQG3WDjKt8f+nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5rao4xX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246CAC4CECE;
-	Thu, 12 Dec 2024 15:36:43 +0000 (UTC)
+	 MIME-Version; b=B5ik3r8Pxq1wTN3jXidhgQi5lM4Rl+5Cp5qoNBNGD+Kfb3fnzboTTuNXewyS7juyKRfEZ0t9iS+mPYNKWK7M1Q7+WSeI8VDBK100DOdkL91ajdncRb0QPeA0WJDUrcTgzJq0NwfkIRnoFla4S2W/4/IneewAamHF6zarWRS37RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6xQfEF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37F4C4CECE;
+	Thu, 12 Dec 2024 15:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017804;
-	bh=GK9HxURILctyIOjj9XyfNzRWYW+/+8l4tu/NsY7CpMA=;
+	s=korg; t=1734016783;
+	bh=sGDn3iKuQAotg/XRykcXU6R4Tyik4Uun5GKIxygQ4ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5rao4xXtA4fH6JKRfqUjjEgixcMxUPq8D7B5JILU/yhEvMrdzVEzeuYomCz1pDs8
-	 hV+PKuPCbKPW6Lbku9Joiq7vKp0c+MWpBFaZQJT/S9/hlcHRsd9O5xYQVR0y2Zub7+
-	 cxi+Pk+Sx6t8iBr91WjlAt4M2RbI+0VK81hRjoAQ=
+	b=P6xQfEF2uFhzgC9I41aU2qHMfUSxIquz/2LeifhDHp3eWm5c7T20Gcxiy/SuxTlfQ
+	 EQjlqOwOjCoLtDEoHgFnAZMkYitF9u4Z3mUTtyvVE97ffjY28ca9vcmNXwFxv1voSh
+	 H2xNuT4gbQpAKHFKg9yXsKN7D9+d5AyZagtCRX38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Raphael Gallais-Pou <rgallaispou@gmail.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/356] drm/sti: Add __iomem for mixer_dbg_mxns parameter
+Subject: [PATCH 6.12 265/466] wifi: rtw89: check return value of ieee80211_probereq_get() for RNR
 Date: Thu, 12 Dec 2024 15:57:14 +0100
-Message-ID: <20241212144249.194948327@linuxfoundation.org>
+Message-ID: <20241212144317.265521393@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 86e8f94789dd6f3e705bfa821e1e416f97a2f863 ]
+[ Upstream commit 630d5d8f2bf6b340202b6bc2c05d794bbd8e4c1c ]
 
-Sparse complains about incorrect type in argument 1.
-expected void const volatile  __iomem *ptr but got void *.
-so modify mixer_dbg_mxn's addr parameter.
+The return value of ieee80211_probereq_get() might be NULL, so check it
+before using to avoid NULL pointer access.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411191809.6V3c826r-lkp@intel.com/
-Fixes: a5f81078a56c ("drm/sti: add debugfs entries for MIXER crtc")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/c28f0dcb6a4526721d83ba1f659bba30564d3d54.1732087094.git.xiaopei01@kylinos.cn
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Addresses-Coverity-ID: 1529805 ("Dereference null return value")
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240919081216.28505-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sti/sti_mixer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/sti/sti_mixer.c b/drivers/gpu/drm/sti/sti_mixer.c
-index 7e5f14646625b..06c1b81912f79 100644
---- a/drivers/gpu/drm/sti/sti_mixer.c
-+++ b/drivers/gpu/drm/sti/sti_mixer.c
-@@ -137,7 +137,7 @@ static void mixer_dbg_crb(struct seq_file *s, int val)
- 	}
- }
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 13a7c39ceb6f5..e6bceef691e9b 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -6074,6 +6074,9 @@ static int rtw89_update_6ghz_rnr_chan(struct rtw89_dev *rtwdev,
  
--static void mixer_dbg_mxn(struct seq_file *s, void *addr)
-+static void mixer_dbg_mxn(struct seq_file *s, void __iomem *addr)
- {
- 	int i;
- 
+ 		skb = ieee80211_probereq_get(rtwdev->hw, rtwvif_link->mac_addr,
+ 					     NULL, 0, req->ie_len);
++		if (!skb)
++			return -ENOMEM;
++
+ 		skb_put_data(skb, ies->ies[NL80211_BAND_6GHZ], ies->len[NL80211_BAND_6GHZ]);
+ 		skb_put_data(skb, ies->common_ies, ies->common_ie_len);
+ 		hdr = (struct ieee80211_hdr *)skb->data;
 -- 
 2.43.0
 
