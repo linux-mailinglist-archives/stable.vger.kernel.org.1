@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-102880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29EAE9EF3E9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 666309EED79
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96D612898D9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 272B728953D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD122288CD;
-	Thu, 12 Dec 2024 17:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F35223C57;
+	Thu, 12 Dec 2024 15:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqdSXHmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yw6EapBf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574A722A81C;
-	Thu, 12 Dec 2024 17:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6343222D43;
+	Thu, 12 Dec 2024 15:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022839; cv=none; b=FMxHZy4dBLevzSzJInbaR7tfnfHOd65EuB1zoyEjwXhSrHA+9aLvID/cLw3WWr5CCI8oMuJTyQvpxvIsv8ClHMnsoZuliGk9VaaSF2RviSQm/CFqJv1UTZuPUtHA0QU6ySbGLtnlXJbmGncUMCS06lTJlb+VoHkkI7nKQ35Pofc=
+	t=1734018332; cv=none; b=aTaa/myKNjaq/EcCpbjlH6+ngFTWeeF0SGg4OtaiU8Xx+HiCb/+6lOZ9dAPdW/f+lW8y9s3oki9/cfnmlYzO3pwxqDEp3k8PcR2KVjiEPAoKMPxbTMNgH9xkdPlTdNnoeiGek13MDWXFc9VvKCp2dTbexUmVslVHw0yoEnl3Wmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022839; c=relaxed/simple;
-	bh=87efIatYdbPJfMSAplZIo1eM2+e5tyrrEi3N1rAaJtE=;
+	s=arc-20240116; t=1734018332; c=relaxed/simple;
+	bh=HvZt3RR+yXEjHY2u0HkPC6KUYQuQ7CojawpjC26SgHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCTHUvyYn+wKSsp8AOxHIrnW1DaUwSIMLiofwwM8yy1jHT0G8ANGbajyKM66FiLpkg7G2eITSj9DymG6bpO1rgpKTs3C7Gjyhk5yJLtmsWwGXtQS4ZyEx0pPfVlluh6O3WBU4D9k6CMez5CbFpj8qGkwcocnJ3BT6U2GjbPfCAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqdSXHmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2F3C4CED0;
-	Thu, 12 Dec 2024 17:00:38 +0000 (UTC)
+	 MIME-Version; b=ag8+k6Qu9GW5yhdkcKIRPHAJtUuylwT+xMwruo6XFXBM5ZtIU6+NIWyrHRLSClPHVwuLtGgbYGapbdUf0wJylZVzwnqVyWLkYrFoKnrx4wE8NV4h+RHQJK8YYLDIUlZAi8RE3HQ/vVcyLp24B3Cy8TLJ3yk5bDm7TA183Vr+JJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yw6EapBf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BF0C4CECE;
+	Thu, 12 Dec 2024 15:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022839;
-	bh=87efIatYdbPJfMSAplZIo1eM2+e5tyrrEi3N1rAaJtE=;
+	s=korg; t=1734018332;
+	bh=HvZt3RR+yXEjHY2u0HkPC6KUYQuQ7CojawpjC26SgHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqdSXHmWSLalXtyDl2RmQGzxPWVXNLSiD8hr/uZx0TASI1UfDBEWOg8uWl8aQSSq8
-	 omEnwdu9bNqO4rjPN82/jOO82RScnKrpCQaRxmljubLgySed592D5s5i1Ym3PXeTU1
-	 wNiU7oklX2HN8kUxbQpsg7uJhC6db+r+4ZTEj5og=
+	b=Yw6EapBfHCVu0I5ksT9qtSnx6GCx8tTGSDlH8oOq5vcfINiZX6FQa+4UxutXWo1uk
+	 975MUOZ5e2oGhGi8WZTo9mSVn0fY7cI2RdRx5Y/nWicoiaWHtHoEBuPqcbVAQqDZUQ
+	 BSIhS+amVQo6r/Qr7RLecn8kt7esQm2ZsDPbjfWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 347/565] ALSA: hda/realtek: Apply quirk for Medion E15433
+	Elena Salomatkina <esalomatkina@ispras.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 223/356] net/sched: cbs: Fix integer overflow in cbs_set_port_rate()
 Date: Thu, 12 Dec 2024 15:59:02 +0100
-Message-ID: <20241212144325.315077168@linuxfoundation.org>
+Message-ID: <20241212144253.426488088@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,36 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Elena Salomatkina <esalomatkina@ispras.ru>
 
-commit ca0f79f0286046f6a91c099dc941cf7afae198d6 upstream.
+[ Upstream commit 397006ba5d918f9b74e734867e8fddbc36dc2282 ]
 
-Medion E15433 laptop wich ALC269VC (SSID 2782:1705) needs the same
-workaround for the missing speaker as another model.
+The subsequent calculation of port_rate = speed * 1000 * BYTES_PER_KBIT,
+where the BYTES_PER_KBIT is of type LL, may cause an overflow.
+At least when speed = SPEED_20000, the expression to the left of port_rate
+will be greater than INT_MAX.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1233298
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241128072646.15659-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Elena Salomatkina <esalomatkina@ispras.ru>
+Link: https://patch.msgid.link/20241013124529.1043-1-esalomatkina@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_cbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9546,6 +9546,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
-+	SND_PCI_QUIRK(0x2782, 0x1705, "MEDION E15433", ALC269VC_FIXUP_INFINIX_Y4_MAX),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+diff --git a/net/sched/sch_cbs.c b/net/sched/sch_cbs.c
+index cac870eb78973..0567a15d0f850 100644
+--- a/net/sched/sch_cbs.c
++++ b/net/sched/sch_cbs.c
+@@ -310,7 +310,7 @@ static void cbs_set_port_rate(struct net_device *dev, struct cbs_sched_data *q)
+ {
+ 	struct ethtool_link_ksettings ecmd;
+ 	int speed = SPEED_10;
+-	int port_rate;
++	s64 port_rate;
+ 	int err;
+ 
+ 	err = __ethtool_get_link_ksettings(dev, &ecmd);
+-- 
+2.43.0
+
 
 
 
