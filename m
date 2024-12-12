@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1409EF827
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D489EF583
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819CF174D53
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64AA118896B9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0509A13CA81;
-	Thu, 12 Dec 2024 17:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30C32165F0;
+	Thu, 12 Dec 2024 17:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1mfskiN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmX0h+yg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B694A13CA93;
-	Thu, 12 Dec 2024 17:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F71C2F44;
+	Thu, 12 Dec 2024 17:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024441; cv=none; b=L8l6M4hFtWoaodcei67pYKCzL3S7BQmaloBbcl2kvFveRo4ACevqiU2YqrJQapu3pH2dN6QkCGkeUv8J7la+U8F/6ZFAOrsUDnuEOxo2UI7SkqCXwu/UCg4WSKGh4/Ofib9UAL8oCFtZjX21x2CCFB8u/qExlWqFJ2zwd/f3MTs=
+	t=1734023152; cv=none; b=I3jDME8VgC8prX/Fv+pCutfMe7INljfFNtPTizbrAsrP++ZSoOvVpK8sk0MautMRqUOP0ELVIOhK1xBIiipPIvaI5HGy5lVwdnD5kj/qURDavegocFBViGisTGS4d/LpQVt+MDL+f/y9V7rw6+9/AFTJknbzL4VdN7srMepWKKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024441; c=relaxed/simple;
-	bh=+CCFgJgcdiMQFazahVImX9yJrzsB54oVnHv4b/ClU8I=;
+	s=arc-20240116; t=1734023152; c=relaxed/simple;
+	bh=aWPkycsT/i/TEEyYJVnQaT40eNOotZ1gStlJRSFzTfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OsT2XPELKoe376Vz0rJcwXwvw5hCc291ySXzXHdKxpS4onhzsqBOLbDqUxuLIyLd89qW2Q7wdk7rlaUtVm3uvh4cQ3JZ/hzIZMpt2PoqVswELHig4S0z9omgPDSD1gp4Hsb1Rc/D9wmbG/sqskQGR1EAofnmoCHzSs4KMrNlr6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1mfskiN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D444CC4CED3;
-	Thu, 12 Dec 2024 17:27:18 +0000 (UTC)
+	 MIME-Version; b=agYOstHoCxymmzwaacQThsEfuNDPwrW2RnyMTbBqDtYqEnLmv2CKk62RkuFH3x7NoaTpc2C07XNVn2WHPAoxyaZbpbDciGfVBDHYvycz2skSY01CGyKZkPFgVv70w+IWyAuHnXfjd4PR/CFaOYOuxb2+pFt4Plr93ZU97fI2cMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmX0h+yg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E252AC4CECE;
+	Thu, 12 Dec 2024 17:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024439;
-	bh=+CCFgJgcdiMQFazahVImX9yJrzsB54oVnHv4b/ClU8I=;
+	s=korg; t=1734023152;
+	bh=aWPkycsT/i/TEEyYJVnQaT40eNOotZ1gStlJRSFzTfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1mfskiNIuSR1qmfkJT4qwPQIaMd0a4+nwLPrTcu1BQ8uS5CxnwpOSoL64Hh+ppq5
-	 GQ6d4ZLREnh1hSwwmKmGFAIWDFHvSeV4T8SB2No0UUyzVSA6h6e1SDhxxbpe+YdBCr
-	 RPXhHJTxEiepMrIHV/SqJh1beoqyeI9AtAkU0TUM=
+	b=cmX0h+ygpmrZEhwBRGt73Jvk3T+MUKn2C0620unw3geq1w0GqryyapVQnS6s1PCJp
+	 KR9Sw2hpM5Q710QIHNrv9HhTQblK/oTNevw81TaeQR4DcjSvr2b+gNO6RxpdKhPlMU
+	 vnHg4yCP7V2jHZZY8p5GrybepWv4vFuZO9DbFj1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waqar Hameed <waqar.hameed@axis.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 297/459] ubifs: authentication: Fix use-after-free in ubifs_tnc_end_commit
+Subject: [PATCH 5.15 440/565] spi: mpc52xx: Add cancel_work_sync before module remove
 Date: Thu, 12 Dec 2024 16:00:35 +0100
-Message-ID: <20241212144305.370236124@linuxfoundation.org>
+Message-ID: <20241212144329.078345336@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waqar Hameed <waqar.hameed@axis.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 4617fb8fc15effe8eda4dd898d4e33eb537a7140 ]
+[ Upstream commit 984836621aad98802d92c4a3047114cf518074c8 ]
 
-After an insertion in TNC, the tree might split and cause a node to
-change its `znode->parent`. A further deletion of other nodes in the
-tree (which also could free the nodes), the aforementioned node's
-`znode->cparent` could still point to a freed node. This
-`znode->cparent` may not be updated when getting nodes to commit in
-`ubifs_tnc_start_commit()`. This could then trigger a use-after-free
-when accessing the `znode->cparent` in `write_index()` in
-`ubifs_tnc_end_commit()`.
+If we remove the module which will call mpc52xx_spi_remove
+it will free 'ms' through spi_unregister_controller.
+while the work ms->work will be used. The sequence of operations
+that may lead to a UAF bug.
 
-This can be triggered by running
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in mpc52xx_spi_remove.
 
-  rm -f /etc/test-file.bin
-  dd if=/dev/urandom of=/etc/test-file.bin bs=1M count=60 conv=fsync
-
-in a loop, and with `CONFIG_UBIFS_FS_AUTHENTICATION`. KASAN then
-reports:
-
-  BUG: KASAN: use-after-free in ubifs_tnc_end_commit+0xa5c/0x1950
-  Write of size 32 at addr ffffff800a3af86c by task ubifs_bgt0_20/153
-
-  Call trace:
-   dump_backtrace+0x0/0x340
-   show_stack+0x18/0x24
-   dump_stack_lvl+0x9c/0xbc
-   print_address_description.constprop.0+0x74/0x2b0
-   kasan_report+0x1d8/0x1f0
-   kasan_check_range+0xf8/0x1a0
-   memcpy+0x84/0xf4
-   ubifs_tnc_end_commit+0xa5c/0x1950
-   do_commit+0x4e0/0x1340
-   ubifs_bg_thread+0x234/0x2e0
-   kthread+0x36c/0x410
-   ret_from_fork+0x10/0x20
-
-  Allocated by task 401:
-   kasan_save_stack+0x38/0x70
-   __kasan_kmalloc+0x8c/0xd0
-   __kmalloc+0x34c/0x5bc
-   tnc_insert+0x140/0x16a4
-   ubifs_tnc_add+0x370/0x52c
-   ubifs_jnl_write_data+0x5d8/0x870
-   do_writepage+0x36c/0x510
-   ubifs_writepage+0x190/0x4dc
-   __writepage+0x58/0x154
-   write_cache_pages+0x394/0x830
-   do_writepages+0x1f0/0x5b0
-   filemap_fdatawrite_wbc+0x170/0x25c
-   file_write_and_wait_range+0x140/0x190
-   ubifs_fsync+0xe8/0x290
-   vfs_fsync_range+0xc0/0x1e4
-   do_fsync+0x40/0x90
-   __arm64_sys_fsync+0x34/0x50
-   invoke_syscall.constprop.0+0xa8/0x260
-   do_el0_svc+0xc8/0x1f0
-   el0_svc+0x34/0x70
-   el0t_64_sync_handler+0x108/0x114
-   el0t_64_sync+0x1a4/0x1a8
-
-  Freed by task 403:
-   kasan_save_stack+0x38/0x70
-   kasan_set_track+0x28/0x40
-   kasan_set_free_info+0x28/0x4c
-   __kasan_slab_free+0xd4/0x13c
-   kfree+0xc4/0x3a0
-   tnc_delete+0x3f4/0xe40
-   ubifs_tnc_remove_range+0x368/0x73c
-   ubifs_tnc_remove_ino+0x29c/0x2e0
-   ubifs_jnl_delete_inode+0x150/0x260
-   ubifs_evict_inode+0x1d4/0x2e4
-   evict+0x1c8/0x450
-   iput+0x2a0/0x3c4
-   do_unlinkat+0x2cc/0x490
-   __arm64_sys_unlinkat+0x90/0x100
-   invoke_syscall.constprop.0+0xa8/0x260
-   do_el0_svc+0xc8/0x1f0
-   el0_svc+0x34/0x70
-   el0t_64_sync_handler+0x108/0x114
-   el0t_64_sync+0x1a4/0x1a8
-
-The offending `memcpy()` in `ubifs_copy_hash()` has a use-after-free
-when a node becomes root in TNC but still has a `cparent` to an already
-freed node. More specifically, consider the following TNC:
-
-         zroot
-         /
-        /
-      zp1
-      /
-     /
-    zn
-
-Inserting a new node `zn_new` with a key smaller then `zn` will trigger
-a split in `tnc_insert()` if `zp1` is full:
-
-         zroot
-         /   \
-        /     \
-      zp1     zp2
-      /         \
-     /           \
-  zn_new          zn
-
-`zn->parent` has now been moved to `zp2`, *but* `zn->cparent` still
-points to `zp1`.
-
-Now, consider a removal of all the nodes _except_ `zn`. Just when
-`tnc_delete()` is about to delete `zroot` and `zp2`:
-
-         zroot
-             \
-              \
-              zp2
-                \
-                 \
-                 zn
-
-`zroot` and `zp2` get freed and the tree collapses:
-
-           zn
-
-`zn` now becomes the new `zroot`.
-
-`get_znodes_to_commit()` will now only find `zn`, the new `zroot`, and
-`write_index()` will check its `znode->cparent` that wrongly points to
-the already freed `zp1`. `ubifs_copy_hash()` thus gets wrongly called
-with `znode->cparent->zbranch[znode->iip].hash` that triggers the
-use-after-free!
-
-Fix this by explicitly setting `znode->cparent` to `NULL` in
-`get_znodes_to_commit()` for the root node. The search for the dirty
-nodes is bottom-up in the tree. Thus, when `find_next_dirty(znode)`
-returns NULL, the current `znode` _is_ the root node. Add an assert for
-this.
-
-Fixes: 16a26b20d2af ("ubifs: authentication: Add hashes to index nodes")
-Tested-by: Waqar Hameed <waqar.hameed@axis.com>
-Co-developed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Fixes: ca632f556697 ("spi: reorganize drivers")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/1f16f8ae0e50ca9adb1dc849bf2ac65a40c9ceb9.1732783000.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ubifs/tnc_commit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-mpc52xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ubifs/tnc_commit.c b/fs/ubifs/tnc_commit.c
-index 234be1c4dc870..dc4f794fd5b73 100644
---- a/fs/ubifs/tnc_commit.c
-+++ b/fs/ubifs/tnc_commit.c
-@@ -657,6 +657,8 @@ static int get_znodes_to_commit(struct ubifs_info *c)
- 		znode->alt = 0;
- 		cnext = find_next_dirty(znode);
- 		if (!cnext) {
-+			ubifs_assert(c, !znode->parent);
-+			znode->cparent = NULL;
- 			znode->cnext = c->cnext;
- 			break;
- 		}
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index 51041526546dd..fa49e899f2b2e 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -521,6 +521,7 @@ static int mpc52xx_spi_remove(struct platform_device *op)
+ 	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
+ 	int i;
+ 
++	cancel_work_sync(&ms->work);
+ 	free_irq(ms->irq0, ms);
+ 	free_irq(ms->irq1, ms);
+ 
 -- 
 2.43.0
 
