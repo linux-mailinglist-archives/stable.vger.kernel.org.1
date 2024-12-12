@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765269EED2A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36A99EF2A3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24D831685D3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:40:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7581899EF1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B222210E1;
-	Thu, 12 Dec 2024 15:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0CB23E6E1;
+	Thu, 12 Dec 2024 16:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Q/ivi9E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUT68/vh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5162210DA;
-	Thu, 12 Dec 2024 15:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840AD23E6D9;
+	Thu, 12 Dec 2024 16:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018008; cv=none; b=IjVq8Y9M1AHn7SLfP5rRZUyERBorWKUrqnVVSSLTIYJKdU7JLMS+alUDNQNoCr7NPfV8gApbJMT8ZAyIPn2/csJDMu95+cyLsBQCohoj93k7kFjvJnMM5nIXZwYH01uUKY94QU/ptar3alMmoxusLlg7mCnKeZEt1DOOEvY9M9s=
+	t=1734020744; cv=none; b=qWP8fibfxngopplXfAWBvsWXlC70m5QFbvQD2I0qJ+ZgdANob6xli0vXeJiYDN2fRyaIu5c8/E8sYEn3OVAkbpnNZtsjdIGRNi7WvuIwSPXZtrVANqYBR8Un095o2juQ2+H5SyXCuJ/N3Rd9IPVxjELFIAWsRsL9kE03sfc2xsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018008; c=relaxed/simple;
-	bh=M6gEHOznYxA+492DouX+0pM8eEcfgFN+RMYypiJiXkc=;
+	s=arc-20240116; t=1734020744; c=relaxed/simple;
+	bh=FE2oINCrKowK+mVVehe77y5ObRGOzEj1qshDa1J0ypU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ixDdmzw0BR3VfhKOxbTYV4NLb948seTVP+MUQxZlXzR892xF6jzamxRcNWxq37oIG9clpVsZ8dD7s/ezn25imO7nkbvPU/MPu2Z2wxsH6QsuoPjhwI5WChBSqIZA/D9BM3sBU2r8WsB6DJdONer01IgxsV+lfAunWlf6c4xzasA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Q/ivi9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CA8C4CECE;
-	Thu, 12 Dec 2024 15:40:07 +0000 (UTC)
+	 MIME-Version; b=N+cvT1UHKsjwXc5QA7pi/QT62ZEhlK5fay48j+dqP5051rIHWPLLxjfI1D0iM2C0LQcEVijRHM+AXxIQYwgqWF3YxxfsB1WtXF4uRdC22GKuo/EoOISDrvBIlDTIGmVBu20yqIWOn5M6B6u5EOCS/EkgyZNEekTtesLzhMqxpKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUT68/vh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C79A9C4CECE;
+	Thu, 12 Dec 2024 16:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018008;
-	bh=M6gEHOznYxA+492DouX+0pM8eEcfgFN+RMYypiJiXkc=;
+	s=korg; t=1734020744;
+	bh=FE2oINCrKowK+mVVehe77y5ObRGOzEj1qshDa1J0ypU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Q/ivi9EZwJXpZf92X5gS2TdN2IUnYozPSdNabbR6EgqzBJSdoz0DDBOcHpeKXFgr
-	 J7cBUZShcYRJb0Ka4eg52chmXcOeidrsAEl05xMTy4Y72SQj8+fqiHyI1Qb5s3/th6
-	 ZovNtngyqaLyVUM4PbyXrdn2Nw19rfdIE6ESibzA=
+	b=IUT68/vhTGn93gjvARGuK+OF+LoiaJ+qqBSz8pGPvRF56anm2yrhLWNaxQAIPICFD
+	 QkzMhwwxiwDXXrdzky1EKUHn46fpxWkRS/MzngMewJFqsj592MhX2L/jp9aTH4gUiv
+	 sUJm3iOGClZguvDh0c+2eAXYYyXi3GssAb1Gj50E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordy Zomer <jordyzomer@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 172/356] bpf: fix OOB devmap writes when deleting elements
-Date: Thu, 12 Dec 2024 15:58:11 +0100
-Message-ID: <20241212144251.431018411@linuxfoundation.org>
+	Fuad Tabba <tabba@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 547/772] KVM: arm64: Change kvm_handle_mmio_return() return polarity
+Date: Thu, 12 Dec 2024 15:58:12 +0100
+Message-ID: <20241212144412.569983511@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Fuad Tabba <tabba@google.com>
 
-commit ab244dd7cf4c291f82faacdc50b45cc0f55b674d upstream.
+[ Upstream commit cc81b6dfc3bc82c3a2600eefbd3823bdb2190197 ]
 
-Jordy reported issue against XSKMAP which also applies to DEVMAP - the
-index used for accessing map entry, due to being a signed integer,
-causes the OOB writes. Fix is simple as changing the type from int to
-u32, however, when compared to XSKMAP case, one more thing needs to be
-addressed.
+Most exit handlers return <= 0 to indicate that the host needs to
+handle the exit. Make kvm_handle_mmio_return() consistent with
+the exit handlers in handle_exit(). This makes the code easier to
+reason about, and makes it easier to add other handlers in future
+patches.
 
-When map is released from system via dev_map_free(), we iterate through
-all of the entries and an iterator variable is also an int, which
-implies OOB accesses. Again, change it to be u32.
+No functional change intended.
 
-Example splat below:
-
-[  160.724676] BUG: unable to handle page fault for address: ffffc8fc2c001000
-[  160.731662] #PF: supervisor read access in kernel mode
-[  160.736876] #PF: error_code(0x0000) - not-present page
-[  160.742095] PGD 0 P4D 0
-[  160.744678] Oops: Oops: 0000 [#1] PREEMPT SMP
-[  160.749106] CPU: 1 UID: 0 PID: 520 Comm: kworker/u145:12 Not tainted 6.12.0-rc1+ #487
-[  160.757050] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
-[  160.767642] Workqueue: events_unbound bpf_map_free_deferred
-[  160.773308] RIP: 0010:dev_map_free+0x77/0x170
-[  160.777735] Code: 00 e8 fd 91 ed ff e8 b8 73 ed ff 41 83 7d 18 19 74 6e 41 8b 45 24 49 8b bd f8 00 00 00 31 db 85 c0 74 48 48 63 c3 48 8d 04 c7 <48> 8b 28 48 85 ed 74 30 48 8b 7d 18 48 85 ff 74 05 e8 b3 52 fa ff
-[  160.796777] RSP: 0018:ffffc9000ee1fe38 EFLAGS: 00010202
-[  160.802086] RAX: ffffc8fc2c001000 RBX: 0000000080000000 RCX: 0000000000000024
-[  160.809331] RDX: 0000000000000000 RSI: 0000000000000024 RDI: ffffc9002c001000
-[  160.816576] RBP: 0000000000000000 R08: 0000000000000023 R09: 0000000000000001
-[  160.823823] R10: 0000000000000001 R11: 00000000000ee6b2 R12: dead000000000122
-[  160.831066] R13: ffff88810c928e00 R14: ffff8881002df405 R15: 0000000000000000
-[  160.838310] FS:  0000000000000000(0000) GS:ffff8897e0c40000(0000) knlGS:0000000000000000
-[  160.846528] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  160.852357] CR2: ffffc8fc2c001000 CR3: 0000000005c32006 CR4: 00000000007726f0
-[  160.859604] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  160.866847] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  160.874092] PKRU: 55555554
-[  160.876847] Call Trace:
-[  160.879338]  <TASK>
-[  160.881477]  ? __die+0x20/0x60
-[  160.884586]  ? page_fault_oops+0x15a/0x450
-[  160.888746]  ? search_extable+0x22/0x30
-[  160.892647]  ? search_bpf_extables+0x5f/0x80
-[  160.896988]  ? exc_page_fault+0xa9/0x140
-[  160.900973]  ? asm_exc_page_fault+0x22/0x30
-[  160.905232]  ? dev_map_free+0x77/0x170
-[  160.909043]  ? dev_map_free+0x58/0x170
-[  160.912857]  bpf_map_free_deferred+0x51/0x90
-[  160.917196]  process_one_work+0x142/0x370
-[  160.921272]  worker_thread+0x29e/0x3b0
-[  160.925082]  ? rescuer_thread+0x4b0/0x4b0
-[  160.929157]  kthread+0xd4/0x110
-[  160.932355]  ? kthread_park+0x80/0x80
-[  160.936079]  ret_from_fork+0x2d/0x50
-[  160.943396]  ? kthread_park+0x80/0x80
-[  160.950803]  ret_from_fork_asm+0x11/0x20
-[  160.958482]  </TASK>
-
-Fixes: 546ac1ffb70d ("bpf: add devmap, a map for storing net device references")
-CC: stable@vger.kernel.org
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Suggested-by: Jordy Zomer <jordyzomer@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20241122121030.716788-3-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240423150538.2103045-15-tabba@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Stable-dep-of: e735a5da6442 ("KVM: arm64: Don't retire aborted MMIO instruction")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/devmap.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/kvm/arm.c  | 2 +-
+ arch/arm64/kvm/mmio.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -180,7 +180,7 @@ static struct bpf_map *dev_map_alloc(uni
- static void dev_map_free(struct bpf_map *map)
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
--	int i;
-+	u32 i;
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index cf7e10587fb09..3a05f364b4b6d 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -876,7 +876,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
  
- 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
- 	 * so the programs (can be more than one that used this map) were
-@@ -813,7 +813,7 @@ static long dev_map_delete_elem(struct b
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
+ 	if (run->exit_reason == KVM_EXIT_MMIO) {
+ 		ret = kvm_handle_mmio_return(vcpu);
+-		if (ret)
++		if (ret <= 0)
+ 			return ret;
+ 	}
  
- 	if (k >= map->max_entries)
- 		return -EINVAL;
-@@ -830,7 +830,7 @@ static long dev_map_hash_delete_elem(str
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
- 	unsigned long flags;
- 	int ret = -ENOENT;
+diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
+index 3dd38a151d2a6..886ef30e12196 100644
+--- a/arch/arm64/kvm/mmio.c
++++ b/arch/arm64/kvm/mmio.c
+@@ -86,7 +86,7 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
  
+ 	/* Detect an already handled MMIO return */
+ 	if (unlikely(!vcpu->mmio_needed))
+-		return 0;
++		return 1;
+ 
+ 	vcpu->mmio_needed = 0;
+ 
+@@ -117,7 +117,7 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
+ 	 */
+ 	kvm_incr_pc(vcpu);
+ 
+-	return 0;
++	return 1;
+ }
+ 
+ int io_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa)
+-- 
+2.43.0
+
 
 
 
