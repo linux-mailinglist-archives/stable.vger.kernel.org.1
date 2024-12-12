@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758B89EEC30
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E053F9EF293
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86FA1882E58
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:30:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17732170EC3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE872153F0;
-	Thu, 12 Dec 2024 15:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E1A229664;
+	Thu, 12 Dec 2024 16:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekBzs0uF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afLik/FH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286462185A8;
-	Thu, 12 Dec 2024 15:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CAB23EC07;
+	Thu, 12 Dec 2024 16:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017417; cv=none; b=CPn8/4yH7Oag48pM13t6+DM1Abry59VGq1cgjzmGCNHh5nClPLZxOMtg+Ip7B1KBCa2tFiTPQWfdjA7lsmwqUK8UWoT2WO9DKEToCdVh6nAw7VtSTjglN8TmWj7Pfnfu2ZSLBlM/yBzeM6CRfTAXF7X8bzWD5iHU02cwtPYphN0=
+	t=1734021361; cv=none; b=p0dS0CI0Poz+4o2ZPOWE/aXMlMfwTJGifsuVn/nevNDvhiVqX73Hc4O1OlpVWcTx4v/G9Cn93rnBxGzpZ1ArLEa+fH3x7LxvFB6kyaSNmBzyw8FuIoT9jWQHr2B2zWClNOV1xFUI4UIb6LKB+ShQhxw99yPbTkjHdSTIcJZbrVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017417; c=relaxed/simple;
-	bh=uu80/eVw7ntNB/mDz030rPKPke78rbmbYcybIk5ZhPE=;
+	s=arc-20240116; t=1734021361; c=relaxed/simple;
+	bh=geeh9+2EjfATAAkccU2ZVPBWlzWZ0AW3anOGKN6bB4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FXnNKyZASJ1Pql94Q8ryDHlz85DbbRe/Zqri9iBBjFtr4dpYxq9FH/i11JtpvA7W3Gi+UUVEDpJpqc18SKLwxqulmxYM5rC8SYqWtWtJHvKccrC/FGHtO1EIifcb36GVVyE8ap3K1+myoy/t3ouKdJtPenvFZgtbiw0qLRElIgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekBzs0uF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3C2C4CED0;
-	Thu, 12 Dec 2024 15:30:16 +0000 (UTC)
+	 MIME-Version; b=nTHj+clk6mkka+EoPTxe8vUYtE0FjR8UYkT6t4pfMEi4/EzG6BuzIIxNQUJOu/ecfOWNy9nlnAfwvhsp+vMWp85jIdpFlo5LHcaXo1B4Z3bxEOtibveWd7s7Z2fpVTGVf+U0Wr7LRP7r0ig0qvSxLoKecbUeYK+EJEkrnuu4Cdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afLik/FH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA36C4CECE;
+	Thu, 12 Dec 2024 16:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017417;
-	bh=uu80/eVw7ntNB/mDz030rPKPke78rbmbYcybIk5ZhPE=;
+	s=korg; t=1734021360;
+	bh=geeh9+2EjfATAAkccU2ZVPBWlzWZ0AW3anOGKN6bB4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekBzs0uF92a+SD8EuL0sUYze71rLD5FqFLgruqYX1tga4s0yzpbs1d5nQjjUcKqRX
-	 2rD5NfbUYa3r0WPn5TRWFpbU5wTFD6z1Rep6dKe1RnX64Kvq8+lYa7QRNaokJ1DvDA
-	 JsxDpNWVCg/pMKvjOnR68qtv+/VSI4mqTkOcAgkw=
+	b=afLik/FHuV5+V+UtMXJ0ki9UbNloqMeAVJBz379x7AsUTdIL/CAQ38hLX5iibfpq2
+	 m83G/wUELljWqqALNeVbidwf/6yRF5xdKeEsjsa1EtgvKiYE5u2gMNCmfdBOlwj4DQ
+	 DNUFmW7YLBPdz14oCTJW566hZXAH4LUSGVnHkfB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 462/466] ALSA: hda: Fix build error without CONFIG_SND_DEBUG
+	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
+	Nihar Chaithanya <niharchaithanya@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 686/772] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
 Date: Thu, 12 Dec 2024 16:00:31 +0100
-Message-ID: <20241212144325.122032320@linuxfoundation.org>
+Message-ID: <20241212144418.263402475@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Nihar Chaithanya <niharchaithanya@gmail.com>
 
-commit 0ddf2784d6c29e59409a62b8f32dc5abe56135a4 upstream.
+[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
 
-The macro should have been defined without setting the non-existing
-name field in the case of CONFIG_SND_DEBUG=n.
+When the value of lp is 0 at the beginning of the for loop, it will
+become negative in the next assignment and we should bail out.
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/20241011131046.5eb3905a@canb.auug.org.au
-Fixes: 5b1913a79c3e ("ALSA: hda: Use own quirk lookup helper")
-Link: https://patch.msgid.link/20241011072152.14657-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
+Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
+Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_local.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/jfs/jfs_dmap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/pci/hda/hda_local.h
-+++ b/sound/pci/hda/hda_local.h
-@@ -308,9 +308,15 @@ struct hda_quirk {
- #endif
- };
- 
-+#ifdef CONFIG_SND_DEBUG_VERBOSE
- #define HDA_CODEC_QUIRK(vend, dev, xname, val) \
- 	{ _SND_PCI_QUIRK_ID(vend, dev), .value = (val), .name = (xname),\
- 			.match_codec_ssid = true }
-+#else
-+#define HDA_CODEC_QUIRK(vend, dev, xname, val) \
-+	{ _SND_PCI_QUIRK_ID(vend, dev), .value = (val), \
-+			.match_codec_ssid = true }
-+#endif
- 
- struct snd_hda_pin_quirk {
- 	unsigned int codec;             /* Codec vendor/device ID */
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 30a56c37d9ecf..6509102e581a1 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2891,6 +2891,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ 	/* bubble the new value up the tree as required.
+ 	 */
+ 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
++		if (lp == 0)
++			break;
++
+ 		/* get the index of the first leaf of the 4 leaf
+ 		 * group containing the specified leaf (leafno).
+ 		 */
+-- 
+2.43.0
+
 
 
 
