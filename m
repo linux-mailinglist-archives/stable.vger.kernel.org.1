@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-101649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F979EEDBC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755919EF1A4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 518FC161FEC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34969290CDF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE6C223327;
-	Thu, 12 Dec 2024 15:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185502309BD;
+	Thu, 12 Dec 2024 16:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NC6p7Sal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdrZkLeV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4E02210C2;
-	Thu, 12 Dec 2024 15:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A202144C0;
+	Thu, 12 Dec 2024 16:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018300; cv=none; b=nKLasvhqsMypAKiFbwY81zagQAMXKjo30B4zqHuvBfXYryHY290FkGr7hjKo19DUPyvz0PRg4Q+P5JWRBqM4Dv6qVdNpqVQZsEK3IPUsuHAHQnH12vRTaN6MUVIpZ5dbQnou9cO/VqRU4HQPcGHakFscB81LxTlqba/xCvYTVcs=
+	t=1734021030; cv=none; b=pvDLK66rYSzjsA32d54zfioIiTF3l933VoNEs9OJZpDGte6S4Zt19FvJaeeWghor0PkR5fuNqlf5/QkR7//dcRFFgYtTNM3ldCIW2wSyKdziHOo5V2FQtyhtiNbQ2HsltElwuZ5BbCmo7I1WXKu0Fp2qrg53IpiekugqTpiej6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018300; c=relaxed/simple;
-	bh=wPHOTybO0p6RBnPTMaLiNXtWkOD/EHYyR/SUUxOpyyg=;
+	s=arc-20240116; t=1734021030; c=relaxed/simple;
+	bh=yvszQuYjAVp6foieEJBRYWDSdxTBHX//R8sh810gAzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEX8bmUh0a9tOXJJZj29iBLJevOAXpSUFO0PhmvCSX04FS1fGfFuUM347hJhLDMChdcxCFKeg4MwcmPusiCtqSqxL1Kd90LjK9otP+wytZFKlizfdQ90oI/qzVHG1Rx5t11R4PwQbaCI0AcmCyMuy22Y9ORx99Xxg5vIRA+dI1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NC6p7Sal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE24C4CED0;
-	Thu, 12 Dec 2024 15:44:59 +0000 (UTC)
+	 MIME-Version; b=JSniLNFvDx5eFbGSCG5Lq79+zc+hT3aS+aRxXQOzm2X2keFcONNFYq7lo5/8vVwCgPBL+/JRUFTnRUGu6TjLKzM6YVd8LCDuv66POD+9xG6ca8oDeRv+B0jeokiOrgp9Gd2NhJH5ghnDS9YEY3tegWKQ2t8AUcwIejGn0AB9mIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdrZkLeV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F223C4CECE;
+	Thu, 12 Dec 2024 16:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018300;
-	bh=wPHOTybO0p6RBnPTMaLiNXtWkOD/EHYyR/SUUxOpyyg=;
+	s=korg; t=1734021030;
+	bh=yvszQuYjAVp6foieEJBRYWDSdxTBHX//R8sh810gAzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NC6p7SalAicXGOZc/7dqRtyyF4RjXVpy1BGrcj8I++9QMB6ReXKUfgLBkmjY+br3l
-	 gW+N5BBxpjV1swXsEdjGoXFrT6Fn2i2FyNqO9V2i8azvwWddsbbZW9wVhhkvQR1H2G
-	 /U65jJocPC978Pi1G4zuPqwV5M86HSxB26SREcMs=
+	b=fdrZkLeV2IJ2O8ouWpaRX0B4aS0YtFVG7k0pzhs8FN7+vncU8bTbTunuQzU0GmOjU
+	 VaP7NqiPbCTza6uEzx8DEbQsKzFrVViHlec6wsMN//xPTp2+tT3QME6txot9rbtnQ5
+	 dMd9TGjJpkenlJ5uFJA2U4KHavJ2S3mwdq0mT9gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert van Bolhuis <nvbolhuis@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/356] wifi: brcmfmac: Fix oops due to NULL pointer dereference in brcmf_sdiod_sglist_rw()
+	Lyude Paul <lyude@redhat.com>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.1 627/772] drm/dp_mst: Fix resetting msg rx state after topology removal
 Date: Thu, 12 Dec 2024 15:59:32 +0100
-Message-ID: <20241212144254.599296275@linuxfoundation.org>
+Message-ID: <20241212144415.843443125@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert van Bolhuis <nvbolhuis@gmail.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 857282b819cbaa0675aaab1e7542e2c0579f52d7 ]
+commit a6fa67d26de385c3c7a23c1e109a0e23bfda4ec7 upstream.
 
-This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
-when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
-are sent from the pkt queue.
+If the MST topology is removed during the reception of an MST down reply
+or MST up request sideband message, the
+drm_dp_mst_topology_mgr::up_req_recv/down_rep_recv states could be reset
+from one thread via drm_dp_mst_topology_mgr_set_mst(false), racing with
+the reading/parsing of the message from another thread via
+drm_dp_mst_handle_down_rep() or drm_dp_mst_handle_up_req(). The race is
+possible since the reader/parser doesn't hold any lock while accessing
+the reception state. This in turn can lead to a memory corruption in the
+reader/parser as described by commit bd2fccac61b4 ("drm/dp_mst: Fix MST
+sideband message body length check").
 
-The problem is the number of entries in the pre-allocated sgtable, it is
-nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
-Given the default [rt]xglom_size=32 it's actually 35 which is too small.
-Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
-is added for each original SKB if tailroom isn't enough to hold tail_pad.
-At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
-in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
-NULL and this causes the oops.
+Fix the above by resetting the message reception state if needed before
+reading/parsing a message. Another solution would be to hold the
+drm_dp_mst_topology_mgr::lock for the whole duration of the message
+reception/parsing in drm_dp_mst_handle_down_rep() and
+drm_dp_mst_handle_up_req(), however this would require a bigger change.
+Since the fix is also needed for stable, opting for the simpler solution
+in this patch.
 
-The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
-the worst-case.
-Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
-additional bytes of memory.
-
-Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241107132903.13513-1-nvbolhuis@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 1d082618bbf3 ("drm/display/dp_mst: Fix down/up message handling after sink disconnect")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13056
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-2-imre.deak@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |   21 +++++++++++++++++++--
+ include/drm/display/drm_dp_mst_helper.h       |    7 +++++++
+ 2 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 00679a990e3da..7710367c319ec 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -770,7 +770,7 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev)
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3655,8 +3655,7 @@ int drm_dp_mst_topology_mgr_set_mst(stru
+ 		ret = 0;
+ 		mgr->payload_id_table_cleared = false;
  
- 	nents = max_t(uint, BRCMF_DEFAULT_RXGLOM_SIZE,
- 		      sdiodev->settings->bus.sdio.txglomsz);
--	nents += (nents >> 4) + 1;
-+	nents *= 2;
+-		memset(&mgr->down_rep_recv, 0, sizeof(mgr->down_rep_recv));
+-		memset(&mgr->up_req_recv, 0, sizeof(mgr->up_req_recv));
++		mgr->reset_rx_state = true;
+ 	}
  
- 	WARN_ON(nents > sdiodev->max_segment_count);
+ out_unlock:
+@@ -3784,6 +3783,11 @@ out_fail:
+ }
+ EXPORT_SYMBOL(drm_dp_mst_topology_mgr_resume);
  
--- 
-2.43.0
-
++static void reset_msg_rx_state(struct drm_dp_sideband_msg_rx *msg)
++{
++	memset(msg, 0, sizeof(*msg));
++}
++
+ static bool
+ drm_dp_get_one_sb_msg(struct drm_dp_mst_topology_mgr *mgr, bool up,
+ 		      struct drm_dp_mst_branch **mstb)
+@@ -4097,6 +4101,17 @@ out:
+ 	return 0;
+ }
+ 
++static void update_msg_rx_state(struct drm_dp_mst_topology_mgr *mgr)
++{
++	mutex_lock(&mgr->lock);
++	if (mgr->reset_rx_state) {
++		mgr->reset_rx_state = false;
++		reset_msg_rx_state(&mgr->down_rep_recv);
++		reset_msg_rx_state(&mgr->up_req_recv);
++	}
++	mutex_unlock(&mgr->lock);
++}
++
+ /**
+  * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
+  * @mgr: manager to notify irq for.
+@@ -4131,6 +4146,8 @@ int drm_dp_mst_hpd_irq_handle_event(stru
+ 		*handled = true;
+ 	}
+ 
++	update_msg_rx_state(mgr);
++
+ 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
+ 		ret = drm_dp_mst_handle_down_rep(mgr);
+ 		*handled = true;
+--- a/include/drm/display/drm_dp_mst_helper.h
++++ b/include/drm/display/drm_dp_mst_helper.h
+@@ -695,6 +695,13 @@ struct drm_dp_mst_topology_mgr {
+ 	bool payload_id_table_cleared : 1;
+ 
+ 	/**
++	 * @reset_rx_state: The down request's reply and up request message
++	 * receiver state must be reset, after the topology manager got
++	 * removed. Protected by @lock.
++	 */
++	bool reset_rx_state : 1;
++
++	/**
+ 	 * @payload_count: The number of currently active payloads in hardware. This value is only
+ 	 * intended to be used internally by MST helpers for payload tracking, and is only safe to
+ 	 * read/write from the atomic commit (not check) context.
 
 
 
