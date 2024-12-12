@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6579EF3D4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8809EF16D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB36E28A2A8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BBA528FCFF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6EF22A811;
-	Thu, 12 Dec 2024 16:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5484C22C34F;
+	Thu, 12 Dec 2024 16:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhpO833q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVeyUg+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087832F44;
-	Thu, 12 Dec 2024 16:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F137022C345;
+	Thu, 12 Dec 2024 16:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022758; cv=none; b=fwiFkepkdw0PmXpH6d2lzV1lwnxClgaY4RQFG+bsH3spyPMJbb83dHOqF43Nm+Wibbh2h9Aub6uEdaurol7s/RqJmaXN/W1rjz1QLhfje0TmZPMc/RCvlK0CnmLDJF8BX1tLJkguf4DzVMUJ6XEf+Vp8zZJaj5MOE8VxfJy/+mM=
+	t=1734020863; cv=none; b=QdvnJXKwHn9f76/CZOUb/krpqrbPr2vllpqA/r4/szQRAKF0jAewaUkgGDx00bIdzl7CRNAKDxsV96rizFnCiGdArXjwyrdcDSISEkD6HTWNbBC334ONt4fJCr9u212Ey0Rq/lAlyfsANbhZ/us9X5BnIQa+tTGbgFDipLvSXjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022758; c=relaxed/simple;
-	bh=p6axj+vyLwFDD6P1Ez5QsnIQodqYc+KmLLfGTQ0Cyaw=;
+	s=arc-20240116; t=1734020863; c=relaxed/simple;
+	bh=8G6KZgHxm3CzuiOf0M41AaisrUo0fySfMfIaOmox44w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7qZEwDhmKxysdoOk5xCLkJi0AoejGsdT55L1KhY3wFCGVg+g9hjoAxZ/K4l/LwKm+aT28QMNEnArSrxAKYg/5/0X1RaXTIAqvISLWGDamHqUyPC8M4YQA3wyKbFCa0jYeQx6m7SEhyjf/cJvKyDaCHlLFwvBN3ie2vmFbqEE+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhpO833q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 517C6C4CED0;
-	Thu, 12 Dec 2024 16:59:17 +0000 (UTC)
+	 MIME-Version; b=M2gnm1tuL7p21ni6w0jEvCxTVVsKMXjiI2+LAlFrCQ4nkRPVnnSFUoseqZJeMvAXnUpZfs654TieMTE3P6irQysz4SZ4Rqs0TXOKgi9WEu1+fd9OhbH79ZJJLiB7GOTxtX25jwFN3REZC3kIG1tfyCPLyJrrqvXWsMM6OGu8Izk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVeyUg+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606C1C4CECE;
+	Thu, 12 Dec 2024 16:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022757;
-	bh=p6axj+vyLwFDD6P1Ez5QsnIQodqYc+KmLLfGTQ0Cyaw=;
+	s=korg; t=1734020862;
+	bh=8G6KZgHxm3CzuiOf0M41AaisrUo0fySfMfIaOmox44w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VhpO833qHo7wCC15Vjrthho9sYCuCuDlqmikkaEpCY5qEPj02ZHJQFrH/ljt7M/2F
-	 X7iEzQiKRV1V1pstyJyVfMog53EXWhlhnon6QXzs5v9CtcDnqb2ZG7wIF808uwbyo9
-	 98YHJaxeY4w/vSXhiLR6RfaqMqHIJvDLUGwNAk1U=
+	b=NVeyUg+BfpirIFB+rWFmRVc2K1ry+bWV5KMKS/0fkYXh+hDJyIoBR0GnnmUQXy+js
+	 BjLp6HHqXWveXF8alspj0mFvp2oCxLG1v7aGaedMiDVGENhAQK9zzl3oxFDd89n205
+	 t2Wll1o0Hs+D7klj3ub911ijc5wJTU+rVX7MejXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 5.15 329/565] cpufreq: mediatek-hw: Fix wrong return value in mtk_cpufreq_get_cpu_power()
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 579/772] device property: Constify device child node APIs
 Date: Thu, 12 Dec 2024 15:58:44 +0100
-Message-ID: <20241212144324.603161076@linuxfoundation.org>
+Message-ID: <20241212144413.871298499@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 172bf5ed04cb6c9e66d58de003938ed5c8756570 upstream.
+[ Upstream commit 7952cd2b8213f20a1752634c25dfd215da537722 ]
 
-mtk_cpufreq_get_cpu_power() return 0 if the policy is NULL. Then in
-em_create_perf_table(), the later zero check for power is not invalid
-as power is uninitialized. As Lukasz suggested, it must return -EINVAL when
-the 'policy' is not found. So return -EINVAL to fix it.
+The device parameter is not altered in the device child node APIs,
+constify them.
 
-Cc: stable@vger.kernel.org
-Fixes: 4855e26bcf4d ("cpufreq: mediatek-hw: Add support for CPUFREQ HW")
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Suggested-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://lore.kernel.org/r/20221004092129.19412-5-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 73b03b27736e ("leds: flash: mt6360: Fix device_for_each_child_node() refcounting in error paths")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/mediatek-cpufreq-hw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/property.c  |  6 +++---
+ include/linux/property.h | 12 ++++++------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/cpufreq/mediatek-cpufreq-hw.c
-+++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
-@@ -60,7 +60,7 @@ mtk_cpufreq_get_cpu_power(unsigned long
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index eb9b01c2ff1d9..ba612087a278f 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -790,7 +790,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_available_child_node);
+  * fwnode pointer. Note that this function also puts a reference to @child
+  * unconditionally.
+  */
+-struct fwnode_handle *device_get_next_child_node(struct device *dev,
++struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+ 						 struct fwnode_handle *child)
+ {
+ 	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+@@ -833,7 +833,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_named_child_node);
+  * The caller is responsible for calling fwnode_handle_put() on the returned
+  * fwnode pointer.
+  */
+-struct fwnode_handle *device_get_named_child_node(struct device *dev,
++struct fwnode_handle *device_get_named_child_node(const struct device *dev,
+ 						  const char *childname)
+ {
+ 	return fwnode_get_named_child_node(dev_fwnode(dev), childname);
+@@ -899,7 +899,7 @@ EXPORT_SYMBOL_GPL(fwnode_device_is_available);
+  *
+  * Return: the number of child nodes for a given device.
+  */
+-unsigned int device_get_child_node_count(struct device *dev)
++unsigned int device_get_child_node_count(const struct device *dev)
+ {
+ 	struct fwnode_handle *child;
+ 	unsigned int count = 0;
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 587b5b666b5bb..ec3490591f934 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -114,16 +114,16 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
+ 	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
+ 	     child = fwnode_get_next_available_child_node(fwnode, child))
  
- 	policy = cpufreq_cpu_get_raw(cpu_dev->id);
- 	if (!policy)
--		return 0;
-+		return -EINVAL;
+-struct fwnode_handle *device_get_next_child_node(
+-	struct device *dev, struct fwnode_handle *child);
++struct fwnode_handle *device_get_next_child_node(const struct device *dev,
++						 struct fwnode_handle *child);
  
- 	data = policy->driver_data;
+ #define device_for_each_child_node(dev, child)				\
+ 	for (child = device_get_next_child_node(dev, NULL); child;	\
+ 	     child = device_get_next_child_node(dev, child))
  
+-struct fwnode_handle *fwnode_get_named_child_node(
+-	const struct fwnode_handle *fwnode, const char *childname);
+-struct fwnode_handle *device_get_named_child_node(struct device *dev,
++struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
++						  const char *childname);
++struct fwnode_handle *device_get_named_child_node(const struct device *dev,
+ 						  const char *childname);
+ 
+ struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+@@ -132,7 +132,7 @@ void fwnode_handle_put(struct fwnode_handle *fwnode);
+ int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
+ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
+ 
+-unsigned int device_get_child_node_count(struct device *dev);
++unsigned int device_get_child_node_count(const struct device *dev);
+ 
+ static inline bool device_property_read_bool(struct device *dev,
+ 					     const char *propname)
+-- 
+2.43.0
+
 
 
 
