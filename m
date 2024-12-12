@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-103049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC2FD9EF5FB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06F09EF970
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C576B17197D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 305B5189DA9B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBB3223E8C;
-	Thu, 12 Dec 2024 17:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E362236FC;
+	Thu, 12 Dec 2024 17:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2oa1vMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usCUO/9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555272236F0;
-	Thu, 12 Dec 2024 17:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327642236F0;
+	Thu, 12 Dec 2024 17:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023387; cv=none; b=rDQ781U6rhkq5yTLUDjHO7yZaxjfe005rGbnzKLzomvqyCjdBNUbvOGjqjzUGAVyxjXAvbkvCk2Wa7zdvw8EhKe9GrxYqGJ9AyZFMHpRDsGZM6i11O1y9F5c7v4CC6bT/r5ytqpjLx3zML6uBAmH6aFyGNSXlTYwBkKgM24knaE=
+	t=1734025423; cv=none; b=Ag23z7tRl/7TomGA1EFe0HbVgo1jDBcEXqAnhOQMHwveebipKtA97lGUIWFxQxkfnWAX+TBZkEC6dC+HdSe3Fi8QS3m21GNlGIVXbkIQkRAviedf8sICR7EKQh9+9VcaMVvoKFSUuxqVOqDLuHey/fOM/aP/mE3C5w4EBHo2LdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023387; c=relaxed/simple;
-	bh=dz+pv+xOrhr6mYRYBslAHoeGFYxrt2fT3VC/Cbq4arM=;
+	s=arc-20240116; t=1734025423; c=relaxed/simple;
+	bh=rCkf6Sj9EYOAAQDymUd23Ich71AJmFG+0Rw8uFJjZCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HESgFpb9WlLRstE+GaAijnTXPNPG3f5qa/1KU98kMFlYENh6PsVWAnUfv8SDKL6XKi2celkCHFaRDk+DGL/jPhA0hNyzEriRhf03nZoZ1xNuiCQ05yjNuZMwJQLmkL+3OyAoiRi14yfN7yWL+W3PND4RYstw1+gjVqkwRjgF1rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2oa1vMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE351C4CECE;
-	Thu, 12 Dec 2024 17:09:46 +0000 (UTC)
+	 MIME-Version; b=jUVMGnKVat9nx41bNC8WzK7uxel60Lws/2qCOGGn4h2OfN/NvNoeJhzgTCZloMudlFfRBjEPOUIPnbRDveSbw1NToVvYL0lNYGkZ8t/rK024NivMEnJJ9b8JuyuYJbiE8exDmiaadC1HouetDg7mrYn3mEKAm15OjJhn5cpXjOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usCUO/9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B1BC4CED4;
+	Thu, 12 Dec 2024 17:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023387;
-	bh=dz+pv+xOrhr6mYRYBslAHoeGFYxrt2fT3VC/Cbq4arM=;
+	s=korg; t=1734025422;
+	bh=rCkf6Sj9EYOAAQDymUd23Ich71AJmFG+0Rw8uFJjZCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q2oa1vMPAbTFducIX0Z8qpJ5AVprzwzo9T1AftN5b1a2tjzAcCwjkk4Xrn0OXn2oH
-	 ILQp1kzOCv/tj+EtJ2R5pUYSIy/7f30G1NIcvONMyDL2W7T4/hkVQG4Go0URVuBRn6
-	 Yj7DX9Eif2Y+Wax0xZqkoiFDKRoXCl8PbXudNnbM=
+	b=usCUO/9xWojhDgcO4Iz8TgQyu90OwRp1KUCiF+tFn5MTT46Y9GX+WDlH/svYHU9T8
+	 SlT0kWgLO7SUUOnP9vtokut+NHQ1V8szh8RmHYWM7V/vvlUV0VzvvoPTfF9cryt8IN
+	 yBMkzjfRFbRGYmkFdJ+SNcnGhdlGl6DWELoW2/IA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 487/565] Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()
+	Huacai Chen <chenhuacai@loongson.cn>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: [PATCH 5.4 164/321] sh: cpuinfo: Fix a warning for CONFIG_CPUMASK_OFFSTACK
 Date: Thu, 12 Dec 2024 16:01:22 +0100
-Message-ID: <20241212144331.012380235@linuxfoundation.org>
+Message-ID: <20241212144236.459507975@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 7c4f78cdb8e7501e9f92d291a7d956591bf73be9 ]
+commit 3c891f7c6a4e90bb1199497552f24b26e46383bc upstream.
 
-bt_sock_alloc() allocates the sk object and attaches it to the provided
-sock object. On error l2cap_sock_alloc() frees the sk object, but the
-dangling pointer is still attached to the sock object, which may create
-use-after-free in other code.
+When CONFIG_CPUMASK_OFFSTACK and CONFIG_DEBUG_PER_CPU_MAPS are selected,
+cpu_max_bits_warn() generates a runtime warning similar as below when
+showing /proc/cpuinfo. Fix this by using nr_cpu_ids (the runtime limit)
+instead of NR_CPUS to iterate CPUs.
 
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-3-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[    3.052463] ------------[ cut here ]------------
+[    3.059679] WARNING: CPU: 3 PID: 1 at include/linux/cpumask.h:108 show_cpuinfo+0x5e8/0x5f0
+[    3.070072] Modules linked in: efivarfs autofs4
+[    3.076257] CPU: 0 PID: 1 Comm: systemd Not tainted 5.19-rc5+ #1052
+[    3.099465] Stack : 9000000100157b08 9000000000f18530 9000000000cf846c 9000000100154000
+[    3.109127]         9000000100157a50 0000000000000000 9000000100157a58 9000000000ef7430
+[    3.118774]         90000001001578e8 0000000000000040 0000000000000020 ffffffffffffffff
+[    3.128412]         0000000000aaaaaa 1ab25f00eec96a37 900000010021de80 900000000101c890
+[    3.138056]         0000000000000000 0000000000000000 0000000000000000 0000000000aaaaaa
+[    3.147711]         ffff8000339dc220 0000000000000001 0000000006ab4000 0000000000000000
+[    3.157364]         900000000101c998 0000000000000004 9000000000ef7430 0000000000000000
+[    3.167012]         0000000000000009 000000000000006c 0000000000000000 0000000000000000
+[    3.176641]         9000000000d3de08 9000000001639390 90000000002086d8 00007ffff0080286
+[    3.186260]         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1c
+[    3.195868]         ...
+[    3.199917] Call Trace:
+[    3.203941] [<90000000002086d8>] show_stack+0x38/0x14c
+[    3.210666] [<9000000000cf846c>] dump_stack_lvl+0x60/0x88
+[    3.217625] [<900000000023d268>] __warn+0xd0/0x100
+[    3.223958] [<9000000000cf3c90>] warn_slowpath_fmt+0x7c/0xcc
+[    3.231150] [<9000000000210220>] show_cpuinfo+0x5e8/0x5f0
+[    3.238080] [<90000000004f578c>] seq_read_iter+0x354/0x4b4
+[    3.245098] [<90000000004c2e90>] new_sync_read+0x17c/0x1c4
+[    3.252114] [<90000000004c5174>] vfs_read+0x138/0x1d0
+[    3.258694] [<90000000004c55f8>] ksys_read+0x70/0x100
+[    3.265265] [<9000000000cfde9c>] do_syscall+0x7c/0x94
+[    3.271820] [<9000000000202fe4>] handle_syscall+0xc4/0x160
+[    3.281824] ---[ end trace 8b484262b4b8c24c ]---
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_sock.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/sh/kernel/cpu/proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 3a2be1b4a5743..57035e46f7151 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1876,6 +1876,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
- 	chan = l2cap_chan_create();
- 	if (!chan) {
- 		sk_free(sk);
-+		sock->sk = NULL;
- 		return NULL;
- 	}
+--- a/arch/sh/kernel/cpu/proc.c
++++ b/arch/sh/kernel/cpu/proc.c
+@@ -133,7 +133,7 @@ static int show_cpuinfo(struct seq_file
  
--- 
-2.43.0
-
+ static void *c_start(struct seq_file *m, loff_t *pos)
+ {
+-	return *pos < NR_CPUS ? cpu_data + *pos : NULL;
++	return *pos < nr_cpu_ids ? cpu_data + *pos : NULL;
+ }
+ static void *c_next(struct seq_file *m, void *v, loff_t *pos)
+ {
 
 
 
