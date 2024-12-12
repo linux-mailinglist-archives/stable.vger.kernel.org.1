@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8489B9EF323
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2824B9EEDD5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0649416BB25
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD234285DB7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D4923FA0D;
-	Thu, 12 Dec 2024 16:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A9E223324;
+	Thu, 12 Dec 2024 15:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttX0273V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gm8YFzgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C0D23FD2B;
-	Thu, 12 Dec 2024 16:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0340D2210FB;
+	Thu, 12 Dec 2024 15:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021375; cv=none; b=CbDpM3ID+PZWix79W7Mc+AyxET0Jykwf73MdOrTnpAqiCqh8dd2Xu7W5ar9uCZOitGnqZUaabCDg+YBxFAmUjysjH/B75B6mcIqvoc5zqO8lqinQEbNuiaSGQuTmIYmLaM8bHzV7pvJDEruz8lAA2xlVxjtA3EBI+kfM2h/fVNI=
+	t=1734018608; cv=none; b=MqSLgReEuNujxGDujsrRdvL58bZ/TCT331a44zbDxYbSA0JKXXewJP/HcvpTGtzkBKzEi1gT3I1+HDVk0xwKkzG4BWEa7WBr5yXt4a+fvYFwSc16qzQmAiYh9jtHPv+H7WkQKjEhOmf+a2okEBYwfJOHuOYoWL15DDUBAzOU5ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021375; c=relaxed/simple;
-	bh=rem8Z/PSDZwreTRqGX+oYq91cBbOT15iN5zfIVDgVfY=;
+	s=arc-20240116; t=1734018608; c=relaxed/simple;
+	bh=Ur6ftnyB/QQ78ChHaGW1prAuGYrt/N622iIhqsgAINU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4h2MVpotRAc4a8Zm+I8v1Qa7AS7Em562ycK88BYlLsdBmJErJe7ktYlVd8wQEAadq/6sxTsDZGo5Foa54IbpxTejahJ/VjcsPChRqSTw9LGaqTwP770hrLjj8oBKmUb9CdQEnVV/pDglwRzz7m8qjxfslXG5ntCtsPeCOu0id4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttX0273V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9632DC4CECE;
-	Thu, 12 Dec 2024 16:36:14 +0000 (UTC)
+	 MIME-Version; b=Xtl3Vp75G6XZBUwoMLxi7F140HjxG0hm+1VoazW3pLZu+7S93efMSzPf5PxnKe6GC6IJ6mQrUlWqZGeSNHHaZS2EaYoKBW/ESfEvr/1xnhbrzfnZw3XBOuaIx6ca235+ZhiLNd7jH2dQ1ca8Pzy8nfkroMIMki/gKiBG8V5fn8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gm8YFzgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C343C4CECE;
+	Thu, 12 Dec 2024 15:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021375;
-	bh=rem8Z/PSDZwreTRqGX+oYq91cBbOT15iN5zfIVDgVfY=;
+	s=korg; t=1734018607;
+	bh=Ur6ftnyB/QQ78ChHaGW1prAuGYrt/N622iIhqsgAINU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ttX0273V8ZToIRn/jPfQwlTtE1znDzmoaQfgOwPef4inYUpYRDV/owf0QVWyq+K9V
-	 RSMBL7SuPyWtPZzg9IdyTaWjIZqgc1pvzRaqkCVE2U47jrOhtoGa0nmnB56n3bkTUP
-	 D7u+nfRJCtuPoPwK3VPTKoYRzuBxdm2geROXV+oo=
+	b=gm8YFzgbxMHxC6D2x8nFfYUmnfc5c73MvAhd0Atd7ZX0Pbh+fiiNXLKr8p2kgj80F
+	 A/UvCRqlQQEsmzik3bcQiy1b9JjyNWY/KdOQgc3suhy0ipTP9rlqoG/KESQAT2Ltcm
+	 o2PTBcUaEGjGFbxS7oCGalEAR38U6Hy/Jbs/wZVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Han <hanqi@vivo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 713/772] f2fs: fix f2fs_bug_on when uninstalling filesystem call f2fs_evict_inode.
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH 6.6 339/356] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
 Date: Thu, 12 Dec 2024 16:00:58 +0100
-Message-ID: <20241212144419.355378200@linuxfoundation.org>
+Message-ID: <20241212144257.961358183@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +61,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Han <hanqi@vivo.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit d5c367ef8287fb4d235c46a2f8c8d68715f3a0ca ]
+Since 5.16 and prior to 6.13 KVM can't be used with FSDAX
+guest memory (PMD pages). To reproduce the issue you need to reserve
+guest memory with `memmap=` cmdline, create and mount FS in DAX mode
+(tested both XFS and ext4), see doc link below. ndctl command for test:
+ndctl create-namespace -v -e namespace1.0 --map=dev --mode=fsdax -a 2M
+Then pass memory object to qemu like:
+-m 8G -object memory-backend-file,id=ram0,size=8G,\
+mem-path=/mnt/pmem/guestmem,share=on,prealloc=on,dump=off,align=2097152 \
+-numa node,memdev=ram0,cpus=0-1
+QEMU fails to run guest with error: kvm run failed Bad address
+and there are two warnings in dmesg:
+WARN_ON_ONCE(!page_count(page)) in kvm_is_zone_device_page() and
+WARN_ON_ONCE(folio_ref_count(folio) <= 0) in try_grab_folio() (v6.6.63)
 
-creating a large files during checkpoint disable until it runs out of
-space and then delete it, then remount to enable checkpoint again, and
-then unmount the filesystem triggers the f2fs_bug_on as below:
+It looks like in the past assumption was made that pfn won't change from
+faultin_pfn() to release_pfn_clean(), e.g. see
+commit 4cd071d13c5c ("KVM: x86/mmu: Move calls to thp_adjust() down a level")
+But kvm_page_fault structure made pfn part of mutable state, so
+now release_pfn_clean() can take hugepage-adjusted pfn.
+And it works for all cases (/dev/shm, hugetlb, devdax) except fsdax.
+Apparently in fsdax mode faultin-pfn and adjusted-pfn may refer to
+different folios, so we're getting get_page/put_page imbalance.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/inode.c:896!
-CPU: 2 UID: 0 PID: 1286 Comm: umount Not tainted 6.11.0-rc7-dirty #360
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-RIP: 0010:f2fs_evict_inode+0x58c/0x610
-Call Trace:
- __die_body+0x15/0x60
- die+0x33/0x50
- do_trap+0x10a/0x120
- f2fs_evict_inode+0x58c/0x610
- do_error_trap+0x60/0x80
- f2fs_evict_inode+0x58c/0x610
- exc_invalid_op+0x53/0x60
- f2fs_evict_inode+0x58c/0x610
- asm_exc_invalid_op+0x16/0x20
- f2fs_evict_inode+0x58c/0x610
- evict+0x101/0x260
- dispose_list+0x30/0x50
- evict_inodes+0x140/0x190
- generic_shutdown_super+0x2f/0x150
- kill_block_super+0x11/0x40
- kill_f2fs_super+0x7d/0x140
- deactivate_locked_super+0x2a/0x70
- cleanup_mnt+0xb3/0x140
- task_work_run+0x61/0x90
+To solve this preserve faultin pfn in separate local variable
+and pass it in kvm_release_pfn_clean().
 
-The root cause is: creating large files during disable checkpoint
-period results in not enough free segments, so when writing back root
-inode will failed in f2fs_enable_checkpoint. When umount the file
-system after enabling checkpoint, the root inode is dirty in
-f2fs_evict_inode function, which triggers BUG_ON. The steps to
-reproduce are as follows:
+Patch tested for all mentioned guest memory backends with tdp_mmu={0,1}.
 
-dd if=/dev/zero of=f2fs.img bs=1M count=55
-mount f2fs.img f2fs_dir -o checkpoint=disable:10%
-dd if=/dev/zero of=big bs=1M count=50
-sync
-rm big
-mount -o remount,checkpoint=enable f2fs_dir
-umount f2fs_dir
+No bug in upstream as it was solved fundamentally by
+commit 8dd861cc07e2 ("KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns")
+and related patch series.
 
-Let's redirty inode when there is not free segments during checkpoint
-is disable.
-
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://nvdimm.docs.kernel.org/2mib_fs_dax.html
+Fixes: 2f6305dd5676 ("KVM: MMU: change kvm_tdp_mmu_map() arguments to kvm_page_fault")
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kvm/mmu/mmu.c         |   10 ++++++++--
+ arch/x86/kvm/mmu/paging_tmpl.h |    5 ++++-
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 5b672df194a99..0f350368dea73 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -719,8 +719,10 @@ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
- 		!is_inode_flag_set(inode, FI_DIRTY_INODE))
- 		return 0;
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4363,6 +4363,7 @@ static bool is_page_fault_stale(struct k
  
--	if (!f2fs_is_checkpoint_ready(sbi))
-+	if (!f2fs_is_checkpoint_ready(sbi)) {
-+		f2fs_mark_inode_dirty_sync(inode, true);
- 		return -ENOSPC;
-+	}
+ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ {
++	kvm_pfn_t orig_pfn;
+ 	int r;
  
- 	/*
- 	 * We need to balance fs here to prevent from producing dirty node pages
--- 
-2.43.0
-
+ 	/* Dummy roots are used only for shadowing bad guest roots. */
+@@ -4384,6 +4385,8 @@ static int direct_page_fault(struct kvm_
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	write_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -4398,7 +4401,7 @@ static int direct_page_fault(struct kvm_
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
+@@ -4447,6 +4450,7 @@ EXPORT_SYMBOL_GPL(kvm_handle_page_fault)
+ static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
+ 				  struct kvm_page_fault *fault)
+ {
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 
+ 	if (page_fault_handle_page_track(vcpu, fault))
+@@ -4464,6 +4468,8 @@ static int kvm_tdp_mmu_page_fault(struct
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	read_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -4474,7 +4480,7 @@ static int kvm_tdp_mmu_page_fault(struct
+ 
+ out_unlock:
+ 	read_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ #endif
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -777,6 +777,7 @@ out_gpte_changed:
+ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ {
+ 	struct guest_walker walker;
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 
+ 	WARN_ON_ONCE(fault->is_tdp);
+@@ -835,6 +836,8 @@ static int FNAME(page_fault)(struct kvm_
+ 			walker.pte_access &= ~ACC_EXEC_MASK;
+ 	}
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	write_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -848,7 +851,7 @@ static int FNAME(page_fault)(struct kvm_
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
 
 
 
