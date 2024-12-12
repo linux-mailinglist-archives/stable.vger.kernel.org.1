@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-102128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2169EF12C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935789EF11C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 190511882856
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E85A8178DB1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B222967F;
-	Thu, 12 Dec 2024 16:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AAE22A801;
+	Thu, 12 Dec 2024 16:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFJ+gYpl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMFOPuVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CB9229676;
-	Thu, 12 Dec 2024 16:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE91215762;
+	Thu, 12 Dec 2024 16:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020080; cv=none; b=U5DialLD3MyrXBVpmDfiEjWD+LD3kHQ99ySXMxHMAcds/MgfVPR2frNNipqTm304QmhLSgH+l6q72W3qqFGjmyVFehXYuAmuxP25/jFDgv1IioNJiZdhuvGQY6YtWXSbU8/cLMkD0+Tw1fmFQeQyfwLRq0bEUFn3nNbfXwgAv5w=
+	t=1734020123; cv=none; b=YniVS6yQqvEYYgUPwmt3un1r2enGXBMv0pzBfqlqznswruGXQI2tbHyjwTQESJVCOA2wY7mvimdaMh0+faILlj66hK5derMScc3bL+JSPpQCgPW/W4Mkm60o3n7WfB9MsYzwFL+eIA4pIHmVrj/TkFaQGBh9aF9RcfMHruJfXvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020080; c=relaxed/simple;
-	bh=q4H3kR7vuHJH/pRb45XxkjtAhBgEby/OqOvNLS6q0rU=;
+	s=arc-20240116; t=1734020123; c=relaxed/simple;
+	bh=6g2n7ij6fIfboOYcJTlqU14qImLuz9ZPiqCeFZhNbbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nWqu6Y2UW4h5bfcytg2vNCNpV3AxGDqyJmWQX0Dfoasw+9SrM1iETQS0uPSXYoURSonPcNIgmg1AuqB+KK7Y0ACnzpvMetomCgf8XyjOOYChbW/bjWRH4YK1CFYxSO+wG+4aWVzURBo1Z9L6a7R3xSNJrGehTkPStxMIAPyQmdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFJ+gYpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7BFC4CED0;
-	Thu, 12 Dec 2024 16:14:38 +0000 (UTC)
+	 MIME-Version; b=nt8mGCWzGoySYgNSe/6S8JssOe8R8m1gaEgoUBX17jaByK5/A1EaiZiCqzn96zXMS7TtsvC8lo+2orrwgVDbZrh55qDNvd6buf5Wcx5zUNYJCljMzIWCNcjruKfAybbCEwAyl3r2bJ0SY1y31VatgCLmC1zT/evPjxFCHO5wSfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMFOPuVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF5AC4CECE;
+	Thu, 12 Dec 2024 16:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020079;
-	bh=q4H3kR7vuHJH/pRb45XxkjtAhBgEby/OqOvNLS6q0rU=;
+	s=korg; t=1734020123;
+	bh=6g2n7ij6fIfboOYcJTlqU14qImLuz9ZPiqCeFZhNbbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RFJ+gYpl48dSEg5NJ22ayewgzqKsyx9Ph4+m1eCkCdLQWS5hjFMjd+YjqQLnIGTAX
-	 pYzfKCiID9BKgD7rjexGTElGAEjuEn0HcDgRC9cLb4gkh9xfPlUQ0zspzX+oDSYFjU
-	 ywmETnt93FbLmpIaZrFAAfa2dmHQrfNYa6kisRws=
+	b=XMFOPuVq05BSXcscXM5Y/M0UvmNdSvSwUodIRVLGNlZHk157UTUqtw4rEW01dMPsv
+	 nxV6tZ8QIZkKGlm4g/Z61lhC6csz5VWzNQyfCUUB+tOA/eEZtf413sIoEgjZlnL1Q1
+	 d/awYF5+eV/r51kzkcMwi/VWQRuKBDtZO1y09SaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	stable@kernel.org,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 355/772] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
-Date: Thu, 12 Dec 2024 15:55:00 +0100
-Message-ID: <20241212144404.581816469@linuxfoundation.org>
+	Koichiro Den <koichiro.den@canonical.com>,
+	Chen-Yu Tsai <wenst@chromium.org>
+Subject: [PATCH 6.1 356/772] Revert "arm64: dts: mediatek: mt8195-cherry: Mark USB 3.0 on xhci1 as disabled"
+Date: Thu, 12 Dec 2024 15:55:01 +0100
+Message-ID: <20241212144404.620563684@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -60,110 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Sevens <bsevens@google.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit b909df18ce2a998afef81d58bbd1a05dc0788c40 upstream.
+This reverts commit edca00ad79aa1dfd1b88ace1df1e9dfa21a3026f.
 
-A bogus device can provide a bNumConfigurations value that exceeds the
-initial value used in usb_get_configuration for allocating dev->config.
+The hunk was applied to the wrong device node when the commit was
+backported to the 6.1 stable branch.
 
-This can lead to out-of-bounds accesses later, e.g. in
-usb_destroy_configuration.
+Revert it to re-do the backport correctly.
 
-Signed-off-by: Benoît Sevens <bsevens@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Koichiro Den <koichiro.den@canonical.com>
+Closes: https://lore.kernel.org/stable/6itvivhxbjlpky5hn6x2hmc3kzz4regcvmsk226t6ippjad7yk@26xug5lrdqdw/
+Fixes: edca00ad79aa ("arm64: dts: mediatek: mt8195-cherry: Mark USB 3.0 on xhci1 as disabled")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |   27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -553,6 +553,7 @@ int snd_usb_create_quirk(struct snd_usb_
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
- {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
+--- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+@@ -922,7 +922,6 @@
+ 	usb2-lpm-disable;
+ 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
+ 	vbus-supply = <&usb_vbus>;
+-	mediatek,u3p-dis-msk = <1>;
+ };
  
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
-@@ -564,10 +565,14 @@ static int snd_usb_extigy_boot_quirk(str
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
- 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&dev->descriptor, sizeof(dev->descriptor));
--		config = dev->actconfig;
-+				&new_device_descriptor, sizeof(new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
-+		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
-+				new_device_descriptor.bNumConfigurations);
-+		else
-+			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
- 		err = usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -899,6 +904,7 @@ static void mbox2_setup_48_24_magic(stru
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -934,10 +940,14 @@ static int snd_usb_mbox2_boot_quirk(stru
- 	dev_dbg(&dev->dev, "device initialised!\n");
- 
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&dev->descriptor, sizeof(dev->descriptor));
--	config = dev->actconfig;
-+		&new_device_descriptor, sizeof(new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
-+	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
-+			new_device_descriptor.bNumConfigurations);
-+	else
-+		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
- 
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
-@@ -1251,6 +1261,7 @@ static void mbox3_setup_48_24_magic(stru
- static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
- 	int descriptor_size;
- 
-@@ -1264,10 +1275,14 @@ static int snd_usb_mbox3_boot_quirk(stru
- 	dev_dbg(&dev->dev, "device initialised!\n");
- 
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&dev->descriptor, sizeof(dev->descriptor));
--	config = dev->actconfig;
-+		&new_device_descriptor, sizeof(new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
-+	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
-+			new_device_descriptor.bNumConfigurations);
-+	else
-+		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
- 
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
+ #include <arm/cros-ec-keyboard.dtsi>
 
 
 
