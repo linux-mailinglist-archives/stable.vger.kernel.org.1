@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5479EEAB5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594949EF1A3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2081281792
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC6F1896190
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198AA215776;
-	Thu, 12 Dec 2024 15:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15378226165;
+	Thu, 12 Dec 2024 16:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0a763h5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2HAyt2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C853E20E034;
-	Thu, 12 Dec 2024 15:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C862253F8;
+	Thu, 12 Dec 2024 16:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016608; cv=none; b=bAfrJYtdxNB2cZS0X1ShLrHy/QnAeGRlKXRck5yCFZ81fiRRoNjgDOWoiRs1W/lStQXhxEUefoPww1J3g2AncQj+OECH0hUBEv2hdfMSBsdzD27bOqYSF7uf7UKjgRnOPEyWESRkJ6mkBfJeE/GCNHr+2XAP0YvIxW4975ty/6c=
+	t=1734020452; cv=none; b=TCRcUJO+SqJyd9A0eS3Swkra6pyXWlgCxzkrWJxl8DVuoR8zoHs2AKlV30hyIJ5zZljgCBEuXRuKoNxIg/rR/oZBJgVqg9xfKcLIA4Cxcbo0AwnsZW8JCd9sznPXWBlHgFV2bSmCLtWWWOD8FZ9dPlDWINXnp0BRk/+Gd0Snhmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016608; c=relaxed/simple;
-	bh=uipNKCt5bnExvBSKwr8wZ/7+FfBVZTbmsZCRiJD6JB8=;
+	s=arc-20240116; t=1734020452; c=relaxed/simple;
+	bh=/IfA3IhbYBLjrDRxQzJExwo3Ack1TqGd2yPsJd5Dw4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3zRq31PUo6mkkw5QaNnsaXOXR1uAUxGfJTuFCdXVSr61omo0fqcQ0tti9n5rv1plSAH516yblXM2OIxN+Fs//L2EZCroX15tkTAs5z+/+tPsHRMgE4rzFYrRnDIPUu4aJSie2BOgMrzDNxm06c0j6LhGESnWCm1u1BwQgJmRTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0a763h5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36514C4CED0;
-	Thu, 12 Dec 2024 15:16:48 +0000 (UTC)
+	 MIME-Version; b=cYYoi8WbgxUxqK7US+7IkvsOXLme9N40VP1G7O5/P81R9fJ4t0K/npyH6xeFSDv0h3pXAunnYSKcai9Q1thmEgw6Z9zdzyHKEbSeqo0fYJQ6PkN98KpuM9ntfO7j5c4O5PsGqx+rtEPV8IWskfzCK/iype273O5Qws43oAKV7u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g2HAyt2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124A8C4CED0;
+	Thu, 12 Dec 2024 16:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016608;
-	bh=uipNKCt5bnExvBSKwr8wZ/7+FfBVZTbmsZCRiJD6JB8=;
+	s=korg; t=1734020452;
+	bh=/IfA3IhbYBLjrDRxQzJExwo3Ack1TqGd2yPsJd5Dw4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0a763h5b4YitSs+H3u3vVBzWpLtnaeaE7pvCA91aiOs2tZvA6gogSNvj2vin+/BP
-	 MO7avTRkSD35w8pak/2XMDuZBc6mfGDFRW/U4n34cRjNOKYM43lLMg8rkBKK2Sy3Rm
-	 IOu/2Q3wG9RHi+MTaySj74umc9xmba1j1TFsc5Mg=
+	b=g2HAyt2Fh27fhgZvcWazn00lVddlyN0BGhxtDNlGLqX7heqXvK/xMHxahLbvvhYQS
+	 0gYUJaFFl/HAsRU2a+JY9KURUDYpNQ75fZovgc3YHwyDHfGPz+gjjR7kQQvubhq5vH
+	 d7Fqk5gQEpt0ChZAPyxn/tv6h9J3gfAgdNUm5+kY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 246/466] mmc: sdhci-esdhc-imx: enable quirks SDHCI_QUIRK_NO_LED
-Date: Thu, 12 Dec 2024 15:56:55 +0100
-Message-ID: <20241212144316.504220065@linuxfoundation.org>
+	syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.1 471/772] ovl: Filter invalid inodes with missing lookup function
+Date: Thu, 12 Dec 2024 15:56:56 +0100
+Message-ID: <20241212144409.395970824@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 4dede2b76f4a760e948e1a49b1520881cb459bd3 ]
+commit c8b359dddb418c60df1a69beea01d1b3322bfe83 upstream.
 
-Enable SDHCI_QUIRK_NO_LED for i.MX7ULP, i.MX8MM, i.MX8QXP and
-i.MXRT1050. Even there is LCTL register bit, there is no IOMUX PAD
-for it. So there is no sense to enable LED for SDHCI for these SoCs.
+Add a check to the ovl_dentry_weird() function to prevent the
+processing of directory inodes that lack the lookup function.
+This is important because such inodes can cause errors in overlayfs
+when passed to the lowerstack.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240923062016.1165868-1-peng.fan@oss.nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=a8c9d476508bd14a90e5
+Suggested-by: Miklos Szeredi <miklos@szeredi.hu>
+Link: https://lore.kernel.org/linux-unionfs/CAJfpegvx-oS9XGuwpJx=Xe28_jzWx5eRo1y900_ZzWY+=gGzUg@mail.gmail.com/
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/overlayfs/util.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index 8f0bc6dca2b04..ef3a44f2dff16 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -238,6 +238,7 @@ struct esdhc_platform_data {
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -135,6 +135,9 @@ void ovl_dentry_init_flags(struct dentry
  
- struct esdhc_soc_data {
- 	u32 flags;
-+	u32 quirks;
- };
- 
- static const struct esdhc_soc_data esdhc_imx25_data = {
-@@ -309,10 +310,12 @@ static struct esdhc_soc_data usdhc_imx7ulp_data = {
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_PMQOS | ESDHC_FLAG_HS400
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
- static struct esdhc_soc_data usdhc_imxrt1050_data = {
- 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
- 
- static struct esdhc_soc_data usdhc_imx8qxp_data = {
-@@ -321,6 +324,7 @@ static struct esdhc_soc_data usdhc_imx8qxp_data = {
- 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
- 			| ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
- 
- static struct esdhc_soc_data usdhc_imx8mm_data = {
-@@ -328,6 +332,7 @@ static struct esdhc_soc_data usdhc_imx8mm_data = {
- 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
- 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
- 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
-+	.quirks = SDHCI_QUIRK_NO_LED,
- };
- 
- struct pltfm_imx_data {
-@@ -1687,6 +1692,7 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
- 
- 	imx_data->socdata = device_get_match_data(&pdev->dev);
- 
-+	host->quirks |= imx_data->socdata->quirks;
- 	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
- 		cpu_latency_qos_add_request(&imx_data->pm_qos_req, 0);
- 
--- 
-2.43.0
-
+ bool ovl_dentry_weird(struct dentry *dentry)
+ {
++	if (!d_can_lookup(dentry) && !d_is_file(dentry) && !d_is_symlink(dentry))
++		return true;
++
+ 	return dentry->d_flags & (DCACHE_NEED_AUTOMOUNT |
+ 				  DCACHE_MANAGE_TRANSIT |
+ 				  DCACHE_OP_HASH |
 
 
 
