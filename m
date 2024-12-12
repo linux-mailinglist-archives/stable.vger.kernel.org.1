@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-102795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688979EF394
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 779DD9EEB2B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4AA828BD0E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B60F281D96
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A215C2358B4;
-	Thu, 12 Dec 2024 16:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01A62153F4;
+	Thu, 12 Dec 2024 15:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ff9UuIUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHwmq75p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8F922969E;
-	Thu, 12 Dec 2024 16:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883631487CD;
+	Thu, 12 Dec 2024 15:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022519; cv=none; b=ixwnDaHxEKlSKoUZR1Gc6fTCjYKvt8nFKrBkog/Nhi0iJqrk3uihaFNNvfYciYvoJNxBGrvzQZuWfCKa0blCPQmwNZn+H7STuvB11I1MnhaYSS8FtWZu31B0+SKY8oBIf4ejrJy3tn5bLSgY8TFi9TH0I2Xm9yZgP4QjXgneJNc=
+	t=1734016908; cv=none; b=gJSKIxnIzYWCNgqGezfO4TXh7kZepuwynMSKHI74Fkn4+pn7i65tQtAR7D47e9jOJExZEpoCuG2XPFBAys5uRTBnDa5Cqpb4JzWOr2AvS1uf3Fg2Xq8XbiFqwrk18F7gmuhKRfvzuEf/m/TEgwqQu92DXsZE5VmgqpnSXtMYzmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022519; c=relaxed/simple;
-	bh=V+L6EZO2/3hRMJnCFc5zju/KCYRw8eWpF81lcVKKlA8=;
+	s=arc-20240116; t=1734016908; c=relaxed/simple;
+	bh=95y47CyjyY6riJIVPuyKA7GINFbqD1S2hWzDyRf1oeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mj77UO1UwDAnQ52xIiEo24AYNE6GA5BuzLDM6RL1T/yegkyqxq3e+DYMt6vJVbIfO/rY0Zo6eiGQt+U+YFTP4uRG8PGnrrjaWwXN6cayLlTcIe4lDNg4cPPxiK8Va3F26aTQoMCELJ5ciDf5SCVI2uAAss13YyVgqECWrd/c3as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ff9UuIUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24E2C4CECE;
-	Thu, 12 Dec 2024 16:55:18 +0000 (UTC)
+	 MIME-Version; b=MZTpzilGliMgxpDGTKuKXSqLBUZMpjYoU1RWgQ+DLwcNoZNyeXy/fKGGuqDYJn38a5sB8hKNFMVQ2vQrazrpW6V6wdoNLUzHK50wyI0UYLhUcbt/qrS8uGWepp0UDngwoKEZWnlSqtoDM2C+VsjsHSSQ3aRybz1DD4zkxPQrojM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHwmq75p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F2DC4CECE;
+	Thu, 12 Dec 2024 15:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022519;
-	bh=V+L6EZO2/3hRMJnCFc5zju/KCYRw8eWpF81lcVKKlA8=;
+	s=korg; t=1734016908;
+	bh=95y47CyjyY6riJIVPuyKA7GINFbqD1S2hWzDyRf1oeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ff9UuIUGF9TPLKDA/Z0fznjeDP6/cVjCulyhGP+zWlwDt2KsMWeqVfxetyG4dtafe
-	 LSc4AQnkUUUJds9MJe2cQF/M+aEkkL49rNgm8uPV/VrnqZ7zOjuOgzl3I+pO1nSdI5
-	 QqIaS7X5aTeuite5zamkhQtnfONrggEdH/gZCWQw=
+	b=aHwmq75pV8Ni2YCm3HtUrzeuI8+MKcVIxSiXAQOwWOHo1wpO7hpLppMkDpt3F2GZA
+	 1RQwaXMBZuUhaJ5MLf5/rfVNBBdz4Qi8LDjLn9GpnF4IcFdBvdwXnpKZDvnD0Ig+Lq
+	 JQxBp270UwPkvAbQATSdcB13BoANWkxvn6V5Ppy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 264/565] NFSD: Cap the number of bytes copied by nfs4_reset_recoverydir()
+Subject: [PATCH 6.12 290/466] net: af_can: do not leave a dangling sk pointer in can_create()
 Date: Thu, 12 Dec 2024 15:57:39 +0100
-Message-ID: <20241212144321.901944988@linuxfoundation.org>
+Message-ID: <20241212144318.242195832@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit f64ea4af43161bb86ffc77e6aeb5bcf5c3229df0 ]
+[ Upstream commit 811a7ca7320c062e15d0f5b171fe6ad8592d1434 ]
 
-It's only current caller already length-checks the string, but let's
-be safe.
+On error can_create() frees the allocated sk object, but sock_init_data()
+has already attached it to the provided sock object. This will leave a
+dangling sk pointer in the sock object and may cause use-after-free later.
 
-Fixes: 0964a3d3f1aa ("[PATCH] knfsd: nfsd4 reboot dirname fix")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://patch.msgid.link/20241014153808.51894-5-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4recover.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/can/af_can.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
-index 2cc543f6c410f..71e7bd23d5c45 100644
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -658,7 +658,8 @@ nfs4_reset_recoverydir(char *recdir)
- 		return status;
- 	status = -ENOTDIR;
- 	if (d_is_dir(path.dentry)) {
--		strcpy(user_recovery_dirname, recdir);
-+		strscpy(user_recovery_dirname, recdir,
-+			sizeof(user_recovery_dirname));
- 		status = 0;
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index 707576eeeb582..01f3fbb3b67dc 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -171,6 +171,7 @@ static int can_create(struct net *net, struct socket *sock, int protocol,
+ 		/* release sk on errors */
+ 		sock_orphan(sk);
+ 		sock_put(sk);
++		sock->sk = NULL;
  	}
- 	path_put(&path);
+ 
+  errout:
 -- 
 2.43.0
 
