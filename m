@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-102989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87D69EF5E0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF00C9EF862
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF3B416F6C6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:08:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E83B17D2A6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03AD222D5E;
-	Thu, 12 Dec 2024 17:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E51C223327;
+	Thu, 12 Dec 2024 17:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRIQH/si"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jllpn5zR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7552210CD;
-	Thu, 12 Dec 2024 17:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE03A22331F;
+	Thu, 12 Dec 2024 17:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023204; cv=none; b=ks4P870W3R2RwXsAdKmWOp68eS9EMww22SPY2mKY3CPO4w3T6RPcrxeU3mhN2IQAu+YlT+61uhN7jiZZAuxHPbnhfMM91fgPsVD6SMCvMJLpcik+NUWEklsHM0EdUkh3hU44aMxM5Jx3GTFEOS3NexAZUKVtoiLIELcGj/ncXF0=
+	t=1734024578; cv=none; b=J0Ap9j3sULaOAlvhrP/Gc95fgbjlzOsaVdAHaXo0wA0o3x8StRVpppVTJe0RNIs19tg+mgGjR1C1+JjvKFdoSzuHVt/KYLja6olJ496IYx+MmaziZSfLww9nQ3iFE6MAC3MIusnwnbHXYE4AAwX75zym27e4jLOHGARpaH6GGgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023204; c=relaxed/simple;
-	bh=c682iFm63EXEG6uUniO5MqZekE6SqYkSHZOUmWoLSZQ=;
+	s=arc-20240116; t=1734024578; c=relaxed/simple;
+	bh=IjEGRm8osZZIAGMJV8pPSwVRgeA16Nowlg6IHRcRp5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnRoGws46Nc3mluWE1tTNlx8SGJzmBbdnecYaKagKvA1pKCNlIb9ShMvfdUOihjBFa+qyRHWBTMk1PAzOGktgRqSAf6WCT5HSRR+yN657CLmlM/PupeblTPt7NVxHByEpndkJ/6TfhWzbwAgCDD3H6O4/E1IfGjQjcyBHjcbLcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRIQH/si; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9A7C4CECE;
-	Thu, 12 Dec 2024 17:06:43 +0000 (UTC)
+	 MIME-Version; b=ps9dabshupv9wMA2h/NUSzlLTiavNvm2PMSJFNp2nYYu797XmavOb3VQdG2iRMcpGTIUzHJm4KB2zrNNyPRnnc8/v7ZTzhc1PTleIcNPWBW05pt9l/b5Qzx9frzXDHhh8h8nyfyjsEu5QYumvJWPuLKM6eqMe6vJjl89ZCgosZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jllpn5zR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF59C4CED4;
+	Thu, 12 Dec 2024 17:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023204;
-	bh=c682iFm63EXEG6uUniO5MqZekE6SqYkSHZOUmWoLSZQ=;
+	s=korg; t=1734024577;
+	bh=IjEGRm8osZZIAGMJV8pPSwVRgeA16Nowlg6IHRcRp5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRIQH/sio6q0E7GxSGsajpZwc7iYgd7WlDjWgmFE5CsyO5fqVNv8fwJWbNVwaUj8x
-	 +gDtCG2nHTne2kts2lnYolk07wzAl1zI8x2vXM1NHuHXoX4AhyZrTfuwd2ycVPp5Kk
-	 GNVESGCbu4M6NwdsUR92G/FgekFHkWF5aSu+FH1E=
+	b=jllpn5zR7XnwvdUBbMUzVXB50PJtRV3xMzidiZ/n9edReg8Wl8z9VVaPO8EX+6Lbk
+	 iz+6+CGIp+G2ZOoy1rj50HK9tu/VzhryPA0apfZaMGSwiQ73EqvRKnUIyxbVGkr0K2
+	 18xc8LBibcETWjyW4eGrYC8Ya2xOyGNfg4uuqPgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gwendal Grignou <gwendal@chromium.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 458/565] scsi: ufs: core: sysfs: Prevent div by zero
+	Zicheng Qu <quzicheng@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 315/459] ad7780: fix division by zero in ad7780_write_raw()
 Date: Thu, 12 Dec 2024 16:00:53 +0100
-Message-ID: <20241212144329.828583247@linuxfoundation.org>
+Message-ID: <20241212144306.091086497@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gwendal Grignou <gwendal@chromium.org>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-commit eb48e9fc0028bed94a40a9352d065909f19e333c upstream.
+commit c174b53e95adf2eece2afc56cd9798374919f99a upstream.
 
-Prevent a division by 0 when monitoring is not enabled.
+In the ad7780_write_raw() , val2 can be zero, which might lead to a
+division by zero error in DIV_ROUND_CLOSEST(). The ad7780_write_raw()
+is based on iio_info's write_raw. While val is explicitly declared that
+can be zero (in read mode), val2 is not specified to be non-zero.
 
-Fixes: 1d8613a23f3c ("scsi: ufs: core: Introduce HBA performance monitor sysfs nodes")
+Fixes: 9085daa4abcc ("staging: iio: ad7780: add gain & filter gpio support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-Link: https://lore.kernel.org/r/20241120062522.917157-1-gwendal@chromium.org
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Link: https://patch.msgid.link/20241028142027.1032332-1-quzicheng@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/ufs/ufs-sysfs.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/adc/ad7780.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/ufs/ufs-sysfs.c
-+++ b/drivers/scsi/ufs/ufs-sysfs.c
-@@ -371,6 +371,9 @@ static ssize_t read_req_latency_avg_show
- 	struct ufs_hba *hba = dev_get_drvdata(dev);
- 	struct ufs_hba_monitor *m = &hba->monitor;
+--- a/drivers/iio/adc/ad7780.c
++++ b/drivers/iio/adc/ad7780.c
+@@ -152,7 +152,7 @@ static int ad7780_write_raw(struct iio_d
  
-+	if (!m->nr_req[READ])
-+		return sysfs_emit(buf, "0\n");
-+
- 	return sysfs_emit(buf, "%llu\n", div_u64(ktime_to_us(m->lat_sum[READ]),
- 						 m->nr_req[READ]));
- }
-@@ -438,6 +441,9 @@ static ssize_t write_req_latency_avg_sho
- 	struct ufs_hba *hba = dev_get_drvdata(dev);
- 	struct ufs_hba_monitor *m = &hba->monitor;
+ 	switch (m) {
+ 	case IIO_CHAN_INFO_SCALE:
+-		if (val != 0)
++		if (val != 0 || val2 == 0)
+ 			return -EINVAL;
  
-+	if (!m->nr_req[WRITE])
-+		return sysfs_emit(buf, "0\n");
-+
- 	return sysfs_emit(buf, "%llu\n", div_u64(ktime_to_us(m->lat_sum[WRITE]),
- 						 m->nr_req[WRITE]));
- }
+ 		vref = st->int_vref_mv * 1000000LL;
 
 
 
