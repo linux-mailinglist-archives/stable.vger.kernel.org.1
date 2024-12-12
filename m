@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-103458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5ECF9EF6F2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0074D9EF99D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58BB2287B23
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD2FE170F22
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA000215710;
-	Thu, 12 Dec 2024 17:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17E2223E70;
+	Thu, 12 Dec 2024 17:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f64tSEto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZ5J9IYH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A55213E6F;
-	Thu, 12 Dec 2024 17:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7C2223E6C;
+	Thu, 12 Dec 2024 17:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024629; cv=none; b=uAUeUEzPFR8w2U4R9AsaWZx5m/yQqZKDttTZ5x8DPb4s9nM/+Tic2tuUCWw0Vfy0U3whfEWvOMlAJVPi0uBRNvk/xLmj6n9myqG8q2/VDr+iS8/MZ0k+vJzWPC+BN+UwzbKMKsdObH+sTaEq7VwRsQNm6wmuNOh/YTZ/uEdciOg=
+	t=1734025565; cv=none; b=FOUteMvKhewLqWwMu6Im/4zOjfjJ5wMraVuLoxsAtY/HG+Y4Y9uqtNKuBUdFBLJj8bSsMHjYw6acxP4lxa42rmqeTriboWFLiaPO5oGd5BN6vREQeLADpBSXTxk9q1V4ScBuE7H0i1u2ZilhVQbuFoiv4cMWOKi707gobBFjYMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024629; c=relaxed/simple;
-	bh=YxQgEahaLy3HYli1NljqEBcY3Gc483eZ4nGaHGl9eSc=;
+	s=arc-20240116; t=1734025565; c=relaxed/simple;
+	bh=DybWwqa8HbOJZ7+lX8wKsessFmtM7dG72bngJrv/bhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxP+Sj2DqO9RY4immtqW/Cxck9FkucP5JAOgG29mvJbPsdHf5X4Zqy7TWekzOs7c9Q+C3kFx7dHRNW6k9UZR21k912syqpiuiSA0+nKYxvN5BuFaqDjtdL96zxaT6pzjeCev2apMBGK/o1jyEb5XktKpkMhoQguKXTJH8tROVRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f64tSEto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C2AC4CECE;
-	Thu, 12 Dec 2024 17:30:28 +0000 (UTC)
+	 MIME-Version; b=CUbBjYNfAV8XdPzS/JkTuJhkwJRVlUCGtJ/GdXIf8F6qVKWBfrIoyN/hyr3SqFCaVxgt+7T699BqGbgwSEefUq06u/VPjgZEj2fIJkDv2RSSuqaaU/3SW1RKdaSrOSoLp1AUA/dR3sWYEY/4czy+3p5EwxGrbneYRAfO8TeljWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZ5J9IYH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB6AC4CECE;
+	Thu, 12 Dec 2024 17:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024629;
-	bh=YxQgEahaLy3HYli1NljqEBcY3Gc483eZ4nGaHGl9eSc=;
+	s=korg; t=1734025565;
+	bh=DybWwqa8HbOJZ7+lX8wKsessFmtM7dG72bngJrv/bhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f64tSEtoD2xjiDkzn29m+motBVw/eZb6TtKPx7Mrwb7kWiNrYihYM9FDKeaxsC+EJ
-	 JYOKQhzm0+o6S/nHMg5BjjlqsTzzhXrd48GwkgEGFAFYGJtMBamYEx4ozgMeegYfQH
-	 7HwjHmReenWsIwuJpOgFT8gwqelVk2V8N5nwSywM=
+	b=QZ5J9IYHRAzfQOWTDsAi3pf/dP9u3bqztGuwqkUDIDOwvGLf2Y5N6gPOwjMWbVqGd
+	 DBecyeCMNuXb4+Q+VzLfrQjB1RkSVBOwmDaUv33nmhUn8GpjZVNASzuDhtP8C6+NtE
+	 SyVU9O2f78yoCOCHseoZo7PhGwRaj+8/06H3VsEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>
-Subject: [PATCH 5.10 360/459] watchdog: rti: of: honor timeout-sec property
-Date: Thu, 12 Dec 2024 16:01:38 +0100
-Message-ID: <20241212144307.895469637@linuxfoundation.org>
+	Dmitry Safonov <dima@arista.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Jeff Dike <jdike@addtoit.com>,
+	Richard Weinberger <richard@nod.at>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 181/321] um: add show_stack_loglvl()
+Date: Thu, 12 Dec 2024 16:01:39 +0100
+Message-ID: <20241212144237.139282867@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +66,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Dmitry Safonov <dima@arista.com>
 
-commit 4962ee045d8f06638714d801ab0fb72f89c16690 upstream.
+[ Upstream commit 1ad87824f4cf16a7f381e1f94943a96bb7a99062 ]
 
-Currently "timeout-sec" Device Tree property is being silently ignored:
-even though watchdog_init_timeout() is being used, the driver always passes
-"heartbeat" == DEFAULT_HEARTBEAT == 60 as argument.
+Currently, the log-level of show_stack() depends on a platform
+realization.  It creates situations where the headers are printed with
+lower log level or higher than the stacktrace (depending on a platform or
+user).
 
-Fix this by setting struct watchdog_device::timeout to DEFAULT_HEARTBEAT
-and passing real module parameter value to watchdog_init_timeout() (which
-may now be 0 if not specified).
+Furthermore, it forces the logic decision from user to an architecture
+side.  In result, some users as sysrq/kdb/etc are doing tricks with
+temporary rising console_loglevel while printing their messages.  And in
+result it not only may print unwanted messages from other CPUs, but also
+omit printing at all in the unlucky case where the printk() was deferred.
 
-Cc: stable@vger.kernel.org
-Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241107203830.1068456-1-alexander.sverdlin@siemens.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems an easier
+approach than introducing more printk buffers.  Also, it will consolidate
+printings with headers.
+
+Introduce show_stack_loglvl(), that eventually will substitute
+show_stack().
+
+[1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
+
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Jeff Dike <jdike@addtoit.com>
+Cc: Richard Weinberger <richard@nod.at>
+Link: http://lkml.kernel.org/r/20200418201944.482088-37-dima@arista.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 0f659ff362ea ("um: Always dump trace for specified task in show_stack")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rti_wdt.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/um/kernel/sysrq.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
---- a/drivers/watchdog/rti_wdt.c
-+++ b/drivers/watchdog/rti_wdt.c
-@@ -54,7 +54,7 @@
+diff --git a/arch/um/kernel/sysrq.c b/arch/um/kernel/sysrq.c
+index c831a1c2eb94a..1b54b6431499b 100644
+--- a/arch/um/kernel/sysrq.c
++++ b/arch/um/kernel/sysrq.c
+@@ -17,7 +17,9 @@
  
- #define MAX_HW_ERROR		250
+ static void _print_addr(void *data, unsigned long address, int reliable)
+ {
+-	pr_info(" [<%08lx>] %s%pS\n", address, reliable ? "" : "? ",
++	const char *loglvl = data;
++
++	printk("%s [<%08lx>] %s%pS\n", loglvl, address, reliable ? "" : "? ",
+ 		(void *)address);
+ }
  
--static int heartbeat = DEFAULT_HEARTBEAT;
-+static int heartbeat;
+@@ -25,7 +27,8 @@ static const struct stacktrace_ops stackops = {
+ 	.address = _print_addr
+ };
  
- /*
-  * struct to hold data for each WDT device
-@@ -242,6 +242,7 @@ static int rti_wdt_probe(struct platform
- 	wdd->min_timeout = 1;
- 	wdd->max_hw_heartbeat_ms = (WDT_PRELOAD_MAX << WDT_PRELOAD_SHIFT) /
- 		wdt->freq * 1000;
-+	wdd->timeout = DEFAULT_HEARTBEAT;
- 	wdd->parent = dev;
+-void show_stack(struct task_struct *task, unsigned long *stack)
++void show_stack_loglvl(struct task_struct *task, unsigned long *stack,
++		       const char *loglvl)
+ {
+ 	struct pt_regs *segv_regs = current->thread.segv_regs;
+ 	int i;
+@@ -39,17 +42,22 @@ void show_stack(struct task_struct *task, unsigned long *stack)
+ 	if (!stack)
+ 		stack = get_stack_pointer(task, segv_regs);
  
- 	watchdog_set_drvdata(wdd, wdt);
+-	pr_info("Stack:\n");
++	printk("%sStack:\n", loglvl);
+ 	for (i = 0; i < 3 * STACKSLOTS_PER_LINE; i++) {
+ 		if (kstack_end(stack))
+ 			break;
+ 		if (i && ((i % STACKSLOTS_PER_LINE) == 0))
+-			pr_cont("\n");
++			printk("%s\n", loglvl);
+ 		pr_cont(" %08lx", *stack++);
+ 	}
+-	pr_cont("\n");
++	printk("%s\n", loglvl);
++
++	printk("%sCall Trace:\n", loglvl);
++	dump_trace(current, &stackops, (void *)loglvl);
++	printk("%s\n", loglvl);
++}
+ 
+-	pr_info("Call Trace:\n");
+-	dump_trace(current, &stackops, NULL);
+-	pr_info("\n");
++void show_stack(struct task_struct *task, unsigned long *stack)
++{
++	show_stack_loglvl(task, stack, KERN_INFO);
+ }
+-- 
+2.43.0
+
 
 
 
