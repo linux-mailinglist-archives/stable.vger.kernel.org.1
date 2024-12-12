@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FC49EF91A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EBE69EF728
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E4317BD13
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9430189530C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006C6223313;
-	Thu, 12 Dec 2024 17:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C616D20967D;
+	Thu, 12 Dec 2024 17:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1/i8vVK"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzkacX0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EC1222D7C;
-	Thu, 12 Dec 2024 17:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D16213CA93;
+	Thu, 12 Dec 2024 17:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025157; cv=none; b=OS5O+KrIO0UOpvd/+iRqzrMkGX6G+AXpKprBCwZZxkG41MbvPMR4nSFpx3+AY93sz9tbasWfawEOqtiFK95llnmg+3qqWJVKQ+wsiiHAlg1YTVvoe6v+6v4ONUFz9IkdhT2q8E04DYhNdZYYDFKXaUg4LyVxrB/FwTiNDUHcOKg=
+	t=1734024219; cv=none; b=g+10rHl3PH09I3ndtkIJH/PshXVh1DyGFNkm3SVUxhP13DeVXsJ+XajtPsl5aUzXqo7IeStOoczQBE1ktDLafh9Emz7BP+Z34qewPdzXqxY54Qn+E/4uIWsth3IH1dlFEkiGsi0nkZe0NYQ74xqITr1WWSgZD6zI6wpk6rKtJgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025157; c=relaxed/simple;
-	bh=5Wj/ub8yRUKQ8I8YEhOKicPTgfqLFgZwrIZWmMD330E=;
+	s=arc-20240116; t=1734024219; c=relaxed/simple;
+	bh=E/KKvT2K3OO6vKa/5Wc2WVyLIcjee/I+A2Pe5x3Nu0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6yXOIPLCDdChP87VoIKrRRajd6EjFoVZkFmJlP/KZMwAk0S6zNY5YwUMIqR5KYlWDWoAK6q9JqKgKaUSZOlE3sPJ6+npzIphp0VFnVwxcqprse12EpOnU1qQUEoWaeD4ljSNfxcOBTtyRns6UaUgZVE1Z/BtIRjQPX8MGw+OP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1/i8vVK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F0AC4CECE;
-	Thu, 12 Dec 2024 17:39:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sdeklWyZGs9NAFAHkGLCGlrHI7J6DK8gUI20y9cGOf/xaSLghJdlIHd1u4+ue7pJ7Y3+FwQpt+7HGtMgjpkWq9GcIJWwDYO1YRTkYwGZQVULT8FZgpawEzRV0T3JYG0OmaFIL21z+L5xowSRE74jnaRm9WUlUb0b3axz2p36D/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzkacX0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE852C4CECE;
+	Thu, 12 Dec 2024 17:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025157;
-	bh=5Wj/ub8yRUKQ8I8YEhOKicPTgfqLFgZwrIZWmMD330E=;
+	s=korg; t=1734024219;
+	bh=E/KKvT2K3OO6vKa/5Wc2WVyLIcjee/I+A2Pe5x3Nu0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W1/i8vVKBeRzIq5q95dCdH+P1SHklq0MTq++OTl/HR7PkAHH8J5Hpi7r8QjozX+ia
-	 I4TMO5ULKIZhRyHwT/8vCqeVj3WGgzFXLYVFruzGNfin4zTzKIdAk1Q8h91VzFkHmb
-	 yKWkj3pAb21i7I+WkN7Qh4CTW56LG0DGpc5a8/M8=
+	b=jzkacX0HN2riQlnF0M8qrvYZZZJwSYEm9qCwMwQJqLqIPBi9Xi9jAEWBrNFBrQfdI
+	 3WeAdmQUwsgS7NSIAkF++xzt/bUab9atxfgATRu6YbyFMv2P28ACMLAGjwfrCbwwOD
+	 QjtTi7yoo/ev04/S/tMSv7Rou5f5/c1zpcaCm51U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>,
+	Alexander Dahl <ada@thorsis.com>, Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 045/321] crypto: cavium - Fix an error handling path in cpt_ucode_load_fw()
+Subject: [PATCH 5.10 225/459] spi: atmel-quadspi: Fix register name in verbose logging function
 Date: Thu, 12 Dec 2024 15:59:23 +0100
-Message-ID: <20241212144231.772385052@linuxfoundation.org>
+Message-ID: <20241212144302.457625723@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit 572b7cf08403b6c67dfe0dc3e0f2efb42443254f ]
+[ Upstream commit 2ac40e6d0ccdd93031f8b1af61b0fe5cdd704923 ]
 
-If do_cpt_init() fails, a previous dma_alloc_coherent() call needs to be
-undone.
+`atmel_qspi_reg_name()` is used for pretty-printing register offsets
+for verbose logging of register accesses. However, due to a typo
+(likely a copy-paste error), QSPI_RD's offset prints as "MR", the
+name of the previous register. Fix this typo.
 
-Add the needed dma_free_coherent() before returning.
-
-Fixes: 9e2c7d99941d ("crypto: cavium - Add Support for Octeon-tx CPT Engine")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c528ecfbef04 ("spi: atmel-quadspi: Add verbose debug facilities to monitor register accesses")
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Reviewed-by: Alexander Dahl <ada@thorsis.com>
+Link: https://patch.msgid.link/20241122141302.2599636-1-csokas.bence@prolan.hu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/cavium/cpt/cptpf_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/atmel-quadspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/cavium/cpt/cptpf_main.c b/drivers/crypto/cavium/cpt/cptpf_main.c
-index b3db27b142afb..52101755d0ddf 100644
---- a/drivers/crypto/cavium/cpt/cptpf_main.c
-+++ b/drivers/crypto/cavium/cpt/cptpf_main.c
-@@ -303,6 +303,8 @@ static int cpt_ucode_load_fw(struct cpt_device *cpt, const u8 *fw, bool is_ae)
- 
- 	ret = do_cpt_init(cpt, mcode);
- 	if (ret) {
-+		dma_free_coherent(&cpt->pdev->dev, mcode->code_size,
-+				  mcode->code, mcode->phys_base);
- 		dev_err(dev, "do_cpt_init failed with ret: %d\n", ret);
- 		goto fw_release;
- 	}
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 8aa89d93db118..17217cc5e4052 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -182,7 +182,7 @@ static const char *atmel_qspi_reg_name(u32 offset, char *tmp, size_t sz)
+ 	case QSPI_MR:
+ 		return "MR";
+ 	case QSPI_RD:
+-		return "MR";
++		return "RD";
+ 	case QSPI_TD:
+ 		return "TD";
+ 	case QSPI_SR:
 -- 
 2.43.0
 
