@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-103753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3389C9EF991
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8C59EF4F5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E3AF176908
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 743AC29011A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBB3229696;
-	Thu, 12 Dec 2024 17:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6133A2165EA;
+	Thu, 12 Dec 2024 17:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBFQe5p/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHCDVQid"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C9222A7E2;
-	Thu, 12 Dec 2024 17:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0DC6F2FE;
+	Thu, 12 Dec 2024 17:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025503; cv=none; b=iB5mGh6VM8mIZT5eFo5P1ERpzkHZIYOopWjnsUY4UftVqA2GvjsOjTZyH3c3ex1kylv3BsvV7ArrspDo7OhQsc1EjoriR33A3Gi43+ousFD/mEMYfEvTzSIvu3ibBlefQg7qRTuPu3uLC6Adk7v4LhtpFWMSxW4+LwGXOM1yGjk=
+	t=1734023477; cv=none; b=SXKqKVtGZn+EhPoe3e2gpelwHz7nkonE7wfyq7QSipf88zpQ6HJ7IvzXNgMGwCDf8MvV7r80tb2b8S6sPO7Prx1oKIeVJPYni8Yog6fnI700u5VqKQgVTmxyNf57V9ru1nlmMaFokzMN8fl34vj2YguHMdtMOkSawab1QLTVLe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025503; c=relaxed/simple;
-	bh=xvbFgeJm16AbYjeUPBXQ7I3MZsG9dyE6tub/IdXjihg=;
+	s=arc-20240116; t=1734023477; c=relaxed/simple;
+	bh=7gmRY4YzHptlsWreRWFe4Sn0ifOfrhGOzBSDxu28XnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/PgHLYJiEIeeAhAXnSfOYflm6CuZuOnKmEDkn3+rZVLxL9WqzJEPt+C6k/oOoNilrWRM4gRyiTxNcWdMhEhV4uuTUnVrKgOZlSLfIUviSa7rmaDuvcYkoxpR6swZiHFmYEtW3SZZerMmU1UCC0Iw56Xt3qrpDtQs+1beVEkjpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBFQe5p/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30A8C4CECE;
-	Thu, 12 Dec 2024 17:45:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=haLBxvUUkw9QKJ5qEWqu+5xzXunWf85VjfwUBzG0nXnUtj3Ums9cUIxyDOlworxp4HUfSWQ+PgISqgKro/XT9oq72kNnoAcb+9N1fpnsxyaN5uBy2tLojTfC8HLevRdwBPswpUJZEpBaIdeHGPlRw+XfSVj4H19E053TtuF+EkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHCDVQid; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA5AC4CED0;
+	Thu, 12 Dec 2024 17:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025503;
-	bh=xvbFgeJm16AbYjeUPBXQ7I3MZsG9dyE6tub/IdXjihg=;
+	s=korg; t=1734023477;
+	bh=7gmRY4YzHptlsWreRWFe4Sn0ifOfrhGOzBSDxu28XnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBFQe5p/l4ahjW81Y3FBewcSReyNHq17UQ8iZDJ7nDVYvMuSDqcTlXW0amxLZDjaM
-	 SMHGCsTgJaunJ1yCsmuxbmViFGXOlBb02sQQpy6xzG1PRkl3hEIy6h2Qm6HdaaqAQl
-	 1MV8aKNAswRtAUJHbm3Ii5OJDXn/t+wFu2eIQNg0=
+	b=cHCDVQidNGtVPPULImpiw5aJssFL0JH5x5e0Q+8jnlVBFpjNTU0W19u+W3VVpKCM7
+	 rg8REbVIgTd5jgc8hftZm2sGletNrjSvZU+MJ/C3kkGP9Yw9amo68VdnVzCMhUiGSn
+	 XORulyWF6Xq0BETRT3ZxQklz4ckECGi1W+gtoqhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	John Meneghini <jmeneghi@redhat.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 192/321] block: return unsigned int from bdev_io_min
-Date: Thu, 12 Dec 2024 16:01:50 +0100
-Message-ID: <20241212144237.569707071@linuxfoundation.org>
+Subject: [PATCH 5.15 516/565] scsi: st: Dont modify unknown block number in MTIOCGET
+Date: Thu, 12 Dec 2024 16:01:51 +0100
+Message-ID: <20241212144332.190007083@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 46fd48ab3ea3eb3bb215684bd66ea3d260b091a9 ]
+[ Upstream commit 5bb2d6179d1a8039236237e1e94cfbda3be1ed9e ]
 
-The underlying limit is defined as an unsigned int, so return that from
-bdev_io_min as well.
+Struct mtget field mt_blkno -1 means it is unknown. Don't add anything to
+it.
 
-Fixes: ac481c20ef8f ("block: Topology ioctls")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241119072602.1059488-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219419#c14
+Link: https://lore.kernel.org/r/20241106095723.63254-2-Kai.Makisara@kolumbus.fi
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Tested-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h | 2 +-
+ drivers/scsi/st.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 5194467d7d753..92ec0b9dd1834 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1333,7 +1333,7 @@ static inline unsigned int queue_io_min(const struct request_queue *q)
- 	return q->limits.io_min;
- }
- 
--static inline int bdev_io_min(struct block_device *bdev)
-+static inline unsigned int bdev_io_min(struct block_device *bdev)
- {
- 	return queue_io_min(bdev_get_queue(bdev));
- }
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 9933722acfd96..861038a1cbd48 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -3751,7 +3751,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 		    ((STp->density << MT_ST_DENSITY_SHIFT) & MT_ST_DENSITY_MASK);
+ 		mt_status.mt_blkno = STps->drv_block;
+ 		mt_status.mt_fileno = STps->drv_file;
+-		if (STp->block_size != 0) {
++		if (STp->block_size != 0 && mt_status.mt_blkno >= 0) {
+ 			if (STps->rw == ST_WRITING)
+ 				mt_status.mt_blkno +=
+ 				    (STp->buffer)->buffer_bytes / STp->block_size;
 -- 
 2.43.0
 
