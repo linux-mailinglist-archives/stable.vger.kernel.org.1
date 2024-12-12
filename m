@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C979EEB93
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FDA9EED18
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE411636EA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8447618873F9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01222054F8;
-	Thu, 12 Dec 2024 15:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56642210D8;
+	Thu, 12 Dec 2024 15:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADBENtg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAEOIbFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0DC2AF0E;
-	Thu, 12 Dec 2024 15:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB5C2185B1;
+	Thu, 12 Dec 2024 15:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016887; cv=none; b=DnptrJFEkNEByHZnoQki0uFzk1Ou7G1a7GXeVeyLRa8O0MG7CZcNlwOVC9eteOifysTt7gVpNwIYTutQXCYh6JLytod5DkvnHDFmFkVW30Bigs2++n/qqDdr6hWS7Aww0PHWBJBSCZU/8Idr9CncBuEpGtbfDxkJk0YiMh2x55Y=
+	t=1734017908; cv=none; b=Kzqe260E5cYjgTCDnjb6CCD5H1Qs1Aj9V6kXF3uwV723XAcMhULOxLFtcVIg/NoKWjgV+Pn5aLZckGysP/62YUKfzRXVHh1bC+5qUVNe/FTkszLThq5jMlSztCrwm4BS3iCMgFo79IdPefCDz575PZWruRQQQRUiG5wu9nOaBPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016887; c=relaxed/simple;
-	bh=8bWPMXqMBk6u9WqEKYckP0lc6SP9kiQIyVxF61b/wbU=;
+	s=arc-20240116; t=1734017908; c=relaxed/simple;
+	bh=eue58u7P/Ab3PLjFjDeehmmtkJXy5U5g67xgmulAtMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iKUXhK5KFNAMz3guLaNkIN+IrCzLvZ4sAMdCuPkhUn2FESUZ3Oxe7RsV5n4Acpt4lpi6/TQOyYMvSdU5d532OJ+ENPicYIMHLzbk9mlFlm2tNmnRU8zYWHWoSisBMLX8he33/aaDbxF2KDK+EsLua+zCVY5YAzj/DHyNanEB8gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADBENtg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097F3C4CECE;
-	Thu, 12 Dec 2024 15:21:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b2khTnkwCg8rXrzxtkyPoN3FUyYmiSAabjA1HeFuEs7Jg4jk4ll1b6QSNBJEscaa5/Ug7Z7YujqhyOssaJnjNtfgELbFceihSK/KRCvIlB0qj6aECPKoTXjP2J14zfsZyv7riczW4ode4pa7GtJCgZt7G1A7bEIY9FWm2W56IcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAEOIbFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8DAC4CECE;
+	Thu, 12 Dec 2024 15:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016887;
-	bh=8bWPMXqMBk6u9WqEKYckP0lc6SP9kiQIyVxF61b/wbU=;
+	s=korg; t=1734017908;
+	bh=eue58u7P/Ab3PLjFjDeehmmtkJXy5U5g67xgmulAtMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADBENtg0TnLOVCydaMzUciCXyT9vWfejWWbFZpeSY91XWFpcNRO0Uw/ZcYA2Eof0f
-	 RY85YvOYO3WaPELeK9qyYO/CAbjZFfrwDIxPz3PfNYi2OpxC8hVAYL0g0dOHbGZMCo
-	 0TlEPdWNlhYti8ianJrZkH5J9T1FZtm0Ti2lwV2A=
+	b=VAEOIbFZfmTEI3sSLQ/Xo4BNA+9IfT0+2Uju8vKsO9YX7ATMHeelTavHOBrKb502T
+	 1yRJnFi3laMieBmJQSmVyUuPgzEjVkD9lM7hjtz7KBCeRf/y2jTUGGBRxGkKJRJ2mg
+	 H5Vj9r3/Fu2TuefehGRJ9wSTKtkImPqG54msCWHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <quic_kangyang@quicinc.com>,
-	David Ruth <druth@chromium.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 294/466] wifi: ath10k: avoid NULL pointer error during sdio remove
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 144/356] can: dev: can_set_termination(): allow sleeping GPIOs
 Date: Thu, 12 Dec 2024 15:57:43 +0100
-Message-ID: <20241212144318.400674390@linuxfoundation.org>
+Message-ID: <20241212144250.331050365@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +64,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <quic_kangyang@quicinc.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a ]
+commit ee1dfbdd8b4b6de85e96ae2059dc9c1bdb6b49b5 upstream.
 
-When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
-workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
-is set to yes, kernel panic will happen:
-Call trace:
- destroy_workqueue+0x1c/0x258
- ath10k_sdio_remove+0x84/0x94
- sdio_bus_remove+0x50/0x16c
- device_release_driver_internal+0x188/0x25c
- device_driver_detach+0x20/0x2c
+In commit 6e86a1543c37 ("can: dev: provide optional GPIO based
+termination support") GPIO based termination support was added.
 
-This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
-ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
-will finally be called in ath10k_core_destroy(). This function will free
-struct cfg80211_registered_device *rdev and all its members, including
-wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
-workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
+For no particular reason that patch uses gpiod_set_value() to set the
+GPIO. This leads to the following warning, if the systems uses a
+sleeping GPIO, i.e. behind an I2C port expander:
 
-After device release, destroy_workqueue() will use NULL pointer then the
-kernel panic happen.
+| WARNING: CPU: 0 PID: 379 at /drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x50/0x6c
+| CPU: 0 UID: 0 PID: 379 Comm: ip Not tainted 6.11.0-20241016-1 #1 823affae360cc91126e4d316d7a614a8bf86236c
 
-Call trace:
-ath10k_sdio_remove
-  ->ath10k_core_unregister
-    ……
-    ->ath10k_core_stop
-      ->ath10k_hif_stop
-        ->ath10k_sdio_irq_disable
-    ->ath10k_hif_power_down
-      ->del_timer_sync(&ar_sdio->sleep_timer)
-  ->ath10k_core_destroy
-    ->ath10k_mac_destroy
-      ->ieee80211_free_hw
-        ->wiphy_free
-    ……
-          ->wiphy_dev_release
-  ->destroy_workqueue
+Replace gpiod_set_value() by gpiod_set_value_cansleep() to allow the
+use of sleeping GPIOs.
 
-Need to call destroy_workqueue() before ath10k_core_destroy(), free
-the work queue buffer first and then free pointer of work queue by
-ath10k_core_destroy(). This order matches the error path order in
-ath10k_sdio_probe().
-
-No work will be queued on sdio workqueue between it is destroyed and
-ath10k_core_destroy() is called. Based on the call_stack above, the
-reason is:
-Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
-ath10k_sdio_irq_disable() will queue work on sdio workqueue.
-Sleep timer will be deleted before ath10k_core_destroy() in
-ath10k_hif_power_down().
-ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
-ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
-bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
-
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
-
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Tested-by: David Ruth <druth@chromium.org>
-Reviewed-by: David Ruth <druth@chromium.org>
-Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc: stable@vger.kernel.org
+Reported-by: Leonard Göhrs <l.goehrs@pengutronix.de>
+Tested-by: Leonard Göhrs <l.goehrs@pengutronix.de>
+Fixes: 6e86a1543c37 ("can: dev: provide optional GPIO based termination support")
+Link: https://patch.msgid.link/20241121-dev-fix-can_set_termination-v1-1-41fa6e29216d@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath10k/sdio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/can/dev/dev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 08a6f36a6be9c..6805357ee29e6 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -3,7 +3,7 @@
-  * Copyright (c) 2004-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
-- * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+--- a/drivers/net/can/dev/dev.c
++++ b/drivers/net/can/dev/dev.c
+@@ -452,7 +452,7 @@ static int can_set_termination(struct ne
+ 	else
+ 		set = 0;
  
- #include <linux/module.h>
-@@ -2648,9 +2648,9 @@ static void ath10k_sdio_remove(struct sdio_func *func)
+-	gpiod_set_value(priv->termination_gpio, set);
++	gpiod_set_value_cansleep(priv->termination_gpio, set);
  
- 	netif_napi_del(&ar->napi);
- 
--	ath10k_core_destroy(ar);
--
- 	destroy_workqueue(ar_sdio->workqueue);
-+
-+	ath10k_core_destroy(ar);
+ 	return 0;
  }
- 
- static const struct sdio_device_id ath10k_sdio_devices[] = {
--- 
-2.43.0
-
 
 
 
