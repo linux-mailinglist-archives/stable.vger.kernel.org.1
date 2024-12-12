@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182139EF1BB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08B109EF3F9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC9528DFB2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3E4729061D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42933223E93;
-	Thu, 12 Dec 2024 16:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35398217656;
+	Thu, 12 Dec 2024 17:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFUWnkbe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="078qm2Ap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0080C213E99;
-	Thu, 12 Dec 2024 16:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47B053365;
+	Thu, 12 Dec 2024 17:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021102; cv=none; b=s9p1TfwwdKYBAImXFBmW0TIZX16OEOd8ujN/4X7H3LVhAVMyMcHyqXQZqluUUYnlir6/EFZlHcG0nekC04VWI95G09GclWH6cM5JbYlFUQWqR7t5fG3/ERNCr+xRfpNnctlxn23Hc4ofo+eS2cwmPWkxH8uvdR2LS5nTU7pPCLU=
+	t=1734022914; cv=none; b=DuaCH6tO4aefJDyb1e+AEfPgMXvXbrd/Kmo4UlZlL5B+lL1Udl56YbCP8nOIQOgY6ZcZFkdv3tvOF7l1kY3warFW9sNVWyMyYhKQgVM0oGghASTJF2XxrTqdl8a0BjLTh4lFDx9YnZG7N/SQ6H2RLX6HSD7lEoTK50U0YKxHq/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021102; c=relaxed/simple;
-	bh=e+7WKT9sSoirNc8A5mFCSgijNhwX2CGt/q/4GmyytXs=;
+	s=arc-20240116; t=1734022914; c=relaxed/simple;
+	bh=e1S9d50QnzFBRG+OuiPy43poZ7vU+3Y6A1SgQt9y2ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R2tuyYdGqSLdXoEGJv4Slyse/1Qodqc2xB2YZLri4pGC7oKDQsrwqkv3L9ah/1uEBi2f0kJASoZA+JaRbgQBgbkEv0WwZNQVU3lno1o5cZoWkqlUHTGvSFgHbTXnLEIlTGOfpsisjgL4+ip1NmL6SEQ8DT0XAdKGWJWgTGjlRJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFUWnkbe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F88C4CECE;
-	Thu, 12 Dec 2024 16:31:40 +0000 (UTC)
+	 MIME-Version; b=DnSS6dB1PfAvxBrIv0KT8kmpqPjWl+cnQaEu1NPF0hY/hix8vf4moXejraYZ8ID2ZoNRlvlkFAswqsw5dzGo+98NLAVV42FI57D+r8EBKB/MG953PalQSfp16lp+nF4lXQtANg8pT4iBVICKD8W6aHMWGRPg9A6y8Leo4jnb9XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=078qm2Ap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CD9C4CED0;
+	Thu, 12 Dec 2024 17:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021101;
-	bh=e+7WKT9sSoirNc8A5mFCSgijNhwX2CGt/q/4GmyytXs=;
+	s=korg; t=1734022913;
+	bh=e1S9d50QnzFBRG+OuiPy43poZ7vU+3Y6A1SgQt9y2ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zFUWnkbeyYBtN4MSq5Dd6Tl4jyP3VOnMgYs9IeMrufivhaQg1awZdE7Qd/BnfCofx
-	 FVSu8UGL41achYzEIzUMYGpT/hZKTb2si5KRQhUbGOK310av3UqIkZJHCgPkWfV5jM
-	 pUqKdfH7nmHg+OUypPG3QG8PXeCrruQTpH8PN5+o=
+	b=078qm2ApcZLhp06zLHk0jpGdtqm9OyH/HQwYtf8gFR6l6IvMlK67yy10dhXacUu1b
+	 HHzodODCKnhbi57f4PmEAVTW0D9t+Pm5ETVK78FWh7zwWNYhvLX0CCSXWFwX1dDr02
+	 CrXjWsmqFiSaHTtxtLuJ0U04BjrKGmuRnC7TsEqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anil Gurumurthy <agurumurthy@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 618/772] scsi: qla2xxx: Supported speed displayed incorrectly for VPorts
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 368/565] rtc: ab-eoz9: dont fail temperature reads on undervoltage notification
 Date: Thu, 12 Dec 2024 15:59:23 +0100
-Message-ID: <20241212144415.464733556@linuxfoundation.org>
+Message-ID: <20241212144326.171309632@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anil Gurumurthy <agurumurthy@marvell.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-commit e4e268f898c8a08f0a1188677e15eadbc06e98f6 upstream.
+[ Upstream commit e0779a0dcf41a6452ac0a169cd96863feb5787c7 ]
 
-The fc_function_template for vports was missing the
-.show_host_supported_speeds. The base port had the same.
+The undervoltage flags reported by the RTC are useful to know if the
+time and date are reliable after a reboot. Although the threshold VLOW1
+indicates that the thermometer has been shutdown and time compensation
+is off, it doesn't mean that the temperature readout is currently
+impossible.
 
-Add .show_host_supported_speeds to the vport template as well.
+As the system is running, the RTC voltage is now fully established and
+we can read the temperature.
 
-Cc: stable@vger.kernel.org
-Fixes: 2c3dfe3f6ad8 ("[SCSI] qla2xxx: add support for NPIV")
-Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-7-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 67075b63cce2 ("rtc: add AB-RTCMC-32.768kHz-EOZ9 RTC support")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://lore.kernel.org/r/20241122101031.68916-3-maxime.chevallier@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_attr.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/rtc/rtc-ab-eoz9.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_attr.c
-+++ b/drivers/scsi/qla2xxx/qla_attr.c
-@@ -3312,6 +3312,7 @@ struct fc_function_template qla2xxx_tran
- 	.show_host_node_name = 1,
- 	.show_host_port_name = 1,
- 	.show_host_supported_classes = 1,
-+	.show_host_supported_speeds = 1,
+diff --git a/drivers/rtc/rtc-ab-eoz9.c b/drivers/rtc/rtc-ab-eoz9.c
+index a9b355510cd47..31c264100d781 100644
+--- a/drivers/rtc/rtc-ab-eoz9.c
++++ b/drivers/rtc/rtc-ab-eoz9.c
+@@ -396,13 +396,6 @@ static int abeoz9z3_temp_read(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
  
- 	.get_host_port_id = qla2x00_get_host_port_id,
- 	.show_host_port_id = 1,
+-	if ((val & ABEOZ9_REG_CTRL_STATUS_V1F) ||
+-	    (val & ABEOZ9_REG_CTRL_STATUS_V2F)) {
+-		dev_err(dev,
+-			"thermometer might be disabled due to low voltage\n");
+-		return -EINVAL;
+-	}
+-
+ 	switch (attr) {
+ 	case hwmon_temp_input:
+ 		ret = regmap_read(regmap, ABEOZ9_REG_REG_TEMP, &val);
+-- 
+2.43.0
+
 
 
 
