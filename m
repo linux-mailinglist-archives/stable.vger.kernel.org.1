@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2C39EF8EE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A55AF9EF5EA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3162D171922
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AA91194088B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945A7222D45;
-	Thu, 12 Dec 2024 17:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF3E222D52;
+	Thu, 12 Dec 2024 17:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BTgb+is"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDRSKO4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C3613CA81;
-	Thu, 12 Dec 2024 17:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC376215782;
+	Thu, 12 Dec 2024 17:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025303; cv=none; b=dgccFXGDa0+UmiYRDSU0fTrvzI0vOFU8J1PQz3DiudeR5VcrgfpnywtG9IiPvdECGJbqqKdDoduWZoOHMAWXnBf8C6Cwid2f1KJLDoq6Mg6iCVjOonqSlZWeM/Rp5PXZ1HZCD0RdXkGL/79WfwYnzZXRCLCXh/fgtDG4YlWCQfg=
+	t=1734023198; cv=none; b=LSgJrlTJBTmYitAOvwj2Bn7JS6ols977TJga+Opt0A49NB8WbMU1t7Ff1kcsydYamxipaySFbGbY5web0S6UK90X0Q9fXHAakY/R8hDUaIBbMiDIYTfA+BG1BekhZAEsNEyyY3l8LwxItGjEHv5UAIH4WbJsEXd1LX4LJ2ow/1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025303; c=relaxed/simple;
-	bh=hS+9QzcAIGQ/a1HTS0k9RCgLA8kQrR4dnoknTVoSscs=;
+	s=arc-20240116; t=1734023198; c=relaxed/simple;
+	bh=NRu6g4iTIbSlaaYyT3mfI3qaIgXqSpjGZ8OwDKGLT9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvA+rydXDIW5XfTyMSx5aCz2L3CWIB9pE+V+fBAFccmJPsumWpdDZtYyIonEwgM9yTZEIlN0k/nYVWi8Lx5kyXvGYgx61b5rKd5ghu7YqizTPfb8qxXrkvIRL3L+QZAi6NpkkvSiXWPStkfVVSfqyCGbp3zueooO9w7rzr5aeyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BTgb+is; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6824DC4CECE;
-	Thu, 12 Dec 2024 17:41:42 +0000 (UTC)
+	 MIME-Version; b=bCJMyGMw3OAZnP2EA9nyObg6VQ6XocLFnOKJCw1LfoMiBDDNqhe7chrf8ks+Mayfbc7jDIdE3HSthKAALWCslc4YQoHAnsExY+qC4futquEdq71QDePDrow1gxGCMOPvHcYJfOpSlXGKB2/zozJA0CHJAX8SeGxSZjfkPZT6Nzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDRSKO4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59BAC4CECE;
+	Thu, 12 Dec 2024 17:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025302;
-	bh=hS+9QzcAIGQ/a1HTS0k9RCgLA8kQrR4dnoknTVoSscs=;
+	s=korg; t=1734023198;
+	bh=NRu6g4iTIbSlaaYyT3mfI3qaIgXqSpjGZ8OwDKGLT9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BTgb+is4V6m3LSsNoSSIQYo+XBdkUCwwfyS7M4bAgTbmfeEl/skOUH6kN4iy3Gb3
-	 o6DsP+y1I3dmWNHKPwI/l+X9aQGPmRGNgGCgjNBTjaORwfLFm2pbwTSwO9si85MdSg
-	 D5B2TFDbkwpR+GO3gGydHakPRUtBD99D8t9uaLp4=
+	b=iDRSKO4gflppUlsF1XlO7lCfZel3fiGvku4OguCRE+9wzHfLZL0ZBNoSiwzbHqMM9
+	 PJsM231+yseFVlElGLaJFLsVwBuBbygXoOblN9g2R0FWztzoP2eQMVCN/IkBCFymBo
+	 F4mIeYySml/aGEqyjVBeOwaNHguFYZ1jsqqo+zyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avihai Horon <avihaih@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 125/321] vfio/pci: Properly hide first-in-list PCIe extended capability
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 448/565] tracing: Fix cmp_entries_dup() to respect sort() comparison rules
 Date: Thu, 12 Dec 2024 16:00:43 +0100
-Message-ID: <20241212144234.916116282@linuxfoundation.org>
+Message-ID: <20241212144329.425457131@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avihai Horon <avihaih@nvidia.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit fe4bf8d0b6716a423b16495d55b35d3fe515905d ]
+commit e63fbd5f6810ed756bbb8a1549c7d4132968baa9 upstream.
 
-There are cases where a PCIe extended capability should be hidden from
-the user. For example, an unknown capability (i.e., capability with ID
-greater than PCI_EXT_CAP_ID_MAX) or a capability that is intentionally
-chosen to be hidden from the user.
+The cmp_entries_dup() function used as the comparator for sort()
+violated the symmetry and transitivity properties required by the
+sorting algorithm. Specifically, it returned 1 whenever memcmp() was
+non-zero, which broke the following expectations:
 
-Hiding a capability is done by virtualizing and modifying the 'Next
-Capability Offset' field of the previous capability so it points to the
-capability after the one that should be hidden.
+* Symmetry: If x < y, then y > x.
+* Transitivity: If x < y and y < z, then x < z.
 
-The special case where the first capability in the list should be hidden
-is handled differently because there is no previous capability that can
-be modified. In this case, the capability ID and version are zeroed
-while leaving the next pointer intact. This hides the capability and
-leaves an anchor for the rest of the capability list.
+These violations could lead to incorrect sorting and failure to
+correctly identify duplicate elements.
 
-However, today, hiding the first capability in the list is not done
-properly if the capability is unknown, as struct
-vfio_pci_core_device->pci_config_map is set to the capability ID during
-initialization but the capability ID is not properly checked later when
-used in vfio_config_do_rw(). This leads to the following warning [1] and
-to an out-of-bounds access to ecap_perms array.
+Fix the issue by directly returning the result of memcmp(), which
+adheres to the required comparison properties.
 
-Fix it by checking cap_id in vfio_config_do_rw(), and if it is greater
-than PCI_EXT_CAP_ID_MAX, use an alternative struct perm_bits for direct
-read only access instead of the ecap_perms array.
-
-Note that this is safe since the above is the only case where cap_id can
-exceed PCI_EXT_CAP_ID_MAX (except for the special capabilities, which
-are already checked before).
-
-[1]
-
-WARNING: CPU: 118 PID: 5329 at drivers/vfio/pci/vfio_pci_config.c:1900 vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
-CPU: 118 UID: 0 PID: 5329 Comm: simx-qemu-syste Not tainted 6.12.0+ #1
-(snip)
-Call Trace:
- <TASK>
- ? show_regs+0x69/0x80
- ? __warn+0x8d/0x140
- ? vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
- ? report_bug+0x18f/0x1a0
- ? handle_bug+0x63/0xa0
- ? exc_invalid_op+0x19/0x70
- ? asm_exc_invalid_op+0x1b/0x20
- ? vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
- ? vfio_pci_config_rw+0x244/0x430 [vfio_pci_core]
- vfio_pci_rw+0x101/0x1b0 [vfio_pci_core]
- vfio_pci_core_read+0x1d/0x30 [vfio_pci_core]
- vfio_device_fops_read+0x27/0x40 [vfio]
- vfs_read+0xbd/0x340
- ? vfio_device_fops_unl_ioctl+0xbb/0x740 [vfio]
- ? __rseq_handle_notify_resume+0xa4/0x4b0
- __x64_sys_pread64+0x96/0xc0
- x64_sys_call+0x1c3d/0x20d0
- do_syscall_64+0x4d/0x120
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Tested-by: Yi Liu <yi.l.liu@intel.com>
-Link: https://lore.kernel.org/r/20241124142739.21698-1-avihaih@nvidia.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 08d43a5fa063 ("tracing: Add lock-free tracing_map")
+Link: https://lore.kernel.org/20241203202228.1274403-1-visitorckw@gmail.com
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/vfio_pci_config.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ kernel/trace/tracing_map.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-index 50cd17fcf7541..f34ee2a0c2c19 100644
---- a/drivers/vfio/pci/vfio_pci_config.c
-+++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -312,6 +312,10 @@ static int vfio_virt_config_read(struct vfio_pci_device *vdev, int pos,
- 	return count;
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -845,15 +845,11 @@ int tracing_map_init(struct tracing_map
+ static int cmp_entries_dup(const void *A, const void *B)
+ {
+ 	const struct tracing_map_sort_entry *a, *b;
+-	int ret = 0;
+ 
+ 	a = *(const struct tracing_map_sort_entry **)A;
+ 	b = *(const struct tracing_map_sort_entry **)B;
+ 
+-	if (memcmp(a->key, b->key, a->elt->map->key_size))
+-		ret = 1;
+-
+-	return ret;
++	return memcmp(a->key, b->key, a->elt->map->key_size);
  }
  
-+static struct perm_bits direct_ro_perms = {
-+	.readfn = vfio_direct_config_read,
-+};
-+
- /* Default capability regions to read-only, no-virtualization */
- static struct perm_bits cap_perms[PCI_CAP_ID_MAX + 1] = {
- 	[0 ... PCI_CAP_ID_MAX] = { .readfn = vfio_direct_config_read }
-@@ -1835,9 +1839,17 @@ static ssize_t vfio_config_do_rw(struct vfio_pci_device *vdev, char __user *buf,
- 		cap_start = *ppos;
- 	} else {
- 		if (*ppos >= PCI_CFG_SPACE_SIZE) {
--			WARN_ON(cap_id > PCI_EXT_CAP_ID_MAX);
-+			/*
-+			 * We can get a cap_id that exceeds PCI_EXT_CAP_ID_MAX
-+			 * if we're hiding an unknown capability at the start
-+			 * of the extended capability list.  Use default, ro
-+			 * access, which will virtualize the id and next values.
-+			 */
-+			if (cap_id > PCI_EXT_CAP_ID_MAX)
-+				perm = &direct_ro_perms;
-+			else
-+				perm = &ecap_perms[cap_id];
- 
--			perm = &ecap_perms[cap_id];
- 			cap_start = vfio_find_cap_start(vdev, *ppos);
- 		} else {
- 			WARN_ON(cap_id > PCI_CAP_ID_MAX);
--- 
-2.43.0
-
+ static int cmp_entries_sum(const void *A, const void *B)
 
 
 
