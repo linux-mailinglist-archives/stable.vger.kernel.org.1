@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-101298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 227F89EEBBA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0031E9EF2C3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C40E9188D1FA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAE001894B1A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A3A212D6A;
-	Thu, 12 Dec 2024 15:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0B7223C63;
+	Thu, 12 Dec 2024 16:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmW5HxvH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/LG12s/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92ED72054F8;
-	Thu, 12 Dec 2024 15:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C101A13792B;
+	Thu, 12 Dec 2024 16:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017069; cv=none; b=hGvL3P5fiJx/JcSzltNUzhqhOr+m+4VrmKUYzH8UaMkMhDWjrQIlAMv37Y9VJZUOVFYCuq9p3PauaCbxaIq8R8vmbvrW7woFTovnAEvqQeauPb1Ty10ZAqNTC9v4NPsDlKzZEeK5M0m4PprJwQusowxkqP+bvOr+reZickPut/M=
+	t=1734020919; cv=none; b=Ub99DDZfEWzFQiYazIw7qO5YEtYSU/FLXghBQiy0PHh8X9Z2zru1Q+nqNY4fQu3IAKVxO44Y5AGRM56xpww4ZphhdyH42YNWXUGKKIo+4fcayEHRzhYD5EQuzNrbuCw3IVH3bmOXZnIpb/SArxbzTl4JHMOxruqccfwImZBIesI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017069; c=relaxed/simple;
-	bh=h2KL4ohGEM0pF88tzoMv5+dSjRX1EUCZU+oySuldiZk=;
+	s=arc-20240116; t=1734020919; c=relaxed/simple;
+	bh=e2DmskWpPK1v5KgivFfj98PX+AJNPk41eNIitsj31v8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urZ4lVb1OXMLrjoTIuIhwmozqz4qzQUwLXZtt+dW38KLKfymC83uV0jHL52brwSlHfbuxSAq08nvqxPv+Q8GUh/5SAe31/FgtA1dm+jSsxWi7izLvlKZfmO6+JbUHVhUxM07saOazyBe6TEWJ+u6nuYTvz9Ar9hpsJ6Z0/IlzMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmW5HxvH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9403C4CECE;
-	Thu, 12 Dec 2024 15:24:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dJHg3GPdSveIASRihcuCteFdD7pTGJAr36OVBD/RErD2oW1KtGD9HCLSieWhkOH+GiaOlJA2Hwjun1T2fzr5xEJ20sDGa0OOePEuoz3jnCtY8tPCpQcCs/zul5fMGdQNoneroVaftJiofWk1IiGNNvB4psgbwb1+Z/0kYa2CEIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/LG12s/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377A2C4CED0;
+	Thu, 12 Dec 2024 16:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017069;
-	bh=h2KL4ohGEM0pF88tzoMv5+dSjRX1EUCZU+oySuldiZk=;
+	s=korg; t=1734020919;
+	bh=e2DmskWpPK1v5KgivFfj98PX+AJNPk41eNIitsj31v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmW5HxvHGcitsjzZ4BeozFjFo3b9yO4r1CN71BTas8JK31a+tMP01mcxCfQ/V4MfY
-	 G0ppMAfdTBStbiGxN/p3Yf0dHoiVDmRi4CvRfTUuONkQQpKEypuRr5n2aKhJPHiqW9
-	 FM0SgK5DdImvDMK21FOI2PkOAKor5W1++CW0qPNs=
+	b=f/LG12s/tGUnOJH5y6GOVa8aRuBI85ylaRXbN3/kS3DaUofJf2v1CXFSnrZUZATtR
+	 wfIa/Xe/8ITNH8g1c85UiMiFbEg0A1hpSFWWmG+DwwJ6LfrIig3+IFlGr4308ZBF3G
+	 qLrPeg/9j7DyNa3N+ypfjZEMi46o0Uucf6KnFjsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 374/466] clk: qcom: dispcc-sm8550: enable support for SAR2130P
+Subject: [PATCH 6.1 598/772] bpf: Handle BPF_EXIST and BPF_NOEXIST for LPM trie
 Date: Thu, 12 Dec 2024 15:59:03 +0100
-Message-ID: <20241212144321.552825176@linuxfoundation.org>
+Message-ID: <20241212144414.641539572@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 1335c7eb7012f23dc073b8ae4ffcfc1f6e69cfb3 ]
+[ Upstream commit eae6a075e9537dd69891cf77ca5a88fa8a28b4a1 ]
 
-The display clock controller on SAR2130P is very close to the clock
-controller on SM8550 (and SM8650). Reuse existing driver to add support
-for the controller on SAR2130P.
+Add the currently missing handling for the BPF_EXIST and BPF_NOEXIST
+flags. These flags can be specified by users and are relevant since LPM
+trie supports exact matches during update.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241027-sar2130p-clocks-v5-10-ecad2a1432ba@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20241206110622.1161752-4-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/Kconfig         |  4 ++--
- drivers/clk/qcom/dispcc-sm8550.c | 18 ++++++++++++++++--
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ kernel/bpf/lpm_trie.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
-index 4444dafa4e3df..9ba675f229b14 100644
---- a/drivers/clk/qcom/Kconfig
-+++ b/drivers/clk/qcom/Kconfig
-@@ -959,10 +959,10 @@ config SM_DISPCC_8450
- config SM_DISPCC_8550
- 	tristate "SM8550 Display Clock Controller"
- 	depends on ARM64 || COMPILE_TEST
--	depends on SM_GCC_8550 || SM_GCC_8650
-+	depends on SM_GCC_8550 || SM_GCC_8650 || SAR_GCC_2130P
- 	help
- 	  Support for the display clock controller on Qualcomm Technologies, Inc
--	  SM8550 or SM8650 devices.
-+	  SAR2130P, SM8550 or SM8650 devices.
- 	  Say Y if you want to support display devices and functionality such as
- 	  splash screen.
- 
-diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
-index 7f9021ca0ecb0..e41d4104d7702 100644
---- a/drivers/clk/qcom/dispcc-sm8550.c
-+++ b/drivers/clk/qcom/dispcc-sm8550.c
-@@ -75,7 +75,7 @@ static struct pll_vco lucid_ole_vco[] = {
- 	{ 249600000, 2000000000, 0 },
- };
- 
--static const struct alpha_pll_config disp_cc_pll0_config = {
-+static struct alpha_pll_config disp_cc_pll0_config = {
- 	.l = 0xd,
- 	.alpha = 0x6492,
- 	.config_ctl_val = 0x20485699,
-@@ -106,7 +106,7 @@ static struct clk_alpha_pll disp_cc_pll0 = {
- 	},
- };
- 
--static const struct alpha_pll_config disp_cc_pll1_config = {
-+static struct alpha_pll_config disp_cc_pll1_config = {
- 	.l = 0x1f,
- 	.alpha = 0x4000,
- 	.config_ctl_val = 0x20485699,
-@@ -594,6 +594,13 @@ static const struct freq_tbl ftbl_disp_cc_mdss_mdp_clk_src[] = {
- 	{ }
- };
- 
-+static const struct freq_tbl ftbl_disp_cc_mdss_mdp_clk_src_sar2130p[] = {
-+	F(200000000, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
-+	F(325000000, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
-+	F(514000000, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
-+	{ }
-+};
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index d8ddb1e245d9d..0b35f1a9e901c 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -368,6 +368,10 @@ static int trie_update_elem(struct bpf_map *map,
+ 	 * simply assign the @new_node to that slot and be done.
+ 	 */
+ 	if (!node) {
++		if (flags == BPF_EXIST) {
++			ret = -ENOENT;
++			goto out;
++		}
+ 		rcu_assign_pointer(*slot, new_node);
+ 		goto out;
+ 	}
+@@ -376,18 +380,31 @@ static int trie_update_elem(struct bpf_map *map,
+ 	 * which already has the correct data array set.
+ 	 */
+ 	if (node->prefixlen == matchlen) {
++		if (!(node->flags & LPM_TREE_NODE_FLAG_IM)) {
++			if (flags == BPF_NOEXIST) {
++				ret = -EEXIST;
++				goto out;
++			}
++			trie->n_entries--;
++		} else if (flags == BPF_EXIST) {
++			ret = -ENOENT;
++			goto out;
++		}
 +
- static const struct freq_tbl ftbl_disp_cc_mdss_mdp_clk_src_sm8650[] = {
- 	F(19200000, P_BI_TCXO, 1, 0, 0),
- 	F(85714286, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
-@@ -1750,6 +1757,7 @@ static struct qcom_cc_desc disp_cc_sm8550_desc = {
- };
+ 		new_node->child[0] = node->child[0];
+ 		new_node->child[1] = node->child[1];
  
- static const struct of_device_id disp_cc_sm8550_match_table[] = {
-+	{ .compatible = "qcom,sar2130p-dispcc" },
- 	{ .compatible = "qcom,sm8550-dispcc" },
- 	{ .compatible = "qcom,sm8650-dispcc" },
- 	{ }
-@@ -1780,6 +1788,12 @@ static int disp_cc_sm8550_probe(struct platform_device *pdev)
- 		disp_cc_mdss_mdp_clk_src.freq_tbl = ftbl_disp_cc_mdss_mdp_clk_src_sm8650;
- 		disp_cc_mdss_dptx1_usb_router_link_intf_clk.clkr.hw.init->parent_hws[0] =
- 			&disp_cc_mdss_dptx1_link_div_clk_src.clkr.hw;
-+	} else if (of_device_is_compatible(pdev->dev.of_node, "qcom,sar2130p-dispcc")) {
-+		disp_cc_pll0_config.l = 0x1f;
-+		disp_cc_pll0_config.alpha = 0x4000;
-+		disp_cc_pll0_config.user_ctl_val = 0x1;
-+		disp_cc_pll1_config.user_ctl_val = 0x1;
-+		disp_cc_mdss_mdp_clk_src.freq_tbl = ftbl_disp_cc_mdss_mdp_clk_src_sar2130p;
+-		if (!(node->flags & LPM_TREE_NODE_FLAG_IM))
+-			trie->n_entries--;
+-
+ 		rcu_assign_pointer(*slot, new_node);
+ 		free_node = node;
+ 
+ 		goto out;
  	}
  
- 	clk_lucid_ole_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
++	if (flags == BPF_EXIST) {
++		ret = -ENOENT;
++		goto out;
++	}
++
+ 	/* If the new node matches the prefix completely, it must be inserted
+ 	 * as an ancestor. Simply insert it between @node and *@slot.
+ 	 */
 -- 
 2.43.0
 
