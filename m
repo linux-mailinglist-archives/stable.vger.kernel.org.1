@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419D49EF149
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB359EEACF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2AE2171D0D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A048C169C0F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F65A22969F;
-	Thu, 12 Dec 2024 16:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD394217F30;
+	Thu, 12 Dec 2024 15:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sESSZ0P0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rr9dLA8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B34222D59;
-	Thu, 12 Dec 2024 16:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687D421766D;
+	Thu, 12 Dec 2024 15:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020136; cv=none; b=F2qK9GcnisE3uuGDzqxxcjgkX8sgc9FeOxpcrmYxCRzuNNcd3R26/hRT/k25NqMs2q40deELSojLbl3z6hvHfVo8l0WvZ49QRvwJXrWJLgGoGcWULz4yMuJ1RGG+/aRPJB7iZEEbXEwNmQ4ulnDPiac1MwCxIu7Hky8Ylk0dvpM=
+	t=1734016412; cv=none; b=W2R9MEysPhUSngdgCioQiubbmEbY86aTb5Ki0bc1PqqIuQRrXsWLyy8vREbpjBeOqmro+/3I13ObHsKZkIqYvJP6xOSemepJCqYL7PbEfz5AitkJCZGa/pkCf/fn2uZf00v+/YEyT8xBLltL8FYLbtw24z6+w79dJDzPIQZPuso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020136; c=relaxed/simple;
-	bh=goDvfWRsKVExnBiIhqWe5ayAzJuHM2U5FnY95bSHQ/Y=;
+	s=arc-20240116; t=1734016412; c=relaxed/simple;
+	bh=do3tALeFNhB3hoiQvJM4Msfr4+GFTXHRtcjaD57IXdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWOp5Q/eLiRoxxIrBRNF+w+eT9lJxVHCGQBViUutWrBEMXzZZeAZKhauJJLPPjQjpzMsXwnzA/UtOXfwtDZn9Ub/EVDH6D7AvPlrj63wz+nBB7ew3kpZRWu683H3rEDbzy1+gbZcznABqTZVlZmSDmX13bb5y91atN8n2Zy0PqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sESSZ0P0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4015C4CECE;
-	Thu, 12 Dec 2024 16:15:34 +0000 (UTC)
+	 MIME-Version; b=GECUR+bKuOzJkVE3wbR9cWUPFmxeqN8KAmJwruXqCNDQOh+OpcC/1Z8FqRDV7rZHlSZ1Ui0iO3ePGgjtsnPd3RTS4grvcr4/2KQ3fw+yKW6ZG0wcof1TDYLYqHkKOYIqQL+Yv6SH8+HnBXQs0wI5QFY3pVR913yv/KJrUGBwUg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rr9dLA8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 678FCC4CED0;
+	Thu, 12 Dec 2024 15:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020135;
-	bh=goDvfWRsKVExnBiIhqWe5ayAzJuHM2U5FnY95bSHQ/Y=;
+	s=korg; t=1734016410;
+	bh=do3tALeFNhB3hoiQvJM4Msfr4+GFTXHRtcjaD57IXdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sESSZ0P0x/U6UaNIfHQKc33MBGHI7jpucnydze5DduAvgVkG63JqgO5XI7n6A6Gsp
-	 0wtxEzfVUErAB1MwaMqsDFLLBPFTQ8Rjkniqk+R1vKMuAubNDBBTa6xsuiAcCOWr3O
-	 F96vPJOJTjZ0EpnkvZQbD4uEeG0eq2tXJWW+DfOU=
+	b=Rr9dLA8qHurOa9DGNumD2zEaFPkW0yThToCPYrWVPmsPQJNajqep+uQNuWEUSNPnC
+	 +P1vUfMjpdjgkdP77qNyjjK1X0QBU9EXSHDbLEetmIDJ8Dpm3Yi9lIin1NcwzSIWGy
+	 Ceci1LuJZJHyvLXgMsA14X3aEr1jgYJ5GVs7IG9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.1 385/772] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
+	Liequan Che <cheliequan@inspur.com>,
+	Zheng Wang <zyytlz.wz@163.com>,
+	Mingzhe Zou <mingzhe.zou@easystack.cn>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 161/466] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR again
 Date: Thu, 12 Dec 2024 15:55:30 +0100
-Message-ID: <20241212144405.819097748@linuxfoundation.org>
+Message-ID: <20241212144313.159076739@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Liequan Che <cheliequan@inspur.com>
 
-commit 5c1b544563005a00591a3aa86ecff62ed4d11be3 upstream.
+commit b2e382ae12a63560fca35050498e19e760adf8c0 upstream.
 
-Syzkaller reported a hung task with uevent_show() on stack trace. That
-specific issue was addressed by another commit [0], but even with that
-fix applied (for example, running v6.12-rc5) we face another type of hung
-task that comes from the same reproducer [1]. By investigating that, we
-could narrow it to the following path:
+Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+node allocations") leads a NULL pointer deference in cache_set_flush().
 
-(a) Syzkaller emulates a Realtek USB WiFi adapter using raw-gadget and
-dummy_hcd infrastructure.
+1721         if (!IS_ERR_OR_NULL(c->root))
+1722                 list_add(&c->root->list, &c->btree_cache);
 
-(b) During the probe of rtl8192cu, the driver ends-up performing an efuse
-read procedure (which is related to EEPROM load IIUC), and here lies the
-issue: the function read_efuse() calls read_efuse_byte() many times, as
-loop iterations depending on the efuse size (in our example, 512 in total).
+>From the above code in cache_set_flush(), if previous registration code
+fails before allocating c->root, it is possible c->root is NULL as what
+it is initialized. __bch_btree_node_alloc() never returns NULL but
+c->root is possible to be NULL at above line 1721.
 
-This procedure for reading efuse bytes relies in a loop that performs an
-I/O read up to *10k* times in case of failures. We measured the time of
-the loop inside read_efuse_byte() alone, and in this reproducer (which
-involves the dummy_hcd emulation layer), it takes 15 seconds each. As a
-consequence, we have the driver stuck in its probe routine for big time,
-exposing a stack trace like below if we attempt to reboot the system, for
-example:
+This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
 
-task:kworker/0:3 state:D stack:0 pid:662 tgid:662 ppid:2 flags:0x00004000
-Workqueue: usb_hub_wq hub_event
-Call Trace:
- __schedule+0xe22/0xeb6
- schedule_timeout+0xe7/0x132
- __wait_for_common+0xb5/0x12e
- usb_start_wait_urb+0xc5/0x1ef
- ? usb_alloc_urb+0x95/0xa4
- usb_control_msg+0xff/0x184
- _usbctrl_vendorreq_sync+0xa0/0x161
- _usb_read_sync+0xb3/0xc5
- read_efuse_byte+0x13c/0x146
- read_efuse+0x351/0x5f0
- efuse_read_all_map+0x42/0x52
- rtl_efuse_shadow_map_update+0x60/0xef
- rtl_get_hwinfo+0x5d/0x1c2
- rtl92cu_read_eeprom_info+0x10a/0x8d5
- ? rtl92c_read_chip_version+0x14f/0x17e
- rtl_usb_probe+0x323/0x851
- usb_probe_interface+0x278/0x34b
- really_probe+0x202/0x4a4
- __driver_probe_device+0x166/0x1b2
- driver_probe_device+0x2f/0xd8
- [...]
-
-We propose hereby to drastically reduce the attempts of doing the I/O
-reads in case of failures, restricted to USB devices (given that
-they're inherently slower than PCIe ones). By retrying up to 10 times
-(instead of 10000), we got reponsiveness in the reproducer, while seems
-reasonable to believe that there's no sane USB device implementation in
-the field requiring this amount of retries at every I/O read in order
-to properly work. Based on that assumption, it'd be good to have it
-backported to stable but maybe not since driver implementation (the 10k
-number comes from day 0), perhaps up to 6.x series makes sense.
-
-[0] Commit 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
-
-[1] A note about that: this syzkaller report presents multiple reproducers
-that differs by the type of emulated USB device. For this specific case,
-check the entry from 2024/08/08 06:23 in the list of crashes; the C repro
-is available at https://syzkaller.appspot.com/text?tag=ReproC&x=1521fc83980000.
-
-Cc: stable@vger.kernel.org # v6.1+
-Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
-Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241101193412.1390391-1-gpiccoli@igalia.com
+Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
+Signed-off-by: Liequan Che <cheliequan@inspur.com>
+Cc: stable@vger.kernel.org
+Cc: Zheng Wang <zyytlz.wz@163.com>
+Reviewed-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20241202115638.28957-1-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/efuse.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/md/bcache/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-index 82cf5fb5175f..6518e77b89f5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-@@ -162,10 +162,19 @@ void efuse_write_1byte(struct ieee80211_hw *hw, u16 address, u8 value)
- void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+	u16 max_attempts = 10000;
- 	u32 value32;
- 	u8 readbyte;
- 	u16 retry;
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1718,7 +1718,7 @@ static CLOSURE_CALLBACK(cache_set_flush)
+ 	if (!IS_ERR_OR_NULL(c->gc_thread))
+ 		kthread_stop(c->gc_thread);
  
-+	/*
-+	 * In case of USB devices, transfer speeds are limited, hence
-+	 * efuse I/O reads could be (way) slower. So, decrease (a lot)
-+	 * the read attempts in case of failures.
-+	 */
-+	if (rtlpriv->rtlhal.interface == INTF_USB)
-+		max_attempts = 10;
-+
- 	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 1,
- 		       (_offset & 0xff));
- 	readbyte = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 2);
-@@ -178,7 +187,7 @@ void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
+-	if (!IS_ERR(c->root))
++	if (!IS_ERR_OR_NULL(c->root))
+ 		list_add(&c->root->list, &c->btree_cache);
  
- 	retry = 0;
- 	value32 = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
--	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < 10000)) {
-+	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < max_attempts)) {
- 		value32 = rtl_read_dword(rtlpriv,
- 					 rtlpriv->cfg->maps[EFUSE_CTRL]);
- 		retry++;
--- 
-2.47.1
-
+ 	/*
 
 
 
