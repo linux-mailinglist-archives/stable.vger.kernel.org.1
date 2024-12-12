@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F939EF2D8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C9E9EED44
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CAD916B227
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA475285A09
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2863222D7D;
-	Thu, 12 Dec 2024 16:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0C9222D5E;
+	Thu, 12 Dec 2024 15:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYm02etO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwCH7GKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601C821CFEA;
-	Thu, 12 Dec 2024 16:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7777B1547F0;
+	Thu, 12 Dec 2024 15:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020813; cv=none; b=YNLIXnlcX8xHHkxQZFFNIEuVbXJw6ozxxPaD/gjYtHW1d3u+5XR+yzuTurEDm3bLaRfH+qdHBh2kxyY7Y6HITd4QI/yRXjH0MWRU41aXbjliU1xuOO/5cquv51fpoN0yn2Uv/H/y8OCDluU0EmqscySsxplbqCIZAXCbt9sipyU=
+	t=1734018197; cv=none; b=pIb2iDkFaGSefURKEKBW4Cf+tNxChp0r9BP71PNvEylv5AH5Dos9J77GPm5E7BQxfsUEEoq7GssOpuCf4xh5AnYzbVbar+xBqkj7HIZrUWSKLwzzwyntaJxngvKqgYB+o42Vpm7m1RwQ//KqNb2o0DLBgs0p24Le4eZhwv8zkI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020813; c=relaxed/simple;
-	bh=+slE99/cKbOU11ehcIl2n/z/hVe4VvrWdRRcn0qnrEk=;
+	s=arc-20240116; t=1734018197; c=relaxed/simple;
+	bh=aUsAp68o3SH+LrZJXA8u4pNMTKZcpCrRZl5UqjXumZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mLKPFs/uqNG6TCQLOa58Dam+KrQZ/SC0/dJxMGRxE6rfJEGgvaur4gh8s8Deu7VmADZHDLwNmrxr20CkEDo8IrcPbUhMIrxy+oIzQQoEUZ0jDQaqoOJyRin/pdn8+raYwaga7uqHXvogSkCkVErTNoziYFaDD9L06AMPzJjBJjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYm02etO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04512C4CECE;
-	Thu, 12 Dec 2024 16:26:51 +0000 (UTC)
+	 MIME-Version; b=OlpgPgNbH3q6+YWtF4NHINNhCwYSd7fhoC/GnzE7jCon9TkjAiq4MdpAZSVqaDh8IIzqVGOSXboTRER44rfOSzUeW2MoCFzxnA+AFPfxSspKSBJq22M+O99pbF1HgLnFOLtIq/RK/qRCssD44+JGD93WSYYppc7fQSHxtwY5mWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwCH7GKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C90C4CECE;
+	Thu, 12 Dec 2024 15:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020812;
-	bh=+slE99/cKbOU11ehcIl2n/z/hVe4VvrWdRRcn0qnrEk=;
+	s=korg; t=1734018197;
+	bh=aUsAp68o3SH+LrZJXA8u4pNMTKZcpCrRZl5UqjXumZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYm02etOoNQh/wBdqnu76fr6FOlNYFDbK660Smm9qSpb8xpSYu56WcZzSlzn2gQDU
-	 VgzBF+Vk81tEuXyhq/yZWjlRUPgpLdpHAvjoXfsqt5tA2rbmxcyjp1gk2S51SYNLbX
-	 UAqXGbB0B3hf9yWyU0h2Yn/52/cuumEifgyScgZw=
+	b=MwCH7GKmVy0CCMSLdaqKTjyiRxI0fi1evCCaQmAiz4kSi5t57A36mcQMmgfKieYPJ
+	 /RyBaKmnRR5Te+ap0sx7MLiF7adBBYeORxZPG2OEGxuSGvNsitfRFdphbP9HsySECc
+	 oyNZ1bNFBr4X9joK5wEWp9juA+0OogwrNRixB67o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sandipan Das <sandipan.das@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 567/772] i3c: Make i3c_master_unregister() return void
-Date: Thu, 12 Dec 2024 15:58:32 +0100
-Message-ID: <20241212144413.389053943@linuxfoundation.org>
+Subject: [PATCH 6.6 194/356] perf/x86/amd: Warn only on new bits set
+Date: Thu, 12 Dec 2024 15:58:33 +0100
+Message-ID: <20241212144252.292017840@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,137 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 0f74f8b6675cc36d689abb4d9b3d75ab4049b7d7 ]
+[ Upstream commit de20037e1b3c2f2ca97b8c12b8c7bca8abd509a7 ]
 
-The function returned zero unconditionally. Switch the return type to void
-and simplify the callers accordingly.
+Warning at every leaking bits can cause a flood of message, triggering
+various stall-warning mechanisms to fire, including CSD locks, which
+makes the machine to be unusable.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20230318233311.265186-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 25bc99be5fe5 ("i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter")
+Track the bits that are being leaked, and only warn when a new bit is
+set.
+
+That said, this patch will help with the following issues:
+
+1) It will tell us which bits are being set, so, it is easy to
+   communicate it back to vendor, and to do a root-cause analyzes.
+
+2) It avoid the machine to be unusable, because, worst case
+   scenario, the user gets less than 60 WARNs (one per unhandled bit).
+
+Suggested-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Sandipan Das <sandipan.das@amd.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lkml.kernel.org/r/20241001141020.2620361-1-leitao@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c                   | 6 +-----
- drivers/i3c/master/dw-i3c-master.c     | 5 +----
- drivers/i3c/master/i3c-master-cdns.c   | 5 +----
- drivers/i3c/master/mipi-i3c-hci/core.c | 4 +++-
- drivers/i3c/master/svc-i3c-master.c    | 5 +----
- include/linux/i3c/master.h             | 2 +-
- 6 files changed, 8 insertions(+), 19 deletions(-)
+ arch/x86/events/amd/core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 2263bc066108f..c8aa0d27143cc 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2696,17 +2696,13 @@ EXPORT_SYMBOL_GPL(i3c_master_register);
-  * @master: master used to send frames on the bus
-  *
-  * Basically undo everything done in i3c_master_register().
-- *
-- * Return: 0 in case of success, a negative error code otherwise.
-  */
--int i3c_master_unregister(struct i3c_master_controller *master)
-+void i3c_master_unregister(struct i3c_master_controller *master)
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index 8ed10366c4a27..aa8fc2cf1bde7 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -895,11 +895,12 @@ static int amd_pmu_handle_irq(struct pt_regs *regs)
+ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
  {
- 	i3c_master_i2c_adapter_cleanup(master);
- 	i3c_master_unregister_i3c_devs(master);
- 	i3c_master_bus_cleanup(master);
- 	device_unregister(&master->dev);
--
--	return 0;
- }
- EXPORT_SYMBOL_GPL(i3c_master_unregister);
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
++	static atomic64_t status_warned = ATOMIC64_INIT(0);
++	u64 reserved, status, mask, new_bits, prev_bits;
+ 	struct perf_sample_data data;
+ 	struct hw_perf_event *hwc;
+ 	struct perf_event *event;
+ 	int handled = 0, idx;
+-	u64 reserved, status, mask;
+ 	bool pmu_enabled;
  
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index 51a8608203de7..b72f6dce18b48 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -1184,11 +1184,8 @@ static int dw_i3c_probe(struct platform_device *pdev)
- static int dw_i3c_remove(struct platform_device *pdev)
- {
- 	struct dw_i3c_master *master = platform_get_drvdata(pdev);
--	int ret;
+ 	/*
+@@ -964,7 +965,12 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
+ 	 * the corresponding PMCs are expected to be inactive according to the
+ 	 * active_mask
+ 	 */
+-	WARN_ON(status > 0);
++	if (status > 0) {
++		prev_bits = atomic64_fetch_or(status, &status_warned);
++		// A new bit was set for the very first time.
++		new_bits = status & ~prev_bits;
++		WARN(new_bits, "New overflows for inactive PMCs: %llx\n", new_bits);
++	}
  
--	ret = i3c_master_unregister(&master->base);
--	if (ret)
--		return ret;
-+	i3c_master_unregister(&master->base);
- 
- 	reset_control_assert(master->core_rst);
- 
-diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
-index b9cfda6ae9ae5..35b90bb686ad3 100644
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -1666,11 +1666,8 @@ static int cdns_i3c_master_probe(struct platform_device *pdev)
- static int cdns_i3c_master_remove(struct platform_device *pdev)
- {
- 	struct cdns_i3c_master *master = platform_get_drvdata(pdev);
--	int ret;
- 
--	ret = i3c_master_unregister(&master->base);
--	if (ret)
--		return ret;
-+	i3c_master_unregister(&master->base);
- 
- 	clk_disable_unprepare(master->sysclk);
- 	clk_disable_unprepare(master->pclk);
-diff --git a/drivers/i3c/master/mipi-i3c-hci/core.c b/drivers/i3c/master/mipi-i3c-hci/core.c
-index 6aef5ce43cc1f..f9bc58366a721 100644
---- a/drivers/i3c/master/mipi-i3c-hci/core.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/core.c
-@@ -769,7 +769,9 @@ static int i3c_hci_remove(struct platform_device *pdev)
- {
- 	struct i3c_hci *hci = platform_get_drvdata(pdev);
- 
--	return i3c_master_unregister(&hci->master);
-+	i3c_master_unregister(&hci->master);
-+
-+	return 0;
- }
- 
- static const __maybe_unused struct of_device_id i3c_hci_of_match[] = {
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index eca50705e9ce8..77bb7c0468250 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1651,11 +1651,8 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
- static int svc_i3c_master_remove(struct platform_device *pdev)
- {
- 	struct svc_i3c_master *master = platform_get_drvdata(pdev);
--	int ret;
- 
--	ret = i3c_master_unregister(&master->base);
--	if (ret)
--		return ret;
-+	i3c_master_unregister(&master->base);
- 
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-index 604a126b78c83..4b7bb43bf4307 100644
---- a/include/linux/i3c/master.h
-+++ b/include/linux/i3c/master.h
-@@ -541,7 +541,7 @@ int i3c_master_register(struct i3c_master_controller *master,
- 			struct device *parent,
- 			const struct i3c_master_controller_ops *ops,
- 			bool secondary);
--int i3c_master_unregister(struct i3c_master_controller *master);
-+void i3c_master_unregister(struct i3c_master_controller *master);
- 
- /**
-  * i3c_dev_get_master_data() - get master private data attached to an I3C
+ 	/* Clear overflow and freeze bits */
+ 	amd_pmu_ack_global_status(~status);
 -- 
 2.43.0
 
