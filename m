@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107C89EF938
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68B19EF762
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D67C116FB4D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3071899FA0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ACD221D93;
-	Thu, 12 Dec 2024 17:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEC7217F40;
+	Thu, 12 Dec 2024 17:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5No5fMm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6KLUv5o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7662153EC;
-	Thu, 12 Dec 2024 17:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C2C13CA81;
+	Thu, 12 Dec 2024 17:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025320; cv=none; b=Y6vsVOH7fC5HEemXhFyFxl95obzK/J+mO/VfklktY+63mhfgOoldWkzhP+evezMPZRtceCZjjXe1zk8Gu1eFaqLC3JO6jNpsMMLJgsUmDLqpoUIYWXJBlMmGQAoOGbp9FqW+c7OSVolYKrCqQTkVvDWBEwGRuy5o2i4yohutZBU=
+	t=1734024484; cv=none; b=jyguBSO20hcwnN/Y5zrBtw1ygkwapNaiRbIflPP+BRHhsCw1/jsk4AEKBpGL79WI6YAycpnzfDgsSapzRLXa2+Cf45T/Wl5pAxfwnJRqPTAPVVQN5UxYa/Y7ZtgB43d5BwkWipcFo5egJ3pbTIYsh6pCFxdvjjaMV6+bXUH9xZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025320; c=relaxed/simple;
-	bh=J6g8u11b2uUvF4ecaxkv3SLBz4cVsFY06tnc7S/qZps=;
+	s=arc-20240116; t=1734024484; c=relaxed/simple;
+	bh=AsezJIzwEhWY2yT6/tkq+fMNRwaKW6XCg3pLkMmmmvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DvVmLa9d2RBNiCQDa3LtnIJC99waGsrnPOxctf8j2BxlJWCwxTuKtAbFMLqVEFJrhEv2YDQ9FSy93y1WgNZC4+f30G62r13rm4e9drjMkaOS8liMkC/V8I2bDKbr54aS/56c/hgSgLqU8vflas0xJqKGBAdIb9UeIyhKAm8ZXEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5No5fMm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4745C4CECE;
-	Thu, 12 Dec 2024 17:41:59 +0000 (UTC)
+	 MIME-Version; b=O9TwEH5kG8JHYIC1gVzWgUeLpOYttGipUN2BOqJN3znfmKHQoFLmtkF2VIFR+Gy/yyqI51hlCFC2IbIH2iSHQBXKQAXMMuyXls7JVR7t7Hm4Q2bqys9OU810De8y3iIF5xm9cA1wT3k4g2CO7iEoj5CV9suTiMC5l3WW3LlN780=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6KLUv5o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED526C4CECE;
+	Thu, 12 Dec 2024 17:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025320;
-	bh=J6g8u11b2uUvF4ecaxkv3SLBz4cVsFY06tnc7S/qZps=;
+	s=korg; t=1734024484;
+	bh=AsezJIzwEhWY2yT6/tkq+fMNRwaKW6XCg3pLkMmmmvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5No5fMmD/PiGjsbCIpfOnpXwwLTG6u+EdEUNGRy3n/Lr0GxjRd31N5lAUe+M0xZu
-	 3hqh3aF39TjJu7w6a6MjW0y4o+0c8Vnw3xdeuNqYo+YoD57AL/15wuPhyTHxmJPjMj
-	 kG8U/KTxeIvDOqy8xHJiqkEk1nfHZZRmorqzfFKY=
+	b=H6KLUv5oGLn4C+X7HuN8u1qCKotZogEs+zIphddY2H6Rx87QgiK4gCSE8co+cIq8B
+	 8XHVEVBPnKB9SmrOGwd6ciHIGmi06fw35YnGdghCgLm+9VJ/4o+iukNjO6VZ9l8EPZ
+	 aaVTLZUUGjl8YSrlL3XEsxKTjNnn/4AscBNoZHh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 130/321] marvell: pxa168_eth: fix call balance of pep->clk handling routines
+Subject: [PATCH 5.10 310/459] sh: intc: Fix use-after-free bug in register_intc_controller()
 Date: Thu, 12 Dec 2024 16:00:48 +0100
-Message-ID: <20241212144235.111879442@linuxfoundation.org>
+Message-ID: <20241212144305.891737130@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b032ae57d4fe2b2445e3bc190db6fcaa8c102f68 ]
+[ Upstream commit 63e72e551942642c48456a4134975136cdcb9b3c ]
 
-If the clock pep->clk was not enabled in pxa168_eth_probe,
-it should not be disabled in any path.
+In the error handling for this function, d is freed without ever
+removing it from intc_list which would lead to a use after free.
+To fix this, let's only add it to the list after everything has
+succeeded.
 
-Conversely, if it was enabled in pxa168_eth_probe, it must be disabled
-in all error paths to ensure proper cleanup.
-
-Use the devm_clk_get_enabled helper function to ensure proper call balance
-for pep->clk.
-
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Fixes: a49f37eed22b ("net: add Fast Ethernet driver for PXA168.")
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Link: https://patch.msgid.link/20241121200658.2203871-1-mordan@ispras.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 2dcec7a988a1 ("sh: intc: set_irq_wake() support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/pxa168_eth.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/sh/intc/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/pxa168_eth.c b/drivers/net/ethernet/marvell/pxa168_eth.c
-index 235bbb2940a88..0df507686b569 100644
---- a/drivers/net/ethernet/marvell/pxa168_eth.c
-+++ b/drivers/net/ethernet/marvell/pxa168_eth.c
-@@ -1407,18 +1407,15 @@ static int pxa168_eth_probe(struct platform_device *pdev)
+diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
+index f8e070d67fa32..51586c5e993bb 100644
+--- a/drivers/sh/intc/core.c
++++ b/drivers/sh/intc/core.c
+@@ -194,7 +194,6 @@ int __init register_intc_controller(struct intc_desc *desc)
+ 		goto err0;
  
- 	printk(KERN_NOTICE "PXA168 10/100 Ethernet Driver\n");
+ 	INIT_LIST_HEAD(&d->list);
+-	list_add_tail(&d->list, &intc_list);
  
--	clk = devm_clk_get(&pdev->dev, NULL);
-+	clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(clk)) {
--		dev_err(&pdev->dev, "Fast Ethernet failed to get clock\n");
-+		dev_err(&pdev->dev, "Fast Ethernet failed to get and enable clock\n");
- 		return -ENODEV;
- 	}
--	clk_prepare_enable(clk);
+ 	raw_spin_lock_init(&d->lock);
+ 	INIT_RADIX_TREE(&d->tree, GFP_ATOMIC);
+@@ -380,6 +379,7 @@ int __init register_intc_controller(struct intc_desc *desc)
  
- 	dev = alloc_etherdev(sizeof(struct pxa168_eth_private));
--	if (!dev) {
--		err = -ENOMEM;
--		goto err_clk;
--	}
-+	if (!dev)
-+		return -ENOMEM;
+ 	d->skip_suspend = desc->skip_syscore_suspend;
  
- 	platform_set_drvdata(pdev, dev);
- 	pep = netdev_priv(dev);
-@@ -1531,8 +1528,6 @@ static int pxa168_eth_probe(struct platform_device *pdev)
- 	mdiobus_free(pep->smi_bus);
- err_netdev:
- 	free_netdev(dev);
--err_clk:
--	clk_disable_unprepare(clk);
- 	return err;
- }
++	list_add_tail(&d->list, &intc_list);
+ 	nr_intc_controllers++;
  
+ 	return 0;
 -- 
 2.43.0
 
