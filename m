@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-102898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91859EF3F8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D49609EF1B0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AC982902E5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96634291270
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07FB215764;
-	Thu, 12 Dec 2024 17:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0FF231CB1;
+	Thu, 12 Dec 2024 16:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faa2dxDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rq6NkAth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB241F2381;
-	Thu, 12 Dec 2024 17:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEDB231A31;
+	Thu, 12 Dec 2024 16:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022909; cv=none; b=fKnPk0iKLRCaiNAf2WDr4XusVVXMBpDJVLoRU6dQhlnuoSCSeQvWxWBzV1dsgGi3AFDAa8LLFrTSHEf0KzNk5l0+jpN+L3Yokl40dCofi+SFQbwKyEawmVpRDPi6zXIq333Rqj8d47p6zGJna/yc2/+SpcaT7onhNDlDx2/BCSw=
+	t=1734021061; cv=none; b=cH3G1VfjTBrE/t5BaWnCbioNVv1/pFVwxVuDylsUpDRCYgLpYJ+pJ2vI861j+5EkJG+/ycOCRAJD8yHE+lmW8zNak7VvCtfI1FG3cMWm1Wo62hD4FScxllUE/hR8jr6rWSxvi6fSDKjHvQxx5uYlQ9RiiSz0PRYvL9THaE3aLkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022909; c=relaxed/simple;
-	bh=D8KTVv1erkcDuGVwF4RrDMCIMdOYBhhyY2D1BxYKEV0=;
+	s=arc-20240116; t=1734021061; c=relaxed/simple;
+	bh=XBnS3IUyi7gleUyQYkGjev2j5XakGxHuyrrkG8xPMj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFJlyhwnlhpNHdtopcVLQt0jdmVdlrwPnE/eadG4kozoCIuZ1vX+VtQRr11ERkVviejwy10ZHlj/NQ5jIn2rMGbYV5p2c6USBPpHuYf3/zPGeTpLqA/6ssfOWbu6bfYlwwyYAMk+nRj/Q0oVEACNjj3sEtGpK3RCZnA2cvDJzWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=faa2dxDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AA1C4CECE;
-	Thu, 12 Dec 2024 17:01:48 +0000 (UTC)
+	 MIME-Version; b=tlAUG9BbeyBGofADRBAQYdWUM7pL4EKNef0F6S/7+mPtxXACafnpZXVZpqC73wvsBQds1odMThBY9Dx+J+NPb7ioiaccsKIWK0cfoA2wjg/ZutWfCct0NtH2tXzv/p3qaSLk8VvtCZ/TjKyRmZDKgSFBYWqo9ZUrkbSu6cGxDig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rq6NkAth; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07C6C4CECE;
+	Thu, 12 Dec 2024 16:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022909;
-	bh=D8KTVv1erkcDuGVwF4RrDMCIMdOYBhhyY2D1BxYKEV0=;
+	s=korg; t=1734021060;
+	bh=XBnS3IUyi7gleUyQYkGjev2j5XakGxHuyrrkG8xPMj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=faa2dxDuJrOOUpJj1hnEr1mmr7vBrHNbvdkJ7huMrFg2gjrJjw0lISIU/zmS3GId2
-	 Hp46ViHbHPZpEm0uyWHTWRkED2o7h+gCphAGNxghZT4gct/yHdlSIw5ZOj2YQqgpuX
-	 rB6JX8y7orw4pfhh7TSt4Q1OaRpZPJhEWNSK1YX0=
+	b=rq6NkAth+yv2KCwgocnJ8TITitcrg2q2JOOqDhLbATL96rVxDStW38CbczRG6z31G
+	 0FXD99AVzvhal5fwX7oASkANDsB5RPO9NfUTgxzJnpP7IvzQzWgs0QOrdjybPbZE5G
+	 3eCKc/jg64Ad4XXo9ZPMgx/X1RRuEtghhSbm6790=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Zenla <alex@edera.dev>,
-	Alexander Merritt <alexander@edera.dev>,
-	Ariadne Conill <ariadne@ariadne.space>,
-	Juergen Gross <jgross@suse.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 367/565] 9p/xen: fix release of IRQ
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 617/772] scsi: qla2xxx: Fix NVMe and NPIV connect issue
 Date: Thu, 12 Dec 2024 15:59:22 +0100
-Message-ID: <20241212144326.129553118@linuxfoundation.org>
+Message-ID: <20241212144415.424894338@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Zenla <alex@edera.dev>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit e43c608f40c065b30964f0a806348062991b802d ]
+commit 4812b7796c144f63a1094f79a5eb8fbdad8d7ebc upstream.
 
-Kernel logs indicate an IRQ was double-freed.
+NVMe controller fails to send connect command due to failure to locate
+hw context buffer for NVMe queue 0 (blk_mq_hw_ctx, hctx_idx=0). The
+cause of the issue is NPIV host did not initialize the vha->irq_offset
+field.  This field is given to blk-mq (blk_mq_pci_map_queues) to help
+locate the beginning of IO Queues which in turn help locate NVMe queue
+0.
 
-Pass correct device ID during IRQ release.
+Initialize this field to allow NVMe to work properly with NPIV host.
 
-Fixes: 71ebd71921e45 ("xen/9pfs: connect to the backend")
-Signed-off-by: Alex Zenla <alex@edera.dev>
-Signed-off-by: Alexander Merritt <alexander@edera.dev>
-Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241121225100.5736-1-alexander@edera.dev>
-[Dominique: remove confusing variable reset to 0]
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ kernel: nvme nvme5: Connect command failed, errno: -18
+ kernel: nvme nvme5: qid 0: secure concatenation is not supported
+ kernel: nvme nvme5: NVME-FC{5}: create_assoc failed, assoc_id 2e9100 ret 401
+ kernel: nvme nvme5: NVME-FC{5}: reset: Reconnect attempt failed (401)
+ kernel: nvme nvme5: NVME-FC{5}: Reconnect attempt in 2 seconds
+
+Cc: stable@vger.kernel.org
+Fixes: f0783d43dde4 ("scsi: qla2xxx: Use correct number of vectors for online CPUs")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-6-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/trans_xen.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_mid.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index 716736046a18f..6644ae8cc55ad 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -307,7 +307,7 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
- 		if (!priv->rings[i].intf)
- 			break;
- 		if (priv->rings[i].irq > 0)
--			unbind_from_irqhandler(priv->rings[i].irq, priv->dev);
-+			unbind_from_irqhandler(priv->rings[i].irq, ring);
- 		if (priv->rings[i].data.in) {
- 			for (j = 0;
- 			     j < (1 << priv->rings[i].intf->ring_order);
--- 
-2.43.0
-
+--- a/drivers/scsi/qla2xxx/qla_mid.c
++++ b/drivers/scsi/qla2xxx/qla_mid.c
+@@ -515,6 +515,7 @@ qla24xx_create_vhost(struct fc_vport *fc
+ 		return(NULL);
+ 	}
+ 
++	vha->irq_offset = QLA_BASE_VECTORS;
+ 	host = vha->host;
+ 	fc_vport->dd_data = vha;
+ 	/* New host info */
 
 
 
