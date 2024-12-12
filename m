@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658099EF19F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7760A9EED35
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:43:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 253A1289044
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3767C2847EC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1BF23024C;
-	Thu, 12 Dec 2024 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B35223302;
+	Thu, 12 Dec 2024 15:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4xJJR8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiUiLd99"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4847E216E2D;
-	Thu, 12 Dec 2024 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB768223C44;
+	Thu, 12 Dec 2024 15:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021015; cv=none; b=fmXveS4v+imqiFscSGGDu6CGCemqnxCBKeP5DfmY5jih1X+ZnGBLeuDqMVcInaCkT19C2fnX/X5twLauB5DztQ7IJHVOYqH4Ag4xwI8U/775g2/sFYX+BwwLuG0KsKt/bYX84gzqHiEK4O50gtuVJtaAU2A8s3UneW44gZt5K+w=
+	t=1734018134; cv=none; b=YAuceWXcg3fQlisii58lzjRwpZZREzLWbn7ukJTNrgeffdSvEfLxVPcsHrLIQ/pcNJkcIJupx7+7tjAPcKdXcvhkR9y4v/Lx0518Dp/3oi4s8xqA6jEsgtyCZ3n3IiHSs6UKV+On53UOBaoPAHRTnpGLxMYuOhlWaNuMHVcPs4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021015; c=relaxed/simple;
-	bh=cR4liVtNITZ15wBkoXPriSxvpBWbfdIrmLrxc9+SpYA=;
+	s=arc-20240116; t=1734018134; c=relaxed/simple;
+	bh=gUjsuoa1V/G4UoztsPvneUYkzgpTLC8N1RhiyWy2t1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QcdrsK1EQm2aNqGe6SYUrbj+NM5/x9n79P0NF9+oYXkX/sdCzf7rS9Yoc2T/yJ79PcNrB++OfjPy+QnvFzutXq4pGHVykhTcQ1iKhuiLBy3OIiDCHco3uPQsiabvxftd4kOIdQx4dQp30o9WolAUMZzDM1pZRthcrOk27dQszhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4xJJR8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57224C4CECE;
-	Thu, 12 Dec 2024 16:30:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QWLXTTjKiYcYxF7kwyH69H8V6l4qwEc0BXxsnB5leHq/iJx+JE3zmFJm6dTRgp6veJGaPUZ2vwn/1AqyRCY5WJKg3vPH9orEAqgPjTO8q3N/uO9BEDkOfCLV+loEAE/hlDFtAZF1C8HgKKzGOw6pyYaWUJAznrnd+KiGMUTPtto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiUiLd99; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D15BC4CECE;
+	Thu, 12 Dec 2024 15:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021014;
-	bh=cR4liVtNITZ15wBkoXPriSxvpBWbfdIrmLrxc9+SpYA=;
+	s=korg; t=1734018134;
+	bh=gUjsuoa1V/G4UoztsPvneUYkzgpTLC8N1RhiyWy2t1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4xJJR8juEmsmU4kFoqt7gjyUGsLyO/yLMXob1/OOk/mhGLHj5RR2h2cG/B3yahtY
-	 vtG5lBCRK10kty4oYRmUdYq4ze5E2QxLtS8OQ44Qk8yR4VXO4ALUeJh1TLMfXIbsx0
-	 AscLDFw/UVTqg4Omiu+/whdRRtHXRsLdTezhmDT8=
+	b=UiUiLd99SeZTgRhUhzJD1EzMr8gYaFX5kq6tRuzQTwGFK6LbKXjEkipxagjD/xxZ2
+	 agiSfByUDPkY2u/kfeedUVjr51+zXgcHc0zGJKLkcLQedfqHmEZgSzK9Sxo6NbF+QP
+	 LkpXQKXAteIF81hXmx4w4BoWpLVTnJOhpZayBXKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 582/772] leds: flash: mt6360: Fix device_for_each_child_node() refcounting in error paths
+Subject: [PATCH 6.6 208/356] drm: panel-orientation-quirks: Add quirk for AYA NEO 2 model
 Date: Thu, 12 Dec 2024 15:58:47 +0100
-Message-ID: <20241212144413.990703504@linuxfoundation.org>
+Message-ID: <20241212144252.832392791@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
 
-[ Upstream commit 73b03b27736e440e3009fe1319cbc82d2cd1290c ]
+[ Upstream commit 361ebf5ef843b0aa1704c72eb26b91cf76c3c5b7 ]
 
-The device_for_each_child_node() macro requires explicit calls to
-fwnode_handle_put() upon early exits to avoid memory leaks, and in
-this case the error paths are handled after jumping to
-'out_flash_realease', which misses that required call to
-to decrement the refcount of the child node.
+Add quirk orientation for AYA NEO 2. The name appears without spaces in
+DMI strings. That made it difficult to reuse the 2021 match. Also the
+display is larger in resolution.
 
-A more elegant and robust solution is using the scoped variant of the
-loop, which automatically handles such early exits.
+Tested by the JELOS team that has been patching their own kernel for a
+while now and confirmed by users in the AYA NEO and ChimeraOS discord
+servers.
 
-Fix the child node refcounting in the error paths by using
-device_for_each_child_node_scoped().
-
-Cc: stable@vger.kernel.org
-Fixes: 679f8652064b ("leds: Add mt6360 driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20240927-leds_device_for_each_child_node_scoped-v1-1-95c0614b38c8@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/2b35545b77a9fd8c9699b751ca282226dcecb1dd.1726492131.git.tjakobi@math.uni-bielefeld.de
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/flash/leds-mt6360.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/leds/flash/leds-mt6360.c b/drivers/leds/flash/leds-mt6360.c
-index 2fab335a64252..71c1ddd71f8ea 100644
---- a/drivers/leds/flash/leds-mt6360.c
-+++ b/drivers/leds/flash/leds-mt6360.c
-@@ -797,7 +797,6 @@ static void mt6360_v4l2_flash_release(struct mt6360_priv *priv)
- static int mt6360_led_probe(struct platform_device *pdev)
- {
- 	struct mt6360_priv *priv;
--	struct fwnode_handle *child;
- 	size_t count;
- 	int i = 0, ret;
- 
-@@ -824,7 +823,7 @@ static int mt6360_led_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	device_for_each_child_node(&pdev->dev, child) {
-+	device_for_each_child_node_scoped(&pdev->dev, child) {
- 		struct mt6360_led *led = priv->leds + i;
- 		struct led_init_data init_data = { .fwnode = child, };
- 		u32 reg, led_color;
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 259a0c765bafb..55635c7bfcefc 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -184,6 +184,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
++	}, {	/* AYA NEO AYANEO 2 */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
++		},
++		.driver_data = (void *)&lcd1200x1920_rightside_up,
+ 	}, {	/* AYA NEO 2021 */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYADEVICE"),
 -- 
 2.43.0
 
