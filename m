@@ -1,77 +1,59 @@
-Return-Path: <stable+bounces-102145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DA19EF157
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7900B9EF3CD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F11231894778
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F332317B961
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F7422A80B;
-	Thu, 12 Dec 2024 16:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E8E236F81;
+	Thu, 12 Dec 2024 16:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8sdI4fv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aun2xE22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33140222D7F;
-	Thu, 12 Dec 2024 16:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592F7236938;
+	Thu, 12 Dec 2024 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020147; cv=none; b=Jax3NMsg/AR/aKn84jDE2LJOFaihPgv71cRD6IaGhyrgDLWNA5MJWEARuCKve3DKYPLGve626QglhfrrH1QyQR2vtLenYbOvhOTRI2qzntY3G/NrxLS0OSD0mjShusOWEucKIlF7/vo/BrlRpKX30x5G7shAR3/nufGHykih6jA=
+	t=1734021962; cv=none; b=TxuD6Yj0XlnWegH7gu1L65Ppl1ArvbPQg44xw2+s7IB3OF067EbOXpl9jrB4uvF8naFvrVWpjBe3UtyHYGXlEvOJr+7hKhktBHEPcP/3VQC5EOurvNCQJxvXgKRgkWxg+18y85/7iHCoo+LfSM6tH4DAYewLnoA7T/5tJy31Jr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020147; c=relaxed/simple;
-	bh=iL9KFQwOL83ywQ4qE9O/HvmYj/sSamcPIC1u5zo4FLI=;
+	s=arc-20240116; t=1734021962; c=relaxed/simple;
+	bh=q8ObJ8nIPBQXRUcqxYj2YKTEGhqGNB0pAl9hzIZz824=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2DElTSI3F+8FHD82MqArJpoLzwv4spdHnSeO+B7t6JgtQdnNYLGoHca56SAPfUGTD30b29zt+3+dTuf6qtdWopAksAxn79oP7+NtTuB4FQLU9TsZnMoJufLKIicMssQ98xcz2G04B7Uq6JdX+deWi5oFmOQeZv4wd2+vNaac+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8sdI4fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64373C4CECE;
-	Thu, 12 Dec 2024 16:15:46 +0000 (UTC)
+	 MIME-Version; b=SRCXYrqew7kXmZbjKvHB69sceP/nzjT9LAMoanEI7x9I5vKCF6Y2WSnAVGc06n4c8lf2FtpVJiSWZTEZ2PEs23fNWdoAruQevwKfryZ4Pz2GM8Jat0OcK+Cr7PXq3Jp3/jsEEVPLN+ag1EvD6gaJE7Mpjayy5pSxU94ZBgO2yi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aun2xE22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA19AC4CED0;
+	Thu, 12 Dec 2024 16:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020147;
-	bh=iL9KFQwOL83ywQ4qE9O/HvmYj/sSamcPIC1u5zo4FLI=;
+	s=korg; t=1734021961;
+	bh=q8ObJ8nIPBQXRUcqxYj2YKTEGhqGNB0pAl9hzIZz824=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8sdI4fvdEf3NMSmhtk0uW4h6Hj32ELp0JBGG7ptS/psN2SQGcd/gs8x8Cu0/HwIo
-	 eUe1brh2N6BuHFHQE2VlM+IYmixiCP+/Rzh7/S9UyHinFxTOtQjgXj2FRFA2kcU/iM
-	 DMSOvNm69N5//xhJVDu+xl/EGGGAa1R3N42m2+hw=
+	b=Aun2xE22RMuIzaFMomwzDubxNPCVf24T+/2xYg6FpyUe1HFU7O8Pl+UKdfK64rS6d
+	 mYHIqEarlyA85XuKav2Q7EusuuAnHxBSS2O3D8ZcpCXP4237tw/zkCs+Jm8IFFdRm3
+	 KGmNrkVvNx/3EVYlTowp3hppJ9S1I4ZXWRVZqAPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Alasdair Kergon <agk@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Marc Zyngier <maz@kernel.org>,
+	Ross Burton <ross.burton@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Mark Brown <broonie@kernel.org>,
-	Mike Snitzer <snitzer@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 359/772] dma: allow dma_get_cache_alignment() to be overridden by the arch code
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 109/565] clocksource/drivers:sp804: Make user selectable
 Date: Thu, 12 Dec 2024 15:55:04 +0100
-Message-ID: <20241212144404.751067955@linuxfoundation.org>
+Message-ID: <20241212144315.782768965@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,68 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 8c57da28dc3df4e091474a004b5596c9b88a3be0 upstream.
+[ Upstream commit 0309f714a0908e947af1c902cf6a330cb593e75e ]
 
-On arm64, ARCH_DMA_MINALIGN is larger than most cache line size
-configurations deployed.  Allow an architecture to override
-dma_get_cache_alignment() in order to return a run-time probed value (e.g.
-cache_line_size()).
+The sp804 is currently only user selectable if COMPILE_TEST, this was
+done by commit dfc82faad725 ("clocksource/drivers/sp804: Add
+COMPILE_TEST to CONFIG_ARM_TIMER_SP804") in order to avoid it being
+spuriously offered on platforms that won't have the hardware since it's
+generally only seen on Arm based platforms.  This config is overly
+restrictive, while platforms that rely on the SP804 do select it in
+their Kconfig there are others such as the Arm fast models which have a
+SP804 available but currently unused by Linux.  Relax the dependency to
+allow it to be user selectable on arm and arm64 to avoid surprises and
+in case someone comes up with a use for extra timer hardware.
 
-Link: https://lkml.kernel.org/r/20230612153201.554742-3-catalin.marinas@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Tested-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Alasdair Kergon <agk@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Jerry Snitselaar <jsnitsel@redhat.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Logan Gunthorpe <logang@deltatee.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Mike Snitzer <snitzer@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dfc82faad725 ("clocksource/drivers/sp804: Add COMPILE_TEST to CONFIG_ARM_TIMER_SP804")
+Reported-by: Ross Burton <ross.burton@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241001-arm64-vexpress-sp804-v3-1-0a2d3f7883e4@kernel.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-mapping.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clocksource/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -544,6 +544,7 @@ static inline int dma_set_min_align_mask
- 	return 0;
- }
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 08f8cb944a2ac..6382dad202207 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -375,7 +375,8 @@ config ARM_GT_INITIAL_PRESCALER_VAL
+ 	  This affects CPU_FREQ max delta from the initial frequency.
  
-+#ifndef dma_get_cache_alignment
- static inline int dma_get_cache_alignment(void)
- {
- #ifdef ARCH_HAS_DMA_MINALIGN
-@@ -551,6 +552,7 @@ static inline int dma_get_cache_alignmen
- #endif
- 	return 1;
- }
-+#endif
- 
- static inline void *dmam_alloc_coherent(struct device *dev, size_t size,
- 		dma_addr_t *dma_handle, gfp_t gfp)
+ config ARM_TIMER_SP804
+-	bool "Support for Dual Timer SP804 module" if COMPILE_TEST
++	bool "Support for Dual Timer SP804 module"
++	depends on ARM || ARM64 || COMPILE_TEST
+ 	depends on GENERIC_SCHED_CLOCK && HAVE_CLK
+ 	select CLKSRC_MMIO
+ 	select TIMER_OF if OF
+-- 
+2.43.0
+
 
 
 
