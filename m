@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3C19EECC9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 844AD9EF196
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59B46281FF6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16BD2189AA9E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCE92210CD;
-	Thu, 12 Dec 2024 15:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FB12397AA;
+	Thu, 12 Dec 2024 16:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="188VHO3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gtk/UQkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5396921E085;
-	Thu, 12 Dec 2024 15:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8A1226545;
+	Thu, 12 Dec 2024 16:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017883; cv=none; b=Wv8ZEvDPqYnIAjsMWpzd9EijsI0+3Q9zaNtp/f6NJkIc9CYsdp0ItJPZxqsaAwgiwiGtRseZeMVlcc85HxVq37C2rQYNAFx7FNeKEtB2iTZlKSOZ/FL7rfHTMvBgaA28QJB2cr/6lLEHpLsx+2t+oS4e3MxDl1S4jl40Rw+HHwI=
+	t=1734020612; cv=none; b=YEKf9xpctN1Dph3Yz48M9Hlo4gX20z/3fu5L25Vm+OaOWw56c24dfsFMPB4Wlk0ynsNVcp1jDKwnh7AeFBsoh1j0DIYZgET5nDeZenz5kU8qLU7+aFz95N5TOY5KDu1dqSIvnCBSS8HeZJnnXt8J5fNSIPm1ICY57BUCVVxDxNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017883; c=relaxed/simple;
-	bh=J3WXlYtgEAdz4MtpAMLwDP+203XIW+CH38hz1DoHx3s=;
+	s=arc-20240116; t=1734020612; c=relaxed/simple;
+	bh=c4kvDavTnGq5DdOxHJVl2pf5vq8NtoXV1lp/Lfg/riA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aKJZU2gh1B+RCypdBMRmSCaqn9pq0DjMBYK3TCUxx5CH/5ev2JRxEss1qIsQKgVujIUn/hTTjTiI7kv7bbwOCbBLaN9xVRS/GqtKxcp0NrP2mjvPVrv/ai92fDG2PQJrakeOYRfcGxljOY9hvfBUY6mWmr7/l6pznfz/K2zrfPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=188VHO3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA67C4CECE;
-	Thu, 12 Dec 2024 15:38:02 +0000 (UTC)
+	 MIME-Version; b=RwttQJgLDJAKfM18R33Fw0xSg3/VAlsHG5hc44gCnfHkriKcFwx/Yc9XstiuXT5uPcs5dNT2jvC2EZ29vkKAglPSZKqOEyf7D+e9uiBXVaf6Jmk50twdikAxhbFMlSFY7Jys2fG03Gq+WKXk8v99Vk/cn3Zqq2skaR1U5octQbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gtk/UQkA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA9CC4CECE;
+	Thu, 12 Dec 2024 16:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017883;
-	bh=J3WXlYtgEAdz4MtpAMLwDP+203XIW+CH38hz1DoHx3s=;
+	s=korg; t=1734020612;
+	bh=c4kvDavTnGq5DdOxHJVl2pf5vq8NtoXV1lp/Lfg/riA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=188VHO3GKofNIkviXYosSeq4V958BDtau44dCl5tKejs4K3rnbEFAsQGVXqcZoLtT
-	 Ki8f/Bo6VklCgEPwgxexKYSLdFjxvHcb8Ub0u8I0qlW0Au/HvI+wdxIN8vmopIW0Os
-	 dXupfseDfa2QzypKOUH9A+kA712CMPmmaEbNbqc0=
+	b=Gtk/UQkAdI76zne5sCqCeuhMRvD16a46LWnbTcvi/b+a+ccTZbCAYblpweIoS2x28
+	 JtCCYPzBTaoE05+wv+fjjTN3hMSW+MWy2J8VSeJBbRTCdHAAQr4pHY3BHlhQHEaVV4
+	 MP+Etqch9rX7ZBfifC8WbUuy2cG/3n2ijGkn8rIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenxing Chen <chenzhenxing@uniontech.com>,
-	Xu Rao <raoxu@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.6 139/356] HID: wacom: fix when get product name maybe null pointer
+	Andy Jackson <andy@xylanta.com>,
+	Ken Aitchison <ken@xylanta.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 513/772] can: gs_usb: add VID/PID for Xylanta SAINT3 product family
 Date: Thu, 12 Dec 2024 15:57:38 +0100
-Message-ID: <20241212144250.134250232@linuxfoundation.org>
+Message-ID: <20241212144411.152172679@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 59548215b76be98cf3422eea9a67d6ea578aca3d upstream.
+[ Upstream commit 69e2326a21ef409d6c709cb990565331727b9f27 ]
 
-Due to incorrect dev->product reporting by certain devices, null
-pointer dereferences occur when dev->product is empty, leading to
-potential system crashes.
+Add support for the Xylanta SAINT3 product family.
 
-This issue was found on EXCELSIOR DL37-D05 device with
-Loongson-LS3A6000-7A2000-DL37 motherboard.
-
-Kernel logs:
-[   56.470885] usb 4-3: new full-speed USB device number 4 using ohci-pci
-[   56.671638] usb 4-3: string descriptor 0 read error: -22
-[   56.671644] usb 4-3: New USB device found, idVendor=056a, idProduct=0374, bcdDevice= 1.07
-[   56.671647] usb 4-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[   56.678839] hid-generic 0003:056A:0374.0004: hiddev0,hidraw3: USB HID v1.10 Device [HID 056a:0374] on usb-0000:00:05.0-3/input0
-[   56.697719] CPU 2 Unable to handle kernel paging request at virtual address 0000000000000000, era == 90000000066e35c8, ra == ffff800004f98a80
-[   56.697732] Oops[#1]:
-[   56.697734] CPU: 2 PID: 2742 Comm: (udev-worker) Tainted: G           OE      6.6.0-loong64-desktop #25.00.2000.015
-[   56.697737] Hardware name: Inspur CE520L2/C09901N000000000, BIOS 2.09.00 10/11/2024
-[   56.697739] pc 90000000066e35c8 ra ffff800004f98a80 tp 9000000125478000 sp 900000012547b8a0
-[   56.697741] a0 0000000000000000 a1 ffff800004818b28 a2 0000000000000000 a3 0000000000000000
-[   56.697743] a4 900000012547b8f0 a5 0000000000000000 a6 0000000000000000 a7 0000000000000000
-[   56.697745] t0 ffff800004818b2d t1 0000000000000000 t2 0000000000000003 t3 0000000000000005
-[   56.697747] t4 0000000000000000 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
-[   56.697748] t8 0000000000000000 u0 0000000000000000 s9 0000000000000000 s0 900000011aa48028
-[   56.697750] s1 0000000000000000 s2 0000000000000000 s3 ffff800004818e80 s4 ffff800004810000
-[   56.697751] s5 90000001000b98d0 s6 ffff800004811f88 s7 ffff800005470440 s8 0000000000000000
-[   56.697753]    ra: ffff800004f98a80 wacom_update_name+0xe0/0x300 [wacom]
-[   56.697802]   ERA: 90000000066e35c8 strstr+0x28/0x120
-[   56.697806]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-[   56.697816]  PRMD: 0000000c (PPLV0 +PIE +PWE)
-[   56.697821]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-[   56.697827]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
-[   56.697831] ESTAT: 00010000 [PIL] (IS= ECode=1 EsubCode=0)
-[   56.697835]  BADV: 0000000000000000
-[   56.697836]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000)
-[   56.697838] Modules linked in: wacom(+) bnep bluetooth rfkill qrtr nls_iso8859_1 nls_cp437 snd_hda_codec_conexant snd_hda_codec_generic ledtrig_audio snd_hda_codec_hdmi snd_hda_intel snd_intel_dspcfg snd_hda_codec snd_hda_core snd_hwdep snd_pcm snd_timer snd soundcore input_leds mousedev led_class joydev deepin_netmonitor(OE) fuse nfnetlink dmi_sysfs ip_tables x_tables overlay amdgpu amdxcp drm_exec gpu_sched drm_buddy radeon drm_suballoc_helper i2c_algo_bit drm_ttm_helper r8169 ttm drm_display_helper spi_loongson_pci xhci_pci cec xhci_pci_renesas spi_loongson_core hid_generic realtek gpio_loongson_64bit
-[   56.697887] Process (udev-worker) (pid: 2742, threadinfo=00000000aee0d8b4, task=00000000a9eff1f3)
-[   56.697890] Stack : 0000000000000000 ffff800004817e00 0000000000000000 0000251c00000000
-[   56.697896]         0000000000000000 00000011fffffffd 0000000000000000 0000000000000000
-[   56.697901]         0000000000000000 1b67a968695184b9 0000000000000000 90000001000b98d0
-[   56.697906]         90000001000bb8d0 900000011aa48028 0000000000000000 ffff800004f9d74c
-[   56.697911]         90000001000ba000 ffff800004f9ce58 0000000000000000 ffff800005470440
-[   56.697916]         ffff800004811f88 90000001000b98d0 9000000100da2aa8 90000001000bb8d0
-[   56.697921]         0000000000000000 90000001000ba000 900000011aa48028 ffff800004f9d74c
-[   56.697926]         ffff8000054704e8 90000001000bb8b8 90000001000ba000 0000000000000000
-[   56.697931]         90000001000bb8d0 9000000006307564 9000000005e666e0 90000001752359b8
-[   56.697936]         9000000008cbe400 900000000804d000 9000000005e666e0 0000000000000000
-[   56.697941]         ...
-[   56.697944] Call Trace:
-[   56.697945] [<90000000066e35c8>] strstr+0x28/0x120
-[   56.697950] [<ffff800004f98a80>] wacom_update_name+0xe0/0x300 [wacom]
-[   56.698000] [<ffff800004f9ce58>] wacom_parse_and_register+0x338/0x900 [wacom]
-[   56.698050] [<ffff800004f9d74c>] wacom_probe+0x32c/0x420 [wacom]
-[   56.698099] [<9000000006307564>] hid_device_probe+0x144/0x260
-[   56.698103] [<9000000005e65d68>] really_probe+0x208/0x540
-[   56.698109] [<9000000005e661dc>] __driver_probe_device+0x13c/0x1e0
-[   56.698112] [<9000000005e66620>] driver_probe_device+0x40/0x100
-[   56.698116] [<9000000005e6680c>] __device_attach_driver+0x12c/0x180
-[   56.698119] [<9000000005e62bc8>] bus_for_each_drv+0x88/0x160
-[   56.698123] [<9000000005e66468>] __device_attach+0x108/0x260
-[   56.698126] [<9000000005e63918>] device_reprobe+0x78/0x100
-[   56.698129] [<9000000005e62a68>] bus_for_each_dev+0x88/0x160
-[   56.698132] [<9000000006304e54>] __hid_bus_driver_added+0x34/0x80
-[   56.698134] [<9000000005e62bc8>] bus_for_each_drv+0x88/0x160
-[   56.698137] [<9000000006304df0>] __hid_register_driver+0x70/0xa0
-[   56.698142] [<9000000004e10fe4>] do_one_initcall+0x104/0x320
-[   56.698146] [<9000000004f38150>] do_init_module+0x90/0x2c0
-[   56.698151] [<9000000004f3a3d8>] init_module_from_file+0xb8/0x120
-[   56.698155] [<9000000004f3a590>] idempotent_init_module+0x150/0x3a0
-[   56.698159] [<9000000004f3a890>] sys_finit_module+0xb0/0x140
-[   56.698163] [<900000000671e4e8>] do_syscall+0x88/0xc0
-[   56.698166] [<9000000004e12404>] handle_syscall+0xc4/0x160
-[   56.698171] Code: 0011958f  00150224  5800cd85 <2a00022c> 00150004  4000c180  0015022c  03400000  03400000
-[   56.698192] ---[ end trace 0000000000000000 ]---
-
-Fixes: 09dc28acaec7 ("HID: wacom: Improve generic name generation")
-Reported-by: Zhenxing Chen <chenzhenxing@uniontech.com>
-Co-developed-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://patch.msgid.link/B31757FE8E1544CF+20241125052616.18261-1-wangyuli@uniontech.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andy Jackson <andy@xylanta.com>
+Cc: Ken Aitchison <ken@xylanta.com>
+Tested-by: Andy Jackson <andy@xylanta.com>
+Link: https://lore.kernel.org/all/20240625140353.769373-1-mkl@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: 889b2ae9139a ("can: gs_usb: add usb endpoint address detection at driver probe step")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_sys.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2234,7 +2234,8 @@ static void wacom_update_name(struct wac
- 		if (hid_is_usb(wacom->hdev)) {
- 			struct usb_interface *intf = to_usb_interface(wacom->hdev->dev.parent);
- 			struct usb_device *dev = interface_to_usbdev(intf);
--			product_name = dev->product;
-+			if (dev->product != NULL)
-+				product_name = dev->product;
- 		}
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 257e5f10ff1be..6dd4665c82900 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -38,6 +38,9 @@
+ #define USB_ABE_CANDEBUGGER_FD_VENDOR_ID 0x16d0
+ #define USB_ABE_CANDEBUGGER_FD_PRODUCT_ID 0x10b8
  
- 		if (wacom->hdev->bus == BUS_I2C) {
++#define USB_XYLANTA_SAINT3_VENDOR_ID 0x16d0
++#define USB_XYLANTA_SAINT3_PRODUCT_ID 0x0f30
++
+ #define GS_USB_ENDPOINT_IN 1
+ #define GS_USB_ENDPOINT_OUT 2
+ 
+@@ -1448,6 +1451,8 @@ static const struct usb_device_id gs_usb_table[] = {
+ 				      USB_CES_CANEXT_FD_PRODUCT_ID, 0) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(USB_ABE_CANDEBUGGER_FD_VENDOR_ID,
+ 				      USB_ABE_CANDEBUGGER_FD_PRODUCT_ID, 0) },
++	{ USB_DEVICE_INTERFACE_NUMBER(USB_XYLANTA_SAINT3_VENDOR_ID,
++				      USB_XYLANTA_SAINT3_PRODUCT_ID, 0) },
+ 	{} /* Terminating entry */
+ };
+ 
+-- 
+2.43.0
+
 
 
 
