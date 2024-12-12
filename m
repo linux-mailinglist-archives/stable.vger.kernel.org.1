@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CD79EF15C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FFD9EEB46
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 259E61899E02
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF46B188C718
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEF2242A96;
-	Thu, 12 Dec 2024 16:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAD021504F;
+	Thu, 12 Dec 2024 15:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoTdLLvP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkRym9sD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CA9223E94;
-	Thu, 12 Dec 2024 16:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0D513BC26;
+	Thu, 12 Dec 2024 15:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020361; cv=none; b=RIKl+Jr2vZkhJopAP9y/tuGWDyNJQLqdyMZIXqj1kUvxWpPBfaAJLDEbSPBIylOHfgM9ayXbAK3vZQZJpsqkdkXpcc1ikAcDQe6KKmyQsORptGerfRnrmDrs6/uu8pc+4soiy5W6KUEiJaAduI/3Yx9I9UIQcmkd+vwe3uKXl0M=
+	t=1734016667; cv=none; b=cgPftURLhLJpce0QLKi3XnqfTuhWtgoL/5t4wbGT32aoc75enf6cZmo3WgrJsaW9IwOtPPk4r4dbE038tsLN81vEv5YUNAVv2Ffe9CE3niMJObXKHLWYmG+ATD0hcnUwstWwI/AkUPKZKDz5OmnrUqrgErLcRE0K9xKzyLT6biw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020361; c=relaxed/simple;
-	bh=IehZTnUj2/4WtXHZPeKiBZbd4T4LWbne+ezo2uFd0lo=;
+	s=arc-20240116; t=1734016667; c=relaxed/simple;
+	bh=VPDfMqqzcNfuo+DLxvNMR2GACQvivbs1G0wk4wDrvTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocvVQG64h5FQtANOiQfy+otmJZ6zt9H7vwgAnuYrGkYH36NHw0cT359WUOH1jPTZQlL5+ZQWk3pnLbXysqBprMdt9qgUrT4pztIA2HyTvXtGDw8FHvEruxttxLBpaoy1zhtAWgFWvjUpdAFMYFDQXsJ2oUbjs22+IPmlnXL82ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PoTdLLvP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E443C4AF09;
-	Thu, 12 Dec 2024 16:19:20 +0000 (UTC)
+	 MIME-Version; b=MWtYcnVWiflLy25miifSSThIV0XvUMPtJ1pqjdia9pH1SuEbEHWikAFMZVK/n+YSGyzCBniYGjztJR5pbUoRwuUgPFKIKmidHuqN0b3RDms6amjpCPlqz03zzRtJEXsHM+eCCdLNB59ZCXQ+wP1C/PxuMzQ47+vz3lPPbPn5PXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkRym9sD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C6CC4CECE;
+	Thu, 12 Dec 2024 15:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020361;
-	bh=IehZTnUj2/4WtXHZPeKiBZbd4T4LWbne+ezo2uFd0lo=;
+	s=korg; t=1734016666;
+	bh=VPDfMqqzcNfuo+DLxvNMR2GACQvivbs1G0wk4wDrvTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PoTdLLvPG3xv4ZrCfbYtRqi54Y08foTnzjTU91OdoBcIor7Mf+hcMbiVzaAA2aCx6
-	 ajVENQPZyXfKCT6TENH91iQ2Py8Bzl1GOANf7LklczVHwsaqq9xoIM6n5rcTeymW6e
-	 +TOUjBNxDnVaOD9HN5JiNoVlr4n/x2JlPbnZ7azE=
+	b=IkRym9sDSuFoNBgYcH4nCovSSrP7tzu/GYup5NBL/RCL6P9AtmoIAttHzXIqsXMx5
+	 Okc9CeAei7AiMGOur1AN708LdsH2Hhfk2lVKmMmGifGOmnHeutR3kZAoKZy6LARLql
+	 1sXAyUVSf6+xLvmVGouc1fhlqdJgDQek3OBqP1qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Liu Jian <liujian56@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 447/772] sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport
+Subject: [PATCH 6.12 223/466] kselftest/arm64: Dont leak pipe fds in pac.exec_sign_all()
 Date: Thu, 12 Dec 2024 15:56:32 +0100
-Message-ID: <20241212144408.392331207@linuxfoundation.org>
+Message-ID: <20241212144315.590653329@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 4db9ad82a6c823094da27de4825af693a3475d51 ]
+[ Upstream commit 27141b690547da5650a420f26ec369ba142a9ebb ]
 
-Since transport->sock has been set to NULL during reset transport,
-XPRT_SOCK_UPD_TIMEOUT also needs to be cleared. Otherwise, the
-xs_tcp_set_socket_timeouts() may be triggered in xs_tcp_send_request()
-to dereference the transport->sock that has been set to NULL.
+The PAC exec_sign_all() test spawns some child processes, creating pipes
+to be stdin and stdout for the child. It cleans up most of the file
+descriptors that are created as part of this but neglects to clean up the
+parent end of the child stdin and stdout. Add the missing close() calls.
 
-Fixes: 7196dbb02ea0 ("SUNRPC: Allow changing of the TCP timeout parameters on the fly")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241111-arm64-pac-test-collisions-v1-1-171875f37e44@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtsock.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/arm64/pauth/pac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 190dae11f634a..b9dc8e197dde8 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1130,6 +1130,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
- 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
-+	clear_bit(XPRT_SOCK_UPD_TIMEOUT, &transport->sock_state);
+diff --git a/tools/testing/selftests/arm64/pauth/pac.c b/tools/testing/selftests/arm64/pauth/pac.c
+index b743daa772f55..5a07b3958fbf2 100644
+--- a/tools/testing/selftests/arm64/pauth/pac.c
++++ b/tools/testing/selftests/arm64/pauth/pac.c
+@@ -182,6 +182,9 @@ int exec_sign_all(struct signatures *signed_vals, size_t val)
+ 		return -1;
+ 	}
+ 
++	close(new_stdin[1]);
++	close(new_stdout[0]);
++
+ 	return 0;
  }
  
- static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
 -- 
 2.43.0
 
