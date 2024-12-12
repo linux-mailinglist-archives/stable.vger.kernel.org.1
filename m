@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0403A9EF3C9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E829EEB4E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90191284DC9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20633282797
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9D4225412;
-	Thu, 12 Dec 2024 16:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDC71487CD;
+	Thu, 12 Dec 2024 15:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A29gjP1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2t0qL7Ov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854282F44;
-	Thu, 12 Dec 2024 16:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285822054F8;
+	Thu, 12 Dec 2024 15:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022750; cv=none; b=c/Rc1BtkGOJ6Taf+KpTDXdxR28W/rBYOJZZFa8+NnMyDFaFkmud0+trgzZfMIFl+xWAphIJ90gmA7vUvicTe29nQf8Ri16S9d9KXsPUnza9AbHroJL5Eg59Uuzec0A/ATZh6j33rQodP7APblaBU3jiWZh6BfUmtO6Tl17xgy0Y=
+	t=1734017007; cv=none; b=uhn7ygF5UVR0NO5xMQYq/et8xTw6bpVKiQkdXhVN5EzJxoH369s6FXBCbjUkGpzdXaj3/c++ARSnkmDLjBBAgIsNSYiUWba1zxYlvC/Z/zAsCOztdfKSxhW8RmQkh9jxEXamltAtVucN7v1n+UP9fzV+vncbOMXmlAHIfqlABC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022750; c=relaxed/simple;
-	bh=Y1Zb6ay5QWCGLsbplNjEcHsFy6ZiKnZEDCmyjoe7KEU=;
+	s=arc-20240116; t=1734017007; c=relaxed/simple;
+	bh=5JwtVALgFHovo6fRMNPeZN+MNHcr5LPE+XCsTk0/eoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c/rsYIpx/tgVMsQuhqQJeW7AqHB0fDYYHEUVJDF1Wd3BYKdwvSCti/QCJw/eA7BJ7f/IlJGBa45L/GXvQe8dRhKfGmJA4V0GT+2K2qwNUYGeQpaj6rVGTxqZnMkBS/NnX5UkLIiSkyt8Weoo5zN++5XwA5Amw+MbworMXajOwBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A29gjP1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CE4C4CECE;
-	Thu, 12 Dec 2024 16:59:09 +0000 (UTC)
+	 MIME-Version; b=QRmr3pANEF4LNozUkgf5Kxg7udlOuEJpyxviV1aS0FukVy1GWt6i0Y2w7aQgTPGf8eXOQ9+2OigghYt4I5YKfC++kpx6MINnmxA9sBusqzXX777yv+rRIInBY1IPJeTF10/4V3SdV/yXKwwBGYcXzNVY01Cxxb+x/R3vLkLmRig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2t0qL7Ov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D67FC4CECE;
+	Thu, 12 Dec 2024 15:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022750;
-	bh=Y1Zb6ay5QWCGLsbplNjEcHsFy6ZiKnZEDCmyjoe7KEU=;
+	s=korg; t=1734017007;
+	bh=5JwtVALgFHovo6fRMNPeZN+MNHcr5LPE+XCsTk0/eoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A29gjP1q1o4Vq4N6InMOdpE0EDmuQv3p/mTQb9uRpcb+Ktl+wZpd745+xb9dOgske
-	 n3f+HClSus/MBhcgXs5GPLCjPxkHqN8/Xzcg0idpcf/2lXs7svUeftjW6pxaRF1G8S
-	 g4/GHojZVR08HLUlRNwZiD4iHjBl1Zmu1o+scTtc=
+	b=2t0qL7OvZ8/xWBQgJmyFO7hiFf34qPgq5j8ufDu+L8aty8cLznMgLxpqvdf5Z2aIT
+	 cwts8Rts3dRSqBNVd964UkGNUB0+X2Ym/TmnsXxkKIWjWTph+afL6IQkphiY/ePeq0
+	 0Xl0FOMMdn4vM0z2J/zz5KeJ1x6JGdi8UgYTCZhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Subject: [PATCH 5.15 327/565] spi: Fix acpi deferred irq probe
-Date: Thu, 12 Dec 2024 15:58:42 +0100
-Message-ID: <20241212144324.524533763@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Esben Haabendal <esben@geanix.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 354/466] pinctrl: freescale: fix COMPILE_TEST error with PINCTRL_IMX_SCU
+Date: Thu, 12 Dec 2024 15:58:43 +0100
+Message-ID: <20241212144320.773155779@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: Esben Haabendal <esben@geanix.com>
 
-commit d24cfee7f63d6b44d45a67c5662bd1cc48e8b3ca upstream.
+[ Upstream commit 58414a31c5713afb5449fd74a26a843d34cc62e8 ]
 
-When probing spi device take care of deferred probe of ACPI irq gpio
-similar like for OF/DT case.
+When PINCTRL_IMX_SCU was selected by PINCTRL_IMX8DXL or PINCTRL_IMX8QM
+combined with COMPILE_TEST on a non-arm platforms, the IMX_SCU
+dependency could not be enabled.
 
->From practical standpoint this fixes issue with vsc-tp driver on
-Dell XP 9340 laptop, which try to request interrupt with spi->irq
-equal to -EPROBE_DEFER and fail to probe with the following error:
-
-vsc-tp spi-INTC10D0:00: probe with driver vsc-tp failed with error -22
-
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Fixes: 33ada67da352 ("ACPI / spi: attach GPIO IRQ from ACPI description to SPI device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com> # Dell XPS9320, ov01a10
-Link: https://patch.msgid.link/20241122094224.226773-1-stanislaw.gruszka@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410031439.GyTSa0kX-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202410030852.q0Hukplf-lkp@intel.com/
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+Link: https://lore.kernel.org/20241003-imx-pinctrl-compile-test-fix-v1-1-145ca1948cc3@geanix.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/pinctrl/freescale/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -400,6 +400,16 @@ static int spi_probe(struct device *dev)
- 			spi->irq = 0;
- 	}
+diff --git a/drivers/pinctrl/freescale/Kconfig b/drivers/pinctrl/freescale/Kconfig
+index 3b59d71890045..139bc0fb8a9db 100644
+--- a/drivers/pinctrl/freescale/Kconfig
++++ b/drivers/pinctrl/freescale/Kconfig
+@@ -20,7 +20,7 @@ config PINCTRL_IMX_SCMI
  
-+	if (has_acpi_companion(dev) && spi->irq < 0) {
-+		struct acpi_device *adev = to_acpi_device_node(dev->fwnode);
-+
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
-+		if (spi->irq == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+		if (spi->irq < 0)
-+			spi->irq = 0;
-+	}
-+
- 	ret = dev_pm_domain_attach(dev, true);
- 	if (ret)
- 		return ret;
-@@ -2406,9 +2416,6 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+ config PINCTRL_IMX_SCU
+ 	tristate
+-	depends on IMX_SCU
++	depends on IMX_SCU || COMPILE_TEST
+ 	select PINCTRL_IMX
  
--	if (spi->irq < 0)
--		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
--
- 	acpi_device_set_enumerated(adev);
- 
- 	adev->power.flags.ignore_parent = true;
+ config PINCTRL_IMX1_CORE
+-- 
+2.43.0
+
 
 
 
