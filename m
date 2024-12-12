@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 947D09EF2EA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D17869EEA67
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ED2D289839
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A27188DB93
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304B1237FD7;
-	Thu, 12 Dec 2024 16:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF501217640;
+	Thu, 12 Dec 2024 15:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esx52c9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kge9zgXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEA1237FC7;
-	Thu, 12 Dec 2024 16:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9932139B2;
+	Thu, 12 Dec 2024 15:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021977; cv=none; b=uL5jQRV63Ac7u0HZeD5WCpN6wreaG9XpddorxNq4Cr8rC+glQx60I+QS/2KYTnXzKNNgWpOMhLJkMl8O1uz2eK7blKrSxSOeEVTcfRS0EJDIOyL3HMV4F1kQYU++ejl086xdbF+ogNe1Dvlh+BGHkw6tnm9HhZlnfQAzRXLCsUk=
+	t=1734016120; cv=none; b=oqnvafTzlrVbGxbKzdhv1rJOFPVbcFixQz/jjd9ylbkP3qYu29I4Ogj+BEMJqDztSlR4AP+MUg9qvErygKLUnbBPYe8LIXYLd30ZCxNPWcj0Hg7xs6h441MCkOHPPqWcdabdt0druezOLNoISHGyxEQNAdGqwrrAjR4nCMMRrcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021977; c=relaxed/simple;
-	bh=C7WKbigQYJR6LtMHei8ktX5heNaQOEswEZ1FNs7RJsU=;
+	s=arc-20240116; t=1734016120; c=relaxed/simple;
+	bh=VX6C67ibXUvWVzII7dYlyksddRhOgfwixC2UVQsr6SE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aV0Oa6Xm66GN+lWqj0xfVRa5bxPHQjK4lbW9SdR6PbWYRBWeXk7damE/SUZtXaHgi6cXnY6jfRFhR9TtXXKjtpgxq1oTVZABwlT/4D5RbiOjSIPpb8H9wXKNFI8BQvT8IzutGJa5lRayEE3TEXuH5FhOQklCIaDvI16NSknpUI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esx52c9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348B8C4CED0;
-	Thu, 12 Dec 2024 16:46:15 +0000 (UTC)
+	 MIME-Version; b=SYR3axH0jhsoG5imMM0DcXFZE6EZenwKk8IOdiFtoDjzvDwnGzvcHGo/CFdnQSt9WrUk2C9pJMDife0G40e2kn6+NyULaHdGL3Snw+bm7oTE7SluYkegeyRm2vMyFGu6625gL6SXYkS0fv+oU15nl5JANf4RmHgaloXscDkUbJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kge9zgXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCA7C4CECE;
+	Thu, 12 Dec 2024 15:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021976;
-	bh=C7WKbigQYJR6LtMHei8ktX5heNaQOEswEZ1FNs7RJsU=;
+	s=korg; t=1734016120;
+	bh=VX6C67ibXUvWVzII7dYlyksddRhOgfwixC2UVQsr6SE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esx52c9nHpWlHdp7w+82fNgPPHCVJ3e+rQBvEKVWKWR9BVuQ7nHLQTwvjV0XQrR2b
-	 swuOe4Ar2y04EAqmrOS066RCDMfM2LPUfCjlcFiGRymAi1j6fV1XbevDHVCWPAWewU
-	 u0+CJNJpfjdnr3DwIwk9JBj3OYYsNLW3UP4R3CtQ=
+	b=Kge9zgXW52bTeQM8Fyft5iNUbagV7tDrhhlWTwrtY5/hgNXpVGB/VliM0XobNy045
+	 NKeGCtGZupzGktZ228PUQ9IAjqacmi3xW0KIc7yYtH6+t2FWUAoqF2Nw4bGV6J8uH/
+	 EKdbeDqy0G+w6Vd350B+eXwZya5TkcgI2Kuz/leU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	stable@kernel.org,
 	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/565] soc: qcom: geni-se: fix array underflow in geni_se_clk_tbl_get()
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 139/466] ALSA: usb-audio: Fix a DMA to stack memory bug
 Date: Thu, 12 Dec 2024 15:55:08 +0100
-Message-ID: <20241212144315.949300788@linuxfoundation.org>
+Message-ID: <20241212144312.292557085@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 78261cb08f06c93d362cab5c5034bf5899bc7552 ]
+commit f7d306b47a24367302bd4fe846854e07752ffcd9 upstream.
 
-This loop is supposed to break if the frequency returned from
-clk_round_rate() is the same as on the previous iteration.  However,
-that check doesn't make sense on the first iteration through the loop.
-It leads to reading before the start of these->clk_perf_tbl[] array.
+The usb_get_descriptor() function does DMA so we're not allowed
+to use a stack buffer for that.  Doing DMA to the stack is not portable
+all architectures.  Move the "new_device_descriptor" from being stored
+on the stack and allocate it with kmalloc() instead.
 
-Fixes: eddac5af0654 ("soc: qcom: Add GENI based QUP Wrapper driver")
+Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices")
+Cc: stable@kernel.org
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/8cd12678-f44a-4b16-a579-c8f11175ee8c@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley.mountain
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/qcom-geni-se.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/quirks.c |   42 +++++++++++++++++++++++++++---------------
+ 1 file changed, 27 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/soc/qcom/qcom-geni-se.c b/drivers/soc/qcom/qcom-geni-se.c
-index 7d649d2cf31e0..751992ed6c57f 100644
---- a/drivers/soc/qcom/qcom-geni-se.c
-+++ b/drivers/soc/qcom/qcom-geni-se.c
-@@ -594,7 +594,8 @@ int geni_se_clk_tbl_get(struct geni_se *se, unsigned long **tbl)
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -555,7 +555,7 @@ int snd_usb_create_quirk(struct snd_usb_
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
+ 	int err;
  
- 	for (i = 0; i < MAX_CLK_PERF_LEVEL; i++) {
- 		freq = clk_round_rate(se->clk, freq + 1);
--		if (freq <= 0 || freq == se->clk_perf_tbl[i - 1])
-+		if (freq <= 0 ||
-+		    (i > 0 && freq == se->clk_perf_tbl[i - 1]))
- 			break;
- 		se->clk_perf_tbl[i] = freq;
- 	}
--- 
-2.43.0
-
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
+@@ -566,15 +566,19 @@ static int snd_usb_extigy_boot_quirk(str
+ 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
++
++		new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
++		if (!new_device_descriptor)
++			return -ENOMEM;
+ 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&new_device_descriptor, sizeof(new_device_descriptor));
++				new_device_descriptor, sizeof(*new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
+ 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-				new_device_descriptor.bNumConfigurations);
++				new_device_descriptor->bNumConfigurations);
+ 		else
+-			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
++			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
+ 		err = usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -906,7 +910,7 @@ static void mbox2_setup_48_24_magic(stru
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -941,15 +945,19 @@ static int snd_usb_mbox2_boot_quirk(stru
+ 
+ 	dev_dbg(&dev->dev, "device initialised!\n");
+ 
++	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
++	if (!new_device_descriptor)
++		return -ENOMEM;
++
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&new_device_descriptor, sizeof(new_device_descriptor));
++		new_device_descriptor, sizeof(*new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
+-	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
+ 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
+-			new_device_descriptor.bNumConfigurations);
++			new_device_descriptor->bNumConfigurations);
+ 	else
+-		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
++		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
+@@ -1259,7 +1267,7 @@ static void mbox3_setup_defaults(struct
+ static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
+-	struct usb_device_descriptor new_device_descriptor;
++	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
+ 	int err;
+ 	int descriptor_size;
+ 
+@@ -1272,15 +1280,19 @@ static int snd_usb_mbox3_boot_quirk(stru
+ 
+ 	dev_dbg(&dev->dev, "MBOX3: device initialised!\n");
+ 
++	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
++	if (!new_device_descriptor)
++		return -ENOMEM;
++
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&new_device_descriptor, sizeof(new_device_descriptor));
++		new_device_descriptor, sizeof(*new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "MBOX3: error usb_get_descriptor: %d\n", err);
+-	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
+ 		dev_dbg(&dev->dev, "MBOX3: error too large bNumConfigurations: %d\n",
+-			new_device_descriptor.bNumConfigurations);
++			new_device_descriptor->bNumConfigurations);
+ 	else
+-		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
++		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
 
 
 
