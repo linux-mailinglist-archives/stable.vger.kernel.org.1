@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7049EEE15
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009749EF1C8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8896D188DE9B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4548281C32
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CC42054F8;
-	Thu, 12 Dec 2024 15:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1502358AF;
+	Thu, 12 Dec 2024 16:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAcP5lXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj7WH1kP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3DE218594;
-	Thu, 12 Dec 2024 15:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499602358A6;
+	Thu, 12 Dec 2024 16:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018419; cv=none; b=UCdH+ms6o9RtcJLXnQoJS366xMmlpX+8Ux9YCKM00SfRvAC9Bon+znH+/neMTljHCREKCX1rJBsrQPxDSTKePn1hXA0oouRN13pan/HHFVsmQQKiKyW9apkgohuwA3wzvWNXTdSpSBbL5xCeeWTLTD3LtPkPHOEEotr96K5OTY0=
+	t=1734021153; cv=none; b=lsay3CxsrFSQRYq8V4WC9gRxIjO18js0VypLAumGcQ4HPxkoYkp5J32LsNbsHs9/ubxGERBih2PtFS7jkM3Ni0ZkDvnLE4VVIwwC0jWVbF2xaYOB6sHYFmDnL2SpEDMXmRVbvFDrZjAOuqA/fraTr8NGGbym/ZZudjb+Jksus1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018419; c=relaxed/simple;
-	bh=OBevgeBIw+A1BGossCi51jOjAajAhPVQWa2baLnDEIQ=;
+	s=arc-20240116; t=1734021153; c=relaxed/simple;
+	bh=+NaXVwwVA/Lfwt+J6MguqT24pm0rqiJngAysW0OqDl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYMs9MLIpFI45DW2oW0ngGs+dbu8i57DweQxqkO7fXDjEcK23avKal21EIpoB4fvstakauHsFExwIdRnaoB5nxnAb54wEIGiOolOLlA4HwZso+Su5hHOKb5mqTImG9V5ZGijVQyBXhsURcfWMq6gf9iwXUgcnx2aARq6sOwn4D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAcP5lXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5AEC4CECE;
-	Thu, 12 Dec 2024 15:46:58 +0000 (UTC)
+	 MIME-Version; b=osIIrLxCK8l/Qnh4lwt+WFLcQoxc3rZmybwvKn6eu9bvho25pnDSG/D1cBWkGHJtZNHL/XXHkXxVVz9YLUClyI85Y/z5xArZ+Z4bcBuBxLj4yESnIgM6csf8cJ7MQSg/UtMmg3w9bMnaPJfb1uPb6k9Nhy2P8bQLmmQWvuEBPxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lj7WH1kP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B72C4CEF5;
+	Thu, 12 Dec 2024 16:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018418;
-	bh=OBevgeBIw+A1BGossCi51jOjAajAhPVQWa2baLnDEIQ=;
+	s=korg; t=1734021153;
+	bh=+NaXVwwVA/Lfwt+J6MguqT24pm0rqiJngAysW0OqDl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MAcP5lXqWmEwZcDqZuwweJ0pPYIxywIqcRbNuZvK3Ls6f22wrJkJBlv3PGtDYOrt/
-	 bTwonaE75wghOBQ4MeduIKOhyX2tCQawGznVSyTmror5q1U+ac1mJ/ucE+g2vxWyyK
-	 b9qmthbrfn8RENBCNgp6mePFL7t5a10XTJqYNMX8=
+	b=lj7WH1kPQ6FxsL6pXy8yFCEoylaIzaXPWJhYAViqwLQlpS0xmggzA5XDV6vye5oS4
+	 PwEcrNTfXZaabJnLHW96vlelCY1f4Ea14NyGoBN1d8RrhCWh0r/36x9WycPkVBsdeR
+	 QnCCGxeMs1twYXeJ5RLcb0DYfkSRLg8nKBRwmE+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 286/356] verification/dot2: Improve dot parser robustness
+Subject: [PATCH 6.1 660/772] drm/radeon/r600_cs: Fix possible int overflow in r600_packet3_check()
 Date: Thu, 12 Dec 2024 16:00:05 +0100
-Message-ID: <20241212144255.877357067@linuxfoundation.org>
+Message-ID: <20241212144417.193447494@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-[ Upstream commit 571f8b3f866a6d990a50fe5c89fe0ea78784d70b ]
+[ Upstream commit a1e2da6a5072f8abe5b0feaa91a5bcd9dc544a04 ]
 
-This patch makes the dot parser used by dot2c and dot2k slightly more
-robust, namely:
-* allows parsing files with the gv extension (GraphViz)
-* correctly parses edges with any indentation
-    * used to work only with a single character (e.g. '\t')
-Additionally it fixes a couple of warnings reported by pylint such as
-wrong indentation and comparison to False instead of `not ...`
+It is possible, although unlikely, that an integer overflow will occur
+when the result of radeon_get_ib_value() is shifted to the left.
 
-Link: https://lore.kernel.org/20241017064238.41394-2-gmonaco@redhat.com
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Avoid it by casting one of the operands to larger data type (u64).
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/verification/dot2/automata.py | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/radeon/r600_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/verification/dot2/automata.py b/tools/verification/dot2/automata.py
-index baffeb960ff0b..bdeb98baa8b06 100644
---- a/tools/verification/dot2/automata.py
-+++ b/tools/verification/dot2/automata.py
-@@ -29,11 +29,11 @@ class Automata:
+diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
+index 6cf54a747749d..780352f794e91 100644
+--- a/drivers/gpu/drm/radeon/r600_cs.c
++++ b/drivers/gpu/drm/radeon/r600_cs.c
+@@ -2104,7 +2104,7 @@ static int r600_packet3_check(struct radeon_cs_parser *p,
+ 				return -EINVAL;
+ 			}
  
-     def __get_model_name(self):
-         basename = ntpath.basename(self.__dot_path)
--        if basename.endswith(".dot") == False:
-+        if not basename.endswith(".dot") and not basename.endswith(".gv"):
-             print("not a dot file")
-             raise Exception("not a dot file: %s" % self.__dot_path)
- 
--        model_name = basename[0:-4]
-+        model_name = ntpath.splitext(basename)[0]
-         if model_name.__len__() == 0:
-             raise Exception("not a dot file: %s" % self.__dot_path)
- 
-@@ -68,9 +68,9 @@ class Automata:
-     def __get_cursor_begin_events(self):
-         cursor = 0
-         while self.__dot_lines[cursor].split()[0] != "{node":
--           cursor += 1
-+            cursor += 1
-         while self.__dot_lines[cursor].split()[0] == "{node":
--           cursor += 1
-+            cursor += 1
-         # skip initial state transition
-         cursor += 1
-         return cursor
-@@ -94,11 +94,11 @@ class Automata:
-                 initial_state = state[7:]
-             else:
-                 states.append(state)
--                if self.__dot_lines[cursor].__contains__("doublecircle") == True:
-+                if "doublecircle" in self.__dot_lines[cursor]:
-                     final_states.append(state)
-                     has_final_states = True
- 
--                if self.__dot_lines[cursor].__contains__("ellipse") == True:
-+                if "ellipse" in self.__dot_lines[cursor]:
-                     final_states.append(state)
-                     has_final_states = True
- 
-@@ -110,7 +110,7 @@ class Automata:
-         # Insert the initial state at the bein og the states
-         states.insert(0, initial_state)
- 
--        if has_final_states == False:
-+        if not has_final_states:
-             final_states.append(initial_state)
- 
-         return states, initial_state, final_states
-@@ -120,7 +120,7 @@ class Automata:
-         cursor = self.__get_cursor_begin_events()
- 
-         events = []
--        while self.__dot_lines[cursor][1] == '"':
-+        while self.__dot_lines[cursor].lstrip()[0] == '"':
-             # transitions have the format:
-             # "all_fired" -> "both_fired" [ label = "disable_irq" ];
-             #  ------------ event is here ------------^^^^^
-@@ -161,7 +161,7 @@ class Automata:
-         # and we are back! Let's fill the matrix
-         cursor = self.__get_cursor_begin_events()
- 
--        while self.__dot_lines[cursor][1] == '"':
-+        while self.__dot_lines[cursor].lstrip()[0] == '"':
-             if self.__dot_lines[cursor].split()[1] == "->":
-                 line = self.__dot_lines[cursor].split()
-                 origin_state = line[0].replace('"','').replace(',','_')
+-			offset = radeon_get_ib_value(p, idx+1) << 8;
++			offset = (u64)radeon_get_ib_value(p, idx+1) << 8;
+ 			if (offset != track->vgt_strmout_bo_offset[idx_value]) {
+ 				DRM_ERROR("bad STRMOUT_BASE_UPDATE, bo offset does not match: 0x%llx, 0x%x\n",
+ 					  offset, track->vgt_strmout_bo_offset[idx_value]);
 -- 
 2.43.0
 
