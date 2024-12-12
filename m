@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41389EF84A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B1C9EF9C1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEB1B16BFDC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AC66189D98E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C2221E086;
-	Thu, 12 Dec 2024 17:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4770D225A2C;
+	Thu, 12 Dec 2024 17:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDgNdYJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zl+Xfw14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F7C2153DD;
-	Thu, 12 Dec 2024 17:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0185A223E69;
+	Thu, 12 Dec 2024 17:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024781; cv=none; b=mgfuPuUqWsYI/fPWdIw6X6B8g5atuhB0zdCGcOdTHGnKGTOomR+L66fbuiAeBuVOSthM+UeRzqDLSi+h6HG/7BJthF77grxWJd+zQN2aZhAWTSy/T2MQMmCLWVLDt8Muaz5Bf/q2+v0Q+UIYmw46aTP7ET2nygANqU40KGoO14Y=
+	t=1734025614; cv=none; b=hMVu8yLIt1HYpG/F0MbRmLkJOvoFbM1XoHBAuPSFmlItlBNnl/AhYWZx841cpzyNkE7GXCWbcdmyC5hE78009AW1OH4n9b+GLHQn+pSFayX3vxeoQDxf+BebTJas8JlngJa6S/2bVbXqDhQ9I3HO4B2lTKxmOFW3FsxCl8yV7DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024781; c=relaxed/simple;
-	bh=LQm3OYB8NbWcr2vfNOajd36tADvRcmbzNUCiX5T9JsI=;
+	s=arc-20240116; t=1734025614; c=relaxed/simple;
+	bh=4WIXS27e7dcO08HI7B4MQagWKAAC29aCtvByWSTQpYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/XTmBFgK24UX4wJr/ThLtMK6xWDXF3WxVOdsi0/qaRN5RKJA25qSfBzYSatu6b1U6va5QaiALeaxnssFK4MLLid/5pOQDkHR5f2Wiw5pwZJYg6ZYUwrPFoI2/C3n3jieyaNMbH6GVs48kPkTxKuyt0SROSn4qsH0SV63CvV3xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDgNdYJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB8FC4CECE;
-	Thu, 12 Dec 2024 17:33:00 +0000 (UTC)
+	 MIME-Version; b=TkhyA2pKmVDgaYeMGz+I0ExKId5zPVt3jHZ1W/u2JNGRQOLISSV9xqgdF4a5l8SIqBgaqAhE9DoPw7hdAHbMBZN/PXkPTp2ELLIKWu/HDjQTYuUPKmhLlwU+BQaaow7rv08m0GWkRDKW1x+U89Z9fU81h82gtJFBm6G8C90nTvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zl+Xfw14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83281C4CECE;
+	Thu, 12 Dec 2024 17:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024781;
-	bh=LQm3OYB8NbWcr2vfNOajd36tADvRcmbzNUCiX5T9JsI=;
+	s=korg; t=1734025613;
+	bh=4WIXS27e7dcO08HI7B4MQagWKAAC29aCtvByWSTQpYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDgNdYJnSTiUmafG/sJI8HMSx3Ep6NdxvDgB9GvVUjRIOFq2ZS2lYycIp45y0qU8r
-	 SShGX6Q7MYDBfKdTfdOueLxrraZnQi55qXqM2Q7Zt2u1fpRMZ21BU+O0DSbo+Icib1
-	 rdOmHHASKKn6aYvEnvgBFagcFL/oZQFJtvBTzVHM=
+	b=zl+Xfw14s/q6wzzXZCn7BO75iz33ht7nuBdoK6+WPfGpfh2iBv9RpjVGf9dfwC98J
+	 /hjsjxkcS5nXNlLo2hDxqs+mWx1aNU6Z6SHxwHSMe+mwpG97OBzEhQZ+WBPviEO7dl
+	 ucEU2/42y+E01+4v09AbeDv99W5xRaH86gmll7gM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Zhao <Victor.Zhao@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ivan Solodovnikov <solodovnikov.ia@phystech.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 408/459] drm/amdgpu: skip amdgpu_device_cache_pci_state under sriov
+Subject: [PATCH 5.4 228/321] dccp: Fix memory leak in dccp_feat_change_recv
 Date: Thu, 12 Dec 2024 16:02:26 +0100
-Message-ID: <20241212144309.882529813@linuxfoundation.org>
+Message-ID: <20241212144238.984118894@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Zhao <Victor.Zhao@amd.com>
+From: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
 
-[ Upstream commit afe260df55ac280cd56306248cb6d8a6b0db095c ]
+[ Upstream commit 22be4727a8f898442066bcac34f8a1ad0bc72e14 ]
 
-Under sriov, host driver will save and restore vf pci cfg space during
-reset. And during device init, under sriov, pci_restore_state happens after
-fullaccess released, and it can have race condition with mmio protection
-enable from host side leading to missing interrupts.
+If dccp_feat_push_confirm() fails after new value for SP feature was accepted
+without reconciliation ('entry == NULL' branch), memory allocated for that value
+with dccp_feat_clone_sp_val() is never freed.
 
-So skip amdgpu_device_cache_pci_state for sriov.
+Here is the kmemleak stack for this:
 
-Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
-Acked-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+unreferenced object 0xffff88801d4ab488 (size 8):
+  comm "syz-executor310", pid 1127, jiffies 4295085598 (age 41.666s)
+  hex dump (first 8 bytes):
+    01 b4 4a 1d 80 88 ff ff                          ..J.....
+  backtrace:
+    [<00000000db7cabfe>] kmemdup+0x23/0x50 mm/util.c:128
+    [<0000000019b38405>] kmemdup include/linux/string.h:465 [inline]
+    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:371 [inline]
+    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:367 [inline]
+    [<0000000019b38405>] dccp_feat_change_recv net/dccp/feat.c:1145 [inline]
+    [<0000000019b38405>] dccp_feat_parse_options+0x1196/0x2180 net/dccp/feat.c:1416
+    [<00000000b1f6d94a>] dccp_parse_options+0xa2a/0x1260 net/dccp/options.c:125
+    [<0000000030d7b621>] dccp_rcv_state_process+0x197/0x13d0 net/dccp/input.c:650
+    [<000000001f74c72e>] dccp_v4_do_rcv+0xf9/0x1a0 net/dccp/ipv4.c:688
+    [<00000000a6c24128>] sk_backlog_rcv include/net/sock.h:1041 [inline]
+    [<00000000a6c24128>] __release_sock+0x139/0x3b0 net/core/sock.c:2570
+    [<00000000cf1f3a53>] release_sock+0x54/0x1b0 net/core/sock.c:3111
+    [<000000008422fa23>] inet_wait_for_connect net/ipv4/af_inet.c:603 [inline]
+    [<000000008422fa23>] __inet_stream_connect+0x5d0/0xf70 net/ipv4/af_inet.c:696
+    [<0000000015b6f64d>] inet_stream_connect+0x53/0xa0 net/ipv4/af_inet.c:735
+    [<0000000010122488>] __sys_connect_file+0x15c/0x1a0 net/socket.c:1865
+    [<00000000b4b70023>] __sys_connect+0x165/0x1a0 net/socket.c:1882
+    [<00000000f4cb3815>] __do_sys_connect net/socket.c:1892 [inline]
+    [<00000000f4cb3815>] __se_sys_connect net/socket.c:1889 [inline]
+    [<00000000f4cb3815>] __x64_sys_connect+0x6e/0xb0 net/socket.c:1889
+    [<00000000e7b1e839>] do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+    [<0000000055e91434>] entry_SYSCALL_64_after_hwframe+0x67/0xd1
+
+Clean up the allocated memory in case of dccp_feat_push_confirm() failure
+and bail out with an error reset code.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: e77b8363b2ea ("dccp: Process incoming Change feature-negotiation options")
+Signed-off-by: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
+Link: https://patch.msgid.link/20241126143902.190853-1-solodovnikov.ia@phystech.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/dccp/feat.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index e833c02fabff3..2f42471e578ad 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5088,6 +5088,9 @@ bool amdgpu_device_cache_pci_state(struct pci_dev *pdev)
- 	struct amdgpu_device *adev = drm_to_adev(dev);
- 	int r;
+diff --git a/net/dccp/feat.c b/net/dccp/feat.c
+index 9c3b5e0562342..7647306802f1e 100644
+--- a/net/dccp/feat.c
++++ b/net/dccp/feat.c
+@@ -1156,8 +1156,12 @@ static u8 dccp_feat_change_recv(struct list_head *fn, u8 is_mandatory, u8 opt,
+ 			goto not_valid_or_not_known;
+ 		}
  
-+	if (amdgpu_sriov_vf(adev))
-+		return false;
-+
- 	r = pci_save_state(pdev);
- 	if (!r) {
- 		kfree(adev->pci_state);
+-		return dccp_feat_push_confirm(fn, feat, local, &fval);
++		if (dccp_feat_push_confirm(fn, feat, local, &fval)) {
++			kfree(fval.sp.vec);
++			return DCCP_RESET_CODE_TOO_BUSY;
++		}
+ 
++		return 0;
+ 	} else if (entry->state == FEAT_UNSTABLE) {	/* 6.6.2 */
+ 		return 0;
+ 	}
 -- 
 2.43.0
 
