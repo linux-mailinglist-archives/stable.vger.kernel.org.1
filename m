@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF3D9EF122
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0519EED0F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1FCC29F2BA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8605166DC3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBD4225411;
-	Thu, 12 Dec 2024 16:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACF121CFEA;
+	Thu, 12 Dec 2024 15:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GarNuds1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="narqVZCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E592210CA;
-	Thu, 12 Dec 2024 16:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571A92185B1;
+	Thu, 12 Dec 2024 15:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020698; cv=none; b=bjhLSfypZwMlP9ULkhGBPAtV2Cj1m/7+GaVvYtDEbBEMR2EfCp1b/nc6zvlICwKP7axjozg7IrHf4omT++XidJOQGZJwBYHrPKzEi8KXq/LouQGNJnRfl2hTPcP2kaR2/5xT2qwxVpMvw2rEzMu2EXZvPdkm65LrPbxqoxp2OIg=
+	t=1734017912; cv=none; b=tZkX8IWP98kyAhM7hLw4DmH+qv7WF43dInYwQ7O8r/4EJyX3OzxkLGY54UBZipzlCAG+hkc5FFGPrZoAOi/raAcGtWnnSBbqDwJHRJ2kYbh6UgPedN+J0xlVImZaCnzgG5pDGBCciimcV2YfDYbdfWECHPQ1T2iwOcQtfr+LwQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020698; c=relaxed/simple;
-	bh=Kf8Hb53+DCHMsGs+Q3klelNyZiFbIB5eRTu9iccom30=;
+	s=arc-20240116; t=1734017912; c=relaxed/simple;
+	bh=j03e9Oe2VyBNAm7KMcecabemlx0AyODyYVBbkXYsgOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLPxCrdG4OkigSHOSKWNx6G403dVMMhP2e4EGpkr/ekZCDbXnalG/bSddZgj/5NsJCJ1kFD0v2dV+F+JCQq/kcB3XEGTGOpEru0UR1oORz0rQ1mYx7MZKIATCNGCTaLxV4HmKE5dMj+U+7hcP3a6afRdPzxZTNCj8/1TfI8CaRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GarNuds1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB63BC4CECE;
-	Thu, 12 Dec 2024 16:24:57 +0000 (UTC)
+	 MIME-Version; b=K1Ox7oj2vL9EUx6hJcGNy22lCCxAiEvA9hvVV+6l4XI9hPJpdpm27JMVPMTBLQ/d+TjGZRiBvMX8LqiRso8EnS1NVEzAbt8LfT2Dtj0vynruj+y2tkjhMjfQ7QKrCLTEr3ZSE+PZ7Nr41Ffn79FMIanZkAYsB1izPkhmr/04oe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=narqVZCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754F9C4CECE;
+	Thu, 12 Dec 2024 15:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020698;
-	bh=Kf8Hb53+DCHMsGs+Q3klelNyZiFbIB5eRTu9iccom30=;
+	s=korg; t=1734017911;
+	bh=j03e9Oe2VyBNAm7KMcecabemlx0AyODyYVBbkXYsgOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GarNuds1gU6Yqh/gygn+V0ujQ0emzs72cxMA3V4eihNbCKJ2y6Qz0bezw6xmfUw55
-	 d/pVeI73Se2p0SKU1KDx1J1BbLrO4F5LEAVLJxgG5L7l7d2GYwDGagpL0GIUU6UDek
-	 eSKSuKUw9mBYbViAGghilJK2gAwP2kcnPoLx0Eg0=
+	b=narqVZCqzO4SNoaQjohwQ/hx3T4vkCOillwWfe5KahZ9K6PbqRLR3Pc+aRbPJr31Q
+	 iRf4dV1j3JMvtb+7VoFSq1MNF20Az59YySairlEwg9R77H3TvYNmVju7umg9GTBs0c
+	 y/oM4a6P2P5XWBh0vomlv7zrV5RaunQ70xXbTbdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marek Vasut <marex@denx.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 519/772] can: ifi_canfd: ifi_canfd_handle_lec_err(): fix {rx,tx}_errors statistics
+	Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 145/356] can: mcp251xfd: mcp251xfd_get_tef_len(): work around erratum DS80000789E 6.
 Date: Thu, 12 Dec 2024 15:57:44 +0100
-Message-ID: <20241212144411.414418203@linuxfoundation.org>
+Message-ID: <20241212144250.370314266@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit bb03d568bb21b4afe7935d1943bcf68ddea3ea45 ]
+commit 30447a1bc0e066e492552b3e5ffeb63c1605dfe2 upstream.
 
-The ifi_canfd_handle_lec_err() function was incorrectly incrementing only
-the receive error counter, even in cases of bit or acknowledgment errors
-that occur during transmission.
+Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
+broken TEF FIFO tail index erratum") introduced
+mcp251xfd_get_tef_len() to get the number of unhandled transmit events
+from the Transmit Event FIFO (TEF).
 
-Fix the issue by incrementing the appropriate counter based on the
-type of error.
+As the TEF has no head index, the driver uses the TX-FIFO's tail index
+instead, assuming that send frames are completed.
 
-Fixes: 5bbd655a8bd0 ("can: ifi: Add more detailed error reporting")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Link: https://patch.msgid.link/20241122221650.633981-8-dario.binacchi@amarulasolutions.com
+When calculating the number of unhandled TEF events, that commit
+didn't take mcp2518fd erratum DS80000789E 6. into account. According
+to that erratum, the FIFOCI bits of a FIFOSTA register, here the
+TX-FIFO tail index might be corrupted.
+
+However here it seems the bit indicating that the TX-FIFO is
+empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct while the
+TX-FIFO tail index is.
+
+Assume that the TX-FIFO is indeed empty if:
+- Chip's head and tail index are equal (len == 0).
+- The TX-FIFO is less than half full.
+  (The TX-FIFO empty case has already been checked at the
+   beginning of this function.)
+- No free buffers in the TX ring.
+
+If the TX-FIFO is assumed to be empty, assume that the TEF is full and
+return the number of elements in the TX-FIFO (which equals the number
+of TEF elements).
+
+If these assumptions are false, the driver might read to many objects
+from the TEF. mcp251xfd_handle_tefif_one() checks the sequence numbers
+and will refuse to process old events.
+
+Reported-by: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
+Closes: https://patch.msgid.link/CAJ7t6HgaeQ3a_OtfszezU=zB-FqiZXqrnATJ3UujNoQJJf7GgA@mail.gmail.com
+Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
+Tested-by: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20241126-mcp251xfd-fix-length-calculation-v2-1-c2ed516ed6ba@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/ifi_canfd/ifi_canfd.c | 58 ++++++++++++++++++---------
- 1 file changed, 40 insertions(+), 18 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c |   29 +++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/ifi_canfd/ifi_canfd.c b/drivers/net/can/ifi_canfd/ifi_canfd.c
-index 07eaf724a5727..de26f5788ff5f 100644
---- a/drivers/net/can/ifi_canfd/ifi_canfd.c
-+++ b/drivers/net/can/ifi_canfd/ifi_canfd.c
-@@ -391,36 +391,55 @@ static int ifi_canfd_handle_lec_err(struct net_device *ndev)
- 		return 0;
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
+@@ -21,6 +21,11 @@ static inline bool mcp251xfd_tx_fifo_sta
+ 	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
+ }
  
- 	priv->can.can_stats.bus_error++;
--	stats->rx_errors++;
- 
- 	/* Propagate the error condition to the CAN stack. */
- 	skb = alloc_can_err_skb(ndev, &cf);
--	if (unlikely(!skb))
--		return 0;
- 
- 	/* Read the error counter register and check for new errors. */
--	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-+	if (likely(skb))
-+		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_OVERLOAD_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_OVERLOAD;
-+	if (errctr & IFI_CANFD_ERROR_CTR_OVERLOAD_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_OVERLOAD;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_ACK_ERROR_FIRST)
--		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+	if (errctr & IFI_CANFD_ERROR_CTR_ACK_ERROR_FIRST) {
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_BIT0_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+	if (errctr & IFI_CANFD_ERROR_CTR_BIT0_ERROR_FIRST) {
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT0;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_BIT1_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+	if (errctr & IFI_CANFD_ERROR_CTR_BIT1_ERROR_FIRST) {
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT1;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_STUFF_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+	if (errctr & IFI_CANFD_ERROR_CTR_STUFF_ERROR_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_STUFF;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_CRC_ERROR_FIRST)
--		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+	if (errctr & IFI_CANFD_ERROR_CTR_CRC_ERROR_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_FORM_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_FORM;
-+	if (errctr & IFI_CANFD_ERROR_CTR_FORM_ERROR_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_FORM;
-+	}
- 
- 	/* Reset the error counter, ack the IRQ and re-enable the counter. */
- 	writel(IFI_CANFD_ERROR_CTR_ER_RESET, priv->base + IFI_CANFD_ERROR_CTR);
-@@ -428,6 +447,9 @@ static int ifi_canfd_handle_lec_err(struct net_device *ndev)
- 	       priv->base + IFI_CANFD_INTERRUPT);
- 	writel(IFI_CANFD_ERROR_CTR_ER_ENABLE, priv->base + IFI_CANFD_ERROR_CTR);
- 
-+	if (unlikely(!skb))
-+		return 0;
++static inline bool mcp251xfd_tx_fifo_sta_less_than_half_full(u32 fifo_sta)
++{
++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFHRFHIF;
++}
 +
- 	netif_receive_skb(skb);
+ static inline int
+ mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
+ 				 u8 *tef_tail)
+@@ -147,7 +152,29 @@ mcp251xfd_get_tef_len(struct mcp251xfd_p
+ 	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
  
- 	return 1;
--- 
-2.43.0
-
+ 	len = (chip_tx_tail << shift) - (tail << shift);
+-	*len_p = len >> shift;
++	len >>= shift;
++
++	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
++	 * bits of a FIFOSTA register, here the TX-FIFO tail index
++	 * might be corrupted.
++	 *
++	 * However here it seems the bit indicating that the TX-FIFO
++	 * is empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct
++	 * while the TX-FIFO tail index is.
++	 *
++	 * We assume the TX-FIFO is empty, i.e. all pending CAN frames
++	 * haven been send, if:
++	 * - Chip's head and tail index are equal (len == 0).
++	 * - The TX-FIFO is less than half full.
++	 *   (The TX-FIFO empty case has already been checked at the
++	 *    beginning of this function.)
++	 * - No free buffers in the TX ring.
++	 */
++	if (len == 0 && mcp251xfd_tx_fifo_sta_less_than_half_full(fifo_sta) &&
++	    mcp251xfd_get_tx_free(tx_ring) == 0)
++		len = tx_ring->obj_num;
++
++	*len_p = len;
+ 
+ 	return 0;
+ }
 
 
 
