@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-103492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A2A9EF82A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B919EF9E4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2538D1897489
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730C1171DB9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0064B213E6F;
-	Thu, 12 Dec 2024 17:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0CC228CA2;
+	Thu, 12 Dec 2024 17:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipzaMDLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="suBhCTmY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B76215710;
-	Thu, 12 Dec 2024 17:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986682288FB;
+	Thu, 12 Dec 2024 17:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024732; cv=none; b=fbGX7qEivUsM5YVgQziEYYIjXC1myLc6ImBdDTqCZdRCDxfSUNJ3J2OOVcyC2sxeLEVTVkULy30BrR3kUf07hYzCYgChgE/sqtkOx8dexwcp1s2bTp5Ad39C7tjSuJHx/yuSHjgtUikbueIjjRq0a1gjQUk0n156ETFdkyLm0K8=
+	t=1734025663; cv=none; b=mmhpStNIXPHejApZrhJrjF6ohHhLS+xdZJjXuq3lkUh7aAJZjAM/I5fHNSchoWWbGvJyazH89J8IQ+Hee2VxhiFjx7INH4xtQ8kCmfBB7r/jruFwtoA3a2jZ1LYSzI7mujztqF3LhYhrzbgFDA7UlI7AHy0yN86Wd/DIvYCy1Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024732; c=relaxed/simple;
-	bh=S2Q4vfhm9hYL7w5Grrp69UKIFGL43vPPCgIJmqT+Wa4=;
+	s=arc-20240116; t=1734025663; c=relaxed/simple;
+	bh=NenJrlwSUY0L2Zq/bP0yovmssxaMbhrcKruhOwcA/yA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eyGXz3Nso5it7DQv9yxhe9B7estbwaQmEu6oaQ9knYzEBgT8EvVkiOBDZy36bcP3H0dKrOnheWMogQXkb8WBxfB5DKLz4rORisuGagYDkn67NAybaJdrUR90r/kqencp7jgBgpb53QVpgZOaqizBurSY12bNLF+q4BR+7tOoV3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipzaMDLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A28C4CECE;
-	Thu, 12 Dec 2024 17:32:12 +0000 (UTC)
+	 MIME-Version; b=sVI2diaIpwQcaXsTBLHqd9LB7e6ig3FOxtV2JvV5j1knCEBkm2MLLNnQhxnLQmJ03kAL+wRhcwRF6TINPHs+I228ZOE451hk6sE0O4ROVIdgcQLpb/91Cq7IHK6OSsm2Xv63yVnrh2dPedaFh7cjcQv+43X2ti7NMvCvIqQ9wIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=suBhCTmY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EB1C4CECE;
+	Thu, 12 Dec 2024 17:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024732;
-	bh=S2Q4vfhm9hYL7w5Grrp69UKIFGL43vPPCgIJmqT+Wa4=;
+	s=korg; t=1734025663;
+	bh=NenJrlwSUY0L2Zq/bP0yovmssxaMbhrcKruhOwcA/yA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ipzaMDLl6yIBsnVXCMMXGFCyS27O03lqqxMLMaovJ4BbdgEaiEYbYrNBRfhKxuAl5
-	 bxF0K0cArRA8GS7WzdoKnCMnbsChKfagIi63A1ukWH0UoToAg96EJTb4HbXWOkZrqX
-	 je1MDvM5dsjyY9uJ7Q1r+HCJRchWW1SaECF3apWs=
+	b=suBhCTmYPM2kZMS+zj4zjZt8bntFj95+zg3Jajko9XHpaG8g1HbUf/mO1I0n7rZ+D
+	 SNYPUT4iF+DodOCqb0LPNtZl3xwB4ZuR+98UjyTGihTuol02hV67qkU3c2/2fi24ip
+	 8AAS4eIbJ6Ncwq844Zc5t+stADEb8RBRlyNQmYFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 394/459] af_packet: avoid erroring out after sock_init_data() in packet_create()
-Date: Thu, 12 Dec 2024 16:02:12 +0100
-Message-ID: <20241212144309.327496547@linuxfoundation.org>
+	Yuan Can <yuancan@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.4 215/321] dm thin: Add missing destroy_work_on_stack()
+Date: Thu, 12 Dec 2024 16:02:13 +0100
+Message-ID: <20241212144238.471724049@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
+commit e74fa2447bf9ed03d085b6d91f0256cc1b53f1a8 upstream.
 
-After sock_init_data() the allocated sk object is attached to the provided
-sock object. On error, packet_create() frees the sk object leaving the
-dangling pointer in the sock object on return. Some other code may try
-to use this pointer and cause use-after-free.
+This commit add missed destroy_work_on_stack() operations for pw->worker in
+pool_work_wait().
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e7a3e871d895 ("dm thin: cleanup noflush_work to use a proper completion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/md/dm-thin.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index ce3e20bcde4ab..01a191c8194b4 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3386,18 +3386,18 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	if (sock->type == SOCK_PACKET)
- 		sock->ops = &packet_ops_spkt;
+--- a/drivers/md/dm-thin.c
++++ b/drivers/md/dm-thin.c
+@@ -2477,6 +2477,7 @@ static void pool_work_wait(struct pool_w
+ 	init_completion(&pw->complete);
+ 	queue_work(pool->wq, &pw->worker);
+ 	wait_for_completion(&pw->complete);
++	destroy_work_on_stack(&pw->worker);
+ }
  
-+	po = pkt_sk(sk);
-+	err = packet_alloc_pending(po);
-+	if (err)
-+		goto out_sk_free;
-+
- 	sock_init_data(sock, sk);
- 
--	po = pkt_sk(sk);
- 	init_completion(&po->skb_completion);
- 	sk->sk_family = PF_PACKET;
- 	po->num = proto;
- 	po->xmit = dev_queue_xmit;
- 
--	err = packet_alloc_pending(po);
--	if (err)
--		goto out2;
--
- 	packet_cached_dev_reset(po);
- 
- 	sk->sk_destruct = packet_sock_destruct;
-@@ -3432,7 +3432,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	preempt_enable();
- 
- 	return 0;
--out2:
-+out_sk_free:
- 	sk_free(sk);
- out:
- 	return err;
--- 
-2.43.0
-
+ /*----------------------------------------------------------------*/
 
 
 
