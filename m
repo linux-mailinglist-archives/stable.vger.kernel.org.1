@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2E29EF386
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296099EF1C5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE9E291ECB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80E73189E907
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9693B22915E;
-	Thu, 12 Dec 2024 16:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3038C239BB9;
+	Thu, 12 Dec 2024 16:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fk+Sqt7s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdJ+6g6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5418922912F;
-	Thu, 12 Dec 2024 16:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E5B226542;
+	Thu, 12 Dec 2024 16:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022451; cv=none; b=JoN9Nggyq+6cd6+RXIsbvLrriI9+Y2xhoADBDDmOsZt5+V+H6Bqp1Gf78/PV3nIrHAtHFtft4Of1Ra0qioqdJ5/Yarzm1swDpivbrfJ9oSePS5SJbOLDGmENdpGZPKRcggPNHHIKRFk6NuKNu4pcgyncnkHcS39KtiZb4+fK2iU=
+	t=1734020650; cv=none; b=T4mFx2ZHcTGF0BMMW1UZe1LK7FIQXqheWCa0ae14K0vivfQh4hJN7oaXOW5ZePpcBRLQ1AKn/XkASBEN9MpUvpMsmy62slmXWbU+YT8e9wIhjvqkan6FS+wDav+ySEtFZvr/kH3TOTKlOfH/LnwDQ8kdBv3ALG6EahN8OV6ETyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022451; c=relaxed/simple;
-	bh=H3XB7QHcEUv5gh6L9mZbD0G0BH1UPAvcmVGcT8UFqKs=;
+	s=arc-20240116; t=1734020650; c=relaxed/simple;
+	bh=dRZJehB3n6RtxCf5M0YAkkJ7cXvm46JlXQSu5060sM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qkF3yAnmnwDImwetkG/NisIUWb/2PiU6dHtj1cR8DxzCr20BvMcTTHwyzYllmYq5UNqsjHiL7SOjp0DKP5Mmb3oWTr+bXcqQtFuEb35lw8HQsZu60rF3t6yH0Q47yCXFk53UrdRwHzV26bvZgHL+stw2rbRv40+IcUODMEf0vzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fk+Sqt7s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5ABDC4CECE;
-	Thu, 12 Dec 2024 16:54:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S7agilXCBQfx8soMDAWwvNW4zdOKJEOOgxuR7UgitdDtjPRbVqLhmv6GbHq3Vn21Ke3hiXvhnoDxx5w/NCV5QxR8WCY+ESE0UB3Ur7pX7s8U/yH6Wy7Q4HDMRHz1U76mEtr62xaCGurOv6z0xfqESdbt27g9PGI/C3JEBtk6X3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdJ+6g6t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA10FC4CECE;
+	Thu, 12 Dec 2024 16:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022451;
-	bh=H3XB7QHcEUv5gh6L9mZbD0G0BH1UPAvcmVGcT8UFqKs=;
+	s=korg; t=1734020649;
+	bh=dRZJehB3n6RtxCf5M0YAkkJ7cXvm46JlXQSu5060sM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fk+Sqt7siwYCWxJhRFmjXttdWMrvZadcBpot5Nctiy0aIKyEtCSByT8NgCeFkwL4a
-	 rWdx4Q9r09cJlDdk6Kj00mr2QmLrmI80EE8iCgrFy2l2dCx4svwZSWLr8EVuamp7p7
-	 YcmBAqYIWWVmm/i80o07A0G7yDoZyF8PvkcjgN/0=
+	b=GdJ+6g6trh9jWF6ETm+8aLQsQl64MNyVNMHtKLtRksZ4bnZne3JEwyh2RCzi2+L7O
+	 M9nBiRCzyn0GO7VKc1JA5mv0eIUZAb2Hn0VxpFf/ugA4KQq2GOanACOCF8fN8Kofj0
+	 Rq8eK4SSAV+qVuhNXbgZup2VdsNxWYFGgyqx14hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 244/565] perf probe: Correct demangled symbols in C++ program
+	Damien Le Moal <dlemoal@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.1 494/772] PCI: rockchip-ep: Fix address translation unit programming
 Date: Thu, 12 Dec 2024 15:57:19 +0100
-Message-ID: <20241212144321.122972527@linuxfoundation.org>
+Message-ID: <20241212144410.364673400@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,148 +60,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 314909f13cc12d47c468602c37dace512d225eeb ]
+commit 64f093c4d99d797b68b407a9d8767aadc3e3ea7a upstream.
 
-An issue can be observed when probe C++ demangled symbol with steps:
+The Rockchip PCIe endpoint controller handles PCIe transfers addresses
+by masking the lower bits of the programmed PCI address and using the
+same number of lower bits masked from the CPU address space used for the
+mapping. For a PCI mapping of <size> bytes starting from <pci_addr>,
+the number of bits masked is the number of address bits changing in the
+address range [pci_addr..pci_addr + size - 1].
 
-  # nm test_cpp_mangle | grep print_data
-    0000000000000c94 t _GLOBAL__sub_I__Z10print_datai
-    0000000000000afc T _Z10print_datai
-    0000000000000b38 T _Z10print_dataR5Point
+However, rockchip_pcie_prog_ep_ob_atu() calculates num_pass_bits only
+using the size of the mapping, resulting in an incorrect number of mask
+bits depending on the value of the PCI address to map.
 
-  # perf probe -x /home/niayan01/test_cpp_mangle -F --demangle
-    ...
-    print_data(Point&)
-    print_data(int)
-    ...
+Fix this by introducing the helper function
+rockchip_pcie_ep_ob_atu_num_bits() to correctly calculate the number of
+mask bits to use to program the address translation unit. The number of
+mask bits is calculated depending on both the PCI address and size of
+the mapping, and clamped between 8 and 20 using the macros
+ROCKCHIP_PCIE_AT_MIN_NUM_BITS and ROCKCHIP_PCIE_AT_MAX_NUM_BITS. As
+defined in the Rockchip RK3399 TRM V1.3 Part2, Sections 17.5.5.1.1 and
+17.6.8.2.1, this clamping is necessary because:
 
-  # perf --debug verbose=3 probe -x test_cpp_mangle --add "test=print_data(int)"
-    probe-definition(0): test=print_data(int)
-    symbol:print_data(int) file:(null) line:0 offset:0 return:0 lazy:(null)
-    0 arguments
-    Open Debuginfo file: /home/niayan01/test_cpp_mangle
-    Try to find probe point from debuginfo.
-    Symbol print_data(int) address found : afc
-    Matched function: print_data [2ccf]
-    Probe point found: print_data+0
-    Found 1 probe_trace_events.
-    Opening /sys/kernel/tracing//uprobe_events write=1
-    Opening /sys/kernel/tracing//README write=0
-    Writing event: p:probe_test_cpp_mangle/test /home/niayan01/test_cpp_mangle:0xb38
-    ...
+  1) The lower 8 bits of the PCI address to be mapped by the outbound
+     region are ignored. So a minimum of 8 address bits are needed and
+     imply that the PCI address must be aligned to 256.
 
-When tried to probe symbol "print_data(int)", the log shows:
+  2) The outbound memory regions are 1MB in size. So while we can specify
+     up to 63-bits for the PCI address (num_bits filed uses bits 0 to 5 of
+     the outbound address region 0 register), we must limit the number of
+     valid address bits to 20 to match the memory window maximum size (1
+     << 20 = 1MB).
 
-    Symbol print_data(int) address found : afc
-
-The found address is 0xafc - which is right with verifying the output
-result from nm. Afterwards when write event, the command uses offset
-0xb38 in the last log, which is a wrong address.
-
-The dwarf_diename() gets a common function name, in above case, it
-returns string "print_data". As a result, the tool parses the offset
-based on the common name. This leads to probe at the wrong symbol
-"print_data(Point&)".
-
-To fix the issue, use the die_get_linkage_name() function to retrieve
-the distinct linkage name - this is the mangled name for the C++ case.
-Based on this unique name, the tool can get a correct offset for
-probing. Based on DWARF doc, it is possible the linkage name is missed
-in the DIE, it rolls back to use dwarf_diename().
-
-After:
-
-  # perf --debug verbose=3 probe -x test_cpp_mangle --add "test=print_data(int)"
-    probe-definition(0): test=print_data(int)
-    symbol:print_data(int) file:(null) line:0 offset:0 return:0 lazy:(null)
-    0 arguments
-    Open Debuginfo file: /home/niayan01/test_cpp_mangle
-    Try to find probe point from debuginfo.
-    Symbol print_data(int) address found : afc
-    Matched function: print_data [2d06]
-    Probe point found: print_data+0
-    Found 1 probe_trace_events.
-    Opening /sys/kernel/tracing//uprobe_events write=1
-    Opening /sys/kernel/tracing//README write=0
-    Writing event: p:probe_test_cpp_mangle/test /home/niayan01/test_cpp_mangle:0xafc
-    Added new event:
-      probe_test_cpp_mangle:test (on print_data(int) in /home/niayan01/test_cpp_mangle)
-
-    You can now use it in all perf tools, such as:
-
-            perf record -e probe_test_cpp_mangle:test -aR sleep 1
-
-  # perf --debug verbose=3 probe -x test_cpp_mangle --add "test2=print_data(Point&)"
-    probe-definition(0): test2=print_data(Point&)
-    symbol:print_data(Point&) file:(null) line:0 offset:0 return:0 lazy:(null)
-    0 arguments
-    Open Debuginfo file: /home/niayan01/test_cpp_mangle
-    Try to find probe point from debuginfo.
-    Symbol print_data(Point&) address found : b38
-    Matched function: print_data [2ccf]
-    Probe point found: print_data+0
-    Found 1 probe_trace_events.
-    Opening /sys/kernel/tracing//uprobe_events write=1
-    Parsing probe_events: p:probe_test_cpp_mangle/test /home/niayan01/test_cpp_mangle:0x0000000000000afc
-    Group:probe_test_cpp_mangle Event:test probe:p
-    Opening /sys/kernel/tracing//README write=0
-    Writing event: p:probe_test_cpp_mangle/test2 /home/niayan01/test_cpp_mangle:0xb38
-    Added new event:
-      probe_test_cpp_mangle:test2 (on print_data(Point&) in /home/niayan01/test_cpp_mangle)
-
-    You can now use it in all perf tools, such as:
-
-            perf record -e probe_test_cpp_mangle:test2 -aR sleep 1
-
-Fixes: fb1587d869a3 ("perf probe: List probes with line number and file name")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/20241012141432.877894-1-leo.yan@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Link: https://lore.kernel.org/r/20241017015849.190271-2-dlemoal@kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/probe-finder.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/pci/controller/pcie-rockchip-ep.c |   16 +++++++++++++---
+ drivers/pci/controller/pcie-rockchip.h    |    4 ++++
+ 2 files changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index 2f86103761ab2..3c13597d0a0db 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -1736,8 +1736,21 @@ int debuginfo__find_probe_point(struct debuginfo *dbg, u64 addr,
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -63,15 +63,25 @@ static void rockchip_pcie_clear_ep_ob_at
+ 			    ROCKCHIP_PCIE_AT_OB_REGION_DESC1(region));
+ }
  
- 	/* Find a corresponding function (name, baseline and baseaddr) */
- 	if (die_find_realfunc(&cudie, (Dwarf_Addr)addr, &spdie)) {
--		/* Get function entry information */
--		func = basefunc = dwarf_diename(&spdie);
-+		/*
-+		 * Get function entry information.
-+		 *
-+		 * As described in the document DWARF Debugging Information
-+		 * Format Version 5, section 2.22 Linkage Names, "mangled names,
-+		 * are used in various ways, ... to distinguish multiple
-+		 * entities that have the same name".
-+		 *
-+		 * Firstly try to get distinct linkage name, if fail then
-+		 * rollback to get associated name in DIE.
-+		 */
-+		func = basefunc = die_get_linkage_name(&spdie);
-+		if (!func)
-+			func = basefunc = dwarf_diename(&spdie);
++static int rockchip_pcie_ep_ob_atu_num_bits(struct rockchip_pcie *rockchip,
++					    u64 pci_addr, size_t size)
++{
++	int num_pass_bits = fls64(pci_addr ^ (pci_addr + size - 1));
 +
- 		if (!func ||
- 		    die_entrypc(&spdie, &baseaddr) != 0 ||
- 		    dwarf_decl_line(&spdie, &baseline) != 0) {
--- 
-2.43.0
-
++	return clamp(num_pass_bits,
++		     ROCKCHIP_PCIE_AT_MIN_NUM_BITS,
++		     ROCKCHIP_PCIE_AT_MAX_NUM_BITS);
++}
++
+ static void rockchip_pcie_prog_ep_ob_atu(struct rockchip_pcie *rockchip, u8 fn,
+ 					 u32 r, u64 cpu_addr, u64 pci_addr,
+ 					 size_t size)
+ {
+-	int num_pass_bits = fls64(size - 1);
++	int num_pass_bits;
+ 	u32 addr0, addr1, desc0;
+ 
+-	if (num_pass_bits < 8)
+-		num_pass_bits = 8;
++	num_pass_bits = rockchip_pcie_ep_ob_atu_num_bits(rockchip,
++							 pci_addr, size);
+ 
+ 	addr0 = ((num_pass_bits - 1) & PCIE_CORE_OB_REGION_ADDR0_NUM_BITS) |
+ 		(lower_32_bits(pci_addr) & PCIE_CORE_OB_REGION_ADDR0_LO_ADDR);
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -245,6 +245,10 @@
+ 	(PCIE_EP_PF_CONFIG_REGS_BASE + (((fn) << 12) & GENMASK(19, 12)))
+ #define ROCKCHIP_PCIE_EP_VIRT_FUNC_BASE(fn) \
+ 	(PCIE_EP_PF_CONFIG_REGS_BASE + 0x10000 + (((fn) << 12) & GENMASK(19, 12)))
++
++#define ROCKCHIP_PCIE_AT_MIN_NUM_BITS  8
++#define ROCKCHIP_PCIE_AT_MAX_NUM_BITS  20
++
+ #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR0(fn, bar) \
+ 	(PCIE_CORE_AXI_CONF_BASE + 0x0828 + (fn) * 0x0040 + (bar) * 0x0008)
+ #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR1(fn, bar) \
 
 
 
