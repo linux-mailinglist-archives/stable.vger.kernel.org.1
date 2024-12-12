@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-102303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED569EF139
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 178EF9EF3B4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE322884EA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0DA028B60D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580F922969E;
-	Thu, 12 Dec 2024 16:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAACB223C57;
+	Thu, 12 Dec 2024 16:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yh+qECbB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Id19j8Vo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DF123D41A;
-	Thu, 12 Dec 2024 16:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CFA223C53;
+	Thu, 12 Dec 2024 16:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020737; cv=none; b=as01wOxw/wkDuFj305dggjuZ1qOTtMuk3Dnf4YT6Orae2OAO1UbhW7X4pv2vH4boYDJI+lpIUQRBkxcxYEdjQZHe46R7lexPb7w+rWikJhzD62G4elhh2BFoVhjeMqV1JbkYpF7mTiGTBhrpL99vCVKUWz3eHPqou7E7nvQKyOU=
+	t=1734022641; cv=none; b=kFLguAphg44lLFBNqeLMl36Osr03dv0kZFpZdwi2U3N8y5YhuOdcU1IysnYhNjfmNtvxj5EPJN7KxEyZHZSVckAx+yihvqFdfrBuqiemKGeYkvuRVbfV2F6P9H4k2Yvn2cF0HPspTaFy+GJ+aTIFcgBJ5NB6fooRw0Q8TKRRPTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020737; c=relaxed/simple;
-	bh=NTK+L0x+I9OCyi80mXYsNqKY4qokrPT+JRMzR4bkfUE=;
+	s=arc-20240116; t=1734022641; c=relaxed/simple;
+	bh=TBLwGTKlpUXHOSXnJkaARyJn4vONUCbKsYtUEUwlXB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axz7Z9w87ygGWSkqbIx+jJElXge477dFN59Y1BHR/b4uvCIzKMbPBWNxueEy+Qqa1x2M/ycVLghpF0QbOvSsyK+Io4B4N+ueg3KVhyqvF9Ov749fhZ+jO4aUZjyhqncq7PKtGnqFxlX6CoFd7YjhudHa6p7nrF2sCMgTepCrKes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yh+qECbB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69602C4CECE;
-	Thu, 12 Dec 2024 16:25:36 +0000 (UTC)
+	 MIME-Version; b=kxZ3gbLAaVd0SLIzVmtyfwkixF1tvLAsnCsKYrYrSip6D0EA9liXGdffHvJvqJhZ/Fyd9w9q00lkUtuu37pN/0ODQrxq9fjb60yacvsPWzL8+8zW4p7imCXgXO0kwYMwe4QW1Y+IoZuhz0bwfinovS3UEmcN7YFI6VpKZcC3LYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Id19j8Vo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0613DC4CED0;
+	Thu, 12 Dec 2024 16:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020736;
-	bh=NTK+L0x+I9OCyi80mXYsNqKY4qokrPT+JRMzR4bkfUE=;
+	s=korg; t=1734022641;
+	bh=TBLwGTKlpUXHOSXnJkaARyJn4vONUCbKsYtUEUwlXB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yh+qECbB9DKCm/DMJnxxP472ABJG5TVT1+UembO8phhTnB/0klFxaaQEBQwFBfd1J
-	 ZLEDwEJA93HBIiRE52TIsro5tf9Fr/ZbFuNz1bCg+HOUbQqI+LqWNn1wg7LnLyocHC
-	 1MwFniB1TcDbS6vd8dryXxQapPLgur5VOm1Gu9uc=
+	b=Id19j8Vov7tsdkdSJCf+Cimyei4Em5S2NlIIicr+9eO07x5bnZz/nsF3B+QJ4stA/
+	 zrFEaRgLKXC80gJj63rAYwXqmYQhFBt8bvBrM6MemGaBS17Eiw0fZ0ecU5qKLdB01P
+	 AkdWjn+LK2iVmC7kx5faCtLE8xqU08J9dLGPtHxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Frode Nordahl <frode.nordahl@canonical.com>,
-	Chris Mi <cmi@nvidia.com>,
-	Ariel Levkovich <lariel@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 546/772] net/mlx5e: Remove workaround to avoid syndrome for internal port
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Mingli Yu <mingli.yu@windriver.com>
+Subject: [PATCH 5.15 296/565] ksmbd: fix slab-use-after-free in smb3_preauth_hash_rsp
 Date: Thu, 12 Dec 2024 15:58:11 +0100
-Message-ID: <20241212144412.528824712@linuxfoundation.org>
+Message-ID: <20241212144323.167442927@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 5085f861b414e4a51ce28a891dfa32a10a54b64e ]
+commit b8fc56fbca7482c1e5c0e3351c6ae78982e25ada upstream.
 
-Previously a workaround was added to avoid syndrome 0xcdb051. It is
-triggered when offload a rule with tunnel encapsulation, and
-forwarding to another table, but not matching on the internal port in
-firmware steering mode. The original workaround skips internal tunnel
-port logic, which is not correct as not all cases are considered. As
-an example, if vlan is configured on the uplink port, traffic can't
-pass because vlan header is not added with this workaround. Besides,
-there is no such issue for software steering. So, this patch removes
-that, and returns error directly if trying to offload such rule for
-firmware steering.
+ksmbd_user_session_put should be called under smb3_preauth_hash_rsp().
+It will avoid freeing session before calling smb3_preauth_hash_rsp().
 
-Fixes: 06b4eac9c4be ("net/mlx5e: Don't offload internal port if filter device is out device")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Tested-by: Frode Nordahl <frode.nordahl@canonical.com>
-Reviewed-by: Chris Mi <cmi@nvidia.com>
-Reviewed-by: Ariel Levkovich <lariel@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241203204920.232744-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/mellanox/mlx5/core/en/tc_tun_encap.c   | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/ksmbd/server.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-index 907ad6ffe7275..407556334495d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-@@ -4,6 +4,7 @@
- #include <net/fib_notifier.h>
- #include <net/nexthop.h>
- #include "tc_tun_encap.h"
-+#include "fs_core.h"
- #include "en_tc.h"
- #include "tc_tun.h"
- #include "rep/tc.h"
-@@ -23,10 +24,18 @@ static int mlx5e_set_int_port_tunnel(struct mlx5e_priv *priv,
+--- a/fs/ksmbd/server.c
++++ b/fs/ksmbd/server.c
+@@ -238,11 +238,11 @@ static void __handle_ksmbd_work(struct k
+ 	} while (is_chained == true);
  
- 	route_dev = dev_get_by_index(dev_net(e->out_dev), e->route_dev_ifindex);
- 
--	if (!route_dev || !netif_is_ovs_master(route_dev) ||
--	    attr->parse_attr->filter_dev == e->out_dev)
-+	if (!route_dev || !netif_is_ovs_master(route_dev))
- 		goto out;
- 
-+	if (priv->mdev->priv.steering->mode == MLX5_FLOW_STEERING_MODE_DMFS &&
-+	    mlx5e_eswitch_uplink_rep(attr->parse_attr->filter_dev) &&
-+	    (attr->esw_attr->dests[out_index].flags & MLX5_ESW_DEST_ENCAP)) {
-+		mlx5_core_warn(priv->mdev,
-+			       "Matching on external port with encap + fwd to table actions is not allowed for firmware steering\n");
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	err = mlx5e_set_fwd_to_int_port_actions(priv, attr, e->route_dev_ifindex,
- 						MLX5E_TC_INT_PORT_EGRESS,
- 						&attr->action, out_index);
--- 
-2.43.0
-
+ send:
+-	if (work->sess)
+-		ksmbd_user_session_put(work->sess);
+ 	if (work->tcon)
+ 		ksmbd_tree_connect_put(work->tcon);
+ 	smb3_preauth_hash_rsp(work);
++	if (work->sess)
++		ksmbd_user_session_put(work->sess);
+ 	if (work->sess && work->sess->enc && work->encrypted &&
+ 	    conn->ops->encrypt_resp) {
+ 		rc = conn->ops->encrypt_resp(work);
 
 
 
