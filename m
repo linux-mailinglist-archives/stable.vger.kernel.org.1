@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CAE9EEC29
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 731ED9EEE34
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5282B188657D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57B4816DE58
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810DD21578F;
-	Thu, 12 Dec 2024 15:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969952248B8;
+	Thu, 12 Dec 2024 15:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgbXPwQu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l84EOuVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF591487CD;
-	Thu, 12 Dec 2024 15:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9D52210CD;
+	Thu, 12 Dec 2024 15:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017386; cv=none; b=nDsGNLIPf1o6xzyXamFYlJ9LwirKhwaZzsWT8T9T1jLP1RhRi08AivQKxEdFeSl+xbizPEMm6Hjo2N4/y7AOfwnH+7ZmhfBFiRfh4xuK8wMMZeRNqgan0GDDPo0Pxvm1u4g49A8sjr+Xr3bE4tetLyO6Z1pwtDkbcbklVRfZb6I=
+	t=1734018522; cv=none; b=JbZyNRfSHGUecTaTFeMvVYjh8JUwBExlyhooq36E3sayzYXfA7O6JBJ+6CybPT9wswbUUVldD4sAKhKQ5jDseyHczgEK3h1Cau6fb5cDrEgOl4u/3zWDgJ5pl2Nt4IlqVLxq6b4E8VXcW5iyPI4eqBmWMsHV0JjSWEXUuDf7J64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017386; c=relaxed/simple;
-	bh=EGu6xzX878jpmugpFSAcBj/JqdpLC9buPQIWDpAno2g=;
+	s=arc-20240116; t=1734018522; c=relaxed/simple;
+	bh=N/jctqUJnHTBYPzWrm6x/E1zsd0FRgvAGHVqXlBLAp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0RYeNmSFbUjxIDgCW4jQIbw/bt2A8WmGVsGxi3B/Oi3CCwc8sHOCiVToM+MEy1M3XsQmMDELCqxvFvg39bmAKgFmeCpQNxnpHDIAMbxeR+IeAYpN2uAYwfYDD0TrHee9MAqtvqp1GlPVDaz6C8+xBpr/wQPKZrHVDN395qh9Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgbXPwQu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25BEC4CECE;
-	Thu, 12 Dec 2024 15:29:45 +0000 (UTC)
+	 MIME-Version; b=ikUwz/9F/fOpDNEHNHp2tdzlbmMaGuIKgJAa3rDR7NN8cJwS5KrASVRDVGrbd0o8DhCROmh47bbrUXg6V2VWMjgi0XDddxHGkH8Us9ELnBGWyjn+qNQrEewYsHN68+ODcJZQ69lcZEQyl7hVJ6ie9CfIf0y6tZeoS4hiZEhZMxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l84EOuVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBB9C4CED0;
+	Thu, 12 Dec 2024 15:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017386;
-	bh=EGu6xzX878jpmugpFSAcBj/JqdpLC9buPQIWDpAno2g=;
+	s=korg; t=1734018520;
+	bh=N/jctqUJnHTBYPzWrm6x/E1zsd0FRgvAGHVqXlBLAp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgbXPwQuLYUAw8jWht97EWLqQ16lK54vWrIYHgnn9wzZ+Gp4CqH3vEmNStjYTJJjt
-	 8qgLIv0Z3BjDxsULYubNpFm+WZnapgaTTpTGHmOjr+i4kzOPrIfSGhw16u9WKOAnZA
-	 lvxSv0d55NwhqZZdQ2nI9UZEKHEWgDCk14VqJZHg=
+	b=l84EOuVDSvuWKcPc7PYZjrlAtnhsW8hXeohZ2fajbSEUOTTpoAbOD5JaYGTJBbsSm
+	 DVJ/opUa2RLlR18/jCy4n7sK/IfDEE3uPM2nxHfgb2DzI9GNubkc4bmiV7dB4EcRfL
+	 R20oJ+hNwVoGPivK0MrMvkQc0bkf6F+nQuYOBhuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 465/466] ALSA: hda/realtek: Fix spelling mistake "Firelfy" -> "Firefly"
-Date: Thu, 12 Dec 2024 16:00:34 +0100
-Message-ID: <20241212144325.239277898@linuxfoundation.org>
+	Raghavendra K T <raghavendra.kt@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Mel Gorman <mgorman@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 316/356] sched/numa: Fix mm numa_scan_seq based unconditional scan
+Date: Thu, 12 Dec 2024 16:00:35 +0100
+Message-ID: <20241212144257.039158416@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Raghavendra K T <raghavendra.kt@amd.com>
 
-commit 20c3b3e5f2641eff3d85f33e6a468ac052b169bd upstream.
+[ Upstream commit 84db47ca7146d7bd00eb5cf2b93989a971c84650 ]
 
-There is a spelling mistake in a literal string in the alc269_fixup_tbl
-quirk table. Fix it.
+Since commit fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
 
-Fixes: 0d08f0eec961 ("ALSA: hda/realtek: fix micmute LEDs don't work on HP Laptops")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://patch.msgid.link/20241205102833.476190-1-colin.i.king@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+NUMA Balancing allows updating PTEs to trap NUMA hinting faults if the
+task had previously accessed VMA. However unconditional scan of VMAs are
+allowed during initial phase of VMA creation until process's
+mm numa_scan_seq reaches 2 even though current task had not accessed VMA.
+
+Rationale:
+ - Without initial scan subsequent PTE update may never happen.
+ - Give fair opportunity to all the VMAs to be scanned and subsequently
+understand the access pattern of all the VMAs.
+
+But it has a corner case where, if a VMA is created after some time,
+process's mm numa_scan_seq could be already greater than 2.
+
+For e.g., values of mm numa_scan_seq when VMAs are created by running
+mmtest autonuma benchmark briefly looks like:
+start_seq=0 : 459
+start_seq=2 : 138
+start_seq=3 : 144
+start_seq=4 : 8
+start_seq=8 : 1
+start_seq=9 : 1
+This results in no unconditional PTE updates for those VMAs created after
+some time.
+
+Fix:
+ - Note down the initial value of mm numa_scan_seq in per VMA start_seq.
+ - Allow unconditional scan till start_seq + 2.
+
+Result:
+SUT: AMD EPYC Milan with 2 NUMA nodes 256 cpus.
+base kernel: upstream 6.6-rc6 with Mels patches [1] applied.
+
+kernbench
+==========		base                  patched %gain
+Amean    elsp-128      165.09 ( 0.00%)      164.78 *   0.19%*
+
+Duration User       41404.28    41375.08
+Duration System      9862.22     9768.48
+Duration Elapsed      519.87      518.72
+
+Ops NUMA PTE updates           1041416.00      831536.00
+Ops NUMA hint faults            263296.00      220966.00
+Ops NUMA pages migrated         258021.00      212769.00
+Ops AutoNUMA cost                 1328.67        1114.69
+
+autonumabench
+
+NUMA01_THREADLOCAL
+==================
+Amean  elsp-NUMA01_THREADLOCAL   81.79 (0.00%)  67.74 *  17.18%*
+
+Duration User       54832.73    47379.67
+Duration System        75.00      185.75
+Duration Elapsed      576.72      476.09
+
+Ops NUMA PTE updates                  394429.00    11121044.00
+Ops NUMA hint faults                    1001.00     8906404.00
+Ops NUMA pages migrated                  288.00     2998694.00
+Ops AutoNUMA cost                          7.77       44666.84
+
+Signed-off-by: Raghavendra K T <raghavendra.kt@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Link: https://lore.kernel.org/r/2ea7cbce80ac7c62e90cbfb9653a7972f902439f.1697816692.git.raghavendra.kt@amd.com
+Stable-dep-of: 5f1b64e9a9b7 ("sched/numa: fix memory leak due to the overwritten vma->numab_state")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/mm_types.h | 3 +++
+ kernel/sched/fair.c      | 4 +++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10512,7 +10512,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8d91, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8d92, "HP ZBook Firefly 16 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
--	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firelfy 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 43c19d85dfe7f..20c96ce98751a 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -576,6 +576,9 @@ struct vma_numab_state {
+ 	 */
+ 	unsigned long pids_active[2];
+ 
++	/* MM scan sequence ID when scan first started after VMA creation */
++	int start_scan_seq;
++
+ 	/*
+ 	 * MM scan sequence ID when the VMA was last completely scanned.
+ 	 * A VMA is not eligible for scanning if prev_scan_seq == numa_scan_seq
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index db59bf549c644..934d6f198b073 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3197,7 +3197,7 @@ static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
+ 	 * This is also done to avoid any side effect of task scanning
+ 	 * amplifying the unfairness of disjoint set of VMAs' access.
+ 	 */
+-	if (READ_ONCE(current->mm->numa_scan_seq) < 2)
++	if ((READ_ONCE(current->mm->numa_scan_seq) - vma->numab_state->start_scan_seq) < 2)
+ 		return true;
+ 
+ 	pids = vma->numab_state->pids_active[0] | vma->numab_state->pids_active[1];
+@@ -3349,6 +3349,8 @@ static void task_numa_work(struct callback_head *work)
+ 			if (!vma->numab_state)
+ 				continue;
+ 
++			vma->numab_state->start_scan_seq = mm->numa_scan_seq;
++
+ 			vma->numab_state->next_scan = now +
+ 				msecs_to_jiffies(sysctl_numa_balancing_scan_delay);
+ 
+-- 
+2.43.0
+
 
 
 
