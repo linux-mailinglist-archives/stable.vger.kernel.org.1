@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-101372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275649EEBC5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683029EF29C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3A50283A42
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E46991880352
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E60521578E;
-	Thu, 12 Dec 2024 15:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BDE2210E3;
+	Thu, 12 Dec 2024 16:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bmmo9PjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/k+6D+/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD22B748A;
-	Thu, 12 Dec 2024 15:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62202210DA;
+	Thu, 12 Dec 2024 16:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017324; cv=none; b=d/FkiceHE2aBrLVKR9+Cn99pbWPYUkMplxMZo/mNwi3bHuWLBiptkQYiifIJAXGUJhq7wHDSagkFcKMVUmWaxzKWT8/Wmxh/txp0O66qbGYi5n4PaJ55SsYApkwm8kcUWd3KvXnIbDQK7fNrH0n7Cuq7uVWvy98YigEfXmOpA4s=
+	t=1734021194; cv=none; b=bxCeQBBicsTID/nQcO1j2QWuyDKIUreboX3Nx6SZq9cT6se1PoMkYwNLWPHppqhJ4rS9zCeYv+IPHcDWTta4o9UnD4bpQYXoIk82275O0ziyT3fC6j9yca0x7wcbt/MRfhio3KRg9iVOcu86bzUbR2fuWYWXSV4+EX6XQfS5NT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017324; c=relaxed/simple;
-	bh=Lfx77xCwfu+jUY2ZnCLkzgNS9RopBA0b2mcKa52MGw0=;
+	s=arc-20240116; t=1734021194; c=relaxed/simple;
+	bh=UmHa6mRlTpACfJ2LJ2OohwO0GENuLVPHvchSa6Wo8o8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgYjifAn++hBBN//ydAKp8EiGq4X3MhWdvTWayDHjiJcuGH7pXwFRIrHpilmwyb9OLCC4amUgkzdWdYZw8+yNg63YeXwWZoajw+6VY6t5w1L9DCD1emfnpxYistQfRbqoenfo64sPQsh1zS1CQZoZR6o4qNucpSHJ0hWwG3V8oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bmmo9PjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5214AC4CECE;
-	Thu, 12 Dec 2024 15:28:44 +0000 (UTC)
+	 MIME-Version; b=l46dwpQMZYXI9EEplxUZ1EtTMWISUKFP8RLPiZ3CS5V/Bl1zidscda2TgipXeODi1o7WcC1qW/5RxihQ85wrtBGQ1srDfRudQgt2JtVDO/Lo4j7JKH7YwLJB0fks9zC+reZlDUEoOGtQywOrm+e8YkPmUAYIao4QEg9GYCFFS5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/k+6D+/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7C0C4CECE;
+	Thu, 12 Dec 2024 16:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017324;
-	bh=Lfx77xCwfu+jUY2ZnCLkzgNS9RopBA0b2mcKa52MGw0=;
+	s=korg; t=1734021194;
+	bh=UmHa6mRlTpACfJ2LJ2OohwO0GENuLVPHvchSa6Wo8o8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bmmo9PjVgKVsl7mElACSjzSJPFv6K2ERM86JvRvAMoyKcXayRCvq++w+p6zC04l9J
-	 lV5jtKyi6pltDWmiIDkfzrYjOqNeL0jsZTg6E77bfHK+08Bq7Suq4LLB08bnI1pmMD
-	 OHyre03HrtpL+G7LCU3mq5lLOlsX5Nf3P2bUQdYg=
+	b=D/k+6D+/zkpnbf0OaAJhYK0PLIfMdWoD9YP/Nlc+r5/FreJAG31oplCn9RYDi8EjO
+	 lulPUeWViz7G4YIrjtFV3AP8ORUGaplYi7UP3mjfocBTHT333r96l0J118w7ClDXzb
+	 PuIRyYuOZNwArO6z1sLWV2FzWijGHF63GApSp7w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 447/466] btrfs: fix missing snapshot drew unlock when root is dead during swap activation
+Subject: [PATCH 6.1 671/772] net: ieee802154: do not leave a dangling sk pointer in ieee802154_create()
 Date: Thu, 12 Dec 2024 16:00:16 +0100
-Message-ID: <20241212144324.517508180@linuxfoundation.org>
+Message-ID: <20241212144417.641153738@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 9c803c474c6c002d8ade68ebe99026cc39c37f85 ]
+[ Upstream commit b4fcd63f6ef79c73cafae8cf4a114def5fc3d80d ]
 
-When activating a swap file we acquire the root's snapshot drew lock and
-then check if the root is dead, failing and returning with -EPERM if it's
-dead but without unlocking the root's snapshot lock. Fix this by adding
-the missing unlock.
+sock_init_data() attaches the allocated sk object to the provided sock
+object. If ieee802154_create() fails later, the allocated sk object is
+freed, but the dangling pointer remains in the provided sock object, which
+may allow use-after-free.
 
-Fixes: 60021bd754c6 ("btrfs: prevent subvol with swapfile from being deleted")
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Clear the sk pointer in the sock object on error.
+
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-6-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ieee802154/socket.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index d067db2619713..58ffe78132d9d 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -9857,6 +9857,7 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
- 	if (btrfs_root_dead(root)) {
- 		spin_unlock(&root->root_item_lock);
+diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
+index 1fa2fe041ec03..9f74be2aad000 100644
+--- a/net/ieee802154/socket.c
++++ b/net/ieee802154/socket.c
+@@ -1046,19 +1046,21 @@ static int ieee802154_create(struct net *net, struct socket *sock,
  
-+		btrfs_drew_write_unlock(&root->snapshot_lock);
- 		btrfs_exclop_finish(fs_info);
- 		btrfs_warn(fs_info,
- 		"cannot activate swapfile because subvolume %llu is being deleted",
+ 	if (sk->sk_prot->hash) {
+ 		rc = sk->sk_prot->hash(sk);
+-		if (rc) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (rc)
++			goto out_sk_release;
+ 	}
+ 
+ 	if (sk->sk_prot->init) {
+ 		rc = sk->sk_prot->init(sk);
+ 		if (rc)
+-			sk_common_release(sk);
++			goto out_sk_release;
+ 	}
+ out:
+ 	return rc;
++out_sk_release:
++	sk_common_release(sk);
++	sock->sk = NULL;
++	goto out;
+ }
+ 
+ static const struct net_proto_family ieee802154_family_ops = {
 -- 
 2.43.0
 
