@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA919EF35F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075069EEB36
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7F5528928E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 584C41889A5D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F1222541E;
-	Thu, 12 Dec 2024 16:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA262156FF;
+	Thu, 12 Dec 2024 15:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFhp2lUe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHvzL+XW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554842253EC;
-	Thu, 12 Dec 2024 16:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E591537C8;
+	Thu, 12 Dec 2024 15:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022292; cv=none; b=rDUkg46ZJwbTz5kf/MXG2kfmeLFuaegd3J9Nn6XuX+KB/GEgiWZqAy/HEmx4f+/5Ndmp72EwPh0//AT7bLR7ABQuGyAFcsziFDy3TWDaGiJY1eDXdW0xh1dbCdrql96crKs6j84ta1uL0FlhlLkS2JU8vAMmmjZrVZnp7pAsrDM=
+	t=1734016650; cv=none; b=EVrHgaXytdkb5fCopiEJU6I1WhDcp+YnccY/XS6O0GEnlkCkJT4WOkrzlReKdJn3QOJPYdI9y21NJDeatW/GAtvkAhwceYZJd11JfrrSotpAJH2Ox5LFG8iapgjkNEGeQ+v+S0QIvD4Ari1hQzx9PJv9F1GkWbXuCC1oSz5hgxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022292; c=relaxed/simple;
-	bh=DjzHl/z09/T0J8Mwu1hXYGHLUu74f5XQP1pXTyaUOeQ=;
+	s=arc-20240116; t=1734016650; c=relaxed/simple;
+	bh=YHPTOyT7R9nCA19R6vdFgWhIJVUSmHqgZmrbWWk5jZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NC3BaTwB0dWsHRYXj5eeSwR6/Wn064C3PXj9TyjF3KA9GO8Rgt4zpPp7yXNWhftq/WDu2rbsvkNFRgKMoelJh78UzICtpv5YLW4V9A4XMtm2gfY5wfLllPzuD6bZMmtEId/SzUl8TCnxndeGk1vDZpuXWkKgeuIu2CrZFUEhpHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFhp2lUe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE722C4CECE;
-	Thu, 12 Dec 2024 16:51:31 +0000 (UTC)
+	 MIME-Version; b=LEwguudKGEziQYrpy0sSgSN281WfIrfddptegM1NgCYXQxxm5ZQzvT7xKwoxzrN/OHYbdMpa4GAfJCBUxfZhW+bqrbtdZXXeUprXMmWH01Jzdqv96MxGJwYHgbDVBoNDyzHttgx4gx5QF+SdluGJ5K2CxeiSaWlyVseo1Ph3vEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHvzL+XW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBD2C4CECE;
+	Thu, 12 Dec 2024 15:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022292;
-	bh=DjzHl/z09/T0J8Mwu1hXYGHLUu74f5XQP1pXTyaUOeQ=;
+	s=korg; t=1734016650;
+	bh=YHPTOyT7R9nCA19R6vdFgWhIJVUSmHqgZmrbWWk5jZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hFhp2lUe4yBtd2Fs6ZYNV+pDhtdst0EEx7e4maUlkFeauacArz+4zKtNg9mEP5gCN
-	 efGGoYchOLbp9KQLvci1494zPycEPptZBnmO0CxFFZC34/h8c7zE1Buo1z3Vveu0wU
-	 sxbW2hZOQfgvzeHdidOovw2JYPBIhD207bbZho2o=
+	b=nHvzL+XWiax4IASOfIDQf3nV9MMH+UbmhylNglcnhKdW2gLWYdaTIZaaxGr+s3e24
+	 vzrSgzKxuisBo70VL8mVm5Fh0DjhjV1Y4QF1UdGd165VhtzmUi83d/N46DWh/CN+m7
+	 hWc6r4JuNKC4SbRd1eoGjf3aU7kLN1lS55EbzVj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 202/565] ALSA: caiaq: Use snd_card_free_when_closed() at disconnection
+Subject: [PATCH 6.12 228/466] ACPI: x86: Make UART skip quirks work on PCI UARTs without an UID
 Date: Thu, 12 Dec 2024 15:56:37 +0100
-Message-ID: <20241212144319.477416960@linuxfoundation.org>
+Message-ID: <20241212144315.781827871@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,170 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit b04dcbb7f7b1908806b7dc22671cdbe78ff2b82c ]
+[ Upstream commit 7f261203d7c2e0c06e668b25dfaaee091a79ab25 ]
 
-The USB disconnect callback is supposed to be short and not too-long
-waiting.  OTOH, the current code uses snd_card_free() at
-disconnection, but this waits for the close of all used fds, hence it
-can take long.  It eventually blocks the upper layer USB ioctls, which
-may trigger a soft lockup.
+The Vexia EDU ATLA 10 tablet (9V version) which shipped with Android 4.2
+as factory OS has the usual broken DSDT issues for x86 Android tablets.
 
-An easy workaround is to replace snd_card_free() with
-snd_card_free_when_closed().  This variant returns immediately while
-the release of resources is done asynchronously by the card device
-release at the last close.
+On top of that this tablet is special because all its LPSS island
+peripherals are enumerated as PCI devices rather then as ACPI devices as
+they typically are.
 
-This patch also splits the code to the disconnect and the free phases;
-the former is called immediately at the USB disconnect callback while
-the latter is called from the card destructor.
+For the x86-android-tablets kmod to be able to instantiate a serdev client
+for the Bluetooth HCI on this tablet, an ACPI_QUIRK_UART1_SKIP quirk is
+necessary.
 
-Fixes: 523f1dce3743 ("[ALSA] Add Native Instrument usb audio device support")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-5-tiwai@suse.de
+Modify acpi_dmi_skip_serdev_enumeration() to work with PCI enumerated
+UARTs without an UID, such as the UARTs on this tablet.
+
+Also make acpi_dmi_skip_serdev_enumeration() exit early if there are no
+quirks, since there is nothing to do then.
+
+And add the necessary quirks for the Vexia EDU ATLA 10 tablet.
+
+This should compile with CONFIG_PCI being unset without issues because
+dev_is_pci() is defined as "(false)" then.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20241109215936.83004-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/audio.c  | 10 ++++++++--
- sound/usb/caiaq/audio.h  |  1 +
- sound/usb/caiaq/device.c | 19 +++++++++++++++----
- sound/usb/caiaq/input.c  | 12 +++++++++---
- sound/usb/caiaq/input.h  |  1 +
- 5 files changed, 34 insertions(+), 9 deletions(-)
+ drivers/acpi/x86/utils.c | 47 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 39 insertions(+), 8 deletions(-)
 
-diff --git a/sound/usb/caiaq/audio.c b/sound/usb/caiaq/audio.c
-index 4981753652a7f..7a89872aa0cbd 100644
---- a/sound/usb/caiaq/audio.c
-+++ b/sound/usb/caiaq/audio.c
-@@ -869,14 +869,20 @@ int snd_usb_caiaq_audio_init(struct snd_usb_caiaqdev *cdev)
- 	return 0;
- }
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 6af546b21574f..3eec889d4f5f8 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -12,6 +12,7 @@
  
--void snd_usb_caiaq_audio_free(struct snd_usb_caiaqdev *cdev)
-+void snd_usb_caiaq_audio_disconnect(struct snd_usb_caiaqdev *cdev)
- {
- 	struct device *dev = caiaqdev_to_dev(cdev);
+ #include <linux/acpi.h>
+ #include <linux/dmi.h>
++#include <linux/pci.h>
+ #include <linux/platform_device.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/intel-family.h>
+@@ -391,6 +392,19 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
++	{
++		/* Vexia Edu Atla 10 tablet 9V version */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
++		},
++		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_UART1_SKIP |
++					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY |
++					ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS),
++	},
+ 	{
+ 		/* Whitelabel (sold as various brands) TM800A550L */
+ 		.matches = {
+@@ -439,18 +453,35 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
+ 	struct acpi_device *adev = ACPI_COMPANION(controller_parent);
+ 	const struct dmi_system_id *dmi_id;
+ 	long quirks = 0;
+-	u64 uid;
+-	int ret;
++	u64 uid = 0;
  
- 	dev_dbg(dev, "%s(%p)\n", __func__, cdev);
- 	stream_stop(cdev);
-+}
+-	ret = acpi_dev_uid_to_integer(adev, &uid);
+-	if (ret)
++	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
++	if (!dmi_id)
+ 		return 0;
+ 
+-	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
+-	if (dmi_id)
+-		quirks = (unsigned long)dmi_id->driver_data;
++	quirks = (unsigned long)dmi_id->driver_data;
 +
-+void snd_usb_caiaq_audio_free(struct snd_usb_caiaqdev *cdev)
-+{
-+	struct device *dev = caiaqdev_to_dev(cdev);
++	/* uid is left at 0 on errors and 0 is not a valid UART UID */
++	acpi_dev_uid_to_integer(adev, &uid);
 +
-+	dev_dbg(dev, "%s(%p)\n", __func__, cdev);
- 	free_urbs(cdev->data_urbs_in);
- 	free_urbs(cdev->data_urbs_out);
- 	kfree(cdev->data_cb_info);
- }
--
-diff --git a/sound/usb/caiaq/audio.h b/sound/usb/caiaq/audio.h
-index 869bf6264d6a0..07f5d064456cf 100644
---- a/sound/usb/caiaq/audio.h
-+++ b/sound/usb/caiaq/audio.h
-@@ -3,6 +3,7 @@
- #define CAIAQ_AUDIO_H
- 
- int snd_usb_caiaq_audio_init(struct snd_usb_caiaqdev *cdev);
-+void snd_usb_caiaq_audio_disconnect(struct snd_usb_caiaqdev *cdev);
- void snd_usb_caiaq_audio_free(struct snd_usb_caiaqdev *cdev);
- 
- #endif /* CAIAQ_AUDIO_H */
-diff --git a/sound/usb/caiaq/device.c b/sound/usb/caiaq/device.c
-index 49f63f878e6fe..d5c01d3f126ee 100644
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -376,6 +376,17 @@ static void setup_card(struct snd_usb_caiaqdev *cdev)
- 		dev_err(dev, "Unable to set up control system (ret=%d)\n", ret);
- }
- 
-+static void card_free(struct snd_card *card)
-+{
-+	struct snd_usb_caiaqdev *cdev = caiaqdev(card);
++	/* For PCI UARTs without an UID */
++	if (!uid && dev_is_pci(controller_parent)) {
++		struct pci_dev *pdev = to_pci_dev(controller_parent);
 +
-+#ifdef CONFIG_SND_USB_CAIAQ_INPUT
-+	snd_usb_caiaq_input_free(cdev);
-+#endif
-+	snd_usb_caiaq_audio_free(cdev);
-+	usb_reset_device(cdev->chip.dev);
-+}
++		/*
++		 * Devfn values for PCI UARTs on Bay Trail SoCs, which are
++		 * the only devices where this fallback is necessary.
++		 */
++		if (pdev->devfn == PCI_DEVFN(0x1e, 3))
++			uid = 1;
++		else if (pdev->devfn == PCI_DEVFN(0x1e, 4))
++			uid = 2;
++	}
 +
- static int create_card(struct usb_device *usb_dev,
- 		       struct usb_interface *intf,
- 		       struct snd_card **cardp)
-@@ -489,6 +500,7 @@ static int init_card(struct snd_usb_caiaqdev *cdev)
- 		       cdev->vendor_name, cdev->product_name, usbpath);
++	if (!uid)
++		return 0;
  
- 	setup_card(cdev);
-+	card->private_free = card_free;
- 	return 0;
- 
-  err_kill_urb:
-@@ -534,15 +546,14 @@ static void snd_disconnect(struct usb_interface *intf)
- 	snd_card_disconnect(card);
- 
- #ifdef CONFIG_SND_USB_CAIAQ_INPUT
--	snd_usb_caiaq_input_free(cdev);
-+	snd_usb_caiaq_input_disconnect(cdev);
- #endif
--	snd_usb_caiaq_audio_free(cdev);
-+	snd_usb_caiaq_audio_disconnect(cdev);
- 
- 	usb_kill_urb(&cdev->ep1_in_urb);
- 	usb_kill_urb(&cdev->midi_out_urb);
- 
--	snd_card_free(card);
--	usb_reset_device(interface_to_usbdev(intf));
-+	snd_card_free_when_closed(card);
- }
- 
- 
-diff --git a/sound/usb/caiaq/input.c b/sound/usb/caiaq/input.c
-index 84f26dce7f5d0..a9130891bb696 100644
---- a/sound/usb/caiaq/input.c
-+++ b/sound/usb/caiaq/input.c
-@@ -829,15 +829,21 @@ int snd_usb_caiaq_input_init(struct snd_usb_caiaqdev *cdev)
- 	return ret;
- }
- 
--void snd_usb_caiaq_input_free(struct snd_usb_caiaqdev *cdev)
-+void snd_usb_caiaq_input_disconnect(struct snd_usb_caiaqdev *cdev)
- {
- 	if (!cdev || !cdev->input_dev)
- 		return;
- 
- 	usb_kill_urb(cdev->ep4_in_urb);
-+	input_unregister_device(cdev->input_dev);
-+}
-+
-+void snd_usb_caiaq_input_free(struct snd_usb_caiaqdev *cdev)
-+{
-+	if (!cdev || !cdev->input_dev)
-+		return;
-+
- 	usb_free_urb(cdev->ep4_in_urb);
- 	cdev->ep4_in_urb = NULL;
--
--	input_unregister_device(cdev->input_dev);
- 	cdev->input_dev = NULL;
- }
-diff --git a/sound/usb/caiaq/input.h b/sound/usb/caiaq/input.h
-index c42891e7be884..fbe267f85d025 100644
---- a/sound/usb/caiaq/input.h
-+++ b/sound/usb/caiaq/input.h
-@@ -4,6 +4,7 @@
- 
- void snd_usb_caiaq_input_dispatch(struct snd_usb_caiaqdev *cdev, char *buf, unsigned int len);
- int snd_usb_caiaq_input_init(struct snd_usb_caiaqdev *cdev);
-+void snd_usb_caiaq_input_disconnect(struct snd_usb_caiaqdev *cdev);
- void snd_usb_caiaq_input_free(struct snd_usb_caiaqdev *cdev);
- 
- #endif
+-	if (!dev_is_platform(controller_parent)) {
++	if (!dev_is_platform(controller_parent) && !dev_is_pci(controller_parent)) {
+ 		/* PNP enumerated UARTs */
+ 		if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid == 1)
+ 			*skip = true;
 -- 
 2.43.0
 
