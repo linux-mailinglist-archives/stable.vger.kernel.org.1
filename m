@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED129EF2A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEC39EEFD0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FBFD2855B1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6390E2889AA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E73921576E;
-	Thu, 12 Dec 2024 16:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9879622652B;
+	Thu, 12 Dec 2024 16:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xdv6dk6u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUp41Llp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18862F44;
-	Thu, 12 Dec 2024 16:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BD02253EC;
+	Thu, 12 Dec 2024 16:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021695; cv=none; b=EhSKlCyYoX/OgrmkKmsXTP4g97sW6xJosA6IKfObBUrxc1EpZ5eTlteS0HYChhVk4b9C1E/QNQeKturnmMob6CQ5DrOe0yRMXw373nRr5Ws62bk9Woy5kh4iMKeKg92BDGjA0Qaz7f3Yw1QkYO9HIOzcrYVt4npf0uxj1vGOwwM=
+	t=1734019905; cv=none; b=ZQlFquA69UBxL4H3Vgf9LpCtYkhr0XhfZrtagI2uVsMut18en4HOOih0RM68DicT0DDoh1hJCNiFC1y/LVsmOqEYix3C203lUabEhroNjUTKEoq4TLeWQUcy/9ElxJQJ9Os5/4UPryD5B7SxvTCvsszWXZpXrLZODlSw24Z67Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021695; c=relaxed/simple;
-	bh=lTpZy0OgEJREQbUq05MYeaxfP7oMWkf6TaxpBTIvfLk=;
+	s=arc-20240116; t=1734019905; c=relaxed/simple;
+	bh=7YCkHoY4EjxUhBRmvhXLL91yZib0uhOI7HawFP4FX7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGbz98gpw6Q3MT4WVxamV9rMPe6I8xOkS5NmdbzN1+2I0msxLCoE7UVgG3NYuSgE6B3gEgjSf6RyEQn2umYtqz1UxMqUzv0/BebCu8TUQ3orCsm3oqqiIVE69lzHAlRBBCgi4OQLN0+BqVsKmzHnNcVvIsuUUtIX+nO/uBHgcBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xdv6dk6u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CF4C4CECE;
-	Thu, 12 Dec 2024 16:41:34 +0000 (UTC)
+	 MIME-Version; b=MA6Wuba+/2a+1QkS1Oz/M1s0hpc/TQpOwrfpn2I7aA9iHtXMzr4AZxrJUVfmpJCiLZGHhr2zMraJEZJL7J8go8LwEV3l0VQrik0EiEJdM9NzqaipwQRW8Q6q/Tvn5Z8F27NhWRJGdlt3dJNuI+ZDgIX0Z9drXYPL5TPNvfPWz24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUp41Llp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B647C4CECE;
+	Thu, 12 Dec 2024 16:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021694;
-	bh=lTpZy0OgEJREQbUq05MYeaxfP7oMWkf6TaxpBTIvfLk=;
+	s=korg; t=1734019905;
+	bh=7YCkHoY4EjxUhBRmvhXLL91yZib0uhOI7HawFP4FX7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xdv6dk6u0b145rdpaqbTci8CAeMTWWP5UXMQ7FVc1H6BedmJEkoUN+YiCNXPwj0u/
-	 Vomh8a2waQUA4zyx3FiKyAkalBu+bnUKbT+7a2RntlnwzifDz3iyA31QU9hBiN2bl6
-	 53PnGjEXcXkg4S4n02OY1ssKPOvhe9VcRVgL5cQ0=
+	b=rUp41Llp1hUU9pybxUCBYEX1rvj7gw0o40d4pM46RgfndGDY0Z4gREpO8RGD2tcSn
+	 keFQtxl59VS1lYuXwpPfYoIwa05AG0JMoWEgRt8uOue7ZME3Oxm8NlfD6tYXvAlO/2
+	 69oq9T3TrC62SIZNAntsMItT7WCZlX1eeVDg22KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>
-Subject: [PATCH 5.15 037/565] lib/buildid: Fix build ID parsing logic
-Date: Thu, 12 Dec 2024 15:53:52 +0100
-Message-ID: <20241212144312.927767183@linuxfoundation.org>
+	Jonathan Marek <jonathan@marek.ca>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 288/772] rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length
+Date: Thu, 12 Dec 2024 15:53:53 +0100
+Message-ID: <20241212144401.805636296@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Jonathan Marek <jonathan@marek.ca>
 
-The parse_build_id_buf does not account Elf32_Nhdr header size
-when getting the build id data pointer and returns wrong build
-id data as result.
+[ Upstream commit 06c59d97f63c1b8af521fa5aef8a716fb988b285 ]
 
-This is problem only stable trees that merged 8fa2b6817a95 fix,
-the upstream build id code was refactored and returns proper
-build id.
+The name len field of the CMD_OPEN packet is only 16-bits and the upper
+16-bits of "param2" are a different "prio" field, which can be nonzero in
+certain situations, and CMD_OPEN packets can be unexpectedly dropped
+because of this.
 
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Fixes: 8fa2b6817a95 ("lib/buildid: harden build ID parsing logic")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by masking out the upper 16 bits of param2.
+
+Fixes: b4f8e52b89f6 ("rpmsg: Introduce Qualcomm RPM glink driver")
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241007235935.6216-1-jonathan@marek.ca
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/buildid.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rpmsg/qcom_glink_native.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -40,7 +40,7 @@ static int parse_build_id_buf(unsigned c
- 		    name_sz == note_name_sz &&
- 		    memcmp(nhdr + 1, note_name, note_name_sz) == 0 &&
- 		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
--			data = note_start + note_off + ALIGN(note_name_sz, 4);
-+			data = note_start + note_off + sizeof(Elf32_Nhdr) + ALIGN(note_name_sz, 4);
- 			memcpy(build_id, data, desc_sz);
- 			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
- 			if (size)
+diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
+index 2c388426e4019..c838be098e865 100644
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1043,7 +1043,8 @@ static irqreturn_t qcom_glink_native_intr(int irq, void *data)
+ 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
+ 			break;
+ 		case GLINK_CMD_OPEN:
+-			ret = qcom_glink_rx_defer(glink, param2);
++			/* upper 16 bits of param2 are the "prio" field */
++			ret = qcom_glink_rx_defer(glink, param2 & 0xffff);
+ 			break;
+ 		case GLINK_CMD_TX_DATA:
+ 		case GLINK_CMD_TX_DATA_CONT:
+-- 
+2.43.0
+
 
 
 
