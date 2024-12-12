@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01259EF34B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D629EEC67
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 793462928CF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97D10168D9F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5503D22FE0A;
-	Thu, 12 Dec 2024 16:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCBD215777;
+	Thu, 12 Dec 2024 15:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1r6PV5V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0MQ9GKk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D5322FDE5;
-	Thu, 12 Dec 2024 16:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD713212D6A;
+	Thu, 12 Dec 2024 15:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022264; cv=none; b=VjiYmSmE2dB1DyQKhplBlyZgViUVDTlXRkmq24eMCfI5We5loE0FH8InskLU0jxNQ47RHpoZbO0xhtfLUvk5MKftIOmH0xtalHsTSlr0YHbCCM3TU2Cf7VPll1ja+tfu6gM4piE0z/t8WQqxnIrhdoPd/qNVVK+z0g1nejlTQbk=
+	t=1734017551; cv=none; b=hcHaG+7npAz6y9J8W1k0ox1yAuUQeJAIP+ntaY2jTAATxLFj1J7FBHlYtBaKaDfsP10SNLKFa6a0knMPnxHEcVEwyeupOuB3t9VIc+feyBdAfAn+THYJ7afCBS+6MEaqmHceuZ4+lbOfG4zf/23z1VFJvB0Oxar9DYdBAo1/lpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022264; c=relaxed/simple;
-	bh=g3bjwOoJc3PYS+g28FvvSilPcWBNPyFWWGD1WB4i84Y=;
+	s=arc-20240116; t=1734017551; c=relaxed/simple;
+	bh=4nOxgON3Xy/eZO+QOWfy/fPre+lLZq6+fRkYQYd7yVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m56qgNlYhh8zfDQdTeZx5Yu8/ilz9IxMU65GIKLbdBNj3Svs5RolXT3Z8Sw6q9I1LKhOpbjIPMa/GOPsMxKoSe7dJAC0evxSx0sDbEQLEMtZI9HsHX6TEWrUSxl4mflZckJs2p0JlpJuMbfgAfhzLhzuzbb71i25XXS1T6/fXHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1r6PV5V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2148AC4CED0;
-	Thu, 12 Dec 2024 16:51:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OE7YpATpYzK94G390my7NwQVODF7u2ctDF7520juqS/K4D6FxybpfGVQdEDg40hPW49+6/pegdZUqXKV2JcuMwbxbWs5gL7RfcLqNUTZOpoBBziacmI1dmpLDDSC05N5ckRUgxas++bEX1eejx63LjeDWmCt8ayck/U5nCZO77s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0MQ9GKk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532E0C4CECE;
+	Thu, 12 Dec 2024 15:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022263;
-	bh=g3bjwOoJc3PYS+g28FvvSilPcWBNPyFWWGD1WB4i84Y=;
+	s=korg; t=1734017551;
+	bh=4nOxgON3Xy/eZO+QOWfy/fPre+lLZq6+fRkYQYd7yVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1r6PV5VVkZGhR3YTfHtvk9p6Qc3BLrEinaSeUJFoaFA1IuUsIfqndpQxECbQ8lwq
-	 UD0q965MwWhR7XWrgPKewiORgnSgWnn63GyfsTexlsh1jjIx4pCwEDUUi/JtxoBSGv
-	 nsxMbBsJLTnnQ4LXOT06ckebKHubBMNEknWiMckk=
+	b=Y0MQ9GKk39xak8P6iSZZyk7TsWzhSFp3/TOCQFJDrZXcjdrjw4exBszkErzE+/B7m
+	 T7QOnKWiXY/cdj6jmiNY/XdlTsj5ke77fSGEFLEjIpQUg4TsI4Wva1O9D27oyNkeGi
+	 OmhKtEeuMgc/uSsfoSFXCOzLJ2jLiZxnwyAzoR6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	auslands-kv@gmx.de,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 152/565] drm/imx/dcss: Use IRQF_NO_AUTOEN flag in request_irq()
+Subject: [PATCH 6.6 028/356] platform/x86: asus-wmi: Ignore return value when writing thermal policy
 Date: Thu, 12 Dec 2024 15:55:47 +0100
-Message-ID: <20241212144317.491197237@linuxfoundation.org>
+Message-ID: <20241212144245.739417738@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 1af01e14db7e0b45ae502d822776a58c86688763 ]
+[ Upstream commit 25fb5f47f34d90aceda2c47a4230315536e97fa8 ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+On some machines like the ASUS Vivobook S14 writing the thermal policy
+returns the currently writen thermal policy instead of an error code.
 
-Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240912083020.3720233-2-ruanjinjie@huawei.com
-[DB: fixed the subject]
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Ignore the return code to avoid falsely returning an error when the
+thermal policy was written successfully.
+
+Reported-by: auslands-kv@gmx.de
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219517
+Fixes: 2daa86e78c49 ("platform/x86: asus_wmi: Support throttle thermal policy")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241124171941.29789-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/dcss/dcss-crtc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/platform/x86/asus-wmi.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-crtc.c b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
-index 31267c00782fc..af91e45b5d13b 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-crtc.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
-@@ -206,15 +206,13 @@ int dcss_crtc_init(struct dcss_crtc *crtc, struct drm_device *drm)
- 	if (crtc->irq < 0)
- 		return crtc->irq;
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index e36c299dcfb17..1bf6178a3a105 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -3386,7 +3386,6 @@ static int asus_wmi_custom_fan_curve_init(struct asus_wmi *asus)
+ /* Throttle thermal policy ****************************************************/
+ static int throttle_thermal_policy_write(struct asus_wmi *asus)
+ {
+-	u32 retval;
+ 	u8 value;
+ 	int err;
  
--	ret = request_irq(crtc->irq, dcss_crtc_irq_handler,
--			  0, "dcss_drm", crtc);
-+	ret = request_irq(crtc->irq, dcss_crtc_irq_handler, IRQF_NO_AUTOEN,
-+			  "dcss_drm", crtc);
- 	if (ret) {
- 		dev_err(dcss->dev, "irq request failed with %d.\n", ret);
- 		return ret;
+@@ -3408,8 +3407,8 @@ static int throttle_thermal_policy_write(struct asus_wmi *asus)
+ 		value = asus->throttle_thermal_policy_mode;
  	}
  
--	disable_irq(crtc->irq);
--
- 	return 0;
- }
+-	err = asus_wmi_set_devstate(asus->throttle_thermal_policy_dev,
+-				    value, &retval);
++	/* Some machines do not return an error code as a result, so we ignore it */
++	err = asus_wmi_set_devstate(asus->throttle_thermal_policy_dev, value, NULL);
  
+ 	sysfs_notify(&asus->platform_device->dev.kobj, NULL,
+ 			"throttle_thermal_policy");
+@@ -3419,12 +3418,6 @@ static int throttle_thermal_policy_write(struct asus_wmi *asus)
+ 		return err;
+ 	}
+ 
+-	if (retval != 1) {
+-		pr_warn("Failed to set throttle thermal policy (retval): 0x%x\n",
+-			retval);
+-		return -EIO;
+-	}
+-
+ 	/* Must set to disabled if mode is toggled */
+ 	if (asus->cpu_fan_curve_available)
+ 		asus->custom_fan_curves[FAN_CURVE_DEV_CPU].enabled = false;
 -- 
 2.43.0
 
