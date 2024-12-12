@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-102594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0F69EF455
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A37019EF467
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F12D18909E8
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA7831739D3
 	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF0F21660B;
-	Thu, 12 Dec 2024 16:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB91B2288D2;
+	Thu, 12 Dec 2024 16:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12LFbh/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfiJ7XR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEB1205501;
-	Thu, 12 Dec 2024 16:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69C9223C56;
+	Thu, 12 Dec 2024 16:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021791; cv=none; b=JQoWQiRLG+kPpo045DUy4Q417wfvKs6XLaBJ0cQAQ8xNeqNtJi5+MEZYkNACX+mCAH0HqYcEHV9syNuTt2jYT33FQ+1i7tNlnW03hT7fuyFS6OHqL1+p7Wz4StQ3MY+MT0yeljd8Ene4pCWVwiULLixZDvGq6u4cXpIhibuLejA=
+	t=1734021804; cv=none; b=V+2AYX14eOeV+Fyly3jvdZVv/p6Bze0E3UEyebYtpJl/9lQy522hu6ZzcrqP9w2Xr5MHtu4ua6XcE+JcF0onwc2MP3XEwkV6L/wojI4OPvfofb9JVPPPhUL4Zkuxq9omNcKc2mXRy1i4rYhnryJO67fATg5I577jYhdufcpiYDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021791; c=relaxed/simple;
-	bh=VrABIsGvxrppnCXsUsL8GoyoNp7ft1DtBAV8yPH9+/A=;
+	s=arc-20240116; t=1734021804; c=relaxed/simple;
+	bh=JxeXgRjEO/gLUGRO6Y/Xp/Prd7TlF1rXfvuJplHYW3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nnwhPSPnnCjUJ01jP+qCRctSjmtNleq6FJKr4fBNq5bAGWxGarSo/jkfrJ69VE1ZUUQSKMd7jLAel4Qr/iuJOG87gF00z7+/VTHiVw0f0K0qpsSs3e5IiO522phZNp3IAwczdyMo80eHwn4I3HZpCo2r2NxMr8q9Ww3/q2djZZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12LFbh/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821B3C4CECE;
-	Thu, 12 Dec 2024 16:43:10 +0000 (UTC)
+	 MIME-Version; b=ad8FFyKmEy64K2Ywt9g1Dybc5B4c0jAUZzXGXV0miDgxcqpQ0Z6fs2QsJhtPaRENQCQTe1wYZE+m7OrOzHOhGO/FaMfZg+aQedCdX09sT9k15QCutKeCRkfZLnNhm9LXV2DleU3PvbPllzowP+SW7dBAa6Imq7VqE9w2QEELid8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfiJ7XR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135B1C4CECE;
+	Thu, 12 Dec 2024 16:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021791;
-	bh=VrABIsGvxrppnCXsUsL8GoyoNp7ft1DtBAV8yPH9+/A=;
+	s=korg; t=1734021804;
+	bh=JxeXgRjEO/gLUGRO6Y/Xp/Prd7TlF1rXfvuJplHYW3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12LFbh/fxjj/itb2LutJ+D8J02EyT2GEPTdVzVT+d4Rgi8gpCWZFMXsvgDTaIrQbl
-	 avoraSARjmBZzfAJ1OkFfygatoXYRa5mwV/LOsUtFNS9UHfOARPm7R8Z/FV7WtU/G/
-	 c8pG17/nlU2//tljOwbdJPqfkMNCJ4TbQIjW8tOY=
+	b=NfiJ7XR2ZB6wZoMpg5+bBlPaCrnN0XjJJsq5nQ/QWTtDUj8MCJ331mLBVHEUshhsf
+	 PGTG8bysH/eBwysN+m0bwMoyCqoyfK7LPoL+tIprPV2XVSuPbEta+wY0xDVqK05eiJ
+	 B+Kru9XrND7OEIhIMJljyqSEwipOYcEHcXbbqGSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	David Wang <00107082@163.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 064/565] platform/x86: dell-wmi-base: Handle META key Lock/Unlock events
-Date: Thu, 12 Dec 2024 15:54:19 +0100
-Message-ID: <20241212144314.023582797@linuxfoundation.org>
+Subject: [PATCH 5.15 068/565] proc/softirqs: replace seq_printf with seq_put_decimal_ull_width
+Date: Thu, 12 Dec 2024 15:54:23 +0100
+Message-ID: <20241212144314.179477571@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
 References: <20241212144311.432886635@linuxfoundation.org>
@@ -62,54 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: David Wang <00107082@163.com>
 
-[ Upstream commit ec61f0bb4feec3345626a2b93b970b6719743997 ]
+[ Upstream commit 84b9749a3a704dcc824a88aa8267247c801d51e4 ]
 
-Some Alienware devices have a key that locks/unlocks the Meta key. This
-key triggers a WMI event that should be ignored by the kernel, as it's
-handled by internally the firmware.
+seq_printf is costy, on a system with n CPUs, reading /proc/softirqs
+would yield 10*n decimal values, and the extra cost parsing format string
+grows linearly with number of cpus. Replace seq_printf with
+seq_put_decimal_ull_width have significant performance improvement.
+On an 8CPUs system, reading /proc/softirqs show ~40% performance
+gain with this patch.
 
-There is no known way of changing this default behavior. The firmware
-would lock/unlock the Meta key, regardless of how the event is handled.
-
-Tested on an Alienware x15 R1.
-
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Pali Rohár <pali@kernel.org>
-Link: https://lore.kernel.org/r/20241031154441.6663-2-kuurtb@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: David Wang <00107082@163.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-wmi-base.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/proc/softirqs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell-wmi-base.c b/drivers/platform/x86/dell/dell-wmi-base.c
-index b12e6ebd10dd6..c853b429b9d73 100644
---- a/drivers/platform/x86/dell/dell-wmi-base.c
-+++ b/drivers/platform/x86/dell/dell-wmi-base.c
-@@ -79,6 +79,12 @@ static const struct dmi_system_id dell_wmi_smbios_list[] __initconst = {
- static const struct key_entry dell_wmi_keymap_type_0000[] = {
- 	{ KE_IGNORE, 0x003a, { KEY_CAPSLOCK } },
- 
-+	/* Meta key lock */
-+	{ KE_IGNORE, 0xe000, { KEY_RIGHTMETA } },
-+
-+	/* Meta key unlock */
-+	{ KE_IGNORE, 0xe001, { KEY_RIGHTMETA } },
-+
- 	/* Key code is followed by brightness level */
- 	{ KE_KEY,    0xe005, { KEY_BRIGHTNESSDOWN } },
- 	{ KE_KEY,    0xe006, { KEY_BRIGHTNESSUP } },
+diff --git a/fs/proc/softirqs.c b/fs/proc/softirqs.c
+index 12901dcf57e2b..d8f4e7d54d002 100644
+--- a/fs/proc/softirqs.c
++++ b/fs/proc/softirqs.c
+@@ -19,7 +19,7 @@ static int show_softirqs(struct seq_file *p, void *v)
+ 	for (i = 0; i < NR_SOFTIRQS; i++) {
+ 		seq_printf(p, "%12s:", softirq_to_name[i]);
+ 		for_each_possible_cpu(j)
+-			seq_printf(p, " %10u", kstat_softirqs_cpu(i, j));
++			seq_put_decimal_ull_width(p, " ", kstat_softirqs_cpu(i, j), 10);
+ 		seq_putc(p, '\n');
+ 	}
+ 	return 0;
 -- 
 2.43.0
 
