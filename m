@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135EA9EF8E7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B92D59EF619
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550E717AB94
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A4C81942B35
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2F12236FC;
-	Thu, 12 Dec 2024 17:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371CD223C5D;
+	Thu, 12 Dec 2024 17:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1pR+U4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ny9zfWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4D7216E2D;
-	Thu, 12 Dec 2024 17:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BD0223C57;
+	Thu, 12 Dec 2024 17:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025034; cv=none; b=JCPJp+hfqTIjXPvYlVrE5gtkNNwmMhpiZM/nMDTrt4ZT6ZucpaLeCcW/evY4MmAZ+OiotnT4vvks8H2cNgHk6qzKNyQMjw3y3+auoKICDSSLUkh3J758vPJduYxXSuBrNPpb/GfEcP8I63sgXUZ0GlXJuSFjeNgDABFhkleGbuY=
+	t=1734022981; cv=none; b=DF71vrIuWYV/oFAjRh1eUqzVqAUyFPd8gMjn+wYSbMBToDjlKDqJh5Pt0GA8/hwbW2NowHKGR6+tHf51jUbqkjvY/WO0IYrjTi5rcNgEDclbY74Q7LODCuGRJWd3hJJDwvfF1JnMMvcACsDese6xcnsBz7vEJMQu7cSta6b2924=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025034; c=relaxed/simple;
-	bh=JXlbtPdn05KMr0p06Yw4eOfQ1h2MqpL4WA6/oOs6UO8=;
+	s=arc-20240116; t=1734022981; c=relaxed/simple;
+	bh=78VbEhM8h4v9IECgs1u4Sp0jO5BDTffrEBxRToMCuKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LiCtoeaHywKb56Pb+BFJdgOW2wcaAg30vw+3lS2cksEwU3Kb2BaOczRhjj41EzgbvNlvHTf+fkLPWZXz4yBDKFI+bQyJHJh2IUNusAafYTdQwJlX2QS47NYMt0T2pc0cdHAr6aT7ZYfbBHX73FS1xXbN4FCldFZg2NDRC9XmOv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1pR+U4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC0AC4CECE;
-	Thu, 12 Dec 2024 17:37:12 +0000 (UTC)
+	 MIME-Version; b=oit0h+ZK4ZRq9eYUmTrIeJ+IkBDOmGFserTZNB/slHap+y/2jNFYMxSvLkZFYClSa7JuS7g/UFl8UA+NFrnubzoroFus29P0eqGcFR5cHFVr/XZQ5xQSZNfRJvPUu8HOTyYysTA9cxLwV+GfT1MhwErczhjoUp+XVu+hwWHhies=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ny9zfWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E92DC4CED3;
+	Thu, 12 Dec 2024 17:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025033;
-	bh=JXlbtPdn05KMr0p06Yw4eOfQ1h2MqpL4WA6/oOs6UO8=;
+	s=korg; t=1734022980;
+	bh=78VbEhM8h4v9IECgs1u4Sp0jO5BDTffrEBxRToMCuKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1pR+U4Evp/uitXdZAG6Bay0svoTLYb4sPJFw7WaMZRvwU6UpsttPwvr2XPq4evl7
-	 Gk/xiYKT4+vVPoVSClSuqFYLkz3xomUUrl7F38QA2l+rNOMH6kdrp/2WJ6Hi8PaR0t
-	 MZ8JSwaUad/x+51JsmcCnYQAVr2KHXCOEzcstwRg=
+	b=1ny9zfWHZN6kdrFh6j3AKw3vmROkbr6ZrAy++OhAeVEpLFFo4e4BLhUrb9v86U5Ji
+	 kQZz3KHes7akvgJC1croq/RL2LOKsajlwgdA/amiVtjC+ghO2L3bjnLa6r/RA5ACoL
+	 lefj8+qVepHQ1CKnKDWj+uQV6bpwq8wBVwoE5YLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 033/321] m68k: mvme16x: Add and use "mvme16x.h"
+Subject: [PATCH 5.15 356/565] um: Always dump trace for specified task in show_stack
 Date: Thu, 12 Dec 2024 15:59:11 +0100
-Message-ID: <20241212144231.312667381@linuxfoundation.org>
+Message-ID: <20241212144325.676788608@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit dcec33c1fc4ab63983d93ffb0d82b68fc5775b88 ]
+[ Upstream commit 0f659ff362eac69777c4c191b7e5ccb19d76c67d ]
 
-When building with W=1:
+Currently, show_stack() always dumps the trace of the current task.
+However, it should dump the trace of the specified task if one is
+provided. Otherwise, things like running "echo t > sysrq-trigger"
+won't work as expected.
 
-    arch/m68k/mvme16x/config.c:208:6: warning: no previous prototype for ‘mvme16x_cons_write’ [-Wmissing-prototypes]
-      208 | void mvme16x_cons_write(struct console *co, const char *str, unsigned count)
-	  |      ^~~~~~~~~~~~~~~~~~
-
-Fix this by introducing a new header file "mvme16x.h" for holding the
-prototypes of functions implemented in arch/m68k/mvme16x/.
-
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/6200cc3b26fad215c4524748af04692e38c5ecd2.1694613528.git.geert@linux-m68k.org
-Stable-dep-of: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
+Fixes: 970e51feaddb ("um: Add support for CONFIG_STACKTRACE")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20241106103933.1132365-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/kernel/early_printk.c | 4 ++--
- arch/m68k/mvme16x/config.c      | 2 ++
- arch/m68k/mvme16x/mvme16x.h     | 6 ++++++
- 3 files changed, 10 insertions(+), 2 deletions(-)
- create mode 100644 arch/m68k/mvme16x/mvme16x.h
+ arch/um/kernel/sysrq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
-index 7d3fe08a48eb0..3cc944df04f65 100644
---- a/arch/m68k/kernel/early_printk.c
-+++ b/arch/m68k/kernel/early_printk.c
-@@ -12,8 +12,8 @@
- #include <linux/string.h>
- #include <asm/setup.h>
+diff --git a/arch/um/kernel/sysrq.c b/arch/um/kernel/sysrq.c
+index 7452f70d50d06..34edf6b8b69d5 100644
+--- a/arch/um/kernel/sysrq.c
++++ b/arch/um/kernel/sysrq.c
+@@ -52,5 +52,5 @@ void show_stack(struct task_struct *task, unsigned long *stack,
+ 	}
  
--extern void mvme16x_cons_write(struct console *co,
--			       const char *str, unsigned count);
-+
-+#include "../mvme16x/mvme16x.h"
- 
- asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
- 
-diff --git a/arch/m68k/mvme16x/config.c b/arch/m68k/mvme16x/config.c
-index 2f2c2d172b24e..6ad5c8e2bd9ad 100644
---- a/arch/m68k/mvme16x/config.c
-+++ b/arch/m68k/mvme16x/config.c
-@@ -39,6 +39,8 @@
- #include <asm/machdep.h>
- #include <asm/mvme16xhw.h>
- 
-+#include "mvme16x.h"
-+
- extern t_bdid mvme_bdid;
- 
- static MK48T08ptr_t volatile rtc = (MK48T08ptr_t)MVME_RTC_BASE;
-diff --git a/arch/m68k/mvme16x/mvme16x.h b/arch/m68k/mvme16x/mvme16x.h
-new file mode 100644
-index 0000000000000..159c34b700394
---- /dev/null
-+++ b/arch/m68k/mvme16x/mvme16x.h
-@@ -0,0 +1,6 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+struct console;
-+
-+/* config.c */
-+void mvme16x_cons_write(struct console *co, const char *str, unsigned count);
+ 	printk("%sCall Trace:\n", loglvl);
+-	dump_trace(current, &stackops, (void *)loglvl);
++	dump_trace(task ?: current, &stackops, (void *)loglvl);
+ }
 -- 
 2.43.0
 
