@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA8A9EF918
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1487C9EF711
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EBF516E930
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39D0D163264
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C7E222D68;
-	Thu, 12 Dec 2024 17:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63C4216E2D;
+	Thu, 12 Dec 2024 17:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA+RGu1d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0Ij8k0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2D020A5EE;
-	Thu, 12 Dec 2024 17:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7164F2144C4;
+	Thu, 12 Dec 2024 17:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025267; cv=none; b=d6/T+2xsxdKNyoUsCnosXgZQcaPTbqZpsvf8FW17WqcEU78yCUsL6h1UqMVejv00FgKQaSVFbAU3/E7esFuxYKkjZP3KQ6eyYwWSMeIihfHOEUT0VqIE5fmpjKAKhmLqjkVeG4ovTexYcYxSJw7ouuXI8E3LAaH37+YOjldw3g0=
+	t=1734024336; cv=none; b=AHttsCyeHZk0kjcixkVEUbbNa7zEsIGj/Y2fdYIwI3qsiYjuI3LkNna/Lh59Snp0OvZIzm3HsO5PF4fIdcYIYC9iy49bNN+qe26SobQ+iNeA10ph4jgW86SqCVbNpfvcPnnMbdGuni//ssLDoQiIh45wRZw7jYmrf2nyPuIi2JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025267; c=relaxed/simple;
-	bh=bqfOXGQFLp3zbhkmG69pDFno37rmDaL/yoitf6iI6yE=;
+	s=arc-20240116; t=1734024336; c=relaxed/simple;
+	bh=+CgvA/J8OfwgXVCWHKYKsI6kPJk72AeYbjszlezCu6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/1UDlwb6nN85nvOjDaNi5oM5w4aFtwvB4zxHGeb8Ws2geSd91slTdjHikf1D8rPe7qcENZDd8RMKqfcVWBiPoEMXFQgSG36iaLolT9EyZ4BefmS6qyxNsvhPLRwG4movJ0+nbYNriz9BilISe5Fq2Vn0YfzthVc5lKcA6df3rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA+RGu1d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25B9C4CECE;
-	Thu, 12 Dec 2024 17:41:06 +0000 (UTC)
+	 MIME-Version; b=qBwgAbjBlLPXsqFDPxEIRoUPIUZLTDV/fxQFLYCUlO6kAp1YLDwUBBbQNW5+zC369TZb1NOak1nyT8cjGjCcqrb33OM+cg4l+k8sIljO7NaajZ3OJwlljGrheSPjVvK2KSpIY22wsWRd/yThYrzZ/3Ahv+9Lbk8shPjO+QxUxLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0Ij8k0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DEEC4CECE;
+	Thu, 12 Dec 2024 17:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025267;
-	bh=bqfOXGQFLp3zbhkmG69pDFno37rmDaL/yoitf6iI6yE=;
+	s=korg; t=1734024336;
+	bh=+CgvA/J8OfwgXVCWHKYKsI6kPJk72AeYbjszlezCu6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IA+RGu1dHWd9ePRsC7Ua6Uf9WGAKNZLFCXPm0xYty138Qq0VQAPLvAMGv2j5VeIFt
-	 cvVv68rYvT9lByl9PPKwfBlsQ7CW28bbGr16TCbI9NROQ9Fy4iKZk9Zts9VNGMF9iU
-	 eGliyowfCH8CkgSUJ6Nre3s9JOQTpDP5GhFNFZl4=
+	b=x0Ij8k0C4beeLRpTEpyEIDTtFm/DKVDH0AY5IO3c2VdfV9BHzeO8DVWJwJnYJHc0M
+	 0gR9TuTyioRgxncVaBr4N4kDgmgAhYQ3dCSoDFp5EBD8ZgXrOqdW5/trSDdCW0+Aqq
+	 977m3QeXSwcov/SLz377leILw1ayNBP9MFDBnkIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 082/321] ALSA: us122l: Use snd_card_free_when_closed() at disconnection
-Date: Thu, 12 Dec 2024 16:00:00 +0100
-Message-ID: <20241212144233.223338813@linuxfoundation.org>
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	stable <stable@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.10 263/459] Revert "serial: sh-sci: Clean sci_ports[0] after at earlycon exit"
+Date: Thu, 12 Dec 2024 16:00:01 +0100
+Message-ID: <20241212144303.991122665@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit b7df09bb348016943f56b09dcaafe221e3f73947 ]
+commit 718632467d88e98816fa01ab12681ef1c2aa56f8 upstream.
 
-The USB disconnect callback is supposed to be short and not too-long
-waiting.  OTOH, the current code uses snd_card_free() at
-disconnection, but this waits for the close of all used fds, hence it
-can take long.  It eventually blocks the upper layer USB ioctls, which
-may trigger a soft lockup.
+This reverts commit 3791ea69a4858b81e0277f695ca40f5aae40f312.
 
-An easy workaround is to replace snd_card_free() with
-snd_card_free_when_closed().  This variant returns immediately while
-the release of resources is done asynchronously by the card device
-release at the last close.
+It was reported to cause boot-time issues, so revert it for now.
 
-The loop of us122l->mmap_count check is dropped as well.  The check is
-useless for the asynchronous operation with *_when_closed().
-
-Fixes: 030a07e44129 ("ALSA: Add USB US122L driver")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-3-tiwai@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 3791ea69a485 ("serial: sh-sci: Clean sci_ports[0] after at earlycon exit")
+Cc: stable <stable@kernel.org>
+Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/usx2y/us122l.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/tty/serial/sh-sci.c |   28 ----------------------------
+ 1 file changed, 28 deletions(-)
 
-diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
-index e82c5236482df..eb7e57c4a7fdb 100644
---- a/sound/usb/usx2y/us122l.c
-+++ b/sound/usb/usx2y/us122l.c
-@@ -636,10 +636,7 @@ static void snd_us122l_disconnect(struct usb_interface *intf)
- 	usb_put_intf(usb_ifnum_to_if(us122l->dev, 1));
- 	usb_put_dev(us122l->dev);
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3457,32 +3457,6 @@ sh_early_platform_init_buffer("earlyprin
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+ static struct plat_sci_port port_cfg __initdata;
  
--	while (atomic_read(&us122l->mmap_count))
--		msleep(500);
+-static int early_console_exit(struct console *co)
+-{
+-	struct sci_port *sci_port = &sci_ports[0];
+-	struct uart_port *port = &sci_port->port;
+-	unsigned long flags;
+-	int locked = 1;
 -
--	snd_card_free(card);
-+	snd_card_free_when_closed(card);
- }
+-	if (port->sysrq)
+-		locked = 0;
+-	else if (oops_in_progress)
+-		locked = uart_port_trylock_irqsave(port, &flags);
+-	else
+-		uart_port_lock_irqsave(port, &flags);
+-
+-	/*
+-	 * Clean the slot used by earlycon. A new SCI device might
+-	 * map to this slot.
+-	 */
+-	memset(sci_ports, 0, sizeof(*sci_port));
+-
+-	if (locked)
+-		uart_port_unlock_irqrestore(port, flags);
+-
+-	return 0;
+-}
+-
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
+ {
+@@ -3501,8 +3475,6 @@ static int __init early_console_setup(st
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
  
- static int snd_us122l_suspend(struct usb_interface *intf, pm_message_t message)
--- 
-2.43.0
-
+ 	device->con->write = serial_console_write;
+-	device->con->exit = early_console_exit;
+-
+ 	return 0;
+ }
+ static int __init sci_early_console_setup(struct earlycon_device *device,
 
 
 
