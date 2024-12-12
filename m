@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-101332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6C89EEBE2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE44A9EF1C1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA51161D09
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E8E228FA93
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231982153DD;
-	Thu, 12 Dec 2024 15:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CDB235895;
+	Thu, 12 Dec 2024 16:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0klOgmd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2d31C7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4715205ACF;
-	Thu, 12 Dec 2024 15:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12F622EA0A;
+	Thu, 12 Dec 2024 16:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017189; cv=none; b=mgbeb/DJg16WSnfiZYn/Mggwz8YSqABp7lqLR9rKEBdcs9gbbWvPnz3bAYEqwU83P0l8zhNU+enJvomfXwmPXRUOybbtxJzSb5FsTMGSnPFPD7OtFqwqhcTgS5mIXR1xPgegXsCoO/ThnP/Z5TAmTsY1vJM+KuwG2/+v31SjYkE=
+	t=1734021134; cv=none; b=m3jheCD0uEm+rTAU7rVoAJ+N88bfDwCriL1AycxZJTdwEJxkWvA3IEARE4tFed+SOSPdy0pGLYE9OnDZrP0U5gXjhQB8npW6GI3EP/AXWIYQlMHba4Rm6H6tA+zAvPFtOtgyeYtx0HcIppZYp4G1bqJWHlzDaTgqOUqV5l/Jeng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017189; c=relaxed/simple;
-	bh=QDsRv+XrhfM2F7MkihohpiJYoRJPIeth5jFFycUwQAw=;
+	s=arc-20240116; t=1734021134; c=relaxed/simple;
+	bh=QhYXuBS9FrK/ym4LJtU76EOW8DlQFG/SENQ1Dy4nwLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDzfDALIc/YO/ZUgXB3eitqd695TnNMZmbKVb3HCdN5SjNs0mtdomjgMipdC+MgpXPdKLsLl1Uf7hiyw0ExRssKAb+4bK/q7cJzj2hXKTITGMbJzqnQ6AY8MDbhzHEogquWmqbLwc9aVY8Zytp0fCElJjDO02cyjEf+5ti8WvCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0klOgmd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AE0C4CECE;
-	Thu, 12 Dec 2024 15:26:28 +0000 (UTC)
+	 MIME-Version; b=o+oTrFQ/l9gFycceHua3W6J4W7s/ERwXFamFbHlducwmVqf9IjiObFTu5FLpxcfkKaZIKdHZClcMQlfK9QUGW4ZKSpWFmMNLztiHQ3Tpx5fT0UVnpJREcU4fhJ951LqPZrID2r1r7DrmQV7D9khYAwFusc9AtmL/bIl2Bi/b7D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2d31C7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41519C4CECE;
+	Thu, 12 Dec 2024 16:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017189;
-	bh=QDsRv+XrhfM2F7MkihohpiJYoRJPIeth5jFFycUwQAw=;
+	s=korg; t=1734021134;
+	bh=QhYXuBS9FrK/ym4LJtU76EOW8DlQFG/SENQ1Dy4nwLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0klOgmdXDq/j8Do4x/5u+BC+ZWBbCyyNRCtA1IP8NmNVnQZeLtZC07VvqoSdcwA6
-	 uJ1X03D0LaB1GRZuCoIjJ+/ZnZ3/WddBPQklSLhALa4cJ2WJCK21QTYpSOgkfGJYDt
-	 MNBv/ab3OHnAa/wUNCW9f7bebNxkMZeOuoUP119I=
+	b=R2d31C7TX9aXExCJ7jCqS7VBQU2ZSxWErCEo8dC4ZV/U1c/P7XwMAUmKVkVUrz5yp
+	 egNW0SaW5pOWfsfQYee3vJVpXov/Swo8z/pH+tjEefKEzFvYNhBVEScouP4xNG7VKE
+	 Yv2el5GTfpyqshLJl6mQwHN9nGMAA7mbPwsGVBrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 390/466] i3c: mipi-i3c-hci: Mask ring interrupts before ring stop request
-Date: Thu, 12 Dec 2024 15:59:19 +0100
-Message-ID: <20241212144322.180238116@linuxfoundation.org>
+	Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 615/772] ALSA: hda/realtek: Add support for Samsung Galaxy Book3 360 (NP730QFG)
+Date: Thu, 12 Dec 2024 15:59:20 +0100
+Message-ID: <20241212144415.346039577@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
 
-[ Upstream commit 6ca2738174e4ee44edb2ab2d86ce74f015a0cc32 ]
+commit e2974a220594c06f536e65dfd7b2447e0e83a1cb upstream.
 
-Bus cleanup path in DMA mode may trigger a RING_OP_STAT interrupt when
-the ring is being stopped. Depending on timing between ring stop request
-completion, interrupt handler removal and code execution this may lead
-to a NULL pointer dereference in hci_dma_irq_handler() if it gets to run
-after the io_data pointer is set to NULL in hci_dma_cleanup().
+Fixes the 3.5mm headphone jack on the Samsung Galaxy Book 3 360
+NP730QFG laptop.
+Unlike the other Galaxy Book3 series devices, this device only needs
+the ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET quirk.
+Verified changes on the device and compared with codec state in Windows.
 
-Prevent this my masking the ring interrupts before ring stop request.
+[ white-space fixes by tiwai ]
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20240920144432.62370-2-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/QB1PR01MB40047D4CC1282DB7F1333124CC352@QB1PR01MB4004.CANPRD01.PROD.OUTLOOK.COM
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index a918e96b21fdd..13adc58400942 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -159,10 +159,10 @@ static void hci_dma_cleanup(struct i3c_hci *hci)
- 	for (i = 0; i < rings->total; i++) {
- 		rh = &rings->headers[i];
- 
-+		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
- 		rh_reg_write(RING_CONTROL, 0);
- 		rh_reg_write(CR_SETUP, 0);
- 		rh_reg_write(IBI_SETUP, 0);
--		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
- 
- 		if (rh->xfer)
- 			dma_free_coherent(&hci->master.dev,
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10016,6 +10016,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x144d, 0xc830, "Samsung Galaxy Book Ion (NT950XCJ-X716A)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc832, "Samsung Galaxy Book Flex Alpha (NP730QCJ)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xca03, "Samsung Galaxy Book2 Pro 360 (NP930QED)", ALC298_FIXUP_SAMSUNG_AMP),
++	SND_PCI_QUIRK(0x144d, 0xca06, "Samsung Galaxy Book3 360 (NP730QFG)", ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xc868, "Samsung Galaxy Book2 Pro (NP930XED)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
 
 
 
