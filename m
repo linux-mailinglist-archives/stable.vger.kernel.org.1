@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7A19EF400
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF58B9EEBD5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB50B290748
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CCC5162FE1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11973222D7F;
-	Thu, 12 Dec 2024 17:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C0F2153D9;
+	Thu, 12 Dec 2024 15:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGaF0H/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kC6HjiDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19F113792B;
-	Thu, 12 Dec 2024 17:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4194C205ACF;
+	Thu, 12 Dec 2024 15:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022943; cv=none; b=ieJCDS/0mDt72R0btTlCSG/V0gwRynXb6sPLzSAHSmjCO/+zgkFqGgiEJXBmBWpFp9Q9RMLgJVGjfZD4GS7sBATfBX7jst/9Yx6rinjUG2d+f0NCgcRQh1fX7c3WqBdyk7wfPkPAcbTLh/dU4H+kA47r5R5Kg3FQqDgFW+JRi7Q=
+	t=1734017164; cv=none; b=JTqwAGNRZ2I2weVYd0nsGNiPQvkl6D3Mqmr87TSm88gjQVkyHBtSQuPkftRJ3PAswfCeBemeger0pWXzSkIXJQm3V+0TktqgzWmjarYC8ZkITxs33GrrvDsLRCa1aGPJOp8nZUcX2xle+/WXkNZ+dpAspjYJ7/+xlRfx+N691GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022943; c=relaxed/simple;
-	bh=gVm0TGtWALYlTWx9uf7Uucd2O4ZRXDbQS7R/PQtOax8=;
+	s=arc-20240116; t=1734017164; c=relaxed/simple;
+	bh=e6oYQ9F0uXRLxXxkTUWrhEx6lb+UsGSgJW6yt66wEq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESovNyLy1SM8VySBYpjnOIcqqShcDk2ltiLDPVJtn2CCQs3o40kmxoatY5SLRiQbMRFNjQEnyHDVD8nrvDZGmL9Y+3jbDUEXJitkNDXfOEO9jlmioAoqsArr7dpyam3/mDiir8GRHVJo3UEK8Jru9G+5obY/IVRNzI0Rprn+Ggw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGaF0H/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30127C4CED0;
-	Thu, 12 Dec 2024 17:02:22 +0000 (UTC)
+	 MIME-Version; b=M3BdKI9kx4s1yTlbxCvcUReIwHdQnz3lEEIDpBZRRGBfYDoufWCR49vi+enZ6Opw/umHwHIDdzL5vs0PdQoUs8Fr/2CGNaskISQt56C6ofsvAs+2dXFC0lcRdL9AiluOz1HC6RgQt2Vjhl91Hp3haXbDDU19YbOjjE/t02htP4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kC6HjiDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1588C4CECE;
+	Thu, 12 Dec 2024 15:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022943;
-	bh=gVm0TGtWALYlTWx9uf7Uucd2O4ZRXDbQS7R/PQtOax8=;
+	s=korg; t=1734017164;
+	bh=e6oYQ9F0uXRLxXxkTUWrhEx6lb+UsGSgJW6yt66wEq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGaF0H/SyQflyMvRHM5x7eOevlE1ZINWA7lAqAvo/XKuGBYE15L22RhlS8vyGRrXx
-	 tdiap6XL126QnTvgBHSo3crHbOz+IzPWtkv8mYzuU4hdd9Lk5sG9t+/KG/Q0LePHTJ
-	 p4nr7bzF9LjAaxKXIekYp8iBocyrJcO+8skX9BeY=
+	b=kC6HjiDZa5Ts1USOKyJqWo+ixZGuZzmnbhnih2YXKCNZlg8CFkbZaErm5mdRPPUjU
+	 WlbLFLQ+Bkr9gI5I0xGfiJZwdr+wTwAcgKYQ94PkmSMngUTPdTV0/+1/x2HUbE7n2c
+	 VUBcNe/UF6IaJXlRRg9nwtdXBcjZh6rYHb+Z6XuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 375/565] ASoC: fsl_micfil: fix the naming style for mask definition
+	Xiuhong Wang <xiuhong.wang@unisoc.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 401/466] f2fs: fix to shrink read extent node in batches
 Date: Thu, 12 Dec 2024 15:59:30 +0100
-Message-ID: <20241212144326.447978230@linuxfoundation.org>
+Message-ID: <20241212144322.600078803@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 101b096bc2549618f18bc08ae3a0e364b3c8fff1 upstream.
+[ Upstream commit 3fc5d5a182f6a1f8bd4dc775feb54c369dd2c343 ]
 
-Remove the _SHIFT for the mask definition.
+We use rwlock to protect core structure data of extent tree during
+its shrink, however, if there is a huge number of extent nodes in
+extent tree, during shrink of extent tree, it may hold rwlock for
+a very long time, which may trigger kernel hang issue.
 
-Fixes: 17f2142bae4b ("ASoC: fsl_micfil: use GENMASK to define register bit fields")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.kernel.org/r/1651736047-28809-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch fixes to shrink read extent node in batches, so that,
+critical region of the rwlock can be shrunk to avoid its extreme
+long time hold.
+
+Reported-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
+Closes: https://lore.kernel.org/linux-f2fs-devel/20241112110627.1314632-1-xiuhong.wang@unisoc.com/
+Signed-off-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_micfil.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/f2fs/extent_cache.c | 69 +++++++++++++++++++++++++-----------------
+ 1 file changed, 41 insertions(+), 28 deletions(-)
 
---- a/sound/soc/fsl/fsl_micfil.h
-+++ b/sound/soc/fsl/fsl_micfil.h
-@@ -75,9 +75,9 @@
- #define MICFIL_FIFO_STAT_FIFOX_UNDER(ch)	BIT((ch) + 8)
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index 62ac440d94168..368d9cbdea743 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -346,21 +346,22 @@ static struct extent_tree *__grab_extent_tree(struct inode *inode,
+ }
  
- /* MICFIL HWVAD0 Control 1 Register -- REG_MICFIL_VAD0_CTRL1*/
--#define MICFIL_VAD0_CTRL1_CHSEL_SHIFT	GENMASK(26, 24)
--#define MICFIL_VAD0_CTRL1_CICOSR_SHIFT	GENMASK(19, 16)
--#define MICFIL_VAD0_CTRL1_INITT_SHIFT	GENMASK(12, 8)
-+#define MICFIL_VAD0_CTRL1_CHSEL		GENMASK(26, 24)
-+#define MICFIL_VAD0_CTRL1_CICOSR	GENMASK(19, 16)
-+#define MICFIL_VAD0_CTRL1_INITT		GENMASK(12, 8)
- #define MICFIL_VAD0_CTRL1_ST10		BIT(4)
- #define MICFIL_VAD0_CTRL1_ERIE		BIT(3)
- #define MICFIL_VAD0_CTRL1_IE		BIT(2)
-@@ -107,7 +107,7 @@
+ static unsigned int __free_extent_tree(struct f2fs_sb_info *sbi,
+-					struct extent_tree *et)
++				struct extent_tree *et, unsigned int nr_shrink)
+ {
+ 	struct rb_node *node, *next;
+ 	struct extent_node *en;
+-	unsigned int count = atomic_read(&et->node_cnt);
++	unsigned int count;
  
- /* MICFIL HWVAD0 Zero-Crossing Detector - REG_MICFIL_VAD0_ZCD */
- #define MICFIL_VAD0_ZCD_ZCDTH		GENMASK(25, 16)
--#define MICFIL_VAD0_ZCD_ZCDADJ_SHIFT	GENMASK(11, 8)
-+#define MICFIL_VAD0_ZCD_ZCDADJ		GENMASK(11, 8)
- #define MICFIL_VAD0_ZCD_ZCDAND		BIT(4)
- #define MICFIL_VAD0_ZCD_ZCDAUT		BIT(2)
- #define MICFIL_VAD0_ZCD_ZCDEN		BIT(0)
+ 	node = rb_first_cached(&et->root);
+-	while (node) {
++
++	for (count = 0; node && count < nr_shrink; count++) {
+ 		next = rb_next(node);
+ 		en = rb_entry(node, struct extent_node, rb_node);
+ 		__release_extent_node(sbi, et, en);
+ 		node = next;
+ 	}
+ 
+-	return count - atomic_read(&et->node_cnt);
++	return count;
+ }
+ 
+ static void __drop_largest_extent(struct extent_tree *et,
+@@ -579,6 +580,30 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
+ 	return en;
+ }
+ 
++static unsigned int __destroy_extent_node(struct inode *inode,
++					enum extent_type type)
++{
++	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
++	struct extent_tree *et = F2FS_I(inode)->extent_tree[type];
++	unsigned int nr_shrink = type == EX_READ ?
++				READ_EXTENT_CACHE_SHRINK_NUMBER :
++				AGE_EXTENT_CACHE_SHRINK_NUMBER;
++	unsigned int node_cnt = 0;
++
++	if (!et || !atomic_read(&et->node_cnt))
++		return 0;
++
++	while (atomic_read(&et->node_cnt)) {
++		write_lock(&et->lock);
++		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
++		write_unlock(&et->lock);
++	}
++
++	f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
++
++	return node_cnt;
++}
++
+ static void __update_extent_tree_range(struct inode *inode,
+ 			struct extent_info *tei, enum extent_type type)
+ {
+@@ -717,9 +742,6 @@ static void __update_extent_tree_range(struct inode *inode,
+ 		}
+ 	}
+ 
+-	if (is_inode_flag_set(inode, FI_NO_EXTENT))
+-		__free_extent_tree(sbi, et);
+-
+ 	if (et->largest_updated) {
+ 		et->largest_updated = false;
+ 		updated = true;
+@@ -737,6 +759,9 @@ static void __update_extent_tree_range(struct inode *inode,
+ out_read_extent_cache:
+ 	write_unlock(&et->lock);
+ 
++	if (is_inode_flag_set(inode, FI_NO_EXTENT))
++		__destroy_extent_node(inode, EX_READ);
++
+ 	if (updated)
+ 		f2fs_mark_inode_dirty_sync(inode, true);
+ }
+@@ -899,10 +924,14 @@ static unsigned int __shrink_extent_tree(struct f2fs_sb_info *sbi, int nr_shrink
+ 	list_for_each_entry_safe(et, next, &eti->zombie_list, list) {
+ 		if (atomic_read(&et->node_cnt)) {
+ 			write_lock(&et->lock);
+-			node_cnt += __free_extent_tree(sbi, et);
++			node_cnt += __free_extent_tree(sbi, et,
++					nr_shrink - node_cnt - tree_cnt);
+ 			write_unlock(&et->lock);
+ 		}
+-		f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
++
++		if (atomic_read(&et->node_cnt))
++			goto unlock_out;
++
+ 		list_del_init(&et->list);
+ 		radix_tree_delete(&eti->extent_tree_root, et->ino);
+ 		kmem_cache_free(extent_tree_slab, et);
+@@ -1041,23 +1070,6 @@ unsigned int f2fs_shrink_age_extent_tree(struct f2fs_sb_info *sbi, int nr_shrink
+ 	return __shrink_extent_tree(sbi, nr_shrink, EX_BLOCK_AGE);
+ }
+ 
+-static unsigned int __destroy_extent_node(struct inode *inode,
+-					enum extent_type type)
+-{
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+-	struct extent_tree *et = F2FS_I(inode)->extent_tree[type];
+-	unsigned int node_cnt = 0;
+-
+-	if (!et || !atomic_read(&et->node_cnt))
+-		return 0;
+-
+-	write_lock(&et->lock);
+-	node_cnt = __free_extent_tree(sbi, et);
+-	write_unlock(&et->lock);
+-
+-	return node_cnt;
+-}
+-
+ void f2fs_destroy_extent_node(struct inode *inode)
+ {
+ 	__destroy_extent_node(inode, EX_READ);
+@@ -1066,7 +1078,6 @@ void f2fs_destroy_extent_node(struct inode *inode)
+ 
+ static void __drop_extent_tree(struct inode *inode, enum extent_type type)
+ {
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	struct extent_tree *et = F2FS_I(inode)->extent_tree[type];
+ 	bool updated = false;
+ 
+@@ -1074,7 +1085,6 @@ static void __drop_extent_tree(struct inode *inode, enum extent_type type)
+ 		return;
+ 
+ 	write_lock(&et->lock);
+-	__free_extent_tree(sbi, et);
+ 	if (type == EX_READ) {
+ 		set_inode_flag(inode, FI_NO_EXTENT);
+ 		if (et->largest.len) {
+@@ -1083,6 +1093,9 @@ static void __drop_extent_tree(struct inode *inode, enum extent_type type)
+ 		}
+ 	}
+ 	write_unlock(&et->lock);
++
++	__destroy_extent_node(inode, type);
++
+ 	if (updated)
+ 		f2fs_mark_inode_dirty_sync(inode, true);
+ }
+-- 
+2.43.0
+
 
 
 
