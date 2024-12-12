@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678F99EFA06
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900619EF7AC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6012717A249
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4605828E0BE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056832248B8;
-	Thu, 12 Dec 2024 17:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F8F223E81;
+	Thu, 12 Dec 2024 17:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUmIL9Ph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AY06OdbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BFB22370C;
-	Thu, 12 Dec 2024 17:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF5F223E75;
+	Thu, 12 Dec 2024 17:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025739; cv=none; b=VaGDxUExd41twaQPfDb6Y7X+04dnLAK09WambzYDCXmyV2BdFb24Urgzfa/qALMf862QPSXYAjkwRPwsaFFySX5YmwwDz4azA/DMbN41MHPTBR3s4tDXa2KpPXrgidcxfUKrKIb7Q3GkjL3fJtD4jNRjLSMtLJ8hkEWYrxs/xak=
+	t=1734024951; cv=none; b=BToLX6T+KaULQ1DiGGJUTK63Tgyyy4zn13Bzy0Jfujg0hAUhGDIro5Fq6OUg7l/Ew2UIip6Oxjymy1y4HGsWfha353l44UedZkjJrbNZJuaE2S7pXgm06mTkIiXvLtfZbhIPlIdKbEgSh3Pwh9/bemyWfTuyITLYjeIwIruJFpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025739; c=relaxed/simple;
-	bh=z8uCcV3cipBz719El42Ge/u8ywaxH5EOQie0vCeOIOk=;
+	s=arc-20240116; t=1734024951; c=relaxed/simple;
+	bh=gb8TFwQSaN0DmlD9dARuQqg2+nZyX3AhHRB/ppjudG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zd05JIN08DB/XGGE2AFZR4EqJ+Qr7Vdqze2gYgJLbSMfn01bP94fc3IkvYHOpSAUjev/MmtpGtdhg99iy2u+/AVmG+tTcyCEvNLZAEuRuZq0bHDZ9x6FCRFXdb/+1KiN1p6Px7DW8uWGu7M6DqqMvmYbncy5PiOIKz3ledZgUGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUmIL9Ph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B98BC4CECE;
-	Thu, 12 Dec 2024 17:48:59 +0000 (UTC)
+	 MIME-Version; b=b71cTFnlrfLQtAE4GGpBTjizN6E0DHVPtr7COXzlcbL2bCHZjJTP5QzThHVfAcueHD62Q52l6P1mTUQN9EAbDELty0mNbvdmp7Zv9/D4KO/F+7L7jQ6hb3BYQtYqfx40jk43YXlBMTAh7oaXBWYdy4LAGtpAlu1wOmKsJnntgzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AY06OdbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7326C4CECE;
+	Thu, 12 Dec 2024 17:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025739;
-	bh=z8uCcV3cipBz719El42Ge/u8ywaxH5EOQie0vCeOIOk=;
+	s=korg; t=1734024951;
+	bh=gb8TFwQSaN0DmlD9dARuQqg2+nZyX3AhHRB/ppjudG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUmIL9PhC2lmcw0uX+v3EtW+6NjCxpUiaaVd9zv0MU9OWB8Sr8Fwkti0dT5rW3onr
-	 q1d6ujgpTq5UWTOGkY5Yd4YC4eafIOHHx82aPb/eOdPTKHakPFWbpbT8blstFfnULu
-	 iY7ntzAcUJ/nGfXQCxgUUd9JfMQLbdP1Ckl8t6G0=
+	b=AY06OdbZ5cr+ZZgmc8BiF7iXr3oYTnSewG96+P0rGssd1vtXVaauBRlAIJksg2SaV
+	 LDJ97uETbHsmRsq9oiI/BP1lKTSN69YZJjpbRK8etnjs+f58ymJjZey5qTZ3vd98lB
+	 1puhxwdvm+mGIQeF9C1a7eSEG+WfiXEwdIHvToVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 270/321] samples/bpf: Fix a resource leak
-Date: Thu, 12 Dec 2024 16:03:08 +0100
-Message-ID: <20241212144240.647265468@linuxfoundation.org>
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.10 451/459] modpost: Add .irqentry.text to OTHER_SECTIONS
+Date: Thu, 12 Dec 2024 16:03:09 +0100
+Message-ID: <20241212144311.588457580@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit f3ef53174b23246fe9bc2bbc2542f3a3856fa1e2 ]
+commit 7912405643a14b527cd4a4f33c1d4392da900888 upstream.
 
-The opened file should be closed in show_sockopts(), otherwise resource
-leak will occur that this problem was discovered by reading code
+The compiler can fully inline the actual handler function of an interrupt
+entry into the .irqentry.text entry point. If such a function contains an
+access which has an exception table entry, modpost complains about a
+section mismatch:
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241010014126.2573-1-zhujun2@cmss.chinamobile.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference ...
+
+  The relocation at __ex_table+0x447c references section ".irqentry.text"
+  which is not in the list of authorized sections.
+
+Add .irqentry.text to OTHER_SECTIONS to cure the issue.
+
+Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org # needed for linux-5.4-y
+Link: https://lore.kernel.org/all/20241128111844.GE10431@google.com/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/bpf/test_cgrp2_sock.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/mod/modpost.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/samples/bpf/test_cgrp2_sock.c b/samples/bpf/test_cgrp2_sock.c
-index b0811da5a00f3..3f56519a1ccd7 100644
---- a/samples/bpf/test_cgrp2_sock.c
-+++ b/samples/bpf/test_cgrp2_sock.c
-@@ -174,8 +174,10 @@ static int show_sockopts(int family)
- 		return 1;
- 	}
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -951,7 +951,7 @@ static void check_section(const char *mo
+ 		".kprobes.text", ".cpuidle.text", ".noinstr.text"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+ 		".fixup", ".entry.text", ".exception.text", ".text.*", \
+-		".coldtext"
++		".coldtext", ".irqentry.text"
  
--	if (get_bind_to_device(sd, name, sizeof(name)) < 0)
-+	if (get_bind_to_device(sd, name, sizeof(name)) < 0) {
-+		close(sd);
- 		return 1;
-+	}
- 
- 	mark = get_somark(sd);
- 	prio = get_priority(sd);
--- 
-2.43.0
-
+ #define INIT_SECTIONS      ".init.*"
+ #define MEM_INIT_SECTIONS  ".meminit.*"
 
 
 
