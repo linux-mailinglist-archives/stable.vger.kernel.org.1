@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBBE9EED74
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7409EF25B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1536816BD02
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B8C81793D6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6126721E0BC;
-	Thu, 12 Dec 2024 15:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A022922E9E2;
+	Thu, 12 Dec 2024 16:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lt3Pu5e9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7HGSQBd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125E321E085;
-	Thu, 12 Dec 2024 15:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D207223E6B;
+	Thu, 12 Dec 2024 16:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018146; cv=none; b=Kw23qn1vcl1TeuCtWDf8iIdEaTmWID3cRUwBpKQ0yQxBTQkKINS5V6zlxxFVzPHniOz9gnAsJAuEG3HGjmGX4/2oVzUBRnmPBVpLvsV3ryLCyDy+5OW37IksiOhTPi9sinKsqe69JyDasaiQTaElZ9RODFEbsy4DsCwMp5x8m+E=
+	t=1734020933; cv=none; b=gcGzOWq7HlTt5+opphgGcPyhXEOBnh/UsQHIhIr9T5BDO7Vc14T6o6q8c6uXJJ2+UPUYxddVXFgqVtTKlbmhkivRyecxXZesXqLiU6UuzmTeJgKtfLJuk25KT9RmZ6uRD2m6FuHoGCIbFqa0vWikmf1UwdGHF1IMjyANtlsjrvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018146; c=relaxed/simple;
-	bh=O/XHJIlVdj47wLwJJQRm9/KHC4IMYOBgv+ExBSo+Yu4=;
+	s=arc-20240116; t=1734020933; c=relaxed/simple;
+	bh=pbfX+EyynPc1mANM+PSZ0J+eBqSmH01E7z2kUMNEpYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pLaFBsYEvDE5Bm5/CwgGTDIWTCOjuUtprQ7QNF5azrIiU32IWVL6q5V5i1bSC2mVFQnCLGBDgcnxKfMRSLXzj16fvtPszgbK0Fu/0iojI/iU082oUblc/OhHS6BjYOWwlwzELsb96tZE0jLWyA6LVh8cpQYkmSZ7DYR3btnb2Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lt3Pu5e9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9C7C4CECE;
-	Thu, 12 Dec 2024 15:42:24 +0000 (UTC)
+	 MIME-Version; b=bLmXlkedIi7QQTUZsbKmyCcFHM+jiTg3ud36jxP/i/X4Vn0LWAPc9c708bUDUBp7nCTRE+s6UoWW+sTt7BD/XsO23oNzDMfAq3FT16PpazJCYUDNbz0Lf13slKvBUFQMiPgPAicFggxfWYF5kQsK88m7wl/mfLsiLkN0rc94lIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7HGSQBd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1DFC4CED0;
+	Thu, 12 Dec 2024 16:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018145;
-	bh=O/XHJIlVdj47wLwJJQRm9/KHC4IMYOBgv+ExBSo+Yu4=;
+	s=korg; t=1734020933;
+	bh=pbfX+EyynPc1mANM+PSZ0J+eBqSmH01E7z2kUMNEpYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lt3Pu5e96WE5WWOCDGTl2HXZBAX4sHSadeDve7DH/txKbQ6dXDFw7P8PFDq5Vb7GQ
-	 PKyvDvfa6eKTLvGFpQ5WLq6jV2p3RuQa8MRxzPA02KKtcjwUCKBJ060zXucuEgOyjD
-	 ZAYjijwnXtJ8Oz8xKmTYhQ2OMXx3yyknvb9Y/r2g=
+	b=c7HGSQBdq9HTrI/+XN7g36Q6k849Je/BRtYzXTU/ZBnWt7GHQL4KYLAmsKtLijDPt
+	 BtD5s1WBPyHdNQOgf6ATfE8/SMJy13BZ+65mpxP0IKE2CmjOE6uWwxhYd00vJjHp7F
+	 e7n93IjoVi/SVVniwvxp68oXImQ25hL4C40g2o10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
-	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 210/356] drm: panel-orientation-quirks: Add quirk for AYA NEO GEEK
+Subject: [PATCH 6.1 584/772] drm/bridge: it6505: Fix inverted reset polarity
 Date: Thu, 12 Dec 2024 15:58:49 +0100
-Message-ID: <20241212144252.911608109@linuxfoundation.org>
+Message-ID: <20241212144414.070053452@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 428656feb972ca99200fc127b5aecb574efd9d3d ]
+[ Upstream commit c5f3f21728b069412e8072b8b1d0a3d9d3ab0265 ]
 
-Add quirk orientation for AYA NEO GEEK. The name appears without
-spaces in DMI strings. The board name is completely different to
-the previous models making it difficult to reuse their quirks
-despite being the same resolution and using the same orientation.
+The IT6505 bridge chip has a active low reset line. Since it is a
+"reset" and not an "enable" line, the GPIO should be asserted to
+put it in reset and deasserted to bring it out of reset during
+the power on sequence.
 
-Tested by the JELOS team that has been patching their own kernel for a
-while now and confirmed by users in the AYA NEO and ChimeraOS discord
-servers.
+The polarity was inverted when the driver was first introduced, likely
+because the device family that was targeted had an inverting level
+shifter on the reset line.
 
-Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
-Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+The MT8186 Corsola devices already have the IT6505 in their device tree,
+but the whole display pipeline is actually disabled and won't be enabled
+until some remaining issues are sorted out. The other known user is
+the MT8183 Kukui / Jacuzzi family; their device trees currently do not
+have the IT6505 included.
+
+Fix the polarity in the driver while there are no actual users.
+
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Cc: stable@vger.kernel.org
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/40350b0d63fe2b54e7cba1e14be50917203f0079.1726492131.git.tjakobi@math.uni-bielefeld.de
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241029095411.657616-1-wenst@chromium.org
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/bridge/ite-it6505.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 2ee14c6b6fd62..c00f6f16244c0 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -208,6 +208,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_PRODUCT_NAME, "AYA NEO Founder"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
-+	}, {	/* AYA NEO GEEK */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "GEEK"),
-+		},
-+		.driver_data = (void *)&lcd800x1280_rightside_up,
- 	}, {	/* AYA NEO NEXT */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index aad750ad4798d..fbccf7835f700 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2560,9 +2560,9 @@ static int it6505_poweron(struct it6505 *it6505)
+ 	/* time interval between OVDD and SYSRSTN at least be 10ms */
+ 	if (pdata->gpiod_reset) {
+ 		usleep_range(10000, 20000);
+-		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
+-		usleep_range(1000, 2000);
+ 		gpiod_set_value_cansleep(pdata->gpiod_reset, 1);
++		usleep_range(1000, 2000);
++		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
+ 		usleep_range(25000, 35000);
+ 	}
+ 
+@@ -2589,7 +2589,7 @@ static int it6505_poweroff(struct it6505 *it6505)
+ 	}
+ 
+ 	if (pdata->gpiod_reset)
+-		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
++		gpiod_set_value_cansleep(pdata->gpiod_reset, 1);
+ 
+ 	if (pdata->pwr18) {
+ 		err = regulator_disable(pdata->pwr18);
+@@ -3050,7 +3050,7 @@ static int it6505_init_pdata(struct it6505 *it6505)
+ 		return PTR_ERR(pdata->ovdd);
+ 	}
+ 
+-	pdata->gpiod_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
++	pdata->gpiod_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(pdata->gpiod_reset)) {
+ 		dev_err(dev, "gpiod_reset gpio not found");
+ 		return PTR_ERR(pdata->gpiod_reset);
 -- 
 2.43.0
 
