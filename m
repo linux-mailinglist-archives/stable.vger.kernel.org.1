@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB409EF348
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F57D9EF0C8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC9B51887678
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86599189BD63
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E70A22541D;
-	Thu, 12 Dec 2024 16:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915F923692F;
+	Thu, 12 Dec 2024 16:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnyV/qXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPsdmd9c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13DC2210DA;
-	Thu, 12 Dec 2024 16:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FFE225405;
+	Thu, 12 Dec 2024 16:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021698; cv=none; b=eNM3ZvRyWhM0WYkvlMbjv0IglTN3vdwoTwez40525aSiIPu/HrwNb/3+99NTHrqusugOPpYisPWQhIygcmUid4Kfm0oDjD4/zhDlYttc5f4pNIdL5rkS4yHR+Pw3jaCxf6TAwLvELXBhfcDMBWO+XUjAivHBK4TgETzWyDSET+k=
+	t=1734019782; cv=none; b=sPlSNV+SMWlfMrm7X1QvRP1suED7CQW8jCLdzPwYpBvc2/dbq8vqtuHvTa2XPjeDjtNvFLWRSVb5RJ1IGqfCyN61AG2xat/6fnpTabkw6Y7eccDbEQGiwfUJlfZQ7usyWGTR8LAZEuslryhxvuq1EkydzI49CrDNTQwqCN4BAZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021698; c=relaxed/simple;
-	bh=eFT3BTp68aU1TdsdH3DjC/sXfHIB0cD9fkILg0W2YeM=;
+	s=arc-20240116; t=1734019782; c=relaxed/simple;
+	bh=Hkx31Qoa7cPJFLZx7q50S0myZYrHhVnj1lNVD9PhdfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrplEqMrtph3ARGsQiIoZ4R8OXnLSZM2OKAf156KLlzuzZpzsJJp/I7k3nNEK82ZQSKaEKXkMmCeKTG0gGonSQWugr0SVKttHUoAU78X1ntTSRsq8UrZxfoz7QLS224nwuLjOeKz4cheR1oXD2Pa4tDS+fZjKydUUchfp703Xzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnyV/qXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17506C4CECE;
-	Thu, 12 Dec 2024 16:41:37 +0000 (UTC)
+	 MIME-Version; b=b89F4FH895AwGzWjQlG8XLOG/cxTlZPL+ieYE98xazp168aU17nPjgtx48id+x3ER3xvQc+I4gJ7s/iEgLHjxLAPdQEkA8//woOqMUWJCe1Qo6+TutpGKUmUAeC2rWEfg6RngvkzA9K3/ktEj83Wi2Btu6vhKqyouVUtjOyXmVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPsdmd9c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D70C4CECE;
+	Thu, 12 Dec 2024 16:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021698;
-	bh=eFT3BTp68aU1TdsdH3DjC/sXfHIB0cD9fkILg0W2YeM=;
+	s=korg; t=1734019781;
+	bh=Hkx31Qoa7cPJFLZx7q50S0myZYrHhVnj1lNVD9PhdfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CnyV/qXNT63peeDJ1YQkJi+hc2lreO3LiJ3zUSxaQGBRhMjmmt8/q+VjGha56CdNn
-	 c7yR9HbhXCxel6zdpGPm8BNsDlZDeBncHEI9pQCmgweEliFtoCYMgXkw7AEq68OhrL
-	 yOeXYs2KWAqgn+lFPoiHmyXMkVPAXuZC2QdOtgxw=
+	b=yPsdmd9cSEUt3Zs4gUGGTlpd3juxdOs+WTNIsXESMYX7sETaroLRhDxFmAAgaGWAG
+	 LYxfcYCYzFWcMrgxY7/Q55xHL7IOsT0pwayPoJ4hUIIKINzc9/pveDs1Ww7/rTqb+7
+	 Ml37hRdRufj52FJAspS8W/sN+AU/0n3Z+2glJCKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.15 038/565] media: dvbdev: fix the logic when DVB_DYNAMIC_MINORS is not set
-Date: Thu, 12 Dec 2024 15:53:53 +0100
-Message-ID: <20241212144312.967680070@linuxfoundation.org>
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 289/772] remoteproc: qcom_q6v5_mss: Re-order writes to the IMEM region
+Date: Thu, 12 Dec 2024 15:53:54 +0100
+Message-ID: <20241212144401.846510027@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Sibi Sankar <quic_sibis@quicinc.com>
 
-commit a4aebaf6e6efff548b01a3dc49b4b9074751c15b upstream.
+[ Upstream commit 7b22b7719fc17d5979a991c918c868ab041be5c8 ]
 
-When CONFIG_DVB_DYNAMIC_MINORS, ret is not initialized, and a
-semaphore is left at the wrong state, in case of errors.
+Any write access to the IMEM region when the Q6 is setting up XPU
+protection on it will result in a XPU violation. Fix this by ensuring
+IMEM writes related to the MBA post-mortem logs happen before the Q6
+is brought out of reset.
 
-Make the code simpler and avoid mistakes by having just one error
-check logic used weather DVB_DYNAMIC_MINORS is used or not.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202410201717.ULWWdJv8-lkp@intel.com/
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Link: https://lore.kernel.org/r/9e067488d8935b8cf00959764a1fa5de85d65725.1730926254.git.mchehab+huawei@kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 318130cc9362 ("remoteproc: qcom_q6v5_mss: Add MBA log extraction support")
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240819073020.3291287-1-quic_sibis@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvbdev.c |   15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/remoteproc/qcom_q6v5_mss.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -544,6 +544,9 @@ int dvb_register_device(struct dvb_adapt
- 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
- 		if (dvb_minors[minor] == NULL)
- 			break;
-+#else
-+	minor = nums2minor(adap->num, type, id);
-+#endif
- 	if (minor >= MAX_DVB_MINORS) {
- 		if (new_node) {
- 			list_del (&new_node->list_head);
-@@ -557,17 +560,7 @@ int dvb_register_device(struct dvb_adapt
- 		mutex_unlock(&dvbdev_register_lock);
- 		return -EINVAL;
+diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
+index 7dbab5fcbe1e7..e4ef8e6ed8aaa 100644
+--- a/drivers/remoteproc/qcom_q6v5_mss.c
++++ b/drivers/remoteproc/qcom_q6v5_mss.c
+@@ -1118,6 +1118,9 @@ static int q6v5_mba_load(struct q6v5 *qproc)
+ 		goto disable_active_clks;
  	}
--#else
--	minor = nums2minor(adap->num, type, id);
--	if (minor >= MAX_DVB_MINORS) {
--		dvb_media_device_free(dvbdev);
--		list_del(&dvbdev->list_head);
--		kfree(dvbdev);
--		*pdvbdev = NULL;
--		mutex_unlock(&dvbdev_register_lock);
--		return ret;
--	}
--#endif
+ 
++	if (qproc->has_mba_logs)
++		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
 +
- 	dvbdev->minor = minor;
- 	dvb_minors[minor] = dvb_device_get(dvbdev);
- 	up_write(&minor_rwsem);
+ 	writel(qproc->mba_phys, qproc->rmb_base + RMB_MBA_IMAGE_REG);
+ 	if (qproc->dp_size) {
+ 		writel(qproc->mba_phys + SZ_1M, qproc->rmb_base + RMB_PMI_CODE_START_REG);
+@@ -1128,9 +1131,6 @@ static int q6v5_mba_load(struct q6v5 *qproc)
+ 	if (ret)
+ 		goto reclaim_mba;
+ 
+-	if (qproc->has_mba_logs)
+-		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
+-
+ 	ret = q6v5_rmb_mba_wait(qproc, 0, 5000);
+ 	if (ret == -ETIMEDOUT) {
+ 		dev_err(qproc->dev, "MBA boot timed out\n");
+-- 
+2.43.0
+
 
 
 
