@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55AF9EF5EA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DFD9EF781
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AA91194088B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FD6F177B71
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF3E222D52;
-	Thu, 12 Dec 2024 17:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53AB2210EA;
+	Thu, 12 Dec 2024 17:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDRSKO4g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgK9OmJt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC376215782;
-	Thu, 12 Dec 2024 17:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D31216E3B;
+	Thu, 12 Dec 2024 17:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023198; cv=none; b=LSgJrlTJBTmYitAOvwj2Bn7JS6ols977TJga+Opt0A49NB8WbMU1t7Ff1kcsydYamxipaySFbGbY5web0S6UK90X0Q9fXHAakY/R8hDUaIBbMiDIYTfA+BG1BekhZAEsNEyyY3l8LwxItGjEHv5UAIH4WbJsEXd1LX4LJ2ow/1I=
+	t=1734024466; cv=none; b=gCmzKmcIuEY8BmNeYZyRNGnj4eVEHrBZBeirGwQxKOsKCBVHheGpVQVEZftAelwSZ1/avgZm1x01l6qZj5Sr9Wd6j7Kb0L5laJnlhObMriIBoV7KXZ2Mp3M20qLsnSUJr8xb7+NivbI4wXlzuDmZjrZZgy7YevC3tM470qhAw10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023198; c=relaxed/simple;
-	bh=NRu6g4iTIbSlaaYyT3mfI3qaIgXqSpjGZ8OwDKGLT9w=;
+	s=arc-20240116; t=1734024466; c=relaxed/simple;
+	bh=BsW7Y5/8o866zgUA2jyE8X7hpq7die8MrvZxfnmANY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCJMyGMw3OAZnP2EA9nyObg6VQ6XocLFnOKJCw1LfoMiBDDNqhe7chrf8ks+Mayfbc7jDIdE3HSthKAALWCslc4YQoHAnsExY+qC4futquEdq71QDePDrow1gxGCMOPvHcYJfOpSlXGKB2/zozJA0CHJAX8SeGxSZjfkPZT6Nzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDRSKO4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59BAC4CECE;
-	Thu, 12 Dec 2024 17:06:37 +0000 (UTC)
+	 MIME-Version; b=V9iwmv6/T/MlOVR5So+qrSyI9GDW36ODmuL39WyR59uKJGHP7mtORD+gE4kb1HSfpmRnD0mlqHE7xlQq4b9uCNHDqCPjpow3X1GXRoNqZKL06gnR9YYhcQgJyBrf1NwOemInhhiSU4AaTyvDwQOgzBnB0MPIDCzFbN9txKCdCoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgK9OmJt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F0EC4CEDD;
+	Thu, 12 Dec 2024 17:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023198;
-	bh=NRu6g4iTIbSlaaYyT3mfI3qaIgXqSpjGZ8OwDKGLT9w=;
+	s=korg; t=1734024466;
+	bh=BsW7Y5/8o866zgUA2jyE8X7hpq7die8MrvZxfnmANY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iDRSKO4gflppUlsF1XlO7lCfZel3fiGvku4OguCRE+9wzHfLZL0ZBNoSiwzbHqMM9
-	 PJsM231+yseFVlElGLaJFLsVwBuBbygXoOblN9g2R0FWztzoP2eQMVCN/IkBCFymBo
-	 F4mIeYySml/aGEqyjVBeOwaNHguFYZ1jsqqo+zyM=
+	b=CgK9OmJt+Ed5bksgGxuBjBrF5L9Wsuj27pH8YIsZ4s5wXM2ub70enpl86aZX2MRUK
+	 rz2g6fIhaeujL7BifTAXj1QQnhkMFbdwaQpvEyAs67d9qGFiDKeWMV88AcCkNZvJHb
+	 4n0Py1ZNx95ZSRVlw8VCc0x2fkuP/3Ot76E/ZXbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 448/565] tracing: Fix cmp_entries_dup() to respect sort() comparison rules
+	Calum Mackay <calum.mackay@oracle.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 305/459] SUNRPC: correct error code comment in xs_tcp_setup_socket()
 Date: Thu, 12 Dec 2024 16:00:43 +0100
-Message-ID: <20241212144329.425457131@linuxfoundation.org>
+Message-ID: <20241212144305.693084228@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Calum Mackay <calum.mackay@oracle.com>
 
-commit e63fbd5f6810ed756bbb8a1549c7d4132968baa9 upstream.
+[ Upstream commit 8c71139d9f84c1963b0a416941244502a20a7e52 ]
 
-The cmp_entries_dup() function used as the comparator for sort()
-violated the symmetry and transitivity properties required by the
-sorting algorithm. Specifically, it returned 1 whenever memcmp() was
-non-zero, which broke the following expectations:
+This comment was introduced by commit 6ea44adce915
+("SUNRPC: ensure correct error is reported by xs_tcp_setup_socket()").
 
-* Symmetry: If x < y, then y > x.
-* Transitivity: If x < y and y < z, then x < z.
+I believe EIO was a typo at the time: it should have been EAGAIN.
 
-These violations could lead to incorrect sorting and failure to
-correctly identify duplicate elements.
+Subsequently, commit 0445f92c5d53 ("SUNRPC: Fix disconnection races")
+changed that to ENOTCONN.
 
-Fix the issue by directly returning the result of memcmp(), which
-adheres to the required comparison properties.
+Rather than trying to keep the comment here in sync with the code in
+xprt_force_disconnect(), make the point in a non-specific way.
 
-Cc: stable@vger.kernel.org
-Fixes: 08d43a5fa063 ("tracing: Add lock-free tracing_map")
-Link: https://lore.kernel.org/20241203202228.1274403-1-visitorckw@gmail.com
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ea44adce915 ("SUNRPC: ensure correct error is reported by xs_tcp_setup_socket()")
+Signed-off-by: Calum Mackay <calum.mackay@oracle.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/tracing_map.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/sunrpc/xprtsock.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -845,15 +845,11 @@ int tracing_map_init(struct tracing_map
- static int cmp_entries_dup(const void *A, const void *B)
- {
- 	const struct tracing_map_sort_entry *a, *b;
--	int ret = 0;
- 
- 	a = *(const struct tracing_map_sort_entry **)A;
- 	b = *(const struct tracing_map_sort_entry **)B;
- 
--	if (memcmp(a->key, b->key, a->elt->map->key_size))
--		ret = 1;
--
--	return ret;
-+	return memcmp(a->key, b->key, a->elt->map->key_size);
- }
- 
- static int cmp_entries_sum(const void *A, const void *B)
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index e0cd6d7350533..93e59d5a363d0 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2332,10 +2332,8 @@ static void xs_tcp_setup_socket(struct work_struct *work)
+ 	case -EHOSTUNREACH:
+ 	case -EADDRINUSE:
+ 	case -ENOBUFS:
+-		/*
+-		 * xs_tcp_force_close() wakes tasks with -EIO.
+-		 * We need to wake them first to ensure the
+-		 * correct error code.
++		/* xs_tcp_force_close() wakes tasks with a fixed error code.
++		 * We need to wake them first to ensure the correct error code.
+ 		 */
+ 		xprt_wake_pending_tasks(xprt, status);
+ 		xs_tcp_force_close(xprt);
+-- 
+2.43.0
+
 
 
 
