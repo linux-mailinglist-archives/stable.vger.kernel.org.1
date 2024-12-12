@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-102351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336609EF211
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8DE9EED42
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00659167A66
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 186452858ED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE0822D4D5;
-	Thu, 12 Dec 2024 16:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7C5222D45;
+	Thu, 12 Dec 2024 15:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrkRNaF/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I63iYMqg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAB513792B;
-	Thu, 12 Dec 2024 16:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0DC221D93;
+	Thu, 12 Dec 2024 15:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020909; cv=none; b=ER06qBoaqqKLKePv5Lj7fFLOTTeygSzw7xSDBPNHr1AA70zTWbWuVzfwWHQkDSDSjVmxjx6Ga6cSaDmAGpuzRmnihSApm8hfJspWCaAsSa9En5mt92sI6Cd0cYJ9k6br//7ik/+SHREhOv4rTBBvxZhJUEi8eKS13Z0xFHmQCcI=
+	t=1734018187; cv=none; b=GKWFcVG+VrZ/ON74hfGp1UNLGimT37Scl24I7Zxa5CwjfaPB/26QtSC7SWyIjYRae8OaAP6F5RGKxRgAQPaH/vVY2qV8qo5x3gHAA6NOOXjA/vPTFv/B1aYRbwYOpkJXgePzmq44xjBDMZvDnesoLyiuJkK+nHmXuYQ738lLK7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020909; c=relaxed/simple;
-	bh=c06K5rSjIqMqBbDLOAXZzR19Ro4EvRPvswdigYLeiME=;
+	s=arc-20240116; t=1734018187; c=relaxed/simple;
+	bh=IsvbhGxeKX8UWvwlfo1hCuJLNMv4H0HUhmAOtMQOmbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNCnoRLF0VT/A6sdpskPnbuf8fdtlizU4JcTxr3MklJTwhCAZJ0hkqcSQ8N4RwKq7U2jm2u6BUAN8bUyktSsvaNqQgxiRR1tVvREGHLQYnxB8/xmV4mIrpTpZGzVA1IWCIxiD3jGwi18JPibYzv5oAszcSFho8n1fy8aVsmRTCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrkRNaF/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA799C4CED0;
-	Thu, 12 Dec 2024 16:28:28 +0000 (UTC)
+	 MIME-Version; b=PP/z0MzXGAuTaZ1wXQFebW8IzIc8oKqaOfOdzE0i9p8+exXwkpl602GTLn9Kb6eGw3IgAhBEWXM6TSNg6/gAZwYiTP6A8zaevdhIKpe3RoGBNl1O4R1zYebmDJaygrscFeJwqHNQeuk0OdRPRb/hmBzeG3/+k1QNjww0jzT3NX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I63iYMqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD19C4CED0;
+	Thu, 12 Dec 2024 15:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020909;
-	bh=c06K5rSjIqMqBbDLOAXZzR19Ro4EvRPvswdigYLeiME=;
+	s=korg; t=1734018187;
+	bh=IsvbhGxeKX8UWvwlfo1hCuJLNMv4H0HUhmAOtMQOmbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrkRNaF/V/y4eHs5dMnv2ofqeRaBkCUcKbQodliv0J32BC5OaE7KjK+fW2kAnZhxJ
-	 7h4mgrTRs1ifQiwenNDde6lKNy5xKVNqvmzuEip47IzKCgbdZzMz9+XcdZjqXviEHB
-	 RpIBp3KWuwwOa/A49JeXLLfk3IbctK8QgUQFqBjg=
+	b=I63iYMqgYjowTi/VzO4la/ljMKWB1xNOPZ5DiUt3SBe4L+UvtKMrpsmFfb0XVZH5e
+	 epVJFcGzsW7OKvQPDOpPT/ToxcT59rqGY5w/tzmX5fe43/rODWiLcj86yuo1hnBQ8K
+	 6EWdv2UfHrjaGXJM07Frl63pfVk6r7cCD4aMh/xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 595/772] ocfs2: free inode when ocfs2_get_init_inode() fails
+Subject: [PATCH 6.6 221/356] net: fec_mpc52xx_phy: Use %pa to format resource_size_t
 Date: Thu, 12 Dec 2024 15:59:00 +0100
-Message-ID: <20241212144414.514746666@linuxfoundation.org>
+Message-ID: <20241212144253.350919445@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,52 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 965b5dd1894f4525f38c1b5f99b0106a07dbb5db ]
+[ Upstream commit 020bfdc4ed94be472138c891bde4d14241cf00fd ]
 
-syzbot is reporting busy inodes after unmount, for commit 9c89fe0af826
-("ocfs2: Handle error from dquot_initialize()") forgot to call iput() when
-new_inode() succeeded and dquot_initialize() failed.
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
 
-Link: https://lkml.kernel.org/r/e68c0224-b7c6-4784-b4fa-a9fc8c675525@I-love.SAKURA.ne.jp
-Fixes: 9c89fe0af826 ("ocfs2: Handle error from dquot_initialize()")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reported-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0af00f6a2cba2058b5db
-Tested-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+
+Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+
+Flagged by gcc-14 as:
+
+drivers/net/ethernet/freescale/fec_mpc52xx_phy.c: In function 'mpc52xx_fec_mdio_probe':
+drivers/net/ethernet/freescale/fec_mpc52xx_phy.c:97:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+   97 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+      |                                             ~^   ~~~~~~~~~
+      |                                              |      |
+      |                                              |      resource_size_t {aka long long unsigned int}
+      |                                              unsigned int
+      |                                             %llx
+
+No functional change intended.
+Compile tested only.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-1-dcc9afb8858b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/namei.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_mpc52xx_phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index 8a0fa51c9ac68..63b06377f6305 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -200,8 +200,10 @@ static struct inode *ocfs2_get_init_inode(struct inode *dir, umode_t mode)
- 	mode = mode_strip_sgid(&init_user_ns, dir, mode);
- 	inode_init_owner(&init_user_ns, inode, dir, mode);
- 	status = dquot_initialize(inode);
--	if (status)
-+	if (status) {
-+		iput(inode);
- 		return ERR_PTR(status);
-+	}
+diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
+index 39689826cc8ff..ce253aac5344c 100644
+--- a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
++++ b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
+@@ -94,7 +94,7 @@ static int mpc52xx_fec_mdio_probe(struct platform_device *of)
+ 		goto out_free;
+ 	}
  
- 	return inode;
- }
+-	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
+ 	bus->priv = priv;
+ 
+ 	bus->parent = dev;
 -- 
 2.43.0
 
