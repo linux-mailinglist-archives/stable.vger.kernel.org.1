@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F579EF366
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 910399EECAA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90506291B46
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B19188C9BA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4615B231A36;
-	Thu, 12 Dec 2024 16:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A290217739;
+	Thu, 12 Dec 2024 15:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXE6BdPj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pv8cvZvz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C28226530;
-	Thu, 12 Dec 2024 16:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B7A21765E;
+	Thu, 12 Dec 2024 15:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022317; cv=none; b=G0RnHmgJBjhEYwV4eYTMiQMNI1Wp0csecOrreHgXgAj1kVzM/+rCev0vyoCvd/FuA0RyZMiCinaVgOzBXMx0/+lPjEBVCr+ZJTY1aAcz+KDszwrrd1sh/tt5llwjP3RXIopPimJ3bQqHAWngBt2MbILSc2oEMJEbRA4fuRuczWI=
+	t=1734017689; cv=none; b=XWA1uVfjihXxv1VULFW3nvNyCXRV0AQeCYYHsyJBcjN0RcTWIt+GbYfAVGQZL10OL6Bf0Q8YehT4LmrQ2ebUdJ//Dvo1Sm1vz1+rtFcE1YPqL0nO6LdZnC6piXC0kg9JUpycbpnlOYFvXJGjjxBmxX+sdDrddIFkQCDfmymgphQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022317; c=relaxed/simple;
-	bh=LFJttg6w/h8j31oz+12kE9JaLEhF/FJpNqsfCrduiQQ=;
+	s=arc-20240116; t=1734017689; c=relaxed/simple;
+	bh=IXwDMcTJTG/w9Ufa/XIM6MsRHL+03LdQQpcavkNcp/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RE9XrUSgPCzR11GHJZRnhEllVEbEZH7h8jSXa+y9xDeCwA+MYM7i8z3wJto3IAA8AgCe9P11inSUR1XihDnkurrLTqKWCciL4ywbr7njqPmt4IFycle8jqFilE0fmYgM92jqlgpx9mqCtl+zr5b+dyb6iCUdIi6+1Qm53mILGrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXE6BdPj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2E3C4CED0;
-	Thu, 12 Dec 2024 16:51:55 +0000 (UTC)
+	 MIME-Version; b=f9Tlv+zibaOLbbV6mhykOnHDQZtdqAt3qPijppw1hr8CdOZZdntVYE+bcT8f/LeR3As+Orwe+ZhRd77FzJwWO1jHMYSuO1XCD77E5Smc9ieq+2X+QFFNWYZTijfzwWy8lzp+bnK2w0kMr2z8Q2Nma2SNc0FFm1sHzr/2LadnQic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pv8cvZvz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71057C4CECE;
+	Thu, 12 Dec 2024 15:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022316;
-	bh=LFJttg6w/h8j31oz+12kE9JaLEhF/FJpNqsfCrduiQQ=;
+	s=korg; t=1734017689;
+	bh=IXwDMcTJTG/w9Ufa/XIM6MsRHL+03LdQQpcavkNcp/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXE6BdPjvlsPFh5+VK+rvGbJny5nzmU2whKEw9jkLORTXsNlPkI0Lesa3ra09wqKl
-	 aVND4FQY5HsmGxTuY/tgh7qXt5aHsRgKNjN2L72HakHxyID+1hY/kw2y2MWtm+Nn6S
-	 G7ICFzKTt3Jk20Y7dn5Mww1I0EsrAZgV1NmQjRCM=
+	b=Pv8cvZvzHxFeghhNhpU3qSygnf4jL3nmaI7v6wbCLr8prj8zQafNgCDlFI/wL/rQ1
+	 XkXLLMJMtG4Ugq2zuZgGCX7vMlijVoigLNwoJ7t+Cm8oFf/DSDH7TiEn0lCToT7u/A
+	 TcHlRh+IrCtYpPsWvx3smMny7esLb8O9zVH5Fhmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rosen Penev <rosenp@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 207/565] wireguard: selftests: load nf_conntrack if not present
+Subject: [PATCH 6.6 083/356] mmc: mtk-sd: use devm_mmc_alloc_host
 Date: Thu, 12 Dec 2024 15:56:42 +0100
-Message-ID: <20241212144319.675198938@linuxfoundation.org>
+Message-ID: <20241212144247.903467874@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 0290abc9860917f1ee8b58309c2bbd740a39ee8e ]
+[ Upstream commit 7a2fa8eed936b33b22e49b1d2349cd7d02f22710 ]
 
-Some distros may not load nf_conntrack by default, which will cause
-subsequent nf_conntrack sets to fail. Load this module if it is not
-already loaded.
+Allows removing several gotos.
 
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-[ Jason: add [[ -e ... ]] check so this works in the qemu harness. ]
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20241117212030.629159-4-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also fixed some wrong ones.
+
+Added dev_err_probe where EPROBE_DEFER is possible.
+
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://lore.kernel.org/r/20240930224919.355359-2-rosenp@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 291220451c77 ("mmc: mtk-sd: Fix error handle of probe function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/wireguard/netns.sh | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/mtk-sd.c | 55 ++++++++++++++-------------------------
+ 1 file changed, 20 insertions(+), 35 deletions(-)
 
-diff --git a/tools/testing/selftests/wireguard/netns.sh b/tools/testing/selftests/wireguard/netns.sh
-index 93e44410f170e..4732c23e35ee5 100755
---- a/tools/testing/selftests/wireguard/netns.sh
-+++ b/tools/testing/selftests/wireguard/netns.sh
-@@ -320,6 +320,7 @@ waitiface $netns1 vethc
- waitiface $netns2 veths
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index 8b755f1627325..9ebf5aa5d9b18 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2674,20 +2674,18 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 	}
  
- n0 bash -c 'printf 1 > /proc/sys/net/ipv4/ip_forward'
-+[[ -e /proc/sys/net/netfilter/nf_conntrack_udp_timeout ]] || modprobe nf_conntrack
- n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout'
- n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout_stream'
- n0 iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -d 10.0.0.0/24 -j SNAT --to 10.0.0.1
+ 	/* Allocate MMC host for this device */
+-	mmc = mmc_alloc_host(sizeof(struct msdc_host), &pdev->dev);
++	mmc = devm_mmc_alloc_host(&pdev->dev, sizeof(struct msdc_host));
+ 	if (!mmc)
+ 		return -ENOMEM;
+ 
+ 	host = mmc_priv(mmc);
+ 	ret = mmc_of_parse(mmc);
+ 	if (ret)
+-		goto host_free;
++		return ret;
+ 
+ 	host->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(host->base)) {
+-		ret = PTR_ERR(host->base);
+-		goto host_free;
+-	}
++	if (IS_ERR(host->base))
++		return PTR_ERR(host->base);
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+ 	if (res) {
+@@ -2698,18 +2696,16 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 
+ 	ret = mmc_regulator_get_supply(mmc);
+ 	if (ret)
+-		goto host_free;
++		return ret;
+ 
+ 	ret = msdc_of_clock_parse(pdev, host);
+ 	if (ret)
+-		goto host_free;
++		return ret;
+ 
+ 	host->reset = devm_reset_control_get_optional_exclusive(&pdev->dev,
+ 								"hrst");
+-	if (IS_ERR(host->reset)) {
+-		ret = PTR_ERR(host->reset);
+-		goto host_free;
+-	}
++	if (IS_ERR(host->reset))
++		return PTR_ERR(host->reset);
+ 
+ 	/* only eMMC has crypto property */
+ 	if (!(mmc->caps2 & MMC_CAP2_NO_MMC)) {
+@@ -2721,30 +2717,24 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	host->irq = platform_get_irq(pdev, 0);
+-	if (host->irq < 0) {
+-		ret = host->irq;
+-		goto host_free;
+-	}
++	if (host->irq < 0)
++		return host->irq;
+ 
+ 	host->pinctrl = devm_pinctrl_get(&pdev->dev);
+-	if (IS_ERR(host->pinctrl)) {
+-		ret = PTR_ERR(host->pinctrl);
+-		dev_err(&pdev->dev, "Cannot find pinctrl!\n");
+-		goto host_free;
+-	}
++	if (IS_ERR(host->pinctrl))
++		return dev_err_probe(&pdev->dev, PTR_ERR(host->pinctrl),
++				     "Cannot find pinctrl");
+ 
+ 	host->pins_default = pinctrl_lookup_state(host->pinctrl, "default");
+ 	if (IS_ERR(host->pins_default)) {
+-		ret = PTR_ERR(host->pins_default);
+ 		dev_err(&pdev->dev, "Cannot find pinctrl default!\n");
+-		goto host_free;
++		return PTR_ERR(host->pins_default);
+ 	}
+ 
+ 	host->pins_uhs = pinctrl_lookup_state(host->pinctrl, "state_uhs");
+ 	if (IS_ERR(host->pins_uhs)) {
+-		ret = PTR_ERR(host->pins_uhs);
+ 		dev_err(&pdev->dev, "Cannot find pinctrl uhs!\n");
+-		goto host_free;
++		return PTR_ERR(host->pins_uhs);
+ 	}
+ 
+ 	/* Support for SDIO eint irq ? */
+@@ -2833,14 +2823,14 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 					     GFP_KERNEL);
+ 		if (!host->cq_host) {
+ 			ret = -ENOMEM;
+-			goto host_free;
++			goto release_mem;
+ 		}
+ 		host->cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
+ 		host->cq_host->mmio = host->base + 0x800;
+ 		host->cq_host->ops = &msdc_cmdq_ops;
+ 		ret = cqhci_init(host->cq_host, mmc, true);
+ 		if (ret)
+-			goto host_free;
++			goto release_mem;
+ 		mmc->max_segs = 128;
+ 		/* cqhci 16bit length */
+ 		/* 0 size, means 65536 so we don't have to -1 here */
+@@ -2877,11 +2867,8 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 			host->dma.gpd, host->dma.gpd_addr);
+ 	if (host->dma.bd)
+ 		dma_free_coherent(&pdev->dev,
+-			MAX_BD_NUM * sizeof(struct mt_bdma_desc),
+-			host->dma.bd, host->dma.bd_addr);
+-host_free:
+-	mmc_free_host(mmc);
+-
++				  MAX_BD_NUM * sizeof(struct mt_bdma_desc),
++				  host->dma.bd, host->dma.bd_addr);
+ 	return ret;
+ }
+ 
+@@ -2906,9 +2893,7 @@ static void msdc_drv_remove(struct platform_device *pdev)
+ 			2 * sizeof(struct mt_gpdma_desc),
+ 			host->dma.gpd, host->dma.gpd_addr);
+ 	dma_free_coherent(&pdev->dev, MAX_BD_NUM * sizeof(struct mt_bdma_desc),
+-			host->dma.bd, host->dma.bd_addr);
+-
+-	mmc_free_host(mmc);
++			  host->dma.bd, host->dma.bd_addr);
+ }
+ 
+ static void msdc_save_reg(struct msdc_host *host)
 -- 
 2.43.0
 
