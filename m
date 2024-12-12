@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-101150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B359EEB11
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EED9EF43D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07A53188E4D0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A780194152A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1191F218594;
-	Thu, 12 Dec 2024 15:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5A822A7F2;
+	Thu, 12 Dec 2024 16:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0Fmq5ZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6jKObp+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B9E21766D;
-	Thu, 12 Dec 2024 15:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF32229696;
+	Thu, 12 Dec 2024 16:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016534; cv=none; b=V8uqCSwpPUbg5OmuyGaPSQhHHvUGvCMqU2WxiYo9AZUlE6MnsKURf3nn/l0Knyz0ba1w1/4fnUL4qugbA+T4aTmJbPwT80+9r/rhLmZWCamOeotTy6iJkerJ/gG3zQONcSusif+GRxVjUJZ5B7muHhZFVFwOAAtUfnN+aKYTXzw=
+	t=1734022175; cv=none; b=D9GQHQgaKvcvGLl+Fti0I3DUWbJo914dcjcSmV6FKrv+Ru5PA/5MdNBM3jf0Tiv07GSjmoZVYrQnwZsLZPsLHSm+SEBPUnQgrk3r8fzrkvmYTblBJDhe4F31ZZIg+2Su/4BaMOBLM7ijbxoZIX+08oHf6yI0PHKgm1Kh+ZELKFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016534; c=relaxed/simple;
-	bh=P2rl59M/j8HMCXEQ+Cnfm5XVd1+KDPmLHz45Zb+1638=;
+	s=arc-20240116; t=1734022175; c=relaxed/simple;
+	bh=lDTGMk+l4Dx7Ate3TDj6yY/32uVqTjDKlDmOZGeYYTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rixbUYSOu8DQPb5vfboSGJFiCmMrpDs+UB5yKIuHyY9vhUeWXOn6yf0/mki3lglvmxVPCQAUkTcByZ85RNJHdBiwrxlBXuZ09MQlGWqs16NP6bf7O82M+pADqRWYlaUeuQPX+c0yHf3A2DvrmmC9DIOutLJt1h455DT6SQF3vzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0Fmq5ZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17705C4CED0;
-	Thu, 12 Dec 2024 15:15:33 +0000 (UTC)
+	 MIME-Version; b=miqBeFnEdG6p/Edr+OVz5j4QSkyR5cquF8j8YHjyIIm92ClzjBxlh5r7zDWVWEWnvjDtqIexSfrVpV7zgu5On6JhVdxBpLD0SeJoa3gSbet9GriqsTpXcdrEUtaENwoAX9eWARCI0l/rIPPL/FBY0pUllqR+wZkxGwlSSVU0Sgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6jKObp+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A42EC4CECE;
+	Thu, 12 Dec 2024 16:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016534;
-	bh=P2rl59M/j8HMCXEQ+Cnfm5XVd1+KDPmLHz45Zb+1638=;
+	s=korg; t=1734022175;
+	bh=lDTGMk+l4Dx7Ate3TDj6yY/32uVqTjDKlDmOZGeYYTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v0Fmq5ZW8F5FssRHm77OMWAp6GWgWAdg7gqFbdN7JA2TJd2PbV1RZ/UgsDEqEAPfZ
-	 5O+IISAFkYgXHPjafOhYh6RB+ubG0SIx/a758x0mbMCoIkBds/tEqIl0UXNQNzLWzf
-	 i4vqzSR3NtuVBA7B9SRzgIN4SzGidUvbCfzCaza4=
+	b=L6jKObp++1nG9ydUYmN5gnR+lF51vn2iPOVHVeRGCk8dqFbpJG9j36sbsMpDy8zSe
+	 JHOrKN5SBFayDugsUuZRANkC6zccG5FMhDa3CUTXGSF0CUDhqsV+1j2yKVpXSTCCJG
+	 Hpk2nLGItoDn06gnWbFBDsW/+UUu0/IK4qPeakcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Elver <elver@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 195/466] stackdepot: fix stack_depot_save_flags() in NMI context
+	Raed Salem <raeds@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 169/565] netdevsim: rely on XFRM state direction instead of flags
 Date: Thu, 12 Dec 2024 15:56:04 +0100
-Message-ID: <20241212144314.497251978@linuxfoundation.org>
+Message-ID: <20241212144318.155079396@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,92 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 031e04bdc834cda3b054ef6b698503b2b97e8186 upstream.
+[ Upstream commit 55e2f83afb1c142885da63c5a9ce2998b6f6ab21 ]
 
-Per documentation, stack_depot_save_flags() was meant to be usable from
-NMI context if STACK_DEPOT_FLAG_CAN_ALLOC is unset.  However, it still
-would try to take the pool_lock in an attempt to save a stack trace in the
-current pool (if space is available).
+Make sure that netdevsim relies on direction and not on flags.
 
-This could result in deadlock if an NMI is handled while pool_lock is
-already held.  To avoid deadlock, only try to take the lock in NMI context
-and give up if unsuccessful.
-
-The documentation is fixed to clearly convey this.
-
-Link: https://lkml.kernel.org/r/Z0CcyfbPqmxJ9uJH@elver.google.com
-Link: https://lkml.kernel.org/r/20241122154051.3914732-1-elver@google.com
-Fixes: 4434a56ec209 ("stackdepot: make fast paths lock-less again")
-Signed-off-by: Marco Elver <elver@google.com>
-Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Raed Salem <raeds@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Stable-dep-of: 2cf567f421db ("netdevsim: copy addresses for both in and out paths")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/stackdepot.h |    6 +++---
- lib/stackdepot.c           |   10 +++++++++-
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/netdevsim/ipsec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/stackdepot.h
-+++ b/include/linux/stackdepot.h
-@@ -147,7 +147,7 @@ static inline int stack_depot_early_init
-  * If the provided stack trace comes from the interrupt context, only the part
-  * up to the interrupt entry is saved.
-  *
-- * Context: Any context, but setting STACK_DEPOT_FLAG_CAN_ALLOC is required if
-+ * Context: Any context, but unsetting STACK_DEPOT_FLAG_CAN_ALLOC is required if
-  *          alloc_pages() cannot be used from the current context. Currently
-  *          this is the case for contexts where neither %GFP_ATOMIC nor
-  *          %GFP_NOWAIT can be used (NMI, raw_spin_lock).
-@@ -156,7 +156,7 @@ static inline int stack_depot_early_init
-  */
- depot_stack_handle_t stack_depot_save_flags(unsigned long *entries,
- 					    unsigned int nr_entries,
--					    gfp_t gfp_flags,
-+					    gfp_t alloc_flags,
- 					    depot_flags_t depot_flags);
- 
- /**
-@@ -175,7 +175,7 @@ depot_stack_handle_t stack_depot_save_fl
-  * Return: Handle of the stack trace stored in depot, 0 on failure
-  */
- depot_stack_handle_t stack_depot_save(unsigned long *entries,
--				      unsigned int nr_entries, gfp_t gfp_flags);
-+				      unsigned int nr_entries, gfp_t alloc_flags);
- 
- /**
-  * __stack_depot_get_stack_record - Get a pointer to a stack_record struct
---- a/lib/stackdepot.c
-+++ b/lib/stackdepot.c
-@@ -630,7 +630,15 @@ depot_stack_handle_t stack_depot_save_fl
- 			prealloc = page_address(page);
+diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
+index b80ed2ffd45eb..386336a38f349 100644
+--- a/drivers/net/netdevsim/ipsec.c
++++ b/drivers/net/netdevsim/ipsec.c
+@@ -171,7 +171,7 @@ static int nsim_ipsec_add_sa(struct xfrm_state *xs)
+ 		return ret;
  	}
  
--	raw_spin_lock_irqsave(&pool_lock, flags);
-+	if (in_nmi()) {
-+		/* We can never allocate in NMI context. */
-+		WARN_ON_ONCE(can_alloc);
-+		/* Best effort; bail if we fail to take the lock. */
-+		if (!raw_spin_trylock_irqsave(&pool_lock, flags))
-+			goto exit;
-+	} else {
-+		raw_spin_lock_irqsave(&pool_lock, flags);
-+	}
- 	printk_deferred_enter();
+-	if (xs->xso.flags & XFRM_OFFLOAD_INBOUND) {
++	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
+ 		sa.rx = true;
  
- 	/* Try to find again, to avoid concurrently inserting duplicates. */
+ 		if (xs->props.family == AF_INET6)
+-- 
+2.43.0
+
 
 
 
