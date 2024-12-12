@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339219EF2AB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9155D9EF3F0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79268175AD3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49CCF28B1B9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2D022B58A;
-	Thu, 12 Dec 2024 16:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A1422A7EF;
+	Thu, 12 Dec 2024 17:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIcGP2Zi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSXPoL3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED89453365;
-	Thu, 12 Dec 2024 16:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E42822969E;
+	Thu, 12 Dec 2024 17:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020850; cv=none; b=J5PZdapfK/axAu+3vguNf54dIcGTDGkaHtIZ3LcUhwRq+1xcn0jXbqJUjyS0QUHg6dwEu4eX5Vb/pI4Ekg2DHgSXIwssqerde/PBo5oL1lFCyAuUWLLfoUKY5eBRqscMMoMcmRdHUwFBENCZHeUKbQ6o2uZ5nMc/8T+2C8XXJsU=
+	t=1734022867; cv=none; b=HRgCT3izfANlOVgLiwpwOPX97/m3cyUoMLy59U4lzSGf+iK75DkpSe58scDQPx1iCYETM6nHgsymcqZZoW25igF1JGF39CjsRjvrvFue2I86vOA3AiSSoCb8qnmQynEsJLQZweSKP7KnrdLUubZ5XpdEYNbA98y6Lp5Lf5KU5ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020850; c=relaxed/simple;
-	bh=jptQCoj+YNpaXjG5psUjy7iKG4kTklDQThbFKqhU0Lc=;
+	s=arc-20240116; t=1734022867; c=relaxed/simple;
+	bh=n2KyBmDCGarKp49akKEZEAK6NyaC5LxkpaTYLXkW89c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsiwVyq5P9ctj0hmDuIlS1Sbsx7ppgzNymmJkmTbKOcydaxeO/KRBPoXOKlOBhpHoUF2S1LZcbqQm7/Eb3MU07wtYr+U2jO8Y+5J24P0epgecnIMhvMGOslW5l3LAAgXoTpWn9A54YhMc5nU/F0U2w9iv6hkDUh83GJtZvs2xnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIcGP2Zi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490C5C4AF0B;
-	Thu, 12 Dec 2024 16:27:29 +0000 (UTC)
+	 MIME-Version; b=OVdwIMmsRR9DrMu4/xLyJRBvoioByLUqtRxJQ4RCRLdmtvM/7l40nZRkXTSvOoEVICqWf2i6F+uD2ELvhZklmJw8WaYhFTlNj8svrmbWYeK9FcLGuzuKajO84a99twHUWswH3T2Re8I/rAxvsP6mlA3C9FQnyEyf5PlKKEDjk+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSXPoL3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41154C4CECE;
+	Thu, 12 Dec 2024 17:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020849;
-	bh=jptQCoj+YNpaXjG5psUjy7iKG4kTklDQThbFKqhU0Lc=;
+	s=korg; t=1734022865;
+	bh=n2KyBmDCGarKp49akKEZEAK6NyaC5LxkpaTYLXkW89c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIcGP2Zi+/Rv+RZaN8mSddjXrb0ee94anm4eq1CR8sSIzSVn6PHaVvPw8WTT5wFqE
-	 wRsb7DkH6TDb3ecMWiHYGjYzh7exGMivzYQEyMPWNi0g0LL+WrbJ3VLaCTOcm24KGP
-	 aLtWZhJsv0X6JTumxh1DnfjnidLEsZbV+CjM4DDQ=
+	b=GSXPoL3ok77XRRe+W6DQmm1bQjP2LYTjIcb/93nwlnR/RWBRXe/O1ZbZbBkXUODBf
+	 hs/v1EVt8s5n2zF+z1AymRzy2C/ItPu3fjQ8Ydr2JTqLY96merkE0F52SnVbXkAjls
+	 13jE33LtcWfmNEaccvi5g/NGJoHvGu5Zlhkksmc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 576/772] i3c: master: Fix dynamic address leak when assigned-address is present
+	syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 326/565] netfilter: ipset: add missing range check in bitmap_ip_uadt
 Date: Thu, 12 Dec 2024 15:58:41 +0100
-Message-ID: <20241212144413.752432412@linuxfoundation.org>
+Message-ID: <20241212144324.485589729@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 851bd21cdb55e727ab29280bc9f6b678164f802a ]
+commit 35f56c554eb1b56b77b3cf197a6b00922d49033d upstream.
 
-If the DTS contains 'assigned-address', a dynamic address leak occurs
-during hotjoin events.
+When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
+the values of ip and ip_to are slightly swapped. Therefore, the range check
+for ip should be done later, but this part is missing and it seems that the
+vulnerability occurs.
 
-Assume a device have assigned-address 0xb.
-  - Device issue Hotjoin
-  - Call i3c_master_do_daa()
-  - Call driver xxx_do_daa()
-  - Call i3c_master_get_free_addr() to get dynamic address 0x9
-  - i3c_master_add_i3c_dev_locked(0x9)
-  -     expected_dyn_addr  = newdev->boardinfo->init_dyn_addr (0xb);
-  -     i3c_master_reattach_i3c_dev(newdev(0xb), old_dyn_addr(0x9));
-  -         if (dev->info.dyn_addr != old_dyn_addr &&
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 0xb != 0x9 -> TRUE
-                (!dev->boardinfo ||
-                 ^^^^^^^^^^^^^^^ ->  FALSE
-                 dev->info.dyn_addr != dev->boardinfo->init_dyn_addr)) {
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                 0xb != 0xb      ->  FALSE
-                 ...
-                 i3c_bus_set_addr_slot_status(&master->bus, old_dyn_addr,
-                                                     I3C_ADDR_SLOT_FREE);
-		 ^^^
-                 This will be skipped. So old_dyn_addr never free
-            }
+So we should add missing range checks and remove unnecessary range checks.
 
-  - i3c_master_get_free_addr() will return increased sequence number.
-
-Remove dev->info.dyn_addr != dev->boardinfo->init_dyn_addr condition check.
-dev->info.dyn_addr should be checked before calling this function because
-i3c_master_setnewda_locked() has already been called and the target device
-has already accepted dyn_addr. It is too late to check if dyn_addr is free
-in i3c_master_reattach_i3c_dev().
-
-Add check to ensure expected_dyn_addr is free before
-i3c_master_setnewda_locked().
-
-Fixes: cc3a392d69b6 ("i3c: master: fix for SETDASA and DAA process")
-Cc: stable@kernel.org
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241021-i3c_dts_assign-v8-3-4098b8bde01e@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ net/netfilter/ipset/ip_set_bitmap_ip.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index a24264f275135..41ecc0d898f0c 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1491,16 +1491,9 @@ static int i3c_master_reattach_i3c_dev(struct i3c_dev_desc *dev,
- 				       u8 old_dyn_addr)
- {
- 	struct i3c_master_controller *master = i3c_dev_get_master(dev);
--	enum i3c_addr_slot_status status;
- 	int ret;
+--- a/net/netfilter/ipset/ip_set_bitmap_ip.c
++++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
+@@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
+ 		if (ret)
+ 			return ret;
+-		if (ip > ip_to) {
++		if (ip > ip_to)
+ 			swap(ip, ip_to);
+-			if (ip < map->first_ip)
+-				return -IPSET_ERR_BITMAP_RANGE;
+-		}
+ 	} else if (tb[IPSET_ATTR_CIDR]) {
+ 		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
  
--	if (dev->info.dyn_addr != old_dyn_addr &&
--	    (!dev->boardinfo ||
--	     dev->info.dyn_addr != dev->boardinfo->init_dyn_addr)) {
--		status = i3c_bus_get_addr_slot_status(&master->bus,
--						      dev->info.dyn_addr);
--		if (status != I3C_ADDR_SLOT_FREE)
--			return -EBUSY;
-+	if (dev->info.dyn_addr != old_dyn_addr) {
- 		i3c_bus_set_addr_slot_status(&master->bus,
- 					     dev->info.dyn_addr,
- 					     I3C_ADDR_SLOT_I3C_DEV);
-@@ -1902,9 +1895,10 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
- 			goto err_rstdaa;
- 		}
+@@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ip_to = ip;
+ 	}
  
-+		/* Do not mark as occupied until real device exist in bus */
- 		i3c_bus_set_addr_slot_status_mask(&master->bus,
- 						  i3cboardinfo->init_dyn_addr,
--						  I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_DESIRED,
-+						  I3C_ADDR_SLOT_EXT_DESIRED,
- 						  I3C_ADDR_SLOT_EXT_STATUS_MASK);
+-	if (ip_to > map->last_ip)
++	if (ip < map->first_ip || ip_to > map->last_ip)
+ 		return -IPSET_ERR_BITMAP_RANGE;
  
- 		/*
-@@ -2068,7 +2062,8 @@ int i3c_master_add_i3c_dev_locked(struct i3c_master_controller *master,
- 	else
- 		expected_dyn_addr = newdev->info.dyn_addr;
- 
--	if (newdev->info.dyn_addr != expected_dyn_addr) {
-+	if (newdev->info.dyn_addr != expected_dyn_addr &&
-+	    i3c_bus_get_addr_slot_status(&master->bus, expected_dyn_addr) == I3C_ADDR_SLOT_FREE) {
- 		/*
- 		 * Try to apply the expected dynamic address. If it fails, keep
- 		 * the address assigned by the master.
--- 
-2.43.0
-
+ 	for (; !before(ip_to, ip); ip += map->hosts) {
 
 
 
