@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38DC19EF5A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252239EF525
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D065528AA63
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CC5B16647F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A0D213E9F;
-	Thu, 12 Dec 2024 17:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827592288C8;
+	Thu, 12 Dec 2024 16:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLDTOChj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PC/4wNU8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B7013CA93;
-	Thu, 12 Dec 2024 17:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC17223C5E;
+	Thu, 12 Dec 2024 16:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023906; cv=none; b=kG+swmXKldJ++JjQ4wklXu22H5VVmOOVw57P0L8S4PbRDav5KSaCeJgDOA6GH9+QhwucclRtg2Hx5A5acO5aGVaJhoRhrC1KOBYA5lG1E61MaHBecGNPCoa9udUYsjRCtXaV/a1jh43zpmakw83irw8EvtxQA5jS/d627T0Irkc=
+	t=1734022417; cv=none; b=kr9+jG6+hZXuwUUTkjYJz1kCfiVgrwpwM6RJX6vJiQ0jG8qZVBLCGeoW5Zi1TyAbim0yR+CrXnsFAb3RPiOQAWN8YDubajJDNXciyTbEkfry12+LfnflNlMxysuMWv0aAuG4phJ3o2Cov54s+Qmm5/w8NOogazCeEdK491Y4pqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023906; c=relaxed/simple;
-	bh=Oi4f1X2DhgkShVXgjjFe0Iq4vXWh2EQrkhFQTCt+YhQ=;
+	s=arc-20240116; t=1734022417; c=relaxed/simple;
+	bh=h4gepbRE9aUtQPPNhjmrkhc57c6H6bOLCahiaeb7ey0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CF8D1lSb9B71rywxsOoNwuepjSB9ZDsBj9l5e/2iJtXhiLDnP7GmYq8m4pBLGvDPse4grkGogAMYNP9vMrjdV94vmMJFF+J3n3XBN8XCCWNqulLT3JwkaV8DbuFFgKmn7BcZl8EBajrDnovCuBpQLFvvtAi98N1zt/fiuskJL60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLDTOChj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76840C4CECE;
-	Thu, 12 Dec 2024 17:18:25 +0000 (UTC)
+	 MIME-Version; b=VzQFWQ8Lnkuz+ZelHh+QlWtASyCVlhXmrt5arTE+QWmoOCjvMcupO9wPkymT9KcS4OI/KfRhBOLGvG6wHE29HdDU3E8TOM7orFrU2eK8xWkVsTGkiflb8QsJXw6TYJz1FcilooxFaFyLoeDu90sXUFTeD+7++un6UjIXv3hvMHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PC/4wNU8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E30DC4CECE;
+	Thu, 12 Dec 2024 16:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023905;
-	bh=Oi4f1X2DhgkShVXgjjFe0Iq4vXWh2EQrkhFQTCt+YhQ=;
+	s=korg; t=1734022417;
+	bh=h4gepbRE9aUtQPPNhjmrkhc57c6H6bOLCahiaeb7ey0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLDTOChjr7q3JSJWIOLbcdFwsubBClzcGPsDagThFLtJflHJNyz5aXKxSIkz45nh6
-	 qbmrtIPdXre2tu1PpiduXxtsjmBquVknwMU6xzvH0as0eFs1D53uoMmlPwX4ZuQhg2
-	 dXgNMPrdoNsfp4oAJaH4F++ZpRdeBnhKPN85y+gw=
+	b=PC/4wNU8kSpMvLU3/LbukE5rCN+AG5FlPPDZ7vN4oco9UN8Lf+Ti4Z9sE1gwO1iP3
+	 t0ah2FEVRS7x+4KKGo7VUOw4+DZI8edWW+5Dcem+5L5WaF84d6RFCcxtaf1enBBdsr
+	 tD2M5PQpMFevC3H7wFoEEVwXRzWwhJgdO7lh1q+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 091/459] ARM: dts: cubieboard4: Fix DCDC5 regulator constraints
-Date: Thu, 12 Dec 2024 15:57:09 +0100
-Message-ID: <20241212144257.107449266@linuxfoundation.org>
+Subject: [PATCH 5.15 235/565] fbdev/sh7760fb: Alloc DMA memory from hardware device
+Date: Thu, 12 Dec 2024 15:57:10 +0100
+Message-ID: <20241212144320.773065060@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit dd36ad71ad65968f97630808bc8d605c929b128e ]
+[ Upstream commit 8404e56f4bc1d1a65bfc98450ba3dae5e653dda1 ]
 
-The DCDC5 voltage rail in the X-Powers AXP809 PMIC has a resolution of
-50mV, so the currently enforced limits of 1.475 and 1.525 volts cannot
-be set, when the existing regulator value is beyond this range.
+Pass the hardware device to the DMA helpers dma_alloc_coherent() and
+dma_free_coherent(). The fbdev device that is currently being used is
+a software device and does not provide DMA memory. Also update the
+related dev_*() output statements similarly.
 
-This will lead to the whole regulator driver to give up and fail
-probing, which in turn will hang the system, as essential devices depend
-on the PMIC.
-In this case a bug in U-Boot set the voltage to 1.75V (meant for DCDC4),
-and the AXP driver's attempt to correct this lead to this error:
-==================
-[    4.447653] axp20x-rsb sunxi-rsb-3a3: AXP20X driver loaded
-[    4.450066] vcc-dram: Bringing 1750000uV into 1575000-1575000uV
-[    4.460272] vcc-dram: failed to apply 1575000-1575000uV constraint: -EINVAL
-[    4.474788] axp20x-regulator axp20x-regulator.0: Failed to register dcdc5
-[    4.482276] axp20x-regulator axp20x-regulator.0: probe with driver axp20x-regulator failed with error -22
-==================
-
-Set the limits to values that can be programmed, so any correction will
-be successful.
-
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Fixes: 1e1dea72651b ("ARM: dts: sun9i: cubieboard4: Add AXP809 PMIC device node and regulators")
-Link: https://patch.msgid.link/20241007222916.19013-1-andre.przywara@arm.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-28-tzimmermann@suse.de
+Stable-dep-of: f89d17ae2ac4 ("fbdev: sh7760fb: Fix a possible memory leak in sh7760fb_alloc_mem()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/sun9i-a80-cubieboard4.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/sh7760fb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts b/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts
-index 484b93df20cb6..c7a3bf3cc3407 100644
---- a/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts
-+++ b/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts
-@@ -280,8 +280,8 @@ reg_dcdc4: dcdc4 {
+diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
+index 5978a89212322..6adf048c1bae8 100644
+--- a/drivers/video/fbdev/sh7760fb.c
++++ b/drivers/video/fbdev/sh7760fb.c
+@@ -359,7 +359,7 @@ static void sh7760fb_free_mem(struct fb_info *info)
+ 	if (!info->screen_base)
+ 		return;
  
- 			reg_dcdc5: dcdc5 {
- 				regulator-always-on;
--				regulator-min-microvolt = <1425000>;
--				regulator-max-microvolt = <1575000>;
-+				regulator-min-microvolt = <1450000>;
-+				regulator-max-microvolt = <1550000>;
- 				regulator-name = "vcc-dram";
- 			};
+-	dma_free_coherent(info->dev, info->screen_size,
++	dma_free_coherent(info->device, info->screen_size,
+ 			  info->screen_base, par->fbdma);
+ 
+ 	par->fbdma = 0;
+@@ -408,14 +408,14 @@ static int sh7760fb_alloc_mem(struct fb_info *info)
+ 	if (vram < PAGE_SIZE)
+ 		vram = PAGE_SIZE;
+ 
+-	fbmem = dma_alloc_coherent(info->dev, vram, &par->fbdma, GFP_KERNEL);
++	fbmem = dma_alloc_coherent(info->device, vram, &par->fbdma, GFP_KERNEL);
+ 
+ 	if (!fbmem)
+ 		return -ENOMEM;
+ 
+ 	if ((par->fbdma & SH7760FB_DMA_MASK) != SH7760FB_DMA_MASK) {
+ 		sh7760fb_free_mem(info);
+-		dev_err(info->dev, "kernel gave me memory at 0x%08lx, which is"
++		dev_err(info->device, "kernel gave me memory at 0x%08lx, which is"
+ 			"unusable for the LCDC\n", (unsigned long)par->fbdma);
+ 		return -ENOMEM;
+ 	}
+@@ -486,7 +486,7 @@ static int sh7760fb_probe(struct platform_device *pdev)
+ 
+ 	ret = sh7760fb_alloc_mem(info);
+ 	if (ret) {
+-		dev_dbg(info->dev, "framebuffer memory allocation failed!\n");
++		dev_dbg(info->device, "framebuffer memory allocation failed!\n");
+ 		goto out_unmap;
+ 	}
  
 -- 
 2.43.0
