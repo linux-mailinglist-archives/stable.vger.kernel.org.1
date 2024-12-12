@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DA59EF7DE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A219EF905
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02B7B16FBF3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E11CC1894C98
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1AF2165F0;
-	Thu, 12 Dec 2024 17:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01B9222D6A;
+	Thu, 12 Dec 2024 17:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mP5Qkdp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC0gNnfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462EF211493;
-	Thu, 12 Dec 2024 17:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C114221D93;
+	Thu, 12 Dec 2024 17:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024327; cv=none; b=gmVdy1U5pS/KxHCohKLnnWgWCXBA87JSKCowcjhgQOCJsKP5Dvs4F+2pD6zRB+EXG4USQ8loJISpeoLpMGUp7UzNCo9/wr2rWii7el0tz2a6lwaOZ78DQWXh8w+a2aNvu04mkTYmnmvIFXHPzHu3hGxcvDVhpMXUNoc3S7bG6gk=
+	t=1734025264; cv=none; b=Wshk8mbmTtJMGjcx4uBSeCXvz3n7rfuIdUcnCN/0lHQrik/WqYjcY54K5oUh1rNzS1b1jyrU5uCO9ihVMyaZVFeMxWym8hT60RgKe0FFwvNWT8z4xVc8fzAFPR4SYD+RGKG8tRi14TfKmAKngNoVOtXX1KA3ELa8VGuKs3nJ/nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024327; c=relaxed/simple;
-	bh=/0NqUIomGTEqMap8TPmu4NfErR5UmDQ0mwh6yP2KXUo=;
+	s=arc-20240116; t=1734025264; c=relaxed/simple;
+	bh=TxQDqGGb60iZ4ExVxFHCssDMY17FmHns/E7JUC1zG3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJPWVouWMJ/GrS+YObFiav0aSq/RlF7Fjv2pIIOzbm2hfYjgmWTqMBu2cIjg2xx2FAvu5uJryzlMr9TIwARfQG8RFXmg+xX5N5bBVfHhy7xy22H+7bl8/vHb6mU6YPVCWaYxxuS/pUeXVnSSm7SeRUvi/FqiyhEOO1i46/kvw0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mP5Qkdp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96ACC4CECE;
-	Thu, 12 Dec 2024 17:25:26 +0000 (UTC)
+	 MIME-Version; b=BYlhnIuBONu+/rl6c/43MN0TuGGvBnixj7rAVUDZ8zPCVOkVgpZcZ2/B1fX+vrOxODgxkFIHl8TPURznR+JUfmwh96iHgzsTYgpSuKzhsOTHzQcv6HFxqxQY2kjUEG2TcFFSQ84olpw15MRxNe7//TDCuS7RDcjEeClg9kRAdb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC0gNnfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9988C4CED3;
+	Thu, 12 Dec 2024 17:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024327;
-	bh=/0NqUIomGTEqMap8TPmu4NfErR5UmDQ0mwh6yP2KXUo=;
+	s=korg; t=1734025264;
+	bh=TxQDqGGb60iZ4ExVxFHCssDMY17FmHns/E7JUC1zG3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mP5Qkdp+1O+POxsTRd5gm5ldOvg0VtiJ7eCii4Ohrd6WXrl9qT30oR9XhpwOU04Sr
-	 23Qg2mW5Cwbm4x81HFe1QmhyiY4pz6LdLzjUPI+rLUh6S3RJaly5L81RrQ345yOznf
-	 kEZ0VnyAp6hLrqsYMpwZBOmgIXQPKWkHbuPE3bJM=
+	b=SC0gNnfwW9CFXzTL8VtO3fhlk/nHKX3tRUE++7WZ999kxrggjN9UjMtWjtK8hWs7P
+	 1mR7DDnSwk2hlJadt9o2ZZYs3q6T3DcAJL9mD2Kgk8x4MMy3iGOmX8NJPcEokvDfqw
+	 7I5NyPdvsgAcXKkg2WwhrkVrLv4IUthIxWztUF9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-Subject: [PATCH 5.10 260/459] driver core: bus: Fix double free in driver API bus_register()
-Date: Thu, 12 Dec 2024 15:59:58 +0100
-Message-ID: <20241212144303.868976790@linuxfoundation.org>
+	Mingwei Zheng <zmw12306@gmail.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 081/321] net: rfkill: gpio: Add check for clk_enable()
+Date: Thu, 12 Dec 2024 15:59:59 +0100
+Message-ID: <20241212144233.185197045@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Mingwei Zheng <zmw12306@gmail.com>
 
-commit bfa54a793ba77ef696755b66f3ac4ed00c7d1248 upstream.
+[ Upstream commit 8251e7621b25ccdb689f1dd9553b8789e3745ea1 ]
 
-For bus_register(), any error which happens after kset_register() will
-cause that @priv are freed twice, fixed by setting @priv with NULL after
-the first free.
+Add check for the return value of clk_enable() to catch the potential
+error.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20240727-bus_register_fix-v1-1-fed8dd0dba7a@quicinc.com
+Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
+Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://patch.msgid.link/20241108195341.1853080-1-zmw12306@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Brennan : Backport requires bus->p = NULL instead of priv = NULL ]
-Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/bus.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/rfkill/rfkill-gpio.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -874,6 +874,8 @@ bus_devices_fail:
- 	bus_remove_file(bus, &bus_attr_uevent);
- bus_uevent_fail:
- 	kset_unregister(&bus->p->subsys);
-+	/* Above kset_unregister() will kfree @bus->p */
-+	bus->p = NULL;
- out:
- 	kfree(bus->p);
- 	bus->p = NULL;
+diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
+index f74baefd855d3..2df5bf240b64a 100644
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -30,8 +30,12 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
+ {
+ 	struct rfkill_gpio_data *rfkill = data;
+ 
+-	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled)
+-		clk_enable(rfkill->clk);
++	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled) {
++		int ret = clk_enable(rfkill->clk);
++
++		if (ret)
++			return ret;
++	}
+ 
+ 	gpiod_set_value_cansleep(rfkill->shutdown_gpio, !blocked);
+ 	gpiod_set_value_cansleep(rfkill->reset_gpio, !blocked);
+-- 
+2.43.0
+
 
 
 
