@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A589EED53
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9889EF23A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEA516AE29
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07816171444
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3F62210DF;
-	Thu, 12 Dec 2024 15:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7202210DF;
+	Thu, 12 Dec 2024 16:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPdnozI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4uH5q7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C955215799;
-	Thu, 12 Dec 2024 15:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2B32139C9;
+	Thu, 12 Dec 2024 16:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018061; cv=none; b=cjRb6/H+rk60giVAYZYnRm4chsTuilxlIyvhVbdaXcaT40mYeh9RruyS/GQOpWdqcT48FEVqH6WGPgBnqu+VzvgkgAxnWUNvhoCXaxiSYel8OKi4ptr6AQjNhrEOaLJuQiv1fXZdBkMt56lJ7YUcmReTt7qydsbunPals6hLLT0=
+	t=1734020683; cv=none; b=eeb9z6ovLwpCdBrUV1yFvzsnvRNwL9FwuuO0K7j6sxhdKC8DaZ8fVrgsIFZaVoT6aeYORDQnh7F++zBMqJINRhUFESGYrH/DgwwRhCjyAUv6632OeOTEOsgtS2HUzASDaUoBlYP8B+uU518mG4nWWLp1XDFujkk0Dbp8QrsLqEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018061; c=relaxed/simple;
-	bh=m2bRSNEDrlBxOw4754BthLHhMgexODPbXg5h3thouDM=;
+	s=arc-20240116; t=1734020683; c=relaxed/simple;
+	bh=Moxy6q0N61h9SD7ugkjXJcy7vBOkWWfP3yMm3kpaAjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doR3HnAr1HaDqp9P1lf93wSUrXOw+EgHAf12zwOioh0ZrM4edncCBiHBBKZViXUhrG/P3VmLGnfc/0kcOQO7qjRsDU+vrUS62MYLbzdaBB1VpdOr8tG+LdEkJgbOXbC3J3eodLkKIsIPa/8WdfdltoiXnP4mtM+olS8f/YGGUwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPdnozI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF59C4CECE;
-	Thu, 12 Dec 2024 15:41:00 +0000 (UTC)
+	 MIME-Version; b=Q13X7yciMoSO+qRJaTiB0VNfOwakmJE1nkKAyso4AIFagw9w54U5ThGBc/Yi16pLP//MWmNTDB+bbaY0DG1Uqt7TXcySKXYlfOIFMbOoDi5mV6EhK4dA8jTwwrnfHcc/mozPjufUDI133gyARuxqUHyMlgxE4mf17bYZmeJQPtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4uH5q7X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19A6C4CECE;
+	Thu, 12 Dec 2024 16:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018060;
-	bh=m2bRSNEDrlBxOw4754BthLHhMgexODPbXg5h3thouDM=;
+	s=korg; t=1734020683;
+	bh=Moxy6q0N61h9SD7ugkjXJcy7vBOkWWfP3yMm3kpaAjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPdnozI6DWANgi2MHeA8ccOyUa3Kclarae/vISoCQPdiGQ/Ebg7Dr8rcNEuqnwL3b
-	 H+Oa8lJcmB1wtHAMbh6eJUZAItzW06wTpKiNe7eg1TURprFkgEP2lIQ1KReXiVzjbY
-	 Pu4ql/HTL60WjT+sKYVYIwWyjoOHUUyFZdDa4A8o=
+	b=u4uH5q7X61uvdcmlexI0fN16e/KY0Ihm+p9HGI2K8gX0/qZzxuiAVTql3Ge5iDsIB
+	 cJM8DIWNUpQQ+w1Bx7KYqIIL0mWrj8TDoPNSacM+/GiNC55DwY8GDJ1GYWsI75MWQr
+	 CXvtjKFRlmHGlg//CZcaMkWq/55bdHZLApQS0hAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 159/356] nilfs2: fix potential out-of-bounds memory access in nilfs_find_entry()
+	Jiri Wiesner <jwiesner@suse.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 533/772] net/ipv6: release expired exception dst cached in socket
 Date: Thu, 12 Dec 2024 15:57:58 +0100
-Message-ID: <20241212144250.922077592@linuxfoundation.org>
+Message-ID: <20241212144411.995458821@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Jiri Wiesner <jwiesner@suse.de>
 
-commit 985ebec4ab0a28bb5910c3b1481a40fbf7f9e61d upstream.
+[ Upstream commit 3301ab7d5aeb0fe270f73a3d4810c9d1b6a9f045 ]
 
-Syzbot reported that when searching for records in a directory where the
-inode's i_size is corrupted and has a large value, memory access outside
-the folio/page range may occur, or a use-after-free bug may be detected if
-KASAN is enabled.
+Dst objects get leaked in ip6_negative_advice() when this function is
+executed for an expired IPv6 route located in the exception table. There
+are several conditions that must be fulfilled for the leak to occur:
+* an ICMPv6 packet indicating a change of the MTU for the path is received,
+  resulting in an exception dst being created
+* a TCP connection that uses the exception dst for routing packets must
+  start timing out so that TCP begins retransmissions
+* after the exception dst expires, the FIB6 garbage collector must not run
+  before TCP executes ip6_negative_advice() for the expired exception dst
 
-This is because nilfs_last_byte(), which is called by nilfs_find_entry()
-and others to calculate the number of valid bytes of directory data in a
-page from i_size and the page index, loses the upper 32 bits of the 64-bit
-size information due to an inappropriate type of local variable to which
-the i_size value is assigned.
+When TCP executes ip6_negative_advice() for an exception dst that has
+expired and if no other socket holds a reference to the exception dst, the
+refcount of the exception dst is 2, which corresponds to the increment
+made by dst_init() and the increment made by the TCP socket for which the
+connection is timing out. The refcount made by the socket is never
+released. The refcount of the dst is decremented in sk_dst_reset() but
+that decrement is counteracted by a dst_hold() intentionally placed just
+before the sk_dst_reset() in ip6_negative_advice(). After
+ip6_negative_advice() has finished, there is no other object tied to the
+dst. The socket lost its reference stored in sk_dst_cache and the dst is
+no longer in the exception table. The exception dst becomes a leaked
+object.
 
-This caused a large byte offset value due to underflow in the end address
-calculation in the calling nilfs_find_entry(), resulting in memory access
-that exceeds the folio/page size.
+As a result of this dst leak, an unbalanced refcount is reported for the
+loopback device of a net namespace being destroyed under kernels that do
+not contain e5f80fcf869a ("ipv6: give an IPv6 dev to blackhole_netdev"):
+unregister_netdevice: waiting for lo to become free. Usage count = 2
 
-Fix this issue by changing the type of the local variable causing the bit
-loss from "unsigned int" to "u64".  The return value of nilfs_last_byte()
-is also of type "unsigned int", but it is truncated so as not to exceed
-PAGE_SIZE and no bit loss occurs, so no change is required.
+Fix the dst leak by removing the dst_hold() in ip6_negative_advice(). The
+patch that introduced the dst_hold() in ip6_negative_advice() was
+92f1655aa2b22 ("net: fix __dst_negative_advice() race"). But 92f1655aa2b22
+merely refactored the code with regards to the dst refcount so the issue
+was present even before 92f1655aa2b22. The bug was introduced in
+54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually
+expired.") where the expired cached route is deleted and the sk_dst_cache
+member of the socket is set to NULL by calling dst_negative_advice() but
+the refcount belonging to the socket is left unbalanced.
 
-Link: https://lkml.kernel.org/r/20241119172403.9292-1-konishi.ryusuke@gmail.com
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96d5d14c47d97015c624
-Tested-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The IPv4 version - ipv4_negative_advice() - is not affected by this bug.
+When the TCP connection times out ipv4_negative_advice() merely resets the
+sk_dst_cache of the socket while decrementing the refcount of the
+exception dst.
+
+Fixes: 92f1655aa2b22 ("net: fix __dst_negative_advice() race")
+Fixes: 54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually expired.")
+Link: https://lore.kernel.org/netdev/20241113105611.GA6723@incl/T/#u
+Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241128085950.GA4505@incl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/route.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -76,7 +76,7 @@ static inline void nilfs_put_page(struct
-  */
- static unsigned int nilfs_last_byte(struct inode *inode, unsigned long page_nr)
- {
--	unsigned int last_byte = inode->i_size;
-+	u64 last_byte = inode->i_size;
- 
- 	last_byte -= page_nr << PAGE_SHIFT;
- 	if (last_byte > PAGE_SIZE)
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 5da0c83a3ee8f..5ae3ff6ffb7e9 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -2774,10 +2774,10 @@ static void ip6_negative_advice(struct sock *sk,
+ 	if (rt->rt6i_flags & RTF_CACHE) {
+ 		rcu_read_lock();
+ 		if (rt6_check_expired(rt)) {
+-			/* counteract the dst_release() in sk_dst_reset() */
+-			dst_hold(dst);
++			/* rt/dst can not be destroyed yet,
++			 * because of rcu_read_lock()
++			 */
+ 			sk_dst_reset(sk);
+-
+ 			rt6_remove_exception_rt(rt);
+ 		}
+ 		rcu_read_unlock();
+-- 
+2.43.0
+
 
 
 
