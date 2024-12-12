@@ -1,120 +1,92 @@
-Return-Path: <stable+bounces-100918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB599EE7D3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:39:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E53F79EE7FE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:44:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8AEB281213
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:39:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A977B1889B0B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EEC2144A8;
-	Thu, 12 Dec 2024 13:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83ADD2144BA;
+	Thu, 12 Dec 2024 13:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="WE2C1rat"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4UuxzQo"
 X-Original-To: stable@vger.kernel.org
-Received: from st43p00im-ztfb10071701.me.com (st43p00im-ztfb10071701.me.com [17.58.63.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC5A213E9E
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 13:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.63.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11275213E84;
+	Thu, 12 Dec 2024 13:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734010781; cv=none; b=R6LXYkwfUN3aIXc4XNHEQSBtrAY+ItIQNf2fHKILArSX/ucabIUxBPAt0g6eH/rl2OtePhxOBpNMzhmUUc8naI3/XKr7xtvyerANcezxDzK9IhCz8CMksoPlcWlWZl+W7eKvtjRbi9AK4hyxd22GE2p29aiOII9bbDSfKAclFXk=
+	t=1734011071; cv=none; b=DCeCkfv+kObvTQgJxWNuFItSk/KHe291VvexXrM18h3OniQ0YvkIcwrZCUjpGm2H0LU/0jQyJAJ0TEkMrUmvEzRhLPcmQXe1sOYcIR76b2GNBkbV2Z+B79KzD7FuVtzK3O66BfmbHulsQVIB/m3nL5S0iYm3HU1logn82GnsYSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734010781; c=relaxed/simple;
-	bh=VJjh6ZhXKGcVCCDU2UfjvJvEycscGCyQOOsgxx+2wNQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PtxgUI5G9KBwtetaAy8UuFUI8AnGEINZTjXW9kFX5mFVM0/xcYyndDnDMNZB2JR2vQ3SFp4prxazUBnUKfEGrdYJFEjNtgm6mu1gETOjPBC1NTJHX6eXQTD2QzP4ujLpbb7p6jgExjhsxShLMk4mSZTE5sTkm8gicf4bVCYbrb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=WE2C1rat; arc=none smtp.client-ip=17.58.63.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1734010779;
-	bh=cpH9bgdtvAV2gtShH3Xs87qkc05FUN80N1S8SieWLOU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=WE2C1ratPFZQR/5lUr/YlEzqb7pn4kCQ0/XkCbMdWg4xciFjIXXwugk5e1nOAbw/u
-	 RJyVn2Ys/hw1e9TEgRnOE75GO6bzm+c8YnS3vc+xy4fJ6U4X2p6jGlly5lktdQe14R
-	 fKpsVZeqaIGIkMsLKwnUl5Yqp1ZgCsXhs9LIzN+aRQHUSdN3p4ZkWEn6v6NsfXKE5F
-	 zbweygnUJoU9qx7d4dB6nU11goc+hG3Ij6dDc1LR1z9+9quGnx2L6olpVQ3gS56L1p
-	 2/3yIDNTq3lJRSj2nAyNPha8rs0mXrFPEoORDg5XLjKFmYsj1zyQQ/HLjORP41aX01
-	 /JOJ6FlPXdBzg==
-Received: from [192.168.1.26] (st43p00im-dlb-asmtp-mailmevip.me.com [17.42.251.41])
-	by st43p00im-ztfb10071701.me.com (Postfix) with ESMTPSA id A3680CC01D3;
-	Thu, 12 Dec 2024 13:39:29 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Thu, 12 Dec 2024 21:38:38 +0800
-Subject: [PATCH v3 2/9] blk-cgroup: Fix class @block_class's subsystem
- refcount leakage
+	s=arc-20240116; t=1734011071; c=relaxed/simple;
+	bh=Lit1VK9jGMpBkGX999PGGuTFC0FXWDKqYxr+W2P+bB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oj0aMI2kF0B7ZnPIRaT0xelC9P0kYm33HPlH1km3/9W4Q/tCfb4qgqEqCiy53tc80o/BWr/NnC6KwXetaKjS4hC3FxSrqDZr3rXnxXwvLgzhSCEKJCxs5LyV3QHqnUK/idUsm5RmW3OqPb5O2gyRKijnNLQ1rUsvd2xTO7Reb/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4UuxzQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289FFC4CECE;
+	Thu, 12 Dec 2024 13:44:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1734011070;
+	bh=Lit1VK9jGMpBkGX999PGGuTFC0FXWDKqYxr+W2P+bB0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=l4UuxzQoU4a8h5vOWcd9w2BjIG2cfOYh+oaP5YMkQJcW5hzhtgyFi2DqoWKsvo5RY
+	 Q+8EEZswMQClnmByB9ZrRgDOlQxXNWZ5dKvrwfdmXR95O1nhFFJiH/LbucZT210Sk+
+	 hAdt6W6lYcqOiDupwqIAmlFPmB2OWaj5DK4xt/d4=
+Date: Thu, 12 Dec 2024 14:44:27 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Hui Wang <hui.wang@canonical.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, sashal@kernel.org,
+	hvilleneuve@dimonoff.com
+Subject: Re: [stable-kernel][5.15.y][PATCH 0/5] Fix a regression on sc16is7xx
+Message-ID: <2024121241-civil-diligence-dc09@gregkh>
+References: <20241211042545.202482-1-hui.wang@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241212-class_fix-v3-2-04e20c4f0971@quicinc.com>
-References: <20241212-class_fix-v3-0-04e20c4f0971@quicinc.com>
-In-Reply-To: <20241212-class_fix-v3-0-04e20c4f0971@quicinc.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Tejun Heo <tj@kernel.org>, 
- Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>, 
- Boris Burkov <boris@bur.io>, Davidlohr Bueso <dave@stgolabs.net>, 
- Jonathan Cameron <jonathan.cameron@huawei.com>, 
- Dave Jiang <dave.jiang@intel.com>, 
- Alison Schofield <alison.schofield@intel.com>, 
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Dan Williams <dan.j.williams@intel.com>
-Cc: Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
- cgroups@vger.kernel.org, linux-block@vger.kernel.org, 
- linux-cxl@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: RBdV7Ki3-LPAth7cquZxpYKME9w9qxmu
-X-Proofpoint-ORIG-GUID: RBdV7Ki3-LPAth7cquZxpYKME9w9qxmu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-12_09,2024-12-12_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
- malwarescore=0 bulkscore=0 clxscore=1015 phishscore=0 mlxscore=0
- adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412120098
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241211042545.202482-1-hui.wang@canonical.com>
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Wed, Dec 11, 2024 at 12:25:39PM +0800, Hui Wang wrote:
+> Recently we found the fifo_read() and fifo_write() are broken in our
+> 5.15 kernel after rebase to the latest 5.15.y, the 5.15.y integrated
+> the commit e635f652696e ("serial: sc16is7xx: convert from _raw_ to
+> _noinc_ regmap functions for FIFO"), but it forgot to integrate a
+> prerequisite commit 3837a0379533 ("serial: sc16is7xx: improve regmap
+> debugfs by using one regmap per port").
+> 
+> And about the prerequisite commit, there are also 4 commits to fix it,
+> So in total, I backported 5 patches to 5.15.y to fix this regression.
+> 
+> 0002-xxx and 0004-xxx could be cleanly applied to 5.15.y, the remaining
+> 3 patches need to resolve some conflict.
+> 
+> Hugo Villeneuve (5):
+>   serial: sc16is7xx: improve regmap debugfs by using one regmap per port
+>   serial: sc16is7xx: remove wasteful static buffer in
+>     sc16is7xx_regmap_name()
+>   serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
+>   serial: sc16is7xx: remove unused line structure member
+>   serial: sc16is7xx: change EFR lock to operate on each channels
+> 
+>  drivers/tty/serial/sc16is7xx.c | 185 +++++++++++++++++++--------------
+>  1 file changed, 107 insertions(+), 78 deletions(-)
 
-blkcg_fill_root_iostats() iterates over @block_class's devices by
-class_dev_iter_(init|next)(), but does not end iterating with
-class_dev_iter_exit(), so causes the class's subsystem refcount leakage.
+How well did you test this series?  It seems you forgot about commit
+133f4c00b8b2 ("serial: sc16is7xx: fix TX fifo corruption"), right?
 
-Fix by ending the iterating with class_dev_iter_exit().
+Please do better testing and resend a working set of patches.
 
-Fixes: ef45fe470e1e ("blk-cgroup: show global disk stats in root cgroup io.stat")
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- block/blk-cgroup.c | 1 +
- 1 file changed, 1 insertion(+)
+thanks,
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index e68c725cf8d975f53703ecf6e6c50594076204c8..fb9858efdfe9443704cb9a239def0e08addf2518 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1138,6 +1138,7 @@ static void blkcg_fill_root_iostats(void)
- 		blkg_iostat_set(&blkg->iostat.cur, &tmp);
- 		u64_stats_update_end_irqrestore(&blkg->iostat.sync, flags);
- 	}
-+	class_dev_iter_exit(&iter);
- }
- 
- static void blkcg_print_one_stat(struct blkcg_gq *blkg, struct seq_file *s)
-
--- 
-2.34.1
-
+greg k-h
 
