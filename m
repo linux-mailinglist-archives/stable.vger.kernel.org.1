@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16869EF38B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AE09EEAB9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CB62287715
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A0382816B5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E25F22FDF9;
-	Thu, 12 Dec 2024 16:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F6C2153FC;
+	Thu, 12 Dec 2024 15:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yfl2exch"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arp1ciWq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CA8229678;
-	Thu, 12 Dec 2024 16:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ED520E034;
+	Thu, 12 Dec 2024 15:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022486; cv=none; b=bcB6LmA68rbligC1kbfzZlCM66Mbr5Sy3BYeJr6EmCgff/QJLGzYZAW+486VC48Xjy7pOM8t2FwjdF4fcO92T549rMD0naZzAMq3jDXCCwKCw4uZDZk6usf/LAMNS4Jzn5f96SfDVKHNBSUPUGfZhZt/GXcKqn2O277xxmJy1Ng=
+	t=1734016619; cv=none; b=co5gDByN7yJRDqHwGefHB3eWLDnoka9XTUt9NuNSti7OvST9ouDcoMM4JwfLL32JTld/BOWBFl4O7mTQjcNORtxoSYFetxeW8tardJsaz8OkgPvNUBoKrDJlrONBrKYvw2atkqKuP0bOrVv+QelltG9tHAeA9WazQ98YdqR4zh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022486; c=relaxed/simple;
-	bh=HYL4k71H/uB4nCfWpaHF52uWKXzai8MWho4+4ptZvbk=;
+	s=arc-20240116; t=1734016619; c=relaxed/simple;
+	bh=MUMv6rRnScSBqJsgjPGrE6nq8faNTUDm4eOp/ekda8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Myti2ttFLTqCKrzztY0lcVhIkF6E9t85VKJNWyt0D7IftvZGj+dmBlPSYxzs/NUfoRHZeP2mJlSG6RZr3I9aorawUkx8JA97AZ3exoonVX1Glyt+KB56AusedqPnxFVcIu9qD4x4ab31UWnazV/VhhRqU2QmbHYL1ZtcUBtrqeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yfl2exch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AB2C4CED0;
-	Thu, 12 Dec 2024 16:54:45 +0000 (UTC)
+	 MIME-Version; b=SwXQMItYlCIVas3CO9bzjqVeSYAw+zAiPiqTAE7GIJXJjZlxBRH6L0+4+Fy0wbw8W/hO81Sjjup3THHU6RXCD06mzFkwAlQBMKwATsxB1NRVywwPF/oFsnwWwLpmyfNqXqjE5Peqpw+QxNya0olBTsTMG/aby+7bDpQJNYcLI0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arp1ciWq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF46C4CED0;
+	Thu, 12 Dec 2024 15:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022486;
-	bh=HYL4k71H/uB4nCfWpaHF52uWKXzai8MWho4+4ptZvbk=;
+	s=korg; t=1734016619;
+	bh=MUMv6rRnScSBqJsgjPGrE6nq8faNTUDm4eOp/ekda8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yfl2exchBjLq4BGFRsQX4VF0udAkLy7ZStYuj5ut3DVaQWqmdM3FUFO46w7SX8hos
-	 j4IKV+MpM93ksTTgQE78HbCdcPsROGdilTA9UOUurfQRfoKt6KJ+Z+MSNtRfL6AjXc
-	 ASJ5xMXFgZ0oY6skrvL2PgqUv2C2NyvMiaXgOMzw=
+	b=arp1ciWq6rblrs7G9ouD5eQAKLpwp13FtrwSySEmCHDy34VpOU0Ae8jOojaEsEYME
+	 q1J5ek8Bbkyfk2Ix2oKMLasA1rQeXJfA5ebA9wgL4UnbfNn/JrxxsfmtRJCuS33FAq
+	 USrqm693CwswXWBz6SJrS91k2weIVsuaTYvbPuvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 223/565] clk: imx: lpcg-scu: SW workaround for errata (e10858)
+Subject: [PATCH 6.12 249/466] regmap: maple: Provide lockdep (sub)class for maple trees internal lock
 Date: Thu, 12 Dec 2024 15:56:58 +0100
-Message-ID: <20241212144320.304677003@linuxfoundation.org>
+Message-ID: <20241212144316.624428153@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 5ee063fac85656bea9cfe3570af147ba1701ba18 ]
+[ Upstream commit 1ed9b927e7dd8b8cff13052efe212a8ff72ec51d ]
 
-Back-to-back LPCG writes can be ignored by the LPCG register due to
-a HW bug. The writes need to be separated by at least 4 cycles of
-the gated clock. See https://www.nxp.com.cn/docs/en/errata/IMX8_1N94W.pdf
+In some cases when using the maple tree register cache, the lockdep
+validator might complain about invalid deadlocks:
 
-The workaround is implemented as follows:
-1. For clocks running greater than or equal to 24MHz, a read
-followed by the write will provide sufficient delay.
-2. For clocks running below 24MHz, add a delay of 4 clock cylces
-after the write to the LPCG register.
+[7.131886]  Possible interrupt unsafe locking scenario:
 
-Fixes: 2f77296d3df9 ("clk: imx: add lpcg clock support")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20241027-imx-clk-v1-v3-1-89152574d1d7@nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+[7.131890]        CPU0                    CPU1
+[7.131893]        ----                    ----
+[7.131896]   lock(&mt->ma_lock);
+[7.131904]                                local_irq_disable();
+[7.131907]                                lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
+[7.131916]                                lock(&mt->ma_lock);
+[7.131925]   <Interrupt>
+[7.131928]     lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
+[7.131936]
+                *** DEADLOCK ***
+
+[7.131939] no locks held by swapper/0/0.
+[7.131944]
+               the shortest dependencies between 2nd lock and 1st lock:
+[7.131950]  -> (&mt->ma_lock){+.+.}-{2:2} {
+[7.131966]     HARDIRQ-ON-W at:
+[7.131973]                       lock_acquire+0x200/0x330
+[7.131986]                       _raw_spin_lock+0x50/0x70
+[7.131998]                       regcache_maple_write+0x68/0xe0
+[7.132010]                       regcache_write+0x6c/0x90
+[7.132019]                       _regmap_read+0x19c/0x1d0
+[7.132029]                       _regmap_update_bits+0xc0/0x148
+[7.132038]                       regmap_update_bits_base+0x6c/0xa8
+[7.132048]                       rk8xx_probe+0x22c/0x3d8
+[7.132057]                       rk8xx_spi_probe+0x74/0x88
+[7.132065]                       spi_probe+0xa8/0xe0
+
+[...]
+
+[7.132675]   }
+[7.132678]   ... key      at: [<ffff800082943c20>] __key.0+0x0/0x10
+[7.132691]   ... acquired at:
+[7.132695]    _raw_spin_lock+0x50/0x70
+[7.132704]    regcache_maple_write+0x68/0xe0
+[7.132714]    regcache_write+0x6c/0x90
+[7.132724]    _regmap_read+0x19c/0x1d0
+[7.132732]    _regmap_update_bits+0xc0/0x148
+[7.132741]    regmap_field_update_bits_base+0x74/0xb8
+[7.132751]    vop2_plane_atomic_update+0x480/0x14d8 [rockchipdrm]
+[7.132820]    drm_atomic_helper_commit_planes+0x1a0/0x320 [drm_kms_helper]
+
+[...]
+
+[7.135112] -> (rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock){-...}-{2:2} {
+[7.135130]    IN-HARDIRQ-W at:
+[7.135136]                     lock_acquire+0x200/0x330
+[7.135147]                     _raw_spin_lock_irqsave+0x6c/0x98
+[7.135157]                     regmap_lock_spinlock+0x20/0x40
+[7.135166]                     regmap_read+0x44/0x90
+[7.135175]                     vop2_isr+0x90/0x290 [rockchipdrm]
+[7.135225]                     __handle_irq_event_percpu+0x124/0x2d0
+
+In the example above, the validator seems to get the scope of
+dependencies wrong, since the regmap instance used in rk8xx-spi driver
+has nothing to do with the instance from vop2.
+
+Improve validation by sharing the regmap's lockdep class with the maple
+tree's internal lock, while also providing a subclass for the latter.
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20241031-regmap-maple-lockdep-fix-v2-1-06a3710f3623@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-lpcg-scu.c | 37 ++++++++++++++++++++++++++--------
- 1 file changed, 29 insertions(+), 8 deletions(-)
+ drivers/base/regmap/internal.h       | 1 +
+ drivers/base/regmap/regcache-maple.c | 3 +++
+ drivers/base/regmap/regmap.c         | 1 +
+ 3 files changed, 5 insertions(+)
 
-diff --git a/drivers/clk/imx/clk-lpcg-scu.c b/drivers/clk/imx/clk-lpcg-scu.c
-index dd5abd09f3e20..620afdf8dc03e 100644
---- a/drivers/clk/imx/clk-lpcg-scu.c
-+++ b/drivers/clk/imx/clk-lpcg-scu.c
-@@ -6,10 +6,12 @@
+diff --git a/drivers/base/regmap/internal.h b/drivers/base/regmap/internal.h
+index 83acccdc10089..bdb450436cbc5 100644
+--- a/drivers/base/regmap/internal.h
++++ b/drivers/base/regmap/internal.h
+@@ -59,6 +59,7 @@ struct regmap {
+ 			unsigned long raw_spinlock_flags;
+ 		};
+ 	};
++	struct lock_class_key *lock_key;
+ 	regmap_lock lock;
+ 	regmap_unlock unlock;
+ 	void *lock_arg; /* This is passed to lock/unlock functions */
+diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
+index 8d27d3653ea3e..23da7b31d7153 100644
+--- a/drivers/base/regmap/regcache-maple.c
++++ b/drivers/base/regmap/regcache-maple.c
+@@ -355,6 +355,9 @@ static int regcache_maple_init(struct regmap *map)
  
- #include <linux/bits.h>
- #include <linux/clk-provider.h>
-+#include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/units.h>
+ 	mt_init(mt);
  
- #include "clk-scu.h"
- 
-@@ -41,6 +43,29 @@ struct clk_lpcg_scu {
- 
- #define to_clk_lpcg_scu(_hw) container_of(_hw, struct clk_lpcg_scu, hw)
- 
-+/* e10858 -LPCG clock gating register synchronization errata */
-+static void lpcg_e10858_writel(unsigned long rate, void __iomem *reg, u32 val)
-+{
-+	writel(val, reg);
++	if (!mt_external_lock(mt) && map->lock_key)
++		lockdep_set_class_and_subclass(&mt->ma_lock, map->lock_key, 1);
 +
-+	if (rate >= 24 * HZ_PER_MHZ || rate == 0) {
-+		/*
-+		 * The time taken to access the LPCG registers from the AP core
-+		 * through the interconnect is longer than the minimum delay
-+		 * of 4 clock cycles required by the errata.
-+		 * Adding a readl will provide sufficient delay to prevent
-+		 * back-to-back writes.
-+		 */
-+		readl(reg);
-+	} else {
-+		/*
-+		 * For clocks running below 24MHz, wait a minimum of
-+		 * 4 clock cycles.
-+		 */
-+		ndelay(4 * (DIV_ROUND_UP(1000 * HZ_PER_MHZ, rate)));
-+	}
-+}
-+
- static int clk_lpcg_scu_enable(struct clk_hw *hw)
- {
- 	struct clk_lpcg_scu *clk = to_clk_lpcg_scu(hw);
-@@ -57,7 +82,8 @@ static int clk_lpcg_scu_enable(struct clk_hw *hw)
- 		val |= CLK_GATE_SCU_LPCG_HW_SEL;
+ 	if (!map->num_reg_defaults)
+ 		return 0;
  
- 	reg |= val << clk->bit_idx;
--	writel(reg, clk->reg);
-+
-+	lpcg_e10858_writel(clk_hw_get_rate(hw), clk->reg, reg);
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 7ef8577aeb100..e3e2afc2c83c6 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -756,6 +756,7 @@ struct regmap *__regmap_init(struct device *dev,
+ 						   lock_key, lock_name);
+ 		}
+ 		map->lock_arg = map;
++		map->lock_key = lock_key;
+ 	}
  
- 	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
- 
-@@ -74,7 +100,7 @@ static void clk_lpcg_scu_disable(struct clk_hw *hw)
- 
- 	reg = readl_relaxed(clk->reg);
- 	reg &= ~(CLK_GATE_SCU_LPCG_MASK << clk->bit_idx);
--	writel(reg, clk->reg);
-+	lpcg_e10858_writel(clk_hw_get_rate(hw), clk->reg, reg);
- 
- 	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
- }
-@@ -145,13 +171,8 @@ static int __maybe_unused imx_clk_lpcg_scu_resume(struct device *dev)
- {
- 	struct clk_lpcg_scu *clk = dev_get_drvdata(dev);
- 
--	/*
--	 * FIXME: Sometimes writes don't work unless the CPU issues
--	 * them twice
--	 */
--
--	writel(clk->state, clk->reg);
- 	writel(clk->state, clk->reg);
-+	lpcg_e10858_writel(0, clk->reg, clk->state);
- 	dev_dbg(dev, "restore lpcg state 0x%x\n", clk->state);
- 
- 	return 0;
+ 	/*
 -- 
 2.43.0
 
