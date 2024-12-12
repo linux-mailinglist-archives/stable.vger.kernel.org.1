@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-101719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF0B9EEE3F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABAAB9EF2D4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C7316E5E8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5367317482B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15E6215712;
-	Thu, 12 Dec 2024 15:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F0C225407;
+	Thu, 12 Dec 2024 16:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOcoZt+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlPo6Pxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C99913792B;
-	Thu, 12 Dec 2024 15:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B16222D70;
+	Thu, 12 Dec 2024 16:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018555; cv=none; b=PQT3guPQhkWztuUZo/WXp9KgAcJ4JNvA4h8wSv2cjhD4n56Z1NLFYjyihMgN23e4g2y0bEwcwyKJTCrXYAgXL1PsHMPr6ITIykzVGHkMalkPkvPmUDN0eajQOrefGIpjgXA9WSCaAw9xZNGQndQu9XXdMZseo0GsxB2CkFqfGMk=
+	t=1734021183; cv=none; b=eXCvV+cPt62BqefOzC/wUBAaHYP4MV202tQZkbEQ4NT9aZ1ToR1ImmCvf4RVZGF6zbXgjhsyM7tt/BKTWDicn+qX82DHyHm5rD0XRGlbDPLPNrp83/2bToxRXv1la9oHRvu5JqeB6GtTcIdp3MV9GabXL3I6U2OSUFNOL3UQFpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018555; c=relaxed/simple;
-	bh=O/ASa3euzjMQRmNcGJ0rcxSohIOM2JczFc/xPIfpIPI=;
+	s=arc-20240116; t=1734021183; c=relaxed/simple;
+	bh=wGUt6wBkJdYni3WtQQfGJeHtpivty55OuQ10LFzd3jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjipioS2SqM02Jqa7N6rimeh+hKwjamCm45MT8vlQwX+FiepLorqIHQPrCBqMnjL+WrGoBUDKMwqA/7bxs7Co3E55CGj7coDfMPK57oCinzUe6gp2HPTEzC5YR/vAxHLrevWPPHwQtH8i1QgxDRxFNXuqrDcYc3Oz67PKM3BDpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOcoZt+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7A2C4CECE;
-	Thu, 12 Dec 2024 15:49:14 +0000 (UTC)
+	 MIME-Version; b=csZFOGxmUjVRqQr2vZ7FHrZL2GvcZrqKCmEZN3N/QGlXOqkjAAzoD3XS9Sz5TgbTkJBXc20SLfcEj6JG7S9JXUB7DOmM+ZJ5V1cPolC1bd/eJkMUHDhmHtDSxj7N33C2oO7CXltoz6//FC8tPftJt13JX9KFqSspdk8rrL6YqYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlPo6Pxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A210C4CECE;
+	Thu, 12 Dec 2024 16:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018555;
-	bh=O/ASa3euzjMQRmNcGJ0rcxSohIOM2JczFc/xPIfpIPI=;
+	s=korg; t=1734021183;
+	bh=wGUt6wBkJdYni3WtQQfGJeHtpivty55OuQ10LFzd3jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOcoZt+Afa3kBr/az6vEPgPh5QRu1Z7hvbqhGnwsKKpgMxQD6kopvnej3FOWOZkno
-	 GG88wXi4gRW7T3EVeE3GtZ8tab+FgRDFW3LGXk0Yqya28NeRkZWFWt9iCBazTr2Y6Y
-	 xcG6c/YoqiqMBHuawHueYfWxyEqv9wRQnrFa604I=
+	b=FlPo6PxaDGkmJhD4AXzY5w0p8aYORwvl36Q1x+b2d8/3Mr2+uMiAGFFjBs/0sG82C
+	 SgYfUIUhQfp3936MU2p9bNIsrrx5FPFcHEZCQA6tGXfEjaO9aIRCyMPdyBtlRpSgQ1
+	 5QuugUCwr9LhvFVky7YJ1MYTatScXIUSxI+im184=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Amey Narkhede <ameynarkhede03@gmail.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 294/356] PCI: Add reset_subordinate to reset hierarchy below bridge
+Subject: [PATCH 6.1 668/772] Bluetooth: L2CAP: do not leave dangling sk pointer on error in l2cap_sock_create()
 Date: Thu, 12 Dec 2024 16:00:13 +0100
-Message-ID: <20241212144256.185898156@linuxfoundation.org>
+Message-ID: <20241212144417.515525975@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,132 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 2fa046449a82a7d0f6d9721dd83e348816038444 ]
+[ Upstream commit 7c4f78cdb8e7501e9f92d291a7d956591bf73be9 ]
 
-The "bus" and "cxl_bus" reset methods reset a device by asserting Secondary
-Bus Reset on the bridge leading to the device.  These only work if the
-device is the only device below the bridge.
+bt_sock_alloc() allocates the sk object and attaches it to the provided
+sock object. On error l2cap_sock_alloc() frees the sk object, but the
+dangling pointer is still attached to the sock object, which may create
+use-after-free in other code.
 
-Add a sysfs 'reset_subordinate' attribute on bridges that can assert
-Secondary Bus Reset regardless of how many devices are below the bridge.
-
-This resets all the devices below a bridge in a single command, including
-the locking and config space save/restore that reset methods normally do.
-
-This may be the only way to reset devices that don't support other reset
-methods (ACPI, FLR, PM reset, etc).
-
-Link: https://lore.kernel.org/r/20241025222755.3756162-1-kbusch@meta.com
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[bhelgaas: commit log, add capable(CAP_SYS_ADMIN) check]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-Reviewed-by: Amey Narkhede <ameynarkhede03@gmail.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-3-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-bus-pci | 11 +++++++++++
- drivers/pci/pci-sysfs.c                 | 26 +++++++++++++++++++++++++
- drivers/pci/pci.c                       |  2 +-
- drivers/pci/pci.h                       |  1 +
- 4 files changed, 39 insertions(+), 1 deletion(-)
+ net/bluetooth/l2cap_sock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
-index ecf47559f495b..7f3e6bc3ff0ff 100644
---- a/Documentation/ABI/testing/sysfs-bus-pci
-+++ b/Documentation/ABI/testing/sysfs-bus-pci
-@@ -163,6 +163,17 @@ Description:
- 		will be present in sysfs.  Writing 1 to this file
- 		will perform reset.
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index b17782dc513b5..4e965916c17c1 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1920,6 +1920,7 @@ static struct sock *l2cap_sock_alloc(struct net *net, struct socket *sock,
+ 	chan = l2cap_chan_create();
+ 	if (!chan) {
+ 		sk_free(sk);
++		sock->sk = NULL;
+ 		return NULL;
+ 	}
  
-+What:		/sys/bus/pci/devices/.../reset_subordinate
-+Date:		October 2024
-+Contact:	linux-pci@vger.kernel.org
-+Description:
-+		This is visible only for bridge devices. If you want to reset
-+		all devices attached through the subordinate bus of a specific
-+		bridge device, writing 1 to this will try to do it.  This will
-+		affect all devices attached to the system through this bridge
-+		similiar to writing 1 to their individual "reset" file, so use
-+		with caution.
-+
- What:		/sys/bus/pci/devices/.../vpd
- Date:		February 2008
- Contact:	Ben Hutchings <bwh@kernel.org>
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index 3317b93547167..92e8ac85f58e8 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -517,6 +517,31 @@ static ssize_t bus_rescan_store(struct device *dev,
- static struct device_attribute dev_attr_bus_rescan = __ATTR(rescan, 0200, NULL,
- 							    bus_rescan_store);
- 
-+static ssize_t reset_subordinate_store(struct device *dev,
-+				struct device_attribute *attr,
-+				const char *buf, size_t count)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	struct pci_bus *bus = pdev->subordinate;
-+	unsigned long val;
-+
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	if (kstrtoul(buf, 0, &val) < 0)
-+		return -EINVAL;
-+
-+	if (val) {
-+		int ret = __pci_reset_bus(bus);
-+
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return count;
-+}
-+static DEVICE_ATTR_WO(reset_subordinate);
-+
- #if defined(CONFIG_PM) && defined(CONFIG_ACPI)
- static ssize_t d3cold_allowed_store(struct device *dev,
- 				    struct device_attribute *attr,
-@@ -621,6 +646,7 @@ static struct attribute *pci_dev_attrs[] = {
- static struct attribute *pci_bridge_attrs[] = {
- 	&dev_attr_subordinate_bus_number.attr,
- 	&dev_attr_secondary_bus_number.attr,
-+	&dev_attr_reset_subordinate.attr,
- 	NULL,
- };
- 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 830877efe5059..095fa1910d36d 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -6069,7 +6069,7 @@ EXPORT_SYMBOL_GPL(pci_probe_reset_bus);
-  *
-  * Same as above except return -EAGAIN if the bus cannot be locked
-  */
--static int __pci_reset_bus(struct pci_bus *bus)
-+int __pci_reset_bus(struct pci_bus *bus)
- {
- 	int rc;
- 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 67ec4cf2fdb4c..d69a17947ffce 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -49,6 +49,7 @@ bool pci_reset_supported(struct pci_dev *dev);
- void pci_init_reset_methods(struct pci_dev *dev);
- int pci_bridge_secondary_bus_reset(struct pci_dev *dev);
- int pci_bus_error_reset(struct pci_dev *dev);
-+int __pci_reset_bus(struct pci_bus *bus);
- 
- struct pci_cap_saved_data {
- 	u16		cap_nr;
 -- 
 2.43.0
 
