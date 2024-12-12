@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4991B9EF929
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38BD59EF4C3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52E95189AB91
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1A4428D748
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210A3223C50;
-	Thu, 12 Dec 2024 17:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570CE221DA4;
+	Thu, 12 Dec 2024 17:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLHugSym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWH/gGMg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E6F6F2FE;
-	Thu, 12 Dec 2024 17:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BA72F44;
+	Thu, 12 Dec 2024 17:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025317; cv=none; b=e/IDwS2IRdot3C1x0DSs4+q1FTbMdEJ1dzGpPKhFQAFDefu6QJZr6WRBlziGZwEdlVlM5/jdOSX0PupOLfb82tXSVgrU6yXpav6GrKk2z5XoJSu0PaTRJIYnYCBNrYSqI8TQ/Q5eyJlhudfbZljd7CR+5L0pYF8FLkESQrJ2nTI=
+	t=1734023278; cv=none; b=VViLhV5uzeZThQSIg5J78KAfp7gqwYQQDoWn95xaAGFAqIUX1UegY50zlf0xBFKwBDpN7bklH9S+vbeNLjgNhfUJn4ArA7+aC+A8ha7NmNFMmhDIQ9XLVRZd67oHoRDYzhA28Go9sgrIoyQRjjHAt10hdZTD9OsO6WWnHdx0ZCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025317; c=relaxed/simple;
-	bh=F9TZyplcooiU/zR7DYvsgllk2cV5BYZnDav6MmhDB7A=;
+	s=arc-20240116; t=1734023278; c=relaxed/simple;
+	bh=3W80mhWol4K5NcTWzdCpfB1LaUY0O53Ed9RfKvToPRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byTyq6fp6fGfsWjkHgulaz3NLG4dMsbE85TnuymprEUggRzF+Sl6j4/xNEyb4Lzpqdfp10CJDK8qWgklwIkx07S8ehmsdBq3sgVVq6Ym2DgF0HlFMNHA4i+PYDbUuKG7bwOOIHE1NJtEsF1sgH5xp6QwIzXBUO09nzyr9gmMsFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLHugSym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCB9C4CED3;
-	Thu, 12 Dec 2024 17:41:56 +0000 (UTC)
+	 MIME-Version; b=bXG1Bo8x9L8+JVOpk9R/56T2iBjwlmUnkOIqpHyi5EQ6I2Z+c5MAR/8E9Juwrlni3UnydQtdPCJTV8JBoctcKyeJx0VSjI80JoeGvdSFHR7eDzVoWwCf2TAjZsmJhT2tif0xBwDHAc9Lj+WocGIqbg0GpmKIRl3poLF3IIaSNaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWH/gGMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F215C4CECE;
+	Thu, 12 Dec 2024 17:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025317;
-	bh=F9TZyplcooiU/zR7DYvsgllk2cV5BYZnDav6MmhDB7A=;
+	s=korg; t=1734023277;
+	bh=3W80mhWol4K5NcTWzdCpfB1LaUY0O53Ed9RfKvToPRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLHugSymfFl/qmVMICGKPc72L01aDXE5+mEYqbhaCVrNsGPeRvjcRsonFr7UGt/4H
-	 C6m6t2VkAsjlropcRCKlvwppTHO3ZOB7m4AdhcbJaMbetoT6Il40uLcAx/cUh5UrZz
-	 5Gg7lTNjNwbIq571YB+ODFlaDT71RjEXGfMyp4OI=
+	b=hWH/gGMg9aqL/D1eMWQHF9w50ss80YGwYRah7UU1i9bZI7y6TWXfsO9K/VhMslScA
+	 weOS1hC3Nu3C0ZLPNjISGPiDfjsnHMK3ObAX+6zVcVPzqntKWISxxOp/mZ5gsnpZ10
+	 EFqBqmko20o4ZJx32o25/y0I6X0WwjT3utHHWtGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 129/321] net: usb: lan78xx: Fix refcounting and autosuspend on invalid WoL configuration
+	Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 452/565] ALSA: hda/realtek: Add support for Samsung Galaxy Book3 360 (NP730QFG)
 Date: Thu, 12 Dec 2024 16:00:47 +0100
-Message-ID: <20241212144235.071803646@linuxfoundation.org>
+Message-ID: <20241212144329.586908128@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
 
-[ Upstream commit e863ff806f72098bccaf8fa89c80d9ad6187c3b0 ]
+commit e2974a220594c06f536e65dfd7b2447e0e83a1cb upstream.
 
-Validate Wake-on-LAN (WoL) options in `lan78xx_set_wol` before calling
-`usb_autopm_get_interface`. This prevents USB autopm refcounting issues
-and ensures the adapter can properly enter autosuspend when invalid WoL
-options are provided.
+Fixes the 3.5mm headphone jack on the Samsung Galaxy Book 3 360
+NP730QFG laptop.
+Unlike the other Galaxy Book3 series devices, this device only needs
+the ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET quirk.
+Verified changes on the device and compared with codec state in Windows.
 
-Fixes: eb9ad088f966 ("lan78xx: Check for supported Wake-on-LAN modes")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://patch.msgid.link/20241118140351.2398166-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ white-space fixes by tiwai ]
+
+Signed-off-by: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/QB1PR01MB40047D4CC1282DB7F1333124CC352@QB1PR01MB4004.CANPRD01.PROD.OUTLOOK.COM
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/lan78xx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 0ca3ffeb4983c..219a11e8f8d5d 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1428,13 +1428,13 @@ static int lan78xx_set_wol(struct net_device *netdev,
- 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
- 	int ret;
- 
-+	if (wol->wolopts & ~WAKE_ALL)
-+		return -EINVAL;
-+
- 	ret = usb_autopm_get_interface(dev->intf);
- 	if (ret < 0)
- 		return ret;
- 
--	if (wol->wolopts & ~WAKE_ALL)
--		return -EINVAL;
--
- 	pdata->wol = wol->wolopts;
- 
- 	device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9345,6 +9345,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x144d, 0xc830, "Samsung Galaxy Book Ion (NT950XCJ-X716A)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc832, "Samsung Galaxy Book Flex Alpha (NP730QCJ)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xca03, "Samsung Galaxy Book2 Pro 360 (NP930QED)", ALC298_FIXUP_SAMSUNG_AMP),
++	SND_PCI_QUIRK(0x144d, 0xca06, "Samsung Galaxy Book3 360 (NP730QFG)", ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xc868, "Samsung Galaxy Book2 Pro (NP930XED)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
 
 
 
