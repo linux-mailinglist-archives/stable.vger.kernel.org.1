@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-101256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D839EEB92
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031369EED4E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EED3D188C207
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 175C3165C38
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2BB212B0F;
-	Thu, 12 Dec 2024 15:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9805421E0AE;
+	Thu, 12 Dec 2024 15:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGIVlVVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvp181UH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2E92AF0E;
-	Thu, 12 Dec 2024 15:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C056F2FE;
+	Thu, 12 Dec 2024 15:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016915; cv=none; b=Jn6iIzr72RJN9GoPTU+9vsBejtbUNI/OVLftpRXtZdRGFdVWfw2zYji3+WthNog46MUoiTp/tbh2RdQ3KByIiUKwwFXwtUE0Uk0jKGWAJ+ge1b56jWN1Ko8z7LHPye4/SPEVxMZ13pwaY7T5A4fmy8kQdE8CB3ewpLn+td9MQvo=
+	t=1734018047; cv=none; b=VbiiuITIrsbvyNC2XQlkhehQ+f3Mu1TUyBexTu6xHC348miNGE2xxWG0spkHZmjog8Wryc+D3SO1DDZ9HWIas/ky1dmTK9a/kIfeG590GY78rKvF++Zj5/aIilzlqIahIkHKcK+ml6Yhxwgxzwiepn5GqdO4pEb1zUHXkY0zcb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016915; c=relaxed/simple;
-	bh=UqvSXDsS71Gd8zakBwwq/3u5kmqcJBJxxJ5IlYhSTyw=;
+	s=arc-20240116; t=1734018047; c=relaxed/simple;
+	bh=YOddXO79Phe41kj+WUMtht2J3++Df1pkTEtnEo5+U8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e5vRdKNS0jqCESycXMM616uZ09VVjuZAwXLOW6DiM5LEg93EM3p+nmcLf7MDZ4V4UE6VZ7ou38JVMxpcEzDlavtOTiZw0l5YaHcY41pCkxNO3b8X+Y3XT5joJA5maL+NSTv+ZljioKSQEGX3ow5ZIU1n+li8lfuillz2792+un8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGIVlVVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0717AC4CECE;
-	Thu, 12 Dec 2024 15:21:54 +0000 (UTC)
+	 MIME-Version; b=toJSGS1VPMRbghTxTjsPK584glIERrc3bMexhc13sCK35PLgH4ycgbE7D7KUDJtJM/mtuGzBeXJLdREqty6Pe3Vrpo4EmnEEhNGiacdJza+H/IH15YwlqawXvqL0mjN5OYadQ4RI01044D+TPUKRewGYJKFQaWok9avGY3WZBlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvp181UH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86351C4CECE;
+	Thu, 12 Dec 2024 15:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016915;
-	bh=UqvSXDsS71Gd8zakBwwq/3u5kmqcJBJxxJ5IlYhSTyw=;
+	s=korg; t=1734018046;
+	bh=YOddXO79Phe41kj+WUMtht2J3++Df1pkTEtnEo5+U8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGIVlVVFTexyOQQeCW6vc4BpuAO58hqouKbJtKGH/r0kP5AAzvvAEy8LQbt65VSrR
-	 V3XCsAj7Wbecz99tNYmckJK0nHVJrXxkpzlilTPygfBV4Uv3Mf/9riLFC8fuBFEqLk
-	 WuC+OJBVDPTGOp/0ztn4xtRtnLsrBwZw8NOrDZn4=
+	b=rvp181UHLDSzaa/hfA90PQmx00zge2Xo1ho3HJvVVMoLPUeXpW/RaqqmtMadLoBSq
+	 hc9EuGKmNBynvmGZ618qqCxWpAgjvI8SpgyLNGVUyoTIcSV2MXQTrDSie4RpruBz1X
+	 OoC4ZrD204r0CsyiiTjzDafdh09Ctumo59DACUqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 332/466] drm/amdgpu: set the right AMDGPU sg segment limitation
+	Jared Kangas <jkangas@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 182/356] kasan: make report_lock a raw spinlock
 Date: Thu, 12 Dec 2024 15:58:21 +0100
-Message-ID: <20241212144319.902975968@linuxfoundation.org>
+Message-ID: <20241212144251.820701534@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,120 +64,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Jared Kangas <jkangas@redhat.com>
 
-[ Upstream commit e2e97435783979124ba92d6870415c57ecfef6a5 ]
+commit e30a0361b8515d424c73c67de1a43e45a13b8ba2 upstream.
 
-The driver needs to set the correct max_segment_size;
-otherwise debug_dma_map_sg() will complain about the
-over-mapping of the AMDGPU sg length as following:
+If PREEMPT_RT is enabled, report_lock is a sleeping spinlock and must not
+be locked when IRQs are disabled.  However, KASAN reports may be triggered
+in such contexts.  For example:
 
-WARNING: CPU: 6 PID: 1964 at kernel/dma/debug.c:1178 debug_dma_map_sg+0x2dc=
-/0x370
-[  364.049444] Modules linked in: veth amdgpu(OE) amdxcp drm_exec gpu_sched=
- drm_buddy drm_ttm_helper ttm(OE) drm_suballoc_helper drm_display_helper dr=
-m_kms_helper i2c_algo_bit rpcsec_gss_krb5 auth_rpcgss nfsv4 nfs lockd grace=
- netfs xt_conntrack xt_MASQUERADE nf_conntrack_netlink xfrm_user xfrm_algo =
-iptable_nat xt_addrtype iptable_filter br_netfilter nvme_fabrics overlay nf=
-netlink_cttimeout nfnetlink openvswitch nsh nf_conncount nf_nat nf_conntrac=
-k nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c bridge stp llc amd_atl intel_rapl=
-_msr intel_rapl_common sunrpc sch_fq_codel snd_hda_codec_realtek snd_hda_co=
-dec_generic snd_hda_scodec_component snd_hda_codec_hdmi snd_hda_intel snd_i=
-ntel_dspcfg edac_mce_amd binfmt_misc snd_hda_codec snd_pci_acp6x snd_hda_co=
-re snd_acp_config snd_hwdep snd_soc_acpi kvm_amd snd_pcm kvm snd_seq_midi s=
-nd_seq_midi_event crct10dif_pclmul ghash_clmulni_intel sha512_ssse3 snd_raw=
-midi sha256_ssse3 sha1_ssse3 aesni_intel snd_seq nls_iso8859_1 crypto_simd =
-snd_seq_device cryptd snd_timer rapl input_leds snd
-[  364.049532]  ipmi_devintf wmi_bmof ccp serio_raw k10temp sp5100_tco soun=
-dcore ipmi_msghandler cm32181 industrialio mac_hid msr parport_pc ppdev lp =
-parport drm efi_pstore ip_tables x_tables pci_stub crc32_pclmul nvme ahci l=
-ibahci i2c_piix4 r8169 nvme_core i2c_designware_pci realtek i2c_ccgx_ucsi v=
-ideo wmi hid_generic cdc_ether usbnet usbhid hid r8152 mii
-[  364.049576] CPU: 6 PID: 1964 Comm: rocminfo Tainted: G           OE     =
- 6.10.0-custom #492
-[  364.049579] Hardware name: AMD Majolica-RN/Majolica-RN, BIOS RMJ1009A 06=
-/13/2021
-[  364.049582] RIP: 0010:debug_dma_map_sg+0x2dc/0x370
-[  364.049585] Code: 89 4d b8 e8 36 b1 86 00 8b 4d b8 48 8b 55 b0 44 8b 45 =
-a8 4c 8b 4d a0 48 89 c6 48 c7 c7 00 4b 74 bc 4c 89 4d b8 e8 b4 73 f3 ff <0f=
-> 0b 4c 8b 4d b8 8b 15 c8 2c b8 01 85 d2 0f 85 ee fd ff ff 8b 05
-[  364.049588] RSP: 0018:ffff9ca600b57ac0 EFLAGS: 00010286
-[  364.049590] RAX: 0000000000000000 RBX: ffff88b7c132b0c8 RCX: 00000000000=
-00027
-[  364.049592] RDX: ffff88bb0f521688 RSI: 0000000000000001 RDI: ffff88bb0f5=
-21680
-[  364.049594] RBP: ffff9ca600b57b20 R08: 000000000000006f R09: ffff9ca600b=
-57930
-[  364.049596] R10: ffff9ca600b57928 R11: ffffffffbcb46328 R12: 00000000000=
-00000
-[  364.049597] R13: 0000000000000001 R14: ffff88b7c19c0700 R15: ffff88b7c90=
-59800
-[  364.049599] FS:  00007fb2d3516e80(0000) GS:ffff88bb0f500000(0000) knlGS:=
-0000000000000000
-[  364.049601] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  364.049603] CR2: 000055610bd03598 CR3: 00000001049f6000 CR4: 00000000003=
-50ef0
-[  364.049605] Call Trace:
-[  364.049607]  <TASK>
-[  364.049609]  ? show_regs+0x6d/0x80
-[  364.049614]  ? __warn+0x8c/0x140
-[  364.049618]  ? debug_dma_map_sg+0x2dc/0x370
-[  364.049621]  ? report_bug+0x193/0x1a0
-[  364.049627]  ? handle_bug+0x46/0x80
-[  364.049631]  ? exc_invalid_op+0x1d/0x80
-[  364.049635]  ? asm_exc_invalid_op+0x1f/0x30
-[  364.049642]  ? debug_dma_map_sg+0x2dc/0x370
-[  364.049647]  __dma_map_sg_attrs+0x90/0xe0
-[  364.049651]  dma_map_sgtable+0x25/0x40
-[  364.049654]  amdgpu_bo_move+0x59a/0x850 [amdgpu]
-[  364.049935]  ? srso_return_thunk+0x5/0x5f
-[  364.049939]  ? amdgpu_ttm_tt_populate+0x5d/0xc0 [amdgpu]
-[  364.050095]  ttm_bo_handle_move_mem+0xc3/0x180 [ttm]
-[  364.050103]  ttm_bo_validate+0xc1/0x160 [ttm]
-[  364.050108]  ? amdgpu_ttm_tt_get_user_pages+0xe5/0x1b0 [amdgpu]
-[  364.050263]  amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0xa12/0xc90 [amdgpu]
-[  364.050473]  kfd_ioctl_alloc_memory_of_gpu+0x16b/0x3b0 [amdgpu]
-[  364.050680]  kfd_ioctl+0x3c2/0x530 [amdgpu]
-[  364.050866]  ? __pfx_kfd_ioctl_alloc_memory_of_gpu+0x10/0x10 [amdgpu]
-[  364.051054]  ? srso_return_thunk+0x5/0x5f
-[  364.051057]  ? tomoyo_file_ioctl+0x20/0x30
-[  364.051063]  __x64_sys_ioctl+0x9c/0xd0
-[  364.051068]  x64_sys_call+0x1219/0x20d0
-[  364.051073]  do_syscall_64+0x51/0x120
-[  364.051077]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  364.051081] RIP: 0033:0x7fb2d2f1a94f
+        char *s = kzalloc(1, GFP_KERNEL);
+        kfree(s);
+        local_irq_disable();
+        char c = *s;  /* KASAN report here leads to spin_lock() */
+        local_irq_enable();
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make report_spinlock a raw spinlock to prevent rescheduling when
+PREEMPT_RT is enabled.
+
+Link: https://lkml.kernel.org/r/20241119210234.1602529-1-jkangas@redhat.com
+Fixes: 342a93247e08 ("locking/spinlock: Provide RT variant header: <linux/spinlock_rt.h>")
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/kasan/report.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/=
-amdgpu/amdgpu_ttm.c
-index 0637414fc70e0..9f922ec50ea2d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -1851,6 +1851,7 @@ int amdgpu_ttm_init(struct amdgpu_device *adev)
-=20
- 	mutex_init(&adev->mman.gtt_window_lock);
-=20
-+	dma_set_max_seg_size(adev->dev, UINT_MAX);
- 	/* No others user of address space so set it to 0 */
- 	r =3D ttm_device_init(&adev->mman.bdev, &amdgpu_bo_driver, adev->dev,
- 			       adev_to_drm(adev)->anon_inode->i_mapping,
---=20
-2.43.0
-
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -199,7 +199,7 @@ static inline void fail_non_kasan_kunit_
+ 
+ #endif /* CONFIG_KUNIT */
+ 
+-static DEFINE_SPINLOCK(report_lock);
++static DEFINE_RAW_SPINLOCK(report_lock);
+ 
+ static void start_report(unsigned long *flags, bool sync)
+ {
+@@ -210,7 +210,7 @@ static void start_report(unsigned long *
+ 	lockdep_off();
+ 	/* Make sure we don't end up in loop. */
+ 	report_suppress_start();
+-	spin_lock_irqsave(&report_lock, *flags);
++	raw_spin_lock_irqsave(&report_lock, *flags);
+ 	pr_err("==================================================================\n");
+ }
+ 
+@@ -220,7 +220,7 @@ static void end_report(unsigned long *fl
+ 		trace_error_report_end(ERROR_DETECTOR_KASAN,
+ 				       (unsigned long)addr);
+ 	pr_err("==================================================================\n");
+-	spin_unlock_irqrestore(&report_lock, *flags);
++	raw_spin_unlock_irqrestore(&report_lock, *flags);
+ 	if (!test_bit(KASAN_BIT_MULTI_SHOT, &kasan_flags))
+ 		check_panic_on_warn("KASAN");
+ 	switch (kasan_arg_fault) {
 
 
 
