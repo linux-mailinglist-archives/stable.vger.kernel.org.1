@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358D79EF130
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BEA9EF333
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B499177D04
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50B5C289279
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412C222C35E;
-	Thu, 12 Dec 2024 16:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A16223327;
+	Thu, 12 Dec 2024 16:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMs8NfLv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQBW/HFk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF7B2210F2;
-	Thu, 12 Dec 2024 16:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376E620967D;
+	Thu, 12 Dec 2024 16:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020199; cv=none; b=fEjg5ToGcF3+ZrIhAJEi42HSlPrnpkb6npHxAKam+jgVhluSlNaq++aeju5yo9Rftky0Mf/uizNqmz4fk9INE5BhYmWb1pSvna/IakLkeXMlQypb7fBRJsiPx0m3rdz1GdsJK2SYs9rkoqGG+x5ilW4g9f1kXlwiZBeMlx7093s=
+	t=1734022186; cv=none; b=pgkA9NsWintZCwAJVHwJ9dKU07oTq54B8KsjhWylngnsVMrX3YniTwVVkzSbPIMKDcD3L7dlUUNkhz8a8lPPkj40CoBvwy7W53Up2HUp5wixeaXkmK1dfmjtlAFO9sUczaAOYZqrtGvOYLWp/QXySi4yg57JSXh8fvxozYBqJ4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020199; c=relaxed/simple;
-	bh=T7oaNOCvUdu10PIIiClt//de6Td99PJIRPzY+HDU6sg=;
+	s=arc-20240116; t=1734022186; c=relaxed/simple;
+	bh=fS9KHQUzMUfiJ7ZRAnanKioEdER6Wlmzq+5JwUF6z5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAUvARWOgv6Cx0cwDSdRCRObKMZnj/xx0MsuY/IJ7BBEdOKYrtVvg1RRs9N9HofkpHsdch1rl85yW1rVWArARqr7JtMH41OnSBwWHulY13+b9Hf1KALh8EGUP0ussl258ZfodshRvJz8ymo6AyQMDTIQDh4hm9eU0YfvzFOq6z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMs8NfLv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED85C4CED0;
-	Thu, 12 Dec 2024 16:16:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FPHFEyMKLkszPenKogu4t9llWq7nC3nc5DhtfuwzRun2lino/cyC907qI8NgmPLMNeL1Jms7djAd0woGzK6Tou5+ibpUfO7+U+4MhLe4wE7ns7s8C0VKMcvapumxG+MLmYmq7ZJLiZBgSdhesgcQr2zzU0JoDtdkGWUe/VuBwes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQBW/HFk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9839AC4CECE;
+	Thu, 12 Dec 2024 16:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020198;
-	bh=T7oaNOCvUdu10PIIiClt//de6Td99PJIRPzY+HDU6sg=;
+	s=korg; t=1734022186;
+	bh=fS9KHQUzMUfiJ7ZRAnanKioEdER6Wlmzq+5JwUF6z5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rMs8NfLvQT/rFSBn2kmA+mhk1NpeR1/C0dY1g9GTT5B5SmtKYtDF0mCFiS4g3r7qe
-	 UoMF11htNCipKH50lA7C60Kyp6JbfOtyABGmNuFOTcNMho2RO3QNb1zXW6TD4qqACc
-	 2ipw3UQ1O+3I1oYmcCvWq63CAcClghpsEW0fkBPU=
+	b=OQBW/HFkkz+KXwjy7kArUazGu0BDtyrj9Kxlx9i+OtsryLzQkq4OuYclu7AskEv4g
+	 03wJat+D9CVtIjV/sG5/1iUuza1iWuKifvZr88qX8yRpuF2RT4BYjXDkpi+k0xX6l/
+	 ilCUetqr3pymQnDCgWKYUu5DFI2RfISPryXFZgzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: [PATCH 6.1 404/772] sh: cpuinfo: Fix a warning for CONFIG_CPUMASK_OFFSTACK
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 154/565] drm/v3d: Address race-condition in MMU flush
 Date: Thu, 12 Dec 2024 15:55:49 +0100
-Message-ID: <20241212144406.619794389@linuxfoundation.org>
+Message-ID: <20241212144317.569108834@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,71 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit 3c891f7c6a4e90bb1199497552f24b26e46383bc upstream.
+[ Upstream commit cf1becb7f996a0a23ea2c270cf6bb0911ec3ca1a ]
 
-When CONFIG_CPUMASK_OFFSTACK and CONFIG_DEBUG_PER_CPU_MAPS are selected,
-cpu_max_bits_warn() generates a runtime warning similar as below when
-showing /proc/cpuinfo. Fix this by using nr_cpu_ids (the runtime limit)
-instead of NR_CPUS to iterate CPUs.
+We must first flush the MMU cache and then, flush the TLB, not the other
+way around. Currently, we can see a race condition between the MMU cache
+and the TLB when running multiple rendering processes at the same time.
+This is evidenced by MMU errors triggered by the IRQ.
 
-[    3.052463] ------------[ cut here ]------------
-[    3.059679] WARNING: CPU: 3 PID: 1 at include/linux/cpumask.h:108 show_cpuinfo+0x5e8/0x5f0
-[    3.070072] Modules linked in: efivarfs autofs4
-[    3.076257] CPU: 0 PID: 1 Comm: systemd Not tainted 5.19-rc5+ #1052
-[    3.099465] Stack : 9000000100157b08 9000000000f18530 9000000000cf846c 9000000100154000
-[    3.109127]         9000000100157a50 0000000000000000 9000000100157a58 9000000000ef7430
-[    3.118774]         90000001001578e8 0000000000000040 0000000000000020 ffffffffffffffff
-[    3.128412]         0000000000aaaaaa 1ab25f00eec96a37 900000010021de80 900000000101c890
-[    3.138056]         0000000000000000 0000000000000000 0000000000000000 0000000000aaaaaa
-[    3.147711]         ffff8000339dc220 0000000000000001 0000000006ab4000 0000000000000000
-[    3.157364]         900000000101c998 0000000000000004 9000000000ef7430 0000000000000000
-[    3.167012]         0000000000000009 000000000000006c 0000000000000000 0000000000000000
-[    3.176641]         9000000000d3de08 9000000001639390 90000000002086d8 00007ffff0080286
-[    3.186260]         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1c
-[    3.195868]         ...
-[    3.199917] Call Trace:
-[    3.203941] [<90000000002086d8>] show_stack+0x38/0x14c
-[    3.210666] [<9000000000cf846c>] dump_stack_lvl+0x60/0x88
-[    3.217625] [<900000000023d268>] __warn+0xd0/0x100
-[    3.223958] [<9000000000cf3c90>] warn_slowpath_fmt+0x7c/0xcc
-[    3.231150] [<9000000000210220>] show_cpuinfo+0x5e8/0x5f0
-[    3.238080] [<90000000004f578c>] seq_read_iter+0x354/0x4b4
-[    3.245098] [<90000000004c2e90>] new_sync_read+0x17c/0x1c4
-[    3.252114] [<90000000004c5174>] vfs_read+0x138/0x1d0
-[    3.258694] [<90000000004c55f8>] ksys_read+0x70/0x100
-[    3.265265] [<9000000000cfde9c>] do_syscall+0x7c/0x94
-[    3.271820] [<9000000000202fe4>] handle_syscall+0xc4/0x160
-[    3.281824] ---[ end trace 8b484262b4b8c24c ]---
+Fix the MMU flush order by flushing the MMU cache and then the TLB.
+Also, in order to address the race condition, wait for the MMU cache flush
+to finish before starting the TLB flush.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 57692c94dcbe ("drm/v3d: Introduce a new DRM driver for Broadcom V3D V3.x+")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923141348.2422499-2-mcanal@igalia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/kernel/cpu/proc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_mmu.c | 29 ++++++++++-------------------
+ 1 file changed, 10 insertions(+), 19 deletions(-)
 
---- a/arch/sh/kernel/cpu/proc.c
-+++ b/arch/sh/kernel/cpu/proc.c
-@@ -132,7 +132,7 @@ static int show_cpuinfo(struct seq_file
+diff --git a/drivers/gpu/drm/v3d/v3d_mmu.c b/drivers/gpu/drm/v3d/v3d_mmu.c
+index 5a453532901f1..166d4a88daee5 100644
+--- a/drivers/gpu/drm/v3d/v3d_mmu.c
++++ b/drivers/gpu/drm/v3d/v3d_mmu.c
+@@ -34,32 +34,23 @@ static int v3d_mmu_flush_all(struct v3d_dev *v3d)
+ {
+ 	int ret;
  
- static void *c_start(struct seq_file *m, loff_t *pos)
- {
--	return *pos < NR_CPUS ? cpu_data + *pos : NULL;
-+	return *pos < nr_cpu_ids ? cpu_data + *pos : NULL;
+-	/* Make sure that another flush isn't already running when we
+-	 * start this one.
+-	 */
+-	ret = wait_for(!(V3D_READ(V3D_MMU_CTL) &
+-			 V3D_MMU_CTL_TLB_CLEARING), 100);
+-	if (ret)
+-		dev_err(v3d->drm.dev, "TLB clear wait idle pre-wait failed\n");
+-
+-	V3D_WRITE(V3D_MMU_CTL, V3D_READ(V3D_MMU_CTL) |
+-		  V3D_MMU_CTL_TLB_CLEAR);
+-
+-	V3D_WRITE(V3D_MMUC_CONTROL,
+-		  V3D_MMUC_CONTROL_FLUSH |
++	V3D_WRITE(V3D_MMUC_CONTROL, V3D_MMUC_CONTROL_FLUSH |
+ 		  V3D_MMUC_CONTROL_ENABLE);
+ 
+-	ret = wait_for(!(V3D_READ(V3D_MMU_CTL) &
+-			 V3D_MMU_CTL_TLB_CLEARING), 100);
++	ret = wait_for(!(V3D_READ(V3D_MMUC_CONTROL) &
++			 V3D_MMUC_CONTROL_FLUSHING), 100);
+ 	if (ret) {
+-		dev_err(v3d->drm.dev, "TLB clear wait idle failed\n");
++		dev_err(v3d->drm.dev, "MMUC flush wait idle failed\n");
+ 		return ret;
+ 	}
+ 
+-	ret = wait_for(!(V3D_READ(V3D_MMUC_CONTROL) &
+-			 V3D_MMUC_CONTROL_FLUSHING), 100);
++	V3D_WRITE(V3D_MMU_CTL, V3D_READ(V3D_MMU_CTL) |
++		  V3D_MMU_CTL_TLB_CLEAR);
++
++	ret = wait_for(!(V3D_READ(V3D_MMU_CTL) &
++			 V3D_MMU_CTL_TLB_CLEARING), 100);
+ 	if (ret)
+-		dev_err(v3d->drm.dev, "MMUC flush wait idle failed\n");
++		dev_err(v3d->drm.dev, "MMU TLB clear wait idle failed\n");
+ 
+ 	return ret;
  }
- static void *c_next(struct seq_file *m, void *v, loff_t *pos)
- {
+-- 
+2.43.0
+
 
 
 
