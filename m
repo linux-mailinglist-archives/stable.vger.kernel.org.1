@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910EA9EF5CB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 449B19EF5D8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CBCE28727D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A35B19423CC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C97211493;
-	Thu, 12 Dec 2024 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182BE2253FE;
+	Thu, 12 Dec 2024 16:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKVkGnOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWpKK8Kn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F82C4F218;
-	Thu, 12 Dec 2024 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92F82210DE;
+	Thu, 12 Dec 2024 16:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023990; cv=none; b=FsytGQTnulQ8D9CcTWSZLMaVFT61IcvQQQNOo+h0m0SgNPcCx3ERsOS7UTDlSENx7Sjgh9aYBuv0ylr2nT7xQxevwINfWgFVQViJt43Y8aZdC/TUEbpX6M5j/cPrZQeC0h2FjzklLyIyFEeSJJJX6TWwpoEHBIyCyN5d3JI0Dwo=
+	t=1734022735; cv=none; b=MGszaJBLElnvRgxTiU5s15KBrNxvVblgCaFPZ8Wvz3wxAxA0mAGiaVzAYLb1CCwQwSz2v0VOjnDYaetUkCs0kxdlNfojyCnsWAb5pMFDSoqYKOGExiwr1gVwxZbipslYD/8oCadGdIHKhbblfVBViFfWSk5Jb1iJv6AWUdkqIkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023990; c=relaxed/simple;
-	bh=BOhbfL21lFfJ0ZWOoydSBCoiKQ68l9ss3s+BGElalqQ=;
+	s=arc-20240116; t=1734022735; c=relaxed/simple;
+	bh=goGLZfXYMPwd25X+e7g/FvglsKC0wYFvabcMj6jak/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e03EctsTKeYDg8VslmpYKmLJGsrJHBzgQied5i9k1cDZRWmEsDwLyIJB+TrW6M4dmI1RyA59ZIjNcXM1XD7mgROhVKBsfOYCOca5kvShpM01YfCmcicrIdboFgE6mQowwLEL5ragFIPbFByEJWSAabMrxtuMhXmnje+QYwwejj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xKVkGnOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BE6C4CECE;
-	Thu, 12 Dec 2024 17:19:49 +0000 (UTC)
+	 MIME-Version; b=ArSD2O6DKZLQ4H6API9tX+QkBrYa5oR6zuQDpRwGTErTIab6EkZTuhvurcbLPne9uSBsbKjyIBhr9X9dt7lmXLqhG003/CXgOS8+GfbujRp1qUZx9A3GoXpDjCjsLF/hdoI/61Z/fkWEjQQjX6LApPmortBXu5p0qI5dmXxtdwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWpKK8Kn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1C3C4CECE;
+	Thu, 12 Dec 2024 16:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023990;
-	bh=BOhbfL21lFfJ0ZWOoydSBCoiKQ68l9ss3s+BGElalqQ=;
+	s=korg; t=1734022735;
+	bh=goGLZfXYMPwd25X+e7g/FvglsKC0wYFvabcMj6jak/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKVkGnOK42NjXK7pKDgj9x1WEoEM4t8uuwpG2oediJEDSiyC9M4lLF1aNzeBSq2o3
-	 xKIJbV6sb4Obppzeh6TiabG7m0gP9pbVx8aN6FZyRLP58bNkknqudeiQEkpd3oN7PS
-	 sZKzsrVwYctOmG1PZ8I70sBObUn31rdlSW6Uzre8=
+	b=BWpKK8KnKo7X6fkFesw6Jr6FmBCoupwQHksvcBtWW0KzlbdNG3UMNGHrOppcS5XTD
+	 iW6pTtPywu5KezGDUspvPwhix6dAKs612HXm0Ho9l1OKAVDSg7CjAEvxFnAxISuxLw
+	 VQEWGrpFyiIOhPbavwJJ5GhjOb2ebHw8K+xwLlnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 148/459] bpf, sockmap: Fix sk_msg_reset_curr
-Date: Thu, 12 Dec 2024 15:58:06 +0100
-Message-ID: <20241212144259.359159948@linuxfoundation.org>
+Subject: [PATCH 5.15 292/565] counter: stm32-timer-cnt: Add check for clk_enable()
+Date: Thu, 12 Dec 2024 15:58:07 +0100
+Message-ID: <20241212144323.009749666@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 955afd57dc4bf7e8c620a0a9e3af3c881c2c6dff ]
+[ Upstream commit 842c3755a6bfbfcafa4a1438078d2485a9eb1d87 ]
 
-Found in the test_txmsg_pull in test_sockmap,
-```
-txmsg_cork = 512; // corking is importrant here
-opt->iov_length = 3;
-opt->iov_count = 1;
-opt->rate = 512; // sendmsg will be invoked 512 times
-```
-The first sendmsg will send an sk_msg with size 3, and bpf_msg_pull_data
-will be invoked the first time. sk_msg_reset_curr will reset the copybreak
-from 3 to 0. In the second sendmsg, since we are in the stage of corking,
-psock->cork will be reused in func sk_msg_alloc. msg->sg.copybreak is 0
-now, the second msg will overwrite the first msg. As a result, we could
-not pass the data integrity test.
+Add check for the return value of clk_enable() in order to catch the
+potential exception.
 
-The same problem happens in push and pop test. Thus, fix sk_msg_reset_curr
-to restore the correct copybreak.
-
-Fixes: bb9aefde5bba ("bpf: sockmap, updating the sg structure should also update curr")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-9-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: c5b8425514da ("counter: stm32-timer-cnt: add power management support")
+Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20241104191825.40155-1-jiashengjiangcool@gmail.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/counter/stm32-timer-cnt.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 345e6c5c71f06..0b61575df86ee 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2600,18 +2600,16 @@ BPF_CALL_2(bpf_msg_cork_bytes, struct sk_msg *, msg, u32, bytes)
- 
- static void sk_msg_reset_curr(struct sk_msg *msg)
+diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+index 0546e932db0c1..8d668d5cfd0df 100644
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -196,11 +196,17 @@ static int stm32_count_enable_write(struct counter_device *counter,
  {
--	u32 i = msg->sg.start;
--	u32 len = 0;
--
--	do {
--		len += sk_msg_elem(msg, i)->length;
--		sk_msg_iter_var_next(i);
--		if (len >= msg->sg.size)
--			break;
--	} while (i != msg->sg.end);
-+	if (!msg->sg.size) {
-+		msg->sg.curr = msg->sg.start;
-+		msg->sg.copybreak = 0;
-+	} else {
-+		u32 i = msg->sg.end;
+ 	struct stm32_timer_cnt *const priv = counter->priv;
+ 	u32 cr1;
++	int ret;
  
--	msg->sg.curr = i;
--	msg->sg.copybreak = 0;
-+		sk_msg_iter_var_prev(i);
-+		msg->sg.curr = i;
-+		msg->sg.copybreak = msg->sg.data[i].length;
-+	}
- }
+ 	if (enable) {
+ 		regmap_read(priv->regmap, TIM_CR1, &cr1);
+-		if (!(cr1 & TIM_CR1_CEN))
+-			clk_enable(priv->clk);
++		if (!(cr1 & TIM_CR1_CEN)) {
++			ret = clk_enable(priv->clk);
++			if (ret) {
++				dev_err(counter->parent, "Cannot enable clock %d\n", ret);
++				return ret;
++			}
++		}
  
- static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
+ 		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+ 				   TIM_CR1_CEN);
+@@ -374,7 +380,11 @@ static int __maybe_unused stm32_timer_cnt_resume(struct device *dev)
+ 		return ret;
+ 
+ 	if (priv->enabled) {
+-		clk_enable(priv->clk);
++		ret = clk_enable(priv->clk);
++		if (ret) {
++			dev_err(dev, "Cannot enable clock %d\n", ret);
++			return ret;
++		}
+ 
+ 		/* Restore registers that may have been lost */
+ 		regmap_write(priv->regmap, TIM_SMCR, priv->bak.smcr);
 -- 
 2.43.0
 
