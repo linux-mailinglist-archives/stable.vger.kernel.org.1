@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6588F9EF4EC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A589EF9BE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52D31291122
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 136D616665E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47A022541E;
-	Thu, 12 Dec 2024 17:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B1D2288EF;
+	Thu, 12 Dec 2024 17:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gie94+9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbgBD0Og"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F138223711;
-	Thu, 12 Dec 2024 17:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C8C205E2E;
+	Thu, 12 Dec 2024 17:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023442; cv=none; b=LFHVXWmz1apdcdyo55ojem3PBvJe/I/hPSdDBv+LPQ3XdGLmblo8Vl/amj/2ofZ8EPtWokRlxcURN3JJbx8jKC13Ys/IoNIGsFwzgaJLLEwEi0pInWGdNkgKeyNQsp6D6c5KtiGZiXuB2WiK6/BwurzO+hzw5P2qV9MjreUTlPU=
+	t=1734025657; cv=none; b=PZO9KXhzyDHyHU0lj7saDvO5uSRNbwwHVdMh+vacYBEjc3QaKEXTUAM4UnWSk8O9bip+XCRqXbGYEuQFh0ZKx0oh3911msR/lx/bcBglC/nxXgl6YP3ZxFxpFJEgOhmbPEP3KX4RpuzVkjncPXfbW8KPtOq+MOg5MeHvkumIEoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023442; c=relaxed/simple;
-	bh=CcjlJKw3B/d+U8oFUHqCFvdhZ8yzPjqSBNfcgNUk/4w=;
+	s=arc-20240116; t=1734025657; c=relaxed/simple;
+	bh=GYHoBmchpDFBvpHOFSCIA3JwcKPk/8Gfzfb8PvI5bOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxOHz7+qV0+sPGKwrFFbApJ39VNmqzaCvTtsgedSZkW9eI//uFI2xLSvK5Galrr8OJtcsJ7bA9MFidXdEioHgRAYRoEto0PpCqGJBgzwmvzWqc37hu4CHMZma0cedubBZkyVAOkYZBeyTPmNy+0KsukYFK6q7bfHgCkuxm/xjv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gie94+9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C261DC4CECE;
-	Thu, 12 Dec 2024 17:10:41 +0000 (UTC)
+	 MIME-Version; b=jw5fMgQMhPmyJoU2YVjzo0hID8FJ39499TJgWxUiuHh+20GUFb9Aw2X2izUan6pjWF2nTnK893Xvp5qIaS1kAFwy8W+sSoRkNm32S26yHZGXA8xKnSLnqWNlTUj3PPpDMBuwCGQQfCR+zTt2mNUtVF33UPLbQIa0XHgol+nsWr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbgBD0Og; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8CEC4CECE;
+	Thu, 12 Dec 2024 17:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023442;
-	bh=CcjlJKw3B/d+U8oFUHqCFvdhZ8yzPjqSBNfcgNUk/4w=;
+	s=korg; t=1734025657;
+	bh=GYHoBmchpDFBvpHOFSCIA3JwcKPk/8Gfzfb8PvI5bOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gie94+9Rqhw4MPQA4tsQMuAG7ZNHRIdEZiydOfXke9RegxSdZTysXXstJ5/99wYOh
-	 o2+HNiMg09PIuK18icO8++uthlYFqHeBOWs4+fjrynvPPv2r6qTNX5DVSbu2AkwvaK
-	 K9FAFOJa5IgU1Bu+DAfdOSBQWgJ1lMopXed1ilcs=
+	b=gbgBD0Oge0YOM2CKENG+Fxo3kRk6axLNQwm+My/mwEmvxlmhexiUv6F8DO2Wz1yKx
+	 4sQn18khwRUenxTtGF5z+NM3544kaJ4E8xaNRxnLeKpAQMa9SENj9Y2/iTvvqta1wN
+	 6n3Cey8IM1TZzpi3oUUzsdKyFE7eRFsS442tpzAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 535/565] sched/core: Prevent wakeup of ksoftirqd during idle load balance
-Date: Thu, 12 Dec 2024 16:02:10 +0100
-Message-ID: <20241212144332.973096489@linuxfoundation.org>
+	Alexandru Ardelean <aardelean@baylibre.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 213/321] util_macros.h: fix/rework find_closest() macros
+Date: Thu, 12 Dec 2024 16:02:11 +0100
+Message-ID: <20241212144238.393244596@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +62,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: Alexandru Ardelean <aardelean@baylibre.com>
 
-[ Upstream commit e932c4ab38f072ce5894b2851fea8bc5754bb8e5 ]
+commit bc73b4186736341ab5cd2c199da82db6e1134e13 upstream.
 
-Scheduler raises a SCHED_SOFTIRQ to trigger a load balancing event on
-from the IPI handler on the idle CPU. If the SMP function is invoked
-from an idle CPU via flush_smp_call_function_queue() then the HARD-IRQ
-flag is not set and raise_softirq_irqoff() needlessly wakes ksoftirqd
-because soft interrupts are handled before ksoftirqd get on the CPU.
+A bug was found in the find_closest() (find_closest_descending() is also
+affected after some testing), where for certain values with small
+progressions, the rounding (done by averaging 2 values) causes an
+incorrect index to be returned.  The rounding issues occur for
+progressions of 1, 2 and 3.  It goes away when the progression/interval
+between two values is 4 or larger.
 
-Adding a trace_printk() in nohz_csd_func() at the spot of raising
-SCHED_SOFTIRQ and enabling trace events for sched_switch, sched_wakeup,
-and softirq_entry (for SCHED_SOFTIRQ vector alone) helps observing the
-current behavior:
+It's particularly bad for progressions of 1.  For example if there's an
+array of 'a = { 1, 2, 3 }', using 'find_closest(2, a ...)' would return 0
+(the index of '1'), rather than returning 1 (the index of '2').  This
+means that for exact values (with a progression of 1), find_closest() will
+misbehave and return the index of the value smaller than the one we're
+searching for.
 
-       <idle>-0   [000] dN.1.:  nohz_csd_func: Raising SCHED_SOFTIRQ from nohz_csd_func
-       <idle>-0   [000] dN.4.:  sched_wakeup: comm=ksoftirqd/0 pid=16 prio=120 target_cpu=000
-       <idle>-0   [000] .Ns1.:  softirq_entry: vec=7 [action=SCHED]
-       <idle>-0   [000] .Ns1.:  softirq_exit: vec=7  [action=SCHED]
-       <idle>-0   [000] d..2.:  sched_switch: prev_comm=swapper/0 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=ksoftirqd/0 next_pid=16 next_prio=120
-  ksoftirqd/0-16  [000] d..2.:  sched_switch: prev_comm=ksoftirqd/0 prev_pid=16 prev_prio=120 prev_state=S ==> next_comm=swapper/0 next_pid=0 next_prio=120
-       ...
+For progressions of 2 and 3, the exact values are obtained correctly; but
+values aren't approximated correctly (as one would expect).  Starting with
+progressions of 4, all seems to be good (one gets what one would expect).
 
-Use __raise_softirq_irqoff() to raise the softirq. The SMP function call
-is always invoked on the requested CPU in an interrupt handler. It is
-guaranteed that soft interrupts are handled at the end.
+While one could argue that 'find_closest()' should not be used for arrays
+with progressions of 1 (i.e. '{1, 2, 3, ...}', the macro should still
+behave correctly.
 
-Following are the observations with the changes when enabling the same
-set of events:
+The bug was found while testing the 'drivers/iio/adc/ad7606.c',
+specifically the oversampling feature.
+For reference, the oversampling values are listed as:
+   static const unsigned int ad7606_oversampling_avail[7] = {
+          1, 2, 4, 8, 16, 32, 64,
+   };
 
-       <idle>-0       [000] dN.1.: nohz_csd_func: Raising SCHED_SOFTIRQ for nohz_idle_balance
-       <idle>-0       [000] dN.1.: softirq_raise: vec=7 [action=SCHED]
-       <idle>-0       [000] .Ns1.: softirq_entry: vec=7 [action=SCHED]
+When doing:
+  1. $ echo 1 > /sys/bus/iio/devices/iio\:device0/oversampling_ratio
+     $ cat /sys/bus/iio/devices/iio\:device0/oversampling_ratio
+     1  # this is fine
+  2. $ echo 2 > /sys/bus/iio/devices/iio\:device0/oversampling_ratio
+     $ cat /sys/bus/iio/devices/iio\:device0/oversampling_ratio
+     1  # this is wrong; 2 should be returned here
+  3. $ echo 3 > /sys/bus/iio/devices/iio\:device0/oversampling_ratio
+     $ cat /sys/bus/iio/devices/iio\:device0/oversampling_ratio
+     2  # this is fine
+  4. $ echo 4 > /sys/bus/iio/devices/iio\:device0/oversampling_ratio
+     $ cat /sys/bus/iio/devices/iio\:device0/oversampling_ratio
+     4  # this is fine
+And from here-on, the values are as correct (one gets what one would
+expect.)
 
-No unnecessary ksoftirqd wakeups are seen from idle task's context to
-service the softirq.
+While writing a kunit test for this bug, a peculiar issue was found for the
+array in the 'drivers/hwmon/ina2xx.c' & 'drivers/iio/adc/ina2xx-adc.c'
+drivers. While running the kunit test (for 'ina226_avg_tab' from these
+drivers):
+  * idx = find_closest([-1 to 2], ina226_avg_tab, ARRAY_SIZE(ina226_avg_tab));
+    This returns idx == 0, so value.
+  * idx = find_closest(3, ina226_avg_tab, ARRAY_SIZE(ina226_avg_tab));
+    This returns idx == 0, value 1; and now one could argue whether 3 is
+    closer to 4 or to 1. This quirk only appears for value '3' in this
+    array, but it seems to be a another rounding issue.
+  * And from 4 onwards the 'find_closest'() works fine (one gets what one
+    would expect).
 
-Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
-Closes: https://lore.kernel.org/lkml/fcf823f-195e-6c9a-eac3-25f870cb35ac@inria.fr/ [1]
-Reported-by: Julia Lawall <julia.lawall@inria.fr>
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20241119054432.6405-5-kprateek.nayak@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This change reworks the find_closest() macros to also check the difference
+between the left and right elements when 'x'. If the distance to the right
+is smaller (than the distance to the left), the index is incremented by 1.
+This also makes redundant the need for using the DIV_ROUND_CLOSEST() macro.
+
+In order to accommodate for any mix of negative + positive values, the
+internal variables '__fc_x', '__fc_mid_x', '__fc_left' & '__fc_right' are
+forced to 'long' type. This also addresses any potential bugs/issues with
+'x' being of an unsigned type. In those situations any comparison between
+signed & unsigned would be promoted to a comparison between 2 unsigned
+numbers; this is especially annoying when '__fc_left' & '__fc_right'
+underflow.
+
+The find_closest_descending() macro was also reworked and duplicated from
+the find_closest(), and it is being iterated in reverse. The main reason
+for this is to get the same indices as 'find_closest()' (but in reverse).
+The comparison for '__fc_right < __fc_left' favors going the array in
+ascending order.
+For example for array '{ 1024, 512, 256, 128, 64, 16, 4, 1 }' and x = 3, we
+get:
+    __fc_mid_x = 2
+    __fc_left = -1
+    __fc_right = -2
+    Then '__fc_right < __fc_left' evaluates to true and '__fc_i++' becomes 7
+    which is not quite incorrect, but 3 is closer to 4 than to 1.
+
+This change has been validated with the kunit from the next patch.
+
+Link: https://lkml.kernel.org/r/20241105145406.554365-1-aardelean@baylibre.com
+Fixes: 95d119528b0b ("util_macros.h: add find_closest() macro")
+Signed-off-by: Alexandru Ardelean <aardelean@baylibre.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/util_macros.h |   56 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 40 insertions(+), 16 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 7946c73dca31d..ed92b75f7e024 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1108,7 +1108,7 @@ static void nohz_csd_func(void *info)
- 	rq->idle_balance = idle_cpu(cpu);
- 	if (rq->idle_balance) {
- 		rq->nohz_idle_balance = flags;
--		raise_softirq_irqoff(SCHED_SOFTIRQ);
-+		__raise_softirq_irqoff(SCHED_SOFTIRQ);
- 	}
- }
+--- a/include/linux/util_macros.h
++++ b/include/linux/util_macros.h
+@@ -2,19 +2,6 @@
+ #ifndef _LINUX_HELPER_MACROS_H_
+ #define _LINUX_HELPER_MACROS_H_
  
--- 
-2.43.0
-
+-#define __find_closest(x, a, as, op)					\
+-({									\
+-	typeof(as) __fc_i, __fc_as = (as) - 1;				\
+-	typeof(x) __fc_x = (x);						\
+-	typeof(*a) const *__fc_a = (a);					\
+-	for (__fc_i = 0; __fc_i < __fc_as; __fc_i++) {			\
+-		if (__fc_x op DIV_ROUND_CLOSEST(__fc_a[__fc_i] +	\
+-						__fc_a[__fc_i + 1], 2))	\
+-			break;						\
+-	}								\
+-	(__fc_i);							\
+-})
+-
+ /**
+  * find_closest - locate the closest element in a sorted array
+  * @x: The reference value.
+@@ -23,8 +10,27 @@
+  * @as: Size of 'a'.
+  *
+  * Returns the index of the element closest to 'x'.
++ * Note: If using an array of negative numbers (or mixed positive numbers),
++ *       then be sure that 'x' is of a signed-type to get good results.
+  */
+-#define find_closest(x, a, as) __find_closest(x, a, as, <=)
++#define find_closest(x, a, as)						\
++({									\
++	typeof(as) __fc_i, __fc_as = (as) - 1;				\
++	long __fc_mid_x, __fc_x = (x);					\
++	long __fc_left, __fc_right;					\
++	typeof(*a) const *__fc_a = (a);					\
++	for (__fc_i = 0; __fc_i < __fc_as; __fc_i++) {			\
++		__fc_mid_x = (__fc_a[__fc_i] + __fc_a[__fc_i + 1]) / 2;	\
++		if (__fc_x <= __fc_mid_x) {				\
++			__fc_left = __fc_x - __fc_a[__fc_i];		\
++			__fc_right = __fc_a[__fc_i + 1] - __fc_x;	\
++			if (__fc_right < __fc_left)			\
++				__fc_i++;				\
++			break;						\
++		}							\
++	}								\
++	(__fc_i);							\
++})
+ 
+ /**
+  * find_closest_descending - locate the closest element in a sorted array
+@@ -34,8 +40,26 @@
+  * @as: Size of 'a'.
+  *
+  * Similar to find_closest() but 'a' is expected to be sorted in descending
+- * order.
++ * order. The iteration is done in reverse order, so that the comparison
++ * of '__fc_right' & '__fc_left' also works for unsigned numbers.
+  */
+-#define find_closest_descending(x, a, as) __find_closest(x, a, as, >=)
++#define find_closest_descending(x, a, as)				\
++({									\
++	typeof(as) __fc_i, __fc_as = (as) - 1;				\
++	long __fc_mid_x, __fc_x = (x);					\
++	long __fc_left, __fc_right;					\
++	typeof(*a) const *__fc_a = (a);					\
++	for (__fc_i = __fc_as; __fc_i >= 1; __fc_i--) {			\
++		__fc_mid_x = (__fc_a[__fc_i] + __fc_a[__fc_i - 1]) / 2;	\
++		if (__fc_x <= __fc_mid_x) {				\
++			__fc_left = __fc_x - __fc_a[__fc_i];		\
++			__fc_right = __fc_a[__fc_i - 1] - __fc_x;	\
++			if (__fc_right < __fc_left)			\
++				__fc_i--;				\
++			break;						\
++		}							\
++	}								\
++	(__fc_i);							\
++})
+ 
+ #endif
 
 
 
