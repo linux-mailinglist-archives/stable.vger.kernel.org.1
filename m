@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7489EF043
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27B99EEC24
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39A4228F323
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73FAB284A91
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFE523FA0E;
-	Thu, 12 Dec 2024 16:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC5E217656;
+	Thu, 12 Dec 2024 15:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQWaU7FU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXxvBRCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A402215762;
-	Thu, 12 Dec 2024 16:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873312135C1;
+	Thu, 12 Dec 2024 15:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020108; cv=none; b=dKCa50N3AzDSluW79NoXAiBRafeqLMfc/zd3uE+W4L3IB7l3XREy4m9sy3txMQNUSamEwGjrN9hwe4a66kE9sylBAPJxA9Z4rJIlDFLRNtrC311bzZxYaFdIwX5htB9y2AhRzDmMdoyNBnQ9n/lq6eZWzMtpcINBX68xC55cZr8=
+	t=1734017492; cv=none; b=NCHSgGmn2sLoZ9zf+xk/TA22sR2uQHdmOWXSB84pGKmOs3ZoYnNWlTbals2QNEVtoYSlhDD6cLlZZPrp5hugyuUzwK5T6aB18TD1OBD9ZOjwcrc1SMFA1It9wfeeSIOecoMwep5tueo7lEnwHJBR+tet5DznwqYj+UE3+RY2S+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020108; c=relaxed/simple;
-	bh=gAIH7298//nmMWW1s1kCFgM641YA0cWeFc1UithLN4Q=;
+	s=arc-20240116; t=1734017492; c=relaxed/simple;
+	bh=Wtu8BM/nJM7bqQN9zw5kYg/sRul6k/rp1CrZHzezaDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jbB526OV+Xa6nekHWQU48szaxFwGC0TMp7XXfZsTKubdHd/Ldy7oaj0uuEBxJKCf/v5xw0rkJTrkR5I2BexFiN/bU+Sz7xnT6aoWZVvnGlq5Wpyq9Q8CxANOKrzGYyWqXPyzqg3SlmgKdkpvRxeyNwrnAaQNkx/gQb5BrrbuyaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQWaU7FU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91744C4CECE;
-	Thu, 12 Dec 2024 16:15:07 +0000 (UTC)
+	 MIME-Version; b=p016VfoNHbi98pC4CLCPjeTbvhiL+QejQqm9TTvcCeEL6FVXjxNzAZ4thOxCApxq8YEQk61OarCaw16JkIYnMDExtR80TFfSg/xsQT5RTCT+hPwTvwXmVWNJQUlfkHI5ORwNmLAgteP0+t0SOF+iWSpONaNiyvKcLdNoGgevhy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXxvBRCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ACCC4CECE;
+	Thu, 12 Dec 2024 15:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020108;
-	bh=gAIH7298//nmMWW1s1kCFgM641YA0cWeFc1UithLN4Q=;
+	s=korg; t=1734017492;
+	bh=Wtu8BM/nJM7bqQN9zw5kYg/sRul6k/rp1CrZHzezaDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQWaU7FUma5Yd7iFCxECViqTFBUGy4YWwE3GqGMf7GSADNHARgUXIdBhl9tZF4rrs
-	 Uk3rZh8a/WprIiSBLH08TWrK1S+A68svMojVYsTLwQzUMvS/G0PjgCpaxAbGpWhiwm
-	 K8Ib2L1GV/HZ+3hZitXr3iT671VW5eBuLm8MKAKU=
+	b=PXxvBRCe3y8P0TvZNhnBO7gDwMZpZcbHZcdxcM8zeSa2fiXH7IsRQuWqgSTVJAWaP
+	 YJWHxC3Zl/uG2E9TmLXEaDQ3NyW6xpDYYm+aJH1csMpmt+xpDDsMync9zjmS3zOCey
+	 zj3YWpJNkRDZMXZf4GZrIhBnFstKIlMAeYa7yIA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anjelique Melendez <quic_amelende@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 379/772] pinctrl: qcom: spmi: fix debugfs drive strength
+	Andy Jackson <andy@xylanta.com>,
+	Ken Aitchison <ken@xylanta.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 005/356] can: gs_usb: add VID/PID for Xylanta SAINT3 product family
 Date: Thu, 12 Dec 2024 15:55:24 +0100
-Message-ID: <20241212144405.560839167@linuxfoundation.org>
+Message-ID: <20241212144244.829796198@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 6bc0ebfb1d920f13c522545f114cdabb49e9408a upstream.
+[ Upstream commit 69e2326a21ef409d6c709cb990565331727b9f27 ]
 
-Commit 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength
-mapping") fixed a long-standing issue in the Qualcomm SPMI PMIC gpio
-driver which had the 'low' and 'high' drive strength settings switched
-but failed to update the debugfs interface which still gets this wrong.
+Add support for the Xylanta SAINT3 product family.
 
-Fix the debugfs code so that the exported values match the hardware
-settings.
-
-Note that this probably means that most devicetrees that try to describe
-the firmware settings got this wrong if the settings were derived from
-debugfs. Before the above mentioned commit the settings would have
-actually matched the firmware settings even if they were described
-incorrectly, but now they are inverted.
-
-Fixes: 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength mapping")
-Fixes: eadff3024472 ("pinctrl: Qualcomm SPMI PMIC GPIO pin controller driver")
-Cc: Anjelique Melendez <quic_amelende@quicinc.com>
-Cc: stable@vger.kernel.org	# 3.19
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/20241025121622.1496-1-johan+linaro@kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andy Jackson <andy@xylanta.com>
+Cc: Ken Aitchison <ken@xylanta.com>
+Tested-by: Andy Jackson <andy@xylanta.com>
+Link: https://lore.kernel.org/all/20240625140353.769373-1-mkl@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: 889b2ae9139a ("can: gs_usb: add usb endpoint address detection at driver probe step")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-spmi-gpio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-@@ -665,7 +665,7 @@ static void pmic_gpio_config_dbg_show(st
- 		"push-pull", "open-drain", "open-source"
- 	};
- 	static const char *const strengths[] = {
--		"no", "high", "medium", "low"
-+		"no", "low", "medium", "high"
- 	};
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 95b0fdb602c8f..ed59451f03cdd 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -40,6 +40,9 @@
+ #define USB_ABE_CANDEBUGGER_FD_VENDOR_ID 0x16d0
+ #define USB_ABE_CANDEBUGGER_FD_PRODUCT_ID 0x10b8
  
- 	pad = pctldev->desc->pins[pin].drv_data;
++#define USB_XYLANTA_SAINT3_VENDOR_ID 0x16d0
++#define USB_XYLANTA_SAINT3_PRODUCT_ID 0x0f30
++
+ #define GS_USB_ENDPOINT_IN 1
+ #define GS_USB_ENDPOINT_OUT 2
+ 
+@@ -1530,6 +1533,8 @@ static const struct usb_device_id gs_usb_table[] = {
+ 				      USB_CES_CANEXT_FD_PRODUCT_ID, 0) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(USB_ABE_CANDEBUGGER_FD_VENDOR_ID,
+ 				      USB_ABE_CANDEBUGGER_FD_PRODUCT_ID, 0) },
++	{ USB_DEVICE_INTERFACE_NUMBER(USB_XYLANTA_SAINT3_VENDOR_ID,
++				      USB_XYLANTA_SAINT3_PRODUCT_ID, 0) },
+ 	{} /* Terminating entry */
+ };
+ 
+-- 
+2.43.0
+
 
 
 
