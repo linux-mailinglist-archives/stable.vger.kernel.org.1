@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968959EF3BD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB789EED21
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA3F289251
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7543728435E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E55223E62;
-	Thu, 12 Dec 2024 16:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F76222D46;
+	Thu, 12 Dec 2024 15:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQ5rBnKH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUl9mYFf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07876223E65;
-	Thu, 12 Dec 2024 16:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4513F217F34;
+	Thu, 12 Dec 2024 15:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022669; cv=none; b=YgmKcimPviH4fDHHAG6cue53ST3I6dVrQIlxpUnIXTZgaXu4xdkCTrR6ai6JC05gaJ4p+yThbElfZdnFCyjmICzuynosV22xDnk1DJrPUiqpT8hMajfxU0/GO+OVoUMCEBgN1cZHvgms0FiyyJiZ6IxyOcBGvNQblHcmjF6QxrE=
+	t=1734018082; cv=none; b=W5oWY2cW1B9V8Dstn3ZwVL19eEWi/bu9EDxIG3qw1qhWs6yjFPRRshRzXxYcvCJCkpvz1Qw1ahz4gAhxhCK1zz51RxR4LRTLAXC2ybiwDjDsPJB1Ku0n8fG7OnjkqvzaHU90FX1qWFqtvXP0AaczZxnLJtlppFFoWWSnjdOIe7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022669; c=relaxed/simple;
-	bh=MsbS9M1KTdtj91g7Ie7oOZM1yn5m0/LMXe0RzKy6kM8=;
+	s=arc-20240116; t=1734018082; c=relaxed/simple;
+	bh=8JvFLS4Y+T6X3S37rx5mseXiE2t2Lhz5ETD705YPeo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chIxl3RNKaaTYMgKSVbNKczY45AkaKpdiwKl/CTf5lK5nO/mRx8cEn0FpVg3vQ8UsDiXiAXXP0EOK3TVnff56kjOgByfkP8ZeCM3f9mpYqPSkgqKtAYvzoNuWxq7SHJNkokiG07xw53LUQmyc4ykxBbHzvjcA2UHTgbc1rMTFfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQ5rBnKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B2CC4CECE;
-	Thu, 12 Dec 2024 16:57:48 +0000 (UTC)
+	 MIME-Version; b=JY/wrRbMx5X+AwE0TfqdDibLwzhwSYYIb8b4LTq79+Njap1XfjXXk+sx6EDOIV9SXZWL9/kB+PFEEfEOO9dy0V1ZmNJftrFsKyiIQsI4QCpFG/iD/DbPHAy8RGik6F+78FqwRSlntmg/zKN45bJNbPY+ju5O90oMhDYRNsU1eRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUl9mYFf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D0C4CECE;
+	Thu, 12 Dec 2024 15:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022668;
-	bh=MsbS9M1KTdtj91g7Ie7oOZM1yn5m0/LMXe0RzKy6kM8=;
+	s=korg; t=1734018082;
+	bh=8JvFLS4Y+T6X3S37rx5mseXiE2t2Lhz5ETD705YPeo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQ5rBnKHMgFvwNIFpNnDWEO5erz0DXe42TdLCGP9sMMxhPtkIvcnTrbxZT9PU32xb
-	 Cs2iUDa0pqLocmP6tRlgYqpNQWUCZyH3FsKY3o+aCAu+woS60HFsMbl38tQmQY+2ke
-	 +c1E9Tir3of4h8N7+vZwJtm2e1KA/WCWTghBtmeo=
+	b=OUl9mYFfhDkxrN3ClvUN8HPhhtejopM+uS+YHahjIGzdAEZDvpuN9Bl9K2sC0vYog
+	 gG0V/Mi6ICDIJf26VZIO2bI2pmKQkVHNBGMXxs9aCDC/f+KEIFNXdHLeJJ3Q6UIL5U
+	 UmnWfuHR5B6cbUQ0/FsONy+V2+SuiglMJajEqM3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 286/565] iio: light: al3010: Fix an error handling path in al3010_probe()
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Ralph Boehme <slow@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 162/356] fs/smb/client: cifs_prime_dcache() for SMB3 POSIX reparse points
 Date: Thu, 12 Dec 2024 15:58:01 +0100
-Message-ID: <20241212144322.766638626@linuxfoundation.org>
+Message-ID: <20241212144251.037259124@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ralph Boehme <slow@samba.org>
 
-[ Upstream commit a4b7064d34186cf4970fe0333c3b27346cf8f819 ]
+commit 8cb0bc5436351de8a11eef13b7367d64cc0d6c68 upstream.
 
-If i2c_smbus_write_byte_data() fails in al3010_init(),
-al3010_set_pwr(false) is not called.
+Spares an extra revalidation request
 
-In order to avoid such a situation, move the devm_add_action_or_reset()
-witch calls al3010_set_pwr(false) right after a successful
-al3010_set_pwr(true).
-
-Fixes: c36b5195ab70 ("iio: light: add Dyna-Image AL3010 driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/ee5d10a2dd2b70f29772d5df33774d3974a80f30.1725993353.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Ralph Boehme <slow@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/al3010.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/smb/client/readdir.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
-index b4e9924094cd1..bd83e73e68026 100644
---- a/drivers/iio/light/al3010.c
-+++ b/drivers/iio/light/al3010.c
-@@ -87,7 +87,12 @@ static int al3010_init(struct al3010_data *data)
- 	int ret;
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -71,6 +71,8 @@ cifs_prime_dcache(struct dentry *parent,
+ 	struct inode *inode;
+ 	struct super_block *sb = parent->d_sb;
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
++	bool posix = cifs_sb_master_tcon(cifs_sb)->posix_extensions;
++	bool reparse_need_reval = false;
+ 	DECLARE_WAIT_QUEUE_HEAD_ONSTACK(wq);
+ 	int rc;
  
- 	ret = al3010_set_pwr(data->client, true);
-+	if (ret < 0)
-+		return ret;
+@@ -85,7 +87,21 @@ cifs_prime_dcache(struct dentry *parent,
+ 		 * this spares us an invalidation.
+ 		 */
+ retry:
+-		if ((fattr->cf_cifsattrs & ATTR_REPARSE) ||
++		if (posix) {
++			switch (fattr->cf_mode & S_IFMT) {
++			case S_IFLNK:
++			case S_IFBLK:
++			case S_IFCHR:
++				reparse_need_reval = true;
++				break;
++			default:
++				break;
++			}
++		} else if (fattr->cf_cifsattrs & ATTR_REPARSE) {
++			reparse_need_reval = true;
++		}
++
++		if (reparse_need_reval ||
+ 		    (fattr->cf_flags & CIFS_FATTR_NEED_REVAL))
+ 			return;
  
-+	ret = devm_add_action_or_reset(&data->client->dev,
-+				       al3010_set_pwr_off,
-+				       data);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -191,12 +196,6 @@ static int al3010_probe(struct i2c_client *client,
- 		return ret;
- 	}
- 
--	ret = devm_add_action_or_reset(&client->dev,
--					al3010_set_pwr_off,
--					data);
--	if (ret < 0)
--		return ret;
--
- 	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
--- 
-2.43.0
-
 
 
 
