@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-101636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63909EEDB7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3E29EF3F7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5778918841CE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 693E128E94A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D990E222D6F;
-	Thu, 12 Dec 2024 15:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC56222D63;
+	Thu, 12 Dec 2024 17:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHcflnFi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXXVnrv+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C12221D88;
-	Thu, 12 Dec 2024 15:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F7D211A34;
+	Thu, 12 Dec 2024 17:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018253; cv=none; b=osuXwTHddt4Tx1Spobjs6m5BhXeg0nfOTyJ/malsQRurn0W6NZezc17049Pxo1t36whGtd/QEV5JJP1VQsFWQIfvNkNIAq/uACnt+mTO2MjRJTxL11J+5piWUUT4dgh+QndP8LFoYkXAdeAb1YS+7+qTXlRe772YZWqCB4d7ltw=
+	t=1734022905; cv=none; b=EBuPUxjAq/+4bi2iPg4TLDy99c11PDvFvzPf2V2vuH9jO6x+3zbZ6F8vxubOi2WzcMRqM2GlkE8BnMxtYrCJ7QjsX9GuGulSFmOPM6iWcHGLZIm7W20rtzPnODOVSlDKrwa0Lp5OEabK6ihFU9R849g6JkxqULCpzlhjYZKVoDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018253; c=relaxed/simple;
-	bh=fPdEj7+BuiDEB/g2Nz/UDAuFN2lNgtuiqbRYRWiW0mw=;
+	s=arc-20240116; t=1734022905; c=relaxed/simple;
+	bh=SSK21wSOGFhBDXeE/ox3+RXWEfPy/k0UPD7s9QsYSbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLfrjVhWvUZxO1siGzmY92HkHLV4fP0t/UCNfCR1YIlFXV4eL2XnMq+Su73r6yXXRxRCF1D/zns8cVyd85grteoUxxtU2g7YYZAHX69VbJtIdn+qQl0hMY8CqBr9pljsDXh7REPkoXOprrGLuRgiJbKAN2qBhy2eamTH3dGw74U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHcflnFi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDEAC4CECE;
-	Thu, 12 Dec 2024 15:44:12 +0000 (UTC)
+	 MIME-Version; b=aKZMo02/iGn49Crd8w6xYHmrUIA32lwjIs/ncVcnM4wFb3uMraOdM9IRfnFsWIhJZWIRsgoK+quqgd6LgKaBLQKssfSkLXCZ55vvoyJ6EWeyFMlMLFlS/zSSb5FPWV2sShT9cWfeEOaQWKnv1ECulDLCiEEjKLWznUBI6fwDP+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXXVnrv+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3268C4CECE;
+	Thu, 12 Dec 2024 17:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018253;
-	bh=fPdEj7+BuiDEB/g2Nz/UDAuFN2lNgtuiqbRYRWiW0mw=;
+	s=korg; t=1734022905;
+	bh=SSK21wSOGFhBDXeE/ox3+RXWEfPy/k0UPD7s9QsYSbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHcflnFi2KmBaE8d8lV5kKUkj1CFU1g8BRrzAK2FGl9oUSQsOp8Ddwx5balwfIPrC
-	 xWnAe2JoR2AzNdeS5s2PpdU5lrTferfBludzfOslp/0dln27mdN0ye/o9vhH8C7fj6
-	 YAT6lzYFEGnmbHAiJL7eu6u+lxCDRLKsdbybrAhM=
+	b=GXXVnrv+UUbNM/c+/hTwKWhcReUFQ2sczYxHpdh0rXGmqW92SZ/wSLLtwCmCSxlaN
+	 MFuDiW3ugX3R9zh/Egg1Sq1T3+xXWcCQeyz599YH6Z71EcVELRDCUyiWsCqoj3q5v6
+	 nFpDxCChYPPLRMnHEBqjLOvDzapu9ELDtqJ8Bt7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Nikitin <denik@chromium.org>,
-	Levi Yun <yeoreum.yun@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Alex Zenla <alex@edera.dev>,
+	Alexander Merritt <alexander@edera.dev>,
+	Ariadne Conill <ariadne@ariadne.space>,
+	Juergen Gross <jgross@suse.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 242/356] dma-debug: fix a possible deadlock on radix_lock
+Subject: [PATCH 5.15 366/565] 9p/xen: fix init sequence
 Date: Thu, 12 Dec 2024 15:59:21 +0100
-Message-ID: <20241212144254.173601008@linuxfoundation.org>
+Message-ID: <20241212144326.083011324@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Levi Yun <yeoreum.yun@arm.com>
+From: Alex Zenla <alex@edera.dev>
 
-[ Upstream commit 7543c3e3b9b88212fcd0aaf5cab5588797bdc7de ]
+[ Upstream commit 7ef3ae82a6ebbf4750967d1ce43bcdb7e44ff74b ]
 
-radix_lock() shouldn't be held while holding dma_hash_entry[idx].lock
-otherwise, there's a possible deadlock scenario when
-dma debug API is called holding rq_lock():
+Large amount of mount hangs observed during hotplugging of 9pfs devices. The
+9pfs Xen driver attempts to initialize itself more than once, causing the
+frontend and backend to disagree: the backend listens on a channel that the
+frontend does not send on, resulting in stalled processing.
 
-CPU0                   CPU1                       CPU2
-dma_free_attrs()
-check_unmap()          add_dma_entry()            __schedule() //out
-                                                  (A) rq_lock()
-get_hash_bucket()
-(A) dma_entry_hash
-                                                  check_sync()
-                       (A) radix_lock()           (W) dma_entry_hash
-dma_entry_free()
-(W) radix_lock()
-                       // CPU2's one
-                       (W) rq_lock()
+Only allow initialization of 9p frontend once.
 
-CPU1 situation can happen when it extending radix tree and
-it tries to wake up kswapd via wake_all_kswapd().
-
-CPU2 situation can happen while perf_event_task_sched_out()
-(i.e. dma sync operation is called while deleting perf_event using
- etm and etr tmc which are Arm Coresight hwtracing driver backends).
-
-To remove this possible situation, call dma_entry_free() after
-put_hash_bucket() in check_unmap().
-
-Reported-by: Denis Nikitin <denik@chromium.org>
-Closes: https://lists.linaro.org/archives/list/coresight@lists.linaro.org/thread/2WMS7BBSF5OZYB63VT44U5YWLFP5HL6U/#RWM6MLQX5ANBTEQ2PRM7OXCBGCE6NPWU
-Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: c15fe55d14b3b ("9p/xen: fix connection sequence")
+Signed-off-by: Alex Zenla <alex@edera.dev>
+Signed-off-by: Alexander Merritt <alexander@edera.dev>
+Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241119211633.38321-1-alexander@edera.dev>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/debug.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/9p/trans_xen.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index e472cc37d7de4..958d4aa77dcad 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -1051,9 +1051,13 @@ static void check_unmap(struct dma_debug_entry *ref)
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index 99e6b2483311c..716736046a18f 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -487,6 +487,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 		goto error;
  	}
  
- 	hash_bucket_del(entry);
--	dma_entry_free(entry);
--
- 	put_hash_bucket(bucket, flags);
-+
-+	/*
-+	 * Free the entry outside of bucket_lock to avoid ABBA deadlocks
-+	 * between that and radix_lock.
-+	 */
-+	dma_entry_free(entry);
- }
++	xenbus_switch_state(dev, XenbusStateInitialised);
+ 	return 0;
  
- static void check_for_stack(struct device *dev,
+  error_xenbus:
+@@ -534,8 +535,10 @@ static void xen_9pfs_front_changed(struct xenbus_device *dev,
+ 		break;
+ 
+ 	case XenbusStateInitWait:
+-		if (!xen_9pfs_front_init(dev))
+-			xenbus_switch_state(dev, XenbusStateInitialised);
++		if (dev->state != XenbusStateInitialising)
++			break;
++
++		xen_9pfs_front_init(dev);
+ 		break;
+ 
+ 	case XenbusStateConnected:
 -- 
 2.43.0
 
