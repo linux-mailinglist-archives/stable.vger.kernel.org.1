@@ -1,77 +1,58 @@
-Return-Path: <stable+bounces-102144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8E09EF052
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0BE9EEA64
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62486291C07
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89E7A188DAE9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4272240366;
-	Thu, 12 Dec 2024 16:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B4D218EB5;
+	Thu, 12 Dec 2024 15:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQKSqy3o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0/TTsvE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819E722A80F;
-	Thu, 12 Dec 2024 16:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A70216E29;
+	Thu, 12 Dec 2024 15:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020143; cv=none; b=XpZGA20iBKzA6y7JjcST4Nx3desyWaLBLrSHg54y/3cDk3/b9p/L56dbwjWyNr463gfeBO8ssgGSue5NBlFPDKAXjZDzMOiDJScDRDRdfPPmk6L2TDv7nV1uqIT8dM0F8RY1fFwJwXcNETVHvsnWy4eEnt+0oXZyCMInswqPQVY=
+	t=1734016107; cv=none; b=sp/wzOnOQ7ewhTQyPWX1Ys8HbzRxTCRzIxWtMyCO/KxttQl8XxxEwyQ00JcLJsbsttc+eqMe44kssxis5H/WGTToyzLstI7hgq1tikCVq02FPSTLSJ9j6TkFCrsChSJXh+QiJTby11tenMRHW4jIBANBQtE/LKScrKA2Tq54AKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020143; c=relaxed/simple;
-	bh=KWmkr11jjkQaJWT9VJ8Q8YVRYRHhiey8MJdbN1OXmF0=;
+	s=arc-20240116; t=1734016107; c=relaxed/simple;
+	bh=nHRU2JTnJ6ZV3JLT2+wPLeqwxbxaDB14CC1fuli2LY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAe6zc3+/5mLKLIpO9/S57/Vkr6Mhj0IWanCcYWB7m1gLw0V93ww7eDeL8ON2MDemS1QaW+F+uYD9t7XMjyCTaCvbEwU/WucYfrqIV4YfVSSGsTA1Gjh08u7EHG/4LNyQwtaePFFaFAA5OQzaS2tKHcIymqYmBsI6b82Hrn5fmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQKSqy3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA77C4CECE;
-	Thu, 12 Dec 2024 16:15:42 +0000 (UTC)
+	 MIME-Version; b=AnmMb7WaStAlwy8i+LMYyunLmHDupQklXHzpQaYnIMLSOX6ISJyrGfrGraSxA/f2G9R2BzlPNcGZl13IFe0UDEeAPRa6LNMIg2PQhm1AtsncO6idDwbi1Ejq3YKIj+QXbwrl5HtOMzFrnUg7HxX5QM722vjpX4Ed3UXDeLioJUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0/TTsvE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440B2C4CECE;
+	Thu, 12 Dec 2024 15:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020143;
-	bh=KWmkr11jjkQaJWT9VJ8Q8YVRYRHhiey8MJdbN1OXmF0=;
+	s=korg; t=1734016107;
+	bh=nHRU2JTnJ6ZV3JLT2+wPLeqwxbxaDB14CC1fuli2LY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQKSqy3onhTcLrqbQWFh9LbW4hFZeVi7k6+FeAPeXR/Tbg4pCt+DUqJJZ6Vis3YBb
-	 DtLpp0oxnmmad+P9ePbRX2EDZwjbUkuowxyALUdWbIZcch6rkZ7r5TooBpH0AZGnFi
-	 3OhsVHpMzinu7/9ddrLjkCQe/lt3QLhCaaQda6SE=
+	b=M0/TTsvE6RMgT/Jz6aQlt5IJh5VFfmdof8T4R8AGeryBQTyKY9HlshUOQAMjCEaJX
+	 56Qp4HdNfOgRWGRQEWB2geZIil6Es/fFm1kgBQ2IoJZkvY70GrLi61vmEVRrR6MzjW
+	 U45BexmAV9m8jyMg2NStKNcMN/iNjvE2No/SywGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christoph Hellwig <hch@lst.de>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alasdair Kergon <agk@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Mike Snitzer <snitzer@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
 	Will Deacon <will@kernel.org>,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 358/772] mm/slab: decouple ARCH_KMALLOC_MINALIGN from ARCH_DMA_MINALIGN
-Date: Thu, 12 Dec 2024 15:55:03 +0100
-Message-ID: <20241212144404.705629014@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 135/466] arm64: Ensure bits ASID[15:8] are masked out when the kernel uses 8-bit ASIDs
+Date: Thu, 12 Dec 2024 15:55:04 +0100
+Message-ID: <20241212144312.138099051@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,136 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit 4ab5f8ec7d71aea5fe13a48248242130f84ac6bb upstream.
+commit c0900d15d31c2597dd9f634c8be2b71762199890 upstream.
 
-Patch series "mm, dma, arm64: Reduce ARCH_KMALLOC_MINALIGN to 8", v7.
+Linux currently sets the TCR_EL1.AS bit unconditionally during CPU
+bring-up. On an 8-bit ASID CPU, this is RES0 and ignored, otherwise
+16-bit ASIDs are enabled. However, if running in a VM and the hypervisor
+reports 8-bit ASIDs (ID_AA64MMFR0_EL1.ASIDBits == 0) on a 16-bit ASIDs
+CPU, Linux uses bits 8 to 63 as a generation number for tracking old
+process ASIDs. The bottom 8 bits of this generation end up being written
+to TTBR1_EL1 and also used for the ASID-based TLBI operations as the
+upper 8 bits of the ASID. Following an ASID roll-over event we can have
+threads of the same application with the same 8-bit ASID but different
+generation numbers running on separate CPUs. Both TLB caching and the
+TLBI operations will end up using different actual 16-bit ASIDs for the
+same process.
 
-A series reducing the kmalloc() minimum alignment on arm64 to 8 (from
-128).
+A similar scenario can happen in a big.LITTLE configuration if the boot
+CPU only uses 8-bit ASIDs while secondary CPUs have 16-bit ASIDs.
 
+Ensure that the ASID generation is only tracked by bits 16 and up,
+leaving bits 15:8 as 0 if the kernel uses 8-bit ASIDs. Note that
+clearing TCR_EL1.AS is not sufficient since the architecture requires
+that the top 8 bits of the ASID passed to TLBI instructions are 0 rather
+than ignored in such configuration.
 
-This patch (of 17):
-
-In preparation for supporting a kmalloc() minimum alignment smaller than
-the arch DMA alignment, decouple the two definitions.  This requires that
-either the kmalloc() caches are aligned to a (run-time) cache-line size or
-the DMA API bounces unaligned kmalloc() allocations.  Subsequent patches
-will implement both options.
-
-After this patch, ARCH_DMA_MINALIGN is expected to be used in static
-alignment annotations and defined by an architecture to be the maximum
-alignment for all supported configurations/SoCs in a single Image.
-Architectures opting in to a smaller ARCH_KMALLOC_MINALIGN will need to
-define its value in the arch headers.
-
-Since ARCH_DMA_MINALIGN is now always defined, adjust the #ifdef in
-dma_get_cache_alignment() so that there is no change for architectures not
-requiring a minimum DMA alignment.
-
-Link: https://lkml.kernel.org/r/20230612153201.554742-1-catalin.marinas@arm.com
-Link: https://lkml.kernel.org/r/20230612153201.554742-2-catalin.marinas@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Tested-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Alasdair Kergon <agk@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Mike Snitzer <snitzer@kernel.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>
+Cc: stable@vger.kernel.org
 Cc: Will Deacon <will@kernel.org>
-Cc: Jerry Snitselaar <jsnitsel@redhat.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: James Morse <james.morse@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241203151941.353796-1-catalin.marinas@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/cache.h       |    6 ++++++
- include/linux/dma-mapping.h |    3 ++-
- include/linux/slab.h        |   14 ++++++++++----
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ arch/arm64/mm/context.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/cache.h
-+++ b/include/linux/cache.h
-@@ -98,4 +98,10 @@ struct cacheline_padding {
- #define CACHELINE_PADDING(name)
- #endif
+--- a/arch/arm64/mm/context.c
++++ b/arch/arm64/mm/context.c
+@@ -32,9 +32,9 @@ static unsigned long nr_pinned_asids;
+ static unsigned long *pinned_asid_map;
  
-+#ifdef ARCH_DMA_MINALIGN
-+#define ARCH_HAS_DMA_MINALIGN
-+#else
-+#define ARCH_DMA_MINALIGN __alignof__(unsigned long long)
-+#endif
-+
- #endif /* __LINUX_CACHE_H */
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_DMA_MAPPING_H
- #define _LINUX_DMA_MAPPING_H
+ #define ASID_MASK		(~GENMASK(asid_bits - 1, 0))
+-#define ASID_FIRST_VERSION	(1UL << asid_bits)
++#define ASID_FIRST_VERSION	(1UL << 16)
  
-+#include <linux/cache.h>
- #include <linux/sizes.h>
- #include <linux/string.h>
- #include <linux/device.h>
-@@ -545,7 +546,7 @@ static inline int dma_set_min_align_mask
+-#define NUM_USER_ASIDS		ASID_FIRST_VERSION
++#define NUM_USER_ASIDS		(1UL << asid_bits)
+ #define ctxid2asid(asid)	((asid) & ~ASID_MASK)
+ #define asid2ctxid(asid, genid)	((asid) | (genid))
  
- static inline int dma_get_cache_alignment(void)
- {
--#ifdef ARCH_DMA_MINALIGN
-+#ifdef ARCH_HAS_DMA_MINALIGN
- 	return ARCH_DMA_MINALIGN;
- #endif
- 	return 1;
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -12,6 +12,7 @@
- #ifndef _LINUX_SLAB_H
- #define	_LINUX_SLAB_H
- 
-+#include <linux/cache.h>
- #include <linux/gfp.h>
- #include <linux/overflow.h>
- #include <linux/types.h>
-@@ -225,12 +226,17 @@ static inline bool kmem_dump_obj(void *o
-  * alignment larger than the alignment of a 64-bit integer.
-  * Setting ARCH_DMA_MINALIGN in arch headers allows that.
-  */
--#if defined(ARCH_DMA_MINALIGN) && ARCH_DMA_MINALIGN > 8
-+#ifdef ARCH_HAS_DMA_MINALIGN
-+#if ARCH_DMA_MINALIGN > 8 && !defined(ARCH_KMALLOC_MINALIGN)
- #define ARCH_KMALLOC_MINALIGN ARCH_DMA_MINALIGN
--#define KMALLOC_MIN_SIZE ARCH_DMA_MINALIGN
--#define KMALLOC_SHIFT_LOW ilog2(ARCH_DMA_MINALIGN)
--#else
-+#endif
-+#endif
-+
-+#ifndef ARCH_KMALLOC_MINALIGN
- #define ARCH_KMALLOC_MINALIGN __alignof__(unsigned long long)
-+#elif ARCH_KMALLOC_MINALIGN > 8
-+#define KMALLOC_MIN_SIZE ARCH_KMALLOC_MINALIGN
-+#define KMALLOC_SHIFT_LOW ilog2(KMALLOC_MIN_SIZE)
- #endif
- 
- /*
 
 
 
