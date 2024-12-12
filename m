@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC7A9EF28C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03229EEE4C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA5B0172093
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A34B188C1BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2F82210C2;
-	Thu, 12 Dec 2024 16:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C1F2210D8;
+	Thu, 12 Dec 2024 15:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiNC2cZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/xp/9bB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA6421CFF0;
-	Thu, 12 Dec 2024 16:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9B24F218;
+	Thu, 12 Dec 2024 15:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021286; cv=none; b=AcMb7MzYkR2/CF4cJk/kPRheWWHaHjNDvb+8yRKHBjcoCqqBsjnld9wkQxRnoSFOSgeaV02mK1GLuvMmH0v0flw2FSEEcmmQYCdDchAicu+itO8VjFT0r5PU/ihy0qoc0FzEyyJKgpgF3fLPaxMbTEhVkj2Q0uRevql9qYEujJ4=
+	t=1734018577; cv=none; b=q5L/zKMJF5MYTGYibiFQ9Y6N0lv48goWzm7pvM+VZMcKPLXomVRHjlL+GknzffVAm9zcyP9glEoNrP3Qdkb21GUZkVqikOq/9vjAPoLxqqd+8MIbX5Ld3X469zsdoueDU+xh9k52ih7K+vGECg5HG3NTd3DSaWa0R8dBPu7vpIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021286; c=relaxed/simple;
-	bh=i0fsg9nm0wCiFj/V/ZuyiomYdfwhiPnpCfiMAAKLY8c=;
+	s=arc-20240116; t=1734018577; c=relaxed/simple;
+	bh=7WAGjhHxE6RPL8rLrhdDmHjqiTul3nyViyIUWNrJ07c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=miLYiOvPAKgYsm0l1yiD+7COWLhgQpoQhNzdTB0cClxtRSyIPP0EXFUj/rTXgMVRueRp0JKEy37XuyHlEUWnwYvCVfAyTRfeWUpC28S9T/274YnePSMOOPZPHKehPS+lIfyxM9M+ZzL82N11wZR+m05Ft31wvNf/lRLvUhfGvqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiNC2cZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5119CC4CED0;
-	Thu, 12 Dec 2024 16:34:46 +0000 (UTC)
+	 MIME-Version; b=Fnix/cRmJ1k7SLw6BG7Q4gKm00/D69qm4TpsfvE1AVeq42bpov2n3qisXOLpdNRIz9wJ3ZHtVJ2inImN/0NfCMqIDHe21ujaxPsDNSvv4SIiyVxrc+d9NFn8hfHOo7MZ9iYcv641bkanJ0mPwjnyIuLlbXcyjK/NfGwq2qXxzXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/xp/9bB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78718C4CECE;
+	Thu, 12 Dec 2024 15:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021286;
-	bh=i0fsg9nm0wCiFj/V/ZuyiomYdfwhiPnpCfiMAAKLY8c=;
+	s=korg; t=1734018577;
+	bh=7WAGjhHxE6RPL8rLrhdDmHjqiTul3nyViyIUWNrJ07c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LiNC2cZNWmD0A+7+feP4PBuo2iK68icqhlTkUSLFv42GXftcoRSlzMEJK+xr0RDb7
-	 Vq2gUasXhqvSx6vi2s3mKvXVJzcy1HtJ/uzsgH6RXsJV8NX1dCxp6E5Z3jY5GTPcHE
-	 fNBSROxRKZm6zIJA3L5dwJLjzy8atEtpY4WLfoKk=
+	b=Y/xp/9bB138ZMblKNEPOMDIobJBx1SZRXaaedTvsu8JNJ51mia66VuHa5B/lOQ9GL
+	 AD0TvSfZ6K569X3NP/kxiVCSS29w7nzr4OQ8H6mpRujRsImv2Rg02w9pWOQnwIdqGU
+	 7CdpQ5mTr2IuPhMFUYis8wQ1Nc20p+JVdxExVknU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 697/772] net/neighbor: clear error in case strict check is not set
+Subject: [PATCH 6.6 323/356] sched/fair: Rename check_preempt_wakeup() to check_preempt_wakeup_fair()
 Date: Thu, 12 Dec 2024 16:00:42 +0100
-Message-ID: <20241212144418.703543049@linuxfoundation.org>
+Message-ID: <20241212144257.317283395@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ingo Molnar <mingo@kernel.org>
 
-[ Upstream commit 0de6a472c3b38432b2f184bd64eb70d9ea36d107 ]
+[ Upstream commit 82845683ca6a15fe8c7912c6264bb0e84ec6f5fb ]
 
-Commit 51183d233b5a ("net/neighbor: Update neigh_dump_info for strict
-data checking") added strict checking. The err variable is not cleared,
-so if we find no table to dump we will return the validation error even
-if user did not want strict checking.
+Other scheduling classes already postfix their similar methods
+with the class name.
 
-I think the only way to hit this is to send an buggy request, and ask
-for a table which doesn't exist, so there's no point treating this
-as a real fix. I only noticed it because a syzbot repro depended on it
-to trigger another bug.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241115003221.733593-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Stable-dep-of: 0664e2c311b9 ("sched/deadline: Fix warning in migrate_enable for boosted tasks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/fair.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index c842f150c3048..dd0965e1afe85 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -2865,6 +2865,7 @@ static int neigh_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 	err = neigh_valid_dump_req(nlh, cb->strict_check, &filter, cb->extack);
- 	if (err < 0 && cb->strict_check)
- 		return err;
-+	err = 0;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index d1a67776ecb5d..685774895bcec 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8255,7 +8255,7 @@ static void set_next_buddy(struct sched_entity *se)
+ /*
+  * Preempt the current task with a newly woken task if needed:
+  */
+-static void check_preempt_wakeup(struct rq *rq, struct task_struct *p, int wake_flags)
++static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int wake_flags)
+ {
+ 	struct task_struct *curr = rq->curr;
+ 	struct sched_entity *se = &curr->se, *pse = &p->se;
+@@ -13102,7 +13102,7 @@ DEFINE_SCHED_CLASS(fair) = {
+ 	.yield_task		= yield_task_fair,
+ 	.yield_to_task		= yield_to_task_fair,
  
- 	s_t = cb->args[0];
+-	.check_preempt_curr	= check_preempt_wakeup,
++	.check_preempt_curr	= check_preempt_wakeup_fair,
  
+ 	.pick_next_task		= __pick_next_task_fair,
+ 	.put_prev_task		= put_prev_task_fair,
 -- 
 2.43.0
 
