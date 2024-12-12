@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A0B9EF72C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8582F9EF88F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C710189DC09
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2605317B2F6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C115221DBE;
-	Thu, 12 Dec 2024 17:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76E122333E;
+	Thu, 12 Dec 2024 17:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dbo95lGk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5vihbgh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2734D2144C4;
-	Thu, 12 Dec 2024 17:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651CB216E2D;
+	Thu, 12 Dec 2024 17:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024184; cv=none; b=iGxwVhrr8mmMPUwp+QorQdfHOPUKMjCCj+UD9FsgEK5a3aQNDeDCf1pUgFPLKFW6WoaGQaq15xCVpdJIVUWXyHksl0FjAUIzmnpTMp16TUgIILRwSvHsqeh2Mks2JSATvPyyvaIVEYhhTHDYpkQMS81N0HwZUVxfpELCd47URiU=
+	t=1734025030; cv=none; b=ZOJJtftCmKZhSolvxQc+krhEe/gwgIvAVT2W+RYydyQY1lKobMlpk7TYYGq40H2WbG4kF1ZTsKv4QUm8eSMOKD8wPW/8xsn7PUOZmrsI+yR2903mi/8e3ZPfEjszJlvQ1y3VU+dL6cIeRMoI3bY/hv2BNocSKwe6L62dbZg5/7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024184; c=relaxed/simple;
-	bh=KwDHRH8eIu1y1gj0rFKf7OEI8LICOibgawGnaaNM+iI=;
+	s=arc-20240116; t=1734025030; c=relaxed/simple;
+	bh=9dT6f2o3bqOd/vFNBDCzjLRXwZJ6208j7YILrlk6Xks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CUOoZFB1V4yffBDXLCCvfOkpqFaNeCGb4cZV5d7P0VEZgZ7D6aHeChXy9YPFC85k15bAmxMFIlY493dfG2IoyAGK2CVRpIdx/XzPLtLtIBCPFtcf743yEbxCu+Y4f2DulxPDDP0+zJq4zE8ZbYtZAaDmUjyRAv2vBzq6lRZ6QEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dbo95lGk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90656C4CECE;
-	Thu, 12 Dec 2024 17:23:03 +0000 (UTC)
+	 MIME-Version; b=hOXSew79wtZ5WMaYiItIqeYOezK3iLsaUEmBMv10IU2wKzUqKQJeyXOVFcAacuPZ8GBA9+VwXLwt2DnCHdJ+j+fawup8cFEhKxgRKlqkJaWE+jzUjmOfG1pXNHDcU6tc5b8T8si0Gx8g9bJAEB0/GrldfmuerS0E+ggvw1xe+vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5vihbgh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAC6C4CECE;
+	Thu, 12 Dec 2024 17:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024184;
-	bh=KwDHRH8eIu1y1gj0rFKf7OEI8LICOibgawGnaaNM+iI=;
+	s=korg; t=1734025030;
+	bh=9dT6f2o3bqOd/vFNBDCzjLRXwZJ6208j7YILrlk6Xks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dbo95lGk1eVLCf1kaNn7Nq09MHgQDwGQMo3CIBP15uHwytxM6CvsWq3viT7M6AzkC
-	 maVU10JjTgKRt3iNrwMqTw7/lfblSsbJFMEozf+zowjjKKKbR1XoYL/Zv7R8HMjOlp
-	 umzglSjT/6T7jwRucUDGMETwoJkvrHCijnRXhuIM=
+	b=Q5vihbghyateIdyXc7PbuZu53URXnCjQJcAKxQUWtEJw9Vm+LLwMtrxOWuLRAt4lb
+	 vPbQZApCxi5Hsxd9T5gUTCoHBXcgd6fQvxjStFkJG/ANH4Mt3Oq0GRNnWsWIVKkra7
+	 HB94jx5yKfMpfDZJ8YsEVILvko5pSicipO36uyrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 212/459] NFSD: Cap the number of bytes copied by nfs4_reset_recoverydir()
+Subject: [PATCH 5.4 032/321] m68k: mvme147: Fix SCSI controller IRQ numbers
 Date: Thu, 12 Dec 2024 15:59:10 +0100
-Message-ID: <20241212144301.947789541@linuxfoundation.org>
+Message-ID: <20241212144231.274823370@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit f64ea4af43161bb86ffc77e6aeb5bcf5c3229df0 ]
+[ Upstream commit 47bc874427382018fa2e3e982480e156271eee70 ]
 
-It's only current caller already length-checks the string, but let's
-be safe.
+Sometime long ago the m68k IRQ code was refactored and the interrupt
+numbers for SCSI controller on this board ended up wrong, and it hasn't
+worked since.
 
-Fixes: 0964a3d3f1aa ("[PATCH] knfsd: nfsd4 reboot dirname fix")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+The PCC adds 0x40 to the vector for its interrupts so they end up in
+the user interrupt range. Hence, the kernel number should be the kernel
+offset for user interrupt range + the PCC interrupt number.
+
+Fixes: 200a3d352cd5 ("[PATCH] m68k: convert VME irq code")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/0e7636a21a0274eea35bfd5d874459d5078e97cc.1727926187.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4recover.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/m68k/include/asm/mvme147hw.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
-index 2904268c18c9a..eca39b5c12c68 100644
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -658,7 +658,8 @@ nfs4_reset_recoverydir(char *recdir)
- 		return status;
- 	status = -ENOTDIR;
- 	if (d_is_dir(path.dentry)) {
--		strcpy(user_recovery_dirname, recdir);
-+		strscpy(user_recovery_dirname, recdir,
-+			sizeof(user_recovery_dirname));
- 		status = 0;
- 	}
- 	path_put(&path);
+diff --git a/arch/m68k/include/asm/mvme147hw.h b/arch/m68k/include/asm/mvme147hw.h
+index e28eb1c0e0bfb..dbf88059e47a4 100644
+--- a/arch/m68k/include/asm/mvme147hw.h
++++ b/arch/m68k/include/asm/mvme147hw.h
+@@ -93,8 +93,8 @@ struct pcc_regs {
+ #define M147_SCC_B_ADDR		0xfffe3000
+ #define M147_SCC_PCLK		5000000
+ 
+-#define MVME147_IRQ_SCSI_PORT	(IRQ_USER+0x45)
+-#define MVME147_IRQ_SCSI_DMA	(IRQ_USER+0x46)
++#define MVME147_IRQ_SCSI_PORT	(IRQ_USER + 5)
++#define MVME147_IRQ_SCSI_DMA	(IRQ_USER + 6)
+ 
+ /* SCC interrupts, for MVME147 */
+ 
 -- 
 2.43.0
 
