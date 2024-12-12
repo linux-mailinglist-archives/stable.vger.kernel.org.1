@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1A29EF792
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7261D9EF6B6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D22E6285060
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE5E817DD0C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D5B223E84;
-	Thu, 12 Dec 2024 17:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B53222D7C;
+	Thu, 12 Dec 2024 17:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx3RAszB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjxWG4aZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43118225A21;
-	Thu, 12 Dec 2024 17:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AF922330D;
+	Thu, 12 Dec 2024 17:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024888; cv=none; b=dbKWU11xHJtugikSaoMRvLRBbDLMjWsieHkKnnV1pCrXt6+GJpZjLlyPWiWanGH2pcuybc1/UuqJFgfTFdf0p/FAqSIjd6rVb3nOMqtTn19O1WjrcIuTtzDwiLPAOytTcFm1+SB8Q6GcI0NhKPUsitdoJpZs3IrpXFKYHqViIlY=
+	t=1734023514; cv=none; b=buRwI5N5WNtupboPPvlxGVvFko83lXkzqrHzGgw8M9fsThTtCi/Ra7Vm6YXyTFzu49RdmnE725mrEoYU5G33kEO4uxVOv05s3M1RUEdOzQON3xYTgy78dhpZhYZGvgxQsw80fSPo1QBueSkEuN4rk0V9IJ22lDseY5wJRxUp2II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024888; c=relaxed/simple;
-	bh=jTd/ratYnguyXraGPKe7wNFyW5aAFdYdjcRZo+ip7b4=;
+	s=arc-20240116; t=1734023514; c=relaxed/simple;
+	bh=F5m0XiJAnE8vcmA7gHA3uNV6hy7hxC2W/Y+w1Yv+s5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bV31Hp7/xMlt4nWpJZ/fqi85+TaLAmQyy8KTywycLjfce1adSNnJ0GPKYxgpqtwHGPdiVx/3GFHwUt4ImWtAo0l3PwDO9BmuPKyBUAKCpi1rc+SYmS9zup0Smx/Mk1SxxLbnbZXDl7FbjFWw6pFhGjqDqRHJWcle5B4Mf7dz5s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx3RAszB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2C3C4CED3;
-	Thu, 12 Dec 2024 17:34:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YJGb5AJGtAwQ/xOwHodeLWpGjMZPjG/gEfKFEkGyFcx9XmxHuUSpwOvd9TBiueQkd4mZxZDOAZmMSex7Yoc7ygNxPrdYHIVEwzTTYvsc1GghVLb1qMvOMYzIwAQGzmXaP+WIRGnrtg6NWoymVl9RR7h2rMxn+nlolo/Aes/+p9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjxWG4aZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF137C4CED0;
+	Thu, 12 Dec 2024 17:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024888;
-	bh=jTd/ratYnguyXraGPKe7wNFyW5aAFdYdjcRZo+ip7b4=;
+	s=korg; t=1734023514;
+	bh=F5m0XiJAnE8vcmA7gHA3uNV6hy7hxC2W/Y+w1Yv+s5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wx3RAszBbAmSxXCo+T7tTJeNIqOzvHnbQOC/51mGRmJoj2jStk4vbfeIkGQj6kRt+
-	 M7VPfcbikIHD3M9AsmHDh1dR991oyKHXkakMVN7jouBvBTvb75ZVy95TMLt/T0Enmw
-	 ObQesgADNkvqNXeXd9gVJc5bSSyPQCx5dcxFJm6Y=
+	b=JjxWG4aZydXC8M8Hsb04hoFnOLFXi1c0X8/j//ybuAc0Ew8m58RxM1WpkunkHLfvd
+	 dXxfX3I6JA/PvAmWY2NOS+jtfKq3PFIP+sYZBi4RTHjabbCd9wBejaN5iShahZVlBD
+	 BCSF62MC28Z/eM+GvLHQCyG+b9LNfhJCYW4xsN3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 415/459] net/neighbor: clear error in case strict check is not set
-Date: Thu, 12 Dec 2024 16:02:33 +0100
-Message-ID: <20241212144310.152751124@linuxfoundation.org>
+	Tristram Ha <Tristram.Ha@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	=?UTF-8?q?J=C3=B6rg=20Sommer?= <joerg@jo-so.de>
+Subject: [PATCH 5.15 559/565] net: dsa: microchip: correct KSZ8795 static MAC table access
+Date: Thu, 12 Dec 2024 16:02:34 +0100
+Message-ID: <20241212144333.960086042@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Tristram Ha <Tristram.Ha@microchip.com>
 
-[ Upstream commit 0de6a472c3b38432b2f184bd64eb70d9ea36d107 ]
+commit 4bdf79d686b49ac49373b36466acfb93972c7d7c upstream.
 
-Commit 51183d233b5a ("net/neighbor: Update neigh_dump_info for strict
-data checking") added strict checking. The err variable is not cleared,
-so if we find no table to dump we will return the validation error even
-if user did not want strict checking.
+The KSZ8795 driver code was modified to use on KSZ8863/73, which has
+different register definitions.  Some of the new KSZ8795 register
+information are wrong compared to previous code.
 
-I think the only way to hit this is to send an buggy request, and ask
-for a table which doesn't exist, so there's no point treating this
-as a real fix. I only noticed it because a syzbot repro depended on it
-to trigger another bug.
+KSZ8795 also behaves differently in that the STATIC_MAC_TABLE_USE_FID
+and STATIC_MAC_TABLE_FID bits are off by 1 when doing MAC table reading
+than writing.  To compensate that a special code was added to shift the
+register value by 1 before applying those bits.  This is wrong when the
+code is running on KSZ8863, so this special code is only executed when
+KSZ8795 is detected.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241115003221.733593-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4b20a07e103f ("net: dsa: microchip: ksz8795: add support for ksz88xx chips")
+Signed-off-by: Tristram Ha <Tristram.Ha@microchip.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Jörg Sommer <joerg@jo-so.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/microchip/ksz8795.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 432e3a64dc4a5..c187eb951083b 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -2739,6 +2739,7 @@ static int neigh_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 	err = neigh_valid_dump_req(nlh, cb->strict_check, &filter, cb->extack);
- 	if (err < 0 && cb->strict_check)
- 		return err;
-+	err = 0;
+--- a/drivers/net/dsa/microchip/ksz8795.c
++++ b/drivers/net/dsa/microchip/ksz8795.c
+@@ -25,6 +25,8 @@
+ #include "ksz8795_reg.h"
+ #include "ksz8.h"
  
- 	s_t = cb->args[0];
- 
--- 
-2.43.0
-
++#define KSZ8795_CHIP_ID         0x09
++
+ static const u8 ksz8795_regs[] = {
+ 	[REG_IND_CTRL_0]		= 0x6E,
+ 	[REG_IND_DATA_8]		= 0x70,
+@@ -52,13 +54,13 @@ static const u32 ksz8795_masks[] = {
+ 	[STATIC_MAC_TABLE_VALID]	= BIT(21),
+ 	[STATIC_MAC_TABLE_USE_FID]	= BIT(23),
+ 	[STATIC_MAC_TABLE_FID]		= GENMASK(30, 24),
+-	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(26),
+-	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(24, 20),
++	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(22),
++	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(20, 16),
+ 	[DYNAMIC_MAC_TABLE_ENTRIES_H]	= GENMASK(6, 0),
+-	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(8),
++	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(7),
+ 	[DYNAMIC_MAC_TABLE_NOT_READY]	= BIT(7),
+ 	[DYNAMIC_MAC_TABLE_ENTRIES]	= GENMASK(31, 29),
+-	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(26, 20),
++	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(22, 16),
+ 	[DYNAMIC_MAC_TABLE_SRC_PORT]	= GENMASK(26, 24),
+ 	[DYNAMIC_MAC_TABLE_TIMESTAMP]	= GENMASK(28, 27),
+ };
+@@ -601,7 +603,13 @@ static int ksz8_r_sta_mac_table(struct k
+ 				shifts[STATIC_MAC_FWD_PORTS];
+ 		alu->is_override =
+ 			(data_hi & masks[STATIC_MAC_TABLE_OVERRIDE]) ? 1 : 0;
+-		data_hi >>= 1;
++
++		/* KSZ8795 family switches have STATIC_MAC_TABLE_USE_FID and
++		 * STATIC_MAC_TABLE_FID definitions off by 1 when doing read on the
++		 * static MAC table compared to doing write.
++		 */
++		if (dev->chip_id == KSZ8795_CHIP_ID)
++			data_hi >>= 1;
+ 		alu->is_static = true;
+ 		alu->is_use_fid =
+ 			(data_hi & masks[STATIC_MAC_TABLE_USE_FID]) ? 1 : 0;
 
 
 
