@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04E99EF22C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08F69EEB07
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2776165AA4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C17C282D29
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BBE2210FB;
-	Thu, 12 Dec 2024 16:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B97C1487CD;
+	Thu, 12 Dec 2024 15:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+kZ5Jzx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fE218iie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2142210D8;
-	Thu, 12 Dec 2024 16:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDF72EAE5;
+	Thu, 12 Dec 2024 15:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020679; cv=none; b=E+hWjO2BAixECTllm4K9/X6DFRgVVJS6gaUJSxPPQcYfayB7DNTsh6fY1grbe2ZUwEXIQ7osQYaz63bvUwSlxDHCCwKUBRXlpKaVgpVu8/cBh5k1wOhulDqp4ALTAbhbHnvS5dCUjiFvVKailz7MmY4pNEJ4+JYYAuIHHzBBQyw=
+	t=1734016830; cv=none; b=GTiUAsaibjWw6ntzQ4K9TrSn3DLtDtCNaCdDvskQ6GOie9muzNypohWV88eFnsckSoTHId/YyqtH+yMaQxtIkL0xT8X+OYoLSW2ZvzGTiWdRnGJH0X+SDxJIKGWVrLIQsafp5oFg4pgBKXZFOmqvb+i4/rowp6cTDXHkbMNA9j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020679; c=relaxed/simple;
-	bh=pAgdX5guFUKKbo0XreHrUl/v4GRbnwLLwBMg+/Tw8rg=;
+	s=arc-20240116; t=1734016830; c=relaxed/simple;
+	bh=GTxzCO3iZswd4nUjHOyd7qNbVaWhWwmwyataE6sf68w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjZ510CrYD8VuVifbVjxgXBh7xDOtD3uOKzeX8QXNJK1RQ9QTkVHfp5lH133uoebTVDnGX5K63y0MwIYtHLVvRXxvafE7tNmKHsM/l62bk0ZLGlyOpGi0c34izjENvQZeDqedwcRuTRMOgNADRMJ5RVQWi4c4ODomT/aBf8Ibe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+kZ5Jzx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12C1C4CECE;
-	Thu, 12 Dec 2024 16:24:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=APhRRSAk/VAmtO5YFgvdUKhoQ+BMhUdE0Hk5Lqv0KXfbD2RsmOqIDpE3/3sqK/L3vvSkDXHEOkc/LiVwFot11fPS50c5n3nTENsgNqzIiuk3Ld3LtzNbnsLABI27rMwzQmjCy1Fwp50R1lJHwVOxHPK2fNHoFeq63s1VFaVIzAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fE218iie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A45CC4CECE;
+	Thu, 12 Dec 2024 15:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020679;
-	bh=pAgdX5guFUKKbo0XreHrUl/v4GRbnwLLwBMg+/Tw8rg=;
+	s=korg; t=1734016830;
+	bh=GTxzCO3iZswd4nUjHOyd7qNbVaWhWwmwyataE6sf68w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+kZ5JzxMR9kE2fBOOrBr5ln4ACKPmVyBmP/lFYINGimnvLzxmRXosLb+h2iv5hV2
-	 RbdCQD2dniUITCDjowHNUrZtWUQ83DE9OVjCvNGnQas58nCnup1uoO4Ux0sAFZ1q0q
-	 BoWv026OzVpLIiIu0cuLFbDmx4HByMlUnIOlV1RA=
+	b=fE218iieZ8uL1MNKsES8pSabKtpk4Bdu3gWlqES5EIY8LfsmeO+AZ9Py6WfOrfuAc
+	 yP/jnNVG+1nQXc5o63fHTH2UYYPRkCoYnlFxXmNdfGiOssqV4kU8qXQW+QvHJe6Uy9
+	 BhGvJ7WlEtD9/czblQy2bDVe9ZRaAPclYGtjIZfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Lutomirski <luto@amacapital.net>,
-	Vadim Fedorenko <vadfed@meta.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 532/772] net-timestamp: make sk_tskey more predictable in error path
-Date: Thu, 12 Dec 2024 15:57:57 +0100
-Message-ID: <20241212144411.954878308@linuxfoundation.org>
+Subject: [PATCH 6.12 309/466] drm/amdgpu/gfx9: Add cleaner shader for GFX9.4.2
+Date: Thu, 12 Dec 2024 15:57:58 +0100
+Message-ID: <20241212144318.990518946@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +61,307 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Fedorenko <vadfed@meta.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 488b6d91b07112eaaaa4454332c1480894d4e06e ]
+[ Upstream commit 9343b904e7198e4804685133327dece7fe709bc1 ]
 
-When SOF_TIMESTAMPING_OPT_ID is used to ambiguate timestamped datagrams,
-the sk_tskey can become unpredictable in case of any error happened
-during sendmsg(). Move increment later in the code and make decrement of
-sk_tskey in error path. This solution is still racy in case of multiple
-threads doing snedmsg() over the very same socket in parallel, but still
-makes error path much more predictable.
+This commit adds the cleaner shader microcode for GFX9.4.2 GPUs. The
+cleaner shader is a piece of GPU code that is used to clear or
+initialize certain GPU resources, such as Local Data Share (LDS), Vector
+General Purpose Registers (VGPRs), and Scalar General Purpose Registers
+(SGPRs).
 
-Fixes: 09c2d251b707 ("net-timestamp: add key to disambiguate concurrent datagrams")
-Reported-by: Andy Lutomirski <luto@amacapital.net>
-Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240213110428.1681540-1-vadfed@meta.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 3301ab7d5aeb ("net/ipv6: release expired exception dst cached in socket")
+Clearing these resources is important for ensuring data isolation
+between different workloads running on the GPU. Without the cleaner
+shader, residual data from a previous workload could potentially be
+accessed by a subsequent workload, leading to data leaks and incorrect
+computation results.
+
+The cleaner shader microcode is represented as an array of 32-bit words
+(`gfx_9_4_2_cleaner_shader_hex`). This array is the binary
+representation of the cleaner shader code, which is written in a
+low-level GPU instruction set.
+
+Also, this patch updates the `gfx_v9_0_sw_init` function to initialize
+the cleaner shader if the MEC firmware version is 88 or higher. It sets
+the `cleaner_shader_ptr` and `cleaner_shader_size` to the appropriate
+values and attempts to initialize the cleaner shader.
+
+When the cleaner shader feature is enabled, the AMDGPU driver loads this
+array into a specific location in the GPU memory. The GPU then reads
+this memory location to fetch and execute the cleaner shader
+instructions.
+
+The cleaner shader is executed automatically by the GPU at the end of
+each workload, before the next workload starts. This ensures that all
+GPU resources are in a clean state before the start of each workload.
+
+This change ensures that the GPU memory is properly cleared between
+different processes, preventing data leakage and enhancing security. It
+also aligns with the serialization mechanism between KGD and KFD,
+ensuring that the GPU state is consistent across different workloads.
+
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_output.c  | 13 ++++++++-----
- net/ipv6/ip6_output.c | 13 ++++++++-----
- 2 files changed, 16 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c         |  12 ++
+ .../drm/amd/amdgpu/gfx_v9_0_cleaner_shader.h  |  44 ++++-
+ .../amd/amdgpu/gfx_v9_4_2_cleaner_shader.asm  | 153 ++++++++++++++++++
+ 3 files changed, 208 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/gpu/drm/amd/amdgpu/gfx_v9_4_2_cleaner_shader.asm
 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index a6d460aaee794..c82107bbd9810 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -980,8 +980,8 @@ static int __ip_append_data(struct sock *sk,
- 	unsigned int maxfraglen, fragheaderlen, maxnonfragsize;
- 	int csummode = CHECKSUM_NONE;
- 	struct rtable *rt = (struct rtable *)cork->dst;
-+	bool paged, hold_tskey, extra_uref = false;
- 	unsigned int wmem_alloc_delta = 0;
--	bool paged, extra_uref = false;
- 	u32 tskey = 0;
- 
- 	skb = skb_peek_tail(queue);
-@@ -990,10 +990,6 @@ static int __ip_append_data(struct sock *sk,
- 	mtu = cork->gso_size ? IP_MAX_MTU : cork->fragsize;
- 	paged = !!cork->gso_size;
- 
--	if (cork->tx_flags & SKBTX_ANY_TSTAMP &&
--	    READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_OPT_ID)
--		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
--
- 	hh_len = LL_RESERVED_SPACE(rt->dst.dev);
- 
- 	fragheaderlen = sizeof(struct iphdr) + (opt ? opt->optlen : 0);
-@@ -1051,6 +1047,11 @@ static int __ip_append_data(struct sock *sk,
- 
- 	cork->length += length;
- 
-+	hold_tskey = cork->tx_flags & SKBTX_ANY_TSTAMP &&
-+		     READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_OPT_ID;
-+	if (hold_tskey)
-+		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
-+
- 	/* So, what's going on in the loop below?
- 	 *
- 	 * We use calculated fragment length to generate chained skb,
-@@ -1255,6 +1256,8 @@ static int __ip_append_data(struct sock *sk,
- 	cork->length -= length;
- 	IP_INC_STATS(sock_net(sk), IPSTATS_MIB_OUTDISCARDS);
- 	refcount_add(wmem_alloc_delta, &sk->sk_wmem_alloc);
-+	if (hold_tskey)
-+		atomic_dec(&sk->sk_tskey);
- 	return err;
- }
- 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index f2227e662d1cf..4082470803615 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1499,11 +1499,11 @@ static int __ip6_append_data(struct sock *sk,
- 	bool zc = false;
- 	u32 tskey = 0;
- 	struct rt6_info *rt = (struct rt6_info *)cork->dst;
-+	bool paged, hold_tskey, extra_uref = false;
- 	struct ipv6_txoptions *opt = v6_cork->opt;
- 	int csummode = CHECKSUM_NONE;
- 	unsigned int maxnonfragsize, headersize;
- 	unsigned int wmem_alloc_delta = 0;
--	bool paged, extra_uref = false;
- 
- 	skb = skb_peek_tail(queue);
- 	if (!skb) {
-@@ -1515,10 +1515,6 @@ static int __ip6_append_data(struct sock *sk,
- 	mtu = cork->gso_size ? IP6_MAX_MTU : cork->fragsize;
- 	orig_mtu = mtu;
- 
--	if (cork->tx_flags & SKBTX_ANY_TSTAMP &&
--	    READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_OPT_ID)
--		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
--
- 	hh_len = LL_RESERVED_SPACE(rt->dst.dev);
- 
- 	fragheaderlen = sizeof(struct ipv6hdr) + rt->rt6i_nfheader_len +
-@@ -1606,6 +1602,11 @@ static int __ip6_append_data(struct sock *sk,
- 		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index 785a343a95f0f..e7cd51c95141e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -2223,6 +2223,18 @@ static int gfx_v9_0_sw_init(void *handle)
  	}
  
-+	hold_tskey = cork->tx_flags & SKBTX_ANY_TSTAMP &&
-+		     READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_OPT_ID;
-+	if (hold_tskey)
-+		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
+ 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
++	case IP_VERSION(9, 4, 2):
++		adev->gfx.cleaner_shader_ptr = gfx_9_4_2_cleaner_shader_hex;
++		adev->gfx.cleaner_shader_size = sizeof(gfx_9_4_2_cleaner_shader_hex);
++		if (adev->gfx.mec_fw_version >= 88) {
++			adev->gfx.enable_cleaner_shader = true;
++			r = amdgpu_gfx_cleaner_shader_sw_init(adev, adev->gfx.cleaner_shader_size);
++			if (r) {
++				adev->gfx.enable_cleaner_shader = false;
++				dev_err(adev->dev, "Failed to initialize cleaner shader\n");
++			}
++		}
++		break;
+ 	default:
+ 		adev->gfx.enable_cleaner_shader = false;
+ 		break;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0_cleaner_shader.h b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0_cleaner_shader.h
+index 36c0292b51106..0b6bd09b75299 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0_cleaner_shader.h
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0_cleaner_shader.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: MIT */
+ /*
+- * Copyright 2018 Advanced Micro Devices, Inc.
++ * Copyright 2024 Advanced Micro Devices, Inc.
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+  * copy of this software and associated documentation files (the "Software"),
+@@ -24,3 +24,45 @@
+ static const u32 __maybe_unused gfx_9_0_cleaner_shader_hex[] = {
+ 	/* Add the cleaner shader code here */
+ };
 +
- 	/*
- 	 * Let's try using as much space as possible.
- 	 * Use MTU if total length of the message fits into the MTU.
-@@ -1844,6 +1845,8 @@ static int __ip6_append_data(struct sock *sk,
- 	cork->length -= length;
- 	IP6_INC_STATS(sock_net(sk), rt->rt6i_idev, IPSTATS_MIB_OUTDISCARDS);
- 	refcount_add(wmem_alloc_delta, &sk->sk_wmem_alloc);
-+	if (hold_tskey)
-+		atomic_dec(&sk->sk_tskey);
- 	return err;
- }
- 
++/* Define the cleaner shader gfx_9_4_2 */
++static const u32 gfx_9_4_2_cleaner_shader_hex[] = {
++	0xbf068100, 0xbf84003b,
++	0xbf8a0000, 0xb07c0000,
++	0xbe8200ff, 0x00000078,
++	0xbf110802, 0x7e000280,
++	0x7e020280, 0x7e040280,
++	0x7e060280, 0x7e080280,
++	0x7e0a0280, 0x7e0c0280,
++	0x7e0e0280, 0x80828802,
++	0xbe803202, 0xbf84fff5,
++	0xbf9c0000, 0xbe8200ff,
++	0x80000000, 0x86020102,
++	0xbf840011, 0xbefe00c1,
++	0xbeff00c1, 0xd28c0001,
++	0x0001007f, 0xd28d0001,
++	0x0002027e, 0x10020288,
++	0xbe8200bf, 0xbefc00c1,
++	0xd89c2000, 0x00020201,
++	0xd89c6040, 0x00040401,
++	0x320202ff, 0x00000400,
++	0x80828102, 0xbf84fff8,
++	0xbefc00ff, 0x0000005c,
++	0xbf800000, 0xbe802c80,
++	0xbe812c80, 0xbe822c80,
++	0xbe832c80, 0x80fc847c,
++	0xbf84fffa, 0xbee60080,
++	0xbee70080, 0xbeea0180,
++	0xbeec0180, 0xbeee0180,
++	0xbef00180, 0xbef20180,
++	0xbef40180, 0xbef60180,
++	0xbef80180, 0xbefa0180,
++	0xbf810000, 0xbf8d0001,
++	0xbefc00ff, 0x0000005c,
++	0xbf800000, 0xbe802c80,
++	0xbe812c80, 0xbe822c80,
++	0xbe832c80, 0x80fc847c,
++	0xbf84fffa, 0xbee60080,
++	0xbee70080, 0xbeea01ff,
++	0x000000ee, 0xbf810000,
++};
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_2_cleaner_shader.asm b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_2_cleaner_shader.asm
+new file mode 100644
+index 0000000000000..35b8cf9070bd9
+--- /dev/null
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_2_cleaner_shader.asm
+@@ -0,0 +1,153 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright 2024 Advanced Micro Devices, Inc.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++// This shader is to clean LDS, SGPRs and VGPRs. It is  first 64 Dwords or 256 bytes of 192 Dwords cleaner shader.
++//To turn this shader program on for complitaion change this to main and lower shader main to main_1
++
++// MI200 : Clear SGPRs, VGPRs and LDS
++//   Uses two kernels launched separately:
++//   1. Clean VGPRs, LDS, and lower SGPRs
++//        Launches one workgroup per CU, each workgroup with 4x wave64 per SIMD in the CU
++//        Waves are "wave64" and have 128 VGPRs each, which uses all 512 VGPRs per SIMD
++//        Waves in the workgroup share the 64KB of LDS
++//        Each wave clears SGPRs 0 - 95. Because there are 4 waves/SIMD, this is physical SGPRs 0-383
++//        Each wave clears 128 VGPRs, so all 512 in the SIMD
++//        The first wave of the workgroup clears its 64KB of LDS
++//        The shader starts with "S_BARRIER" to ensure SPI has launched all waves of the workgroup
++//          before any wave in the workgroup could end.  Without this, it is possible not all SGPRs get cleared.
++//    2. Clean remaining SGPRs
++//        Launches a workgroup with 24 waves per workgroup, yielding 6 waves per SIMD in each CU
++//        Waves are allocating 96 SGPRs
++//          CP sets up SPI_RESOURCE_RESERVE_* registers to prevent these waves from allocating SGPRs 0-223.
++//          As such, these 6 waves per SIMD are allocated physical SGPRs 224-799
++//        Barriers do not work for >16 waves per workgroup, so we cannot start with S_BARRIER
++//          Instead, the shader starts with an S_SETHALT 1. Once all waves are launched CP will send unhalt command
++//        The shader then clears all SGPRs allocated to it, cleaning out physical SGPRs 224-799
++
++shader main
++  asic(MI200)
++  type(CS)
++  wave_size(64)
++// Note: original source code from SQ team
++
++//   (theorhetical fastest = ~512clks vgpr + 1536 lds + ~128 sgpr  = 2176 clks)
++
++  s_cmp_eq_u32 s0, 1                                // Bit0 is set, sgpr0 is set then clear VGPRS and LDS as FW set COMPUTE_USER_DATA_3
++  s_cbranch_scc0  label_0023                        // Clean VGPRs and LDS if sgpr0 of wave is set, scc = (s3 == 1)
++  S_BARRIER
++
++  s_movk_i32    m0, 0x0000
++  s_mov_b32     s2, 0x00000078  // Loop 128/8=16 times  (loop unrolled for performance)
++  //
++  // CLEAR VGPRs
++  //
++  s_set_gpr_idx_on  s2, 0x8    // enable Dest VGPR indexing
++label_0005:
++  v_mov_b32     v0, 0
++  v_mov_b32     v1, 0
++  v_mov_b32     v2, 0
++  v_mov_b32     v3, 0
++  v_mov_b32     v4, 0
++  v_mov_b32     v5, 0
++  v_mov_b32     v6, 0
++  v_mov_b32     v7, 0
++  s_sub_u32     s2, s2, 8
++  s_set_gpr_idx_idx  s2
++  s_cbranch_scc0  label_0005
++  s_set_gpr_idx_off
++
++  //
++  //
++
++  s_mov_b32     s2, 0x80000000                      // Bit31 is first_wave
++  s_and_b32     s2, s2, s1                          // sgpr0 has tg_size (first_wave) term as in ucode only COMPUTE_PGM_RSRC2.tg_size_en is set
++  s_cbranch_scc0  label_clean_sgpr_1                // Clean LDS if its first wave of ThreadGroup/WorkGroup
++  // CLEAR LDS
++  //
++  s_mov_b32 exec_lo, 0xffffffff
++  s_mov_b32 exec_hi, 0xffffffff
++  v_mbcnt_lo_u32_b32  v1, exec_hi, 0          // Set V1 to thread-ID (0..63)
++  v_mbcnt_hi_u32_b32  v1, exec_lo, v1         // Set V1 to thread-ID (0..63)
++  v_mul_u32_u24  v1, 0x00000008, v1           // * 8, so each thread is a double-dword address (8byte)
++  s_mov_b32     s2, 0x00000003f               // 64 loop iterations
++  s_mov_b32     m0, 0xffffffff
++  // Clear all of LDS space
++  // Each FirstWave of WorkGroup clears 64kbyte block
++
++label_001F:
++  ds_write2_b64  v1, v[2:3], v[2:3] offset1:32
++  ds_write2_b64  v1, v[4:5], v[4:5] offset0:64 offset1:96
++  v_add_co_u32     v1, vcc, 0x00000400, v1
++  s_sub_u32     s2, s2, 1
++  s_cbranch_scc0  label_001F
++  //
++  // CLEAR SGPRs
++  //
++label_clean_sgpr_1:
++  s_mov_b32     m0, 0x0000005c   // Loop 96/4=24 times  (loop unrolled for performance)
++  s_nop 0
++label_sgpr_loop:
++  s_movreld_b32     s0, 0
++  s_movreld_b32     s1, 0
++  s_movreld_b32     s2, 0
++  s_movreld_b32     s3, 0
++  s_sub_u32         m0, m0, 4
++  s_cbranch_scc0  label_sgpr_loop
++
++  //clear vcc, flat scratch
++  s_mov_b32 flat_scratch_lo, 0   //clear  flat scratch lo SGPR
++  s_mov_b32 flat_scratch_hi, 0   //clear  flat scratch hi SGPR
++  s_mov_b64 vcc, 0               //clear vcc
++  s_mov_b64 ttmp0, 0             //Clear ttmp0 and ttmp1
++  s_mov_b64 ttmp2, 0             //Clear ttmp2 and ttmp3
++  s_mov_b64 ttmp4, 0             //Clear ttmp4 and ttmp5
++  s_mov_b64 ttmp6, 0             //Clear ttmp6 and ttmp7
++  s_mov_b64 ttmp8, 0             //Clear ttmp8 and ttmp9
++  s_mov_b64 ttmp10, 0            //Clear ttmp10 and ttmp11
++  s_mov_b64 ttmp12, 0            //Clear ttmp12 and ttmp13
++  s_mov_b64 ttmp14, 0            //Clear ttmp14 and ttmp15
++s_endpgm
++
++label_0023:
++
++  s_sethalt 1
++
++  s_mov_b32     m0, 0x0000005c   // Loop 96/4=24 times  (loop unrolled for performance)
++  s_nop 0
++label_sgpr_loop1:
++
++  s_movreld_b32     s0, 0
++  s_movreld_b32     s1, 0
++  s_movreld_b32     s2, 0
++  s_movreld_b32     s3, 0
++  s_sub_u32         m0, m0, 4
++  s_cbranch_scc0  label_sgpr_loop1
++
++  //clear vcc, flat scratch
++  s_mov_b32 flat_scratch_lo, 0   //clear  flat scratch lo SGPR
++  s_mov_b32 flat_scratch_hi, 0   //clear  flat scratch hi SGPR
++  s_mov_b64 vcc, 0xee            //clear vcc
++
++s_endpgm
++end
++
 -- 
 2.43.0
 
