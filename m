@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-103773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3C99EF9B3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1469EF692
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BD73163B5F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68DD63605D1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B429522C36D;
-	Thu, 12 Dec 2024 17:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44302223338;
+	Thu, 12 Dec 2024 17:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yobWPFK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdRczyNm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D3E22652B;
-	Thu, 12 Dec 2024 17:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0146722330D;
+	Thu, 12 Dec 2024 17:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025562; cv=none; b=SlULszXc67xbgYoJFer709cafq57llUzD4UnlyOUppMN/P9FWBxkqIbbeTEj2B75/B7n8HF1XS7Iq4RzQ0zTNbaVZcHfnfQjQHlv1+REOsE4cWcF2nZQPuxy+6UB22Tyta1j8ktZ3oyhfZuLA+bwpvNfG1kl2erlk1CAXsgzymo=
+	t=1734023344; cv=none; b=KtQECusg4K9inFo9W6Lm/d0MsmBUhRKnXYL1DnhAc5AX2AT7rLJ6p0SXRdpVgLyMZMe1VIzC6QO6MLf+C1F80sS4zwbF/5MY/9wkt0we/yJ1u1o213QFVQo5HbOkpC9nZ8F45sF/4l4N0VPKnFR6CHYMX/y6VpBdqHvDNphW9L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025562; c=relaxed/simple;
-	bh=FMTVdITsuBqwi0d1NYRLlse56rvyKjWMCLtdycMeAQY=;
+	s=arc-20240116; t=1734023344; c=relaxed/simple;
+	bh=xtaoOQPygjRaBte3GrmT1da+qzifchKK1P6r25azNEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7sN6rOxUAImhgk2ZpluS9UdQ3iCYbHJvz552MQjYoXPYy2Gc72yeFX/1rPfcrPvZiR8Ha2KT9r2D37MF8Ri77MRphq5uYzds7dTrVdO8MWMEnfBFbuANfBOo5vWrtphlzCgTsjzYMTSjAhJpQANN4V/+YHCC758WwCtl2oOzT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yobWPFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87139C4CECE;
-	Thu, 12 Dec 2024 17:46:01 +0000 (UTC)
+	 MIME-Version; b=oK3TyjUx3GuZck7+1WjxnVuO0CdPynb2j23+8mbPlNiNNEz/RYXPFQZ4BB6FH5Fdxopuo57/4VRSoBpRxeHZmYUmoYjp4pmTA52SWdX66ywFFSajKl9HwjDd2EA2QauFUFz6VFWP7P+/JNav4wjmci7w2THwMoRGKoShjcDNZf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdRczyNm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C3FC4CECE;
+	Thu, 12 Dec 2024 17:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025562;
-	bh=FMTVdITsuBqwi0d1NYRLlse56rvyKjWMCLtdycMeAQY=;
+	s=korg; t=1734023343;
+	bh=xtaoOQPygjRaBte3GrmT1da+qzifchKK1P6r25azNEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yobWPFKLk4Xvlxp30KOyBbhTSAZfSH/Hi+tV0qMmoNWxvYpX5OD7+8IXov6OOqe6
-	 Q2kOGfXmKcYxzjFT8zJoQw3MObtzV468/iYDy/cLE/sRjYG0u7BO6sfSDuMN2trkJy
-	 42rdmZ+eAJaZVedoIFEFvj7e46QAQScotbcKoodc=
+	b=JdRczyNmHFtmkG63pp14JHjGfmungzNISgwFLrJwbSCL6uaPUSLCRfi7cRkmArb0e
+	 hADQ4beLNyl23RVP8XGJXj6SyO27msRroI824PLUzpHCZhPtY0dfKYFOgLAKoOb/XX
+	 V55LMsvNN4htWPD6m0aA61hsgoRK/ldFxQclgfhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Safonov <dima@arista.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Jeff Dike <jdike@addtoit.com>,
-	Richard Weinberger <richard@nod.at>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Victor Zhao <Victor.Zhao@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 180/321] um/sysrq: remove needless variable sp
+Subject: [PATCH 5.15 503/565] drm/amdgpu: skip amdgpu_device_cache_pci_state under sriov
 Date: Thu, 12 Dec 2024 16:01:38 +0100
-Message-ID: <20241212144237.099952516@linuxfoundation.org>
+Message-ID: <20241212144331.645985064@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,53 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Safonov <dima@arista.com>
+From: Victor Zhao <Victor.Zhao@amd.com>
 
-[ Upstream commit 3dd923f39a03dede001afe0edcc08613d5f403e5 ]
+[ Upstream commit afe260df55ac280cd56306248cb6d8a6b0db095c ]
 
-`sp' is a needless excercise here.
+Under sriov, host driver will save and restore vf pci cfg space during
+reset. And during device init, under sriov, pci_restore_state happens after
+fullaccess released, and it can have race condition with mmio protection
+enable from host side leading to missing interrupts.
 
-Signed-off-by: Dmitry Safonov <dima@arista.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Jeff Dike <jdike@addtoit.com>
-Cc: Richard Weinberger <richard@nod.at>
-Link: http://lkml.kernel.org/r/20200418201944.482088-36-dima@arista.com
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 0f659ff362ea ("um: Always dump trace for specified task in show_stack")
+So skip amdgpu_device_cache_pci_state for sriov.
+
+Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
+Acked-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/sysrq.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/um/kernel/sysrq.c b/arch/um/kernel/sysrq.c
-index c71b5ef7ea8c3..c831a1c2eb94a 100644
---- a/arch/um/kernel/sysrq.c
-+++ b/arch/um/kernel/sysrq.c
-@@ -27,7 +27,6 @@ static const struct stacktrace_ops stackops = {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 042f27af6856c..4be8d2ca50f3a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5743,6 +5743,9 @@ bool amdgpu_device_cache_pci_state(struct pci_dev *pdev)
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	int r;
  
- void show_stack(struct task_struct *task, unsigned long *stack)
- {
--	unsigned long *sp = stack;
- 	struct pt_regs *segv_regs = current->thread.segv_regs;
- 	int i;
- 
-@@ -38,10 +37,9 @@ void show_stack(struct task_struct *task, unsigned long *stack)
- 	}
- 
- 	if (!stack)
--		sp = get_stack_pointer(task, segv_regs);
-+		stack = get_stack_pointer(task, segv_regs);
- 
- 	pr_info("Stack:\n");
--	stack = sp;
- 	for (i = 0; i < 3 * STACKSLOTS_PER_LINE; i++) {
- 		if (kstack_end(stack))
- 			break;
++	if (amdgpu_sriov_vf(adev))
++		return false;
++
+ 	r = pci_save_state(pdev);
+ 	if (!r) {
+ 		kfree(adev->pci_state);
 -- 
 2.43.0
 
