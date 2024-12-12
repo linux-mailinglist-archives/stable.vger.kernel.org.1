@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48BD9EF6E1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BF19EFA02
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB981721D9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE62217264F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7D122541D;
-	Thu, 12 Dec 2024 17:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416132288E2;
+	Thu, 12 Dec 2024 17:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhp/C+iH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4sKqGSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D54223C42;
-	Thu, 12 Dec 2024 17:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24B42236F0;
+	Thu, 12 Dec 2024 17:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023436; cv=none; b=QS0QAdQcpYx+TK18EaV+j2jmwUAgWd+b9xGSAY1ZDlG6Btap9BcmFfh0PpdEAHTkeq+L4ZJcToEcKPtmdSbs7gntGua/9d0S5iI5U15A0ogmoMAeO5fFfNrnwPs9xyUyKfN0ndIBLMSCx3x9hg/L7lu0O9r/NfvrwSgSuMHGNps=
+	t=1734025649; cv=none; b=mNYrhpjhkx9sb/9x1Tc/ow8JhDoni9RTVQmdRwSU63879lCjqonVBM4By1OwkSkRiWgOfl+OnZnkYBeUtu7aKTE15brvToq/D2ADbl1rMDbkomlcUa1pNKGdw/3C9MtgxHOGpNa7JYOhobB/7wvc/wH9wZy1OOGx0tpx5pRJNYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023436; c=relaxed/simple;
-	bh=hG0n1E1x9atu90Tv9EKIjyZr/3qCJYem1Ro6wjZwfRI=;
+	s=arc-20240116; t=1734025649; c=relaxed/simple;
+	bh=f3aqvOof44sg1MaGRT/msya/r6H/UR7rSW/zDr2ViPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtcGzxsoJut4uyMUnnjzGXHKZw0Mz3kfg9ozRDt8ijBISh6XFRvoAL65/FHOKB9ZTFx+Vm/Pu8+WVdW6QGHsu6b4VKdqaeni6nOzHGUN4CQN79s93/fPOQ1kUMKie7BQDN415irle2Y+G/L3r2h5d8i4xOYnEGzV7ABl6dl5xo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhp/C+iH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9567C4CECE;
-	Thu, 12 Dec 2024 17:10:35 +0000 (UTC)
+	 MIME-Version; b=Xi6Ynl55wnftPHynmBInSiUlWHKUqP9sLIiAciTBSn7gIVffzqXneaAGOyp018dcKui+Xihyvjltz8gf9Qpl6zzSeLZeeRT0SCV0jytTsSRDzQpyXhQRNznHQao+JCto37RXFmLmBz1HM1ZCTsmFZhqvOeabwW2ozmdeoKG61qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4sKqGSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EDFC4CECE;
+	Thu, 12 Dec 2024 17:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023436;
-	bh=hG0n1E1x9atu90Tv9EKIjyZr/3qCJYem1Ro6wjZwfRI=;
+	s=korg; t=1734025648;
+	bh=f3aqvOof44sg1MaGRT/msya/r6H/UR7rSW/zDr2ViPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhp/C+iHSXC34ZajDSzIwyCJmCcWevury0LrbFTe1as1BJTDHd+2pZvRz4RXUzdKc
-	 LJvNZpVjdEpzELdOthRnFz4lcA9U6NJ8v9L5S9fpshQ1NbtGqGp2eGedYa8n0+kP14
-	 e6ab+iuJ1xYeOYOleISl4xeO2/ldNkpYW5vh69Zw=
+	b=F4sKqGSzFpb2RmGajK/ouCipBj3wIkVs4YdNLWxfaYkrODY/U5eBoR/Z8kQF/asnU
+	 wQs6jvU8QbXdocmmW2ALx5MP1GZLOKoInv4Xi78JtrzPbpzlMqy82C3rjn531OEd5n
+	 C5vhBcPFyC39YVSgcHQ4YjxPbWEl84bNIyLuIxIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Valentin Schneider <valentin.schneider@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 533/565] sched/fair: Add NOHZ balancer flag for nohz.next_balance updates
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	guoweikang <guoweikang.kernel@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.4 210/321] ftrace: Fix regression with module command in stack_trace_filter
 Date: Thu, 12 Dec 2024 16:02:08 +0100
-Message-ID: <20241212144332.894306897@linuxfoundation.org>
+Message-ID: <20241212144238.276375006@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Schneider <valentin.schneider@arm.com>
+From: guoweikang <guoweikang.kernel@gmail.com>
 
-[ Upstream commit efd984c481abb516fab8bafb25bf41fd9397a43c ]
+commit 45af52e7d3b8560f21d139b3759735eead8b1653 upstream.
 
-A following patch will trigger NOHZ idle balances as a means to update
-nohz.next_balance. Vincent noted that blocked load updates can have
-non-negligible overhead, which should be avoided if the intent is to only
-update nohz.next_balance.
+When executing the following command:
 
-Add a new NOHZ balance kick flag, NOHZ_NEXT_KICK. Gate NOHZ blocked load
-update by the presence of NOHZ_STATS_KICK - currently all NOHZ balance
-kicks will have the NOHZ_STATS_KICK flag set, so no change in behaviour is
-expected.
+    # echo "write*:mod:ext3" > /sys/kernel/tracing/stack_trace_filter
 
-Suggested-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20210823111700.2842997-2-valentin.schneider@arm.com
-Stable-dep-of: ff47a0acfcce ("sched/fair: Check idle_cpu() before need_resched() to detect ilb CPU turning busy")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The current mod command causes a null pointer dereference. While commit
+0f17976568b3f ("ftrace: Fix regression with module command in stack_trace_filter")
+has addressed part of the issue, it left a corner case unhandled, which still
+results in a kernel crash.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241120052750.275463-1-guoweikang.kernel@gmail.com
+Fixes: 04ec7bb642b77 ("tracing: Have the trace_array hold the list of registered func probes");
+Signed-off-by: guoweikang <guoweikang.kernel@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c  | 24 ++++++++++++++----------
- kernel/sched/sched.h |  8 +++++++-
- 2 files changed, 21 insertions(+), 11 deletions(-)
+ kernel/trace/ftrace.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 68793b50adad7..6e1a6d6285d12 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10764,7 +10764,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		goto out;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -4132,6 +4132,9 @@ ftrace_mod_callback(struct trace_array *
+ 	char *func;
+ 	int ret;
  
- 	if (rq->nr_running >= 2) {
--		flags = NOHZ_KICK_MASK;
-+		flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 		goto out;
- 	}
- 
-@@ -10778,7 +10778,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		 * on.
- 		 */
- 		if (rq->cfs.h_nr_running >= 1 && check_cpu_capacity(rq, sd)) {
--			flags = NOHZ_KICK_MASK;
-+			flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 			goto unlock;
- 		}
- 	}
-@@ -10792,7 +10792,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		 */
- 		for_each_cpu_and(i, sched_domain_span(sd), nohz.idle_cpus_mask) {
- 			if (sched_asym_prefer(i, cpu)) {
--				flags = NOHZ_KICK_MASK;
-+				flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 				goto unlock;
- 			}
- 		}
-@@ -10805,7 +10805,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		 * to run the misfit task on.
- 		 */
- 		if (check_misfit_status(rq, sd)) {
--			flags = NOHZ_KICK_MASK;
-+			flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 			goto unlock;
- 		}
- 
-@@ -10832,7 +10832,7 @@ static void nohz_balancer_kick(struct rq *rq)
- 		 */
- 		nr_busy = atomic_read(&sds->nr_busy_cpus);
- 		if (nr_busy > 1) {
--			flags = NOHZ_KICK_MASK;
-+			flags = NOHZ_STATS_KICK | NOHZ_BALANCE_KICK;
- 			goto unlock;
- 		}
- 	}
-@@ -10994,7 +10994,8 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
- 	 * setting the flag, we are sure to not clear the state and not
- 	 * check the load of an idle cpu.
- 	 */
--	WRITE_ONCE(nohz.has_blocked, 0);
-+	if (flags & NOHZ_STATS_KICK)
-+		WRITE_ONCE(nohz.has_blocked, 0);
- 
- 	/*
- 	 * Ensures that if we miss the CPU, we must see the has_blocked
-@@ -11016,13 +11017,15 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
- 		 * balancing owner will pick it up.
- 		 */
- 		if (need_resched()) {
--			has_blocked_load = true;
-+			if (flags & NOHZ_STATS_KICK)
-+				has_blocked_load = true;
- 			goto abort;
- 		}
- 
- 		rq = cpu_rq(balance_cpu);
- 
--		has_blocked_load |= update_nohz_stats(rq);
-+		if (flags & NOHZ_STATS_KICK)
-+			has_blocked_load |= update_nohz_stats(rq);
- 
- 		/*
- 		 * If time for next balance is due,
-@@ -11053,8 +11056,9 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
- 	if (likely(update_next_balance))
- 		nohz.next_balance = next_balance;
- 
--	WRITE_ONCE(nohz.next_blocked,
--		now + msecs_to_jiffies(LOAD_AVG_PERIOD));
-+	if (flags & NOHZ_STATS_KICK)
-+		WRITE_ONCE(nohz.next_blocked,
-+			   now + msecs_to_jiffies(LOAD_AVG_PERIOD));
- 
- abort:
- 	/* There is still blocked load, enable periodic update */
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 48bcc1876df83..6fc16bc13abf5 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -2739,12 +2739,18 @@ extern void cfs_bandwidth_usage_dec(void);
- #define NOHZ_BALANCE_KICK_BIT	0
- #define NOHZ_STATS_KICK_BIT	1
- #define NOHZ_NEWILB_KICK_BIT	2
-+#define NOHZ_NEXT_KICK_BIT	3
- 
-+/* Run rebalance_domains() */
- #define NOHZ_BALANCE_KICK	BIT(NOHZ_BALANCE_KICK_BIT)
-+/* Update blocked load */
- #define NOHZ_STATS_KICK		BIT(NOHZ_STATS_KICK_BIT)
-+/* Update blocked load when entering idle */
- #define NOHZ_NEWILB_KICK	BIT(NOHZ_NEWILB_KICK_BIT)
-+/* Update nohz.next_balance */
-+#define NOHZ_NEXT_KICK		BIT(NOHZ_NEXT_KICK_BIT)
- 
--#define NOHZ_KICK_MASK	(NOHZ_BALANCE_KICK | NOHZ_STATS_KICK)
-+#define NOHZ_KICK_MASK	(NOHZ_BALANCE_KICK | NOHZ_STATS_KICK | NOHZ_NEXT_KICK)
- 
- #define nohz_flags(cpu)	(&cpu_rq(cpu)->nohz_flags)
- 
--- 
-2.43.0
-
++	if (!tr)
++		return -ENODEV;
++
+ 	/* match_records() modifies func, and we need the original */
+ 	func = kstrdup(func_orig, GFP_KERNEL);
+ 	if (!func)
 
 
 
