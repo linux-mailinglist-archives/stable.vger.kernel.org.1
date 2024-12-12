@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEE49EF6BE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 189DD9EF9AE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CEA228879E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9C5B17D467
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1046B2210F1;
-	Thu, 12 Dec 2024 17:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7093922966A;
+	Thu, 12 Dec 2024 17:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbeh0SKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9Lf4cLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3FF216E2D;
-	Thu, 12 Dec 2024 17:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA5A223E71;
+	Thu, 12 Dec 2024 17:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024532; cv=none; b=coTC50LZNh548wi2cmOxgaH+HTbTD+3/aQgY+vuS4botkjs9CS8VAFjMWzkNjypgxmz9Jg2qASQGz8XZ7Jf836smZjN+glb+AJuhDXa1o3faCOL2uzo2kVgovKJ8dZm6dNAasfdlZNOl8jdOfppUrM1psUGfItHclwoyWnz6JSI=
+	t=1734025469; cv=none; b=gllgaYi6PVFvlFHW0Yhr3CbP4iie2uTZA6vEbUHKflbyoC5ZYF0herMqO+6oIIqE4/D9+lTQZ17WzZrvuUWBzudepZm9JRDUBA6Pcs3tIWYCX3EC6lbRryiG1cogdYMz5YbrYk4d7M86pbiajHW+79yk1e/DVBbPU35mfhpWVrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024532; c=relaxed/simple;
-	bh=3p3V+6WhdRyyPbcipWtJOfLAKSxQwVwGVqGxr5xr3Ao=;
+	s=arc-20240116; t=1734025469; c=relaxed/simple;
+	bh=RDM5NFhYiHzh1g6b69pFxD1bMZ8H4pHaEQnUeo7Aopo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqzHW5JGEAgOXM8AGNMiDFqhoFbWOVFOPLOork93SPzH4hc/IV+milXNtWXs84YcKhPLcJ81Gu4jwApam883npc+gNXQVC8/nFz0UsoDMta2tiVcnaix3Dud2x3zLs5BHw1pnQmqg5IGPq5ci5yfquI4gyip17SvT8S3MX1CD/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbeh0SKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC391C4CED0;
-	Thu, 12 Dec 2024 17:28:51 +0000 (UTC)
+	 MIME-Version; b=dYzBzVNw7AqH2X5lPdbByW4ANb1Riyaet81ZQDJ2CWB33EPWsWlhCrNwGMvDNC4UUiaLpencHiA+TOXiEu6V0tsmLe57OBTSmGclbB/LU75UV/NlSR7jOAvZo5l1Es9Kwzbw48KsoPRT6jatI6z2C061yhsPkY8RuLNpx3dWpgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9Lf4cLP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A059C4CECE;
+	Thu, 12 Dec 2024 17:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024532;
-	bh=3p3V+6WhdRyyPbcipWtJOfLAKSxQwVwGVqGxr5xr3Ao=;
+	s=korg; t=1734025467;
+	bh=RDM5NFhYiHzh1g6b69pFxD1bMZ8H4pHaEQnUeo7Aopo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbeh0SKb5f4R3qqGM29OvVn1phVKxzpNI4D2YjDG1mWf7wCJDus8EoOx+SCM5UMV9
-	 FQkT1woQwlLkfg1ZJnTa9CsGxRBsquJ2b+cyDgJS1keAO0mTO43WkHMANqnwO1kRsF
-	 09mZyfGeGE+LxbpVqG/YZF78pCnDuQgPsJcDN/zY=
+	b=P9Lf4cLPqA8YSjhsqR+VhtzwpaumamOu0T9vlMiKVpcI53RtY1YzKE28cYlzavZCG
+	 CDyGTunmTOoQp5Pco6usljVjBWbecNO1hshx9fLo7vfRCn2V+B1RIgAkfuGnYN5kgU
+	 eX5ljfBawDFdbbTUmebtVjar77ZiUixKp+W14G50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 328/459] can: sun4i_can: sun4i_can_err(): fix {rx,tx}_errors statistics
+	Artem Sadovnikov <ancowi69@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 5.4 148/321] jfs: xattr: check invalid xattr size more strictly
 Date: Thu, 12 Dec 2024 16:01:06 +0100
-Message-ID: <20241212144306.618710733@linuxfoundation.org>
+Message-ID: <20241212144235.824286509@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Artem Sadovnikov <ancowi69@gmail.com>
 
-[ Upstream commit 595a81988a6fe06eb5849e972c8b9cb21c4e0d54 ]
+commit d9f9d96136cba8fedd647d2c024342ce090133c2 upstream.
 
-The sun4i_can_err() function only incremented the receive error counter
-and never the transmit error counter, even if the STA_ERR_DIR flag
-reported that an error had occurred during transmission.
+Commit 7c55b78818cf ("jfs: xattr: fix buffer overflow for invalid xattr")
+also addresses this issue but it only fixes it for positive values, while
+ea_size is an integer type and can take negative values, e.g. in case of
+a corrupted filesystem. This still breaks validation and would overflow
+because of implicit conversion from int to size_t in print_hex_dump().
 
-Increment the receive/transmit error counter based on the value of the
-STA_ERR_DIR flag.
+Fix this issue by clamping the ea_size value instead.
 
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-11-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sun4i_can.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/jfs/xattr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index e9fa3921efbed..89796691917b3 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -563,11 +563,9 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
- 		/* bus error interrupt */
- 		netdev_dbg(dev, "bus error interrupt\n");
- 		priv->can.can_stats.bus_error++;
--		stats->rx_errors++;
-+		ecc = readl(priv->base + SUN4I_REG_STA_ADDR);
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -559,7 +559,7 @@ static int ea_get(struct inode *inode, s
  
- 		if (likely(skb)) {
--			ecc = readl(priv->base + SUN4I_REG_STA_ADDR);
--
- 			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+       size_check:
+ 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
+-		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
++		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
  
- 			switch (ecc & SUN4I_STA_MASK_ERR) {
-@@ -585,9 +583,15 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
- 					       >> 16;
- 				break;
- 			}
--			/* error occurred during transmission? */
--			if ((ecc & SUN4I_STA_ERR_DIR) == 0)
-+		}
-+
-+		/* error occurred during transmission? */
-+		if ((ecc & SUN4I_STA_ERR_DIR) == 0) {
-+			if (likely(skb))
- 				cf->data[2] |= CAN_ERR_PROT_TX;
-+			stats->tx_errors++;
-+		} else {
-+			stats->rx_errors++;
- 		}
- 	}
- 	if (isrc & SUN4I_INT_ERR_PASSIVE) {
--- 
-2.43.0
-
+ 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
+ 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
 
 
 
