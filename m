@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBF29EF872
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33B59EF51B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FBDA295070
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A36A818827B5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC1B215710;
-	Thu, 12 Dec 2024 17:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5916F223C4E;
+	Thu, 12 Dec 2024 17:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Am13CKI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USe5OKg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF346F2FE;
-	Thu, 12 Dec 2024 17:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1396253365;
+	Thu, 12 Dec 2024 17:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025337; cv=none; b=lOK5Q4uVJ+nMyBph3JK7R7C1nqScPmGWaF24OUov46s3YFXoOsFEfmjdwI0loPwsjkoNVcdBRnn4NM+KOULruAQSIHFpS/8zl//tcCv2oMgc2WlUPWvoCzK9sthGlkaUadrbuZbX5s8jE8bUCeYJYGeszrTIkNzb1+KZlkyVHxM=
+	t=1734023127; cv=none; b=u5nGU9YM6m1sRL5OxJwgvt3YK4t0YyAnTgkPdkvi6OTJI18wLT0yw0X8o0HLGEYpq7Pdhj5B/PEKokJOKzEOJiPKZ9W61Eof/TCX+dIkw0jPy38gAqB0jPXHuoqh765+oZVCoUOAD2p2b6QNoKwoc15D0aH3ynVJ4pREv9g/mVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025337; c=relaxed/simple;
-	bh=cooOmRh2cJJ70bCSm2nwwx5qUNAhHXK1d8ADEj450GU=;
+	s=arc-20240116; t=1734023127; c=relaxed/simple;
+	bh=nOkIzn68S8J9USZ5xaPqqbWcT0j6/in1gUSvAs6pges=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BUYOccgIjbcZ7UDHL/zaxcukbL+bVCdRx5clAmPnIFinP6SDYwhs1dfgmxvcCOOTJVQteyXYI+R7pLeTuP6eKKcj9LJ8fjNm3w6RqemX4NKcdkThS/jtxy4jLhJ89lZiKDZSRBm4ZPwJYhsi6QWd3YXCIIC0MxxhXHo8phKepPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Am13CKI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DA1C4CED0;
-	Thu, 12 Dec 2024 17:42:16 +0000 (UTC)
+	 MIME-Version; b=I3t8QS+1rvEkHX3CO0+eE/DnhST1oNSpQ5o6X3XMnMMFu4cqtb1pI3tdwr3PX9GiECFYDbGhKYXbKS8ueAmmH99b8JqS6HPsa6xOTy2sMeQkLRbqYvOT9F/SD+aTwTBFXUeN97fYwJwe2Rdpe/seDprBy7aGRy/Ry+QfP69a3no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USe5OKg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB08C4CECE;
+	Thu, 12 Dec 2024 17:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025337;
-	bh=cooOmRh2cJJ70bCSm2nwwx5qUNAhHXK1d8ADEj450GU=;
+	s=korg; t=1734023126;
+	bh=nOkIzn68S8J9USZ5xaPqqbWcT0j6/in1gUSvAs6pges=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Am13CKIDpuHlWfvrGr67gjPB/SevrsE8iWhrCFG6G0sdkXpIS0erIDUvv4FBg+c8
-	 8j8BaQiul02l7qimeDgh5quP3FceO5r3yeNd9B/5EYlOMrC3dIkfQSM1pF90aPyYwY
-	 yNwxXoT32QL0nSGNIoYly/sbde76F3BDvPVbxgd4=
+	b=USe5OKg65juvzreiL5wIu0H1WlM19ndsR7QJd1ECzD8lMjiLf/RLLSdM+wUUYKnWQ
+	 SOpHHrQ2wzo7FpYNUArkBp3hBi+BYYQQHWSyT+xr+WD5cnh+lfZNywbJAEKWAyKaWJ
+	 HggwyALJuaK9FktPWekywOZaJCO+jzDwsf7kOj1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Amir Mohammadi <amiremohamadi@yahoo.com>,
+	Quentin Monnet <qmo@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 109/321] clk: clk-axi-clkgen: make sure to enable the AXI bus clock
-Date: Thu, 12 Dec 2024 16:00:27 +0100
-Message-ID: <20241212144234.291710255@linuxfoundation.org>
+Subject: [PATCH 5.15 433/565] bpftool: fix potential NULL pointer dereferencing in prog_dump()
+Date: Thu, 12 Dec 2024 16:00:28 +0100
+Message-ID: <20241212144328.800413875@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Amir Mohammadi <amirmohammadi1999.am@gmail.com>
 
-[ Upstream commit c64ef7e4851d1a9abbb7f7833e4936973ac5ba79 ]
+[ Upstream commit ef3ba8c258ee368a5343fa9329df85b4bcb9e8b5 ]
 
-In order to access the registers of the HW, we need to make sure that
-the AXI bus clock is enabled. Hence let's increase the number of clocks
-by one.
+A NULL pointer dereference could occur if ksyms
+is not properly checked before usage in the prog_dump() function.
 
-In order to keep backward compatibility and make sure old DTs still work
-we check if clock-names is available or not. If it is, then we can
-disambiguate between really having the AXI clock or a parent clock and
-so we can enable the bus clock. If not, we fallback to what was done
-before and don't explicitly enable the AXI bus clock.
-
-Note that if clock-names is given, the axi clock must be the last one in
-the phandle array (also enforced in the DT bindings) so that we can reuse
-as much code as possible.
-
-Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-2-bc5e0733ad76@analog.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: b053b439b72a ("bpf: libbpf: bpftool: Print bpf_line_info during prog dump")
+Signed-off-by: Amir Mohammadi <amiremohamadi@yahoo.com>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20241121083413.7214-1-amiremohamadi@yahoo.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-axi-clkgen.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ tools/bpf/bpftool/prog.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
-index 8d0c32e81e787..73f3bfeb44dc5 100644
---- a/drivers/clk/clk-axi-clkgen.c
-+++ b/drivers/clk/clk-axi-clkgen.c
-@@ -7,6 +7,7 @@
-  */
+diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+index 75f71c3ad4f62..64142f3d06655 100644
+--- a/tools/bpf/bpftool/prog.c
++++ b/tools/bpf/bpftool/prog.c
+@@ -744,11 +744,18 @@ prog_dump(struct bpf_prog_info *info, enum dump_mode mode,
+ 					printf("%s:\n", sym_name);
+ 				}
  
- #include <linux/platform_device.h>
-+#include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/slab.h>
- #include <linux/io.h>
-@@ -412,6 +413,7 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 	struct clk_init_data init;
- 	const char *parent_names[2];
- 	const char *clk_name;
-+	struct clk *axi_clk;
- 	unsigned int i;
- 	int ret;
+-				if (disasm_print_insn(img, lens[i], opcodes,
+-						      name, disasm_opt, btf,
+-						      prog_linfo, ksyms[i], i,
+-						      linum))
+-					goto exit_free;
++				if (ksyms) {
++					if (disasm_print_insn(img, lens[i], opcodes,
++							      name, disasm_opt, btf,
++							      prog_linfo, ksyms[i], i,
++							      linum))
++						goto exit_free;
++				} else {
++					if (disasm_print_insn(img, lens[i], opcodes,
++							      name, disasm_opt, btf,
++							      NULL, 0, 0, false))
++						goto exit_free;
++				}
  
-@@ -431,8 +433,24 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 		return PTR_ERR(axi_clkgen->base);
+ 				img += lens[i];
  
- 	init.num_parents = of_clk_get_parent_count(pdev->dev.of_node);
--	if (init.num_parents < 1 || init.num_parents > 2)
--		return -EINVAL;
-+
-+	axi_clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
-+	if (!IS_ERR(axi_clk)) {
-+		if (init.num_parents < 2 || init.num_parents > 3)
-+			return -EINVAL;
-+
-+		init.num_parents -= 1;
-+	} else {
-+		/*
-+		 * Legacy... So that old DTs which do not have clock-names still
-+		 * work. In this case we don't explicitly enable the AXI bus
-+		 * clock.
-+		 */
-+		if (PTR_ERR(axi_clk) != -ENOENT)
-+			return PTR_ERR(axi_clk);
-+		if (init.num_parents < 1 || init.num_parents > 2)
-+			return -EINVAL;
-+	}
- 
- 	for (i = 0; i < init.num_parents; i++) {
- 		parent_names[i] = of_clk_get_parent_name(pdev->dev.of_node, i);
 -- 
 2.43.0
 
