@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-101503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390769EECD4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7879EF37B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC14818834E0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 072D528AB72
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A501721578B;
-	Thu, 12 Dec 2024 15:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6E222758C;
+	Thu, 12 Dec 2024 16:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6sdXdeo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qULdPRR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E1D6F2FE;
-	Thu, 12 Dec 2024 15:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD37222D57;
+	Thu, 12 Dec 2024 16:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017784; cv=none; b=Rz8FwahzdOmLDM8UFv3eSBqtZ1JZG3ySQKv3ojtzDmMEGynCXsANHY4EfIq8GtvzHCcCszm4xT3ZMAoYVcLfB3bhFL6w6NCrw6Z55Q6wAerUOp+vmpTj5DDeqq5jAj6lMupbWaQJVLez0w14KdKTOLuwtCYUoHfAgnGF4C9rrys=
+	t=1734022408; cv=none; b=cecd1ULIClABzo0+b1f8+jOlgrfJqJbPbTfYVlq1qQi9EKiZrdKP1HvubWnNfdIviUiSBxwkDe9xjVCFIxzSC1eHeyN+sw94392UehGeCmywOG5XcphQQKE40zbEn2sISSt6BLnS5rsV1YopoVwtXJGaUwlcbmMDdPXM32Y2Pqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017784; c=relaxed/simple;
-	bh=YsDk1AsVbWybR/K6tdt70ZcNUmfKLb7wotx/8D7ACcM=;
+	s=arc-20240116; t=1734022408; c=relaxed/simple;
+	bh=Cdg2TGsZ9BUz8+qSjeH6RtkxFk9BfGOed6TQh193UXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnaB36eK8pr4fVcGwcT/NAWlPjsfBCk7wWsQQTzRn/RUeEnepZJWhFFtpSt+s3S8d5NcA7Mt7hbKSLpTByJIFLw3zCi259j09AZG4Z84i69UA+sMHIVZoqLFZ82x7kJONnBP1eEx6j2titr81gtznlVFdZqdwrKudT5I4mdAWzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6sdXdeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3532C4CED0;
-	Thu, 12 Dec 2024 15:36:23 +0000 (UTC)
+	 MIME-Version; b=O9SlcIE+FitTXiGGxzQCjPCF35Hco0JGsYSzR6V+I6rufL95D8K6s1xvRwyXqB4xvFGaWaUZ41BzHVjDsd6Gvps3Ib1YysftWNkRPIBSqgg6PU6ouua1BrHtaTQxOogdzYDqc8VA/On7ShwMZxaqW3by4g4ssTaWWGPW1SpzLa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qULdPRR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2ED4C4CECE;
+	Thu, 12 Dec 2024 16:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017784;
-	bh=YsDk1AsVbWybR/K6tdt70ZcNUmfKLb7wotx/8D7ACcM=;
+	s=korg; t=1734022408;
+	bh=Cdg2TGsZ9BUz8+qSjeH6RtkxFk9BfGOed6TQh193UXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p6sdXdeoPjTvyfTllYRKy2IcNldlwvEE2W53w/M7jiMdi28VenL8xXEStEoFT62/V
-	 A/xSUTNxGV0HqWGedSW5IlquM6YkuItyRg8MD5L5lI/ugfkYWFAWdRTYnt+Q5/MnT6
-	 AepFUokG8HwZU8gYyz3sQxkc46Bax2B2HwWGJuYM=
+	b=qULdPRR5TyiN6WxIJFgpFOF0mlaQyssirfS8zIuDN9yo4/5BzFHuAIOiNt1YBkJcs
+	 8pkRWdRjwN1p38P3P9DC94K7VFeuu407mxdcltxH9B9fmbKVtHJLentGVKlpzMH5pY
+	 n4l/AOoiCgqKIAVwp6aLb5gzpi9snQARNRNJL2BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Can Guo <quic_cang@quicinc.com>,
-	Ziqi Chen <quic_ziqichen@quicinc.com>,
-	Bean Huo <beanhuo@micron.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Zhang Zekun <zhangzekun11@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/356] scsi: ufs: core: Add ufshcd_send_bsg_uic_cmd() for UFS BSG
+Subject: [PATCH 5.15 234/565] powerpc/kexec: Fix return of uninitialized variable
 Date: Thu, 12 Dec 2024 15:57:09 +0100
-Message-ID: <20241212144248.990103107@linuxfoundation.org>
+Message-ID: <20241212144320.735006711@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,119 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Chen <quic_ziqichen@quicinc.com>
+From: Zhang Zekun <zhangzekun11@huawei.com>
 
-[ Upstream commit 60b4dd1460f6d65739acb0f28d12bd9abaeb34b4 ]
+[ Upstream commit 83b5a407fbb73e6965adfb4bd0a803724bf87f96 ]
 
-User layer applications can send UIC GET/SET commands via the BSG
-framework, and if the user layer application sends a UIC SET command to the
-PA_PWRMODE attribute, a power mode change shall be initiated in UniPro and
-two interrupts shall be triggered if the power mode is successfully
-changed, i.e., UIC Command Completion interrupt and UIC Power Mode
-interrupt.
+of_property_read_u64() can fail and leave the variable uninitialized,
+which will then be used. Return error if reading the property failed.
 
-The current UFS BSG code calls ufshcd_send_uic_cmd() directly, with which
-the second interrupt, i.e., UIC Power Mode interrupt, shall be treated as
-unhandled interrupt. In addition, after the UIC command is completed, user
-layer application has to poll UniPro and/or M-PHY state machine to confirm
-the power mode change is finished.
-
-Add a new wrapper function ufshcd_send_bsg_uic_cmd() and call it from
-ufs_bsg_request() so that if a UIC SET command is targeting the PA_PWRMODE
-attribute it can be redirected to ufshcd_uic_pwr_ctrl().
-
-Fixes: e77044c5a842 ("scsi: ufs-bsg: Add support for uic commands in ufs_bsg_request()")
-Co-developed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Ziqi Chen <quic_ziqichen@quicinc.com>
-Link: https://lore.kernel.org/r/20241119095613.121385-1-quic_ziqichen@quicinc.com
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 2e6bd221d96f ("powerpc/kexec_file: Enable early kernel OPAL calls")
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20240930075628.125138-1-zhangzekun11@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs_bsg.c     |  2 +-
- drivers/ufs/core/ufshcd-priv.h |  1 +
- drivers/ufs/core/ufshcd.c      | 36 ++++++++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+), 1 deletion(-)
+ arch/powerpc/kexec/file_load_64.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/core/ufs_bsg.c b/drivers/ufs/core/ufs_bsg.c
-index 374e5aae4e7e8..fec5993c66c39 100644
---- a/drivers/ufs/core/ufs_bsg.c
-+++ b/drivers/ufs/core/ufs_bsg.c
-@@ -170,7 +170,7 @@ static int ufs_bsg_request(struct bsg_job *job)
- 		break;
- 	case UPIU_TRANSACTION_UIC_CMD:
- 		memcpy(&uc, &bsg_request->upiu_req.uc, UIC_CMD_SIZE);
--		ret = ufshcd_send_uic_cmd(hba, &uc);
-+		ret = ufshcd_send_bsg_uic_cmd(hba, &uc);
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 5056e175ca2c4..bce1bef0be899 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -909,13 +909,18 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
+ 	if (dn) {
+ 		u64 val;
+ 
+-		of_property_read_u64(dn, "opal-base-address", &val);
++		ret = of_property_read_u64(dn, "opal-base-address", &val);
++		if (ret)
++			goto out;
++
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_base", &val,
+ 						     sizeof(val), false);
  		if (ret)
- 			dev_err(hba->dev, "send uic cmd: error code %d\n", ret);
+ 			goto out;
  
-diff --git a/drivers/ufs/core/ufshcd-priv.h b/drivers/ufs/core/ufshcd-priv.h
-index f42d99ce5bf1e..099a54009a16f 100644
---- a/drivers/ufs/core/ufshcd-priv.h
-+++ b/drivers/ufs/core/ufshcd-priv.h
-@@ -89,6 +89,7 @@ int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
- 			    u8 **buf, bool ascii);
- 
- int ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd);
-+int ufshcd_send_bsg_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd);
- 
- int ufshcd_exec_raw_upiu_cmd(struct ufs_hba *hba,
- 			     struct utp_upiu_req *req_upiu,
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 44b2cd66b8189..f1bb2d5081360 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -4206,6 +4206,42 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
- 	return ret;
- }
- 
-+/**
-+ * ufshcd_send_bsg_uic_cmd - Send UIC commands requested via BSG layer and retrieve the result
-+ * @hba: per adapter instance
-+ * @uic_cmd: UIC command
-+ *
-+ * Return: 0 only if success.
-+ */
-+int ufshcd_send_bsg_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd)
-+{
-+	int ret;
-+
-+	if (hba->quirks & UFSHCD_QUIRK_BROKEN_UIC_CMD)
-+		return 0;
-+
-+	ufshcd_hold(hba);
-+
-+	if (uic_cmd->argument1 == UIC_ARG_MIB(PA_PWRMODE) &&
-+	    uic_cmd->command == UIC_CMD_DME_SET) {
-+		ret = ufshcd_uic_pwr_ctrl(hba, uic_cmd);
-+		goto out;
-+	}
-+
-+	mutex_lock(&hba->uic_cmd_mutex);
-+	ufshcd_add_delay_before_dme_cmd(hba);
-+
-+	ret = __ufshcd_send_uic_cmd(hba, uic_cmd);
-+	if (!ret)
-+		ret = ufshcd_wait_for_uic_cmd(hba, uic_cmd);
-+
-+	mutex_unlock(&hba->uic_cmd_mutex);
-+
-+out:
-+	ufshcd_release(hba);
-+	return ret;
-+}
-+
- /**
-  * ufshcd_uic_change_pwr_mode - Perform the UIC power mode chage
-  *				using DME_SET primitives.
+-		of_property_read_u64(dn, "opal-entry-address", &val);
++		ret = of_property_read_u64(dn, "opal-entry-address", &val);
++		if (ret)
++			goto out;
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_entry", &val,
+ 						     sizeof(val), false);
+ 	}
 -- 
 2.43.0
 
