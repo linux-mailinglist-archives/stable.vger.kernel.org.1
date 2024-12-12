@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-103011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7575C9EF5D3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D12989EF660
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:24:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C6EA1898C3D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5740117744B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEF42144C4;
-	Thu, 12 Dec 2024 17:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27322253E4;
+	Thu, 12 Dec 2024 17:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTkHEUpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2tcKpzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94E9222D4A;
-	Thu, 12 Dec 2024 17:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DFD22331E;
+	Thu, 12 Dec 2024 17:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023271; cv=none; b=rVKrrrYjpRk9WRZ72cGDEmtZrwzO/i+45ROdBYO9uxDgilMSktXTO03Nj4VTqWQqMh1AwFleamINa9I3l5zGhj5yF7SHCB7FZGeCDl+3ki7nuSKHvOO1x/C2JKGPWQ08KurYqihDzV+hiPDgM5EAEOZRRmdNZOULrt8+H7yaf2g=
+	t=1734023393; cv=none; b=DFpV4dSFqHSxcvkwn7u0ILoppAehOzAHyOceDjYqWejevfccQnEdukcbnH9e2eTX/Fxp86sTj2YvnhobB8uKiLhW7zoMMFFX6z2ecapOzH6ubxk/p+2eTHaNwpVpgZm5NRrWpl7wWrjVdYOz6vw9RfujVFcKNxbOfmGIi7qXC4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023271; c=relaxed/simple;
-	bh=QPkyRhBvoLowvRx7sQkNLxpD29QxGH/c4RuGPbIFSPQ=;
+	s=arc-20240116; t=1734023393; c=relaxed/simple;
+	bh=4V3Z8Dnmm90z1oLmBnQp0wRAqZuut6R1frrUczq5Al8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SCdlcvxAr8aw42e/Ed/kRJ9atQcQdJUfXi072yldmXVNCfS9PQSAbVzvpeWHzulWlX0XUO+PZXAv+m2Jn3lFu289rrudQqYewP77F67Mv5m6vfPdmXWXRN5RTb1aPl2ZIeat+CDs+7CbmAoC6B+wBr3rmsbbODQzsAvVIh+4mBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTkHEUpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C187C4CECE;
-	Thu, 12 Dec 2024 17:07:51 +0000 (UTC)
+	 MIME-Version; b=tKIyDGkVsbz6ke+gAEFlxgS8In6s+aciiGx1SoNyMmqkDNM9tQoCpu1Sb3qbCu9Gxh2Sgv31J7JIDU23q/091mfX6cNgQXn3zfElhkAV0K35Dju+gojEn2yxZ98d7rS38VkbG/Heetk+wy8qAa4tWFp4Xgwu4OeVmHPILSZJb3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2tcKpzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66D9C4CECE;
+	Thu, 12 Dec 2024 17:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023271;
-	bh=QPkyRhBvoLowvRx7sQkNLxpD29QxGH/c4RuGPbIFSPQ=;
+	s=korg; t=1734023393;
+	bh=4V3Z8Dnmm90z1oLmBnQp0wRAqZuut6R1frrUczq5Al8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dTkHEUpS6V4B/ST9p8c9c+pnJVNZ63epbBwGCs1JD4tCxz0z1m3Z8Lmb2fDyZVf3+
-	 T/4+gH3Uq+Biv0kzjHK+9IPExHVZyvDeMP+GNCVmxfCrCHtMc9wb4tiOZDsLcS+nEE
-	 LFO4KM9+4ukGIQChkZ3ZBDb5bh4JQiW7OsMVvhhE=
+	b=b2tcKpzhXcMWEPWF/C3PEq71/bbT+jfqgVUuoUOlMw1vYriq6OGJVj72cgauWj2am
+	 V5V3eORo4lKYYREn/JI3frB5qrchY3clLKMA0vjl1jc+x+MivpKU9rqtGHdbYhHfQX
+	 Lgvr3Vp16kanQbxJC4zGtnAEX7LP5mEQ2XXkI/d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
-	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Liao Chen <liaochen4@huawei.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 478/565] drm: panel-orientation-quirks: Add quirk for AYA NEO 2 model
-Date: Thu, 12 Dec 2024 16:01:13 +0100
-Message-ID: <20241212144330.648840758@linuxfoundation.org>
+Subject: [PATCH 5.15 479/565] drm/mcde: Enable module autoloading
+Date: Thu, 12 Dec 2024 16:01:14 +0100
+Message-ID: <20241212144330.688185359@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
 References: <20241212144311.432886635@linuxfoundation.org>
@@ -62,53 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit 361ebf5ef843b0aa1704c72eb26b91cf76c3c5b7 ]
+[ Upstream commit 8a16b5cdae26207ff4c22834559384ad3d7bc970 ]
 
-Add quirk orientation for AYA NEO 2. The name appears without spaces in
-DMI strings. That made it difficult to reuse the 2021 match. Also the
-display is larger in resolution.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
+on the alias from of_device_id table.
 
-Tested by the JELOS team that has been patching their own kernel for a
-while now and confirmed by users in the AYA NEO and ChimeraOS discord
-servers.
-
-Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
-Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/2b35545b77a9fd8c9699b751ca282226dcecb1dd.1726492131.git.tjakobi@math.uni-bielefeld.de
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240902113320.903147-4-liaochen4@huawei.com
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/mcde/mcde_drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index f1091cb87de0c..bf90a5be956fe 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -166,6 +166,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
-+	}, {	/* AYA NEO AYANEO 2 */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
-+		},
-+		.driver_data = (void *)&lcd1200x1920_rightside_up,
- 	}, {	/* AYA NEO 2021 */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYADEVICE"),
+diff --git a/drivers/gpu/drm/mcde/mcde_drv.c b/drivers/gpu/drm/mcde/mcde_drv.c
+index e60566a5739c7..be14d7961f2e4 100644
+--- a/drivers/gpu/drm/mcde/mcde_drv.c
++++ b/drivers/gpu/drm/mcde/mcde_drv.c
+@@ -475,6 +475,7 @@ static const struct of_device_id mcde_of_match[] = {
+ 	},
+ 	{},
+ };
++MODULE_DEVICE_TABLE(of, mcde_of_match);
+ 
+ static struct platform_driver mcde_driver = {
+ 	.driver = {
 -- 
 2.43.0
 
