@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF069EEAB0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DCC9EEC1F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E2C165982
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7013A284810
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B69217739;
-	Thu, 12 Dec 2024 15:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7C421765E;
+	Thu, 12 Dec 2024 15:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BW1CDstB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEeaWlfN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364A3217707;
-	Thu, 12 Dec 2024 15:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B17217F34;
+	Thu, 12 Dec 2024 15:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016342; cv=none; b=ARVNRRKbEWWzBfvKbR/GFIjSyG96tzPKu/ZelUObsCeCWC+vuL8mpC5yb6Aw0QcsVYgADGc5QJQrGYSAc6f7+aM+GUcbvFTE2+RXtTLQ62QvPyJ+qq4ObIWXC6JI2X81hzLBQvxR24oNtD3HIKKt4TzZkE20goG1wfig29hDz8g=
+	t=1734017475; cv=none; b=M+Wx+0QJ+s8xgXF0XoXAujBFhrd+1NS5yLn2jo5V+P4wVGNzG7ltfvSDp9Qmz117UnjuiIc+vrvleA/EeZ/drN0kvNwRv4qF6YJ2/S9C5wgWsLBWccV83KJNNeplAO+wSZ23ZXZx/53dOE4ZatLTHrHQmtWiXyXT2Us1sqXG+xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016342; c=relaxed/simple;
-	bh=ri8dVpTwz66BpQO3CYvrGsLwHuOdyV+t35zrRuqTUTM=;
+	s=arc-20240116; t=1734017475; c=relaxed/simple;
+	bh=V4HC51sRP83m/66ys09pi2mGltXkxg9u9Z4y2zSB2ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sF/LHTm3dJwqrbu72OKz8CMZa9cK/25vXVGcP5PIBUFSan2y7IyzdDtgHWKO0YG92PuqYU8RFmsBii9De5Mdhu3ajgZViNPzsJPL1E7gkJ5CY7QtgQmfys1cySqekhN6ACVQamo7YcSVvxqX7/2xbhmVPj8omnQnj7AzIPbG0vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BW1CDstB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0ABC4CEDD;
-	Thu, 12 Dec 2024 15:12:21 +0000 (UTC)
+	 MIME-Version; b=fI1SNRMvi1grxCm0O5kAlNyA8P2PHYlWEIOqwOlMOhX+s9SK14kAd8OMhKwOmJvqahNArd4nysJK9p+cx0yzjOk8qFwrtCfei2jg5ct4f5EIsfZhDutVUqmt+5/n+laJtxWMjEGo24TwS11GMMpWUFsRHFs33d/yoo204HC1Mjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEeaWlfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4B5C4CECE;
+	Thu, 12 Dec 2024 15:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016342;
-	bh=ri8dVpTwz66BpQO3CYvrGsLwHuOdyV+t35zrRuqTUTM=;
+	s=korg; t=1734017475;
+	bh=V4HC51sRP83m/66ys09pi2mGltXkxg9u9Z4y2zSB2ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BW1CDstBTsaCrKkl9Fr5YO72ehxTp3g1LcLNwXwB0Y6iEwR6rDb97TVemJzzY/5gM
-	 GvI58HBGh8OJkIANCsVw//te5uQj06sJrmehQ76ut9XNEPxNCQjtSDT3EKl9E+65lU
-	 /rfJ9s9TLxTTQBG7/atnoA6TiF1/py5XeIEzv8eg=
+	b=WEeaWlfN+Gf9gwI+Z4nXcZGxh93tdTUE3QoCH43/SYGjMYy0fdq49VKE4qbcPaeCC
+	 7OuX8la/W9mMf6+B6sMK/dDm75gLffWw1ZwVigazWK4uHvMszj74hcFoG81z7RjWQb
+	 EebPdjSGtVhsoH2alBIABMLsbb1N1G9qUGo9vTZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Imre Deak <imre.deak@intel.com>
-Subject: [PATCH 6.12 172/466] drm/dp_mst: Verify request type in the corresponding down message reply
-Date: Thu, 12 Dec 2024 15:55:41 +0100
-Message-ID: <20241212144313.596710028@linuxfoundation.org>
+	Martin Ottens <martin.ottens@fau.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 023/356] net/sched: tbf: correct backlog statistic for GSO packets
+Date: Thu, 12 Dec 2024 15:55:42 +0100
+Message-ID: <20241212144245.535055684@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Martin Ottens <martin.ottens@fau.de>
 
-commit 4d49e77a973d3b5d1881663c3f122906a0702940 upstream.
+[ Upstream commit 1596a135e3180c92e42dd1fbcad321f4fb3e3b17 ]
 
-After receiving the response for an MST down request message, the
-response should be accepted/parsed only if the response type matches
-that of the request. Ensure this by checking if the request type code
-stored both in the request and the reply match, dropping the reply in
-case of a mismatch.
+When the length of a GSO packet in the tbf qdisc is larger than the burst
+size configured the packet will be segmented by the tbf_segment function.
+Whenever this function is used to enqueue SKBs, the backlog statistic of
+the tbf is not increased correctly. This can lead to underflows of the
+'backlog' byte-statistic value when these packets are dequeued from tbf.
 
-This fixes the topology detection for an MST hub, as described in the
-Closes link below, where the hub sends an incorrect reply message after
-a CLEAR_PAYLOAD_TABLE -> LINK_ADDRESS down request message sequence.
+Reproduce the bug:
+Ensure that the sender machine has GSO enabled. Configured the tbf on
+the outgoing interface of the machine as follows (burstsize = 1 MTU):
+$ tc qdisc add dev <oif> root handle 1: tbf rate 50Mbit burst 1514 latency 50ms
 
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: <stable@vger.kernel.org>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12804
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-3-imre.deak@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Send bulk TCP traffic out via this interface, e.g., by running an iPerf3
+client on this machine. Check the qdisc statistics:
+$ tc -s qdisc show dev <oif>
+
+The 'backlog' byte-statistic has incorrect values while traffic is
+transferred, e.g., high values due to u32 underflows. When the transfer
+is stopped, the value is != 0, which should never happen.
+
+This patch fixes this bug by updating the statistics correctly, even if
+single SKBs of a GSO SKB cannot be enqueued.
+
+Fixes: e43ac79a4bc6 ("sch_tbf: segment too big GSO packets")
+Signed-off-by: Martin Ottens <martin.ottens@fau.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241125174608.1484356-1-martin.ottens@fau.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c |   31 ++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ net/sched/sch_tbf.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3937,6 +3937,34 @@ drm_dp_get_one_sb_msg(struct drm_dp_mst_
- 	return true;
+diff --git a/net/sched/sch_tbf.c b/net/sched/sch_tbf.c
+index 17d2d00ddb182..f92174008499b 100644
+--- a/net/sched/sch_tbf.c
++++ b/net/sched/sch_tbf.c
+@@ -208,7 +208,7 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct tbf_sched_data *q = qdisc_priv(sch);
+ 	struct sk_buff *segs, *nskb;
+ 	netdev_features_t features = netif_skb_features(skb);
+-	unsigned int len = 0, prev_len = qdisc_pkt_len(skb);
++	unsigned int len = 0, prev_len = qdisc_pkt_len(skb), seg_len;
+ 	int ret, nb;
+ 
+ 	segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
+@@ -219,21 +219,27 @@ static int tbf_segment(struct sk_buff *skb, struct Qdisc *sch,
+ 	nb = 0;
+ 	skb_list_walk_safe(segs, segs, nskb) {
+ 		skb_mark_not_on_list(segs);
+-		qdisc_skb_cb(segs)->pkt_len = segs->len;
+-		len += segs->len;
++		seg_len = segs->len;
++		qdisc_skb_cb(segs)->pkt_len = seg_len;
+ 		ret = qdisc_enqueue(segs, q->qdisc, to_free);
+ 		if (ret != NET_XMIT_SUCCESS) {
+ 			if (net_xmit_drop_count(ret))
+ 				qdisc_qstats_drop(sch);
+ 		} else {
+ 			nb++;
++			len += seg_len;
+ 		}
+ 	}
+ 	sch->q.qlen += nb;
+-	if (nb > 1)
++	sch->qstats.backlog += len;
++	if (nb > 0) {
+ 		qdisc_tree_reduce_backlog(sch, 1 - nb, prev_len - len);
+-	consume_skb(skb);
+-	return nb > 0 ? NET_XMIT_SUCCESS : NET_XMIT_DROP;
++		consume_skb(skb);
++		return NET_XMIT_SUCCESS;
++	}
++
++	kfree_skb(skb);
++	return NET_XMIT_DROP;
  }
  
-+static int get_msg_request_type(u8 data)
-+{
-+	return data & 0x7f;
-+}
-+
-+static bool verify_rx_request_type(struct drm_dp_mst_topology_mgr *mgr,
-+				   const struct drm_dp_sideband_msg_tx *txmsg,
-+				   const struct drm_dp_sideband_msg_rx *rxmsg)
-+{
-+	const struct drm_dp_sideband_msg_hdr *hdr = &rxmsg->initial_hdr;
-+	const struct drm_dp_mst_branch *mstb = txmsg->dst;
-+	int tx_req_type = get_msg_request_type(txmsg->msg[0]);
-+	int rx_req_type = get_msg_request_type(rxmsg->msg[0]);
-+	char rad_str[64];
-+
-+	if (tx_req_type == rx_req_type)
-+		return true;
-+
-+	drm_dp_mst_rad_to_str(mstb->rad, mstb->lct, rad_str, sizeof(rad_str));
-+	drm_dbg_kms(mgr->dev,
-+		    "Got unexpected MST reply, mstb: %p seqno: %d lct: %d rad: %s rx_req_type: %s (%02x) != tx_req_type: %s (%02x)\n",
-+		    mstb, hdr->seqno, mstb->lct, rad_str,
-+		    drm_dp_mst_req_type_str(rx_req_type), rx_req_type,
-+		    drm_dp_mst_req_type_str(tx_req_type), tx_req_type);
-+
-+	return false;
-+}
-+
- static int drm_dp_mst_handle_down_rep(struct drm_dp_mst_topology_mgr *mgr)
- {
- 	struct drm_dp_sideband_msg_tx *txmsg;
-@@ -3966,6 +3994,9 @@ static int drm_dp_mst_handle_down_rep(st
- 		goto out_clear_reply;
- 	}
- 
-+	if (!verify_rx_request_type(mgr, txmsg, msg))
-+		goto out_clear_reply;
-+
- 	drm_dp_sideband_parse_reply(mgr, msg, &txmsg->reply);
- 
- 	if (txmsg->reply.reply_type == DP_SIDEBAND_REPLY_NAK) {
+ static int tbf_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+-- 
+2.43.0
+
 
 
 
