@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FABB9EF37D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 301789EF100
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E22C287940
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC01D29E802
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A6C2288D6;
-	Thu, 12 Dec 2024 16:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B0D237FF1;
+	Thu, 12 Dec 2024 16:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKy+akWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hilkvj72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A94223C5E;
-	Thu, 12 Dec 2024 16:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7063237FEB;
+	Thu, 12 Dec 2024 16:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022423; cv=none; b=VY3ckUj2J74s79W+lCPK/bKjlYAcAj+iIFJbti6SkMP0R3VdtZWEhXJvKPtQIQrde6p7wzzeCpsf9VSbzf9EqnWCuC/r1Y0o2hH+S6DMQWX0iQY0ctVwH4UrLO27WCQujHji+VJieEZA0eGYbm26x3nACkXOuPeLARQ294YffSE=
+	t=1734020579; cv=none; b=Tw6qeldq0NZeb2nxW4s4DiIFT8UlodCQR+XG3oWN6V4IHEyVxNe04wilbghCB7xK45P5BVzWKNF8ClWGJsfr+BBl+4AeSeWMIzd9j0XCmnQaaHgH/gikoiLJTYs9hJ8Cdc2/UnDJqRwhqGzYsFzQCehvdVoVrHLzZTokBn+msUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022423; c=relaxed/simple;
-	bh=wYWB6s1jcPEvv0m5TMb+AlO8UExbr45tbzr0STxI7Q8=;
+	s=arc-20240116; t=1734020579; c=relaxed/simple;
+	bh=wnWvpqogDTxshhgsr+KKqD6MKL9CQbrDL7RYUY3Jud4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJsIdyf//1OWBB36IUomc+mkfqzozkzoSDoYtOVMN+uEtt8MkK1+wSNBaUWGRosxlZzq9yVQl/N1dUiqq6U4subpeuOX7kR5GlmFbb0xDnbUoeaXUIL5jvCEPrANhOfCZftEaCMpIILN0AKVmaQn974goz/11IyCAbAtV5+OyQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKy+akWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DFAC4CECE;
-	Thu, 12 Dec 2024 16:53:43 +0000 (UTC)
+	 MIME-Version; b=ZFKDolheAT2cskeG6reIUelY15zMM3IaON85GX1z/hJkfyLakSPyPvbZklmo4vC57lC/WgsFKcyBAWnOxfl1sl0bKcmVr0CIXUKKdNbNT0BGLEdwuIBSYVUeXHghvi8a+rKnqs7nz7kVKekuIXXNfUDTLULKgiWaAPv2/Efr7wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hilkvj72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C34C4CECE;
+	Thu, 12 Dec 2024 16:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022423;
-	bh=wYWB6s1jcPEvv0m5TMb+AlO8UExbr45tbzr0STxI7Q8=;
+	s=korg; t=1734020578;
+	bh=wnWvpqogDTxshhgsr+KKqD6MKL9CQbrDL7RYUY3Jud4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKy+akWwnrDeBRLKwrqskpY713omCXCYREJ4NqrZQQ2pxjA6l0M1Nv5W7BDePZpKO
-	 iJvtHqLJ+Y5LEOLrWbV7Rq1H24vnNlEhAcocl1goyTAw5xwVq+CfvE+psIaLSrOt7x
-	 2MWG5w35bnt5tFhCXjTCwNLgDnHrxG2/4iBZw778=
+	b=hilkvj724IyxyKEq9KcSFwL8qgH7p35atPi7C8WC+3ARRdN3cr2h4x4NE1jBVVbR+
+	 p3EuleEJm3K8fXL92a/zjOVH8ZzbADI+kQJdKFBaT+BU6j1TjNU2e6sFQwpsWfxz/P
+	 TVBfVyIilCMoXTfSsWjFeY3VO7l7V/C9bK+0i+WU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 237/565] dt-bindings: clock: axi-clkgen: include AXI clk
+	stable@kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 487/772] i3c: master: Fix miss free init_dyn_addr at i3c_master_put_i3c_addrs()
 Date: Thu, 12 Dec 2024 15:57:12 +0100
-Message-ID: <20241212144320.851197366@linuxfoundation.org>
+Message-ID: <20241212144410.069004916@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 47f3f5a82a31527e027929c5cec3dd1ef5ef30f5 ]
+commit 3082990592f7c6d7510a9133afa46e31bbe26533 upstream.
 
-In order to access the registers of the HW, we need to make sure that
-the AXI bus clock is enabled. Hence let's increase the number of clocks
-by one and add clock-names to differentiate between parent clocks and
-the bus clock.
+if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+                                      ^^^ here check "init_dyn_addr"
+	i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr, ...)
+						             ^^^^
+							free "dyn_addr"
+Fix copy/paste error "dyn_addr" by replacing it with "init_dyn_addr".
 
-Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-1-bc5e0733ad76@analog.com
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241001162608.224039-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../bindings/clock/adi,axi-clkgen.yaml        | 22 +++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ drivers/i3c/master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
-index 983033fe5b177..592285f616f57 100644
---- a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
-+++ b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
-@@ -26,9 +26,21 @@ properties:
-     description:
-       Specifies the reference clock(s) from which the output frequency is
-       derived. This must either reference one clock if only the first clock
--      input is connected or two if both clock inputs are connected.
--    minItems: 1
--    maxItems: 2
-+      input is connected or two if both clock inputs are connected. The last
-+      clock is the AXI bus clock that needs to be enabled so we can access the
-+      core registers.
-+    minItems: 2
-+    maxItems: 3
-+
-+  clock-names:
-+    oneOf:
-+      - items:
-+          - const: clkin1
-+          - const: s_axi_aclk
-+      - items:
-+          - const: clkin1
-+          - const: clkin2
-+          - const: s_axi_aclk
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1281,7 +1281,7 @@ static void i3c_master_put_i3c_addrs(str
+ 					     I3C_ADDR_SLOT_FREE);
  
-   '#clock-cells':
-     const: 0
-@@ -40,6 +52,7 @@ required:
-   - compatible
-   - reg
-   - clocks
-+  - clock-names
-   - '#clock-cells'
+ 	if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+-		i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr,
++		i3c_bus_set_addr_slot_status(&master->bus, dev->boardinfo->init_dyn_addr,
+ 					     I3C_ADDR_SLOT_FREE);
+ }
  
- additionalProperties: false
-@@ -50,5 +63,6 @@ examples:
-       compatible = "adi,axi-clkgen-2.00.a";
-       #clock-cells = <0>;
-       reg = <0xff000000 0x1000>;
--      clocks = <&osc 1>;
-+      clocks = <&osc 1>, <&clkc 15>;
-+      clock-names = "clkin1", "s_axi_aclk";
-     };
--- 
-2.43.0
-
 
 
 
