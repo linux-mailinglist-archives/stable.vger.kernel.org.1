@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87939EF823
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4144E9EF628
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C864188EDD7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5751D16D2F5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D7B221D93;
-	Thu, 12 Dec 2024 17:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFA6223E82;
+	Thu, 12 Dec 2024 17:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/bx8rkP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ttmzyDo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E312B20A5EE;
-	Thu, 12 Dec 2024 17:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E94223E7D;
+	Thu, 12 Dec 2024 17:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024651; cv=none; b=ja2qp+kaXfBK8hJzcawEtorFBbhLQln9h3J51HgVUsW4PWpBugcYvk93gL/4lhM50MKb9XE+8hMS+sbshTLMg6FhjGKodTsK79RC/cLcs9gwRoMdQAPo2ykv63uL4FSJoWdtEf5+HqqB0Y5AeSBYdv2xHDH6iPmNTM+vO8MS750=
+	t=1734023365; cv=none; b=krdKSe5UAmtOK0aX6GsisDhtkqAGmwZ7UDWMcU+Ks5zgUcNGaf0K9+R/jk4JKJdHugNZIHporDLnZ6j+kUCiqJyGVmqlGz/JixdBLZZopBq62S6xiyun58Q27x3AId6RjKYBtp6sJk6v6VMZwpS/N3EE3oUq6Q0KJ0lBX+75JTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024651; c=relaxed/simple;
-	bh=+0wRa3tLu7RRJlNOrj0qfEbEoqL5MmHuKePIPcMR4rA=;
+	s=arc-20240116; t=1734023365; c=relaxed/simple;
+	bh=FjTrg7NMfg3O7yR47/SNaOtkPh/en7ZZFzvDUfZNB3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ius37dgsv02IkJoEjGGYlCkp/avomuGIal8Q/Z0wYPmOISFWBbrJB7IjhZHbiTnB/1T+cudK/13/1ehYcEpx/V9fiwk234tVAScmekbINAxyLepClCkIjiajOSbeBVc4SMF2+I7yt91R1n5FHOprBcvYoX5L694WvTKvEvmKJlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/bx8rkP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA8DC4CECE;
-	Thu, 12 Dec 2024 17:30:50 +0000 (UTC)
+	 MIME-Version; b=QpQe5C8KLqOt3gEq2RxxHXc2/3HvaEBf0+oMc4hNV+Df4T5kNSzu2zzcJH6W4HGQT1JQLFF2rwTxIkNBwRo9zT2vGkMbhZcRPi2xJ+hiyqjUmAQLLMj08DxmhcnWAQiIxbKzpLHsyMVD6ScXCXrQcDTRDmRCrWnwweOF3lwIowI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ttmzyDo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE56C4CED4;
+	Thu, 12 Dec 2024 17:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024650;
-	bh=+0wRa3tLu7RRJlNOrj0qfEbEoqL5MmHuKePIPcMR4rA=;
+	s=korg; t=1734023364;
+	bh=FjTrg7NMfg3O7yR47/SNaOtkPh/en7ZZFzvDUfZNB3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/bx8rkPIIkCsYTmk/86s8KtFxNcTo42avE+NguzLB0zoAkRbmCqgf81go8L60KjZ
-	 zBH6hUEO+sga/llKAhjrjC/nsVAQwCN56PCD8IYApynQ0gwyOpeaOCS8+0vlGQ+kPD
-	 0QR+8YAAFeovXecVxdbsuUkTExaOFUsH3t1Bwpvg=
+	b=1ttmzyDoQw5eStYNBjhTv7TM72gaqIA63GVVfRM0KTFt3zpPQJI8Wl3vTImBM/RBb
+	 xS1AbHsaHBg7xGXxCv+6woAQYbWPUvtTY5baNAkoqEebr+FJBCsfafKxXjQxJGWn6q
+	 JmPU7Z5xy8DMifeRuotC2mHi26zMdbxZoNZkz8A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 366/459] scsi: qla2xxx: Fix NVMe and NPIV connect issue
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 509/565] rocker: fix link status detection in rocker_carrier_init()
 Date: Thu, 12 Dec 2024 16:01:44 +0100
-Message-ID: <20241212144308.132444636@linuxfoundation.org>
+Message-ID: <20241212144331.889511391@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 4812b7796c144f63a1094f79a5eb8fbdad8d7ebc upstream.
+[ Upstream commit e64285ff41bb7a934bd815bd38f31119be62ac37 ]
 
-NVMe controller fails to send connect command due to failure to locate
-hw context buffer for NVMe queue 0 (blk_mq_hw_ctx, hctx_idx=0). The
-cause of the issue is NPIV host did not initialize the vha->irq_offset
-field.  This field is given to blk-mq (blk_mq_pci_map_queues) to help
-locate the beginning of IO Queues which in turn help locate NVMe queue
-0.
+Since '1 << rocker_port->pport' may be undefined for port >= 32,
+cast the left operand to 'unsigned long long' like it's done in
+'rocker_port_set_enable()' above. Compile tested only.
 
-Initialize this field to allow NVMe to work properly with NPIV host.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
- kernel: nvme nvme5: Connect command failed, errno: -18
- kernel: nvme nvme5: qid 0: secure concatenation is not supported
- kernel: nvme nvme5: NVME-FC{5}: create_assoc failed, assoc_id 2e9100 ret 401
- kernel: nvme nvme5: NVME-FC{5}: reset: Reconnect attempt failed (401)
- kernel: nvme nvme5: NVME-FC{5}: Reconnect attempt in 2 seconds
-
-Cc: stable@vger.kernel.org
-Fixes: f0783d43dde4 ("scsi: qla2xxx: Use correct number of vectors for online CPUs")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20241114151946.519047-1-dmantipov@yandex.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_mid.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/rocker/rocker_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_mid.c
-+++ b/drivers/scsi/qla2xxx/qla_mid.c
-@@ -498,6 +498,7 @@ qla24xx_create_vhost(struct fc_vport *fc
- 		return(NULL);
- 	}
+diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
+index 3364b6a56bd1e..e1509becb7536 100644
+--- a/drivers/net/ethernet/rocker/rocker_main.c
++++ b/drivers/net/ethernet/rocker/rocker_main.c
+@@ -2516,7 +2516,7 @@ static void rocker_carrier_init(const struct rocker_port *rocker_port)
+ 	u64 link_status = rocker_read64(rocker, PORT_PHYS_LINK_STATUS);
+ 	bool link_up;
  
-+	vha->irq_offset = QLA_BASE_VECTORS;
- 	host = vha->host;
- 	fc_vport->dd_data = vha;
- 	/* New host info */
+-	link_up = link_status & (1 << rocker_port->pport);
++	link_up = link_status & (1ULL << rocker_port->pport);
+ 	if (link_up)
+ 		netif_carrier_on(rocker_port->dev);
+ 	else
+-- 
+2.43.0
+
 
 
 
