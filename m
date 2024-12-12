@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C0E9EED86
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C779EEB3B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:42 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA71E188BDED
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E73CD2819A5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D40221D9C;
-	Thu, 12 Dec 2024 15:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1F82080FC;
+	Thu, 12 Dec 2024 15:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkOfRp48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fRfQAmG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98632185A8;
-	Thu, 12 Dec 2024 15:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FEA2AF0E;
+	Thu, 12 Dec 2024 15:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018177; cv=none; b=tyETZCtoazj3DyuBKKnkmgaccJ4KX0bv+YyOZ0qMCUvuBhHLU1ULlfXf9xDN2Dx6GVHcwrfE4zLPw5pJNBjFqdqz1GURB+UN+JLMzKMvX4s98i5Hmo4KnWHG4i91GiNL34arb4a82uTRr3bh2Dewjr9pj6e5LpAgkhAQJ326sv8=
+	t=1734016958; cv=none; b=HpIcG+8Z5/zO8E2bfdF3XlSNXHh1hXoEDdYjYfMv6UG5D8frP68RdfH2Zc8VKPOsZzrhvxVob/oCZzf6nirjeKzBUw8gKQLDjqfJAsb9h7b6SgQfLnyFkVUlZ1CqkuTTQkW5hZleTcbYvQFWXRbPIOH6An6l6tN8ReSyJeSUhVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018177; c=relaxed/simple;
-	bh=9adRds/7pEcKq8eJgr5Jnlqy0pHttk3HtY7D03Aqz5Y=;
+	s=arc-20240116; t=1734016958; c=relaxed/simple;
+	bh=rlXtcwdVMPacQ3bc0PbCyAbCyPavZk4Wc0S9RdsD1oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXJ8Q2W5/ZV43awIe6Wzmyy/BPvgHExsKUuHd92J95t0hGEiuk8wEYidRrmTFhUIUekPunpohcmmZqyktWLuNVJGHvuLqe1eo3CS0Mt4f3uthIYqzH4APpdx23VcwNeh6qzzG10xoAV7HwXE/lI54+jRPYN3Rkzk3pTF4r6eYUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkOfRp48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68ACDC4CECE;
-	Thu, 12 Dec 2024 15:42:56 +0000 (UTC)
+	 MIME-Version; b=KbAyBOkuKjQXdkY4/kurMk+WYJMxpdGvMy0e835Ri7ma4lyHEKbBDTsXyOzUa8Npx6vdBNaUWmhwfzQywaAW0paYdDLlDOlmxZp2rERXliz08FPwTMJ3qaFvVGLW+olvXrCwAUc+4IyN+Ty057JEbqVK+H1ALeWRIT0LSDb7flg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fRfQAmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B080CC4CECE;
+	Thu, 12 Dec 2024 15:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018176;
-	bh=9adRds/7pEcKq8eJgr5Jnlqy0pHttk3HtY7D03Aqz5Y=;
+	s=korg; t=1734016958;
+	bh=rlXtcwdVMPacQ3bc0PbCyAbCyPavZk4Wc0S9RdsD1oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AkOfRp48v59sog9/+VTHIUl94S/sYjhBS/2yXa2rlqdjOOuxeUIUTQHA0tGhCUirW
-	 cRADVRVOZ5NvbLz7Sa0gaQzwg5V54WyHYz5OiHpsdHN6MbzMQ34QzkwgYABgoEHrvp
-	 YxLYtPhCdZnzq1IxBiH3rL7CELYm2+2OPQg6rR7o=
+	b=1fRfQAmGhJ0WF0M1F5zPNe+vPbWrh1sT4E3O3b9TBX1M09bPooCtUjQAuIJc2Uk1C
+	 nDLQJJ6Wphf/Fm+YNbZUkBdUCLQdpmOTpXzjq7H+VorXPbiBt1U90y8Arf81vYFVkp
+	 F6iyK/9UFHZIW4d3bbxKQhAuNs6/Pa54Ta7wriKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommy Giesler <tommy.giesler@hetzner.com>,
-	Sarah Maedel <sarah.maedel@hetzner-cloud.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	syzbot+2446dd3cb07277388db6@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/356] hwmon: (nct6775) Add 665-ACE/600M-CL to ASUS WMI monitoring list
+Subject: [PATCH 6.12 342/466] Bluetooth: hci_conn: Use disable_delayed_work_sync
 Date: Thu, 12 Dec 2024 15:58:31 +0100
-Message-ID: <20241212144252.214327831@linuxfoundation.org>
+Message-ID: <20241212144320.304728303@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarah Maedel <sarah.maedel@hetzner-cloud.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit ccae49e5cf6ebda1a7fa5d2ca99500987c7420c4 ]
+[ Upstream commit 2b0f2fc9ed62e73c95df1fa8ed2ba3dac54699df ]
 
-Boards such as
-* Pro WS 665-ACE
-* Pro WS 600M-CL
-have got a nct6775 chip, but by default there's no use of it
-because of resource conflict with WMI method.
+This makes use of disable_delayed_work_sync instead
+cancel_delayed_work_sync as it not only cancel the ongoing work but also
+disables new submit which is disarable since the object holding the work
+is about to be freed.
 
-Add affected boards to the WMI monitoring list.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=204807
-Co-developed-by: Tommy Giesler <tommy.giesler@hetzner.com>
-Signed-off-by: Tommy Giesler <tommy.giesler@hetzner.com>
-Signed-off-by: Sarah Maedel <sarah.maedel@hetzner-cloud.de>
-Message-ID: <20241018074611.358619-1-sarah.maedel@hetzner-cloud.de>
-[groeck: Change commit message to imperative mood]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: syzbot+2446dd3cb07277388db6@syzkaller.appspotmail.com
+Tested-by: syzbot+2446dd3cb07277388db6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2446dd3cb07277388db6
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-platform.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_conn.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
-index 706a662dd077d..7e0ac3fcbc050 100644
---- a/drivers/hwmon/nct6775-platform.c
-+++ b/drivers/hwmon/nct6775-platform.c
-@@ -1350,6 +1350,8 @@ static const char * const asus_msi_boards[] = {
- 	"Pro H610M-CT D4",
- 	"Pro H610T D4",
- 	"Pro Q670M-C",
-+	"Pro WS 600M-CL",
-+	"Pro WS 665-ACE",
- 	"Pro WS W680-ACE",
- 	"Pro WS W680-ACE IPMI",
- 	"Pro WS W790-ACE",
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index a1dfd865d61ab..e6591f487a511 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1128,9 +1128,9 @@ void hci_conn_del(struct hci_conn *conn)
+ 
+ 	hci_conn_unlink(conn);
+ 
+-	cancel_delayed_work_sync(&conn->disc_work);
+-	cancel_delayed_work_sync(&conn->auto_accept_work);
+-	cancel_delayed_work_sync(&conn->idle_work);
++	disable_delayed_work_sync(&conn->disc_work);
++	disable_delayed_work_sync(&conn->auto_accept_work);
++	disable_delayed_work_sync(&conn->idle_work);
+ 
+ 	if (conn->type == ACL_LINK) {
+ 		/* Unacked frames */
 -- 
 2.43.0
 
