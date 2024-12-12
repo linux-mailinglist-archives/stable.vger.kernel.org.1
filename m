@@ -1,97 +1,120 @@
-Return-Path: <stable+bounces-101589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9059EED5B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FB89EEED1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F238164E7E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339B516489B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C73222D59;
-	Thu, 12 Dec 2024 15:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C4222D4E;
+	Thu, 12 Dec 2024 15:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JbTyuEFz"
 X-Original-To: stable@vger.kernel.org
-Received: from bm.lauterbach.com (bm.lauterbach.com [62.154.241.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741F6215799;
-	Thu, 12 Dec 2024 15:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.154.241.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F08215764;
+	Thu, 12 Dec 2024 15:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018092; cv=none; b=OH5IywKBMZTQXPbOnknmXnXyCJ38CSn1EoYL4GgIBe4WRxo6QiGszt/cD0FtGqRYi3lb3dsSFT+h0ObwOwpW42VnW09sSv0VNhMem5Fg+tIrqEnvaJBHsRAmyR2S/13h/UkiGgqNINpASRRvowU+7Q95ZKwtN/yPBY9rj8CnUt4=
+	t=1734018941; cv=none; b=HaA+Qukjxt+CksE8MEAFg9MngHr9DEIG/bWnUiAbN5mefpMiuUyT4gUpViKqRQKl8gTBMuuKXzkQbpQ2TReVMvKejWffvljvMNrWwu3WylfnVWxdMtHnGe/DbTfEs29LVMg5S6Ge8wdxoWO8L3vwegDuWs55JaIPxRAVTks9uDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018092; c=relaxed/simple;
-	bh=4niNNU3UJmwI8sRI+2DvCo+K56fl99MNZJH1e6dbsnQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nNmXQohpS7kecCPp0tAUx01vL5NkPs55HCG4P0riHiyvtjRFgISZ4MliS7gPxUWPaDqxXj2FcaeMAf02zXgX83HaJZEc3lPe/WdXWVgXhhmmCm+RNU23hoQ5XKPBEcKpUDJ7Cz0C2GCF9zn8TBtryt1bI3XpOuCMV8j8txFT4Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lauterbach.com; spf=pass smtp.mailfrom=lauterbach.com; arc=none smtp.client-ip=62.154.241.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lauterbach.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lauterbach.com
-Received: from ingpc2.intern.lauterbach.com (unknown [10.2.10.44])
-	(Authenticated sender: ingo.rohloff@lauterbach.com)
-	by bm.lauterbach.com (Postfix) with ESMTPSA id 02A46D349880;
-	Thu, 12 Dec 2024 16:41:25 +0100 (CET)
-From: Ingo Rohloff <ingo.rohloff@lauterbach.com>
-To: gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
-	Ingo Rohloff <ingo.rohloff@lauterbach.com>,
+	s=arc-20240116; t=1734018941; c=relaxed/simple;
+	bh=PKNBf0TCKuwNcifWvhSa7hUFVANZKsYx7vGJQEMnWHs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oo3yWXeinRwcFx5xeplb7M8e7G3MBAiGur17IHghqY+fTz0AMxkQxv1xo3Dl1gnBXqk+W7RxDDLHnFCtEBbCNYbheuCrTaFPex47aPBk1zKrvx8yH5I5ar7Wxl7XTejV612SuBv5dnpAGwWlqXQpCNAjrjzZ3kMGTkgKnie8PtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JbTyuEFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9073DC4CED3;
+	Thu, 12 Dec 2024 15:55:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734018940;
+	bh=PKNBf0TCKuwNcifWvhSa7hUFVANZKsYx7vGJQEMnWHs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JbTyuEFzQhdRJOmDrKJyk9vWtv59qHQf6NV5vzbP3QL+w07scAiTpND/D+fCd5C8M
+	 HGFo7Zr4lA5KuhQLh7wMkG5WWx5Kwal2PKprL1LophqlY/WN+VyLBpsZN7PTE0uCjd
+	 XCQ0F8h0QOZONPX2obr7xgnwPTHDCgpgZWYhjXMhHfrPQXzgzL7yfoJDVJvO65o1bq
+	 w/zHPnbEtKLRQh0t0kyUZvpJsBX6ZnpdESQlKb/vt8tTSwZJc/KFJ6+Q+rhQJ5VEUp
+	 PKEBQhBU2DPnV/ofyaUbQV54Hzth2cvwnkNcKOatzAiuYps8eAMqojXzk68jfIL7aF
+	 PBNJQBAh1PLCA==
+Date: Thu, 12 Dec 2024 15:55:33 +0000
+From: Lee Jones <lee@kernel.org>
+To: Jiri Kosina <jikos@kernel.org>
+Cc: Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>, jic23@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	jdelvare@suse.com, linux@roeck-us.net,
+	srinivas.pandruvada@linux.intel.com, bentiss@kernel.org,
+	dmitry.torokhov@gmail.com, pavel@ucw.cz, ukleinek@debian.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2] usb: gadget: configfs: Ignore trailing LF for user strings to cdev
-Date: Thu, 12 Dec 2024 16:41:14 +0100
-Message-ID: <20241212154114.29295-1-ingo.rohloff@lauterbach.com>
-X-Mailer: git-send-email 2.47.1
+Subject: Re: [PATCH v9 1/9] HID: hid-sensor-hub: don't use stale
+ platform-data on remove
+Message-ID: <20241212155533.GG7139@google.com>
+References: <20241107114712.538976-1-heiko@sntech.de>
+ <20241211120844.GD7139@google.com>
+ <n914pn7o-pr9n-5ss0-p744-73402nnn843p@xreary.bet>
+ <3196449.TQGk6oTFT5@diego>
+ <4s41717n-3888-os6o-384n-7678n0361r0s@xreary.bet>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Bm-Milter-Handled: 166a2dfb-2e12-4590-8fa5-72e30323519f
-X-Bm-Transport-Timestamp: 1734018085056
+In-Reply-To: <4s41717n-3888-os6o-384n-7678n0361r0s@xreary.bet>
 
-Since commit c033563220e0f7a8
-("usb: gadget: configfs: Attach arbitrary strings to cdev")
-a user can provide extra string descriptors to a USB gadget via configfs.
+On Wed, 11 Dec 2024, Jiri Kosina wrote:
 
-For "manufacturer", "product", "serialnumber", setting the string via
-configfs ignores a trailing LF.
+> On Wed, 11 Dec 2024, Heiko Stübner wrote:
+> 
+> > > > > > > This change was more or less a surprise find, because I wanted to make
+> > > > > > > the platform_data pointer in the mfd_cell struct const and this the hid
+> > > > > > > sensor hub stood out as doing something strange ;-) .
+> > > > > > > 
+> > > > > > > So patch 2 of this series actually depends on this change to not cause
+> > > > > > > build errors.
+> > > > > > 
+> > > > > > Ah, right.
+> > > > > > 
+> > > > > > > But seeing that we're after -rc6 alredy, I would assume the brunt of the 
+> > > > > > > mcu series might need to wait after 6.13-rc1 anyway - but I guess that 
+> > > > > > > depends on how Lee sees things ;-) .
+> > > > > > 
+> > > > > > OK, I am keeping my hands off it for the time being.
+> > > > > 
+> > > > > I can take it now with an Ack.
+> > > > 
+> > > > Looking to apply this set now.
+> > > > 
+> > > > Ack please.
+> > > 
+> > > I'd preferer if Srinivas could ack this as the more specific maintainer. 
+> > > Srinivas, please? 
+> > 
+> > The patch already includes the
+> >    Ack from Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> > from a previous version, so I guess it should be ok already?
+> 
+> Ah, I missed that, indeed, sorry for the noise.
+> 
+> With that
+> 
+> 	Acked-by: Jiri Kosina <jkosina@suse.com>
+> 
+> and Lee, please feel free to take it.
 
-For the arbitrary strings the LF was not ignored.
+Thanks, will do.
 
-This patch ignores a trailing LF to make this consistent with the existing
-behavior for "manufacturer", ...  string descriptors.
-
-Fixes: c033563220e0 ("usb: gadget: configfs: Attach arbitrary strings to cdev")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ingo Rohloff <ingo.rohloff@lauterbach.com>
----
- drivers/usb/gadget/configfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index 6499a88d346c..fba2a56dae97 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -827,11 +827,15 @@ static ssize_t gadget_string_s_store(struct config_item *item, const char *page,
- {
- 	struct gadget_string *string = to_gadget_string(item);
- 	int size = min(sizeof(string->string), len + 1);
-+	ssize_t cpy_len;
- 
- 	if (len > USB_MAX_STRING_LEN)
- 		return -EINVAL;
- 
--	return strscpy(string->string, page, size);
-+	cpy_len = strscpy(string->string, page, size);
-+	if (cpy_len > 0 && string->string[cpy_len - 1] == '\n')
-+		string->string[cpy_len - 1] = 0;
-+	return len;
- }
- CONFIGFS_ATTR(gadget_string_, s);
- 
 -- 
-2.47.1
-
+Lee Jones [李琼斯]
 
