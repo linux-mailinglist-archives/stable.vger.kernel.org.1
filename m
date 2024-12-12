@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49829EF56F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6287E9EF73A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D46CF189B233
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05575162F7C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA52B229132;
-	Thu, 12 Dec 2024 16:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC191F2381;
+	Thu, 12 Dec 2024 17:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uk191Bw/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRZj+Ici"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86312216E14;
-	Thu, 12 Dec 2024 16:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FE84F218;
+	Thu, 12 Dec 2024 17:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022444; cv=none; b=qMsWWVZYP6zsTQ1SCUYY1r5ya4aFTL3zwL/ZnhyodVcRaN6pX3nvRLfvlu0MfuH02q5ecpeetg/ZoAVoRoqqnmDEeos1RH6zIas42Zv9IF9FQxBy2tWAoqjAArYUGr+bG1kbd6LlullipErnmeD9BePwYphF6JYNWqZPiY2YE5k=
+	t=1734023838; cv=none; b=JGPACu5/jYua8kfdLUimWaacVVw3pxpyAloRUouGIgy8T8VorxfXigK4cioendOXlmBLNrfBE+HwtZudPn5SbmUxzU9EQ38eMWdKitdGYPOE0s1hotAM/HGZMV4g4h9SINI6ZVq3Y1ldTOYeuprLnykkxV40gVCTNyxZhII2D30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022444; c=relaxed/simple;
-	bh=fwrOdF1q3ItXED9f9JZDdusB3cghkRFrdc1yJRI0pk8=;
+	s=arc-20240116; t=1734023838; c=relaxed/simple;
+	bh=5Zu92DBGnlT6z8I95VYWhuQGAGLRmc32xFVz2Vsnsfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FS2Bu0hu+4MSXbm6wKt27oIulsYnIzv0VSQqIY1Tjj/y7PRP8D+PIAuIh2dX/ezmy4JKRr1840TIT/CRQsr4zZBksDy1/FnxmHUzAw9zxW28TP2oqfSXenFfZOpyXvn1+IwCG1TT1KNKAxzBEBhUcXW0CGVKy523M5KTt48nNwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uk191Bw/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73531C4CECE;
-	Thu, 12 Dec 2024 16:54:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gGkMzpSps3Q5Ca7Ze7QdnePYURq3KIO+3E2iwwgpbBqeHBx9sq4xH3g+wdRamC0qg5zWrTZK61HNEd0s1WI6hpzgDDeZHO4PX1fPufh1ehnmzC+Yf/r0/b7NKJGnUTZogh5PAqfGJG3FJRpCT4i+LYc5/G7fz8jwYHbl8UIyopg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRZj+Ici; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60ACBC4CECE;
+	Thu, 12 Dec 2024 17:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022444;
-	bh=fwrOdF1q3ItXED9f9JZDdusB3cghkRFrdc1yJRI0pk8=;
+	s=korg; t=1734023836;
+	bh=5Zu92DBGnlT6z8I95VYWhuQGAGLRmc32xFVz2Vsnsfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uk191Bw/f7PZ7TL5BgQO+ACQZ+KOF4mV6hgTcrvG6V3LAHI70ba5uTbRgXqUzS+Ko
-	 nVAh5wgB3DZcrBtv7/pPoZloIeRgJlSyl2uQctGt0B4Czcyn+RKYKTNCc10QkNbpsN
-	 3Jp/nZ0emBqZmpV86HZsHHs34Gd5BBPX4xDItC3A=
+	b=sRZj+IcigQWmxMhfs/8Tcgc6Nxh+tnTINVqUC/ZsU1FJQRYxzddW5aeH5cVRhuTJf
+	 hYIVQRM+Vhl+6rL6BTKitNuIizgGO3FNCv1RboAUxdG5exAlqyKDCiXOw9CZqN9+QC
+	 1O1hCxXhNqwiXvvHqt1Jtb0H7hw3oEoAtKqJ5l6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Todd Kjos <tkjos@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Jeongjun Park <aha310510@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 242/565] PCI: Fix reset_method_store() memory leak
+Subject: [PATCH 5.10 099/459] wifi: ath9k: add range check for conn_rsp_epid in htc_connect_service()
 Date: Thu, 12 Dec 2024 15:57:17 +0100
-Message-ID: <20241212144321.044066016@linuxfoundation.org>
+Message-ID: <20241212144257.421705857@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Todd Kjos <tkjos@google.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 2985b1844f3f3447f2d938eff1ef6762592065a5 ]
+[ Upstream commit 8619593634cbdf5abf43f5714df49b04e4ef09ab ]
 
-In reset_method_store(), a string is allocated via kstrndup() and assigned
-to the local "options". options is then used in with strsep() to find
-spaces:
+I found the following bug in my fuzzer:
 
-  while ((name = strsep(&options, " ")) != NULL) {
+  UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath9k/htc_hst.c:26:51
+  index 255 is out of range for type 'htc_endpoint [22]'
+  CPU: 0 UID: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.11.0-rc6-dirty #14
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  Workqueue: events request_firmware_work_func
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x180/0x1b0
+   __ubsan_handle_out_of_bounds+0xd4/0x130
+   htc_issue_send.constprop.0+0x20c/0x230
+   ? _raw_spin_unlock_irqrestore+0x3c/0x70
+   ath9k_wmi_cmd+0x41d/0x610
+   ? mark_held_locks+0x9f/0xe0
+   ...
 
-If there are no remaining spaces, then options is set to NULL by strsep(),
-so the subsequent kfree(options) doesn't free the memory allocated via
-kstrndup().
+Since this bug has been confirmed to be caused by insufficient verification
+of conn_rsp_epid, I think it would be appropriate to add a range check for
+conn_rsp_epid to htc_connect_service() to prevent the bug from occurring.
 
-Fix by using a separate tmp_options to iterate with strsep() so options is
-preserved.
-
-Link: https://lore.kernel.org/r/20241001231147.3583649-1-tkjos@google.com
-Fixes: d88f521da3ef ("PCI: Allow userspace to query and set device reset mechanism")
-Signed-off-by: Todd Kjos <tkjos@google.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240909103855.68006-1-aha310510@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath9k/htc_hst.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index ee1d74f89a05f..09d1b69746602 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5214,7 +5214,7 @@ static ssize_t reset_method_store(struct device *dev,
- 				  const char *buf, size_t count)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
--	char *options, *name;
-+	char *options, *tmp_options, *name;
- 	int m, n;
- 	u8 reset_methods[PCI_NUM_RESET_METHODS] = { 0 };
+diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
+index 99667aba289df..00dc97ac53b9d 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_hst.c
++++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
+@@ -294,6 +294,9 @@ int htc_connect_service(struct htc_target *target,
+ 		return -ETIMEDOUT;
+ 	}
  
-@@ -5234,7 +5234,8 @@ static ssize_t reset_method_store(struct device *dev,
- 		return -ENOMEM;
- 
- 	n = 0;
--	while ((name = strsep(&options, " ")) != NULL) {
-+	tmp_options = options;
-+	while ((name = strsep(&tmp_options, " ")) != NULL) {
- 		if (sysfs_streq(name, ""))
- 			continue;
- 
++	if (target->conn_rsp_epid < 0 || target->conn_rsp_epid >= ENDPOINT_MAX)
++		return -EINVAL;
++
+ 	*conn_rsp_epid = target->conn_rsp_epid;
+ 	return 0;
+ err:
 -- 
 2.43.0
 
