@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-103350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EA69EF75F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93AA19EF802
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1095189BC32
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53C0D292704
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910B72165F0;
-	Thu, 12 Dec 2024 17:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0342A216E0B;
+	Thu, 12 Dec 2024 17:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/gjXYSb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxgAhvQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCFB176AA1;
-	Thu, 12 Dec 2024 17:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A49213E6F;
+	Thu, 12 Dec 2024 17:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024303; cv=none; b=CRWeVg+J+NYZmMVa2y0NG1q7CwfL3VybhWuFys4jlfPiVhQWfdnN/uWJ4mBMwC6bgzCb/5YZqd+O0pTNVpxNior5vuhqTeaTXG1Kj/ZCh6bEpvs68mY+cppwf0d6zgeP8Hyk+2Pm78cA8UjSZpdVyxrPTJL5X5k9Ei1MBAKyJeQ=
+	t=1734025110; cv=none; b=bgR1YTd1Y2Z1nNnxdb0H8Od8PltwN4MkaXefZUC5d4PKsG1UFq82yAidQo7lrIj6tjJlHpfXYHaixQiaXuVg0cSj6UAFmK4QWtzBk6UR5Wtssvm+d39CGk/R74JdBlENE3rqp3t9DpqsB/IzFniZKunTY85hbX69JRxEmkuFe5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024303; c=relaxed/simple;
-	bh=CamiNhI/AsA6FxShs8t9bsDpX5LL2hJxE9nsKckhg8Y=;
+	s=arc-20240116; t=1734025110; c=relaxed/simple;
+	bh=s6vmPcXochGrHCjnt7iJ3HOTN3Q65YLNUJ2i77x/hbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ImchI1XECGsHquEqw2DS0jN3kMhysrR5McO1zrNmlvTh8CmbD/DWsQd/Zxmop6smY6SGFXnHEpqpjxVUFBxNsc/zO3b2byadGnDMXM2/W/atIAMjfWD+tBmtT2xlY6ZRLbVrnTH9bB+8+nQcS+jPqvq2Ql3ySXwfFdhK6aFQe08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/gjXYSb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6212C4CEDE;
-	Thu, 12 Dec 2024 17:25:02 +0000 (UTC)
+	 MIME-Version; b=lYdilJighZCe4KDzddO63Olx7q0RKdsIpkMPUS2CJaXOsOFdOtbiWMnj8sTOEyv49G4DpB+kpWL/UxujR9iGmLm3lHWZqDEV9BVTu9aSmZ1Ep7XA5NORBLoCCr1XPqF9xnygKCUFwvzY/PXwCOVBEGFKgUwEkpn1xQrpLTFdpD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxgAhvQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3372BC4CECE;
+	Thu, 12 Dec 2024 17:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024303;
-	bh=CamiNhI/AsA6FxShs8t9bsDpX5LL2hJxE9nsKckhg8Y=;
+	s=korg; t=1734025110;
+	bh=s6vmPcXochGrHCjnt7iJ3HOTN3Q65YLNUJ2i77x/hbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H/gjXYSbF0ICP6h6IcIgRJJPJpUr4sQXySnxQ9Nw0tSbSmJVFjnm+yVh0eVthkcCn
-	 onvM95BW7qBF2C+OZf7Ss9XGYfhzLJSIlqwdgylenDLwp78COrs5Fir4q2efZChPME
-	 qPtA22HTWnoi2A/vn8xbc7PVtEY1k5Ko/bVswTRQ=
+	b=sxgAhvQmtl3u865GnHuF5UmQawybE7qQ1IoDZVi/ZE1KMANrRkjbJb13tXk5vcnsX
+	 pNJC7MQxjEyCA0lPSbXclrLPqyctu6DBK510zycZw/E2YZA3vzZzNolZrSmivUnWGD
+	 Zo+wuzJ6kjTlIBgVqDF2QDkM/MJPkMqY9mGEdPm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salam Noureddine <noureddine@arista.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yi Yang <yiyang13@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 221/459] tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets
-Date: Thu, 12 Dec 2024 15:59:19 +0100
-Message-ID: <20241212144302.302657614@linuxfoundation.org>
+Subject: [PATCH 5.4 042/321] crypto: pcrypt - Call crypto layer directly when padata_do_parallel() return -EBUSY
+Date: Thu, 12 Dec 2024 15:59:20 +0100
+Message-ID: <20241212144231.656713905@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,63 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit 614f4d166eeeb9bd709b0ad29552f691c0f45776 ]
+[ Upstream commit 662f2f13e66d3883b9238b0b96b17886179e60e2 ]
 
-The hardware on Broadcom 1G chipsets have a known limitation
-where they cannot handle DMA addresses that cross over 4GB.
-When such an address is encountered, the hardware sets the
-address overflow error bit in the DMA status register and
-triggers a reset.
+Since commit 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for
+PADATA_RESET"), the pcrypt encryption and decryption operations return
+-EAGAIN when the CPU goes online or offline. In alg_test(), a WARN is
+generated when pcrypt_aead_decrypt() or pcrypt_aead_encrypt() returns
+-EAGAIN, the unnecessary panic will occur when panic_on_warn set 1.
+Fix this issue by calling crypto layer directly without parallelization
+in that case.
 
-However, BCM57766 hardware is setting the overflow bit and
-triggering a reset in some cases when there is no actual
-underlying address overflow. The hardware team analyzed the
-issue and concluded that it is happening when the status
-block update has an address with higher (b16 to b31) bits
-as 0xffff following a previous update that had lowest bits
-as 0xffff.
-
-To work around this bug in the BCM57766 hardware, set the
-coherent dma mask from the current 64b to 31b. This will
-ensure that upper bits of the status block DMA address are
-always at most 0x7fff, thus avoiding the improper overflow
-check described above. This work around is intended for only
-status block and ring memories and has no effect on TX and
-RX buffers as they do not require coherent memory.
-
-Fixes: 72f2afb8a685 ("[TG3]: Add DMA address workaround")
-Reported-by: Salam Noureddine <noureddine@arista.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Link: https://patch.msgid.link/20241119055741.147144-1-pavan.chebbi@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for PADATA_RESET")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ crypto/pcrypt.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index fe2c9b110e606..937579817f226 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -17807,6 +17807,9 @@ static int tg3_init_one(struct pci_dev *pdev,
- 	} else
- 		persist_dma_mask = dma_mask = DMA_BIT_MASK(64);
+diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
+index 63e64164900e8..9e4179f5717e6 100644
+--- a/crypto/pcrypt.c
++++ b/crypto/pcrypt.c
+@@ -118,8 +118,10 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psenc, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
+-	if (err == -EBUSY)
+-		return -EAGAIN;
++	if (err == -EBUSY) {
++		/* try non-parallel mode */
++		return crypto_aead_encrypt(creq);
++	}
  
-+	if (tg3_asic_rev(tp) == ASIC_REV_57766)
-+		persist_dma_mask = DMA_BIT_MASK(31);
-+
- 	/* Configure DMA attributes. */
- 	if (dma_mask > DMA_BIT_MASK(32)) {
- 		err = pci_set_dma_mask(pdev, dma_mask);
+ 	return err;
+ }
+@@ -167,8 +169,10 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psdec, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
+-	if (err == -EBUSY)
+-		return -EAGAIN;
++	if (err == -EBUSY) {
++		/* try non-parallel mode */
++		return crypto_aead_decrypt(creq);
++	}
+ 
+ 	return err;
+ }
 -- 
 2.43.0
 
