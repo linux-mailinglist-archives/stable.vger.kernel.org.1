@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE139EF7AE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B814B9EF89A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 045D3174C6C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D221188E76F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6442B20967D;
-	Thu, 12 Dec 2024 17:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C958223C47;
+	Thu, 12 Dec 2024 17:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsRPjMVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtG6hvzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213FF13CA93;
-	Thu, 12 Dec 2024 17:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C1B2210EA;
+	Thu, 12 Dec 2024 17:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024145; cv=none; b=YDPn6QY3GcvJe5qp77umqdk5emZI15CmjrFsPCGI/3xsIbBVyywa5iHPUMMEfN6IogF1Ae8pg7sXwKc8Gc0I1YWRrK2FcX/VoBogQ9ourwWKBkV+qaWMgFFGuiiNoK5Qt9KObOPLFo4RDg/3krxyfklMMhAA0gcMzSCLwFl7vyQ=
+	t=1734024994; cv=none; b=CZFIphsDXV4FqGlmRPu43ROWFIEHxc3TO80+4e8nII0XisKHpDLDViMDQ9ZIPrMQj5MK2ceTI/UlyngI889PFPbekk2zGTe1kG8uNzfvcP5k4uK7A2/jHrIWAy1mAP4PtMoJWYDu4KP/ynD74rD+i0XtJBBLHrHpgmxQSlguors=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024145; c=relaxed/simple;
-	bh=rMkmrxeL0VN+8yj+JPc/LpA+rjrrcKaxUZr1E86Ge68=;
+	s=arc-20240116; t=1734024994; c=relaxed/simple;
+	bh=A+Lfo9vUOOUHs5Pl8R2OW7qa8QunSRcB69v6+jh6LJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGBoqHHa7PYffnJk/itP0MIwr/19JRXHIsJ4VtHBaMtGZU6UZenoZ18HLI0d+62QDqfGyco/JURwUl/NPuR9iNqEsVqsrqjTtOq1piiQIsDCBWwwuqG9aAdVeCpzByTaJmgxLdUaSty/t9uxJlHCLVOJTe7tysFM9DrLDOAe5r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsRPjMVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2BDC4CECE;
-	Thu, 12 Dec 2024 17:22:24 +0000 (UTC)
+	 MIME-Version; b=uXOoajte6HLT9AVjCfnTGWktFx/yALZ9ick0GMjssNE1WRiwp+Wi9+4U6Fj5z8RGu1qM3cFvJuEMdPYg4GfsHfu9/QaEIM561E/8XynlBEsikQev6/nCCmHrv+PoOmxZ0+BBJsj1jXDuyosIOi+VioUcA9dWMC8CAROK/pJTMyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtG6hvzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93EBC4CECE;
+	Thu, 12 Dec 2024 17:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024145;
-	bh=rMkmrxeL0VN+8yj+JPc/LpA+rjrrcKaxUZr1E86Ge68=;
+	s=korg; t=1734024994;
+	bh=A+Lfo9vUOOUHs5Pl8R2OW7qa8QunSRcB69v6+jh6LJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SsRPjMVskKexFRvAoVNSQF/jUA3ZnrsD5EIuBmZzbfJJKNjcdpp2NjxdgYzaALvgW
-	 JKMzOEI8m+S8suyRBrnTvaBemsks71/+la66yECCQGlE5LOXasVNIHopfrjMwg7neG
-	 QA0yFWYElsq7VgIro+sFwWhPWCViS6+z/F3xg25c=
+	b=VtG6hvzmxuSysl5tCstRztZ8dWZ7PTZVi84Vjo921uYjA8xSmC3LnskaLGKgfElqt
+	 +fwpw0NclJFtbzby4fIPX54jpDXEBb2iDUnMsIVB9Dt5ilivXG01RM8WGFImRyMRNn
+	 SGJDIKMUCcVW0jnhRnDFzHVBD1qFqbgRA/ZBQ4FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Peterson <benjamin@engflow.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Luo Yifan <luoyifan@cmss.chinamobile.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 201/459] perf trace: avoid garbage when not printing a trace events arguments
+Subject: [PATCH 5.4 021/321] ASoC: stm: Prevent potential division by zero in stm32_sai_mclk_round_rate()
 Date: Thu, 12 Dec 2024 15:58:59 +0100
-Message-ID: <20241212144301.507784608@linuxfoundation.org>
+Message-ID: <20241212144230.483956440@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Peterson <benjamin@engflow.com>
+From: Luo Yifan <luoyifan@cmss.chinamobile.com>
 
-[ Upstream commit 5fb8e56542a3cf469fdf25d77f50e21cbff3ae7e ]
+[ Upstream commit 63c1c87993e0e5bb11bced3d8224446a2bc62338 ]
 
-trace__fprintf_tp_fields may not print any tracepoint arguments. E.g., if the
-argument values are all zero. Previously, this would result in a totally
-uninitialized buffer being passed to fprintf, which could lead to garbage on the
-console. Fix the problem by passing the number of initialized bytes fprintf.
+This patch checks if div is less than or equal to zero (div <= 0). If
+div is zero or negative, the function returns -EINVAL, ensuring the
+division operation (*prate / div) is safe to perform.
 
-Fixes: f11b2803bb88 ("perf trace: Allow choosing how to augment the tracepoint arguments")
-Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
-Tested-by: Howard Chu <howardchu95@gmail.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/r/20241103204816.7834-1-benjamin@engflow.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
+Link: https://patch.msgid.link/20241106014654.206860-1-luoyifan@cmss.chinamobile.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/stm/stm32_sai_sub.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 8de0d0a740de4..3143601c1cb1f 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2748,7 +2748,7 @@ static size_t trace__fprintf_tp_fields(struct trace *trace, struct evsel *evsel,
- 		printed += syscall_arg_fmt__scnprintf_val(arg, bf + printed, size - printed, &syscall_arg, val);
- 	}
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 7e965848796c3..b7dc9d3192597 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -379,8 +379,8 @@ static long stm32_sai_mclk_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	int div;
  
--	return printed + fprintf(trace->output, "%s", bf);
-+	return printed + fprintf(trace->output, "%.*s", (int)printed, bf);
- }
+ 	div = stm32_sai_get_clk_div(sai, *prate, rate);
+-	if (div < 0)
+-		return div;
++	if (div <= 0)
++		return -EINVAL;
  
- static int trace__event_handler(struct trace *trace, struct evsel *evsel,
+ 	mclk->freq = *prate / div;
+ 
 -- 
 2.43.0
 
