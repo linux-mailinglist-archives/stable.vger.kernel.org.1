@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301789EF100
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 191219EECDB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC01D29E802
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC311163305
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B0D237FF1;
-	Thu, 12 Dec 2024 16:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EF0217F26;
+	Thu, 12 Dec 2024 15:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hilkvj72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18CGwrgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7063237FEB;
-	Thu, 12 Dec 2024 16:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107852139CB;
+	Thu, 12 Dec 2024 15:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020579; cv=none; b=Tw6qeldq0NZeb2nxW4s4DiIFT8UlodCQR+XG3oWN6V4IHEyVxNe04wilbghCB7xK45P5BVzWKNF8ClWGJsfr+BBl+4AeSeWMIzd9j0XCmnQaaHgH/gikoiLJTYs9hJ8Cdc2/UnDJqRwhqGzYsFzQCehvdVoVrHLzZTokBn+msUY=
+	t=1734017798; cv=none; b=MIia9AOg1oeTRjlJyo7J7Cx+rrNQt12JylopSoOO93phGnctfHSKnymdGlQFr5w0VECK+KcENZxb+qfT774wepZsHtzymLXm2Qw1wz6qX9lRblV6REdFlu7jtKxxPbrMZgCJzRs42c+1Lp1n9i6ZevqMKLqTWMkWvwp8nP1PstM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020579; c=relaxed/simple;
-	bh=wnWvpqogDTxshhgsr+KKqD6MKL9CQbrDL7RYUY3Jud4=;
+	s=arc-20240116; t=1734017798; c=relaxed/simple;
+	bh=5BsGiqhiC+JZVXpKBoxsiqxL8u1pjevn8T7qnK1TD0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFKDolheAT2cskeG6reIUelY15zMM3IaON85GX1z/hJkfyLakSPyPvbZklmo4vC57lC/WgsFKcyBAWnOxfl1sl0bKcmVr0CIXUKKdNbNT0BGLEdwuIBSYVUeXHghvi8a+rKnqs7nz7kVKekuIXXNfUDTLULKgiWaAPv2/Efr7wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hilkvj72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C34C4CECE;
-	Thu, 12 Dec 2024 16:22:57 +0000 (UTC)
+	 MIME-Version; b=PlBsAgkqRvfF0vl2iK8HirOQFXCI+g7aGm3kCNWUnOinumRmxqsyOxGst7KVN+VHRMbzk4U5/2TgUSBk7INMghmQJo4/XjQNqCplNyEjelCEacbMe8G0UIY1i57i53NMWrOFazTbZLDV63AzLI6l/9wQDDwig38qxdBbJbT2Zrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18CGwrgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A91C4CECE;
+	Thu, 12 Dec 2024 15:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020578;
-	bh=wnWvpqogDTxshhgsr+KKqD6MKL9CQbrDL7RYUY3Jud4=;
+	s=korg; t=1734017797;
+	bh=5BsGiqhiC+JZVXpKBoxsiqxL8u1pjevn8T7qnK1TD0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hilkvj724IyxyKEq9KcSFwL8qgH7p35atPi7C8WC+3ARRdN3cr2h4x4NE1jBVVbR+
-	 p3EuleEJm3K8fXL92a/zjOVH8ZzbADI+kQJdKFBaT+BU6j1TjNU2e6sFQwpsWfxz/P
-	 TVBfVyIilCMoXTfSsWjFeY3VO7l7V/C9bK+0i+WU=
+	b=18CGwrglEEGje+5h19PyIAHq/U+ymKMk1ppReot+9a4TaIX6Y3XALLlGITbU5K9hF
+	 1M4m9TrDvOcmGTVUXGOaKMA6VpY66nJ14Rg1K9lRiQaIjz4qt2kOwf7d75KQ+LfB2E
+	 dDbxG7p6lPP+yG1XsNiCNqF/cz4vq9gHVxPw72wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 487/772] i3c: master: Fix miss free init_dyn_addr at i3c_master_put_i3c_addrs()
+	Alasdair McWilliam <alasdair.mcwilliam@outlook.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 113/356] xsk: always clear DMA mapping information when unmapping the pool
 Date: Thu, 12 Dec 2024 15:57:12 +0100
-Message-ID: <20241212144410.069004916@linuxfoundation.org>
+Message-ID: <20241212144249.109473680@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-commit 3082990592f7c6d7510a9133afa46e31bbe26533 upstream.
+[ Upstream commit ac9a48a6f1610b094072b815e884e1668aea4401 ]
 
-if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
-                                      ^^^ here check "init_dyn_addr"
-	i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr, ...)
-						             ^^^^
-							free "dyn_addr"
-Fix copy/paste error "dyn_addr" by replacing it with "init_dyn_addr".
+When the umem is shared, the DMA mapping is also shared between the xsk
+pools, therefore it should stay valid as long as at least 1 user remains.
+However, the pool also keeps the copies of DMA-related information that are
+initialized in the same way in xp_init_dma_info(), but cleared by
+xp_dma_unmap() only for the last remaining pool, this causes the problems
+below.
 
-Cc: stable@kernel.org
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241001162608.224039-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The first one is that the commit adbf5a42341f ("ice: remove af_xdp_zc_qps
+bitmap") relies on pool->dev to determine the presence of a ZC pool on a
+given queue, avoiding internal bookkeeping. This works perfectly fine if
+the UMEM is not shared, but reliably fails otherwise as stated in the
+linked report.
+
+The second one is pool->dma_pages which is dynamically allocated and
+only freed in xp_dma_unmap(), this leads to a small memory leak. kmemleak
+does not catch it, but by printing the allocation results after terminating
+the userspace program it is possible to see that all addresses except the
+one belonging to the last detached pool are still accessible through the
+kmemleak dump functionality.
+
+Always clear the DMA mapping information from the pool and free
+pool->dma_pages when unmapping the pool, so that the only difference
+between results of the last remaining user's call and the ones before would
+be the destruction of the DMA mapping.
+
+Fixes: adbf5a42341f ("ice: remove af_xdp_zc_qps bitmap")
+Fixes: 921b68692abb ("xsk: Enable sharing of dma mappings")
+Reported-by: Alasdair McWilliam <alasdair.mcwilliam@outlook.com>
+Closes: https://lore.kernel.org/PA4P194MB10056F208AF221D043F57A3D86512@PA4P194MB1005.EURP194.PROD.OUTLOOK.COM
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Link: https://lore.kernel.org/r/20241122112912.89881-1-larysa.zaremba@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/xdp/xsk_buff_pool.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1281,7 +1281,7 @@ static void i3c_master_put_i3c_addrs(str
- 					     I3C_ADDR_SLOT_FREE);
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index b0a611677865d..f38388b6b62c2 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -369,10 +369,9 @@ void xp_dma_unmap(struct xsk_buff_pool *pool, unsigned long attrs)
+ 		return;
+ 	}
  
- 	if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
--		i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr,
-+		i3c_bus_set_addr_slot_status(&master->bus, dev->boardinfo->init_dyn_addr,
- 					     I3C_ADDR_SLOT_FREE);
- }
+-	if (!refcount_dec_and_test(&dma_map->users))
+-		return;
++	if (refcount_dec_and_test(&dma_map->users))
++		__xp_dma_unmap(dma_map, attrs);
  
+-	__xp_dma_unmap(dma_map, attrs);
+ 	kvfree(pool->dma_pages);
+ 	pool->dma_pages = NULL;
+ 	pool->dma_pages_cnt = 0;
+-- 
+2.43.0
+
 
 
 
