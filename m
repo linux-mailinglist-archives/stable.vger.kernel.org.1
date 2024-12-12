@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701E89EF6CD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8A69EF908
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8990360A92
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8707228EFE0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E91222D6A;
-	Thu, 12 Dec 2024 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F44C22969A;
+	Thu, 12 Dec 2024 17:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkQwcpL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3Z4YZ2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B0321CFEA;
-	Thu, 12 Dec 2024 17:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9E62236EB;
+	Thu, 12 Dec 2024 17:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023488; cv=none; b=FDzj1s4XBhUww5jFCfcqJiRgL1TjVfmEB/YDl/4rvAotEJEzDCMFBb/At+VwEY+Fot6bhJieFyE8Xs+/owEs9CEH2wuDPW2PtdtV6/pX2/gc72vAwn2rknmKU5Y23xoVzZYavKrpaQmBX/kooCWgC1orOrA48de2607l4jqMCbw=
+	t=1734025523; cv=none; b=XknbDQFe9DxjHPmbgnFAq4owr0cNrriHY6xibFg69R7o6Ue3zQAuMV6ah0OZaZn9c6txtaGHO8yrZzho51FF0CwXpzkZie/mrSI69VSeExwQsjbb+1bMvoCCazSd6vcr4eXR5Ddpmi2Y/aiBlsbmZ1ETA7DOSTsoB6hTLAgSzZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023488; c=relaxed/simple;
-	bh=DdRp495ByXfgZG/bve1fzkYnPQQgYh68oaPNP8K4rto=;
+	s=arc-20240116; t=1734025523; c=relaxed/simple;
+	bh=GE3N/0bVl7rmaBfzOkJdF8UIn/X6f3KqXIo0252gj+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWEcEvU89b30CFlYHh8+nJluFjSW6w38ZWyi2VSDrNwzq0SG4w3Dm4lxV9OUGMZ8Z6g/v3ZxpUBOjXxbJWteJX2zEnQVdqoPYHl+ObhEpHY2YRv7Icp+MRp8x4I0A69B/EvZUZXLTaJXvTmi3y7sWQuX6Cr9e0W/aPynh2jznpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkQwcpL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2340C4CECE;
-	Thu, 12 Dec 2024 17:11:25 +0000 (UTC)
+	 MIME-Version; b=FpL+dGvgoSxyHaHMxLGmo43YgVxn8jFVbk6ADyi65nMFd5X8V7EJqizLjiQXFoDmUzao1/69xZre4RsKEwMdciwvcHXqDM45f63kjcQ5LSQYsjH8f3sdBBaYmYZWKj4cXRNhsgikqT9KD4CL8NrhG/BDB5Ltu8Dp31mNkPfJI54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3Z4YZ2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3402EC4CED4;
+	Thu, 12 Dec 2024 17:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023486;
-	bh=DdRp495ByXfgZG/bve1fzkYnPQQgYh68oaPNP8K4rto=;
+	s=korg; t=1734025522;
+	bh=GE3N/0bVl7rmaBfzOkJdF8UIn/X6f3KqXIo0252gj+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MkQwcpL5AQ3rojKFamD/sJ2JJP6rtMDnJQAXOvga1kQmcZBc31zHQkQwUgR3WE7wV
-	 iqwGRbUptS99UgpWrO6OQIK7SmVslNp7q5Dj94AMQil0lcVHr+cI3NXUZDZ/S6PCgI
-	 v2QFUjycbNYqN2IfHZtE9LCdFceiNZpgIgstqJwA=
+	b=f3Z4YZ2b+WJ0HGZ2z4haM/olPZ5e0fPrqAAODO/0Y/ZeB5Cf+6ardM/6QCN9I0lLl
+	 kFlQ2ueqGlVQfkQyBAEfV/ZcF50ZjUQGkraTXEXTGP8sNaNOwRM1h/ldEmBBipTl9Y
+	 7KgPiA3ILZnE1qKWdoLiuPUMbO9duDERscpvVCQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+	Calum Mackay <calum.mackay@oracle.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 519/565] nvdimm: rectify the illogical code within nd_dax_probe()
-Date: Thu, 12 Dec 2024 16:01:54 +0100
-Message-ID: <20241212144332.308070835@linuxfoundation.org>
+Subject: [PATCH 5.4 197/321] SUNRPC: correct error code comment in xs_tcp_setup_socket()
+Date: Thu, 12 Dec 2024 16:01:55 +0100
+Message-ID: <20241212144237.762108174@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Calum Mackay <calum.mackay@oracle.com>
 
-[ Upstream commit b61352101470f8b68c98af674e187cfaa7c43504 ]
+[ Upstream commit 8c71139d9f84c1963b0a416941244502a20a7e52 ]
 
-When nd_dax is NULL, nd_pfn is consequently NULL as well. Nevertheless,
-it is inadvisable to perform pointer arithmetic or address-taking on a
-NULL pointer.
-Introduce the nd_dax_devinit() function to enhance the code's logic and
-improve its readability.
+This comment was introduced by commit 6ea44adce915
+("SUNRPC: ensure correct error is reported by xs_tcp_setup_socket()").
 
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/20241108085526.527957-1-yiyang13@huawei.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+I believe EIO was a typo at the time: it should have been EAGAIN.
+
+Subsequently, commit 0445f92c5d53 ("SUNRPC: Fix disconnection races")
+changed that to ENOTCONN.
+
+Rather than trying to keep the comment here in sync with the code in
+xprt_force_disconnect(), make the point in a non-specific way.
+
+Fixes: 6ea44adce915 ("SUNRPC: ensure correct error is reported by xs_tcp_setup_socket()")
+Signed-off-by: Calum Mackay <calum.mackay@oracle.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/dax_devs.c | 4 ++--
- drivers/nvdimm/nd.h       | 7 +++++++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ net/sunrpc/xprtsock.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
-index 99965077bac4f..e7b8211c19cc6 100644
---- a/drivers/nvdimm/dax_devs.c
-+++ b/drivers/nvdimm/dax_devs.c
-@@ -106,12 +106,12 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
- 
- 	nvdimm_bus_lock(&ndns->dev);
- 	nd_dax = nd_dax_alloc(nd_region);
--	nd_pfn = &nd_dax->nd_pfn;
--	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
-+	dax_dev = nd_dax_devinit(nd_dax, ndns);
- 	nvdimm_bus_unlock(&ndns->dev);
- 	if (!dax_dev)
- 		return -ENOMEM;
- 	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
-+	nd_pfn = &nd_dax->nd_pfn;
- 	nd_pfn->pfn_sb = pfn_sb;
- 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
- 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
-diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
-index 5467ebbb4a6b0..55ae9fa9db5bf 100644
---- a/drivers/nvdimm/nd.h
-+++ b/drivers/nvdimm/nd.h
-@@ -485,6 +485,13 @@ struct nd_dax *to_nd_dax(struct device *dev);
- int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns);
- bool is_nd_dax(struct device *dev);
- struct device *nd_dax_create(struct nd_region *nd_region);
-+static inline struct device *nd_dax_devinit(struct nd_dax *nd_dax,
-+					    struct nd_namespace_common *ndns)
-+{
-+	if (!nd_dax)
-+		return NULL;
-+	return nd_pfn_devinit(&nd_dax->nd_pfn, ndns);
-+}
- #else
- static inline int nd_dax_probe(struct device *dev,
- 		struct nd_namespace_common *ndns)
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index e88b9e53dcb65..ffa9df8f16796 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2455,10 +2455,8 @@ static void xs_tcp_setup_socket(struct work_struct *work)
+ 	case -EHOSTUNREACH:
+ 	case -EADDRINUSE:
+ 	case -ENOBUFS:
+-		/*
+-		 * xs_tcp_force_close() wakes tasks with -EIO.
+-		 * We need to wake them first to ensure the
+-		 * correct error code.
++		/* xs_tcp_force_close() wakes tasks with a fixed error code.
++		 * We need to wake them first to ensure the correct error code.
+ 		 */
+ 		xprt_wake_pending_tasks(xprt, status);
+ 		xs_tcp_force_close(xprt);
 -- 
 2.43.0
 
