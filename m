@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-101553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5759EED23
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4AD9EEAE4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B2411888BFD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09E122828DA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678152185A0;
-	Thu, 12 Dec 2024 15:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E8B2156FF;
+	Thu, 12 Dec 2024 15:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+EkrFqi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dosceCgK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2213D2210DA;
-	Thu, 12 Dec 2024 15:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52FA2153F4;
+	Thu, 12 Dec 2024 15:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017965; cv=none; b=D6XOuhI9yOWos4G4Ostx26/bLkugv/Y0cREVljzM4rJXWJFOizd5SG9LnpDI+i/FnpKgQkiVuZ8hY6jcJn/ljcRxVJy4furIjO65DUBmvnJ2YQf5KbhXOY6KsZ1GMzYtyic1f1JIVCJhSwFbKfQypYk5VE3fkWORcKati3FwFGg=
+	t=1734016726; cv=none; b=VFb1cY0SXxuEdjpvju2S4oSYq+ov3mxEUvdkiVyLZ0sjp6H5HIXa/Pplc4jY/bgCkViYum+EXZX5NJupeTfy1DzXiDvdBkEwSt+mI4TLr3qZvPxhzKUlsOi0FlnzXRBZR0wwzFEFMq8jfAQgNIXh1pikOOTEBaEpjU4etlFFCk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017965; c=relaxed/simple;
-	bh=ex33IXlBmEN1ay6BL9UppMK7TPnXpWLz2F6e9nHJiyA=;
+	s=arc-20240116; t=1734016726; c=relaxed/simple;
+	bh=WCJXVP0q+oHwXobT2eaAxsAbKCYngcAzYuqtoxU+IYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYTqrXsvhATNHwFRzXJSXj/97yvycMvHfngFRhUnwre8fM52+lhR/HKhFbciB9txYiOoFeczyDTGXdnbayppo0/2HBLkcBA6ynqJ6hWYWNFr2DEax/mJfNF+AsEBEIwVsOuPdM2n4PXRfNlF2H3L6qfOmte/dsDB681A7Uky/3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+EkrFqi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B3CC4CECE;
-	Thu, 12 Dec 2024 15:39:24 +0000 (UTC)
+	 MIME-Version; b=PSG0OOCKfB335t+jGqKq/XZLcc9jh74AN8qS2qkxJKrNn00V9f7rOzxeqtnlc7VQDcy2v9CIRDbpYcS9kqPXMeT875sHiK405b8oT693bgZatKTWWNFfTj4t2fwwjV3cSxy4+6X3pCwSO4A+Y/A56edUDeDTALcmt9Tw84lpkJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dosceCgK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA50CC4CED7;
+	Thu, 12 Dec 2024 15:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017965;
-	bh=ex33IXlBmEN1ay6BL9UppMK7TPnXpWLz2F6e9nHJiyA=;
+	s=korg; t=1734016726;
+	bh=WCJXVP0q+oHwXobT2eaAxsAbKCYngcAzYuqtoxU+IYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+EkrFqiz2GesyFIK8gIoVziG/zlvYBQSHcFes1Figz8/xkGljMj5olpsi6jJY5oY
-	 N/O93hucK3Jdtbc+3mxqGkXNGhEuXUWxYdPZbFwswWfTXGamcP0GUA9WywSPwOK6ob
-	 cowYRxxbQmxJJaWgne0NPFacefq/hdPB12NWbJnc=
+	b=dosceCgKgdiWSdvyu8+sjgtme37tYEpBC7sPK2KSu6aOEnpTdVBum+e/Pbjtg3OSA
+	 OswDB66MGdJHgoUr9NUIoefr0v9mIT8TG7d7qI1Ky5lhXBEiw3hGw/SOaks17SvrOK
+	 eFXT3YuTEeE+vEdK9dE2gOLJYlK1Dlx463GV7b6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/356] ocfs2: free inode when ocfs2_get_init_inode() fails
-Date: Thu, 12 Dec 2024 15:57:29 +0100
-Message-ID: <20241212144249.788559708@linuxfoundation.org>
+Subject: [PATCH 6.12 281/466] wifi: ath12k: fix atomic calls in ath12k_mac_op_set_bitrate_mask()
+Date: Thu, 12 Dec 2024 15:57:30 +0100
+Message-ID: <20241212144317.892385525@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,52 +62,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-[ Upstream commit 965b5dd1894f4525f38c1b5f99b0106a07dbb5db ]
+[ Upstream commit 8fac3266c68a8e647240b8ac8d0b82f1821edf85 ]
 
-syzbot is reporting busy inodes after unmount, for commit 9c89fe0af826
-("ocfs2: Handle error from dquot_initialize()") forgot to call iput() when
-new_inode() succeeded and dquot_initialize() failed.
+When I try to manually set bitrates:
 
-Link: https://lkml.kernel.org/r/e68c0224-b7c6-4784-b4fa-a9fc8c675525@I-love.SAKURA.ne.jp
-Fixes: 9c89fe0af826 ("ocfs2: Handle error from dquot_initialize()")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reported-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0af00f6a2cba2058b5db
-Tested-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+iw wlan0 set bitrates legacy-2.4 1
+
+I get sleeping from invalid context error, see below. Fix that by switching to
+use recently introduced ieee80211_iterate_stations_mtx().
+
+Do note that WCN6855 firmware is still crashing, I'm not sure if that firmware
+even supports bitrate WMI commands and should we consider disabling
+ath12k_mac_op_set_bitrate_mask() for WCN6855? But that's for another patch.
+
+BUG: sleeping function called from invalid context at drivers/net/wireless/ath/ath12k/wmi.c:420
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 2236, name: iw
+preempt_count: 0, expected: 0
+RCU nest depth: 1, expected: 0
+3 locks held by iw/2236:
+ #0: ffffffffabc6f1d8 (cb_lock){++++}-{3:3}, at: genl_rcv+0x14/0x40
+ #1: ffff888138410810 (&rdev->wiphy.mtx){+.+.}-{3:3}, at: nl80211_pre_doit+0x54d/0x800 [cfg80211]
+ #2: ffffffffab2cfaa0 (rcu_read_lock){....}-{1:2}, at: ieee80211_iterate_stations_atomic+0x2f/0x200 [mac80211]
+CPU: 3 UID: 0 PID: 2236 Comm: iw Not tainted 6.11.0-rc7-wt-ath+ #1772
+Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xa4/0xe0
+ dump_stack+0x10/0x20
+ __might_resched+0x363/0x5a0
+ ? __alloc_skb+0x165/0x340
+ __might_sleep+0xad/0x160
+ ath12k_wmi_cmd_send+0xb1/0x3d0 [ath12k]
+ ? ath12k_wmi_init_wcn7850+0xa40/0xa40 [ath12k]
+ ? __netdev_alloc_skb+0x45/0x7b0
+ ? __asan_memset+0x39/0x40
+ ? ath12k_wmi_alloc_skb+0xf0/0x150 [ath12k]
+ ? reacquire_held_locks+0x4d0/0x4d0
+ ath12k_wmi_set_peer_param+0x340/0x5b0 [ath12k]
+ ath12k_mac_disable_peer_fixed_rate+0xa3/0x110 [ath12k]
+ ? ath12k_mac_vdev_stop+0x4f0/0x4f0 [ath12k]
+ ieee80211_iterate_stations_atomic+0xd4/0x200 [mac80211]
+ ath12k_mac_op_set_bitrate_mask+0x5d2/0x1080 [ath12k]
+ ? ath12k_mac_vif_chan+0x320/0x320 [ath12k]
+ drv_set_bitrate_mask+0x267/0x470 [mac80211]
+ ieee80211_set_bitrate_mask+0x4cc/0x8a0 [mac80211]
+ ? __this_cpu_preempt_check+0x13/0x20
+ nl80211_set_tx_bitrate_mask+0x2bc/0x530 [cfg80211]
+ ? nl80211_parse_tx_bitrate_mask+0x2320/0x2320 [cfg80211]
+ ? trace_contention_end+0xef/0x140
+ ? rtnl_unlock+0x9/0x10
+ ? nl80211_pre_doit+0x557/0x800 [cfg80211]
+ genl_family_rcv_msg_doit+0x1f0/0x2e0
+ ? genl_family_rcv_msg_attrs_parse.isra.0+0x250/0x250
+ ? ns_capable+0x57/0xd0
+ genl_family_rcv_msg+0x34c/0x600
+ ? genl_family_rcv_msg_dumpit+0x310/0x310
+ ? __lock_acquire+0xc62/0x1de0
+ ? he_set_mcs_mask.isra.0+0x8d0/0x8d0 [cfg80211]
+ ? nl80211_parse_tx_bitrate_mask+0x2320/0x2320 [cfg80211]
+ ? cfg80211_external_auth_request+0x690/0x690 [cfg80211]
+ genl_rcv_msg+0xa0/0x130
+ netlink_rcv_skb+0x14c/0x400
+ ? genl_family_rcv_msg+0x600/0x600
+ ? netlink_ack+0xd70/0xd70
+ ? rwsem_optimistic_spin+0x4f0/0x4f0
+ ? genl_rcv+0x14/0x40
+ ? down_read_killable+0x580/0x580
+ ? netlink_deliver_tap+0x13e/0x350
+ ? __this_cpu_preempt_check+0x13/0x20
+ genl_rcv+0x23/0x40
+ netlink_unicast+0x45e/0x790
+ ? netlink_attachskb+0x7f0/0x7f0
+ netlink_sendmsg+0x7eb/0xdb0
+ ? netlink_unicast+0x790/0x790
+ ? __this_cpu_preempt_check+0x13/0x20
+ ? selinux_socket_sendmsg+0x31/0x40
+ ? netlink_unicast+0x790/0x790
+ __sock_sendmsg+0xc9/0x160
+ ____sys_sendmsg+0x620/0x990
+ ? kernel_sendmsg+0x30/0x30
+ ? __copy_msghdr+0x410/0x410
+ ? __kasan_check_read+0x11/0x20
+ ? mark_lock+0xe6/0x1470
+ ___sys_sendmsg+0xe9/0x170
+ ? copy_msghdr_from_user+0x120/0x120
+ ? __lock_acquire+0xc62/0x1de0
+ ? do_fault_around+0x2c6/0x4e0
+ ? do_user_addr_fault+0x8c1/0xde0
+ ? reacquire_held_locks+0x220/0x4d0
+ ? do_user_addr_fault+0x8c1/0xde0
+ ? __kasan_check_read+0x11/0x20
+ ? __fdget+0x4e/0x1d0
+ ? sockfd_lookup_light+0x1a/0x170
+ __sys_sendmsg+0xd2/0x180
+ ? __sys_sendmsg_sock+0x20/0x20
+ ? reacquire_held_locks+0x4d0/0x4d0
+ ? debug_smp_processor_id+0x17/0x20
+ __x64_sys_sendmsg+0x72/0xb0
+ ? lockdep_hardirqs_on+0x7d/0x100
+ x64_sys_call+0x894/0x9f0
+ do_syscall_64+0x64/0x130
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+RIP: 0033:0x7f230fe04807
+Code: 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00 00 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74 24 10
+RSP: 002b:00007ffe996a7ea8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000556f9f9c3390 RCX: 00007f230fe04807
+RDX: 0000000000000000 RSI: 00007ffe996a7ee0 RDI: 0000000000000003
+RBP: 0000556f9f9c88c0 R08: 0000000000000002 R09: 0000000000000000
+R10: 0000556f965ca190 R11: 0000000000000246 R12: 0000556f9f9c8780
+R13: 00007ffe996a7ee0 R14: 0000556f9f9c87d0 R15: 0000556f9f9c88c0
+ </TASK>
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20241007165932.78081-2-kvalo@kernel.org
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/namei.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index 21b3d5b9be603..4e6d8a3f727df 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -200,8 +200,10 @@ static struct inode *ocfs2_get_init_inode(struct inode *dir, umode_t mode)
- 	mode = mode_strip_sgid(&nop_mnt_idmap, dir, mode);
- 	inode_init_owner(&nop_mnt_idmap, inode, dir, mode);
- 	status = dquot_initialize(inode);
--	if (status)
-+	if (status) {
-+		iput(inode);
- 		return ERR_PTR(status);
-+	}
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 6d0784a21558e..8946141aa0dce 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -8186,9 +8186,9 @@ ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
+ 				    arvif->vdev_id, ret);
+ 			goto out;
+ 		}
+-		ieee80211_iterate_stations_atomic(hw,
+-						  ath12k_mac_disable_peer_fixed_rate,
+-						  arvif);
++		ieee80211_iterate_stations_mtx(hw,
++					       ath12k_mac_disable_peer_fixed_rate,
++					       arvif);
+ 	} else if (ath12k_mac_bitrate_mask_get_single_nss(ar, band, mask,
+ 							  &single_nss)) {
+ 		rate = WMI_FIXED_RATE_NONE;
+@@ -8233,16 +8233,16 @@ ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
+ 			goto out;
+ 		}
  
- 	return inode;
- }
+-		ieee80211_iterate_stations_atomic(hw,
+-						  ath12k_mac_disable_peer_fixed_rate,
+-						  arvif);
++		ieee80211_iterate_stations_mtx(hw,
++					       ath12k_mac_disable_peer_fixed_rate,
++					       arvif);
+ 
+ 		mutex_lock(&ar->conf_mutex);
+ 
+ 		arvif->bitrate_mask = *mask;
+-		ieee80211_iterate_stations_atomic(hw,
+-						  ath12k_mac_set_bitrate_mask_iter,
+-						  arvif);
++		ieee80211_iterate_stations_mtx(hw,
++					       ath12k_mac_set_bitrate_mask_iter,
++					       arvif);
+ 
+ 		mutex_unlock(&ar->conf_mutex);
+ 	}
 -- 
 2.43.0
 
