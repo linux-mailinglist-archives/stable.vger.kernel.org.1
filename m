@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7CC9EF909
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68639EF5E2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BEA92851EF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BAF9189E5D7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3164223C48;
-	Thu, 12 Dec 2024 17:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEC52236EF;
+	Thu, 12 Dec 2024 17:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvWfzJBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai/L5DDW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5C922331E;
-	Thu, 12 Dec 2024 17:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD992222D70;
+	Thu, 12 Dec 2024 17:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025525; cv=none; b=o5dqA5EVavaSWxYITqPt27eGba1t4ufaN61mG9m7TqTKT5IwNUpIQm3Ll3UGkGzu19F0DhXKCRo8Qhrlx+bDBPsAsiC/zYydh5EDtLZ5rSjCh2Jj8q5zL05tOM3NvZetMySnhZMiulfYJD1U+bil5GQyfDf4fPA12QBWLTvtzKk=
+	t=1734023399; cv=none; b=GlSOZJnPA4BXmTjFa3MbzMWC8krOtEB+KIMZwLesA4dDe8DjIAO90Fg3ywaWCJkxQ/wr1YlJmPkVxcmYQosbdjk6CMTxWLDMDjlYWdhPS/mi520q/dyf6S9oIH+chJhmZq8k3sZEAxxQY3LCrkp3JGpfHqfLJp1xya+cicgYYzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025525; c=relaxed/simple;
-	bh=OPG5JxL5V+AfLWzxwkezlEnppLUHnBCiKdJhsPhXvlk=;
+	s=arc-20240116; t=1734023399; c=relaxed/simple;
+	bh=CmKCb5N7u/db+UJQZY6RlmzMAFQHFu3itIwukfF3qH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+3gNgkho7lrWQfhVR1NHCaoh9G9JnZbUhtVNnsdC/dDIV4f6gF9AR0afSdvQl7vPiywL0AL0shB/BjKbuxPN55280VmktywK+rrbujwyh/wUfZrvStsj5mGKyIhOnFoxFRbWWs1gvXe0wpr83O0I1UfwdlioqfEKEJ0wiyiIFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvWfzJBK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16779C4CECE;
-	Thu, 12 Dec 2024 17:45:24 +0000 (UTC)
+	 MIME-Version; b=oiLcSO0/LjDjmqNlzvG+nCKrh0EwTxIODj62DksCvFekxieXpBgDCrEf+MYlFfAfXoKSKyWcBjtEKTHQuMaLrah/qKGp5dV6/R20z9hm9TrlgP529yhyNmrR1gTatgK9IUu2yauim/DQwJHEXZ9NhrNv6pfVx7X7yP3itsRj1r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ai/L5DDW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD0CC4CECE;
+	Thu, 12 Dec 2024 17:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025525;
-	bh=OPG5JxL5V+AfLWzxwkezlEnppLUHnBCiKdJhsPhXvlk=;
+	s=korg; t=1734023399;
+	bh=CmKCb5N7u/db+UJQZY6RlmzMAFQHFu3itIwukfF3qH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvWfzJBK2GUTihKyQE4ueshm+6luM8mMXgkvhWygwkqKrdFaKNV1jRUtLbqZA2GqM
-	 QqCaqwbX1+Jpoh+KmsN7fKcZzslIH42g0Cee/AOVIYVWztYMAmw/vl+1vQklUNcd1t
-	 mHM9CUDAwJ4a42iCXxdvnB9bqygADrvoGBFnFPYs=
+	b=Ai/L5DDWDm8/0xGkGie1e0nTU2p9em62zEtIrnlQ5Kd3+36HQkweNMeS3EqUACscM
+	 xB+Gds1+pYCrvD2uTuZ7v2mNpTq/2FIpgJ/ieLV0OG9u/kaB4mJYMJAhQ63ZdxKcTV
+	 dIx/S7qvsw72nqZ2YJhdua6mJNsyTM6zcwUOLZ0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Esther Shimanovich <eshimanovich@chromium.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 198/321] SUNRPC: Replace internal use of SOCKWQ_ASYNC_NOSPACE
-Date: Thu, 12 Dec 2024 16:01:56 +0100
-Message-ID: <20241212144237.801116357@linuxfoundation.org>
+Subject: [PATCH 5.15 522/565] PCI: Detect and trust built-in Thunderbolt chips
+Date: Thu, 12 Dec 2024 16:01:57 +0100
+Message-ID: <20241212144332.429813904@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +64,278 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Esther Shimanovich <eshimanovich@chromium.org>
 
-[ Upstream commit 2790a624d43084de590884934969e19c7a82316a ]
+[ Upstream commit 3b96b895127b7c0aed63d82c974b46340e8466c1 ]
 
-The socket's SOCKWQ_ASYNC_NOSPACE can be cleared by various actors in
-the socket layer, so replace it with our own flag in the transport
-sock_state field.
+Some computers with CPUs that lack Thunderbolt features use discrete
+Thunderbolt chips to add Thunderbolt functionality. These Thunderbolt
+chips are located within the chassis; between the Root Port labeled
+ExternalFacingPort and the USB-C port.
 
-Reported-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
+These Thunderbolt PCIe devices should be labeled as fixed and trusted, as
+they are built into the computer. Otherwise, security policies that rely on
+those flags may have unintended results, such as preventing USB-C ports
+from enumerating.
+
+Detect the above scenario through the process of elimination.
+
+  1) Integrated Thunderbolt host controllers already have Thunderbolt
+     implemented, so anything outside their external facing Root Port is
+     removable and untrusted.
+
+     Detect them using the following properties:
+
+       - Most integrated host controllers have the "usb4-host-interface"
+         ACPI property, as described here:
+
+         https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#mapping-native-protocols-pcie-displayport-tunneled-through-usb4-to-usb4-host-routers
+
+       - Integrated Thunderbolt PCIe Root Ports before Alder Lake do not
+         have the "usb4-host-interface" ACPI property. Identify those by
+         their PCI IDs instead.
+
+  2) If a Root Port does not have integrated Thunderbolt capabilities, but
+     has the "ExternalFacingPort" ACPI property, that means the
+     manufacturer has opted to use a discrete Thunderbolt host controller
+     that is built into the computer.
+
+     This host controller can be identified by virtue of being located
+     directly below an external-facing Root Port that lacks integrated
+     Thunderbolt. Label it as trusted and fixed.
+
+     Everything downstream from it is untrusted and removable.
+
+The "ExternalFacingPort" ACPI property is described here:
+https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-externally-exposed-pcie-root-ports
+
+Link: https://lore.kernel.org/r/20240910-trust-tbt-fix-v5-1-7a7a42a5f496@chromium.org
+Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/xprtsock.h |  1 +
- net/sunrpc/xprtsock.c           | 22 ++++------------------
- 2 files changed, 5 insertions(+), 18 deletions(-)
+ arch/x86/pci/acpi.c | 119 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/pci/probe.c |  30 ++++++++---
+ include/linux/pci.h |   6 +++
+ 3 files changed, 148 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/sunrpc/xprtsock.h b/include/linux/sunrpc/xprtsock.h
-index 46deca97e806d..6644fe4d7ff34 100644
---- a/include/linux/sunrpc/xprtsock.h
-+++ b/include/linux/sunrpc/xprtsock.h
-@@ -91,6 +91,7 @@ struct sock_xprt {
- #define XPRT_SOCK_WAKE_PENDING	(6)
- #define XPRT_SOCK_WAKE_DISCONNECT	(7)
- #define XPRT_SOCK_CONNECT_SENT	(8)
-+#define XPRT_SOCK_NOSPACE	(9)
- 
- #endif /* __KERNEL__ */
- 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index ffa9df8f16796..fde3fb7387d0d 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -891,14 +891,8 @@ static int xs_nospace(struct rpc_rqst *req, struct sock_xprt *transport)
- 
- 	/* Don't race with disconnect */
- 	if (xprt_connected(xprt)) {
--		struct socket_wq *wq;
--
--		rcu_read_lock();
--		wq = rcu_dereference(sk->sk_wq);
--		set_bit(SOCKWQ_ASYNC_NOSPACE, &wq->flags);
--		rcu_read_unlock();
--
- 		/* wait for more buffer space */
-+		set_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
- 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
- 		sk->sk_write_pending++;
- 		xprt_wait_for_buffer_space(xprt);
-@@ -1246,6 +1240,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
- 	clear_bit(XPRT_SOCK_WAKE_ERROR, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
-+	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
+diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+index 948656069cddd..f13c4e9194fa1 100644
+--- a/arch/x86/pci/acpi.c
++++ b/arch/x86/pci/acpi.c
+@@ -162,6 +162,125 @@ void __init pci_acpi_crs_quirks(void)
+ 	       pci_use_crs ? "nocrs" : "use_crs");
  }
  
- static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
-@@ -1609,7 +1604,6 @@ static void xs_tcp_state_change(struct sock *sk)
- 
- static void xs_write_space(struct sock *sk)
++/*
++ * Check if pdev is part of a PCIe switch that is directly below the
++ * specified bridge.
++ */
++static bool pcie_switch_directly_under(struct pci_dev *bridge,
++				       struct pci_dev *pdev)
++{
++	struct pci_dev *parent = pci_upstream_bridge(pdev);
++
++	/* If the device doesn't have a parent, it's not under anything */
++	if (!parent)
++		return false;
++
++	/*
++	 * If the device has a PCIe type, check if it is below the
++	 * corresponding PCIe switch components (if applicable). Then check
++	 * if its upstream port is directly beneath the specified bridge.
++	 */
++	switch (pci_pcie_type(pdev)) {
++	case PCI_EXP_TYPE_UPSTREAM:
++		return parent == bridge;
++
++	case PCI_EXP_TYPE_DOWNSTREAM:
++		if (pci_pcie_type(parent) != PCI_EXP_TYPE_UPSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		return parent == bridge;
++
++	case PCI_EXP_TYPE_ENDPOINT:
++		if (pci_pcie_type(parent) != PCI_EXP_TYPE_DOWNSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		if (!parent || pci_pcie_type(parent) != PCI_EXP_TYPE_UPSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		return parent == bridge;
++	}
++
++	return false;
++}
++
++static bool pcie_has_usb4_host_interface(struct pci_dev *pdev)
++{
++	struct fwnode_handle *fwnode;
++
++	/*
++	 * For USB4, the tunneled PCIe Root or Downstream Ports are marked
++	 * with the "usb4-host-interface" ACPI property, so we look for
++	 * that first. This should cover most cases.
++	 */
++	fwnode = fwnode_find_reference(dev_fwnode(&pdev->dev),
++				       "usb4-host-interface", 0);
++	if (!IS_ERR(fwnode)) {
++		fwnode_handle_put(fwnode);
++		return true;
++	}
++
++	/*
++	 * Any integrated Thunderbolt 3/4 PCIe Root Ports from Intel
++	 * before Alder Lake do not have the "usb4-host-interface"
++	 * property so we use their PCI IDs instead. All these are
++	 * tunneled. This list is not expected to grow.
++	 */
++	if (pdev->vendor == PCI_VENDOR_ID_INTEL) {
++		switch (pdev->device) {
++		/* Ice Lake Thunderbolt 3 PCIe Root Ports */
++		case 0x8a1d:
++		case 0x8a1f:
++		case 0x8a21:
++		case 0x8a23:
++		/* Tiger Lake-LP Thunderbolt 4 PCIe Root Ports */
++		case 0x9a23:
++		case 0x9a25:
++		case 0x9a27:
++		case 0x9a29:
++		/* Tiger Lake-H Thunderbolt 4 PCIe Root Ports */
++		case 0x9a2b:
++		case 0x9a2d:
++		case 0x9a2f:
++		case 0x9a31:
++			return true;
++		}
++	}
++
++	return false;
++}
++
++bool arch_pci_dev_is_removable(struct pci_dev *pdev)
++{
++	struct pci_dev *parent, *root;
++
++	/* pdev without a parent or Root Port is never tunneled */
++	parent = pci_upstream_bridge(pdev);
++	if (!parent)
++		return false;
++	root = pcie_find_root_port(pdev);
++	if (!root)
++		return false;
++
++	/* Internal PCIe devices are not tunneled */
++	if (!root->external_facing)
++		return false;
++
++	/* Anything directly behind a "usb4-host-interface" is tunneled */
++	if (pcie_has_usb4_host_interface(parent))
++		return true;
++
++	/*
++	 * Check if this is a discrete Thunderbolt/USB4 controller that is
++	 * directly behind the non-USB4 PCIe Root Port marked as
++	 * "ExternalFacingPort". Those are not behind a PCIe tunnel.
++	 */
++	if (pcie_switch_directly_under(root, pdev))
++		return false;
++
++	/* PCIe devices after the discrete chip are tunneled */
++	return true;
++}
++
+ #ifdef	CONFIG_PCI_MMCONFIG
+ static int check_segment(u16 seg, struct device *dev, char *estr)
  {
--	struct socket_wq *wq;
- 	struct sock_xprt *transport;
- 	struct rpc_xprt *xprt;
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index d9fc02a71baad..dd2134c7c4192 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1574,23 +1574,33 @@ static void set_pcie_thunderbolt(struct pci_dev *dev)
  
-@@ -1620,15 +1614,10 @@ static void xs_write_space(struct sock *sk)
- 	if (unlikely(!(xprt = xprt_from_sock(sk))))
- 		return;
- 	transport = container_of(xprt, struct sock_xprt, xprt);
--	rcu_read_lock();
--	wq = rcu_dereference(sk->sk_wq);
--	if (!wq || test_and_clear_bit(SOCKWQ_ASYNC_NOSPACE, &wq->flags) == 0)
--		goto out;
--
-+	if (!test_and_clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state))
+ static void set_pcie_untrusted(struct pci_dev *dev)
+ {
+-	struct pci_dev *parent;
++	struct pci_dev *parent = pci_upstream_bridge(dev);
+ 
++	if (!parent)
 +		return;
- 	xs_run_error_worker(transport, XPRT_SOCK_WAKE_WRITE);
- 	sk->sk_write_pending--;
--out:
--	rcu_read_unlock();
+ 	/*
+-	 * If the upstream bridge is untrusted we treat this device
++	 * If the upstream bridge is untrusted we treat this device as
+ 	 * untrusted as well.
+ 	 */
+-	parent = pci_upstream_bridge(dev);
+-	if (parent && (parent->untrusted || parent->external_facing))
++	if (parent->untrusted) {
++		dev->untrusted = true;
++		return;
++	}
++
++	if (arch_pci_dev_is_removable(dev)) {
++		pci_dbg(dev, "marking as untrusted\n");
+ 		dev->untrusted = true;
++	}
+ }
+ 
+ static void pci_set_removable(struct pci_dev *dev)
+ {
+ 	struct pci_dev *parent = pci_upstream_bridge(dev);
+ 
++	if (!parent)
++		return;
+ 	/*
+-	 * We (only) consider everything downstream from an external_facing
++	 * We (only) consider everything tunneled below an external_facing
+ 	 * device to be removable by the user. We're mainly concerned with
+ 	 * consumer platforms with user accessible thunderbolt ports that are
+ 	 * vulnerable to DMA attacks, and we expect those ports to be marked by
+@@ -1600,9 +1610,15 @@ static void pci_set_removable(struct pci_dev *dev)
+ 	 * accessible to user / may not be removed by end user, and thus not
+ 	 * exposed as "removable" to userspace.
+ 	 */
+-	if (parent &&
+-	    (parent->external_facing || dev_is_removable(&parent->dev)))
++	if (dev_is_removable(&parent->dev)) {
++		dev_set_removable(&dev->dev, DEVICE_REMOVABLE);
++		return;
++	}
++
++	if (arch_pci_dev_is_removable(dev)) {
++		pci_dbg(dev, "marking as removable\n");
+ 		dev_set_removable(&dev->dev, DEVICE_REMOVABLE);
++	}
  }
  
  /**
-@@ -1979,7 +1968,6 @@ static int xs_local_finish_connecting(struct rpc_xprt *xprt,
- 		sk->sk_user_data = xprt;
- 		sk->sk_data_ready = xs_data_ready;
- 		sk->sk_write_space = xs_udp_write_space;
--		sock_set_flag(sk, SOCK_FASYNC);
- 		sk->sk_error_report = xs_error_report;
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 32805c3a37bb3..a97c2b9885e1b 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2403,6 +2403,12 @@ pci_host_bridge_acpi_msi_domain(struct pci_bus *bus) { return NULL; }
+ static inline bool pci_pr3_present(struct pci_dev *pdev) { return false; }
+ #endif
  
- 		xprt_clear_connected(xprt);
-@@ -2176,7 +2164,6 @@ static void xs_udp_finish_connecting(struct rpc_xprt *xprt, struct socket *sock)
- 		sk->sk_user_data = xprt;
- 		sk->sk_data_ready = xs_data_ready;
- 		sk->sk_write_space = xs_udp_write_space;
--		sock_set_flag(sk, SOCK_FASYNC);
- 
- 		xprt_set_connected(xprt);
- 
-@@ -2337,7 +2324,6 @@ static int xs_tcp_finish_connecting(struct rpc_xprt *xprt, struct socket *sock)
- 		sk->sk_data_ready = xs_data_ready;
- 		sk->sk_state_change = xs_tcp_state_change;
- 		sk->sk_write_space = xs_tcp_write_space;
--		sock_set_flag(sk, SOCK_FASYNC);
- 		sk->sk_error_report = xs_error_report;
- 
- 		/* socket options */
++#if defined(CONFIG_X86) && defined(CONFIG_ACPI)
++bool arch_pci_dev_is_removable(struct pci_dev *pdev);
++#else
++static inline bool arch_pci_dev_is_removable(struct pci_dev *pdev) { return false; }
++#endif
++
+ #ifdef CONFIG_EEH
+ static inline struct eeh_dev *pci_dev_to_eeh_dev(struct pci_dev *pdev)
+ {
 -- 
 2.43.0
 
