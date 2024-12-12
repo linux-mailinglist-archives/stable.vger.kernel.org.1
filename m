@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FD59EF601
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C86D89EF78A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE21F177227
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4843B189C9A4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2DE223E9C;
-	Thu, 12 Dec 2024 16:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726C2223E66;
+	Thu, 12 Dec 2024 17:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7FQu+42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtcGGhLJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2D7223E93;
-	Thu, 12 Dec 2024 16:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5B32153DD;
+	Thu, 12 Dec 2024 17:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022700; cv=none; b=t/2HItymTSDMlz/O9yx4P9AWBLiwiEI93V3/ON3HzDodT62PRE9ljUC5Q6qxhzP8HmuKokYBcYISrXQ+8qhIaTcShMrwleL9ZuU4pc08ceAryxmRchoEZNg8eKeCHBAlUD/zsVDJR6HZFUZDn0wpwbLxRBWv5wxa2vbhb43QqnU=
+	t=1734024048; cv=none; b=W9FtjN+CdwCFL9S8E79fGm0eZcVuyeiOqTwl6kvW+Hr4xuf98fsmcVgo272cLtAsGXBxbfp4qRln+pQK5uN6X872wl9TxJ0rgemz/5xYx7CVzuYtSNrCuGI7brDEWg6sq+aH2wGwsIeQUfgFU4pBErs9uFfJBJCmXUdb/5Z1w5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022700; c=relaxed/simple;
-	bh=DbOwH0lGa1bmKvDsA5h7kZuqCrOg1fChLS3Rm08y84s=;
+	s=arc-20240116; t=1734024048; c=relaxed/simple;
+	bh=36/yV2HyUHSCRggnxHWZnzREjoUONDUlkd1Khz0kaRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLym16aRpoWAYLDO0k+32LeQkemA05GbO8wJC+uo1jID7HhpTZnnz3mhHCzaRiaMNPkO8NMMRpoY0Sokc3Ng3eGZlo/ab1Ss8AdLol0uUM93ZtnMIo4lcC7BAw4n8uKaTS6b4r/i6jjX8XvREDTItvtCzZj2XXSvRmRS7c0Yih8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7FQu+42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2DAC4CECE;
-	Thu, 12 Dec 2024 16:58:19 +0000 (UTC)
+	 MIME-Version; b=TyedaxMBpOJuCD6OEXsAc+jowmJ3lc2lwWoboRKwOmambaFJrxTK2ZdRVJJ09L2v/a667wAX8/5lu1K1O4duzAyRzKRLmiF+PpVxgC+guMjZct3hQ0FRpSfiLdzlcWfenkVXAOZlK7dFTKxVJ1g/oNHOEjz4S8hF3/JssQA7h0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtcGGhLJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DC7C4CECE;
+	Thu, 12 Dec 2024 17:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022699;
-	bh=DbOwH0lGa1bmKvDsA5h7kZuqCrOg1fChLS3Rm08y84s=;
+	s=korg; t=1734024048;
+	bh=36/yV2HyUHSCRggnxHWZnzREjoUONDUlkd1Khz0kaRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7FQu+42Dt7Ng9QKXd3P1Pxdva2bDV8Q/hUiX0wJvq7f04nFHPyzliyKBS8wmrI9a
-	 5BjEGL0+2Z0A5njP8cclGsHawihbYpDDz5g5Cb96BMP+DWOXHqplz1RA0T5Uwv0GKf
-	 +J4jc0XCyf/yexuNmtjp6cm8Vcb40twNdCwRXS/I=
+	b=RtcGGhLJG4jsk0DHxRYXq86Wz7hB2ELCMQ1dI5uTgYfjqKzaGCpc1GP2rOTO0pzDv
+	 QeRWeYbzeWB4EoMDr+OJJT5nomcZV0kT9Dkt4ST3WU5Ozik3MTqrizOhtHppkzGEw1
+	 hLpBnspW9zV/GD2JjSpXfwoaXPs2lQKZkY30lyVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dennis Wassenberg <Dennis.Wassenberg@secunet.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.15 312/565] PCI: Fix use-after-free of slot->bus on hot remove
+	Zhang Ning <zhangn1985@outlook.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 169/459] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for TMU device
 Date: Thu, 12 Dec 2024 15:58:27 +0100
-Message-ID: <20241212144323.938750349@linuxfoundation.org>
+Message-ID: <20241212144300.188256108@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +64,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit c7acef99642b763ba585f4a43af999fcdbcc3dc4 upstream.
+[ Upstream commit 9b79d59e6b2b515eb9a22bc469ef7b8f0904fc73 ]
 
-Dennis reports a boot crash on recent Lenovo laptops with a USB4 dock.
+While design wise the idea of converting the driver to use
+the hierarchy of the IRQ chips is correct, the implementation
+has (inherited) flaws. This was unveiled when platform_get_irq()
+had started WARN() on IRQ 0 that is supposed to be a Linux
+IRQ number (also known as vIRQ).
 
-Since commit 0fc70886569c ("thunderbolt: Reset USB4 v2 host router") and
-commit 59a54c5f3dbd ("thunderbolt: Reset topology created by the boot
-firmware"), USB4 v2 and v1 Host Routers are reset on probe of the
-thunderbolt driver.
+Rework the driver to respect IRQ domain when creating each MFD
+device separately, as the domain is not the same for all of them.
 
-The reset clears the Presence Detect State and Data Link Layer Link Active
-bits at the USB4 Host Router's Root Port and thus causes hot removal of the
-dock.
-
-The crash occurs when pciehp is unbound from one of the dock's Downstream
-Ports:  pciehp creates a pci_slot on bind and destroys it on unbind.  The
-pci_slot contains a pointer to the pci_bus below the Downstream Port, but
-a reference on that pci_bus is never acquired.  The pci_bus is destroyed
-before the pci_slot, so a use-after-free ensues when pci_slot_release()
-accesses slot->bus.
-
-In principle this should not happen because pci_stop_bus_device() unbinds
-pciehp (and therefore destroys the pci_slot) before the pci_bus is
-destroyed by pci_remove_bus_device().
-
-However the stacktrace provided by Dennis shows that pciehp is unbound from
-pci_remove_bus_device() instead of pci_stop_bus_device().  To understand
-the significance of this, one needs to know that the PCI core uses a two
-step process to remove a portion of the hierarchy:  It first unbinds all
-drivers in the sub-hierarchy in pci_stop_bus_device() and then actually
-removes the devices in pci_remove_bus_device().  There is no precaution to
-prevent driver binding in-between pci_stop_bus_device() and
-pci_remove_bus_device().
-
-In Dennis' case, it seems removal of the hierarchy by pciehp races with
-driver binding by pci_bus_add_devices().  pciehp is bound to the
-Downstream Port after pci_stop_bus_device() has run, so it is unbound by
-pci_remove_bus_device() instead of pci_stop_bus_device().  Because the
-pci_bus has already been destroyed at that point, accesses to it result in
-a use-after-free.
-
-One might conclude that driver binding needs to be prevented after
-pci_stop_bus_device() has run.  However it seems risky that pci_slot points
-to pci_bus without holding a reference.  Solely relying on correct ordering
-of driver unbind versus pci_bus destruction is certainly not defensive
-programming.
-
-If pci_slot has a need to access data in pci_bus, it ought to acquire a
-reference.  Amend pci_create_slot() accordingly.  Dennis reports that the
-crash is not reproducible with this change.
-
-Abridged stacktrace:
-
-  pcieport 0000:00:07.0: PME: Signaling with IRQ 156
-  pcieport 0000:00:07.0: pciehp: Slot #12 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ IbPresDis- LLActRep+
-  pci_bus 0000:20: dev 00, created physical slot 12
-  pcieport 0000:00:07.0: pciehp: Slot(12): Card not present
-  ...
-  pcieport 0000:21:02.0: pciehp: pcie_disable_notification: SLOTCTRL d8 write cmd 0
-  Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 13 UID: 0 PID: 134 Comm: irq/156-pciehp Not tainted 6.11.0-devel+ #1
-  RIP: 0010:dev_driver_string+0x12/0x40
-  pci_destroy_slot
-  pciehp_remove
-  pcie_port_remove_service
-  device_release_driver_internal
-  bus_remove_device
-  device_del
-  device_unregister
-  remove_iter
-  device_for_each_child
-  pcie_portdrv_remove
-  pci_device_remove
-  device_release_driver_internal
-  bus_remove_device
-  device_del
-  pci_remove_bus_device (recursive invocation)
-  pci_remove_bus_device
-  pciehp_unconfigure_device
-  pciehp_disable_slot
-  pciehp_handle_presence_or_link_change
-  pciehp_ist
-
-Link: https://lore.kernel.org/r/4bfd4c0e976c1776cd08e76603903b338cf25729.1728579288.git.lukas@wunner.de
-Reported-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
-Closes: https://lore.kernel.org/r/6de4b45ff2b32dd91a805ec02ec8ec73ef411bf6.camel@secunet.com/
-Tested-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 957ae5098185 ("platform/x86: Add Whiskey Cove PMIC TMU support")
+Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
+Reported-by: Zhang Ning <zhangn1985@outlook.com>
+Closes: https://lore.kernel.org/r/TY2PR01MB3322FEDCDC048B7D3794F922CDBA2@TY2PR01MB3322.jpnprd01.prod.outlook.com
+Tested-by: Zhang Ning <zhangn1985@outlook.com>
+Acked-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20241005193029.1929139-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/slot.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mfd/intel_soc_pmic_bxtwc.c     | 31 ++++++++++++++------------
+ drivers/platform/x86/intel_bxtwc_tmu.c | 22 +++++-------------
+ 2 files changed, 23 insertions(+), 30 deletions(-)
 
---- a/drivers/pci/slot.c
-+++ b/drivers/pci/slot.c
-@@ -79,6 +79,7 @@ static void pci_slot_release(struct kobj
- 	up_read(&pci_bus_sem);
+diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
+index 82c71b475a7e0..8b55f839a946b 100644
+--- a/drivers/mfd/intel_soc_pmic_bxtwc.c
++++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
+@@ -245,12 +245,6 @@ static struct mfd_cell bxt_wc_dev[] = {
+ 		.num_resources = ARRAY_SIZE(bcu_resources),
+ 		.resources = bcu_resources,
+ 	},
+-	{
+-		.name = "bxt_wcove_tmu",
+-		.num_resources = ARRAY_SIZE(tmu_resources),
+-		.resources = tmu_resources,
+-	},
+-
+ 	{
+ 		.name = "bxt_wcove_gpio",
+ 		.num_resources = ARRAY_SIZE(gpio_resources),
+@@ -261,6 +255,14 @@ static struct mfd_cell bxt_wc_dev[] = {
+ 	},
+ };
  
- 	list_del(&slot->list);
-+	pci_bus_put(slot->bus);
++static const struct mfd_cell bxt_wc_tmu_dev[] = {
++	{
++		.name = "bxt_wcove_tmu",
++		.num_resources = ARRAY_SIZE(tmu_resources),
++		.resources = tmu_resources,
++	},
++};
++
+ static struct mfd_cell bxt_wc_chgr_dev[] = {
+ 	{
+ 		.name = "bxt_wcove_usbc",
+@@ -485,6 +487,15 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to add IRQ chip\n");
  
- 	kfree(slot);
- }
-@@ -260,7 +261,7 @@ placeholder:
- 		goto err;
++	ret = bxtwc_add_chained_devices(pmic, bxt_wc_tmu_dev, ARRAY_SIZE(bxt_wc_tmu_dev),
++					pmic->irq_chip_data,
++					BXTWC_TMU_LVL1_IRQ,
++					IRQF_ONESHOT,
++					&bxtwc_regmap_irq_chip_tmu,
++					&pmic->irq_chip_data_tmu);
++	if (ret)
++		return ret;
++
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+ 					 BXTWC_PWRBTN_LVL1_IRQ,
+ 					 IRQF_ONESHOT,
+@@ -493,14 +504,6 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
+ 
+-	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+-					 BXTWC_TMU_LVL1_IRQ,
+-					 IRQF_ONESHOT,
+-					 &bxtwc_regmap_irq_chip_tmu,
+-					 &pmic->irq_chip_data_tmu);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "Failed to add TMU IRQ chip\n");
+-
+ 	/* Add chained IRQ handler for BCU IRQs */
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+ 					 BXTWC_BCU_LVL1_IRQ,
+diff --git a/drivers/platform/x86/intel_bxtwc_tmu.c b/drivers/platform/x86/intel_bxtwc_tmu.c
+index 7ccf583649e6b..3c9778366d930 100644
+--- a/drivers/platform/x86/intel_bxtwc_tmu.c
++++ b/drivers/platform/x86/intel_bxtwc_tmu.c
+@@ -48,9 +48,8 @@ static irqreturn_t bxt_wcove_tmu_irq_handler(int irq, void *data)
+ static int bxt_wcove_tmu_probe(struct platform_device *pdev)
+ {
+ 	struct intel_soc_pmic *pmic = dev_get_drvdata(pdev->dev.parent);
+-	struct regmap_irq_chip_data *regmap_irq_chip;
+ 	struct wcove_tmu *wctmu;
+-	int ret, virq, irq;
++	int ret;
+ 
+ 	wctmu = devm_kzalloc(&pdev->dev, sizeof(*wctmu), GFP_KERNEL);
+ 	if (!wctmu)
+@@ -59,27 +58,18 @@ static int bxt_wcove_tmu_probe(struct platform_device *pdev)
+ 	wctmu->dev = &pdev->dev;
+ 	wctmu->regmap = pmic->regmap;
+ 
+-	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0)
+-		return irq;
++	wctmu->irq = platform_get_irq(pdev, 0);
++	if (wctmu->irq < 0)
++		return wctmu->irq;
+ 
+-	regmap_irq_chip = pmic->irq_chip_data_tmu;
+-	virq = regmap_irq_get_virq(regmap_irq_chip, irq);
+-	if (virq < 0) {
+-		dev_err(&pdev->dev,
+-			"failed to get virtual interrupt=%d\n", irq);
+-		return virq;
+-	}
+-
+-	ret = devm_request_threaded_irq(&pdev->dev, virq,
++	ret = devm_request_threaded_irq(&pdev->dev, wctmu->irq,
+ 					NULL, bxt_wcove_tmu_irq_handler,
+ 					IRQF_ONESHOT, "bxt_wcove_tmu", wctmu);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "request irq failed: %d,virq: %d\n",
+-							ret, virq);
++			ret, wctmu->irq);
+ 		return ret;
  	}
+-	wctmu->irq = virq;
  
--	slot->bus = parent;
-+	slot->bus = pci_bus_get(parent);
- 	slot->number = slot_nr;
- 
- 	slot->kobj.kset = pci_slots_kset;
-@@ -268,6 +269,7 @@ placeholder:
- 	slot_name = make_slot_name(name);
- 	if (!slot_name) {
- 		err = -ENOMEM;
-+		pci_bus_put(slot->bus);
- 		kfree(slot);
- 		goto err;
- 	}
+ 	/* Unmask TMU second level Wake & System alarm */
+ 	regmap_update_bits(wctmu->regmap, BXTWC_MTMUIRQ_REG,
+-- 
+2.43.0
+
 
 
 
