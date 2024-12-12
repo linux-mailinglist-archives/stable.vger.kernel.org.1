@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A319EEB14
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A27BE9EECA0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6881D1886498
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3F37188482C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF99C2210D8;
-	Thu, 12 Dec 2024 15:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C97217F46;
+	Thu, 12 Dec 2024 15:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHJH1Fkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPU+cIEV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C91521764F;
-	Thu, 12 Dec 2024 15:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F002153DF;
+	Thu, 12 Dec 2024 15:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016555; cv=none; b=OiFOl1z60looOu9RdT1MxYDwAYe/5qwUR7Bdw2DtXTXFwofIojCeUOIEri4Dlb6O/Eh3zFy2zVs+trnv6GTYoqhRhkCxwAarQKKRrJoN02vwN2cl1kxdIqP93v1L4reCu2BwypglWgFHupJbPO8o6Uyb6+3OrKZsiPifdHmziDo=
+	t=1734017655; cv=none; b=J3ORiZBlKm8ooAHCZeNZ2424tOfYKOSGRG9TpBZHNgtW4YeqHVPuOeX2ZqLiLyq6Bp36Jj1KGiLuAwIxtEiRqzg93tc9v6oELswevcrampIWGG5tC0TMLRWJ7kG9aE9un7A1F44W7kl3q9kF4iWPHZbp7H1qRNIytkvbto9xqUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016555; c=relaxed/simple;
-	bh=T3GAmQm2DdNIdMxlGiwB+roJhCIB+VkW39ZwQuPX5Oo=;
+	s=arc-20240116; t=1734017655; c=relaxed/simple;
+	bh=ZxffZ5XhvQjuqB610Ar/DgLm2UzhhbOLHm7PjFJJwqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWaka8ZTAComI6uDDCfaI53raCsCL6M9LvjilOiIYC/xs/h94brljbW0CqG8wDW02Tp0Y6CtUMVJ+XRLC75XKpkE+lJekTArti159TeQbDcdTJZPoUHoNaCqZvfOZrTwcdT8b0IBoO87hMtVPq0I4K7vP3By+bT2+v8EB4KwGs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHJH1Fkd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF31DC4CECE;
-	Thu, 12 Dec 2024 15:15:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zcbi8riWnf735s+QoB8lQsqEa/8w/73UZIJdNlm/IVUZbs5uhgTltWrYuDCramu73QsSKEI46oz6ZoyV39ivM/8I4jkvKDtM8wzp+0TxKYPvdX1P983fQclgDcgz+8F7W2CTjcAu3y+9m+sXe8BdyH/+Fs5ZDju2GS6tfgAkynI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPU+cIEV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F096C4CECE;
+	Thu, 12 Dec 2024 15:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016555;
-	bh=T3GAmQm2DdNIdMxlGiwB+roJhCIB+VkW39ZwQuPX5Oo=;
+	s=korg; t=1734017654;
+	bh=ZxffZ5XhvQjuqB610Ar/DgLm2UzhhbOLHm7PjFJJwqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHJH1FkdeZ2hPhRIkK13Ju8ZUwxWpHWc9J5Eim0GoIsGZp2xMMI3CiQKbIBL/n6BX
-	 XKUcCsmgHXNp6KudZVyubOa+N9XCmSjUZPnry5LeUFMkARLiSJmMhXNicz0czZDXpH
-	 9t4rw96iF+9vaPb6zoC4dREba3XHF0pzVz5zMWMA=
+	b=fPU+cIEVMUsUGf7M2aZVcCGT2rmmd27WuQXrUbQpuWrQgAkNkzdcF+PXcyQAGMa0E
+	 VZzBoJ9qazyV50Oc6Xw0NWcrlq3zcFvXIFzAYzN7ivvuPRczCNB3FyWeakZbvlHw/7
+	 HZFwxXvQ5M9S9GZbeFUt0RBQQ3QFZY2Z52xgXb/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Foster <bfoster@redhat.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 224/466] ext4: partial zero eof block on unaligned inode size extension
+Subject: [PATCH 6.6 074/356] soc/fsl: cpm: qmc: Convert to platform remove callback returning void
 Date: Thu, 12 Dec 2024 15:56:33 +0100
-Message-ID: <20241212144315.628883438@linuxfoundation.org>
+Message-ID: <20241212144247.553431899@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,183 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Foster <bfoster@redhat.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit c7fc0366c65628fd69bfc310affec4918199aae2 ]
+[ Upstream commit 14914a115e807aa2f8025e451133627a64120ac3 ]
 
-Using mapped writes, it's technically possible to expose stale
-post-eof data on a truncate up operation. Consider the following
-example:
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new() which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-$ xfs_io -fc "pwrite 0 2k" -c "mmap 0 4k" -c "mwrite 2k 2k" \
-	-c "truncate 8k" -c "pread -v 2k 16" <file>
-...
-00000800:  58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58  XXXXXXXXXXXXXXXX
-...
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-This shows that the post-eof data written via mwrite lands within
-EOF after a truncate up. While this is deliberate of the test case,
-behavior is somewhat unpredictable because writeback does post-eof
-zeroing, and writeback can occur at any time in the background. For
-example, an fsync inserted between the mwrite and truncate causes
-the subsequent read to instead return zeroes. This basically means
-that there is a race window in this situation between any subsequent
-extending operation and writeback that dictates whether post-eof
-data is exposed to the file or zeroed.
-
-To prevent this problem, perform partial block zeroing as part of
-the various inode size extending operations that are susceptible to
-it. For truncate extension, zero around the original eof similar to
-how truncate down does partial zeroing of the new eof. For extension
-via writes and fallocate related operations, zero the newly exposed
-range of the file to cover any partial zeroing that must occur at
-the original and new eof blocks.
-
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Link: https://patch.msgid.link/20240919160741.208162-2-bfoster@redhat.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Acked-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20230925095532.1984344-7-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Stable-dep-of: cb3daa51db81 ("soc: fsl: cpm1: qmc: Set the ret error code on platform_get_irq() failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |  7 ++++++-
- fs/ext4/inode.c   | 51 +++++++++++++++++++++++++++++++++--------------
- 2 files changed, 42 insertions(+), 16 deletions(-)
+ drivers/soc/fsl/qe/qmc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 88f98dc440275..60909af2d4a53 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4482,7 +4482,7 @@ static int ext4_alloc_file_blocks(struct file *file, ext4_lblk_t offset,
- 	int depth = 0;
- 	struct ext4_map_blocks map;
- 	unsigned int credits;
--	loff_t epos;
-+	loff_t epos, old_size = i_size_read(inode);
- 
- 	BUG_ON(!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS));
- 	map.m_lblk = offset;
-@@ -4541,6 +4541,11 @@ static int ext4_alloc_file_blocks(struct file *file, ext4_lblk_t offset,
- 			if (ext4_update_inode_size(inode, epos) & 0x1)
- 				inode_set_mtime_to_ts(inode,
- 						      inode_get_ctime(inode));
-+			if (epos > old_size) {
-+				pagecache_isize_extended(inode, old_size, epos);
-+				ext4_zero_partial_blocks(handle, inode,
-+						     old_size, epos - old_size);
-+			}
- 		}
- 		ret2 = ext4_mark_inode_dirty(handle, inode);
- 		ext4_update_inode_fsync_trans(handle, inode, 1);
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 99d09cd9c6a37..67a5b937f5a92 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1307,8 +1307,10 @@ static int ext4_write_end(struct file *file,
- 	folio_unlock(folio);
- 	folio_put(folio);
- 
--	if (old_size < pos && !verity)
-+	if (old_size < pos && !verity) {
- 		pagecache_isize_extended(inode, old_size, pos);
-+		ext4_zero_partial_blocks(handle, inode, old_size, pos - old_size);
-+	}
- 	/*
- 	 * Don't mark the inode dirty under folio lock. First, it unnecessarily
- 	 * makes the holding time of folio lock longer. Second, it forces lock
-@@ -1423,8 +1425,10 @@ static int ext4_journalled_write_end(struct file *file,
- 	folio_unlock(folio);
- 	folio_put(folio);
- 
--	if (old_size < pos && !verity)
-+	if (old_size < pos && !verity) {
- 		pagecache_isize_extended(inode, old_size, pos);
-+		ext4_zero_partial_blocks(handle, inode, old_size, pos - old_size);
-+	}
- 
- 	if (size_changed) {
- 		ret2 = ext4_mark_inode_dirty(handle, inode);
-@@ -2985,7 +2989,8 @@ static int ext4_da_do_write_end(struct address_space *mapping,
- 	struct inode *inode = mapping->host;
- 	loff_t old_size = inode->i_size;
- 	bool disksize_changed = false;
--	loff_t new_i_size;
-+	loff_t new_i_size, zero_len = 0;
-+	handle_t *handle;
- 
- 	if (unlikely(!folio_buffers(folio))) {
- 		folio_unlock(folio);
-@@ -3029,18 +3034,21 @@ static int ext4_da_do_write_end(struct address_space *mapping,
- 	folio_unlock(folio);
- 	folio_put(folio);
- 
--	if (old_size < pos)
-+	if (pos > old_size) {
- 		pagecache_isize_extended(inode, old_size, pos);
-+		zero_len = pos - old_size;
-+	}
- 
--	if (disksize_changed) {
--		handle_t *handle;
-+	if (!disksize_changed && !zero_len)
-+		return copied;
- 
--		handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
--		if (IS_ERR(handle))
--			return PTR_ERR(handle);
--		ext4_mark_inode_dirty(handle, inode);
--		ext4_journal_stop(handle);
--	}
-+	handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
-+	if (IS_ERR(handle))
-+		return PTR_ERR(handle);
-+	if (zero_len)
-+		ext4_zero_partial_blocks(handle, inode, old_size, zero_len);
-+	ext4_mark_inode_dirty(handle, inode);
-+	ext4_journal_stop(handle);
- 
- 	return copied;
+diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+index 8dc73cc1a83b1..2312152a44b3e 100644
+--- a/drivers/soc/fsl/qe/qmc.c
++++ b/drivers/soc/fsl/qe/qmc.c
+@@ -1414,7 +1414,7 @@ static int qmc_probe(struct platform_device *pdev)
+ 	return ret;
  }
-@@ -5426,6 +5434,14 @@ int ext4_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 		}
  
- 		if (attr->ia_size != inode->i_size) {
-+			/* attach jbd2 jinode for EOF folio tail zeroing */
-+			if (attr->ia_size & (inode->i_sb->s_blocksize - 1) ||
-+			    oldsize & (inode->i_sb->s_blocksize - 1)) {
-+				error = ext4_inode_attach_jinode(inode);
-+				if (error)
-+					goto err_out;
-+			}
-+
- 			handle = ext4_journal_start(inode, EXT4_HT_INODE, 3);
- 			if (IS_ERR(handle)) {
- 				error = PTR_ERR(handle);
-@@ -5436,12 +5452,17 @@ int ext4_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 				orphan = 1;
- 			}
- 			/*
--			 * Update c/mtime on truncate up, ext4_truncate() will
--			 * update c/mtime in shrink case below
-+			 * Update c/mtime and tail zero the EOF folio on
-+			 * truncate up. ext4_truncate() handles the shrink case
-+			 * below.
- 			 */
--			if (!shrink)
-+			if (!shrink) {
- 				inode_set_mtime_to_ts(inode,
- 						      inode_set_ctime_current(inode));
-+				if (oldsize & (inode->i_sb->s_blocksize - 1))
-+					ext4_block_truncate_page(handle,
-+							inode->i_mapping, oldsize);
-+			}
+-static int qmc_remove(struct platform_device *pdev)
++static void qmc_remove(struct platform_device *pdev)
+ {
+ 	struct qmc *qmc = platform_get_drvdata(pdev);
  
- 			if (shrink)
- 				ext4_fc_track_range(handle, inode,
+@@ -1426,8 +1426,6 @@ static int qmc_remove(struct platform_device *pdev)
+ 
+ 	/* Disconnect the serial from TSA */
+ 	tsa_serial_disconnect(qmc->tsa_serial);
+-
+-	return 0;
+ }
+ 
+ static const struct of_device_id qmc_id_table[] = {
+@@ -1442,7 +1440,7 @@ static struct platform_driver qmc_driver = {
+ 		.of_match_table = of_match_ptr(qmc_id_table),
+ 	},
+ 	.probe = qmc_probe,
+-	.remove = qmc_remove,
++	.remove_new = qmc_remove,
+ };
+ module_platform_driver(qmc_driver);
+ 
 -- 
 2.43.0
 
