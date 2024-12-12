@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-103631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD509EF896
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7719EF816
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34BAC1896994
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C6E9293117
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F7F20A5EE;
-	Thu, 12 Dec 2024 17:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63D315696E;
+	Thu, 12 Dec 2024 17:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MR/3nsf2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlCSD74w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D922515696E;
-	Thu, 12 Dec 2024 17:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39EA216E0B;
+	Thu, 12 Dec 2024 17:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025142; cv=none; b=GtE2aRHokOqO7Tbao/cHjNWOdGl+blWDYa7ipKtTRROgz2hnrPc3gStPxZDbGlk8YyWQ/lnQawP3Hyro5fCnR/50/JAnipEUbWmC+axxxFlvyqvNZtyORcZsRQuWpiha98n3MR50GFMFfUW2uUGRRBuBAF0/owygXlqAE88f3Ys=
+	t=1734025154; cv=none; b=cVQAXWExxDA1nqQ/XUyR9nXLrtRBPaZOOtVd9vk5XywSxKM/BBXXmz7BfUsaE7NIXE6UHzduTN7Yzzw2kO1BsXCkaK5OJyJYjpYR02wCEkqNlWRxlQ/N6zW55DjewBOeCb2O921YzrYZ81R0J/gOqelr2cAeUpHYDwI+4gCbv+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025142; c=relaxed/simple;
-	bh=RYY7RP8CFF4+N5vDFjvGRlDrK6PkaYFWfBTzceeGvSc=;
+	s=arc-20240116; t=1734025154; c=relaxed/simple;
+	bh=RlogMfDQq7cmzFaNeJ4T4A+GVPJ0tEELX0d5asV0dtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2JyNB7jd5PbN8ZcKIwzFAyHKJUJEbIwy5YG2ORT1gXaji/83qZfiQg3O+S5QvI/XpXe8wgys+VuH1L25BTHtFzf/AnAFswmWN+T66feKbpPP8HQiWz5Fbds2q9eQBy/Yw02LIy5HiLHmEPq1NnKU47aOc1wTkdTxS7Lx3df83k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MR/3nsf2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613BEC4CECE;
-	Thu, 12 Dec 2024 17:39:02 +0000 (UTC)
+	 MIME-Version; b=DC1kCQRA23LdrHOJDY29G8vcKe80JVJmR8jz+Jl6AoqBTC3rMQUveGCjb0E2vQ1qFcsWGtEVtG8paee6F4sHK6rLLw3WFOIPpMTLGsn0Z7USok5+ZIxgZzUxcqIIYmqJ8Fqn95C3Lsm1IHKeCjwIYPfQKvLeqgOW35/TQcl+8VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlCSD74w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27549C4CECE;
+	Thu, 12 Dec 2024 17:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025142;
-	bh=RYY7RP8CFF4+N5vDFjvGRlDrK6PkaYFWfBTzceeGvSc=;
+	s=korg; t=1734025154;
+	bh=RlogMfDQq7cmzFaNeJ4T4A+GVPJ0tEELX0d5asV0dtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MR/3nsf2BVl5pTeH2Wq1rykHGoj2QeX43hlufmwQolAJSe1FU1wCLFQooVRSfnVHy
-	 sW0qUVbrDxYRaewdzvJbr/KktgNw2w3661gNSrILYemeG+pm1R2N6y7W0HZSXBOQYZ
-	 Y7YSea0JOV1GzCQ23PHciLrxUSaDzZOBTTs3UOuk=
+	b=XlCSD74wPJH2d9q8IkUvqges2WawICHn1BboJI22NDOGNj5PyW/ZJvFIIW/3XU46J
+	 7q8Hda17gMFH0lnDFimCa4zeOkWPoCmi7LdnSgwsXQZjCUiWUQ66s9w476u1aMICX9
+	 mKtkc71c2ahWNHesZfoSvlQn+23DAow2jX4VP8P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Everest K.C." <everestkc@everestkc.com.np>,
+	Chen Ridong <chenridong@huawei.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/321] crypto: cavium - Fix the if condition to exit loop after timeout
-Date: Thu, 12 Dec 2024 15:59:21 +0100
-Message-ID: <20241212144231.693908549@linuxfoundation.org>
+Subject: [PATCH 5.4 044/321] crypto: bcm - add error check in the ahash_hmac_init function
+Date: Thu, 12 Dec 2024 15:59:22 +0100
+Message-ID: <20241212144231.734594471@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -66,51 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Everest K.C <everestkc@everestkc.com.np>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 53d91ca76b6c426c546542a44c78507b42008c9e ]
+[ Upstream commit 19630cf57233e845b6ac57c9c969a4888925467b ]
 
-The while loop breaks in the first run because of incorrect
-if condition. It also causes the statements after the if to
-appear dead.
-Fix this by changing the condition from if(timeout--) to
-if(!timeout--).
+The ahash_init functions may return fails. The ahash_hmac_init should
+not return ok when ahash_init returns error. For an example, ahash_init
+will return -ENOMEM when allocation memory is error.
 
-This bug was reported by Coverity Scan.
-Report:
-CID 1600859: (#1 of 1): Logically dead code (DEADCODE)
-dead_error_line: Execution cannot reach this statement: udelay(30UL);
-
-Fixes: 9e2c7d99941d ("crypto: cavium - Add Support for Octeon-tx CPT Engine")
-Signed-off-by: Everest K.C. <everestkc@everestkc.com.np>
+Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/cavium/cpt/cptpf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/bcm/cipher.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/cavium/cpt/cptpf_main.c b/drivers/crypto/cavium/cpt/cptpf_main.c
-index d9362199423f2..b3db27b142afb 100644
---- a/drivers/crypto/cavium/cpt/cptpf_main.c
-+++ b/drivers/crypto/cavium/cpt/cptpf_main.c
-@@ -45,7 +45,7 @@ static void cpt_disable_cores(struct cpt_device *cpt, u64 coremask,
- 		dev_err(dev, "Cores still busy %llx", coremask);
- 		grp = cpt_read_csr64(cpt->reg_base,
- 				     CPTX_PF_EXEC_BUSY(0));
--		if (timeout--)
-+		if (!timeout--)
- 			break;
+diff --git a/drivers/crypto/bcm/cipher.c b/drivers/crypto/bcm/cipher.c
+index 98b8483577ce2..75fdaa311c4a6 100644
+--- a/drivers/crypto/bcm/cipher.c
++++ b/drivers/crypto/bcm/cipher.c
+@@ -2478,6 +2478,7 @@ static int ahash_hmac_setkey(struct crypto_ahash *ahash, const u8 *key,
  
- 		udelay(CSR_DELAY);
-@@ -395,7 +395,7 @@ static void cpt_disable_all_cores(struct cpt_device *cpt)
- 		dev_err(dev, "Cores still busy");
- 		grp = cpt_read_csr64(cpt->reg_base,
- 				     CPTX_PF_EXEC_BUSY(0));
--		if (timeout--)
-+		if (!timeout--)
- 			break;
+ static int ahash_hmac_init(struct ahash_request *req)
+ {
++	int ret;
+ 	struct iproc_reqctx_s *rctx = ahash_request_ctx(req);
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
+ 	struct iproc_ctx_s *ctx = crypto_ahash_ctx(tfm);
+@@ -2487,7 +2488,9 @@ static int ahash_hmac_init(struct ahash_request *req)
+ 	flow_log("ahash_hmac_init()\n");
  
- 		udelay(CSR_DELAY);
+ 	/* init the context as a hash */
+-	ahash_init(req);
++	ret = ahash_init(req);
++	if (ret)
++		return ret;
+ 
+ 	if (!spu_no_incr_hash(ctx)) {
+ 		/* SPU-M can do incr hashing but needs sw for outer HMAC */
 -- 
 2.43.0
 
