@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-101409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5A39EEC46
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4139EEAAA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92014162B91
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59CA6164FF5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1859A217F48;
-	Thu, 12 Dec 2024 15:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5132163AB;
+	Thu, 12 Dec 2024 15:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMak2kAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPLZ1BdP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C912F215799;
-	Thu, 12 Dec 2024 15:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C132213E97;
+	Thu, 12 Dec 2024 15:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017451; cv=none; b=LyJCZ7d9nK6ivZ54MG5tM06ZasIV3MNi5O0Bi8Xd0CbtUtFCGSbYyvfJ1qhoWbLuO/Y8KQdY8cqSnoL2EVdW5xURhkwA5EielCeRLA5pH4udWep2t4M1x/DwLCe0iNTXUZibjnm+9VT505ukV6j7eAHlVc1HZxU6UVJ0vJZHCQQ=
+	t=1734016323; cv=none; b=lxwlJIOkRAYZrUmo8R6uvdSmdIVUwaurTFAPcFor5AHY27+lgCJxLz7tYoY5Gc8SD+2rzl3Idd6OL4boB6/uvSkpCeIRaR7EvkU3l2BsJvIDXZeUQSOcTSZUzYrzWYJBwMK62tObLYjQ8KE9mEuacqQV+c2texhwHvgzkDTOgkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017451; c=relaxed/simple;
-	bh=5QtGArNLeTg8sN7B9Xdbhg9XyOIRnsj7WHyIUx6oOcE=;
+	s=arc-20240116; t=1734016323; c=relaxed/simple;
+	bh=itIfiC5wfXNHZ5TiX2+s2dI6VnA8UZ8Km7ZuxJj8iZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qeNqsYQ3q9wLYSfGEOyI4OlzcKrJPh1ojNaNe3KxpoaqpYHtz8ac4w2pXL6uVkw0uQlE3bUbkmD+fnp293nRvsvjdhTgvhMym2+f5/bx/rnHqcn/ikqGp088g52JLNr7BquVJa5A66g/ZrbPU/AkZ8VKKmwxIo1+XWhfTBfBBXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMak2kAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA873C4CECE;
-	Thu, 12 Dec 2024 15:30:50 +0000 (UTC)
+	 MIME-Version; b=nTxeyGR8QyZ6ofA9F9sxGtD3AnluQHHj/6rXObgsGs3APQ39Zr1F3QI9tWA/Ore78wf4hvBoO7QTskmIeEaI7uq4v5qbQk4cw8xi7mC1PKxUvDITVLI3jXPnFIt0tSn2cmq00nstvHHtQmKMILYoIzXSf53m+1xlm8XPZtw4ArU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPLZ1BdP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7344C4CED0;
+	Thu, 12 Dec 2024 15:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017451;
-	bh=5QtGArNLeTg8sN7B9Xdbhg9XyOIRnsj7WHyIUx6oOcE=;
+	s=korg; t=1734016323;
+	bh=itIfiC5wfXNHZ5TiX2+s2dI6VnA8UZ8Km7ZuxJj8iZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wMak2kAyVBdqurU9BNCCvT/KpQLHpd1kbr9QoLNjBZln2RWgmjE85nvQPO3R/uSjm
-	 d21A3v4h9RmC9rRglyC9s5LGolXS1Q3eK8WhJ3HP+tmkjWMZ4gAstbaSv0C2gk1fX5
-	 D/ILhkIVN4blDd4Q3GpYdh75Laxg8bsYMQZh0xuk=
+	b=RPLZ1BdPmD4KZJrSprt7tJvBjAN4mSv68PpMVVG4n2wxAvus25fkoLfyaVB8HZKrP
+	 F38u/1+KHRogZjfoPzW6vXHUbYxSllhjWmRvR5MmItPoyKraZPTQpATRNiSUis8O1S
+	 HiewQBmMn41sI7gqJtp1muy3cJl3+q8qVADvJIHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Ruowen Qin <ruqin@redhat.com>,
-	Jinghao Jia <jinghao7@illinois.edu>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/356] ipvs: fix UB due to uninitialized stack access in ip_vs_protocol_init()
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.12 167/466] x86/cacheinfo: Delete global num_cache_leaves
 Date: Thu, 12 Dec 2024 15:55:36 +0100
-Message-ID: <20241212144245.302317726@linuxfoundation.org>
+Message-ID: <20241212144313.400721548@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +61,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinghao Jia <jinghao7@illinois.edu>
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
-[ Upstream commit 146b6f1112eb30a19776d6c323c994e9d67790db ]
+commit 9677be09e5e4fbe48aeccb06ae3063c5eba331c3 upstream.
 
-Under certain kernel configurations when building with Clang/LLVM, the
-compiler does not generate a return or jump as the terminator
-instruction for ip_vs_protocol_init(), triggering the following objtool
-warning during build time:
+Linux remembers cpu_cachinfo::num_leaves per CPU, but x86 initializes all
+CPUs from the same global "num_cache_leaves".
 
-  vmlinux.o: warning: objtool: ip_vs_protocol_init() falls through to next function __initstub__kmod_ip_vs_rr__935_123_ip_vs_rr_init6()
+This is erroneous on systems such as Meteor Lake, where each CPU has a
+distinct num_leaves value. Delete the global "num_cache_leaves" and
+initialize num_leaves on each CPU.
 
-At runtime, this either causes an oops when trying to load the ipvs
-module or a boot-time panic if ipvs is built-in. This same issue has
-been reported by the Intel kernel test robot previously.
+init_cache_level() no longer needs to set num_leaves. Also, it never had to
+set num_levels as it is unnecessary in x86. Keep checking for zero cache
+leaves. Such condition indicates a bug.
 
-Digging deeper into both LLVM and the kernel code reveals this to be a
-undefined behavior problem. ip_vs_protocol_init() uses a on-stack buffer
-of 64 chars to store the registered protocol names and leaves it
-uninitialized after definition. The function calls strnlen() when
-concatenating protocol names into the buffer. With CONFIG_FORTIFY_SOURCE
-strnlen() performs an extra step to check whether the last byte of the
-input char buffer is a null character (commit 3009f891bb9f ("fortify:
-Allow strlen() and strnlen() to pass compile-time known lengths")).
-This, together with possibly other configurations, cause the following
-IR to be generated:
+  [ bp: Cleanup. ]
 
-  define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #5 section ".init.text" align 16 !kcfi_type !29 {
-    %1 = alloca [64 x i8], align 16
-    ...
-
-  14:                                               ; preds = %11
-    %15 = getelementptr inbounds i8, ptr %1, i64 63
-    %16 = load i8, ptr %15, align 1
-    %17 = tail call i1 @llvm.is.constant.i8(i8 %16)
-    %18 = icmp eq i8 %16, 0
-    %19 = select i1 %17, i1 %18, i1 false
-    br i1 %19, label %20, label %23
-
-  20:                                               ; preds = %14
-    %21 = call i64 @strlen(ptr noundef nonnull dereferenceable(1) %1) #23
-    ...
-
-  23:                                               ; preds = %14, %11, %20
-    %24 = call i64 @strnlen(ptr noundef nonnull dereferenceable(1) %1, i64 noundef 64) #24
-    ...
-  }
-
-The above code calculates the address of the last char in the buffer
-(value %15) and then loads from it (value %16). Because the buffer is
-never initialized, the LLVM GVN pass marks value %16 as undefined:
-
-  %13 = getelementptr inbounds i8, ptr %1, i64 63
-  br i1 undef, label %14, label %17
-
-This gives later passes (SCCP, in particular) more DCE opportunities by
-propagating the undef value further, and eventually removes everything
-after the load on the uninitialized stack location:
-
-  define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #0 section ".init.text" align 16 !kcfi_type !11 {
-    %1 = alloca [64 x i8], align 16
-    ...
-
-  12:                                               ; preds = %11
-    %13 = getelementptr inbounds i8, ptr %1, i64 63
-    unreachable
-  }
-
-In this way, the generated native code will just fall through to the
-next function, as LLVM does not generate any code for the unreachable IR
-instruction and leaves the function without a terminator.
-
-Zero the on-stack buffer to avoid this possible UB.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402100205.PWXIz1ZK-lkp@intel.com/
-Co-developed-by: Ruowen Qin <ruqin@redhat.com>
-Signed-off-by: Ruowen Qin <ruqin@redhat.com>
-Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org # 6.3+
+Link: https://lore.kernel.org/r/20241128002247.26726-3-ricardo.neri-calderon@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_proto.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/x86/kernel/cpu/cacheinfo.c |   43 +++++++++++++++++++---------------------
+ 1 file changed, 21 insertions(+), 22 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto.c b/net/netfilter/ipvs/ip_vs_proto.c
-index f100da4ba3bc3..a9fd1d3fc2cbf 100644
---- a/net/netfilter/ipvs/ip_vs_proto.c
-+++ b/net/netfilter/ipvs/ip_vs_proto.c
-@@ -340,7 +340,7 @@ void __net_exit ip_vs_protocol_net_cleanup(struct netns_ipvs *ipvs)
+--- a/arch/x86/kernel/cpu/cacheinfo.c
++++ b/arch/x86/kernel/cpu/cacheinfo.c
+@@ -178,8 +178,6 @@ struct _cpuid4_info_regs {
+ 	struct amd_northbridge *nb;
+ };
  
- int __init ip_vs_protocol_init(void)
+-static unsigned short num_cache_leaves;
+-
+ /* AMD doesn't have CPUID4. Emulate it here to report the same
+    information to the user.  This makes some assumptions about the machine:
+    L2 not shared, no SMT etc. that is currently true on AMD CPUs.
+@@ -717,20 +715,23 @@ void cacheinfo_hygon_init_llc_id(struct
+ 
+ void init_amd_cacheinfo(struct cpuinfo_x86 *c)
  {
--	char protocols[64];
-+	char protocols[64] = { 0 };
- #define REGISTER_PROTOCOL(p)			\
- 	do {					\
- 		register_ip_vs_protocol(p);	\
-@@ -348,8 +348,6 @@ int __init ip_vs_protocol_init(void)
- 		strcat(protocols, (p)->name);	\
- 	} while (0)
++	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(c->cpu_index);
  
--	protocols[0] = '\0';
--	protocols[2] = '\0';
- #ifdef CONFIG_IP_VS_PROTO_TCP
- 	REGISTER_PROTOCOL(&ip_vs_protocol_tcp);
- #endif
--- 
-2.43.0
-
+ 	if (boot_cpu_has(X86_FEATURE_TOPOEXT)) {
+-		num_cache_leaves = find_num_cache_leaves(c);
++		ci->num_leaves = find_num_cache_leaves(c);
+ 	} else if (c->extended_cpuid_level >= 0x80000006) {
+ 		if (cpuid_edx(0x80000006) & 0xf000)
+-			num_cache_leaves = 4;
++			ci->num_leaves = 4;
+ 		else
+-			num_cache_leaves = 3;
++			ci->num_leaves = 3;
+ 	}
+ }
+ 
+ void init_hygon_cacheinfo(struct cpuinfo_x86 *c)
+ {
+-	num_cache_leaves = find_num_cache_leaves(c);
++	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(c->cpu_index);
++
++	ci->num_leaves = find_num_cache_leaves(c);
+ }
+ 
+ void init_intel_cacheinfo(struct cpuinfo_x86 *c)
+@@ -740,21 +741,21 @@ void init_intel_cacheinfo(struct cpuinfo
+ 	unsigned int new_l1d = 0, new_l1i = 0; /* Cache sizes from cpuid(4) */
+ 	unsigned int new_l2 = 0, new_l3 = 0, i; /* Cache sizes from cpuid(4) */
+ 	unsigned int l2_id = 0, l3_id = 0, num_threads_sharing, index_msb;
++	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(c->cpu_index);
+ 
+ 	if (c->cpuid_level > 3) {
+-		static int is_initialized;
+-
+-		if (is_initialized == 0) {
+-			/* Init num_cache_leaves from boot CPU */
+-			num_cache_leaves = find_num_cache_leaves(c);
+-			is_initialized++;
+-		}
++		/*
++		 * There should be at least one leaf. A non-zero value means
++		 * that the number of leaves has been initialized.
++		 */
++		if (!ci->num_leaves)
++			ci->num_leaves = find_num_cache_leaves(c);
+ 
+ 		/*
+ 		 * Whenever possible use cpuid(4), deterministic cache
+ 		 * parameters cpuid leaf to find the cache details
+ 		 */
+-		for (i = 0; i < num_cache_leaves; i++) {
++		for (i = 0; i < ci->num_leaves; i++) {
+ 			struct _cpuid4_info_regs this_leaf = {};
+ 			int retval;
+ 
+@@ -790,14 +791,14 @@ void init_intel_cacheinfo(struct cpuinfo
+ 	 * Don't use cpuid2 if cpuid4 is supported. For P4, we use cpuid2 for
+ 	 * trace cache
+ 	 */
+-	if ((num_cache_leaves == 0 || c->x86 == 15) && c->cpuid_level > 1) {
++	if ((!ci->num_leaves || c->x86 == 15) && c->cpuid_level > 1) {
+ 		/* supports eax=2  call */
+ 		int j, n;
+ 		unsigned int regs[4];
+ 		unsigned char *dp = (unsigned char *)regs;
+ 		int only_trace = 0;
+ 
+-		if (num_cache_leaves != 0 && c->x86 == 15)
++		if (ci->num_leaves && c->x86 == 15)
+ 			only_trace = 1;
+ 
+ 		/* Number of times to iterate */
+@@ -991,14 +992,12 @@ static void ci_leaf_init(struct cacheinf
+ 
+ int init_cache_level(unsigned int cpu)
+ {
+-	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
++	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(cpu);
+ 
+-	if (!num_cache_leaves)
++	/* There should be at least one leaf. */
++	if (!ci->num_leaves)
+ 		return -ENOENT;
+-	if (!this_cpu_ci)
+-		return -EINVAL;
+-	this_cpu_ci->num_levels = 3;
+-	this_cpu_ci->num_leaves = num_cache_leaves;
++
+ 	return 0;
+ }
+ 
 
 
 
