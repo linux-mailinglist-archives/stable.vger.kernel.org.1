@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535E89EEB26
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10EB9EECB2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91A14188B655
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDAC6169936
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EA62153FC;
-	Thu, 12 Dec 2024 15:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27416217F46;
+	Thu, 12 Dec 2024 15:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWjMNMwa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tx549aak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B472210C2;
-	Thu, 12 Dec 2024 15:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75151547F0;
+	Thu, 12 Dec 2024 15:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016577; cv=none; b=oodLNFki1EglPZ8i378aX3HC1NyFExTYaojAg2tW4MiE1/zGT1iwT5Rgpka4P+dBzAOEF21bBlaIFk75yyIrNASe5T+cig7dywPC4SwZo/k3KPcspFJ1GU8t8+tVYA2L5q/bNJe0hPOHYZfgYzp4igUXNT8srR7e/qchas0Kc2w=
+	t=1734017706; cv=none; b=Svgq3eag/CzrCIEbQSn5xACpCQ6CzqEoxPHtMogSzjwwxCMJQ8jH1/G3D56wNkpJSu8Y9Wpp/Ncg32f4YxMF6TRinaM/pHt3k+JDqgBIO89hNlGlRtvq6JqOT4zcvc4JTdUN3Bo2nshGta+TEJNivYFe5p1wHjg6yM5L9EN/SJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016577; c=relaxed/simple;
-	bh=LOCehs3NyBNX6D4TFTf28/f2e5fJ8mUEiXbIYlx4p/Q=;
+	s=arc-20240116; t=1734017706; c=relaxed/simple;
+	bh=CDWXQDml3CSwaQwj397TCJgzB7w06Cj2SnUiB2di6Ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5oXbq8lzSfQ4q34UnLrW2Sl/1ZjJuEfgRZ4tOj3a2IPhsF5B7LcsBBCVHrhfygiEGdm27xVD8/HISTgXKd2xyIE4KmNmVYGv04VjAfrkh0/Fox9nOADmmbyH68UEbU3fZnBJR/+oXzl2F3szafA7uwF3ZxESxpaWEeCSmxO3oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWjMNMwa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E81EC4CECE;
-	Thu, 12 Dec 2024 15:16:16 +0000 (UTC)
+	 MIME-Version; b=fhrcH/1/Na+HO6iPvyTjf/ynSrngnqBPbslbSb/GuRhM5z5biXonLhlHsKNkHbd2Ecu5LCikUTslAnOeTBug6cApE/S0npQepgiHgKSccpmMUvRiokWCyslLZRllBZyeJekqg2F5+ii++0fSS1l41HHjVXKpl8vFUJwRn0Fp6Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tx549aak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4541CC4CED0;
+	Thu, 12 Dec 2024 15:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016577;
-	bh=LOCehs3NyBNX6D4TFTf28/f2e5fJ8mUEiXbIYlx4p/Q=;
+	s=korg; t=1734017706;
+	bh=CDWXQDml3CSwaQwj397TCJgzB7w06Cj2SnUiB2di6Ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWjMNMwaKjJFUdinkLsfH3oWu6xl6JyC/djUt1g1MhzibrD+PIwBIV5T+N2lP3SJI
-	 wVH3UQpVFKsL9i8VuO+LBXSY8JAAtUY+a7BVN+1oamiC9WQ2755/W81v3/Hv8ZmAPN
-	 PmMIjwjvhBdzTTHXibzzCIbHHSBpSadrLyLw8flc=
+	b=Tx549aakeAgZOWEg2A4enleobx3Z9+pDeoTXKPTEXdvbS/5DIkIu9yc7vd9kcatuJ
+	 ULP9FX8kDEtIA6Tv41LI4eR+SQcKjrmfg1WbjHpUKSP7RP+RrMPdDKDle2bMjqNWxp
+	 r3wziIdnS/H4BNSVHWf7xKq+JHbPl8+qXinSMPBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Hutterer <peter.hutterer@who-t.net>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 238/466] HID: add per device quirk to force bind to hid-generic
+Subject: [PATCH 6.6 088/356] zram: do not mark idle slots that cannot be idle
 Date: Thu, 12 Dec 2024 15:56:47 +0100
-Message-ID: <20241212144316.185369784@linuxfoundation.org>
+Message-ID: <20241212144248.097151129@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit 645c224ac5f6e0013931c342ea707b398d24d410 ]
+[ Upstream commit b967fa1ba72b5da2b6d9bf95f0b13420a59e0701 ]
 
-We already have the possibility to force not binding to hid-generic and
-rely on a dedicated driver, but we couldn't do the other way around.
+ZRAM_SAME slots cannot be post-processed (writeback or recompress) so do
+not mark them ZRAM_IDLE.  Same with ZRAM_WB slots, they cannot be
+ZRAM_IDLE because they are not in zsmalloc pool anymore.
 
-This is useful for BPF programs where we are fixing the report descriptor
-and the events, but want to avoid a specialized driver to come after BPF
-which would unwind everything that is done there.
-
-Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
-Link: https://patch.msgid.link/20241001-hid-bpf-hid-generic-v3-8-2ef1019468df@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Link: https://lkml.kernel.org/r/20240917021020.883356-6-senozhatsky@chromium.org
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: d37da422edb0 ("zram: clear IDLE flag in mark_idle()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c    | 5 +++--
- drivers/hid/hid-generic.c | 3 +++
- include/linux/hid.h       | 2 ++
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/block/zram/zram_drv.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 582fd234eec78..935ccc38d1295 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2674,9 +2674,10 @@ static bool hid_check_device_match(struct hid_device *hdev,
- 	/*
- 	 * hid-generic implements .match(), so we must be dealing with a
- 	 * different HID driver here, and can simply check if
--	 * hid_ignore_special_drivers is set or not.
-+	 * hid_ignore_special_drivers or HID_QUIRK_IGNORE_SPECIAL_DRIVER
-+	 * are set or not.
- 	 */
--	return !hid_ignore_special_drivers;
-+	return !hid_ignore_special_drivers && !(hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER);
- }
- 
- static int __hid_device_probe(struct hid_device *hdev, struct hid_driver *hdrv)
-diff --git a/drivers/hid/hid-generic.c b/drivers/hid/hid-generic.c
-index d2439399fb357..9e04c6d0fcc87 100644
---- a/drivers/hid/hid-generic.c
-+++ b/drivers/hid/hid-generic.c
-@@ -40,6 +40,9 @@ static bool hid_generic_match(struct hid_device *hdev,
- 	if (ignore_special_driver)
- 		return true;
- 
-+	if (hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER)
-+		return true;
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 582df13bfde94..e05eace18cc47 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -297,17 +297,28 @@ static void mark_idle(struct zram *zram, ktime_t cutoff)
+ 		/*
+ 		 * Do not mark ZRAM_UNDER_WB slot as ZRAM_IDLE to close race.
+ 		 * See the comment in writeback_store.
++		 *
++		 * Also do not mark ZRAM_SAME slots as ZRAM_IDLE, because no
++		 * post-processing (recompress, writeback) happens to the
++		 * ZRAM_SAME slot.
++		 *
++		 * And ZRAM_WB slots simply cannot be ZRAM_IDLE.
+ 		 */
+ 		zram_slot_lock(zram, index);
+-		if (zram_allocated(zram, index) &&
+-				!zram_test_flag(zram, index, ZRAM_UNDER_WB)) {
++		if (!zram_allocated(zram, index) ||
++		    zram_test_flag(zram, index, ZRAM_WB) ||
++		    zram_test_flag(zram, index, ZRAM_UNDER_WB) ||
++		    zram_test_flag(zram, index, ZRAM_SAME)) {
++			zram_slot_unlock(zram, index);
++			continue;
++		}
 +
- 	if (hdev->quirks & HID_QUIRK_HAVE_SPECIAL_DRIVER)
- 		return false;
- 
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 121d5b8bc8675..a7d60a1c72a09 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -359,6 +359,7 @@ struct hid_item {
-  * | @HID_QUIRK_NO_OUTPUT_REPORTS_ON_INTR_EP:
-  * | @HID_QUIRK_HAVE_SPECIAL_DRIVER:
-  * | @HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE:
-+ * | @HID_QUIRK_IGNORE_SPECIAL_DRIVER
-  * | @HID_QUIRK_FULLSPEED_INTERVAL:
-  * | @HID_QUIRK_NO_INIT_REPORTS:
-  * | @HID_QUIRK_NO_IGNORE:
-@@ -384,6 +385,7 @@ struct hid_item {
- #define HID_QUIRK_HAVE_SPECIAL_DRIVER		BIT(19)
- #define HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE	BIT(20)
- #define HID_QUIRK_NOINVERT			BIT(21)
-+#define HID_QUIRK_IGNORE_SPECIAL_DRIVER		BIT(22)
- #define HID_QUIRK_FULLSPEED_INTERVAL		BIT(28)
- #define HID_QUIRK_NO_INIT_REPORTS		BIT(29)
- #define HID_QUIRK_NO_IGNORE			BIT(30)
+ #ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+-			is_idle = !cutoff || ktime_after(cutoff,
+-							 zram->table[index].ac_time);
++		is_idle = !cutoff ||
++			ktime_after(cutoff, zram->table[index].ac_time);
+ #endif
+-			if (is_idle)
+-				zram_set_flag(zram, index, ZRAM_IDLE);
+-		}
++		if (is_idle)
++			zram_set_flag(zram, index, ZRAM_IDLE);
+ 		zram_slot_unlock(zram, index);
+ 	}
+ }
 -- 
 2.43.0
 
