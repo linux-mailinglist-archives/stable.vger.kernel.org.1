@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-102683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627EF9EF3AB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:01:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845E69EEAA8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC29217DFAB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DBEF1885E8B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4EC2210E8;
-	Thu, 12 Dec 2024 16:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B2021661F;
+	Thu, 12 Dec 2024 15:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqYcAPsA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qq3Pqshs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C008217656;
-	Thu, 12 Dec 2024 16:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ABA21504F;
+	Thu, 12 Dec 2024 15:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022114; cv=none; b=Z28hefrN5QQK3lzn3d4eoZ53h7+gbvnk6DZM7TiMsp5V8gZpKYx0nnA8A4vHE/cNWv6dxiOOUButGCrYL+kx7SFopBuglTqXzjc98Lv8rLFTyFaYOSLdbH1TyNSeiQlY7/cyy/KXFYPxZh1GW5O5U4jUpM9UQFO9p6oXwcfFgCo=
+	t=1734016356; cv=none; b=h8nHaHiH6w8vpteUK6PL8Rcc/2fOwco1TEuSVYqmgXAf41IwcREOS+9ixONznwb56S8UaIoQVpMur0/qHSZaR4D0nk4fZkZGakbrH2Ox00djoo2uQ3CJNhWDJJ5Vtx3UtQg73vEJR8H8sCLm48Vikpe4s+XZomBvam233VoK7h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022114; c=relaxed/simple;
-	bh=muten9OlFpl/MoxJQp9E1/iWtJLke2/rkyrHF0DHBhA=;
+	s=arc-20240116; t=1734016356; c=relaxed/simple;
+	bh=1QQgA6NWX6rwgx4dsp54WmcHhCT0eF5Cli4/OVFDRTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvBwuHuph4px5JgQZOZiJM9OPwRmhz4s1Fj6kMpBvkNh9u64xt5JxdSxWcKBEJUgKmRBhRXIMnAw08WR4AWm2Jw1BS4d6bctdQLOCtTW7OskoU8H6Be6pKYktLVGD8JDLgceGBRkmmW5iEXI3TUguz7i1ZDOxlQO/W8JOIjXZZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqYcAPsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50905C4CECE;
-	Thu, 12 Dec 2024 16:48:33 +0000 (UTC)
+	 MIME-Version; b=ojyNIooCz9gwOnFrlrGHlMJORSyV1ldVyyQiaXqTOkFVFavrgiBnB16xUmLa450MvIoO4I1JglkL4aHj5gqWHDfZpYQ4Fbor5W7if3TjpyLbBIS8QJ0XFkXt/JPehPTa0CachCqtXSdfgKCVtutNuJvEIlsq6AQA6YJmGpH5gmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qq3Pqshs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3680C4CED4;
+	Thu, 12 Dec 2024 15:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022113;
-	bh=muten9OlFpl/MoxJQp9E1/iWtJLke2/rkyrHF0DHBhA=;
+	s=korg; t=1734016355;
+	bh=1QQgA6NWX6rwgx4dsp54WmcHhCT0eF5Cli4/OVFDRTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqYcAPsAANATckWrU5lEzlvKiAlsYmNruIZyhQSDmRDKTDSo5fS11QMJlkt0de/o1
-	 5KaGmK9VZ1PAvEvmPfGQeCNx9VN22nHpADHh+6kH55f2jLWolBHKej4zmnrhmBLil6
-	 qJtRTV+rLobFdybWo+OpGyZH0Xjsc3GQTGF9uNPE=
+	b=Qq3Pqshsgh2+o7i98aQhPrEqGYpo3DRdaDooP+gvLJWHzyxrn4To7rzJ9wY+qMzow
+	 I6alx/Z2RSFkAvf810KlYZxA6laaFZ5llIabOOGnUBzcO1+BZcW2nNlX6d+v2GML0a
+	 GXaPgGbbLuDPdNTV5KV77AXgxH6OKYEbv0N+g/HE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/565] wifi: p54: Use IRQF_NO_AUTOEN flag in request_irq()
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Peterson Guo <peterson.guo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.12 176/466] drm/amd/display: Add a left edge pixel if in YCbCr422 or YCbCr420 and odm
 Date: Thu, 12 Dec 2024 15:55:45 +0100
-Message-ID: <20241212144317.414430972@linuxfoundation.org>
+Message-ID: <20241212144313.749459172@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Peterson Guo <peterson.guo@amd.com>
 
-[ Upstream commit bcd1371bd85e560ccc9159b7747f94bfe43b77a6 ]
+commit 63e7ee677c74e981257cedfdd8543510d09096ba upstream.
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+[WHY]
+On some cards when odm is used, the monitor will have 2 separate pipes
+split vertically. When compression is used on the YCbCr colour space on
+the second pipe to have correct colours, we need to read a pixel from the
+end of first pipe to accurately display colours. Hardware was programmed
+properly to account for this extra pixel but it was not calculated
+properly in software causing a split screen on some monitors.
 
-Fixes: cd8d3d321285 ("p54spi: p54spi driver")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240910124314.698896-2-ruanjinjie@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[HOW]
+The fix adjusts the second pipe's viewport and timings if the pixel
+encoding is YCbCr422 or YCbCr420.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: George Shen <george.shen@amd.com>
+Signed-off-by: Peterson Guo <peterson.guo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intersil/p54/p54spi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c |   23 ++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/net/wireless/intersil/p54/p54spi.c b/drivers/net/wireless/intersil/p54/p54spi.c
-index cdb57819684ae..8a9168aac7281 100644
---- a/drivers/net/wireless/intersil/p54/p54spi.c
-+++ b/drivers/net/wireless/intersil/p54/p54spi.c
-@@ -623,7 +623,7 @@ static int p54spi_probe(struct spi_device *spi)
- 	gpio_direction_input(p54spi_gpio_irq);
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
+@@ -1511,6 +1511,7 @@ bool dcn20_split_stream_for_odm(
  
- 	ret = request_irq(gpio_to_irq(p54spi_gpio_irq),
--			  p54spi_interrupt, 0, "p54spi",
-+			  p54spi_interrupt, IRQF_NO_AUTOEN, "p54spi",
- 			  priv->spi);
- 	if (ret < 0) {
- 		dev_err(&priv->spi->dev, "request_irq() failed");
-@@ -632,8 +632,6 @@ static int p54spi_probe(struct spi_device *spi)
+ 	if (prev_odm_pipe->plane_state) {
+ 		struct scaler_data *sd = &prev_odm_pipe->plane_res.scl_data;
++		struct output_pixel_processor *opp = next_odm_pipe->stream_res.opp;
+ 		int new_width;
  
- 	irq_set_irq_type(gpio_to_irq(p54spi_gpio_irq), IRQ_TYPE_EDGE_RISING);
- 
--	disable_irq(gpio_to_irq(p54spi_gpio_irq));
--
- 	INIT_WORK(&priv->work, p54spi_work);
- 	init_completion(&priv->fw_comp);
- 	INIT_LIST_HEAD(&priv->tx_pending);
--- 
-2.43.0
-
+ 		/* HACTIVE halved for odm combine */
+@@ -1544,7 +1545,28 @@ bool dcn20_split_stream_for_odm(
+ 		sd->viewport_c.x += dc_fixpt_floor(dc_fixpt_mul_int(
+ 				sd->ratios.horz_c, sd->h_active - sd->recout.x));
+ 		sd->recout.x = 0;
++
++		/*
++		 * When odm is used in YcbCr422 or 420 colour space, a split screen
++		 * will be seen with the previous calculations since the extra left
++		 *  edge pixel is accounted for in fmt but not in viewport.
++		 *
++		 * Below are calculations which fix the split by fixing the calculations
++		 * if there is an extra left edge pixel.
++		 */
++		if (opp && opp->funcs->opp_get_left_edge_extra_pixel_count
++				&& opp->funcs->opp_get_left_edge_extra_pixel_count(
++					opp, next_odm_pipe->stream->timing.pixel_encoding,
++					resource_is_pipe_type(next_odm_pipe, OTG_MASTER)) == 1) {
++			sd->h_active += 1;
++			sd->recout.width += 1;
++			sd->viewport.x -= dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
++			sd->viewport_c.x -= dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
++			sd->viewport_c.width += dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
++			sd->viewport.width += dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
++		}
+ 	}
++
+ 	if (!next_odm_pipe->top_pipe)
+ 		next_odm_pipe->stream_res.opp = pool->opps[next_odm_pipe->pipe_idx];
+ 	else
+@@ -2133,6 +2155,7 @@ bool dcn20_fast_validate_bw(
+ 			ASSERT(0);
+ 		}
+ 	}
++
+ 	/* Actual dsc count per stream dsc validation*/
+ 	if (!dcn20_validate_dsc(dc, context)) {
+ 		context->bw_ctx.dml.vba.ValidationStatus[context->bw_ctx.dml.vba.soc.num_states] =
 
 
 
