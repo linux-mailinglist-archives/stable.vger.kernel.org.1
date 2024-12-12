@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DB29EF8D6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DB59EF63F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177611894A06
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CAB928761E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE15223C7B;
-	Thu, 12 Dec 2024 17:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3621215782;
+	Thu, 12 Dec 2024 17:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/INBLqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="copi5Ht0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4AB223C48;
-	Thu, 12 Dec 2024 17:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9F7211493;
+	Thu, 12 Dec 2024 17:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025164; cv=none; b=WaFB8Lj4El2q89N8TNSGsNB9QChc2pxlT0zufZdDLVsiVL0eY1TNoEoy9vt6Z2NmGREIPd1VQ+LI1S9HT4oXrp+wyz9tsETMm//slBxUdVcMe5wJlgEaI23LDsBPf0XCwg6B1SD/krDVY9ZKnQZ2Owkv/DHPOD73o2knfNPwKaQ=
+	t=1734024225; cv=none; b=hkVvHkv/dxhUPtkzmAdw6bV880OHmVUap8Ab6fkR0YRVIIzJ4QKDZ3SoK27oFi0x3Nfvg3rzjvpY4srUypfUDb/4okTmtyrbeIQkYdo2N5qi6w8d/33nzT/XHbgFLCyJMgusmXJEvQ6NbuOoYSqqbYCR1Cqhb0D1F4YxZDCx0lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025164; c=relaxed/simple;
-	bh=Uj7NLUqSm5bG+CkvQ8HGFmACHXWcSy52OLefetMg4Q4=;
+	s=arc-20240116; t=1734024225; c=relaxed/simple;
+	bh=+yAaO9GQTy3m5G+khab8uuJvP/7T9kIY3MtrVjELjUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmCAwZgyHSbpz/86SXo1KTDbWBTBxss9HkUB9jn8LHYqK6JkTGmaV0GE5FB0xjtR/IaMKDRKYNMYTgaDzz3WxEAp07pu2pQyOO1OnOOyw53WpnkRdYIcQh0pRlZ9ruhgfO034cRvrCoyX3VU4z5bNQDUyU0rIunb9F7QA/27sJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/INBLqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8DEC4CECE;
-	Thu, 12 Dec 2024 17:39:23 +0000 (UTC)
+	 MIME-Version; b=EIysOXOTVYWvQTJs4IFDnQCSsrWpR3dlVOhokx9pDgF7ceGgzX2+YxadvEulL7DBbLg3TwjpMid3iZmDl4BnmAG7JIH11MrG8Gc4AYzUMTOOqeXVylf8IkiqglEZjXkZ1B1kWRJGvhnIL4MjunvydA0B2X1poASGRvPCSDJNBC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=copi5Ht0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070E2C4CECE;
+	Thu, 12 Dec 2024 17:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025163;
-	bh=Uj7NLUqSm5bG+CkvQ8HGFmACHXWcSy52OLefetMg4Q4=;
+	s=korg; t=1734024225;
+	bh=+yAaO9GQTy3m5G+khab8uuJvP/7T9kIY3MtrVjELjUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x/INBLqW1XGG6GBfmflQ+Wb9rL+lZIk7o2TX1JFAeJ6GOj18cEJ6vvs+YKS5fHgQY
-	 M2V2ekQVjqJGfabTahil3Py9ufuuVE7QCdFF71ZLyRBT59L8xS0DKjSbijiks7N9pq
-	 aqWuypckvgNtHsfjpCA3i7humlWaNnskDHwl1xFQ=
+	b=copi5Ht0pedo7fwO3hzKmkdq32Qi8ngJnroi0SYN9zDX6dO7xPrLbM7aFMrN7aCHP
+	 gOwlyXJS6Qvy1AyJ+06IBM0ueOi0pHtC4UVbHAT9I+d8ZeKZy3F2UERh73jk+G4Hlr
+	 m6JScJ3HeuFUAnirBHgEnVRfFrCf7mYTOqKKZx7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Eric Dumazet <edumazet@google.com>,
+	George McCollister <george.mccollister@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 047/321] soc: ti: smartreflex: Use IRQF_NO_AUTOEN flag in request_irq()
+Subject: [PATCH 5.10 227/459] net: hsr: fix hsr_init_sk() vs network/transport headers.
 Date: Thu, 12 Dec 2024 15:59:25 +0100
-Message-ID: <20241212144231.850969525@linuxfoundation.org>
+Message-ID: <20241212144302.537223969@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 16a0a69244240cfa32c525c021c40f85e090557a ]
+[ Upstream commit 9cfb5e7f0ded2bfaabc270ceb5f91d13f0e805b9 ]
 
-If request_irq() fails in sr_late_init(), there is no need to enable
-the irq, and if it succeeds, disable_irq() after request_irq() still has
-a time gap in which interrupts can come.
+Following sequence in hsr_init_sk() is invalid :
 
-request_irq() with IRQF_NO_AUTOEN flag will disable IRQ auto-enable when
-request IRQ.
+    skb_reset_mac_header(skb);
+    skb_reset_mac_len(skb);
+    skb_reset_network_header(skb);
+    skb_reset_transport_header(skb);
 
-Fixes: 1279ba5916f6 ("OMAP3+: SR: disable interrupt by default")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240912034147.3014213-1-ruanjinjie@huawei.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+It is invalid because skb_reset_mac_len() needs the correct
+network header, which should be after the mac header.
+
+This patch moves the skb_reset_network_header()
+and skb_reset_transport_header() before
+the call to dev_hard_header().
+
+As a result skb->mac_len is no longer set to a value
+close to 65535.
+
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: George McCollister <george.mccollister@gmail.com>
+Link: https://patch.msgid.link/20241122171343.897551-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/avs/smartreflex.c | 4 ++--
+ net/hsr/hsr_device.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/avs/smartreflex.c b/drivers/power/avs/smartreflex.c
-index 2365efe2dae15..2fe4dbbab46d2 100644
---- a/drivers/power/avs/smartreflex.c
-+++ b/drivers/power/avs/smartreflex.c
-@@ -213,10 +213,10 @@ static int sr_late_init(struct omap_sr *sr_info)
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index c5a4c5fb72934..505eb58f7e081 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -256,6 +256,8 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
+ 	skb->dev = master->dev;
+ 	skb->priority = TC_PRIO_CONTROL;
  
- 	if (sr_class->notify && sr_class->notify_flags && sr_info->irq) {
- 		ret = devm_request_irq(&sr_info->pdev->dev, sr_info->irq,
--				       sr_interrupt, 0, sr_info->name, sr_info);
-+				       sr_interrupt, IRQF_NO_AUTOEN,
-+				       sr_info->name, sr_info);
- 		if (ret)
- 			goto error;
--		disable_irq(sr_info->irq);
- 	}
++	skb_reset_network_header(skb);
++	skb_reset_transport_header(skb);
+ 	if (dev_hard_header(skb, skb->dev, ETH_P_PRP,
+ 			    hsr->sup_multicast_addr,
+ 			    skb->dev->dev_addr, skb->len) <= 0)
+@@ -263,8 +265,6 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
  
- 	if (pdata && pdata->enable_on_init)
+ 	skb_reset_mac_header(skb);
+ 	skb_reset_mac_len(skb);
+-	skb_reset_network_header(skb);
+-	skb_reset_transport_header(skb);
+ 
+ 	return skb;
+ out:
 -- 
 2.43.0
 
