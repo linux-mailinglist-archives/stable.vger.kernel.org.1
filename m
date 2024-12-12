@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730549EF673
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA8A9EF918
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653AE17D393
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EBF516E930
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332FB223C56;
-	Thu, 12 Dec 2024 17:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C7E222D68;
+	Thu, 12 Dec 2024 17:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szhetlel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA+RGu1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B55176AA1;
-	Thu, 12 Dec 2024 17:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2D020A5EE;
+	Thu, 12 Dec 2024 17:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023044; cv=none; b=TRoFpGLDk/Z0QMxoqVh74aO/t6kOfbtA5ZFl1jP0NknNTU5DhnGxQpdYPCRmbO1TN4nfjKV9KQXaNCNi2MY/QNHiRe8S/tqb9MAvgZkY3i03/NU1K9SS68jHaKn8zG1e8KEiIjGF6wn+CnclW3vdrQ50WGJcPv2CMN/uImh5kA0=
+	t=1734025267; cv=none; b=d6/T+2xsxdKNyoUsCnosXgZQcaPTbqZpsvf8FW17WqcEU78yCUsL6h1UqMVejv00FgKQaSVFbAU3/E7esFuxYKkjZP3KQ6eyYwWSMeIihfHOEUT0VqIE5fmpjKAKhmLqjkVeG4ovTexYcYxSJw7ouuXI8E3LAaH37+YOjldw3g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023044; c=relaxed/simple;
-	bh=OnDeUvkC/qU/0VrPupZP+Y2CMRKNfMSp603XnVF0pkA=;
+	s=arc-20240116; t=1734025267; c=relaxed/simple;
+	bh=bqfOXGQFLp3zbhkmG69pDFno37rmDaL/yoitf6iI6yE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Is/segady48phpwUHfZBjZ/4UXDbSc8xZn7yY3I6JoQgLSMbgmmKLPGt/3D02zmzIo+VSGBw98edoCJNuWbakYrbWoysDxACVGNFjMGa+6BstUxRq16qs9Vn1y288EWVC1ccRHlTP2GhAjTViXzjU+4502acEbQvX9kuOpNMeOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szhetlel; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5431CC4CECE;
-	Thu, 12 Dec 2024 17:04:03 +0000 (UTC)
+	 MIME-Version; b=p/1UDlwb6nN85nvOjDaNi5oM5w4aFtwvB4zxHGeb8Ws2geSd91slTdjHikf1D8rPe7qcENZDd8RMKqfcVWBiPoEMXFQgSG36iaLolT9EyZ4BefmS6qyxNsvhPLRwG4movJ0+nbYNriz9BilISe5Fq2Vn0YfzthVc5lKcA6df3rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA+RGu1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25B9C4CECE;
+	Thu, 12 Dec 2024 17:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023043;
-	bh=OnDeUvkC/qU/0VrPupZP+Y2CMRKNfMSp603XnVF0pkA=;
+	s=korg; t=1734025267;
+	bh=bqfOXGQFLp3zbhkmG69pDFno37rmDaL/yoitf6iI6yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szhetlelKTuQGg25kMzgwJiT6Hw2jQIUJxs9sgTm85XnC92EGzJ0nzCwR0+Z+6juX
-	 iRcYZRjbIcgMkRK2wHrRIzlKQWfJZ+y2tRtp/zDYLlUjznRcKoongVD7AY8hmaBUc8
-	 e8CE3UCv9L9Y7x9914x3iLJ9+fBibLZ/CC2pe1Y4=
+	b=IA+RGu1dHWd9ePRsC7Ua6Uf9WGAKNZLFCXPm0xYty138Qq0VQAPLvAMGv2j5VeIFt
+	 cvVv68rYvT9lByl9PPKwfBlsQ7CW28bbGr16TCbI9NROQ9Fy4iKZk9Zts9VNGMF9iU
+	 eGliyowfCH8CkgSUJ6Nre3s9JOQTpDP5GhFNFZl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marek Vasut <marex@denx.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 405/565] can: ifi_canfd: ifi_canfd_handle_lec_err(): fix {rx,tx}_errors statistics
+Subject: [PATCH 5.4 082/321] ALSA: us122l: Use snd_card_free_when_closed() at disconnection
 Date: Thu, 12 Dec 2024 16:00:00 +0100
-Message-ID: <20241212144327.667657343@linuxfoundation.org>
+Message-ID: <20241212144233.223338813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit bb03d568bb21b4afe7935d1943bcf68ddea3ea45 ]
+[ Upstream commit b7df09bb348016943f56b09dcaafe221e3f73947 ]
 
-The ifi_canfd_handle_lec_err() function was incorrectly incrementing only
-the receive error counter, even in cases of bit or acknowledgment errors
-that occur during transmission.
+The USB disconnect callback is supposed to be short and not too-long
+waiting.  OTOH, the current code uses snd_card_free() at
+disconnection, but this waits for the close of all used fds, hence it
+can take long.  It eventually blocks the upper layer USB ioctls, which
+may trigger a soft lockup.
 
-Fix the issue by incrementing the appropriate counter based on the
-type of error.
+An easy workaround is to replace snd_card_free() with
+snd_card_free_when_closed().  This variant returns immediately while
+the release of resources is done asynchronously by the card device
+release at the last close.
 
-Fixes: 5bbd655a8bd0 ("can: ifi: Add more detailed error reporting")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Link: https://patch.msgid.link/20241122221650.633981-8-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The loop of us122l->mmap_count check is dropped as well.  The check is
+useless for the asynchronous operation with *_when_closed().
+
+Fixes: 030a07e44129 ("ALSA: Add USB US122L driver")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241113111042.15058-3-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/ifi_canfd/ifi_canfd.c | 58 ++++++++++++++++++---------
- 1 file changed, 40 insertions(+), 18 deletions(-)
+ sound/usb/usx2y/us122l.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/ifi_canfd/ifi_canfd.c b/drivers/net/can/ifi_canfd/ifi_canfd.c
-index e8318e984bf2f..6a66d63f25c1d 100644
---- a/drivers/net/can/ifi_canfd/ifi_canfd.c
-+++ b/drivers/net/can/ifi_canfd/ifi_canfd.c
-@@ -393,36 +393,55 @@ static int ifi_canfd_handle_lec_err(struct net_device *ndev)
- 		return 0;
+diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
+index e82c5236482df..eb7e57c4a7fdb 100644
+--- a/sound/usb/usx2y/us122l.c
++++ b/sound/usb/usx2y/us122l.c
+@@ -636,10 +636,7 @@ static void snd_us122l_disconnect(struct usb_interface *intf)
+ 	usb_put_intf(usb_ifnum_to_if(us122l->dev, 1));
+ 	usb_put_dev(us122l->dev);
  
- 	priv->can.can_stats.bus_error++;
--	stats->rx_errors++;
+-	while (atomic_read(&us122l->mmap_count))
+-		msleep(500);
+-
+-	snd_card_free(card);
++	snd_card_free_when_closed(card);
+ }
  
- 	/* Propagate the error condition to the CAN stack. */
- 	skb = alloc_can_err_skb(ndev, &cf);
--	if (unlikely(!skb))
--		return 0;
- 
- 	/* Read the error counter register and check for new errors. */
--	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-+	if (likely(skb))
-+		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_OVERLOAD_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_OVERLOAD;
-+	if (errctr & IFI_CANFD_ERROR_CTR_OVERLOAD_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_OVERLOAD;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_ACK_ERROR_FIRST)
--		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+	if (errctr & IFI_CANFD_ERROR_CTR_ACK_ERROR_FIRST) {
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_BIT0_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+	if (errctr & IFI_CANFD_ERROR_CTR_BIT0_ERROR_FIRST) {
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT0;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_BIT1_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+	if (errctr & IFI_CANFD_ERROR_CTR_BIT1_ERROR_FIRST) {
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT1;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_STUFF_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+	if (errctr & IFI_CANFD_ERROR_CTR_STUFF_ERROR_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_STUFF;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_CRC_ERROR_FIRST)
--		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+	if (errctr & IFI_CANFD_ERROR_CTR_CRC_ERROR_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_FORM_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_FORM;
-+	if (errctr & IFI_CANFD_ERROR_CTR_FORM_ERROR_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_FORM;
-+	}
- 
- 	/* Reset the error counter, ack the IRQ and re-enable the counter. */
- 	writel(IFI_CANFD_ERROR_CTR_ER_RESET, priv->base + IFI_CANFD_ERROR_CTR);
-@@ -430,6 +449,9 @@ static int ifi_canfd_handle_lec_err(struct net_device *ndev)
- 	       priv->base + IFI_CANFD_INTERRUPT);
- 	writel(IFI_CANFD_ERROR_CTR_ER_ENABLE, priv->base + IFI_CANFD_ERROR_CTR);
- 
-+	if (unlikely(!skb))
-+		return 0;
-+
- 	netif_receive_skb(skb);
- 
- 	return 1;
+ static int snd_us122l_suspend(struct usb_interface *intf, pm_message_t message)
 -- 
 2.43.0
 
