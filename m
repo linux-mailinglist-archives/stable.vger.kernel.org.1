@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-103720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECCC9EF8D4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AAA9EF59A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E96428B1B0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9835434134F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFD2222D7C;
-	Thu, 12 Dec 2024 17:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA3F21E085;
+	Thu, 12 Dec 2024 17:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veZJRNYb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/2so/su"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CA2222D67;
-	Thu, 12 Dec 2024 17:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC38D217F40;
+	Thu, 12 Dec 2024 17:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025405; cv=none; b=DGWKALPDmKkfkr+QqHJ8A0bf6Tz/mPJ5NIpm0HsrKaZL+fYVompYL1FEvND8RswOKddCYW+928Ww+CAo449bLxfcv7u5ov7dPlINIGRR/DsLRne63WEyR5hte6juVQe4glkNZahuLCTXe170nffa1FoKyr9xX/5zLVX3KXXu7Ys=
+	t=1734023222; cv=none; b=DuvjDkGYyJbxgWAbSTn132oHKd46j1jqhKf3npxA+JU+cVW50SEdqYvvzLJdlWhhlOr896ijqFEsuMgqPagG6Yv3QBWSCSsBALorhlGnVoj0UkjGdfoakjPRciOY5pr6UVBi2mkxFiAGtz1SZcWa3/xZvucUfywMABNmnjZJENw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025405; c=relaxed/simple;
-	bh=mGxeKq6U6L7heB7rVdeMDiSNCxPr/x5R7Xbn7kL1C6Y=;
+	s=arc-20240116; t=1734023222; c=relaxed/simple;
+	bh=wmmt3VGqGaTNbt1PNZ5eky598xYl4IXIacpvfpsjWN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMzF/fJnNI0VBKvXy9U6/+RE9RcJ3ruKpRNrfvQvxYl7YprNalsEtPr5/3DEicDgupPSZJ8Up5PxfDdJ++sTa6I+Ww+fW/VoIS5ww65EZ1tmrmNJoNIkzczJZYqbzFDp2pVftXEdZsv62YbMzT7duzLzYLQ4sZZx9NWreSbiTk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veZJRNYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E354C4CED0;
-	Thu, 12 Dec 2024 17:43:24 +0000 (UTC)
+	 MIME-Version; b=C/b55MfleAlMnh6gvcxUSr5Umum4MYnp5iOW7Vk/JbvBUghhULxb+jXYUj41vgJpXAgu3DAmVDd2oHzZOjMtQTOqlpXxvsrnchffM+KtDJqFaKpIpFwDXtsvA9KFBTptO3HwG4mdjlCPpbC39HsSK2VAmWpYrESf0k3fvZfhiQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/2so/su; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D98BC4CECE;
+	Thu, 12 Dec 2024 17:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025404;
-	bh=mGxeKq6U6L7heB7rVdeMDiSNCxPr/x5R7Xbn7kL1C6Y=;
+	s=korg; t=1734023222;
+	bh=wmmt3VGqGaTNbt1PNZ5eky598xYl4IXIacpvfpsjWN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=veZJRNYbv35lYJPzSUNQoUVyxziTecY9xCoeH+Fv5ZRZuZNq3E7DjL7txmUlToyDf
-	 eWux5VlM5GS7oEZOSgC+LJrtVmOGbXWtpxWoqclQ8Ce/wYupjRR9QdY6eFdHQiADoY
-	 lbGyemvDjvUGgTQlPySLoQ7txuzvZGM5h20ElWe0=
+	b=j/2so/surLocqqk2eyfNVfDKfT4WsRDMSpBiWYwdOBM96WO9+WeKlFw12wzeb51br
+	 llNfPO3ts42XZSrjKty2dKX4Dh/Pnx/2jZFWxQlwF+zVr6FSMjFi2xDuUTh2eNlRhr
+	 k6NiZi6S2WeDz7C5Gq2Viw38zac1NlGPF1gu5ZCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.4 141/321] usb: ehci-spear: fix call balance of sehci clk handling routines
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 464/565] regmap: detach regmap from dev on regmap_exit
 Date: Thu, 12 Dec 2024 16:00:59 +0100
-Message-ID: <20241212144235.549724338@linuxfoundation.org>
+Message-ID: <20241212144330.075814519@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-commit 40c974826734836402abfd44efbf04f63a2cc1c1 upstream.
+commit 3061e170381af96d1e66799d34264e6414d428a7 upstream.
 
-If the clock sehci->clk was not enabled in spear_ehci_hcd_drv_probe,
-it should not be disabled in any path.
+At the end of __regmap_init(), if dev is not NULL, regmap_attach_dev()
+is called, which adds a devres reference to the regmap, to be able to
+retrieve a dev's regmap by name using dev_get_regmap().
 
-Conversely, if it was enabled in spear_ehci_hcd_drv_probe, it must be disabled
-in all error paths to ensure proper cleanup.
+When calling regmap_exit, the opposite does not happen, and the
+reference is kept until the dev is detached.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
+Add a regmap_detach_dev() function and call it in regmap_exit() to make
+sure that the devres reference is not kept.
 
-Fixes: 7675d6ba436f ("USB: EHCI: make ehci-spear a separate driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241114230310.432213-1-mordan@ispras.ru
+Fixes: 72b39f6f2b5a ("regmap: Implement dev_get_regmap()")
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20241128130554.362486-1-demonsingur%40gmail.com
+Link: https://patch.msgid.link/20241128131625.363835-1-demonsingur@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ehci-spear.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/base/regmap/regmap.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/usb/host/ehci-spear.c
-+++ b/drivers/usb/host/ehci-spear.c
-@@ -110,7 +110,9 @@ static int spear_ehci_hcd_drv_probe(stru
- 	/* registers start at offset 0x0 */
- 	hcd_to_ehci(hcd)->caps = hcd->regs;
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -663,6 +663,17 @@ int regmap_attach_dev(struct device *dev
+ }
+ EXPORT_SYMBOL_GPL(regmap_attach_dev);
  
--	clk_prepare_enable(sehci->clk);
-+	retval = clk_prepare_enable(sehci->clk);
-+	if (retval)
-+		goto err_put_hcd;
- 	retval = usb_add_hcd(hcd, irq, IRQF_SHARED);
- 	if (retval)
- 		goto err_stop_ehci;
-@@ -135,8 +137,7 @@ static int spear_ehci_hcd_drv_remove(str
++static int dev_get_regmap_match(struct device *dev, void *res, void *data);
++
++static int regmap_detach_dev(struct device *dev, struct regmap *map)
++{
++	if (!dev)
++		return 0;
++
++	return devres_release(dev, dev_get_regmap_release,
++			      dev_get_regmap_match, (void *)map->name);
++}
++
+ static enum regmap_endian regmap_get_reg_endian(const struct regmap_bus *bus,
+ 					const struct regmap_config *config)
+ {
+@@ -1497,6 +1508,7 @@ int regmap_reinit_cache(struct regmap *m
+ {
+ 	int ret;
  
- 	usb_remove_hcd(hcd);
++	regmap_detach_dev(map->dev, map);
+ 	regcache_exit(map);
+ 	regmap_debugfs_exit(map);
  
--	if (sehci->clk)
--		clk_disable_unprepare(sehci->clk);
-+	clk_disable_unprepare(sehci->clk);
- 	usb_put_hcd(hcd);
- 
- 	return 0;
 
 
 
