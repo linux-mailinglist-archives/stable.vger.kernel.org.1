@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-102612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812089EF3C2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3919EEA2A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC065178FF3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE36188A9FB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B4222967D;
-	Thu, 12 Dec 2024 16:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE4B216E1D;
+	Thu, 12 Dec 2024 15:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoMvQJzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgseFGUX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D547E216E3B;
-	Thu, 12 Dec 2024 16:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7968C2EAE5;
+	Thu, 12 Dec 2024 15:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021855; cv=none; b=HckzaVJ4dhGmMoDcQ6k58npghIxx1Tv/LK0q/QZdefoRZUlTkEd0orm8GXBv6wytg6ESW87EKj2d3LAG6560TCFqchYbZtYfZRfqNdy8T1dMLplurzocNp0ET3R6rWELGVLkk+lDcsLH95GAH7dq3x84Igfw5IlIaxd6ziQJds8=
+	t=1734016010; cv=none; b=BQ25BtwVjZWoSiq1chnAaRRQC0iwSHjGu6nKOVDkWBDODD7fAwsEKvSc22VBH52NZjJVaG7enyir/9lMJEeRILRAdQWHl3dre/qVR85U7PlnJwosYpafkPs31l+fiOapPWhatXnVTIa/fanOczOD90gI7JyXVrMnkPyxZfG09gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021855; c=relaxed/simple;
-	bh=9z81GhMaMVV6BUJaSER17Ob46bS8EcXUpIoPcJX3oYE=;
+	s=arc-20240116; t=1734016010; c=relaxed/simple;
+	bh=qizGT6EDJKsninS3o1N5zqa6K3ny2w9o9YmEZXOZI14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IjJNGhRYFlmq0W5Txki4l17HQQavMSj52hVabiktDx3nrQCumAdSOICk2PFbcmKzOFdHDUfYT+827Xz7gHUwyXdezwt5aPjY4YwL/J2QwXVJOpUq8mARdiwVOlojCN3OA+eyQ3dmSfqVsTGuBUaoTv2H950NjMExUmUM5anDpS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoMvQJzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448C5C4CED0;
-	Thu, 12 Dec 2024 16:44:15 +0000 (UTC)
+	 MIME-Version; b=uVYM9CouJ9buY6aVvc5dPqe1bNpFyfibztv+fH2DA9Z+x4aV9LkG1sfMfBRq+ygQwE8rVIrSCF3bAZYhJXgKtdD1c+MqoDcvcUcVwAbogVN86HJpbxqZAOGrMoS6IiDL+Y8nFgae+b4KxEMMscK5PWTo3GTzOFDyzGnO8vB1iWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgseFGUX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC14BC4CECE;
+	Thu, 12 Dec 2024 15:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021855;
-	bh=9z81GhMaMVV6BUJaSER17Ob46bS8EcXUpIoPcJX3oYE=;
+	s=korg; t=1734016010;
+	bh=qizGT6EDJKsninS3o1N5zqa6K3ny2w9o9YmEZXOZI14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WoMvQJzXVVjN3bgbfVnRV3L2cLD/XkDs36Q+5NOeTkBn24o0jlQc1nGuulx72qwcf
-	 P+GdEvxTQ7CwuW28rI27Iq6f5yBmV2GnG9c4+3G7eNLGetlIsI2gNZSEiCUhuxh91V
-	 Wm+aC8MBAjq/iR4Grxl5435hSnolvvdlmDPmIfFs=
+	b=CgseFGUXWeRKTkbwQkuZWWWfRZ4oxmZGXi/j5mDLVY/YTT2jKByFs7J0OnlCtRlNA
+	 NLzTX2DBMg1WZOAZVWoagllK34F9tE+WJa51VlBrncEHnY7M1yHXROEFgfG5uBEasu
+	 HxeNhB3rpbK0CHF+zOD/J6IM/UwTp7xapx5CwTc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"Yingfu.zhou" <yingfu.zhou@shopee.com>,
+	"Chunguang.xu" <chunguang.xu@shopee.com>,
+	"Yue.zhao" <yue.zhao@shopee.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 081/565] mips: asm: fix warning when disabling MIPS_FP_SUPPORT
+Subject: [PATCH 6.12 107/466] nvme-rdma: unquiesce admin_q before destroy it
 Date: Thu, 12 Dec 2024 15:54:36 +0100
-Message-ID: <20241212144314.687662814@linuxfoundation.org>
+Message-ID: <20241212144311.045849513@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Chunguang.xu <chunguang.xu@shopee.com>
 
-[ Upstream commit da09935975c8f8c90d6f57be2422dee5557206cd ]
+[ Upstream commit 5858b687559809f05393af745cbadf06dee61295 ]
 
-When MIPS_FP_SUPPORT is disabled, __sanitize_fcr31() is defined as
-nothing, which triggers a gcc warning:
+Kernel will hang on destroy admin_q while we create ctrl failed, such
+as following calltrace:
 
-    In file included from kernel/sched/core.c:79:
-    kernel/sched/core.c: In function 'context_switch':
-    ./arch/mips/include/asm/switch_to.h:114:39: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
-      114 |                 __sanitize_fcr31(next);                                 \
-          |                                       ^
-    kernel/sched/core.c:5316:9: note: in expansion of macro 'switch_to'
-     5316 |         switch_to(prev, next, prev);
-          |         ^~~~~~~~~
+PID: 23644    TASK: ff2d52b40f439fc0  CPU: 2    COMMAND: "nvme"
+ #0 [ff61d23de260fb78] __schedule at ffffffff8323bc15
+ #1 [ff61d23de260fc08] schedule at ffffffff8323c014
+ #2 [ff61d23de260fc28] blk_mq_freeze_queue_wait at ffffffff82a3dba1
+ #3 [ff61d23de260fc78] blk_freeze_queue at ffffffff82a4113a
+ #4 [ff61d23de260fc90] blk_cleanup_queue at ffffffff82a33006
+ #5 [ff61d23de260fcb0] nvme_rdma_destroy_admin_queue at ffffffffc12686ce
+ #6 [ff61d23de260fcc8] nvme_rdma_setup_ctrl at ffffffffc1268ced
+ #7 [ff61d23de260fd28] nvme_rdma_create_ctrl at ffffffffc126919b
+ #8 [ff61d23de260fd68] nvmf_dev_write at ffffffffc024f362
+ #9 [ff61d23de260fe38] vfs_write at ffffffff827d5f25
+    RIP: 00007fda7891d574  RSP: 00007ffe2ef06958  RFLAGS: 00000202
+    RAX: ffffffffffffffda  RBX: 000055e8122a4d90  RCX: 00007fda7891d574
+    RDX: 000000000000012b  RSI: 000055e8122a4d90  RDI: 0000000000000004
+    RBP: 00007ffe2ef079c0   R8: 000000000000012b   R9: 000055e8122a4d90
+    R10: 0000000000000000  R11: 0000000000000202  R12: 0000000000000004
+    R13: 000055e8122923c0  R14: 000000000000012b  R15: 00007fda78a54500
+    ORIG_RAX: 0000000000000001  CS: 0033  SS: 002b
 
-Fix this by providing an empty body for __sanitize_fcr31() like one is
-defined for __mips_mt_fpaff_switch_to().
+This due to we have quiesced admi_q before cancel requests, but forgot
+to unquiesce before destroy it, as a result we fail to drain the
+pending requests, and hang on blk_mq_freeze_queue_wait() forever. Here
+try to reuse nvme_rdma_teardown_admin_queue() to fix this issue and
+simplify the code.
 
-Fixes: 36a498035bd2 ("MIPS: Avoid FCSR sanitization when CONFIG_MIPS_FP_SUPPORT=n")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 958dc1d32c80 ("nvme-rdma: add clean action for failed reconnection")
+Reported-by: Yingfu.zhou <yingfu.zhou@shopee.com>
+Signed-off-by: Chunguang.xu <chunguang.xu@shopee.com>
+Signed-off-by: Yue.zhao <yue.zhao@shopee.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/switch_to.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/rdma.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
-index a4374b4cb88fd..d6ccd53440213 100644
---- a/arch/mips/include/asm/switch_to.h
-+++ b/arch/mips/include/asm/switch_to.h
-@@ -97,7 +97,7 @@ do {									\
- 	}								\
- } while (0)
- #else
--# define __sanitize_fcr31(next)
-+# define __sanitize_fcr31(next) do { (void) (next); } while (0)
- #endif
+diff --git a/drivers/nvme/host/rdma.c b/drivers/nvme/host/rdma.c
+index 24a2759798d01..913e6e5a80705 100644
+--- a/drivers/nvme/host/rdma.c
++++ b/drivers/nvme/host/rdma.c
+@@ -1091,13 +1091,7 @@ static int nvme_rdma_setup_ctrl(struct nvme_rdma_ctrl *ctrl, bool new)
+ 	}
+ destroy_admin:
+ 	nvme_stop_keep_alive(&ctrl->ctrl);
+-	nvme_quiesce_admin_queue(&ctrl->ctrl);
+-	blk_sync_queue(ctrl->ctrl.admin_q);
+-	nvme_rdma_stop_queue(&ctrl->queues[0]);
+-	nvme_cancel_admin_tagset(&ctrl->ctrl);
+-	if (new)
+-		nvme_remove_admin_tag_set(&ctrl->ctrl);
+-	nvme_rdma_destroy_admin_queue(ctrl);
++	nvme_rdma_teardown_admin_queue(ctrl, new);
+ 	return ret;
+ }
  
- /*
 -- 
 2.43.0
 
