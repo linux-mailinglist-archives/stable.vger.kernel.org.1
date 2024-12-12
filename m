@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-101011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD139EEA05
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:08:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3DD9EE9DE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:06:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4396188BEF1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1AD2282B92
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5362156FF;
-	Thu, 12 Dec 2024 15:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9BE216E1D;
+	Thu, 12 Dec 2024 15:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRUaeghA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Odbb9/Rz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B555211476;
-	Thu, 12 Dec 2024 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DDD2080FC;
+	Thu, 12 Dec 2024 15:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015947; cv=none; b=CeHABcVyKsS+eb4ZWVFrutSdNg8kDzvq3J2vmu5MGWmV6rRta1P903Kldg7NX+0OH25sZIZA4Q4FunfUOQMjLuXE9IjSFf3oM6v7cKK6LQa6bHDwNw1+E9OxPZfsDAF6GAK5xngJZYq4Nrv2bHxMoUtoI2Xfn5LmKbaFExIESzc=
+	t=1734015961; cv=none; b=tAbieqbwVps0bGGIHaE7WzFfu6pkgwLZLwbS4hecPt+ytOZGdNl+5vT/7yVjJAMrXIIRcsVgS1/IJz+J7pgMU2ISCq21lt7lyPaPFcWnP/d3aCNDAnpR84RGitjr1/5JY2U7Ev7cX4CGvJu6wYdk2aFW2uCetazgpISifjqwXx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015947; c=relaxed/simple;
-	bh=ZWtvUjQPb4Gx0JN99ssqnkPn2f/VZVMpXy3/Jzbb4mg=;
+	s=arc-20240116; t=1734015961; c=relaxed/simple;
+	bh=+LnLyNHi2Jv1aAcRHzFPkvn3VkqGI/iXfEiW/mPaBJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0NKirJXmXAhQMOvGsMw60Anrd44m2do2aT0NHVkc5wge9WlKZYWRqu+YsMm62ysiq/my7xACLcnEoIgqQMSYz7WYG0cLjRvtUWkbF+LaHbP2iGtt6g+/7JN/9+RdWI1jC2BEnaUT70ANKrq4eGfkEWWpyUbamcgD140IBxxobA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRUaeghA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B90C4CECE;
-	Thu, 12 Dec 2024 15:05:46 +0000 (UTC)
+	 MIME-Version; b=OYCFTqLUu7pA2R2KFO8XnB1jlX618NKCb3zGbgG5lAt87w+y8V+OsBPMgFjJAmbD513660Rtr+ud9/HFMTBvso2yCAK+Su4ZGlr8GkGylXKU/ImYxvyxkjDjNnpEcGXL1oa7eCjtQeoxSG4gK3EipxQpaYTLagG8vojSEPUm5E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Odbb9/Rz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABD4C4CECE;
+	Thu, 12 Dec 2024 15:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015946;
-	bh=ZWtvUjQPb4Gx0JN99ssqnkPn2f/VZVMpXy3/Jzbb4mg=;
+	s=korg; t=1734015960;
+	bh=+LnLyNHi2Jv1aAcRHzFPkvn3VkqGI/iXfEiW/mPaBJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRUaeghAPApbri1kJ0VkhonxGuJWdmihVOGwt9ruFHysmrvLMIT9FFUNnwy7aWoLl
-	 y24h48sbvO/nkGe1kzBcf7WNb+usgPV/FPJ1nPz88pZX+rZi9PPmN8h41M5rbWu7wd
-	 7ZjqIqqA1YsIs0JDeyvMr58EraPo+mexHtJwO9/U=
+	b=Odbb9/Rzk/VisxGUNH5n1qn6llPZn5h9EPP2lM/5Cu4hOr+a3YUOjISko8x+Mwr5h
+	 6M2PY8LwhwzGDg+YZqhGStTJh0925TK9lmxOHiWQ7JBTrGkWDzQZdGYy0HLaejTCco
+	 f3iuwxjdVdyMWu81osvM8HYzunPvyUAbjOrZ/Uic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Charles Han <hanchunchao@inspur.com>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/466] gpio: grgpio: use a helper variable to store the address of ofdev->dev
-Date: Thu, 12 Dec 2024 15:53:50 +0100
-Message-ID: <20241212144309.229101655@linuxfoundation.org>
+Subject: [PATCH 6.12 062/466] gpio: grgpio: Add NULL check in grgpio_probe
+Date: Thu, 12 Dec 2024 15:53:51 +0100
+Message-ID: <20241212144309.266627318@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -65,111 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit d036ae41cebdfae92666024163c109b8fef516fa ]
+[ Upstream commit 050b23d081da0f29474de043e9538c1f7a351b3b ]
 
-Instead of dereferencing the platform device pointer repeatedly, just
-store its address in a helper variable.
+devm_kasprintf() can return a NULL pointer on failure,but this
+returned value in grgpio_probe is not checked.
+Add NULL check in grgpio_probe, to handle kernel NULL
+pointer dereference error.
 
-Link: https://lore.kernel.org/r/20241015131832.44678-3-brgl@bgdev.pl
+Cc: stable@vger.kernel.org
+Fixes: 7eb6ce2f2723 ("gpio: Convert to using %pOF instead of full_name")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20241114091822.78199-1-hanchunchao@inspur.com
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Stable-dep-of: 050b23d081da ("gpio: grgpio: Add NULL check in grgpio_probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-grgpio.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/gpio/gpio-grgpio.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/gpio/gpio-grgpio.c b/drivers/gpio/gpio-grgpio.c
-index 017c7170eb57c..2d16ce13a804d 100644
+index 2d16ce13a804d..620793740c668 100644
 --- a/drivers/gpio/gpio-grgpio.c
 +++ b/drivers/gpio/gpio-grgpio.c
-@@ -328,6 +328,7 @@ static const struct irq_domain_ops grgpio_irq_domain_ops = {
- static int grgpio_probe(struct platform_device *ofdev)
- {
- 	struct device_node *np = ofdev->dev.of_node;
-+	struct device *dev = &ofdev->dev;
- 	void  __iomem *regs;
- 	struct gpio_chip *gc;
- 	struct grgpio_priv *priv;
-@@ -337,7 +338,7 @@ static int grgpio_probe(struct platform_device *ofdev)
- 	int size;
- 	int i;
- 
--	priv = devm_kzalloc(&ofdev->dev, sizeof(*priv), GFP_KERNEL);
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
- 
-@@ -346,28 +347,28 @@ static int grgpio_probe(struct platform_device *ofdev)
- 		return PTR_ERR(regs);
- 
- 	gc = &priv->gc;
--	err = bgpio_init(gc, &ofdev->dev, 4, regs + GRGPIO_DATA,
-+	err = bgpio_init(gc, dev, 4, regs + GRGPIO_DATA,
- 			 regs + GRGPIO_OUTPUT, NULL, regs + GRGPIO_DIR, NULL,
- 			 BGPIOF_BIG_ENDIAN_BYTE_ORDER);
- 	if (err) {
--		dev_err(&ofdev->dev, "bgpio_init() failed\n");
-+		dev_err(dev, "bgpio_init() failed\n");
- 		return err;
- 	}
- 
- 	priv->regs = regs;
- 	priv->imask = gc->read_reg(regs + GRGPIO_IMASK);
--	priv->dev = &ofdev->dev;
-+	priv->dev = dev;
- 
+@@ -362,6 +362,9 @@ static int grgpio_probe(struct platform_device *ofdev)
  	gc->owner = THIS_MODULE;
  	gc->to_irq = grgpio_to_irq;
--	gc->label = devm_kasprintf(&ofdev->dev, GFP_KERNEL, "%pOF", np);
-+	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
+ 	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
++	if (!gc->label)
++		return -ENOMEM;
++
  	gc->base = -1;
  
  	err = of_property_read_u32(np, "nbits", &prop);
- 	if (err || prop <= 0 || prop > GRGPIO_MAX_NGPIO) {
- 		gc->ngpio = GRGPIO_MAX_NGPIO;
--		dev_dbg(&ofdev->dev,
--			"No or invalid nbits property: assume %d\n", gc->ngpio);
-+		dev_dbg(dev, "No or invalid nbits property: assume %d\n",
-+			gc->ngpio);
- 	} else {
- 		gc->ngpio = prop;
- 	}
-@@ -379,7 +380,7 @@ static int grgpio_probe(struct platform_device *ofdev)
- 	irqmap = (s32 *)of_get_property(np, "irqmap", &size);
- 	if (irqmap) {
- 		if (size < gc->ngpio) {
--			dev_err(&ofdev->dev,
-+			dev_err(dev,
- 				"irqmap shorter than ngpio (%d < %d)\n",
- 				size, gc->ngpio);
- 			return -EINVAL;
-@@ -389,7 +390,7 @@ static int grgpio_probe(struct platform_device *ofdev)
- 						     &grgpio_irq_domain_ops,
- 						     priv);
- 		if (!priv->domain) {
--			dev_err(&ofdev->dev, "Could not add irq domain\n");
-+			dev_err(dev, "Could not add irq domain\n");
- 			return -EINVAL;
- 		}
- 
-@@ -419,13 +420,13 @@ static int grgpio_probe(struct platform_device *ofdev)
- 
- 	err = gpiochip_add_data(gc, priv);
- 	if (err) {
--		dev_err(&ofdev->dev, "Could not add gpiochip\n");
-+		dev_err(dev, "Could not add gpiochip\n");
- 		if (priv->domain)
- 			irq_domain_remove(priv->domain);
- 		return err;
- 	}
- 
--	dev_info(&ofdev->dev, "regs=0x%p, base=%d, ngpio=%d, irqs=%s\n",
-+	dev_info(dev, "regs=0x%p, base=%d, ngpio=%d, irqs=%s\n",
- 		 priv->regs, gc->base, gc->ngpio, priv->domain ? "on" : "off");
- 
- 	return 0;
 -- 
 2.43.0
 
