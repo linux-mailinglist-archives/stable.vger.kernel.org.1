@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191219EECDB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 519F19EEAF9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC311163305
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08536282EEB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EF0217F26;
-	Thu, 12 Dec 2024 15:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9F1216E3B;
+	Thu, 12 Dec 2024 15:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18CGwrgl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9yBmIPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107852139CB;
-	Thu, 12 Dec 2024 15:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42FE215048;
+	Thu, 12 Dec 2024 15:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017798; cv=none; b=MIia9AOg1oeTRjlJyo7J7Cx+rrNQt12JylopSoOO93phGnctfHSKnymdGlQFr5w0VECK+KcENZxb+qfT774wepZsHtzymLXm2Qw1wz6qX9lRblV6REdFlu7jtKxxPbrMZgCJzRs42c+1Lp1n9i6ZevqMKLqTWMkWvwp8nP1PstM=
+	t=1734016776; cv=none; b=GqAtouLYMr6q+RbkRVSvEvC14NWBZ1RcgPcqxxrKEqji/zf98ifM108qBSW3Ua8VvFxLSyLc7961lE+zNo2CVGEGSyYAyDjEVG7LMUgivMRn8oDEKefy5d4zcJmb9RGt6Fg626gInfYUzHKoDUm9AATQmXSqAjF0TNR/UcrLt+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017798; c=relaxed/simple;
-	bh=5BsGiqhiC+JZVXpKBoxsiqxL8u1pjevn8T7qnK1TD0s=;
+	s=arc-20240116; t=1734016776; c=relaxed/simple;
+	bh=P7hu3zgoa2Ca/Q01UX2xcVCE2VmnFt3sdZlHYIY0sgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PlBsAgkqRvfF0vl2iK8HirOQFXCI+g7aGm3kCNWUnOinumRmxqsyOxGst7KVN+VHRMbzk4U5/2TgUSBk7INMghmQJo4/XjQNqCplNyEjelCEacbMe8G0UIY1i57i53NMWrOFazTbZLDV63AzLI6l/9wQDDwig38qxdBbJbT2Zrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18CGwrgl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A91C4CECE;
-	Thu, 12 Dec 2024 15:36:37 +0000 (UTC)
+	 MIME-Version; b=QEeaIRm9MRiL+jwo+WdTprr8sCTRgGaPzYK/iF7fh2Hb5gF4njNW1ctRuiOIDDie4UmTknIJkXoGECok35BUy0NvCx2WZNIalNdPVi9AwsbygpvJ+zPJK5m/oVWj+RAKjb32DFhx5sVAMi8AaEDz1hN059telQkfE7M7lHM6OLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9yBmIPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2F9C4CECE;
+	Thu, 12 Dec 2024 15:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017797;
-	bh=5BsGiqhiC+JZVXpKBoxsiqxL8u1pjevn8T7qnK1TD0s=;
+	s=korg; t=1734016776;
+	bh=P7hu3zgoa2Ca/Q01UX2xcVCE2VmnFt3sdZlHYIY0sgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18CGwrglEEGje+5h19PyIAHq/U+ymKMk1ppReot+9a4TaIX6Y3XALLlGITbU5K9hF
-	 1M4m9TrDvOcmGTVUXGOaKMA6VpY66nJ14Rg1K9lRiQaIjz4qt2kOwf7d75KQ+LfB2E
-	 dDbxG7p6lPP+yG1XsNiCNqF/cz4vq9gHVxPw72wo=
+	b=B9yBmIPdCTNiyw9GdYbPh/tdsf5Expqs4nWuA0GQ4ScINa/IfZ4RdDzj6N4AAV5iL
+	 3zGXF2tINcafZsNY3UmVzG31QJajlrrN8igT3KZuRU0NPY+CZWAHJWgWFEGYW2jcsT
+	 6tSzOYqzY4VQkExppAttWZEEnGtPqHiwGaa3CaSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alasdair McWilliam <alasdair.mcwilliam@outlook.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Liao Chen <liaochen4@huawei.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/356] xsk: always clear DMA mapping information when unmapping the pool
+Subject: [PATCH 6.12 263/466] drm/bridge: it6505: Enable module autoloading
 Date: Thu, 12 Dec 2024 15:57:12 +0100
-Message-ID: <20241212144249.109473680@linuxfoundation.org>
+Message-ID: <20241212144317.189139025@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit ac9a48a6f1610b094072b815e884e1668aea4401 ]
+[ Upstream commit 1e2ab24cd708b1c864ff983ee1504c0a409d2f8e ]
 
-When the umem is shared, the DMA mapping is also shared between the xsk
-pools, therefore it should stay valid as long as at least 1 user remains.
-However, the pool also keeps the copies of DMA-related information that are
-initialized in the same way in xp_init_dma_info(), but cleared by
-xp_dma_unmap() only for the last remaining pool, this causes the problems
-below.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
+on the alias from of_device_id table.
 
-The first one is that the commit adbf5a42341f ("ice: remove af_xdp_zc_qps
-bitmap") relies on pool->dev to determine the presence of a ZC pool on a
-given queue, avoiding internal bookkeeping. This works perfectly fine if
-the UMEM is not shared, but reliably fails otherwise as stated in the
-linked report.
-
-The second one is pool->dma_pages which is dynamically allocated and
-only freed in xp_dma_unmap(), this leads to a small memory leak. kmemleak
-does not catch it, but by printing the allocation results after terminating
-the userspace program it is possible to see that all addresses except the
-one belonging to the last detached pool are still accessible through the
-kmemleak dump functionality.
-
-Always clear the DMA mapping information from the pool and free
-pool->dma_pages when unmapping the pool, so that the only difference
-between results of the last remaining user's call and the ones before would
-be the destruction of the DMA mapping.
-
-Fixes: adbf5a42341f ("ice: remove af_xdp_zc_qps bitmap")
-Fixes: 921b68692abb ("xsk: Enable sharing of dma mappings")
-Reported-by: Alasdair McWilliam <alasdair.mcwilliam@outlook.com>
-Closes: https://lore.kernel.org/PA4P194MB10056F208AF221D043F57A3D86512@PA4P194MB1005.EURP194.PROD.OUTLOOK.COM
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Link: https://lore.kernel.org/r/20241122112912.89881-1-larysa.zaremba@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240902113320.903147-2-liaochen4@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk_buff_pool.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index b0a611677865d..f38388b6b62c2 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -369,10 +369,9 @@ void xp_dma_unmap(struct xsk_buff_pool *pool, unsigned long attrs)
- 		return;
- 	}
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 65b57de20203f..008d86cc562af 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -3507,6 +3507,7 @@ static const struct of_device_id it6505_of_match[] = {
+ 	{ .compatible = "ite,it6505" },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(of, it6505_of_match);
  
--	if (!refcount_dec_and_test(&dma_map->users))
--		return;
-+	if (refcount_dec_and_test(&dma_map->users))
-+		__xp_dma_unmap(dma_map, attrs);
- 
--	__xp_dma_unmap(dma_map, attrs);
- 	kvfree(pool->dma_pages);
- 	pool->dma_pages = NULL;
- 	pool->dma_pages_cnt = 0;
+ static struct i2c_driver it6505_i2c_driver = {
+ 	.driver = {
 -- 
 2.43.0
 
