@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-103289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9109EF60B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:22:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B5D9EF8C5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14B00287FEC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58DEC17B7BB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472BA2165F0;
-	Thu, 12 Dec 2024 17:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B800222D67;
+	Thu, 12 Dec 2024 17:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KELj014y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13L5DoxH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0350313CA93;
-	Thu, 12 Dec 2024 17:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C48223C53;
+	Thu, 12 Dec 2024 17:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024115; cv=none; b=E5DWncZi95F1SDuGFyINqzTVwgIyvcICzanv6p1kxUCqwmngU1ZCWfYAQC6jSr6lOm11Ff6xmk4vQXKrJaV4HlsW9UAAifn4gsbk3Q98KNROD5FwvJX7JWgCzBj/YifhkXcIiJkSplRtLPPJtRw1Q0jbnKc3BMglId7PLGhqZIM=
+	t=1734024967; cv=none; b=TladKXH6KNEYFJjO0t+FqEaX+eVYKtqX/3mSPwKV+D/LFkd9e8MFQ7flD+dEgRx/g24aVGJXChX80pTMbyMvVpK8GdLlO3P53xca5M9GVhYSoayBndh6IfyED5TSiQfIBIMrOZzbuklUoOgDEXC6NhaxhD4tDf6QZNuMIL5q8wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024115; c=relaxed/simple;
-	bh=i3lN6kFz+RVaTInW9tG6PfliiPEjnen5juS0/O0M2Qo=;
+	s=arc-20240116; t=1734024967; c=relaxed/simple;
+	bh=m0apJX/WGs19R7YHoEAxXcpKwoSVD9/hHUjPlqTCzio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnwNKoKjG9dB/LfLVEbXYk+1Xmd+T92qI9DYZny5DaO/OXMTMp6jjrjZQAuxh5qthMA3C5uaUvLHI5QK3f4L3tte7DnsTALNc38EK7oj18HkF86PAyrc3XC3ed41Sn8YaOauCt2vQuM3NRFIOWPPkBOqigbfSHeaWy/yt5Ja5nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KELj014y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F17C4CED0;
-	Thu, 12 Dec 2024 17:21:54 +0000 (UTC)
+	 MIME-Version; b=pRkD1bET3zxbMbzRXP6rPwdq22gYML8Nwu1LE2PiAzY8XSM6tnU39g2LV+owLpzEBFfoEKGeTo8SK6HqJwO/476LsUnzraC9v+J96A1JPMLV+0qm2BLugFsJ31O9bCJULlcanzC7QrWl3nw8hWQ2JkEjrD1ptXFb0kQP/4IJLCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13L5DoxH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78601C4CED0;
+	Thu, 12 Dec 2024 17:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024114;
-	bh=i3lN6kFz+RVaTInW9tG6PfliiPEjnen5juS0/O0M2Qo=;
+	s=korg; t=1734024966;
+	bh=m0apJX/WGs19R7YHoEAxXcpKwoSVD9/hHUjPlqTCzio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KELj014ywCwyNAGZCqRVxg6cNi66ZzkZ3Y1W9lhqKsGRigNWgWINT7PZB+DmWoWDg
-	 OJ8BxiwBdKXmmnhxjJjlLwvVdU2L1S3DY60+nQtmhRvGeGXm/Zv41VCh615l1+Olwl
-	 DSHmpAaZc3y3xHPSVKDFYZ0hZGRjxC/meqwkvbeQ=
+	b=13L5DoxHszAGYKh/slvL9lNFJvxiIk+mYW9xKgSe5uWdTVhqYD/KW87ukmtpIU31o
+	 Ex+JsmAYJLmIAVs4tQhlrzftHk0btHcjjstmzdKjHLeYU4Dfawq9KkKifgR6VOGgd8
+	 N3QJQidlx4mWsA23kaKlFWcRgCrJA7ZNAnubnb4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 183/459] powerpc/kexec: Fix return of uninitialized variable
-Date: Thu, 12 Dec 2024 15:58:41 +0100
-Message-ID: <20241212144300.786427349@linuxfoundation.org>
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Mark Fasheh <mark@fasheh.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 004/321] ocfs2: uncache inode which has failed entering the group
+Date: Thu, 12 Dec 2024 15:58:42 +0100
+Message-ID: <20241212144229.488517468@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +68,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 83b5a407fbb73e6965adfb4bd0a803724bf87f96 ]
+commit 737f34137844d6572ab7d473c998c7f977ff30eb upstream.
 
-of_property_read_u64() can fail and leave the variable uninitialized,
-which will then be used. Return error if reading the property failed.
+Syzbot has reported the following BUG:
 
-Fixes: 2e6bd221d96f ("powerpc/kexec_file: Enable early kernel OPAL calls")
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20240930075628.125138-1-zhangzekun11@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kernel BUG at fs/ocfs2/uptodate.c:509!
+...
+Call Trace:
+ <TASK>
+ ? __die_body+0x5f/0xb0
+ ? die+0x9e/0xc0
+ ? do_trap+0x15a/0x3a0
+ ? ocfs2_set_new_buffer_uptodate+0x145/0x160
+ ? do_error_trap+0x1dc/0x2c0
+ ? ocfs2_set_new_buffer_uptodate+0x145/0x160
+ ? __pfx_do_error_trap+0x10/0x10
+ ? handle_invalid_op+0x34/0x40
+ ? ocfs2_set_new_buffer_uptodate+0x145/0x160
+ ? exc_invalid_op+0x38/0x50
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? ocfs2_set_new_buffer_uptodate+0x2e/0x160
+ ? ocfs2_set_new_buffer_uptodate+0x144/0x160
+ ? ocfs2_set_new_buffer_uptodate+0x145/0x160
+ ocfs2_group_add+0x39f/0x15a0
+ ? __pfx_ocfs2_group_add+0x10/0x10
+ ? __pfx_lock_acquire+0x10/0x10
+ ? mnt_get_write_access+0x68/0x2b0
+ ? __pfx_lock_release+0x10/0x10
+ ? rcu_read_lock_any_held+0xb7/0x160
+ ? __pfx_rcu_read_lock_any_held+0x10/0x10
+ ? smack_log+0x123/0x540
+ ? mnt_get_write_access+0x68/0x2b0
+ ? mnt_get_write_access+0x68/0x2b0
+ ? mnt_get_write_access+0x226/0x2b0
+ ocfs2_ioctl+0x65e/0x7d0
+ ? __pfx_ocfs2_ioctl+0x10/0x10
+ ? smack_file_ioctl+0x29e/0x3a0
+ ? __pfx_smack_file_ioctl+0x10/0x10
+ ? lockdep_hardirqs_on_prepare+0x43d/0x780
+ ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
+ ? __pfx_ocfs2_ioctl+0x10/0x10
+ __se_sys_ioctl+0xfb/0x170
+ do_syscall_64+0xf3/0x230
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+ </TASK>
+
+When 'ioctl(OCFS2_IOC_GROUP_ADD, ...)' has failed for the particular
+inode in 'ocfs2_verify_group_and_input()', corresponding buffer head
+remains cached and subsequent call to the same 'ioctl()' for the same
+inode issues the BUG() in 'ocfs2_set_new_buffer_uptodate()' (trying
+to cache the same buffer head of that inode). Fix this by uncaching
+the buffer head with 'ocfs2_remove_from_cache()' on error path in
+'ocfs2_group_add()'.
+
+Link: https://lkml.kernel.org/r/20241114043844.111847-1-dmantipov@yandex.ru
+Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=453873f1588c2d75b447
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kexec/file_load_64.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/ocfs2/resize.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index a8a7cb71086b3..cb3fc0042cc25 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -909,13 +909,18 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
- 	if (dn) {
- 		u64 val;
+--- a/fs/ocfs2/resize.c
++++ b/fs/ocfs2/resize.c
+@@ -568,6 +568,8 @@ out_commit:
+ 	ocfs2_commit_trans(osb, handle);
  
--		of_property_read_u64(dn, "opal-base-address", &val);
-+		ret = of_property_read_u64(dn, "opal-base-address", &val);
-+		if (ret)
-+			goto out;
-+
- 		ret = kexec_purgatory_get_set_symbol(image, "opal_base", &val,
- 						     sizeof(val), false);
- 		if (ret)
- 			goto out;
+ out_free_group_bh:
++	if (ret < 0)
++		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
+ 	brelse(group_bh);
  
--		of_property_read_u64(dn, "opal-entry-address", &val);
-+		ret = of_property_read_u64(dn, "opal-entry-address", &val);
-+		if (ret)
-+			goto out;
- 		ret = kexec_purgatory_get_set_symbol(image, "opal_entry", &val,
- 						     sizeof(val), false);
- 	}
--- 
-2.43.0
-
+ out_unlock:
 
 
 
