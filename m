@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C779EEB3B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F699EF3C6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E73CD2819A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76BA128D16A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1F82080FC;
-	Thu, 12 Dec 2024 15:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91C22253F1;
+	Thu, 12 Dec 2024 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fRfQAmG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGyewx1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FEA2AF0E;
-	Thu, 12 Dec 2024 15:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9532C223E93;
+	Thu, 12 Dec 2024 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016958; cv=none; b=HpIcG+8Z5/zO8E2bfdF3XlSNXHh1hXoEDdYjYfMv6UG5D8frP68RdfH2Zc8VKPOsZzrhvxVob/oCZzf6nirjeKzBUw8gKQLDjqfJAsb9h7b6SgQfLnyFkVUlZ1CqkuTTQkW5hZleTcbYvQFWXRbPIOH6An6l6tN8ReSyJeSUhVQ=
+	t=1734022717; cv=none; b=uLiScJRZGBQo7wsV7pBPVEFntC0Z/RdywJXOrZRJNALEH6EfQFMCCh7C6JGBPOhnGUAcKJNh72KOuIWurAIuKQEuSYDMhUYhN3yvN9iQXdoeydSkji0PpR14Qb/QVLWDhcgQZm1be6yneaGyqEpps6Jnqp+Uy0POANeU/KvDxE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016958; c=relaxed/simple;
-	bh=rlXtcwdVMPacQ3bc0PbCyAbCyPavZk4Wc0S9RdsD1oQ=;
+	s=arc-20240116; t=1734022717; c=relaxed/simple;
+	bh=bK7UdaxlLJo9/5RDa81g56TGLho7ZuWF1jegWkBpA8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbAyBOkuKjQXdkY4/kurMk+WYJMxpdGvMy0e835Ri7ma4lyHEKbBDTsXyOzUa8Npx6vdBNaUWmhwfzQywaAW0paYdDLlDOlmxZp2rERXliz08FPwTMJ3qaFvVGLW+olvXrCwAUc+4IyN+Ty057JEbqVK+H1ALeWRIT0LSDb7flg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fRfQAmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B080CC4CECE;
-	Thu, 12 Dec 2024 15:22:37 +0000 (UTC)
+	 MIME-Version; b=Dp3Kgq/px+niro6s8N+0U8/wTjkBwIC17PHuuPjTH4yp/ReodTGk2KegRQEoAoOYdyQYqC/H4DiOKVTdHedjis4LmrOoGOX9BJ3dH6ksukWQX9hHZbiH6LbsKH0dK3ZDUW6qkF04XnD/rSAXShVlUkYEeaxSLwZoJpKX9E8ETc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGyewx1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C66C4CED4;
+	Thu, 12 Dec 2024 16:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016958;
-	bh=rlXtcwdVMPacQ3bc0PbCyAbCyPavZk4Wc0S9RdsD1oQ=;
+	s=korg; t=1734022717;
+	bh=bK7UdaxlLJo9/5RDa81g56TGLho7ZuWF1jegWkBpA8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fRfQAmGhJ0WF0M1F5zPNe+vPbWrh1sT4E3O3b9TBX1M09bPooCtUjQAuIJc2Uk1C
-	 nDLQJJ6Wphf/Fm+YNbZUkBdUCLQdpmOTpXzjq7H+VorXPbiBt1U90y8Arf81vYFVkp
-	 F6iyK/9UFHZIW4d3bbxKQhAuNs6/Pa54Ta7wriKM=
+	b=PGyewx1En9Wz4eHBbUapcFtqueh2XBnPh8x5qDatKYJlGbtKCM7r1TK5w3Su3E9ze
+	 kv/3d/uaiQYMLxs7MSMBmxsZK+zSzHPyfZDAcXBHhrOvYnsnNaGKgVDaJ/nFe7BGsl
+	 fN7TuuLkxgwjU3HUm4l204Kp9RvS4JbSM1uGQvlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2446dd3cb07277388db6@syzkaller.appspotmail.com,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 342/466] Bluetooth: hci_conn: Use disable_delayed_work_sync
+	stable <stable@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Lin Feng <linf@wangsu.com>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 5.15 316/565] tty: ldsic: fix tty_ldisc_autoload sysctls proc_handler
 Date: Thu, 12 Dec 2024 15:58:31 +0100
-Message-ID: <20241212144320.304728303@linuxfoundation.org>
+Message-ID: <20241212144324.095634186@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-[ Upstream commit 2b0f2fc9ed62e73c95df1fa8ed2ba3dac54699df ]
+commit 635a9fca54f4f4148be1ae1c7c6bd37af80f5773 upstream.
 
-This makes use of disable_delayed_work_sync instead
-cancel_delayed_work_sync as it not only cancel the ongoing work but also
-disables new submit which is disarable since the object holding the work
-is about to be freed.
+Commit 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of
+ldiscs") introduces the tty_ldisc_autoload sysctl with the wrong
+proc_handler. .extra1 and .extra2 parameters are set to avoid other values
+thant SYSCTL_ZERO or SYSCTL_ONE to be set but proc_dointvec do not uses
+them.
 
-Reported-by: syzbot+2446dd3cb07277388db6@syzkaller.appspotmail.com
-Tested-by: syzbot+2446dd3cb07277388db6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2446dd3cb07277388db6
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit fixes this by using proc_dointvec_minmax instead of
+proc_dointvec.
+
+Fixes: 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of ldiscs")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+Reviewed-by: Lin Feng <linf@wangsu.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20241112131357.49582-4-nicolas.bouchinet@clip-os.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/tty_ldisc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index a1dfd865d61ab..e6591f487a511 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1128,9 +1128,9 @@ void hci_conn_del(struct hci_conn *conn)
- 
- 	hci_conn_unlink(conn);
- 
--	cancel_delayed_work_sync(&conn->disc_work);
--	cancel_delayed_work_sync(&conn->auto_accept_work);
--	cancel_delayed_work_sync(&conn->idle_work);
-+	disable_delayed_work_sync(&conn->disc_work);
-+	disable_delayed_work_sync(&conn->auto_accept_work);
-+	disable_delayed_work_sync(&conn->idle_work);
- 
- 	if (conn->type == ACL_LINK) {
- 		/* Unacked frames */
--- 
-2.43.0
-
+--- a/drivers/tty/tty_ldisc.c
++++ b/drivers/tty/tty_ldisc.c
+@@ -852,7 +852,7 @@ static struct ctl_table tty_table[] = {
+ 		.data		= &tty_ldisc_autoload,
+ 		.maxlen		= sizeof(tty_ldisc_autoload),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
+ 		.extra1		= SYSCTL_ZERO,
+ 		.extra2		= SYSCTL_ONE,
+ 	},
 
 
 
