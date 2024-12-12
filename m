@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F270A9EEAC0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A549EF37A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1FF6281D7E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27E522810EC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E41215764;
-	Thu, 12 Dec 2024 15:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AE4226554;
+	Thu, 12 Dec 2024 16:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5zeUQJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfkd5M69"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89792EAE5;
-	Thu, 12 Dec 2024 15:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556F8222D57;
+	Thu, 12 Dec 2024 16:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016643; cv=none; b=ClCtzHcGnJucbkZgf2i9dThSu28C5A4cjGETubWzvORRAbJaVLrk5G42FiucYcoNS0OEzjnxDH52w4WReOpUb9YA0lGwXPkASWt8GCdCXAxroUI1NyqL4qrxOFDuudQSD0jn13673rCVSY+BBoIw7CNHnDmP1e09BE/pAt70L1Y=
+	t=1734022391; cv=none; b=QPrLZp0QI+gkyCldUSJnjOip4di28svG6CgAwU24RpM2G/XlJUMfRk19yZ565EZEQDFPylBsVenwLy9pX4oGxSWQ5TDRia20epOec2pvNR4kSw3nPx2kaOIzly3lD7yGdvhUXA85vocFHPQLeSjitCA50DzBAWd8zSf3uPidp5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016643; c=relaxed/simple;
-	bh=Td66NEbgNbDRkTMygdeZH9hjgDiLU13kkB4yaoxcS8M=;
+	s=arc-20240116; t=1734022391; c=relaxed/simple;
+	bh=h6S/vdoicKL6Nowsrs+3aqGnumIuK8OAN8idBG4j8Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDZRhzmssfdw/tjW4dWasb4yBIVAkHWEjN079vSAkWd6qsiS5NnUvcM//GpqG9rGws6cFHSb+nd73QQQD+8GAtoE57r+oGmTKfNFGMS3w9hs1Pw4+bqC993JvAg8l8xZADs7HjoXDVdamkwxTy4+YHDh40srKmNJ7sO1dBJ3OQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5zeUQJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82DDC4CEE7;
-	Thu, 12 Dec 2024 15:17:22 +0000 (UTC)
+	 MIME-Version; b=oYG0zSxRPUnT7gCw/jfzweLcCeZXRjoTf8NsBHaoKEnoDjwbvYFsym3EaPzuI17G9nMlP8oBhg+6+HTk9gDXDQJDBV1VJ47B37hWZmyuh1qOfPSi0DwpK8jxwCM+VyLnAc6tN/IQnsiEU2Jqqbc/bfw26/+DzFUAuSjeP9+V2Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfkd5M69; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5A4C4CED3;
+	Thu, 12 Dec 2024 16:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016643;
-	bh=Td66NEbgNbDRkTMygdeZH9hjgDiLU13kkB4yaoxcS8M=;
+	s=korg; t=1734022391;
+	bh=h6S/vdoicKL6Nowsrs+3aqGnumIuK8OAN8idBG4j8Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y5zeUQJgoIe4JckaAAW+JRosijg2L7/+5ZepunvZ5FHCXBFitMYhrK59/bq2mGB4k
-	 nFR2z7f2P5eTWhvMyiUcj0w09YippH4xO9geG6Cbz5ttZ3tRazA+v+n/WJNMFgb61U
-	 28ixEgxhEOogJFRoGUdmRRj0jxB2KSNPsIf1AEr8=
+	b=tfkd5M69kcNc3Ps0oM+zs7RNGadjqF77VbC1R5ejTrwMkfUbi2qZf2Hkkow40959M
+	 MfYNS8HRaTVa8eLE/NaoUCZ0XAAyW0LAAZDYkKrakPrnx/mqGpYqXU0ybDwZFi0bco
+	 FovoKgVkjG+Egy1Agbyw0mRCNXuwQFpxzVo18Gb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dom Cobley <popcornmix@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 255/466] drm/vc4: hdmi: Avoid log spam for audio start failure
+Subject: [PATCH 5.15 229/565] scsi: qedi: Fix a possible memory leak in qedi_alloc_and_init_sb()
 Date: Thu, 12 Dec 2024 15:57:04 +0100
-Message-ID: <20241212144316.863963827@linuxfoundation.org>
+Message-ID: <20241212144320.539851086@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dom Cobley <popcornmix@gmail.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit b4e5646178e86665f5caef2894578600f597098a ]
+[ Upstream commit 95bbdca4999bc59a72ebab01663d421d6ce5775d ]
 
-We regularly get dmesg error reports of:
-[   18.184066] hdmi-audio-codec hdmi-audio-codec.3.auto: ASoC: error at snd_soc_dai_startup on i2s-hifi: -19
-[   18.184098]  MAI: soc_pcm_open() failed (-19)
+Hook "qedi_ops->common->sb_init = qed_sb_init" does not release the DMA
+memory sb_virt when it fails. Add dma_free_coherent() to free it. This
+is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
 
-These are generated for any disconnected hdmi interface when pulseaudio
-attempts to open the associated ALSA device (numerous times). Each open
-generates a kernel error message, generating general log spam.
-
-The error messages all come from _soc_pcm_ret in sound/soc/soc-pcm.c#L39
-which suggests returning ENOTSUPP, rather that ENODEV will be quiet.
-And indeed it is.
-
-Signed-off-by: Dom Cobley <popcornmix@gmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-5-dave.stevenson@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20241026125711.484-3-thunder.leizhen@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qedi/qedi_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 2d7d3e90f3be4..7e0a5ea7ab859 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -1924,7 +1924,7 @@ static int vc4_hdmi_audio_startup(struct device *dev, void *data)
- 	}
- 
- 	if (!vc4_hdmi_audio_can_stream(vc4_hdmi)) {
--		ret = -ENODEV;
-+		ret = -ENOTSUPP;
- 		goto out_dev_exit;
- 	}
- 
+diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
+index b36edbef5b82f..76b2e6484f90f 100644
+--- a/drivers/scsi/qedi/qedi_main.c
++++ b/drivers/scsi/qedi/qedi_main.c
+@@ -369,6 +369,7 @@ static int qedi_alloc_and_init_sb(struct qedi_ctx *qedi,
+ 	ret = qedi_ops->common->sb_init(qedi->cdev, sb_info, sb_virt, sb_phys,
+ 				       sb_id, QED_SB_TYPE_STORAGE);
+ 	if (ret) {
++		dma_free_coherent(&qedi->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
+ 		QEDI_ERR(&qedi->dbg_ctx,
+ 			 "Status block initialization failed for id = %d.\n",
+ 			  sb_id);
 -- 
 2.43.0
 
