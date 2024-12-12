@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C4A9EF654
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AAEB9EF5A5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E23617D189
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B05F217BBA4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9359216E3B;
-	Thu, 12 Dec 2024 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D896F22540F;
+	Thu, 12 Dec 2024 16:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uapfokV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTy0+//5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A6453365;
-	Thu, 12 Dec 2024 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968E022FAF8;
+	Thu, 12 Dec 2024 16:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023668; cv=none; b=feyCIA/Dxw9hpioEQolIoO/9j7tSUajAgw8RWqzuKgNKq7ol6sttI2Z9iPw0+4UGj35vX4Y2+/zYMnLWX8sNgqhmloz508rierlDPUH60uWmmcCwPO7U7YKBpIrDhEeXd7763++8UBSZuejMa8ibSXOYDgV1eVPRvFMwXjnjteY=
+	t=1734022267; cv=none; b=uYeptfcRYGS/q0fqaSdZeIdO2ZV2GTSIklYJ0zPdxdfcXyztSomBdP9nG68bJEdgZpUQab5KF8HLhzeSpx2neTAz9/C6KdeX8UMzaCDwi7HT1xvj0cSFjF004QA+gmnUhsN8vYsf1XMkJjN2HTlOlomC+SlcqvpnOiW5zm8ZTFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023668; c=relaxed/simple;
-	bh=2ZA4HxqYfmH0GetntLTnsvl1YV6yT84qP3T+rBW1L08=;
+	s=arc-20240116; t=1734022267; c=relaxed/simple;
+	bh=RoHyV3hdijBdf/0MhEITdPiWYMo8ahFaeHQPm0F5kCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SueyYcLeB1v6xlG1U9xTZ9GZ0GCXyNF2Z9hOOK/AVZRWB0ErB8ek+0FTOazfL7228t98sIrwCyZYIFPIH0RDHqoyItubEN0Pd+ayRhrE9Eay68CXnYk7rl1bSgcJNAathXvJzvlXe4t795EHJx+UGQb6uYxj7Gn8RQK5L6HUdL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uapfokV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F16C4CECE;
-	Thu, 12 Dec 2024 17:14:27 +0000 (UTC)
+	 MIME-Version; b=NnP0LcJrb9sq6L+s7OTDu0P2H8Fbd7noN+sCq0dFdnAGBsSbrxxI4+nJfN2/lTaF2CuSEkBy7aUFiCq3QxjmhYQvbLE5xPynj43CZ+LXSWIwEHJFhlLb21DNuEEgQzmbjftIYWGdthyvrwwIcCIQK1LV3a7/nRzJqZOgkL+wTmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTy0+//5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F7BC4CECE;
+	Thu, 12 Dec 2024 16:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023668;
-	bh=2ZA4HxqYfmH0GetntLTnsvl1YV6yT84qP3T+rBW1L08=;
+	s=korg; t=1734022267;
+	bh=RoHyV3hdijBdf/0MhEITdPiWYMo8ahFaeHQPm0F5kCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uapfokVsOPG03AnnQQA0zEpt9OptQtQ5C9i3o7UnZq4CrYf9e0M7whWM3YvA8qTh
-	 pHQwQL/75NqCvZe2Y6V3ph3kMFN+jkWCRq5nznaHrV2JFIV4zwOICrq2SDEcQWMic9
-	 2reXfuLrZ8IvxFfXMVwlmZODFki44n+Zegka9uvU=
+	b=UTy0+//5ZBooec6gsJValLsiQmSCTJgtxyIiAs84NJcVUNRAxzHLCn5ASlW7TlR2E
+	 p8K/ZQjQTHOkBq/YnYf2s27JszZEB1VeRPE2TZdp1jCt1pRkv1K3QFPWauCYEOyvAt
+	 c8ibwdNDuQRRit+qbY/UtB0lK7Be2XVy+RIvPoXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/459] soc: qcom: Add check devm_kasprintf() returned value
-Date: Thu, 12 Dec 2024 15:56:20 +0100
-Message-ID: <20241212144255.190110083@linuxfoundation.org>
+Subject: [PATCH 5.15 186/565] netfilter: nf_tables: skip transaction if update object is not implemented
+Date: Thu, 12 Dec 2024 15:56:21 +0100
+Message-ID: <20241212144318.834409724@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e694d2b5c58ba2d1e995d068707c8d966e7f5f2a ]
+[ Upstream commit 84b1a0c0140a9a92ea108576c0002210f224ce59 ]
 
-devm_kasprintf() can return a NULL pointer on failure but this
-returned value in qcom_socinfo_probe() is not checked.
+Turn update into noop as a follow up for:
 
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20240929072349.202520-1-hanchunchao@inspur.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  9fedd894b4e1 ("netfilter: nf_tables: fix unexpected EOPNOTSUPP error")
+
+instead of adding a transaction object which is simply discarded at a
+later stage of the commit protocol.
+
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: cddc04275f95 ("netfilter: nf_tables: must hold rcu read lock while iterating object type list")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/socinfo.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
-index 60c82dcaa8d1d..7bb3543e42e59 100644
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -507,10 +507,16 @@ static int qcom_socinfo_probe(struct platform_device *pdev)
- 	qs->attr.revision = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%u.%u",
- 					   SOCINFO_MAJOR(le32_to_cpu(info->ver)),
- 					   SOCINFO_MINOR(le32_to_cpu(info->ver)));
--	if (offsetof(struct socinfo, serial_num) <= item_size)
-+	if (!qs->attr.soc_id || qs->attr.revision)
-+		return -ENOMEM;
-+
-+	if (offsetof(struct socinfo, serial_num) <= item_size) {
- 		qs->attr.serial_number = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 							"%u",
- 							le32_to_cpu(info->serial_num));
-+		if (!qs->attr.serial_number)
-+			return -ENOMEM;
-+	}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 71a486d9fd76a..20e2f2deb336d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7189,6 +7189,9 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
+ 		if (WARN_ON_ONCE(!type))
+ 			return -ENOENT;
  
- 	qs->soc_dev = soc_device_register(&qs->attr);
- 	if (IS_ERR(qs->soc_dev))
++		if (!obj->ops->update)
++			return 0;
++
+ 		nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
+ 
+ 		return nf_tables_updobj(&ctx, type, nla[NFTA_OBJ_DATA], obj);
+@@ -8787,9 +8790,10 @@ static void nft_obj_commit_update(struct nft_trans *trans)
+ 	obj = nft_trans_obj(trans);
+ 	newobj = nft_trans_obj_newobj(trans);
+ 
+-	if (obj->ops->update)
+-		obj->ops->update(obj, newobj);
++	if (WARN_ON_ONCE(!obj->ops->update))
++		return;
+ 
++	obj->ops->update(obj, newobj);
+ 	nft_obj_destroy(&trans->ctx, newobj);
+ }
+ 
 -- 
 2.43.0
 
