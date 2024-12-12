@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5F49EF36A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77D99EEB27
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DE97287578
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C57D163094
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024F7231A55;
-	Thu, 12 Dec 2024 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26452210E5;
+	Thu, 12 Dec 2024 15:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0h+o+Trg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMPk/7au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5476222D66;
-	Thu, 12 Dec 2024 16:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F36C2210DF;
+	Thu, 12 Dec 2024 15:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022327; cv=none; b=XwMjbhEc4k/PYKClnoDi8a53nUicHESDAtHMspj8qOHd3eo8SEQ2FykFngfHpDu5bTNS7w1js4VDzngY931ilhkj5HkQKa1LuXgH4viQ3sBDzNalVv5SuNeSdbKBTXpiYed3Pyb9O4GLxqKTy4Eso29L0VfnHCBSsmkVtUfhPSg=
+	t=1734016569; cv=none; b=h7sMLScHDndhC967u/27I41nVIgYiaVpB1S5Mz0QILVFgcN56nhKTejEdMgVzmfn7w0TNfAJJmVHA87kSV/DBmZNAe6WjHFUjwdN575GsXUGhpbpcbjo1+IzgT9YTJD0lQ4oJZmxXGpKn9sOrh+2myuV4LQZC1hSn+SJMFgO5SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022327; c=relaxed/simple;
-	bh=jv0u0Q93DCo+cjyKn9BRlDfWNwDwpB3BSQZMHELIdRI=;
+	s=arc-20240116; t=1734016569; c=relaxed/simple;
+	bh=/hu+UM0g7byTMxdX7pwy15YoI/wG254KuSMs4nLyZZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKsPK8+6eR6BGwV/gvcTGowQIpIgWPTEjUnmRFGQYsmk0HyVRSCPiV+PNC95zwFtH9jSX27CenbuFP9gLsqwrMClCtYH1KiF1r4bzHhYazN+79/m1waxoWuu76l/U8v1dTYGfmWB3o4Gb761dtf4DXag6+ntNvryK0AF7KPSE4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0h+o+Trg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3DBC4CED0;
-	Thu, 12 Dec 2024 16:52:06 +0000 (UTC)
+	 MIME-Version; b=W9Aizp7qOT2m+AqdoqJ4cbHndNEvDeCAxYPdY4gkq8SCtjgEcp1XTjEtI+mu8kKEVxNN6k+StGMlQAFMuObszg9M948xep/CNqQFcY6yK7updsTdaaLd5OX46Wu4Epfm4YODJw0vsvdohzcz9BgwGpWAsaQvSX0Kuucfh62TjyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMPk/7au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C641AC4CECE;
+	Thu, 12 Dec 2024 15:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022327;
-	bh=jv0u0Q93DCo+cjyKn9BRlDfWNwDwpB3BSQZMHELIdRI=;
+	s=korg; t=1734016569;
+	bh=/hu+UM0g7byTMxdX7pwy15YoI/wG254KuSMs4nLyZZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0h+o+TrgiV5043gptlZr7IMn7u7eHPElMOngaXliCa/FVVDhP1fNrlLI9RG8eIG0H
-	 xKhQmIJf30kuszDoqnu5D/+xPPkKUgu5Rp55fkQttppmI1N5uOoz/XGOFGO682hUDW
-	 Lc3pshugGFy9TTahP0u15yZQDoeg/lFlSSAwxSNs=
+	b=yMPk/7auj3GonQMAvsZoKUcigCVDebDWZ0NcrXfixaSEaDjwUjYF7msZ1OsorqvaT
+	 fqCyC1RwWIVydKggyd99dRrL66P8NUJsbLqbJ4dlUaHQXQpLw4qElkTiFMwWnRGOPf
+	 ua1dvIA96I79xfSBMZDpZUiU0GUTYwL7OkrkYS1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 210/565] pinctrl: zynqmp: drop excess struct member description
+Subject: [PATCH 6.12 236/466] spi: spi-fsl-lpspi: Adjust type of scldiv
 Date: Thu, 12 Dec 2024 15:56:45 +0100
-Message-ID: <20241212144319.798041100@linuxfoundation.org>
+Message-ID: <20241212144316.103679702@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 2a85fc7044987d751f27d7f1e4423eebbcecc2c6 ]
+[ Upstream commit fa8ecda9876ac1e7b29257aa82af1fd0695496e2 ]
 
-The 'node' member has never been part of this structure so drop its
-description.
+The target value of scldiv is just a byte, but its calculation in
+fsl_lpspi_set_bitrate could be negative. So use an adequate type to store
+the result and avoid overflows. After that this needs range check
+adjustments, but this should make the code less opaque.
 
-Fixes: 8b242ca700f8 ("pinctrl: Add Xilinx ZynqMP pinctrl driver support")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/20241010080432.7781-1-brgl@bgdev.pl
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20240930093056.93418-2-wahrenst@gmx.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-zynqmp.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-zynqmp.c b/drivers/pinctrl/pinctrl-zynqmp.c
-index e14012209992f..9bd3e663ab08e 100644
---- a/drivers/pinctrl/pinctrl-zynqmp.c
-+++ b/drivers/pinctrl/pinctrl-zynqmp.c
-@@ -45,7 +45,6 @@
-  * @name:	Name of the pin mux function
-  * @groups:	List of pin groups for this function
-  * @ngroups:	Number of entries in @groups
-- * @node:	Firmware node matching with the function
-  *
-  * This structure holds information about pin control function
-  * and function group names supporting that function.
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 9573b8fa4fbfc..29b9676fe43d8 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -315,9 +315,10 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
+ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	struct lpspi_config config = fsl_lpspi->config;
+-	unsigned int perclk_rate, scldiv, div;
++	unsigned int perclk_rate, div;
+ 	u8 prescale_max;
+ 	u8 prescale;
++	int scldiv;
+ 
+ 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
+ 	prescale_max = fsl_lpspi->devtype_data->prescale_max;
+@@ -338,13 +339,13 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 
+ 	for (prescale = 0; prescale <= prescale_max; prescale++) {
+ 		scldiv = div / (1 << prescale) - 2;
+-		if (scldiv < 256) {
++		if (scldiv >= 0 && scldiv < 256) {
+ 			fsl_lpspi->config.prescale = prescale;
+ 			break;
+ 		}
+ 	}
+ 
+-	if (scldiv >= 256)
++	if (scldiv < 0 || scldiv >= 256)
+ 		return -EINVAL;
+ 
+ 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
 -- 
 2.43.0
 
