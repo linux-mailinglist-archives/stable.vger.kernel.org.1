@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DEF9EEC41
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BF29EEAD8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6D0280D35
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:33:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70FCD188D83C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1402153FC;
-	Thu, 12 Dec 2024 15:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9427216E28;
+	Thu, 12 Dec 2024 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrbDz7Ls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hS4hoB2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73997212F9E;
-	Thu, 12 Dec 2024 15:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669A421504F;
+	Thu, 12 Dec 2024 15:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017589; cv=none; b=J4Wb56/Tw+Wy8uiXlsY1LwMaBm/1Ysg9JQmVgU7038RhMDwuq9I9H1hdX1JluO7Ove/zj1VM5EppN/EghxXmVP9TTIn4vmNzj6Qh4S8VwRbBS9nKkjwJGRgkDBpilKl+bP3f2Lhm+DxauK6rkKbusUsGUX69Dv0tv5JWl1fXbmw=
+	t=1734016458; cv=none; b=d0jCh5M2p5re+ff6DvV+0sn7OkNqZ/NxUxe5F5QJMDsr/lpEL89VHaNb8RzGpHGnenNfX82W3/Q2Qje65336MUpDL5RCweaiYuGolpvngXkh+wJSAzBY0r5l0Ry966q72K43a4FjU/F6FC1dX+0CxCF+APdAFJ5fzZzqFcC0AT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017589; c=relaxed/simple;
-	bh=2A5EAs1lcK/sUFCd8GCKz4M8bPsuunPa25kAVD4MmjA=;
+	s=arc-20240116; t=1734016458; c=relaxed/simple;
+	bh=XlFwrZGGrpOebLfzA3FuPrPmPZEnPVlu5vnyQi9NGwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7liWmphNOgeeJS/j482+PwmxmoWsXIfGbNajQ+su4PEV4h30/hW5Zs+kVCcSdINVShnp6PRQgFlzUmglFFkIH7ussgRljHsVEN5CWZnzZ4BGqY0z6L1mwFRkiwlCXe1c80JqqEGFSfmF6kLd9yeGyxAametc/63a9H2Dd1sOBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrbDz7Ls; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3513C4CECE;
-	Thu, 12 Dec 2024 15:33:08 +0000 (UTC)
+	 MIME-Version; b=Twy/7shcYsCHgZ1EwNnzSMORehfDyfwIaJbo7nkK6Uyzm8acp8NG0AL4A1f3mDzmSL3sw7Hq5qq3Z8tKDiHTRyUQsyhN2I/B8MHWFsNMoMi2kvIMisWARi9hNxfPhjvJcem9pVk+QEbHEdVIFslpX7WUH+eCdZGBSzFVskAIU/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hS4hoB2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C603BC4CED0;
+	Thu, 12 Dec 2024 15:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017589;
-	bh=2A5EAs1lcK/sUFCd8GCKz4M8bPsuunPa25kAVD4MmjA=;
+	s=korg; t=1734016458;
+	bh=XlFwrZGGrpOebLfzA3FuPrPmPZEnPVlu5vnyQi9NGwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrbDz7Lse14LrrZsGg+FekpfbWGKI7uoBZyiJmub61tBkthGZ0bFSqr0RQviTev1T
-	 OpLL/V4bjzPZ/MBmcudpFYvsGdLGwPzVedk1urjVyjxJ7RysjLUNcgIp65aiLfu3dk
-	 fleJQBDtZnifJP4LyOkvJBsU1ShzkB6b4uuO1HIw=
+	b=hS4hoB2DeyLRABR3MaoER2PfNaEzAQmiZoTaZYDB7n+JRygvfGdHcvH+A7k0gJxv3
+	 XnDdMLKIJfsMQC47Aiw/hf5Zxq5p1jo64F5ObG+iUAaMEreN8QD53QtR+wStV4pwnd
+	 94qGwzLEuu9hkICvGvemTqt/B53lUGwUHQVWDwCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/356] mlxsw: spectrum_acl_flex_keys: Add ipv4_5b flex key
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 205/466] mm: open-code PageTail in folio_flags() and const_folio_flags()
 Date: Thu, 12 Dec 2024 15:56:14 +0100
-Message-ID: <20241212144246.803955106@linuxfoundation.org>
+Message-ID: <20241212144314.888291794@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit c6caabdf3e0cc50ba4a44bebc82cda5551d81d4f ]
+commit 4de22b2a6a7477d84d9a01eb6b62a9117309d722 upstream.
 
-The previous patch replaced the key block 'ipv4_4' with 'ipv4_5'. The
-corresponding block for Spectrum-4 is 'ipv4_4b'. To be consistent, replace
-key block 'ipv4_4b' with 'ipv4_5b'.
+It is unsafe to call PageTail() in dump_page() as page_is_fake_head() will
+almost certainly return true when called on a head page that is copied to
+the stack.  That will cause the VM_BUG_ON_PGFLAGS() in const_folio_flags()
+to trigger when it shouldn't.  Fortunately, we don't need to call
+PageTail() here; it's fine to have a pointer to a virtual alias of the
+page's flag word rather than the real page's flag word.
 
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 217bbf156f93 ("mlxsw: spectrum_acl_flex_keys: Use correct key block on Spectrum-4")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241125201721.2963278-1-willy@infradead.org
+Fixes: fae7d834c43c ("mm: add __dump_folio()")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c    | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/page-flags.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-index cc00c8d69eb77..7d66c4f2deeaa 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-@@ -321,8 +321,8 @@ static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_mac_5b[] = {
- 	MLXSW_AFK_ELEMENT_INST_EXT_U32(SRC_SYS_PORT, 0x04, 0, 9, -1, true), /* RX_ACL_SYSTEM_PORT */
- };
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -306,7 +306,7 @@ static const unsigned long *const_folio_
+ {
+ 	const struct page *page = &folio->page;
  
--static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv4_4b[] = {
--	MLXSW_AFK_ELEMENT_INST_U32(VIRT_ROUTER, 0x04, 13, 12),
-+static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv4_5b[] = {
-+	MLXSW_AFK_ELEMENT_INST_U32(VIRT_ROUTER, 0x04, 20, 12),
- };
+-	VM_BUG_ON_PGFLAGS(PageTail(page), page);
++	VM_BUG_ON_PGFLAGS(page->compound_head & 1, page);
+ 	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags), page);
+ 	return &page[n].flags;
+ }
+@@ -315,7 +315,7 @@ static unsigned long *folio_flags(struct
+ {
+ 	struct page *page = &folio->page;
  
- static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv6_2b[] = {
-@@ -339,7 +339,7 @@ static const struct mlxsw_afk_block mlxsw_sp4_afk_blocks[] = {
- 	MLXSW_AFK_BLOCK(0x38, mlxsw_sp_afk_element_info_ipv4_0),
- 	MLXSW_AFK_BLOCK(0x39, mlxsw_sp_afk_element_info_ipv4_1),
- 	MLXSW_AFK_BLOCK(0x3A, mlxsw_sp_afk_element_info_ipv4_2),
--	MLXSW_AFK_BLOCK(0x35, mlxsw_sp_afk_element_info_ipv4_4b),
-+	MLXSW_AFK_BLOCK(0x36, mlxsw_sp_afk_element_info_ipv4_5b),
- 	MLXSW_AFK_BLOCK(0x40, mlxsw_sp_afk_element_info_ipv6_0),
- 	MLXSW_AFK_BLOCK(0x41, mlxsw_sp_afk_element_info_ipv6_1),
- 	MLXSW_AFK_BLOCK(0x47, mlxsw_sp_afk_element_info_ipv6_2b),
--- 
-2.43.0
-
+-	VM_BUG_ON_PGFLAGS(PageTail(page), page);
++	VM_BUG_ON_PGFLAGS(page->compound_head & 1, page);
+ 	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags), page);
+ 	return &page[n].flags;
+ }
 
 
 
