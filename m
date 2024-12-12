@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060C39EF141
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534AC9EEA75
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:14:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD94D171FB1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97F03188C93E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F6522914B;
-	Thu, 12 Dec 2024 16:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4FB216E0B;
+	Thu, 12 Dec 2024 15:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPkAzhc2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ABgqG3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C7A218592;
-	Thu, 12 Dec 2024 16:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBC521660C;
+	Thu, 12 Dec 2024 15:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020067; cv=none; b=RZeQE2F6oeQazVxZ6b93w3Rf0PxJQTKu9di3yYvI1XdVUaDd4ptiVykELr4zUiHFKTxrk5FmbyjGsxXsaJ+bK+RUJM3J/UXsRTbsqOknTRURkb8O+ds67tbu1O+WMOMgqm8WH/j/KI7oe2qpwBMKqP5JhBgnprrD816X19eHTmE=
+	t=1734016148; cv=none; b=Y4L21+dZFH1jf9/wGepvgm2fjU11Xq4Z0t4JeqnYxYdhb27GYo5IRNZnpUbHTp/Ftqiah0oGIL0WW+JkbZXHVGBmpmx2yuFsjER9oksc0gOhecoW5+cplsQy97O+tUIm4UUmeh5vvdQiFSvoKx1fn5o5jvZKYafjEuRpZlYmWF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020067; c=relaxed/simple;
-	bh=KXopIyzoex0fCsDuRzdGuIOHCLjOG5/68oLzr3sjWBY=;
+	s=arc-20240116; t=1734016148; c=relaxed/simple;
+	bh=FR7PI+MSJSPhE0pLxnJjH2RA6DHsUNilWXOLKwTzTnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AHSyfSA6Xw6o6H6hjBA6TShsIIf5Y0Vcyjahaad4f9Qet5tf9CIae8m/5Kg2BzISnBZMQZSFs7wmfmOgau7vAFrBZKx2f34truzPP5c+P0yUt+/Wed2XtFsHuqhnuhhalgLQsZdWpE1lZk/Gew+zMqjh+MXhOc7ClXbhfxQPVwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPkAzhc2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40C3C4CECE;
-	Thu, 12 Dec 2024 16:14:26 +0000 (UTC)
+	 MIME-Version; b=SMbptd15nSh8nL/DprKnIBviAo00ScjQZFL9vZO5fqnoDroL3MxHKPYQmPEur/aYeVK+mUhkxfq5SRY9iC5r17Hr3P66sjECEkpTpFwXrKcF+afEl0BeN9G72+upFCYekwb86sySd4WJecwp2eRZGPbGnHZAftDV3b5AR23C0s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ABgqG3y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A544C4CECE;
+	Thu, 12 Dec 2024 15:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020067;
-	bh=KXopIyzoex0fCsDuRzdGuIOHCLjOG5/68oLzr3sjWBY=;
+	s=korg; t=1734016148;
+	bh=FR7PI+MSJSPhE0pLxnJjH2RA6DHsUNilWXOLKwTzTnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPkAzhc2j24xFOya7oBErbpTvep9CzwVwTvc5Pcg3ePK3lOhOhrkvMLx1G6GGy4b5
-	 M/Wd5qHSEMriGMoilk7KFHL5aPpKA/Z3bvPCO1XHFXe9tAaSFrI3ujxZIOf39mDkCB
-	 bYg0ZRVuiPaUW9GT5jxWlpmj120+3n1FUZA3qgv4=
+	b=2ABgqG3ylf+0uSfc8lerIqJK2n+TZblmjtQjeHI7Dk7t6IHxK18VpAL4w/bZq1325
+	 apqsOT1LuTd1AoTpOZcoDYEOG3Bl1FjnuNynJxYRaqt7nOR7JUmkzdNK5e9xHUZTKg
+	 kSamdz1xw8rWx/K/Za6e0vdcq5kGk7XNFrM9DwNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.1 370/772] powerpc/pseries: Fix KVM guest detection for disabling hardlockup detector
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 146/466] scsi: qla2xxx: Fix NVMe and NPIV connect issue
 Date: Thu, 12 Dec 2024 15:55:15 +0100
-Message-ID: <20241212144405.199636813@linuxfoundation.org>
+Message-ID: <20241212144312.564804171@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 44e5d21e6d3fd2a1fed7f0327cf72e99397e2eaf upstream.
+commit 4812b7796c144f63a1094f79a5eb8fbdad8d7ebc upstream.
 
-As per the kernel documentation[1], hardlockup detector should
-be disabled in KVM guests as it may give false positives. On
-PPC, hardlockup detector is enabled inside KVM guests because
-disable_hardlockup_detector() is marked as early_initcall and it
-relies on kvm_guest static key (is_kvm_guest()) which is initialized
-later during boot by check_kvm_guest(), which is a core_initcall.
-check_kvm_guest() is also called in pSeries_smp_probe(), which is called
-before initcalls, but it is skipped if KVM guest does not have doorbell
-support or if the guest is launched with SMT=1.
+NVMe controller fails to send connect command due to failure to locate
+hw context buffer for NVMe queue 0 (blk_mq_hw_ctx, hctx_idx=0). The
+cause of the issue is NPIV host did not initialize the vha->irq_offset
+field.  This field is given to blk-mq (blk_mq_pci_map_queues) to help
+locate the beginning of IO Queues which in turn help locate NVMe queue
+0.
 
-Call check_kvm_guest() in disable_hardlockup_detector() so that
-is_kvm_guest() check goes through fine and hardlockup detector can be
-disabled inside the KVM guest.
+Initialize this field to allow NVMe to work properly with NPIV host.
 
-[1]: Documentation/admin-guide/sysctl/kernel.rst
+ kernel: nvme nvme5: Connect command failed, errno: -18
+ kernel: nvme nvme5: qid 0: secure concatenation is not supported
+ kernel: nvme nvme5: NVME-FC{5}: create_assoc failed, assoc_id 2e9100 ret 401
+ kernel: nvme nvme5: NVME-FC{5}: reset: Reconnect attempt failed (401)
+ kernel: nvme nvme5: NVME-FC{5}: Reconnect attempt in 2 seconds
 
-Fixes: 633c8e9800f3 ("powerpc/pseries: Enable hardlockup watchdog for PowerVM partitions")
-Cc: stable@vger.kernel.org # v5.14+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241108094839.33084-1-gautam@linux.ibm.com
+Cc: stable@vger.kernel.org
+Fixes: f0783d43dde4 ("scsi: qla2xxx: Use correct number of vectors for online CPUs")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-6-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/setup_64.c |    1 +
+ drivers/scsi/qla2xxx/qla_mid.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -924,6 +924,7 @@ static int __init disable_hardlockup_det
- 	hardlockup_detector_disable();
- #else
- 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
-+		check_kvm_guest();
- 		if (is_kvm_guest())
- 			hardlockup_detector_disable();
+--- a/drivers/scsi/qla2xxx/qla_mid.c
++++ b/drivers/scsi/qla2xxx/qla_mid.c
+@@ -506,6 +506,7 @@ qla24xx_create_vhost(struct fc_vport *fc
+ 		return(NULL);
  	}
+ 
++	vha->irq_offset = QLA_BASE_VECTORS;
+ 	host = vha->host;
+ 	fc_vport->dd_data = vha;
+ 	/* New host info */
 
 
 
