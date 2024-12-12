@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA57E9EF5FF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB1979EF4DE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 751472814D6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB760340605
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A9720967D;
-	Thu, 12 Dec 2024 17:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D046322A7F9;
+	Thu, 12 Dec 2024 17:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVOxfJC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrKZz0Dg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D404F21766D;
-	Thu, 12 Dec 2024 17:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83393229677;
+	Thu, 12 Dec 2024 17:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024066; cv=none; b=e6/QhdZmvrAI4FlhQkv0Sj42T1agqAYqb1O1iC2XyVKmJVPfXrfMRBo/CoGgZd3GzM4tlM1ft9jx8LggUNxxUGcfG0nCOOP850P0N2NFsLqN5VMyY6UC8hNREOD/SD+wkpSnmJzPEpRZPanxF9/qsECMpwzzd40lqY0vY52PBlE=
+	t=1734022869; cv=none; b=F/JwFHpyx8mjnYXJsBiBYyA3qZ4epAU1xA7LgIhXI1b45xdWNibtJAbcYHPDn5TbHELbw3QofNEN+WLmXYQmpCxh9u84ygBTsLhNm/mXZCqqmOp9CrlrfGL84DVfMmnrSo+NcBt9Qp3Mb/qWrFsYvzODh/J8/CKTcdm21Wqtx2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024066; c=relaxed/simple;
-	bh=AZ2a5EAsYHWD+wH7E3qsXwFf4hPUb7AcFgfUUnylDbw=;
+	s=arc-20240116; t=1734022869; c=relaxed/simple;
+	bh=UF+iLgOhEhSCxM/xlsWRAE33hcdX9c0uoik3Ie1oKYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrurRlNiLJn6JGkhd8b+UGQMyrByFf00pvcX57qeOWex5iWIdElysTsCn59iVU8zKtJUOpmY3puDDLsk9HpZKmKuVSY5swLtKYP27Wz9s9uGdniaX1pHieqvNu1sH/IHYXwVqkECQLDaAa8cwRcJbmmLSL0sy/0hIARFJeuMlzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVOxfJC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56526C4CECE;
-	Thu, 12 Dec 2024 17:21:06 +0000 (UTC)
+	 MIME-Version; b=aalk0Ez1nHWO0xRn2mZtqVll5AjJSrCgJ1oG194FWtBkWR4m/K4w5/txm4noV9G5xqjaa6al/BISsaYTypkmV3tozV271G++vzdjVGk89xbKNxyr6ygt/CigTLi/5u3zmVrLSnIeE5Lps815+lsAT73qZ0Ue6YM9ZNDRnXpP7r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrKZz0Dg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FFBC4CECE;
+	Thu, 12 Dec 2024 17:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024066;
-	bh=AZ2a5EAsYHWD+wH7E3qsXwFf4hPUb7AcFgfUUnylDbw=;
+	s=korg; t=1734022869;
+	bh=UF+iLgOhEhSCxM/xlsWRAE33hcdX9c0uoik3Ie1oKYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QVOxfJC+wB6Q5QhmQ/ausQgzMlRgpEh4U+OKs2zMdb1UWN3DoaOK0akLvzTFSxBnn
-	 etuzMeQkbKrPWyhGqS7TfLLdzNSfng1M1cFgahmLmVYXJ2GXCQprqNWkERP7VNptVh
-	 4MFh9fO4qI3SsrvBRTEkGhoExZzkcgUHV47u2pvY=
+	b=qrKZz0Dgl9S2knOZq0Opow/5RSWe/rT3KTsHokI0sNHJD/ce/yt2NGo664nJ8I7jE
+	 4Q8+z6iAIRlG97fultL2gPo+3qEfRDvV5S4pNNEr2y3MTxmNmwgrQOrS0WNpHOXGF2
+	 oDSBZ4NsCKlhZrvFAZKcGniUfuJYT3ueMqd99vmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/459] RDMA/bnxt_re: Check cqe flags to know imm_data vs inv_irkey
+	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
+	Ahmed Ehab <bottaawesome633@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [PATCH 5.15 317/565] locking/lockdep: Avoid creating new name string literals in lockdep_set_subclass()
 Date: Thu, 12 Dec 2024 15:58:32 +0100
-Message-ID: <20241212144300.396159179@linuxfoundation.org>
+Message-ID: <20241212144324.133907395@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Ahmed Ehab <bottaawesome633@gmail.com>
 
-[ Upstream commit 808ca6de989c598bc5af1ae0ad971a66077efac0 ]
+commit d7fe143cb115076fed0126ad8cf5ba6c3e575e43 upstream.
 
-Invalidate rkey is cpu endian and immediate data is in big endian format.
-Both immediate data and invalidate the remote key returned by
-HW is in little endian format.
+Syzbot reports a problem that a warning will be triggered while
+searching a lock class in look_up_lock_class().
 
-While handling the commit in fixes tag, the difference between
-immediate data and invalidate rkey endianness was not considered.
+The cause of the issue is that a new name is created and used by
+lockdep_set_subclass() instead of using the existing one. This results
+in a lock instance has a different name pointer than previous registered
+one stored in lock class, and WARN_ONCE() is triggered because of that
+in look_up_lock_class().
 
-Without changes of this patch, Kernel ULP was failing while processing
-inv_rkey.
+To fix this, change lockdep_set_subclass() to use the existing name
+instead of a new one. Hence, no new name will be created by
+lockdep_set_subclass(). Hence, the warning is avoided.
 
-dmesg log snippet -
-nvme nvme0: Bogus remote invalidation for rkey 0x2000019Fix in this patch
+[boqun: Reword the commit log to state the correct issue]
 
-Do endianness conversion based on completion queue entry flag.
-Also, the HW completions are already converted to host endianness in
-bnxt_qplib_cq_process_res_rc and bnxt_qplib_cq_process_res_ud and there
-is no need to convert it again in bnxt_re_poll_cq. Modified the union to
-hold the correct data type.
-
-Fixes: 95b087f87b78 ("bnxt_re: Fix imm_data endianness")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1730110014-20755-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
+Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/lkml/20240824221031.7751-1-bottaawesome633@gmail.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +++++--
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ include/linux/lockdep.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index f16e0b2c7895e..9ffd28ab526a8 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -3334,7 +3334,7 @@ static void bnxt_re_process_res_shadow_qp_wc(struct bnxt_re_qp *gsi_sqp,
- 	wc->byte_len = orig_cqe->length;
- 	wc->qp = &gsi_qp->ib_qp;
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -233,7 +233,7 @@ static inline void lockdep_init_map(stru
+ 			      (lock)->dep_map.lock_type)
  
--	wc->ex.imm_data = cpu_to_be32(le32_to_cpu(orig_cqe->immdata));
-+	wc->ex.imm_data = cpu_to_be32(orig_cqe->immdata);
- 	wc->src_qp = orig_cqe->src_qp;
- 	memcpy(wc->smac, orig_cqe->smac, ETH_ALEN);
- 	if (bnxt_re_is_vlan_pkt(orig_cqe, &vlan_id, &sl)) {
-@@ -3474,7 +3474,10 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
- 				continue;
- 			}
- 			wc->qp = &qp->ib_qp;
--			wc->ex.imm_data = cpu_to_be32(le32_to_cpu(cqe->immdata));
-+			if (cqe->flags & CQ_RES_RC_FLAGS_IMM)
-+				wc->ex.imm_data = cpu_to_be32(cqe->immdata);
-+			else
-+				wc->ex.invalidate_rkey = cqe->invrkey;
- 			wc->src_qp = cqe->src_qp;
- 			memcpy(wc->smac, cqe->smac, ETH_ALEN);
- 			wc->port_num = 1;
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index 01cb48caa9dbd..6803162261a7d 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -372,7 +372,7 @@ struct bnxt_qplib_cqe {
- 	u16				cfa_meta;
- 	u64				wr_id;
- 	union {
--		__le32			immdata;
-+		u32			immdata;
- 		u32			invrkey;
- 	};
- 	u64				qp_handle;
--- 
-2.43.0
-
+ #define lockdep_set_subclass(lock, sub)					\
+-	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
++	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
+ 			      (lock)->dep_map.wait_type_inner,		\
+ 			      (lock)->dep_map.wait_type_outer,		\
+ 			      (lock)->dep_map.lock_type)
 
 
 
