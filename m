@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA03E9EF3AF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:01:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A849EECBF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CE6A28178A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98DA7283B87
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB90822370C;
-	Thu, 12 Dec 2024 16:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E175921B91D;
+	Thu, 12 Dec 2024 15:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To4PULfB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvwSlBsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676AF21E085;
-	Thu, 12 Dec 2024 16:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC24217F46;
+	Thu, 12 Dec 2024 15:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022612; cv=none; b=kL178s6lCxe5pADyeon2q/REHpV9843+fdyxm/IlXu0AzbpgYUcbCJIi0WPI5asim95kUiuO0bkdDcBBthbwdeVh/teGv5JcHZFaCU7GtHFRLup2LfKkD2kjaw/ZmeEA+lhgfJbTrRBPmdZXt3hsdKoIfEXR/Wf46B31QC6Dy2M=
+	t=1734017870; cv=none; b=Sz09JHaGcC0AUw8z7Hk2fD7MklGGgv3zi//6tPhc5H6BugKsggu41/qcd1WuOC6vWSrvUBHMJzgvHlxoIVtIrCMRgfMX35sACnqQsq8zAo19YPdcnefzNYkeEboARBOhwa/9y6AyRd3K7quRJH/WZ4QQeQvrfdUh8LuYtS5TRe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022612; c=relaxed/simple;
-	bh=ag4ncE94NTnqsO3AkLiT3/Urt8ZpRQdqNh/jeGzEU70=;
+	s=arc-20240116; t=1734017870; c=relaxed/simple;
+	bh=LXhmfBM7ioGgIev4DNp7z3X1LdFZ2xj26ed4AkMr28w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWW7AT/LivNbO5FzJT7kKLsQV2KEvSECgLDxYWwHrg9Pk2ysLWaJQGfdcor2VRIOniM9kUMEe3YltFlKivAnPjm2nd1QwxIg7inLxlGFCmZfbSssFiN8Kjmaz9ANwd47m4L56cxVuUvi1YobiNIzDhnSSvr3Fro7QGBYVwNQHCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=To4PULfB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6135C4CECE;
-	Thu, 12 Dec 2024 16:56:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rl2FcM05uLLnhANKlBEPmwAbG47iSQsL3tAGDo0CGShTekBp6L9EjvAexKozzAlvq39cgGZ775C+QeMZ0P5zz6q3y/gF2VgITwPG4ZungL+7hfUvmonyMNZttO6Wc98F5wjDWCQ4SZp8qckzHeGuK81TLnyXL+bcff8G9ViIY/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvwSlBsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D61C4CECE;
+	Thu, 12 Dec 2024 15:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022612;
-	bh=ag4ncE94NTnqsO3AkLiT3/Urt8ZpRQdqNh/jeGzEU70=;
+	s=korg; t=1734017870;
+	bh=LXhmfBM7ioGgIev4DNp7z3X1LdFZ2xj26ed4AkMr28w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=To4PULfByRqjk5FEnZNz1sAfNBWqPOdBMQNrYMZ8CkN46eyDevIbsfO+n2kCsMvRV
-	 KxsaMx1kYn6mOTza6Hw2gFsbn7xNoBKT445l6Un7LUgLTMB0yASEApVXS6Z5lX7Pzj
-	 xch1DdOuM0PwyOBb41UqtXcwvEHrAB46cP08B//s=
+	b=DvwSlBsHp5fMiumbv2fiFWPsJJSVABPOyFgRS91Kqc9XQl3X63x8p7N1rq0dGoazP
+	 55tfW1EAsSzLMUeKJ81EO9gYBp4aLRy5AjVu0VnFePRbwOMkg8qxuqnid6cC+muBCG
+	 tq27WKbaPyP7BESwfo8LlaUSNyXllTarUHNicTpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepak Kumar Singh <deesin@codeaurora.org>,
-	Arun Kumar Neelakantam <aneela@codeaurora.org>,
-	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 259/565] rpmsg: glink: Send READ_NOTIFY command in FIFO full case
+Subject: [PATCH 6.6 135/356] bpf: Handle in-place update for full LPM trie correctly
 Date: Thu, 12 Dec 2024 15:57:34 +0100
-Message-ID: <20241212144321.709108867@linuxfoundation.org>
+Message-ID: <20241212144249.980379604@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,127 +61,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun Kumar Neelakantam <aneela@codeaurora.org>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit b16a37e1846c9573a847a56fa2f31ba833dae45a ]
+[ Upstream commit 532d6b36b2bfac5514426a97a4df8d103d700d43 ]
 
-The current design sleeps unconditionally in TX FIFO full case and
-wakeup only after sleep timer expires which adds random delays in
-clients TX path.
+When a LPM trie is full, in-place updates of existing elements
+incorrectly return -ENOSPC.
 
-Avoid sleep and use READ_NOTIFY command so that writer can be woken up
-when remote notifies about read completion by sending IRQ.
+Fix this by deferring the check of trie->n_entries. For new insertions,
+n_entries must not exceed max_entries. However, in-place updates are
+allowed even when the trie is full.
 
-Signed-off-by: Deepak Kumar Singh <deesin@codeaurora.org>
-Signed-off-by: Arun Kumar Neelakantam <aneela@codeaurora.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Link: https://lore.kernel.org/r/1596086296-28529-7-git-send-email-deesin@codeaurora.org
-Stable-dep-of: 06c59d97f63c ("rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length")
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20241206110622.1161752-5-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c | 36 ++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ kernel/bpf/lpm_trie.c | 44 +++++++++++++++++++++----------------------
+ 1 file changed, 21 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-index ecfa04bc9a78d..cbc0f64587f3e 100644
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -92,6 +92,8 @@ struct glink_core_rx_intent {
-  * @rcids:	idr of all channels with a known remote channel id
-  * @features:	remote features
-  * @intentless:	flag to indicate that there is no intent
-+ * @tx_avail_notify: Waitqueue for pending tx tasks
-+ * @sent_read_notify: flag to check cmd sent or not
-  */
- struct qcom_glink {
- 	struct device *dev;
-@@ -118,6 +120,8 @@ struct qcom_glink {
- 	unsigned long features;
- 
- 	bool intentless;
-+	wait_queue_head_t tx_avail_notify;
-+	bool sent_read_notify;
- };
- 
- enum {
-@@ -305,6 +309,20 @@ static void qcom_glink_tx_write(struct qcom_glink *glink,
- 	glink->tx_pipe->write(glink->tx_pipe, hdr, hlen, data, dlen);
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index db1b36c09eafa..958f907cdaf0e 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -302,6 +302,16 @@ static struct lpm_trie_node *lpm_trie_node_alloc(const struct lpm_trie *trie,
+ 	return node;
  }
  
-+static void qcom_glink_send_read_notify(struct qcom_glink *glink)
++static int trie_check_add_elem(struct lpm_trie *trie, u64 flags)
 +{
-+	struct glink_msg msg;
-+
-+	msg.cmd = cpu_to_le16(RPM_CMD_READ_NOTIF);
-+	msg.param1 = 0;
-+	msg.param2 = 0;
-+
-+	qcom_glink_tx_write(glink, &msg, sizeof(msg), NULL, 0);
-+
-+	mbox_send_message(glink->mbox_chan, NULL);
-+	mbox_client_txdone(glink->mbox_chan, 0);
++	if (flags == BPF_EXIST)
++		return -ENOENT;
++	if (trie->n_entries == trie->map.max_entries)
++		return -ENOSPC;
++	trie->n_entries++;
++	return 0;
 +}
 +
- static int qcom_glink_tx(struct qcom_glink *glink,
- 			 const void *hdr, size_t hlen,
- 			 const void *data, size_t dlen, bool wait)
-@@ -325,12 +343,21 @@ static int qcom_glink_tx(struct qcom_glink *glink,
- 			goto out;
- 		}
+ /* Called from syscall or from eBPF program */
+ static long trie_update_elem(struct bpf_map *map,
+ 			     void *_key, void *value, u64 flags)
+@@ -325,20 +335,12 @@ static long trie_update_elem(struct bpf_map *map,
+ 	spin_lock_irqsave(&trie->lock, irq_flags);
  
-+		if (!glink->sent_read_notify) {
-+			glink->sent_read_notify = true;
-+			qcom_glink_send_read_notify(glink);
-+		}
-+
- 		/* Wait without holding the tx_lock */
- 		spin_unlock_irqrestore(&glink->tx_lock, flags);
- 
--		usleep_range(10000, 15000);
-+		wait_event_timeout(glink->tx_avail_notify,
-+				   qcom_glink_tx_avail(glink) >= tlen, 10 * HZ);
- 
- 		spin_lock_irqsave(&glink->tx_lock, flags);
-+
-+		if (qcom_glink_tx_avail(glink) >= tlen)
-+			glink->sent_read_notify = false;
+ 	/* Allocate and fill a new node */
+-
+-	if (trie->n_entries == trie->map.max_entries) {
+-		ret = -ENOSPC;
+-		goto out;
+-	}
+-
+ 	new_node = lpm_trie_node_alloc(trie, value);
+ 	if (!new_node) {
+ 		ret = -ENOMEM;
+ 		goto out;
  	}
  
- 	qcom_glink_tx_write(glink, hdr, hlen, data, dlen);
-@@ -991,6 +1018,9 @@ static irqreturn_t qcom_glink_native_intr(int irq, void *data)
- 	unsigned int cmd;
- 	int ret = 0;
- 
-+	/* To wakeup any blocking writers */
-+	wake_up_all(&glink->tx_avail_notify);
+-	trie->n_entries++;
+-
+ 	new_node->prefixlen = key->prefixlen;
+ 	RCU_INIT_POINTER(new_node->child[0], NULL);
+ 	RCU_INIT_POINTER(new_node->child[1], NULL);
+@@ -368,10 +370,10 @@ static long trie_update_elem(struct bpf_map *map,
+ 	 * simply assign the @new_node to that slot and be done.
+ 	 */
+ 	if (!node) {
+-		if (flags == BPF_EXIST) {
+-			ret = -ENOENT;
++		ret = trie_check_add_elem(trie, flags);
++		if (ret)
+ 			goto out;
+-		}
 +
- 	for (;;) {
- 		avail = qcom_glink_rx_avail(glink);
- 		if (avail < sizeof(msg))
-@@ -1546,6 +1576,9 @@ static void qcom_glink_rx_close_ack(struct qcom_glink *glink, unsigned int lcid)
- 	struct glink_channel *channel;
- 	unsigned long flags;
+ 		rcu_assign_pointer(*slot, new_node);
+ 		goto out;
+ 	}
+@@ -385,10 +387,10 @@ static long trie_update_elem(struct bpf_map *map,
+ 				ret = -EEXIST;
+ 				goto out;
+ 			}
+-			trie->n_entries--;
+-		} else if (flags == BPF_EXIST) {
+-			ret = -ENOENT;
+-			goto out;
++		} else {
++			ret = trie_check_add_elem(trie, flags);
++			if (ret)
++				goto out;
+ 		}
  
-+	/* To wakeup any blocking writers */
-+	wake_up_all(&glink->tx_avail_notify);
-+
- 	spin_lock_irqsave(&glink->idr_lock, flags);
- 	channel = idr_find(&glink->lcids, lcid);
- 	if (WARN(!channel, "close ack on unknown channel\n")) {
-@@ -1707,6 +1740,7 @@ struct qcom_glink *qcom_glink_native_probe(struct device *dev,
- 	spin_lock_init(&glink->rx_lock);
- 	INIT_LIST_HEAD(&glink->rx_queue);
- 	INIT_WORK(&glink->rx_work, qcom_glink_work);
-+	init_waitqueue_head(&glink->tx_avail_notify);
+ 		new_node->child[0] = node->child[0];
+@@ -400,10 +402,9 @@ static long trie_update_elem(struct bpf_map *map,
+ 		goto out;
+ 	}
  
- 	spin_lock_init(&glink->idr_lock);
- 	idr_init(&glink->lcids);
+-	if (flags == BPF_EXIST) {
+-		ret = -ENOENT;
++	ret = trie_check_add_elem(trie, flags);
++	if (ret)
+ 		goto out;
+-	}
+ 
+ 	/* If the new node matches the prefix completely, it must be inserted
+ 	 * as an ancestor. Simply insert it between @node and *@slot.
+@@ -417,6 +418,7 @@ static long trie_update_elem(struct bpf_map *map,
+ 
+ 	im_node = lpm_trie_node_alloc(trie, NULL);
+ 	if (!im_node) {
++		trie->n_entries--;
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -438,12 +440,8 @@ static long trie_update_elem(struct bpf_map *map,
+ 	rcu_assign_pointer(*slot, im_node);
+ 
+ out:
+-	if (ret) {
+-		if (new_node)
+-			trie->n_entries--;
++	if (ret)
+ 		kfree(new_node);
+-	}
+-
+ 	spin_unlock_irqrestore(&trie->lock, irq_flags);
+ 	kfree_rcu(free_node, rcu);
+ 
 -- 
 2.43.0
 
