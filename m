@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADAF69EFA04
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6F69EF86B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45FD0179EE2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3572189D483
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD03223C5D;
-	Thu, 12 Dec 2024 17:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707C9223E97;
+	Thu, 12 Dec 2024 17:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8NQqnsS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2PYrA0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED78622333B;
-	Thu, 12 Dec 2024 17:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B12A15696E;
+	Thu, 12 Dec 2024 17:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025681; cv=none; b=DtQseseci2apF5JP1kvWWNjF+r8+iYkmC1Ec2SskgGjgShOwh+74yWasznx4j7YbuzReHdOi/E0bD5jKpauPuMqnH42fDSgLY3F22LDoZbTOnL2HQXJkjT3aFdu17MuQmdkdk4GI+gruJ6Yk6WB8u0ZbqLW1Lu4EjritO6M1UlY=
+	t=1734024849; cv=none; b=Dnv252p/cPLOw5fLS2/34FfXdbf0dgoUut9jIQB6ih4aoucaSXSZT2FRP42X18Gp4IjWhwkKYe5c7KkerMf3zr1w7WskEU9ssPw1XDXgT/Yz+b/ivJ+OleR6XcneFKyvZCGUnpoAC1lkwsz+Z2vWg6tcSxWrWmFwaaDQuIZU5L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025681; c=relaxed/simple;
-	bh=vxZZ2XB7HIQfLAJlkGRg1eByhRbThcQQGdZ/2wfHAr8=;
+	s=arc-20240116; t=1734024849; c=relaxed/simple;
+	bh=oiltNOWfRkQFvY028J85enuPFXtp86lFBkBS0zKwSsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qmOVJKz9161MvTu7wt2JMeRD4fygBkhMV2V7zbII0oj/MwTmYIgtCXnRMBsXVP3k+UYG+hQYJcKgPh7NXCX/01Aq8tnMiNceJC+XMUFI0Tp5iAwPfqetD4KXP+nE0+7zmBocQwZNsYZEPOPlIRl7X3wMIqmfXS9EPjwZtRp+K2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8NQqnsS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73889C4CECE;
-	Thu, 12 Dec 2024 17:48:00 +0000 (UTC)
+	 MIME-Version; b=hDQtQ9bB65pSjcnBH4DemvhX0IOu0vnCOCwKCBqNgVuaP/uGOmJlzlANZ8t9p6IEP9mXtSus5P3aE+YdJwMk/GKxc7inRQ2Wi4leTNAV8XJiwCLVLH0VMy7xYhXcXnTphLchyknp+boHeZAaXnE7d4ykIwM8UOUnJQpaQkG9tk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2PYrA0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB728C4CECE;
+	Thu, 12 Dec 2024 17:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025680;
-	bh=vxZZ2XB7HIQfLAJlkGRg1eByhRbThcQQGdZ/2wfHAr8=;
+	s=korg; t=1734024849;
+	bh=oiltNOWfRkQFvY028J85enuPFXtp86lFBkBS0zKwSsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8NQqnsSsC2/z3nQzffMHLwhYXBrbnr34Gd32Dk5DuUFWdfe6BJl+smuURFnm5iuh
-	 aeb2vSDJh6FzQ2KpXEqVnrq3BQtJhgY9pj1BgbhKtW+/s4XFGVSGBJ79Ls9Rlkvqki
-	 Ge52EkR+eCCfTrmjI2d8lBvR6UA65zge1NiZmEL0=
+	b=G2PYrA0KL+5htUvW++v3FV1XfrsoZKD/1skaay0ylwWSKOMQIuoUOYOYADGg2JdKN
+	 VWyCHuTcNEp1nqR/h6gDp7dVXrFM9QrD1rx7qLrUzElVC+8merjX/0ZRsvyFWd2qhZ
+	 Wi9NX3Aa9fMgUmQL+Rhc6luA+j4Xyba6iBNhii2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Parker Newman <pnewman@connecttech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 252/321] bpf: Fix exact match conditions in trie_get_next_key()
+Subject: [PATCH 5.10 432/459] misc: eeprom: eeprom_93cx6: Add quirk for extra read clock cycle
 Date: Thu, 12 Dec 2024 16:02:50 +0100
-Message-ID: <20241212144239.924637019@linuxfoundation.org>
+Message-ID: <20241212144310.824250452@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Parker Newman <pnewman@connecttech.com>
 
-[ Upstream commit 27abc7b3fa2e09bbe41e2924d328121546865eda ]
+[ Upstream commit 7738a7ab9d12c5371ed97114ee2132d4512e9fd5 ]
 
-trie_get_next_key() uses node->prefixlen == key->prefixlen to identify
-an exact match, However, it is incorrect because when the target key
-doesn't fully match the found node (e.g., node->prefixlen != matchlen),
-these two nodes may also have the same prefixlen. It will return
-expected result when the passed key exist in the trie. However when a
-recently-deleted key or nonexistent key is passed to
-trie_get_next_key(), it may skip keys and return incorrect result.
+Add a quirk similar to eeprom_93xx46 to add an extra clock cycle before
+reading data from the EEPROM.
 
-Fix it by using node->prefixlen == matchlen to identify exact matches.
-When the condition is true after the search, it also implies
-node->prefixlen equals key->prefixlen, otherwise, the search would
-return NULL instead.
+The 93Cx6 family of EEPROMs output a "dummy 0 bit" between the writing
+of the op-code/address from the host to the EEPROM and the reading of
+the actual data from the EEPROM.
 
-Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241206110622.1161752-6-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+More info can be found on page 6 of the AT93C46 datasheet (linked below).
+Similar notes are found in other 93xx6 datasheets.
+
+In summary the read operation for a 93Cx6 EEPROM is:
+Write to EEPROM:	110[A5-A0]	(9 bits)
+Read from EEPROM:	0[D15-D0]	(17 bits)
+
+Where:
+	110 is the start bit and READ OpCode
+	[A5-A0] is the address to read from
+	0 is a "dummy bit" preceding the actual data
+	[D15-D0] is the actual data.
+
+Looking at the READ timing diagrams in the 93Cx6 datasheets the dummy
+bit should be clocked out on the last address bit clock cycle meaning it
+should be discarded naturally.
+
+However, depending on the hardware configuration sometimes this dummy
+bit is not discarded. This is the case with Exar PCI UARTs which require
+an extra clock cycle between sending the address and reading the data.
+
+Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-5193-SEEPROM-AT93C46D-Datasheet.pdf
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Parker Newman <pnewman@connecttech.com>
+Link: https://lore.kernel.org/r/0f23973efefccd2544705a0480b4ad4c2353e407.1727880931.git.pnewman@connecttech.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/eeprom/eeprom_93cx6.c | 10 ++++++++++
+ include/linux/eeprom_93cx6.h       | 11 +++++++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 1f92d531b4466..f726ceb8d7e96 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -655,7 +655,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 	struct lpm_trie_node **node_stack = NULL;
- 	int err = 0, stack_ptr = -1;
- 	unsigned int next_bit;
--	size_t matchlen;
-+	size_t matchlen = 0;
+diff --git a/drivers/misc/eeprom/eeprom_93cx6.c b/drivers/misc/eeprom/eeprom_93cx6.c
+index 9627294fe3e95..4c9827fe92173 100644
+--- a/drivers/misc/eeprom/eeprom_93cx6.c
++++ b/drivers/misc/eeprom/eeprom_93cx6.c
+@@ -186,6 +186,11 @@ void eeprom_93cx6_read(struct eeprom_93cx6 *eeprom, const u8 word,
+ 	eeprom_93cx6_write_bits(eeprom, command,
+ 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width);
  
- 	/* The get_next_key follows postorder. For the 4 node example in
- 	 * the top of this file, the trie_get_next_key() returns the following
-@@ -694,7 +694,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 		next_bit = extract_bit(key->data, node->prefixlen);
- 		node = rcu_dereference(node->child[next_bit]);
- 	}
--	if (!node || node->prefixlen != key->prefixlen ||
-+	if (!node || node->prefixlen != matchlen ||
- 	    (node->flags & LPM_TREE_NODE_FLAG_IM))
- 		goto find_leftmost;
++	if (has_quirk_extra_read_cycle(eeprom)) {
++		eeprom_93cx6_pulse_high(eeprom);
++		eeprom_93cx6_pulse_low(eeprom);
++	}
++
+ 	/*
+ 	 * Read the requested 16 bits.
+ 	 */
+@@ -252,6 +257,11 @@ void eeprom_93cx6_readb(struct eeprom_93cx6 *eeprom, const u8 byte,
+ 	eeprom_93cx6_write_bits(eeprom, command,
+ 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width + 1);
  
++	if (has_quirk_extra_read_cycle(eeprom)) {
++		eeprom_93cx6_pulse_high(eeprom);
++		eeprom_93cx6_pulse_low(eeprom);
++	}
++
+ 	/*
+ 	 * Read the requested 8 bits.
+ 	 */
+diff --git a/include/linux/eeprom_93cx6.h b/include/linux/eeprom_93cx6.h
+index c860c72a921d0..3a485cc0e0fa0 100644
+--- a/include/linux/eeprom_93cx6.h
++++ b/include/linux/eeprom_93cx6.h
+@@ -11,6 +11,8 @@
+ 	Supported chipsets: 93c46, 93c56 and 93c66.
+  */
+ 
++#include <linux/bits.h>
++
+ /*
+  * EEPROM operation defines.
+  */
+@@ -34,6 +36,7 @@
+  * @register_write(struct eeprom_93cx6 *eeprom): handler to
+  * write to the eeprom register by using all reg_* fields.
+  * @width: eeprom width, should be one of the PCI_EEPROM_WIDTH_* defines
++ * @quirks: eeprom or controller quirks
+  * @drive_data: Set if we're driving the data line.
+  * @reg_data_in: register field to indicate data input
+  * @reg_data_out: register field to indicate data output
+@@ -50,6 +53,9 @@ struct eeprom_93cx6 {
+ 	void (*register_write)(struct eeprom_93cx6 *eeprom);
+ 
+ 	int width;
++	unsigned int quirks;
++/* Some EEPROMs require an extra clock cycle before reading */
++#define PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE	BIT(0)
+ 
+ 	char drive_data;
+ 	char reg_data_in;
+@@ -71,3 +77,8 @@ extern void eeprom_93cx6_wren(struct eeprom_93cx6 *eeprom, bool enable);
+ 
+ extern void eeprom_93cx6_write(struct eeprom_93cx6 *eeprom,
+ 			       u8 addr, u16 data);
++
++static inline bool has_quirk_extra_read_cycle(struct eeprom_93cx6 *eeprom)
++{
++	return eeprom->quirks & PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE;
++}
 -- 
 2.43.0
 
