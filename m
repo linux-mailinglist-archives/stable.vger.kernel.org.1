@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E939EEBBB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E67A9EEE3E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C02D28355D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9DC01612AB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0692153F4;
-	Thu, 12 Dec 2024 15:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE04225411;
+	Thu, 12 Dec 2024 15:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEGP+sib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmUf38UL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996BD748A;
-	Thu, 12 Dec 2024 15:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E092210D8;
+	Thu, 12 Dec 2024 15:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017311; cv=none; b=TV+pwd1LenMUOVVP7OPIV0XgSITTc4jM7jQdGDMKQz19crp5yjTMS/2bLT3yAYrsTb31lkI2mn4BAycaSaPgDLYipIVQlM7s5N6aa8aQezkZwJ3nedmoneUtZlPEnKHHSQ5Rg2q4HeAE0TMy+F2+67Pv42cJaEamZ85gBX3MQmA=
+	t=1734018547; cv=none; b=XHYvXfEuptze0dqp8Lnki+/WQfgLGuTtJZKWgOFeKyg+Mcs5sC64UVTQmxVF9lBasnIwElw2xZ6lEOvN5+QnOZWOEK5rnnPJ5pU6dLDGu39Fcr15E4dxfTj60QDNj/z/Zem0g8uXEkfcx+cicjdcARg6TJenyLk0FUgUXZZzOTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017311; c=relaxed/simple;
-	bh=jo+soLT40rXgf1Qn0g60kPv7F3PTkDyA51ojdrN9RF8=;
+	s=arc-20240116; t=1734018547; c=relaxed/simple;
+	bh=j8AZO3OyTabBGJ0ic4c/M0AU4GnHFQuUI7hRIukuKN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewMD7ttJ7O0V+SaRCfEppliaJmvuLpKi/LTT/ejE8bpjMNl2UHMAYqKROWdx/6pvPFsy+/W7w2M/1SIuX69EINaNndfeQFG5Gz1kGdK6N4cx0XyqdMXjwXLiUAhrjkf6qKyqAguGrwLaHa5H4sP3d1SmVmUTlK3x1Inh6O+BHE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEGP+sib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D567C4CECE;
-	Thu, 12 Dec 2024 15:28:30 +0000 (UTC)
+	 MIME-Version; b=cHhKBnktzOEHSN64nYL03v4hK+S6yO8dePBUxRR5YLeZ+UiZJDkspdj+OxRKrtuzcTc89URcWxWkuKGhaoe6YpDADz2h5X4AHaXy6Fpsj0dqINfbD1PonCXnYw+Q65RNgOlNplzuj70j/2Dp5f5XXv+Lj4mUP03u1XP6MZqXPRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmUf38UL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5A4C4CECE;
+	Thu, 12 Dec 2024 15:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017311;
-	bh=jo+soLT40rXgf1Qn0g60kPv7F3PTkDyA51ojdrN9RF8=;
+	s=korg; t=1734018546;
+	bh=j8AZO3OyTabBGJ0ic4c/M0AU4GnHFQuUI7hRIukuKN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEGP+sibIOhhDZFj0fm8Zyed7gYxDvPg5xU36vWlhzkW5NynMS9IyxXKGKADQwfo9
-	 fksmxubuTCAZruGpZiwj0uPhpRd2lm2V8RAoRfpMn2XRKG3q56hFP+nc/+Kw7W78Xo
-	 U2OcE239b1C1q0qR2oBVX2aWtTyofnUX6g7ybVuI=
+	b=pmUf38UL+LbYu9j6S3+V3WD72BEs7IlUVK1k6uMMTQU7JJymEvhCBrwCIvzWD9sxG
+	 wkmtQ5vAJCvRpFy/nWc2MEUh3otoJzntvCZ0S8MQbQ1AmcqpRJINfoqkUYzgSd2qRL
+	 v4fmNPddwbvhffgTfOrmuA5Jk5Q/FAYzBopCPc9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Esther Shimanovich <eshimanovich@chromium.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 443/466] sched/deadline: Fix warning in migrate_enable for boosted tasks
+Subject: [PATCH 6.6 293/356] PCI: Detect and trust built-in Thunderbolt chips
 Date: Thu, 12 Dec 2024 16:00:12 +0100
-Message-ID: <20241212144324.358551206@linuxfoundation.org>
+Message-ID: <20241212144256.146750173@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,278 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Esther Shimanovich <eshimanovich@chromium.org>
 
-[ Upstream commit 0664e2c311b9fa43b33e3e81429cd0c2d7f9c638 ]
+[ Upstream commit 3b96b895127b7c0aed63d82c974b46340e8466c1 ]
 
-When running the following command:
+Some computers with CPUs that lack Thunderbolt features use discrete
+Thunderbolt chips to add Thunderbolt functionality. These Thunderbolt
+chips are located within the chassis; between the Root Port labeled
+ExternalFacingPort and the USB-C port.
 
-while true; do
-    stress-ng --cyclic 30 --timeout 30s --minimize --quiet
-done
+These Thunderbolt PCIe devices should be labeled as fixed and trusted, as
+they are built into the computer. Otherwise, security policies that rely on
+those flags may have unintended results, such as preventing USB-C ports
+from enumerating.
 
-a warning is eventually triggered:
+Detect the above scenario through the process of elimination.
 
-WARNING: CPU: 43 PID: 2848 at kernel/sched/deadline.c:794
-setup_new_dl_entity+0x13e/0x180
-...
-Call Trace:
- <TASK>
- ? show_trace_log_lvl+0x1c4/0x2df
- ? enqueue_dl_entity+0x631/0x6e0
- ? setup_new_dl_entity+0x13e/0x180
- ? __warn+0x7e/0xd0
- ? report_bug+0x11a/0x1a0
- ? handle_bug+0x3c/0x70
- ? exc_invalid_op+0x14/0x70
- ? asm_exc_invalid_op+0x16/0x20
- enqueue_dl_entity+0x631/0x6e0
- enqueue_task_dl+0x7d/0x120
- __do_set_cpus_allowed+0xe3/0x280
- __set_cpus_allowed_ptr_locked+0x140/0x1d0
- __set_cpus_allowed_ptr+0x54/0xa0
- migrate_enable+0x7e/0x150
- rt_spin_unlock+0x1c/0x90
- group_send_sig_info+0xf7/0x1a0
- ? kill_pid_info+0x1f/0x1d0
- kill_pid_info+0x78/0x1d0
- kill_proc_info+0x5b/0x110
- __x64_sys_kill+0x93/0xc0
- do_syscall_64+0x5c/0xf0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
- RIP: 0033:0x7f0dab31f92b
+  1) Integrated Thunderbolt host controllers already have Thunderbolt
+     implemented, so anything outside their external facing Root Port is
+     removable and untrusted.
 
-This warning occurs because set_cpus_allowed dequeues and enqueues tasks
-with the ENQUEUE_RESTORE flag set. If the task is boosted, the warning
-is triggered. A boosted task already had its parameters set by
-rt_mutex_setprio, and a new call to setup_new_dl_entity is unnecessary,
-hence the WARN_ON call.
+     Detect them using the following properties:
 
-Check if we are requeueing a boosted task and avoid calling
-setup_new_dl_entity if that's the case.
+       - Most integrated host controllers have the "usb4-host-interface"
+         ACPI property, as described here:
 
-Fixes: 295d6d5e3736 ("sched/deadline: Fix switching to -deadline")
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lore.kernel.org/r/20240724142253.27145-2-wander@redhat.com
+         https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#mapping-native-protocols-pcie-displayport-tunneled-through-usb4-to-usb4-host-routers
+
+       - Integrated Thunderbolt PCIe Root Ports before Alder Lake do not
+         have the "usb4-host-interface" ACPI property. Identify those by
+         their PCI IDs instead.
+
+  2) If a Root Port does not have integrated Thunderbolt capabilities, but
+     has the "ExternalFacingPort" ACPI property, that means the
+     manufacturer has opted to use a discrete Thunderbolt host controller
+     that is built into the computer.
+
+     This host controller can be identified by virtue of being located
+     directly below an external-facing Root Port that lacks integrated
+     Thunderbolt. Label it as trusted and fixed.
+
+     Everything downstream from it is untrusted and removable.
+
+The "ExternalFacingPort" ACPI property is described here:
+https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-externally-exposed-pcie-root-ports
+
+Link: https://lore.kernel.org/r/20240910-trust-tbt-fix-v5-1-7a7a42a5f496@chromium.org
+Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/pci/acpi.c | 119 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/pci/probe.c |  30 ++++++++---
+ include/linux/pci.h |   6 +++
+ 3 files changed, 148 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index be1b917dc8ce4..40a1ad4493b4d 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2042,6 +2042,7 @@ enqueue_dl_entity(struct sched_dl_entity *dl_se, int flags)
- 	} else if (flags & ENQUEUE_REPLENISH) {
- 		replenish_dl_entity(dl_se);
- 	} else if ((flags & ENQUEUE_RESTORE) &&
-+		   !is_dl_boosted(dl_se) &&
- 		   dl_time_before(dl_se->deadline, rq_clock(rq_of_dl_se(dl_se)))) {
- 		setup_new_dl_entity(dl_se);
- 	}
+diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+index ea2eb2ec90e2b..1e3bdefe9cb42 100644
+--- a/arch/x86/pci/acpi.c
++++ b/arch/x86/pci/acpi.c
+@@ -250,6 +250,125 @@ void __init pci_acpi_crs_quirks(void)
+ 		pr_info("Please notify linux-pci@vger.kernel.org so future kernels can do this automatically\n");
+ }
+ 
++/*
++ * Check if pdev is part of a PCIe switch that is directly below the
++ * specified bridge.
++ */
++static bool pcie_switch_directly_under(struct pci_dev *bridge,
++				       struct pci_dev *pdev)
++{
++	struct pci_dev *parent = pci_upstream_bridge(pdev);
++
++	/* If the device doesn't have a parent, it's not under anything */
++	if (!parent)
++		return false;
++
++	/*
++	 * If the device has a PCIe type, check if it is below the
++	 * corresponding PCIe switch components (if applicable). Then check
++	 * if its upstream port is directly beneath the specified bridge.
++	 */
++	switch (pci_pcie_type(pdev)) {
++	case PCI_EXP_TYPE_UPSTREAM:
++		return parent == bridge;
++
++	case PCI_EXP_TYPE_DOWNSTREAM:
++		if (pci_pcie_type(parent) != PCI_EXP_TYPE_UPSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		return parent == bridge;
++
++	case PCI_EXP_TYPE_ENDPOINT:
++		if (pci_pcie_type(parent) != PCI_EXP_TYPE_DOWNSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		if (!parent || pci_pcie_type(parent) != PCI_EXP_TYPE_UPSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		return parent == bridge;
++	}
++
++	return false;
++}
++
++static bool pcie_has_usb4_host_interface(struct pci_dev *pdev)
++{
++	struct fwnode_handle *fwnode;
++
++	/*
++	 * For USB4, the tunneled PCIe Root or Downstream Ports are marked
++	 * with the "usb4-host-interface" ACPI property, so we look for
++	 * that first. This should cover most cases.
++	 */
++	fwnode = fwnode_find_reference(dev_fwnode(&pdev->dev),
++				       "usb4-host-interface", 0);
++	if (!IS_ERR(fwnode)) {
++		fwnode_handle_put(fwnode);
++		return true;
++	}
++
++	/*
++	 * Any integrated Thunderbolt 3/4 PCIe Root Ports from Intel
++	 * before Alder Lake do not have the "usb4-host-interface"
++	 * property so we use their PCI IDs instead. All these are
++	 * tunneled. This list is not expected to grow.
++	 */
++	if (pdev->vendor == PCI_VENDOR_ID_INTEL) {
++		switch (pdev->device) {
++		/* Ice Lake Thunderbolt 3 PCIe Root Ports */
++		case 0x8a1d:
++		case 0x8a1f:
++		case 0x8a21:
++		case 0x8a23:
++		/* Tiger Lake-LP Thunderbolt 4 PCIe Root Ports */
++		case 0x9a23:
++		case 0x9a25:
++		case 0x9a27:
++		case 0x9a29:
++		/* Tiger Lake-H Thunderbolt 4 PCIe Root Ports */
++		case 0x9a2b:
++		case 0x9a2d:
++		case 0x9a2f:
++		case 0x9a31:
++			return true;
++		}
++	}
++
++	return false;
++}
++
++bool arch_pci_dev_is_removable(struct pci_dev *pdev)
++{
++	struct pci_dev *parent, *root;
++
++	/* pdev without a parent or Root Port is never tunneled */
++	parent = pci_upstream_bridge(pdev);
++	if (!parent)
++		return false;
++	root = pcie_find_root_port(pdev);
++	if (!root)
++		return false;
++
++	/* Internal PCIe devices are not tunneled */
++	if (!root->external_facing)
++		return false;
++
++	/* Anything directly behind a "usb4-host-interface" is tunneled */
++	if (pcie_has_usb4_host_interface(parent))
++		return true;
++
++	/*
++	 * Check if this is a discrete Thunderbolt/USB4 controller that is
++	 * directly behind the non-USB4 PCIe Root Port marked as
++	 * "ExternalFacingPort". Those are not behind a PCIe tunnel.
++	 */
++	if (pcie_switch_directly_under(root, pdev))
++		return false;
++
++	/* PCIe devices after the discrete chip are tunneled */
++	return true;
++}
++
+ #ifdef	CONFIG_PCI_MMCONFIG
+ static int check_segment(u16 seg, struct device *dev, char *estr)
+ {
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 43159965e09e9..03b519a228403 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1602,23 +1602,33 @@ static void set_pcie_thunderbolt(struct pci_dev *dev)
+ 
+ static void set_pcie_untrusted(struct pci_dev *dev)
+ {
+-	struct pci_dev *parent;
++	struct pci_dev *parent = pci_upstream_bridge(dev);
+ 
++	if (!parent)
++		return;
+ 	/*
+-	 * If the upstream bridge is untrusted we treat this device
++	 * If the upstream bridge is untrusted we treat this device as
+ 	 * untrusted as well.
+ 	 */
+-	parent = pci_upstream_bridge(dev);
+-	if (parent && (parent->untrusted || parent->external_facing))
++	if (parent->untrusted) {
++		dev->untrusted = true;
++		return;
++	}
++
++	if (arch_pci_dev_is_removable(dev)) {
++		pci_dbg(dev, "marking as untrusted\n");
+ 		dev->untrusted = true;
++	}
+ }
+ 
+ static void pci_set_removable(struct pci_dev *dev)
+ {
+ 	struct pci_dev *parent = pci_upstream_bridge(dev);
+ 
++	if (!parent)
++		return;
+ 	/*
+-	 * We (only) consider everything downstream from an external_facing
++	 * We (only) consider everything tunneled below an external_facing
+ 	 * device to be removable by the user. We're mainly concerned with
+ 	 * consumer platforms with user accessible thunderbolt ports that are
+ 	 * vulnerable to DMA attacks, and we expect those ports to be marked by
+@@ -1628,9 +1638,15 @@ static void pci_set_removable(struct pci_dev *dev)
+ 	 * accessible to user / may not be removed by end user, and thus not
+ 	 * exposed as "removable" to userspace.
+ 	 */
+-	if (parent &&
+-	    (parent->external_facing || dev_is_removable(&parent->dev)))
++	if (dev_is_removable(&parent->dev)) {
++		dev_set_removable(&dev->dev, DEVICE_REMOVABLE);
++		return;
++	}
++
++	if (arch_pci_dev_is_removable(dev)) {
++		pci_dbg(dev, "marking as removable\n");
+ 		dev_set_removable(&dev->dev, DEVICE_REMOVABLE);
++	}
+ }
+ 
+ /**
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 2b7e45bae9408..2d1fb935a8c86 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2577,6 +2577,12 @@ pci_host_bridge_acpi_msi_domain(struct pci_bus *bus) { return NULL; }
+ static inline bool pci_pr3_present(struct pci_dev *pdev) { return false; }
+ #endif
+ 
++#if defined(CONFIG_X86) && defined(CONFIG_ACPI)
++bool arch_pci_dev_is_removable(struct pci_dev *pdev);
++#else
++static inline bool arch_pci_dev_is_removable(struct pci_dev *pdev) { return false; }
++#endif
++
+ #ifdef CONFIG_EEH
+ static inline struct eeh_dev *pci_dev_to_eeh_dev(struct pci_dev *pdev)
+ {
 -- 
 2.43.0
 
