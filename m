@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CD79EF30E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7199EEC2C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ADBD1794CB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C5181663E9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47C8229687;
-	Thu, 12 Dec 2024 16:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D81217F48;
+	Thu, 12 Dec 2024 15:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v91SqDcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWCM/LrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FDE23A1A4;
-	Thu, 12 Dec 2024 16:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C357A217F29;
+	Thu, 12 Dec 2024 15:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021357; cv=none; b=pyEhXcvGim7jIUmls/TgznshkiSZ/9iKzX6cyKPuIe/EZQyc0EfRCLNFaRDNhrZF7/2pNipdhJroxxpIw81Ecd8ERgfel4uHA5wlk0lCXEpmhby6iB8Ccj0O4qa33zPWIKZFc500lje0sYhlflXEW9GsLyufLYbkhsHph6KwhBo=
+	t=1734017413; cv=none; b=Z03n5PVj2GAEBZjelqPBbxUv91EVkho5eet8/ICpQ4vwzHc97HxToakW8xMvNHdxv3e92jhrfbjeseFSjo96pOfH8IgPL+MNiBeEAmUJQwRsqUgKbR4s/XSm5SywXP0XUMMpdpTpvQMk9iW5Msgeqc4iWKlFSub7eAxpKiDuGYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021357; c=relaxed/simple;
-	bh=Aris9I+0wTEtprQnO56x0s8ac0VYfP8UIFqUCSFAveg=;
+	s=arc-20240116; t=1734017413; c=relaxed/simple;
+	bh=8VSSiezTJ+CGseyN7fCqou2pCfH4YVW8y8umHLCbXAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdOztJU+IaHfyHB1Us2rQQlTcFch7XV7GYDA5/WPQqOis0wqvGz7M4V6xWUI5b+pmTSJtR2MVMsb/uwOyjEBTcaDH110z0q3oU5JWO09t0oB5ZCuaNLgRJAM8Sy4PBVXz8YStax35z+MFVvhx/6spTpxNDwPeBVIazzP/vvgpcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v91SqDcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6D7C4CECE;
-	Thu, 12 Dec 2024 16:35:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OJtesK+X2iXDhaubGg6bL+P/rGA2ATKHjRfjP1d+Lmmg8uWG+A0uWHXSd8mHmgfsZf3qObk804gApIbiAnN612xHjOKhfYjpyPvyD5SGD1HUIWSrFyBoVBIzGTMJcpf6bStU2y2cf/Udq/oZfPRoi1cCFSO/lUsRAFYnR0OKbhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWCM/LrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A28BC4CECE;
+	Thu, 12 Dec 2024 15:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021357;
-	bh=Aris9I+0wTEtprQnO56x0s8ac0VYfP8UIFqUCSFAveg=;
+	s=korg; t=1734017413;
+	bh=8VSSiezTJ+CGseyN7fCqou2pCfH4YVW8y8umHLCbXAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v91SqDcKQewAt1TN/Nfln6uXLKMhQ1IDtHdm5hylZflsYGvHpdyzgCxrQLBEuj6/S
-	 c6thtOeXzuOQxLfwMe1wSq5dCUwQOkF2bNs/zyeO/ivAL1cdsKO6Tv0IAmaOBxjosp
-	 UlknWZrOE23UrT1DhUl2RFQruLY0DsYS+TD2m7xg=
+	b=oWCM/LrMp7i+qAxosE4HkzAUiUHJO244y4+ZHbLLiFC+4NdFUb7TJGRTQ8zN4yO7d
+	 oWI9rkJJKUu1EPYIY1fEKr789FXBu0eBkTj0/aX3N7KnOwggeDL8/Er1kuQxCeh8d+
+	 An5dWjK0LKJP5kpu8beuZdoAsD3j8nnfFUZ+2RN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 685/772] jfs: fix array-index-out-of-bounds in jfs_readdir
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 461/466] drm/amdgpu: rework resume handling for display (v2)
 Date: Thu, 12 Dec 2024 16:00:30 +0100
-Message-ID: <20241212144418.224546810@linuxfoundation.org>
+Message-ID: <20241212144325.081964604@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 839f102efb168f02dfdd46717b7c6dddb26b015e ]
+commit 73dae652dcac776296890da215ee7dec357a1032 upstream.
 
-The stbl might contain some invalid values. Added a check to
-return error code in that case.
+Split resume into a 3rd step to handle displays when DCC is
+enabled on DCN 4.0.1.  Move display after the buffer funcs
+have been re-enabled so that the GPU will do the move and
+properly set the DCC metadata for DCN.
 
-Reported-by: syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0315f8fe99120601ba88
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: fix fence irq resume ordering
+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.11.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   45 +++++++++++++++++++++++++++--
+ 1 file changed, 43 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 69fd936fbdb37..8f85177f284b5 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -2891,6 +2891,14 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
- 		stbl = DT_GETSTBL(p);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3666,7 +3666,7 @@ static int amdgpu_device_ip_resume_phase
+  *
+  * @adev: amdgpu_device pointer
+  *
+- * First resume function for hardware IPs.  The list of all the hardware
++ * Second resume function for hardware IPs.  The list of all the hardware
+  * IPs that make up the asic is walked and the resume callbacks are run for
+  * all blocks except COMMON, GMC, and IH.  resume puts the hardware into a
+  * functional state after a suspend and updates the software state as
+@@ -3684,6 +3684,7 @@ static int amdgpu_device_ip_resume_phase
+ 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_COMMON ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GMC ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_IH ||
++		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_PSP)
+ 			continue;
+ 		r = adev->ip_blocks[i].version->funcs->resume(adev);
+@@ -3699,6 +3700,36 @@ static int amdgpu_device_ip_resume_phase
+ }
  
- 		for (i = index; i < p->header.nextindex; i++) {
-+			if (stbl[i] < 0 || stbl[i] > 127) {
-+				jfs_err("JFS: Invalid stbl[%d] = %d for inode %ld, block = %lld",
-+					i, stbl[i], (long)ip->i_ino, (long long)bn);
-+				free_page(dirent_buf);
-+				DT_PUTPAGE(mp);
-+				return -EIO;
-+			}
+ /**
++ * amdgpu_device_ip_resume_phase3 - run resume for hardware IPs
++ *
++ * @adev: amdgpu_device pointer
++ *
++ * Third resume function for hardware IPs.  The list of all the hardware
++ * IPs that make up the asic is walked and the resume callbacks are run for
++ * all DCE.  resume puts the hardware into a functional state after a suspend
++ * and updates the software state as necessary.  This function is also used
++ * for restoring the GPU after a GPU reset.
++ *
++ * Returns 0 on success, negative error code on failure.
++ */
++static int amdgpu_device_ip_resume_phase3(struct amdgpu_device *adev)
++{
++	int i, r;
 +
- 			d = (struct ldtentry *) & p->slot[stbl[i]];
++	for (i = 0; i < adev->num_ip_blocks; i++) {
++		if (!adev->ip_blocks[i].status.valid || adev->ip_blocks[i].status.hw)
++			continue;
++		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE) {
++			r = adev->ip_blocks[i].version->funcs->resume(adev);
++			if (r)
++				return r;
++		}
++	}
++
++	return 0;
++}
++
++/**
+  * amdgpu_device_ip_resume - run resume for hardware IPs
+  *
+  * @adev: amdgpu_device pointer
+@@ -3727,6 +3758,13 @@ static int amdgpu_device_ip_resume(struc
+ 	if (adev->mman.buffer_funcs_ring->sched.ready)
+ 		amdgpu_ttm_set_buffer_funcs_status(adev, true);
  
- 			if (((long) jfs_dirent + d->namlen + 1) >
--- 
-2.43.0
-
++	if (r)
++		return r;
++
++	amdgpu_fence_driver_hw_init(adev);
++
++	r = amdgpu_device_ip_resume_phase3(adev);
++
+ 	return r;
+ }
+ 
+@@ -4809,7 +4847,6 @@ int amdgpu_device_resume(struct drm_devi
+ 		dev_err(adev->dev, "amdgpu_device_ip_resume failed (%d).\n", r);
+ 		goto exit;
+ 	}
+-	amdgpu_fence_driver_hw_init(adev);
+ 
+ 	if (!adev->in_s0ix) {
+ 		r = amdgpu_amdkfd_resume(adev, adev->in_runpm);
+@@ -5431,6 +5468,10 @@ int amdgpu_do_asic_reset(struct list_hea
+ 				if (tmp_adev->mman.buffer_funcs_ring->sched.ready)
+ 					amdgpu_ttm_set_buffer_funcs_status(tmp_adev, true);
+ 
++				r = amdgpu_device_ip_resume_phase3(tmp_adev);
++				if (r)
++					goto out;
++
+ 				if (vram_lost)
+ 					amdgpu_device_fill_reset_magic(tmp_adev);
+ 
 
 
 
