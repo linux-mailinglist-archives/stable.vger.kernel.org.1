@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-101428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC6B9EEC32
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 881519EF193
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A6542840D6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9DCC189D87E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9868A21C172;
-	Thu, 12 Dec 2024 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E788322E9EC;
+	Thu, 12 Dec 2024 16:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoTuz5G0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvGsE0YW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542B4217F48;
-	Thu, 12 Dec 2024 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A469120969B;
+	Thu, 12 Dec 2024 16:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017517; cv=none; b=P+FJ7GKDu3fkVFxTp5vwUnKwQu1rB7D9LGviam9vjHO1qD9LWzsUp3PUnYcOUuTYliznzTHRWKRx4HO8B1nNDHT7LZH17QGG2NP2uM0/58v4GAaUFo3YJEAnYNn9bfMhqBnEIo2/PMbthWg5MtCH9DInKFTyRQPaLHMEQzyrBzA=
+	t=1734020229; cv=none; b=G4PTylUNfD7jlgS8SRpDf1RxfHLvWWSAkLkt94k0ObHxHCF1I2zhb7KRl2pzeiQSs9ROjBF4ICy+PTdaIpfaFSKHuPSTYX29c2eOGRNc/6A6U6mKYLfqE7aD97FXirh8bz6QSOW00N0Hc3eF5kq4daM/8MW3mG0trNDXdP3Pr5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017517; c=relaxed/simple;
-	bh=BDtIoeD99Q5+GcSGtgwe6k38S3iUs4VL9IO3v82L4RQ=;
+	s=arc-20240116; t=1734020229; c=relaxed/simple;
+	bh=o6CtfbbRusvcdc2oPSynhZFOISnljkI6E3p3pnHTRWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qG2+Yp1nMo+Z0/W5RLGS+RSmGEWMkGLlGE83+i+AO2cobF7FNov4ujWxdtecMZFgayDyYIxnnamJ2emw0tQsIw/Jd6GsbWglAyWF3zhghXPsC8ik6oa1AOFjIjBt5asKJfZYLLP1VmkWgRtsRasiqTMDZqtoMBc9+fz/QXZDRjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoTuz5G0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA9AC4CECE;
-	Thu, 12 Dec 2024 15:31:56 +0000 (UTC)
+	 MIME-Version; b=NuC3sskIHdd+KLiTgkvVK8fxF6t9fSdBlWGUWpKuCteD7WJ7Hqk9CQO/t56mrJOHadPheYWroSmneqxiv/HxMIA30rUuePKKjwXr3Qa9/TxI7JZKLG/pdyUQxVXtXqwrlL9vjn8sqLqIrf9c3F+tuZYViFxO/XhzBSWzpO9NN2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvGsE0YW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4233C4CECE;
+	Thu, 12 Dec 2024 16:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017517;
-	bh=BDtIoeD99Q5+GcSGtgwe6k38S3iUs4VL9IO3v82L4RQ=;
+	s=korg; t=1734020229;
+	bh=o6CtfbbRusvcdc2oPSynhZFOISnljkI6E3p3pnHTRWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XoTuz5G08qQj7dXe2p/pSqLFPmObncFpe4PoZIQhd1A3KCGok6PCXPUPZ0gXPGuoy
-	 JPz4hOSjhyqqgbxaoE7PqQdBfF+jgf4VLCr6x2YINU7RmDzgFzDvzrguaV+AhcgEJK
-	 2sRUICix9OAb5/IK4Ohc2xBD9UAplp4fLKhWYazc=
+	b=IvGsE0YWRMVQCgxiipG4i+RiVCnaOIIluDkhDW9cxQ8Hp5/pDq78s7AP9GOrGywym
+	 28GpzAPnFvQrGj2GXGO6DnZM0mgOzCGp1XzC9f2a2DX8+b4spVrHK1rgBOqhPAjeoN
+	 NQs+GbTfJV9I12q1Sk4t92hUjMboOK8bULLixCaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/356] net/smc: unify the structs of accept or confirm message for v1 and v2
-Date: Thu, 12 Dec 2024 15:55:55 +0100
-Message-ID: <20241212144246.053759087@linuxfoundation.org>
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	syzbot+a828133770f62293563e@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 411/772] media: v4l2-core: v4l2-dv-timings: check cvt/gtf result
+Date: Thu, 12 Dec 2024 15:55:56 +0100
+Message-ID: <20241212144406.905747668@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,479 +61,373 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit 9505450d55b0f7809fe63c36ad9339a909461c87 ]
+commit 9f070b1862f3411b8bcdfd51a8eaad25286f9deb upstream.
 
-The structs of CLC accept and confirm messages for SMCv1 and SMCv2 are
-separately defined and often casted to each other in the code, which may
-increase the risk of errors caused by future divergence of them. So
-unify them into one struct for better maintainability.
+The v4l2_detect_cvt/gtf functions should check the result against the
+timing capabilities: these functions calculate the timings, so if they
+are out of bounds, they should be rejected.
 
-Suggested-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 0541db8ee32c ("net/smc: initialize close_work early to avoid warning")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To do this, add the struct v4l2_dv_timings_cap as argument to those
+functions.
+
+This required updates to the adv7604 and adv7842 drivers since the
+prototype of these functions has now changed. The timings struct
+that is passed to v4l2_detect_cvt/gtf in those two drivers is filled
+with the timings detected by the hardware.
+
+The vivid driver was also updated, but an additional check was added:
+the width and height specified by VIDIOC_S_DV_TIMINGS has to match the
+calculated result, otherwise something went wrong. Note that vivid
+*emulates* hardware, so all the values passed to the v4l2_detect_cvt/gtf
+functions came from the timings struct that was filled by userspace
+and passed on to the driver via VIDIOC_S_DV_TIMINGS. So these fields
+can contain random data. Both the constraints check via
+struct v4l2_dv_timings_cap and the additional width/height check
+ensure that the resulting timings are sane and not messed up by the
+v4l2_detect_cvt/gtf calculations.
+
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 2576415846bc ("[media] v4l2: move dv-timings related code to v4l2-dv-timings.c")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+a828133770f62293563e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-media/000000000000013050062127830a@google.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c  | 52 +++++++++++++------------------------
- net/smc/smc_clc.c | 65 ++++++++++++++++++++---------------------------
- net/smc/smc_clc.h | 42 +++++++++++++-----------------
- 3 files changed, 62 insertions(+), 97 deletions(-)
+ drivers/media/i2c/adv7604.c                      |    5 
+ drivers/media/i2c/adv7842.c                      |   13 +-
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c |   15 ++
+ drivers/media/v4l2-core/v4l2-dv-timings.c        |  132 ++++++++++++-----------
+ include/media/v4l2-dv-timings.h                  |   18 ++-
+ 5 files changed, 107 insertions(+), 76 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 3158b94fd347a..ea24fb4dae0df 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -659,8 +659,6 @@ static bool smc_isascii(char *hostname)
- static void smc_conn_save_peer_info_fce(struct smc_sock *smc,
- 					struct smc_clc_msg_accept_confirm *clc)
- {
--	struct smc_clc_msg_accept_confirm_v2 *clc_v2 =
--		(struct smc_clc_msg_accept_confirm_v2 *)clc;
- 	struct smc_clc_first_contact_ext *fce;
- 	int clc_v2_len;
+--- a/drivers/media/i2c/adv7604.c
++++ b/drivers/media/i2c/adv7604.c
+@@ -1405,12 +1405,13 @@ static int stdi2dv_timings(struct v4l2_s
+ 	if (v4l2_detect_cvt(stdi->lcf + 1, hfreq, stdi->lcvs, 0,
+ 			(stdi->hs_pol == '+' ? V4L2_DV_HSYNC_POS_POL : 0) |
+ 			(stdi->vs_pol == '+' ? V4L2_DV_VSYNC_POS_POL : 0),
+-			false, timings))
++			false, adv76xx_get_dv_timings_cap(sd, -1), timings))
+ 		return 0;
+ 	if (v4l2_detect_gtf(stdi->lcf + 1, hfreq, stdi->lcvs,
+ 			(stdi->hs_pol == '+' ? V4L2_DV_HSYNC_POS_POL : 0) |
+ 			(stdi->vs_pol == '+' ? V4L2_DV_VSYNC_POS_POL : 0),
+-			false, state->aspect_ratio, timings))
++			false, state->aspect_ratio,
++			adv76xx_get_dv_timings_cap(sd, -1), timings))
+ 		return 0;
  
-@@ -669,17 +667,15 @@ static void smc_conn_save_peer_info_fce(struct smc_sock *smc,
- 		return;
- 
- 	if (smc->conn.lgr->is_smcd) {
--		memcpy(smc->conn.lgr->negotiated_eid, clc_v2->d1.eid,
-+		memcpy(smc->conn.lgr->negotiated_eid, clc->d1.eid,
- 		       SMC_MAX_EID_LEN);
--		clc_v2_len = offsetofend(struct smc_clc_msg_accept_confirm_v2,
--					 d1);
-+		clc_v2_len = offsetofend(struct smc_clc_msg_accept_confirm, d1);
- 	} else {
--		memcpy(smc->conn.lgr->negotiated_eid, clc_v2->r1.eid,
-+		memcpy(smc->conn.lgr->negotiated_eid, clc->r1.eid,
- 		       SMC_MAX_EID_LEN);
--		clc_v2_len = offsetofend(struct smc_clc_msg_accept_confirm_v2,
--					 r1);
-+		clc_v2_len = offsetofend(struct smc_clc_msg_accept_confirm, r1);
- 	}
--	fce = (struct smc_clc_first_contact_ext *)(((u8 *)clc_v2) + clc_v2_len);
-+	fce = (struct smc_clc_first_contact_ext *)(((u8 *)clc) + clc_v2_len);
- 	smc->conn.lgr->peer_os = fce->os_type;
- 	smc->conn.lgr->peer_smc_release = fce->release;
- 	if (smc_isascii(fce->hostname))
-@@ -1131,13 +1127,13 @@ static int smc_connect_ism_vlan_cleanup(struct smc_sock *smc,
- }
- 
- #define SMC_CLC_MAX_ACCEPT_LEN \
--	(sizeof(struct smc_clc_msg_accept_confirm_v2) + \
-+	(sizeof(struct smc_clc_msg_accept_confirm) + \
- 	 sizeof(struct smc_clc_first_contact_ext_v2x) + \
- 	 sizeof(struct smc_clc_msg_trail))
- 
- /* CLC handshake during connect */
- static int smc_connect_clc(struct smc_sock *smc,
--			   struct smc_clc_msg_accept_confirm_v2 *aclc2,
-+			   struct smc_clc_msg_accept_confirm *aclc,
- 			   struct smc_init_info *ini)
- {
- 	int rc = 0;
-@@ -1147,7 +1143,7 @@ static int smc_connect_clc(struct smc_sock *smc,
- 	if (rc)
- 		return rc;
- 	/* receive SMC Accept CLC message */
--	return smc_clc_wait_msg(smc, aclc2, SMC_CLC_MAX_ACCEPT_LEN,
-+	return smc_clc_wait_msg(smc, aclc, SMC_CLC_MAX_ACCEPT_LEN,
- 				SMC_CLC_ACCEPT, CLC_WAIT_TIME);
- }
- 
-@@ -1183,10 +1179,8 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
- 				       struct smc_clc_msg_accept_confirm *aclc,
- 				       struct smc_init_info *ini)
- {
--	struct smc_clc_msg_accept_confirm_v2 *clc_v2 =
--		(struct smc_clc_msg_accept_confirm_v2 *)aclc;
- 	struct smc_clc_first_contact_ext *fce =
--		smc_get_clc_first_contact_ext(clc_v2, false);
-+		smc_get_clc_first_contact_ext(aclc, false);
- 	struct net *net = sock_net(&smc->sk);
- 	int rc;
- 
-@@ -1309,10 +1303,7 @@ static int smc_connect_rdma(struct smc_sock *smc,
+ 	v4l2_dbg(2, debug, sd,
+--- a/drivers/media/i2c/adv7842.c
++++ b/drivers/media/i2c/adv7842.c
+@@ -1431,14 +1431,15 @@ static int stdi2dv_timings(struct v4l2_s
  	}
  
- 	if (aclc->hdr.version > SMC_V1) {
--		struct smc_clc_msg_accept_confirm_v2 *clc_v2 =
--			(struct smc_clc_msg_accept_confirm_v2 *)aclc;
--
--		eid = clc_v2->r1.eid;
-+		eid = aclc->r1.eid;
- 		if (ini->first_contact_local)
- 			smc_fill_gid_list(link->lgr, &ini->smcrv2.gidlist,
- 					  link->smcibdev, link->gid);
-@@ -1353,7 +1344,7 @@ static int smc_connect_rdma(struct smc_sock *smc,
-  * Determine from the CHID of the received CLC ACCEPT the ISM device chosen.
+ 	if (v4l2_detect_cvt(stdi->lcf + 1, hfreq, stdi->lcvs, 0,
+-			(stdi->hs_pol == '+' ? V4L2_DV_HSYNC_POS_POL : 0) |
+-			(stdi->vs_pol == '+' ? V4L2_DV_VSYNC_POS_POL : 0),
+-			false, timings))
++			    (stdi->hs_pol == '+' ? V4L2_DV_HSYNC_POS_POL : 0) |
++			    (stdi->vs_pol == '+' ? V4L2_DV_VSYNC_POS_POL : 0),
++			    false, adv7842_get_dv_timings_cap(sd), timings))
+ 		return 0;
+ 	if (v4l2_detect_gtf(stdi->lcf + 1, hfreq, stdi->lcvs,
+-			(stdi->hs_pol == '+' ? V4L2_DV_HSYNC_POS_POL : 0) |
+-			(stdi->vs_pol == '+' ? V4L2_DV_VSYNC_POS_POL : 0),
+-			false, state->aspect_ratio, timings))
++			    (stdi->hs_pol == '+' ? V4L2_DV_HSYNC_POS_POL : 0) |
++			    (stdi->vs_pol == '+' ? V4L2_DV_VSYNC_POS_POL : 0),
++			    false, state->aspect_ratio,
++			    adv7842_get_dv_timings_cap(sd), timings))
+ 		return 0;
+ 
+ 	v4l2_dbg(2, debug, sd,
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -1719,12 +1719,19 @@ static bool valid_cvt_gtf_timings(struct
+ 	h_freq = (u32)bt->pixelclock / total_h_pixel;
+ 
+ 	if (bt->standards == 0 || (bt->standards & V4L2_DV_BT_STD_CVT)) {
++		struct v4l2_dv_timings cvt = {};
++
+ 		if (v4l2_detect_cvt(total_v_lines, h_freq, bt->vsync, bt->width,
+-				    bt->polarities, bt->interlaced, timings))
++				    bt->polarities, bt->interlaced,
++				    &vivid_dv_timings_cap, &cvt) &&
++		    cvt.bt.width == bt->width && cvt.bt.height == bt->height) {
++			*timings = cvt;
+ 			return true;
++		}
+ 	}
+ 
+ 	if (bt->standards == 0 || (bt->standards & V4L2_DV_BT_STD_GTF)) {
++		struct v4l2_dv_timings gtf = {};
+ 		struct v4l2_fract aspect_ratio;
+ 
+ 		find_aspect_ratio(bt->width, bt->height,
+@@ -1732,8 +1739,12 @@ static bool valid_cvt_gtf_timings(struct
+ 				  &aspect_ratio.denominator);
+ 		if (v4l2_detect_gtf(total_v_lines, h_freq, bt->vsync,
+ 				    bt->polarities, bt->interlaced,
+-				    aspect_ratio, timings))
++				    aspect_ratio, &vivid_dv_timings_cap,
++				    &gtf) &&
++		    gtf.bt.width == bt->width && gtf.bt.height == bt->height) {
++			*timings = gtf;
+ 			return true;
++		}
+ 	}
+ 	return false;
+ }
+--- a/drivers/media/v4l2-core/v4l2-dv-timings.c
++++ b/drivers/media/v4l2-core/v4l2-dv-timings.c
+@@ -481,25 +481,28 @@ EXPORT_SYMBOL_GPL(v4l2_calc_timeperframe
+  * @polarities - the horizontal and vertical polarities (same as struct
+  *		v4l2_bt_timings polarities).
+  * @interlaced - if this flag is true, it indicates interlaced format
+- * @fmt - the resulting timings.
++ * @cap - the v4l2_dv_timings_cap capabilities.
++ * @timings - the resulting timings.
+  *
+  * This function will attempt to detect if the given values correspond to a
+  * valid CVT format. If so, then it will return true, and fmt will be filled
+  * in with the found CVT timings.
   */
- static int
--smc_v2_determine_accepted_chid(struct smc_clc_msg_accept_confirm_v2 *aclc,
-+smc_v2_determine_accepted_chid(struct smc_clc_msg_accept_confirm *aclc,
- 			       struct smc_init_info *ini)
+-bool v4l2_detect_cvt(unsigned frame_height,
+-		     unsigned hfreq,
+-		     unsigned vsync,
+-		     unsigned active_width,
++bool v4l2_detect_cvt(unsigned int frame_height,
++		     unsigned int hfreq,
++		     unsigned int vsync,
++		     unsigned int active_width,
+ 		     u32 polarities,
+ 		     bool interlaced,
+-		     struct v4l2_dv_timings *fmt)
++		     const struct v4l2_dv_timings_cap *cap,
++		     struct v4l2_dv_timings *timings)
  {
- 	int i;
-@@ -1380,12 +1371,9 @@ static int smc_connect_ism(struct smc_sock *smc,
- 	ini->first_contact_peer = aclc->hdr.typev2 & SMC_FIRST_CONTACT_MASK;
+-	int  v_fp, v_bp, h_fp, h_bp, hsync;
+-	int  frame_width, image_height, image_width;
++	struct v4l2_dv_timings t = {};
++	int v_fp, v_bp, h_fp, h_bp, hsync;
++	int frame_width, image_height, image_width;
+ 	bool reduced_blanking;
+ 	bool rb_v2 = false;
+-	unsigned pix_clk;
++	unsigned int pix_clk;
  
- 	if (aclc->hdr.version == SMC_V2) {
--		struct smc_clc_msg_accept_confirm_v2 *aclc_v2 =
--			(struct smc_clc_msg_accept_confirm_v2 *)aclc;
--
- 		if (ini->first_contact_peer) {
- 			struct smc_clc_first_contact_ext *fce =
--				smc_get_clc_first_contact_ext(aclc_v2, true);
-+				smc_get_clc_first_contact_ext(aclc, true);
- 
- 			ini->release_nr = fce->release;
- 			rc = smc_clc_clnt_v2x_features_validate(fce, ini);
-@@ -1393,7 +1381,7 @@ static int smc_connect_ism(struct smc_sock *smc,
- 				return rc;
- 		}
- 
--		rc = smc_v2_determine_accepted_chid(aclc_v2, ini);
-+		rc = smc_v2_determine_accepted_chid(aclc, ini);
- 		if (rc)
- 			return rc;
- 	}
-@@ -1419,12 +1407,8 @@ static int smc_connect_ism(struct smc_sock *smc,
- 	smc_rx_init(smc);
- 	smc_tx_init(smc);
- 
--	if (aclc->hdr.version > SMC_V1) {
--		struct smc_clc_msg_accept_confirm_v2 *clc_v2 =
--			(struct smc_clc_msg_accept_confirm_v2 *)aclc;
--
--		eid = clc_v2->d1.eid;
--	}
-+	if (aclc->hdr.version > SMC_V1)
-+		eid = aclc->d1.eid;
- 
- 	rc = smc_clc_send_confirm(smc, ini->first_contact_local,
- 				  aclc->hdr.version, eid, ini);
-@@ -1475,7 +1459,6 @@ static int smc_connect_check_aclc(struct smc_init_info *ini,
- static int __smc_connect(struct smc_sock *smc)
- {
- 	u8 version = smc_ism_is_v2_capable() ? SMC_V2 : SMC_V1;
--	struct smc_clc_msg_accept_confirm_v2 *aclc2;
- 	struct smc_clc_msg_accept_confirm *aclc;
- 	struct smc_init_info *ini = NULL;
- 	u8 *buf = NULL;
-@@ -1523,11 +1506,10 @@ static int __smc_connect(struct smc_sock *smc)
- 		rc = SMC_CLC_DECL_MEM;
- 		goto fallback;
- 	}
--	aclc2 = (struct smc_clc_msg_accept_confirm_v2 *)buf;
--	aclc = (struct smc_clc_msg_accept_confirm *)aclc2;
-+	aclc = (struct smc_clc_msg_accept_confirm *)buf;
- 
- 	/* perform CLC handshake */
--	rc = smc_connect_clc(smc, aclc2, ini);
-+	rc = smc_connect_clc(smc, aclc, ini);
- 	if (rc) {
- 		/* -EAGAIN on timeout, see tcp_recvmsg() */
- 		if (rc == -EAGAIN) {
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index d471a06baac32..a28dee81d6fa4 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -387,9 +387,9 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
- 
- /* check arriving CLC accept or confirm */
- static bool
--smc_clc_msg_acc_conf_valid(struct smc_clc_msg_accept_confirm_v2 *clc_v2)
-+smc_clc_msg_acc_conf_valid(struct smc_clc_msg_accept_confirm *clc)
- {
--	struct smc_clc_msg_hdr *hdr = &clc_v2->hdr;
-+	struct smc_clc_msg_hdr *hdr = &clc->hdr;
- 
- 	if (hdr->typev1 != SMC_TYPE_R && hdr->typev1 != SMC_TYPE_D)
+ 	if (vsync < 4 || vsync > 8)
  		return false;
-@@ -459,7 +459,7 @@ static int smc_clc_fill_fce_v2x(struct smc_clc_first_contact_ext_v2x *fce_v2x,
+@@ -625,36 +628,39 @@ bool v4l2_detect_cvt(unsigned frame_heig
+ 		h_fp = h_blank - hsync - h_bp;
+ 	}
+ 
+-	fmt->type = V4L2_DV_BT_656_1120;
+-	fmt->bt.polarities = polarities;
+-	fmt->bt.width = image_width;
+-	fmt->bt.height = image_height;
+-	fmt->bt.hfrontporch = h_fp;
+-	fmt->bt.vfrontporch = v_fp;
+-	fmt->bt.hsync = hsync;
+-	fmt->bt.vsync = vsync;
+-	fmt->bt.hbackporch = frame_width - image_width - h_fp - hsync;
++	t.type = V4L2_DV_BT_656_1120;
++	t.bt.polarities = polarities;
++	t.bt.width = image_width;
++	t.bt.height = image_height;
++	t.bt.hfrontporch = h_fp;
++	t.bt.vfrontporch = v_fp;
++	t.bt.hsync = hsync;
++	t.bt.vsync = vsync;
++	t.bt.hbackporch = frame_width - image_width - h_fp - hsync;
+ 
+ 	if (!interlaced) {
+-		fmt->bt.vbackporch = frame_height - image_height - v_fp - vsync;
+-		fmt->bt.interlaced = V4L2_DV_PROGRESSIVE;
++		t.bt.vbackporch = frame_height - image_height - v_fp - vsync;
++		t.bt.interlaced = V4L2_DV_PROGRESSIVE;
+ 	} else {
+-		fmt->bt.vbackporch = (frame_height - image_height - 2 * v_fp -
++		t.bt.vbackporch = (frame_height - image_height - 2 * v_fp -
+ 				      2 * vsync) / 2;
+-		fmt->bt.il_vbackporch = frame_height - image_height - 2 * v_fp -
+-					2 * vsync - fmt->bt.vbackporch;
+-		fmt->bt.il_vfrontporch = v_fp;
+-		fmt->bt.il_vsync = vsync;
+-		fmt->bt.flags |= V4L2_DV_FL_HALF_LINE;
+-		fmt->bt.interlaced = V4L2_DV_INTERLACED;
++		t.bt.il_vbackporch = frame_height - image_height - 2 * v_fp -
++					2 * vsync - t.bt.vbackporch;
++		t.bt.il_vfrontporch = v_fp;
++		t.bt.il_vsync = vsync;
++		t.bt.flags |= V4L2_DV_FL_HALF_LINE;
++		t.bt.interlaced = V4L2_DV_INTERLACED;
+ 	}
+ 
+-	fmt->bt.pixelclock = pix_clk;
+-	fmt->bt.standards = V4L2_DV_BT_STD_CVT;
++	t.bt.pixelclock = pix_clk;
++	t.bt.standards = V4L2_DV_BT_STD_CVT;
+ 
+ 	if (reduced_blanking)
+-		fmt->bt.flags |= V4L2_DV_FL_REDUCED_BLANKING;
++		t.bt.flags |= V4L2_DV_FL_REDUCED_BLANKING;
+ 
++	if (!v4l2_valid_dv_timings(&t, cap, NULL, NULL))
++		return false;
++	*timings = t;
+ 	return true;
+ }
+ EXPORT_SYMBOL_GPL(v4l2_detect_cvt);
+@@ -699,22 +705,25 @@ EXPORT_SYMBOL_GPL(v4l2_detect_cvt);
+  *		image height, so it has to be passed explicitly. Usually
+  *		the native screen aspect ratio is used for this. If it
+  *		is not filled in correctly, then 16:9 will be assumed.
+- * @fmt - the resulting timings.
++ * @cap - the v4l2_dv_timings_cap capabilities.
++ * @timings - the resulting timings.
+  *
+  * This function will attempt to detect if the given values correspond to a
+  * valid GTF format. If so, then it will return true, and fmt will be filled
+  * in with the found GTF timings.
   */
- static bool smc_clc_msg_hdr_valid(struct smc_clc_msg_hdr *clcm, bool check_trl)
+-bool v4l2_detect_gtf(unsigned frame_height,
+-		unsigned hfreq,
+-		unsigned vsync,
+-		u32 polarities,
+-		bool interlaced,
+-		struct v4l2_fract aspect,
+-		struct v4l2_dv_timings *fmt)
++bool v4l2_detect_gtf(unsigned int frame_height,
++		     unsigned int hfreq,
++		     unsigned int vsync,
++		     u32 polarities,
++		     bool interlaced,
++		     struct v4l2_fract aspect,
++		     const struct v4l2_dv_timings_cap *cap,
++		     struct v4l2_dv_timings *timings)
  {
--	struct smc_clc_msg_accept_confirm_v2 *clc_v2;
-+	struct smc_clc_msg_accept_confirm *clc;
- 	struct smc_clc_msg_proposal *pclc;
- 	struct smc_clc_msg_decline *dclc;
- 	struct smc_clc_msg_trail *trl;
-@@ -477,12 +477,11 @@ static bool smc_clc_msg_hdr_valid(struct smc_clc_msg_hdr *clcm, bool check_trl)
- 		break;
- 	case SMC_CLC_ACCEPT:
- 	case SMC_CLC_CONFIRM:
--		clc_v2 = (struct smc_clc_msg_accept_confirm_v2 *)clcm;
--		if (!smc_clc_msg_acc_conf_valid(clc_v2))
-+		clc = (struct smc_clc_msg_accept_confirm *)clcm;
-+		if (!smc_clc_msg_acc_conf_valid(clc))
- 			return false;
- 		trl = (struct smc_clc_msg_trail *)
--			((u8 *)clc_v2 + ntohs(clc_v2->hdr.length) -
--							sizeof(*trl));
-+			((u8 *)clc + ntohs(clc->hdr.length) - sizeof(*trl));
- 		break;
- 	case SMC_CLC_DECLINE:
- 		dclc = (struct smc_clc_msg_decline *)clcm;
-@@ -1009,7 +1008,7 @@ int smc_clc_send_proposal(struct smc_sock *smc, struct smc_init_info *ini)
++	struct v4l2_dv_timings t = {};
+ 	int pix_clk;
+-	int  v_fp, v_bp, h_fp, hsync;
++	int v_fp, v_bp, h_fp, hsync;
+ 	int frame_width, image_height, image_width;
+ 	bool default_gtf;
+ 	int h_blank;
+@@ -783,36 +792,39 @@ bool v4l2_detect_gtf(unsigned frame_heig
  
- static void
- smcd_clc_prep_confirm_accept(struct smc_connection *conn,
--			     struct smc_clc_msg_accept_confirm_v2 *clc_v2,
-+			     struct smc_clc_msg_accept_confirm *clc,
- 			     int first_contact, u8 version,
- 			     u8 *eid, struct smc_init_info *ini,
- 			     int *fce_len,
-@@ -1017,11 +1016,9 @@ smcd_clc_prep_confirm_accept(struct smc_connection *conn,
- 			     struct smc_clc_msg_trail *trl)
- {
- 	struct smcd_dev *smcd = conn->lgr->smcd;
--	struct smc_clc_msg_accept_confirm *clc;
- 	int len;
+ 	h_fp = h_blank / 2 - hsync;
  
- 	/* SMC-D specific settings */
--	clc = (struct smc_clc_msg_accept_confirm *)clc_v2;
- 	memcpy(clc->hdr.eyecatcher, SMCD_EYECATCHER,
- 	       sizeof(SMCD_EYECATCHER));
- 	clc->hdr.typev1 = SMC_TYPE_D;
-@@ -1033,15 +1030,15 @@ smcd_clc_prep_confirm_accept(struct smc_connection *conn,
- 	if (version == SMC_V1) {
- 		clc->hdr.length = htons(SMCD_CLC_ACCEPT_CONFIRM_LEN);
+-	fmt->type = V4L2_DV_BT_656_1120;
+-	fmt->bt.polarities = polarities;
+-	fmt->bt.width = image_width;
+-	fmt->bt.height = image_height;
+-	fmt->bt.hfrontporch = h_fp;
+-	fmt->bt.vfrontporch = v_fp;
+-	fmt->bt.hsync = hsync;
+-	fmt->bt.vsync = vsync;
+-	fmt->bt.hbackporch = frame_width - image_width - h_fp - hsync;
++	t.type = V4L2_DV_BT_656_1120;
++	t.bt.polarities = polarities;
++	t.bt.width = image_width;
++	t.bt.height = image_height;
++	t.bt.hfrontporch = h_fp;
++	t.bt.vfrontporch = v_fp;
++	t.bt.hsync = hsync;
++	t.bt.vsync = vsync;
++	t.bt.hbackporch = frame_width - image_width - h_fp - hsync;
+ 
+ 	if (!interlaced) {
+-		fmt->bt.vbackporch = frame_height - image_height - v_fp - vsync;
+-		fmt->bt.interlaced = V4L2_DV_PROGRESSIVE;
++		t.bt.vbackporch = frame_height - image_height - v_fp - vsync;
++		t.bt.interlaced = V4L2_DV_PROGRESSIVE;
  	} else {
--		clc_v2->d1.chid = htons(smc_ism_get_chid(smcd));
-+		clc->d1.chid = htons(smc_ism_get_chid(smcd));
- 		if (eid && eid[0])
--			memcpy(clc_v2->d1.eid, eid, SMC_MAX_EID_LEN);
-+			memcpy(clc->d1.eid, eid, SMC_MAX_EID_LEN);
- 		len = SMCD_CLC_ACCEPT_CONFIRM_LEN_V2;
- 		if (first_contact) {
- 			*fce_len = smc_clc_fill_fce_v2x(fce_v2x, ini);
- 			len += *fce_len;
- 		}
--		clc_v2->hdr.length = htons(len);
-+		clc->hdr.length = htons(len);
+-		fmt->bt.vbackporch = (frame_height - image_height - 2 * v_fp -
++		t.bt.vbackporch = (frame_height - image_height - 2 * v_fp -
+ 				      2 * vsync) / 2;
+-		fmt->bt.il_vbackporch = frame_height - image_height - 2 * v_fp -
+-					2 * vsync - fmt->bt.vbackporch;
+-		fmt->bt.il_vfrontporch = v_fp;
+-		fmt->bt.il_vsync = vsync;
+-		fmt->bt.flags |= V4L2_DV_FL_HALF_LINE;
+-		fmt->bt.interlaced = V4L2_DV_INTERLACED;
++		t.bt.il_vbackporch = frame_height - image_height - 2 * v_fp -
++					2 * vsync - t.bt.vbackporch;
++		t.bt.il_vfrontporch = v_fp;
++		t.bt.il_vsync = vsync;
++		t.bt.flags |= V4L2_DV_FL_HALF_LINE;
++		t.bt.interlaced = V4L2_DV_INTERLACED;
  	}
- 	memcpy(trl->eyecatcher, SMCD_EYECATCHER,
- 	       sizeof(SMCD_EYECATCHER));
-@@ -1049,7 +1046,7 @@ smcd_clc_prep_confirm_accept(struct smc_connection *conn,
  
- static void
- smcr_clc_prep_confirm_accept(struct smc_connection *conn,
--			     struct smc_clc_msg_accept_confirm_v2 *clc_v2,
-+			     struct smc_clc_msg_accept_confirm *clc,
- 			     int first_contact, u8 version,
- 			     u8 *eid, struct smc_init_info *ini,
- 			     int *fce_len,
-@@ -1057,12 +1054,10 @@ smcr_clc_prep_confirm_accept(struct smc_connection *conn,
- 			     struct smc_clc_fce_gid_ext *gle,
- 			     struct smc_clc_msg_trail *trl)
- {
--	struct smc_clc_msg_accept_confirm *clc;
- 	struct smc_link *link = conn->lnk;
- 	int len;
+-	fmt->bt.pixelclock = pix_clk;
+-	fmt->bt.standards = V4L2_DV_BT_STD_GTF;
++	t.bt.pixelclock = pix_clk;
++	t.bt.standards = V4L2_DV_BT_STD_GTF;
  
- 	/* SMC-R specific settings */
--	clc = (struct smc_clc_msg_accept_confirm *)clc_v2;
- 	memcpy(clc->hdr.eyecatcher, SMC_EYECATCHER,
- 	       sizeof(SMC_EYECATCHER));
- 	clc->hdr.typev1 = SMC_TYPE_R;
-@@ -1094,7 +1089,7 @@ smcr_clc_prep_confirm_accept(struct smc_connection *conn,
- 		clc->hdr.length = htons(SMCR_CLC_ACCEPT_CONFIRM_LEN);
- 	} else {
- 		if (eid && eid[0])
--			memcpy(clc_v2->r1.eid, eid, SMC_MAX_EID_LEN);
-+			memcpy(clc->r1.eid, eid, SMC_MAX_EID_LEN);
- 		len = SMCR_CLC_ACCEPT_CONFIRM_LEN_V2;
- 		if (first_contact) {
- 			*fce_len = smc_clc_fill_fce_v2x(fce_v2x, ini);
-@@ -1108,20 +1103,19 @@ smcr_clc_prep_confirm_accept(struct smc_connection *conn,
- 				len += gle->gid_cnt * sizeof(gle->gid[0]);
- 			}
- 		}
--		clc_v2->hdr.length = htons(len);
-+		clc->hdr.length = htons(len);
- 	}
- 	memcpy(trl->eyecatcher, SMC_EYECATCHER, sizeof(SMC_EYECATCHER));
+ 	if (!default_gtf)
+-		fmt->bt.flags |= V4L2_DV_FL_REDUCED_BLANKING;
++		t.bt.flags |= V4L2_DV_FL_REDUCED_BLANKING;
+ 
++	if (!v4l2_valid_dv_timings(&t, cap, NULL, NULL))
++		return false;
++	*timings = t;
+ 	return true;
  }
+ EXPORT_SYMBOL_GPL(v4l2_detect_gtf);
+--- a/include/media/v4l2-dv-timings.h
++++ b/include/media/v4l2-dv-timings.h
+@@ -146,15 +146,18 @@ void v4l2_print_dv_timings(const char *d
+  * @polarities: the horizontal and vertical polarities (same as struct
+  *		v4l2_bt_timings polarities).
+  * @interlaced: if this flag is true, it indicates interlaced format
++ * @cap: the v4l2_dv_timings_cap capabilities.
+  * @fmt: the resulting timings.
+  *
+  * This function will attempt to detect if the given values correspond to a
+  * valid CVT format. If so, then it will return true, and fmt will be filled
+  * in with the found CVT timings.
+  */
+-bool v4l2_detect_cvt(unsigned frame_height, unsigned hfreq, unsigned vsync,
+-		unsigned active_width, u32 polarities, bool interlaced,
+-		struct v4l2_dv_timings *fmt);
++bool v4l2_detect_cvt(unsigned int frame_height, unsigned int hfreq,
++		     unsigned int vsync, unsigned int active_width,
++		     u32 polarities, bool interlaced,
++		     const struct v4l2_dv_timings_cap *cap,
++		     struct v4l2_dv_timings *fmt);
  
- /* build and send CLC CONFIRM / ACCEPT message */
- static int smc_clc_send_confirm_accept(struct smc_sock *smc,
--				       struct smc_clc_msg_accept_confirm_v2 *clc_v2,
-+				       struct smc_clc_msg_accept_confirm *clc,
- 				       int first_contact, u8 version,
- 				       u8 *eid, struct smc_init_info *ini)
- {
- 	struct smc_clc_first_contact_ext_v2x fce_v2x;
- 	struct smc_connection *conn = &smc->conn;
--	struct smc_clc_msg_accept_confirm *clc;
- 	struct smc_clc_fce_gid_ext gle;
- 	struct smc_clc_msg_trail trl;
- 	int i, fce_len;
-@@ -1129,21 +1123,20 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
- 	struct msghdr msg;
+ /**
+  * v4l2_detect_gtf - detect if the given timings follow the GTF standard
+@@ -170,15 +173,18 @@ bool v4l2_detect_cvt(unsigned frame_heig
+  *		image height, so it has to be passed explicitly. Usually
+  *		the native screen aspect ratio is used for this. If it
+  *		is not filled in correctly, then 16:9 will be assumed.
++ * @cap: the v4l2_dv_timings_cap capabilities.
+  * @fmt: the resulting timings.
+  *
+  * This function will attempt to detect if the given values correspond to a
+  * valid GTF format. If so, then it will return true, and fmt will be filled
+  * in with the found GTF timings.
+  */
+-bool v4l2_detect_gtf(unsigned frame_height, unsigned hfreq, unsigned vsync,
+-		u32 polarities, bool interlaced, struct v4l2_fract aspect,
+-		struct v4l2_dv_timings *fmt);
++bool v4l2_detect_gtf(unsigned int frame_height, unsigned int hfreq,
++		     unsigned int vsync, u32 polarities, bool interlaced,
++		     struct v4l2_fract aspect,
++		     const struct v4l2_dv_timings_cap *cap,
++		     struct v4l2_dv_timings *fmt);
  
- 	/* send SMC Confirm CLC msg */
--	clc = (struct smc_clc_msg_accept_confirm *)clc_v2;
- 	clc->hdr.version = version;	/* SMC version */
- 	if (first_contact)
- 		clc->hdr.typev2 |= SMC_FIRST_CONTACT_MASK;
- 	if (conn->lgr->is_smcd)
--		smcd_clc_prep_confirm_accept(conn, clc_v2, first_contact,
-+		smcd_clc_prep_confirm_accept(conn, clc, first_contact,
- 					     version, eid, ini, &fce_len,
- 					     &fce_v2x, &trl);
- 	else
--		smcr_clc_prep_confirm_accept(conn, clc_v2, first_contact,
-+		smcr_clc_prep_confirm_accept(conn, clc, first_contact,
- 					     version, eid, ini, &fce_len,
- 					     &fce_v2x, &gle, &trl);
- 	memset(&msg, 0, sizeof(msg));
- 	i = 0;
--	vec[i].iov_base = clc_v2;
-+	vec[i].iov_base = clc;
- 	if (version > SMC_V1)
- 		vec[i++].iov_len = (clc->hdr.typev1 == SMC_TYPE_D ?
- 					SMCD_CLC_ACCEPT_CONFIRM_LEN_V2 :
-@@ -1177,16 +1170,16 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
- int smc_clc_send_confirm(struct smc_sock *smc, bool clnt_first_contact,
- 			 u8 version, u8 *eid, struct smc_init_info *ini)
- {
--	struct smc_clc_msg_accept_confirm_v2 cclc_v2;
-+	struct smc_clc_msg_accept_confirm cclc;
- 	int reason_code = 0;
- 	int len;
- 
- 	/* send SMC Confirm CLC msg */
--	memset(&cclc_v2, 0, sizeof(cclc_v2));
--	cclc_v2.hdr.type = SMC_CLC_CONFIRM;
--	len = smc_clc_send_confirm_accept(smc, &cclc_v2, clnt_first_contact,
-+	memset(&cclc, 0, sizeof(cclc));
-+	cclc.hdr.type = SMC_CLC_CONFIRM;
-+	len = smc_clc_send_confirm_accept(smc, &cclc, clnt_first_contact,
- 					  version, eid, ini);
--	if (len < ntohs(cclc_v2.hdr.length)) {
-+	if (len < ntohs(cclc.hdr.length)) {
- 		if (len >= 0) {
- 			reason_code = -ENETUNREACH;
- 			smc->sk.sk_err = -reason_code;
-@@ -1202,14 +1195,14 @@ int smc_clc_send_confirm(struct smc_sock *smc, bool clnt_first_contact,
- int smc_clc_send_accept(struct smc_sock *new_smc, bool srv_first_contact,
- 			u8 version, u8 *negotiated_eid, struct smc_init_info *ini)
- {
--	struct smc_clc_msg_accept_confirm_v2 aclc_v2;
-+	struct smc_clc_msg_accept_confirm aclc;
- 	int len;
- 
--	memset(&aclc_v2, 0, sizeof(aclc_v2));
--	aclc_v2.hdr.type = SMC_CLC_ACCEPT;
--	len = smc_clc_send_confirm_accept(new_smc, &aclc_v2, srv_first_contact,
-+	memset(&aclc, 0, sizeof(aclc));
-+	aclc.hdr.type = SMC_CLC_ACCEPT;
-+	len = smc_clc_send_confirm_accept(new_smc, &aclc, srv_first_contact,
- 					  version, negotiated_eid, ini);
--	if (len < ntohs(aclc_v2.hdr.length))
-+	if (len < ntohs(aclc.hdr.length))
- 		len = len >= 0 ? -EPROTO : -new_smc->clcsock->sk->sk_err;
- 
- 	return len > 0 ? 0 : len;
-@@ -1270,10 +1263,8 @@ int smc_clc_clnt_v2x_features_validate(struct smc_clc_first_contact_ext *fce,
- int smc_clc_v2x_features_confirm_check(struct smc_clc_msg_accept_confirm *cclc,
- 				       struct smc_init_info *ini)
- {
--	struct smc_clc_msg_accept_confirm_v2 *clc_v2 =
--		(struct smc_clc_msg_accept_confirm_v2 *)cclc;
- 	struct smc_clc_first_contact_ext *fce =
--		smc_get_clc_first_contact_ext(clc_v2, ini->is_smcd);
-+		smc_get_clc_first_contact_ext(cclc, ini->is_smcd);
- 	struct smc_clc_first_contact_ext_v2x *fce_v2x =
- 		(struct smc_clc_first_contact_ext_v2x *)fce;
- 
-diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
-index 08155a96a02a1..d7b1716cfb0fd 100644
---- a/net/smc/smc_clc.h
-+++ b/net/smc/smc_clc.h
-@@ -257,30 +257,23 @@ struct smc_clc_fce_gid_ext {
- };
- 
- struct smc_clc_msg_accept_confirm {	/* clc accept / confirm message */
--	struct smc_clc_msg_hdr hdr;
--	union {
--		struct smcr_clc_msg_accept_confirm r0; /* SMC-R */
--		struct { /* SMC-D */
--			struct smcd_clc_msg_accept_confirm_common d0;
--			u32 reserved5[3];
--		};
--	};
--} __packed;			/* format defined in RFC7609 */
--
--struct smc_clc_msg_accept_confirm_v2 {	/* clc accept / confirm message */
- 	struct smc_clc_msg_hdr hdr;
- 	union {
- 		struct { /* SMC-R */
- 			struct smcr_clc_msg_accept_confirm r0;
--			u8 eid[SMC_MAX_EID_LEN];
--			u8 reserved6[8];
--		} r1;
-+			struct { /* v2 only */
-+				u8 eid[SMC_MAX_EID_LEN];
-+				u8 reserved6[8];
-+			} __packed r1;
-+		};
- 		struct { /* SMC-D */
- 			struct smcd_clc_msg_accept_confirm_common d0;
--			__be16 chid;
--			u8 eid[SMC_MAX_EID_LEN];
--			u8 reserved5[8];
--		} d1;
-+			struct { /* v2 only, but 12 bytes reserved in v1 */
-+				__be16 chid;
-+				u8 eid[SMC_MAX_EID_LEN];
-+				u8 reserved5[8];
-+			} __packed d1;
-+		};
- 	};
- };
- 
-@@ -389,24 +382,23 @@ smc_get_clc_smcd_v2_ext(struct smc_clc_v2_extension *prop_v2ext)
- }
- 
- static inline struct smc_clc_first_contact_ext *
--smc_get_clc_first_contact_ext(struct smc_clc_msg_accept_confirm_v2 *clc_v2,
-+smc_get_clc_first_contact_ext(struct smc_clc_msg_accept_confirm *clc,
- 			      bool is_smcd)
- {
- 	int clc_v2_len;
- 
--	if (clc_v2->hdr.version == SMC_V1 ||
--	    !(clc_v2->hdr.typev2 & SMC_FIRST_CONTACT_MASK))
-+	if (clc->hdr.version == SMC_V1 ||
-+	    !(clc->hdr.typev2 & SMC_FIRST_CONTACT_MASK))
- 		return NULL;
- 
- 	if (is_smcd)
- 		clc_v2_len =
--			offsetofend(struct smc_clc_msg_accept_confirm_v2, d1);
-+			offsetofend(struct smc_clc_msg_accept_confirm, d1);
- 	else
- 		clc_v2_len =
--			offsetofend(struct smc_clc_msg_accept_confirm_v2, r1);
-+			offsetofend(struct smc_clc_msg_accept_confirm, r1);
- 
--	return (struct smc_clc_first_contact_ext *)(((u8 *)clc_v2) +
--						    clc_v2_len);
-+	return (struct smc_clc_first_contact_ext *)(((u8 *)clc) + clc_v2_len);
- }
- 
- struct smcd_dev;
--- 
-2.43.0
-
+ /**
+  * v4l2_calc_aspect_ratio - calculate the aspect ratio based on bytes
 
 
 
