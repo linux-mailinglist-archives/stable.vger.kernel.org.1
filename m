@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-102881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DFB9EF3EA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6171E9EED8E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E72EF288BF8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33D3D1697F3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1DA22ACD1;
-	Thu, 12 Dec 2024 17:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528AA22333D;
+	Thu, 12 Dec 2024 15:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5KanIyS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2v86oUM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3FA229677;
-	Thu, 12 Dec 2024 17:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AAB223335;
+	Thu, 12 Dec 2024 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022843; cv=none; b=RG+QLcHs9TXUIt3DF30BteJRCPCJq0CAiHSGTvap/AAUEUDM0ZCPevrtD3OFwXJpTtma1YkZxiowEp2UZ2v22cz0NKgJYCWGHhnAoxgeOHjbaTyocK9qh5x8akq57JJ2r3gecfG0+NqZImoUWMihLflxeCO3AS6RQi7fPIxourY=
+	t=1734018218; cv=none; b=EA74XriMpCEjrXvutCyPtIhIJ2yDpb5bibuQjI613AAwDr/5je4EY5tpqLFPK9elDR/sECBQCymrDLZCnjSTt255lzGyQd7nz47TQHYGLDvdrme4x5ymJh9QEtV0OqqFdR6XYm2N2v4xPmIFdh86cAy12G//ZrSapjroBhQKTcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022843; c=relaxed/simple;
-	bh=QozCcMWY1rdcOxTTvn6Ia0Ywq/DAQlin0Moi94/iEqQ=;
+	s=arc-20240116; t=1734018218; c=relaxed/simple;
+	bh=QeF++zrA2uFT/o5t5UGd2k78P+2IBx09HKuKm5IL2pA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ssT36+SSPLgU1QB/9/fK0+jzS2rmjS22pCSXpB4rAHUWboxmRMG7OTFqJoHRR+n3CS7o++HOJ3Yc1eQ8FPvhQosAZrlxzIFs4Jfr/qKOowGZEj5ahImj/m+TAtAuHbi1qSENCHtvJyyHCuKwdG8kTDvrxFb6aCRTCowkHMM7xTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5KanIyS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E905C4CECE;
-	Thu, 12 Dec 2024 17:00:42 +0000 (UTC)
+	 MIME-Version; b=eFgs/F9a7sUCvc9uT0VRSUjHRZ7d6Yjbd6dkfMZgiab35gzLBXPWxOy4Zc0x5d1VM7RK+BBY7XjZbdXR7Uu/lX6xEilEJ1xlioVRvOg9cclQGkFpv+6ZQ52xZK0L7ZkGgiG2mlkPNrQFIr/t844ULJLAumsNJUaJhMqJafdYg2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2v86oUM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DBDC4CED0;
+	Thu, 12 Dec 2024 15:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022842;
-	bh=QozCcMWY1rdcOxTTvn6Ia0Ywq/DAQlin0Moi94/iEqQ=;
+	s=korg; t=1734018217;
+	bh=QeF++zrA2uFT/o5t5UGd2k78P+2IBx09HKuKm5IL2pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5KanIySxj0jSaSX8/kqBEVaXE8ZxdWkpPG0zmInM+ShSTfVD3HxyCAeFtKYWjado
-	 KLQacrO25EhaPAFk8g099KxAIJCdtlJPk7j4Trxm56S9fS0sYa0JYONU/dPaf0JNwN
-	 +5TrYmb6BiidVadyQiNbJosdqTsorf6ePLlqUz+o=
+	b=C2v86oUMIZ3k/X4pU6Sq9WbUV6LxoHGzRq3Yp6GZHmXo1oMfGMkHSG9QUCuEU+jqA
+	 RSjlg2ll3oteQ2p/A7I75Cu8ppVwHZ7dlVSyMHDZFM1zqzzDICI5+eon4I3TR52qxT
+	 2lqXFGJE3Dnck0MsuMMolDX3JLsFGlmQPzCFKz1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.15 348/565] usb: dwc3: gadget: Fix checking for number of TRBs left
+	Eric Dumazet <edumazet@google.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 224/356] af_packet: avoid erroring out after sock_init_data() in packet_create()
 Date: Thu, 12 Dec 2024 15:59:03 +0100
-Message-ID: <20241212144325.355265255@linuxfoundation.org>
+Message-ID: <20241212144253.464171950@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-commit 02a6982b0ccfcdc39e20016f5fc9a1b7826a6ee7 upstream.
+[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
 
-The check whether the TRB ring is full or empty in dwc3_calc_trbs_left()
-is insufficient. It assumes there are active TRBs if there's any request
-in the started_list. However, that's not the case for requests with a
-large SG list.
+After sock_init_data() the allocated sk object is attached to the provided
+sock object. On error, packet_create() frees the sk object leaving the
+dangling pointer in the sock object on return. Some other code may try
+to use this pointer and cause use-after-free.
 
-That is, if we have a single usb request that requires more TRBs than
-the total TRBs in the TRB ring, the queued TRBs will be available when
-all the TRBs in the ring are completed. But the request is only
-partially completed and remains in the started_list. With the current
-logic, the TRB ring is empty, but dwc3_calc_trbs_left() returns 0.
-
-Fix this by additionally checking for the request->num_trbs for active
-TRB count.
-
-Cc: stable@vger.kernel.org
-Fixes: 51f1954ad853 ("usb: dwc3: gadget: Fix dwc3_calc_trbs_left()")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/708dc62b56b77da1f704cc2ae9b6ddb1f2dbef1f.1731545781.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/packet/af_packet.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1168,11 +1168,14 @@ static u32 dwc3_calc_trbs_left(struct dw
- 	 * pending to be processed by the driver.
- 	 */
- 	if (dep->trb_enqueue == dep->trb_dequeue) {
-+		struct dwc3_request *req;
-+
- 		/*
--		 * If there is any request remained in the started_list at
--		 * this point, that means there is no TRB available.
-+		 * If there is any request remained in the started_list with
-+		 * active TRBs at this point, then there is no TRB available.
- 		 */
--		if (!list_empty(&dep->started_list))
-+		req = next_request(&dep->started_list);
-+		if (req && req->num_trbs)
- 			return 0;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 3e5703537e4eb..56e3ae3b6be93 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3428,17 +3428,17 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	if (sock->type == SOCK_PACKET)
+ 		sock->ops = &packet_ops_spkt;
  
- 		return DWC3_TRB_NUM - 1;
++	po = pkt_sk(sk);
++	err = packet_alloc_pending(po);
++	if (err)
++		goto out_sk_free;
++
+ 	sock_init_data(sock, sk);
+ 
+-	po = pkt_sk(sk);
+ 	init_completion(&po->skb_completion);
+ 	sk->sk_family = PF_PACKET;
+ 	po->num = proto;
+ 
+-	err = packet_alloc_pending(po);
+-	if (err)
+-		goto out2;
+-
+ 	packet_cached_dev_reset(po);
+ 
+ 	sk->sk_destruct = packet_sock_destruct;
+@@ -3470,7 +3470,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	sock_prot_inuse_add(net, &packet_proto, 1);
+ 
+ 	return 0;
+-out2:
++out_sk_free:
+ 	sk_free(sk);
+ out:
+ 	return err;
+-- 
+2.43.0
+
 
 
 
