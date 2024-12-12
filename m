@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC8F59EEC23
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97E79EEAA7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DFE128455C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B94DC163FEA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6DC217670;
-	Thu, 12 Dec 2024 15:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ADE21660B;
+	Thu, 12 Dec 2024 15:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I70Y9hjN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0HcPiLW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FADE2153DF;
-	Thu, 12 Dec 2024 15:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D3D21504F;
+	Thu, 12 Dec 2024 15:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017489; cv=none; b=KcQz9ERqVwZprLt/lFyfjcBjAdInCLxtgnJGwQpn8C1vfIGx4n632gD1DBICrMUAyKMmHsNQmam1xvN0cQtJI0IHiwe1neImSAGnnZ9iTyJAbCUuqKbpNBruqhmOYYl282PdUXP9nWh+iH2T3Au7FhFvX5FXwQIk0Zoe2q/lyB0=
+	t=1734016309; cv=none; b=FyG/xNRQDsZ34E8m9JMMV9a8L0aFUpDqndQZneCE00a7T7r4u5eFF4msyqkv4VC1Uoc9qdoyaUhmdjmI+vXoZM7oYz6mvYmt5LgRhRi5KlV7S0RCCQWAdO7ldudtG3MF6StGC0qqzI8qbBgKWPXhFSVHbYBwEo+/iFc5urqoQrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017489; c=relaxed/simple;
-	bh=QnMfSGPOP8JWL9c4vxV8x+F1CqHtyctGbTPFXlV7TAo=;
+	s=arc-20240116; t=1734016309; c=relaxed/simple;
+	bh=0PTAS2LBaZPb0ie9o7+Z/o7CUv2aoPqr0l9e+w2nYas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNJdSicAnTrug2UpSH0ZXlsyhLZhObe2ROPRrYxnM+qX5Uaca15Rlg0TlOzVIHBMeVyEm6msKjetZJ/Oz0UtJdJyI0f7lZcIzDqQ3MOGJ/Fc3doxCG1QSv9dvObo4X8jy4Us+NYxN4ZXpBtfMnHPG+7hsatHrdQbyTbdver/SzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I70Y9hjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF476C4CECE;
-	Thu, 12 Dec 2024 15:31:28 +0000 (UTC)
+	 MIME-Version; b=Vl0yiVBu9i9XgaQEDRn0ulGQKlqixpXLEynmckZ3hUfhgrGiJvcSrehvvfQPgOP+ImSV2OZu4fiWAJifTkqBopD9oFF0ckBrdpSefZTLShe/+Ba26rZDam8DysBmPQ3c+Wq9TPo1XS2jaRKR/SY20jbWxfZVtt5N2TolzpBo4r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0HcPiLW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7AC0C4CED7;
+	Thu, 12 Dec 2024 15:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017489;
-	bh=QnMfSGPOP8JWL9c4vxV8x+F1CqHtyctGbTPFXlV7TAo=;
+	s=korg; t=1734016309;
+	bh=0PTAS2LBaZPb0ie9o7+Z/o7CUv2aoPqr0l9e+w2nYas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I70Y9hjNhnoBgEZiRs9ihJWZhvBncfJhWgIeXqS4m+mcShHiQ9gSczq0AwT3Zvsb6
-	 cljf+nTs40eHcPEp3o9S9Pr31H7Vs54rZIadYyxF0CkjZbnSAK+Gpedz1AVhfoEyvZ
-	 AuVOSYodQUWqZIgsTpZQROWoYoopaMkikWsFrhv4=
+	b=M0HcPiLWQP2OEh1dH6L5EHErmoRJe1ft7DTtc4Wprb/BB8zESyo8Rwm8pBJzc+9lA
+	 EIF9fkwv2cYfv3U2zSz8c2c9FWa5ExlWeGkRfJ95I0Du7Pcpcnb99kM7dlkKCVLCF5
+	 8srgPVmMOmZa9GuTTVzGpoHEyZQYWUiJtSzbXMd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yassine Oudjana <y.oudjana@protonmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/356] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 154/466] scsi: ufs: core: Add missing post notify for power mode change
 Date: Thu, 12 Dec 2024 15:55:23 +0100
-Message-ID: <20241212144244.789393515@linuxfoundation.org>
+Message-ID: <20241212144312.882527590@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
+commit 7f45ed5f0cd5ccbbec79adc6c48a67d6a85fba56 upstream.
 
-Clear the IRQ enable bit of WDT_MODE before asserting software reset
-in order to make TOPRGU issue a system reset signal instead of an IRQ.
+When the power mode change is successful but the power mode hasn't
+actually changed, the post notification was missed.  Similar to the
+approach with hibernate/clock scale/hce enable, having pre/post
+notifications in the same function will make it easier to maintain.
 
-Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Additionally, supplement the description of power parameters for the
+pwr_change_notify callback.
+
+Fixes: 7eb584db73be ("ufs: refactor configuring power mode")
+Cc: stable@vger.kernel.org #6.11.x
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20241122024943.30589-1-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/mtk_wdt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/ufs/core/ufshcd.c |    7 ++++---
+ include/ufs/ufshcd.h      |   10 ++++++----
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
-index b2330b16b497a..0559d9f2d97b3 100644
---- a/drivers/watchdog/mtk_wdt.c
-+++ b/drivers/watchdog/mtk_wdt.c
-@@ -186,9 +186,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
- {
- 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
- 	void __iomem *wdt_base;
-+	u32 reg;
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -4684,9 +4684,6 @@ static int ufshcd_change_power_mode(stru
+ 		dev_err(hba->dev,
+ 			"%s: power mode change failed %d\n", __func__, ret);
+ 	} else {
+-		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
+-								pwr_mode);
+-
+ 		memcpy(&hba->pwr_info, pwr_mode,
+ 			sizeof(struct ufs_pa_layer_attr));
+ 	}
+@@ -4715,6 +4712,10 @@ int ufshcd_config_pwr_mode(struct ufs_hb
  
- 	wdt_base = mtk_wdt->wdt_base;
+ 	ret = ufshcd_change_power_mode(hba, &final_params);
  
-+	/* Enable reset in order to issue a system reset instead of an IRQ */
-+	reg = readl(wdt_base + WDT_MODE);
-+	reg &= ~WDT_MODE_IRQ_EN;
-+	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
++	if (!ret)
++		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
++					&final_params);
 +
- 	while (1) {
- 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
- 		mdelay(5);
--- 
-2.43.0
-
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(ufshcd_config_pwr_mode);
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -308,7 +308,9 @@ struct ufs_pwr_mode_info {
+  *                       to allow variant specific Uni-Pro initialization.
+  * @pwr_change_notify: called before and after a power mode change
+  *			is carried out to allow vendor spesific capabilities
+- *			to be set.
++ *			to be set. PRE_CHANGE can modify final_params based
++ *			on desired_pwr_mode, but POST_CHANGE must not alter
++ *			the final_params parameter
+  * @setup_xfer_req: called before any transfer request is issued
+  *                  to set some things
+  * @setup_task_mgmt: called before any task management request is issued
+@@ -350,9 +352,9 @@ struct ufs_hba_variant_ops {
+ 	int	(*link_startup_notify)(struct ufs_hba *,
+ 				       enum ufs_notify_change_status);
+ 	int	(*pwr_change_notify)(struct ufs_hba *,
+-					enum ufs_notify_change_status status,
+-					struct ufs_pa_layer_attr *,
+-					struct ufs_pa_layer_attr *);
++				enum ufs_notify_change_status status,
++				struct ufs_pa_layer_attr *desired_pwr_mode,
++				struct ufs_pa_layer_attr *final_params);
+ 	void	(*setup_xfer_req)(struct ufs_hba *hba, int tag,
+ 				  bool is_scsi_cmd);
+ 	void	(*setup_task_mgmt)(struct ufs_hba *, int, u8);
 
 
 
