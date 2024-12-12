@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-101042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0F99EEA48
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:11:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70599EF0EC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41BCC168869
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7361F18935C1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87D4215773;
-	Thu, 12 Dec 2024 15:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEE923EC18;
+	Thu, 12 Dec 2024 16:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCNbV/te"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikkImmTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A464F213E97;
-	Thu, 12 Dec 2024 15:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ADE23EC14;
+	Thu, 12 Dec 2024 16:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016056; cv=none; b=X9ff6jdaczzxRzrlXr4LS0nL7uwP1VFB2FheoiFvCqbYA0Tiy5qfjjkez4uECINpr8zD7tKsp/iT4OJexmlfiH5IgauDka5y8qXGnz6/DXUkXyi1Z9zJAxXEZjBd1fFoa26nYuRUzzEZml0s/g8roo2j/l2Qlvt51bwWeplpZyE=
+	t=1734019965; cv=none; b=JRiAXb3yiOJyoGcRU168nIUaig1QHCbibR/ku3mIy3qG2KONkRTC3h22Vmkfykmr3FSDwLzT6evTVOSh00QXN2GNx62fV9hPmckJQMfzynI+fWDNA0srctvcrK8iaIAOGuuyrq3USUYLU80/s61fV8ARJ+tn3KwOZNal+Ba/g8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016056; c=relaxed/simple;
-	bh=4FDypYsdrubjOaDiFCGWDKyUMBK5aHQh26jyp1g6W/8=;
+	s=arc-20240116; t=1734019965; c=relaxed/simple;
+	bh=05y15PdB042DknqvH+lgkJKNnQB7KdKvNT1EUJhr/aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f//BAWFGzVTfRAVqitYIVuDRbYmP4Kj29J0zSPMFRoLIsdSZDbOJ+gozKGhSdMlzaNsg8eNF16RkmMWbkqyZRar3GwLauKm+3rZqj8C9fPGIXT6L0AaoMnezFWy3hQVIRwORm8h5PJVzUKi/661cqaXHzGxjqgfplC+3HCA4K08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCNbV/te; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A57BCC4CECE;
-	Thu, 12 Dec 2024 15:07:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NwhlMXB3E9EVW423bdq92dOafivInnJ7bcI+9m+cdfumMEnlbPBjTouTjGMoVCNhdB6+eafVkUo2aWbrw2r3dgG1QntDAQBZWEbxcPXrYQuPxRGLTLI9vUgOKM7NNLyyaDGb+WOdvzvza+Cxes5gM1FN8SNNDeBusfBJtugMbHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikkImmTp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D9EC4CEDE;
+	Thu, 12 Dec 2024 16:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016056;
-	bh=4FDypYsdrubjOaDiFCGWDKyUMBK5aHQh26jyp1g6W/8=;
+	s=korg; t=1734019965;
+	bh=05y15PdB042DknqvH+lgkJKNnQB7KdKvNT1EUJhr/aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCNbV/teP59GDrBZxLtmqDkwoxM38zoJTQ8FmsLewV3+YyUdssAZ8zKOXhgl6nR45
-	 4hOCwoNAKQUR6Q+dOMyzG+x8wQlZLFVzMt0U3AaQePfkQcPa92ibc8Qi0xU09J4z0Z
-	 k4YjrtRrN7OVtY/a3tOXzMyzKZakYuUJ3b7qLg7w=
+	b=ikkImmTpcqlUQ61/WXEVwevbm7CqXFp2pDN9yz1KZmZna/kkfG0GTbTtBIKhEULr1
+	 hyB2d80cD8Qul+VHX540e1OcI7QoRy6n0RIC2agl5s/6zAusKjQe8UiCXDiOH9VQgQ
+	 NDe9EraQas1Pf6YqWXI858jDAsc3GihGgOLfURSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/466] bpf: Fix exact match conditions in trie_get_next_key()
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 343/772] ALSA: usb-audio: Fix out of bounds reads when finding clock sources
 Date: Thu, 12 Dec 2024 15:54:48 +0100
-Message-ID: <20241212144311.513941501@linuxfoundation.org>
+Message-ID: <20241212144404.082525884@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 27abc7b3fa2e09bbe41e2924d328121546865eda ]
+commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6 upstream.
 
-trie_get_next_key() uses node->prefixlen == key->prefixlen to identify
-an exact match, However, it is incorrect because when the target key
-doesn't fully match the found node (e.g., node->prefixlen != matchlen),
-these two nodes may also have the same prefixlen. It will return
-expected result when the passed key exist in the trie. However when a
-recently-deleted key or nonexistent key is passed to
-trie_get_next_key(), it may skip keys and return incorrect result.
+The current USB-audio driver code doesn't check bLength of each
+descriptor at traversing for clock descriptors.  That is, when a
+device provides a bogus descriptor with a shorter bLength, the driver
+might hit out-of-bounds reads.
 
-Fix it by using node->prefixlen == matchlen to identify exact matches.
-When the condition is true after the search, it also implies
-node->prefixlen equals key->prefixlen, otherwise, the search would
-return NULL instead.
+For addressing it, this patch adds sanity checks to the validator
+functions for the clock descriptor traversal.  When the descriptor
+length is shorter than expected, it's skipped in the loop.
 
-Fixes: b471f2f1de8b ("bpf: implement MAP_GET_NEXT_KEY command for LPM_TRIE map")
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241206110622.1161752-6-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For the clock source and clock multiplier descriptors, we can just
+check bLength against the sizeof() of each descriptor type.
+OTOH, the clock selector descriptor of UAC2 and UAC3 has an array
+of bNrInPins elements and two more fields at its tail, hence those
+have to be checked in addition to the sizeof() check.
+
+Reported-by: Benoît Sevens <bsevens@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/20241121140613.3651-1-bsevens@google.com
+Link: https://patch.msgid.link/20241125144629.20757-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/lpm_trie.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/clock.c |   24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index fcc5cd358d7f9..010e91ac978e6 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -646,7 +646,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 	struct lpm_trie_node **node_stack = NULL;
- 	int err = 0, stack_ptr = -1;
- 	unsigned int next_bit;
--	size_t matchlen;
-+	size_t matchlen = 0;
+--- a/sound/usb/clock.c
++++ b/sound/usb/clock.c
+@@ -36,6 +36,12 @@ union uac23_clock_multiplier_desc {
+ 	struct uac_clock_multiplier_descriptor v3;
+ };
  
- 	/* The get_next_key follows postorder. For the 4 node example in
- 	 * the top of this file, the trie_get_next_key() returns the following
-@@ -685,7 +685,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
- 		next_bit = extract_bit(key->data, node->prefixlen);
- 		node = rcu_dereference(node->child[next_bit]);
- 	}
--	if (!node || node->prefixlen != key->prefixlen ||
-+	if (!node || node->prefixlen != matchlen ||
- 	    (node->flags & LPM_TREE_NODE_FLAG_IM))
- 		goto find_leftmost;
++/* check whether the descriptor bLength has the minimal length */
++#define DESC_LENGTH_CHECK(p, proto) \
++	((proto) == UAC_VERSION_3 ? \
++	 ((p)->v3.bLength >= sizeof((p)->v3)) :	\
++	 ((p)->v2.bLength >= sizeof((p)->v2)))
++
+ #define GET_VAL(p, proto, field) \
+ 	((proto) == UAC_VERSION_3 ? (p)->v3.field : (p)->v2.field)
  
--- 
-2.43.0
-
+@@ -58,6 +64,8 @@ static bool validate_clock_source(void *
+ {
+ 	union uac23_clock_source_desc *cs = p;
+ 
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
+ }
+ 
+@@ -65,13 +73,27 @@ static bool validate_clock_selector(void
+ {
+ 	union uac23_clock_selector_desc *cs = p;
+ 
+-	return GET_VAL(cs, proto, bClockID) == id;
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
++	if (GET_VAL(cs, proto, bClockID) != id)
++		return false;
++	/* additional length check for baCSourceID array (in bNrInPins size)
++	 * and two more fields (which sizes depend on the protocol)
++	 */
++	if (proto == UAC_VERSION_3)
++		return cs->v3.bLength >= sizeof(cs->v3) + cs->v3.bNrInPins +
++			4 /* bmControls */ + 2 /* wCSelectorDescrStr */;
++	else
++		return cs->v2.bLength >= sizeof(cs->v2) + cs->v2.bNrInPins +
++			1 /* bmControls */ + 1 /* iClockSelector */;
+ }
+ 
+ static bool validate_clock_multiplier(void *p, int id, int proto)
+ {
+ 	union uac23_clock_multiplier_desc *cs = p;
+ 
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
+ }
+ 
 
 
 
