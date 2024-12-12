@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-103402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997C59EF7AB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C04B49EF515
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74461178732
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0352F189904A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F3F222D57;
-	Thu, 12 Dec 2024 17:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4960A223C65;
+	Thu, 12 Dec 2024 17:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Td1aTrdZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtG1FYCU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCA3222D4E;
-	Thu, 12 Dec 2024 17:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CCB222D4A;
+	Thu, 12 Dec 2024 17:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024460; cv=none; b=AwfOCKItG1xwV5dTkq+ngVv+46qWdcxanqoy4rtiWix5zRLOP3sq88OyZtQGGfDNrzSK/spWKXckuQJ/1kDdkCu4RuTHaj0Wxp3f/bhLG+pOwBExqccKXP/G5Fjhsp45ZaCkJJVDdH0y3iwBCftLeNQgvVokjCEO14uTteHGd48=
+	t=1734023174; cv=none; b=YwXEA+nDgbtcTaQDUApUDZWjR6p3Lmw1DUUAi/mlVugU+eS2jvtu4w7NiLz6uo1Rs/w00kqPfnhNYlMDsanwlFS2jW8bs8SOdmtpAxzcoppBAumQ24WfF3tL1NbPTWe58ssbcDPylETsZEmghL5tl35qHXDkx2SL0iT1khQIrxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024460; c=relaxed/simple;
-	bh=rmbDZVV8bbZP9VpKEogTRl6tPRIZckccCEbybGBo0kg=;
+	s=arc-20240116; t=1734023174; c=relaxed/simple;
+	bh=4KLpK2KQuBOYisYrlrENrPvqqubw7Oaib+4LRMJ0AL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lN4AkIXf+NGMprBX3J6//WhkLOC1Ba63aiQyhS7N7iT9w9ny4EjUCQ6ixIVV8TYXyXU8rmJvslcyjjC0Hgk+nubjluUXBBQZeqTZGg6bTHZt6VVlIhLEg0Ofae/ajmstMLfrowSD+Q8PzOWMxYau8U2bBGFP5vLp67Cb8fuvkGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Td1aTrdZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C45C4CED3;
-	Thu, 12 Dec 2024 17:27:39 +0000 (UTC)
+	 MIME-Version; b=FZUITZZlP2qxOXipyt5GlSxtTKZYzLFCk35xyo7SeF9BFRcPYunMGrmg9v37DXhB2+fRpIvwf2soxMBtQVQOLMSX1N6XVAb4P00bym8BcgSJFZBdP5GQ8RnlnBbsOnq+sR9COO3/D25FEPk+sAODGw7NdBevv4HiJC2bsJK1Ydg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtG1FYCU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A06C4CED3;
+	Thu, 12 Dec 2024 17:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024460;
-	bh=rmbDZVV8bbZP9VpKEogTRl6tPRIZckccCEbybGBo0kg=;
+	s=korg; t=1734023173;
+	bh=4KLpK2KQuBOYisYrlrENrPvqqubw7Oaib+4LRMJ0AL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Td1aTrdZIBMGSwVraQfM9RQB6p5YTgD+qcxGrNoZbGtOurZtmwf2/I02nr69HuDd1
-	 dHdACv/50bcE56Whx3Z7PryynleIylA7BaAH1oLDdQzEr8klvQPMx0cP0sTttuEPLT
-	 NuaXaGC24IRrO3h4AbLz73gxy3khRBXTWSX5MSmo=
+	b=dtG1FYCUduqwqQO4f2RnPo34gYQMrsgRmsFvmRutsOUqqFV8bETrZYms3+QXowhV9
+	 TAM7bPMtLWSQnyd8bgkRmwB8Wwp5n4aHL4yZa1Wq4tLBMjXOVIhbKdgHd3+0nSox9g
+	 J8x+TlQJk8EqnfJz9hE6eD2Ud6+efinvs0g5k6iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 303/459] modpost: remove incorrect code in do_eisa_entry()
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>
+Subject: [PATCH 5.15 446/565] watchdog: rti: of: honor timeout-sec property
 Date: Thu, 12 Dec 2024 16:00:41 +0100
-Message-ID: <20241212144305.616510802@linuxfoundation.org>
+Message-ID: <20241212144329.336780295@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,91 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 0c3e091319e4748cb36ac9a50848903dc6f54054 ]
+commit 4962ee045d8f06638714d801ab0fb72f89c16690 upstream.
 
-This function contains multiple bugs after the following commits:
+Currently "timeout-sec" Device Tree property is being silently ignored:
+even though watchdog_init_timeout() is being used, the driver always passes
+"heartbeat" == DEFAULT_HEARTBEAT == 60 as argument.
 
- - ac551828993e ("modpost: i2c aliases need no trailing wildcard")
- - 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+Fix this by setting struct watchdog_device::timeout to DEFAULT_HEARTBEAT
+and passing real module parameter value to watchdog_init_timeout() (which
+may now be 0 if not specified).
 
-Commit ac551828993e inserted the following code to do_eisa_entry():
-
-    else
-            strcat(alias, "*");
-
-This is incorrect because 'alias' is uninitialized. If it is not
-NULL-terminated, strcat() could cause a buffer overrun.
-
-Even if 'alias' happens to be zero-filled, it would output:
-
-    MODULE_ALIAS("*");
-
-This would match anything. As a result, the module could be loaded by
-any unrelated uevent from an unrelated subsystem.
-
-Commit ac551828993e introduced another bug.            
-
-Prior to that commit, the conditional check was:
-
-    if (eisa->sig[0])
-
-This checked if the first character of eisa_device_id::sig was not '\0'.
-
-However, commit ac551828993e changed it as follows:
-
-    if (sig[0])
-
-sig[0] is NOT the first character of the eisa_device_id::sig. The
-type of 'sig' is 'char (*)[8]', meaning that the type of 'sig[0]' is
-'char [8]' instead of 'char'. 'sig[0]' and 'symval' refer to the same
-address, which never becomes NULL.
-
-The correct conversion would have been:
-
-    if ((*sig)[0])
-
-However, this if-conditional was meaningless because the earlier change
-in commit ac551828993e was incorrect.
-
-This commit removes the entire incorrect code, which should never have
-been executed.
-
-Fixes: ac551828993e ("modpost: i2c aliases need no trailing wildcard")
-Fixes: 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241107203830.1068456-1-alexander.sverdlin@siemens.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mod/file2alias.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/watchdog/rti_wdt.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 7154df094f40b..1c9c33f491e64 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -786,10 +786,7 @@ static int do_eisa_entry(const char *filename, void *symval,
- 		char *alias)
- {
- 	DEF_FIELD_ADDR(symval, eisa_device_id, sig);
--	if (sig[0])
--		sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
--	else
--		strcat(alias, "*");
-+	sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
- 	return 1;
- }
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -54,7 +54,7 @@
  
--- 
-2.43.0
-
+ #define MAX_HW_ERROR		250
+ 
+-static int heartbeat = DEFAULT_HEARTBEAT;
++static int heartbeat;
+ 
+ /*
+  * struct to hold data for each WDT device
+@@ -242,6 +242,7 @@ static int rti_wdt_probe(struct platform
+ 	wdd->min_timeout = 1;
+ 	wdd->max_hw_heartbeat_ms = (WDT_PRELOAD_MAX << WDT_PRELOAD_SHIFT) /
+ 		wdt->freq * 1000;
++	wdd->timeout = DEFAULT_HEARTBEAT;
+ 	wdd->parent = dev;
+ 
+ 	watchdog_set_drvdata(wdd, wdt);
 
 
 
