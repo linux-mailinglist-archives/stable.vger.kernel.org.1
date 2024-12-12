@@ -1,194 +1,109 @@
-Return-Path: <stable+bounces-103930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4519EFC07
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 20:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF2A9EFC1D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 20:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1376928CF4E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:07:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96FFC285E50
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D931018C035;
-	Thu, 12 Dec 2024 19:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E40A1925AF;
+	Thu, 12 Dec 2024 19:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="BsD00iIp";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MfUGiHj7";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="BsD00iIp";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MfUGiHj7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PnBdrybr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEED188722;
-	Thu, 12 Dec 2024 19:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA93E18CBFB;
+	Thu, 12 Dec 2024 19:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734030464; cv=none; b=IcexBhQy2PzcDl4xek2k0UedMzXlXsKsrhzwpLSHqpZ2U7+9odrq9gvaQj+WUn+gBY5ysH7cbVaAfmFSFWIdqmJJ65lL44yXMhmZlSC1Qu9xqQr7WNeoXzTIbnJXDbXHxJVGMglbUp7j9v18neZTRrG0cIIVPu1nQk/VJImrvHk=
+	t=1734030773; cv=none; b=Hpm7MfOIa3p3FBB0gdximEPyDkwty5ipMzXr4BbSq9D33YxPiBClwqjB7l+H54tD+ZRnn0j6u2OYunvpqHEf+GcFORr5PTfUfiQNaZ8nrZdNN8+bRB7TJxgMu+dREfIerKAfk8SajpCgGWz06YB1p4Xu4Yd0kfuRZpXBVxxUZx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734030464; c=relaxed/simple;
-	bh=sGdzzV6E/rI5g3logA4o76dfyuCnYsHfPPIMcI2XD7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CbSukmHJ4Wf24yJ11K5veDUZWoWu002bo2BvUwtgYlkt4FBskxKAlMsbmthRJM5xr5M5+mEr8wElqHRj8k9rz/DLKieAuHxvJ+FFCiSsTTB2y//AkeoIqGIZko4q9/fHqyS+eIY3lyeXG0xdZrM/Ae7x0d1O3/GTWzgngmjnCfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=BsD00iIp; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MfUGiHj7; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=BsD00iIp; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MfUGiHj7; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 846BE1F37C;
-	Thu, 12 Dec 2024 19:07:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1734030460;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A6nOQNfjlp8/gPOnK0kS3/hz4FmE6wWLT5nfsY448C4=;
-	b=BsD00iIpeSnNTojWvYgfFaKfrqwDFZhSVmQOTexilwa2rXOQ7TsoxoDTeQWVyMWyRPxweD
-	69mCvrQ724BhzTKUnEJkeIeGpkLmvpx0+zRx/2YA7134AsjvbIJAUBFo6umhG2aOJ2OBhz
-	brBwPi2cZpiFwaluynweNctb/l5tu7Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1734030460;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A6nOQNfjlp8/gPOnK0kS3/hz4FmE6wWLT5nfsY448C4=;
-	b=MfUGiHj7V/2Tju4jwVl4g4oAjnSi49ERQfxTaP1xtr7TMuo2jZ2HGseKYh9HGCTp+7CN1K
-	48R+OmoWOUjkqxCg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1734030460;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A6nOQNfjlp8/gPOnK0kS3/hz4FmE6wWLT5nfsY448C4=;
-	b=BsD00iIpeSnNTojWvYgfFaKfrqwDFZhSVmQOTexilwa2rXOQ7TsoxoDTeQWVyMWyRPxweD
-	69mCvrQ724BhzTKUnEJkeIeGpkLmvpx0+zRx/2YA7134AsjvbIJAUBFo6umhG2aOJ2OBhz
-	brBwPi2cZpiFwaluynweNctb/l5tu7Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1734030460;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A6nOQNfjlp8/gPOnK0kS3/hz4FmE6wWLT5nfsY448C4=;
-	b=MfUGiHj7V/2Tju4jwVl4g4oAjnSi49ERQfxTaP1xtr7TMuo2jZ2HGseKYh9HGCTp+7CN1K
-	48R+OmoWOUjkqxCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 433BA13508;
-	Thu, 12 Dec 2024 19:07:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xcPlD3w0W2dxQQAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Thu, 12 Dec 2024 19:07:40 +0000
-Date: Thu, 12 Dec 2024 20:07:39 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Daniel Vacek <neelx@suse.com>
-Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-	Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Omar Sandoval <osandov@fb.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-rt-devel@lists.linux.dev" <linux-rt-devel@lists.linux.dev>
-Subject: Re: [PATCH] btrfs: fix a race in encoded read
-Message-ID: <20241212190738.GY31418@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <20241212075303.2538880-1-neelx@suse.com>
- <ac4c4ae5-0890-4f47-8a85-3c4447feaa90@wdc.com>
- <CAPjX3FcAZM4dSbnMkTpJPNJMcPDxKbEMwbg3ScaTWVg+5JqfDg@mail.gmail.com>
- <133f4cb5-516d-4e11-b03a-d2007ff667ee@wdc.com>
- <CAPjX3FchmM24-Afv7ueeK-Z1zBYivfj4yKXhVq6bARiGjqQOwQ@mail.gmail.com>
- <9d5b4776-e3c8-449c-bb0d-c200a1f76603@wdc.com>
- <CAPjX3FdU1mOkRr+JVE+S4og4NvjFerZhHC_qupFBTgjn9=s8MA@mail.gmail.com>
- <a8047d3a-ab45-42f0-8c60-f00829e40518@wdc.com>
- <CAPjX3Fexb19AcchSttsmm=JCcobBBCPXxF6_qkK=_yuqtgNRRg@mail.gmail.com>
+	s=arc-20240116; t=1734030773; c=relaxed/simple;
+	bh=N+EJbicTSJqYwAn+hAWPtB4u/8m+fF3kJ4QK3LRp2GM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=QCO7jsjxPyCyX6/7oAYuXPCQtME9IYZktVczJVnlkI1C8MkzzH7fBn34ErLZLEcyw/dnIe6rkNdcfkeUFsPSH5l8edgumBCtaGMsR/Jw29TN5OjyGjIdfmwD2OcmOAPtnHztQSVNKCGXpYi/Vius0IExDTbjqXZmRrrTu6WXm/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PnBdrybr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9A7C4CED0;
+	Thu, 12 Dec 2024 19:12:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734030773;
+	bh=N+EJbicTSJqYwAn+hAWPtB4u/8m+fF3kJ4QK3LRp2GM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=PnBdrybrDBCuwdp0AJl0uUhutNvE+TcCMs0jCAfzCfEGcmOQ0zk/x4He2VHTX3WA7
+	 o7iuxK9rUl4MXncgf7kJFhfu0ldF7H8rHXlOCzPQs4Y0LZymiqY7JIAj44Yi8GifXk
+	 nqLwqV6PHVnI0dHDtlX6nsq+VNVANv8CSjNNdfR3G4LnrMgnFODPW7WeDxIkd4m/By
+	 wXS3p0xJYg5i0gum6ZgXLG2kBx9QrdZtuFX4pwIbVfX72J6sMs9o30BnYc7ebQOVyO
+	 O5kbEK5zGsicezyLKbU4EIYwu8u5qGJcuFjOP1qASTcn8y8oid5mkVoMCiYZ5x6z1H
+	 5UyjO4zOWWswg==
+Date: Thu, 12 Dec 2024 13:12:51 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Joao Pinto <jpinto@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Wei Yongjun <weiyongjun1@huawei.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] PCI: endpoint: fix bug for 2 APIs and simplify 1
+ API
+Message-ID: <20241212191251.GA3358574@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPjX3Fexb19AcchSttsmm=JCcobBBCPXxF6_qkK=_yuqtgNRRg@mail.gmail.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[]
-X-Spam-Score: -4.00
-X-Spam-Flag: NO
+In-Reply-To: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
 
-On Thu, Dec 12, 2024 at 11:26:20AM +0100, Daniel Vacek wrote:
-> On Thu, Dec 12, 2024 at 11:10 AM Johannes Thumshirn
-> <Johannes.Thumshirn@wdc.com> wrote:
-> >
-> > On 12.12.24 10:35, Daniel Vacek wrote:
-> > > On Thu, Dec 12, 2024 at 10:14 AM Johannes Thumshirn
-> > > <Johannes.Thumshirn@wdc.com> wrote:
-> > >> It got recently force pushed, 34725028ec5500018f1cb5bfd55c669c7bbf1346
-> > >> it is now, sorry.
-> > >
-> > > Yeah, this looks very similar and it should fix the bug as well. In
-> > > fact the fix part looks exactly the same, I just also changed the
-> > > slab/stack allocation while you changed the atomic/refcount. But these
-> > > are unrelated, IIUC. I actually planned to split it into two patches
-> > > but David told me it's not necessary and I should send it as it is.
-> > >
-> > > Just nitpicking about your patch, the subject says simplify while I
-> > > don't really see any simplification.
-> > > Also it does not mention the UAF bug leading to crashes it fixes,
-> > > missing the Fixes: and CC: stable tags.
-> > >
-> > > What do we do now?
-> >
-> > I think it's up to David if he want's to send the patch for this rc or
-> > not. In my test environment the part that went upstream was sufficient
-> > to fix the UAF, so this was the part that actually went to Linus first.
+On Tue, Dec 10, 2024 at 10:00:17PM +0800, Zijun Hu wrote:
+> This patch series is to fix bug for APIs
+> - devm_pci_epc_destroy().
+> - pci_epf_remove_vepf().
 > 
-> But it (I assume you are referring to `05b36b04d74a`) does not really
-> fix the UAF. I'm still able to get the same crashes even with this
-> commit applied. That was actually where I originally started testing.
+> and simplify APIs below:
+> - pci_epc_get().
 > 
-> > @Dave can you send '34725028ec55 ("btrfs: simplify waiting for encoded
-> > read endios")' in the next PR? I can update the Fixes tag.
-> 
-> The commit message definitely needs to be updated mentioning that this
-> actually fixes the UAF which `05b36b04d74a` does not really address.
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 
-Yeah, the commit message does not say anything about fixing things so I
-skipped it when looking for -rc fixes.
+Applied to pci/endpoint for v6.14, thanks!
+
+> ---
+> Changes in v3:
+> - Remove stable tag of patch 1/3
+> - Add one more patch 3/3
+> - Link to v2: https://lore.kernel.org/all/20241102-pci-epc-core_fix-v2-0-0785f8435be5@quicinc.com
+> 
+> Changes in v2:
+> - Correct tile and commit message for patch 1/2.
+> - Add one more patch 2/2 to simplify API pci_epc_get().
+> - Link to v1: https://lore.kernel.org/r/20241020-pci-epc-core_fix-v1-1-3899705e3537@quicinc.com
+> 
+> ---
+> Zijun Hu (3):
+>       PCI: endpoint: Fix that API devm_pci_epc_destroy() fails to destroy the EPC device
+>       PCI: endpoint: Simplify API pci_epc_get() implementation
+>       PCI: endpoint: Fix API pci_epf_add_vepf() returning -EBUSY error
+> 
+>  drivers/pci/endpoint/pci-epc-core.c | 23 +++++++----------------
+>  drivers/pci/endpoint/pci-epf-core.c |  1 +
+>  2 files changed, 8 insertions(+), 16 deletions(-)
+> ---
+> base-commit: 11066801dd4b7c4d75fce65c812723a80c1481ae
+> change-id: 20241020-pci-epc-core_fix-a92512fa9d19
+> 
+> Best regards,
+> -- 
+> Zijun Hu <quic_zijuhu@quicinc.com>
+> 
 
