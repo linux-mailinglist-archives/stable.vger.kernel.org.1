@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AAEB9EF5A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0EE9EF719
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B05F217BBA4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D9E8341810
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D896F22540F;
-	Thu, 12 Dec 2024 16:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D206F2FE;
+	Thu, 12 Dec 2024 17:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTy0+//5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2q0Ke7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968E022FAF8;
-	Thu, 12 Dec 2024 16:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27A153365;
+	Thu, 12 Dec 2024 17:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022267; cv=none; b=uYeptfcRYGS/q0fqaSdZeIdO2ZV2GTSIklYJ0zPdxdfcXyztSomBdP9nG68bJEdgZpUQab5KF8HLhzeSpx2neTAz9/C6KdeX8UMzaCDwi7HT1xvj0cSFjF004QA+gmnUhsN8vYsf1XMkJjN2HTlOlomC+SlcqvpnOiW5zm8ZTFs=
+	t=1734023671; cv=none; b=DoGLnt7+P5UoXW8Fl1qoDQgrTs3H2jAYTcKG91ndQTuaQW+EBf7KIZX0Py8tX2hsO0HA0J4Qa0DYLLd7bvQeJHjQg823yUkbBLUqp64mhLK65RWPEEDHB6HOR8scJ1Sy80Hru7TvSyfn/y/JDlUpnYLW204UiX6m8dApa4/BJos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022267; c=relaxed/simple;
-	bh=RoHyV3hdijBdf/0MhEITdPiWYMo8ahFaeHQPm0F5kCk=;
+	s=arc-20240116; t=1734023671; c=relaxed/simple;
+	bh=BWQV4sBPKl1mcllYJxTgMAQevISgKdVshQ9WmZ+bx40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NnP0LcJrb9sq6L+s7OTDu0P2H8Fbd7noN+sCq0dFdnAGBsSbrxxI4+nJfN2/lTaF2CuSEkBy7aUFiCq3QxjmhYQvbLE5xPynj43CZ+LXSWIwEHJFhlLb21DNuEEgQzmbjftIYWGdthyvrwwIcCIQK1LV3a7/nRzJqZOgkL+wTmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTy0+//5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F7BC4CECE;
-	Thu, 12 Dec 2024 16:51:06 +0000 (UTC)
+	 MIME-Version; b=mAAzyQOOzPgHRLXjECfL6vAezIcv+MqtLMVbouTwFuaFJ4jwomH2UY+BiAHWrWlveMDeHGfQA80uzOzT/vAgSxeky0/y6MaTeW+PJjx/WK+6G3kEmY4v8tShAQgAGw1nJMPqe6z3jlJyDzf8UdlN79YPFWaukvD2YpZjFfBhRjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2q0Ke7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE8BC4CECE;
+	Thu, 12 Dec 2024 17:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022267;
-	bh=RoHyV3hdijBdf/0MhEITdPiWYMo8ahFaeHQPm0F5kCk=;
+	s=korg; t=1734023671;
+	bh=BWQV4sBPKl1mcllYJxTgMAQevISgKdVshQ9WmZ+bx40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTy0+//5ZBooec6gsJValLsiQmSCTJgtxyIiAs84NJcVUNRAxzHLCn5ASlW7TlR2E
-	 p8K/ZQjQTHOkBq/YnYf2s27JszZEB1VeRPE2TZdp1jCt1pRkv1K3QFPWauCYEOyvAt
-	 c8ibwdNDuQRRit+qbY/UtB0lK7Be2XVy+RIvPoXs=
+	b=C2q0Ke7rswl74UY8laEzAqxt6DscRJkNWL5D1LsiIx6ZurtyWR1TKHcHm20wwQWAF
+	 7UTmTk+58rA49NZW1E2+q+rIO698ujXDJ7tnXgB+ed8tuFF1CopvrjsXlgMMd+zSln
+	 NfkKge8MnT8QBfbqMiQ4S4qWT0UgO3VmMgdKNNYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 186/565] netfilter: nf_tables: skip transaction if update object is not implemented
+Subject: [PATCH 5.10 043/459] regulator: rk808: Add apply_bit for BUCK3 on RK809
 Date: Thu, 12 Dec 2024 15:56:21 +0100
-Message-ID: <20241212144318.834409724@linuxfoundation.org>
+Message-ID: <20241212144255.228188623@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Mikhail Rudenko <mike.rudenko@gmail.com>
 
-[ Upstream commit 84b1a0c0140a9a92ea108576c0002210f224ce59 ]
+[ Upstream commit 5e53e4a66bc7430dd2d11c18a86410e3a38d2940 ]
 
-Turn update into noop as a follow up for:
+Currently, RK809's BUCK3 regulator is modelled in the driver as a
+configurable regulator with 0.5-2.4V voltage range. But the voltage
+setting is not actually applied, because when bit 6 of
+PMIC_POWER_CONFIG register is set to 0 (default), BUCK3 output voltage
+is determined by the external feedback resistor. Fix this, by setting
+bit 6 when voltage selection is set. Existing users which do not
+specify voltage constraints in their device trees will not be affected
+by this change, since no voltage setting is applied in those cases,
+and bit 6 is not enabled.
 
-  9fedd894b4e1 ("netfilter: nf_tables: fix unexpected EOPNOTSUPP error")
-
-instead of adding a transaction object which is simply discarded at a
-later stage of the commit protocol.
-
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: cddc04275f95 ("netfilter: nf_tables: must hold rcu read lock while iterating object type list")
+Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+Link: https://patch.msgid.link/20241017-rk809-dcdc3-v1-1-e3c3de92f39c@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/regulator/rk808-regulator.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 71a486d9fd76a..20e2f2deb336d 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7189,6 +7189,9 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
- 		if (WARN_ON_ONCE(!type))
- 			return -ENOENT;
- 
-+		if (!obj->ops->update)
-+			return 0;
-+
- 		nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
- 
- 		return nf_tables_updobj(&ctx, type, nla[NFTA_OBJ_DATA], obj);
-@@ -8787,9 +8790,10 @@ static void nft_obj_commit_update(struct nft_trans *trans)
- 	obj = nft_trans_obj(trans);
- 	newobj = nft_trans_obj_newobj(trans);
- 
--	if (obj->ops->update)
--		obj->ops->update(obj, newobj);
-+	if (WARN_ON_ONCE(!obj->ops->update))
-+		return;
- 
-+	obj->ops->update(obj, newobj);
- 	nft_obj_destroy(&trans->ctx, newobj);
- }
- 
+diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
+index e926c1a858460..e3b9d5ce8dbbf 100644
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -944,6 +944,8 @@ static const struct regulator_desc rk809_reg[] = {
+ 		.n_linear_ranges = ARRAY_SIZE(rk817_buck1_voltage_ranges),
+ 		.vsel_reg = RK817_BUCK3_ON_VSEL_REG,
+ 		.vsel_mask = RK817_BUCK_VSEL_MASK,
++		.apply_reg = RK817_POWER_CONFIG,
++		.apply_bit = RK817_BUCK3_FB_RES_INTER,
+ 		.enable_reg = RK817_POWER_EN_REG(0),
+ 		.enable_mask = ENABLE_MASK(RK817_ID_DCDC3),
+ 		.enable_val = ENABLE_MASK(RK817_ID_DCDC3),
 -- 
 2.43.0
 
