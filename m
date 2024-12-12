@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19B69EEAAD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F01259EF34B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE09718883DF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 793462928CF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3F92165F0;
-	Thu, 12 Dec 2024 15:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5503D22FE0A;
+	Thu, 12 Dec 2024 16:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Swls72Da"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1r6PV5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284C321171A;
-	Thu, 12 Dec 2024 15:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D5322FDE5;
+	Thu, 12 Dec 2024 16:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016366; cv=none; b=OOXz6SolzDS9Z4dXZaukYlgcoPbYxs2gnrdFQQwvePe7qE1ayLmE0EuFD7doOnbB+Kmsvd7qgSBTJjFxtIKv/YvLoMCDpc4RrRLnLYDfWimpzdsFgpPcuMpsxdWiiEP4q3eP5QiC1ERr23XWSZSJNqEChwBSZR7eWtp3c8ISwZY=
+	t=1734022264; cv=none; b=VjiYmSmE2dB1DyQKhplBlyZgViUVDTlXRkmq24eMCfI5We5loE0FH8InskLU0jxNQ47RHpoZbO0xhtfLUvk5MKftIOmH0xtalHsTSlr0YHbCCM3TU2Cf7VPll1ja+tfu6gM4piE0z/t8WQqxnIrhdoPd/qNVVK+z0g1nejlTQbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016366; c=relaxed/simple;
-	bh=Xtxd1bIXzK6ieS/uUKO37k9jUd1FkbwKUsseI0MgBXY=;
+	s=arc-20240116; t=1734022264; c=relaxed/simple;
+	bh=g3bjwOoJc3PYS+g28FvvSilPcWBNPyFWWGD1WB4i84Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hf+ohMZLoltLM6mcXo8iZJTvOCeFNPNVB8A6cE2TwtLzlD+bxbPhBXVXHzHvAvY4TKFFCbPcMrAtNrwwqiWD9uH2h9zwc9fwLte7CGG2u3ZDQIe5WBiBHxUtPzodujhqv1qPzqLKjzstDBL6+JCZ8bW5mcagXVeck+hiu22jevA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Swls72Da; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8FFC4CEDE;
-	Thu, 12 Dec 2024 15:12:45 +0000 (UTC)
+	 MIME-Version; b=m56qgNlYhh8zfDQdTeZx5Yu8/ilz9IxMU65GIKLbdBNj3Svs5RolXT3Z8Sw6q9I1LKhOpbjIPMa/GOPsMxKoSe7dJAC0evxSx0sDbEQLEMtZI9HsHX6TEWrUSxl4mflZckJs2p0JlpJuMbfgAfhzLhzuzbb71i25XXS1T6/fXHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1r6PV5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2148AC4CED0;
+	Thu, 12 Dec 2024 16:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016366;
-	bh=Xtxd1bIXzK6ieS/uUKO37k9jUd1FkbwKUsseI0MgBXY=;
+	s=korg; t=1734022263;
+	bh=g3bjwOoJc3PYS+g28FvvSilPcWBNPyFWWGD1WB4i84Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Swls72DafuWC0uP86nnLTWRXneBvxJgoqQ5AFMqQPex78kuY6xzNMtNiNAcUZ1DvJ
-	 DsN44MeuljQAxj8GD6FzIN0KS3q0DxtAqoXUVbhuQ1RSp6htjS26jJhdZXk5VG+n+r
-	 EA2nv38WBxS7bI/WOm4FwO9w+zU6Rr4exDYxw8o8=
+	b=L1r6PV5VVkZGhR3YTfHtvk9p6Qc3BLrEinaSeUJFoaFA1IuUsIfqndpQxECbQ8lwq
+	 UD0q965MwWhR7XWrgPKewiORgnSgWnn63GyfsTexlsh1jjIx4pCwEDUUi/JtxoBSGv
+	 nsxMbBsJLTnnQ4LXOT06ckebKHubBMNEknWiMckk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Belanger <david.belanger@amd.com>,
-	Frank Min <frank.min@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 178/466] drm/amdgpu/hdp4.0: do a posting read when flushing HDP
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 152/565] drm/imx/dcss: Use IRQF_NO_AUTOEN flag in request_irq()
 Date: Thu, 12 Dec 2024 15:55:47 +0100
-Message-ID: <20241212144313.825768840@linuxfoundation.org>
+Message-ID: <20241212144317.491197237@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit c9b8dcabb52afe88413ff135a0953e3cc4128483 upstream.
+[ Upstream commit 1af01e14db7e0b45ae502d822776a58c86688763 ]
 
-Need to read back to make sure the write goes through.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Cc: David Belanger <david.belanger@amd.com>
-Reviewed-by: Frank Min <frank.min@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240912083020.3720233-2-ruanjinjie@huawei.com
+[DB: fixed the subject]
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/imx/dcss/dcss-crtc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
-@@ -40,10 +40,12 @@
- static void hdp_v4_0_flush_hdp(struct amdgpu_device *adev,
- 				struct amdgpu_ring *ring)
- {
--	if (!ring || !ring->funcs->emit_wreg)
-+	if (!ring || !ring->funcs->emit_wreg) {
- 		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
--	else
-+		RREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
-+	} else {
- 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
-+	}
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-crtc.c b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+index 31267c00782fc..af91e45b5d13b 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-crtc.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+@@ -206,15 +206,13 @@ int dcss_crtc_init(struct dcss_crtc *crtc, struct drm_device *drm)
+ 	if (crtc->irq < 0)
+ 		return crtc->irq;
+ 
+-	ret = request_irq(crtc->irq, dcss_crtc_irq_handler,
+-			  0, "dcss_drm", crtc);
++	ret = request_irq(crtc->irq, dcss_crtc_irq_handler, IRQF_NO_AUTOEN,
++			  "dcss_drm", crtc);
+ 	if (ret) {
+ 		dev_err(dcss->dev, "irq request failed with %d.\n", ret);
+ 		return ret;
+ 	}
+ 
+-	disable_irq(crtc->irq);
+-
+ 	return 0;
  }
  
- static void hdp_v4_0_invalidate_hdp(struct amdgpu_device *adev,
-@@ -54,11 +56,13 @@ static void hdp_v4_0_invalidate_hdp(stru
- 	    amdgpu_ip_version(adev, HDP_HWIP, 0) == IP_VERSION(4, 4, 5))
- 		return;
- 
--	if (!ring || !ring->funcs->emit_wreg)
-+	if (!ring || !ring->funcs->emit_wreg) {
- 		WREG32_SOC15_NO_KIQ(HDP, 0, mmHDP_READ_CACHE_INVALIDATE, 1);
--	else
-+		RREG32_SOC15_NO_KIQ(HDP, 0, mmHDP_READ_CACHE_INVALIDATE);
-+	} else {
- 		amdgpu_ring_emit_wreg(ring, SOC15_REG_OFFSET(
- 			HDP, 0, mmHDP_READ_CACHE_INVALIDATE), 1);
-+	}
- }
- 
- static void hdp_v4_0_query_ras_error_count(struct amdgpu_device *adev,
+-- 
+2.43.0
+
 
 
 
