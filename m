@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207299EEC48
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF139EF195
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69CE91636DE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE847188EC1A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454512210DF;
-	Thu, 12 Dec 2024 15:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D1D2236EA;
+	Thu, 12 Dec 2024 16:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1f0/F1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzDmgDDI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DA3217707;
-	Thu, 12 Dec 2024 15:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6526D223C69;
+	Thu, 12 Dec 2024 16:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017448; cv=none; b=jhrWdfFjA9t2tGanSotoYZal5BiUNOYKGugPZjbWpbhCVYR9xx+1IEw8qXEqti1352mIQ9ZPkz22AzF213uJiaz9kagY8qA26o9NH5tBZvGIvAkgMcNnHPpNWmrFT9xtByq69d/1JdRZtR1RxKOlmWgwwqrJjQ2ArqzZWuWQ2TM=
+	t=1734020265; cv=none; b=X9t7FvyyGDvQG3UilRWdZ6ZdUuT8EBq7EJcw3FGJHoWagPu7VgC7ahqDIcaM6vCWW99cEnIuNylgOEyR2mVa1j1MawlJTQkQn9rzWkmR2QAmSTtpiyISP6oY9wTkbeFExnB8U2FYK0bx99N6cwIxh1en2Ng1Bba1gsxQC/+ltoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017448; c=relaxed/simple;
-	bh=Qp3tkI5E/R9a3wADCsnthJdkrgF9Ds0r+4RwWx4HuMc=;
+	s=arc-20240116; t=1734020265; c=relaxed/simple;
+	bh=6z78+mOQwZ8F90aR/9LRlcaj6Yqwc64h+xxj7geVpCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlGnIJupjW441Txbjg0WtQcJLRVzDnhfEXl7PtSKx9+HkDeIMXk6Ttmr6ZEcG9UhNEeBbljUTe9T0Ny94w3z+MeSXWgIdShep9YBkd06LNKXDryjRj3mpvQG0f95rS81PS5KSXAeHOctfOO7V3FKuznUSU05epXywSuhDHGBUK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1f0/F1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DACAC4CECE;
-	Thu, 12 Dec 2024 15:30:47 +0000 (UTC)
+	 MIME-Version; b=mg3umO7XAXNVTGfFc33Yy8VippCa0YrdNwn+OwVZMzQIzXRAYzuc7B1bVWGKqMu5QI3zgomm5a+TrdYgLybUDvlaMoagMvaveG1h+oBIkgnqKoE9MdqImm5tngwhcsXexPv1FTkXoRrTlPSFLLKUhiz0oHhvtJp/OilWKrSvhTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzDmgDDI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0AF7C4CECE;
+	Thu, 12 Dec 2024 16:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017447;
-	bh=Qp3tkI5E/R9a3wADCsnthJdkrgF9Ds0r+4RwWx4HuMc=;
+	s=korg; t=1734020265;
+	bh=6z78+mOQwZ8F90aR/9LRlcaj6Yqwc64h+xxj7geVpCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1f0/F1gCKbNs5fZT2VAiuVonAyGhEobKaUBDIM55nTludl/roZZXc3OzEzrzTmXJ
-	 V/NfuqIOHdI6P0ulSq7NpEp1hxkG3nU/zRTgk52cRt0Bl9yDiHWNc1lSlQDEDMm4st
-	 DLwIyajAWh0KADvZuDGRA4rTOrsiF84EPRoPNEUE=
+	b=mzDmgDDISLRnVwIfhpBaotX7LYeuooD+Z+lftLR/iZQ8zWYN2DlSs+tlFzckezTYP
+	 K0yvbGfafcrkRxKyhBs1k0qoBTppvASP4GS5l+acCt4rTXYN+U7TMIBJgmGQUfYZud
+	 Z2BeQuHwkp8bt9zv9gM70LQhA75HmdYFpHbvZ7cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/356] can: f81604: f81604_handle_can_bus_errors(): fix {rx,tx}_errors statistics
-Date: Thu, 12 Dec 2024 15:55:35 +0100
-Message-ID: <20241212144245.263910270@linuxfoundation.org>
+	syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 391/772] netfilter: ipset: add missing range check in bitmap_ip_uadt
+Date: Thu, 12 Dec 2024 15:55:36 +0100
+Message-ID: <20241212144406.060252301@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit d7b916540c2ba3d2a88c27b2a6287b39d8eac052 ]
+commit 35f56c554eb1b56b77b3cf197a6b00922d49033d upstream.
 
-The f81604_handle_can_bus_errors() function only incremented the receive
-error counter and never the transmit error counter, even if the ECC_DIR
-flag reported that an error had occurred during transmission.
+When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
+the values of ip and ip_to are slightly swapped. Therefore, the range check
+for ip should be done later, but this part is missing and it seems that the
+vulnerability occurs.
 
-Increment the receive/transmit error counter based on the value of the
-ECC_DIR flag.
+So we should add missing range checks and remove unnecessary range checks.
 
-Fixes: 88da17436973 ("can: usb: f81604: add Fintek F81604 support")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-13-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/f81604.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/netfilter/ipset/ip_set_bitmap_ip.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/can/usb/f81604.c b/drivers/net/can/usb/f81604.c
-index ec8cef7fd2d53..fb9fb16507f0b 100644
---- a/drivers/net/can/usb/f81604.c
-+++ b/drivers/net/can/usb/f81604.c
-@@ -526,7 +526,6 @@ static void f81604_handle_can_bus_errors(struct f81604_port_priv *priv,
- 		netdev_dbg(netdev, "bus error interrupt\n");
+--- a/net/netfilter/ipset/ip_set_bitmap_ip.c
++++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
+@@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
+ 		if (ret)
+ 			return ret;
+-		if (ip > ip_to) {
++		if (ip > ip_to)
+ 			swap(ip, ip_to);
+-			if (ip < map->first_ip)
+-				return -IPSET_ERR_BITMAP_RANGE;
+-		}
+ 	} else if (tb[IPSET_ATTR_CIDR]) {
+ 		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
  
- 		priv->can.can_stats.bus_error++;
--		stats->rx_errors++;
+@@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ip_to = ip;
+ 	}
  
- 		if (skb) {
- 			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-@@ -548,10 +547,15 @@ static void f81604_handle_can_bus_errors(struct f81604_port_priv *priv,
+-	if (ip_to > map->last_ip)
++	if (ip < map->first_ip || ip_to > map->last_ip)
+ 		return -IPSET_ERR_BITMAP_RANGE;
  
- 			/* set error location */
- 			cf->data[3] = data->ecc & F81604_SJA1000_ECC_SEG;
-+		}
- 
--			/* Error occurred during transmission? */
--			if ((data->ecc & F81604_SJA1000_ECC_DIR) == 0)
-+		/* Error occurred during transmission? */
-+		if ((data->ecc & F81604_SJA1000_ECC_DIR) == 0) {
-+			stats->tx_errors++;
-+			if (skb)
- 				cf->data[2] |= CAN_ERR_PROT_TX;
-+		} else {
-+			stats->rx_errors++;
- 		}
- 
- 		set_bit(F81604_CLEAR_ECC, &priv->clear_flags);
--- 
-2.43.0
-
+ 	for (; !before(ip_to, ip); ip += map->hosts) {
 
 
 
