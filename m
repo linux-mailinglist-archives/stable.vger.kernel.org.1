@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89AE09EEAB9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5E79EF0E7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A0382816B5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F76729DB47
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F6C2153FC;
-	Thu, 12 Dec 2024 15:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A242E2210E5;
+	Thu, 12 Dec 2024 16:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arp1ciWq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rA7OTewX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ED520E034;
-	Thu, 12 Dec 2024 15:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5D52153DD;
+	Thu, 12 Dec 2024 16:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016619; cv=none; b=co5gDByN7yJRDqHwGefHB3eWLDnoka9XTUt9NuNSti7OvST9ouDcoMM4JwfLL32JTld/BOWBFl4O7mTQjcNORtxoSYFetxeW8tardJsaz8OkgPvNUBoKrDJlrONBrKYvw2atkqKuP0bOrVv+QelltG9tHAeA9WazQ98YdqR4zh8=
+	t=1734020465; cv=none; b=d+zcXGm3kBS1xEOPLmYw8Nh7z+yb0+xpAQ3kBLWFJSCEKxTRo1PqRSmf/lgoU2HF6QZsASgShSx1kY36EEY7Un7lhwW3oUQN0DDind6BN4dQmK4NDdFYbBxFrfvpZSV/McOua3ccV1fUNrTSNArhCgeZfPMV5HO11EOJObQxO/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016619; c=relaxed/simple;
-	bh=MUMv6rRnScSBqJsgjPGrE6nq8faNTUDm4eOp/ekda8Q=;
+	s=arc-20240116; t=1734020465; c=relaxed/simple;
+	bh=0rm0N9ywkcWyTNEDhf+1oALhQep5dvhN1Pc7BdBFLG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwXQMItYlCIVas3CO9bzjqVeSYAw+zAiPiqTAE7GIJXJjZlxBRH6L0+4+Fy0wbw8W/hO81Sjjup3THHU6RXCD06mzFkwAlQBMKwATsxB1NRVywwPF/oFsnwWwLpmyfNqXqjE5Peqpw+QxNya0olBTsTMG/aby+7bDpQJNYcLI0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arp1ciWq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF46C4CED0;
-	Thu, 12 Dec 2024 15:16:58 +0000 (UTC)
+	 MIME-Version; b=IUcfmFqdema86yYHQ/wfJb5p2GARWaKxfUZiSWfT0UUMNVqNvtmDzjGLhWRku8rGk+Tpe8AdzI1vRoQPjmYs6Oveh/a89sVIdcJ/LVUH5kaSybmI5ZDaz93UvH+dXovkw9Cdr0aJXfdXPxztcoVqCs6G1gCCChIM67O0HnhA3lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rA7OTewX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A257FC4CED0;
+	Thu, 12 Dec 2024 16:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016619;
-	bh=MUMv6rRnScSBqJsgjPGrE6nq8faNTUDm4eOp/ekda8Q=;
+	s=korg; t=1734020465;
+	bh=0rm0N9ywkcWyTNEDhf+1oALhQep5dvhN1Pc7BdBFLG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arp1ciWq6rblrs7G9ouD5eQAKLpwp13FtrwSySEmCHDy34VpOU0Ae8jOojaEsEYME
-	 q1J5ek8Bbkyfk2Ix2oKMLasA1rQeXJfA5ebA9wgL4UnbfNn/JrxxsfmtRJCuS33FAq
-	 USrqm693CwswXWBz6SJrS91k2weIVsuaTYvbPuvY=
+	b=rA7OTewXN35b70uehwN/XAaDDPiK+rmfOg5oSPO5r8bwz+iocCZKgxD43lo688+0/
+	 nEPj3ruJvqB5W8YN+LPSeSYdYvyEHekile/LzEe18n9N1Pi2JgVpkfdLs4Ehn5O3qb
+	 t1HNKKgk9khrb94qsS+/qCLslbhFrcRyUVZo4UOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 249/466] regmap: maple: Provide lockdep (sub)class for maple trees internal lock
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	guoweikang <guoweikang.kernel@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 473/772] ftrace: Fix regression with module command in stack_trace_filter
 Date: Thu, 12 Dec 2024 15:56:58 +0100
-Message-ID: <20241212144316.624428153@linuxfoundation.org>
+Message-ID: <20241212144409.477614647@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: guoweikang <guoweikang.kernel@gmail.com>
 
-[ Upstream commit 1ed9b927e7dd8b8cff13052efe212a8ff72ec51d ]
+commit 45af52e7d3b8560f21d139b3759735eead8b1653 upstream.
 
-In some cases when using the maple tree register cache, the lockdep
-validator might complain about invalid deadlocks:
+When executing the following command:
 
-[7.131886]  Possible interrupt unsafe locking scenario:
+    # echo "write*:mod:ext3" > /sys/kernel/tracing/stack_trace_filter
 
-[7.131890]        CPU0                    CPU1
-[7.131893]        ----                    ----
-[7.131896]   lock(&mt->ma_lock);
-[7.131904]                                local_irq_disable();
-[7.131907]                                lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
-[7.131916]                                lock(&mt->ma_lock);
-[7.131925]   <Interrupt>
-[7.131928]     lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
-[7.131936]
-                *** DEADLOCK ***
+The current mod command causes a null pointer dereference. While commit
+0f17976568b3f ("ftrace: Fix regression with module command in stack_trace_filter")
+has addressed part of the issue, it left a corner case unhandled, which still
+results in a kernel crash.
 
-[7.131939] no locks held by swapper/0/0.
-[7.131944]
-               the shortest dependencies between 2nd lock and 1st lock:
-[7.131950]  -> (&mt->ma_lock){+.+.}-{2:2} {
-[7.131966]     HARDIRQ-ON-W at:
-[7.131973]                       lock_acquire+0x200/0x330
-[7.131986]                       _raw_spin_lock+0x50/0x70
-[7.131998]                       regcache_maple_write+0x68/0xe0
-[7.132010]                       regcache_write+0x6c/0x90
-[7.132019]                       _regmap_read+0x19c/0x1d0
-[7.132029]                       _regmap_update_bits+0xc0/0x148
-[7.132038]                       regmap_update_bits_base+0x6c/0xa8
-[7.132048]                       rk8xx_probe+0x22c/0x3d8
-[7.132057]                       rk8xx_spi_probe+0x74/0x88
-[7.132065]                       spi_probe+0xa8/0xe0
-
-[...]
-
-[7.132675]   }
-[7.132678]   ... key      at: [<ffff800082943c20>] __key.0+0x0/0x10
-[7.132691]   ... acquired at:
-[7.132695]    _raw_spin_lock+0x50/0x70
-[7.132704]    regcache_maple_write+0x68/0xe0
-[7.132714]    regcache_write+0x6c/0x90
-[7.132724]    _regmap_read+0x19c/0x1d0
-[7.132732]    _regmap_update_bits+0xc0/0x148
-[7.132741]    regmap_field_update_bits_base+0x74/0xb8
-[7.132751]    vop2_plane_atomic_update+0x480/0x14d8 [rockchipdrm]
-[7.132820]    drm_atomic_helper_commit_planes+0x1a0/0x320 [drm_kms_helper]
-
-[...]
-
-[7.135112] -> (rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock){-...}-{2:2} {
-[7.135130]    IN-HARDIRQ-W at:
-[7.135136]                     lock_acquire+0x200/0x330
-[7.135147]                     _raw_spin_lock_irqsave+0x6c/0x98
-[7.135157]                     regmap_lock_spinlock+0x20/0x40
-[7.135166]                     regmap_read+0x44/0x90
-[7.135175]                     vop2_isr+0x90/0x290 [rockchipdrm]
-[7.135225]                     __handle_irq_event_percpu+0x124/0x2d0
-
-In the example above, the validator seems to get the scope of
-dependencies wrong, since the regmap instance used in rk8xx-spi driver
-has nothing to do with the instance from vop2.
-
-Improve validation by sharing the regmap's lockdep class with the maple
-tree's internal lock, while also providing a subclass for the latter.
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20241031-regmap-maple-lockdep-fix-v2-1-06a3710f3623@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241120052750.275463-1-guoweikang.kernel@gmail.com
+Fixes: 04ec7bb642b77 ("tracing: Have the trace_array hold the list of registered func probes");
+Signed-off-by: guoweikang <guoweikang.kernel@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/internal.h       | 1 +
- drivers/base/regmap/regcache-maple.c | 3 +++
- drivers/base/regmap/regmap.c         | 1 +
- 3 files changed, 5 insertions(+)
+ kernel/trace/ftrace.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/base/regmap/internal.h b/drivers/base/regmap/internal.h
-index 83acccdc10089..bdb450436cbc5 100644
---- a/drivers/base/regmap/internal.h
-+++ b/drivers/base/regmap/internal.h
-@@ -59,6 +59,7 @@ struct regmap {
- 			unsigned long raw_spinlock_flags;
- 		};
- 	};
-+	struct lock_class_key *lock_key;
- 	regmap_lock lock;
- 	regmap_unlock unlock;
- 	void *lock_arg; /* This is passed to lock/unlock functions */
-diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
-index 8d27d3653ea3e..23da7b31d7153 100644
---- a/drivers/base/regmap/regcache-maple.c
-+++ b/drivers/base/regmap/regcache-maple.c
-@@ -355,6 +355,9 @@ static int regcache_maple_init(struct regmap *map)
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -4437,6 +4437,9 @@ ftrace_mod_callback(struct trace_array *
+ 	char *func;
+ 	int ret;
  
- 	mt_init(mt);
- 
-+	if (!mt_external_lock(mt) && map->lock_key)
-+		lockdep_set_class_and_subclass(&mt->ma_lock, map->lock_key, 1);
++	if (!tr)
++		return -ENODEV;
 +
- 	if (!map->num_reg_defaults)
- 		return 0;
- 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 7ef8577aeb100..e3e2afc2c83c6 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -756,6 +756,7 @@ struct regmap *__regmap_init(struct device *dev,
- 						   lock_key, lock_name);
- 		}
- 		map->lock_arg = map;
-+		map->lock_key = lock_key;
- 	}
- 
- 	/*
--- 
-2.43.0
-
+ 	/* match_records() modifies func, and we need the original */
+ 	func = kstrdup(func_orig, GFP_KERNEL);
+ 	if (!func)
 
 
 
