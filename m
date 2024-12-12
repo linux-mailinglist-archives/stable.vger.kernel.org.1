@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF59C9EF405
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574789EEBC2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9714C28BE12
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 737951885C12
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00972210DB;
-	Thu, 12 Dec 2024 17:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4774C2153DF;
+	Thu, 12 Dec 2024 15:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAe+valL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKNjMA5K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B38F13792B;
-	Thu, 12 Dec 2024 17:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045B820969B;
+	Thu, 12 Dec 2024 15:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022957; cv=none; b=cef2tNqOxOLfskXnx3DhycL4y+30b1FDPuds/eMugYRcjqZIW4o2KfE6payH7dikGMZcEAgiKdZaw/3ypaSuciMAzihZp8f3qYVougbnJmwGKybT6FxPVw3H9nxA+mqRl0iLLqtmrzTYLbV66K5xCFkYnjZ6nxexyopolTdLy/s=
+	t=1734017086; cv=none; b=JS5gS0hnP/+8jY5C9oVicWY2OVxKl9MJAFgjwKba16u/5DOj5/WQDLGvaSvpfiCyE0oAVsLyawsNyE17kqwVLOo4JkNgtGcN5jV6vwsLtB2ulgW1elajbgO9Y0YZGn8sU1m9ZgBDbzRdf3IFpsWeNl21ZYus5OYb91YL4XJEb8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022957; c=relaxed/simple;
-	bh=l3o+5BO4M/vML0IHN6VX+Juprc7RntmRwtDMoQ9ZDiQ=;
+	s=arc-20240116; t=1734017086; c=relaxed/simple;
+	bh=VYxVndknFQhIK0Dl3cZwVWFeGzOQk/MuO3VsvKe8vQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKUDmBehEa3bJeyDA/+Ec4euS2Vttlvj8D870Uck0WTJheSPOqykXWnBhUcHc5UrxteHrgHcTRTnH/yiAom+eKw72ZIsXNuvZEgzwvNEPKxg1H+ENSxbjgSsV5cxokDJiySarXMwkKx80p+ycwKR1ie/sRD85fDkKlOMSBHwr8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAe+valL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6677C4CECE;
-	Thu, 12 Dec 2024 17:02:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WWIuP5tWrdgfSErm/eQhyrE9tOLNtnOygo0hMd/7T3xE2pjcBHauU/SSV6S/0RBUql0a5scVmKyAtpxKL0npnC65ioNGMVXxWaeDOL40O6P3zaVJuYH5FniUKy3Vkq0jsv7xRagTEtYw6ZCnMLprwVbOTu+Qfu4lQtMEe7dexRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKNjMA5K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A34C4CECE;
+	Thu, 12 Dec 2024 15:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022957;
-	bh=l3o+5BO4M/vML0IHN6VX+Juprc7RntmRwtDMoQ9ZDiQ=;
+	s=korg; t=1734017085;
+	bh=VYxVndknFQhIK0Dl3cZwVWFeGzOQk/MuO3VsvKe8vQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAe+valLYUJ+Gb4q+Iz5vN/3AnkpjKGHR2bBoTVwAJTxeJr7GgVHBJcjgQrB4FsPD
-	 m4ZCfHpprLH+/sAs711qARsRb0QrnooX6uM3g4AK2YKgNXDtBz6e6H+hiWnYLHXLOi
-	 ztC0y+aKcjjXTwBwKWQv3ClE/y6PpILw2hH8D7oo=
+	b=nKNjMA5KoDx00KouhXnLcgR/7DhpYD/f+CCasrFe5fzlO6zjwAykQShugeTVlVitI
+	 lxZKxQKZab57f44bjHFyg4rV6K37B4kIkSuQ9fQwLhvU1FumW0CF+MfU4PyicViqk4
+	 iT0EqP+1A9RCczVay1L+0vc1P0zai3HCujkql0Jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 352/565] SUNRPC: make sure cache entry active before cache_show
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 378/466] scsi: st: Add MTIOCGET and MTLOAD to ioctls allowed after device reset
 Date: Thu, 12 Dec 2024 15:59:07 +0100
-Message-ID: <20241212144325.515118252@linuxfoundation.org>
+Message-ID: <20241212144321.707648217@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-commit 2862eee078a4d2d1f584e7f24fa50dddfa5f3471 upstream.
+[ Upstream commit 0b120edb37dc9dd8ca82893d386922eb6b16f860 ]
 
-The function `c_show` was called with protection from RCU. This only
-ensures that `cp` will not be freed. Therefore, the reference count for
-`cp` can drop to zero, which will trigger a refcount use-after-free
-warning when `cache_get` is called. To resolve this issue, use
-`cache_get_rcu` to ensure that `cp` remains active.
+Most drives rewind the tape when the device is reset. Reading and writing
+are not allowed until something is done to make the tape position match the
+user's expectation (e.g., rewind the tape). Add MTIOCGET and MTLOAD to
+operations allowed after reset. MTIOCGET is modified to not touch the tape
+if pos_unknown is non-zero. The tape location is known after MTLOAD.
 
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 7 PID: 822 at lib/refcount.c:25
-refcount_warn_saturate+0xb1/0x120
-CPU: 7 UID: 0 PID: 822 Comm: cat Not tainted 6.12.0-rc3+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.16.1-2.fc37 04/01/2014
-RIP: 0010:refcount_warn_saturate+0xb1/0x120
-
-Call Trace:
- <TASK>
- c_show+0x2fc/0x380 [sunrpc]
- seq_read_iter+0x589/0x770
- seq_read+0x1e5/0x270
- proc_reg_read+0xe1/0x140
- vfs_read+0x125/0x530
- ksys_read+0xc1/0x160
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Cc: stable@vger.kernel.org # v4.20+
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219419#c14
+Link: https://lore.kernel.org/r/20241106095723.63254-3-Kai.Makisara@kolumbus.fi
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Tested-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/st.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1415,7 +1415,9 @@ static int c_show(struct seq_file *m, vo
- 		seq_printf(m, "# expiry=%lld refcnt=%d flags=%lx\n",
- 			   convert_to_wallclock(cp->expiry_time),
- 			   kref_read(&cp->ref), cp->flags);
--	cache_get(cp);
-+	if (!cache_get_rcu(cp))
-+		return 0;
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 8d27e6caf0277..c9038284bc893 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -3506,6 +3506,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 	int i, cmd_nr, cmd_type, bt;
+ 	int retval = 0;
+ 	unsigned int blk;
++	bool cmd_mtiocget;
+ 	struct scsi_tape *STp = file->private_data;
+ 	struct st_modedef *STm;
+ 	struct st_partstat *STps;
+@@ -3619,6 +3620,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 			 */
+ 			if (mtc.mt_op != MTREW &&
+ 			    mtc.mt_op != MTOFFL &&
++			    mtc.mt_op != MTLOAD &&
+ 			    mtc.mt_op != MTRETEN &&
+ 			    mtc.mt_op != MTERASE &&
+ 			    mtc.mt_op != MTSEEK &&
+@@ -3732,17 +3734,28 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 		goto out;
+ 	}
+ 
++	cmd_mtiocget = cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET);
 +
- 	if (cache_check(cd, cp, NULL))
- 		/* cache_check does a cache_put on failure */
- 		seq_puts(m, "# ");
+ 	if ((i = flush_buffer(STp, 0)) < 0) {
+-		retval = i;
+-		goto out;
+-	}
+-	if (STp->can_partitions &&
+-	    (i = switch_partition(STp)) < 0) {
+-		retval = i;
+-		goto out;
++		if (cmd_mtiocget && STp->pos_unknown) {
++			/* flush fails -> modify status accordingly */
++			reset_state(STp);
++			STp->pos_unknown = 1;
++		} else { /* return error */
++			retval = i;
++			goto out;
++		}
++	} else { /* flush_buffer succeeds */
++		if (STp->can_partitions) {
++			i = switch_partition(STp);
++			if (i < 0) {
++				retval = i;
++				goto out;
++			}
++		}
+ 	}
+ 
+-	if (cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET)) {
++	if (cmd_mtiocget) {
+ 		struct mtget mt_status;
+ 
+ 		if (_IOC_SIZE(cmd_in) != sizeof(struct mtget)) {
+-- 
+2.43.0
+
 
 
 
