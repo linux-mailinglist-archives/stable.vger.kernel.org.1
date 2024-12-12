@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60D89EF2F6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EBA9EEE1A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 667AD174600
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 633511886D5B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7866B23236A;
-	Thu, 12 Dec 2024 16:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8380215774;
+	Thu, 12 Dec 2024 15:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuzdCOP4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dt8jD82u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DD7223E90;
-	Thu, 12 Dec 2024 16:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9679F6F2FE;
+	Thu, 12 Dec 2024 15:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021072; cv=none; b=MGN65jdDX2va+r4oyTzRx/wttM7jE7xpm9Oq2V/AqFDrNJ26uw4hlOTZGn4dAbz++TIRXvMICZxc6Q3F9Gx2SoDVfQhbJEG/Uchd/FjayuDw+Fl0AkExrE0F698ImpvWbyyShaGWqE1ETM5YCuwYO7LvGjiipcSU5Zcas6NtcwA=
+	t=1734018441; cv=none; b=bixG34VJ0ahWdPihTX/c8Of1Ugk0ZFI37lp921uGgmIZBE1Itxsu8jzPJ1bDPe1Jyy3fQOLuD2sCdtZd9Vy5g0xJ8CjX7HFWZX9Wqb5P513xWyvRGfqTmXzOcozY6IGIHSuNxbOOm/kLrIOMkoltbvJu+AbYFHZY9Dc7I4YVZLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021072; c=relaxed/simple;
-	bh=lkGoqVIJh5iFfSZjV6FAGqj1XqRR0jtKuR+uv3WCTyA=;
+	s=arc-20240116; t=1734018441; c=relaxed/simple;
+	bh=ODBGa5lUSD8askmEbMRMQ1USuQpMSi+8pivpIx5/Kl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OGnz5OePn4+W+4rT8IDyF+99V1iF+AHt3YZLFFP4fSyDvO9vrkEvpNosnpoUQsz9cVLK+Xt5UnrYj2ldMweDMRNF9giaD6eXj4Z2atGLEMs7eZN3BpXZP8+Njryr/gbgYRtaPgxp2TQsORIBP2MehytUAeDaB/Ne1o9I0BeGoI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuzdCOP4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79935C4CECE;
-	Thu, 12 Dec 2024 16:31:11 +0000 (UTC)
+	 MIME-Version; b=sdf1JSdIoT4wytCpiNm4C5i3JSAu6LTmg5OniMgujBYTXr4zEVeD22WIx9HcdURpfJluORZYOVl4EHfttRaJad+fZzhGL1K5ml21or8Ds25tPWBdJ3LkUrCla4gniUUcyc0n+rgiD0JfNfL4I6LQwUvuiSH4JKCJS0TxcicSI0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dt8jD82u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930CBC4CECE;
+	Thu, 12 Dec 2024 15:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021072;
-	bh=lkGoqVIJh5iFfSZjV6FAGqj1XqRR0jtKuR+uv3WCTyA=;
+	s=korg; t=1734018441;
+	bh=ODBGa5lUSD8askmEbMRMQ1USuQpMSi+8pivpIx5/Kl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MuzdCOP42WEj3zv0r93sVji0zBlRjnSC4C4JY9VMyCQIEUvRRGkdtGFxwNK/rWsPz
-	 5lopytprAr0CEYmOiQfnB1yo70Wc4F8UdB9uUf8rgwzePxvyyCfaYKcxElmt7THlZK
-	 fdzGG920DTDv8l1F4G5t4tGEwwtWHgROeLqUzcK8=
+	b=dt8jD82uReZhCsRxhvUxQtsYMjhi5nnfCzHgk9GH1jY+SfxiiE2U2E1nsDgX/R9Ff
+	 SQ0nXEa9uM94kgp0e7mvWlKSkzUSNPtU86/MH4iVnFNIHiQEDWVb/n1owdocsgz15W
+	 KfUnwgfQS65bSx9BnnYlQnak/R2zCHBx4ciGYg+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>
-Subject: [PATCH 6.1 637/772] mmc: core: Further prevent card detect during shutdown
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 263/356] net/neighbor: clear error in case strict check is not set
 Date: Thu, 12 Dec 2024 15:59:42 +0100
-Message-ID: <20241212144416.254406992@linuxfoundation.org>
+Message-ID: <20241212144254.986577284@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 87a0d90fcd31c0f36da0332428c9e1a1e0f97432 upstream.
+[ Upstream commit 0de6a472c3b38432b2f184bd64eb70d9ea36d107 ]
 
-Disabling card detect from the host's ->shutdown_pre() callback turned out
-to not be the complete solution. More precisely, beyond the point when the
-mmc_bus->shutdown() has been called, to gracefully power off the card, we
-need to prevent card detect. Otherwise the mmc_rescan work may poll for the
-card with a CMD13, to see if it's still alive, which then will fail and
-hang as the card has already been powered off.
+Commit 51183d233b5a ("net/neighbor: Update neigh_dump_info for strict
+data checking") added strict checking. The err variable is not cleared,
+so if we find no table to dump we will return the validation error even
+if user did not want strict checking.
 
-To fix this problem, let's disable mmc_rescan prior to power off the card
-during shutdown.
+I think the only way to hit this is to send an buggy request, and ask
+for a table which doesn't exist, so there's no point treating this
+as a real fix. I only noticed it because a syzbot repro depended on it
+to trigger another bug.
 
-Reported-by: Anthony Pighin <anthony.pighin@nokia.com>
-Fixes: 66c915d09b94 ("mmc: core: Disable card detect during shutdown")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Closes: https://lore.kernel.org/all/BN0PR08MB695133000AF116F04C3A9FFE83212@BN0PR08MB6951.namprd08.prod.outlook.com/
-Tested-by: Anthony Pighin <anthony.pighin@nokia.com>
-Message-ID: <20241125122446.18684-1-ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241115003221.733593-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/bus.c  |    2 ++
- drivers/mmc/core/core.c |    3 +++
- 2 files changed, 5 insertions(+)
+ net/core/neighbour.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/core/bus.c
-+++ b/drivers/mmc/core/bus.c
-@@ -149,6 +149,8 @@ static void mmc_bus_shutdown(struct devi
- 	if (dev->driver && drv->shutdown)
- 		drv->shutdown(card);
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 552719c3bbc3d..cb0c233e83962 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -2875,6 +2875,7 @@ static int neigh_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
+ 	err = neigh_valid_dump_req(nlh, cb->strict_check, &filter, cb->extack);
+ 	if (err < 0 && cb->strict_check)
+ 		return err;
++	err = 0;
  
-+	__mmc_stop_host(host);
-+
- 	if (host->bus_ops->shutdown) {
- 		ret = host->bus_ops->shutdown(host);
- 		if (ret)
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -2291,6 +2291,9 @@ void mmc_start_host(struct mmc_host *hos
+ 	s_t = cb->args[0];
  
- void __mmc_stop_host(struct mmc_host *host)
- {
-+	if (host->rescan_disable)
-+		return;
-+
- 	if (host->slot.cd_irq >= 0) {
- 		mmc_gpio_set_cd_wake(host, false);
- 		disable_irq(host->slot.cd_irq);
+-- 
+2.43.0
+
 
 
 
