@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A69B9EF30F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF60D9EEA9C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8AB32905D3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 329AA16267C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C714723A593;
-	Thu, 12 Dec 2024 16:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0F8215F5A;
+	Thu, 12 Dec 2024 15:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXzYKoK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1O0kZwoc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BEA1F2381;
-	Thu, 12 Dec 2024 16:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3753213E97;
+	Thu, 12 Dec 2024 15:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022110; cv=none; b=gayPZZqkfGHbhqWkBsfN9Zkx72zYinsLMO7oJ9XuGMiW1vW8nqy2XO2hQxUsF1dv3dsr2XUzopSeIFy4fxX2MgzvUJJ1SRr8m+VRe1HSvqwrbOMI0L2Isjz7I8gzr9Pl1C2XD9Z/3xL2VkI/LHqyAEwAU+88dsz0ke4A8KWJvR4=
+	t=1734016291; cv=none; b=r437aKr8Mz1bj+dQ2S4cgndtvREf+OVvktfN9cGG3/V6sxafeoYVTI8+nkNcdE7+TwHNEL3THrP0GXbcuG5ULlhreQkhgZpf8dSlH4JQ8rFOdC1SwcN8ixionBoH9duMXJvQ69pCHPYY1J6m2a7SOSa9yDop5aiCyV2MZRGf1PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022110; c=relaxed/simple;
-	bh=T93IiUiNXVdtTUYTbtnLLBaBYtnBrSIoiQEHvyo3f5M=;
+	s=arc-20240116; t=1734016291; c=relaxed/simple;
+	bh=llGiApNpU+Qxbmfgl8cVYhZeKlaADJfSaQkzTbqiqlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JD8ALud7y422Q6strLsriIHbTrG1zNLXseohbh51oqqjU+yEZ7ufTIj7uo3guSaQflPhP63ALsoRhHa8hjFrVVIhA/qVIDppl7J2vsvkRHiCjXTiOh5ghQWCkSVQE9/hDBzDylywxllqtdzmmkjvu4EaWRmNlIcqc4HAXKF6Hms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXzYKoK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA78C4CECE;
-	Thu, 12 Dec 2024 16:48:29 +0000 (UTC)
+	 MIME-Version; b=PWXKdJM7a2XcG5hg2WxnMYBIkmbVKYcXgLqPDs7ynJpXmegJx4X5x0Iw4oCu1dyOK/BjSbs1u/YO8QbMAr7vAcNy7ssvk9d2BL4R28C/o1VxeLTZBcj/Bjn1vvj5duTtNwWhXwEkzM35Zzw9AgV90DgWG2A+tufbozXe5DZC5Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1O0kZwoc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F88CC4CECE;
+	Thu, 12 Dec 2024 15:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022110;
-	bh=T93IiUiNXVdtTUYTbtnLLBaBYtnBrSIoiQEHvyo3f5M=;
+	s=korg; t=1734016291;
+	bh=llGiApNpU+Qxbmfgl8cVYhZeKlaADJfSaQkzTbqiqlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VXzYKoK739FCBVCyuESblebL8rwcVqzXgNGIhgtejPluRPpVvwAviHHh4zjC9mIqD
-	 kDm+b+2TClMwDp+GQegAeYdQgerIQdfmsgNMIJtm8LSjw3paioVdql4J/aExeKfQPB
-	 esBiU6hNDwwnMblExS4Fvu8+bdavRAvtaJeEV8Ww=
+	b=1O0kZwocw3BniduM7KmI9gSvCgRvz4SXquLQrBnTRWbHxSOr2e/OZIX44MdmeD4Cr
+	 cagaJWTJ1Fdf430LwMniYXBETKrxzbO6aIf7KwfZPjP7GQxJdVS9U9mN2a6QDl2SA2
+	 ZUoG640p2Qa8G7IF1xdfwlg1RR8GYGIy8DCn8pUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/565] arm64: dts: mt8183: Damu: add i2c2s i2c-scl-internal-delay-ns
+	Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 149/466] scsi: qla2xxx: Remove check req_sg_cnt should be equal to rsp_sg_cnt
 Date: Thu, 12 Dec 2024 15:55:18 +0100
-Message-ID: <20241212144316.347873994@linuxfoundation.org>
+Message-ID: <20241212144312.687243906@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-[ Upstream commit 6ff2d45f2121c698a57c959ae21885a048615908 ]
+commit 833c70e212fc40d3e98da941796f4c7bcaecdf58 upstream.
 
-Add i2c2's i2c-scl-internal-delay-ns.
+Firmware supports multiple sg_cnt for request and response for CT
+commands, so remove the redundant check. A check is there where sg_cnt
+for request and response should be same. This is not required as driver
+and FW have code to handle multiple and different sg_cnt on request and
+response.
 
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://lore.kernel.org/r/20241025-i2c-delay-v2-4-9be1bcaf35e0@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-5-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/qla2xxx/qla_bsg.c |   10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-index 42ba9c00866cd..8e0cba4d23726 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-@@ -29,3 +29,6 @@ &qca_wifi {
- 	qcom,ath10k-calibration-variant = "GO_DAMU";
- };
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -494,16 +494,6 @@ qla2x00_process_ct(struct bsg_job *bsg_j
+ 		goto done;
+ 	}
  
-+&i2c2 {
-+	i2c-scl-internal-delay-ns = <20000>;
-+};
--- 
-2.43.0
-
+-	if ((req_sg_cnt !=  bsg_job->request_payload.sg_cnt) ||
+-	    (rsp_sg_cnt != bsg_job->reply_payload.sg_cnt)) {
+-		ql_log(ql_log_warn, vha, 0x7011,
+-		    "request_sg_cnt: %x dma_request_sg_cnt: %x reply_sg_cnt:%x "
+-		    "dma_reply_sg_cnt: %x\n", bsg_job->request_payload.sg_cnt,
+-		    req_sg_cnt, bsg_job->reply_payload.sg_cnt, rsp_sg_cnt);
+-		rval = -EAGAIN;
+-		goto done_unmap_sg;
+-	}
+-
+ 	if (!vha->flags.online) {
+ 		ql_log(ql_log_warn, vha, 0x7012,
+ 		    "Host is not online.\n");
 
 
 
