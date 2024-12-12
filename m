@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-103554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAD99EF8CF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96089EF9F9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17BF317A00E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EABC818943F9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7BD223C42;
-	Thu, 12 Dec 2024 17:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB1C216E2D;
+	Thu, 12 Dec 2024 17:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQCNitCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/qdLo3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E90213E6F;
-	Thu, 12 Dec 2024 17:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E112209695;
+	Thu, 12 Dec 2024 17:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024916; cv=none; b=uWECmpzhR81oa96DqEiJMLbhQEftWRVMZJXvpPyX5CnL5+IB/fXm+TpNZRFewwzSbVY/UEBJFcxjtpjfGXkrOluTvXGz44fRYvmbVJAfYPu/eXqxekWGUlnPMrXh8RaymFxDuhQhoyBLxDyDDW1r0DvtyAu8C4iXkeN5VLKxGtE=
+	t=1734025845; cv=none; b=DOzeCAhXAO5gMZmOahd2vaJrMPtOFfIHZBf7LJlDApQAOA77FVYHE8Bi2RqcZ03kkcApXVE6ay+D+qoSoO/W4FebPdaWbG94JaSOwV32COMFKRme8qXM9KiSNqNSsVEc/xevqXF1G9MVDME3Z78Iqir6sIy6XYHPznAPISERgLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024916; c=relaxed/simple;
-	bh=LsjLRtZqdLabuLEuho4Uk60bhK3ZpxTl7WqQwoQ2uuQ=;
+	s=arc-20240116; t=1734025845; c=relaxed/simple;
+	bh=RDVKIEDXreTKv007o6QVmjgfnbl/PvwVB4k8jerqvec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsrOlDrG5YNPAKPfM32GYjAwjMRH/cb50Xk07zLKHIt2A4Oa9DdzCcBzF/FrDpP16MUncMIizn79CdT+lJZd4P+jBh6D+Evot8xkffpdHXQCcAjB6t4B0i9+DTcEW80Y6Zp4bmOT7LPXlV0/btr3Bmg6D66Q/5rXkEI3E8iLrjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQCNitCO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817CDC4CECE;
-	Thu, 12 Dec 2024 17:35:15 +0000 (UTC)
+	 MIME-Version; b=UPqdvZTMYWDrsTrOYQxeOgYUAAu0+3T0fwFravg8P6IfiYzKdGI35es36i7gnKYha1azv7yjA8CGJ4OiQ8t3LH2hANSRK3C9BJSeam2NSPo0tvtOFWNeuW4NLqoW8PGbjUz1GiTWbfkiHKCg22c9c0rIlkvWbP8KaWGDtkglQGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/qdLo3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C3EC4CECE;
+	Thu, 12 Dec 2024 17:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024915;
-	bh=LsjLRtZqdLabuLEuho4Uk60bhK3ZpxTl7WqQwoQ2uuQ=;
+	s=korg; t=1734025845;
+	bh=RDVKIEDXreTKv007o6QVmjgfnbl/PvwVB4k8jerqvec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQCNitCOUCf86FhKXuvbwL4NE6x13FZzRbozjhLHcYl5qGnCD+s11NUa6I7kwysx+
-	 qpIfQPJzfa4954dcMgAjJh47PBYtLtdnTJ7reNRwy3QSqKuuDFWmNWCY9k71i0gsXo
-	 smwGrTeuBPjsI1Dss/tzg3f16WAW5+pEZL0W9ejk=
+	b=P/qdLo3dJwcdpjKGD/zYEvFJa6v7eR3AhW7SAVqDmbciDpjOvv6RB75O3xPOkoztb
+	 E2WrklOIyE31d5ihmtf1eU19/h5sgjEkWSyVCL1+EiHWSULbkCz8Z+huRrBx9Wf1W2
+	 VjMa5TiutOPWFITTn3CAH/66GRwQH3FzEqyWggJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <damien.lemoal@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 455/459] scsi: core: Fix scsi_mode_select() buffer length handling
-Date: Thu, 12 Dec 2024 16:03:13 +0100
-Message-ID: <20241212144311.744465393@linuxfoundation.org>
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 276/321] net: af_can: do not leave a dangling sk pointer in can_create()
+Date: Thu, 12 Dec 2024 16:03:14 +0100
+Message-ID: <20241212144240.881659284@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <damien.lemoal@wdc.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-commit a7d6840bed0c2b16ac3071b74b5fcf08fc488241 upstream.
+[ Upstream commit 811a7ca7320c062e15d0f5b171fe6ad8592d1434 ]
 
-The MODE SELECT(6) command allows handling mode page buffers that are up to
-255 bytes, including the 4 byte header needed in front of the page
-buffer. For requests larger than this limit, automatically use the MODE
-SELECT(10) command.
+On error can_create() frees the allocated sk object, but sock_init_data()
+has already attached it to the provided sock object. This will leave a
+dangling sk pointer in the sock object and may cause use-after-free later.
 
-In both cases, since scsi_mode_select() adds the mode select page header,
-checks on the buffer length value must include this header size to avoid
-overflows of the command CDB allocation length field.
-
-While at it, use put_unaligned_be16() for setting the header block
-descriptor length and CDB allocation length when using MODE SELECT(10).
-
-[mkp: fix MODE SENSE vs. MODE SELECT confusion]
-
-Link: https://lore.kernel.org/r/20210820070255.682775-3-damien.lemoal@wdc.com
-Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://patch.msgid.link/20241014153808.51894-5-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ net/can/af_can.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -2019,8 +2019,15 @@ scsi_mode_select(struct scsi_device *sde
- 	memset(cmd, 0, sizeof(cmd));
- 	cmd[1] = (pf ? 0x10 : 0) | (sp ? 0x01 : 0);
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index b396c23561d63..bc06016a4fe90 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -171,6 +171,7 @@ static int can_create(struct net *net, struct socket *sock, int protocol,
+ 		/* release sk on errors */
+ 		sock_orphan(sk);
+ 		sock_put(sk);
++		sock->sk = NULL;
+ 	}
  
--	if (sdev->use_10_for_ms) {
--		if (len > 65535)
-+	/*
-+	 * Use MODE SELECT(10) if the device asked for it or if the mode page
-+	 * and the mode select header cannot fit within the maximumm 255 bytes
-+	 * of the MODE SELECT(6) command.
-+	 */
-+	if (sdev->use_10_for_ms ||
-+	    len + 4 > 255 ||
-+	    data->block_descriptor_length > 255) {
-+		if (len > 65535 - 8)
- 			return -EINVAL;
- 		real_buffer = kmalloc(8 + len, GFP_KERNEL);
- 		if (!real_buffer)
-@@ -2033,15 +2040,13 @@ scsi_mode_select(struct scsi_device *sde
- 		real_buffer[3] = data->device_specific;
- 		real_buffer[4] = data->longlba ? 0x01 : 0;
- 		real_buffer[5] = 0;
--		real_buffer[6] = data->block_descriptor_length >> 8;
--		real_buffer[7] = data->block_descriptor_length;
-+		put_unaligned_be16(data->block_descriptor_length,
-+				   &real_buffer[6]);
- 
- 		cmd[0] = MODE_SELECT_10;
--		cmd[7] = len >> 8;
--		cmd[8] = len;
-+		put_unaligned_be16(len, &cmd[7]);
- 	} else {
--		if (len > 255 || data->block_descriptor_length > 255 ||
--		    data->longlba)
-+		if (data->longlba)
- 			return -EINVAL;
- 
- 		real_buffer = kmalloc(4 + len, GFP_KERNEL);
+  errout:
+-- 
+2.43.0
+
 
 
 
