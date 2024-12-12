@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A299EF7D0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD509EF896
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7BF61893E67
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34BAC1896994
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A665221660C;
-	Thu, 12 Dec 2024 17:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F7F20A5EE;
+	Thu, 12 Dec 2024 17:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U234Qpmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MR/3nsf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62858211493;
-	Thu, 12 Dec 2024 17:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D922515696E;
+	Thu, 12 Dec 2024 17:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024309; cv=none; b=iDzJifahBD6o0zl5aDm8RrXePYAj8C/SOwx6oEgzC7r8l0+fAZXSiADwVrZzTBJfPr8uAxkS37kyB/o0+9MPnMlG115s4xgEvRly2zH80J+siwTqGzIsj3snhTR83apz4w3xjcR/XYFFsKy96nzWISSxPeZObMpcfF3c1iW8QdU=
+	t=1734025142; cv=none; b=GtE2aRHokOqO7Tbao/cHjNWOdGl+blWDYa7ipKtTRROgz2hnrPc3gStPxZDbGlk8YyWQ/lnQawP3Hyro5fCnR/50/JAnipEUbWmC+axxxFlvyqvNZtyORcZsRQuWpiha98n3MR50GFMFfUW2uUGRRBuBAF0/owygXlqAE88f3Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024309; c=relaxed/simple;
-	bh=CNtlVLqpiD5PlzGxjxNI+LpYLJIRzq40MfQugVlAptM=;
+	s=arc-20240116; t=1734025142; c=relaxed/simple;
+	bh=RYY7RP8CFF4+N5vDFjvGRlDrK6PkaYFWfBTzceeGvSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmzNKq5544y6OUf+ND7qfDr3kyC9gomdU44hpW4SQ7tcPk/jQswyFq0YMMvczjxX74dIIA1Z8LM45rOQJnzXNSOsE1frFSdW5A7aDnreorGTZrVeBebR/LNDVpNcpupnvee+SeLqZmRg2+8iOrzLB6oAN4/xCrSueX3PhKTX7cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U234Qpmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4377C4CECE;
-	Thu, 12 Dec 2024 17:25:08 +0000 (UTC)
+	 MIME-Version; b=I2JyNB7jd5PbN8ZcKIwzFAyHKJUJEbIwy5YG2ORT1gXaji/83qZfiQg3O+S5QvI/XpXe8wgys+VuH1L25BTHtFzf/AnAFswmWN+T66feKbpPP8HQiWz5Fbds2q9eQBy/Yw02LIy5HiLHmEPq1NnKU47aOc1wTkdTxS7Lx3df83k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MR/3nsf2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613BEC4CECE;
+	Thu, 12 Dec 2024 17:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024309;
-	bh=CNtlVLqpiD5PlzGxjxNI+LpYLJIRzq40MfQugVlAptM=;
+	s=korg; t=1734025142;
+	bh=RYY7RP8CFF4+N5vDFjvGRlDrK6PkaYFWfBTzceeGvSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U234QpmpQhvX6jEqnDN4xw4eZeWJ9Ndkh0hYdxDMOIwf3hNteGNNZBB5r3PDa3VZI
-	 otbj5F/xh0tcyerNENXbPjaWj0mtk1PtUI98x1VLTwM76eRRaDuXNIdxymR0xCAPYR
-	 Gpk4Ub947vt+Xa/dI4hemY9pUZdtYX+T3A77bP4w=
+	b=MR/3nsf2BVl5pTeH2Wq1rykHGoj2QeX43hlufmwQolAJSe1FU1wCLFQooVRSfnVHy
+	 sW0qUVbrDxYRaewdzvJbr/KktgNw2w3661gNSrILYemeG+pm1R2N6y7W0HZSXBOQYZ
+	 Y7YSea0JOV1GzCQ23PHciLrxUSaDzZOBTTs3UOuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Everest K.C." <everestkc@everestkc.com.np>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 223/459] marvell: pxa168_eth: fix call balance of pep->clk handling routines
+Subject: [PATCH 5.4 043/321] crypto: cavium - Fix the if condition to exit loop after timeout
 Date: Thu, 12 Dec 2024 15:59:21 +0100
-Message-ID: <20241212144302.380073095@linuxfoundation.org>
+Message-ID: <20241212144231.693908549@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Everest K.C <everestkc@everestkc.com.np>
 
-[ Upstream commit b032ae57d4fe2b2445e3bc190db6fcaa8c102f68 ]
+[ Upstream commit 53d91ca76b6c426c546542a44c78507b42008c9e ]
 
-If the clock pep->clk was not enabled in pxa168_eth_probe,
-it should not be disabled in any path.
+The while loop breaks in the first run because of incorrect
+if condition. It also causes the statements after the if to
+appear dead.
+Fix this by changing the condition from if(timeout--) to
+if(!timeout--).
 
-Conversely, if it was enabled in pxa168_eth_probe, it must be disabled
-in all error paths to ensure proper cleanup.
+This bug was reported by Coverity Scan.
+Report:
+CID 1600859: (#1 of 1): Logically dead code (DEADCODE)
+dead_error_line: Execution cannot reach this statement: udelay(30UL);
 
-Use the devm_clk_get_enabled helper function to ensure proper call balance
-for pep->clk.
-
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Fixes: a49f37eed22b ("net: add Fast Ethernet driver for PXA168.")
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Link: https://patch.msgid.link/20241121200658.2203871-1-mordan@ispras.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9e2c7d99941d ("crypto: cavium - Add Support for Octeon-tx CPT Engine")
+Signed-off-by: Everest K.C. <everestkc@everestkc.com.np>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/pxa168_eth.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/crypto/cavium/cpt/cptpf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/pxa168_eth.c b/drivers/net/ethernet/marvell/pxa168_eth.c
-index 3712e1786091f..cf867b8f43808 100644
---- a/drivers/net/ethernet/marvell/pxa168_eth.c
-+++ b/drivers/net/ethernet/marvell/pxa168_eth.c
-@@ -1397,18 +1397,15 @@ static int pxa168_eth_probe(struct platform_device *pdev)
+diff --git a/drivers/crypto/cavium/cpt/cptpf_main.c b/drivers/crypto/cavium/cpt/cptpf_main.c
+index d9362199423f2..b3db27b142afb 100644
+--- a/drivers/crypto/cavium/cpt/cptpf_main.c
++++ b/drivers/crypto/cavium/cpt/cptpf_main.c
+@@ -45,7 +45,7 @@ static void cpt_disable_cores(struct cpt_device *cpt, u64 coremask,
+ 		dev_err(dev, "Cores still busy %llx", coremask);
+ 		grp = cpt_read_csr64(cpt->reg_base,
+ 				     CPTX_PF_EXEC_BUSY(0));
+-		if (timeout--)
++		if (!timeout--)
+ 			break;
  
- 	printk(KERN_NOTICE "PXA168 10/100 Ethernet Driver\n");
+ 		udelay(CSR_DELAY);
+@@ -395,7 +395,7 @@ static void cpt_disable_all_cores(struct cpt_device *cpt)
+ 		dev_err(dev, "Cores still busy");
+ 		grp = cpt_read_csr64(cpt->reg_base,
+ 				     CPTX_PF_EXEC_BUSY(0));
+-		if (timeout--)
++		if (!timeout--)
+ 			break;
  
--	clk = devm_clk_get(&pdev->dev, NULL);
-+	clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(clk)) {
--		dev_err(&pdev->dev, "Fast Ethernet failed to get clock\n");
-+		dev_err(&pdev->dev, "Fast Ethernet failed to get and enable clock\n");
- 		return -ENODEV;
- 	}
--	clk_prepare_enable(clk);
- 
- 	dev = alloc_etherdev(sizeof(struct pxa168_eth_private));
--	if (!dev) {
--		err = -ENOMEM;
--		goto err_clk;
--	}
-+	if (!dev)
-+		return -ENOMEM;
- 
- 	platform_set_drvdata(pdev, dev);
- 	pep = netdev_priv(dev);
-@@ -1523,8 +1520,6 @@ static int pxa168_eth_probe(struct platform_device *pdev)
- 	mdiobus_free(pep->smi_bus);
- err_netdev:
- 	free_netdev(dev);
--err_clk:
--	clk_disable_unprepare(clk);
- 	return err;
- }
- 
-@@ -1541,7 +1536,6 @@ static int pxa168_eth_remove(struct platform_device *pdev)
- 	if (dev->phydev)
- 		phy_disconnect(dev->phydev);
- 
--	clk_disable_unprepare(pep->clk);
- 	mdiobus_unregister(pep->smi_bus);
- 	mdiobus_free(pep->smi_bus);
- 	cancel_work_sync(&pep->tx_timeout_task);
+ 		udelay(CSR_DELAY);
 -- 
 2.43.0
 
