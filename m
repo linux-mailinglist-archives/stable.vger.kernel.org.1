@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCFE69EF243
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2219EEE0A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C56C16C1C1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 338DA16A13A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD9523589C;
-	Thu, 12 Dec 2024 16:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE3F226868;
+	Thu, 12 Dec 2024 15:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqPvtxII"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHrb2tYB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6AC2253E6;
-	Thu, 12 Dec 2024 16:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5AB22655E;
+	Thu, 12 Dec 2024 15:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021146; cv=none; b=oa+2OnjsPKUtjzc99nrkYgaPsukrdzQ2gVp69lAQEfpKkaVQTpPxlT4rxxwZOUZ3yuOedVbAgl96XE0yyMcGX8jy2o/DO8/8MOpgJbQe8hhxLOfqxe0otLP/9wDeDzfXDu5wFRv0vYo+sqtH6g6rfockRv084JOfaLZPSnUZ7uM=
+	t=1734018408; cv=none; b=NJYMuu4kFPHGhYbjhfTBXmMR0N9AvW55KCzCZQLdVOMV7FV/krRUrUg8/1Z3UGAPQ5THiSS8zJWvjXJRxzqNQfH2denQjbF3Wt5hf4OGW2jcTzomSi+wZgSmPrcnVrz46dlgA97FUikgDi3YfBiYz8JieyIXoOjn3+TgIbFSrdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021146; c=relaxed/simple;
-	bh=T5LFqRsQoEBdhBp/fUmUYQ2S8zGVrcYWI2Q7LLEMiE0=;
+	s=arc-20240116; t=1734018408; c=relaxed/simple;
+	bh=SgTnMuJhIhk907cegzNkKUDzEXouJCkt/nfKa864JrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h50bUL9qDIgqPq1nd7TmwSU+2PG2aypEiZmyPYlUdsbQRHsaLPEbm3oOmZ2efAOmJ3jPAieIXkpeak2wqCn3kNs4zi3tZ5njiwrZG9WdKcZfJFiknqsQibU+VqzCqaIMRa6OQv+ctAbOAL2fs8u1ztBTie2RwqTYhmQ+QwlHkP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqPvtxII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5857C4CECE;
-	Thu, 12 Dec 2024 16:32:25 +0000 (UTC)
+	 MIME-Version; b=FgoeaK+4Qxjt9Mhsk1RVz/KgHCABzrvy9fdy1me/7l2NVippeKZfSVopk9VQY16KYgM+LXWcT3PncMAXQZnN0TBb81c/M8jsh2M6CUsV/95ldwv+VHHfTG9Zu9Jk+1DWE2AWX0a3eYzL0XA52NEdsaVvJB7sZd9LY4qTRPnnSuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHrb2tYB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D77DC4CED4;
+	Thu, 12 Dec 2024 15:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021146;
-	bh=T5LFqRsQoEBdhBp/fUmUYQ2S8zGVrcYWI2Q7LLEMiE0=;
+	s=korg; t=1734018408;
+	bh=SgTnMuJhIhk907cegzNkKUDzEXouJCkt/nfKa864JrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqPvtxIIH/eAg+TbR5JInDkhuqAgxeX6hDPeUHuyYguab8Sd+Awn7dM9Y5BSMseFZ
-	 6cNPoRyewanBSG5nF1MYC9+VMaZCmmGPiNoiZlfvkJc8ugf9LAO4xakgumDt7Woz8h
-	 OnSTdJQo5A1qis9fbFECT1LRCbIlAxi5WsgF3OtI=
+	b=RHrb2tYBnUToxAzE7PXcgghBsoaBeiE1XE9IFBS3oXkTBVUYF6sPhyIVF1OP2hrk+
+	 n4/k9CvGpgRFm+73TSMJwXKvvhcQ3BhC2ppZgjD85GZgMbiTEvoVgRzSqaBZFEKOiS
+	 Hi6WbS1uRDoZQChNk9SLzMWGyc0t0udCa9SVzieY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Yi Yang <yiyang13@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 658/772] drm/bridge: it6505: Enable module autoloading
+Subject: [PATCH 6.6 284/356] nvdimm: rectify the illogical code within nd_dax_probe()
 Date: Thu, 12 Dec 2024 16:00:03 +0100
-Message-ID: <20241212144417.108349363@linuxfoundation.org>
+Message-ID: <20241212144255.799431050@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit 1e2ab24cd708b1c864ff983ee1504c0a409d2f8e ]
+[ Upstream commit b61352101470f8b68c98af674e187cfaa7c43504 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
-on the alias from of_device_id table.
+When nd_dax is NULL, nd_pfn is consequently NULL as well. Nevertheless,
+it is inadvisable to perform pointer arithmetic or address-taking on a
+NULL pointer.
+Introduce the nd_dax_devinit() function to enhance the code's logic and
+improve its readability.
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240902113320.903147-2-liaochen4@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20241108085526.527957-1-yiyang13@huawei.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvdimm/dax_devs.c | 4 ++--
+ drivers/nvdimm/nd.h       | 7 +++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index fbccf7835f700..5a23277be4445 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -3349,6 +3349,7 @@ static const struct of_device_id it6505_of_match[] = {
- 	{ .compatible = "ite,it6505" },
- 	{ }
- };
-+MODULE_DEVICE_TABLE(of, it6505_of_match);
+diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
+index 3bd61f2457885..cfafe1fa77bab 100644
+--- a/drivers/nvdimm/dax_devs.c
++++ b/drivers/nvdimm/dax_devs.c
+@@ -106,12 +106,12 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
  
- static struct i2c_driver it6505_i2c_driver = {
- 	.driver = {
+ 	nvdimm_bus_lock(&ndns->dev);
+ 	nd_dax = nd_dax_alloc(nd_region);
+-	nd_pfn = &nd_dax->nd_pfn;
+-	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
++	dax_dev = nd_dax_devinit(nd_dax, ndns);
+ 	nvdimm_bus_unlock(&ndns->dev);
+ 	if (!dax_dev)
+ 		return -ENOMEM;
+ 	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
++	nd_pfn = &nd_dax->nd_pfn;
+ 	nd_pfn->pfn_sb = pfn_sb;
+ 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
+ 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
+diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+index e8b9d27dbb3c3..12774334273c1 100644
+--- a/drivers/nvdimm/nd.h
++++ b/drivers/nvdimm/nd.h
+@@ -601,6 +601,13 @@ struct nd_dax *to_nd_dax(struct device *dev);
+ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns);
+ bool is_nd_dax(const struct device *dev);
+ struct device *nd_dax_create(struct nd_region *nd_region);
++static inline struct device *nd_dax_devinit(struct nd_dax *nd_dax,
++					    struct nd_namespace_common *ndns)
++{
++	if (!nd_dax)
++		return NULL;
++	return nd_pfn_devinit(&nd_dax->nd_pfn, ndns);
++}
+ #else
+ static inline int nd_dax_probe(struct device *dev,
+ 		struct nd_namespace_common *ndns)
 -- 
 2.43.0
 
