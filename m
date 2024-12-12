@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-100981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386589EE9C5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:04:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1483A9EE9C8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:05:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDD9E280F80
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:04:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA3AD281289
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E7D217F5D;
-	Thu, 12 Dec 2024 15:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C95C216E0B;
+	Thu, 12 Dec 2024 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvShe4zN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lphJoewr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6169B21577F;
-	Thu, 12 Dec 2024 15:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0676221660C;
+	Thu, 12 Dec 2024 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015835; cv=none; b=HV8j3ewZegwer+7Qdvh3WK3x2ky+2W67wF40oD3gRWnCgfE3qu9UbcRO9W2UmkvFHoGOZ36BBFWt6zZRDbSQo7n+gGd2LXr0EfET4pl2eZIVcouKM3O/gntHaQufEKToLPcPOj2GgS3YBHFyxPJdSlBU/GLsCqKIgExqnFYUMa0=
+	t=1734015866; cv=none; b=EbrEflgbDMA2pNd9WyR6U9mg7eyETPbwpLQn8E2OGETCqE08Ptr4tP89yXqqZAcbsdPXzJkw5/VIkwn3u0ssYJw2JjyqgiLGJPYl3GSgaDKq1/xi8rn/Qy7OUeU/iDHYmPKE6hKm4h4oQrUW2OhiVH/+0uQFDdav4726nyhUvy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015835; c=relaxed/simple;
-	bh=LDZzdKnpntRYg7S8s7uhbO9lBnSW7CuVvlWQQZ7BFYw=;
+	s=arc-20240116; t=1734015866; c=relaxed/simple;
+	bh=v4QIljcFrdEU6gdwJxofXdbBA9jJ+mSwu1Vxp15D4s0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mr7I1cs7qmreElb5oZuEa9bybi29HepJM2ot2ZC3jMq3Y1aAIDpvHGpCpIOD0kCPcp56Vd9e3omwCBuPGqVmwKeDW78rNnVJnJRosrPZy33EKocpLbOsRdXvZoEdgJIHoOEdfM0AKvBenDkuDA+5I3cDWsitPnTVVkHBwAx2ba0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvShe4zN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78831C4CECE;
-	Thu, 12 Dec 2024 15:03:54 +0000 (UTC)
+	 MIME-Version; b=ii5E0PPsoeM8U+hAO/aMVu9ZKKLuUuJChaINMVozxtG7culQDA51Ukeul7lB3tKpYvuWMsxDiIxSTsFaalpmm2+pHT4qHs3/8p0X/2PfCiFB3xCa58g0yh2K7MsI/G0FRSD1DirF6bbTPaVCnJeG3VE85nH1UzbDhSYe3TgsvPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lphJoewr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65601C4CECE;
+	Thu, 12 Dec 2024 15:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015835;
-	bh=LDZzdKnpntRYg7S8s7uhbO9lBnSW7CuVvlWQQZ7BFYw=;
+	s=korg; t=1734015865;
+	bh=v4QIljcFrdEU6gdwJxofXdbBA9jJ+mSwu1Vxp15D4s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvShe4zN9rTxg9Oyorw1kiSboD9jPV3eRwrljPybTRT2ZrIwxdDbQMx1HYtM04EYi
-	 UqBjJtY8FW+vdScGhcDhtBPy3gli/cyRjlDmibuH2vE2iWBse75La/cA2d+q/JF0Gl
-	 A1qDnXORb2jpbH5MUj1MosCusE0aDZynKMLL5ByU=
+	b=lphJoewrCpkqCBFyXsMKQWyjTHZI3PMhH7wlG/gQKqyNrBabmc3mIkQA99at42Ymq
+	 WZpOxNuZzTp+2fTnabowVi//RJ5vABLDUuM7ApE3JrgAq27Hi4Jw+/5pPjrazGQbBx
+	 zgDGu9HsXk7SXuFpdkcDt0clDQArMud047K5fk6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Frode Nordahl <frode.nordahl@canonical.com>,
-	Chris Mi <cmi@nvidia.com>,
-	Ariel Levkovich <lariel@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konstantin Shkolnyy <kshk@linux.ibm.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/466] net/mlx5e: Remove workaround to avoid syndrome for internal port
-Date: Thu, 12 Dec 2024 15:53:46 +0100
-Message-ID: <20241212144309.071595332@linuxfoundation.org>
+Subject: [PATCH 6.12 059/466] vsock/test: fix parameter types in SO_VM_SOCKETS_* calls
+Date: Thu, 12 Dec 2024 15:53:48 +0100
+Message-ID: <20241212144309.149802958@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -70,67 +67,117 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Konstantin Shkolnyy <kshk@linux.ibm.com>
 
-[ Upstream commit 5085f861b414e4a51ce28a891dfa32a10a54b64e ]
+[ Upstream commit 3f36ee29e732b68044d531f47d31f22d265954c6 ]
 
-Previously a workaround was added to avoid syndrome 0xcdb051. It is
-triggered when offload a rule with tunnel encapsulation, and
-forwarding to another table, but not matching on the internal port in
-firmware steering mode. The original workaround skips internal tunnel
-port logic, which is not correct as not all cases are considered. As
-an example, if vlan is configured on the uplink port, traffic can't
-pass because vlan header is not added with this workaround. Besides,
-there is no such issue for software steering. So, this patch removes
-that, and returns error directly if trying to offload such rule for
-firmware steering.
+Change parameters of SO_VM_SOCKETS_* to unsigned long long as documented
+in the vm_sockets.h, because the corresponding kernel code requires them
+to be at least 64-bit, no matter what architecture. Otherwise they are
+too small on 32-bit machines.
 
-Fixes: 06b4eac9c4be ("net/mlx5e: Don't offload internal port if filter device is out device")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Tested-by: Frode Nordahl <frode.nordahl@canonical.com>
-Reviewed-by: Chris Mi <cmi@nvidia.com>
-Reviewed-by: Ariel Levkovich <lariel@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241203204920.232744-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5c338112e48a ("test/vsock: rework message bounds test")
+Fixes: 685a21c314a8 ("test/vsock: add big message test")
+Fixes: 542e893fbadc ("vsock/test: two tests to check credit update logic")
+Fixes: 8abbffd27ced ("test/vsock: vsock_perf utility")
+Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/en/tc_tun_encap.c   | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ tools/testing/vsock/vsock_perf.c |  4 ++--
+ tools/testing/vsock/vsock_test.c | 22 +++++++++++++++++-----
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-index 878cbdbf5ec8b..e7e01f3298efb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-@@ -5,6 +5,7 @@
- #include <net/nexthop.h>
- #include <net/ip_tunnels.h>
- #include "tc_tun_encap.h"
-+#include "fs_core.h"
- #include "en_tc.h"
- #include "tc_tun.h"
- #include "rep/tc.h"
-@@ -24,10 +25,18 @@ static int mlx5e_set_int_port_tunnel(struct mlx5e_priv *priv,
+diff --git a/tools/testing/vsock/vsock_perf.c b/tools/testing/vsock/vsock_perf.c
+index 22633c2848cc7..8e0a6c0770d37 100644
+--- a/tools/testing/vsock/vsock_perf.c
++++ b/tools/testing/vsock/vsock_perf.c
+@@ -33,7 +33,7 @@
  
- 	route_dev = dev_get_by_index(dev_net(e->out_dev), e->route_dev_ifindex);
+ static unsigned int port = DEFAULT_PORT;
+ static unsigned long buf_size_bytes = DEFAULT_BUF_SIZE_BYTES;
+-static unsigned long vsock_buf_bytes = DEFAULT_VSOCK_BUF_BYTES;
++static unsigned long long vsock_buf_bytes = DEFAULT_VSOCK_BUF_BYTES;
+ static bool zerocopy;
  
--	if (!route_dev || !netif_is_ovs_master(route_dev) ||
--	    attr->parse_attr->filter_dev == e->out_dev)
-+	if (!route_dev || !netif_is_ovs_master(route_dev))
- 		goto out;
+ static void error(const char *s)
+@@ -162,7 +162,7 @@ static void run_receiver(int rcvlowat_bytes)
+ 	printf("Run as receiver\n");
+ 	printf("Listen port %u\n", port);
+ 	printf("RX buffer %lu bytes\n", buf_size_bytes);
+-	printf("vsock buffer %lu bytes\n", vsock_buf_bytes);
++	printf("vsock buffer %llu bytes\n", vsock_buf_bytes);
+ 	printf("SO_RCVLOWAT %d bytes\n", rcvlowat_bytes);
  
-+	if (priv->mdev->priv.steering->mode == MLX5_FLOW_STEERING_MODE_DMFS &&
-+	    mlx5e_eswitch_uplink_rep(attr->parse_attr->filter_dev) &&
-+	    (attr->esw_attr->dests[out_index].flags & MLX5_ESW_DEST_ENCAP)) {
-+		mlx5_core_warn(priv->mdev,
-+			       "Matching on external port with encap + fwd to table actions is not allowed for firmware steering\n");
-+		err = -EINVAL;
-+		goto out;
+ 	fd = socket(AF_VSOCK, SOCK_STREAM, 0);
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index 7fd25b814b4b6..0b7f5bf546da5 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -429,7 +429,7 @@ static void test_seqpacket_msg_bounds_client(const struct test_opts *opts)
+ 
+ static void test_seqpacket_msg_bounds_server(const struct test_opts *opts)
+ {
+-	unsigned long sock_buf_size;
++	unsigned long long sock_buf_size;
+ 	unsigned long remote_hash;
+ 	unsigned long curr_hash;
+ 	int fd;
+@@ -634,7 +634,8 @@ static void test_seqpacket_timeout_server(const struct test_opts *opts)
+ 
+ static void test_seqpacket_bigmsg_client(const struct test_opts *opts)
+ {
+-	unsigned long sock_buf_size;
++	unsigned long long sock_buf_size;
++	size_t buf_size;
+ 	socklen_t len;
+ 	void *data;
+ 	int fd;
+@@ -655,13 +656,20 @@ static void test_seqpacket_bigmsg_client(const struct test_opts *opts)
+ 
+ 	sock_buf_size++;
+ 
+-	data = malloc(sock_buf_size);
++	/* size_t can be < unsigned long long */
++	buf_size = (size_t)sock_buf_size;
++	if (buf_size != sock_buf_size) {
++		fprintf(stderr, "Returned BUFFER_SIZE too large\n");
++		exit(EXIT_FAILURE);
 +	}
 +
- 	err = mlx5e_set_fwd_to_int_port_actions(priv, attr, e->route_dev_ifindex,
- 						MLX5E_TC_INT_PORT_EGRESS,
- 						&attr->action, out_index);
++	data = malloc(buf_size);
+ 	if (!data) {
+ 		perror("malloc");
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
+-	send_buf(fd, data, sock_buf_size, 0, -EMSGSIZE);
++	send_buf(fd, data, buf_size, 0, -EMSGSIZE);
+ 
+ 	control_writeln("CLISENT");
+ 
+@@ -1360,6 +1368,7 @@ static void test_stream_credit_update_test(const struct test_opts *opts,
+ 	int recv_buf_size;
+ 	struct pollfd fds;
+ 	size_t buf_size;
++	unsigned long long sock_buf_size;
+ 	void *buf;
+ 	int fd;
+ 
+@@ -1371,8 +1380,11 @@ static void test_stream_credit_update_test(const struct test_opts *opts,
+ 
+ 	buf_size = RCVLOWAT_CREDIT_UPD_BUF_SIZE;
+ 
++	/* size_t can be < unsigned long long */
++	sock_buf_size = buf_size;
++
+ 	if (setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
+-		       &buf_size, sizeof(buf_size))) {
++		       &sock_buf_size, sizeof(sock_buf_size))) {
+ 		perror("setsockopt(SO_VM_SOCKETS_BUFFER_SIZE)");
+ 		exit(EXIT_FAILURE);
+ 	}
 -- 
 2.43.0
 
