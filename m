@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B379EEC22
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84CA29EF20F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BCDF164D34
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2859628BDED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFAF20969B;
-	Thu, 12 Dec 2024 15:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7AA23A561;
+	Thu, 12 Dec 2024 16:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MevQOjzw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXXLNzh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6F0217670;
-	Thu, 12 Dec 2024 15:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C61E23A1BF;
+	Thu, 12 Dec 2024 16:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017379; cv=none; b=rk9bZXuI8hkorw52HnB/DMQ7eSgPow3lpbkCn/XSCE5lV/9UX2fed54Qys79HGvStBkoPTQA/phFvJpVRslK86WOpBz/jj5Ht/qFMBO4cIE8Yc7ILuSeVJARYS66ScsBxX4vzBMJVuIs1ARFxqjrZMVx+O0ZM/D6idtvLQNakEQ=
+	t=1734021364; cv=none; b=sC2x8U+R4RcX4pES8wiD3LlUq5brqYO0R3t281yiQAbtqWvpsEuF/SQ+el94KIU6f0zyR77tOojcvBfs5W+WJIax3GXNIUHfLyuU+3rPWfgwYzPyntkYeXR3Ni6rzCbuK9iHRncjVfTG5zrOK889vNTeA6ubG/0Bd2lVjuWK71k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017379; c=relaxed/simple;
-	bh=hogSnZuvq2x9Niqh3QFmTzcJSD9P5W5Evtg+c7wkQG4=;
+	s=arc-20240116; t=1734021364; c=relaxed/simple;
+	bh=dQn6WBWVWMN+QZh7qLgmCCWvekiNRsCbl8vXYqxzGo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XxyTsIvvrqp1PkRd87qNCGM2sw0EsYA1CObgJ38iXMactVx13kNxW42+z/vnTnn5D8sf6X3bQAuhZfSusvxZPgq9KudRS3FQTpdhsE405cMQcBw+F3hl2Zo2pkkEFQdZxW+H5667DLBUqJS+OfVGbve8krNN0n03WdFhgMPN3mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MevQOjzw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A754BC4CED4;
-	Thu, 12 Dec 2024 15:29:38 +0000 (UTC)
+	 MIME-Version; b=NANjGenc4WH7yyofhltQ2CGAdDhv4CuKVw9RRRPPdURzHATfS76Gl6QuAP4RjG5FqwGmaNxrKgnRA+WlzsG9L+HvNo4WgBXxU9ASvJpT3reCcQuU2Sg9xZnVLDVPs9G+GCCsJep2/cQxuy5qNCh1Ju4J5+1MD4HUdPy3oT89ENc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXXLNzh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1E1C4CECE;
+	Thu, 12 Dec 2024 16:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017379;
-	bh=hogSnZuvq2x9Niqh3QFmTzcJSD9P5W5Evtg+c7wkQG4=;
+	s=korg; t=1734021364;
+	bh=dQn6WBWVWMN+QZh7qLgmCCWvekiNRsCbl8vXYqxzGo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MevQOjzw13r7K7A1MZFO9pRv/OU4ZbN1Pd2iGcEyV0zNm+RpnNt0ob9Lo2FjWJeSm
-	 vXWp74i+5EfAtKlxsY+FuoPvqoPBdwek4TvY4UhtOeuHvELaFufuQ/MMLPU2xrshfN
-	 Gvke9FMNS0BGVuvri9bRX90B6l+ij8kHZKR2ULag=
+	b=AXXLNzh3O70zUUIS3n7sgr3D03V/JUwy/6N1Fk1lxCIaqNKDnBPzv3xeSDmlW/6lM
+	 zFeZ+Ip6o5ezvAzf7VF6rZQ4kc5+1e/SLwaWEjmL8kU+YWkW32nL5RRIRiQhOWhzN1
+	 NzzNhNtCA09otli+cY4txY8D8gbpm58KgdEqEbWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
+	Victor Zhao <Victor.Zhao@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	aurabindo.pillai@amd.com,
-	hamishclaxton@gmail.com
-Subject: [PATCH 6.12 463/466] Revert "drm/amd/display: parse umc_info or vram_info based on ASIC"
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 687/772] drm/amdgpu: skip amdgpu_device_cache_pci_state under sriov
 Date: Thu, 12 Dec 2024 16:00:32 +0100
-Message-ID: <20241212144325.161894777@linuxfoundation.org>
+Message-ID: <20241212144418.304052547@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Victor Zhao <Victor.Zhao@amd.com>
 
-commit 3c2296b1eec55b50c64509ba15406142d4a958dc upstream.
+[ Upstream commit afe260df55ac280cd56306248cb6d8a6b0db095c ]
 
-This reverts commit 2551b4a321a68134360b860113dd460133e856e5.
+Under sriov, host driver will save and restore vf pci cfg space during
+reset. And during device init, under sriov, pci_restore_state happens after
+fullaccess released, and it can have race condition with mmio protection
+enable from host side leading to missing interrupts.
 
-This was not the root cause.  Revert.
+So skip amdgpu_device_cache_pci_state for sriov.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3678
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
+Acked-by: Lijo Lazar <lijo.lazar@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: aurabindo.pillai@amd.com
-Cc: hamishclaxton@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -3127,9 +3127,7 @@ static enum bp_result bios_parser_get_vr
- 	struct atom_data_revision revision;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 1d0f6628f1d69..aca1a4e9b7ae9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -6013,6 +6013,9 @@ bool amdgpu_device_cache_pci_state(struct pci_dev *pdev)
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	int r;
  
- 	// vram info moved to umc_info for DCN4x
--	if (dcb->ctx->dce_version >= DCN_VERSION_4_01 &&
--		dcb->ctx->dce_version < DCN_VERSION_MAX &&
--		info && DATA_TABLES(umc_info)) {
-+	if (info && DATA_TABLES(umc_info)) {
- 		header = GET_IMAGE(struct atom_common_table_header,
- 					DATA_TABLES(umc_info));
- 
++	if (amdgpu_sriov_vf(adev))
++		return false;
++
+ 	r = pci_save_state(pdev);
+ 	if (!r) {
+ 		kfree(adev->pci_state);
+-- 
+2.43.0
+
 
 
 
