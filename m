@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC2C9EEAB7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BABEB9EECB8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B2252824EE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75DF2283981
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D79216E12;
-	Thu, 12 Dec 2024 15:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D0421E085;
+	Thu, 12 Dec 2024 15:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNwwEDhS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gg52GIZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96662165EA;
-	Thu, 12 Dec 2024 15:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C2C6F2FE;
+	Thu, 12 Dec 2024 15:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016615; cv=none; b=XDq/0tQUMJEE/QTn7Vmrbr6upTO8Ce5k7gkx1EMNTu5BnNlQy2vzpxYnpZgsgYJkJuNcEM8g2gj1JPyR4rIHOkIxAeFpAEK1BxOLIZnH3BM3agnny2ZmLPfwDedAOKCRd6oyNB4gkreDsLSrH2E4hxRXoNKsmP7TdcO7TR+YETM=
+	t=1734017850; cv=none; b=pND8nayPxuqiX/W/imBjtmVMtCTu78/XIVKDJdSgqfNatngDiLNwQbjPxBfLxmi7XP6CImHyKiBokjQnpAoQMk3pQwTsT3Yy0nL0HHIVes2zGg7+ulDLf0d1MN3RZVuLWy7k96nGUJv2ZGE157H7tz0yhmtoWid/okFRFlpDhcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016615; c=relaxed/simple;
-	bh=9UGg+c5TbM5aJY0N2tkFrxJhNbKh6vQcEuqvQCViOj4=;
+	s=arc-20240116; t=1734017850; c=relaxed/simple;
+	bh=xVN9IJ7uIdT/29KFG1B4sygXXIgPBPDyXQoa/4L2kH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F83EIH9ZVMyqf+mmFXcWm5EOAfpA9NVehpd6HCvvFzcUjBtXWSWLenh11+cj6tsRl1Ox0EuyxbU6Yp0mALXg3A578JbjM3L8wjFbiQ7vJpR7Nf9SeSvPK2KnN+0tgXS6u/lUjDFqJYlyU5ye1ak7pZfnrwsHKXEwcW7biZVT9KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNwwEDhS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17322C4CED4;
-	Thu, 12 Dec 2024 15:16:54 +0000 (UTC)
+	 MIME-Version; b=aIY4LDnfNs+q1SxXrCu6STAf8ox6LYflQe4oUqjIYEnCw9SLuyR2iSaLFwCVK15e4ej2+xeT2vb6hwyX3oukMs1EJLax1hT5f40yjkPLaMpk8pd0epKuz0G7PN94sHfXLXjLj9swul2+ObtM3UlExLKv8hjOj+FBGq/hTXgI3AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gg52GIZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636A9C4CECE;
+	Thu, 12 Dec 2024 15:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016615;
-	bh=9UGg+c5TbM5aJY0N2tkFrxJhNbKh6vQcEuqvQCViOj4=;
+	s=korg; t=1734017849;
+	bh=xVN9IJ7uIdT/29KFG1B4sygXXIgPBPDyXQoa/4L2kH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VNwwEDhSk+4TuReusI+Rxdl2WDd85YV4KPIQEcNILq+vbjzDZVwRrznJFEjhtV4Yy
-	 GeaNzV2j3EoQ8TbqUxA3hbRqDvDhQb3LSFa/8DENwnAU7UlHwqfVN0M8IfxHTfoeuv
-	 qegYex6MQUYjpeJjsRL7jVBmL/ejrXywOkKIBTZw=
+	b=Gg52GIZGuBfHbl8Xgu+xIZoZyegjKb68XxFv1uVMhOIy6WojF/PktZIyoBthlJSq7
+	 kGkQlS0kryCcDMDKsK9BypNcr1iAG9kNFxsI4zN4+81POsC+LgrPHGO82mSvPrywGU
+	 6G7cefQGBgJMEfhkAKzkGhld2AD1Lr48MY/c5olc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 248/466] soc: imx8m: Probe the SoC driver as platform driver
+Subject: [PATCH 6.6 098/356] i3c: master: add enable(disable) hot join in sys entry
 Date: Thu, 12 Dec 2024 15:56:57 +0100
-Message-ID: <20241212144316.586484113@linuxfoundation.org>
+Message-ID: <20241212144248.490683506@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,275 +62,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 9cc832d37799dbea950c4c8a34721b02b8b5a8ff ]
+[ Upstream commit 317bacf960a4879af22d12175f47d284930b3273 ]
 
-With driver_async_probe=* on kernel command line, the following trace is
-produced because on i.MX8M Plus hardware because the soc-imx8m.c driver
-calls of_clk_get_by_name() which returns -EPROBE_DEFER because the clock
-driver is not yet probed. This was not detected during regular testing
-without driver_async_probe.
+Add hotjoin entry in sys file system allow user enable/disable hotjoin
+feature.
 
-Convert the SoC code to platform driver and instantiate a platform device
-in its current device_initcall() to probe the platform driver. Rework
-.soc_revision callback to always return valid error code and return SoC
-revision via parameter. This way, if anything in the .soc_revision callback
-return -EPROBE_DEFER, it gets propagated to .probe and the .probe will get
-retried later.
+Add (*enable(disable)_hotjoin)() to i3c_master_controller_ops.
+Add api i3c_master_enable(disable)_hotjoin();
 
-"
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 1 at drivers/soc/imx/soc-imx8m.c:115 imx8mm_soc_revision+0xdc/0x180
-CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-next-20240924-00002-g2062bb554dea #603
-Hardware name: DH electronics i.MX8M Plus DHCOM Premium Developer Kit (3) (DT)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : imx8mm_soc_revision+0xdc/0x180
-lr : imx8mm_soc_revision+0xd0/0x180
-sp : ffff8000821fbcc0
-x29: ffff8000821fbce0 x28: 0000000000000000 x27: ffff800081810120
-x26: ffff8000818a9970 x25: 0000000000000006 x24: 0000000000824311
-x23: ffff8000817f42c8 x22: ffff0000df8be210 x21: fffffffffffffdfb
-x20: ffff800082780000 x19: 0000000000000001 x18: ffffffffffffffff
-x17: ffff800081fff418 x16: ffff8000823e1000 x15: ffff0000c03b65e8
-x14: ffff0000c00051b0 x13: ffff800082790000 x12: 0000000000000801
-x11: ffff80008278ffff x10: ffff80008209d3a6 x9 : ffff80008062e95c
-x8 : ffff8000821fb9a0 x7 : 0000000000000000 x6 : 00000000000080e3
-x5 : ffff0000df8c03d8 x4 : 0000000000000000 x3 : 0000000000000000
-x2 : 0000000000000000 x1 : fffffffffffffdfb x0 : fffffffffffffdfb
-Call trace:
- imx8mm_soc_revision+0xdc/0x180
- imx8_soc_init+0xb0/0x1e0
- do_one_initcall+0x94/0x1a8
- kernel_init_freeable+0x240/0x2a8
- kernel_init+0x28/0x140
- ret_from_fork+0x10/0x20
----[ end trace 0000000000000000 ]---
-SoC: i.MX8MP revision 1.1
-"
-
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231201222532.2431484-2-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Stable-dep-of: 25bc99be5fe5 ("i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/imx/soc-imx8m.c | 107 ++++++++++++++++++++++++++++--------
- 1 file changed, 85 insertions(+), 22 deletions(-)
+ drivers/i3c/master.c       | 83 ++++++++++++++++++++++++++++++++++++++
+ include/linux/i3c/master.h |  5 +++
+ 2 files changed, 88 insertions(+)
 
-diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index fe111bae38c8e..5ea8887828c06 100644
---- a/drivers/soc/imx/soc-imx8m.c
-+++ b/drivers/soc/imx/soc-imx8m.c
-@@ -30,7 +30,7 @@
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 70d120dfb0908..bbd5dc89be229 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -526,6 +526,88 @@ static ssize_t i2c_scl_frequency_show(struct device *dev,
+ }
+ static DEVICE_ATTR_RO(i2c_scl_frequency);
  
- struct imx8_soc_data {
- 	char *name;
--	u32 (*soc_revision)(void);
-+	int (*soc_revision)(u32 *socrev);
++static int i3c_set_hotjoin(struct i3c_master_controller *master, bool enable)
++{
++	int ret;
++
++	if (!master || !master->ops)
++		return -EINVAL;
++
++	if (!master->ops->enable_hotjoin || !master->ops->disable_hotjoin)
++		return -EINVAL;
++
++	i3c_bus_normaluse_lock(&master->bus);
++
++	if (enable)
++		ret = master->ops->enable_hotjoin(master);
++	else
++		ret = master->ops->disable_hotjoin(master);
++
++	master->hotjoin = enable;
++
++	i3c_bus_normaluse_unlock(&master->bus);
++
++	return ret;
++}
++
++static ssize_t hotjoin_store(struct device *dev, struct device_attribute *attr,
++			     const char *buf, size_t count)
++{
++	struct i3c_bus *i3cbus = dev_to_i3cbus(dev);
++	int ret;
++	bool res;
++
++	if (!i3cbus->cur_master)
++		return -EINVAL;
++
++	if (kstrtobool(buf, &res))
++		return -EINVAL;
++
++	ret = i3c_set_hotjoin(i3cbus->cur_master->common.master, res);
++	if (ret)
++		return ret;
++
++	return count;
++}
++
++/*
++ * i3c_master_enable_hotjoin - Enable hotjoin
++ * @master: I3C master object
++ *
++ * Return: a 0 in case of success, an negative error code otherwise.
++ */
++int i3c_master_enable_hotjoin(struct i3c_master_controller *master)
++{
++	return i3c_set_hotjoin(master, true);
++}
++EXPORT_SYMBOL_GPL(i3c_master_enable_hotjoin);
++
++/*
++ * i3c_master_disable_hotjoin - Disable hotjoin
++ * @master: I3C master object
++ *
++ * Return: a 0 in case of success, an negative error code otherwise.
++ */
++int i3c_master_disable_hotjoin(struct i3c_master_controller *master)
++{
++	return i3c_set_hotjoin(master, false);
++}
++EXPORT_SYMBOL_GPL(i3c_master_disable_hotjoin);
++
++static ssize_t hotjoin_show(struct device *dev, struct device_attribute *da, char *buf)
++{
++	struct i3c_bus *i3cbus = dev_to_i3cbus(dev);
++	ssize_t ret;
++
++	i3c_bus_normaluse_lock(i3cbus);
++	ret = sysfs_emit(buf, "%d\n", i3cbus->cur_master->common.master->hotjoin);
++	i3c_bus_normaluse_unlock(i3cbus);
++
++	return ret;
++}
++
++static DEVICE_ATTR_RW(hotjoin);
++
+ static struct attribute *i3c_masterdev_attrs[] = {
+ 	&dev_attr_mode.attr,
+ 	&dev_attr_current_master.attr,
+@@ -536,6 +618,7 @@ static struct attribute *i3c_masterdev_attrs[] = {
+ 	&dev_attr_pid.attr,
+ 	&dev_attr_dynamic_address.attr,
+ 	&dev_attr_hdrcap.attr,
++	&dev_attr_hotjoin.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(i3c_masterdev);
+diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+index 0b52da4f23467..65b8965968af2 100644
+--- a/include/linux/i3c/master.h
++++ b/include/linux/i3c/master.h
+@@ -452,6 +452,8 @@ struct i3c_master_controller_ops {
+ 	int (*disable_ibi)(struct i3c_dev_desc *dev);
+ 	void (*recycle_ibi_slot)(struct i3c_dev_desc *dev,
+ 				 struct i3c_ibi_slot *slot);
++	int (*enable_hotjoin)(struct i3c_master_controller *master);
++	int (*disable_hotjoin)(struct i3c_master_controller *master);
  };
  
- static u64 soc_uid;
-@@ -51,24 +51,29 @@ static u32 imx8mq_soc_revision_from_atf(void)
- static inline u32 imx8mq_soc_revision_from_atf(void) { return 0; };
- #endif
+ /**
+@@ -487,6 +489,7 @@ struct i3c_master_controller {
+ 	const struct i3c_master_controller_ops *ops;
+ 	unsigned int secondary : 1;
+ 	unsigned int init_done : 1;
++	unsigned int hotjoin: 1;
+ 	struct {
+ 		struct list_head i3c;
+ 		struct list_head i2c;
+@@ -543,6 +546,8 @@ int i3c_master_register(struct i3c_master_controller *master,
+ 			const struct i3c_master_controller_ops *ops,
+ 			bool secondary);
+ void i3c_master_unregister(struct i3c_master_controller *master);
++int i3c_master_enable_hotjoin(struct i3c_master_controller *master);
++int i3c_master_disable_hotjoin(struct i3c_master_controller *master);
  
--static u32 __init imx8mq_soc_revision(void)
-+static int imx8mq_soc_revision(u32 *socrev)
- {
- 	struct device_node *np;
- 	void __iomem *ocotp_base;
- 	u32 magic;
- 	u32 rev;
- 	struct clk *clk;
-+	int ret;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-ocotp");
- 	if (!np)
--		return 0;
-+		return -EINVAL;
- 
- 	ocotp_base = of_iomap(np, 0);
--	WARN_ON(!ocotp_base);
-+	if (!ocotp_base) {
-+		ret = -EINVAL;
-+		goto err_iomap;
-+	}
-+
- 	clk = of_clk_get_by_name(np, NULL);
- 	if (IS_ERR(clk)) {
--		WARN_ON(IS_ERR(clk));
--		return 0;
-+		ret = PTR_ERR(clk);
-+		goto err_clk;
- 	}
- 
- 	clk_prepare_enable(clk);
-@@ -88,32 +93,45 @@ static u32 __init imx8mq_soc_revision(void)
- 	soc_uid <<= 32;
- 	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW);
- 
-+	*socrev = rev;
-+
- 	clk_disable_unprepare(clk);
- 	clk_put(clk);
- 	iounmap(ocotp_base);
- 	of_node_put(np);
- 
--	return rev;
-+	return 0;
-+
-+err_clk:
-+	iounmap(ocotp_base);
-+err_iomap:
-+	of_node_put(np);
-+	return ret;
- }
- 
--static void __init imx8mm_soc_uid(void)
-+static int imx8mm_soc_uid(void)
- {
- 	void __iomem *ocotp_base;
- 	struct device_node *np;
- 	struct clk *clk;
-+	int ret = 0;
- 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
- 		     IMX8MP_OCOTP_UID_OFFSET : 0;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-ocotp");
- 	if (!np)
--		return;
-+		return -EINVAL;
- 
- 	ocotp_base = of_iomap(np, 0);
--	WARN_ON(!ocotp_base);
-+	if (!ocotp_base) {
-+		ret = -EINVAL;
-+		goto err_iomap;
-+	}
-+
- 	clk = of_clk_get_by_name(np, NULL);
- 	if (IS_ERR(clk)) {
--		WARN_ON(IS_ERR(clk));
--		return;
-+		ret = PTR_ERR(clk);
-+		goto err_clk;
- 	}
- 
- 	clk_prepare_enable(clk);
-@@ -124,31 +142,41 @@ static void __init imx8mm_soc_uid(void)
- 
- 	clk_disable_unprepare(clk);
- 	clk_put(clk);
-+
-+err_clk:
- 	iounmap(ocotp_base);
-+err_iomap:
- 	of_node_put(np);
-+
-+	return ret;
- }
- 
--static u32 __init imx8mm_soc_revision(void)
-+static int imx8mm_soc_revision(u32 *socrev)
- {
- 	struct device_node *np;
- 	void __iomem *anatop_base;
--	u32 rev;
-+	int ret;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mm-anatop");
- 	if (!np)
--		return 0;
-+		return -EINVAL;
- 
- 	anatop_base = of_iomap(np, 0);
--	WARN_ON(!anatop_base);
-+	if (!anatop_base) {
-+		ret = -EINVAL;
-+		goto err_iomap;
-+	}
- 
--	rev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
-+	*socrev = readl_relaxed(anatop_base + ANADIG_DIGPROG_IMX8MM);
- 
- 	iounmap(anatop_base);
- 	of_node_put(np);
- 
--	imx8mm_soc_uid();
-+	return imx8mm_soc_uid();
- 
--	return rev;
-+err_iomap:
-+	of_node_put(np);
-+	return ret;
- }
- 
- static const struct imx8_soc_data imx8mq_soc_data = {
-@@ -184,7 +212,7 @@ static __maybe_unused const struct of_device_id imx8_soc_match[] = {
- 	kasprintf(GFP_KERNEL, "%d.%d", (soc_rev >> 4) & 0xf,  soc_rev & 0xf) : \
- 	"unknown"
- 
--static int __init imx8_soc_init(void)
-+static int imx8m_soc_probe(struct platform_device *pdev)
- {
- 	struct soc_device_attribute *soc_dev_attr;
- 	struct soc_device *soc_dev;
-@@ -212,8 +240,11 @@ static int __init imx8_soc_init(void)
- 	data = id->data;
- 	if (data) {
- 		soc_dev_attr->soc_id = data->name;
--		if (data->soc_revision)
--			soc_rev = data->soc_revision();
-+		if (data->soc_revision) {
-+			ret = data->soc_revision(&soc_rev);
-+			if (ret)
-+				goto free_soc;
-+		}
- 	}
- 
- 	soc_dev_attr->revision = imx8_revision(soc_rev);
-@@ -251,6 +282,38 @@ static int __init imx8_soc_init(void)
- 	kfree(soc_dev_attr);
- 	return ret;
- }
-+
-+static struct platform_driver imx8m_soc_driver = {
-+	.probe = imx8m_soc_probe,
-+	.driver = {
-+		.name = "imx8m-soc",
-+	},
-+};
-+
-+static int __init imx8_soc_init(void)
-+{
-+	struct platform_device *pdev;
-+	int ret;
-+
-+	/* No match means this is non-i.MX8M hardware, do nothing. */
-+	if (!of_match_node(imx8_soc_match, of_root))
-+		return 0;
-+
-+	ret = platform_driver_register(&imx8m_soc_driver);
-+	if (ret) {
-+		pr_err("Failed to register imx8m-soc platform driver: %d\n", ret);
-+		return ret;
-+	}
-+
-+	pdev = platform_device_register_simple("imx8m-soc", -1, NULL, 0);
-+	if (IS_ERR(pdev)) {
-+		pr_err("Failed to register imx8m-soc platform device: %ld\n", PTR_ERR(pdev));
-+		platform_driver_unregister(&imx8m_soc_driver);
-+		return PTR_ERR(pdev);
-+	}
-+
-+	return 0;
-+}
- device_initcall(imx8_soc_init);
- MODULE_DESCRIPTION("NXP i.MX8M SoC driver");
- MODULE_LICENSE("GPL");
+ /**
+  * i3c_dev_get_master_data() - get master private data attached to an I3C
 -- 
 2.43.0
 
