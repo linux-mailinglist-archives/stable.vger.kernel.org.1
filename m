@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7879EEC42
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1E79EEAD3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BAD416589C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA566169DD2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E506821C166;
-	Thu, 12 Dec 2024 15:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6D9216E1D;
+	Thu, 12 Dec 2024 15:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAjnMwTC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuvtMCQC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DB4217F48;
-	Thu, 12 Dec 2024 15:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9B621504F;
+	Thu, 12 Dec 2024 15:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017437; cv=none; b=htak+mNJvSNzJ0DTftr/IHif867KtNio1i7/BCvIuk+vekKwPnqYdw8S/9dlGz55fwCmiDQ2fBlOu9lL6IsVSAID9EjodrXz621P6MWRREqKGK0aNXgGvlDYXyyhsV/rNyp+wv/KaryVV5vyqE5mB4EfPHGb+9tsvfbyqwCLK9w=
+	t=1734016422; cv=none; b=osyrTW2wzQkfliH5UIFb2gn3Rim8zZgLeafis/VoN4qaLPesK5EhMrC7pcfn5KYu6Tu9FpM8LdvEEqslyy3489JmhnhHfBCnxDrO+RyBQ2J0P3cfhD3HfAlHvIlmGFKz71wdhg9FCUVCUm70z0x2Y9Cf3UfET3gsiDeZHVIlbLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017437; c=relaxed/simple;
-	bh=h/sVdjHV+8JbDX7bwhBqt8CTgQ3QuPnA78h3kRqUgzE=;
+	s=arc-20240116; t=1734016422; c=relaxed/simple;
+	bh=8wT6a6gsD35aZYLT3y/ZDhszMqASZz6w7D0SjaRugoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbfCK22isURSFzih1J+mTe99GSnpOSqj+0KOGHE0C4GaCrftR5tq3aRuMOEGkkjxvlsDg70iUYa+ODLZ0peg5618pumK53Ic9oJwAC2RsLWhXE47RevkdOVscr2M5VPXfQhdlXKNdAe3EczJZpMK4OWVMc3IueiLJTJtJyM/lpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAjnMwTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFBAC4CECE;
-	Thu, 12 Dec 2024 15:30:36 +0000 (UTC)
+	 MIME-Version; b=FwhYkMygJn3vdpEPwhRzniSwDLd8A8CFTY6qSi9LyYVsJiMSwAQF7wTweBiSmg8sDaMk1VjXBzzpnap8OAHqrHHP3+xYGk23iF8hjJeKBz3gMG8keUL3g9bwUPDqaUukBZC5KSsthX0Iog4wn7GQOqSxjadrH9elLtHYEIdyCek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuvtMCQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8782BC4CED0;
+	Thu, 12 Dec 2024 15:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017437;
-	bh=h/sVdjHV+8JbDX7bwhBqt8CTgQ3QuPnA78h3kRqUgzE=;
+	s=korg; t=1734016422;
+	bh=8wT6a6gsD35aZYLT3y/ZDhszMqASZz6w7D0SjaRugoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PAjnMwTCSvL6Je7domJYuU5duR39RrkeG0kno68yBOF6Waw55aymLS1ExeFOeafvo
-	 1/N8NxJ3cMYNEFjm03Zz6e5U0q9jiFNTFUu4c11OyjwPG/skVMC0MCCrL1HgXnmBFP
-	 6FcOBlbh/PC5X5dF53178528LtlRxEp+BZTI5PPI=
+	b=wuvtMCQCdgFQ7KGakJ0wOvOYuCfs1NsPrupq35WLxT5CZIOhmQn+yRf3qaWcAKzoL
+	 73Q5GCVZ7oxa0WgKugHI/VNxiS68UWle9JUYdeDZNJGx4i0ucezA+6B950cbF2vfHv
+	 h+U5jGrzUdbdol798GeulxONz3DCmgqw3BYpF2bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/356] can: sja1000: sja1000_err(): fix {rx,tx}_errors statistics
-Date: Thu, 12 Dec 2024 15:55:32 +0100
-Message-ID: <20241212144245.144663085@linuxfoundation.org>
+	Maximilian Heyne <mheyne@amazon.de>,
+	SeongJae Park <sj@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 164/466] selftests/damon: add _damon_sysfs.py to TEST_FILES
+Date: Thu, 12 Dec 2024 15:55:33 +0100
+Message-ID: <20241212144313.283452490@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-[ Upstream commit 2c4ef3af4b028a0eaaf378df511d3b425b1df61f ]
+commit 4a475c0a7eeb3368eca40fe7cb02d157eeddc77a upstream.
 
-The sja1000_err() function only incremented the receive error counter
-and never the transmit error counter, even if the ECC_DIR flag reported
-that an error had occurred during transmission.
+When running selftests I encountered the following error message with
+some damon tests:
 
-Increment the receive/transmit error counter based on the value of the
-ECC_DIR flag.
+ # Traceback (most recent call last):
+ #   File "[...]/damon/./damos_quota.py", line 7, in <module>
+ #     import _damon_sysfs
+ # ModuleNotFoundError: No module named '_damon_sysfs'
 
-Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-10-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by adding the _damon_sysfs.py file to TEST_FILES so that it
+will be available when running the respective damon selftests.
+
+Link: https://lkml.kernel.org/r/20241127-picks-visitor-7416685b-mheyne@amazon.de
+Fixes: 306abb63a8ca ("selftests/damon: implement a python module for test-purpose DAMON sysfs controls")
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sja1000/sja1000.c | 67 ++++++++++++++++++-------------
- 1 file changed, 39 insertions(+), 28 deletions(-)
+ tools/testing/selftests/damon/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
-index 743c2eb62b877..10e211d917e31 100644
---- a/drivers/net/can/sja1000/sja1000.c
-+++ b/drivers/net/can/sja1000/sja1000.c
-@@ -416,8 +416,6 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
- 	int ret = 0;
+diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
+index 5b2a6a5dd1af..812f656260fb 100644
+--- a/tools/testing/selftests/damon/Makefile
++++ b/tools/testing/selftests/damon/Makefile
+@@ -6,7 +6,7 @@ TEST_GEN_FILES += debugfs_target_ids_read_before_terminate_race
+ TEST_GEN_FILES += debugfs_target_ids_pid_leak
+ TEST_GEN_FILES += access_memory access_memory_even
  
- 	skb = alloc_can_err_skb(dev, &cf);
--	if (skb == NULL)
--		return -ENOMEM;
+-TEST_FILES = _chk_dependency.sh _debugfs_common.sh
++TEST_FILES = _chk_dependency.sh _debugfs_common.sh _damon_sysfs.py
  
- 	txerr = priv->read_reg(priv, SJA1000_TXERR);
- 	rxerr = priv->read_reg(priv, SJA1000_RXERR);
-@@ -425,8 +423,11 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
- 	if (isrc & IRQ_DOI) {
- 		/* data overrun interrupt */
- 		netdev_dbg(dev, "data overrun interrupt\n");
--		cf->can_id |= CAN_ERR_CRTL;
--		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
-+		if (skb) {
-+			cf->can_id |= CAN_ERR_CRTL;
-+			cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
-+		}
-+
- 		stats->rx_over_errors++;
- 		stats->rx_errors++;
- 		sja1000_write_cmdreg(priv, CMD_CDO);	/* clear bit */
-@@ -452,7 +453,7 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
- 		else
- 			state = CAN_STATE_ERROR_ACTIVE;
- 	}
--	if (state != CAN_STATE_BUS_OFF) {
-+	if (state != CAN_STATE_BUS_OFF && skb) {
- 		cf->can_id |= CAN_ERR_CNT;
- 		cf->data[6] = txerr;
- 		cf->data[7] = rxerr;
-@@ -460,33 +461,38 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
- 	if (isrc & IRQ_BEI) {
- 		/* bus error interrupt */
- 		priv->can.can_stats.bus_error++;
--		stats->rx_errors++;
- 
- 		ecc = priv->read_reg(priv, SJA1000_ECC);
-+		if (skb) {
-+			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
--		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
--
--		/* set error type */
--		switch (ecc & ECC_MASK) {
--		case ECC_BIT:
--			cf->data[2] |= CAN_ERR_PROT_BIT;
--			break;
--		case ECC_FORM:
--			cf->data[2] |= CAN_ERR_PROT_FORM;
--			break;
--		case ECC_STUFF:
--			cf->data[2] |= CAN_ERR_PROT_STUFF;
--			break;
--		default:
--			break;
--		}
-+			/* set error type */
-+			switch (ecc & ECC_MASK) {
-+			case ECC_BIT:
-+				cf->data[2] |= CAN_ERR_PROT_BIT;
-+				break;
-+			case ECC_FORM:
-+				cf->data[2] |= CAN_ERR_PROT_FORM;
-+				break;
-+			case ECC_STUFF:
-+				cf->data[2] |= CAN_ERR_PROT_STUFF;
-+				break;
-+			default:
-+				break;
-+			}
- 
--		/* set error location */
--		cf->data[3] = ecc & ECC_SEG;
-+			/* set error location */
-+			cf->data[3] = ecc & ECC_SEG;
-+		}
- 
- 		/* Error occurred during transmission? */
--		if ((ecc & ECC_DIR) == 0)
--			cf->data[2] |= CAN_ERR_PROT_TX;
-+		if ((ecc & ECC_DIR) == 0) {
-+			stats->tx_errors++;
-+			if (skb)
-+				cf->data[2] |= CAN_ERR_PROT_TX;
-+		} else {
-+			stats->rx_errors++;
-+		}
- 	}
- 	if (isrc & IRQ_EPI) {
- 		/* error passive interrupt */
-@@ -502,8 +508,10 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
- 		netdev_dbg(dev, "arbitration lost interrupt\n");
- 		alc = priv->read_reg(priv, SJA1000_ALC);
- 		priv->can.can_stats.arbitration_lost++;
--		cf->can_id |= CAN_ERR_LOSTARB;
--		cf->data[0] = alc & 0x1f;
-+		if (skb) {
-+			cf->can_id |= CAN_ERR_LOSTARB;
-+			cf->data[0] = alc & 0x1f;
-+		}
- 	}
- 
- 	if (state != priv->can.state) {
-@@ -516,6 +524,9 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
- 			can_bus_off(dev);
- 	}
- 
-+	if (!skb)
-+		return -ENOMEM;
-+
- 	netif_rx(skb);
- 
- 	return ret;
+ # functionality tests
+ TEST_PROGS = debugfs_attrs.sh debugfs_schemes.sh debugfs_target_ids.sh
 -- 
-2.43.0
+2.47.1
 
 
 
