@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7389EF4B5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A299EF7D0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50F3717A8A2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7BF61893E67
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8D1222D5C;
-	Thu, 12 Dec 2024 17:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A665221660C;
+	Thu, 12 Dec 2024 17:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJdjmt9f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U234Qpmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B96B1F2381;
-	Thu, 12 Dec 2024 17:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62858211493;
+	Thu, 12 Dec 2024 17:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022902; cv=none; b=FiLOTz3UsvcyeDwz7dIFM8NlagT67urTJYl1OFZ3XUUCXEcvt6cTuUrtjw7M6W8141ec5vTlNuKjF3l3bDLxWpIUkLZheWtO14AAQZviPcQ0YNGMsFb8FKDp+EEPfwZrWbqBuJbZg3tsdlmQ3qZbtKrAaBep4YGy73FRJGJrad0=
+	t=1734024309; cv=none; b=iDzJifahBD6o0zl5aDm8RrXePYAj8C/SOwx6oEgzC7r8l0+fAZXSiADwVrZzTBJfPr8uAxkS37kyB/o0+9MPnMlG115s4xgEvRly2zH80J+siwTqGzIsj3snhTR83apz4w3xjcR/XYFFsKy96nzWISSxPeZObMpcfF3c1iW8QdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022902; c=relaxed/simple;
-	bh=Iq8UXAkZUl2JkRRssdxrT+GrtS/2vo0JHCpkHB7aKyY=;
+	s=arc-20240116; t=1734024309; c=relaxed/simple;
+	bh=CNtlVLqpiD5PlzGxjxNI+LpYLJIRzq40MfQugVlAptM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=deGvC9ThQzJW2In67dUW7YOsy6/776McUrrzXMoc9EUW8zOKl1KM5PFjsF9javHuLo1o3jaSsSwLk8fGnzaSqpiaemAzXyrYyKVl1ewLAiNylsJuYzlrpTLP896+PyRsbecxaKhBUqKTDckXj49+EEOM+Pr6quNrSeyGDejJb1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJdjmt9f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7A9C4CECE;
-	Thu, 12 Dec 2024 17:01:41 +0000 (UTC)
+	 MIME-Version; b=QmzNKq5544y6OUf+ND7qfDr3kyC9gomdU44hpW4SQ7tcPk/jQswyFq0YMMvczjxX74dIIA1Z8LM45rOQJnzXNSOsE1frFSdW5A7aDnreorGTZrVeBebR/LNDVpNcpupnvee+SeLqZmRg2+8iOrzLB6oAN4/xCrSueX3PhKTX7cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U234Qpmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4377C4CECE;
+	Thu, 12 Dec 2024 17:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022902;
-	bh=Iq8UXAkZUl2JkRRssdxrT+GrtS/2vo0JHCpkHB7aKyY=;
+	s=korg; t=1734024309;
+	bh=CNtlVLqpiD5PlzGxjxNI+LpYLJIRzq40MfQugVlAptM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJdjmt9fg/Urtm/5stfDnBjwFeckPt4QaVIF1zltqw9R6lXimAAuHaPjpIdv6QaRY
-	 80V1H6nXKljhMXpJqyRVI4z2sBS66Pdmd2JUJFFCAtpdC6fLIPhtDBJYE5WqEEEUBL
-	 CBgm6PY8Ezd3gLmi/7kg+63BABWslkAlTzQ5KtAw=
+	b=U234QpmpQhvX6jEqnDN4xw4eZeWJ9Ndkh0hYdxDMOIwf3hNteGNNZBB5r3PDa3VZI
+	 otbj5F/xh0tcyerNENXbPjaWj0mtk1PtUI98x1VLTwM76eRRaDuXNIdxymR0xCAPYR
+	 Gpk4Ub947vt+Xa/dI4hemY9pUZdtYX+T3A77bP4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Vitalii Mordan <mordan@ispras.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 365/565] block: return unsigned int from bdev_io_min
-Date: Thu, 12 Dec 2024 15:59:20 +0100
-Message-ID: <20241212144326.043930871@linuxfoundation.org>
+Subject: [PATCH 5.10 223/459] marvell: pxa168_eth: fix call balance of pep->clk handling routines
+Date: Thu, 12 Dec 2024 15:59:21 +0100
+Message-ID: <20241212144302.380073095@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit 46fd48ab3ea3eb3bb215684bd66ea3d260b091a9 ]
+[ Upstream commit b032ae57d4fe2b2445e3bc190db6fcaa8c102f68 ]
 
-The underlying limit is defined as an unsigned int, so return that from
-bdev_io_min as well.
+If the clock pep->clk was not enabled in pxa168_eth_probe,
+it should not be disabled in any path.
 
-Fixes: ac481c20ef8f ("block: Topology ioctls")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241119072602.1059488-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Conversely, if it was enabled in pxa168_eth_probe, it must be disabled
+in all error paths to ensure proper cleanup.
+
+Use the devm_clk_get_enabled helper function to ensure proper call balance
+for pep->clk.
+
+Found by Linux Verification Center (linuxtesting.org) with Klever.
+
+Fixes: a49f37eed22b ("net: add Fast Ethernet driver for PXA168.")
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Link: https://patch.msgid.link/20241121200658.2203871-1-mordan@ispras.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/pxa168_eth.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index c6d57814988d2..60e4d426fda87 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1429,7 +1429,7 @@ static inline unsigned int queue_io_min(const struct request_queue *q)
- 	return q->limits.io_min;
+diff --git a/drivers/net/ethernet/marvell/pxa168_eth.c b/drivers/net/ethernet/marvell/pxa168_eth.c
+index 3712e1786091f..cf867b8f43808 100644
+--- a/drivers/net/ethernet/marvell/pxa168_eth.c
++++ b/drivers/net/ethernet/marvell/pxa168_eth.c
+@@ -1397,18 +1397,15 @@ static int pxa168_eth_probe(struct platform_device *pdev)
+ 
+ 	printk(KERN_NOTICE "PXA168 10/100 Ethernet Driver\n");
+ 
+-	clk = devm_clk_get(&pdev->dev, NULL);
++	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev, "Fast Ethernet failed to get clock\n");
++		dev_err(&pdev->dev, "Fast Ethernet failed to get and enable clock\n");
+ 		return -ENODEV;
+ 	}
+-	clk_prepare_enable(clk);
+ 
+ 	dev = alloc_etherdev(sizeof(struct pxa168_eth_private));
+-	if (!dev) {
+-		err = -ENOMEM;
+-		goto err_clk;
+-	}
++	if (!dev)
++		return -ENOMEM;
+ 
+ 	platform_set_drvdata(pdev, dev);
+ 	pep = netdev_priv(dev);
+@@ -1523,8 +1520,6 @@ static int pxa168_eth_probe(struct platform_device *pdev)
+ 	mdiobus_free(pep->smi_bus);
+ err_netdev:
+ 	free_netdev(dev);
+-err_clk:
+-	clk_disable_unprepare(clk);
+ 	return err;
  }
  
--static inline int bdev_io_min(struct block_device *bdev)
-+static inline unsigned int bdev_io_min(struct block_device *bdev)
- {
- 	return queue_io_min(bdev_get_queue(bdev));
- }
+@@ -1541,7 +1536,6 @@ static int pxa168_eth_remove(struct platform_device *pdev)
+ 	if (dev->phydev)
+ 		phy_disconnect(dev->phydev);
+ 
+-	clk_disable_unprepare(pep->clk);
+ 	mdiobus_unregister(pep->smi_bus);
+ 	mdiobus_free(pep->smi_bus);
+ 	cancel_work_sync(&pep->tx_timeout_task);
 -- 
 2.43.0
 
