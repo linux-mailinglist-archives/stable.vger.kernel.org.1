@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B526F9EEDCF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CDA99EF191
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32E2A189065F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE9429028C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55288223C4F;
-	Thu, 12 Dec 2024 15:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B7C223E83;
+	Thu, 12 Dec 2024 16:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BN7HR/Qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgBoMy4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1111E223336;
-	Thu, 12 Dec 2024 15:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DABE221D9F;
+	Thu, 12 Dec 2024 16:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018329; cv=none; b=jS8meGXAQMum7MuRyxbrBcpegGw2Sw/R0DCTTJ5/fWfwS9tQrs+kCA0R4jlTHF9fvI/vOtPTO5y9fnvmwuPN3Tspx+dGzTkqRrctA9tGIU3MVcjRMT85g18lV2Mg9ZFhz7opkeJy6FpXua49d+Tg0aAhnbCpfKplY5lmAsBSumE=
+	t=1734020953; cv=none; b=t8d+QUbmzpFa+KrbK/n2/yfXxe+XZm3u6uWD95+mMcCIzGGVHN2Zu70xGv310M6UgrYHyiitJEQ2TBo6n9/KkT77CQuhjhMzqY5yaIA1Bw/4QBp3RvgALvmbXKJ22F9WHBF9fvPHAyen4u2ggQi9AdjOvxQUVyGb+6Da/anKDYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018329; c=relaxed/simple;
-	bh=imiBL3A3dkH5ENY+17xL305ozg5x5SjADJfBjpN3fdE=;
+	s=arc-20240116; t=1734020953; c=relaxed/simple;
+	bh=qVSz92ax17o9SlyeESPfkAVPrLLBLN0/5N6/9OMg7p8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBKGKNhIXMVL4i1sZp74UKZyWHLLIc2BTnnPQIWq+aAa/n0OpcjqogG4Yof9fHBtl3A3DK3A0sf9ERqyIHAPmMVmYqmP/0oC08oTeHZAUKAQ8eWB55dUliHdBpbbTCKCtVlPoE1h6UgDqXo6l5qtb1bEJVv/WLYIpG7kep9Tuz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BN7HR/Qf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737F8C4CECE;
-	Thu, 12 Dec 2024 15:45:28 +0000 (UTC)
+	 MIME-Version; b=o2QPl2WP+YqYvmxyRMne5BnF1grRjBtJoSLoW61aYFRG3WhkyZ5u0/R9GfMaeO92R1cjpOWgez5eDYR9Zbx7ZO66b8ixzVaiULp76Gnl2lg2SqpSq61JqIa/cQ2T6NISSBo473FvDMXPzSVJoqLzWDeajfXEf0soeOMGOp1mLhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgBoMy4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8DBC4CED0;
+	Thu, 12 Dec 2024 16:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018328;
-	bh=imiBL3A3dkH5ENY+17xL305ozg5x5SjADJfBjpN3fdE=;
+	s=korg; t=1734020953;
+	bh=qVSz92ax17o9SlyeESPfkAVPrLLBLN0/5N6/9OMg7p8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BN7HR/Qf063kBCx/+Do6tUhNmBoz/UnUfSelOZfEoEYJf4eeVIUKtbz6Ht9sR0Vgt
-	 kMVsQPMAcwxb5IfFwIjjUsoc+AtKt/QYQ2bP7bid5yjrp0qcC7+/KN8pN38s5WiWoU
-	 4QsIeUBdIetQ0A1lLovUlsD0daYHmUsLGs3TnMOI=
+	b=AgBoMy4+irH9mJGTn8t6sv3lRLePvKJoPT5gkJr6xCMPXITW51SEY8RuSAjjdHk8g
+	 4EVM0BNKIoSkRrfHqQoX7J7og+O7IcQGPM4dyncdMDwUNOYmeRJRBJCbB0e0STCzLi
+	 1NqdmrnRKdrKC7PEf762hiaq2og1BNMrq27JyiF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 232/356] wifi: ath5k: add PCI ID for Arcadyan devices
+	Jordy Zomer <jordyzomer@google.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 606/772] ksmbd: fix Out-of-Bounds Write in ksmbd_vfs_stream_write
 Date: Thu, 12 Dec 2024 15:59:11 +0100
-Message-ID: <20241212144253.786916934@linuxfoundation.org>
+Message-ID: <20241212144414.963155186@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Jordy Zomer <jordyzomer@google.com>
 
-[ Upstream commit f3ced9bb90b0a287a1fa6184d16b0f104a78fa90 ]
+commit 313dab082289e460391c82d855430ec8a28ddf81 upstream.
 
-Arcadyan made routers with this PCI ID containing an AR2417.
+An offset from client could be a negative value, It could allows
+to write data outside the bounds of the allocated buffer.
+Note that this issue is coming when setting
+'vfs objects = streams_xattr parameter' in ksmbd.conf.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20240930180716.139894-3-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: Jordy Zomer <jordyzomer@google.com>
+Signed-off-by: Jordy Zomer <jordyzomer@google.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath5k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/smb2pdu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-index 35a6a7b1047a3..f583e0f3932b8 100644
---- a/drivers/net/wireless/ath/ath5k/pci.c
-+++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -47,6 +47,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
- 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
- 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
- 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
-+	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
- 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
- 	{ 0 }
- };
--- 
-2.43.0
-
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6587,6 +6587,8 @@ int smb2_write(struct ksmbd_work *work)
+ 	}
+ 
+ 	offset = le64_to_cpu(req->Offset);
++	if (offset < 0)
++		return -EINVAL;
+ 	length = le32_to_cpu(req->Length);
+ 
+ 	if (req->Channel == SMB2_CHANNEL_RDMA_V1 ||
 
 
 
