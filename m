@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3566F9EF592
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B379EF6ED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95CEC189677C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 110801896803
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7E422331C;
-	Thu, 12 Dec 2024 16:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3E51632E6;
+	Thu, 12 Dec 2024 17:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWXtnjE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRxql9qh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3863E2054EF;
-	Thu, 12 Dec 2024 16:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF354F218;
+	Thu, 12 Dec 2024 17:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022579; cv=none; b=MkuOwXKiWfP4gpkZOvI97uNlsF5oH31IJxsb0ALJCYydtSY8GkbsaFeyf5IUoY/2wBSJe7TI+uTrQqzRf3Z9BenLfonPNjnhOmzXXMoHdeJhvOMAW/rnkxBxldyLuqZHUrT1CRpEBELmFab5i5C0LifdCryAU/Ol/T8cn8Sn2lY=
+	t=1734023950; cv=none; b=biRwQPPHDzkxJWAHCAdOlQXO3R2ECYsvO/aJper0icfBFWAk+zCfnrK6T2HDVPvIY5EErYBYX9oDQSafhvEGx4OLSFS8OQ2z62/88MwZF+oJNf+HVBcin3ZqQhx99VrCGfr/0daoixHg73sI50Gi3c/oJPfx8L8QIXSvcalMpVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022579; c=relaxed/simple;
-	bh=dbCQrxVbfP0Hi7AmV2DSmdzMCTd9R6DPFMcFni3QBAs=;
+	s=arc-20240116; t=1734023950; c=relaxed/simple;
+	bh=culJFWfK6gEMxJ8HAL4gTnvUA5i+VQl9wDCjutpCVuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqkZY4IV0/Tunk/odv8spKPg77S3UbGZJZHzc8KAA5X738QUHXtU08wGHzFu4MqxRoBG3XmYBzsSGVrk3UmvciEBOmNjoSxuGqtp7gpctdQrvOlE58q7DEqOkYcHQCTsIyxjxLLauHXn74VGaaXLtWsfXQmFn/+/4nH/9wm8F4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWXtnjE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E11AC4CED3;
-	Thu, 12 Dec 2024 16:56:18 +0000 (UTC)
+	 MIME-Version; b=GW8ovJDCUXuJDq5wemBJga6m+u4fsJNWZujt4LLUw4IQp7dsvO/gpxkpScXRg2UbpIbkO3C0fsoiMPDludF2KUGaRszYZ0kwtEEvMXW5VTq/wrnF0COgEKHy3Vm+B1MvsCXNonsDaFoyYUHcyytAjhe/qubzjf/1UMGW2jTSqqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRxql9qh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165A6C4CED0;
+	Thu, 12 Dec 2024 17:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022579;
-	bh=dbCQrxVbfP0Hi7AmV2DSmdzMCTd9R6DPFMcFni3QBAs=;
+	s=korg; t=1734023950;
+	bh=culJFWfK6gEMxJ8HAL4gTnvUA5i+VQl9wDCjutpCVuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWXtnjE5+s6L8rGKtCHmzOC/z/3qSNbWHgSZa4XiZEcqvNkm5Ix1n4jRZjLDwnGle
-	 lS1kFLqeK8hpoGeNCSMerXjzEDDsnaYYlzfefEK7R/e+BGXF1ENetVcG6qfYsrJbq1
-	 Zf9Sgakp0f8x4KuY1VXNt7GpnIVWsxl2gC5D86oo=
+	b=zRxql9qhh5/romask01kYYsflHYjkpdVqjxOCOv6SPc/XQ1aRxx8+KjwaVOI8YBBs
+	 umkYFFarolpvPEcrsMX/OZ36NxUGGPJjZFc2Pb2Jd3Xj86BOFyj6lODF+Z43PaYo8+
+	 bAT56P1cy315WZ/ld3yvaKW4yH4pg07UR6L7duWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 279/565] marvell: pxa168_eth: fix call balance of pep->clk handling routines
-Date: Thu, 12 Dec 2024 15:57:54 +0100
-Message-ID: <20241212144322.483788608@linuxfoundation.org>
+Subject: [PATCH 5.10 137/459] drm/etnaviv: hold GPU lock across perfmon sampling
+Date: Thu, 12 Dec 2024 15:57:55 +0100
+Message-ID: <20241212144258.922693942@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit b032ae57d4fe2b2445e3bc190db6fcaa8c102f68 ]
+[ Upstream commit 37dc4737447a7667f8e9ec790dac251da057eb27 ]
 
-If the clock pep->clk was not enabled in pxa168_eth_probe,
-it should not be disabled in any path.
+The perfmon sampling mutates shared GPU state (e.g. VIVS_HI_CLOCK_CONTROL
+to select the pipe for the perf counter reads). To avoid clashing with
+other functions mutating the same state (e.g. etnaviv_gpu_update_clock)
+the perfmon sampling needs to hold the GPU lock.
 
-Conversely, if it was enabled in pxa168_eth_probe, it must be disabled
-in all error paths to ensure proper cleanup.
-
-Use the devm_clk_get_enabled helper function to ensure proper call balance
-for pep->clk.
-
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Fixes: a49f37eed22b ("net: add Fast Ethernet driver for PXA168.")
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Link: https://patch.msgid.link/20241121200658.2203871-1-mordan@ispras.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 68dc0b295dcb ("drm/etnaviv: use 'sync points' for performance monitor requests")
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/pxa168_eth.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/pxa168_eth.c b/drivers/net/ethernet/marvell/pxa168_eth.c
-index 11ef1d8dea15c..a202320c26985 100644
---- a/drivers/net/ethernet/marvell/pxa168_eth.c
-+++ b/drivers/net/ethernet/marvell/pxa168_eth.c
-@@ -1396,18 +1396,15 @@ static int pxa168_eth_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+index e944bcd30a2ba..407a15e1469f2 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+@@ -1274,6 +1274,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+ {
+ 	u32 val;
  
- 	printk(KERN_NOTICE "PXA168 10/100 Ethernet Driver\n");
++	mutex_lock(&gpu->lock);
++
+ 	/* disable clock gating */
+ 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
+ 	val &= ~VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
+@@ -1285,6 +1287,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+ 	gpu_write(gpu, VIVS_HI_CLOCK_CONTROL, val);
  
--	clk = devm_clk_get(&pdev->dev, NULL);
-+	clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(clk)) {
--		dev_err(&pdev->dev, "Fast Ethernet failed to get clock\n");
-+		dev_err(&pdev->dev, "Fast Ethernet failed to get and enable clock\n");
- 		return -ENODEV;
- 	}
--	clk_prepare_enable(clk);
- 
- 	dev = alloc_etherdev(sizeof(struct pxa168_eth_private));
--	if (!dev) {
--		err = -ENOMEM;
--		goto err_clk;
--	}
-+	if (!dev)
-+		return -ENOMEM;
- 
- 	platform_set_drvdata(pdev, dev);
- 	pep = netdev_priv(dev);
-@@ -1518,8 +1515,6 @@ static int pxa168_eth_probe(struct platform_device *pdev)
- 	mdiobus_free(pep->smi_bus);
- err_netdev:
- 	free_netdev(dev);
--err_clk:
--	clk_disable_unprepare(clk);
- 	return err;
+ 	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_PRE);
++
++	mutex_unlock(&gpu->lock);
  }
  
-@@ -1537,7 +1532,6 @@ static int pxa168_eth_remove(struct platform_device *pdev)
- 	if (dev->phydev)
- 		phy_disconnect(dev->phydev);
+ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
+@@ -1294,13 +1298,9 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
+ 	unsigned int i;
+ 	u32 val;
  
--	clk_disable_unprepare(pep->clk);
- 	mdiobus_unregister(pep->smi_bus);
- 	mdiobus_free(pep->smi_bus);
- 	unregister_netdev(dev);
+-	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
+-
+-	for (i = 0; i < submit->nr_pmrs; i++) {
+-		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
++	mutex_lock(&gpu->lock);
+ 
+-		*pmr->bo_vma = pmr->sequence;
+-	}
++	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
+ 
+ 	/* disable debug register */
+ 	val = gpu_read(gpu, VIVS_HI_CLOCK_CONTROL);
+@@ -1311,6 +1311,14 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
+ 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
+ 	val |= VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
+ 	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, val);
++
++	mutex_unlock(&gpu->lock);
++
++	for (i = 0; i < submit->nr_pmrs; i++) {
++		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
++
++		*pmr->bo_vma = pmr->sequence;
++	}
+ }
+ 
+ 
 -- 
 2.43.0
 
