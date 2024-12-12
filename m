@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D579EF5AC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E479EF7C4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72D4F34094C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A01C6189268F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB4B223E8D;
-	Thu, 12 Dec 2024 17:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A6E21660B;
+	Thu, 12 Dec 2024 17:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1RSQCNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRYbUKcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CEB223E64;
-	Thu, 12 Dec 2024 17:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A17215762;
+	Thu, 12 Dec 2024 17:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023003; cv=none; b=POekPlGj2rRWBFHruWRedS3Bna807ftVzc3HVeLCa82FTyrOGpUdfEVmBml9a5oKJeziSVGOPhmA+wG9aKC2aVNVIM433DIXoE4yRmCRXBHsYSce1BbCvEu3e02g1pl/az9eUKvBlpuEKi0YSNgM++pWQvCaneaXFftGbGlFM+4=
+	t=1734024394; cv=none; b=a0EExqLjgPFytVeTmM6L7Sn4KDiBtmBANEnCvAXrTjlsZKB/f2L/wWlU1DR0EW5ekfFzG7wQaySUTaVrOeFF2eJifLU4h7W50k8BU6BJVj8/1JMjn7T5HpXtsISEeFE6O4hseOHGt6zp8Giid5k3IXaegZxpjciWk9v5Rd9GrGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023003; c=relaxed/simple;
-	bh=Hixige3tTxzoZ9v6dL8MYATlTAdBj4X39q+htXJV3uY=;
+	s=arc-20240116; t=1734024394; c=relaxed/simple;
+	bh=yrL2Oa24zoHF6t1hiKGYiDSEam+FBt41xUfQ9rMoCG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFaWIx/fS1tw8B54ZcUo3uUxNvQhFhb1GDYmYXK3S/GbIqBoKCp6Tdh9S2ONBcfkjMakSI2xhMWEsmKl6/zWWj+Are4joRHgsR8p10Wi7162mNowkaI9MKZG6m5FpCMTLphNs9zWNw+lqTOSCq55B/xjAaWzy+hLREynKIDBEpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1RSQCNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF4FC4CECE;
-	Thu, 12 Dec 2024 17:03:22 +0000 (UTC)
+	 MIME-Version; b=mu1JZgtoFspi/lPNQHQ3BJH4FVfn0FHcevw5/COsBabyZJ38ivlPASr6n0xyti3vmfQVnOgWuunXH9paBIG3IHnhQxu8t12J86llltcUaOy/t59Ls3W9l9a9DHXFyP6FTFebdCm9717xuMVvuQcOsaKtsRzfdSebcUk9YzhmU0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRYbUKcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A231C4CED0;
+	Thu, 12 Dec 2024 17:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023002;
-	bh=Hixige3tTxzoZ9v6dL8MYATlTAdBj4X39q+htXJV3uY=;
+	s=korg; t=1734024393;
+	bh=yrL2Oa24zoHF6t1hiKGYiDSEam+FBt41xUfQ9rMoCG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1RSQCNgtnux6CJtprNFyvz9M+c54Y5r0E2Npz+ddotUm8BAbO8rvT2lwY4bWd0u1
-	 NMKDLFdbxUC3RFUs2E/EVizlPHK7Yazz59jpzfynXsMhcBwEz4KszzZVTbMzlpziNc
-	 bY1qhEMuj9KGVLDH88r7nEUYN92pcFh3aZ6Jqdy8=
+	b=YRYbUKcw+aucV/FyMQb7roccvOG38m8ykICkcjkcoGNf1O5xoFLmtWrOphSEU++sY
+	 LlDSa8jzCgt+ZXeYY5u1ECSOhFVx/vex9xSzh0DXrIumgZuBbFrGUhFB7Aojsvittw
+	 Anu5s9KZM2KeIH+svrABI7sN7msbRfaT2Dyo/+8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Alain Volmat <alain.volmat@foss.st.com>
-Subject: [PATCH 5.15 394/565] drm/sti: avoid potential dereference of error pointers in sti_hqvdp_atomic_check
-Date: Thu, 12 Dec 2024 15:59:49 +0100
-Message-ID: <20241212144327.220908802@linuxfoundation.org>
+	Dennis Wassenberg <Dennis.Wassenberg@secunet.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.10 252/459] PCI: Fix use-after-free of slot->bus on hot remove
+Date: Thu, 12 Dec 2024 15:59:50 +0100
+Message-ID: <20241212144303.547441537@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit c1ab40a1fdfee732c7e6ff2fb8253760293e47e8 upstream.
+commit c7acef99642b763ba585f4a43af999fcdbcc3dc4 upstream.
 
-The return value of drm_atomic_get_crtc_state() needs to be
-checked. To avoid use of error pointer 'crtc_state' in case
-of the failure.
+Dennis reports a boot crash on recent Lenovo laptops with a USB4 dock.
 
+Since commit 0fc70886569c ("thunderbolt: Reset USB4 v2 host router") and
+commit 59a54c5f3dbd ("thunderbolt: Reset topology created by the boot
+firmware"), USB4 v2 and v1 Host Routers are reset on probe of the
+thunderbolt driver.
+
+The reset clears the Presence Detect State and Data Link Layer Link Active
+bits at the USB4 Host Router's Root Port and thus causes hot removal of the
+dock.
+
+The crash occurs when pciehp is unbound from one of the dock's Downstream
+Ports:  pciehp creates a pci_slot on bind and destroys it on unbind.  The
+pci_slot contains a pointer to the pci_bus below the Downstream Port, but
+a reference on that pci_bus is never acquired.  The pci_bus is destroyed
+before the pci_slot, so a use-after-free ensues when pci_slot_release()
+accesses slot->bus.
+
+In principle this should not happen because pci_stop_bus_device() unbinds
+pciehp (and therefore destroys the pci_slot) before the pci_bus is
+destroyed by pci_remove_bus_device().
+
+However the stacktrace provided by Dennis shows that pciehp is unbound from
+pci_remove_bus_device() instead of pci_stop_bus_device().  To understand
+the significance of this, one needs to know that the PCI core uses a two
+step process to remove a portion of the hierarchy:  It first unbinds all
+drivers in the sub-hierarchy in pci_stop_bus_device() and then actually
+removes the devices in pci_remove_bus_device().  There is no precaution to
+prevent driver binding in-between pci_stop_bus_device() and
+pci_remove_bus_device().
+
+In Dennis' case, it seems removal of the hierarchy by pciehp races with
+driver binding by pci_bus_add_devices().  pciehp is bound to the
+Downstream Port after pci_stop_bus_device() has run, so it is unbound by
+pci_remove_bus_device() instead of pci_stop_bus_device().  Because the
+pci_bus has already been destroyed at that point, accesses to it result in
+a use-after-free.
+
+One might conclude that driver binding needs to be prevented after
+pci_stop_bus_device() has run.  However it seems risky that pci_slot points
+to pci_bus without holding a reference.  Solely relying on correct ordering
+of driver unbind versus pci_bus destruction is certainly not defensive
+programming.
+
+If pci_slot has a need to access data in pci_bus, it ought to acquire a
+reference.  Amend pci_create_slot() accordingly.  Dennis reports that the
+crash is not reproducible with this change.
+
+Abridged stacktrace:
+
+  pcieport 0000:00:07.0: PME: Signaling with IRQ 156
+  pcieport 0000:00:07.0: pciehp: Slot #12 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ IbPresDis- LLActRep+
+  pci_bus 0000:20: dev 00, created physical slot 12
+  pcieport 0000:00:07.0: pciehp: Slot(12): Card not present
+  ...
+  pcieport 0000:21:02.0: pciehp: pcie_disable_notification: SLOTCTRL d8 write cmd 0
+  Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 13 UID: 0 PID: 134 Comm: irq/156-pciehp Not tainted 6.11.0-devel+ #1
+  RIP: 0010:dev_driver_string+0x12/0x40
+  pci_destroy_slot
+  pciehp_remove
+  pcie_port_remove_service
+  device_release_driver_internal
+  bus_remove_device
+  device_del
+  device_unregister
+  remove_iter
+  device_for_each_child
+  pcie_portdrv_remove
+  pci_device_remove
+  device_release_driver_internal
+  bus_remove_device
+  device_del
+  pci_remove_bus_device (recursive invocation)
+  pci_remove_bus_device
+  pciehp_unconfigure_device
+  pciehp_disable_slot
+  pciehp_handle_presence_or_link_change
+  pciehp_ist
+
+Link: https://lore.kernel.org/r/4bfd4c0e976c1776cd08e76603903b338cf25729.1728579288.git.lukas@wunner.de
+Reported-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
+Closes: https://lore.kernel.org/r/6de4b45ff2b32dd91a805ec02ec8ec73ef411bf6.camel@secunet.com/
+Tested-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Cc: stable@vger.kernel.org
-Fixes: dd86dc2f9ae1 ("drm/sti: implement atomic_check for the planes")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240913090926.2023716-1-make24@iscas.ac.cn
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/sti/sti_hqvdp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/slot.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/sti/sti_hqvdp.c
-+++ b/drivers/gpu/drm/sti/sti_hqvdp.c
-@@ -1035,6 +1035,9 @@ static int sti_hqvdp_atomic_check(struct
- 		return 0;
+--- a/drivers/pci/slot.c
++++ b/drivers/pci/slot.c
+@@ -79,6 +79,7 @@ static void pci_slot_release(struct kobj
+ 	up_read(&pci_bus_sem);
  
- 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
-+	if (IS_ERR(crtc_state))
-+		return PTR_ERR(crtc_state);
-+
- 	mode = &crtc_state->mode;
- 	dst_x = new_plane_state->crtc_x;
- 	dst_y = new_plane_state->crtc_y;
+ 	list_del(&slot->list);
++	pci_bus_put(slot->bus);
+ 
+ 	kfree(slot);
+ }
+@@ -260,7 +261,7 @@ placeholder:
+ 		goto err;
+ 	}
+ 
+-	slot->bus = parent;
++	slot->bus = pci_bus_get(parent);
+ 	slot->number = slot_nr;
+ 
+ 	slot->kobj.kset = pci_slots_kset;
+@@ -268,6 +269,7 @@ placeholder:
+ 	slot_name = make_slot_name(name);
+ 	if (!slot_name) {
+ 		err = -ENOMEM;
++		pci_bus_put(slot->bus);
+ 		kfree(slot);
+ 		goto err;
+ 	}
 
 
 
