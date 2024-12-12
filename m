@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F0F9EF4F1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B631F9EF6CA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A22271885C73
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68CE189932C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A08D229669;
-	Thu, 12 Dec 2024 17:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42DF2144C4;
+	Thu, 12 Dec 2024 17:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1QgYnaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUd/fild"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8379226863;
-	Thu, 12 Dec 2024 17:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6052213CA93;
+	Thu, 12 Dec 2024 17:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022812; cv=none; b=C7XudF7o7ACi7Lsuv+Ia5IcTr9GGGcfKWuTTG8xH+Xwri08A4MUCWgTY2AJ/48Ax8u9hEO+hn2hHf1txPyrOnmzWnUqcLLiIBOOCOkrdlwDGKktejnL6ymbfF78M0vD+Ls9fK1Im8cYSAU8/UkyB/9CmeNILqThWZUdsJHjm4Do=
+	t=1734024136; cv=none; b=YWBR193iIMEsT8jy72myN3HVIlw46O3fY114Zwq1w+sZHRQKE0LZYSy+wntooL0/Csm0WR3BzPJte8JWaw0IzeZ+UJ8w/w0uJpRUnXF7ksYLO4e3yBQzyTg3UsB6DjCuF0Nw4BKaNzqJ+X2S/LosgSo0WEmKpd5FPlqbu2Cqtq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022812; c=relaxed/simple;
-	bh=L71/LaJPMpbjlIvWekaRt7OaD1MWJnhwkrztYYjp52s=;
+	s=arc-20240116; t=1734024136; c=relaxed/simple;
+	bh=XI2qEDV3/j+6ECgBx+DNw4fRxZhMXw0Pb5ZlgsyD92M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYcjzLJDiAFfHtxHyiBgDlv8z6xXQMfsEhKVRraydpup/0b1CLqqt0CH3hqrZWfsrwj3yMHSGuw15LtzWKcdqQ/nrfJm3kPXKYht+eCEcU321CCtvYyMPQ1oStsqPDqsh/GbTYRYUkJC+PHLdCBIq1GtYEtEFgpInOWYAShz1ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1QgYnaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD30C4CECE;
-	Thu, 12 Dec 2024 17:00:10 +0000 (UTC)
+	 MIME-Version; b=eM9ZsXU1szqQwLHLkhZ+aTpGKGkkwA370vHKrU/D661oqMoNwLA/MZUZD+IZy9R/BrJUxGAlboPAkNhQQmiShlc6wZbgYUynU7vOCEDWSaAYMkHsK30yyLzfF/snMdZtPv+XcrYtA9TnxLo+Frbyh86lnXlsDpexbL3+T3BoYfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUd/fild; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2DBC4CECE;
+	Thu, 12 Dec 2024 17:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022811;
-	bh=L71/LaJPMpbjlIvWekaRt7OaD1MWJnhwkrztYYjp52s=;
+	s=korg; t=1734024136;
+	bh=XI2qEDV3/j+6ECgBx+DNw4fRxZhMXw0Pb5ZlgsyD92M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v1QgYnaK7ZPerpnsktkUDDNBwtksCKciuHtTKTgxbCGxhtmt/JjpUCP/DWfou1V9M
-	 Cvr/HSDKwY/U8cNWEYyTCsO+Lz0+bcgBdVS1w3AtTARr5HJtZ1VYeT68R3eNMC6V7A
-	 oByvinoSIo9GFj4RlhWF0J4xQPyYQLJtxJxmYASw=
+	b=bUd/fildPLgs1sJfE/TflUo69fQV1xcn6e9vS0tf70mAEJykTwXjQr/I2MON0YRDE
+	 c14ixTLm45TWE/IKFGLGJFnsP88OtHlCkcnKruIZfefn4SByTBnq+Iiw2+99EEzeNH
+	 5iWd1+Sz7lBYaiin8qdHZP0a8EdCmxF6cyoKjhS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 5.15 341/565] soc: fsl: rcpm: fix missing of_node_put() in copy_ippdexpcr1_setting()
+	Christoph Hellwig <hch@lst.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 198/459] f2fs: open code allocate_segment_by_default
 Date: Thu, 12 Dec 2024 15:58:56 +0100
-Message-ID: <20241212144325.076059702@linuxfoundation.org>
+Message-ID: <20241212144301.389851845@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit c9f1efabf8e3b3ff886a42669f7093789dbeca94 upstream.
+[ Upstream commit 8442d94b8ac8d5d8300725a9ffa9def526b71170 ]
 
-of_find_compatible_node() requires a call to of_node_put() when the
-pointer to the node is not required anymore to decrement its refcount
-and avoid leaking memory.
+allocate_segment_by_default has just two callers, which use very
+different code pathes inside it based on the force paramter.  Just
+open code the logic in the two callers using a new helper to decided
+if a new segment should be allocated.
 
-Add the missing call to of_node_put() after the node has been used.
-
-Cc: stable@vger.kernel.org
-Fixes: e95f287deed2 ("soc: fsl: handle RCPM errata A-008646 on SoC LS1021A")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241013-rcpm-of_node_put-v1-1-9a8e55a01eae@gmail.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 43563069e1c1 ("f2fs: check curseg->inited before write_sum_page in change_curseg")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/rcpm.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/segment.c | 50 +++++++++++++++++++++++------------------------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
---- a/drivers/soc/fsl/rcpm.c
-+++ b/drivers/soc/fsl/rcpm.c
-@@ -36,6 +36,7 @@ static void copy_ippdexpcr1_setting(u32
- 		return;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 82f8a86d7d701..7d6f2ee2f0177 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2876,31 +2876,20 @@ static int get_ssr_segment(struct f2fs_sb_info *sbi, int type,
+ 	return 0;
+ }
  
- 	regs = of_iomap(np, 0);
-+	of_node_put(np);
- 	if (!regs)
- 		return;
+-/*
+- * flush out current segment and replace it with new segment
+- * This function should be returned with success, otherwise BUG
+- */
+-static void allocate_segment_by_default(struct f2fs_sb_info *sbi,
+-						int type, bool force)
++static bool need_new_seg(struct f2fs_sb_info *sbi, int type)
+ {
+ 	struct curseg_info *curseg = CURSEG_I(sbi, type);
  
+-	if (force)
+-		new_curseg(sbi, type, true);
+-	else if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
+-					curseg->seg_type == CURSEG_WARM_NODE)
+-		new_curseg(sbi, type, false);
+-	else if (curseg->alloc_type == LFS &&
+-			is_next_segment_free(sbi, curseg, type) &&
+-			likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
+-		new_curseg(sbi, type, false);
+-	else if (f2fs_need_SSR(sbi) &&
+-			get_ssr_segment(sbi, type, SSR, 0))
+-		change_curseg(sbi, type, true);
+-	else
+-		new_curseg(sbi, type, false);
+-
+-	stat_inc_seg_type(sbi, curseg);
++	if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
++	    curseg->seg_type == CURSEG_WARM_NODE)
++		return true;
++	if (curseg->alloc_type == LFS &&
++	    is_next_segment_free(sbi, curseg, type) &&
++	    likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
++		return true;
++	if (!f2fs_need_SSR(sbi) || !get_ssr_segment(sbi, type, SSR, 0))
++		return true;
++	return false;
+ }
+ 
+ void f2fs_allocate_segment_for_resize(struct f2fs_sb_info *sbi, int type,
+@@ -2953,7 +2942,8 @@ static void __allocate_new_segment(struct f2fs_sb_info *sbi, int type,
+ 		return;
+ alloc:
+ 	old_segno = curseg->segno;
+-	allocate_segment_by_default(sbi, type, true);
++	new_curseg(sbi, type, true);
++	stat_inc_seg_type(sbi, curseg);
+ 	locate_dirty_segment(sbi, old_segno);
+ }
+ 
+@@ -3393,11 +3383,19 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
+ 	update_sit_entry(sbi, old_blkaddr, -1);
+ 
+ 	if (!__has_curseg_space(sbi, curseg)) {
+-		if (from_gc)
++		/*
++		 * Flush out current segment and replace it with new segment.
++		 */
++		if (from_gc) {
+ 			get_atssr_segment(sbi, type, se->type,
+ 						AT_SSR, se->mtime);
+-		else
+-			allocate_segment_by_default(sbi, type, false);
++		} else {
++			if (need_new_seg(sbi, type))
++				new_curseg(sbi, type, false);
++			else
++				change_curseg(sbi, type, true);
++			stat_inc_seg_type(sbi, curseg);
++		}
+ 	}
+ 	/*
+ 	 * segment dirty status should be updated after segment allocation,
+-- 
+2.43.0
+
 
 
 
