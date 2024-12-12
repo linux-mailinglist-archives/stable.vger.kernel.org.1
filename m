@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCC99EF6E0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD24A9EF7D6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96F1E17F3B3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9120E189B2D5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD1F223C4E;
-	Thu, 12 Dec 2024 17:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C392206A5;
+	Thu, 12 Dec 2024 17:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWuKm0Ji"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYS/j7+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEA722C354;
-	Thu, 12 Dec 2024 17:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9885216E3B;
+	Thu, 12 Dec 2024 17:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023241; cv=none; b=WBjV1El784WqPOtLmzouvmu/Gd+SDX/Ewyz0V4lmJaA2yLfG6Wtb8CFN5JQsHFInj93C16uudRhMBTYgDxcO08ATZczg9YRiBdoFWpmtnWR+wxLmA5G1RucJ/SOE/WNEGLJJP9YsYl1jX8njikDgItHjB/gCzvyVbojhDtNEDqY=
+	t=1734024526; cv=none; b=gK33gOEn6K3MrIqlT0DlckWnPSC9sSfUZ/y25Opj0PC5xtuys2UuWZ9Lkjle+U6jY/a+BOegPk/OsVvX/UznZKICWk7w55tvBgZp2fFmm6w+jhfvVHQkkAf8nPmI9Y0IlCDMT20xtuyxPYoYyzykxxZjbRxhOiZqUT75hpI9aWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023241; c=relaxed/simple;
-	bh=DBpuPMklBVzc9rq6D0L8yF9vAjB2mcm1slIaCk6FhUo=;
+	s=arc-20240116; t=1734024526; c=relaxed/simple;
+	bh=YT79NFKtA0iA5yVXNgqQiVzc1KnkkmQ87esWXBl2WkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OhzQwU+nUoZz4j/HKC17QXdc8mR1wKkc1ilTztjFYE8B3HBVkpzxgBYy3TWgKLS6AO7XKepL3UOMYl+G+jZAc1OuyUEED0C4O+NPcu+wuC2qD89M9CfSFQ6euuXTzjwoeF9imFAMimRxP4/ePKCjk1aI9jcJUcWYFPaFysOjvMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWuKm0Ji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89592C4CEDF;
-	Thu, 12 Dec 2024 17:07:20 +0000 (UTC)
+	 MIME-Version; b=sF8lZLwlAnQ0mXAcrdLw4TMiBSathcMh+7+Qg6BIGJvS6H7U28kU7QrMwVQkpPLUCul4LevhDULqaFCLuMw6A9s9g322K22DxNzjofqck2R9vqWF1u9ARmYTPKG+9lBPcAlBHIhcUfaUAQ8WTdpEAla/PV3qltPJ8fVz7qFbJCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYS/j7+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E663BC4CED4;
+	Thu, 12 Dec 2024 17:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023241;
-	bh=DBpuPMklBVzc9rq6D0L8yF9vAjB2mcm1slIaCk6FhUo=;
+	s=korg; t=1734024526;
+	bh=YT79NFKtA0iA5yVXNgqQiVzc1KnkkmQ87esWXBl2WkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWuKm0Ji/j+/WXHVcMWyUqYppu1Ez/1TvaJhW92vVk7BrnpZXGUpUkyZc23Hb0s+4
-	 uxODgeFOGSpqapMTATIxMdimQ60BK9KXMIzKjx7AB3lytsraJiZuIEcPFe91ihxZD5
-	 Q5qttYU+UODdUd6PGk4sdhdSYToqR9qS3eGpHVF4=
+	b=jYS/j7+lXr5UY5ywe7T1XWerWIhqnqfeF4KQsKV8ILt91MihudeY0fUFhsBPhRB/F
+	 v2wPKzABS9Js331aUnLJ5Mji8klA3s7DVWZN6Kc72IGvMK2GLZyQGexCxEzXl978LY
+	 MSqydzBGWbwCh+Gg8NZCH1TkS+9CV0DGzv4x2sPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
+	Yassine Oudjana <y.oudjana@protonmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 469/565] epoll: annotate racy check
+Subject: [PATCH 5.10 326/459] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
 Date: Thu, 12 Dec 2024 16:01:04 +0100
-Message-ID: <20241212144330.274908250@linuxfoundation.org>
+Message-ID: <20241212144306.539446445@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Yassine Oudjana <y.oudjana@protonmail.com>
 
-[ Upstream commit 6474353a5e3d0b2cf610153cea0c61f576a36d0a ]
+[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
 
-Epoll relies on a racy fastpath check during __fput() in
-eventpoll_release() to avoid the hit of pointlessly acquiring a
-semaphore. Annotate that race by using WRITE_ONCE() and READ_ONCE().
+Clear the IRQ enable bit of WDT_MODE before asserting software reset
+in order to make TOPRGU issue a system reset signal instead of an IRQ.
 
-Link: https://lore.kernel.org/r/66edfb3c.050a0220.3195df.001a.GAE@google.com
-Link: https://lore.kernel.org/r/20240925-fungieren-anbauen-79b334b00542@brauner
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reported-by: syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
+Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c            | 6 ++++--
- include/linux/eventpoll.h | 2 +-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/watchdog/mtk_wdt.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index b60edddf17870..7413b4a6ba282 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -696,7 +696,8 @@ static int ep_remove(struct eventpoll *ep, struct epitem *epi)
- 	to_free = NULL;
- 	head = file->f_ep;
- 	if (head->first == &epi->fllink && !epi->fllink.next) {
--		file->f_ep = NULL;
-+		/* See eventpoll_release() for details. */
-+		WRITE_ONCE(file->f_ep, NULL);
- 		if (!is_file_epoll(file)) {
- 			struct epitems_head *v;
- 			v = container_of(head, struct epitems_head, epitems);
-@@ -1460,7 +1461,8 @@ static int attach_epitem(struct file *file, struct epitem *epi)
- 			spin_unlock(&file->f_lock);
- 			goto allocate;
- 		}
--		file->f_ep = head;
-+		/* See eventpoll_release() for details. */
-+		WRITE_ONCE(file->f_ep, head);
- 		to_free = NULL;
- 	}
- 	hlist_add_head_rcu(&epi->fllink, file->f_ep);
-diff --git a/include/linux/eventpoll.h b/include/linux/eventpoll.h
-index 3337745d81bd6..0c0d00fcd131f 100644
---- a/include/linux/eventpoll.h
-+++ b/include/linux/eventpoll.h
-@@ -42,7 +42,7 @@ static inline void eventpoll_release(struct file *file)
- 	 * because the file in on the way to be removed and nobody ( but
- 	 * eventpoll ) has still a reference to this file.
- 	 */
--	if (likely(!file->f_ep))
-+	if (likely(!READ_ONCE(file->f_ep)))
- 		return;
+diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
+index d6a6393f609d1..2cc668b295fd9 100644
+--- a/drivers/watchdog/mtk_wdt.c
++++ b/drivers/watchdog/mtk_wdt.c
+@@ -153,9 +153,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
+ {
+ 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
+ 	void __iomem *wdt_base;
++	u32 reg;
  
- 	/*
+ 	wdt_base = mtk_wdt->wdt_base;
+ 
++	/* Enable reset in order to issue a system reset instead of an IRQ */
++	reg = readl(wdt_base + WDT_MODE);
++	reg &= ~WDT_MODE_IRQ_EN;
++	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
++
+ 	while (1) {
+ 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
+ 		mdelay(5);
 -- 
 2.43.0
 
