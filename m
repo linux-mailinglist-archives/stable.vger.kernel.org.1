@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7A79EEB45
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2B69EED65
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7CB281AD8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:23:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B8411888157
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB982080FC;
-	Thu, 12 Dec 2024 15:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A17221C166;
+	Thu, 12 Dec 2024 15:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nettyItW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfKp7hYH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D132AF0E;
-	Thu, 12 Dec 2024 15:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F8D4F218;
+	Thu, 12 Dec 2024 15:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016982; cv=none; b=JrLyQK9H2/u63xROJ9siH04RLvOzU9nGIjUX/WsR7q8ugtCX6hrGIZG2saAnUg2oeY00Fu0QGJLvwcMHIztSGvpVFFHY0l1gWdgcZihOtwq8b/zndB4CdHIBpzsQXIbkK6eUyfdLZJ/IPxszVaU8XaM6BEbKc+ZTyMfgYuJBR4s=
+	t=1734018103; cv=none; b=XOP+Xy4L4fYxGaIs2Wx1g4f+XwGqYfXd32Sgb1jC1MHmlcPcq38z4bRY0hWCIfNFfqr/fErdTNFekbcS6rFMKYRVhzt4Ge4DxMtseFutjn1OWdaqkqe9t+9ahrCdlTj05hdFe5Hy4HmUNJf/6WKBx9kxIJO1Fl1u/9u5MnBfW08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016982; c=relaxed/simple;
-	bh=ABbYLaYNOSDZ/z7PC8h7bLODGzyaE7qyn5QbbDnmqpQ=;
+	s=arc-20240116; t=1734018103; c=relaxed/simple;
+	bh=zML1QE2RdrwPwoZ6V8ku3yy2fi0lywvSVydO7Kj20Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fg2PU6B3jAMm/IWhX+q0FwQZfvZ60UhlXDjvw+uyv+qIABo3VtryFyAt6JqHMDh8iRTnu+o4sesNmwkpb25nWbzTGAGiEMDDrc3/Dld+pWxEkt5siD+wKvUJZqmUvZUvw3CfJOI37Je8nVIr9uYxAnbclYBA72MsLNDnsQ+oV2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nettyItW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FF6C4CECE;
-	Thu, 12 Dec 2024 15:23:01 +0000 (UTC)
+	 MIME-Version; b=RFY4CcPk1KQgCBI7Rvwlvb2AvYtJO4K+ibHXXdNVFk92t3aCSItjMtq+5gLhDvkriE+YXc0eGmy03lW2nDtruPMLPFFNDhFqZ4EmwtWNsSEvCHwCNNooj6bN0WrXqBLFSQooqGUlLwiXegNKEDYypa5ZfHG0lK268otib8T3GXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfKp7hYH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A98FC4CECE;
+	Thu, 12 Dec 2024 15:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016982;
-	bh=ABbYLaYNOSDZ/z7PC8h7bLODGzyaE7qyn5QbbDnmqpQ=;
+	s=korg; t=1734018102;
+	bh=zML1QE2RdrwPwoZ6V8ku3yy2fi0lywvSVydO7Kj20Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nettyItWQfgM8/I0B6wxCMyQu4rlzr6hLm/U2sVLCqmQTAzQgSOwSRS6diMVM0CgU
-	 CN2gpG8ZtAbUD8pn1QN705ZYiLH90kbE3VCfdnAarwHW6hJKKxrOH1T+UXa8CfEgTZ
-	 NRXtoszU4cOdnw04GAfgpl1ezPUmWKaj8mqvX/3A=
+	b=VfKp7hYH0eD0g2Nyy6R22YCENYBwibBV5NP3I6s1PGvdczxuybZs+HaxpfN9WYb7r
+	 5adjiJnjf3eXbtzaABlxWigR5l9314sCNCWFTPdaHimhfK74Bswy7DhAgd0WBKePuL
+	 OJSSnslFtZAV/LynRD5W18e9YrUFoxDbPM0RONBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McCrohan <jmccrohan@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Rohan Barar <rohan.barar@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 348/466] Bluetooth: btusb: Add new VID/PID 0489/e124 for MT7925
-Date: Thu, 12 Dec 2024 15:58:37 +0100
-Message-ID: <20241212144320.538228166@linuxfoundation.org>
+Subject: [PATCH 6.6 199/356] media: cx231xx: Add support for Dexatek USB Video Grabber 1d19:6108
+Date: Thu, 12 Dec 2024 15:58:38 +0100
+Message-ID: <20241212144252.484888369@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McCrohan <jmccrohan@gmail.com>
+From: Rohan Barar <rohan.barar@gmail.com>
 
-[ Upstream commit 679cb60fd60774798719c3e449874a168642a8e6 ]
+[ Upstream commit 61a830bc0ea69a05d8a4534f825c6aa618263649 ]
 
-Add VID 0489 & PID e124 for MediaTek MT7925 USB Bluetooth chip.
+Add Dexatek Technology Ltd USB Video Grabber 1d19:6108 to the cx231xx
+driver. This device is sold under the name "BAUHN DVD Maker (DK8723)" by
+ALDI in Australia.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
+This device is similar to 1d19:6109, which is already included in cx231xx.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=08 Cnt=02 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e124 Rev= 1.00
-S:  Manufacturer=MediaTek Inc.
-S:  Product=Wireless_Device
-S:  SerialNumber=000000000
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
-A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+Both video and audio capture function correctly after installing the
+patched cx231xx driver.
 
-Signed-off-by: Jonathan McCrohan <jmccrohan@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Patch Changelog
+v1:
+ - Initial submission.
+v2:
+ - Fix SoB + Improve subject.
+v3:
+ - Rephrase message to not exceed 75 characters per line.
+ - Removed reference to external GitHub URL.
+
+Signed-off-by: Rohan Barar <rohan.barar@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
+ drivers/media/usb/cx231xx/cx231xx-cards.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index d922fa8e8b3ce..9208b5b7fc86f 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -650,6 +650,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe11e), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe124), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe139), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3602), .driver_info = BTUSB_MEDIATEK |
+diff --git a/drivers/media/usb/cx231xx/cx231xx-cards.c b/drivers/media/usb/cx231xx/cx231xx-cards.c
+index 92efe6c1f47ba..bda729b42d05f 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-cards.c
++++ b/drivers/media/usb/cx231xx/cx231xx-cards.c
+@@ -994,6 +994,8 @@ const unsigned int cx231xx_bcount = ARRAY_SIZE(cx231xx_boards);
+ 
+ /* table of devices that work with this driver */
+ struct usb_device_id cx231xx_id_table[] = {
++	{USB_DEVICE(0x1D19, 0x6108),
++	.driver_info = CX231XX_BOARD_PV_XCAPTURE_USB},
+ 	{USB_DEVICE(0x1D19, 0x6109),
+ 	.driver_info = CX231XX_BOARD_PV_XCAPTURE_USB},
+ 	{USB_DEVICE(0x0572, 0x5A3C),
 -- 
 2.43.0
 
