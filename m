@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4019EEBE9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60D89EF2F6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C55B1639C2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 667AD174600
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D3E212D6A;
-	Thu, 12 Dec 2024 15:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7866B23236A;
+	Thu, 12 Dec 2024 16:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLgRCYBQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuzdCOP4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AF2748A;
-	Thu, 12 Dec 2024 15:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DD7223E90;
+	Thu, 12 Dec 2024 16:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017210; cv=none; b=U69eLt74xTW+PPMM0EejyPfHqCwOs19DUNMCL2Le2LlV+pahwQ2kv1NDMtnnz4k3f+bb8p6/exNhmlbm2y1qoMu3H45KgwdJyjMigslxMNxQ8KmVcWfUc2QPHMhTpG1oGbzzA28EwcXL/NAFQLsd2gUK2/Xrpjff+cSdxiEzvYU=
+	t=1734021072; cv=none; b=MGN65jdDX2va+r4oyTzRx/wttM7jE7xpm9Oq2V/AqFDrNJ26uw4hlOTZGn4dAbz++TIRXvMICZxc6Q3F9Gx2SoDVfQhbJEG/Uchd/FjayuDw+Fl0AkExrE0F698ImpvWbyyShaGWqE1ETM5YCuwYO7LvGjiipcSU5Zcas6NtcwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017210; c=relaxed/simple;
-	bh=ndYsC6+L760ohEsfPvWsoLNpyK1FZ2obiPASGZQ/hxo=;
+	s=arc-20240116; t=1734021072; c=relaxed/simple;
+	bh=lkGoqVIJh5iFfSZjV6FAGqj1XqRR0jtKuR+uv3WCTyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwQXqtDyuW2DLWMSwzh2BRrys9/sgEkySdYGy3OJPImW/vbtgDet6VlUF/3GTNX8DcgH5QQ5Yu4UIMRnkSzTerwRVt9gI+g/ymYVyiiL6V2IHxRvYTa4cwHBhJuvn9iLob7gHeu9KygBK4zc1975i/cSSAB0cUpd/upn+gG3xk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLgRCYBQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AC7C4CECE;
-	Thu, 12 Dec 2024 15:26:49 +0000 (UTC)
+	 MIME-Version; b=OGnz5OePn4+W+4rT8IDyF+99V1iF+AHt3YZLFFP4fSyDvO9vrkEvpNosnpoUQsz9cVLK+Xt5UnrYj2ldMweDMRNF9giaD6eXj4Z2atGLEMs7eZN3BpXZP8+Njryr/gbgYRtaPgxp2TQsORIBP2MehytUAeDaB/Ne1o9I0BeGoI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuzdCOP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79935C4CECE;
+	Thu, 12 Dec 2024 16:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017210;
-	bh=ndYsC6+L760ohEsfPvWsoLNpyK1FZ2obiPASGZQ/hxo=;
+	s=korg; t=1734021072;
+	bh=lkGoqVIJh5iFfSZjV6FAGqj1XqRR0jtKuR+uv3WCTyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLgRCYBQH//xMEOFF1dBpFYuUgOGyEsvt8SkGAZfNTYMeBj0qCwbtV8j/SAY0uosK
-	 UXtneJD3cG4AN+E2DhTJIU3kMpSgBc55cbcyUsUISKYV+CoeGS3yMhdSABI186Tpdi
-	 sKOVaoa1Nbh2bm9GAQAAfnSxtc06Hr+0mW4aGvts=
+	b=MuzdCOP42WEj3zv0r93sVji0zBlRjnSC4C4JY9VMyCQIEUvRRGkdtGFxwNK/rWsPz
+	 5lopytprAr0CEYmOiQfnB1yo70Wc4F8UdB9uUf8rgwzePxvyyCfaYKcxElmt7THlZK
+	 fdzGG920DTDv8l1F4G5t4tGEwwtWHgROeLqUzcK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Saranya Gopal <saranya.gopal@intel.com>,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 413/466] usb: typec: ucsi: Do not call ACPI _DSM method for UCSI read operations
+	Anthony Pighin <anthony.pighin@nokia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>
+Subject: [PATCH 6.1 637/772] mmc: core: Further prevent card detect during shutdown
 Date: Thu, 12 Dec 2024 15:59:42 +0100
-Message-ID: <20241212144323.075341493@linuxfoundation.org>
+Message-ID: <20241212144416.254406992@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saranya Gopal <saranya.gopal@intel.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit fa48d7e81624efdf398b990a9049e9cd75a5aead ]
+commit 87a0d90fcd31c0f36da0332428c9e1a1e0f97432 upstream.
 
-ACPI _DSM methods are needed only for UCSI write operations and for reading
-CCI during RESET_PPM operation. So, remove _DSM calls from other places.
-While there, remove the Zenbook quirk also since the default behavior
-now aligns with the Zenbook quirk. With this change, GET_CONNECTOR_STATUS
-returns at least 6 seconds faster than before in Arrowlake-S platforms.
+Disabling card detect from the host's ->shutdown_pre() callback turned out
+to not be the complete solution. More precisely, beyond the point when the
+mmc_bus->shutdown() has been called, to gracefully power off the card, we
+need to prevent card detect. Otherwise the mmc_rescan work may poll for the
+card with a CMD13, to see if it's still alive, which then will fail and
+hang as the card has already been powered off.
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Saranya Gopal <saranya.gopal@intel.com>
-Reviewed-by: Christian A. Ehrhardt <lk@c--e.de>
-Link: https://lore.kernel.org/r/20240830084342.460109-1-saranya.gopal@intel.com
+To fix this problem, let's disable mmc_rescan prior to power off the card
+during shutdown.
+
+Reported-by: Anthony Pighin <anthony.pighin@nokia.com>
+Fixes: 66c915d09b94 ("mmc: core: Disable card detect during shutdown")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Closes: https://lore.kernel.org/all/BN0PR08MB695133000AF116F04C3A9FFE83212@BN0PR08MB6951.namprd08.prod.outlook.com/
+Tested-by: Anthony Pighin <anthony.pighin@nokia.com>
+Message-ID: <20241125122446.18684-1-ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_acpi.c | 56 +++---------------------------
- 1 file changed, 5 insertions(+), 51 deletions(-)
+ drivers/mmc/core/bus.c  |    2 ++
+ drivers/mmc/core/core.c |    3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
-index 7a5dff8d9cc6c..accf15ff1306a 100644
---- a/drivers/usb/typec/ucsi/ucsi_acpi.c
-+++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
-@@ -61,9 +61,11 @@ static int ucsi_acpi_read_cci(struct ucsi *ucsi, u32 *cci)
- 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
- 	int ret;
+--- a/drivers/mmc/core/bus.c
++++ b/drivers/mmc/core/bus.c
+@@ -149,6 +149,8 @@ static void mmc_bus_shutdown(struct devi
+ 	if (dev->driver && drv->shutdown)
+ 		drv->shutdown(card);
  
--	ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
--	if (ret)
--		return ret;
-+	if (UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
-+		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
-+		if (ret)
-+			return ret;
-+	}
++	__mmc_stop_host(host);
++
+ 	if (host->bus_ops->shutdown) {
+ 		ret = host->bus_ops->shutdown(host);
+ 		if (ret)
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -2291,6 +2291,9 @@ void mmc_start_host(struct mmc_host *hos
  
- 	memcpy(cci, ua->base + UCSI_CCI, sizeof(*cci));
- 
-@@ -73,11 +75,6 @@ static int ucsi_acpi_read_cci(struct ucsi *ucsi, u32 *cci)
- static int ucsi_acpi_read_message_in(struct ucsi *ucsi, void *val, size_t val_len)
+ void __mmc_stop_host(struct mmc_host *host)
  {
- 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
--	int ret;
--
--	ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
--	if (ret)
--		return ret;
- 
- 	memcpy(val, ua->base + UCSI_MESSAGE_IN, val_len);
- 
-@@ -102,42 +99,6 @@ static const struct ucsi_operations ucsi_acpi_ops = {
- 	.async_control = ucsi_acpi_async_control
- };
- 
--static int
--ucsi_zenbook_read_cci(struct ucsi *ucsi, u32 *cci)
--{
--	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
--	int ret;
--
--	if (UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
--		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
--		if (ret)
--			return ret;
--	}
--
--	memcpy(cci, ua->base + UCSI_CCI, sizeof(*cci));
--
--	return 0;
--}
--
--static int
--ucsi_zenbook_read_message_in(struct ucsi *ucsi, void *val, size_t val_len)
--{
--	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
--
--	/* UCSI_MESSAGE_IN is never read for PPM_RESET, return stored data */
--	memcpy(val, ua->base + UCSI_MESSAGE_IN, val_len);
--
--	return 0;
--}
--
--static const struct ucsi_operations ucsi_zenbook_ops = {
--	.read_version = ucsi_acpi_read_version,
--	.read_cci = ucsi_zenbook_read_cci,
--	.read_message_in = ucsi_zenbook_read_message_in,
--	.sync_control = ucsi_sync_control_common,
--	.async_control = ucsi_acpi_async_control
--};
--
- static int ucsi_gram_read_message_in(struct ucsi *ucsi, void *val, size_t val_len)
- {
- 	u16 bogus_change = UCSI_CONSTAT_POWER_LEVEL_CHANGE |
-@@ -190,13 +151,6 @@ static const struct ucsi_operations ucsi_gram_ops = {
- };
- 
- static const struct dmi_system_id ucsi_acpi_quirks[] = {
--	{
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UA_UM325UA"),
--		},
--		.driver_data = (void *)&ucsi_zenbook_ops,
--	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
--- 
-2.43.0
-
++	if (host->rescan_disable)
++		return;
++
+ 	if (host->slot.cd_irq >= 0) {
+ 		mmc_gpio_set_cd_wake(host, false);
+ 		disable_irq(host->slot.cd_irq);
 
 
 
