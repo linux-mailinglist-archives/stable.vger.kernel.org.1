@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-103363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964139EF674
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 883519EF551
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 377AD2891E9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19675189FCD0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36A721660B;
-	Thu, 12 Dec 2024 17:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A1A225A2F;
+	Thu, 12 Dec 2024 17:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siIzeVYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZVAc/IX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827C121660C;
-	Thu, 12 Dec 2024 17:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EF222540E;
+	Thu, 12 Dec 2024 17:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024342; cv=none; b=M6D+Nq+AZbAmaRWHWd6O/eTG8Z3lJ4gnippowG1LQ25+jzOulKD2MBKyxM6jHrAZW98XKEUAZxavUx492Y4cxynnGMwiBKT9G8VEa+JxC9pLv41crPTiSvvoMaH9+O8RRGS3laPockNQL2nzISqFKoWcZHrjquF6Lh77yP4zp5o=
+	t=1734023053; cv=none; b=G1SMxPAgw6GdHj11nzN7tJDleK1JLDi3YF/EMZRd41RmnQLSw+VjNwKp1m3NQbH79HgUb/QFSpAoRdbav7Un0zJJhWhaPcDidqMXuUvcbsILvPT6ryyrSOynL5KLO6tN9qnlYWY/S8lTXbW11t4FU/vHF+h84pDmnwcAHUS5T3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024342; c=relaxed/simple;
-	bh=FHLgtNFr0ufY07a+1snulwTHe2xxNvCdCl0BZL5nNig=;
+	s=arc-20240116; t=1734023053; c=relaxed/simple;
+	bh=ghP18pKzxy2OUyNWZ/ShjpLLY4LdfOvfuUZNEmvyQjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mz3+q7soi4ECZDlSUCatVRyiRu9C9wF0O8Ct4vA7zH91lc4OKi0USP08toBQvMp+qMIrhJX5/WIbKeSv2OD0Uznn/akq/LOvC8EeOyVulaPrMPWVggM4R0I6NUUxLTMtQACWzbgev3oNt/H/+Y9C5J53FQFzGteUxQDBhvQzSmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siIzeVYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0305AC4CECE;
-	Thu, 12 Dec 2024 17:25:41 +0000 (UTC)
+	 MIME-Version; b=jG1kFtZ8B+DaEOW/VeN3NdSjQ6TSajzcEF/bG6fCfb1sKQCAFpHIVnE0HfwcZg00a+URYN3IDXSjX9e7rDnn5uHH4sQYWQOX8l/N5ODstChdamYMyZKT7wuOIl+gpqOuH/dI/pY2i7P1UXoqjFMLhQd4+//eFJqoZhmWB3y/PRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZVAc/IX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417A6C4CECE;
+	Thu, 12 Dec 2024 17:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024342;
-	bh=FHLgtNFr0ufY07a+1snulwTHe2xxNvCdCl0BZL5nNig=;
+	s=korg; t=1734023053;
+	bh=ghP18pKzxy2OUyNWZ/ShjpLLY4LdfOvfuUZNEmvyQjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=siIzeVYpLTST7M0yJGPSPFWYaoduELdPa292fdecll+XYAGka9rsa0e1+wJOwrUtO
-	 LDb9JzR4p1rj2p3j4vPpGTTLSUT4s+6SvQggrpAE9x+F95XsSUdbYwoFiAUZvk2tp8
-	 iIRxKEVRFE9kzpzsh/y98PVbC7cdlsbLsxp0e0l4=
+	b=sZVAc/IXz4NY7OxsLGVYl61dzwX0XlV9NnJeCyI/xESTGSsDc6baBYL8o7XvrNraY
+	 Tra09iileFYV9Lc9KMZbI+k82Qd72TDlHlutmeFXiGb3cP6IxXIrKBHfPN+MjccH0s
+	 EfJD0Yy1yC2kuWgevq1ZpsP3TVZIFzdZsCl4uCLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Subject: [PATCH 5.10 265/459] spi: Fix acpi deferred irq probe
+	kernel test robot <lkp@intel.com>,
+	Ruowen Qin <ruqin@redhat.com>,
+	Jinghao Jia <jinghao7@illinois.edu>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 408/565] ipvs: fix UB due to uninitialized stack access in ip_vs_protocol_init()
 Date: Thu, 12 Dec 2024 16:00:03 +0100
-Message-ID: <20241212144304.070768411@linuxfoundation.org>
+Message-ID: <20241212144327.787763331@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: Jinghao Jia <jinghao7@illinois.edu>
 
-commit d24cfee7f63d6b44d45a67c5662bd1cc48e8b3ca upstream.
+[ Upstream commit 146b6f1112eb30a19776d6c323c994e9d67790db ]
 
-When probing spi device take care of deferred probe of ACPI irq gpio
-similar like for OF/DT case.
+Under certain kernel configurations when building with Clang/LLVM, the
+compiler does not generate a return or jump as the terminator
+instruction for ip_vs_protocol_init(), triggering the following objtool
+warning during build time:
 
->From practical standpoint this fixes issue with vsc-tp driver on
-Dell XP 9340 laptop, which try to request interrupt with spi->irq
-equal to -EPROBE_DEFER and fail to probe with the following error:
+  vmlinux.o: warning: objtool: ip_vs_protocol_init() falls through to next function __initstub__kmod_ip_vs_rr__935_123_ip_vs_rr_init6()
 
-vsc-tp spi-INTC10D0:00: probe with driver vsc-tp failed with error -22
+At runtime, this either causes an oops when trying to load the ipvs
+module or a boot-time panic if ipvs is built-in. This same issue has
+been reported by the Intel kernel test robot previously.
 
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Fixes: 33ada67da352 ("ACPI / spi: attach GPIO IRQ from ACPI description to SPI device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com> # Dell XPS9320, ov01a10
-Link: https://patch.msgid.link/20241122094224.226773-1-stanislaw.gruszka@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Digging deeper into both LLVM and the kernel code reveals this to be a
+undefined behavior problem. ip_vs_protocol_init() uses a on-stack buffer
+of 64 chars to store the registered protocol names and leaves it
+uninitialized after definition. The function calls strnlen() when
+concatenating protocol names into the buffer. With CONFIG_FORTIFY_SOURCE
+strnlen() performs an extra step to check whether the last byte of the
+input char buffer is a null character (commit 3009f891bb9f ("fortify:
+Allow strlen() and strnlen() to pass compile-time known lengths")).
+This, together with possibly other configurations, cause the following
+IR to be generated:
+
+  define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #5 section ".init.text" align 16 !kcfi_type !29 {
+    %1 = alloca [64 x i8], align 16
+    ...
+
+  14:                                               ; preds = %11
+    %15 = getelementptr inbounds i8, ptr %1, i64 63
+    %16 = load i8, ptr %15, align 1
+    %17 = tail call i1 @llvm.is.constant.i8(i8 %16)
+    %18 = icmp eq i8 %16, 0
+    %19 = select i1 %17, i1 %18, i1 false
+    br i1 %19, label %20, label %23
+
+  20:                                               ; preds = %14
+    %21 = call i64 @strlen(ptr noundef nonnull dereferenceable(1) %1) #23
+    ...
+
+  23:                                               ; preds = %14, %11, %20
+    %24 = call i64 @strnlen(ptr noundef nonnull dereferenceable(1) %1, i64 noundef 64) #24
+    ...
+  }
+
+The above code calculates the address of the last char in the buffer
+(value %15) and then loads from it (value %16). Because the buffer is
+never initialized, the LLVM GVN pass marks value %16 as undefined:
+
+  %13 = getelementptr inbounds i8, ptr %1, i64 63
+  br i1 undef, label %14, label %17
+
+This gives later passes (SCCP, in particular) more DCE opportunities by
+propagating the undef value further, and eventually removes everything
+after the load on the uninitialized stack location:
+
+  define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #0 section ".init.text" align 16 !kcfi_type !11 {
+    %1 = alloca [64 x i8], align 16
+    ...
+
+  12:                                               ; preds = %11
+    %13 = getelementptr inbounds i8, ptr %1, i64 63
+    unreachable
+  }
+
+In this way, the generated native code will just fall through to the
+next function, as LLVM does not generate any code for the unreachable IR
+instruction and leaves the function without a terminator.
+
+Zero the on-stack buffer to avoid this possible UB.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202402100205.PWXIz1ZK-lkp@intel.com/
+Co-developed-by: Ruowen Qin <ruqin@redhat.com>
+Signed-off-by: Ruowen Qin <ruqin@redhat.com>
+Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ net/netfilter/ipvs/ip_vs_proto.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -397,6 +397,16 @@ static int spi_drv_probe(struct device *
- 			spi->irq = 0;
- 	}
+diff --git a/net/netfilter/ipvs/ip_vs_proto.c b/net/netfilter/ipvs/ip_vs_proto.c
+index f100da4ba3bc3..a9fd1d3fc2cbf 100644
+--- a/net/netfilter/ipvs/ip_vs_proto.c
++++ b/net/netfilter/ipvs/ip_vs_proto.c
+@@ -340,7 +340,7 @@ void __net_exit ip_vs_protocol_net_cleanup(struct netns_ipvs *ipvs)
  
-+	if (has_acpi_companion(dev) && spi->irq < 0) {
-+		struct acpi_device *adev = to_acpi_device_node(dev->fwnode);
-+
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
-+		if (spi->irq == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+		if (spi->irq < 0)
-+			spi->irq = 0;
-+	}
-+
- 	ret = dev_pm_domain_attach(dev, true);
- 	if (ret)
- 		return ret;
-@@ -2249,9 +2259,6 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+ int __init ip_vs_protocol_init(void)
+ {
+-	char protocols[64];
++	char protocols[64] = { 0 };
+ #define REGISTER_PROTOCOL(p)			\
+ 	do {					\
+ 		register_ip_vs_protocol(p);	\
+@@ -348,8 +348,6 @@ int __init ip_vs_protocol_init(void)
+ 		strcat(protocols, (p)->name);	\
+ 	} while (0)
  
--	if (spi->irq < 0)
--		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
--
- 	acpi_device_set_enumerated(adev);
- 
- 	adev->power.flags.ignore_parent = true;
+-	protocols[0] = '\0';
+-	protocols[2] = '\0';
+ #ifdef CONFIG_IP_VS_PROTO_TCP
+ 	REGISTER_PROTOCOL(&ip_vs_protocol_tcp);
+ #endif
+-- 
+2.43.0
+
 
 
 
