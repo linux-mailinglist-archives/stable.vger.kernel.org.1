@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90FC9EECCC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 110DF9EEB32
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2B5188DB36
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88ED5188EC5F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C04217F29;
-	Thu, 12 Dec 2024 15:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D762153FC;
+	Thu, 12 Dec 2024 15:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bymw1Gr9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Quir1Mi8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44877215777;
-	Thu, 12 Dec 2024 15:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F6D2156FF;
+	Thu, 12 Dec 2024 15:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017748; cv=none; b=YSpGuwfGfiZuRb1IACD9fbhNa2cVVWvuSiKBPXs/P8/w3xTerg+nbcKe80yibdbOFcEQ/BFfRofH5Nm6/8kkjCLBKR+mec/KX+CWoukZ7RFKNuGbgthIdxj5eIXdTxI4U0N2mWDFC32AuL6/Ocd2QljzthqAkysK2zN5DG27yno=
+	t=1734016629; cv=none; b=M8zQodxj38PyG19tcj0LjcIg7zdTNbzkyQJ39cpnHOXPUqAtXnFi+lD4IIUm/wp4Jj3maWIE0LgmdGdssc97KmmXz0y/7GsOig4Me9gOWkpF7pVPuqVObh9MIivgtQJAYP9XxmOpF+lhw9z3eZGDsOGrtC6xOcYkkNhUTPDoWEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017748; c=relaxed/simple;
-	bh=GIAHy7+k6MgML/pXt3OKcdHV1z0ZKVhXffgX9QkyUUY=;
+	s=arc-20240116; t=1734016629; c=relaxed/simple;
+	bh=6oTYb9ov+P0MUqaDnhukkFaWqO4fawpAMg9HEO8rRtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmyoMe8EqE9Zac4RHVrJlNQSeSFChFxz0q8nIZ2M7UorwLA0z6Pz/VvxJNwU5LtM5t++MWSL1s6LoW1leyxEHn9yYeuegWdFUQfln4o8l/EiONi4Jorow2Xd+Zk0vbhGyIgPjxGs7qnmB85wjUJAeZPfGr7c5pKCSOMu25fxERI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bymw1Gr9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AECC4CECE;
-	Thu, 12 Dec 2024 15:35:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OlQiJt2Kv8DhiqsEXaCzRF+mLQujFv7PlsfBzEmED/MIFrdCWpwoXnHirP0KY9NwWZTso2n+6iFHfWmuMHIXK1sn5I1BF5huaytPS04gqXLjQOrInUYAR1qO4dMnLfr6sqAtRU1F/Sql9zg7qVmeTHnyV8vyHL3IhyU08nkHnuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Quir1Mi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042DFC4CECE;
+	Thu, 12 Dec 2024 15:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017748;
-	bh=GIAHy7+k6MgML/pXt3OKcdHV1z0ZKVhXffgX9QkyUUY=;
+	s=korg; t=1734016629;
+	bh=6oTYb9ov+P0MUqaDnhukkFaWqO4fawpAMg9HEO8rRtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bymw1Gr98xusX8LcfZvIzIHkK0vxSYIbC9OPClrQAVPVq6oojUVYMhBu+a3impk3A
-	 FBjFcSjSTqa8prVHTOxaPQDb3yAZpWc+e4ALLdK/jgE0gdBPNkVyT9kDAM4/QeFmG8
-	 NZL6t620nwN3IV5j2qYkG6vAUxF3f8w+0x0KdDss=
+	b=Quir1Mi8bLV+aTlXLicL2N+OzSId3lKA2sHC5unPcNN0FdLWYi0QZzyDVQfLcx291
+	 +FwjmtZWLfJjyo9HzPGKEHepeo7cHBTrYKdz99HWzGE2G6WMi3c1/1DysR96OE+yS6
+	 31hffPxL/Ryq/lO6pBPuJCYQNtUNr1o5kOsPhDfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Callahan Kovacs <callahankovacs@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/356] i3c: master: support to adjust first broadcast address speed
-Date: Thu, 12 Dec 2024 15:57:00 +0100
-Message-ID: <20241212144248.614605599@linuxfoundation.org>
+Subject: [PATCH 6.12 252/466] HID: magicmouse: Apple Magic Trackpad 2 USB-C driver support
+Date: Thu, 12 Dec 2024 15:57:01 +0100
+Message-ID: <20241212144316.742232588@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +60,208 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Callahan Kovacs <callahankovacs@gmail.com>
 
-[ Upstream commit aef79e189ba2b32f78bd35daf2c0b41f3868a321 ]
+[ Upstream commit 87a2f10395c82c2b4687bb8611a6c5663a12f9e7 ]
 
-According to I3C spec 6.2 Timing Specification, the Open Drain High Period
-of SCL Clock timing for first broadcast address should be adjusted to 200ns
-at least. I3C device working as i2c device will see the broadcast to close
-its Spike Filter then change to work at I3C mode. After that I3C open drain
-SCL high level should be adjusted back.
+Adds driver support for the USB-C model of Apple's Magic Trackpad 2.
 
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240910051626.4052552-1-carlos.song@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 25bc99be5fe5 ("i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter")
+The 2024 USB-C model is compatible with the existing Magic Trackpad 2
+driver but has a different hardware ID.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219470
+Signed-off-by: Callahan Kovacs <callahankovacs@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c       | 12 ++++++++++++
- include/linux/i3c/master.h | 16 ++++++++++++++++
- 2 files changed, 28 insertions(+)
+ drivers/hid/hid-ids.h        |  1 +
+ drivers/hid/hid-magicmouse.c | 56 ++++++++++++++++++++++++++----------
+ 2 files changed, 42 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index bbd5dc89be229..78171a754a3f8 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1827,6 +1827,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
- 		goto err_bus_cleanup;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 92cff3f2658cf..0f23be98c56e2 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -94,6 +94,7 @@
+ #define USB_DEVICE_ID_APPLE_MAGICMOUSE2	0x0269
+ #define USB_DEVICE_ID_APPLE_MAGICTRACKPAD	0x030e
+ #define USB_DEVICE_ID_APPLE_MAGICTRACKPAD2	0x0265
++#define USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC	0x0324
+ #define USB_DEVICE_ID_APPLE_FOUNTAIN_ANSI	0x020e
+ #define USB_DEVICE_ID_APPLE_FOUNTAIN_ISO	0x020f
+ #define USB_DEVICE_ID_APPLE_GEYSER_ANSI	0x0214
+diff --git a/drivers/hid/hid-magicmouse.c b/drivers/hid/hid-magicmouse.c
+index 8a73b59e0827b..ec110dea87726 100644
+--- a/drivers/hid/hid-magicmouse.c
++++ b/drivers/hid/hid-magicmouse.c
+@@ -227,7 +227,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 		touch_minor = tdata[4];
+ 		state = tdata[7] & TOUCH_STATE_MASK;
+ 		down = state != TOUCH_STATE_NONE;
+-	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		   input->id.product ==
++			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		id = tdata[8] & 0xf;
+ 		x = (tdata[1] << 27 | tdata[0] << 19) >> 19;
+ 		y = -((tdata[3] << 30 | tdata[2] << 22 | tdata[1] << 14) >> 19);
+@@ -259,8 +261,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 	/* If requested, emulate a scroll wheel by detecting small
+ 	 * vertical touch motions.
+ 	 */
+-	if (emulate_scroll_wheel && (input->id.product !=
+-			USB_DEVICE_ID_APPLE_MAGICTRACKPAD2)) {
++	if (emulate_scroll_wheel &&
++	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
++	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		unsigned long now = jiffies;
+ 		int step_x = msc->touches[id].scroll_x - x;
+ 		int step_y = msc->touches[id].scroll_y - y;
+@@ -359,7 +362,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 		input_report_abs(input, ABS_MT_POSITION_X, x);
+ 		input_report_abs(input, ABS_MT_POSITION_Y, y);
+ 
+-		if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2)
++		if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		    input->id.product ==
++			    USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC)
+ 			input_report_abs(input, ABS_MT_PRESSURE, pressure);
+ 
+ 		if (report_undeciphered) {
+@@ -367,7 +372,9 @@ static void magicmouse_emit_touch(struct magicmouse_sc *msc, int raw_id, u8 *tda
+ 			    input->id.product == USB_DEVICE_ID_APPLE_MAGICMOUSE2)
+ 				input_event(input, EV_MSC, MSC_RAW, tdata[7]);
+ 			else if (input->id.product !=
+-					USB_DEVICE_ID_APPLE_MAGICTRACKPAD2)
++					 USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
++				 input->id.product !=
++					 USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC)
+ 				input_event(input, EV_MSC, MSC_RAW, tdata[8]);
+ 		}
  	}
+@@ -493,7 +500,9 @@ static int magicmouse_raw_event(struct hid_device *hdev,
+ 		magicmouse_emit_buttons(msc, clicks & 3);
+ 		input_report_rel(input, REL_X, x);
+ 		input_report_rel(input, REL_Y, y);
+-	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		   input->id.product ==
++			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		input_mt_sync_frame(input);
+ 		input_report_key(input, BTN_MOUSE, clicks & 1);
+ 	} else { /* USB_DEVICE_ID_APPLE_MAGICTRACKPAD */
+@@ -545,7 +554,9 @@ static int magicmouse_setup_input(struct input_dev *input, struct hid_device *hd
+ 			__set_bit(REL_WHEEL_HI_RES, input->relbit);
+ 			__set_bit(REL_HWHEEL_HI_RES, input->relbit);
+ 		}
+-	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		   input->id.product ==
++			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		/* If the trackpad has been connected to a Mac, the name is
+ 		 * automatically personalized, e.g., "José Expósito's Trackpad".
+ 		 * When connected through Bluetooth, the personalized name is
+@@ -621,7 +632,9 @@ static int magicmouse_setup_input(struct input_dev *input, struct hid_device *hd
+ 				  MOUSE_RES_X);
+ 		input_abs_set_res(input, ABS_MT_POSITION_Y,
+ 				  MOUSE_RES_Y);
+-	} else if (input->id.product ==  USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	} else if (input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		   input->id.product ==
++			   USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		input_set_abs_params(input, ABS_MT_PRESSURE, 0, 253, 0, 0);
+ 		input_set_abs_params(input, ABS_PRESSURE, 0, 253, 0, 0);
+ 		input_set_abs_params(input, ABS_MT_ORIENTATION, -3, 4, 0, 0);
+@@ -660,7 +673,8 @@ static int magicmouse_setup_input(struct input_dev *input, struct hid_device *hd
+ 	input_set_events_per_packet(input, 60);
  
-+	if (master->ops->set_speed) {
-+		ret = master->ops->set_speed(master, I3C_OPEN_DRAIN_SLOW_SPEED);
-+		if (ret)
-+			goto err_bus_cleanup;
-+	}
-+
- 	/*
- 	 * Reset all dynamic address that may have been assigned before
- 	 * (assigned by the bootloader for example).
-@@ -1835,6 +1841,12 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
- 	if (ret && ret != I3C_ERROR_M2)
- 		goto err_bus_cleanup;
+ 	if (report_undeciphered &&
+-	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
++	    input->id.product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		__set_bit(EV_MSC, input->evbit);
+ 		__set_bit(MSC_RAW, input->mscbit);
+ 	}
+@@ -685,7 +699,9 @@ static int magicmouse_input_mapping(struct hid_device *hdev,
  
-+	if (master->ops->set_speed) {
-+		master->ops->set_speed(master, I3C_OPEN_DRAIN_NORMAL_SPEED);
-+		if (ret)
-+			goto err_bus_cleanup;
-+	}
-+
- 	/* Disable all slave events before starting DAA. */
- 	ret = i3c_master_disec_locked(master, I3C_BROADCAST_ADDR,
- 				      I3C_CCC_EVENT_SIR | I3C_CCC_EVENT_MR |
-diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-index 1cbf0baca65fe..f0aa4c549aa7f 100644
---- a/include/linux/i3c/master.h
-+++ b/include/linux/i3c/master.h
-@@ -269,6 +269,20 @@ enum i3c_bus_mode {
- 	I3C_BUS_MODE_MIXED_SLOW,
+ 	/* Magic Trackpad does not give relative data after switching to MT */
+ 	if ((hi->input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD ||
+-	     hi->input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) &&
++	     hi->input->id.product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++	     hi->input->id.product ==
++		     USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
+ 	    field->flags & HID_MAIN_ITEM_RELATIVE)
+ 		return -1;
+ 
+@@ -721,7 +737,8 @@ static int magicmouse_enable_multitouch(struct hid_device *hdev)
+ 	int ret;
+ 	int feature_size;
+ 
+-	if (hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	if (hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++	    hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		if (hdev->vendor == BT_VENDOR_ID_APPLE) {
+ 			feature_size = sizeof(feature_mt_trackpad2_bt);
+ 			feature = feature_mt_trackpad2_bt;
+@@ -766,7 +783,8 @@ static int magicmouse_fetch_battery(struct hid_device *hdev)
+ 
+ 	if (!hdev->battery || hdev->vendor != USB_VENDOR_ID_APPLE ||
+ 	    (hdev->product != USB_DEVICE_ID_APPLE_MAGICMOUSE2 &&
+-	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2))
++	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
++	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC))
+ 		return -1;
+ 
+ 	report_enum = &hdev->report_enum[hdev->battery_report_type];
+@@ -835,7 +853,9 @@ static int magicmouse_probe(struct hid_device *hdev,
+ 
+ 	if (id->vendor == USB_VENDOR_ID_APPLE &&
+ 	    (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+-	     (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 && hdev->type != HID_TYPE_USBMOUSE)))
++	     ((id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++	       id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
++	      hdev->type != HID_TYPE_USBMOUSE)))
+ 		return 0;
+ 
+ 	if (!msc->input) {
+@@ -850,7 +870,8 @@ static int magicmouse_probe(struct hid_device *hdev,
+ 	else if (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2)
+ 		report = hid_register_report(hdev, HID_INPUT_REPORT,
+ 			MOUSE2_REPORT_ID, 0);
+-	else if (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) {
++	else if (id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++		 id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) {
+ 		if (id->vendor == BT_VENDOR_ID_APPLE)
+ 			report = hid_register_report(hdev, HID_INPUT_REPORT,
+ 				TRACKPAD2_BT_REPORT_ID, 0);
+@@ -920,7 +941,8 @@ static const __u8 *magicmouse_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 	 */
+ 	if (hdev->vendor == USB_VENDOR_ID_APPLE &&
+ 	    (hdev->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
+-	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2) &&
++	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
++	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
+ 	    *rsize == 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
+ 		hid_info(hdev,
+ 			 "fixing up magicmouse battery report descriptor\n");
+@@ -951,6 +973,10 @@ static const struct hid_device_id magic_mice[] = {
+ 		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2), .driver_data = 0 },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE,
+ 		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2), .driver_data = 0 },
++	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE,
++		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC), .driver_data = 0 },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE,
++		USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC), .driver_data = 0 },
+ 	{ }
  };
- 
-+/**
-+ * enum i3c_open_drain_speed - I3C open-drain speed
-+ * @I3C_OPEN_DRAIN_SLOW_SPEED: Slow open-drain speed for sending the first
-+ *				broadcast address. The first broadcast address at this speed
-+ *				will be visible to all devices on the I3C bus. I3C devices
-+ *				working in I2C mode will turn off their spike filter when
-+ *				switching into I3C mode.
-+ * @I3C_OPEN_DRAIN_NORMAL_SPEED: Normal open-drain speed in I3C bus mode.
-+ */
-+enum i3c_open_drain_speed {
-+	I3C_OPEN_DRAIN_SLOW_SPEED,
-+	I3C_OPEN_DRAIN_NORMAL_SPEED,
-+};
-+
- /**
-  * enum i3c_addr_slot_status - I3C address slot status
-  * @I3C_ADDR_SLOT_FREE: address is free
-@@ -428,6 +442,7 @@ struct i3c_bus {
-  *		      NULL.
-  * @enable_hotjoin: enable hot join event detect.
-  * @disable_hotjoin: disable hot join event detect.
-+ * @set_speed: adjust I3C open drain mode timing.
-  */
- struct i3c_master_controller_ops {
- 	int (*bus_init)(struct i3c_master_controller *master);
-@@ -456,6 +471,7 @@ struct i3c_master_controller_ops {
- 				 struct i3c_ibi_slot *slot);
- 	int (*enable_hotjoin)(struct i3c_master_controller *master);
- 	int (*disable_hotjoin)(struct i3c_master_controller *master);
-+	int (*set_speed)(struct i3c_master_controller *master, enum i3c_open_drain_speed speed);
- };
- 
- /**
+ MODULE_DEVICE_TABLE(hid, magic_mice);
 -- 
 2.43.0
 
