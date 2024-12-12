@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-102297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F3C9EF22B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A359EED29
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 926DD18908D6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77DA11889A06
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778C1222D44;
-	Thu, 12 Dec 2024 16:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B07218587;
+	Thu, 12 Dec 2024 15:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuDrFzr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1A9Inx5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327282139D2;
-	Thu, 12 Dec 2024 16:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D695E6F2FE;
+	Thu, 12 Dec 2024 15:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020718; cv=none; b=OxNjpAsgl8FqnLvmoyPFIFdL1mLcWs/2t5LcCX4KnFh/j0IFT+ND5GBj8nNXeEiwaGjXKs8iG4eCA4JTWq1NbKWuQq5BKyj+KOTpQVuANp/fLz//mkTTt0R0CRL2gzxX/jZyMyTzp5yKITmhhimho4LKGbqBlPkjIlWHeGYPVzM=
+	t=1734017990; cv=none; b=H8Zghrfa65/crBrJjDtsMXWmeQuwK0ynD90o2vty/MIJOoRymaymGrD/HnZOS80XBuN9hwE8l/XnqkMhGgc2EILjT+xIqwU2MNMP4s/0VMdgxfxxX1nXQuVyKSNqKC9NvCSzrHnD3kpW6h/5qvjkWVi2wu/XL6yAWGgj3SZzfYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020718; c=relaxed/simple;
-	bh=FQyipcMVMXuV0BYCXJNyWfIYyNgoKWesfK2d81d/4ZQ=;
+	s=arc-20240116; t=1734017990; c=relaxed/simple;
+	bh=p3VlkFzMXMXWWR6NJbYiQdDC5pdJj4MLNV+znOY5N0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4SA6+PwCfGHozNCLEOn/7WN5w16Bn+uP70latcjvsyJyGo2uzccmQ1aQmTipvI67HrZytCCXye6/IXAqg67Ru8O5Pyg5gLgcERCrcsJ/RdVwCAHyeTVlm4eJ/9+FGfv3O6nnBYShQUO1rJKEAznfskOQPITCUof2PpVRqsbsU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuDrFzr7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750B4C4CECE;
-	Thu, 12 Dec 2024 16:25:17 +0000 (UTC)
+	 MIME-Version; b=PzQ99ravhLJJv51Hjp9r6ItObghQgeCoK1QxU+m6KGBAuNTwmmex8hUQb7YI6qdNLz/j2KaU2nhYf/4AHSVO5Gz1YNmi67DXWP9thZ12GPwK52ZkPuNdhnC4Q57e6XtWjrfKsvw9xgYJa2HZnz95l5nmuvPiuXLmE/S55SsKKHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1A9Inx5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22126C4CECE;
+	Thu, 12 Dec 2024 15:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020718;
-	bh=FQyipcMVMXuV0BYCXJNyWfIYyNgoKWesfK2d81d/4ZQ=;
+	s=korg; t=1734017990;
+	bh=p3VlkFzMXMXWWR6NJbYiQdDC5pdJj4MLNV+znOY5N0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HuDrFzr7SAFT2FzVF/wHwAp9M1FbrVSnY5vvrswG6oumIZT6F4fR3IfS3f32sJafi
-	 bR28+OiHCoL/dH9cbsPevHyItrD+wuUMfuRKx6wEb5IQIo+LQTMm0hdKPiwpbDspFH
-	 odp6NM7v6Tb1creSc6wU0IlUymMmr/PdKw6DTEOU=
+	b=D1A9Inx5AjbX943J1NiK6dLJVg8UwzGbT8IQjqQctyz5FighBoY5De1NEdCdWlriN
+	 fkcKu0BB6mseArE78KAbJNUqYOYa89nelOXGru7yeNUfAxJspQcB4hoFwkdNvoDMeQ
+	 me6jXTQGPv02eD9/Z2xlm709MFTNLCCJwS5bpcU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Cong Wang <cong.wang@bytedance.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 541/772] net: sched: fix erspan_opt settings in cls_flower
+	Lyude Paul <lyude@redhat.com>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.6 167/356] drm/dp_mst: Verify request type in the corresponding down message reply
 Date: Thu, 12 Dec 2024 15:58:06 +0100
-Message-ID: <20241212144412.322500349@linuxfoundation.org>
+Message-ID: <20241212144251.233989908@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 292207809486d99c78068d3f459cbbbffde88415 ]
+commit 4d49e77a973d3b5d1881663c3f122906a0702940 upstream.
 
-When matching erspan_opt in cls_flower, only the (version, dir, hwid)
-fields are relevant. However, in fl_set_erspan_opt() it initializes
-all bits of erspan_opt and its mask to 1. This inadvertently requires
-packets to match not only the (version, dir, hwid) fields but also the
-other fields that are unexpectedly set to 1.
+After receiving the response for an MST down request message, the
+response should be accepted/parsed only if the response type matches
+that of the request. Ensure this by checking if the request type code
+stored both in the request and the reply match, dropping the reply in
+case of a mismatch.
 
-This patch resolves the issue by ensuring that only the (version, dir,
-hwid) fields are configured in fl_set_erspan_opt(), leaving the other
-fields to 0 in erspan_opt.
+This fixes the topology detection for an MST hub, as described in the
+Closes link below, where the hub sends an incorrect reply message after
+a CLEAR_PAYLOAD_TABLE -> LINK_ADDRESS down request message sequence.
 
-Fixes: 79b1011cb33d ("net: sched: allow flower to match erspan options")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: <stable@vger.kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12804
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-3-imre.deak@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_flower.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |   31 ++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 10e6ec0f94981..b4a7952c5d7da 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -1279,7 +1279,6 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 	int err;
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3862,6 +3862,34 @@ drm_dp_get_one_sb_msg(struct drm_dp_mst_
+ 	return true;
+ }
  
- 	md = (struct erspan_metadata *)&key->enc_opts.data[key->enc_opts.len];
--	memset(md, 0xff, sizeof(*md));
- 	md->version = 1;
++static int get_msg_request_type(u8 data)
++{
++	return data & 0x7f;
++}
++
++static bool verify_rx_request_type(struct drm_dp_mst_topology_mgr *mgr,
++				   const struct drm_dp_sideband_msg_tx *txmsg,
++				   const struct drm_dp_sideband_msg_rx *rxmsg)
++{
++	const struct drm_dp_sideband_msg_hdr *hdr = &rxmsg->initial_hdr;
++	const struct drm_dp_mst_branch *mstb = txmsg->dst;
++	int tx_req_type = get_msg_request_type(txmsg->msg[0]);
++	int rx_req_type = get_msg_request_type(rxmsg->msg[0]);
++	char rad_str[64];
++
++	if (tx_req_type == rx_req_type)
++		return true;
++
++	drm_dp_mst_rad_to_str(mstb->rad, mstb->lct, rad_str, sizeof(rad_str));
++	drm_dbg_kms(mgr->dev,
++		    "Got unexpected MST reply, mstb: %p seqno: %d lct: %d rad: %s rx_req_type: %s (%02x) != tx_req_type: %s (%02x)\n",
++		    mstb, hdr->seqno, mstb->lct, rad_str,
++		    drm_dp_mst_req_type_str(rx_req_type), rx_req_type,
++		    drm_dp_mst_req_type_str(tx_req_type), tx_req_type);
++
++	return false;
++}
++
+ static int drm_dp_mst_handle_down_rep(struct drm_dp_mst_topology_mgr *mgr)
+ {
+ 	struct drm_dp_sideband_msg_tx *txmsg;
+@@ -3891,6 +3919,9 @@ static int drm_dp_mst_handle_down_rep(st
+ 		goto out_clear_reply;
+ 	}
  
- 	if (!depth)
-@@ -1308,9 +1307,9 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 			NL_SET_ERR_MSG(extack, "Missing tunnel key erspan option index");
- 			return -EINVAL;
- 		}
-+		memset(&md->u.index, 0xff, sizeof(md->u.index));
- 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX]) {
- 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_INDEX];
--			memset(&md->u, 0x00, sizeof(md->u));
- 			md->u.index = nla_get_be32(nla);
- 		}
- 	} else if (md->version == 2) {
-@@ -1319,10 +1318,12 @@ static int fl_set_erspan_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 			NL_SET_ERR_MSG(extack, "Missing tunnel key erspan option dir or hwid");
- 			return -EINVAL;
- 		}
-+		md->u.md2.dir = 1;
- 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_DIR]) {
- 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_DIR];
- 			md->u.md2.dir = nla_get_u8(nla);
- 		}
-+		set_hwid(&md->u.md2, 0xff);
- 		if (tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_HWID]) {
- 			nla = tb[TCA_FLOWER_KEY_ENC_OPT_ERSPAN_HWID];
- 			set_hwid(&md->u.md2, nla_get_u8(nla));
--- 
-2.43.0
-
++	if (!verify_rx_request_type(mgr, txmsg, msg))
++		goto out_clear_reply;
++
+ 	drm_dp_sideband_parse_reply(mgr, msg, &txmsg->reply);
+ 
+ 	if (txmsg->reply.reply_type == DP_SIDEBAND_REPLY_NAK) {
 
 
 
