@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6A09EEB20
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5F49EF36A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26678166A7E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DE97287578
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3246B21C195;
-	Thu, 12 Dec 2024 15:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024F7231A55;
+	Thu, 12 Dec 2024 16:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xd8NVzmr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0h+o+Trg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17B41487CD;
-	Thu, 12 Dec 2024 15:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5476222D66;
+	Thu, 12 Dec 2024 16:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016566; cv=none; b=MvGFMDNtkJB6UxbgT4wGlkiEDGPRjC3F06xXo3VF5dr6p6qYbGWW70QGeXuCrJFHoOm7c1jPCVM25NX7lM1IjvEvPxY9XgeD0A52Sg/q6btJaYjc423fU218g+7ZcqkMefPEZIXYmShvcyQiUv1nSPwZjvEFP1k0E9p+XtLrpws=
+	t=1734022327; cv=none; b=XwMjbhEc4k/PYKClnoDi8a53nUicHESDAtHMspj8qOHd3eo8SEQ2FykFngfHpDu5bTNS7w1js4VDzngY931ilhkj5HkQKa1LuXgH4viQ3sBDzNalVv5SuNeSdbKBTXpiYed3Pyb9O4GLxqKTy4Eso29L0VfnHCBSsmkVtUfhPSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016566; c=relaxed/simple;
-	bh=eeHMsiPu65vh6XQVQ3uc2wi7Pot/ecLSeYZZWSxeX2k=;
+	s=arc-20240116; t=1734022327; c=relaxed/simple;
+	bh=jv0u0Q93DCo+cjyKn9BRlDfWNwDwpB3BSQZMHELIdRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mj5wrC1HKUy6BEQogjXzx4UJEUiuoq0zS8EuuvC00vYlB2GvHGate9EBh4MDnDhPkW7PjYHRy4XreXYj95lUHwUu8W/NKYEJ4lnHQ3TWuRFVaDwtG2cH2E1gK7xZY1KgY4l9G8UERnzUWw1hFRpWvshs0FHkGW6/XNyL5mpjfug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xd8NVzmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9C9C4CECE;
-	Thu, 12 Dec 2024 15:16:05 +0000 (UTC)
+	 MIME-Version; b=hKsPK8+6eR6BGwV/gvcTGowQIpIgWPTEjUnmRFGQYsmk0HyVRSCPiV+PNC95zwFtH9jSX27CenbuFP9gLsqwrMClCtYH1KiF1r4bzHhYazN+79/m1waxoWuu76l/U8v1dTYGfmWB3o4Gb761dtf4DXag6+ntNvryK0AF7KPSE4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0h+o+Trg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3DBC4CED0;
+	Thu, 12 Dec 2024 16:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016565;
-	bh=eeHMsiPu65vh6XQVQ3uc2wi7Pot/ecLSeYZZWSxeX2k=;
+	s=korg; t=1734022327;
+	bh=jv0u0Q93DCo+cjyKn9BRlDfWNwDwpB3BSQZMHELIdRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xd8NVzmrIk2DMkN4GUnrZLCXMmzs3o0rcEtLI/1EN6usGs7t1eVHOpf0P5nw0QWd7
-	 2zmHBBm9bp12E7DD/Oam+zlcuxagUvr1i5T8d1xJuxUkjCQHhe92WCbxhM6LN/Ov/3
-	 HIA9IhEI8Z4cUPiDkKrodbrfc3qcPT3Gv2J0fHpQ=
+	b=0h+o+TrgiV5043gptlZr7IMn7u7eHPElMOngaXliCa/FVVDhP1fNrlLI9RG8eIG0H
+	 xKhQmIJf30kuszDoqnu5D/+xPPkKUgu5Rp55fkQttppmI1N5uOoz/XGOFGO682hUDW
+	 Lc3pshugGFy9TTahP0u15yZQDoeg/lFlSSAwxSNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 235/466] gpio: free irqs that are still requested when the chip is being removed
-Date: Thu, 12 Dec 2024 15:56:44 +0100
-Message-ID: <20241212144316.066251568@linuxfoundation.org>
+Subject: [PATCH 5.15 210/565] pinctrl: zynqmp: drop excess struct member description
+Date: Thu, 12 Dec 2024 15:56:45 +0100
+Message-ID: <20241212144319.798041100@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit ec8b6f55b98146c41dcf15e8189eb43291e35e89 ]
+[ Upstream commit 2a85fc7044987d751f27d7f1e4423eebbcecc2c6 ]
 
-If we remove a GPIO chip that is also an interrupt controller with users
-not having freed some interrupts, we'll end up leaking resources as
-indicated by the following warning:
+The 'node' member has never been part of this structure so drop its
+description.
 
-  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'gpio'
-
-As there's no way of notifying interrupt users about the irqchip going
-away and the interrupt subsystem is not plugged into the driver model and
-so not all cases can be handled by devlinks, we need to make sure to free
-all interrupts before the complete the removal of the provider.
-
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-Tested-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20240919135104.3583-1-brgl@bgdev.pl
+Fixes: 8b242ca700f8 ("pinctrl: Add Xilinx ZynqMP pinctrl driver support")
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/20241010080432.7781-1-brgl@bgdev.pl
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c | 41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ drivers/pinctrl/pinctrl-zynqmp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 2b02655abb56e..44372f8647d51 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -14,6 +14,7 @@
- #include <linux/idr.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
-+#include <linux/irqdesc.h>
- #include <linux/kernel.h>
- #include <linux/list.h>
- #include <linux/lockdep.h>
-@@ -713,6 +714,45 @@ bool gpiochip_line_is_valid(const struct gpio_chip *gc,
- }
- EXPORT_SYMBOL_GPL(gpiochip_line_is_valid);
- 
-+static void gpiod_free_irqs(struct gpio_desc *desc)
-+{
-+	int irq = gpiod_to_irq(desc);
-+	struct irq_desc *irqd = irq_to_desc(irq);
-+	void *cookie;
-+
-+	for (;;) {
-+		/*
-+		 * Make sure the action doesn't go away while we're
-+		 * dereferencing it. Retrieve and store the cookie value.
-+		 * If the irq is freed after we release the lock, that's
-+		 * alright - the underlying maple tree lookup will return NULL
-+		 * and nothing will happen in free_irq().
-+		 */
-+		scoped_guard(mutex, &irqd->request_mutex) {
-+			if (!irq_desc_has_action(irqd))
-+				return;
-+
-+			cookie = irqd->action->dev_id;
-+		}
-+
-+		free_irq(irq, cookie);
-+	}
-+}
-+
-+/*
-+ * The chip is going away but there may be users who had requested interrupts
-+ * on its GPIO lines who have no idea about its removal and have no way of
-+ * being notified about it. We need to free any interrupts still in use here or
-+ * we'll leak memory and resources (like procfs files).
-+ */
-+static void gpiochip_free_remaining_irqs(struct gpio_chip *gc)
-+{
-+	struct gpio_desc *desc;
-+
-+	for_each_gpio_desc_with_flag(gc, desc, FLAG_USED_AS_IRQ)
-+		gpiod_free_irqs(desc);
-+}
-+
- static void gpiodev_release(struct device *dev)
- {
- 	struct gpio_device *gdev = to_gpio_device(dev);
-@@ -1125,6 +1165,7 @@ void gpiochip_remove(struct gpio_chip *gc)
- 	/* FIXME: should the legacy sysfs handling be moved to gpio_device? */
- 	gpiochip_sysfs_unregister(gdev);
- 	gpiochip_free_hogs(gc);
-+	gpiochip_free_remaining_irqs(gc);
- 
- 	scoped_guard(mutex, &gpio_devices_lock)
- 		list_del_rcu(&gdev->list);
+diff --git a/drivers/pinctrl/pinctrl-zynqmp.c b/drivers/pinctrl/pinctrl-zynqmp.c
+index e14012209992f..9bd3e663ab08e 100644
+--- a/drivers/pinctrl/pinctrl-zynqmp.c
++++ b/drivers/pinctrl/pinctrl-zynqmp.c
+@@ -45,7 +45,6 @@
+  * @name:	Name of the pin mux function
+  * @groups:	List of pin groups for this function
+  * @ngroups:	Number of entries in @groups
+- * @node:	Firmware node matching with the function
+  *
+  * This structure holds information about pin control function
+  * and function group names supporting that function.
 -- 
 2.43.0
 
