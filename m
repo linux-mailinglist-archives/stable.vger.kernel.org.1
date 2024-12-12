@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-103099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA4E9EF50E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C649EF810
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03E9A2853DE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BE65172E61
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F469217679;
-	Thu, 12 Dec 2024 17:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9349C217664;
+	Thu, 12 Dec 2024 17:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tol0uzep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSn1fYAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0E72139D2;
-	Thu, 12 Dec 2024 17:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5235C20A5EE;
+	Thu, 12 Dec 2024 17:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023542; cv=none; b=d2zYvlGjhYdcq21ARoSQ978zml1fYXL18cXw0GGPz+VoFSERmu+EcE7bcv7gdCG1NUvzd9QrbASTWaAzawctqR6upMpkvwcubaCfMVjhCM+JMemV0Puit4w9oLXaxa6nXo3n7S/HLupII5uGHHEgq8rxCcLOqOETbWVGQdB3YCw=
+	t=1734024772; cv=none; b=T7voi8l1ZVaX/xISaHLGPzRDHoPInw8+0yak62jACyof9oi0Eihp3BeAOSJ87HUVrOi4ocor5WY6c6pYci8fA4Zui4DBicloR2R+dQp+Cm8cfFR3hTKbH8Hg6A1Bm83ad32knjlT/3u7TT7dXyCvYJ4ProCqKcS+sJxM8h2Upgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023542; c=relaxed/simple;
-	bh=51SCpxPzUkGZ9PbD0NS79+mbu28D4TNFrfwKGGZRqGw=;
+	s=arc-20240116; t=1734024772; c=relaxed/simple;
+	bh=KmLjjcVSCxS7+BhOuZpZAUAuo0ptkn+f39bGZeTtzMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbUlOmNkjWxRp60Vup59DwXiSS2oPo4MGAsKvB8zrKEeatnDOmZ+bo7LTvG+YQEVIB84pepe001ApWAvvWB1ier0TTbCYvKEpcgWKzw16V7WrFGMEQLi53eWpjT4NNAtLK1rb/LW3Zcos0+/csD2DrV1l/9lbb6E8OP5y92UDFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tol0uzep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F73DC4CED0;
-	Thu, 12 Dec 2024 17:12:21 +0000 (UTC)
+	 MIME-Version; b=HMhJpZB7C9JpEmIUIdLIdxUERtcSDHwLVMagdEU3eS9MfO5q4T9Xw/sFstq/Mm993uRQywOPkT/7rCr7JThe4Uw1BEjODnEovOw91N4X2zd0C5rm1jgzjqgpx/oj0n2lOqdnFvRHA+tJls0d0KsKhEEOL7PDbK6uJMpukGw5d+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSn1fYAg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05C9C4CECE;
+	Thu, 12 Dec 2024 17:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023541;
-	bh=51SCpxPzUkGZ9PbD0NS79+mbu28D4TNFrfwKGGZRqGw=;
+	s=korg; t=1734024772;
+	bh=KmLjjcVSCxS7+BhOuZpZAUAuo0ptkn+f39bGZeTtzMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tol0uzep5Aa9HU6sHTFOzE7OJx27U49tiHhL3PPcAhY+CcX3z474yBXlIuITJcVDv
-	 8pWX9tsPG/OXSwE+G5z+k8sltWja7Nx960lo/addA4Qghd06G4oGUSVLZHW9lTIb9A
-	 Y+Q7jIO70Q8Nz3Jrei55ysdScHgwUtULKBRRw+ng=
+	b=bSn1fYAgJu6F1wVpPn9yLukyTjC2rj9j3TWdYzcysnm/UrjU5Ab8LuIF5Yej7MLyW
+	 WdsNviJVHo6/jVddVMkAB4G4MstR+pWspCE0KrY0bHmO5xPIviPNpNGZrpaEqsl+gE
+	 2YxRN5JP4oZrphowl3deVBVvDqvbSQx3CLeMj4dI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>
-Subject: [PATCH 5.15 549/565] ocfs2: Revert "ocfs2: fix the la space leak when unmounting an ocfs2 volume"
+	syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com,
+	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 406/459] jfs: fix array-index-out-of-bounds in jfs_readdir
 Date: Thu, 12 Dec 2024 16:02:24 +0100
-Message-ID: <20241212144333.556979035@linuxfoundation.org>
+Message-ID: <20241212144309.805978887@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-This reverts commit dfe6c5692fb5 ("ocfs2: fix the la space leak when
-unmounting an ocfs2 volume").
+[ Upstream commit 839f102efb168f02dfdd46717b7c6dddb26b015e ]
 
-In commit dfe6c5692fb5, the commit log "This bug has existed since the
-initial OCFS2 code." is wrong. The correct introduction commit is
-30dd3478c3cd ("ocfs2: correctly use ocfs2_find_next_zero_bit()").
+The stbl might contain some invalid values. Added a check to
+return error code in that case.
 
-The influence of commit dfe6c5692fb5 is that it provides a correct
-fix for the latest kernel. however, it shouldn't be pushed to stable
-branches. Let's use this commit to revert all branches that include
-dfe6c5692fb5 and use a new fix method to fix commit 30dd3478c3cd.
-
-Fixes: dfe6c5692fb5 ("ocfs2: fix the la space leak when unmounting an ocfs2 volume")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0315f8fe99120601ba88
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/localalloc.c |   19 -------------------
- 1 file changed, 19 deletions(-)
+ fs/jfs/jfs_dtree.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/ocfs2/localalloc.c
-+++ b/fs/ocfs2/localalloc.c
-@@ -1008,25 +1008,6 @@ static int ocfs2_sync_local_to_main(stru
- 		start = bit_off + 1;
- 	}
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 8f7ce1bea44c5..a3d1d560f4c86 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -3187,6 +3187,14 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
+ 		stbl = DT_GETSTBL(p);
  
--	/* clear the contiguous bits until the end boundary */
--	if (count) {
--		blkno = la_start_blk +
--			ocfs2_clusters_to_blocks(osb->sb,
--					start - count);
--
--		trace_ocfs2_sync_local_to_main_free(
--				count, start - count,
--				(unsigned long long)la_start_blk,
--				(unsigned long long)blkno);
--
--		status = ocfs2_release_clusters(handle,
--				main_bm_inode,
--				main_bm_bh, blkno,
--				count);
--		if (status < 0)
--			mlog_errno(status);
--	}
--
- bail:
- 	if (status)
- 		mlog_errno(status);
+ 		for (i = index; i < p->header.nextindex; i++) {
++			if (stbl[i] < 0 || stbl[i] > 127) {
++				jfs_err("JFS: Invalid stbl[%d] = %d for inode %ld, block = %lld",
++					i, stbl[i], (long)ip->i_ino, (long long)bn);
++				free_page(dirent_buf);
++				DT_PUTPAGE(mp);
++				return -EIO;
++			}
++
+ 			d = (struct ldtentry *) & p->slot[stbl[i]];
+ 
+ 			if (((long) jfs_dirent + d->namlen + 1) >
+-- 
+2.43.0
+
 
 
 
