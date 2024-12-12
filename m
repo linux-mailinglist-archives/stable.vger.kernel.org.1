@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F6E9EF29D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AB69EEA18
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F65828F9A3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45CC0188C586
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3273223024C;
-	Thu, 12 Dec 2024 16:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147BE21661F;
+	Thu, 12 Dec 2024 15:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pX6i8i4C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mavSS0Re"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10EB22FDF1;
-	Thu, 12 Dec 2024 16:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5929215799;
+	Thu, 12 Dec 2024 15:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021678; cv=none; b=cXd8/vURDAmL0GdULzJIUrKuAesVxyQ2V93+j360GQiTCaGx3nwtZ0sEI+1wBFEoF2VfE1m0zNEj7V7ndf9ZCyl5k7LQKyg/iCtTqE2i9b0hcYn54Wp9hrbKUKpcE5WYvDu/OWtsdRUg99IrVLmEovZvQs8VyqD9t1NXgedBYDA=
+	t=1734015982; cv=none; b=AIqcWGpcM4JsL+ICcoU885xVIwPG9xdhd7szgWFmuKjSJQKUopWG6OeoTF77NoVsfVvRl3SomK775C/4zo3E2B3I8KyghzUOVqdeuFLRWMmRuLoGO+7RLjq8USmlY9MmT0rIxScOLJww9ECQNvUe93QuA6xHy4gShis+4eTz1lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021678; c=relaxed/simple;
-	bh=6HonkOq0JrmfiOMdI1wALRUNVfiK7eDHCr2eSbGCEh8=;
+	s=arc-20240116; t=1734015982; c=relaxed/simple;
+	bh=S9lBQ+krNDaFxMME6dn79MHY0ap/Of8G7gM+w58Wa04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/EEjfZpxW7OYI1bzYdTaShwuRGvW/Ou5EGbCrfTkm9horrPuilEGveY5liWCAeKlV2C++RMgrNG2KWPAY+Qd2lYIHKr07RFp4qbRmS8d4Q/Z1Tty94jEpgMOU0Cpff+2otB5WcshwZigXnC1YXKoTgNzk0bFxJN1cIsRMyo5ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pX6i8i4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00444C4CEE8;
-	Thu, 12 Dec 2024 16:41:16 +0000 (UTC)
+	 MIME-Version; b=cJ8lnZ4IAYBeLrtFXekkdtKm67x/a6gATOlIO1kfucnSpg96M6yBtsZOZf2Pa62rF7Rc1QdPj5G/8UEPWpgRwKf0YtrNx+sKvRMHSLXSAV6P8zikKZKQORUFfkFmvFqIT30rZ3rKoHa5/BLxo7CjoUxoWj7FZPShRwj07QiPJn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mavSS0Re; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2A7C4CED4;
+	Thu, 12 Dec 2024 15:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021677;
-	bh=6HonkOq0JrmfiOMdI1wALRUNVfiK7eDHCr2eSbGCEh8=;
+	s=korg; t=1734015982;
+	bh=S9lBQ+krNDaFxMME6dn79MHY0ap/Of8G7gM+w58Wa04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pX6i8i4CEg5mX27Hk8JKrGSh7+mjW9qLkCJaN1MmNKP/GPo+zwIFBhFBdL8b4ZoSH
-	 4pGHqT0s0J1hrGrqnkINO0kYck5Crw1kEKY7HE5Zrh+yDEW1+z1BWJKdg7fZJMHNNP
-	 LUXXs+pt+NJmzZB6mm/6zDcA35ZTR41D8FoLaUG4=
+	b=mavSS0Re8VDKgVE1xaSbiR15CkgbhhZxm/en9tjrOnHJpRrOIKAohLf3EW8yrNbIC
+	 1xx6iIINuAbuW4Uz+eNEliXOO3Xh0ywzNVvhKcm4Ep+PiEvgkldxCLffu0NRoJofig
+	 9dw3+7yyEfewnBaFGaYw4o6V+CPJAAXq4CK9cdjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
-	Ubisectech Sirius <bugreport@valiantsec.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 032/565] nilfs2: fix null-ptr-deref in block_dirty_buffer tracepoint
+	Konstantin Shkolnyy <kshk@linux.ibm.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 058/466] vsock/test: fix failures due to wrong SO_RCVLOWAT parameter
 Date: Thu, 12 Dec 2024 15:53:47 +0100
-Message-ID: <20241212144312.716214275@linuxfoundation.org>
+Message-ID: <20241212144309.109905030@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Konstantin Shkolnyy <kshk@linux.ibm.com>
 
-commit 2026559a6c4ce34db117d2db8f710fe2a9420d5a upstream.
+[ Upstream commit 7ce1c0921a806ee7d4bb24f74a3b30c89fc5fb39 ]
 
-When using the "block:block_dirty_buffer" tracepoint, mark_buffer_dirty()
-may cause a NULL pointer dereference, or a general protection fault when
-KASAN is enabled.
+This happens on 64-bit big-endian machines.
+SO_RCVLOWAT requires an int parameter. However, instead of int, the test
+uses unsigned long in one place and size_t in another. Both are 8 bytes
+long on 64-bit machines. The kernel, having received the 8 bytes, doesn't
+test for the exact size of the parameter, it only cares that it's >=
+sizeof(int), and casts the 4 lower-addressed bytes to an int, which, on
+a big-endian machine, contains 0. 0 doesn't trigger an error, SO_RCVLOWAT
+returns with success and the socket stays with the default SO_RCVLOWAT = 1,
+which results in vsock_test failures, while vsock_perf doesn't even notice
+that it's failed to change it.
 
-This happens because, since the tracepoint was added in
-mark_buffer_dirty(), it references the dev_t member bh->b_bdev->bd_dev
-regardless of whether the buffer head has a pointer to a block_device
-structure.
-
-In the current implementation, nilfs_grab_buffer(), which grabs a buffer
-to read (or create) a block of metadata, including b-tree node blocks,
-does not set the block device, but instead does so only if the buffer is
-not in the "uptodate" state for each of its caller block reading
-functions.  However, if the uptodate flag is set on a folio/page, and the
-buffer heads are detached from it by try_to_free_buffers(), and new buffer
-heads are then attached by create_empty_buffers(), the uptodate flag may
-be restored to each buffer without the block device being set to
-bh->b_bdev, and mark_buffer_dirty() may be called later in that state,
-resulting in the bug mentioned above.
-
-Fix this issue by making nilfs_grab_buffer() always set the block device
-of the super block structure to the buffer head, regardless of the state
-of the buffer's uptodate flag.
-
-Link: https://lkml.kernel.org/r/20241106160811.3316-3-konishi.ryusuke@gmail.com
-Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Ubisectech Sirius <bugreport@valiantsec.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b1346338fbae ("vsock_test: POLLIN + SO_RCVLOWAT test")
+Fixes: 542e893fbadc ("vsock/test: two tests to check credit update logic")
+Fixes: 8abbffd27ced ("test/vsock: vsock_perf utility")
+Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btnode.c  |    2 --
- fs/nilfs2/gcinode.c |    4 +---
- fs/nilfs2/mdt.c     |    1 -
- fs/nilfs2/page.c    |    1 +
- 4 files changed, 2 insertions(+), 6 deletions(-)
+ tools/testing/vsock/vsock_perf.c | 6 +++---
+ tools/testing/vsock/vsock_test.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/nilfs2/btnode.c
-+++ b/fs/nilfs2/btnode.c
-@@ -68,7 +68,6 @@ nilfs_btnode_create_block(struct address
- 		goto failed;
- 	}
- 	memset(bh->b_data, 0, i_blocksize(inode));
--	bh->b_bdev = inode->i_sb->s_bdev;
- 	bh->b_blocknr = blocknr;
- 	set_buffer_mapped(bh);
- 	set_buffer_uptodate(bh);
-@@ -133,7 +132,6 @@ int nilfs_btnode_submit_block(struct add
- 		goto found;
- 	}
- 	set_buffer_mapped(bh);
--	bh->b_bdev = inode->i_sb->s_bdev;
- 	bh->b_blocknr = pblocknr; /* set block address for read */
- 	bh->b_end_io = end_buffer_read_sync;
- 	get_bh(bh);
---- a/fs/nilfs2/gcinode.c
-+++ b/fs/nilfs2/gcinode.c
-@@ -83,10 +83,8 @@ int nilfs_gccache_submit_read_data(struc
- 		goto out;
- 	}
- 
--	if (!buffer_mapped(bh)) {
--		bh->b_bdev = inode->i_sb->s_bdev;
-+	if (!buffer_mapped(bh))
- 		set_buffer_mapped(bh);
--	}
- 	bh->b_blocknr = pbn;
- 	bh->b_end_io = end_buffer_read_sync;
- 	get_bh(bh);
---- a/fs/nilfs2/mdt.c
-+++ b/fs/nilfs2/mdt.c
-@@ -89,7 +89,6 @@ static int nilfs_mdt_create_block(struct
- 	if (buffer_uptodate(bh))
- 		goto failed_bh;
- 
--	bh->b_bdev = sb->s_bdev;
- 	err = nilfs_mdt_insert_new_block(inode, block, bh, init_block);
- 	if (likely(!err)) {
- 		get_bh(bh);
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -63,6 +63,7 @@ struct buffer_head *nilfs_grab_buffer(st
- 		put_page(page);
- 		return NULL;
- 	}
-+	bh->b_bdev = inode->i_sb->s_bdev;
- 	return bh;
+diff --git a/tools/testing/vsock/vsock_perf.c b/tools/testing/vsock/vsock_perf.c
+index 4e8578f815e08..22633c2848cc7 100644
+--- a/tools/testing/vsock/vsock_perf.c
++++ b/tools/testing/vsock/vsock_perf.c
+@@ -133,7 +133,7 @@ static float get_gbps(unsigned long bits, time_t ns_delta)
+ 	       ((float)ns_delta / NSEC_PER_SEC);
  }
  
+-static void run_receiver(unsigned long rcvlowat_bytes)
++static void run_receiver(int rcvlowat_bytes)
+ {
+ 	unsigned int read_cnt;
+ 	time_t rx_begin_ns;
+@@ -163,7 +163,7 @@ static void run_receiver(unsigned long rcvlowat_bytes)
+ 	printf("Listen port %u\n", port);
+ 	printf("RX buffer %lu bytes\n", buf_size_bytes);
+ 	printf("vsock buffer %lu bytes\n", vsock_buf_bytes);
+-	printf("SO_RCVLOWAT %lu bytes\n", rcvlowat_bytes);
++	printf("SO_RCVLOWAT %d bytes\n", rcvlowat_bytes);
+ 
+ 	fd = socket(AF_VSOCK, SOCK_STREAM, 0);
+ 
+@@ -439,7 +439,7 @@ static long strtolx(const char *arg)
+ int main(int argc, char **argv)
+ {
+ 	unsigned long to_send_bytes = DEFAULT_TO_SEND_BYTES;
+-	unsigned long rcvlowat_bytes = DEFAULT_RCVLOWAT_BYTES;
++	int rcvlowat_bytes = DEFAULT_RCVLOWAT_BYTES;
+ 	int peer_cid = -1;
+ 	bool sender = false;
+ 
+diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
+index 8d38dbf8f41f0..7fd25b814b4b6 100644
+--- a/tools/testing/vsock/vsock_test.c
++++ b/tools/testing/vsock/vsock_test.c
+@@ -835,7 +835,7 @@ static void test_stream_poll_rcvlowat_server(const struct test_opts *opts)
+ 
+ static void test_stream_poll_rcvlowat_client(const struct test_opts *opts)
+ {
+-	unsigned long lowat_val = RCVLOWAT_BUF_SIZE;
++	int lowat_val = RCVLOWAT_BUF_SIZE;
+ 	char buf[RCVLOWAT_BUF_SIZE];
+ 	struct pollfd fds;
+ 	short poll_flags;
+@@ -1357,7 +1357,7 @@ static void test_stream_rcvlowat_def_cred_upd_client(const struct test_opts *opt
+ static void test_stream_credit_update_test(const struct test_opts *opts,
+ 					   bool low_rx_bytes_test)
+ {
+-	size_t recv_buf_size;
++	int recv_buf_size;
+ 	struct pollfd fds;
+ 	size_t buf_size;
+ 	void *buf;
+-- 
+2.43.0
+
 
 
 
