@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-103565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B089EF89E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 678F99EFA06
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31D891899C01
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6012717A249
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB1A222D4A;
-	Thu, 12 Dec 2024 17:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056832248B8;
+	Thu, 12 Dec 2024 17:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3CbyPzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUmIL9Ph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6A9216E2D;
-	Thu, 12 Dec 2024 17:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BFB22370C;
+	Thu, 12 Dec 2024 17:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024948; cv=none; b=ZOi04kMBDeqTNBA96SCLosN7uiDbYS0ZLQBz94+wyEtdmDEErw77RgdFXno93p57m7Qqcfy7/PoV6jrz4ayblGHZpBqgFpgXdVyhhDOmrM2xhDBsQxvFx+VGCUT7g5bW5Ub5YuEwxM54PzF7ssGZQ0Mkn/e2G+z3Htm7TeBu1+I=
+	t=1734025739; cv=none; b=VaGDxUExd41twaQPfDb6Y7X+04dnLAK09WambzYDCXmyV2BdFb24Urgzfa/qALMf862QPSXYAjkwRPwsaFFySX5YmwwDz4azA/DMbN41MHPTBR3s4tDXa2KpPXrgidcxfUKrKIb7Q3GkjL3fJtD4jNRjLSMtLJ8hkEWYrxs/xak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024948; c=relaxed/simple;
-	bh=pyXDda+7f5ZiyjPRvv6L5dwWyOItut5y2+KGTPUecm0=;
+	s=arc-20240116; t=1734025739; c=relaxed/simple;
+	bh=z8uCcV3cipBz719El42Ge/u8ywaxH5EOQie0vCeOIOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BG+EeSbBL57bCnfIvE722C2uAAEB6LAWXcR2AKD/Du76QGoc293vf4JIVyRIXoIkU1ogWAZH1FYYl3f+uzXfmPDrR6sE0+dgUB8yGeO6GTul8GMtYO/4R99ozZEE3tOB1pmYoVorHBqvH/plw+OOeo9prJEDYXHhuGAeGVwun5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3CbyPzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6151C4CECE;
-	Thu, 12 Dec 2024 17:35:47 +0000 (UTC)
+	 MIME-Version; b=Zd05JIN08DB/XGGE2AFZR4EqJ+Qr7Vdqze2gYgJLbSMfn01bP94fc3IkvYHOpSAUjev/MmtpGtdhg99iy2u+/AVmG+tTcyCEvNLZAEuRuZq0bHDZ9x6FCRFXdb/+1KiN1p6Px7DW8uWGu7M6DqqMvmYbncy5PiOIKz3ledZgUGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUmIL9Ph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B98BC4CECE;
+	Thu, 12 Dec 2024 17:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024948;
-	bh=pyXDda+7f5ZiyjPRvv6L5dwWyOItut5y2+KGTPUecm0=;
+	s=korg; t=1734025739;
+	bh=z8uCcV3cipBz719El42Ge/u8ywaxH5EOQie0vCeOIOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t3CbyPzpq9lENIsML2EQwN4mfVrZLX1HOozA3q0TxVZfIXL7h5gkX3KQzRgH9x3+4
-	 2SYVz6iezYkWQFgnyyXgSlsLuUAOafW5IgxB9OhXxm8h5yFaIC+AbK/hSOQENDRfkz
-	 ums8PWsYbA6OK6KxGv+3QYZaGdfn7dS5eealwxrc=
+	b=yUmIL9PhC2lmcw0uX+v3EtW+6NjCxpUiaaVd9zv0MU9OWB8Sr8Fwkti0dT5rW3onr
+	 q1d6ujgpTq5UWTOGkY5Yd4YC4eafIOHHx82aPb/eOdPTKHakPFWbpbT8blstFfnULu
+	 iY7ntzAcUJ/nGfXQCxgUUd9JfMQLbdP1Ckl8t6G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>
-Subject: [PATCH 5.10 450/459] ocfs2: Revert "ocfs2: fix the la space leak when unmounting an ocfs2 volume"
+	Zhu Jun <zhujun2@cmss.chinamobile.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 270/321] samples/bpf: Fix a resource leak
 Date: Thu, 12 Dec 2024 16:03:08 +0100
-Message-ID: <20241212144311.546914994@linuxfoundation.org>
+Message-ID: <20241212144240.647265468@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-This reverts commit dfe6c5692fb5 ("ocfs2: fix the la space leak when
-unmounting an ocfs2 volume").
+[ Upstream commit f3ef53174b23246fe9bc2bbc2542f3a3856fa1e2 ]
 
-In commit dfe6c5692fb5, the commit log "This bug has existed since the
-initial OCFS2 code." is wrong. The correct introduction commit is
-30dd3478c3cd ("ocfs2: correctly use ocfs2_find_next_zero_bit()").
+The opened file should be closed in show_sockopts(), otherwise resource
+leak will occur that this problem was discovered by reading code
 
-The influence of commit dfe6c5692fb5 is that it provides a correct
-fix for the latest kernel. however, it shouldn't be pushed to stable
-branches. Let's use this commit to revert all branches that include
-dfe6c5692fb5 and use a new fix method to fix commit 30dd3478c3cd.
-
-Fixes: dfe6c5692fb5 ("ocfs2: fix the la space leak when unmounting an ocfs2 volume")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241010014126.2573-1-zhujun2@cmss.chinamobile.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/localalloc.c |   19 -------------------
- 1 file changed, 19 deletions(-)
+ samples/bpf/test_cgrp2_sock.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/ocfs2/localalloc.c
-+++ b/fs/ocfs2/localalloc.c
-@@ -1010,25 +1010,6 @@ static int ocfs2_sync_local_to_main(stru
- 		start = bit_off + 1;
+diff --git a/samples/bpf/test_cgrp2_sock.c b/samples/bpf/test_cgrp2_sock.c
+index b0811da5a00f3..3f56519a1ccd7 100644
+--- a/samples/bpf/test_cgrp2_sock.c
++++ b/samples/bpf/test_cgrp2_sock.c
+@@ -174,8 +174,10 @@ static int show_sockopts(int family)
+ 		return 1;
  	}
  
--	/* clear the contiguous bits until the end boundary */
--	if (count) {
--		blkno = la_start_blk +
--			ocfs2_clusters_to_blocks(osb->sb,
--					start - count);
--
--		trace_ocfs2_sync_local_to_main_free(
--				count, start - count,
--				(unsigned long long)la_start_blk,
--				(unsigned long long)blkno);
--
--		status = ocfs2_release_clusters(handle,
--				main_bm_inode,
--				main_bm_bh, blkno,
--				count);
--		if (status < 0)
--			mlog_errno(status);
--	}
--
- bail:
- 	if (status)
- 		mlog_errno(status);
+-	if (get_bind_to_device(sd, name, sizeof(name)) < 0)
++	if (get_bind_to_device(sd, name, sizeof(name)) < 0) {
++		close(sd);
+ 		return 1;
++	}
+ 
+ 	mark = get_somark(sd);
+ 	prio = get_priority(sd);
+-- 
+2.43.0
+
 
 
 
