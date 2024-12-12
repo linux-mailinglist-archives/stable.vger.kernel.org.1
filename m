@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F5F9EF106
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7879EEC42
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 089091625C2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BAD416589C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30E4223316;
-	Thu, 12 Dec 2024 16:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E506821C166;
+	Thu, 12 Dec 2024 15:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVVAy27i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAjnMwTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF7E211A34;
-	Thu, 12 Dec 2024 16:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DB4217F48;
+	Thu, 12 Dec 2024 15:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020166; cv=none; b=h2OWgnnvOQHX4HhpYi9Y/8VtGW8QR8B0rs3OhrwNvyQH4w0RY9//yM7F+G1Ji+bgFM+8DdxM34BgoyOTeZ5cVZxiGCgki8wzT0IkdnZm2485OXzkxov+qBQW/2UgXx6ouCI1t4+Fc4DJWuj5lHl8dZOkXcA5xd7VYOd1WWErSEw=
+	t=1734017437; cv=none; b=htak+mNJvSNzJ0DTftr/IHif867KtNio1i7/BCvIuk+vekKwPnqYdw8S/9dlGz55fwCmiDQ2fBlOu9lL6IsVSAID9EjodrXz621P6MWRREqKGK0aNXgGvlDYXyyhsV/rNyp+wv/KaryVV5vyqE5mB4EfPHGb+9tsvfbyqwCLK9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020166; c=relaxed/simple;
-	bh=HR6ZDmIPKxVSdCw7CAGdg7IQxYmmfcCua6qkd+C57+g=;
+	s=arc-20240116; t=1734017437; c=relaxed/simple;
+	bh=h/sVdjHV+8JbDX7bwhBqt8CTgQ3QuPnA78h3kRqUgzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=craYDBZX3F20SVCCzgCZIhP1nO/7WSo0P+qpmkNOJoutWpjMKMQ/qtlRQjOctiMwL/xiptbGo7hIUnW1nbJ4OyMBbk+V9KRMlAvfooSGn+RaMTpJ6vGQE7lDATrKd5E6/U0B6Cla0E+IxBw+oM7rFDVBWazvoaHgRQLt4ycosNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVVAy27i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9678C4CECE;
-	Thu, 12 Dec 2024 16:16:05 +0000 (UTC)
+	 MIME-Version; b=KbfCK22isURSFzih1J+mTe99GSnpOSqj+0KOGHE0C4GaCrftR5tq3aRuMOEGkkjxvlsDg70iUYa+ODLZ0peg5618pumK53Ic9oJwAC2RsLWhXE47RevkdOVscr2M5VPXfQhdlXKNdAe3EczJZpMK4OWVMc3IueiLJTJtJyM/lpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAjnMwTC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFBAC4CECE;
+	Thu, 12 Dec 2024 15:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020166;
-	bh=HR6ZDmIPKxVSdCw7CAGdg7IQxYmmfcCua6qkd+C57+g=;
+	s=korg; t=1734017437;
+	bh=h/sVdjHV+8JbDX7bwhBqt8CTgQ3QuPnA78h3kRqUgzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVVAy27iWJDVmsGQziKS7/OcI8wEmTG3GyH0TpjbN8flY7JzZho6sIeTdHil3KsrJ
-	 qW9uxYhNtgeFpfuDRyAENteUICZIGLdEhZMy4oHgsd7PhxzXHN6EUdphi6b7ui7VZ1
-	 ZL8w5Fql8z7HtBj2mRp8TGefpn5AaNrDamhfYvgE=
+	b=PAjnMwTCSvL6Je7domJYuU5duR39RrkeG0kno68yBOF6Waw55aymLS1ExeFOeafvo
+	 1/N8NxJ3cMYNEFjm03Zz6e5U0q9jiFNTFUu4c11OyjwPG/skVMC0MCCrL1HgXnmBFP
+	 6FcOBlbh/PC5X5dF53178528LtlRxEp+BZTI5PPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Vrastil <michal.vrastil@hidglobal.com>,
-	Elson Roy Serrao <quic_eserrao@quicinc.com>,
-	Peter korsgaard <peter@korsgaard.com>
-Subject: [PATCH 6.1 387/772] Revert "usb: gadget: composite: fix OS descriptors w_value logic"
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 013/356] can: sja1000: sja1000_err(): fix {rx,tx}_errors statistics
 Date: Thu, 12 Dec 2024 15:55:32 +0100
-Message-ID: <20241212144405.901770934@linuxfoundation.org>
+Message-ID: <20241212144245.144663085@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Vrastil <michal.vrastil@hidglobal.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-commit 51cdd69d6a857f527d6d0697a2e1f0fa8bca1005 upstream.
+[ Upstream commit 2c4ef3af4b028a0eaaf378df511d3b425b1df61f ]
 
-This reverts commit ec6ce7075ef879b91a8710829016005dc8170f17.
+The sja1000_err() function only incremented the receive error counter
+and never the transmit error counter, even if the ECC_DIR flag reported
+that an error had occurred during transmission.
 
-Fix installation of WinUSB driver using OS descriptors. Without the
-fix the drivers are not installed correctly and the property
-'DeviceInterfaceGUID' is missing on host side.
+Increment the receive/transmit error counter based on the value of the
+ECC_DIR flag.
 
-The original change was based on the assumption that the interface
-number is in the high byte of wValue but it is in the low byte,
-instead. Unfortunately, the fix is based on MS documentation which is
-also wrong.
-
-The actual USB request for OS descriptors (using USB analyzer) looks
-like:
-
-Offset  0   1   2   3   4   5   6   7
-0x000   C1  A1  02  00  05  00  0A  00
-
-C1: bmRequestType (device to host, vendor, interface)
-A1: nas magic number
-0002: wValue (2: nas interface)
-0005: wIndex (5: get extended property i.e. nas interface GUID)
-008E: wLength (142)
-
-The fix was tested on Windows 10 and Windows 11.
-
-Cc: stable@vger.kernel.org
-Fixes: ec6ce7075ef8 ("usb: gadget: composite: fix OS descriptors w_value logic")
-Signed-off-by: Michal Vrastil <michal.vrastil@hidglobal.com>
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Acked-by: Peter korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20241113235433.20244-1-quic_eserrao@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-10-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/net/can/sja1000/sja1000.c | 67 ++++++++++++++++++-------------
+ 1 file changed, 39 insertions(+), 28 deletions(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2032,8 +2032,20 @@ unknown:
- 			memset(buf, 0, w_length);
- 			buf[5] = 0x01;
- 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
-+			/*
-+			 * The Microsoft CompatID OS Descriptor Spec(w_index = 0x4) and
-+			 * Extended Prop OS Desc Spec(w_index = 0x5) state that the
-+			 * HighByte of wValue is the InterfaceNumber and the LowByte is
-+			 * the PageNumber. This high/low byte ordering is incorrectly
-+			 * documented in the Spec. USB analyzer output on the below
-+			 * request packets show the high/low byte inverted i.e LowByte
-+			 * is the InterfaceNumber and the HighByte is the PageNumber.
-+			 * Since we dont support >64KB CompatID/ExtendedProp descriptors,
-+			 * PageNumber is set to 0. Hence verify that the HighByte is 0
-+			 * for below two cases.
-+			 */
- 			case USB_RECIP_DEVICE:
--				if (w_index != 0x4 || (w_value & 0xff))
-+				if (w_index != 0x4 || (w_value >> 8))
- 					break;
- 				buf[6] = w_index;
- 				/* Number of ext compat interfaces */
-@@ -2049,9 +2061,9 @@ unknown:
- 				}
- 				break;
- 			case USB_RECIP_INTERFACE:
--				if (w_index != 0x5 || (w_value & 0xff))
-+				if (w_index != 0x5 || (w_value >> 8))
- 					break;
--				interface = w_value >> 8;
-+				interface = w_value & 0xFF;
- 				if (interface >= MAX_CONFIG_INTERFACES ||
- 				    !os_desc_cfg->interface[interface])
- 					break;
+diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
+index 743c2eb62b877..10e211d917e31 100644
+--- a/drivers/net/can/sja1000/sja1000.c
++++ b/drivers/net/can/sja1000/sja1000.c
+@@ -416,8 +416,6 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 	int ret = 0;
+ 
+ 	skb = alloc_can_err_skb(dev, &cf);
+-	if (skb == NULL)
+-		return -ENOMEM;
+ 
+ 	txerr = priv->read_reg(priv, SJA1000_TXERR);
+ 	rxerr = priv->read_reg(priv, SJA1000_RXERR);
+@@ -425,8 +423,11 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 	if (isrc & IRQ_DOI) {
+ 		/* data overrun interrupt */
+ 		netdev_dbg(dev, "data overrun interrupt\n");
+-		cf->can_id |= CAN_ERR_CRTL;
+-		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
++		if (skb) {
++			cf->can_id |= CAN_ERR_CRTL;
++			cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
++		}
++
+ 		stats->rx_over_errors++;
+ 		stats->rx_errors++;
+ 		sja1000_write_cmdreg(priv, CMD_CDO);	/* clear bit */
+@@ -452,7 +453,7 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 		else
+ 			state = CAN_STATE_ERROR_ACTIVE;
+ 	}
+-	if (state != CAN_STATE_BUS_OFF) {
++	if (state != CAN_STATE_BUS_OFF && skb) {
+ 		cf->can_id |= CAN_ERR_CNT;
+ 		cf->data[6] = txerr;
+ 		cf->data[7] = rxerr;
+@@ -460,33 +461,38 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 	if (isrc & IRQ_BEI) {
+ 		/* bus error interrupt */
+ 		priv->can.can_stats.bus_error++;
+-		stats->rx_errors++;
+ 
+ 		ecc = priv->read_reg(priv, SJA1000_ECC);
++		if (skb) {
++			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+ 
+-		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+-
+-		/* set error type */
+-		switch (ecc & ECC_MASK) {
+-		case ECC_BIT:
+-			cf->data[2] |= CAN_ERR_PROT_BIT;
+-			break;
+-		case ECC_FORM:
+-			cf->data[2] |= CAN_ERR_PROT_FORM;
+-			break;
+-		case ECC_STUFF:
+-			cf->data[2] |= CAN_ERR_PROT_STUFF;
+-			break;
+-		default:
+-			break;
+-		}
++			/* set error type */
++			switch (ecc & ECC_MASK) {
++			case ECC_BIT:
++				cf->data[2] |= CAN_ERR_PROT_BIT;
++				break;
++			case ECC_FORM:
++				cf->data[2] |= CAN_ERR_PROT_FORM;
++				break;
++			case ECC_STUFF:
++				cf->data[2] |= CAN_ERR_PROT_STUFF;
++				break;
++			default:
++				break;
++			}
+ 
+-		/* set error location */
+-		cf->data[3] = ecc & ECC_SEG;
++			/* set error location */
++			cf->data[3] = ecc & ECC_SEG;
++		}
+ 
+ 		/* Error occurred during transmission? */
+-		if ((ecc & ECC_DIR) == 0)
+-			cf->data[2] |= CAN_ERR_PROT_TX;
++		if ((ecc & ECC_DIR) == 0) {
++			stats->tx_errors++;
++			if (skb)
++				cf->data[2] |= CAN_ERR_PROT_TX;
++		} else {
++			stats->rx_errors++;
++		}
+ 	}
+ 	if (isrc & IRQ_EPI) {
+ 		/* error passive interrupt */
+@@ -502,8 +508,10 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 		netdev_dbg(dev, "arbitration lost interrupt\n");
+ 		alc = priv->read_reg(priv, SJA1000_ALC);
+ 		priv->can.can_stats.arbitration_lost++;
+-		cf->can_id |= CAN_ERR_LOSTARB;
+-		cf->data[0] = alc & 0x1f;
++		if (skb) {
++			cf->can_id |= CAN_ERR_LOSTARB;
++			cf->data[0] = alc & 0x1f;
++		}
+ 	}
+ 
+ 	if (state != priv->can.state) {
+@@ -516,6 +524,9 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 			can_bus_off(dev);
+ 	}
+ 
++	if (!skb)
++		return -ENOMEM;
++
+ 	netif_rx(skb);
+ 
+ 	return ret;
+-- 
+2.43.0
+
 
 
 
