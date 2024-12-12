@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE7A9EF801
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDD59EF6DC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AD7028EA1C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6E8C18916B5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFBC216E2D;
-	Thu, 12 Dec 2024 17:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA7221660C;
+	Thu, 12 Dec 2024 17:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8KzqiTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phrFgDj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D78213E6F;
-	Thu, 12 Dec 2024 17:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4EF2144C4;
+	Thu, 12 Dec 2024 17:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025108; cv=none; b=hz58vzZb+glBYMlcR9mEOjJiolkiMO3Jw2U5CUbyhiAy85ouk6MClEDCHcaP+hIXIrCQMRptTV7Oe9CXJHKVUAtQAaPP4vtBBfI1oHa+JyRhWoPNqQkOSqCb0mz4Jho0bBFS4Tpqf6CE8EZCAx81JhREw0SV4/x0EQ/CHT2nqrA=
+	t=1734024265; cv=none; b=gOmRf3DIVVr4AiBzr9gqbAPc3+JzsBRo68/xUiXOTlrCfkNY0SAtN7TpO9Ju6GVYgDNUpOmth/OFSAlqm/xhsVUEhApOAvMIUPzUbN+jqG5ZGAYFrkEikNRPSZnyrb/russ0pQtPoG3RKNQNLz9xWzA4UVwd4tK0aEBaRejGWTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025108; c=relaxed/simple;
-	bh=PDqLkYuDwSeHF+QiJvZCKirq5h46b/Avuii7ZnHEPpY=;
+	s=arc-20240116; t=1734024265; c=relaxed/simple;
+	bh=uESCVqeDFtSPBt7QE3BwFf7NB4o7VFQKBYtvV2/9DNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VK1bGPXMnIyu88MVYly7wYotK2it2yoN54DRmh47rKzhoRv5Duofj2TawAZ7yH5H1WTWYAPQ4Ta0pnCCZLf3hL+iL7JGfZXBgcws7Xc5tqzmuoLwCP1hSkBbgawlpMkqCA0JIBz79aXvdNQrESkDkjb/ENmbWR/aZy1swOHLYuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8KzqiTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4849BC4CECE;
-	Thu, 12 Dec 2024 17:38:27 +0000 (UTC)
+	 MIME-Version; b=UvYMtOJHak9bVH8w9l7E/Q4LPJ9JvX30O/Sz70wqf6s7WoWEJmL83psZsZ2h7QBQacRBl43BchqK2Suo148s7VsmvZmMXz4uBoHIF3+KFen+b/IXiNwCsoNvawY0J1tE0DQHPM926jh/wRuDndovCpMCzSk2XpR4N90HB/LE/FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phrFgDj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50596C4CECE;
+	Thu, 12 Dec 2024 17:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025107;
-	bh=PDqLkYuDwSeHF+QiJvZCKirq5h46b/Avuii7ZnHEPpY=;
+	s=korg; t=1734024265;
+	bh=uESCVqeDFtSPBt7QE3BwFf7NB4o7VFQKBYtvV2/9DNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s8KzqiTIcc86JYQ5h3/LNSEvSyEYBM7JlW22yoYSdzb+fxD+AlnkYavCF1Ui+XYnz
-	 sHbuUPIH2zRRRWYcSe76vpNECOSOVbtAxUxIZdab3gravwe9axiGUAP6kXM97HA7co
-	 TTDIoV7jkB5mTGj8GGHk0gAP0ROgDvnap4ilm4Po=
+	b=phrFgDj2TtCxm8S8SCYvC0Ao59zsRgAsil8wsy9XEQOzYZmthTMk3LE3mFnGmS3RS
+	 IVs/DjdeQ+4GVzKXFVM4zTsnKciP4b8SYzJDg/nMlt89t0L2p4t9iw7iAO9wbqXM2w
+	 L6DC97P4keYhC7KE1u2M8iz/hgUWtcth6LvWpAA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 059/321] wifi: mwifiex: Use IRQF_NO_AUTOEN flag in request_irq()
+Subject: [PATCH 5.10 239/459] ALSA: hda/realtek: Update ALC256 depop procedure
 Date: Thu, 12 Dec 2024 15:59:37 +0100
-Message-ID: <20241212144232.323179744@linuxfoundation.org>
+Message-ID: <20241212144303.020558307@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 9a98dd48b6d834d7a3fe5e8e7b8c3a1d006f9685 ]
+[ Upstream commit cc3d0b5dd989d3238d456f9fd385946379a9c13d ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+Old procedure has a chance to meet Headphone no output.
 
-Fixes: 853402a00823 ("mwifiex: Enable WoWLAN for both sdio and pcie")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240910124314.698896-3-ruanjinjie@huawei.com
+Fixes: 4a219ef8f370 ("ALSA: hda/realtek - Add ALC256 HP depop function")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/463c5f93715d4714967041a0a8cec28e@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 42 ++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index 5894566ec4805..d788e2e6397ce 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -1600,7 +1600,8 @@ static void mwifiex_probe_of(struct mwifiex_adapter *adapter)
- 	}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index b1dbb0b4c8158..eec99b9cd7692 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3596,25 +3596,22 @@ static void alc256_init(struct hda_codec *codec)
  
- 	ret = devm_request_irq(dev, adapter->irq_wakeup,
--			       mwifiex_irq_wakeup_handler, IRQF_TRIGGER_LOW,
-+			       mwifiex_irq_wakeup_handler,
-+			       IRQF_TRIGGER_LOW | IRQF_NO_AUTOEN,
- 			       "wifi_wake", adapter);
- 	if (ret) {
- 		dev_err(dev, "Failed to request irq_wakeup %d (%d)\n",
-@@ -1608,7 +1609,6 @@ static void mwifiex_probe_of(struct mwifiex_adapter *adapter)
- 		goto err_exit;
- 	}
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
  
--	disable_irq(adapter->irq_wakeup);
- 	if (device_init_wakeup(dev, true)) {
- 		dev_err(dev, "fail to init wakeup for mwifiex\n");
- 		goto err_exit;
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+ 
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+-
+-	snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp_pin_sense || spec->ultra_low_power)
+-		msleep(85);
+-
+-	snd_hda_codec_write(codec, hp_pin, 0,
++		snd_hda_codec_write(codec, hp_pin, 0,
+ 			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+ 
+-	if (hp_pin_sense || spec->ultra_low_power)
+-		msleep(100);
++		msleep(75);
++
++		snd_hda_codec_write(codec, hp_pin, 0,
++			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
+ 
++		msleep(75);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
++	}
+ 	alc_update_coef_idx(codec, 0x46, 3 << 12, 0);
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
+ 	alc_update_coefex_idx(codec, 0x53, 0x02, 0x8000, 1 << 15); /* Clear bit */
+ 	alc_update_coefex_idx(codec, 0x53, 0x02, 0x8000, 0 << 15);
+ 	/*
+@@ -3638,29 +3635,28 @@ static void alc256_shutup(struct hda_codec *codec)
+ 	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+ 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 
+-	if (hp_pin_sense)
++	if (hp_pin_sense) {
+ 		msleep(2);
+ 
+-	snd_hda_codec_write(codec, hp_pin, 0,
++		snd_hda_codec_write(codec, hp_pin, 0,
+ 			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+ 
+-	if (hp_pin_sense || spec->ultra_low_power)
+-		msleep(85);
++		msleep(75);
+ 
+ 	/* 3k pull low control for Headset jack. */
+ 	/* NOTE: call this before clearing the pin, otherwise codec stalls */
+ 	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
+ 	 * when booting with headset plugged. So skip setting it for the codec alc257
+ 	 */
+-	if (spec->en_3kpull_low)
+-		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
++		if (spec->en_3kpull_low)
++			alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
+ 
+-	if (!spec->no_shutup_pins)
+-		snd_hda_codec_write(codec, hp_pin, 0,
++		if (!spec->no_shutup_pins)
++			snd_hda_codec_write(codec, hp_pin, 0,
+ 				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+ 
+-	if (hp_pin_sense || spec->ultra_low_power)
+-		msleep(100);
++		msleep(75);
++	}
+ 
+ 	alc_auto_setup_eapd(codec, false);
+ 	alc_shutup_pins(codec);
 -- 
 2.43.0
 
