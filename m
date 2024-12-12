@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FA69EECCD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89AA9EEABE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F4901887DDA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78FA22821B6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B972121C172;
-	Thu, 12 Dec 2024 15:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF322153F8;
+	Thu, 12 Dec 2024 15:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVNjlQyx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIkC5hPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BEC21578B;
-	Thu, 12 Dec 2024 15:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09732EAE5;
+	Thu, 12 Dec 2024 15:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017758; cv=none; b=k87JKJ3ttb7PNuhm7OxgeTvbH/WJL2d5oo3EH+vxSfCZTPpt8cdkhYq22Zne+mTZQSPlmP63UQKU5BuT+cazQ9RSZYXhVZP1j0tAxqem71d9sGdk6qe+CZZ7cDS05VR/ohcvVinPghU5VAI6HU++GDhhcLLZK0fsMLUtahFnvZs=
+	t=1734016639; cv=none; b=a8NmQyDYkvTvr6j7WYvy7Rns8DfEsEkIdbdIYw7wnE1Q1llizavygNGxRfW67Y2MDhHPzct5OAXoFNOobWSX3A/jgn0wYME9iZft+9x9Yd4DYb15l7+7ua7ON4Z/y25vp+uWJl7iBJzL/Rv+OT9FQ6ZKUqB1nZLn155HZ7n3TSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017758; c=relaxed/simple;
-	bh=KPxi4ZGvUKyq5/Y40SDBDgECRgfzBUpk7uxYaB13noA=;
+	s=arc-20240116; t=1734016639; c=relaxed/simple;
+	bh=kJJr+R0wj/IPqXneRa5Bk09HszHWq7qmp44GTYmpp1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTce1Lqg+FyZem4hD74efgPo+1+Ax0oQ/VZ0f6g8YG466LXhHbC55QnRVkk0083b8RugW2UbpzHihX5At6AtD3RiFUgR/j8pI2YreNlWsPoIHgdXERukxoVqb9BVtyXxMwrw6KDjWnL3SrjzaOnnB0WClQjS11le9iXxjqyuLo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVNjlQyx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA236C4CECE;
-	Thu, 12 Dec 2024 15:35:57 +0000 (UTC)
+	 MIME-Version; b=k+oPdF95/Pp2d4gCLprv5CLaZVgNR6YB7uWmCIAkEHnQ87Kio3wlo6cykL+5yywUYc9Ou3r6XIYN1vzLnUnHVe/pwj2d5vHu8ex9k5nf915YhxOaT0aGfS/MRjmk7f6OOyMFSlddzXLDoBxtRoFAYMTT2Jqkj+Xo+OFsECCaC1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIkC5hPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8D0C4CED4;
+	Thu, 12 Dec 2024 15:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017758;
-	bh=KPxi4ZGvUKyq5/Y40SDBDgECRgfzBUpk7uxYaB13noA=;
+	s=korg; t=1734016639;
+	bh=kJJr+R0wj/IPqXneRa5Bk09HszHWq7qmp44GTYmpp1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVNjlQyxEyziLl+9Ja8R6Cv6f3aSl/OJbBhWtah1OdSbr4+6neIX2nmq6qVX/Gx4s
-	 qhpnehUEjOHGqtfYdRdw6dlcHrUWR65xmUklQoUzp+bqcFWFxNdsVi2tCxquVep3qd
-	 iI+mDuCWJVSy6eAOq5eYmmGOl/+hJ+G0oEHchf2c=
+	b=HIkC5hPG0uN4Zy6TV1f1UX5bk8POgrfQuOdEz7oeQhBGjaMHsWtEC7Sgumkyh5fF8
+	 ghKkSV1J6xlX445+EHA1JoO9WfH+nWdjq5ydph3xCw/dkb79QqefAr7gfTGWusrbCP
+	 37vrVi/z8sQoYmLvCT5se+PoIJL2SG2luQPa+psI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Shekhar Chauhan <shekhar.chauhan@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/356] i3c: master: Replace hard code 2 with macro I3C_ADDR_SLOT_STATUS_BITS
+Subject: [PATCH 6.12 254/466] drm/xe/pciids: separate ARL and MTL PCI IDs
 Date: Thu, 12 Dec 2024 15:57:03 +0100
-Message-ID: <20241212144248.749006275@linuxfoundation.org>
+Message-ID: <20241212144316.824212969@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 16aed0a6520ba01b7d22c32e193fc1ec674f92d4 ]
+[ Upstream commit cdb56a63f7eef34e89b045fc8bcae8d326bbdb19 ]
 
-Replace the hardcoded value 2, which indicates 2 bits for I3C address
-status, with the predefined macro I3C_ADDR_SLOT_STATUS_BITS.
+Avoid including PCI IDs for one platform to the PCI IDs of another. It's
+more clear to deal with them completely separately at the PCI ID macro
+level.
 
-Improve maintainability and extensibility of the code.
-
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241021-i3c_dts_assign-v8-1-4098b8bde01e@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 851bd21cdb55 ("i3c: master: Fix dynamic address leak when 'assigned-address' is present")
+Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/a30cb0da7694a8eccceba66d676ac59aa0e96176.1725443121.git.jani.nikula@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c       | 4 ++--
- include/linux/i3c/master.h | 4 +++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_pci.c   |  1 +
+ include/drm/intel/xe_pciids.h | 13 ++++++++-----
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 78171a754a3f8..2b6bc03652139 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -345,7 +345,7 @@ static enum i3c_addr_slot_status
- i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
- {
- 	unsigned long status;
--	int bitpos = addr * 2;
-+	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
+diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
+index 8563206f643e6..025d649434673 100644
+--- a/drivers/gpu/drm/xe/xe_pci.c
++++ b/drivers/gpu/drm/xe/xe_pci.c
+@@ -388,6 +388,7 @@ static const struct pci_device_id pciidlist[] = {
+ 	XE_RPLS_IDS(INTEL_VGA_DEVICE, &adl_s_desc),
+ 	XE_DG1_IDS(INTEL_VGA_DEVICE, &dg1_desc),
+ 	XE_ATS_M_IDS(INTEL_VGA_DEVICE, &ats_m_desc),
++	XE_ARL_IDS(INTEL_VGA_DEVICE, &mtl_desc),
+ 	XE_DG2_IDS(INTEL_VGA_DEVICE, &dg2_desc),
+ 	XE_MTL_IDS(INTEL_VGA_DEVICE, &mtl_desc),
+ 	XE_LNL_IDS(INTEL_VGA_DEVICE, &lnl_desc),
+diff --git a/include/drm/intel/xe_pciids.h b/include/drm/intel/xe_pciids.h
+index 7ee7524141f10..67dad09e62bc8 100644
+--- a/include/drm/intel/xe_pciids.h
++++ b/include/drm/intel/xe_pciids.h
+@@ -174,16 +174,19 @@
+ 	XE_ATS_M150_IDS(MACRO__, ## __VA_ARGS__),\
+ 	XE_ATS_M75_IDS(MACRO__, ## __VA_ARGS__)
  
- 	if (addr > I2C_MAX_ADDR)
- 		return I3C_ADDR_SLOT_RSVD;
-@@ -359,7 +359,7 @@ i3c_bus_get_addr_slot_status(struct i3c_bus *bus, u16 addr)
- static void i3c_bus_set_addr_slot_status(struct i3c_bus *bus, u16 addr,
- 					 enum i3c_addr_slot_status status)
- {
--	int bitpos = addr * 2;
-+	int bitpos = addr * I3C_ADDR_SLOT_STATUS_BITS;
- 	unsigned long *ptr;
- 
- 	if (addr > I2C_MAX_ADDR)
-diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-index f0aa4c549aa7f..ed6b153481021 100644
---- a/include/linux/i3c/master.h
-+++ b/include/linux/i3c/master.h
-@@ -305,6 +305,8 @@ enum i3c_addr_slot_status {
- 	I3C_ADDR_SLOT_STATUS_MASK = 3,
- };
- 
-+#define I3C_ADDR_SLOT_STATUS_BITS 2
+-/* MTL / ARL */
++/* ARL */
++#define XE_ARL_IDS(MACRO__, ...)		\
++	MACRO__(0x7D41, ## __VA_ARGS__),	\
++	MACRO__(0x7D51, ## __VA_ARGS__),        \
++	MACRO__(0x7D67, ## __VA_ARGS__),	\
++	MACRO__(0x7DD1, ## __VA_ARGS__)
 +
- /**
-  * struct i3c_bus - I3C bus object
-  * @cur_master: I3C master currently driving the bus. Since I3C is multi-master
-@@ -346,7 +348,7 @@ enum i3c_addr_slot_status {
- struct i3c_bus {
- 	struct i3c_dev_desc *cur_master;
- 	int id;
--	unsigned long addrslots[((I2C_MAX_ADDR + 1) * 2) / BITS_PER_LONG];
-+	unsigned long addrslots[((I2C_MAX_ADDR + 1) * I3C_ADDR_SLOT_STATUS_BITS) / BITS_PER_LONG];
- 	enum i3c_bus_mode mode;
- 	struct {
- 		unsigned long i3c;
++/* MTL */
+ #define XE_MTL_IDS(MACRO__, ...)		\
+ 	MACRO__(0x7D40, ## __VA_ARGS__),	\
+-	MACRO__(0x7D41, ## __VA_ARGS__),	\
+ 	MACRO__(0x7D45, ## __VA_ARGS__),	\
+-	MACRO__(0x7D51, ## __VA_ARGS__),        \
+ 	MACRO__(0x7D55, ## __VA_ARGS__),	\
+ 	MACRO__(0x7D60, ## __VA_ARGS__),	\
+-	MACRO__(0x7D67, ## __VA_ARGS__),	\
+-	MACRO__(0x7DD1, ## __VA_ARGS__),        \
+ 	MACRO__(0x7DD5, ## __VA_ARGS__)
+ 
+ #define XE_LNL_IDS(MACRO__, ...) \
 -- 
 2.43.0
 
