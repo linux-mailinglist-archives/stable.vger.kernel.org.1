@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1ADA9EF9B5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D23EF9EF5DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FB05188B9E3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F22A71898BFD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F2B215798;
-	Thu, 12 Dec 2024 17:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE17D225409;
+	Thu, 12 Dec 2024 17:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/FPuGCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwYAqUtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F98168C3F;
-	Thu, 12 Dec 2024 17:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90183223C42;
+	Thu, 12 Dec 2024 17:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025666; cv=none; b=N/l5DU+lPTXZHjfdw6brU0Btin47WkAGboHDsZxkAVCVIw6N9+Ld0FSErFmHy9GIQxH2sjD42Wy2sU1BrlOEmeX4+etFMckOekIkG7e+HcmvpLhpfM+FCkGhp6P6gWvVww2BjRI+8H2yLdHkRPJPrNEKzeiDdkt2Pg5wb1LIQZo=
+	t=1734023421; cv=none; b=cCtC0dyEx7pzVOFvfhxdiowK1E+Un0j+6zgwrjsVF7SI0IsVWBAoaVnABnm5C0ghIi+3yrERq3qTEgwiXPy2/rR/Gf4NUKHlmkh0P23unkwRdc2tHA1b9jSmxThKKgVBfDwyD7O2E/l8KVVHzlPKRTD6u6VPFCRlVy4kR24S364=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025666; c=relaxed/simple;
-	bh=rxh3Tw2JY0SL9lGOphqtGIsqKzt7lZpRZIS6QC7IRJ0=;
+	s=arc-20240116; t=1734023421; c=relaxed/simple;
+	bh=n9ZLcGcY0ECnuVKdilhkvuiiHbW+z47o3h371rvIm/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hnIV6zcuZFmZSXUgs9vfINygVbE7mA9d7UAzR3MCQ27Eu//gDUQbuQSQekAvV1LsdW1cHh4me0iCTgpBrhdNlKPRqYr1rx3uxGGN+Fnshv81R8hsmeOZcvrMmmHfKGPWUxpgUFJh1W6bLw3yKO7AiAAcXAYeX6JLK1JWS40MAxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/FPuGCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF0DC4CED0;
-	Thu, 12 Dec 2024 17:47:45 +0000 (UTC)
+	 MIME-Version; b=jBFmii2SxXre9S7Ib2LlcI59hmTuOCOE68KTXECGDRJN5QnQEcqYR405KHLNVrdue6dZLog2DDvugVl8go1Zc84yAfht3RDssufqlmNnNv7eHIMNMe87ddDKK4f61IAtPs7CvCXd0VNUvFC2NYAnAeEyfdSXeShtww+LO62DwTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwYAqUtH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911CFC4CECE;
+	Thu, 12 Dec 2024 17:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025666;
-	bh=rxh3Tw2JY0SL9lGOphqtGIsqKzt7lZpRZIS6QC7IRJ0=;
+	s=korg; t=1734023421;
+	bh=n9ZLcGcY0ECnuVKdilhkvuiiHbW+z47o3h371rvIm/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/FPuGCU5IZSKSHjfzf9xaSYxEBdGsyv3fdAIX+SY34W72sc0mMlBXT63gKjH8pD1
-	 Kru6JmHSr0J2EypFvvVKJXq+MX3eHyVXi0oJAljliZVFn/dbxj5RoAEed8eAHBFtdO
-	 pXB6wRJzf3yr1Jm6P2UNjE70t9b7D32QZDCOfzx0=
+	b=VwYAqUtH60i5vkBpqMXxqyuQa19dqR9P5s7vSveF4jgBbdf2uwdkkm8BzQ0kcVgp6
+	 RY4BkcHcgaQs+D3SeBCJcYfbayhuhbFjs+IbmnAxUAQLVOqLvWNjB+Phyra6QZ3KYV
+	 odcU2Uh1ifdcMx45ahixiMyyoOwMrUjjRN8j2daA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 206/321] media: venus: Fix pm_runtime_set_suspended() with runtime pm enabled
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Parker Newman <pnewman@connecttech.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 529/565] misc: eeprom: eeprom_93cx6: Add quirk for extra read clock cycle
 Date: Thu, 12 Dec 2024 16:02:04 +0100
-Message-ID: <20241212144238.120513963@linuxfoundation.org>
+Message-ID: <20241212144332.723313923@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Parker Newman <pnewman@connecttech.com>
 
-commit 2a20869f7d798aa2b69e45b863eaf1b1ecf98278 upstream.
+[ Upstream commit 7738a7ab9d12c5371ed97114ee2132d4512e9fd5 ]
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+Add a quirk similar to eeprom_93xx46 to add an extra clock cycle before
+reading data from the EEPROM.
 
-Cc: stable@vger.kernel.org
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Acked-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+The 93Cx6 family of EEPROMs output a "dummy 0 bit" between the writing
+of the op-code/address from the host to the EEPROM and the reading of
+the actual data from the EEPROM.
+
+More info can be found on page 6 of the AT93C46 datasheet (linked below).
+Similar notes are found in other 93xx6 datasheets.
+
+In summary the read operation for a 93Cx6 EEPROM is:
+Write to EEPROM:	110[A5-A0]	(9 bits)
+Read from EEPROM:	0[D15-D0]	(17 bits)
+
+Where:
+	110 is the start bit and READ OpCode
+	[A5-A0] is the address to read from
+	0 is a "dummy bit" preceding the actual data
+	[D15-D0] is the actual data.
+
+Looking at the READ timing diagrams in the 93Cx6 datasheets the dummy
+bit should be clocked out on the last address bit clock cycle meaning it
+should be discarded naturally.
+
+However, depending on the hardware configuration sometimes this dummy
+bit is not discarded. This is the case with Exar PCI UARTs which require
+an extra clock cycle between sending the address and reading the data.
+
+Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-5193-SEEPROM-AT93C46D-Datasheet.pdf
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Parker Newman <pnewman@connecttech.com>
+Link: https://lore.kernel.org/r/0f23973efefccd2544705a0480b4ad4c2353e407.1727880931.git.pnewman@connecttech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/eeprom/eeprom_93cx6.c | 10 ++++++++++
+ include/linux/eeprom_93cx6.h       | 11 +++++++++++
+ 2 files changed, 21 insertions(+)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -335,8 +335,8 @@ err_of_depopulate:
- 	of_platform_depopulate(dev);
- err_runtime_disable:
- 	pm_runtime_put_noidle(dev);
--	pm_runtime_set_suspended(dev);
- 	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
- 	hfi_destroy(core);
- 	return ret;
- }
+diff --git a/drivers/misc/eeprom/eeprom_93cx6.c b/drivers/misc/eeprom/eeprom_93cx6.c
+index 9627294fe3e95..4c9827fe92173 100644
+--- a/drivers/misc/eeprom/eeprom_93cx6.c
++++ b/drivers/misc/eeprom/eeprom_93cx6.c
+@@ -186,6 +186,11 @@ void eeprom_93cx6_read(struct eeprom_93cx6 *eeprom, const u8 word,
+ 	eeprom_93cx6_write_bits(eeprom, command,
+ 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width);
+ 
++	if (has_quirk_extra_read_cycle(eeprom)) {
++		eeprom_93cx6_pulse_high(eeprom);
++		eeprom_93cx6_pulse_low(eeprom);
++	}
++
+ 	/*
+ 	 * Read the requested 16 bits.
+ 	 */
+@@ -252,6 +257,11 @@ void eeprom_93cx6_readb(struct eeprom_93cx6 *eeprom, const u8 byte,
+ 	eeprom_93cx6_write_bits(eeprom, command,
+ 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width + 1);
+ 
++	if (has_quirk_extra_read_cycle(eeprom)) {
++		eeprom_93cx6_pulse_high(eeprom);
++		eeprom_93cx6_pulse_low(eeprom);
++	}
++
+ 	/*
+ 	 * Read the requested 8 bits.
+ 	 */
+diff --git a/include/linux/eeprom_93cx6.h b/include/linux/eeprom_93cx6.h
+index c860c72a921d0..3a485cc0e0fa0 100644
+--- a/include/linux/eeprom_93cx6.h
++++ b/include/linux/eeprom_93cx6.h
+@@ -11,6 +11,8 @@
+ 	Supported chipsets: 93c46, 93c56 and 93c66.
+  */
+ 
++#include <linux/bits.h>
++
+ /*
+  * EEPROM operation defines.
+  */
+@@ -34,6 +36,7 @@
+  * @register_write(struct eeprom_93cx6 *eeprom): handler to
+  * write to the eeprom register by using all reg_* fields.
+  * @width: eeprom width, should be one of the PCI_EEPROM_WIDTH_* defines
++ * @quirks: eeprom or controller quirks
+  * @drive_data: Set if we're driving the data line.
+  * @reg_data_in: register field to indicate data input
+  * @reg_data_out: register field to indicate data output
+@@ -50,6 +53,9 @@ struct eeprom_93cx6 {
+ 	void (*register_write)(struct eeprom_93cx6 *eeprom);
+ 
+ 	int width;
++	unsigned int quirks;
++/* Some EEPROMs require an extra clock cycle before reading */
++#define PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE	BIT(0)
+ 
+ 	char drive_data;
+ 	char reg_data_in;
+@@ -71,3 +77,8 @@ extern void eeprom_93cx6_wren(struct eeprom_93cx6 *eeprom, bool enable);
+ 
+ extern void eeprom_93cx6_write(struct eeprom_93cx6 *eeprom,
+ 			       u8 addr, u16 data);
++
++static inline bool has_quirk_extra_read_cycle(struct eeprom_93cx6 *eeprom)
++{
++	return eeprom->quirks & PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE;
++}
+-- 
+2.43.0
+
 
 
 
