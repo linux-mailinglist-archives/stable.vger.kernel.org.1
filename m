@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-103451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340089EF6EB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DB89EF4C8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD50728B84D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58B7328F097
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA3222332D;
-	Thu, 12 Dec 2024 17:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5394F2210F8;
+	Thu, 12 Dec 2024 17:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZp7Skq7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtQML4n+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D54C223320;
-	Thu, 12 Dec 2024 17:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117631F2381;
+	Thu, 12 Dec 2024 17:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024608; cv=none; b=qFQq8yBKQLutH4aiX3v5sD+rOtp7i3iolF5L74si2tB3JLGJr7uikg6sHNF8t/hF1mPOuJS8Wqq0J+paeHaXRRYukQZ9VtiYcAvDeFfbAtnLpslHGw84APu6GiqE6m7eB++JK90azAEeuClg4M2TaiQKmbfkT5dma3UaHQmCjvE=
+	t=1734023287; cv=none; b=TuZhVOlBfPVx6UYsBgej2k1aAKlB4oMqMf5GEjKAG9usTfOfafzkq9djTshBxcuyRbPDsWIh0yAveVG6FYWdCu0m1PLCovX4JQK6y5JIcOPCB/cO+wO3Bx78OS//nQ8k66QRA5lrR9L4jSFlMVu3+QRPUbuNAsqVB3A53QN1yMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024608; c=relaxed/simple;
-	bh=peJu836SFe7EytLwqTOJECHue+1MnnZqmfBBOivN/EI=;
+	s=arc-20240116; t=1734023287; c=relaxed/simple;
+	bh=WWW9vEybyvAOhK6AGDNpjBSAVjdAAOhP+AaT0vw2H28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUaDFKSp0LWP74lcNDvhiqhC5oM/+DikPd++7nBpUcU/nMNdPMnQF45k4GYS552N1FITUAdVgALU7uuIS2KUFT2zNg6Zx5ASf8zDXKn/a3F5U1PpVIEqxetc/y6fVZf1lLdky/sIietwzAUkCBJoXFXE1IG2KBpbQyJ5slcGaQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZp7Skq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B04C4CECE;
-	Thu, 12 Dec 2024 17:30:07 +0000 (UTC)
+	 MIME-Version; b=IetFfX1m9Bxj6OYl4HrFxMcxjVqjAGmUhfOLFr/R7p+ArrcBQd+hprAvX/pVWwO6okOSJmuOdGEO8UKYH6DuC8uvIH6B1lZ57Lch7xnjdkVHA/xj0CLqWtvh88p+QzfxtlJcf1NSk1f6f6Lsywl7W22uOJi84n0EAXvwH3O21hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtQML4n+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86439C4CECE;
+	Thu, 12 Dec 2024 17:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024608;
-	bh=peJu836SFe7EytLwqTOJECHue+1MnnZqmfBBOivN/EI=;
+	s=korg; t=1734023286;
+	bh=WWW9vEybyvAOhK6AGDNpjBSAVjdAAOhP+AaT0vw2H28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZp7Skq7BqlHnDZjBVB4n++qRHcqIruBEcz4RlVK7X0vUsFbqR+wOWk3LMb4AOSFV
-	 bpPpURiwC/N3E7zpgokxdmFQIDxGWcK594t4ueSnZKiOjgK8SRFZ+vxZ6QKo5QyhSQ
-	 Io12vEaMB6vGpSEZ+ZqrIP1stvXbtLNfCZt7T8D8=
+	b=xtQML4n+/bFqsd5RkXZkxyOBtaJvrX4Tx114uRXeIyMVuYDUsYPVgErcSQtm/znN5
+	 NVsx7DdacfFYY3DdGB7YOXNBgHRdHhUOkpnGv/kPruy766xQiQ+fDFxZ5x+u6cqT+6
+	 xwysg0Y9YXTKyUW6v+/sRHJCm+sxGQ/wbClC6UNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 312/459] octeontx2-pf: Fix out-of-bounds read in otx2_get_fecparam()
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 455/565] scsi: qla2xxx: Supported speed displayed incorrectly for VPorts
 Date: Thu, 12 Dec 2024 16:00:50 +0100
-Message-ID: <20241212144305.969420049@linuxfoundation.org>
+Message-ID: <20241212144329.710619853@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit 93efb0c656837f4a31d7cc6117a7c8cecc8fadac upstream.
+commit e4e268f898c8a08f0a1188677e15eadbc06e98f6 upstream.
 
-Code at line 967 implies that rsp->fwdata.supported_fec may be up to 4:
+The fc_function_template for vports was missing the
+.show_host_supported_speeds. The base port had the same.
 
- 967: if (rsp->fwdata.supported_fec <= FEC_MAX_INDEX)
+Add .show_host_supported_speeds to the vport template as well.
 
-If rsp->fwdata.supported_fec evaluates to 4, then there is an
-out-of-bounds read at line 971 because fec is an array with
-a maximum of 4 elements:
-
- 954         const int fec[] = {
- 955                 ETHTOOL_FEC_OFF,
- 956                 ETHTOOL_FEC_BASER,
- 957                 ETHTOOL_FEC_RS,
- 958                 ETHTOOL_FEC_BASER | ETHTOOL_FEC_RS};
- 959 #define FEC_MAX_INDEX 4
-
- 971: fecparam->fec = fec[rsp->fwdata.supported_fec];
-
-Fix this by properly indexing fec[] with rsp->fwdata.supported_fec - 1.
-In this case the proper indexes 0 to 3 are used when
-rsp->fwdata.supported_fec evaluates to a range of 1 to 4, correspondingly.
-
-Fixes: d0cf9503e908 ("octeontx2-pf: ethtool fec mode support")
-Addresses-Coverity-ID: 1501722 ("Out-of-bounds read")
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: stable@vger.kernel.org
+Fixes: 2c3dfe3f6ad8 ("[SCSI] qla2xxx: add support for NPIV")
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_attr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -805,7 +805,7 @@ static int otx2_get_fecparam(struct net_
- 		if (!rsp->fwdata.supported_fec)
- 			fecparam->fec = ETHTOOL_FEC_NONE;
- 		else
--			fecparam->fec = fec[rsp->fwdata.supported_fec];
-+			fecparam->fec = fec[rsp->fwdata.supported_fec - 1];
- 	}
- 	return 0;
- }
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -3303,6 +3303,7 @@ struct fc_function_template qla2xxx_tran
+ 	.show_host_node_name = 1,
+ 	.show_host_port_name = 1,
+ 	.show_host_supported_classes = 1,
++	.show_host_supported_speeds = 1,
+ 
+ 	.get_host_port_id = qla2x00_get_host_port_id,
+ 	.show_host_port_id = 1,
 
 
 
