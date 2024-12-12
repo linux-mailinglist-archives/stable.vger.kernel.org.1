@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-103427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303539EF79B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064839EF95E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:50:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97274189C717
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90A1E189E226
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0487621660B;
-	Thu, 12 Dec 2024 17:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA8822969B;
+	Thu, 12 Dec 2024 17:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLBJfSu4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egf0QCFX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CB6217F34;
-	Thu, 12 Dec 2024 17:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C66229684;
+	Thu, 12 Dec 2024 17:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024535; cv=none; b=m8Mm/K95hRY72KhEA2ec3RInixcqerBi5xH9ylULFccRTQwm9K90sSQZYieM6KAi7MShPX75IxhO/FrgXdr82xy7ZKjJLR9R9fpfdDi1uPKHEe6loMbrMp3xgR2y12IOpJUefmrrx770AJlfjk+iL3Ow8UgM/SpEuMovIQ3aiag=
+	t=1734025376; cv=none; b=cpC4uaXykT2Kd1/vu6me9wm043qBvf4gfoCjdAzJhvdkZemOc5pXiCfYYWP7TwpuZHYr+bROJ3dWYhkaR298ZNCsaSml0Txn/GpyQ9Nhytc1s2XffWkHFR537biVQuoILAZLDVAtDFFiKNmG0eSpm6jQeLjCxsWsnjEvihKvB48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024535; c=relaxed/simple;
-	bh=SJVyNQkxS7pwzcQbTIBx6ievIuGT+qxtBpHuWj3NiXg=;
+	s=arc-20240116; t=1734025376; c=relaxed/simple;
+	bh=DdXIM8NsVC1jbi9IrV55ZOVNKbCAFxmwKqnygYiyrOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+b0Kc9EcYBe/qmFLsF3CXeiG7WzW5UXKkFAz2KWt1MQZgTH2ZJEJoK5ah/R455eUAe9b269VTlr5PlqJDcz406gvHRK+1znl+OpATwVYqme151w+LYO/aM9VnOYEvg5AyRMkQ1cbnE+fzsi0OOenRm23VsfJ8nWK0fLqZNwdWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLBJfSu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC8BC4CED0;
-	Thu, 12 Dec 2024 17:28:54 +0000 (UTC)
+	 MIME-Version; b=gRIsuCOt7ck5a6ScOHPnLh7fHHcTDSN2XpCtxverpe7Ipxn7a3Gg8vb2A6ojZ2qdadIoXmyr/I+uJVkKw3PjzpR22zEfEFmx1nePkXlQx3HS9XtPvH+i2JH+2wq/ZznJ3TO7MJoAWgvSKucr0w5jjtDtQ2DRKDnwroEcyydq9fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egf0QCFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA59BC4AF10;
+	Thu, 12 Dec 2024 17:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024535;
-	bh=SJVyNQkxS7pwzcQbTIBx6ievIuGT+qxtBpHuWj3NiXg=;
+	s=korg; t=1734025376;
+	bh=DdXIM8NsVC1jbi9IrV55ZOVNKbCAFxmwKqnygYiyrOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLBJfSu4Bo/1SPR9QmXhz9ot+fUl+lCHqDBHL7PKz9jc+vYwpgCGou6hi5jSYJ1nV
-	 3JtSvoM2NZ+I6L2WObaiECB/bauMlPZ8gLClLn1Cpqdh+emN98yI9yix9DY7e6cXwo
-	 C9F2PchKBLDNODEgNUw5AZuRoDOiCC1ZiUef8Qms=
+	b=egf0QCFXTUuZsSe8Klm20c8OnJK1tU2G5QM0S26jr/mTiX23pKNonNrnCA4QtWVwG
+	 u23pohdhKO/I9rKVNJ9oEijE9c2QLjDrMet6ImHCAiC3kurmAIhGVeyGJ52xG4O/ph
+	 SO1QFCP2Q5u6AwOP0B+CxbEtDDab+TiMlx5/LQQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Ruowen Qin <ruqin@redhat.com>,
-	Jinghao Jia <jinghao7@illinois.edu>,
-	Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 329/459] ipvs: fix UB due to uninitialized stack access in ip_vs_protocol_init()
-Date: Thu, 12 Dec 2024 16:01:07 +0100
-Message-ID: <20241212144306.660970646@linuxfoundation.org>
+	Dennis Wassenberg <Dennis.Wassenberg@secunet.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.4 150/321] PCI: Fix use-after-free of slot->bus on hot remove
+Date: Thu, 12 Dec 2024 16:01:08 +0100
+Message-ID: <20241212144235.902080117@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinghao Jia <jinghao7@illinois.edu>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 146b6f1112eb30a19776d6c323c994e9d67790db ]
+commit c7acef99642b763ba585f4a43af999fcdbcc3dc4 upstream.
 
-Under certain kernel configurations when building with Clang/LLVM, the
-compiler does not generate a return or jump as the terminator
-instruction for ip_vs_protocol_init(), triggering the following objtool
-warning during build time:
+Dennis reports a boot crash on recent Lenovo laptops with a USB4 dock.
 
-  vmlinux.o: warning: objtool: ip_vs_protocol_init() falls through to next function __initstub__kmod_ip_vs_rr__935_123_ip_vs_rr_init6()
+Since commit 0fc70886569c ("thunderbolt: Reset USB4 v2 host router") and
+commit 59a54c5f3dbd ("thunderbolt: Reset topology created by the boot
+firmware"), USB4 v2 and v1 Host Routers are reset on probe of the
+thunderbolt driver.
 
-At runtime, this either causes an oops when trying to load the ipvs
-module or a boot-time panic if ipvs is built-in. This same issue has
-been reported by the Intel kernel test robot previously.
+The reset clears the Presence Detect State and Data Link Layer Link Active
+bits at the USB4 Host Router's Root Port and thus causes hot removal of the
+dock.
 
-Digging deeper into both LLVM and the kernel code reveals this to be a
-undefined behavior problem. ip_vs_protocol_init() uses a on-stack buffer
-of 64 chars to store the registered protocol names and leaves it
-uninitialized after definition. The function calls strnlen() when
-concatenating protocol names into the buffer. With CONFIG_FORTIFY_SOURCE
-strnlen() performs an extra step to check whether the last byte of the
-input char buffer is a null character (commit 3009f891bb9f ("fortify:
-Allow strlen() and strnlen() to pass compile-time known lengths")).
-This, together with possibly other configurations, cause the following
-IR to be generated:
+The crash occurs when pciehp is unbound from one of the dock's Downstream
+Ports:  pciehp creates a pci_slot on bind and destroys it on unbind.  The
+pci_slot contains a pointer to the pci_bus below the Downstream Port, but
+a reference on that pci_bus is never acquired.  The pci_bus is destroyed
+before the pci_slot, so a use-after-free ensues when pci_slot_release()
+accesses slot->bus.
 
-  define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #5 section ".init.text" align 16 !kcfi_type !29 {
-    %1 = alloca [64 x i8], align 16
-    ...
+In principle this should not happen because pci_stop_bus_device() unbinds
+pciehp (and therefore destroys the pci_slot) before the pci_bus is
+destroyed by pci_remove_bus_device().
 
-  14:                                               ; preds = %11
-    %15 = getelementptr inbounds i8, ptr %1, i64 63
-    %16 = load i8, ptr %15, align 1
-    %17 = tail call i1 @llvm.is.constant.i8(i8 %16)
-    %18 = icmp eq i8 %16, 0
-    %19 = select i1 %17, i1 %18, i1 false
-    br i1 %19, label %20, label %23
+However the stacktrace provided by Dennis shows that pciehp is unbound from
+pci_remove_bus_device() instead of pci_stop_bus_device().  To understand
+the significance of this, one needs to know that the PCI core uses a two
+step process to remove a portion of the hierarchy:  It first unbinds all
+drivers in the sub-hierarchy in pci_stop_bus_device() and then actually
+removes the devices in pci_remove_bus_device().  There is no precaution to
+prevent driver binding in-between pci_stop_bus_device() and
+pci_remove_bus_device().
 
-  20:                                               ; preds = %14
-    %21 = call i64 @strlen(ptr noundef nonnull dereferenceable(1) %1) #23
-    ...
+In Dennis' case, it seems removal of the hierarchy by pciehp races with
+driver binding by pci_bus_add_devices().  pciehp is bound to the
+Downstream Port after pci_stop_bus_device() has run, so it is unbound by
+pci_remove_bus_device() instead of pci_stop_bus_device().  Because the
+pci_bus has already been destroyed at that point, accesses to it result in
+a use-after-free.
 
-  23:                                               ; preds = %14, %11, %20
-    %24 = call i64 @strnlen(ptr noundef nonnull dereferenceable(1) %1, i64 noundef 64) #24
-    ...
-  }
+One might conclude that driver binding needs to be prevented after
+pci_stop_bus_device() has run.  However it seems risky that pci_slot points
+to pci_bus without holding a reference.  Solely relying on correct ordering
+of driver unbind versus pci_bus destruction is certainly not defensive
+programming.
 
-The above code calculates the address of the last char in the buffer
-(value %15) and then loads from it (value %16). Because the buffer is
-never initialized, the LLVM GVN pass marks value %16 as undefined:
+If pci_slot has a need to access data in pci_bus, it ought to acquire a
+reference.  Amend pci_create_slot() accordingly.  Dennis reports that the
+crash is not reproducible with this change.
 
-  %13 = getelementptr inbounds i8, ptr %1, i64 63
-  br i1 undef, label %14, label %17
+Abridged stacktrace:
 
-This gives later passes (SCCP, in particular) more DCE opportunities by
-propagating the undef value further, and eventually removes everything
-after the load on the uninitialized stack location:
+  pcieport 0000:00:07.0: PME: Signaling with IRQ 156
+  pcieport 0000:00:07.0: pciehp: Slot #12 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ IbPresDis- LLActRep+
+  pci_bus 0000:20: dev 00, created physical slot 12
+  pcieport 0000:00:07.0: pciehp: Slot(12): Card not present
+  ...
+  pcieport 0000:21:02.0: pciehp: pcie_disable_notification: SLOTCTRL d8 write cmd 0
+  Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 13 UID: 0 PID: 134 Comm: irq/156-pciehp Not tainted 6.11.0-devel+ #1
+  RIP: 0010:dev_driver_string+0x12/0x40
+  pci_destroy_slot
+  pciehp_remove
+  pcie_port_remove_service
+  device_release_driver_internal
+  bus_remove_device
+  device_del
+  device_unregister
+  remove_iter
+  device_for_each_child
+  pcie_portdrv_remove
+  pci_device_remove
+  device_release_driver_internal
+  bus_remove_device
+  device_del
+  pci_remove_bus_device (recursive invocation)
+  pci_remove_bus_device
+  pciehp_unconfigure_device
+  pciehp_disable_slot
+  pciehp_handle_presence_or_link_change
+  pciehp_ist
 
-  define hidden i32 @ip_vs_protocol_init() local_unnamed_addr #0 section ".init.text" align 16 !kcfi_type !11 {
-    %1 = alloca [64 x i8], align 16
-    ...
-
-  12:                                               ; preds = %11
-    %13 = getelementptr inbounds i8, ptr %1, i64 63
-    unreachable
-  }
-
-In this way, the generated native code will just fall through to the
-next function, as LLVM does not generate any code for the unreachable IR
-instruction and leaves the function without a terminator.
-
-Zero the on-stack buffer to avoid this possible UB.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402100205.PWXIz1ZK-lkp@intel.com/
-Co-developed-by: Ruowen Qin <ruqin@redhat.com>
-Signed-off-by: Ruowen Qin <ruqin@redhat.com>
-Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/4bfd4c0e976c1776cd08e76603903b338cf25729.1728579288.git.lukas@wunner.de
+Reported-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
+Closes: https://lore.kernel.org/r/6de4b45ff2b32dd91a805ec02ec8ec73ef411bf6.camel@secunet.com/
+Tested-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_proto.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/pci/slot.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto.c b/net/netfilter/ipvs/ip_vs_proto.c
-index f100da4ba3bc3..a9fd1d3fc2cbf 100644
---- a/net/netfilter/ipvs/ip_vs_proto.c
-+++ b/net/netfilter/ipvs/ip_vs_proto.c
-@@ -340,7 +340,7 @@ void __net_exit ip_vs_protocol_net_cleanup(struct netns_ipvs *ipvs)
+--- a/drivers/pci/slot.c
++++ b/drivers/pci/slot.c
+@@ -115,6 +115,7 @@ static void pci_slot_release(struct kobj
+ 	up_read(&pci_bus_sem);
  
- int __init ip_vs_protocol_init(void)
- {
--	char protocols[64];
-+	char protocols[64] = { 0 };
- #define REGISTER_PROTOCOL(p)			\
- 	do {					\
- 		register_ip_vs_protocol(p);	\
-@@ -348,8 +348,6 @@ int __init ip_vs_protocol_init(void)
- 		strcat(protocols, (p)->name);	\
- 	} while (0)
+ 	list_del(&slot->list);
++	pci_bus_put(slot->bus);
  
--	protocols[0] = '\0';
--	protocols[2] = '\0';
- #ifdef CONFIG_IP_VS_PROTO_TCP
- 	REGISTER_PROTOCOL(&ip_vs_protocol_tcp);
- #endif
--- 
-2.43.0
-
+ 	kfree(slot);
+ }
+@@ -296,7 +297,7 @@ placeholder:
+ 		goto err;
+ 	}
+ 
+-	slot->bus = parent;
++	slot->bus = pci_bus_get(parent);
+ 	slot->number = slot_nr;
+ 
+ 	slot->kobj.kset = pci_slots_kset;
+@@ -304,6 +305,7 @@ placeholder:
+ 	slot_name = make_slot_name(name);
+ 	if (!slot_name) {
+ 		err = -ENOMEM;
++		pci_bus_put(slot->bus);
+ 		kfree(slot);
+ 		goto err;
+ 	}
 
 
 
