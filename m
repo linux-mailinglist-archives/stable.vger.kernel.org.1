@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AD69EEBCB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1749EF278
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6789D1887827
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07A0189B3A5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D89820969B;
-	Thu, 12 Dec 2024 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC98722EA00;
+	Thu, 12 Dec 2024 16:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpPziOBc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5DTvvvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B73913792B;
-	Thu, 12 Dec 2024 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6571222D77;
+	Thu, 12 Dec 2024 16:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017121; cv=none; b=iUgvJ00aBwv4KA8/Kd/UoZfVW6OWzMgo/oX4A4Czp7CyFJ70boLhEmx9xXE0V45PRdvvdjbn/chH3s7NcdGR4fJ/5dAPjxNZcyuOrktuN8NWUva7lzTtqSyo7Hfuk5oz+7d+f7g3XQA4RhXoY7sdWdzTWx/I5pegranNEnG1+Zs=
+	t=1734020972; cv=none; b=HmpodDRz3A67cOgkve06EGOfiB7mRAA6jNfaK2SGe/3nrFc++aZcDhYPLGMgUm3p+7CyjjyGL+ByMNFNyQ87zibBihdgI1BMv5nzeYv1/ALjuPZLFJ5SR4DZsVI+e7tZXaloJI/0W20SLiNqhpTDlMGZIf6Lo1xOC2nPkeFr7ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017121; c=relaxed/simple;
-	bh=yRKJQ37vpMQiRM6FwB3vLuDtq+9bSsSkhg2z+pvtjxw=;
+	s=arc-20240116; t=1734020972; c=relaxed/simple;
+	bh=FM1VCcwbJKU02cwM88cr3SBtcO94BGzDeD4h2ZTBvZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MkDOYICrvskIAWdELoIPyl+FB7UwDWq/lvEo8WPHQGwtP2/Qud56panzjFLX4YV5XNn0US+/h/fGmtHCOFlAD6nHyl+FnXTYYoKHwPl4n60B59Bs7I9WGfhm19RYKyYge+glPfNDK10cJqZUsQ+ZyuH1Ai1cb7TiQKsrMjRRcyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpPziOBc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C41BC4CECE;
-	Thu, 12 Dec 2024 15:25:20 +0000 (UTC)
+	 MIME-Version; b=EkSCo6q30tw0JocaQwfUuYPQ/F4fCcpZ09E6IRWsa/+b5+uA3oexlUXHTmpitr1YSberf84hosXISwk5aOhP0KKMLmkETAzaBDL885UW76sKufZCjnqIHucupfRZgtWMYzJ8o/MYYL4JkZ8QABpes1wUaxCwrLKe5K9JhRBRa+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5DTvvvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB944C4CED0;
+	Thu, 12 Dec 2024 16:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017120;
-	bh=yRKJQ37vpMQiRM6FwB3vLuDtq+9bSsSkhg2z+pvtjxw=;
+	s=korg; t=1734020972;
+	bh=FM1VCcwbJKU02cwM88cr3SBtcO94BGzDeD4h2ZTBvZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpPziOBcLdJ4Cx8J+QLsU0h5ZcM3eQG/7ir+EP47pjf5m+r442Wo7NH/jeo8QApki
-	 c1TaiC5b9uf5ZmYwrdxhduGGLbqg0cpK67Ao1TNKsowBYDS7LqLVkPiDRsQXRRRVYY
-	 XGJacb85HGOUdt5cFaW5HU/hy/0O6phjNQA6P7lQ=
+	b=i5DTvvvZw8kYum9uM8UsCAfOaTvIx7QcEgYT5zhZye4hQJcSUlhnsVfitgA+LvYqw
+	 4Z1JQ9Yx6ygu0fsmyo6bbjR7702l+1tnqQ7UTUjeRbtx67IDfhz/3vqo/v4Aa/cb2h
+	 h1qAgpvwqnR41Apf+MwfMp6Q7O+wSbGKXyEzd5ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 387/466] mailbox: pcc: Check before sending MCTP PCC response ACK
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.1 611/772] arm64: Ensure bits ASID[15:8] are masked out when the kernel uses 8-bit ASIDs
 Date: Thu, 12 Dec 2024 15:59:16 +0100
-Message-ID: <20241212144322.058318019@linuxfoundation.org>
+Message-ID: <20241212144415.177210068@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,171 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Young <admiyo@os.amperecomputing.com>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-[ Upstream commit 7f9e19f207be0c534d517d65e01417ba968cdd34 ]
+commit c0900d15d31c2597dd9f634c8be2b71762199890 upstream.
 
-Type 4 PCC channels have an option to send back a response
-to the platform when they are done processing the request.
-The flag to indicate whether or not to respond is inside
-the message body, and thus is not available to the pcc
-mailbox.
+Linux currently sets the TCR_EL1.AS bit unconditionally during CPU
+bring-up. On an 8-bit ASID CPU, this is RES0 and ignored, otherwise
+16-bit ASIDs are enabled. However, if running in a VM and the hypervisor
+reports 8-bit ASIDs (ID_AA64MMFR0_EL1.ASIDBits == 0) on a 16-bit ASIDs
+CPU, Linux uses bits 8 to 63 as a generation number for tracking old
+process ASIDs. The bottom 8 bits of this generation end up being written
+to TTBR1_EL1 and also used for the ASID-based TLBI operations as the
+upper 8 bits of the ASID. Following an ASID roll-over event we can have
+threads of the same application with the same 8-bit ASID but different
+generation numbers running on separate CPUs. Both TLB caching and the
+TLBI operations will end up using different actual 16-bit ASIDs for the
+same process.
 
-If the flag is not set, still set command completion
-bit after processing message.
+A similar scenario can happen in a big.LITTLE configuration if the boot
+CPU only uses 8-bit ASIDs while secondary CPUs have 16-bit ASIDs.
 
-In order to read the flag, this patch maps the shared
-buffer to virtual memory. To avoid duplication of mapping
-the shared buffer is then made available to be used by
-the driver that uses the mailbox.
+Ensure that the ASID generation is only tracked by bits 16 and up,
+leaving bits 15:8 as 0 if the kernel uses 8-bit ASIDs. Note that
+clearing TCR_EL1.AS is not sufficient since the architecture requires
+that the top 8 bits of the ASID passed to TLBI instructions are 0 rather
+than ignored in such configuration.
 
-Signed-off-by: Adam Young <admiyo@os.amperecomputing.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: James Morse <james.morse@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241203151941.353796-1-catalin.marinas@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/pcc.c | 61 +++++++++++++++++++++++++++++++++++++------
- include/acpi/pcc.h    |  7 +++++
- 2 files changed, 60 insertions(+), 8 deletions(-)
+ arch/arm64/mm/context.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 94885e411085a..82102a4c5d688 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -269,6 +269,35 @@ static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
- 	return !!val;
- }
+--- a/arch/arm64/mm/context.c
++++ b/arch/arm64/mm/context.c
+@@ -32,9 +32,9 @@ static unsigned long nr_pinned_asids;
+ static unsigned long *pinned_asid_map;
  
-+static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
-+{
-+	struct acpi_pcct_ext_pcc_shared_memory pcc_hdr;
-+
-+	if (pchan->type != ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
-+		return;
-+	/* If the memory region has not been mapped, we cannot
-+	 * determine if we need to send the message, but we still
-+	 * need to set the cmd_update flag before returning.
-+	 */
-+	if (pchan->chan.shmem == NULL) {
-+		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
-+		return;
-+	}
-+	memcpy_fromio(&pcc_hdr, pchan->chan.shmem,
-+		      sizeof(struct acpi_pcct_ext_pcc_shared_memory));
-+	/*
-+	 * The PCC slave subspace channel needs to set the command complete bit
-+	 * after processing message. If the PCC_ACK_FLAG is set, it should also
-+	 * ring the doorbell.
-+	 *
-+	 * The PCC master subspace channel clears chan_in_use to free channel.
-+	 */
-+	if (le32_to_cpup(&pcc_hdr.flags) & PCC_ACK_FLAG_MASK)
-+		pcc_send_data(chan, NULL);
-+	else
-+		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
-+}
-+
- /**
-  * pcc_mbox_irq - PCC mailbox interrupt handler
-  * @irq:	interrupt number
-@@ -306,14 +335,7 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ #define ASID_MASK		(~GENMASK(asid_bits - 1, 0))
+-#define ASID_FIRST_VERSION	(1UL << asid_bits)
++#define ASID_FIRST_VERSION	(1UL << 16)
  
- 	mbox_chan_received_data(chan, NULL);
+-#define NUM_USER_ASIDS		ASID_FIRST_VERSION
++#define NUM_USER_ASIDS		(1UL << asid_bits)
+ #define ctxid2asid(asid)	((asid) & ~ASID_MASK)
+ #define asid2ctxid(asid, genid)	((asid) | (genid))
  
--	/*
--	 * The PCC slave subspace channel needs to set the command complete bit
--	 * and ring doorbell after processing message.
--	 *
--	 * The PCC master subspace channel clears chan_in_use to free channel.
--	 */
--	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
--		pcc_send_data(chan, NULL);
-+	check_and_ack(pchan, chan);
- 	pchan->chan_in_use = false;
- 
- 	return IRQ_HANDLED;
-@@ -365,14 +387,37 @@ EXPORT_SYMBOL_GPL(pcc_mbox_request_channel);
- void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
- {
- 	struct mbox_chan *chan = pchan->mchan;
-+	struct pcc_chan_info *pchan_info;
-+	struct pcc_mbox_chan *pcc_mbox_chan;
- 
- 	if (!chan || !chan->cl)
- 		return;
-+	pchan_info = chan->con_priv;
-+	pcc_mbox_chan = &pchan_info->chan;
-+	if (pcc_mbox_chan->shmem) {
-+		iounmap(pcc_mbox_chan->shmem);
-+		pcc_mbox_chan->shmem = NULL;
-+	}
- 
- 	mbox_free_channel(chan);
- }
- EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
- 
-+int pcc_mbox_ioremap(struct mbox_chan *chan)
-+{
-+	struct pcc_chan_info *pchan_info;
-+	struct pcc_mbox_chan *pcc_mbox_chan;
-+
-+	if (!chan || !chan->cl)
-+		return -1;
-+	pchan_info = chan->con_priv;
-+	pcc_mbox_chan = &pchan_info->chan;
-+	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
-+				       pcc_mbox_chan->shmem_size);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
-+
- /**
-  * pcc_send_data - Called from Mailbox Controller code. Used
-  *		here only to ring the channel doorbell. The PCC client
-diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
-index 9b373d172a776..699c1a37b8e78 100644
---- a/include/acpi/pcc.h
-+++ b/include/acpi/pcc.h
-@@ -12,6 +12,7 @@
- struct pcc_mbox_chan {
- 	struct mbox_chan *mchan;
- 	u64 shmem_base_addr;
-+	void __iomem *shmem;
- 	u64 shmem_size;
- 	u32 latency;
- 	u32 max_access_rate;
-@@ -31,11 +32,13 @@ struct pcc_mbox_chan {
- #define PCC_CMD_COMPLETION_NOTIFY	BIT(0)
- 
- #define MAX_PCC_SUBSPACES	256
-+#define PCC_ACK_FLAG_MASK	0x1
- 
- #ifdef CONFIG_PCC
- extern struct pcc_mbox_chan *
- pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id);
- extern void pcc_mbox_free_channel(struct pcc_mbox_chan *chan);
-+extern int pcc_mbox_ioremap(struct mbox_chan *chan);
- #else
- static inline struct pcc_mbox_chan *
- pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
-@@ -43,6 +46,10 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
- 	return ERR_PTR(-ENODEV);
- }
- static inline void pcc_mbox_free_channel(struct pcc_mbox_chan *chan) { }
-+static inline int pcc_mbox_ioremap(struct mbox_chan *chan)
-+{
-+	return 0;
-+};
- #endif
- 
- #endif /* _PCC_H */
--- 
-2.43.0
-
 
 
 
