@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-102061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561219EF05C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6AFD9EF3CF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30B7B16AD05
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5562E177923
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20AEC236958;
-	Thu, 12 Dec 2024 16:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D200229686;
+	Thu, 12 Dec 2024 16:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15nHXBev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTmp8sN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3542222D66;
-	Thu, 12 Dec 2024 16:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7FE216E3B;
+	Thu, 12 Dec 2024 16:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019820; cv=none; b=UITzZ9/CuJCc76r/mIQGhjRmpDJFBgCpYlqEJ+P0+UFmqohHjabLKbPZDSBBwGCg/mpVYhkQX9tADeNoVuKKaA9rq2jRG11Gi7otC5TZJUcdcL9lX5NUu8zUB2NvUnUgxLcWvS17Y3XAFaFuJnebCHFKMz/OXLNiRiCu82G0138=
+	t=1734021866; cv=none; b=PQ2FsCyw+nZmFrHSvvyLO+SIvdvYWKITFZqnGDylpdEJRf9aZZjN5NvBwFJG4rKsvkY7nJ74YQftXdmGtDGHuDXfmbUfP1MijV7ggobxERJ3ZUHZsvh8bRhhoMDf3ou+eM9eHQTMnJ3AE8lKW3GRGg6gUEzz/Zn4iponFHJahIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019820; c=relaxed/simple;
-	bh=ZDwtKXHpUCPs+h8sSjV9ZOUNFRvXOK2Yp+wIZTzlH70=;
+	s=arc-20240116; t=1734021866; c=relaxed/simple;
+	bh=SBFstXJ7fsMRLzDchTKxT3iunZV3IhykXLOASYhEbUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FyyRT7ijiulGx4bEl9NRZrW+tlEZnb6fudpebg/UL9r2YYKq8+ev98JAhjLrqGj/af9NIFUpIzyQMEFnA0gc3eOK9Q79/Y7E8BsG8JgO75RZUeBZpDQ3m1UBmH9Y2zIteeH/Oa+KOPVcKMHEfg5MbHV899BbOQraYhj0pvzaNT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15nHXBev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BD6C4CECE;
-	Thu, 12 Dec 2024 16:10:19 +0000 (UTC)
+	 MIME-Version; b=NXR16kaQ+nnifvviPqr9g93YLJQ3mX5eeUMnBZOJVNglM1xnoVf0MY3NBkN3OjW/xkdYlSBs+Nju+mG3cZGTh1ytIfH+8Sry7zmGEPIAVbNAHDwbOiodqyaLppPimYpFPvct5EC09hsaZQyEyp/SOzd9iAj6rQ6hk4TC8PQv3K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTmp8sN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B7DC4CED4;
+	Thu, 12 Dec 2024 16:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019820;
-	bh=ZDwtKXHpUCPs+h8sSjV9ZOUNFRvXOK2Yp+wIZTzlH70=;
+	s=korg; t=1734021866;
+	bh=SBFstXJ7fsMRLzDchTKxT3iunZV3IhykXLOASYhEbUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15nHXBevJNAG4mb8lx+p3p4WY7sCddipG0lySfLLYOeKW4r0L97JOYgIxZwYylyBH
-	 r1Ci7ZUmoCoIa9EYxuKg6zHsmGIWnw6nmV3AFwEPKP7xDM2/qxVIOz39n6cxeyX3Q5
-	 QFNSMr/oSndKN0YmpWl2MyLfM03AE6I5gSquk1/Q=
+	b=WTmp8sN0ybKobzm+IfliYRI0fP54Eeezrk7iYlxSeDZhHbJAflCyt00897ylTrA4a
+	 ksW5igHqOejLwYZaAKc7e20Gp5HQYcR3YptQXaAaVgXEMWN4Op/139X+oLf4qoIqyh
+	 uXb9gZuITAWmu7TDcXX0qi59gbxakZTMZqlOu1zE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salam Noureddine <noureddine@arista.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 307/772] tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets
+Subject: [PATCH 5.15 057/565] selftests/watchdog-test: Fix system accidentally reset after watchdog-test
 Date: Thu, 12 Dec 2024 15:54:12 +0100
-Message-ID: <20241212144402.582946051@linuxfoundation.org>
+Message-ID: <20241212144313.750581544@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,63 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 614f4d166eeeb9bd709b0ad29552f691c0f45776 ]
+[ Upstream commit dc1308bee1ed03b4d698d77c8bd670d399dcd04d ]
 
-The hardware on Broadcom 1G chipsets have a known limitation
-where they cannot handle DMA addresses that cross over 4GB.
-When such an address is encountered, the hardware sets the
-address overflow error bit in the DMA status register and
-triggers a reset.
+When running watchdog-test with 'make run_tests', the watchdog-test will
+be terminated by a timeout signal(SIGTERM) due to the test timemout.
 
-However, BCM57766 hardware is setting the overflow bit and
-triggering a reset in some cases when there is no actual
-underlying address overflow. The hardware team analyzed the
-issue and concluded that it is happening when the status
-block update has an address with higher (b16 to b31) bits
-as 0xffff following a previous update that had lowest bits
-as 0xffff.
+And then, a system reboot would happen due to watchdog not stop. see
+the dmesg as below:
+```
+[ 1367.185172] watchdog: watchdog0: watchdog did not stop!
+```
 
-To work around this bug in the BCM57766 hardware, set the
-coherent dma mask from the current 64b to 31b. This will
-ensure that upper bits of the status block DMA address are
-always at most 0x7fff, thus avoiding the improper overflow
-check described above. This work around is intended for only
-status block and ring memories and has no effect on TX and
-RX buffers as they do not require coherent memory.
+Fix it by registering more signals(including SIGTERM) in watchdog-test,
+where its signal handler will stop the watchdog.
 
-Fixes: 72f2afb8a685 ("[TG3]: Add DMA address workaround")
-Reported-by: Salam Noureddine <noureddine@arista.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Link: https://patch.msgid.link/20241119055741.147144-1-pavan.chebbi@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+After that
+ # timeout 1 ./watchdog-test
+ Watchdog Ticking Away!
+ .
+ Stopping watchdog ticks...
+
+Link: https://lore.kernel.org/all/20241029031324.482800-1-lizhijian@fujitsu.com/
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 0c694ab3c110c..dab0ab10d111a 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -17736,6 +17736,9 @@ static int tg3_init_one(struct pci_dev *pdev,
- 	} else
- 		persist_dma_mask = dma_mask = DMA_BIT_MASK(64);
+diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
+index f45e510500c0d..09773695d219f 100644
+--- a/tools/testing/selftests/watchdog/watchdog-test.c
++++ b/tools/testing/selftests/watchdog/watchdog-test.c
+@@ -242,7 +242,13 @@ int main(int argc, char *argv[])
  
-+	if (tg3_asic_rev(tp) == ASIC_REV_57766)
-+		persist_dma_mask = DMA_BIT_MASK(31);
-+
- 	/* Configure DMA attributes. */
- 	if (dma_mask > DMA_BIT_MASK(32)) {
- 		err = dma_set_mask(&pdev->dev, dma_mask);
+ 	printf("Watchdog Ticking Away!\n");
+ 
++	/*
++	 * Register the signals
++	 */
+ 	signal(SIGINT, term);
++	signal(SIGTERM, term);
++	signal(SIGKILL, term);
++	signal(SIGQUIT, term);
+ 
+ 	while (1) {
+ 		keep_alive();
 -- 
 2.43.0
 
