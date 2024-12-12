@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA7B9EF29E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8089EED40
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352F6178113
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004F428582A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905C122D4C6;
-	Thu, 12 Dec 2024 16:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40DC222D4C;
+	Thu, 12 Dec 2024 15:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLjdMJTx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjtIP3c1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B81213792B;
-	Thu, 12 Dec 2024 16:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91242221D93;
+	Thu, 12 Dec 2024 15:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020903; cv=none; b=O1ixwi7dd/aKUnpP09ajwXgfqq4IY19eBzxvwL1IQ8IAC4XdJ8z27cJHF/xNz2I/lhscwnd8dmr6F1u1aZ50/DDYb76y04YBJJZ4bpVEHPSpsbDfp1P8XTTPDSjUlvrar2K5D24JskLuwy5eml5KhjHHxuJuQdvfRT78PK1HQLU=
+	t=1734018180; cv=none; b=O0ejdbpzzBc3SFchDt9quaE7wlF3nbVndVgxPu8hqlFK+bT6OlCrS77GIfRPerEpP5T+JB6yuw5wqc/626DRqFwuxRR6/80Kq3pzee7yao+R7U/moqR4RWp4U/Hymvw1ju+o16m520ESEs2AwiX20PaVLoL2rc4GkMasHrCj2m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020903; c=relaxed/simple;
-	bh=NqL9fDXvnI8vcqnJ689HZak6DNJOu9GYKVfZrZfSwyo=;
+	s=arc-20240116; t=1734018180; c=relaxed/simple;
+	bh=0fSlRO3GV7lnWJ+MaHCiSBrE3kC21jq83RJurqxGbak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqHLTMvpwPMaf0ZdVggTPVuHzk+yy9PvLaAN/PyX5hKC3eZ7kE0lc0Jm4jal3opUi9sO+c6qhNMqW8ajISHqTrQGBmo9/fWXckGke9DAKpgMv/T8jbTZHgMnkte98NgYE3vfe3XJ3niHuUMzkKAxJvJT0Te5LLb950LkLQcNMkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLjdMJTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37660C4CED0;
-	Thu, 12 Dec 2024 16:28:21 +0000 (UTC)
+	 MIME-Version; b=PYFwsX9nK+XKtu8y34vI63EwDxK4J3NSVWnovZ9I+mPOLs6J/K1oPjGkoEoMOs8/oAgydLVb7xmJjZhbddmy1zsCz/pUGIEPW88hol6Nqa4NuUKdOdlgszimfWfG4itkzSPs+NSG5ZoInpChLWiTeWSLD5EJtfVnUF3uEOkk684=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjtIP3c1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB317C4CECE;
+	Thu, 12 Dec 2024 15:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020902;
-	bh=NqL9fDXvnI8vcqnJ689HZak6DNJOu9GYKVfZrZfSwyo=;
+	s=korg; t=1734018180;
+	bh=0fSlRO3GV7lnWJ+MaHCiSBrE3kC21jq83RJurqxGbak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLjdMJTxirUmYu0+RhSx3PLfQBHDeBQRWZTHLnSpwBj2n1es8/lYIFfrUPwcUttxq
-	 pYnjQ+LBtTcRwmymlcd7sRKEsBIjQXVq0Avw1PFYvv1+v/a4Jk3JPQK9fB6Ro2Irhe
-	 xRDugAy7vbBIMDVG5zfL/SOrYdPJgSjAqh9Se3JI=
+	b=GjtIP3c1mVjCImDKDPumf+DDLYhAiQBnq9t9wS+Tr1HsgUrtZWY8a+lccp6T4R8UG
+	 ysT4XN+aMf2X8eO2pS6Mn1PUWcY01db6bwX98iLnpu54NGIMZ6SA1UTaz1WAyXweEC
+	 O5ccers+XGUoNjYiPHZ6VeNTkpMgGc6+yDhlV9FA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 593/772] scsi: scsi_debug: Fix hrtimer support for ndelay
+Subject: [PATCH 6.6 219/356] r8169: dont apply UDP padding quirk on RTL8126A
 Date: Thu, 12 Dec 2024 15:58:58 +0100
-Message-ID: <20241212144414.434623564@linuxfoundation.org>
+Message-ID: <20241212144253.270378286@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 6918141d815acef056a0d10e966a027d869a922d ]
+[ Upstream commit 87e26448dbda4523b73a894d96f0f788506d3795 ]
 
-Since commit 771f712ba5b0 ("scsi: scsi_debug: Fix cmd duration
-calculation"), ns_from_boot value is only evaluated in schedule_resp()
-for polled requests.
+Vendor drivers r8125/r8126 indicate that this quirk isn't needed
+any longer for RTL8126A. Mimic this in r8169.
 
-However, ns_from_boot is also required for hrtimer support for when
-ndelay is less than INCLUSIVE_TIMING_MAX_NS, so fix up the logic to
-decide when to evaluate ns_from_boot.
-
-Fixes: 771f712ba5b0 ("scsi: scsi_debug: Fix cmd duration calculation")
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241202130045.2335194-1-john.g.garry@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/d1317187-aa81-4a69-b831-678436e4de62@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
-index b77035ddc9440..2493e07a1a5ba 100644
---- a/drivers/scsi/scsi_debug.c
-+++ b/drivers/scsi/scsi_debug.c
-@@ -5672,7 +5672,7 @@ static int schedule_resp(struct scsi_cmnd *cmnd, struct sdebug_dev_info *devip,
- 	if (sdebug_host_max_queue)
- 		sd_dp->hc_idx = get_tag(cmnd);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 6856eb602f826..7e5258b2c4290 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4126,8 +4126,8 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
+ {
+ 	unsigned int padto = 0, len = skb->len;
  
--	if (polled)
-+	if (polled || (ndelay > 0 && ndelay < INCLUSIVE_TIMING_MAX_NS))
- 		ns_from_boot = ktime_get_boottime_ns();
+-	if (rtl_is_8125(tp) && len < 128 + RTL_MIN_PATCH_LEN &&
+-	    rtl_skb_is_udp(skb) && skb_transport_header_was_set(skb)) {
++	if (len < 128 + RTL_MIN_PATCH_LEN && rtl_skb_is_udp(skb) &&
++	    skb_transport_header_was_set(skb)) {
+ 		unsigned int trans_data_len = skb_tail_pointer(skb) -
+ 					      skb_transport_header(skb);
  
- 	/* one of the resp_*() response functions is called here */
+@@ -4151,9 +4151,15 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
+ static unsigned int rtl_quirk_packet_padto(struct rtl8169_private *tp,
+ 					   struct sk_buff *skb)
+ {
+-	unsigned int padto;
++	unsigned int padto = 0;
+ 
+-	padto = rtl8125_quirk_udp_padto(tp, skb);
++	switch (tp->mac_version) {
++	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
++		padto = rtl8125_quirk_udp_padto(tp, skb);
++		break;
++	default:
++		break;
++	}
+ 
+ 	switch (tp->mac_version) {
+ 	case RTL_GIGA_MAC_VER_34:
 -- 
 2.43.0
 
