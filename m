@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-102277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCE39EF1F7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:43:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEB39EECE4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF8F216F460
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590C8188BEFD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28029239BB1;
-	Thu, 12 Dec 2024 16:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD609218587;
+	Thu, 12 Dec 2024 15:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZaFGa8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5XxyXE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D645D226545;
-	Thu, 12 Dec 2024 16:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E6C2139CB;
+	Thu, 12 Dec 2024 15:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020641; cv=none; b=JtUB7JTVl1blv+LU6E8LmPR570Gn14tP1O84KiodZivN21i/jTz4mR72WL7NQM0xXrRPdNEeFciEZfkyFrNPcDEVpanWhSALWQ241ApaelpROk8WAoz1mrJTNrsxHG530M2p0QOl1FHnYmK7ZLeumrfrbsvMwAZpZJj1K7WWE+A=
+	t=1734017818; cv=none; b=lvEbfJdGcyqjs5sh3UiErwB33diVHdaOGpCl4Yt8VWcDnbMiz036MyswA5EDGJpZ5S2zwfmGsWjOf+ZlqFmzzsOTIxKtT/youoYEM0f9Dc5btaODy7t0M1V6LH5pd0CsrTwg8xcHpsFmwFdqLChjGSB8z3sgmtTmleNVb57EGxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020641; c=relaxed/simple;
-	bh=6tV71f/ybmjl762N2GcDWmstXEWajcgHQiuu8bj0L7Q=;
+	s=arc-20240116; t=1734017818; c=relaxed/simple;
+	bh=pF2HcqScIK46DMFAaA0juOn4w4eqLCYG6UJ/96PPfvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZkWMtJvVMHn4nv+UB1jCkOjOxO/yZtMf/dCL1cWsYeMhqFIyfPXZDXzO80lAmlspQe9+HK5LY1T15T1FGCIm0xGGxTB1JEiT758fPYsZVLUk+eU/Zo3UNojynz+dx/MDby/I78BUsm4m26ghYhHj4ot8sK+5VftG1srn4oLnK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZaFGa8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC58DC4CECE;
-	Thu, 12 Dec 2024 16:24:00 +0000 (UTC)
+	 MIME-Version; b=sFnDPpb1MrW2yRmHHOs/UG2RBGH8/lpYd1hye3CXRm5uUZKqW50mtcF4ldfFEg3yGRiy91HWFLDRgmBnVkXdCqgne6If1ClmNocFHlJCsdalp98Oa0VuOGUFImuNf7uRN5evMlQbtyXaw7r3daAgap3Q7Wvs4aPzcKj5F23T9uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5XxyXE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC21EC4CECE;
+	Thu, 12 Dec 2024 15:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020641;
-	bh=6tV71f/ybmjl762N2GcDWmstXEWajcgHQiuu8bj0L7Q=;
+	s=korg; t=1734017818;
+	bh=pF2HcqScIK46DMFAaA0juOn4w4eqLCYG6UJ/96PPfvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZaFGa8vapDnB8FP7cCJFUDZVdjrSV0KY47k7ETMd1liv2tMvMrtVN8i6fxy49l/b
-	 dJq5rI+l64b8T3PBTM3rwDOSH2aSYJmSvd2QwS/LMbKVLdnnZkQ8I/+CiY+KWj+Krf
-	 87lBF7L8Wd5BgzH0pCdrZ5J2/hwM0QteWKrt4lLw=
+	b=f5XxyXE78s9JaZIFs6ZRvF1lCIeoExLDqf/jBE1BQ0O4rFcAesZ2gZI6TNiPQY3zw
+	 IYvpQwAIc8f7H63uHAVYbF32Gg6jUTYrnRmf5uWB9i1Vs/3d+XMv5uZ9ZUeIK6kAfW
+	 7TRsk+yob8bHrEGcOMGVRegEimjSBTnj2kCZZhus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Tymoshenko <ovt@google.com>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 6.1 492/772] ovl: properly handle large files in ovl_security_fileattr
-Date: Thu, 12 Dec 2024 15:57:17 +0100
-Message-ID: <20241212144410.281864316@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 119/356] ALSA: seq: ump: Fix seq port updates per FB info notify
+Date: Thu, 12 Dec 2024 15:57:18 +0100
+Message-ID: <20241212144249.356475554@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Tymoshenko <ovt@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 3b6b99ef15ea37635604992ede9ebcccef38a239 upstream.
+[ Upstream commit aaa55faa2495320e44bc643a917c701f2cc89ee7 ]
 
-dentry_open in ovl_security_fileattr fails for any file
-larger than 2GB if open method of the underlying filesystem
-calls generic_file_open (e.g. fusefs).
+update_port_infos() is called when a UMP FB Info update notification
+is received, and this function is supposed to update the attributes of
+the corresponding sequencer port.  However, the function had a few
+issues and it brought to the incorrect states.  Namely:
 
-The issue can be reproduce using the following script:
-(passthrough_ll is an example app from libfuse).
+- It tried to get a wrong sequencer info for the update without
+  correcting the port number with the group-offset 1
+- The loop exited immediately when a sequencer port isn't present;
+  this ended up with the truncation if a sequencer port in the middle
+  goes away
 
-  $ D=/opt/test/mnt
-  $ mkdir -p ${D}/{source,base,top/uppr,top/work,ovlfs}
-  $ dd if=/dev/zero of=${D}/source/zero.bin bs=1G count=2
-  $ passthrough_ll -o source=${D}/source ${D}/base
-  $ mount -t overlay overlay \
-      -olowerdir=${D}/base,upperdir=${D}/top/uppr,workdir=${D}/top/work \
-      ${D}/ovlfs
-  $ chmod 0777 ${D}/mnt/ovlfs/zero.bin
+This patch addresses those bugs.
 
-Running this script results in "Value too large for defined data type"
-error message from chmod.
-
-Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
-Fixes: 72db82115d2b ("ovl: copy up sync/noatime fileattr flags")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4a16a3af0571 ("ALSA: seq: ump: Handle FB info update")
+Link: https://patch.msgid.link/20241128170423.23351-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/inode.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/core/seq/seq_ump_client.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/overlayfs/inode.c
-+++ b/fs/overlayfs/inode.c
-@@ -593,8 +593,13 @@ static int ovl_security_fileattr(const s
- 	struct file *file;
- 	unsigned int cmd;
- 	int err;
-+	unsigned int flags;
+diff --git a/sound/core/seq/seq_ump_client.c b/sound/core/seq/seq_ump_client.c
+index 91773f8ca7828..1c6c49560ae12 100644
+--- a/sound/core/seq/seq_ump_client.c
++++ b/sound/core/seq/seq_ump_client.c
+@@ -258,12 +258,12 @@ static void update_port_infos(struct seq_ump_client *client)
+ 			continue;
  
--	file = dentry_open(realpath, O_RDONLY, current_cred());
-+	flags = O_RDONLY;
-+	if (force_o_largefile())
-+		flags |= O_LARGEFILE;
-+
-+	file = dentry_open(realpath, flags, current_cred());
- 	if (IS_ERR(file))
- 		return PTR_ERR(file);
- 
+ 		old->addr.client = client->seq_client;
+-		old->addr.port = i;
++		old->addr.port = ump_group_to_seq_port(i);
+ 		err = snd_seq_kernel_client_ctl(client->seq_client,
+ 						SNDRV_SEQ_IOCTL_GET_PORT_INFO,
+ 						old);
+ 		if (err < 0)
+-			return;
++			continue;
+ 		fill_port_info(new, client, &client->ump->groups[i]);
+ 		if (old->capability == new->capability &&
+ 		    !strcmp(old->name, new->name))
+@@ -272,7 +272,7 @@ static void update_port_infos(struct seq_ump_client *client)
+ 						SNDRV_SEQ_IOCTL_SET_PORT_INFO,
+ 						new);
+ 		if (err < 0)
+-			return;
++			continue;
+ 		/* notify to system port */
+ 		snd_seq_system_client_ev_port_change(client->seq_client, i);
+ 	}
+-- 
+2.43.0
+
 
 
 
