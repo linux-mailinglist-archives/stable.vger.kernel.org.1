@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6AFD9EF3CF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D63639EF0A6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5562E177923
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C3C01893A87
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D200229686;
-	Thu, 12 Dec 2024 16:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1493022541E;
+	Thu, 12 Dec 2024 16:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTmp8sN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xI4SmcF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7FE216E3B;
-	Thu, 12 Dec 2024 16:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D462210DE;
+	Thu, 12 Dec 2024 16:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021866; cv=none; b=PQ2FsCyw+nZmFrHSvvyLO+SIvdvYWKITFZqnGDylpdEJRf9aZZjN5NvBwFJG4rKsvkY7nJ74YQftXdmGtDGHuDXfmbUfP1MijV7ggobxERJ3ZUHZsvh8bRhhoMDf3ou+eM9eHQTMnJ3AE8lKW3GRGg6gUEzz/Zn4iponFHJahIs=
+	t=1734019828; cv=none; b=OcXlnf1bErGhc4ej5vAVmsPFxWUgCj/akjkjLuSgfC7jcGzgljB2FYdmAUij65vjHXyybqKdQB0oIM/WpRt+LZ1qMrKPHRI61CrO6XqXaYix10ZVq3MmJfdy6tavV2jGD7riTKXlheuSVH8pR0ZjPTTpqZmez1YjqJ1FA09kIvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021866; c=relaxed/simple;
-	bh=SBFstXJ7fsMRLzDchTKxT3iunZV3IhykXLOASYhEbUw=;
+	s=arc-20240116; t=1734019828; c=relaxed/simple;
+	bh=s33D+rVaXs5Rr9Ll/lKZ/uUFfmXd+4zkUWghJdHiPYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXR16kaQ+nnifvviPqr9g93YLJQ3mX5eeUMnBZOJVNglM1xnoVf0MY3NBkN3OjW/xkdYlSBs+Nju+mG3cZGTh1ytIfH+8Sry7zmGEPIAVbNAHDwbOiodqyaLppPimYpFPvct5EC09hsaZQyEyp/SOzd9iAj6rQ6hk4TC8PQv3K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTmp8sN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B7DC4CED4;
-	Thu, 12 Dec 2024 16:44:25 +0000 (UTC)
+	 MIME-Version; b=piHY234hb3Qrq5viJ3a9CjImOxzyLnSIsWxF5mWa3+O7FJmYO8i7w+NHVgbbaKgPr74pVbZ6WiBl/tYvF8uBbYeBL66SILruB8F6F9Q66Xr3eudRKB0M8P26T3YsJcnu5ayUVEbW/fRMouqweE+S6S5daciIL+yuOZEcs/St9Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xI4SmcF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA71DC4CECE;
+	Thu, 12 Dec 2024 16:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021866;
-	bh=SBFstXJ7fsMRLzDchTKxT3iunZV3IhykXLOASYhEbUw=;
+	s=korg; t=1734019828;
+	bh=s33D+rVaXs5Rr9Ll/lKZ/uUFfmXd+4zkUWghJdHiPYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTmp8sN0ybKobzm+IfliYRI0fP54Eeezrk7iYlxSeDZhHbJAflCyt00897ylTrA4a
-	 ksW5igHqOejLwYZaAKc7e20Gp5HQYcR3YptQXaAaVgXEMWN4Op/139X+oLf4qoIqyh
-	 uXb9gZuITAWmu7TDcXX0qi59gbxakZTMZqlOu1zE=
+	b=xI4SmcF3UfVJ+x4elXO3dvCVR03tg3BwfkyCLRb7J8fGQAfrn+bs6QpLXEubsJ2Xg
+	 vvwf4u0i5x9W8JKwsKHm4Ka5J5cxWQiFIMV/EsGiYI21zFZuGITGiJ0m/3oDSHx8+H
+	 ex5w1bwNrQ/IkTopBObg+N6XL0ljNjHch/Y1TvTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 057/565] selftests/watchdog-test: Fix system accidentally reset after watchdog-test
-Date: Thu, 12 Dec 2024 15:54:12 +0100
-Message-ID: <20241212144313.750581544@linuxfoundation.org>
+Subject: [PATCH 6.1 308/772] net: usb: lan78xx: Fix refcounting and autosuspend on invalid WoL configuration
+Date: Thu, 12 Dec 2024 15:54:13 +0100
+Message-ID: <20241212144402.623081597@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit dc1308bee1ed03b4d698d77c8bd670d399dcd04d ]
+[ Upstream commit e863ff806f72098bccaf8fa89c80d9ad6187c3b0 ]
 
-When running watchdog-test with 'make run_tests', the watchdog-test will
-be terminated by a timeout signal(SIGTERM) due to the test timemout.
+Validate Wake-on-LAN (WoL) options in `lan78xx_set_wol` before calling
+`usb_autopm_get_interface`. This prevents USB autopm refcounting issues
+and ensures the adapter can properly enter autosuspend when invalid WoL
+options are provided.
 
-And then, a system reboot would happen due to watchdog not stop. see
-the dmesg as below:
-```
-[ 1367.185172] watchdog: watchdog0: watchdog did not stop!
-```
-
-Fix it by registering more signals(including SIGTERM) in watchdog-test,
-where its signal handler will stop the watchdog.
-
-After that
- # timeout 1 ./watchdog-test
- Watchdog Ticking Away!
- .
- Stopping watchdog ticks...
-
-Link: https://lore.kernel.org/all/20241029031324.482800-1-lizhijian@fujitsu.com/
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: eb9ad088f966 ("lan78xx: Check for supported Wake-on-LAN modes")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Link: https://patch.msgid.link/20241118140351.2398166-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/usb/lan78xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
-index f45e510500c0d..09773695d219f 100644
---- a/tools/testing/selftests/watchdog/watchdog-test.c
-+++ b/tools/testing/selftests/watchdog/watchdog-test.c
-@@ -242,7 +242,13 @@ int main(int argc, char *argv[])
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index ee3c13bbf6c02..feff1265cad6f 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1657,13 +1657,13 @@ static int lan78xx_set_wol(struct net_device *netdev,
+ 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
+ 	int ret;
  
- 	printf("Watchdog Ticking Away!\n");
++	if (wol->wolopts & ~WAKE_ALL)
++		return -EINVAL;
++
+ 	ret = usb_autopm_get_interface(dev->intf);
+ 	if (ret < 0)
+ 		return ret;
  
-+	/*
-+	 * Register the signals
-+	 */
- 	signal(SIGINT, term);
-+	signal(SIGTERM, term);
-+	signal(SIGKILL, term);
-+	signal(SIGQUIT, term);
+-	if (wol->wolopts & ~WAKE_ALL)
+-		return -EINVAL;
+-
+ 	pdata->wol = wol->wolopts;
  
- 	while (1) {
- 		keep_alive();
+ 	device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
 -- 
 2.43.0
 
