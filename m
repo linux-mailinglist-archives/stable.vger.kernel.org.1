@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-101852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1749EEF02
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A509D9EEF24
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C366188808C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:00:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 875D316C328
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E0A229694;
-	Thu, 12 Dec 2024 15:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEB7235C2A;
+	Thu, 12 Dec 2024 15:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXLLiz6H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzA6c5lm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7F422968E;
-	Thu, 12 Dec 2024 15:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168F2235C26;
+	Thu, 12 Dec 2024 15:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019035; cv=none; b=CNH9kO6TnSL9rfeDWjR61dw9e0O31SA+5xIObkGY9w/5A3V+IVcKOIWFEybWtdFGOCOCmSpaNXlECVL1v0H+9ujGLo9uOnc8IZSgZ6mpgxtiZaEq7n4YCDyejB8Sbtch8OqYbOaaAVGTlhc21aL79X41VupK3gS07+0iGIu3Shc=
+	t=1734019075; cv=none; b=f6kSeM48FvgpUx7xXQsKhyP6LIvXz7uxxQF6sz4q3hfAeOwNyJ89hWpgX/zX71B0RbzsvItkLDDTwIj0PjuXbr4liJIaA1GjlvjrvaIonqV3yk0XQmDiOTF2lxDNXX6KkLWTDlojsz+o1t8NqrtLGGGPUbKdR1MGH6l0MKM+FUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019035; c=relaxed/simple;
-	bh=FLpTvpEu8RkwM8Fv+DsdWp0q5bYbKsw3Y+dkgAm1Fqc=;
+	s=arc-20240116; t=1734019075; c=relaxed/simple;
+	bh=ySOlUiaMRYuqv2si610PpyMyFU4AoqNCdDYH9ycYRdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TfEofzMIMRFen1T6M2qFGDxwH0MJ6KGcl9InqfLmjIMLvT8c5jCcTwrEXvmUp8RW0hJNNan/aDCZWz2iCvA+V3xE5+O29j44lCSXqxywJmJPPLmgzUk3pWivZUaglzz/B/+GhzAJrHkW3JeDDOU2EKbq2+sC78kVmuVHG2x6F+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXLLiz6H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1771AC4CEDD;
-	Thu, 12 Dec 2024 15:57:12 +0000 (UTC)
+	 MIME-Version; b=It+ARO3A8M7SlA0FPGZVrlnI3fbalemSl62pC6R8gKLz6Zri3byiIAVVEC3n+Ys5hY6whgDNlaO+rvURbCeXZ9RYa4Iwx3h+lU9yQcq7Egm2m5ZRzFL0bxf33CXfGztLLoWOD9n+RZhop6ef8it4JyDhjmhS60uicRjmIQFUaGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzA6c5lm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27891C4CECE;
+	Thu, 12 Dec 2024 15:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019033;
-	bh=FLpTvpEu8RkwM8Fv+DsdWp0q5bYbKsw3Y+dkgAm1Fqc=;
+	s=korg; t=1734019074;
+	bh=ySOlUiaMRYuqv2si610PpyMyFU4AoqNCdDYH9ycYRdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXLLiz6HC4PBbw0yiDWCFP0NeBUNFZeT9H0LedSuen4693FWN7/PH7PSvnrR7RNfC
-	 YO9/ix2cT1YT1ZD9x1EqgbEocNYXH0wA45jhrC7463Tszq4K0PVaF2kmfRWeA2F8BE
-	 mL9/C8V7rbTfU1vrucwAQ7ptxZkaiG0BIUajr5Pg=
+	b=bzA6c5lmE7+f+GlC067HUhgB/YwnanAtRKbVp1+6mKAFXimNGX1aVz8Mf9UZOoQ3x
+	 UHrOEI7VpUlK1Uo8ugGPlKiAnRQh5qcdNCW9L+y/Z+/MnRkSKnzaEYXRz62vfVw6F/
+	 JWAPCvnu32sl4IOpPETx3VECaFkXOXOKURnGt0Xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/772] spi: spi-fsl-lpspi: downgrade log level for pio mode
-Date: Thu, 12 Dec 2024 15:50:37 +0100
-Message-ID: <20241212144353.745563414@linuxfoundation.org>
+Subject: [PATCH 6.1 093/772] spi: spi-fsl-lpspi: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Thu, 12 Dec 2024 15:50:38 +0100
+Message-ID: <20241212144353.783930942@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,36 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit d5786c88cacbb859f465e8e93c26154585c1008d ]
+[ Upstream commit 003c7e01916c5e2af95add9b0cbda2e6163873e8 ]
 
-Having no DMA is not an error. The simplest reason is not having it
-configured. SPI will still be usable, so raise a warning instead to
-get still some attention.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20230531072850.739021-1-alexander.stein@ew.tq-group.com
+Fixes: 9728fb3ce117 ("spi: lpspi: disable lpspi module irq in DMA mode")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240906022828.891812-1-ruanjinjie@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 003c7e01916c ("spi: spi-fsl-lpspi: Use IRQF_NO_AUTOEN flag in request_irq()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 7d016464037c3..b9e602447eca5 100644
+index b9e602447eca5..246d133238822 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -908,7 +908,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+@@ -870,7 +870,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 		goto out_controller_put;
+ 	}
+ 
+-	ret = devm_request_irq(&pdev->dev, irq, fsl_lpspi_isr, 0,
++	ret = devm_request_irq(&pdev->dev, irq, fsl_lpspi_isr, IRQF_NO_AUTOEN,
+ 			       dev_name(&pdev->dev), fsl_lpspi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "can't get irq%d: %d\n", irq, ret);
+@@ -907,14 +907,10 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
  	if (ret == -EPROBE_DEFER)
  		goto out_pm_get;
- 	if (ret < 0)
--		dev_err(&pdev->dev, "dma setup error %d, use pio\n", ret);
-+		dev_warn(&pdev->dev, "dma setup error %d, use pio\n", ret);
- 	else
- 		/*
- 		 * disable LPSPI module IRQ when enable DMA mode successfully,
+-	if (ret < 0)
++	if (ret < 0) {
+ 		dev_warn(&pdev->dev, "dma setup error %d, use pio\n", ret);
+-	else
+-		/*
+-		 * disable LPSPI module IRQ when enable DMA mode successfully,
+-		 * to prevent the unexpected LPSPI module IRQ events.
+-		 */
+-		disable_irq(irq);
++		enable_irq(irq);
++	}
+ 
+ 	ret = devm_spi_register_controller(&pdev->dev, controller);
+ 	if (ret < 0) {
 -- 
 2.43.0
 
