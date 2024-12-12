@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751739EEBDD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D079EEDE2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E48FB1687AA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74800188B844
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6981120969B;
-	Thu, 12 Dec 2024 15:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D991221D9C;
+	Thu, 12 Dec 2024 15:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcPqmIZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lv6ks11T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279FA205ACF;
-	Thu, 12 Dec 2024 15:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE939222D55;
+	Thu, 12 Dec 2024 15:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017186; cv=none; b=FTouuywujvsF+Qa02w/o4IRk6B0lH7BBVGCdJq8+GdOwrWA/Gl/OnZ80txfynM3/51kLiD1Jf7yOCBb/P3h4iAds05NoUYpsQlAPtdllUxd28Q4M9GUh2N6eO1GCXkuaJFSCPcjsoYIVtx97+Nbf1EFYge1j5SFen4gjhdUIua8=
+	t=1734018375; cv=none; b=uTnIUCtljFdcXkLqXvcroDAJyozHiFnpGASh8+J76gC5KnKUiB/7HtvGgczz6JZmQNp93xiQCo8MsSgkECXAZ+swknwLkMQnQcd42tmyli5ltg0h/C+qRsUWCNWfuP8UZI1wBcJ08rQ16NU8vEo0/PejmTLAnMxsWWOHR9OHmZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017186; c=relaxed/simple;
-	bh=98fLkRc5syxwqOavCuCxV4JRusyxhireMu190o4xs3Y=;
+	s=arc-20240116; t=1734018375; c=relaxed/simple;
+	bh=8Yk2WLh8bAdrWqnmG/x1b95ncHlQf1vY/6yI8cN8x80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKuWorhpoVTVq/Dn8U6sEFz3kN9dZPCMhG9RxuHc7dC310Bu6YNOkGFG4khwFoMszlaSpyInBIIahnJqn8DVUIE/E/PVQi3Zm879uZY2EVoyHdabfwo+f5oWEhZrovuQHqa/Ocrf6P+bnQsn/Sqjcl1rqKI1yFHffIKnYjNJpW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcPqmIZN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE78C4CECE;
-	Thu, 12 Dec 2024 15:26:25 +0000 (UTC)
+	 MIME-Version; b=b+ufC6CvCC6EqyUjLZEb2TSGuKaD5L+blyXeAwSiUMdzT+ZjjGjiNYF6zXINGI2BSJN2xTRL+i09e0QUdNUN1TcOlfBETeTrPr/jXcIEnNJ4sZQP5H8VY7zChoxrpgu2ZM8gHzsav/Ni52A7TfklynKtqIiMVJHsyn4OyAYvt/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lv6ks11T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296D0C4CECE;
+	Thu, 12 Dec 2024 15:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017186;
-	bh=98fLkRc5syxwqOavCuCxV4JRusyxhireMu190o4xs3Y=;
+	s=korg; t=1734018375;
+	bh=8Yk2WLh8bAdrWqnmG/x1b95ncHlQf1vY/6yI8cN8x80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OcPqmIZN0kKe1tJVK38fiq5YMA6Wf7WF1FgLUz9Q16s8ks/3RiT6GuuBNftz6lm2a
-	 PBYdw2Pz7GTZ5gjDGpg42HbdYqR3vrpaFGmESTVuCC4/JW6eEvh8iTgWlrYl0Q/2Ey
-	 y840XjK3ZlwbaLsS+PIl2W3DCKck8KMWmv6XH6Fw=
+	b=Lv6ks11T5jkRNQ5oBr+BAwC8LpyzZjJHVnjy1FZW/sShQzT1z1oAQaSHmtPnyQBNf
+	 KiITlGrA6oQHW1ZJX1zX2fys0Vy8WyKH/pKpzMlGU1tRmUWb0pJWfX68NYOT0XEmBA
+	 hRm6Au2N41Sz7iYYHHETwwo/1uY1cCcEuGfM5isE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7f3761b790fa41d0f3d5@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Danil Pylaev <danstiv404@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 407/466] fs/ntfs3: Fix case when unmarked clusters intersect with zone
-Date: Thu, 12 Dec 2024 15:59:36 +0100
-Message-ID: <20241212144322.832684911@linuxfoundation.org>
+Subject: [PATCH 6.6 258/356] Bluetooth: Add new quirks for ATS2851
+Date: Thu, 12 Dec 2024 15:59:37 +0100
+Message-ID: <20241212144254.793510105@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Danil Pylaev <danstiv404@gmail.com>
 
-[ Upstream commit 5fc982fe7eca9d0cf7b25832450ebd4f7c8e1c36 ]
+[ Upstream commit 94464a7b71634037b13d54021e0dfd0fb0d8c1f0 ]
 
-Reported-by: syzbot+7f3761b790fa41d0f3d5@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+This adds quirks for broken extended create connection,
+and write auth payload timeout.
+
+Signed-off-by: Danil Pylaev <danstiv404@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/run.c | 40 ++++++++++++++++++++++++++++++----------
- 1 file changed, 30 insertions(+), 10 deletions(-)
+ include/net/bluetooth/hci.h      | 14 ++++++++++++++
+ include/net/bluetooth/hci_core.h | 10 ++++++----
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
-index 58e988cd80490..48566dff0dc92 100644
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -1055,8 +1055,8 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- {
- 	int ret, err;
- 	CLST next_vcn, lcn, len;
--	size_t index;
--	bool ok;
-+	size_t index, done;
-+	bool ok, zone;
- 	struct wnd_bitmap *wnd;
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 2129d071c3725..77a3040a3f29d 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -297,6 +297,20 @@ enum {
+ 	 */
+ 	HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT,
  
- 	ret = run_unpack(run, sbi, ino, svcn, evcn, vcn, run_buf, run_buf_size);
-@@ -1087,8 +1087,9 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- 			continue;
- 
- 		down_read_nested(&wnd->rw_lock, BITMAP_MUTEX_CLUSTERS);
-+		zone = max(wnd->zone_bit, lcn) < min(wnd->zone_end, lcn + len);
- 		/* Check for free blocks. */
--		ok = wnd_is_used(wnd, lcn, len);
-+		ok = !zone && wnd_is_used(wnd, lcn, len);
- 		up_read(&wnd->rw_lock);
- 		if (ok)
- 			continue;
-@@ -1096,14 +1097,33 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- 		/* Looks like volume is corrupted. */
- 		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
- 
--		if (down_write_trylock(&wnd->rw_lock)) {
--			/* Mark all zero bits as used in range [lcn, lcn+len). */
--			size_t done;
--			err = wnd_set_used_safe(wnd, lcn, len, &done);
--			up_write(&wnd->rw_lock);
--			if (err)
--				return err;
-+		if (!down_write_trylock(&wnd->rw_lock))
-+			continue;
++	/*
++	 * When this quirk is set, the HCI_OP_LE_EXT_CREATE_CONN command is
++	 * disabled. This is required for the Actions Semiconductor ATS2851
++	 * based controllers, which erroneously claims to support it.
++	 */
++	HCI_QUIRK_BROKEN_EXT_CREATE_CONN,
 +
-+		if (zone) {
-+			/*
-+			 * Range [lcn, lcn + len) intersects with zone.
-+			 * To avoid complex with zone just turn it off.
-+			 */
-+			wnd_zone_set(wnd, 0, 0);
-+		}
++	/*
++	 * When this quirk is set, the command WRITE_AUTH_PAYLOAD_TIMEOUT is
++	 * skipped. This is required for the Actions Semiconductor ATS2851
++	 * based controllers, due to a race condition in pairing process.
++	 */
++	HCI_QUIRK_BROKEN_WRITE_AUTH_PAYLOAD_TIMEOUT,
 +
-+		/* Mark all zero bits as used in range [lcn, lcn+len). */
-+		err = wnd_set_used_safe(wnd, lcn, len, &done);
-+		if (zone) {
-+			/* Restore zone. Lock mft run. */
-+			struct rw_semaphore *lock;
-+			lock = is_mounted(sbi) ? &sbi->mft.ni->file.run_lock :
-+						 NULL;
-+			if (lock)
-+				down_read(lock);
-+			ntfs_refresh_zone(sbi);
-+			if (lock)
-+				up_read(lock);
- 		}
-+		up_write(&wnd->rw_lock);
-+		if (err)
-+			return err;
- 	}
+ 	/* When this quirk is set, MSFT extension monitor tracking by
+ 	 * address filter is supported. Since tracking quantity of each
+ 	 * pattern is limited, this feature supports tracking multiple
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 0f50c0cefcb7d..4185eb679180d 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1852,8 +1852,8 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+ 			   !test_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &(dev)->quirks))
  
- 	return ret;
+ /* Use ext create connection if command is supported */
+-#define use_ext_conn(dev) ((dev)->commands[37] & 0x80)
+-
++#define use_ext_conn(dev) (((dev)->commands[37] & 0x80) && \
++	!test_bit(HCI_QUIRK_BROKEN_EXT_CREATE_CONN, &(dev)->quirks))
+ /* Extended advertising support */
+ #define ext_adv_capable(dev) (((dev)->le_features[1] & HCI_LE_EXT_ADV))
+ 
+@@ -1866,8 +1866,10 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+  * C24: Mandatory if the LE Controller supports Connection State and either
+  * LE Feature (LL Privacy) or LE Feature (Extended Advertising) is supported
+  */
+-#define use_enhanced_conn_complete(dev) (ll_privacy_capable(dev) || \
+-					 ext_adv_capable(dev))
++#define use_enhanced_conn_complete(dev) ((ll_privacy_capable(dev) || \
++					 ext_adv_capable(dev)) && \
++					 !test_bit(HCI_QUIRK_BROKEN_EXT_CREATE_CONN, \
++						 &(dev)->quirks))
+ 
+ /* Periodic advertising support */
+ #define per_adv_capable(dev) (((dev)->le_features[1] & HCI_LE_PERIODIC_ADV))
 -- 
 2.43.0
 
