@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F5D9EF07F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 179109EF309
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49DC29353E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB9192892CE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E24521E086;
-	Thu, 12 Dec 2024 16:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5DE23A582;
+	Thu, 12 Dec 2024 16:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7TJbZ8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czm52eZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF8520969B;
-	Thu, 12 Dec 2024 16:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB44422A7E4;
+	Thu, 12 Dec 2024 16:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020262; cv=none; b=Cqdskyg1j1wjWyOGgW6EZKkLsqctcGDI4olAk1IXVrRicnzN9uTZXfvLXiHabxtYtrtm28qmf0l+ck7GNkg3MMqgmglaLaWI8NDyTnQctmrK6Mojqt+DkFykIelEVEnPP1fSd/tV3WydHdoXSiDuawStcEKkEDpeWqks1nANMVk=
+	t=1734022075; cv=none; b=ds5R/i5k5gfxWlJh4mtHLOHApB2n8teSzusAoyb+0caYhHeMkcgSer8Ivws1xGYFHXYSFD1b6W1ozmIqzMy4E3J9LxPZmhFCPOEHaNIt3zjxtZlPEdIGRIqOiX4NN2TTMiDBGXJe/QQkeUqu37GdMbxy6N7OjZIFm5pJ7hfqlGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020262; c=relaxed/simple;
-	bh=3/zsq5+YcGEnbWBsovkix6w458X3zCmb7SjXTtqOyxc=;
+	s=arc-20240116; t=1734022075; c=relaxed/simple;
+	bh=viBTxaL9O+/m9oKG143gxEJ1lkmYZkRvNZ1Ae3GJOgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pdO4mQHabtWP1PGLvwOXuezLa6q+XQDGMlAaX/kV+/gq85G6UnMwMviC9FxqL8wotRg1ot21n3cfcjYlQWhZZcoHQrqv416sypalTUtKSjbCGX7k72OVq9gkRKMr5BtCWfIDHh38bFKdSz+bDp6UXpJPluIIcjT3wjF1jeyAMRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7TJbZ8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD0EC4CECE;
-	Thu, 12 Dec 2024 16:17:41 +0000 (UTC)
+	 MIME-Version; b=GFbqBeSBkugct6H9nE8hzBoLexjoztY2ao2FP7LsZ8EfolayKpY7Fk0xCVeZiBhpZok7L8zIbbX6kGXXNMBExePRejVBd5qUqz37v+TVghNVDI7aj2g2qq8jTne6tjVDGqMVId/NjHVayGwl95lOA08pEy4u0DIkaqeIkK7WqBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czm52eZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A510C4CECE;
+	Thu, 12 Dec 2024 16:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020262;
-	bh=3/zsq5+YcGEnbWBsovkix6w458X3zCmb7SjXTtqOyxc=;
+	s=korg; t=1734022075;
+	bh=viBTxaL9O+/m9oKG143gxEJ1lkmYZkRvNZ1Ae3GJOgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7TJbZ8vdVBKCB6akt4+oR+FyQV/zLHVzQFDQp9QskYt8KZWvSEW5FRFCR1JP/U6a
-	 Qwy4qjzhZ63/gQRaONi6Lil/KEoGIfaFpA4BSVlzjeIjKvXeFNsWq90w6ohVvr5H41
-	 9qktag91ZRNCzai7Isz+FWJT5E1hSCKDGEPLNODE=
+	b=czm52eZzBZTbVwUx0PRCyFUbSOlEXApw8qRh74pxJvxpQS2Mpoi55OUYIy3w1cse4
+	 RySAxDxW7WSwEBUGgsp4AhSUANS8nlj+1LvViET3WGXNToQdNlE+g8i814/szNtiC6
+	 /4qtMvaKDmNWzcBzBw8lWebcTyItENdIhhIhscMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew McClain <mmcclain@noprivs.com>,
-	Sai Kumar Cholleti <skmr537@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.1 390/772] gpio: exar: set value when external pull-up or pull-down is present
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 140/565] venus: venc: add handling for VIDIOC_ENCODER_CMD
 Date: Thu, 12 Dec 2024 15:55:35 +0100
-Message-ID: <20241212144406.021713835@linuxfoundation.org>
+Message-ID: <20241212144317.014033018@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sai Kumar Cholleti <skmr537@gmail.com>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-commit 72cef64180de04a7b055b4773c138d78f4ebdb77 upstream.
+[ Upstream commit 7493db46e4c4aa5126dd32f8eae12a4cdcf7a401 ]
 
-Setting GPIO direction = high, sometimes results in GPIO value = 0.
+Add handling for below commands in encoder:
+1. V4L2_ENC_CMD_STOP
+2. V4L2_ENC_CMD_START
 
-If a GPIO is pulled high, the following construction results in the
-value being 0 when the desired value is 1:
-
-$ echo "high" > /sys/class/gpio/gpio336/direction
-$ cat /sys/class/gpio/gpio336/value
-0
-
-Before the GPIO direction is changed from an input to an output,
-exar_set_value() is called with value = 1, but since the GPIO is an
-input when exar_set_value() is called, _regmap_update_bits() reads a 1
-due to an external pull-up.  regmap_set_bits() sets force_write =
-false, so the value (1) is not written.  When the direction is then
-changed, the GPIO becomes an output with the value of 0 (the hardware
-default).
-
-regmap_write_bits() sets force_write = true, so the value is always
-written by exar_set_value() and an external pull-up doesn't affect the
-outcome of setting direction = high.
-
-The same can happen when a GPIO is pulled low, but the scenario is a
-little more complicated.
-
-$ echo high > /sys/class/gpio/gpio351/direction
-$ cat /sys/class/gpio/gpio351/value
-1
-
-$ echo in > /sys/class/gpio/gpio351/direction
-$ cat /sys/class/gpio/gpio351/value
-0
-
-$ echo low > /sys/class/gpio/gpio351/direction
-$ cat /sys/class/gpio/gpio351/value
-1
-
-Fixes: 36fb7218e878 ("gpio: exar: switch to using regmap")
-Co-developed-by: Matthew McClain <mmcclain@noprivs.com>
-Signed-off-by: Matthew McClain <mmcclain@noprivs.com>
-Signed-off-by: Sai Kumar Cholleti <skmr537@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241105071523.2372032-1-skmr537@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: 6c9934c5a00a ("media: venus: fix enc/dec destruction order")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-exar.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/media/platform/qcom/venus/core.h |  9 ++++
+ drivers/media/platform/qcom/venus/venc.c | 68 ++++++++++++++++++++++++
+ 2 files changed, 77 insertions(+)
 
---- a/drivers/gpio/gpio-exar.c
-+++ b/drivers/gpio/gpio-exar.c
-@@ -99,11 +99,13 @@ static void exar_set_value(struct gpio_c
- 	struct exar_gpio_chip *exar_gpio = gpiochip_get_data(chip);
- 	unsigned int addr = exar_offset_to_lvl_addr(exar_gpio, offset);
- 	unsigned int bit = exar_offset_to_bit(exar_gpio, offset);
-+	unsigned int bit_value = value ? BIT(bit) : 0;
+diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
+index 6869f0d06b774..cf9d2dd265f7d 100644
+--- a/drivers/media/platform/qcom/venus/core.h
++++ b/drivers/media/platform/qcom/venus/core.h
+@@ -310,6 +310,14 @@ enum venus_dec_state {
+ 	VENUS_DEC_STATE_DRC		= 7,
+ };
  
--	if (value)
--		regmap_set_bits(exar_gpio->regmap, addr, BIT(bit));
--	else
--		regmap_clear_bits(exar_gpio->regmap, addr, BIT(bit));
-+	/*
-+	 * regmap_write_bits() forces value to be written when an external
-+	 * pull up/down might otherwise indicate value was already set.
-+	 */
-+	regmap_write_bits(exar_gpio->regmap, addr, BIT(bit), bit_value);
++enum venus_enc_state {
++	VENUS_ENC_STATE_DEINIT		= 0,
++	VENUS_ENC_STATE_INIT		= 1,
++	VENUS_ENC_STATE_ENCODING	= 2,
++	VENUS_ENC_STATE_STOPPED		= 3,
++	VENUS_ENC_STATE_DRAIN		= 4,
++};
++
+ struct venus_ts_metadata {
+ 	bool used;
+ 	u64 ts_ns;
+@@ -415,6 +423,7 @@ struct venus_inst {
+ 	u8 quantization;
+ 	u8 xfer_func;
+ 	enum venus_dec_state codec_state;
++	enum venus_enc_state enc_state;
+ 	wait_queue_head_t reconf_wait;
+ 	unsigned int subscriptions;
+ 	int buf_count;
+diff --git a/drivers/media/platform/qcom/venus/venc.c b/drivers/media/platform/qcom/venus/venc.c
+index 52a7366d7a5fc..ae47535168d12 100644
+--- a/drivers/media/platform/qcom/venus/venc.c
++++ b/drivers/media/platform/qcom/venus/venc.c
+@@ -522,6 +522,51 @@ static int venc_subscribe_event(struct v4l2_fh *fh,
+ 	}
  }
  
- static int exar_direction_output(struct gpio_chip *chip, unsigned int offset,
++static int
++venc_encoder_cmd(struct file *file, void *fh, struct v4l2_encoder_cmd *cmd)
++{
++	struct venus_inst *inst = to_inst(file);
++	struct hfi_frame_data fdata = {0};
++	int ret = 0;
++
++	ret = v4l2_m2m_ioctl_try_encoder_cmd(file, fh, cmd);
++	if (ret)
++		return ret;
++
++	mutex_lock(&inst->lock);
++
++	if (cmd->cmd == V4L2_ENC_CMD_STOP &&
++	    inst->enc_state == VENUS_ENC_STATE_ENCODING) {
++		/*
++		 * Implement V4L2_ENC_CMD_STOP by enqueue an empty buffer on
++		 * encoder input to signal EOS.
++		 */
++		if (!(inst->streamon_out && inst->streamon_cap))
++			goto unlock;
++
++		fdata.buffer_type = HFI_BUFFER_INPUT;
++		fdata.flags |= HFI_BUFFERFLAG_EOS;
++		fdata.device_addr = 0xdeadb000;
++
++		ret = hfi_session_process_buf(inst, &fdata);
++
++		inst->enc_state = VENUS_ENC_STATE_DRAIN;
++	} else if (cmd->cmd == V4L2_ENC_CMD_START) {
++		if (inst->enc_state == VENUS_ENC_STATE_DRAIN) {
++			ret = -EBUSY;
++			goto unlock;
++		}
++		if (inst->enc_state == VENUS_ENC_STATE_STOPPED) {
++			vb2_clear_last_buffer_dequeued(&inst->fh.m2m_ctx->cap_q_ctx.q);
++			inst->enc_state = VENUS_ENC_STATE_ENCODING;
++		}
++	}
++
++unlock:
++	mutex_unlock(&inst->lock);
++	return ret;
++}
++
+ static const struct v4l2_ioctl_ops venc_ioctl_ops = {
+ 	.vidioc_querycap = venc_querycap,
+ 	.vidioc_enum_fmt_vid_cap = venc_enum_fmt,
+@@ -550,6 +595,7 @@ static const struct v4l2_ioctl_ops venc_ioctl_ops = {
+ 	.vidioc_subscribe_event = venc_subscribe_event,
+ 	.vidioc_unsubscribe_event = v4l2_event_unsubscribe,
+ 	.vidioc_try_encoder_cmd = v4l2_m2m_ioctl_try_encoder_cmd,
++	.vidioc_encoder_cmd = venc_encoder_cmd,
+ };
+ 
+ static int venc_pm_get(struct venus_inst *inst)
+@@ -1182,6 +1228,8 @@ static int venc_start_streaming(struct vb2_queue *q, unsigned int count)
+ 	if (ret)
+ 		goto error;
+ 
++	inst->enc_state = VENUS_ENC_STATE_ENCODING;
++
+ 	mutex_unlock(&inst->lock);
+ 
+ 	return 0;
+@@ -1201,10 +1249,21 @@ static int venc_start_streaming(struct vb2_queue *q, unsigned int count)
+ static void venc_vb2_buf_queue(struct vb2_buffer *vb)
+ {
+ 	struct venus_inst *inst = vb2_get_drv_priv(vb->vb2_queue);
++	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
+ 
+ 	venc_pm_get_put(inst);
+ 
+ 	mutex_lock(&inst->lock);
++
++	if (inst->enc_state == VENUS_ENC_STATE_STOPPED) {
++		vbuf->sequence = inst->sequence_cap++;
++		vbuf->field = V4L2_FIELD_NONE;
++		vb2_set_plane_payload(vb, 0, 0);
++		v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
++		mutex_unlock(&inst->lock);
++		return;
++	}
++
+ 	venus_helper_vb2_buf_queue(vb);
+ 	mutex_unlock(&inst->lock);
+ }
+@@ -1246,6 +1305,10 @@ static void venc_buf_done(struct venus_inst *inst, unsigned int buf_type,
+ 		vb->planes[0].data_offset = data_offset;
+ 		vb->timestamp = timestamp_us * NSEC_PER_USEC;
+ 		vbuf->sequence = inst->sequence_cap++;
++		if ((vbuf->flags & V4L2_BUF_FLAG_LAST) &&
++		    inst->enc_state == VENUS_ENC_STATE_DRAIN) {
++			inst->enc_state = VENUS_ENC_STATE_STOPPED;
++		}
+ 	} else {
+ 		vbuf->sequence = inst->sequence_out++;
+ 	}
+@@ -1346,6 +1409,9 @@ static int venc_open(struct file *file)
+ 	inst->clk_data.core_id = VIDC_CORE_ID_DEFAULT;
+ 	inst->core_acquired = false;
+ 
++	if (inst->enc_state == VENUS_ENC_STATE_DEINIT)
++		inst->enc_state = VENUS_ENC_STATE_INIT;
++
+ 	venus_helper_init_instance(inst);
+ 
+ 	ret = venc_ctrl_init(inst);
+@@ -1408,6 +1474,8 @@ static int venc_close(struct file *file)
+ 	v4l2_fh_del(&inst->fh);
+ 	v4l2_fh_exit(&inst->fh);
+ 
++	inst->enc_state = VENUS_ENC_STATE_DEINIT;
++
+ 	venc_pm_put(inst, false);
+ 
+ 	kfree(inst);
+-- 
+2.43.0
+
 
 
 
