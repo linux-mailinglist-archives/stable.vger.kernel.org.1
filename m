@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4749EF06D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4747D9EEA35
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAD09179172
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21D6416A9F9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49674226531;
-	Thu, 12 Dec 2024 16:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE44F216E2D;
+	Thu, 12 Dec 2024 15:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJcZzoGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrpMZ/XO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039C6226536;
-	Thu, 12 Dec 2024 16:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D862139B2;
+	Thu, 12 Dec 2024 15:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019926; cv=none; b=e1+isZov1OlpDStlDoG3PWrt1NLuzwFCtZ4uB2ocJmWrilsl6hcvjYKLoRCkSGyHvzOL3mGdRlqttpe8rYXS+aI+fEZeYSCb4PBKT/xIWCn7fJN77a6Q7giY5kAKhP22sry7Cii/x1qAtbzJxe6mjuLa9OZd1oPyFyakQ7BcXcM=
+	t=1734016017; cv=none; b=EljyeOEKHgRQY4t4p+7gMz76s6MZHKO6Ynlw5CqT/w03154G6sL8LtKFX+GTjr5Hi64vRgGPR8Ci5AzJNSTDaMTI8F4rdYrImcucEG8Hb/sFBXt9LPry83du4Y+dYV2pFRl9g/ZHFofHVXcUmi4tZASLbVCsIaZwvthY9NYJBH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019926; c=relaxed/simple;
-	bh=jeHTmQwDSDM1wsNAeaAPEU11bCTpBAtLb5xEA/A8bq4=;
+	s=arc-20240116; t=1734016017; c=relaxed/simple;
+	bh=m//KzxoVHbm6kcz+63yoo9sevjYvxxDf6pAxNBgAdIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpbXs4UPj6p1YYU/lBre71Q8A4SyGwzSBG/jZF6Pf4Vvk1b03fji6lUr7qw8Pv8GjuwpjwC/Qdb5fWvzycm0xVMAKb3qPe2g7TovNuOvVmy6QWMyWoEqMDvDiH16L9i2DsI4OZfo2JZybdGgpIo4LJj0f3Q8hSA4rkMfrOYM56E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJcZzoGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682D4C4CECE;
-	Thu, 12 Dec 2024 16:12:05 +0000 (UTC)
+	 MIME-Version; b=JFnK6G+lYAJciTvjez89rvUp0zDixkEPTq3efkCFPbO8drXhbSw5MSS7Dn5sxuT8ZVBwSK8NfluUyTghonQri6/kkIpxlWbF243/37A3XiBytM2YNz8ehyaWaAaNzPhgybzNyIOtnMzAWgIhmfDF3vdkRdxcKmNfXu4CQaFnvuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrpMZ/XO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB106C4CECE;
+	Thu, 12 Dec 2024 15:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019925;
-	bh=jeHTmQwDSDM1wsNAeaAPEU11bCTpBAtLb5xEA/A8bq4=;
+	s=korg; t=1734016017;
+	bh=m//KzxoVHbm6kcz+63yoo9sevjYvxxDf6pAxNBgAdIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJcZzoGVtLigTZp7RBbnFKPIx7WJmoctGC1U6v+jttKpgMdGATyFbPWe1h2eTlTvW
-	 DVyY7LP70ke37/wJGviLP8JiCOtJGtZjtZ/Ix5Q5EXHa6h1xD+JkM5Y66EC7S4k5h+
-	 iQnU4HtKkQqHV3lq0hLTg6A2X6ZD41l9O5o6cJlQ=
+	b=DrpMZ/XOGQx5ioA3/2BXF3yyjgIV18TEzTcVpAHcNWQ7LshsK84jPml5wCejt8v+c
+	 F7UWlmxuoky4uek6BdDX16CjzKyKaSZWKIZ9E4Dn33n5x+EtoiD5HRAHuydO8ZJsHl
+	 Byiu6GgUuFTcW53AXJR3fI9gdPsZg6RMsKJuR49E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Panis <jpanis@baylibre.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	William Breathitt Gray <wbg@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 333/772] counter: ti-ecap-capture: Add check for clk_enable()
+Subject: [PATCH 6.12 109/466] scsi: scsi_debug: Fix hrtimer support for ndelay
 Date: Thu, 12 Dec 2024 15:54:38 +0100
-Message-ID: <20241212144403.663227864@linuxfoundation.org>
+Message-ID: <20241212144311.124282866@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit 1437d9f1c56fce9c24e566508bce1d218dd5497a ]
+[ Upstream commit 6918141d815acef056a0d10e966a027d869a922d ]
 
-Add check for the return value of clk_enable() in order to catch the
-potential exception.
+Since commit 771f712ba5b0 ("scsi: scsi_debug: Fix cmd duration
+calculation"), ns_from_boot value is only evaluated in schedule_resp()
+for polled requests.
 
-Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
-Reviewed-by: Julien Panis <jpanis@baylibre.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241104194059.47924-1-jiashengjiangcool@gmail.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+However, ns_from_boot is also required for hrtimer support for when
+ndelay is less than INCLUSIVE_TIMING_MAX_NS, so fix up the logic to
+decide when to evaluate ns_from_boot.
+
+Fixes: 771f712ba5b0 ("scsi: scsi_debug: Fix cmd duration calculation")
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20241202130045.2335194-1-john.g.garry@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/ti-ecap-capture.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-index fb1cb1774674a..b84e368a413f5 100644
---- a/drivers/counter/ti-ecap-capture.c
-+++ b/drivers/counter/ti-ecap-capture.c
-@@ -576,8 +576,13 @@ static int ecap_cnt_resume(struct device *dev)
- {
- 	struct counter_device *counter_dev = dev_get_drvdata(dev);
- 	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
-+	int ret;
+diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
+index b52513eeeafa7..680ba180a6725 100644
+--- a/drivers/scsi/scsi_debug.c
++++ b/drivers/scsi/scsi_debug.c
+@@ -6447,7 +6447,7 @@ static int schedule_resp(struct scsi_cmnd *cmnd, struct sdebug_dev_info *devip,
+ 	}
+ 	sd_dp = &sqcp->sd_dp;
  
--	clk_enable(ecap_dev->clk);
-+	ret = clk_enable(ecap_dev->clk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable clock %d\n", ret);
-+		return ret;
-+	}
+-	if (polled)
++	if (polled || (ndelay > 0 && ndelay < INCLUSIVE_TIMING_MAX_NS))
+ 		ns_from_boot = ktime_get_boottime_ns();
  
- 	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
- 
+ 	/* one of the resp_*() response functions is called here */
 -- 
 2.43.0
 
