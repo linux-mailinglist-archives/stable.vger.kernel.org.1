@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-101707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068979EEDAE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 758B89EEC30
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B539A28B60B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86FA1882E58
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC49E223E64;
-	Thu, 12 Dec 2024 15:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE872153F0;
+	Thu, 12 Dec 2024 15:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvNXQrk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekBzs0uF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A609A223C7A;
-	Thu, 12 Dec 2024 15:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286462185A8;
+	Thu, 12 Dec 2024 15:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018508; cv=none; b=XKxAWgQp5Yfe7rdwECtC6P9b5CKG6P7A+7AA+ZCv0BAQtdhC5dsnBJLVBglfl/osPBweq3H/Uu/FdrKZbLV9bTtzRZC99LqzTPKt0FEjRFDb+TRQIfqqFlrwZfOl4D50LVavyTD8J93eRS4gdNfsZ9ATOhGoXObQZ//G/Q9YL8M=
+	t=1734017417; cv=none; b=CPn8/4yH7Oag48pM13t6+DM1Abry59VGq1cgjzmGCNHh5nClPLZxOMtg+Ip7B1KBCa2tFiTPQWfdjA7lsmwqUK8UWoT2WO9DKEToCdVh6nAw7VtSTjglN8TmWj7Pfnfu2ZSLBlM/yBzeM6CRfTAXF7X8bzWD5iHU02cwtPYphN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018508; c=relaxed/simple;
-	bh=lKrwKn0e16Tmr3fZw1SPJaq6J9f5aCX0vximwEJ4uxw=;
+	s=arc-20240116; t=1734017417; c=relaxed/simple;
+	bh=uu80/eVw7ntNB/mDz030rPKPke78rbmbYcybIk5ZhPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qiXaoQ7NVTnJPgRpBEdDDRTpPjcbd0CJin1KSYdF7aKg8xHoqhf0uiMunq1cgjisqF8GiyAO8mEH/MWcrLUYVq/zLF7AmBnXUgylDD8VQ7weTOKk0yc3mPDOjN9s14iDcm/auazv+v+x0gdqNx8x+T3sOqDdLumu4+LVajz7Kr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvNXQrk5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A3BC4CECE;
-	Thu, 12 Dec 2024 15:48:26 +0000 (UTC)
+	 MIME-Version; b=FXnNKyZASJ1Pql94Q8ryDHlz85DbbRe/Zqri9iBBjFtr4dpYxq9FH/i11JtpvA7W3Gi+UUVEDpJpqc18SKLwxqulmxYM5rC8SYqWtWtJHvKccrC/FGHtO1EIifcb36GVVyE8ap3K1+myoy/t3ouKdJtPenvFZgtbiw0qLRElIgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekBzs0uF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3C2C4CED0;
+	Thu, 12 Dec 2024 15:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018507;
-	bh=lKrwKn0e16Tmr3fZw1SPJaq6J9f5aCX0vximwEJ4uxw=;
+	s=korg; t=1734017417;
+	bh=uu80/eVw7ntNB/mDz030rPKPke78rbmbYcybIk5ZhPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NvNXQrk59z1Hu7LsYfiacYjW/EQLwLYgtxEGPJB1gH2YbZnVmHHLmo+xOB3asCKyH
-	 Y+tLNHWu0GGkQbFAe+4gV4tsSLFk+dimB3JB95osIXEdPKHmsTGpUmjhntVOyLrmph
-	 CNSZ7IADjsiLxwmBgstCTlQRhzTSYu/ApHb/qi4Y=
+	b=ekBzs0uF92a+SD8EuL0sUYze71rLD5FqFLgruqYX1tga4s0yzpbs1d5nQjjUcKqRX
+	 2rD5NfbUYa3r0WPn5TRWFpbU5wTFD6z1Rep6dKe1RnX64Kvq8+lYa7QRNaokJ1DvDA
+	 JsxDpNWVCg/pMKvjOnR68qtv+/VSI4mqTkOcAgkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 312/356] serial: 8250_dw: Add Sophgo SG2044 quirk
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 462/466] ALSA: hda: Fix build error without CONFIG_SND_DEBUG
 Date: Thu, 12 Dec 2024 16:00:31 +0100
-Message-ID: <20241212144256.884388895@linuxfoundation.org>
+Message-ID: <20241212144325.122032320@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit cad4dda82c7eedcfc22597267e710ccbcf39d572 ]
+commit 0ddf2784d6c29e59409a62b8f32dc5abe56135a4 upstream.
 
-SG2044 relys on an internal divisor when calculating bitrate, which
-means a wrong clock for the most common bitrates. So add a quirk for
-this uart device to skip the set rate call and only relys on the
-internal UART divisor.
+The macro should have been defined without setting the non-existing
+name field in the case of CONFIG_SND_DEBUG=n.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Link: https://lore.kernel.org/r/20241024062105.782330-4-inochiama@gmail.com
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/20241011131046.5eb3905a@canb.auug.org.au
+Fixes: 5b1913a79c3e ("ALSA: hda: Use own quirk lookup helper")
+Link: https://patch.msgid.link/20241011072152.14657-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dw.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/pci/hda/hda_local.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index 8aed33be2ebf4..eaf4a907380aa 100644
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -785,7 +785,7 @@ static const struct dw8250_platform_data dw8250_renesas_rzn1_data = {
- 	.quirks = DW_UART_QUIRK_CPR_VALUE | DW_UART_QUIRK_IS_DMA_FC,
+--- a/sound/pci/hda/hda_local.h
++++ b/sound/pci/hda/hda_local.h
+@@ -308,9 +308,15 @@ struct hda_quirk {
+ #endif
  };
  
--static const struct dw8250_platform_data dw8250_starfive_jh7100_data = {
-+static const struct dw8250_platform_data dw8250_skip_set_rate_data = {
- 	.usr_reg = DW_UART_USR,
- 	.quirks = DW_UART_QUIRK_SKIP_SET_RATE,
- };
-@@ -795,7 +795,8 @@ static const struct of_device_id dw8250_of_match[] = {
- 	{ .compatible = "cavium,octeon-3860-uart", .data = &dw8250_octeon_3860_data },
- 	{ .compatible = "marvell,armada-38x-uart", .data = &dw8250_armada_38x_data },
- 	{ .compatible = "renesas,rzn1-uart", .data = &dw8250_renesas_rzn1_data },
--	{ .compatible = "starfive,jh7100-uart", .data = &dw8250_starfive_jh7100_data },
-+	{ .compatible = "sophgo,sg2044-uart", .data = &dw8250_skip_set_rate_data },
-+	{ .compatible = "starfive,jh7100-uart", .data = &dw8250_skip_set_rate_data },
- 	{ /* Sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, dw8250_of_match);
--- 
-2.43.0
-
++#ifdef CONFIG_SND_DEBUG_VERBOSE
+ #define HDA_CODEC_QUIRK(vend, dev, xname, val) \
+ 	{ _SND_PCI_QUIRK_ID(vend, dev), .value = (val), .name = (xname),\
+ 			.match_codec_ssid = true }
++#else
++#define HDA_CODEC_QUIRK(vend, dev, xname, val) \
++	{ _SND_PCI_QUIRK_ID(vend, dev), .value = (val), \
++			.match_codec_ssid = true }
++#endif
+ 
+ struct snd_hda_pin_quirk {
+ 	unsigned int codec;             /* Codec vendor/device ID */
 
 
 
