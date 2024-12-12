@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A02589EF9B0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 859369EF4C1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82B4017BA79
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 230EE28CF0A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74FA223C79;
-	Thu, 12 Dec 2024 17:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04667222D46;
+	Thu, 12 Dec 2024 17:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSkuiL5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2PrWAG+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836CB223313;
-	Thu, 12 Dec 2024 17:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C972F44;
+	Thu, 12 Dec 2024 17:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025389; cv=none; b=LPCjirK8VWt9cTXAwefmTctt43bKtt+YJ9yTxodvdXrHB/nAL6NDZpCC5pmLuFHmVJIfB+qwnmwDCPIDVHbCoICnhAed7eOnzr2lw5ueMOup0oF4gtOM0Bj3G/5DE3j4MYrw+SxCLJbiB3n5DL1VkuTxcBNYTSvOa/J/8Tdeayw=
+	t=1734023268; cv=none; b=dsN2oIfDRebH3xFR1IgTZ24wjZfG4tGqpZvETjEjm+Ju4GTLCUGaN/y4rLM54kD6/8Wr3FhCMYv0SOfpUUjxfJthaweKzY7eRJ/gUJxjPgWPILCV0zb1PQwJoBO5fCYGlyS+GIUkHvkVAVTke+P7VcfLoDXfTsZPTxFIw0gzXso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025389; c=relaxed/simple;
-	bh=7c/Rgi30a3WvsqExppx4ypkySA5mJSwv81QiWWHMdF8=;
+	s=arc-20240116; t=1734023268; c=relaxed/simple;
+	bh=Qr0Sn5LAJiNTUPV/T4Ba8VpSJ3yuz+Z3NG/5/q5lMzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4zjoZUwzm+BwLRW6iuzKHGpTOzIlStBcxQwdjfM6r6ByUNA87MYKgfy7x/kRhLYo36iq4+rN5itB0u7KTaivr6ehcvlNTUaQKl1Zb43x2Ms/6hC1lSi071oxT5liH7saUYTP4+39YPREGh7Uvzyvor+b8ECU/Xr4fc4undgGQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSkuiL5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059FAC4CEE5;
-	Thu, 12 Dec 2024 17:43:08 +0000 (UTC)
+	 MIME-Version; b=juwR7xeWxjxvXLLSKhSpyH4cqGfwt5xdhTG+q/dh3uFScWP2nYgZOKDsUgSePic6MZgObHi46TKb15P/7UiYlXtmEhISUN5FvlOBBnpoD4apgvXxmmTwQ7kmL96/rjQalDxj7xzHKdgDG4BTeyw/4y60WhXAotCyR43q/Sl+rwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2PrWAG+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35298C4CECE;
+	Thu, 12 Dec 2024 17:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025389;
-	bh=7c/Rgi30a3WvsqExppx4ypkySA5mJSwv81QiWWHMdF8=;
+	s=korg; t=1734023268;
+	bh=Qr0Sn5LAJiNTUPV/T4Ba8VpSJ3yuz+Z3NG/5/q5lMzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSkuiL5hfBQTcmGuhl+h/cfmWrEOiDdfBmtSt1Ibbt7DTOTZ/H0L0gaohK3HYCDWB
-	 JJz+/tjx6oDMxEOyOWS7W2WPxGpkASQRlJZ+4xmkltfuH6dgzdHB9roR81BJc1n2He
-	 AcTT8koI0FbD5Q+fJ6guBwm9T8nC9TAdxDD6P6GY=
+	b=t2PrWAG+qADTnharIn/VreFdXf0ofN/oAc2WhuG2Pt6hLwpWh9LPas//5g/jv2tf1
+	 t54sYJ0TQbiPK6bWgrr+dhm5ZnK74zsJuJJEG97/Lw3estCHO2hi9C+uxfkeoKOV5w
+	 trhjHR927f6paOcwJknFwUDTkK0zNfPPcTBXR4gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Vrastil <michal.vrastil@hidglobal.com>,
-	Elson Roy Serrao <quic_eserrao@quicinc.com>,
-	Peter korsgaard <peter@korsgaard.com>
-Subject: [PATCH 5.4 154/321] Revert "usb: gadget: composite: fix OS descriptors w_value logic"
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 477/565] drm/vc4: hvs: Set AXI panic modes for the HVS
 Date: Thu, 12 Dec 2024 16:01:12 +0100
-Message-ID: <20241212144236.061117139@linuxfoundation.org>
+Message-ID: <20241212144330.609516856@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Vrastil <michal.vrastil@hidglobal.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-commit 51cdd69d6a857f527d6d0697a2e1f0fa8bca1005 upstream.
+[ Upstream commit 014eccc9da7bfc76a3107fceea37dd60f1d63630 ]
 
-This reverts commit ec6ce7075ef879b91a8710829016005dc8170f17.
+The HVS can change AXI request mode based on how full the COB
+FIFOs are.
+Until now the vc4 driver has been relying on the firmware to
+have set these to sensible values.
 
-Fix installation of WinUSB driver using OS descriptors. Without the
-fix the drivers are not installed correctly and the property
-'DeviceInterfaceGUID' is missing on host side.
+With HVS channel 2 now being used for live video, change the
+panic mode for all channels to be explicitly set by the driver,
+and the same for all channels.
 
-The original change was based on the assumption that the interface
-number is in the high byte of wValue but it is in the low byte,
-instead. Unfortunately, the fix is based on MS documentation which is
-also wrong.
-
-The actual USB request for OS descriptors (using USB analyzer) looks
-like:
-
-Offset  0   1   2   3   4   5   6   7
-0x000   C1  A1  02  00  05  00  0A  00
-
-C1: bmRequestType (device to host, vendor, interface)
-A1: nas magic number
-0002: wValue (2: nas interface)
-0005: wIndex (5: get extended property i.e. nas interface GUID)
-008E: wLength (142)
-
-The fix was tested on Windows 10 and Windows 11.
-
-Cc: stable@vger.kernel.org
-Fixes: ec6ce7075ef8 ("usb: gadget: composite: fix OS descriptors w_value logic")
-Signed-off-by: Michal Vrastil <michal.vrastil@hidglobal.com>
-Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Acked-by: Peter korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20241113235433.20244-1-quic_eserrao@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-7-dave.stevenson@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/composite.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hvs.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -1924,8 +1924,20 @@ unknown:
- 			memset(buf, 0, w_length);
- 			buf[5] = 0x01;
- 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
-+			/*
-+			 * The Microsoft CompatID OS Descriptor Spec(w_index = 0x4) and
-+			 * Extended Prop OS Desc Spec(w_index = 0x5) state that the
-+			 * HighByte of wValue is the InterfaceNumber and the LowByte is
-+			 * the PageNumber. This high/low byte ordering is incorrectly
-+			 * documented in the Spec. USB analyzer output on the below
-+			 * request packets show the high/low byte inverted i.e LowByte
-+			 * is the InterfaceNumber and the HighByte is the PageNumber.
-+			 * Since we dont support >64KB CompatID/ExtendedProp descriptors,
-+			 * PageNumber is set to 0. Hence verify that the HighByte is 0
-+			 * for below two cases.
-+			 */
- 			case USB_RECIP_DEVICE:
--				if (w_index != 0x4 || (w_value & 0xff))
-+				if (w_index != 0x4 || (w_value >> 8))
- 					break;
- 				buf[6] = w_index;
- 				/* Number of ext compat interfaces */
-@@ -1941,9 +1953,9 @@ unknown:
- 				}
- 				break;
- 			case USB_RECIP_INTERFACE:
--				if (w_index != 0x5 || (w_value & 0xff))
-+				if (w_index != 0x5 || (w_value >> 8))
- 					break;
--				interface = w_value >> 8;
-+				interface = w_value & 0xFF;
- 				if (interface >= MAX_CONFIG_INTERFACES ||
- 				    !os_desc_cfg->interface[interface])
- 					break;
+diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
+index 3856ac289d380..69b2936a5f4ad 100644
+--- a/drivers/gpu/drm/vc4/vc4_hvs.c
++++ b/drivers/gpu/drm/vc4/vc4_hvs.c
+@@ -729,6 +729,17 @@ static int vc4_hvs_bind(struct device *dev, struct device *master, void *data)
+ 	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
+ 	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
+ 
++	/* Set AXI panic mode.
++	 * VC4 panics when < 2 lines in FIFO.
++	 * VC5 panics when less than 1 line in the FIFO.
++	 */
++	dispctrl &= ~(SCALER_DISPCTRL_PANIC0_MASK |
++		      SCALER_DISPCTRL_PANIC1_MASK |
++		      SCALER_DISPCTRL_PANIC2_MASK);
++	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC0);
++	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
++	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
++
+ 	HVS_WRITE(SCALER_DISPCTRL, dispctrl);
+ 
+ 	ret = devm_request_irq(dev, platform_get_irq(pdev, 0),
+-- 
+2.43.0
+
 
 
 
