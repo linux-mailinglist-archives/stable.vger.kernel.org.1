@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-101047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4386C9EEA0A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3E99EEA16
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:08:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9D6C2820EE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BEF72840B8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C45215795;
-	Thu, 12 Dec 2024 15:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8164D2163AB;
+	Thu, 12 Dec 2024 15:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTgpIpK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbjcV18X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2837D2080FC;
-	Thu, 12 Dec 2024 15:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE87217F34;
+	Thu, 12 Dec 2024 15:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016074; cv=none; b=My6NWNXHhllbCuxNpRw5CWZZebfM1Ju0fG/XnD2jhBRUfFSnEheG+qHcSk/ytdS+EVg2IhuGKArQAOIr9hVw/YeAdZHeYN3Mjtw3+Bn50FuLRNcs5M+3yTX6NF9gCJMaDWVwgOR6aqRDAXOcCcMHcMfARCla3hxqRGszjRnqBr0=
+	t=1734016101; cv=none; b=uijZR7Q1fzImn9LSGYBdlOps3Lfa4ft+yUqFu9+j35bLk5Y8pxysDygUtaOgBfrL/tROkoPeNCeDXjDLEgEbzT8tM86RkRkHYY3F/jwkMyImgZ4lDJG8Wrw8QdKJL6KI4hyQsDdm/H3cVYYOS4+cMFiCECyh3eWWZ5uvXjvrxYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016074; c=relaxed/simple;
-	bh=RrP25hRRadcRAzBvdUyfuWdBel9xNG3LvY6GDjDh8L8=;
+	s=arc-20240116; t=1734016101; c=relaxed/simple;
+	bh=1IBtwzBzVnwFhlDQeUeJ1aGp6ad88gC6AoUKSIrkn/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mePwmph8Q9xwBKbZh49IdKQqLiq2WZX3msGCF0tI0PzC0YBu1fn5I8ehBXauSY+qBsaKgH0hs5I0ARyBadQSw7b302AqCi+s/LFxckoldsXyFHIZibr3XMFi8EgY97lp07lDgiFZ6D+MOhNrVghYSXAq9hRcsGH6I2c0ekmERB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTgpIpK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A667DC4CECE;
-	Thu, 12 Dec 2024 15:07:52 +0000 (UTC)
+	 MIME-Version; b=VZ9bCfFJEu35dOB5OikF3oPBMn5BGArJ2ca5/U8JY4mSKZtlGKoIHboI7QsJd9kf0HrIeQgYGobt7Z3RF/qDvRzc/htPxdp/kQ+Hc2nmuzsSztfzumRY9bgGKo12Bb/AitopVj0u4ELfu6yjxcOHmasJsLOVgtf4x1Kln2MOsgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbjcV18X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A947C4CEDD;
+	Thu, 12 Dec 2024 15:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016073;
-	bh=RrP25hRRadcRAzBvdUyfuWdBel9xNG3LvY6GDjDh8L8=;
+	s=korg; t=1734016101;
+	bh=1IBtwzBzVnwFhlDQeUeJ1aGp6ad88gC6AoUKSIrkn/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTgpIpK25MuoNJSNAGDUaPZb2HUcjjOdvierI85fZ0uKQaAoXycs11RZBP7AxhsxY
-	 9f8cjo5993PDBlEk3gQY5NP87OF+qzf/4F/f8YoanvQRu7TEvE5HWCnvAtP+PNqJkH
-	 q6fGlDr7DsBhDdHnuBqJWEQNhVdUiUr4zhKkVDWY=
+	b=gbjcV18XUfBDfBa73NjY8VTCdG6UIJm16d90Y9jzhDUl5adf9nkkDVDev9qrYbCfy
+	 BydWN6Cqqt6svAOYQTvt79Lohiko6mPGBOaSlL5bcr6eiwKPRW0VvV6HpCkuj6G/vQ
+	 VouQxV2uo29daiekD6RWT5zM5EliXqonaqM69KtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenxing Chen <chenzhenxing@uniontech.com>,
-	Xu Rao <raoxu@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.12 123/466] HID: wacom: fix when get product name maybe null pointer
-Date: Thu, 12 Dec 2024 15:54:52 +0100
-Message-ID: <20241212144311.666317417@linuxfoundation.org>
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 125/466] LoongArch: KVM: Protect kvm_check_requests() with SRCU
+Date: Thu, 12 Dec 2024 15:54:54 +0100
+Message-ID: <20241212144311.744179045@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -67,109 +64,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 59548215b76be98cf3422eea9a67d6ea578aca3d upstream.
+commit 589e6cc7597655bed7b8543b8286925f631f597c upstream.
 
-Due to incorrect dev->product reporting by certain devices, null
-pointer dereferences occur when dev->product is empty, leading to
-potential system crashes.
+When we enable lockdep we get such a warning:
 
-This issue was found on EXCELSIOR DL37-D05 device with
-Loongson-LS3A6000-7A2000-DL37 motherboard.
+ =============================
+ WARNING: suspicious RCU usage
+ 6.12.0-rc7+ #1891 Tainted: G        W
+ -----------------------------
+ include/linux/kvm_host.h:1043 suspicious rcu_dereference_check() usage!
+ other info that might help us debug this:
+ rcu_scheduler_active = 2, debug_locks = 1
+ 1 lock held by qemu-system-loo/948:
+  #0: 90000001184a00a8 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0xf4/0xe20 [kvm]
+ stack backtrace:
+ CPU: 0 UID: 0 PID: 948 Comm: qemu-system-loo Tainted: G        W          6.12.0-rc7+ #1891
+ Tainted: [W]=WARN
+ Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
+ Stack : 0000000000000089 9000000005a0db9c 90000000071519c8 900000012c578000
+         900000012c57b920 0000000000000000 900000012c57b928 9000000007e53788
+         900000000815bcc8 900000000815bcc0 900000012c57b790 0000000000000001
+         0000000000000001 4b031894b9d6b725 0000000004dec000 90000001003299c0
+         0000000000000414 0000000000000001 000000000000002d 0000000000000003
+         0000000000000030 00000000000003b4 0000000004dec000 90000001184a0000
+         900000000806d000 9000000007e53788 00000000000000b4 0000000000000004
+         0000000000000004 0000000000000000 0000000000000000 9000000107baf600
+         9000000008916000 9000000007e53788 9000000005924778 0000000010000044
+         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
+         ...
+ Call Trace:
+ [<9000000005924778>] show_stack+0x38/0x180
+ [<90000000071519c4>] dump_stack_lvl+0x94/0xe4
+ [<90000000059eb754>] lockdep_rcu_suspicious+0x194/0x240
+ [<ffff8000022143bc>] kvm_gfn_to_hva_cache_init+0xfc/0x120 [kvm]
+ [<ffff80000222ade4>] kvm_pre_enter_guest+0x3a4/0x520 [kvm]
+ [<ffff80000222b3dc>] kvm_handle_exit+0x23c/0x480 [kvm]
 
-Kernel logs:
-[   56.470885] usb 4-3: new full-speed USB device number 4 using ohci-pci
-[   56.671638] usb 4-3: string descriptor 0 read error: -22
-[   56.671644] usb 4-3: New USB device found, idVendor=056a, idProduct=0374, bcdDevice= 1.07
-[   56.671647] usb 4-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[   56.678839] hid-generic 0003:056A:0374.0004: hiddev0,hidraw3: USB HID v1.10 Device [HID 056a:0374] on usb-0000:00:05.0-3/input0
-[   56.697719] CPU 2 Unable to handle kernel paging request at virtual address 0000000000000000, era == 90000000066e35c8, ra == ffff800004f98a80
-[   56.697732] Oops[#1]:
-[   56.697734] CPU: 2 PID: 2742 Comm: (udev-worker) Tainted: G           OE      6.6.0-loong64-desktop #25.00.2000.015
-[   56.697737] Hardware name: Inspur CE520L2/C09901N000000000, BIOS 2.09.00 10/11/2024
-[   56.697739] pc 90000000066e35c8 ra ffff800004f98a80 tp 9000000125478000 sp 900000012547b8a0
-[   56.697741] a0 0000000000000000 a1 ffff800004818b28 a2 0000000000000000 a3 0000000000000000
-[   56.697743] a4 900000012547b8f0 a5 0000000000000000 a6 0000000000000000 a7 0000000000000000
-[   56.697745] t0 ffff800004818b2d t1 0000000000000000 t2 0000000000000003 t3 0000000000000005
-[   56.697747] t4 0000000000000000 t5 0000000000000000 t6 0000000000000000 t7 0000000000000000
-[   56.697748] t8 0000000000000000 u0 0000000000000000 s9 0000000000000000 s0 900000011aa48028
-[   56.697750] s1 0000000000000000 s2 0000000000000000 s3 ffff800004818e80 s4 ffff800004810000
-[   56.697751] s5 90000001000b98d0 s6 ffff800004811f88 s7 ffff800005470440 s8 0000000000000000
-[   56.697753]    ra: ffff800004f98a80 wacom_update_name+0xe0/0x300 [wacom]
-[   56.697802]   ERA: 90000000066e35c8 strstr+0x28/0x120
-[   56.697806]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-[   56.697816]  PRMD: 0000000c (PPLV0 +PIE +PWE)
-[   56.697821]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-[   56.697827]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
-[   56.697831] ESTAT: 00010000 [PIL] (IS= ECode=1 EsubCode=0)
-[   56.697835]  BADV: 0000000000000000
-[   56.697836]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000)
-[   56.697838] Modules linked in: wacom(+) bnep bluetooth rfkill qrtr nls_iso8859_1 nls_cp437 snd_hda_codec_conexant snd_hda_codec_generic ledtrig_audio snd_hda_codec_hdmi snd_hda_intel snd_intel_dspcfg snd_hda_codec snd_hda_core snd_hwdep snd_pcm snd_timer snd soundcore input_leds mousedev led_class joydev deepin_netmonitor(OE) fuse nfnetlink dmi_sysfs ip_tables x_tables overlay amdgpu amdxcp drm_exec gpu_sched drm_buddy radeon drm_suballoc_helper i2c_algo_bit drm_ttm_helper r8169 ttm drm_display_helper spi_loongson_pci xhci_pci cec xhci_pci_renesas spi_loongson_core hid_generic realtek gpio_loongson_64bit
-[   56.697887] Process (udev-worker) (pid: 2742, threadinfo=00000000aee0d8b4, task=00000000a9eff1f3)
-[   56.697890] Stack : 0000000000000000 ffff800004817e00 0000000000000000 0000251c00000000
-[   56.697896]         0000000000000000 00000011fffffffd 0000000000000000 0000000000000000
-[   56.697901]         0000000000000000 1b67a968695184b9 0000000000000000 90000001000b98d0
-[   56.697906]         90000001000bb8d0 900000011aa48028 0000000000000000 ffff800004f9d74c
-[   56.697911]         90000001000ba000 ffff800004f9ce58 0000000000000000 ffff800005470440
-[   56.697916]         ffff800004811f88 90000001000b98d0 9000000100da2aa8 90000001000bb8d0
-[   56.697921]         0000000000000000 90000001000ba000 900000011aa48028 ffff800004f9d74c
-[   56.697926]         ffff8000054704e8 90000001000bb8b8 90000001000ba000 0000000000000000
-[   56.697931]         90000001000bb8d0 9000000006307564 9000000005e666e0 90000001752359b8
-[   56.697936]         9000000008cbe400 900000000804d000 9000000005e666e0 0000000000000000
-[   56.697941]         ...
-[   56.697944] Call Trace:
-[   56.697945] [<90000000066e35c8>] strstr+0x28/0x120
-[   56.697950] [<ffff800004f98a80>] wacom_update_name+0xe0/0x300 [wacom]
-[   56.698000] [<ffff800004f9ce58>] wacom_parse_and_register+0x338/0x900 [wacom]
-[   56.698050] [<ffff800004f9d74c>] wacom_probe+0x32c/0x420 [wacom]
-[   56.698099] [<9000000006307564>] hid_device_probe+0x144/0x260
-[   56.698103] [<9000000005e65d68>] really_probe+0x208/0x540
-[   56.698109] [<9000000005e661dc>] __driver_probe_device+0x13c/0x1e0
-[   56.698112] [<9000000005e66620>] driver_probe_device+0x40/0x100
-[   56.698116] [<9000000005e6680c>] __device_attach_driver+0x12c/0x180
-[   56.698119] [<9000000005e62bc8>] bus_for_each_drv+0x88/0x160
-[   56.698123] [<9000000005e66468>] __device_attach+0x108/0x260
-[   56.698126] [<9000000005e63918>] device_reprobe+0x78/0x100
-[   56.698129] [<9000000005e62a68>] bus_for_each_dev+0x88/0x160
-[   56.698132] [<9000000006304e54>] __hid_bus_driver_added+0x34/0x80
-[   56.698134] [<9000000005e62bc8>] bus_for_each_drv+0x88/0x160
-[   56.698137] [<9000000006304df0>] __hid_register_driver+0x70/0xa0
-[   56.698142] [<9000000004e10fe4>] do_one_initcall+0x104/0x320
-[   56.698146] [<9000000004f38150>] do_init_module+0x90/0x2c0
-[   56.698151] [<9000000004f3a3d8>] init_module_from_file+0xb8/0x120
-[   56.698155] [<9000000004f3a590>] idempotent_init_module+0x150/0x3a0
-[   56.698159] [<9000000004f3a890>] sys_finit_module+0xb0/0x140
-[   56.698163] [<900000000671e4e8>] do_syscall+0x88/0xc0
-[   56.698166] [<9000000004e12404>] handle_syscall+0xc4/0x160
-[   56.698171] Code: 0011958f  00150224  5800cd85 <2a00022c> 00150004  4000c180  0015022c  03400000  03400000
-[   56.698192] ---[ end trace 0000000000000000 ]---
+Fix it by protecting kvm_check_requests() with SRCU.
 
-Fixes: 09dc28acaec7 ("HID: wacom: Improve generic name generation")
-Reported-by: Zhenxing Chen <chenzhenxing@uniontech.com>
-Co-developed-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://patch.msgid.link/B31757FE8E1544CF+20241125052616.18261-1-wangyuli@uniontech.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_sys.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/loongarch/kvm/vcpu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2241,7 +2241,8 @@ static void wacom_update_name(struct wac
- 		if (hid_is_usb(wacom->hdev)) {
- 			struct usb_interface *intf = to_usb_interface(wacom->hdev->dev.parent);
- 			struct usb_device *dev = interface_to_usbdev(intf);
--			product_name = dev->product;
-+			if (dev->product != NULL)
-+				product_name = dev->product;
- 		}
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -240,7 +240,7 @@ static void kvm_late_check_requests(stru
+  */
+ static int kvm_enter_guest_check(struct kvm_vcpu *vcpu)
+ {
+-	int ret;
++	int idx, ret;
  
- 		if (wacom->hdev->bus == BUS_I2C) {
+ 	/*
+ 	 * Check conditions before entering the guest
+@@ -249,7 +249,9 @@ static int kvm_enter_guest_check(struct
+ 	if (ret < 0)
+ 		return ret;
+ 
++	idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 	ret = kvm_check_requests(vcpu);
++	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+ 
+ 	return ret;
+ }
 
 
 
