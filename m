@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010DA9EEA4C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:11:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0052D9EF146
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5807282592
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:11:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64921779B9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F02E2163AB;
-	Thu, 12 Dec 2024 15:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D650823FA04;
+	Thu, 12 Dec 2024 16:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqaanaib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mz75tWbI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6BC213E97;
-	Thu, 12 Dec 2024 15:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B9B23FD1B;
+	Thu, 12 Dec 2024 16:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016313; cv=none; b=eCFCBvwhIDzaLxmmvcqAnu33DB4pW6YDoHx4V82LG/B5hQ2KtMz111TxfFDJIRRc6OYK84mu0YBN/RB7UP5GKIvD9DJFKiLiY0It3z3573toWtFFV76yljMDa6ONSlazknEP1k9JgDBgmKbilV/Xb8wKw2coqr8zkDpqSUE4ioY=
+	t=1734020112; cv=none; b=PDBkgkOQdVC6iRdwBYg4eV9Vv0fzP0pKu09lpS5aXENt2vTajJEtrzQWW0l9c7f2K5Buc4i5wlx7cdhcnGHJbKUHP044LSYKP2A+7Pc1JSZi1OmVyeF8aAkEh2DlJlzdQwb+luzCfbBURaenKOxkjxqJXtAKApdWaTqBYjcVNHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016313; c=relaxed/simple;
-	bh=f5+5hlzKu0AYsa+lEOx449azAQ2F6XKGDFBKSwTKpic=;
+	s=arc-20240116; t=1734020112; c=relaxed/simple;
+	bh=Cj6VjRn5DS7q1dWH65ZlKGPusE6n44sp5zV/zFQidFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GW7+pix/VpYVSadF4B8YP6SZrfPJpn+NiJXeXXih8X5Rlwva64E3K7ir1Zc+ApdP2nMbTEnsTeIwx10tpmFXLlVI+n3Gw07gEZmg+5QncBh1AXWqDpN8S4BkSou+yzQz6kETHmeB958f0VdQijvMibcC2aSpQEIKuputswpDo4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqaanaib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796D3C4CED4;
-	Thu, 12 Dec 2024 15:11:52 +0000 (UTC)
+	 MIME-Version; b=T83i2Vo812TQru0Nbzp8bFF3iGC7oSidr69ZCQTglpJbyUVC56U14hxpwj+ymcnFnmdklbQtziokm+jILrcUYMhK1m7KlpbsXhS2oRhW7X1ul14X4XEPYNKBr9UBrSth+al59iQBRbdwAc3nB3LMwSocXYetIVnT3I9udlpD+9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mz75tWbI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90507C4CECE;
+	Thu, 12 Dec 2024 16:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016313;
-	bh=f5+5hlzKu0AYsa+lEOx449azAQ2F6XKGDFBKSwTKpic=;
+	s=korg; t=1734020112;
+	bh=Cj6VjRn5DS7q1dWH65ZlKGPusE6n44sp5zV/zFQidFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqaanaiba14Ut8W/pmVKT+mw6vAJqFEag4EZxDP5NYx2iBQe9eQ87B2pyRSu10muB
-	 hy9bPUGGq4Viax4Y/0TLeX5pGdeRsViH24z4CAXFT5VssNo7Lg5W51D9KkoEdQoc9Q
-	 b60bQFG2L7++ap+jdugwt7MAAL2+AiWk5ICsJ+u0=
+	b=Mz75tWbIu85ty6+MLKBxX1N4D0gV5XYeUTFucFGABG5KRS6KJd8MlBIc6PFjUxNYW
+	 3NbdUv01Rr2bMzC/EEmjf1bqqA+OZsjlj2xPh84Jf7e4lzYTpSqsD7pLvYwgCu4gJw
+	 +Yy+NL0F8hUo/vwj2DOA3MY54AnqDPod8RPPMLeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 155/466] nilfs2: fix potential out-of-bounds memory access in nilfs_find_entry()
-Date: Thu, 12 Dec 2024 15:55:24 +0100
-Message-ID: <20241212144312.921700272@linuxfoundation.org>
+	Angelo Dureghello <adureghello@baylibre.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 380/772] dt-bindings: iio: dac: ad3552r: fix maximum spi speed
+Date: Thu, 12 Dec 2024 15:55:25 +0100
+Message-ID: <20241212144405.603525517@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-commit 985ebec4ab0a28bb5910c3b1481a40fbf7f9e61d upstream.
+commit d1d1c117f39b2057d1e978f26a8bd9631ddb193b upstream.
 
-Syzbot reported that when searching for records in a directory where the
-inode's i_size is corrupted and has a large value, memory access outside
-the folio/page range may occur, or a use-after-free bug may be detected if
-KASAN is enabled.
+Fix maximum SPI clock speed, as per datasheet (Rev. B, page 6).
 
-This is because nilfs_last_byte(), which is called by nilfs_find_entry()
-and others to calculate the number of valid bytes of directory data in a
-page from i_size and the page index, loses the upper 32 bits of the 64-bit
-size information due to an inappropriate type of local variable to which
-the i_size value is assigned.
-
-This caused a large byte offset value due to underflow in the end address
-calculation in the calling nilfs_find_entry(), resulting in memory access
-that exceeds the folio/page size.
-
-Fix this issue by changing the type of the local variable causing the bit
-loss from "unsigned int" to "u64".  The return value of nilfs_last_byte()
-is also of type "unsigned int", but it is truncated so as not to exceed
-PAGE_SIZE and no bit loss occurs, so no change is required.
-
-Link: https://lkml.kernel.org/r/20241119172403.9292-1-konishi.ryusuke@gmail.com
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96d5d14c47d97015c624
-Tested-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b0a96c5f599e ("dt-bindings: iio: dac: Add adi,ad3552r.yaml")
+Cc: stable@vger.kernel.org
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20241003-wip-bl-ad3552r-axi-v0-iio-testing-v4-4-ceb157487329@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dir.c |    2 +-
+ Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -70,7 +70,7 @@ static inline unsigned int nilfs_chunk_s
-  */
- static unsigned int nilfs_last_byte(struct inode *inode, unsigned long page_nr)
- {
--	unsigned int last_byte = inode->i_size;
-+	u64 last_byte = inode->i_size;
+--- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+@@ -26,7 +26,7 @@ properties:
+     maxItems: 1
  
- 	last_byte -= page_nr << PAGE_SHIFT;
- 	if (last_byte > PAGE_SIZE)
+   spi-max-frequency:
+-    maximum: 30000000
++    maximum: 66000000
+ 
+   reset-gpios:
+     maxItems: 1
 
 
 
