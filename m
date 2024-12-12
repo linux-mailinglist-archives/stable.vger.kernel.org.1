@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2209EF1D6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C199EEE77
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEC68290144
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD58F16C8D2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EEC235C42;
-	Thu, 12 Dec 2024 16:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90C9222D62;
+	Thu, 12 Dec 2024 15:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlUs8DtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iPvbxrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD16922652A;
-	Thu, 12 Dec 2024 16:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E63217F34;
+	Thu, 12 Dec 2024 15:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021279; cv=none; b=H+GbFfXMvoLTT4nKFtWsuJTpq7THK08kZum0jToArFhylrKvLY7mr6VqJs/nkA0qNOhuKKP2f/qyRvdOb6MviQKyVmv0QfVLsafD8HI5xYhYPXpWoxn3Q9h4c2xLPTixRn/s2bYj0kvEqeqlbMeO+DgLOniT2PMVhuujXChOy/o=
+	t=1734018690; cv=none; b=o4y57SPv5HlYTbQBHWq1JNlBgnsqSa2kjlGBW0gTT7l6buBxiAkCzjnjY16VuI1XbEsEylBxMnwK2mcmT7cn38jGCXPNtAQKZD7xcrW2T8ebERtCYcdr5T+u8o1noTkgzN//thaGfIY/97UE3a+s8/Ud3C95lSxNRE4tpu1a7qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021279; c=relaxed/simple;
-	bh=MbcVxf3YnV45CGgDk24nqdj0dcY9eUGRTTWm0JH2PYY=;
+	s=arc-20240116; t=1734018690; c=relaxed/simple;
+	bh=0lLFVIeb+ieAeLfjSeH9zx5AKaw9tdoP7NAfbIQggTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BeM3uGA5uvQrwVpwMIqeKz6UeLHf6EfullFqL/19N9/Ej6HQnkLoosHXmeWlgWaNSOvf+wCV143HBkj7Jb12nfGw3TK1IXV6y7Cd0bZWg1ZQYJuyjiuUb70cMJbNIuIeqLSqICZyVtPj0hswpwlDT+gXFUaLjau5591JzMs89uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlUs8DtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC881C4CED0;
-	Thu, 12 Dec 2024 16:34:38 +0000 (UTC)
+	 MIME-Version; b=aBNXZTfwRi8mhjPnLzstxbGCt3mW/2mpxFf/g6PG6c+XXWorgpdWGRSw0ABaD9FOHGOIOZoWGG0zbThg2enp2WXPnZtMXo2h3IHBugsdOPfmF9y1P0o7D5LfTqg3XG43ws4K5+E8RVGO9VabhyGYqKQd0qFcKfDFhY+dmxxsDWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iPvbxrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45FDC4CED0;
+	Thu, 12 Dec 2024 15:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021279;
-	bh=MbcVxf3YnV45CGgDk24nqdj0dcY9eUGRTTWm0JH2PYY=;
+	s=korg; t=1734018690;
+	bh=0lLFVIeb+ieAeLfjSeH9zx5AKaw9tdoP7NAfbIQggTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlUs8DtKz8InpDnyZWDKfUEbCHhDlVDVIhvuspyMWV+E08qjnxt702BMo5yiaswXS
-	 1M+jNlK4oABlh22CfKU5GY1BDQE0rEsITJYAs5WoZ2l0YXS8TG2IWG8N+veNLCZu4+
-	 cNLZe1G65SFjT5a+w17pH6S5ZgRWxdMGr/rT4hw0=
+	b=0iPvbxrr/d05UDlKtIyoojRcjbUuekO70f5uGolkAvaRYQ97loEc5MXuSldl1StY7
+	 8BmToezDHS70OEj2ZeoPCywPKgpgGR/cNyTxyrL8qyUA4jDCkAB8PVtmBMdOjMk6Rp
+	 Yd0IXqz4bRTPE0mWtdspCmbECwveIB+iJw75AuP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 695/772] ASoC: hdmi-codec: reorder channel allocation list
-Date: Thu, 12 Dec 2024 16:00:40 +0100
-Message-ID: <20241212144418.626792734@linuxfoundation.org>
+Subject: [PATCH 6.6 322/356] sched/core: Prevent wakeup of ksoftirqd during idle load balance
+Date: Thu, 12 Dec 2024 16:00:41 +0100
+Message-ID: <20241212144257.279481594@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,212 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-[ Upstream commit 82ff5abc2edcfba0c0f1a1be807795e2876f46e9 ]
+[ Upstream commit e932c4ab38f072ce5894b2851fea8bc5754bb8e5 ]
 
-The ordering in hdmi_codec_get_ch_alloc_table_idx() results in
-wrong channel allocation for a number of cases, e.g. when ELD
-reports FL|FR|LFE|FC|RL|RR or FL|FR|LFE|FC|RL|RR|RC|RLC|RRC:
+Scheduler raises a SCHED_SOFTIRQ to trigger a load balancing event on
+from the IPI handler on the idle CPU. If the SMP function is invoked
+from an idle CPU via flush_smp_call_function_queue() then the HARD-IRQ
+flag is not set and raise_softirq_irqoff() needlessly wakes ksoftirqd
+because soft interrupts are handled before ksoftirqd get on the CPU.
 
-ca_id 0x01 with speaker mask FL|FR|LFE is selected instead of
-ca_id 0x03 with speaker mask FL|FR|LFE|FC for 4 channels
+Adding a trace_printk() in nohz_csd_func() at the spot of raising
+SCHED_SOFTIRQ and enabling trace events for sched_switch, sched_wakeup,
+and softirq_entry (for SCHED_SOFTIRQ vector alone) helps observing the
+current behavior:
 
-and
+       <idle>-0   [000] dN.1.:  nohz_csd_func: Raising SCHED_SOFTIRQ from nohz_csd_func
+       <idle>-0   [000] dN.4.:  sched_wakeup: comm=ksoftirqd/0 pid=16 prio=120 target_cpu=000
+       <idle>-0   [000] .Ns1.:  softirq_entry: vec=7 [action=SCHED]
+       <idle>-0   [000] .Ns1.:  softirq_exit: vec=7  [action=SCHED]
+       <idle>-0   [000] d..2.:  sched_switch: prev_comm=swapper/0 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=ksoftirqd/0 next_pid=16 next_prio=120
+  ksoftirqd/0-16  [000] d..2.:  sched_switch: prev_comm=ksoftirqd/0 prev_pid=16 prev_prio=120 prev_state=S ==> next_comm=swapper/0 next_pid=0 next_prio=120
+       ...
 
-ca_id 0x04 with speaker mask FL|FR|RC gets selected instead of
-ca_id 0x0b with speaker mask FL|FR|LFE|FC|RL|RR for 6 channels
+Use __raise_softirq_irqoff() to raise the softirq. The SMP function call
+is always invoked on the requested CPU in an interrupt handler. It is
+guaranteed that soft interrupts are handled at the end.
 
-Fix this by reordering the channel allocation list with most
-specific speaker masks at the top.
+Following are the observations with the changes when enabling the same
+set of events:
 
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-Link: https://patch.msgid.link/20241115044344.3510979-1-christianshewitt@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+       <idle>-0       [000] dN.1.: nohz_csd_func: Raising SCHED_SOFTIRQ for nohz_idle_balance
+       <idle>-0       [000] dN.1.: softirq_raise: vec=7 [action=SCHED]
+       <idle>-0       [000] .Ns1.: softirq_entry: vec=7 [action=SCHED]
+
+No unnecessary ksoftirqd wakeups are seen from idle task's context to
+service the softirq.
+
+Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
+Closes: https://lore.kernel.org/lkml/fcf823f-195e-6c9a-eac3-25f870cb35ac@inria.fr/ [1]
+Reported-by: Julia Lawall <julia.lawall@inria.fr>
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20241119054432.6405-5-kprateek.nayak@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/hdmi-codec.c | 140 +++++++++++++++++++---------------
- 1 file changed, 77 insertions(+), 63 deletions(-)
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
-index d8259afc60b08..cb664d3d02dd0 100644
---- a/sound/soc/codecs/hdmi-codec.c
-+++ b/sound/soc/codecs/hdmi-codec.c
-@@ -184,84 +184,97 @@ static const struct snd_pcm_chmap_elem hdmi_codec_8ch_chmaps[] = {
- /*
-  * hdmi_codec_channel_alloc: speaker configuration available for CEA
-  *
-- * This is an ordered list that must match with hdmi_codec_8ch_chmaps struct
-+ * This is an ordered list where ca_id must exist in hdmi_codec_8ch_chmaps
-  * The preceding ones have better chances to be selected by
-  * hdmi_codec_get_ch_alloc_table_idx().
-  */
- static const struct hdmi_codec_cea_spk_alloc hdmi_codec_channel_alloc[] = {
- 	{ .ca_id = 0x00, .n_ch = 2,
--	  .mask = FL | FR},
--	/* 2.1 */
--	{ .ca_id = 0x01, .n_ch = 4,
--	  .mask = FL | FR | LFE},
--	/* Dolby Surround */
-+	  .mask = FL | FR },
-+	{ .ca_id = 0x03, .n_ch = 4,
-+	  .mask = FL | FR | LFE | FC },
- 	{ .ca_id = 0x02, .n_ch = 4,
- 	  .mask = FL | FR | FC },
--	/* surround51 */
-+	{ .ca_id = 0x01, .n_ch = 4,
-+	  .mask = FL | FR | LFE },
- 	{ .ca_id = 0x0b, .n_ch = 6,
--	  .mask = FL | FR | LFE | FC | RL | RR},
--	/* surround40 */
--	{ .ca_id = 0x08, .n_ch = 6,
--	  .mask = FL | FR | RL | RR },
--	/* surround41 */
--	{ .ca_id = 0x09, .n_ch = 6,
--	  .mask = FL | FR | LFE | RL | RR },
--	/* surround50 */
-+	  .mask = FL | FR | LFE | FC | RL | RR },
- 	{ .ca_id = 0x0a, .n_ch = 6,
- 	  .mask = FL | FR | FC | RL | RR },
--	/* 6.1 */
--	{ .ca_id = 0x0f, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | RL | RR | RC },
--	/* surround71 */
-+	{ .ca_id = 0x09, .n_ch = 6,
-+	  .mask = FL | FR | LFE | RL | RR },
-+	{ .ca_id = 0x08, .n_ch = 6,
-+	  .mask = FL | FR | RL | RR },
-+	{ .ca_id = 0x07, .n_ch = 6,
-+	  .mask = FL | FR | LFE | FC | RC },
-+	{ .ca_id = 0x06, .n_ch = 6,
-+	  .mask = FL | FR | FC | RC },
-+	{ .ca_id = 0x05, .n_ch = 6,
-+	  .mask = FL | FR | LFE | RC },
-+	{ .ca_id = 0x04, .n_ch = 6,
-+	  .mask = FL | FR | RC },
- 	{ .ca_id = 0x13, .n_ch = 8,
- 	  .mask = FL | FR | LFE | FC | RL | RR | RLC | RRC },
--	/* others */
--	{ .ca_id = 0x03, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC },
--	{ .ca_id = 0x04, .n_ch = 8,
--	  .mask = FL | FR | RC},
--	{ .ca_id = 0x05, .n_ch = 8,
--	  .mask = FL | FR | LFE | RC },
--	{ .ca_id = 0x06, .n_ch = 8,
--	  .mask = FL | FR | FC | RC },
--	{ .ca_id = 0x07, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | RC },
--	{ .ca_id = 0x0c, .n_ch = 8,
--	  .mask = FL | FR | RC | RL | RR },
--	{ .ca_id = 0x0d, .n_ch = 8,
--	  .mask = FL | FR | LFE | RL | RR | RC },
--	{ .ca_id = 0x0e, .n_ch = 8,
--	  .mask = FL | FR | FC | RL | RR | RC },
--	{ .ca_id = 0x10, .n_ch = 8,
--	  .mask = FL | FR | RL | RR | RLC | RRC },
--	{ .ca_id = 0x11, .n_ch = 8,
--	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
-+	{ .ca_id = 0x1f, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
- 	{ .ca_id = 0x12, .n_ch = 8,
- 	  .mask = FL | FR | FC | RL | RR | RLC | RRC },
--	{ .ca_id = 0x14, .n_ch = 8,
--	  .mask = FL | FR | FLC | FRC },
--	{ .ca_id = 0x15, .n_ch = 8,
--	  .mask = FL | FR | LFE | FLC | FRC },
--	{ .ca_id = 0x16, .n_ch = 8,
--	  .mask = FL | FR | FC | FLC | FRC },
--	{ .ca_id = 0x17, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | FLC | FRC },
--	{ .ca_id = 0x18, .n_ch = 8,
--	  .mask = FL | FR | RC | FLC | FRC },
--	{ .ca_id = 0x19, .n_ch = 8,
--	  .mask = FL | FR | LFE | RC | FLC | FRC },
--	{ .ca_id = 0x1a, .n_ch = 8,
--	  .mask = FL | FR | RC | FC | FLC | FRC },
--	{ .ca_id = 0x1b, .n_ch = 8,
--	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
--	{ .ca_id = 0x1c, .n_ch = 8,
--	  .mask = FL | FR | RL | RR | FLC | FRC },
--	{ .ca_id = 0x1d, .n_ch = 8,
--	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
- 	{ .ca_id = 0x1e, .n_ch = 8,
- 	  .mask = FL | FR | FC | RL | RR | FLC | FRC },
--	{ .ca_id = 0x1f, .n_ch = 8,
--	  .mask = FL | FR | LFE | FC | RL | RR | FLC | FRC },
-+	{ .ca_id = 0x11, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR | RLC | RRC },
-+	{ .ca_id = 0x1d, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR | FLC | FRC },
-+	{ .ca_id = 0x10, .n_ch = 8,
-+	  .mask = FL | FR | RL | RR | RLC | RRC },
-+	{ .ca_id = 0x1c, .n_ch = 8,
-+	  .mask = FL | FR | RL | RR | FLC | FRC },
-+	{ .ca_id = 0x0f, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RL | RR | RC },
-+	{ .ca_id = 0x1b, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RC | FC | FLC | FRC },
-+	{ .ca_id = 0x0e, .n_ch = 8,
-+	  .mask = FL | FR | FC | RL | RR | RC },
-+	{ .ca_id = 0x1a, .n_ch = 8,
-+	  .mask = FL | FR | RC | FC | FLC | FRC },
-+	{ .ca_id = 0x0d, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR | RC },
-+	{ .ca_id = 0x19, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RC | FLC | FRC },
-+	{ .ca_id = 0x0c, .n_ch = 8,
-+	  .mask = FL | FR | RC | RL | RR },
-+	{ .ca_id = 0x18, .n_ch = 8,
-+	  .mask = FL | FR | RC | FLC | FRC },
-+	{ .ca_id = 0x17, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | FLC | FRC },
-+	{ .ca_id = 0x16, .n_ch = 8,
-+	  .mask = FL | FR | FC | FLC | FRC },
-+	{ .ca_id = 0x15, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FLC | FRC },
-+	{ .ca_id = 0x14, .n_ch = 8,
-+	  .mask = FL | FR | FLC | FRC },
-+	{ .ca_id = 0x0b, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RL | RR },
-+	{ .ca_id = 0x0a, .n_ch = 8,
-+	  .mask = FL | FR | FC | RL | RR },
-+	{ .ca_id = 0x09, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RL | RR },
-+	{ .ca_id = 0x08, .n_ch = 8,
-+	  .mask = FL | FR | RL | RR },
-+	{ .ca_id = 0x07, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC | RC },
-+	{ .ca_id = 0x06, .n_ch = 8,
-+	  .mask = FL | FR | FC | RC },
-+	{ .ca_id = 0x05, .n_ch = 8,
-+	  .mask = FL | FR | LFE | RC },
-+	{ .ca_id = 0x04, .n_ch = 8,
-+	  .mask = FL | FR | RC },
-+	{ .ca_id = 0x03, .n_ch = 8,
-+	  .mask = FL | FR | LFE | FC },
-+	{ .ca_id = 0x02, .n_ch = 8,
-+	  .mask = FL | FR | FC },
-+	{ .ca_id = 0x01, .n_ch = 8,
-+	  .mask = FL | FR | LFE },
- };
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 8abd1bf31864e..da14c7450156b 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1183,7 +1183,7 @@ static void nohz_csd_func(void *info)
+ 	rq->idle_balance = idle_cpu(cpu);
+ 	if (rq->idle_balance) {
+ 		rq->nohz_idle_balance = flags;
+-		raise_softirq_irqoff(SCHED_SOFTIRQ);
++		__raise_softirq_irqoff(SCHED_SOFTIRQ);
+ 	}
+ }
  
- struct hdmi_codec_priv {
-@@ -370,7 +383,8 @@ static int hdmi_codec_chmap_ctl_get(struct snd_kcontrol *kcontrol,
- 	struct snd_pcm_chmap *info = snd_kcontrol_chip(kcontrol);
- 	struct hdmi_codec_priv *hcp = info->private_data;
- 
--	map = info->chmap[hcp->chmap_idx].map;
-+	if (hcp->chmap_idx != HDMI_CODEC_CHMAP_IDX_UNKNOWN)
-+		map = info->chmap[hcp->chmap_idx].map;
- 
- 	for (i = 0; i < info->max_channels; i++) {
- 		if (hcp->chmap_idx == HDMI_CODEC_CHMAP_IDX_UNKNOWN)
 -- 
 2.43.0
 
