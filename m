@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-103854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0726D9EFA0F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 798EB9EF87B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7BBC176DF8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E346B177953
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1522210F1;
-	Thu, 12 Dec 2024 17:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AF5223C43;
+	Thu, 12 Dec 2024 17:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/nVIrS8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBP10s1k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98420208984;
-	Thu, 12 Dec 2024 17:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6D522333B;
+	Thu, 12 Dec 2024 17:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025801; cv=none; b=cNkquK3A5dwbbZwY6/eolj4705JvJ5MNY5gt6vUSpLfXOhuZOFv4KsZNawHhxJ6UQilOCYM4zMugQ3FpTr1IziSRaBHdjtEuY89oow+DLzCugngzpwMZ4ubs578vguPBX0DKkEXkLlZpk6Q4G81ryOgsDY3q5c8o3B6gEj4dpl8=
+	t=1734024912; cv=none; b=m7KSkgTvJWVsZH1HO+RLZcITjh8Gve27DpZ9xwN9AsDyFkNw9f5gTrXf803ydheoOs9c2ykXp5qbaajga+YzrdAcZzPKZvZ49CNAOpHVDc3pfVHyxbinEeDB4SxI1sJMEZ169D/Ic2lQY8Ti1DvN2pFAGJWFSIXscdoeEKhRlrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025801; c=relaxed/simple;
-	bh=Bjq3DQJEQv9WaGh7O6mUy6b0IrrcIteOL4xYzAOmZUI=;
+	s=arc-20240116; t=1734024912; c=relaxed/simple;
+	bh=i/ucm41pU6s0SQG82hRWFsedrfXL1nXOPacte19WcOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ubpzrlEOvuJa1boOssbCVyw9GKA5l5SHRAynUItN9KRcEjsYNrhidwteHa/1ed/aeJmTNFUhu5/X9GZss/Zg1gkEXBSrvzR4WJ0SIay/kl9i1eDnW2OMeU9LMKXQa1IXv+4f+Ubi0nQp0Kat9cO0+h74RtUsY1XR6PVJcZ1vO6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/nVIrS8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB6AC4CECE;
-	Thu, 12 Dec 2024 17:50:00 +0000 (UTC)
+	 MIME-Version; b=iJ488MxldA5ppjOxpkJPagFl6Yov4RAW2FvHZgsw2QZlj5QEPtYiYtSXsJSPrBRwQp0Ro4GbPzOhr1wzyhr7bF5WfJIP7KU8tKaCbKQqkWpUu9PB4mPUV3V3D9jDoP+ZFl1AaT8rlCmXyp3x9tgbdVtv3dF/vtCSYfat+Abqyts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBP10s1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A87C4CECE;
+	Thu, 12 Dec 2024 17:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025801;
-	bh=Bjq3DQJEQv9WaGh7O6mUy6b0IrrcIteOL4xYzAOmZUI=;
+	s=korg; t=1734024912;
+	bh=i/ucm41pU6s0SQG82hRWFsedrfXL1nXOPacte19WcOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/nVIrS8mqY/3WbR5Q5Ha5RdnAisbL/u5L47YkiLnng6n/TxBdyeRVCcs/QrL+O5+
-	 xxElywB/Xtl7ZvX31Z4zgVjCPh5EsEQPyp3e0aUHJq7htF6+Z6nhpYWEHBj5cR8vbh
-	 Y+HlWFbVPRiFblxftYzV2iRBzO/NlZynwTIiA4Ig=
+	b=sBP10s1kgbybUD0tUXqT8/U1rFNecn07NIbKd8DZApJIHuDTQKYrLVp7Sm6eLnp1z
+	 grUtUhX5ix2yMO9D6OUvXP5pXliviLn8wnym7wxjzwi03nTdZiCLlmuwBYtTenkg90
+	 oUE4qnC6BcVk8YJ10mWVnnYmMPSqL+oDRcAo8hL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 274/321] af_packet: avoid erroring out after sock_init_data() in packet_create()
+	Damien Le Moal <damien.lemoal@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 454/459] scsi: sd: Fix sd_do_mode_sense() buffer length handling
 Date: Thu, 12 Dec 2024 16:03:12 +0100
-Message-ID: <20241212144240.806131032@linuxfoundation.org>
+Message-ID: <20241212144311.705021393@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Damien Le Moal <damien.lemoal@wdc.com>
 
-[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
+commit c749301ebee82eb5e97dec14b6ab31a4aabe37a6 upstream.
 
-After sock_init_data() the allocated sk object is attached to the provided
-sock object. On error, packet_create() frees the sk object leaving the
-dangling pointer in the sock object on return. Some other code may try
-to use this pointer and cause use-after-free.
+For devices that explicitly asked for MODE SENSE(10) use, make sure that
+scsi_mode_sense() is called with a buffer of at least 8 bytes so that the
+sense header fits.
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20210820070255.682775-4-damien.lemoal@wdc.com
+Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/scsi/sd.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 6aed6a36ea456..88bc4a21dda45 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3357,18 +3357,18 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	if (sock->type == SOCK_PACKET)
- 		sock->ops = &packet_ops_spkt;
- 
-+	po = pkt_sk(sk);
-+	err = packet_alloc_pending(po);
-+	if (err)
-+		goto out_sk_free;
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -2649,6 +2649,13 @@ sd_do_mode_sense(struct scsi_disk *sdkp,
+ 		 unsigned char *buffer, int len, struct scsi_mode_data *data,
+ 		 struct scsi_sense_hdr *sshdr)
+ {
++	/*
++	 * If we must use MODE SENSE(10), make sure that the buffer length
++	 * is at least 8 bytes so that the mode sense header fits.
++	 */
++	if (sdkp->device->use_10_for_ms && len < 8)
++		len = 8;
 +
- 	sock_init_data(sock, sk);
- 
--	po = pkt_sk(sk);
- 	init_completion(&po->skb_completion);
- 	sk->sk_family = PF_PACKET;
- 	po->num = proto;
- 	po->xmit = dev_queue_xmit;
- 
--	err = packet_alloc_pending(po);
--	if (err)
--		goto out2;
--
- 	packet_cached_dev_reset(po);
- 
- 	sk->sk_destruct = packet_sock_destruct;
-@@ -3403,7 +3403,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
- 	preempt_enable();
- 
- 	return 0;
--out2:
-+out_sk_free:
- 	sk_free(sk);
- out:
- 	return err;
--- 
-2.43.0
-
+ 	return scsi_mode_sense(sdkp->device, dbd, modepage, buffer, len,
+ 			       SD_TIMEOUT, sdkp->max_retries, data,
+ 			       sshdr);
 
 
 
