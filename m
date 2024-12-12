@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF0B9EF695
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:27:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE47C9EF54C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB9BB189D9F7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA8F217B7B7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6627B20969B;
-	Thu, 12 Dec 2024 17:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF2821576E;
+	Thu, 12 Dec 2024 16:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfQ9kG2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="li7UM0KP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CF91487CD;
-	Thu, 12 Dec 2024 17:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEBE2210DE;
+	Thu, 12 Dec 2024 16:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023984; cv=none; b=a/Ly2sZRDA79h+925JZZNlhnMa63yMFA3nDKGOJp3mn/fetOyzwkhr4GGAUAZpORqTfcIl1olHp7MvSWU7dv9gsZnNYfLWaDtafFb2WjQXFcJe7oZMZNLo/r1hCpd25qkf6crDk7RZ1mM8MtsTuWg2u1RE5n2KmDRwqpqocHLbg=
+	t=1734022732; cv=none; b=B5kNXYBgkZ+sAhPHJpBncxL4KLgco2fW10MZxw8gCG1c/uNy+NT9KxQAR11yM793qxvmxMebIvS8KaO2Nt8oTyTmVt58R09y6RYN4HoVhyyH0RFJT1MxY/sO0t8AwPBev5T+Q1vMHletCHWtxiJHveSBlxB7Lvyz2sGx7CO8/L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023984; c=relaxed/simple;
-	bh=fyLKiINQNV7quQWMot/VH4d2l1xTNKrs4unG211O9V4=;
+	s=arc-20240116; t=1734022732; c=relaxed/simple;
+	bh=VFgM1roJ4PJSGVTkzkNjrEmW1AGnlfoD7AIutn2rDwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMi2wsFWENu9P4Sq6/misy/bMW5RvnK2H7fjVUxWTfORAfJqE7kQRrUAepI9oQ7VkBy9fYefW/o55VngGDWgwpV0YL5iBY0h975nzOVMWLWSXA/+qEAbNrdBsgTq8Jp2atrAbgyF7dm7NY13y3ZPRfQKCIkphPA4ugNC/MN6VwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfQ9kG2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943E3C4CECE;
-	Thu, 12 Dec 2024 17:19:43 +0000 (UTC)
+	 MIME-Version; b=fnB+SdP1f5DLTDSfbuoe0GUlcN0hE3FJgAgVohiB4u8zr1A9p5VQwVFmc3faFpL9prn+8ujpHN3/byqZ552nt/SHdsAkqEmpGDugSzRixn8Qyy/miqxsXKtkMmfVSCvfYotvySQoXMzP02Mp42Mpy58JtBRKfRfzyWOYcAjOVn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=li7UM0KP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3598CC4CECE;
+	Thu, 12 Dec 2024 16:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023984;
-	bh=fyLKiINQNV7quQWMot/VH4d2l1xTNKrs4unG211O9V4=;
+	s=korg; t=1734022731;
+	bh=VFgM1roJ4PJSGVTkzkNjrEmW1AGnlfoD7AIutn2rDwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OfQ9kG2nODjHclrnD2TXAjcGity0gvSc9Z3vGkqZDEAnrTcRr2xpDq6MkHpvdLEQ4
-	 wNXK3OgpTbb/03Cva4RYYkH3hEvcrnAcrQDmk72DojChqhYSq2+xpF6JlTpnB8Vn/v
-	 HND4rc3WHKcwKpXYo7rA0nEA5feYRjo7t1pAno1o=
+	b=li7UM0KPBfmNu5zPby/yGQepOATCqqDThLBPxHjzQ5v4uSx1mPtx0IRoGMLGB5Unv
+	 EfKT8LXo/NjvHgNcOUYa2/MrEQXu+EYKTqU4p4oi+KKFFi3SWaDZgmrTmvlqIy38ib
+	 JTWTs5ZV+1ESicd/CIeMp8nAvP2k1zYQe6i2yknU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 147/459] bpf, sockmap: Several fixes to bpf_msg_pop_data
-Date: Thu, 12 Dec 2024 15:58:05 +0100
-Message-ID: <20241212144259.320066916@linuxfoundation.org>
+Subject: [PATCH 5.15 291/565] misc: apds990x: Fix missing pm_runtime_disable()
+Date: Thu, 12 Dec 2024 15:58:06 +0100
+Message-ID: <20241212144322.969974267@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 5d609ba262475db450ba69b8e8a557bd768ac07a ]
+[ Upstream commit 3c5d8b819d27012264edd17e6ae7fffda382fe44 ]
 
-Several fixes to bpf_msg_pop_data,
-1. In sk_msg_shift_left, we should put_page
-2. if (len == 0), return early is better
-3. pop the entire sk_msg (last == msg->sg.size) should be supported
-4. Fix for the value of variable "a"
-5. In sk_msg_shift_left, after shifting, i has already pointed to the next
-element. Addtional sk_msg_iter_var_next may result in BUG.
+The pm_runtime_disable() is missing in probe error path,
+so add it to fix it.
 
-Fixes: 7246d8ed4dcc ("bpf: helper to pop data from messages")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-8-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: 92b1f84d46b2 ("drivers/misc: driver for APDS990X ALS and proximity sensors")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240923035556.3009105-1-ruanjinjie@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/misc/apds990x.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 0ef77fb72af78..345e6c5c71f06 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2900,8 +2900,10 @@ static const struct bpf_func_proto bpf_msg_push_data_proto = {
- 
- static void sk_msg_shift_left(struct sk_msg *msg, int i)
- {
-+	struct scatterlist *sge = sk_msg_elem(msg, i);
- 	int prev;
- 
-+	put_page(sg_page(sge));
- 	do {
- 		prev = i;
- 		sk_msg_iter_var_next(i);
-@@ -2938,6 +2940,9 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	if (unlikely(flags))
- 		return -EINVAL;
- 
-+	if (unlikely(len == 0))
-+		return 0;
-+
- 	/* First find the starting scatterlist element */
- 	i = msg->sg.start;
- 	do {
-@@ -2950,7 +2955,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	} while (i != msg->sg.end);
- 
- 	/* Bounds checks: start and pop must be inside message */
--	if (start >= offset + l || last >= msg->sg.size)
-+	if (start >= offset + l || last > msg->sg.size)
- 		return -EINVAL;
- 
- 	space = MAX_MSG_FRAGS - sk_msg_elem_used(msg);
-@@ -2979,12 +2984,12 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	 */
- 	if (start != offset) {
- 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
--		int a = start;
-+		int a = start - offset;
- 		int b = sge->length - pop - a;
- 
- 		sk_msg_iter_var_next(i);
- 
--		if (pop < sge->length - a) {
-+		if (b > 0) {
- 			if (space) {
- 				sge->length = a;
- 				sk_msg_shift_right(msg, i);
-@@ -3003,7 +3008,6 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 				if (unlikely(!page))
- 					return -ENOMEM;
- 
--				sge->length = a;
- 				orig = sg_page(sge);
- 				from = sg_virt(sge);
- 				to = page_address(page);
-@@ -3013,7 +3017,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 				put_page(orig);
- 			}
- 			pop = 0;
--		} else if (pop >= sge->length - a) {
-+		} else {
- 			pop -= (sge->length - a);
- 			sge->length = a;
+diff --git a/drivers/misc/apds990x.c b/drivers/misc/apds990x.c
+index 45f5b997a0e10..5b17288ecc2f0 100644
+--- a/drivers/misc/apds990x.c
++++ b/drivers/misc/apds990x.c
+@@ -1148,7 +1148,7 @@ static int apds990x_probe(struct i2c_client *client,
+ 		err = chip->pdata->setup_resources();
+ 		if (err) {
+ 			err = -EINVAL;
+-			goto fail3;
++			goto fail4;
  		}
-@@ -3047,7 +3051,6 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 			pop -= sge->length;
- 			sk_msg_shift_left(msg, i);
- 		}
--		sk_msg_iter_var_next(i);
  	}
  
- 	sk_mem_uncharge(msg->sk, len - pop);
+@@ -1156,7 +1156,7 @@ static int apds990x_probe(struct i2c_client *client,
+ 				apds990x_attribute_group);
+ 	if (err < 0) {
+ 		dev_err(&chip->client->dev, "Sysfs registration failed\n");
+-		goto fail4;
++		goto fail5;
+ 	}
+ 
+ 	err = request_threaded_irq(client->irq, NULL,
+@@ -1167,15 +1167,17 @@ static int apds990x_probe(struct i2c_client *client,
+ 	if (err) {
+ 		dev_err(&client->dev, "could not get IRQ %d\n",
+ 			client->irq);
+-		goto fail5;
++		goto fail6;
+ 	}
+ 	return err;
+-fail5:
++fail6:
+ 	sysfs_remove_group(&chip->client->dev.kobj,
+ 			&apds990x_attribute_group[0]);
+-fail4:
++fail5:
+ 	if (chip->pdata && chip->pdata->release_resources)
+ 		chip->pdata->release_resources();
++fail4:
++	pm_runtime_disable(&client->dev);
+ fail3:
+ 	regulator_bulk_disable(ARRAY_SIZE(chip->regs), chip->regs);
+ fail2:
 -- 
 2.43.0
 
