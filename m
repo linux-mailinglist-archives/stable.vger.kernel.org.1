@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19B19EF8FD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074359EF733
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BABB9189AADF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095F5189859A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D3D2210F1;
-	Thu, 12 Dec 2024 17:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8116216E3B;
+	Thu, 12 Dec 2024 17:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrjzEPZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n74gd7EZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5E220A5EE;
-	Thu, 12 Dec 2024 17:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EFD215762;
+	Thu, 12 Dec 2024 17:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025196; cv=none; b=jqzEDWFLwaXhzSRkTReMw+wmS2qPG85ZFr4Ki8aPLOXM9uforpcd5+no0kCP28C0c/DcHJ+YdeRQsIfvOrva6rF/Oou/8sEV4t2bWLgvP1Im7VtnweYesNHlRWsZA+Atl6gNhOtc8QahvwZt6MUcZu1F9Xh8xbUGFgNke3iHjBw=
+	t=1734024360; cv=none; b=gNEXiGJZj6L+mzeKjh/U5C8GkK8FcEiB37YU5haKCjy9SVgDsVlXysyU8GbggQE2YrvX+cG3p7KqlOMoOXiOQIpxpIWqB5P9mSpFAI6LmiIVPJLOJgAP9NUw1zZgoxqL1BlbFF6oZX9d4n4gmtxXwszz1xJDte8U2jxhiSnWqBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025196; c=relaxed/simple;
-	bh=KhFZsV/w7aj5eZ1pnUXHYtLI8kY6avQkUOqRBCPjCAk=;
+	s=arc-20240116; t=1734024360; c=relaxed/simple;
+	bh=JHtv/OSvnseLZlHRWuShsskSTLsc5Uqd52E62f+oxeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wv6uwmr0CCAswBiE8dLSu6eC8GQ6tqP0XBFLlfGf7WlNp2+9mBRA/fab49tkXEt/4vl5rRk/tOgMdtuF4LxcQVq9vFEup4mhH68+4RZWJK1eOJkM4Lyoh2/EpKSa0R7bk0jds+wEyuhfiCFibOXEsL1SFZl4BY/jowONKCmqiC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrjzEPZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC57C4CECE;
-	Thu, 12 Dec 2024 17:39:55 +0000 (UTC)
+	 MIME-Version; b=SYtiegeym63rfV9STXOpPubWrf/enNCAAeQzV97hbfIck44FANCYCnHvHce6a41KqNW9tJ1yglMPr1n0/3rK5315Ok6bZxTkvX3cY66PYwt2+7V7lDG+S3n0eeXI43wlP/SiN2ErjqJ4k4lcAY5cMOe+ukqUXA8tBcPQmnIPIbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n74gd7EZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B73C4CECE;
+	Thu, 12 Dec 2024 17:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025196;
-	bh=KhFZsV/w7aj5eZ1pnUXHYtLI8kY6avQkUOqRBCPjCAk=;
+	s=korg; t=1734024360;
+	bh=JHtv/OSvnseLZlHRWuShsskSTLsc5Uqd52E62f+oxeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zrjzEPZyr/zeI0AZhQ/ABpFGfd/+PYQTSNXH+6uYVOmOb/i0MbBujLmNr0zSE41cT
-	 PYKRpnVzI/sFMKUWwEY/oUYE24c4D4546VwP7ur8eFpLqCVkeUGik/JnoXY2sOAeID
-	 vwn6aHq1F+3P2QJkTWyvQdps9XFwurxWqKWHLWeE=
+	b=n74gd7EZ2NVa3Ib7uFLJcPwpBHbE0TeeBdVRJzS0DTChcHvnC86LD6jMgU3oe+Sak
+	 iNzEEnFMLaLRpVCKNdzi4do4kaGuEyyd6OjGVNzbOl52v3Woy8QDhycbeoX7GyAfO6
+	 kuh6OkP2sMifv3YIMThLWdG9y+n/5B2GrOEAzJp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 089/321] mfd: da9052-spi: Change read-mask to write-mask
-Date: Thu, 12 Dec 2024 16:00:07 +0100
-Message-ID: <20241212144233.502426565@linuxfoundation.org>
+	Bin Liu <b-liu@ti.com>,
+	Judith Mendez <jm@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 5.10 270/459] serial: 8250: omap: Move pm_runtime_get_sync
+Date: Thu, 12 Dec 2024 16:00:08 +0100
+Message-ID: <20241212144304.270453976@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
+From: Bin Liu <b-liu@ti.com>
 
-[ Upstream commit 2e3378f6c79a1b3f7855ded1ef306ea4406352ed ]
+commit bcc7ba668818dcadd2f1db66b39ed860a63ecf97 upstream.
 
-Driver has mixed up the R/W bit.
-The LSB bit is set on write rather than read.
-Change it to avoid nasty things to happen.
+Currently in omap_8250_shutdown, the dma->rx_running flag is
+set to zero in omap_8250_rx_dma_flush. Next pm_runtime_get_sync
+is called, which is a runtime resume call stack which can
+re-set the flag. When the call omap_8250_shutdown returns, the
+flag is expected to be UN-SET, but this is not the case. This
+is causing issues the next time UART is re-opened and
+omap_8250_rx_dma is called. Fix by moving pm_runtime_get_sync
+before the omap_8250_rx_dma_flush.
 
-Fixes: e9e9d3973594 ("mfd: da9052: Avoid setting read_flag_mask for da9052-i2c driver")
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-Link: https://lore.kernel.org/r/20240925-da9052-v2-1-f243e4505b07@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cc: stable@vger.kernel.org
+Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
+Signed-off-by: Bin Liu <b-liu@ti.com>
+[Judith: Add commit message]
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Tested-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20241031172315.453750-1-jm@ti.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/da9052-spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/da9052-spi.c b/drivers/mfd/da9052-spi.c
-index 5faf3766a5e20..06c500bf4d57e 100644
---- a/drivers/mfd/da9052-spi.c
-+++ b/drivers/mfd/da9052-spi.c
-@@ -37,7 +37,7 @@ static int da9052_spi_probe(struct spi_device *spi)
- 	spi_set_drvdata(spi, da9052);
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -768,12 +768,12 @@ static void omap_8250_shutdown(struct ua
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	struct omap8250_priv *priv = port->private_data;
  
- 	config = da9052_regmap_config;
--	config.read_flag_mask = 1;
-+	config.write_flag_mask = 1;
- 	config.reg_bits = 7;
- 	config.pad_bits = 1;
- 	config.val_bits = 8;
--- 
-2.43.0
-
++	pm_runtime_get_sync(port->dev);
++
+ 	flush_work(&priv->qos_work);
+ 	if (up->dma)
+ 		omap_8250_rx_dma_flush(up);
+ 
+-	pm_runtime_get_sync(port->dev);
+-
+ 	serial_out(up, UART_OMAP_WER, 0);
+ 	if (priv->habit & UART_HAS_EFR2)
+ 		serial_out(up, UART_OMAP_EFR2, 0x0);
 
 
 
