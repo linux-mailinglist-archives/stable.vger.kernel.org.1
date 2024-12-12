@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DF79EF1A6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2999EED72
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F30290DC4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CA8C288DA8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9230231A25;
-	Thu, 12 Dec 2024 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD24222D59;
+	Thu, 12 Dec 2024 15:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNqqa9b0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18LaKTq2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2A4231A20;
-	Thu, 12 Dec 2024 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F79B223336;
+	Thu, 12 Dec 2024 15:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021038; cv=none; b=W9vCTNzATy569wtNUZjaF1yfp7oaAfpR23N9W6lz31aiBSPegz2liz92ACeI4uVzGzLKsdr8FeUfGqNE+KjUpr25UPcGc2Ul1pGPv1sk7EkC0skHXpMP7iIJmhXyd2gplbx7K9y7gn8pR8pvkrXW19c+GqRbBLNScHiaDFcrLSM=
+	t=1734018307; cv=none; b=VGh1CcaosVOniFQI6u7TZCEZPaojQ8XkfN67qeLwweotK5IMBtCZ4twEFcm0o4+AAgmg0qy/is5TOIQmL4ReSZWeNghIxlD3MnUyylkTHEitW4xyvAH0D468oJxjqqjGKAXJgqhH3/8/imYPm6D0MLPtT58tpYmaOghO7gF/fUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021038; c=relaxed/simple;
-	bh=fgkx9YW5fyNknQhRUbM+YFnSldT5ffAz4KlAf/vXhLM=;
+	s=arc-20240116; t=1734018307; c=relaxed/simple;
+	bh=ROwjmKNZ8C+gQ90amxw6WHQHM0cLFfcCNiZXfHmRsOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5JPkoGgw2o1KgqeXBOEMXeef2wDQVTFwyLHDMrwHZr2vnynfETF2XbjMMtHR+DWNxTSYMFsSOgFRC7hfGxHEvxuqCcpl2Fiw+Abpcs6QAD8tLyLTHrBM3CqcmkjGf5yr6w/aqpk5m0/TRXJsV52mz4cjL5o4OKOrlAuSlrWOxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNqqa9b0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E3AC4CECE;
-	Thu, 12 Dec 2024 16:30:37 +0000 (UTC)
+	 MIME-Version; b=rQH1IQyxj2DEqp0DF3zYQpOqwnnn7uRKUmHwWCR0E2qUaRTgE3ePLYSVvO7RRYn7deZfhQllhI5dYRMpyhTaF/c1/NhiIXCbtQd1wNwWiYwljwHzs3hwHZRimdH1a91Uxbu9PcnQRyu1Hc7m0S7YYz3baGekVAJr2A54k+gZ9dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18LaKTq2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC89EC4CECE;
+	Thu, 12 Dec 2024 15:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021038;
-	bh=fgkx9YW5fyNknQhRUbM+YFnSldT5ffAz4KlAf/vXhLM=;
+	s=korg; t=1734018307;
+	bh=ROwjmKNZ8C+gQ90amxw6WHQHM0cLFfcCNiZXfHmRsOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNqqa9b0qEoQNa21Hnb/2za6BIzysiTud+LtEopcSVx2jg95tuah5k8kaDEU9nRHR
-	 fXOQII0uui2R8PrH8DbVqhWu0O38XkJLewXE0xSuyMNxnasxw37BjX1PQfTzbBregu
-	 VsbrLvHZg/oXFKMzYG3vSi+vFKuYHYM3P8RzVhyU=
+	b=18LaKTq2996TFoJ7RS0s1WL0g7Wx1YblPlAoeqEQNMc9Kk+L4y9idv8ClrL4DKAIz
+	 QL5fLVttV/3iKy14oKhX4W1FbLUDOdpTLGROqRPtfQsQ2xJEWxOxi1BQseBuThlPkD
+	 8YaASiQtz59YPePhq36AIQpWhYEe/F2P+M78G3dY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.1 629/772] modpost: Add .irqentry.text to OTHER_SECTIONS
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 255/356] dsa: qca8k: Use nested lock to avoid splat
 Date: Thu, 12 Dec 2024 15:59:34 +0100
-Message-ID: <20241212144415.926139401@linuxfoundation.org>
+Message-ID: <20241212144254.679795184@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Andrew Lunn <andrew@lunn.ch>
 
-commit 7912405643a14b527cd4a4f33c1d4392da900888 upstream.
+[ Upstream commit 078e0d596f7b5952dad8662ace8f20ed2165e2ce ]
 
-The compiler can fully inline the actual handler function of an interrupt
-entry into the .irqentry.text entry point. If such a function contains an
-access which has an exception table entry, modpost complains about a
-section mismatch:
+qca8k_phy_eth_command() is used to probe the child MDIO bus while the
+parent MDIO is locked. This causes lockdep splat, reporting a possible
+deadlock. It is not an actually deadlock, because different locks are
+used. By making use of mutex_lock_nested() we can avoid this false
+positive.
 
-  WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference ...
-
-  The relocation at __ex_table+0x447c references section ".irqentry.text"
-  which is not in the list of authorized sections.
-
-Add .irqentry.text to OTHER_SECTIONS to cure the issue.
-
-Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org # needed for linux-5.4-y
-Link: https://lore.kernel.org/all/20241128111844.GE10431@google.com/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20241110175955.3053664-1-andrew@lunn.ch
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/modpost.c |    2 +-
+ drivers/net/dsa/qca/qca8k-8xxx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -829,7 +829,7 @@ static void check_section(const char *mo
- 		".ltext", ".ltext.*"
- #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
- 		".fixup", ".entry.text", ".exception.text", \
--		".coldtext", ".softirqentry.text"
-+		".coldtext", ".softirqentry.text", ".irqentry.text"
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index 17c28fe2d7433..384ae32c05b1c 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -673,7 +673,7 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
+ 	 * We therefore need to lock the MDIO bus onto which the switch is
+ 	 * connected.
+ 	 */
+-	mutex_lock(&priv->bus->mdio_lock);
++	mutex_lock_nested(&priv->bus->mdio_lock, MDIO_MUTEX_NESTED);
  
- #define INIT_SECTIONS      ".init.*"
- #define MEM_INIT_SECTIONS  ".meminit.*"
+ 	/* Actually start the request:
+ 	 * 1. Send mdio master packet
+-- 
+2.43.0
+
 
 
 
