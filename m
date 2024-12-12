@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD8B9EEBF9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA099EEE2F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:58 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E09B283AD0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:30:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C52CF1887E8C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D54215799;
-	Thu, 12 Dec 2024 15:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D4B223C6C;
+	Thu, 12 Dec 2024 15:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HehYiYow"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmwyttjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5120B215798;
-	Thu, 12 Dec 2024 15:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F61223C51;
+	Thu, 12 Dec 2024 15:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017407; cv=none; b=Fdd7IONdtwwcfYWtf9LaVOJP5LCKuDBQ0hra1OdkMShP8b3aTP6TsjqDghyUwx7z+tcMEPFeIwjLQs+DK6os6LPmLFhqQRe3D5aZ313AHqroHVkRkLnUguz5yiz2zXCn/PGRGbEBxZRkb9Inz/RMWgiOGczRlIfHOGXz1ibFVGs=
+	t=1734018496; cv=none; b=j9cfoXM8SQ1T6PNePVf36gx479YJPiia2R4GRSH+EH4b0kM62AvAKDK1vo59qPD4pfPJ7eX1+Q50ApU9OWqHwCVcX40Ap8ZbcFvLcf8oGwNaDXh60bmye/z0eLy1X+D4Miwdu4bwGiSGsbpTv5PGhfywKHnG5uyYeitEWbcbnbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017407; c=relaxed/simple;
-	bh=NwR7/7lQDzNwZhBYIVn54iYOOg9AQ5FlDSK1L8D1CTk=;
+	s=arc-20240116; t=1734018496; c=relaxed/simple;
+	bh=GkF5Qf0hdME4ktOlYBtevQRq0fWABin970RkKP6SB30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rut0Ee8wRiEQPA/CGGu7c7Y3O0Ruk7gU9MnQ4TCstv6KrIpGJiIEr1gVzIKQGsvVXX03i3pLPMA6HjNRVRhxs7MjwHvF+I2XrljhHAX2Mqsdp3ZjunUNr1YHWGBfc9t2nTgfQg2ckqMO5V8vVr/Kq6bEeEmXdzPlWbbhY4Jaah4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HehYiYow; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9F6C4CECE;
-	Thu, 12 Dec 2024 15:30:06 +0000 (UTC)
+	 MIME-Version; b=ktGzZTz6FXF7xkcjUpYIdpczfwAQdRwrkCNMIvxV7Vw6qkRrUoock+oRGn1NEweVNjRfhlqF7iTa7pOkANmF1QnJQZw7yGQMysHNUmkXF6s5Ga6whoDISlD1ksa+rEVTPw57W9K0u06N0wUWphCBWgEsm9MSwcIiRYH38jfvx8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmwyttjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C5AC4CECE;
+	Thu, 12 Dec 2024 15:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017406;
-	bh=NwR7/7lQDzNwZhBYIVn54iYOOg9AQ5FlDSK1L8D1CTk=;
+	s=korg; t=1734018496;
+	bh=GkF5Qf0hdME4ktOlYBtevQRq0fWABin970RkKP6SB30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HehYiYowSD2+3zzl1t8y6qI61pinKZk3DoVvhzlGqSwDKckVUM7lFKWrg0NSMcSMj
-	 z9PUKGbN9R/xXYJwwRIM3ChVYDIxj4NFtzy7IgfSNBh63eb2YjdaqEKEPlaph6zj5x
-	 JlvCmJzH/2TMO3rx6kmfNYprhEJ00NM8j6SU1aHA=
+	b=YmwyttjKuGGSacgfudJ6gBIuLsnDgLbcz/k/M7oph5tgmrLk3KP5C9d2omR5M/oKZ
+	 zrll9SVO/c3PzcaWVfDd/w2T/gyyzkUj7lvfSudEcDR8fyaS29dW8n44Jb8gwuqLqt
+	 l9lccPJQW3QSGSwQc3sR2V3ShmRSPSZEXhhuRGGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ott <sebott@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Matt Fleming <mfleming@cloudflare.com>
-Subject: [PATCH 6.12 459/466] net/mlx5: unique names for per device caches
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Rob Herring <robh@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 309/356] powerpc/prom_init: Fixup missing powermac #size-cells
 Date: Thu, 12 Dec 2024 16:00:28 +0100
-Message-ID: <20241212144325.000168582@linuxfoundation.org>
+Message-ID: <20241212144256.768966315@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 25872a079bbbe952eb660249cc9f40fa75623e68 upstream.
+[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
 
-Add the device name to the per device kmem_cache names to
-ensure their uniqueness. This fixes warnings like this:
-"kmem_cache of name 'mlx5_fs_fgs' already exists".
+On some powermacs `escc` nodes are missing `#size-cells` properties,
+which is deprecated and now triggers a warning at boot since commit
+045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
+handling").
 
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241023134146.28448-1-sebott@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example:
+
+  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
+  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
+  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
+  ...
+  Call Trace:
+    of_bus_n_size_cells+0x98/0x108 (unreliable)
+    of_bus_default_count_cells+0x40/0x60
+    __of_get_address+0xc8/0x21c
+    __of_address_to_resource+0x5c/0x228
+    pmz_init_port+0x5c/0x2ec
+    pmz_probe.isra.0+0x144/0x1e4
+    pmz_console_init+0x10/0x48
+    console_init+0xcc/0x138
+    start_kernel+0x5c4/0x694
+
+As powermacs boot via prom_init it's possible to add the missing
+properties to the device tree during boot, avoiding the warning. Note
+that `escc-legacy` nodes are also missing `#size-cells` properties, but
+they are skipped by the macio driver, so leave them alone.
+
+Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -3698,6 +3698,7 @@ void mlx5_fs_core_free(struct mlx5_core_
- int mlx5_fs_core_alloc(struct mlx5_core_dev *dev)
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index d464ba412084d..a6090896f7497 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2924,7 +2924,7 @@ static void __init fixup_device_tree_chrp(void)
+ #endif
+ 
+ #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
+-static void __init fixup_device_tree_pmac(void)
++static void __init fixup_device_tree_pmac64(void)
  {
- 	struct mlx5_flow_steering *steering;
-+	char name[80];
- 	int err = 0;
+ 	phandle u3, i2c, mpic;
+ 	u32 u3_rev;
+@@ -2964,7 +2964,31 @@ static void __init fixup_device_tree_pmac(void)
+ 		     &parent, sizeof(parent));
+ }
+ #else
+-#define fixup_device_tree_pmac()
++#define fixup_device_tree_pmac64()
++#endif
++
++#ifdef CONFIG_PPC_PMAC
++static void __init fixup_device_tree_pmac(void)
++{
++	__be32 val = 1;
++	char type[8];
++	phandle node;
++
++	// Some pmacs are missing #size-cells on escc nodes
++	for (node = 0; prom_next_node(&node); ) {
++		type[0] = '\0';
++		prom_getprop(node, "device_type", type, sizeof(type));
++		if (prom_strcmp(type, "escc"))
++			continue;
++
++		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
++			continue;
++
++		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
++	}
++}
++#else
++static inline void fixup_device_tree_pmac(void) { }
+ #endif
  
- 	err = mlx5_init_fc_stats(dev);
-@@ -3722,10 +3723,12 @@ int mlx5_fs_core_alloc(struct mlx5_core_
- 	else
- 		steering->mode = MLX5_FLOW_STEERING_MODE_DMFS;
- 
--	steering->fgs_cache = kmem_cache_create("mlx5_fs_fgs",
-+	snprintf(name, sizeof(name), "%s-mlx5_fs_fgs", dev_name(dev->device));
-+	steering->fgs_cache = kmem_cache_create(name,
- 						sizeof(struct mlx5_flow_group), 0,
- 						0, NULL);
--	steering->ftes_cache = kmem_cache_create("mlx5_fs_ftes", sizeof(struct fs_fte), 0,
-+	snprintf(name, sizeof(name), "%s-mlx5_fs_ftes", dev_name(dev->device));
-+	steering->ftes_cache = kmem_cache_create(name, sizeof(struct fs_fte), 0,
- 						 0, NULL);
- 	if (!steering->ftes_cache || !steering->fgs_cache) {
- 		err = -ENOMEM;
+ #ifdef CONFIG_PPC_EFIKA
+@@ -3189,6 +3213,7 @@ static void __init fixup_device_tree(void)
+ 	fixup_device_tree_maple_memory_controller();
+ 	fixup_device_tree_chrp();
+ 	fixup_device_tree_pmac();
++	fixup_device_tree_pmac64();
+ 	fixup_device_tree_efika();
+ 	fixup_device_tree_pasemi();
+ }
+-- 
+2.43.0
+
 
 
 
