@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A829EEB41
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729D29EED83
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9631282D55
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0116916AC83
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149B42153FC;
-	Thu, 12 Dec 2024 15:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BB0222D63;
+	Thu, 12 Dec 2024 15:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StE3sAID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaGuauF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC37F1487CD;
-	Thu, 12 Dec 2024 15:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34CC2185A8;
+	Thu, 12 Dec 2024 15:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016972; cv=none; b=XiiMElm3FVAgdd0008U+NWEbdrISO+UduxkClemVpc1SwTbQjxmC3WA5fEmYmJcn+m91uwEp4REa9QwFXBzomSa+KVcZS8yFhgeIHC9qdlqqJOvlz2aiDzwocmb39W+1Ke54MPZyZ66DJVczhFEIuLOIS48jMBOm/DwP7cT247s=
+	t=1734018200; cv=none; b=Mh979I6ovJjzTDZ6aHrEqZ/u3qg6290O6ZqTNXjpe8jjyce0fWJiYCvXsJEh10858lbO3abve45nsYXJIyPqgH6PQimfCvf6wFWIP9EZmT9L/6kp1KGaIZbbwhgStKjNIq9XnZNWpj+arfnaBm+QsulA+6I0UiKQkCssflbEHqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016972; c=relaxed/simple;
-	bh=ng/gl+cDA45VhZiWZqd2G23Ie5ZuhGJcoCYCl+CJZLo=;
+	s=arc-20240116; t=1734018200; c=relaxed/simple;
+	bh=LdLm1OfITKhkodrSSeYJ72j1Hv20X3s3gPoG+UUePpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFkFxVPo5hSZv5GtQfBt4tCA4scefYXMIhS+VcZqULPlzHmKkcx0tLvHkFVSvOaOkTzsbxNgC9EXgrgV5xWUu4N9fociPrkr2ntMn5Gv5tuYlw0qCi5sHsepovC2gNYwrl53C631nZxGhsC16Mcv37b6L/fba9r91OcJqaK/l6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StE3sAID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29289C4CECE;
-	Thu, 12 Dec 2024 15:22:51 +0000 (UTC)
+	 MIME-Version; b=WevfzUvdjUuPUlezF/ARtaTIujr8X5pgTCYj0pWnx5qB+1YPc/yjY9F9W9Zb+RryKOD9tqT2Mcorv0j29JVV2VPiO5/RnhXaZkU+07XhkMw/lnYQongDGA7taRfAkZqb4f73vsUEkPDLKRPl/NHqrOpW5V34gxOy59Nk5fVePfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaGuauF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416C3C4CECE;
+	Thu, 12 Dec 2024 15:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016972;
-	bh=ng/gl+cDA45VhZiWZqd2G23Ie5ZuhGJcoCYCl+CJZLo=;
+	s=korg; t=1734018200;
+	bh=LdLm1OfITKhkodrSSeYJ72j1Hv20X3s3gPoG+UUePpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StE3sAIDiSTBaQcgfTbYJVjBcZ8DfJb5wx6Vvqo2Kj9gcEb9FA3ILEy6V741FVwwP
-	 SjTHpTr4d/vZHBYPeeINeZ0u0FWO7d9kqvbuI3rQnNSsAaHjTaTAj5hr1DXBsO7mC6
-	 /tEQQvwxcmxlAv1Buu0yPhV0iXQmMXEcWW+3gIyU=
+	b=eaGuauF52xYWQ4YEAdjYSL57ZPlDj0viLFagTUpwI6uig8NXolP3i90WqmLODSP2y
+	 1k/HNloiXTFvIO9gDbbbplhAH8IPGEg4c26LUfKTGoXBYj3NQ+2XBZtnyhT9/Oln+/
+	 sKo3qSnnxsr7FxMzgD1kXuVccf1s24q9LF5IQq5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danil Pylaev <danstiv404@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 345/466] Bluetooth: Support new quirks for ATS2851
+Subject: [PATCH 6.6 195/356] spi: spi-fsl-lpspi: Adjust type of scldiv
 Date: Thu, 12 Dec 2024 15:58:34 +0100
-Message-ID: <20241212144320.420147513@linuxfoundation.org>
+Message-ID: <20241212144252.329932320@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danil Pylaev <danstiv404@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 5bd3135924b4570dcecc8793f7771cb8d42d8b19 ]
+[ Upstream commit fa8ecda9876ac1e7b29257aa82af1fd0695496e2 ]
 
-This adds support for quirks for broken extended create connection,
-and write auth payload timeout.
+The target value of scldiv is just a byte, but its calculation in
+fsl_lpspi_set_bitrate could be negative. So use an adequate type to store
+the result and avoid overflows. After that this needs range check
+adjustments, but this should make the code less opaque.
 
-Signed-off-by: Danil Pylaev <danstiv404@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20240930093056.93418-2-wahrenst@gmx.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 7 +++++++
- net/bluetooth/hci_sync.c  | 9 ++++++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 2e4bd3e961ce0..2b5ba8acd1d84 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3626,6 +3626,13 @@ static void hci_encrypt_change_evt(struct hci_dev *hdev, void *data,
- 		goto unlock;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 514a2c5c84226..9e2541dee56e5 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -315,9 +315,10 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
+ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ {
+ 	struct lpspi_config config = fsl_lpspi->config;
+-	unsigned int perclk_rate, scldiv, div;
++	unsigned int perclk_rate, div;
+ 	u8 prescale_max;
+ 	u8 prescale;
++	int scldiv;
+ 
+ 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
+ 	prescale_max = fsl_lpspi->devtype_data->prescale_max;
+@@ -338,13 +339,13 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
+ 
+ 	for (prescale = 0; prescale <= prescale_max; prescale++) {
+ 		scldiv = div / (1 << prescale) - 2;
+-		if (scldiv < 256) {
++		if (scldiv >= 0 && scldiv < 256) {
+ 			fsl_lpspi->config.prescale = prescale;
+ 			break;
+ 		}
  	}
  
-+	/* We skip the WRITE_AUTH_PAYLOAD_TIMEOUT for ATS2851 based controllers
-+	 * to avoid unexpected SMP command errors when pairing.
-+	 */
-+	if (test_bit(HCI_QUIRK_BROKEN_WRITE_AUTH_PAYLOAD_TIMEOUT,
-+		     &hdev->quirks))
-+		goto notify;
-+
- 	/* Set the default Authenticated Payload Timeout after
- 	 * an LE Link is established. As per Core Spec v5.0, Vol 2, Part B
- 	 * Section 3.3, the HCI command WRITE_AUTH_PAYLOAD_TIMEOUT should be
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index c0203a2b51075..c86f4e42e69ca 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -4842,6 +4842,13 @@ static const struct {
- 	HCI_QUIRK_BROKEN(SET_RPA_TIMEOUT,
- 			 "HCI LE Set Random Private Address Timeout command is "
- 			 "advertised, but not supported."),
-+	HCI_QUIRK_BROKEN(EXT_CREATE_CONN,
-+			 "HCI LE Extended Create Connection command is "
-+			 "advertised, but not supported."),
-+	HCI_QUIRK_BROKEN(WRITE_AUTH_PAYLOAD_TIMEOUT,
-+			 "HCI WRITE AUTH PAYLOAD TIMEOUT command leads "
-+			 "to unexpected SMP errors when pairing "
-+			 "and will not be used."),
- 	HCI_QUIRK_BROKEN(LE_CODED,
- 			 "HCI LE Coded PHY feature bit is set, "
- 			 "but its usage is not supported.")
-@@ -6477,7 +6484,7 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
- 					     &own_addr_type);
- 	if (err)
- 		goto done;
--
-+	/* Send command LE Extended Create Connection if supported */
- 	if (use_ext_conn(hdev)) {
- 		err = hci_le_ext_create_conn_sync(hdev, conn, own_addr_type);
- 		goto done;
+-	if (scldiv >= 256)
++	if (scldiv < 0 || scldiv >= 256)
+ 		return -EINVAL;
+ 
+ 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
 -- 
 2.43.0
 
