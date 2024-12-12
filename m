@@ -1,53 +1,61 @@
-Return-Path: <stable+bounces-103821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5DE9EF948
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:49:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3AD79EF9F1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA88828E5C4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB730189AEC2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6742222D45;
-	Thu, 12 Dec 2024 17:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563BE225413;
+	Thu, 12 Dec 2024 17:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LT4+keuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eH+iTB/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852B2211493;
-	Thu, 12 Dec 2024 17:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129DE223E8D;
+	Thu, 12 Dec 2024 17:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025701; cv=none; b=Ld5gQzMAT3QIWObjfAb+d1cyEVmOcSuInVYfdtjBiSHZVG+BSGveoBy6ECpDrjBocX8vzh3bqqZLvqtEIxxS/J4E7zWTYpdmSW/y5FVFQvJa6KF8U2+r9tvDkm6ND1cB33yHeSXXQSs12mlFXsXxTWApooWNeQ6LRFL3/qskimA=
+	t=1734025734; cv=none; b=cw8uub46kHMAJAf80ERcd42rz7Fz/1yAKbOrdaB7ow6H6/RW1CX/zRdJCWSfslPecyRADzVABzDet+4/qTI+WptDDe9E2N5jtnKCcCaYVvazVZRTQqFtxaoITopLEcyj2sCp0qmEM/Rup4V1MyLHooZJ4z8lUeqNCcgDxGdeANA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025701; c=relaxed/simple;
-	bh=i/byawCNdmauWhmDsX1mHkry4+ayDyOfTFQcaFhPte0=;
+	s=arc-20240116; t=1734025734; c=relaxed/simple;
+	bh=SSlEWGdS+Hd1jocAN+CkZb9FS6K8aYSlGefZKKZ9tr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2kGWiLkps1thjSxS3QKutCwnlivzyOcYYoUosJsGn1RtBPckdu0mu59D+FG1c0FjZQweYlSnNWCPwCh1HpyEEZZwIlSBk7RIV1r7kPL4oRK5/dQW+hKzN1S90Rm1RPhQcABl2jaStEW1Lve7gdFQAN+eOqkGzxnqqf0aq7sK94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LT4+keuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1454C4CEDD;
-	Thu, 12 Dec 2024 17:48:20 +0000 (UTC)
+	 MIME-Version; b=dQ/JwWgcG3nxZKc8dJ00h9Dn4O3gmu2/Luid1fzz+RL/LL4HvtlZNeHem47Jw8ex+MSrrBKJ1lFfRPBQ+9vUVuhiIYDKnTwJrr0xZTHcGAHPKXpMvpFyVbUdsO1mc6lbDleTCepV5gT4Tx3/GmYB+dcNXuMJZhKy41fnWmq4jRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eH+iTB/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8F2C4CECE;
+	Thu, 12 Dec 2024 17:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025701;
-	bh=i/byawCNdmauWhmDsX1mHkry4+ayDyOfTFQcaFhPte0=;
+	s=korg; t=1734025733;
+	bh=SSlEWGdS+Hd1jocAN+CkZb9FS6K8aYSlGefZKKZ9tr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LT4+keuJb/W6LoMZ0iMmziFiduGFEq3rpyDTXSmDds/IGtcS3AgVQG/0IiIGldwuA
-	 8OO00QbSen6//dfKkpIR9fgYJb5KKLEhYqpmAzh2J2MI9Vn5QAqUjnTr89hNofSaqo
-	 FFEzLAHUHquoQVgGo4dfavD7rdgHUx4CMyfBVim4=
+	b=eH+iTB/hirxJrfpEEUpVqmwqfr5yBCQkJ1KLwGfpctpICp4cAxYBF0g3cxmYV9yCc
+	 x/m1BMZsgco6U0ACKxZBjBUf/g3Q/NsG55JKO0M4vZcVtNe3iu7r10SAMAZdaCYC7I
+	 bCTC4SL8/7KUuhBMGdcXX2dW/merV2ttBnGUHJLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Jiri Slaby <jslaby@suse.cz>,
+	Borislav Petkov <bp@suse.de>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
 	Juergen Gross <jgross@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	x86-ml <x86@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 241/321] xen: Fix the issue of resource not being properly released in xenbus_dev_probe()
-Date: Thu, 12 Dec 2024 16:02:39 +0100
-Message-ID: <20241212144239.495970292@linuxfoundation.org>
+Subject: [PATCH 5.4 242/321] x86/asm: Reorder early variables
+Date: Thu, 12 Dec 2024 16:02:40 +0100
+Message-ID: <20241212144239.534882826@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -66,65 +74,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Jiri Slaby <jslaby@suse.cz>
 
-[ Upstream commit afc545da381ba0c651b2658966ac737032676f01 ]
+[ Upstream commit 1a8770b746bd05ef68217989cd723b2c24d2208d ]
 
-This patch fixes an issue in the function xenbus_dev_probe(). In the
-xenbus_dev_probe() function, within the if (err) branch at line 313, the
-program incorrectly returns err directly without releasing the resources
-allocated by err = drv->probe(dev, id). As the return value is non-zero,
-the upper layers assume the processing logic has failed. However, the probe
-operation was performed earlier without a corresponding remove operation.
-Since the probe actually allocates resources, failing to perform the remove
-operation could lead to problems.
+Moving early_recursion_flag (4 bytes) after early_level4_pgt (4k) and
+early_dynamic_pgts (256k) saves 4k which are used for alignment of
+early_level4_pgt after early_recursion_flag.
 
-To fix this issue, we followed the resource release logic of the
-xenbus_dev_remove() function by adding a new block fail_remove before the
-fail_put block. After entering the branch if (err) at line 313, the
-function will use a goto statement to jump to the fail_remove block,
-ensuring that the previously acquired resources are correctly released,
-thus preventing the reference count leak.
+The real improvement is merely on the source code side. Previously it
+was:
+* __INITDATA + .balign
+* early_recursion_flag variable
+* a ton of CPP MACROS
+* __INITDATA (again)
+* early_top_pgt and early_recursion_flag variables
+* .data
 
-This bug was identified by an experimental static analysis tool developed
-by our team. The tool specializes in analyzing reference count operations
-and detecting potential issues where resources are not properly managed.
-In this case, the tool flagged the missing release operation as a
-potential problem, which led to the development of this patch.
+Now, it is a bit simpler:
+* a ton of CPP MACROS
+* __INITDATA + .balign
+* early_top_pgt and early_recursion_flag variables
+* early_recursion_flag variable
+* .data
 
-Fixes: 4bac07c993d0 ("xen: add the Xenbus sysfs and virtual device hotplug driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241105130919.4621-1-chenqiuji666@gmail.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+On the binary level the change looks like this:
+Before:
+ (sections)
+  12 .init.data    00042000  0000000000000000  0000000000000000 00008000  2**12
+ (symbols)
+  000000       4 OBJECT  GLOBAL DEFAULT   22 early_recursion_flag
+  001000    4096 OBJECT  GLOBAL DEFAULT   22 early_top_pgt
+  002000 0x40000 OBJECT  GLOBAL DEFAULT   22 early_dynamic_pgts
+
+After:
+ (sections)
+  12 .init.data    00041004  0000000000000000  0000000000000000 00008000  2**12
+ (symbols)
+  000000    4096 OBJECT  GLOBAL DEFAULT   22 early_top_pgt
+  001000 0x40000 OBJECT  GLOBAL DEFAULT   22 early_dynamic_pgts
+  041000       4 OBJECT  GLOBAL DEFAULT   22 early_recursion_flag
+
+So the resulting vmlinux is smaller by 4k with my toolchain as many
+other variables can be placed after early_recursion_flag to fill the
+rest of the page. Note that this is only .init data, so it is freed
+right after being booted anyway. Savings on-disk are none -- compression
+of zeros is easy, so the size of bzImage is the same pre and post the
+change.
+
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: x86-ml <x86@kernel.org>
+Link: https://lkml.kernel.org/r/20191003095238.29831-1-jslaby@suse.cz
+Stable-dep-of: 3b2f2d22fb42 ("crypto: x86/aegis128 - access 32-bit arguments as 32-bit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/xenbus/xenbus_probe.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/kernel/head_64.S | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
-index b88512d92ef52..fd686b962727a 100644
---- a/drivers/xen/xenbus/xenbus_probe.c
-+++ b/drivers/xen/xenbus/xenbus_probe.c
-@@ -250,10 +250,16 @@ int xenbus_dev_probe(struct device *_dev)
- 	if (err) {
- 		dev_warn(&dev->dev, "watch_otherend on %s failed.\n",
- 		       dev->nodename);
--		return err;
-+		goto fail_remove;
- 	}
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index f3d3e9646a99b..f00d7c0c1c86b 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -335,12 +335,6 @@ early_idt_handler_common:
+ 	jmp restore_regs_and_return_to_kernel
+ END(early_idt_handler_common)
  
- 	return 0;
-+fail_remove:
-+	if (drv->remove) {
-+		down(&dev->reclaim_sem);
-+		drv->remove(dev);
-+		up(&dev->reclaim_sem);
-+	}
- fail_put:
- 	module_put(drv->driver.owner);
- fail:
+-	__INITDATA
+-
+-	.balign 4
+-GLOBAL(early_recursion_flag)
+-	.long 0
+-
+ #define NEXT_PAGE(name) \
+ 	.balign	PAGE_SIZE; \
+ GLOBAL(name)
+@@ -375,6 +369,8 @@ GLOBAL(name)
+ 	.endr
+ 
+ 	__INITDATA
++	.balign 4
++
+ NEXT_PGD_PAGE(early_top_pgt)
+ 	.fill	512,8,0
+ 	.fill	PTI_USER_PGD_FILL,8,0
+@@ -382,6 +378,9 @@ NEXT_PGD_PAGE(early_top_pgt)
+ NEXT_PAGE(early_dynamic_pgts)
+ 	.fill	512*EARLY_DYNAMIC_PAGE_TABLES,8,0
+ 
++GLOBAL(early_recursion_flag)
++	.long 0
++
+ 	.data
+ 
+ #if defined(CONFIG_XEN_PV) || defined(CONFIG_PVH)
 -- 
 2.43.0
 
