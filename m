@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194C19EF6B3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCEAF9EF575
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F385B174EAB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1764176BB3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9FB53365;
-	Thu, 12 Dec 2024 17:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03332210EA;
+	Thu, 12 Dec 2024 16:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBEzhct3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arAqXFos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE25F21660B;
-	Thu, 12 Dec 2024 17:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDEE217F46;
+	Thu, 12 Dec 2024 16:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023750; cv=none; b=q1aVZq1guTuxYZyzolFVUlpVqy5c8wCoNZFsPeR4pmqWIYtJxcCcdvhQN6V3JLMrGVy7oWqEy+gkU+QE9Dhg+p5xNebTNA7DDZBFvncxqJa4i5H/DWiYF7AEjj4BwqLmYdN0Gju3zao0lnUc9HJcriFQNilePwca/kceevIRN/Y=
+	t=1734022339; cv=none; b=Cl9+9+4GqW4Ow13y4xuVrVtwCCimIAFmgua1Y5jiS0pfq++jCtDaWd36g/4QK9bBuMvXQmCWi4S4J+zkEgF2athrHAXb09ZOpgbDFz5qYkLxDF6kW24TQAJ50z2UDUo+gDrxS/rTqHaMeKGikgv2YXKg3ylPEoAXSEDmh7wo4P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023750; c=relaxed/simple;
-	bh=R8zBEynxiGfUsdbZKrzptpCZHV675EhszDQbW7Bgwac=;
+	s=arc-20240116; t=1734022339; c=relaxed/simple;
+	bh=kKbTNOXleBrJ4HJ686xq28GnWOaEGHVeh14VZaL04+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rwjZjTL+uOIqDfxlFRtbLU3sC+msIeB490cXzp704FQcAjS1+EEcfn8q9opGx4yWXQQuFTlUrxfwvvYuvZ0N0E4nMcoDyjiUfOjAMr6FHvEOR8tvxjOudZZWjdG9q8ONB0ggqEo4fEplSz5J0zdEXO6pZtO6CwfO7XNB2ZOu39Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBEzhct3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5425CC4CECE;
-	Thu, 12 Dec 2024 17:15:49 +0000 (UTC)
+	 MIME-Version; b=BMG39iy1yxAjBKhvLqQ1G8XmKaPxaR7RB8BuMRjz71NjUWb9Jy2M6CPB/bGqaxa5dWng/TtbQnnYQmHmckSZDw3P3R9vClZfVc+UQLXezkO1/igHan0H2ONJIwHbWo8bddcuC7YGDnwar1uKaZFkfOKdC5dbq/A01yH8FcmJTyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arAqXFos; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D5C4CECE;
+	Thu, 12 Dec 2024 16:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023749;
-	bh=R8zBEynxiGfUsdbZKrzptpCZHV675EhszDQbW7Bgwac=;
+	s=korg; t=1734022338;
+	bh=kKbTNOXleBrJ4HJ686xq28GnWOaEGHVeh14VZaL04+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jBEzhct3BkiGb4DfaSI01YG6c3xYHPJ0xjTRTwDp8O8N+sKL0+PbcyJb805wubnaa
-	 Z+drEk7qVWK/i8/7K+y1cjNTX4bWdKfCT1R4aVOcs7YQWi/lzYpCoxxuqPpMbnuiQk
-	 DfSh1WkI1wmCHATHeQg6xsAnjD/gZkqIdJM2MElo=
+	b=arAqXFoshTl5z+S3VA3B9C39YgjU7rxEqnf8UdlKS1+0/pNfK4pGTjYtoVGdtodZM
+	 gqHe/yKjaKXuO3Tq+svsSYcVRUkJnlv8/qWCm6Lf7CiLwq4BSZ+3Vur+yBWBAU58Gl
+	 vn1Z5+yC+JDlTLnlH3f/scNPB1h3Z6HSUm53zleA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Priyanka Singh <priyanka.singh@nxp.com>,
-	Li Yang <leoyang.li@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 070/459] EDAC/fsl_ddr: Fix bad bit shift operations
+Subject: [PATCH 5.15 213/565] mfd: da9052-spi: Change read-mask to write-mask
 Date: Thu, 12 Dec 2024 15:56:48 +0100
-Message-ID: <20241212144256.289328414@linuxfoundation.org>
+Message-ID: <20241212144319.914932530@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Priyanka Singh <priyanka.singh@nxp.com>
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-[ Upstream commit 9ec22ac4fe766c6abba845290d5139a3fbe0153b ]
+[ Upstream commit 2e3378f6c79a1b3f7855ded1ef306ea4406352ed ]
 
-Fix undefined behavior caused by left-shifting a negative value in the
-expression:
+Driver has mixed up the R/W bit.
+The LSB bit is set on write rather than read.
+Change it to avoid nasty things to happen.
 
-    cap_high ^ (1 << (bad_data_bit - 32))
-
-The variable bad_data_bit ranges from 0 to 63. When it is less than 32,
-bad_data_bit - 32 becomes negative, and left-shifting by a negative
-value in C is undefined behavior.
-
-Fix this by combining cap_high and cap_low into a 64-bit variable.
-
-  [ bp: Massage commit message, simplify error bits handling. ]
-
-Fixes: ea2eb9a8b620 ("EDAC, fsl-ddr: Separate FSL DDR driver from MPC85xx")
-Signed-off-by: Priyanka Singh <priyanka.singh@nxp.com>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241016-imx95_edac-v3-3-86ae6fc2756a@nxp.com
+Fixes: e9e9d3973594 ("mfd: da9052: Avoid setting read_flag_mask for da9052-i2c driver")
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Link: https://lore.kernel.org/r/20240925-da9052-v2-1-f243e4505b07@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/fsl_ddr_edac.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/mfd/da9052-spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
-index 6d8ea226010d2..61e59341a41f9 100644
---- a/drivers/edac/fsl_ddr_edac.c
-+++ b/drivers/edac/fsl_ddr_edac.c
-@@ -331,21 +331,25 @@ static void fsl_mc_check(struct mem_ctl_info *mci)
- 	 * TODO: Add support for 32-bit wide buses
- 	 */
- 	if ((err_detect & DDR_EDE_SBE) && (bus_width == 64)) {
-+		u64 cap = (u64)cap_high << 32 | cap_low;
-+		u32 s = syndrome;
-+
- 		sbe_ecc_decode(cap_high, cap_low, syndrome,
- 				&bad_data_bit, &bad_ecc_bit);
+diff --git a/drivers/mfd/da9052-spi.c b/drivers/mfd/da9052-spi.c
+index 5faf3766a5e20..06c500bf4d57e 100644
+--- a/drivers/mfd/da9052-spi.c
++++ b/drivers/mfd/da9052-spi.c
+@@ -37,7 +37,7 @@ static int da9052_spi_probe(struct spi_device *spi)
+ 	spi_set_drvdata(spi, da9052);
  
--		if (bad_data_bit != -1)
--			fsl_mc_printk(mci, KERN_ERR,
--				"Faulty Data bit: %d\n", bad_data_bit);
--		if (bad_ecc_bit != -1)
--			fsl_mc_printk(mci, KERN_ERR,
--				"Faulty ECC bit: %d\n", bad_ecc_bit);
-+		if (bad_data_bit >= 0) {
-+			fsl_mc_printk(mci, KERN_ERR, "Faulty Data bit: %d\n", bad_data_bit);
-+			cap ^= 1ULL << bad_data_bit;
-+		}
-+
-+		if (bad_ecc_bit >= 0) {
-+			fsl_mc_printk(mci, KERN_ERR, "Faulty ECC bit: %d\n", bad_ecc_bit);
-+			s ^= 1 << bad_ecc_bit;
-+		}
- 
- 		fsl_mc_printk(mci, KERN_ERR,
- 			"Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
--			cap_high ^ (1 << (bad_data_bit - 32)),
--			cap_low ^ (1 << bad_data_bit),
--			syndrome ^ (1 << bad_ecc_bit));
-+			upper_32_bits(cap), lower_32_bits(cap), s);
- 	}
- 
- 	fsl_mc_printk(mci, KERN_ERR,
+ 	config = da9052_regmap_config;
+-	config.read_flag_mask = 1;
++	config.write_flag_mask = 1;
+ 	config.reg_bits = 7;
+ 	config.pad_bits = 1;
+ 	config.val_bits = 8;
 -- 
 2.43.0
 
