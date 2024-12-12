@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-102295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60249EF1E1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6132F9EEB0E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7C9175C43
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13ADF281AD8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5056F2FE;
-	Thu, 12 Dec 2024 16:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613732080FC;
+	Thu, 12 Dec 2024 15:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypHLxUFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xbcsg+ge"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD94F2210CF;
-	Thu, 12 Dec 2024 16:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2192AF0E;
+	Thu, 12 Dec 2024 15:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020710; cv=none; b=WrJ4eGGr4cBTmS+F2lSVRFCfEc4xvoT9nI21jUe0GDBpbFOvDXt/lsIy5X2PQss3LDYBxoEwI4wnGQtXnyBBQxbp4ttqGW66RWgBQBSqiiQVgTuxqK+naU6MWyKFVO4D7muMCdbMfBnuiffZiO/HEVSAL3ln+0qPrrWYVG7nTZ0=
+	t=1734016855; cv=none; b=gRIKzjtxtcwdA2sTGtAqSdkxQP4KgS/+iRw65vaX63EkSpR2j4vpGAMGTHRe+10L7x41F1iKIWcgiL0jhvFwlVJI5hjTFQ/TsnWblFyialsuqrqU6O7/6c1+Yz1OcvElRgNrPSJ5WaLL20zHa4hgZqXqr5gZsAxFkPW23bEJsU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020710; c=relaxed/simple;
-	bh=QKTdqRGML+RmimJCTglx4JehFbmzQ49KGTVCEzZy2y8=;
+	s=arc-20240116; t=1734016855; c=relaxed/simple;
+	bh=iqrJHLxF4y4KRdavClrr6I2EFNaYkqnwWfXqv98eWxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZ4ldkCT+kXpVherWXt03bfyKDGVPzwstMVw1a40/lu4n3wfU752MORT8msaR+hzGJm9jSMrJzQfLUVhpvaBMxlKO078G88yO78msd6jCQHpN39Yj4Cvj6Jx3fZw/Bp1awSkud18WGNF6oDYCZpr0wwmv9ogyz+LnVawhECfR+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypHLxUFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95861C4CED3;
-	Thu, 12 Dec 2024 16:25:09 +0000 (UTC)
+	 MIME-Version; b=cKUH4ELJsxZwe2D1x7lvmNmdYpi+vbZKIrj9V7PzD0UI7PjaFTGLD/EEgI2WkmzYEDkxrdi2uMfIW3foyGjANMYumXCRnRCxWT4L3kAsSWCBuYTmK30YK3jkCKWKmVKDiTPHhm8dGlmn5J9SfzGVESZirLNwi/TTcTW4Jttwv/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xbcsg+ge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22A7C4CECE;
+	Thu, 12 Dec 2024 15:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020710;
-	bh=QKTdqRGML+RmimJCTglx4JehFbmzQ49KGTVCEzZy2y8=;
+	s=korg; t=1734016854;
+	bh=iqrJHLxF4y4KRdavClrr6I2EFNaYkqnwWfXqv98eWxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ypHLxUFb31/yWaA0sut7YrKb3Y8qkmsXAhMDdASWERPTV26ePteBoCFzM905uI+6k
-	 GNJ3I8jkwEbG2B97Fqy7zWf9CjBy+PElWTwdvbOq8V7br0St5OOO/5UjJyvAi2HPZ7
-	 9wNf2u4oiS1QUaxIMI2I8ENV6N2QcYAE6bt4KH3U=
+	b=Xbcsg+gecUGi+d4AcJF3hE1CE7trsaszzTfU1OH0fOiekvBd3qRPxBO7typRxPgnR
+	 s1M5PUnt18TSxGsowugi0kuDWEKytupwx1Ea8Bbm2WHC/HAcXPewfAkbqHHQ9kt3K+
+	 vZJZ+5HAtKJp3QzTSTCRZ1723yzRC2jg0rd8XvGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifei Liu <yifei.l.liu@oracle.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Mac Chiang <mac.chiang@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 539/772] ixgbe: downgrade logging of unsupported VF API version to debug
+Subject: [PATCH 6.12 315/466] ASoC: Intel: soc-acpi-intel-arl-match: Add rt722 and rt1320 support
 Date: Thu, 12 Dec 2024 15:58:04 +0100
-Message-ID: <20241212144412.242715284@linuxfoundation.org>
+Message-ID: <20241212144319.228387880@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Mac Chiang <mac.chiang@intel.com>
 
-[ Upstream commit 15915b43a7fb938934bb7fc4290127218859d795 ]
+[ Upstream commit f193fb888d1da45365daa7d0ff7a964c8305d407 ]
 
-The ixgbe PF driver logs an info message when a VF attempts to negotiate an
-API version which it does not support:
+This patch adds support for the rt722 multi-function codec and the
+rt1320 amplifier in the ARL board configuration.
 
-  VF 0 requested invalid api version 6
+Link 0: RT722 codec with three endpoints: Headset, Speaker, and DMIC.
+Link 2: RT1320 amplifier.
 
-The ixgbevf driver attempts to load with mailbox API v1.5, which is
-required for best compatibility with other hosts such as the ESX VMWare PF.
+Note:
+The Speaker endpoint on the RT722 codec is not used.
 
-The Linux PF only supports API v1.4, and does not currently have support
-for the v1.5 API.
-
-The logged message can confuse users, as the v1.5 API is valid, but just
-happens to not currently be supported by the Linux PF.
-
-Downgrade the info message to a debug message, and fix the language to
-use 'unsupported' instead of 'invalid' to improve message clarity.
-
-Long term, we should investigate whether the improvements in the v1.5 API
-make sense for the Linux PF, and if so implement them properly. This may
-require yet another API version to resolve issues with negotiating IPSEC
-offload support.
-
-Fixes: 339f28964147 ("ixgbevf: Add support for new mailbox communication between PF and VF")
-Reported-by: Yifei Liu <yifei.l.liu@oracle.com>
-Link: https://lore.kernel.org/intel-wired-lan/20240301235837.3741422-1-yifei.l.liu@oracle.com/
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Mac Chiang <mac.chiang@intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20241028072631.15536-4-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_common.h | 2 ++
- drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c  | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ .../intel/common/soc-acpi-intel-arl-match.c   | 63 +++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
-index 4b531e8ae38ae..afe8a64dbdd41 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
-@@ -195,6 +195,8 @@ u32 ixgbe_read_reg(struct ixgbe_hw *hw, u32 reg);
- 	dev_err(&adapter->pdev->dev, format, ## arg)
- #define e_dev_notice(format, arg...) \
- 	dev_notice(&adapter->pdev->dev, format, ## arg)
-+#define e_dbg(msglvl, format, arg...) \
-+	netif_dbg(adapter, msglvl, adapter->netdev, format, ## arg)
- #define e_info(msglvl, format, arg...) \
- 	netif_info(adapter, msglvl, adapter->netdev, format, ## arg)
- #define e_err(msglvl, format, arg...) \
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-index 198ab9d97618c..9132e73e41829 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-@@ -1051,7 +1051,7 @@ static int ixgbe_negotiate_vf_api(struct ixgbe_adapter *adapter,
- 		break;
+diff --git a/sound/soc/intel/common/soc-acpi-intel-arl-match.c b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
+index 072b8486d0727..24d850df77ca8 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-arl-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-arl-match.c
+@@ -44,6 +44,31 @@ static const struct snd_soc_acpi_endpoint spk_3_endpoint = {
+ 	.group_id = 1,
+ };
+ 
++/*
++ * RT722 is a multi-function codec, three endpoints are created for
++ * its headset, amp and dmic functions.
++ */
++static const struct snd_soc_acpi_endpoint rt722_endpoints[] = {
++	{
++		.num = 0,
++		.aggregated = 0,
++		.group_position = 0,
++		.group_id = 0,
++	},
++	{
++		.num = 1,
++		.aggregated = 0,
++		.group_position = 0,
++		.group_id = 0,
++	},
++	{
++		.num = 2,
++		.aggregated = 0,
++		.group_position = 0,
++		.group_id = 0,
++	},
++};
++
+ static const struct snd_soc_acpi_adr_device cs35l56_2_lr_adr[] = {
+ 	{
+ 		.adr = 0x00023001FA355601ull,
+@@ -185,6 +210,24 @@ static const struct snd_soc_acpi_adr_device rt711_sdca_0_adr[] = {
  	}
+ };
  
--	e_info(drv, "VF %d requested invalid api version %u\n", vf, api);
-+	e_dbg(drv, "VF %d requested unsupported api version %u\n", vf, api);
++static const struct snd_soc_acpi_adr_device rt722_0_single_adr[] = {
++	{
++		.adr = 0x000030025D072201ull,
++		.num_endpoints = ARRAY_SIZE(rt722_endpoints),
++		.endpoints = rt722_endpoints,
++		.name_prefix = "rt722"
++	}
++};
++
++static const struct snd_soc_acpi_adr_device rt1320_2_single_adr[] = {
++	{
++		.adr = 0x000230025D132001ull,
++		.num_endpoints = 1,
++		.endpoints = &single_endpoint,
++		.name_prefix = "rt1320-1"
++	}
++};
++
+ static const struct snd_soc_acpi_link_adr arl_cs42l43_l0[] = {
+ 	{
+ 		.mask = BIT(0),
+@@ -287,6 +330,20 @@ static const struct snd_soc_acpi_link_adr arl_sdca_rvp[] = {
+ 	{}
+ };
  
- 	return -1;
- }
++static const struct snd_soc_acpi_link_adr arl_rt722_l0_rt1320_l2[] = {
++	{
++		.mask = BIT(0),
++		.num_adr = ARRAY_SIZE(rt722_0_single_adr),
++		.adr_d = rt722_0_single_adr,
++	},
++	{
++		.mask = BIT(2),
++		.num_adr = ARRAY_SIZE(rt1320_2_single_adr),
++		.adr_d = rt1320_2_single_adr,
++	},
++	{}
++};
++
+ static const struct snd_soc_acpi_codecs arl_essx_83x6 = {
+ 	.num_codecs = 3,
+ 	.codecs = { "ESSX8316", "ESSX8326", "ESSX8336"},
+@@ -385,6 +442,12 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_arl_sdw_machines[] = {
+ 		.drv_name = "sof_sdw",
+ 		.sof_tplg_filename = "sof-arl-rt711-l0.tplg",
+ 	},
++	{
++		.link_mask = BIT(0) | BIT(2),
++		.links = arl_rt722_l0_rt1320_l2,
++		.drv_name = "sof_sdw",
++		.sof_tplg_filename = "sof-arl-rt722-l0_rt1320-l2.tplg",
++	},
+ 	{},
+ };
+ EXPORT_SYMBOL_GPL(snd_soc_acpi_intel_arl_sdw_machines);
 -- 
 2.43.0
 
