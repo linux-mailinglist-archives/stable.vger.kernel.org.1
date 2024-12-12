@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9923B9EF36C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA37D9EEC82
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B7BF290E3E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6C17284488
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD326223C79;
-	Thu, 12 Dec 2024 16:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A474F217F34;
+	Thu, 12 Dec 2024 15:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QofM/1P3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSvhyNwR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DBB226545;
-	Thu, 12 Dec 2024 16:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627231547F0;
+	Thu, 12 Dec 2024 15:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022331; cv=none; b=X5MR5EOBbuJne9TLJBgivtWefz30EUHAMJJ9EGg80Vs6WdN7m9R4fpIby3qoClZlSJXB0iKhIonjGwnj/ogPuZKxu3TzuTXyFBgCAK0wMi2fTxhJzPgcvfw9mZvc0UolH9hKPuY7sBcX+k3mA9K8YT2TomZD3O6lTmCnz4mgflc=
+	t=1734017703; cv=none; b=e9hzse6G0qv0HvcOmuSBtttTYhwxZ1rWCE61yFWo3l4CHZ7mrwdD1KHRmavT/z8pkFBuS5+pFuCv1XN5087vNFXB9fyDpr7goIYc+kOG0+dV4/s4HNnpg04h0wkqcpMnNST7iAqEFXMVoIhOo+/pt/JIbI614VYHvSONOKSDg3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022331; c=relaxed/simple;
-	bh=/s2WutadzGRfRLllVwTUpMI03qX1M/xIzWj3WiOAqcM=;
+	s=arc-20240116; t=1734017703; c=relaxed/simple;
+	bh=WC9Y1jjPRk1m8A71Rx+I1WWwj0iTqr2BjnPdIauYGOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLkj4DW9lQFa+oy/Siahmx4zWjl2nQIVBOl9xhkTb9vvswJDkUED3t5deimHDEl67TfReXnygS9cewnwHbDerbQFOkrbdoGA44PUFqzlQ8c0zhNRTYgUe4XMqLCP0st05dgC0ry1CeYpyjNGu/nyIl9AIYNwvAcGvT55soIFC8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QofM/1P3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABC3C4CECE;
-	Thu, 12 Dec 2024 16:52:10 +0000 (UTC)
+	 MIME-Version; b=YBpziQkR4TpyLEFjpTNCKq0tIOicfzK5rVIYZKPlYJEsHrVC49SwCDmJ8NEgAVYDu1UrAfqBewxQlitmvHmCSzMlRaRZ2WDetecRT27pV2m4+hS+h3hqpml83YLfMVXLMJNIWIOr3mNz0SU8l9Q/W2/LU7fnt2sXwyk9hjFOdJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSvhyNwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC05C4CECE;
+	Thu, 12 Dec 2024 15:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022331;
-	bh=/s2WutadzGRfRLllVwTUpMI03qX1M/xIzWj3WiOAqcM=;
+	s=korg; t=1734017703;
+	bh=WC9Y1jjPRk1m8A71Rx+I1WWwj0iTqr2BjnPdIauYGOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QofM/1P36wDOZrUIjTe64vmDd5hhtyjHc/fsIIM+ZEuxYzTQB4WSbFX4KwdVCnW0d
-	 FaRTpANEqa7+6YATrpMZ0Ul5kQZ84hCfbQcI0Kplez9O5wTSSCUpnJ4HeN/7CzEvW6
-	 lKUoQ+WOPF3zH+TjbzirrhlStGyRqJlXO1Gm2GCc=
+	b=iSvhyNwR46x22zHZfS/pjL0z0cRClJ0TxCwMQX10ox5Vqij+ZVZNru91ViHZ/v+zo
+	 k9szhxzppIhp21JEOaRHIlxnxotkr+RAUYEcgPeCCnUr/M5MxOkTL3zGVYSvHiWMtG
+	 C/fRY6yLlirsywBOU5cf75lLu7iOBkPZw7qfMBiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Segher Boessenkool <segher@kernel.crashing.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Dmytro Maluka <dmaluka@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 211/565] powerpc/vdso: Flag VDSO64 entry points as functions
+Subject: [PATCH 6.6 087/356] zram: split memory-tracking and ac-time tracking
 Date: Thu, 12 Dec 2024 15:56:46 +0100
-Message-ID: <20241212144319.836802324@linuxfoundation.org>
+Message-ID: <20241212144248.058843550@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +64,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit 0161bd38c24312853ed5ae9a425a1c41c4ac674a ]
+[ Upstream commit a7a0350583ba51d8cde6180bb51d704b89a3b29e ]
 
-On powerpc64 as shown below by readelf, vDSO functions symbols have
-type NOTYPE.
+ZRAM_MEMORY_TRACKING enables two features:
+- per-entry ac-time tracking
+- debugfs interface
 
-$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
-ELF Header:
-  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
-  Class:                             ELF64
-  Data:                              2's complement, big endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              DYN (Shared object file)
-  Machine:                           PowerPC64
-  Version:                           0x1
-...
+The latter one is the reason why memory-tracking depends on DEBUG_FS,
+while the former one is used far beyond debugging these days.  Namely
+ac-time is used for fine grained writeback of idle entries (pages).
 
-Symbol table '.dynsym' contains 12 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-...
-     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
-...
-     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+Move ac-time tracking under its own config option so that it can be
+enabled (along with writeback) on systems without DEBUG_FS.
 
-Symbol table '.symtab' contains 56 entries:
-   Num:    Value          Size Type    Bind   Vis      Ndx Name
-...
-    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
-    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
-    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
-
-To overcome that, commit ba83b3239e65 ("selftests: vDSO: fix vDSO
-symbols lookup for powerpc64") was applied to have selftests also
-look for NOTYPE symbols, but the correct fix should be to flag VDSO
-entry points as functions.
-
-The original commit that brought VDSO support into powerpc/64 has the
-following explanation:
-
-    Note that the symbols exposed by the vDSO aren't "normal" function symbols, apps
-    can't be expected to link against them directly, the vDSO's are both seen
-    as if they were linked at 0 and the symbols just contain offsets to the
-    various functions.  This is done on purpose to avoid a relocation step
-    (ppc64 functions normally have descriptors with abs addresses in them).
-    When glibc uses those functions, it's expected to use it's own trampolines
-    that know how to reach them.
-
-The descriptors it's talking about are the OPD function descriptors
-used on ABI v1 (big endian). But it would be more correct for a text
-symbol to have type function, even if there's no function descriptor
-for it.
-
-glibc has a special case already for handling the VDSO symbols which
-creates a fake opd pointing at the kernel symbol. So changing the VDSO
-symbol type to function shouldn't affect that.
-
-For ABI v2, there is no function descriptors and VDSO functions can
-safely have function type.
-
-So lets flag VDSO entry points as functions and revert the
-selftest change.
-
-Link: https://github.com/mpe/linux-fullhistory/commit/5f2dd691b62da9d9cc54b938f8b29c22c93cb805
-Fixes: ba83b3239e65 ("selftests: vDSO: fix vDSO symbols lookup for powerpc64")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-By: Segher Boessenkool <segher@kernel.crashing.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/b6ad2f1ee9887af3ca5ecade2a56f4acda517a85.1728512263.git.christophe.leroy@csgroup.eu
+[senozhatsky@chromium.org: ifdef fixup, per Dmytro]
+  Link: https://lkml.kernel.org/r/20231117013543.540280-1-senozhatsky@chromium.org
+Link: https://lkml.kernel.org/r/20231115024223.4133148-1-senozhatsky@chromium.org
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Dmytro Maluka <dmaluka@chromium.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: d37da422edb0 ("zram: clear IDLE flag in mark_idle()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/vdso.h           | 1 +
- tools/testing/selftests/vDSO/parse_vdso.c | 3 +--
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/blockdev/zram.rst |  2 +-
+ drivers/block/zram/Kconfig                  | 11 ++++++++-
+ drivers/block/zram/zram_drv.c               | 27 ++++++++++-----------
+ drivers/block/zram/zram_drv.h               |  2 +-
+ 4 files changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
-index 8542e9bbeead3..1062e6a4c0fcd 100644
---- a/arch/powerpc/include/asm/vdso.h
-+++ b/arch/powerpc/include/asm/vdso.h
-@@ -28,6 +28,7 @@ int vdso_getcpu_init(void);
- #ifdef __VDSO64__
- #define V_FUNCTION_BEGIN(name)		\
- 	.globl name;			\
-+	.type name,@function; 		\
- 	name:				\
+diff --git a/Documentation/admin-guide/blockdev/zram.rst b/Documentation/admin-guide/blockdev/zram.rst
+index e4551579cb128..ee2b0030d4168 100644
+--- a/Documentation/admin-guide/blockdev/zram.rst
++++ b/Documentation/admin-guide/blockdev/zram.rst
+@@ -328,7 +328,7 @@ as idle::
+ From now on, any pages on zram are idle pages. The idle mark
+ will be removed until someone requests access of the block.
+ IOW, unless there is access request, those pages are still idle pages.
+-Additionally, when CONFIG_ZRAM_MEMORY_TRACKING is enabled pages can be
++Additionally, when CONFIG_ZRAM_TRACK_ENTRY_ACTIME is enabled pages can be
+ marked as idle based on how long (in seconds) it's been since they were
+ last accessed::
  
- #define V_FUNCTION_END(name)		\
-diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
-index 7dd5668ea8a6e..28f35620c4991 100644
---- a/tools/testing/selftests/vDSO/parse_vdso.c
-+++ b/tools/testing/selftests/vDSO/parse_vdso.c
-@@ -222,8 +222,7 @@ void *vdso_sym(const char *version, const char *name)
- 		ELF(Sym) *sym = &vdso_info.symtab[chain];
+diff --git a/drivers/block/zram/Kconfig b/drivers/block/zram/Kconfig
+index 0386b7da02aa3..af201392ed52c 100644
+--- a/drivers/block/zram/Kconfig
++++ b/drivers/block/zram/Kconfig
+@@ -69,9 +69,18 @@ config ZRAM_WRITEBACK
  
- 		/* Check for a defined global or weak function w/ right name. */
--		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
--		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
-+		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
- 			continue;
- 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
- 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
+ 	 See Documentation/admin-guide/blockdev/zram.rst for more information.
+ 
++config ZRAM_TRACK_ENTRY_ACTIME
++	bool "Track access time of zram entries"
++	depends on ZRAM
++	help
++	  With this feature zram tracks access time of every stored
++	  entry (page), which can be used for a more fine grained IDLE
++	  pages writeback.
++
+ config ZRAM_MEMORY_TRACKING
+ 	bool "Track zRam block status"
+ 	depends on ZRAM && DEBUG_FS
++	select ZRAM_TRACK_ENTRY_ACTIME
+ 	help
+ 	  With this feature, admin can track the state of allocated blocks
+ 	  of zRAM. Admin could see the information via
+@@ -86,4 +95,4 @@ config ZRAM_MULTI_COMP
+ 	  This will enable multi-compression streams, so that ZRAM can
+ 	  re-compress pages using a potentially slower but more effective
+ 	  compression algorithm. Note, that IDLE page recompression
+-	  requires ZRAM_MEMORY_TRACKING.
++	  requires ZRAM_TRACK_ENTRY_ACTIME.
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index c29c471b6a182..582df13bfde94 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -174,6 +174,14 @@ static inline u32 zram_get_priority(struct zram *zram, u32 index)
+ 	return prio & ZRAM_COMP_PRIORITY_MASK;
+ }
+ 
++static void zram_accessed(struct zram *zram, u32 index)
++{
++	zram_clear_flag(zram, index, ZRAM_IDLE);
++#ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
++	zram->table[index].ac_time = ktime_get_boottime();
++#endif
++}
++
+ static inline void update_used_max(struct zram *zram,
+ 					const unsigned long pages)
+ {
+@@ -293,8 +301,9 @@ static void mark_idle(struct zram *zram, ktime_t cutoff)
+ 		zram_slot_lock(zram, index);
+ 		if (zram_allocated(zram, index) &&
+ 				!zram_test_flag(zram, index, ZRAM_UNDER_WB)) {
+-#ifdef CONFIG_ZRAM_MEMORY_TRACKING
+-			is_idle = !cutoff || ktime_after(cutoff, zram->table[index].ac_time);
++#ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
++			is_idle = !cutoff || ktime_after(cutoff,
++							 zram->table[index].ac_time);
+ #endif
+ 			if (is_idle)
+ 				zram_set_flag(zram, index, ZRAM_IDLE);
+@@ -317,7 +326,7 @@ static ssize_t idle_store(struct device *dev,
+ 		 */
+ 		u64 age_sec;
+ 
+-		if (IS_ENABLED(CONFIG_ZRAM_MEMORY_TRACKING) && !kstrtoull(buf, 0, &age_sec))
++		if (IS_ENABLED(CONFIG_ZRAM_TRACK_ENTRY_ACTIME) && !kstrtoull(buf, 0, &age_sec))
+ 			cutoff_time = ktime_sub(ktime_get_boottime(),
+ 					ns_to_ktime(age_sec * NSEC_PER_SEC));
+ 		else
+@@ -844,12 +853,6 @@ static void zram_debugfs_destroy(void)
+ 	debugfs_remove_recursive(zram_debugfs_root);
+ }
+ 
+-static void zram_accessed(struct zram *zram, u32 index)
+-{
+-	zram_clear_flag(zram, index, ZRAM_IDLE);
+-	zram->table[index].ac_time = ktime_get_boottime();
+-}
+-
+ static ssize_t read_block_state(struct file *file, char __user *buf,
+ 				size_t count, loff_t *ppos)
+ {
+@@ -933,10 +936,6 @@ static void zram_debugfs_unregister(struct zram *zram)
+ #else
+ static void zram_debugfs_create(void) {};
+ static void zram_debugfs_destroy(void) {};
+-static void zram_accessed(struct zram *zram, u32 index)
+-{
+-	zram_clear_flag(zram, index, ZRAM_IDLE);
+-};
+ static void zram_debugfs_register(struct zram *zram) {};
+ static void zram_debugfs_unregister(struct zram *zram) {};
+ #endif
+@@ -1257,7 +1256,7 @@ static void zram_free_page(struct zram *zram, size_t index)
+ {
+ 	unsigned long handle;
+ 
+-#ifdef CONFIG_ZRAM_MEMORY_TRACKING
++#ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+ 	zram->table[index].ac_time = 0;
+ #endif
+ 	if (zram_test_flag(zram, index, ZRAM_IDLE))
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index ca7a15bd48456..35e3221446292 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -69,7 +69,7 @@ struct zram_table_entry {
+ 		unsigned long element;
+ 	};
+ 	unsigned long flags;
+-#ifdef CONFIG_ZRAM_MEMORY_TRACKING
++#ifdef CONFIG_ZRAM_TRACK_ENTRY_ACTIME
+ 	ktime_t ac_time;
+ #endif
+ };
 -- 
 2.43.0
 
