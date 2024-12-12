@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844FB9EEA27
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812089EF3C2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13874188CBCF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC065178FF3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61EF7217664;
-	Thu, 12 Dec 2024 15:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B4222967D;
+	Thu, 12 Dec 2024 16:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFZoR5Z2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoMvQJzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E64521766B;
-	Thu, 12 Dec 2024 15:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D547E216E3B;
+	Thu, 12 Dec 2024 16:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016007; cv=none; b=KGkNz5/Lni6q861cb9HK3GvXQWjHsbed+cwFAvU2Evw9kJstxz0V24MRG4b/ce+ZSw97paVwsdjSu62CAdym2JNSrZF1sNSEAzVxoImN4qNnBHsL35JPIRA75jbhtPc+MQ2mv98y2jOGNyIOtCKBdbvjIyfintVBY+c3kAjc8K4=
+	t=1734021855; cv=none; b=HckzaVJ4dhGmMoDcQ6k58npghIxx1Tv/LK0q/QZdefoRZUlTkEd0orm8GXBv6wytg6ESW87EKj2d3LAG6560TCFqchYbZtYfZRfqNdy8T1dMLplurzocNp0ET3R6rWELGVLkk+lDcsLH95GAH7dq3x84Igfw5IlIaxd6ziQJds8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016007; c=relaxed/simple;
-	bh=MSeky+d8LidpYuddQugZXQMdj1MCVIZN2okYHyB0/Lo=;
+	s=arc-20240116; t=1734021855; c=relaxed/simple;
+	bh=9z81GhMaMVV6BUJaSER17Ob46bS8EcXUpIoPcJX3oYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/h8pEy5rA6e9N8SrA2FiOFRv9lfJbdQ8ZcXhOHvseFUMy9n/OHT8lGS82AU9x4my4PIzYVJyv8Wq3q9jvIUrzJiGuo3VCq6qJc/N0W5j3OjsvQV3dcWNosGNNfUmfu0SVxPFKIhD8e4KX51za8BDD4kbwEVxnOUt7Ow5kfNoRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFZoR5Z2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACB9C4CECE;
-	Thu, 12 Dec 2024 15:06:46 +0000 (UTC)
+	 MIME-Version; b=IjJNGhRYFlmq0W5Txki4l17HQQavMSj52hVabiktDx3nrQCumAdSOICk2PFbcmKzOFdHDUfYT+827Xz7gHUwyXdezwt5aPjY4YwL/J2QwXVJOpUq8mARdiwVOlojCN3OA+eyQ3dmSfqVsTGuBUaoTv2H950NjMExUmUM5anDpS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoMvQJzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448C5C4CED0;
+	Thu, 12 Dec 2024 16:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016007;
-	bh=MSeky+d8LidpYuddQugZXQMdj1MCVIZN2okYHyB0/Lo=;
+	s=korg; t=1734021855;
+	bh=9z81GhMaMVV6BUJaSER17Ob46bS8EcXUpIoPcJX3oYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oFZoR5Z2f3cV+jID9v0SJ+saOGyyt4oFEh4iYC8pfHNdZajy7U+kjAwIVzX4TZRl6
-	 Zbp3zRwI80xTiJC2yZu8Jq+/o5eoTrqF2k6WJn6glIQr7uYVFqXmXAXqIoaJLCtGVC
-	 iLDlpudg3tdL9QwQHM4wpv1cFrFxGCiueuumK6Pk=
+	b=WoMvQJzXVVjN3bgbfVnRV3L2cLD/XkDs36Q+5NOeTkBn24o0jlQc1nGuulx72qwcf
+	 P+GdEvxTQ7CwuW28rI27Iq6f5yBmV2GnG9c4+3G7eNLGetlIsI2gNZSEiCUhuxh91V
+	 Wm+aC8MBAjq/iR4Grxl5435hSnolvvdlmDPmIfFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chunguang.xu" <chunguang.xu@shopee.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/466] nvme-tcp: fix the memleak while create new ctrl failed
-Date: Thu, 12 Dec 2024 15:54:35 +0100
-Message-ID: <20241212144311.006996858@linuxfoundation.org>
+Subject: [PATCH 5.15 081/565] mips: asm: fix warning when disabling MIPS_FP_SUPPORT
+Date: Thu, 12 Dec 2024 15:54:36 +0100
+Message-ID: <20241212144314.687662814@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunguang.xu <chunguang.xu@shopee.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit fec55c29e54d3ca6fe9d7d7d9266098b4514fd34 ]
+[ Upstream commit da09935975c8f8c90d6f57be2422dee5557206cd ]
 
-Now while we create new ctrl failed, we have not free the
-tagset occupied by admin_q, here try to fix it.
+When MIPS_FP_SUPPORT is disabled, __sanitize_fcr31() is defined as
+nothing, which triggers a gcc warning:
 
-Fixes: fd1418de10b9 ("nvme-tcp: avoid open-coding nvme_tcp_teardown_admin_queue()")
-Signed-off-by: Chunguang.xu <chunguang.xu@shopee.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+    In file included from kernel/sched/core.c:79:
+    kernel/sched/core.c: In function 'context_switch':
+    ./arch/mips/include/asm/switch_to.h:114:39: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
+      114 |                 __sanitize_fcr31(next);                                 \
+          |                                       ^
+    kernel/sched/core.c:5316:9: note: in expansion of macro 'switch_to'
+     5316 |         switch_to(prev, next, prev);
+          |         ^~~~~~~~~
+
+Fix this by providing an empty body for __sanitize_fcr31() like one is
+defined for __mips_mt_fpaff_switch_to().
+
+Fixes: 36a498035bd2 ("MIPS: Avoid FCSR sanitization when CONFIG_MIPS_FP_SUPPORT=n")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 2 +-
+ arch/mips/include/asm/switch_to.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 3e416af2659f1..55abfe5e1d254 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -2278,7 +2278,7 @@ static int nvme_tcp_setup_ctrl(struct nvme_ctrl *ctrl, bool new)
- 	}
- destroy_admin:
- 	nvme_stop_keep_alive(ctrl);
--	nvme_tcp_teardown_admin_queue(ctrl, false);
-+	nvme_tcp_teardown_admin_queue(ctrl, new);
- 	return ret;
- }
+diff --git a/arch/mips/include/asm/switch_to.h b/arch/mips/include/asm/switch_to.h
+index a4374b4cb88fd..d6ccd53440213 100644
+--- a/arch/mips/include/asm/switch_to.h
++++ b/arch/mips/include/asm/switch_to.h
+@@ -97,7 +97,7 @@ do {									\
+ 	}								\
+ } while (0)
+ #else
+-# define __sanitize_fcr31(next)
++# define __sanitize_fcr31(next) do { (void) (next); } while (0)
+ #endif
  
+ /*
 -- 
 2.43.0
 
