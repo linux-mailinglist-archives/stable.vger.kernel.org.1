@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27E59EF5C4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B8C9EF6AC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEA96340FEE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5497E288BD1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3235F2236EF;
-	Thu, 12 Dec 2024 17:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9071217F40;
+	Thu, 12 Dec 2024 17:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbs92sst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ala7AcFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15BA22331E;
-	Thu, 12 Dec 2024 17:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EBC217F34;
+	Thu, 12 Dec 2024 17:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023112; cv=none; b=YDB4/BdsWAQM/G2fsxu/v/hse6Eu0+wpbNuAQMUY7ZIqaZApCcgKh4EOsVM+yvZlVqxHPWmxqkKSFmKSCFaysR2Pj/jtfDohF65yb8HnOWPbKnziyjJxFPSMQnXEqlXUdB4PkFotHUAAKRYro9dty0xr8BR4JHpk1xCTqhFJMKw=
+	t=1734024496; cv=none; b=mNkjcRX/2BQrYl13O+o41L6YJmPWp7fx5Iytp+GZKZvot0+fMW0fBqQ/zuHRFsDr+sjuGU4ozTj4O/PYCHkdPx7k5CTPKZUeg7wXp1XJmwArmTBHFqDRHc4CpSRXMDUDGjSAXcpU7oh6nDis0blFVl546iRuAEVgw0Utcfka1oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023112; c=relaxed/simple;
-	bh=BOw44Ddd7yMlDYuJNMDXewucqNya6YZ4qLgWVH2E6NA=;
+	s=arc-20240116; t=1734024496; c=relaxed/simple;
+	bh=NyPgYn1DdaaPooZ2tSZWiM9JDnajVDJNnHX4Qgu8s7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKNzFdLGeCAnvNRw9HwdKrySEeVvttA1w+VlOgxfh/K2JTWmbqQpCVRCH95O0BQyNTmOsYmR1FE6P3kCwUi8rt+t2Xsg+3Iy5sz95pZZq4JuzRqmUbtXNqLYi9uqaV4+sr+D3XZzA8P7VmRuyx5LO/Zhp1ITWdqZwZcy6J8xUcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbs92sst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60136C4CECE;
-	Thu, 12 Dec 2024 17:05:11 +0000 (UTC)
+	 MIME-Version; b=n+WpKfg5QlG93wPQC7FAolTd4Zqfp0OCLKY5WeVHfwkNC5rwStMKiZIBJiGLpEvUN2uJa9C90PxqOablw7lg1WnMawuOqX48CzI1czRjl5cHj7Qn/NhrNcG0BJXtAGqwi8sE0tSxkyvyDUlYnoMBl/7q4nDIYcTGV29z7EglcaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ala7AcFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A718C4CED3;
+	Thu, 12 Dec 2024 17:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023111;
-	bh=BOw44Ddd7yMlDYuJNMDXewucqNya6YZ4qLgWVH2E6NA=;
+	s=korg; t=1734024496;
+	bh=NyPgYn1DdaaPooZ2tSZWiM9JDnajVDJNnHX4Qgu8s7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbs92sst2QMsR+Ge/bCyP4RNKdinjHdmcm0x4uGl7F62qcvXy0107YR6MbwtbtoRb
-	 IL7dApyNNOlW+T16qxeqF75Qe70Ig3nPDgMSVzcTLE2vE62r1ClUKysSBrt5mtAmWy
-	 fTgj8VItW3PEAKOrbptvndGnQ6PNWa9NgY2lrA5k=
+	b=Ala7AcFGW1vBFWWIe3UH689EDFmcF+M124NTqVDUdfCuiAMg6J3kD6lY8riB1wrXM
+	 ci8GF3EAxYVAOH7zfy8QzqHW+Glr1LabCNCyZi5Fglm9rga4aQsEpRbG3v2uWL/AXY
+	 LlJF0dopdSL0VjJoO+6axl1852BcHy/itDhWGxLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 428/565] dt_bindings: rs485: Correct delay values
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 285/459] NFSD: Prevent a potential integer overflow
 Date: Thu, 12 Dec 2024 16:00:23 +0100
-Message-ID: <20241212144328.598560584@linuxfoundation.org>
+Message-ID: <20241212144304.890098706@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 885dcb08c93d75b784468e65fd4f1f82d5313061 ]
+commit 7f33b92e5b18e904a481e6e208486da43e4dc841 upstream.
 
-Currently the documentation claims that a maximum of 1000 msecs is allowed
-for RTS delays. However nothing actually checks the values read from device
-tree/ACPI and so it is possible to set much higher values.
+If the tag length is >= U32_MAX - 3 then the "length + 4" addition
+can result in an integer overflow. Address this by splitting the
+decoding into several steps so that decode_cb_compound4res() does
+not have to perform arithmetic on the unsafe length value.
 
-There is already a maximum of 100 ms enforced for RTS delays that are set
-via the UART TIOCSRS485 ioctl. To be consistent with that use the same
-limit for DT/ACPI values.
-
-Although this change is visible to userspace the risk of breaking anything
-when reducing the max delays from 1000 to 100 ms should be very low, since
-100 ms is already a very high maximum for delays that are usually rather in
-the usecs range.
-
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20220710164442.2958979-7-LinoSanfilippo@gmx.de
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 12b3642b6c24 ("dt-bindings: serial: rs485: Fix rs485-rts-delay property")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/rs485.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4callback.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/serial/rs485.yaml b/Documentation/devicetree/bindings/serial/rs485.yaml
-index 0c9fa694f85c8..518949737c86e 100644
---- a/Documentation/devicetree/bindings/serial/rs485.yaml
-+++ b/Documentation/devicetree/bindings/serial/rs485.yaml
-@@ -22,12 +22,12 @@ properties:
-         - description: Delay between rts signal and beginning of data sent in
-             milliseconds. It corresponds to the delay before sending data.
-           default: 0
--          maximum: 1000
-+          maximum: 100
-         - description: Delay between end of data sent and rts signal in milliseconds.
-             It corresponds to the delay after sending data and actual release
-             of the line.
-           default: 0
--          maximum: 1000
-+          maximum: 100
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -297,17 +297,17 @@ static int decode_cb_compound4res(struct
+ 	u32 length;
+ 	__be32 *p;
  
-   rs485-rts-active-low:
-     description: drive RTS low when sending (default is high).
--- 
-2.43.0
-
+-	p = xdr_inline_decode(xdr, 4 + 4);
++	p = xdr_inline_decode(xdr, XDR_UNIT);
+ 	if (unlikely(p == NULL))
+ 		goto out_overflow;
+-	hdr->status = be32_to_cpup(p++);
++	hdr->status = be32_to_cpup(p);
+ 	/* Ignore the tag */
+-	length = be32_to_cpup(p++);
+-	p = xdr_inline_decode(xdr, length + 4);
+-	if (unlikely(p == NULL))
++	if (xdr_stream_decode_u32(xdr, &length) < 0)
++		goto out_overflow;
++	if (xdr_inline_decode(xdr, length) == NULL)
++		goto out_overflow;
++	if (xdr_stream_decode_u32(xdr, &hdr->nops) < 0)
+ 		goto out_overflow;
+-	p += XDR_QUADLEN(length);
+-	hdr->nops = be32_to_cpup(p);
+ 	return 0;
+ out_overflow:
+ 	return -EIO;
 
 
 
