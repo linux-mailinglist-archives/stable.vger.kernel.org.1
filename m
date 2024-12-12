@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842669EF837
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF8C9EF956
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:49:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BA6E189F240
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 668FB28DAF6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6B3223C50;
-	Thu, 12 Dec 2024 17:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78EA215798;
+	Thu, 12 Dec 2024 17:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+EQ5v5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEjI9yUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599AB2236EB;
-	Thu, 12 Dec 2024 17:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76516205E2E;
+	Thu, 12 Dec 2024 17:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024826; cv=none; b=AMGUjvu+qncbRxBGINPGdPIimEGBbLcSUpoln8pkK4OaFNEkjqkuNXg9j14jLPQgpsZ+rFEgJzdspIXgY451/jw40BVxWLmYd/Lt1u9uNmtXWQz/2BWho+PakxjfpiWFT3cTpPCg8zW3XAtdYKtSG0Xh6Tn5fVDPGySG+wSQhiM=
+	t=1734025751; cv=none; b=Laog1Gp3IsaqYbE/UbncVADvFYm4p4pKHmRqgO0oBnxlVIsvRzrVo/6kZOsMEg/9q6Y3fMflcYS6tIw1oGV1hsKSC7m8r5UiKzq0a5Bs+cZh498Byx0o+OA7ziI7Glo7f1Iw0NjiMIdF9WgCocGKBfirbUqGM3DUkhw9CgGTcEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024826; c=relaxed/simple;
-	bh=b7+NAydOgXuVLQ3PH1VOty9u4v85+pz7zItGkYYEQj0=;
+	s=arc-20240116; t=1734025751; c=relaxed/simple;
+	bh=SqlVzSh0pK/4biKXCG01gkiHD8er8FO05TY0rNlIU5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkwSJydR9LFQ1auNSndZ/wUL5tE+RxIxjy9PWng1qzQXqnbppYmUfZcG3HTDg01fcxwkaeIDHsBNicpYzFgtVcYvRpVG18Dt6+GbNyqezmLUNBQiuiwf2AzBKRRXH6MEKnQQ4JOzpzskwVuYRTtj2b8ZOyK+dOb94HwVBDuicLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+EQ5v5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72711C4CED0;
-	Thu, 12 Dec 2024 17:33:45 +0000 (UTC)
+	 MIME-Version; b=u8XmC69u2RTDhP7i6ngW+Pe7k7qTZ0kxmfQFuh1qbyOaT9N+Px5vSYPzxDp5Xe5sD0oJU7ajuKzNha+g0nlXVox1WmAP0NOdG57tuRu93lkZT5bvmbuATDYbt4JxKr5BhK6PYK3p7HW5a2aI8ewgAbvAaDsynFpj/r9zzsgujjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEjI9yUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F036FC4CECE;
+	Thu, 12 Dec 2024 17:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024825;
-	bh=b7+NAydOgXuVLQ3PH1VOty9u4v85+pz7zItGkYYEQj0=;
+	s=korg; t=1734025751;
+	bh=SqlVzSh0pK/4biKXCG01gkiHD8er8FO05TY0rNlIU5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+EQ5v5iYKcTSgtajQrPMpZD2FVSNlXgf3tFcj13e2wZKhRRSp13G3r9xR0pvXdVy
-	 HsCCY9bnj7aSoCTy8yaMW6y8IXT4HPFCmZ+hh/wFO3f4jKqjsbfb/c8HvDU70/+uNR
-	 T31gegdVgp5MlAyDckhm6kfViX56bg/2kny462/Q=
+	b=XEjI9yUdc6vff/zUytU3g4Mdvr7PPegzlkkbcZ3fe/SlG/dKXgOqdSd0JzA4/86j7
+	 PvZsPI88vLqFQrQhuH52e4pa1c/tpKJIE+ehpo7X5ZBDp2Yj9yS9Vx0vJhBsJSVfIN
+	 yS0d7wCnBgpt5x7kdCzTJQZtTD1urpLhLBrA95+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Han <hanqi@vivo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 425/459] f2fs: fix f2fs_bug_on when uninstalling filesystem call f2fs_evict_inode.
+Subject: [PATCH 5.4 245/321] gpio: grgpio: use a helper variable to store the address of ofdev->dev
 Date: Thu, 12 Dec 2024 16:02:43 +0100
-Message-ID: <20241212144310.550331665@linuxfoundation.org>
+Message-ID: <20241212144239.650715804@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Han <hanqi@vivo.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit d5c367ef8287fb4d235c46a2f8c8d68715f3a0ca ]
+[ Upstream commit d036ae41cebdfae92666024163c109b8fef516fa ]
 
-creating a large files during checkpoint disable until it runs out of
-space and then delete it, then remount to enable checkpoint again, and
-then unmount the filesystem triggers the f2fs_bug_on as below:
+Instead of dereferencing the platform device pointer repeatedly, just
+store its address in a helper variable.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/inode.c:896!
-CPU: 2 UID: 0 PID: 1286 Comm: umount Not tainted 6.11.0-rc7-dirty #360
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-RIP: 0010:f2fs_evict_inode+0x58c/0x610
-Call Trace:
- __die_body+0x15/0x60
- die+0x33/0x50
- do_trap+0x10a/0x120
- f2fs_evict_inode+0x58c/0x610
- do_error_trap+0x60/0x80
- f2fs_evict_inode+0x58c/0x610
- exc_invalid_op+0x53/0x60
- f2fs_evict_inode+0x58c/0x610
- asm_exc_invalid_op+0x16/0x20
- f2fs_evict_inode+0x58c/0x610
- evict+0x101/0x260
- dispose_list+0x30/0x50
- evict_inodes+0x140/0x190
- generic_shutdown_super+0x2f/0x150
- kill_block_super+0x11/0x40
- kill_f2fs_super+0x7d/0x140
- deactivate_locked_super+0x2a/0x70
- cleanup_mnt+0xb3/0x140
- task_work_run+0x61/0x90
-
-The root cause is: creating large files during disable checkpoint
-period results in not enough free segments, so when writing back root
-inode will failed in f2fs_enable_checkpoint. When umount the file
-system after enabling checkpoint, the root inode is dirty in
-f2fs_evict_inode function, which triggers BUG_ON. The steps to
-reproduce are as follows:
-
-dd if=/dev/zero of=f2fs.img bs=1M count=55
-mount f2fs.img f2fs_dir -o checkpoint=disable:10%
-dd if=/dev/zero of=big bs=1M count=50
-sync
-rm big
-mount -o remount,checkpoint=enable f2fs_dir
-umount f2fs_dir
-
-Let's redirty inode when there is not free segments during checkpoint
-is disable.
-
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://lore.kernel.org/r/20241015131832.44678-3-brgl@bgdev.pl
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 050b23d081da ("gpio: grgpio: Add NULL check in grgpio_probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-grgpio.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index b23e6a848e9b7..452c0240cc11e 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -701,8 +701,10 @@ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
- 		!is_inode_flag_set(inode, FI_DIRTY_INODE))
- 		return 0;
+diff --git a/drivers/gpio/gpio-grgpio.c b/drivers/gpio/gpio-grgpio.c
+index 3224933f4c8f4..62ba651fef658 100644
+--- a/drivers/gpio/gpio-grgpio.c
++++ b/drivers/gpio/gpio-grgpio.c
+@@ -328,6 +328,7 @@ static const struct irq_domain_ops grgpio_irq_domain_ops = {
+ static int grgpio_probe(struct platform_device *ofdev)
+ {
+ 	struct device_node *np = ofdev->dev.of_node;
++	struct device *dev = &ofdev->dev;
+ 	void  __iomem *regs;
+ 	struct gpio_chip *gc;
+ 	struct grgpio_priv *priv;
+@@ -337,7 +338,7 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 	int size;
+ 	int i;
  
--	if (!f2fs_is_checkpoint_ready(sbi))
-+	if (!f2fs_is_checkpoint_ready(sbi)) {
-+		f2fs_mark_inode_dirty_sync(inode, true);
- 		return -ENOSPC;
-+	}
+-	priv = devm_kzalloc(&ofdev->dev, sizeof(*priv), GFP_KERNEL);
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
  
- 	/*
- 	 * We need to balance fs here to prevent from producing dirty node pages
+@@ -346,29 +347,29 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 		return PTR_ERR(regs);
+ 
+ 	gc = &priv->gc;
+-	err = bgpio_init(gc, &ofdev->dev, 4, regs + GRGPIO_DATA,
++	err = bgpio_init(gc, dev, 4, regs + GRGPIO_DATA,
+ 			 regs + GRGPIO_OUTPUT, NULL, regs + GRGPIO_DIR, NULL,
+ 			 BGPIOF_BIG_ENDIAN_BYTE_ORDER);
+ 	if (err) {
+-		dev_err(&ofdev->dev, "bgpio_init() failed\n");
++		dev_err(dev, "bgpio_init() failed\n");
+ 		return err;
+ 	}
+ 
+ 	priv->regs = regs;
+ 	priv->imask = gc->read_reg(regs + GRGPIO_IMASK);
+-	priv->dev = &ofdev->dev;
++	priv->dev = dev;
+ 
+ 	gc->of_node = np;
+ 	gc->owner = THIS_MODULE;
+ 	gc->to_irq = grgpio_to_irq;
+-	gc->label = devm_kasprintf(&ofdev->dev, GFP_KERNEL, "%pOF", np);
++	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
+ 	gc->base = -1;
+ 
+ 	err = of_property_read_u32(np, "nbits", &prop);
+ 	if (err || prop <= 0 || prop > GRGPIO_MAX_NGPIO) {
+ 		gc->ngpio = GRGPIO_MAX_NGPIO;
+-		dev_dbg(&ofdev->dev,
+-			"No or invalid nbits property: assume %d\n", gc->ngpio);
++		dev_dbg(dev, "No or invalid nbits property: assume %d\n",
++			gc->ngpio);
+ 	} else {
+ 		gc->ngpio = prop;
+ 	}
+@@ -380,7 +381,7 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 	irqmap = (s32 *)of_get_property(np, "irqmap", &size);
+ 	if (irqmap) {
+ 		if (size < gc->ngpio) {
+-			dev_err(&ofdev->dev,
++			dev_err(dev,
+ 				"irqmap shorter than ngpio (%d < %d)\n",
+ 				size, gc->ngpio);
+ 			return -EINVAL;
+@@ -390,7 +391,7 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 						     &grgpio_irq_domain_ops,
+ 						     priv);
+ 		if (!priv->domain) {
+-			dev_err(&ofdev->dev, "Could not add irq domain\n");
++			dev_err(dev, "Could not add irq domain\n");
+ 			return -EINVAL;
+ 		}
+ 
+@@ -420,13 +421,13 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 
+ 	err = gpiochip_add_data(gc, priv);
+ 	if (err) {
+-		dev_err(&ofdev->dev, "Could not add gpiochip\n");
++		dev_err(dev, "Could not add gpiochip\n");
+ 		if (priv->domain)
+ 			irq_domain_remove(priv->domain);
+ 		return err;
+ 	}
+ 
+-	dev_info(&ofdev->dev, "regs=0x%p, base=%d, ngpio=%d, irqs=%s\n",
++	dev_info(dev, "regs=0x%p, base=%d, ngpio=%d, irqs=%s\n",
+ 		 priv->regs, gc->base, gc->ngpio, priv->domain ? "on" : "off");
+ 
+ 	return 0;
 -- 
 2.43.0
 
