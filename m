@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-102189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 250019EF123
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8BD9EEADD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5987170E4A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EB7F188A88E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97395223C63;
-	Thu, 12 Dec 2024 16:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B5E2165F0;
+	Thu, 12 Dec 2024 15:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLuCi66k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTsrtkZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506FD222D77;
-	Thu, 12 Dec 2024 16:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516B821504F;
+	Thu, 12 Dec 2024 15:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020307; cv=none; b=jjaluL7hRCzhGNIRc3g9xxaqLgqfzN2o/qH2BdMWUevAe2+IBvVL2maOFjDnvfjHAeI1qwD04PyPqxfTi86Rlx8pOtxFmxnL+G6IVHU9RPNb8wUh2S9yU1o+QD6ckyZiOAKWOsyTRZMGe6pY4LCUPsx/SdFwHOD3xRJdkbQ903U=
+	t=1734016480; cv=none; b=bm+Vnq5Oc8/XmaYtO44H9R1CR/mbAYlP8b18pum9b13UdUFSbelvTb2+pmdJVbr0axOUm+jSQK0en2CUOwieEVufyl2w0ep4vTsEnj6vNVDsm7qoc/0vOy7fRBZxjGrKkME2GWASjXsFoTm+BHyfS7hkxo42VHhFVgmrGeu3QtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020307; c=relaxed/simple;
-	bh=PSkCgKzxusmctlZPddKH+LZeYB6YO/itmmeTNY5wRUw=;
+	s=arc-20240116; t=1734016480; c=relaxed/simple;
+	bh=jxeIciw1eZw3NUE/XjbIwo2PajEK8VYG7s4i/pxkxY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWylI9jEw+9sLUdV7Tjuvcya0YKKZswtIdWWBcSQxU/mb8sfxXJ1mZU+l+nLB75JSGKbWlw1MmE596ps2z8Q0i7olVEjUCsVDGHsOS7Gm9PhKRvqudrsC0SvbGHwzFan5lDrdK71JmeCDKwm0eajgZtMJDjcCRsR0N43Ac6Ekd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLuCi66k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899FDC4CECE;
-	Thu, 12 Dec 2024 16:18:26 +0000 (UTC)
+	 MIME-Version; b=YWjJfTVyds+f/oAqJbOdhY5U35d3+Q3w0jme0NXPWbLJrFPTo5iJ5hQm5nniR2ucHq9QAEjaadKgeCJmipjxdCHoQScS3JOCs3IqTaOXjj61DPW8AX2ellVKocyDSeQ+wEDgL5Zz5Yk+UYXjIaPuv8oK49fYjoTsYHvL/ADLjCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTsrtkZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8789CC4CED0;
+	Thu, 12 Dec 2024 15:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020307;
-	bh=PSkCgKzxusmctlZPddKH+LZeYB6YO/itmmeTNY5wRUw=;
+	s=korg; t=1734016480;
+	bh=jxeIciw1eZw3NUE/XjbIwo2PajEK8VYG7s4i/pxkxY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLuCi66ktzi+PST7svwvKK4ulxk9AjV01bcK+DOxbNRsNq3B62n29x1hjcXQpQu6f
-	 sQI3vzGelaf9ujpup0FC3fXmTBlZX6VFA3nI5B5kpX66c3YMvP1UyQzm85dqt9DIjo
-	 gXe/J5dlaArB3hx3puQr/sekYYvBC3REybteVC6k=
+	b=yTsrtkZrjMI098BNmRRWAVGM74S2zvb2ZVEnFSPaxPN5P2BLaOp/vVI7ASvJk0eGh
+	 mcjx7K2HvgR4DPCaURoTTkFW7m+jEA8LM5XCUV51o1OsfLDV8zx1DrrTtDjulMndQv
+	 4HMA3nzhfWZGmICiyKewjU8P5reKz7981OaMfFbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 434/772] ubifs: Correct the total block count by deducting journal reservation
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH 6.12 210/466] memblock: allow zero threshold in validate_numa_converage()
 Date: Thu, 12 Dec 2024 15:56:19 +0100
-Message-ID: <20241212144407.864553059@linuxfoundation.org>
+Message-ID: <20241212144315.087020635@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[ Upstream commit 84a2bee9c49769310efa19601157ef50a1df1267 ]
+commit 9cdc6423acb49055efb444ecd895d853a70ef931 upstream.
 
-Since commit e874dcde1cbf ("ubifs: Reserve one leb for each journal
-head while doing budget"), available space is calulated by deducting
-reservation for all journal heads. However, the total block count (
-which is only used by statfs) is not updated yet, which will cause
-the wrong displaying for used space(total - available).
-Fix it by deducting reservation for all journal heads from total
-block count.
+Currently memblock validate_numa_converage() returns false negative when
+threshold set to zero.
 
-Fixes: e874dcde1cbf ("ubifs: Reserve one leb for each journal head while doing budget")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make the check if the memory size with invalid node ID is greater than
+the threshold exclusive to fix that.
+
+Link: https://lore.kernel.org/all/Z0mIDBD4KLyxyOCm@kernel.org/
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ubifs/super.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/memblock.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
-index 32cb147597960..d4c3948a7f863 100644
---- a/fs/ubifs/super.c
-+++ b/fs/ubifs/super.c
-@@ -777,10 +777,10 @@ static void init_constants_master(struct ubifs_info *c)
- 	 * necessary to report something for the 'statfs()' call.
- 	 *
- 	 * Subtract the LEB reserved for GC, the LEB which is reserved for
--	 * deletions, minimum LEBs for the index, and assume only one journal
--	 * head is available.
-+	 * deletions, minimum LEBs for the index, the LEBs which are reserved
-+	 * for each journal head.
- 	 */
--	tmp64 = c->main_lebs - 1 - 1 - MIN_INDEX_LEBS - c->jhead_cnt + 1;
-+	tmp64 = c->main_lebs - 1 - 1 - MIN_INDEX_LEBS - c->jhead_cnt;
- 	tmp64 *= (long long)c->leb_size - c->leb_overhead;
- 	tmp64 = ubifs_reported_space(c, tmp64);
- 	c->block_cnt = tmp64 >> UBIFS_BLOCK_SHIFT;
--- 
-2.43.0
-
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -735,7 +735,7 @@ int __init_memblock memblock_add(phys_ad
+ /**
+  * memblock_validate_numa_coverage - check if amount of memory with
+  * no node ID assigned is less than a threshold
+- * @threshold_bytes: maximal number of pages that can have unassigned node
++ * @threshold_bytes: maximal memory size that can have unassigned node
+  * ID (in bytes).
+  *
+  * A buggy firmware may report memory that does not belong to any node.
+@@ -755,7 +755,7 @@ bool __init_memblock memblock_validate_n
+ 			nr_pages += end_pfn - start_pfn;
+ 	}
+ 
+-	if ((nr_pages << PAGE_SHIFT) >= threshold_bytes) {
++	if ((nr_pages << PAGE_SHIFT) > threshold_bytes) {
+ 		mem_size_mb = memblock_phys_mem_size() >> 20;
+ 		pr_err("NUMA: no nodes coverage for %luMB of %luMB RAM\n",
+ 		       (nr_pages << PAGE_SHIFT) >> 20, mem_size_mb);
 
 
 
