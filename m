@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-101984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD219EF049
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 114859EEFD7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA56D177810
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDD49177640
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A2B21E086;
-	Thu, 12 Dec 2024 16:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0372236F0;
+	Thu, 12 Dec 2024 16:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9Xk/xWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sT6QsCy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012C92236EA;
-	Thu, 12 Dec 2024 16:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6192210F2;
+	Thu, 12 Dec 2024 16:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019524; cv=none; b=eckQ/iCZqklSiqlMzuwelB/NA9DNPrlCfG/3hnIsyNWiVNAu1KdfB+4IQ5fRAMdOvjEiS9vHCWj1H48oDSyEvH7253LrsXZUNvFW7PTb5+mjlTXCDGXy3iZ5yqiiabr/rXVJMV45UepY0XCBmpcnQ3RyqrWL74o6dbWSZsVZsQw=
+	t=1734019406; cv=none; b=o227jRatzJTDVt3U1DD6bjDVN6bGIQCGjNAA/kQdqvW3ZzkjkqCwX03ZDdmARlhr7r0L8PDcQwoYjErj8HESO2Fg6mDEq+/tYEY/DI0ogkDYacvNfvV265FjQxqaEKiYlJbkIGcgLZ94SLqoOHjXiyc2mk/1Kgf4L+7LH3a2vcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019524; c=relaxed/simple;
-	bh=yppY8/k2SvDK2u4RkVGeALp/cWqVjGVPi/nKXcg2oFc=;
+	s=arc-20240116; t=1734019406; c=relaxed/simple;
+	bh=49YaS5WMoBEB2AiXmg3IHYfaUTw2syqQP2Ih9Ok7X78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2o4QFm/IXDd8RghGJc+f0abHJyt9UtzEayFDB7wOiYlA4cyiILonJztiQrblOUNsOktyb5LV0lGl3xc/ThKzYZurVCs5IMJmpDueV/7QUQ/e6OIDT+B/VdnzDDFXtWNjKf23OmWLNyrq8ZvoFv/QsyyhtpaL5h6F9P/Is8WXjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9Xk/xWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A17AC4CECE;
-	Thu, 12 Dec 2024 16:05:22 +0000 (UTC)
+	 MIME-Version; b=nXT4+mm9ff4F6xWJoB9VcXCCB9hVqEXNFz27SL80N8ahJNmHsSK051eQVYIZ+nwY6PgU8d89WMvk8X3iK713cRsGUEKnCDazemdI/18YVGWGdsf5M3yt5R385qfp91kDnWzONJz0YjUkIhTDjMsevZiO3vrvVe9gTkNdw/cGVo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sT6QsCy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78E0C4CECE;
+	Thu, 12 Dec 2024 16:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019523;
-	bh=yppY8/k2SvDK2u4RkVGeALp/cWqVjGVPi/nKXcg2oFc=;
+	s=korg; t=1734019406;
+	bh=49YaS5WMoBEB2AiXmg3IHYfaUTw2syqQP2Ih9Ok7X78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9Xk/xWcnrFbqqvO0I0Xs3JKblz4CI0YWZzvab0+TPz+A9sZ8TS5O2dqB4Ge5ZxX3
-	 VMnmOV+6GAcp3Dp7zNXVZWyZ5oLNgTb9HYIR8NzU8sZbFudRqqpYWmug+TT1XEwnvu
-	 QMTxDrJdz3Y1mCP+4DPxKUEdMQUoSleaAqZOey6Y=
+	b=sT6QsCy9scF2hNyPG3hAtN4jPe1y7r+/eZPGp+e7GOhWSH+2gYqcY6ZWhDcB2cKoN
+	 QZ1h0XjWcUJ+qYUvttofVSttSDDda0SPA8V+LEIB6Kpp6EwyExEdKs6r0ckgEbP4AO
+	 mZoiPOT0psaaIV4Yr91iwN1ZsuxCSLErExaAwhXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 199/772] wireguard: selftests: load nf_conntrack if not present
-Date: Thu, 12 Dec 2024 15:52:24 +0100
-Message-ID: <20241212144358.160147743@linuxfoundation.org>
+Subject: [PATCH 6.1 200/772] bpf: fix recursive lock when verdict program return SK_PASS
+Date: Thu, 12 Dec 2024 15:52:25 +0100
+Message-ID: <20241212144358.201013716@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -68,38 +69,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit 0290abc9860917f1ee8b58309c2bbd740a39ee8e ]
+[ Upstream commit 8ca2a1eeadf09862190b2810697702d803ceef2d ]
 
-Some distros may not load nf_conntrack by default, which will cause
-subsequent nf_conntrack sets to fail. Load this module if it is not
-already loaded.
+When the stream_verdict program returns SK_PASS, it places the received skb
+into its own receive queue, but a recursive lock eventually occurs, leading
+to an operating system deadlock. This issue has been present since v6.9.
 
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-[ Jason: add [[ -e ... ]] check so this works in the qemu harness. ]
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20241117212030.629159-4-Jason@zx2c4.com
+'''
+sk_psock_strp_data_ready
+    write_lock_bh(&sk->sk_callback_lock)
+    strp_data_ready
+      strp_read_sock
+        read_sock -> tcp_read_sock
+          strp_recv
+            cb.rcv_msg -> sk_psock_strp_read
+              # now stream_verdict return SK_PASS without peer sock assign
+              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
+              sk_psock_verdict_apply
+                sk_psock_skb_ingress_self
+                  sk_psock_skb_ingress_enqueue
+                    sk_psock_data_ready
+                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
+
+'''
+
+This topic has been discussed before, but it has not been fixed.
+Previous discussion:
+https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
+
+Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
+Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/wireguard/netns.sh | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/skmsg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/wireguard/netns.sh b/tools/testing/selftests/wireguard/netns.sh
-index 405ff262ca93d..55500f901fbc3 100755
---- a/tools/testing/selftests/wireguard/netns.sh
-+++ b/tools/testing/selftests/wireguard/netns.sh
-@@ -332,6 +332,7 @@ waitiface $netns1 vethc
- waitiface $netns2 veths
- 
- n0 bash -c 'printf 1 > /proc/sys/net/ipv4/ip_forward'
-+[[ -e /proc/sys/net/netfilter/nf_conntrack_udp_timeout ]] || modprobe nf_conntrack
- n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout'
- n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout_stream'
- n0 iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -d 10.0.0.0/24 -j SNAT --to 10.0.0.1
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 746d950de0e14..584516387fdab 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1114,9 +1114,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
+ 		if (tls_sw_has_ctx_rx(sk)) {
+ 			psock->saved_data_ready(sk);
+ 		} else {
+-			write_lock_bh(&sk->sk_callback_lock);
++			read_lock_bh(&sk->sk_callback_lock);
+ 			strp_data_ready(&psock->strp);
+-			write_unlock_bh(&sk->sk_callback_lock);
++			read_unlock_bh(&sk->sk_callback_lock);
+ 		}
+ 	}
+ 	rcu_read_unlock();
 -- 
 2.43.0
 
