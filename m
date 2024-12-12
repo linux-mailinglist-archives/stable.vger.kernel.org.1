@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5DA89EF0CA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D189EF301
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC8AD179402
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 496DB28AEFA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E8923A57F;
-	Thu, 12 Dec 2024 16:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0274E239BC5;
+	Thu, 12 Dec 2024 16:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/f4p1f1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzzTi5Au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2179023A57E;
-	Thu, 12 Dec 2024 16:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2C223A188;
+	Thu, 12 Dec 2024 16:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019941; cv=none; b=nqzh7wZkNPGrdHjA/bGIMYNwdxV9hwkIv+WVaQYa8D9r1loKqT7YPEjn/mxP+lHzR8qayVGQ7xm6p+BsghFfwHdeTwpeGC4cQK1VcfT0Ar8Ps52Q+I0hR9/AO5n1iNCRBHVFLQe5AHQxyF05FOdO3gnip5zBgPLFvY3tKfEM3ps=
+	t=1734022028; cv=none; b=Cy4WDSg1TVIqYV5sMWBuT3kxzkfL19/rW4C7t6enOUHFTeAej2BjkwOOHa8yQ37RnUzNFtohO/V/e1XYzOxOTLvIBS3tWl6K8S4TjPGaa8LJrAVMSp1Ub/aMNV2Vk6hGYo9iXLt+xBLGfcEPmHLUIkVHnWX5kz0yVnD2DecXmyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019941; c=relaxed/simple;
-	bh=RkeeqQ2JJLmAi+TwtQ+4oUFNSBrRmQpWg0M30M9Jpro=;
+	s=arc-20240116; t=1734022028; c=relaxed/simple;
+	bh=YhvozduS5iSL3zWMqHyQcy+K5NaOf89InAEmYWnI/b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=goFpfuCAp61Y/fFUhXazSD8rqZtiW5DmTIq9Fbl4y1bENxKrYSQZWjyr0bC9hGX4pXcqgcMatCQ60d7cAc+fczN9rw8TVIAbs6DkMyP3wCzinsE3FIRmdTD8raQ4a7Ef4RPCwyMDQrrBrD4Jd6XWUt5mw7mDFgO4k/u9N4TLZCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/f4p1f1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC2BC4CECE;
-	Thu, 12 Dec 2024 16:12:20 +0000 (UTC)
+	 MIME-Version; b=sOJ1LAZ1K94URI9kErU4Tm4idhRXyaHZxqf4wxoRJ2CO1NpUKGXeeYPK6hmBCeFPmWiW4t4EFnSWkoN2720rZl5VOnJb2gntlOP5qSNZnv1zT4fwShw1A1511ToygTTiHesrpnaY/7UmVl5y/YKC5pTvxkxU9eFubuG31xh8nF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzzTi5Au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09A0C4CED3;
+	Thu, 12 Dec 2024 16:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019940;
-	bh=RkeeqQ2JJLmAi+TwtQ+4oUFNSBrRmQpWg0M30M9Jpro=;
+	s=korg; t=1734022028;
+	bh=YhvozduS5iSL3zWMqHyQcy+K5NaOf89InAEmYWnI/b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/f4p1f1Os47f8y/QdOH/QdW02m8nOe/FOlc4tnp9GGcsJgfnmJwdlgNuPLvolhod
-	 /wYikGdyi6yFsGhR5cfFU5a2KSz6U9gSDpZIY5EQfLUKqOPEiMW5WC8xiMTk4ZestZ
-	 hKlfgBAiNpfRL3dFpXcCRXD4NHLouagnWhYM9P90=
+	b=QzzTi5Au6NnIi5mz5WwZGdaw3yGppY3dSBZGmH/zIDfXjdbfGVsFsje3RV7HwLd+/
+	 MxbT9vrxEeNpQUHVkFAJ58ok87VlanTtNdg6cn14V7xpSl9oCMtQ4aK8H7NjBVMgAK
+	 JudiTApCELADoVEAqdaVn6rWbZUeIt1yu3lzR7p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Bin Lan <bin.lan.cn@windriver.com>
-Subject: [PATCH 6.1 337/772] mailbox: mtk-cmdq: Move devm_mbox_controller_register() after devm_pm_runtime_enable()
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 087/565] arm64: fix .data.rel.ro size assertion when CONFIG_LTO_CLANG
 Date: Thu, 12 Dec 2024 15:54:42 +0100
-Message-ID: <20241212144403.832907797@linuxfoundation.org>
+Message-ID: <20241212144314.925666398@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit a8bd68e4329f9a0ad1b878733e0f80be6a971649 upstream.
+[ Upstream commit 340fd66c856651d8c1d29f392dd26ad674d2db0e ]
 
-When mtk-cmdq unbinds, a WARN_ON message with condition
-pm_runtime_get_sync() < 0 occurs.
+Commit be2881824ae9 ("arm64/build: Assert for unwanted sections")
+introduced an assertion to ensure that the .data.rel.ro section does
+not exist.
 
-According to the call tracei below:
-  cmdq_mbox_shutdown
-  mbox_free_channel
-  mbox_controller_unregister
-  __devm_mbox_controller_unregister
-  ...
+However, this check does not work when CONFIG_LTO_CLANG is enabled,
+because .data.rel.ro matches the .data.[0-9a-zA-Z_]* pattern in the
+DATA_MAIN macro.
 
-The root cause can be deduced to be calling pm_runtime_get_sync() after
-calling pm_runtime_disable() as observed below:
-1. CMDQ driver uses devm_mbox_controller_register() in cmdq_probe()
-   to bind the cmdq device to the mbox_controller, so
-   devm_mbox_controller_unregister() will automatically unregister
-   the device bound to the mailbox controller when the device-managed
-   resource is removed. That means devm_mbox_controller_unregister()
-   and cmdq_mbox_shoutdown() will be called after cmdq_remove().
-2. CMDQ driver also uses devm_pm_runtime_enable() in cmdq_probe() after
-   devm_mbox_controller_register(), so that devm_pm_runtime_disable()
-   will be called after cmdq_remove(), but before
-   devm_mbox_controller_unregister().
+Move the ASSERT() above the RW_DATA() line.
 
-To fix this problem, cmdq_probe() needs to move
-devm_mbox_controller_register() after devm_pm_runtime_enable() to make
-devm_pm_runtime_disable() be called after
-devm_mbox_controller_unregister().
-
-Fixes: 623a6143a845 ("mailbox: mediatek: Add Mediatek CMDQ driver")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be2881824ae9 ("arm64/build: Assert for unwanted sections")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20241106161843.189927-1-masahiroy@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mtk-cmdq-mailbox.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/kernel/vmlinux.lds.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/mailbox/mtk-cmdq-mailbox.c
-+++ b/drivers/mailbox/mtk-cmdq-mailbox.c
-@@ -605,18 +605,18 @@ static int cmdq_probe(struct platform_de
- 		cmdq->mbox.chans[i].con_priv = (void *)&cmdq->thread[i];
- 	}
+diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
+index 184abd7c4206e..7bedadfa36422 100644
+--- a/arch/arm64/kernel/vmlinux.lds.S
++++ b/arch/arm64/kernel/vmlinux.lds.S
+@@ -258,6 +258,9 @@ SECTIONS
+ 	__initdata_end = .;
+ 	__init_end = .;
  
--	err = devm_mbox_controller_register(dev, &cmdq->mbox);
--	if (err < 0) {
--		dev_err(dev, "failed to register mailbox: %d\n", err);
--		return err;
--	}
--
- 	platform_set_drvdata(pdev, cmdq);
- 
- 	WARN_ON(clk_bulk_prepare(cmdq->gce_num, cmdq->clocks));
- 
- 	cmdq_init(cmdq);
- 
-+	err = devm_mbox_controller_register(dev, &cmdq->mbox);
-+	if (err < 0) {
-+		dev_err(dev, "failed to register mailbox: %d\n", err);
-+		return err;
-+	}
++	.data.rel.ro : { *(.data.rel.ro) }
++	ASSERT(SIZEOF(.data.rel.ro) == 0, "Unexpected RELRO detected!")
 +
- 	return 0;
+ 	_data = .;
+ 	_sdata = .;
+ 	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
+@@ -309,9 +312,6 @@ SECTIONS
+ 		*(.plt) *(.plt.*) *(.iplt) *(.igot .igot.plt)
+ 	}
+ 	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
+-
+-	.data.rel.ro : { *(.data.rel.ro) }
+-	ASSERT(SIZEOF(.data.rel.ro) == 0, "Unexpected RELRO detected!")
  }
  
+ #include "image-vars.h"
+-- 
+2.43.0
+
 
 
 
