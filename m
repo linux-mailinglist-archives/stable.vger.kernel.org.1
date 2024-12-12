@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FD99EED08
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0C49EF161
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA11C2820A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:40:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B4F228C5DE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCADC2210E8;
-	Thu, 12 Dec 2024 15:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED0022330D;
+	Thu, 12 Dec 2024 16:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcYzjEqU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dg6yxjWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961EE2210E2;
-	Thu, 12 Dec 2024 15:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B957222D4B;
+	Thu, 12 Dec 2024 16:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018028; cv=none; b=OPEaMooBc/iw5RuMHIAZUum5ADnFw938kgYVs4Q6HIVvTs/ivcjWpz2VAc6eYEqKCQRkMnFEEC0wEoQxofUseNoUBCzFzFUAdGe3tNExhBl9zXx2KwGGIgXtR0okRRDg0kQSOWmGMGwxGLgJOxv0XiLEG6fOA56XYHCZl3vYNZg=
+	t=1734020820; cv=none; b=pPbiOdq0V2at/3Qe0x+PW1/EBdbzSjWlmfQGdzsP++GyNJxsFFT7DP9tTvxO81IknaMAaq+7FuLsdnRaUBL0L0k0ysXnwQs0J3TNhya5AFgdV0QGYZIhVCNQ7e7NY16DeZpL4SFBmjZNWFWxFVMtlX6UOpChFcoynrKBpJTqYZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018028; c=relaxed/simple;
-	bh=8JTKbGchHvlrXiAOjKzj0PsNmmD75hIBUHM8nlJpx0Q=;
+	s=arc-20240116; t=1734020820; c=relaxed/simple;
+	bh=ORUs7DZoYoZoi7WrW6wxV5aT17PN3QwnyAC/WHMfuV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cnAB5TSPJDfv0LkSIMmsmc/qkqP49wkddyPl4Mli1S4aElZ8HOls6l+T6vmQj0TvURR7iWZOKzXE2tHf0zFIn0NAMkPPzUz6FM1rlTXDmMiOt/g47eSPs6DUhMicx+I3ikY/cZq4LZVnJnjby8HWvDGP8O50l/fSLecJwZpwmJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcYzjEqU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B441C4CECE;
-	Thu, 12 Dec 2024 15:40:25 +0000 (UTC)
+	 MIME-Version; b=KaYkSRLt4e0IfKX2ZNHim5dOol8v4eSn/og7VdsSgDUmKw/qhRfeBbk2XTyWK0zRMVVcqJoxrA6mrkJk6QPuoELWFC2lx2rLdXTpNJBniEE729GPbtm0xvdMy+Ge4pIrGTMNBFa8oQVVsWOhvxej3pd2Kv0mpJ7l0xU6FxROI9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dg6yxjWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F346C4CECE;
+	Thu, 12 Dec 2024 16:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018026;
-	bh=8JTKbGchHvlrXiAOjKzj0PsNmmD75hIBUHM8nlJpx0Q=;
+	s=korg; t=1734020820;
+	bh=ORUs7DZoYoZoi7WrW6wxV5aT17PN3QwnyAC/WHMfuV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcYzjEqUFDbh85wmakneNnpxrqj+a0h1S/NSIi6Gntzwo9Nb3U/pFVrZR1fzDiDyE
-	 ZmctEAy5qobG/HiQ99GDVyvQ0xv8zNvxYEA3P3RnUYRvtPHkAP6szI84fZQrjruE36
-	 W8DrmhHnbIcSEmR03G1TLWSd0j3OfwNWJTGKt9TQ=
+	b=dg6yxjWM07A97ducPmymCMZxtVA/UPBrOaMO8lazrlec7vfeYag9Xq9gsTWskgG6O
+	 PRGorGj/cgT4KPZgP6Hr8WToC4CKNdgo5pX9fW/Saw9U+pIciqpkBw7rTOnUunDEq3
+	 DbRQP9yXeQFx626c39I1N9LBQK1CmUcRJNhgt4Wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordy Zomer <jordyzomer@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 176/356] xsk: fix OOB map writes when deleting elements
-Date: Thu, 12 Dec 2024 15:58:15 +0100
-Message-ID: <20241212144251.590066603@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 551/772] serial: amba-pl011: Use port lock wrappers
+Date: Thu, 12 Dec 2024 15:58:16 +0100
+Message-ID: <20241212144412.728357479@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +60,344 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 32cd3db7de97c0c7a018756ce66244342fd583f0 upstream.
+[ Upstream commit 68ca3e72d7463d79d29b6e4961d6028df2a88e25 ]
 
-Jordy says:
+When a serial port is used for kernel console output, then all
+modifications to the UART registers which are done from other contexts,
+e.g. getty, termios, are interference points for the kernel console.
 
-"
-In the xsk_map_delete_elem function an unsigned integer
-(map->max_entries) is compared with a user-controlled signed integer
-(k). Due to implicit type conversion, a large unsigned value for
-map->max_entries can bypass the intended bounds check:
+So far this has been ignored and the printk output is based on the
+principle of hope. The rework of the console infrastructure which aims to
+support threaded and atomic consoles, requires to mark sections which
+modify the UART registers as unsafe. This allows the atomic write function
+to make informed decisions and eventually to restore operational state. It
+also allows to prevent the regular UART code from modifying UART registers
+while printk output is in progress.
 
-	if (k >= map->max_entries)
-		return -EINVAL;
+All modifications of UART registers are guarded by the UART port lock,
+which provides an obvious synchronization point with the console
+infrastructure.
 
-This allows k to hold a negative value (between -2147483648 and -2),
-which is then used as an array index in m->xsk_map[k], which results
-in an out-of-bounds access.
+To avoid adding this functionality to all UART drivers, wrap the
+spin_[un]lock*() invocations for uart_port::lock into helper functions
+which just contain the spin_[un]lock*() invocations for now. In a
+subsequent step these helpers will gain the console synchronization
+mechanisms.
 
-	spin_lock_bh(&m->lock);
-	map_entry = &m->xsk_map[k]; // Out-of-bounds map_entry
-	old_xs = unrcu_pointer(xchg(map_entry, NULL));  // Oob write
-	if (old_xs)
-		xsk_map_sock_delete(old_xs, map_entry);
-	spin_unlock_bh(&m->lock);
+Converted with coccinelle. No functional change.
 
-The xchg operation can then be used to cause an out-of-bounds write.
-Moreover, the invalid map_entry passed to xsk_map_sock_delete can lead
-to further memory corruption.
-"
-
-It indeed results in following splat:
-
-[76612.897343] BUG: unable to handle page fault for address: ffffc8fc2e461108
-[76612.904330] #PF: supervisor write access in kernel mode
-[76612.909639] #PF: error_code(0x0002) - not-present page
-[76612.914855] PGD 0 P4D 0
-[76612.917431] Oops: Oops: 0002 [#1] PREEMPT SMP
-[76612.921859] CPU: 11 UID: 0 PID: 10318 Comm: a.out Not tainted 6.12.0-rc1+ #470
-[76612.929189] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
-[76612.939781] RIP: 0010:xsk_map_delete_elem+0x2d/0x60
-[76612.944738] Code: 00 00 41 54 55 53 48 63 2e 3b 6f 24 73 38 4c 8d a7 f8 00 00 00 48 89 fb 4c 89 e7 e8 2d bf 05 00 48 8d b4 eb 00 01 00 00 31 ff <48> 87 3e 48 85 ff 74 05 e8 16 ff ff ff 4c 89 e7 e8 3e bc 05 00 31
-[76612.963774] RSP: 0018:ffffc9002e407df8 EFLAGS: 00010246
-[76612.969079] RAX: 0000000000000000 RBX: ffffc9002e461000 RCX: 0000000000000000
-[76612.976323] RDX: 0000000000000001 RSI: ffffc8fc2e461108 RDI: 0000000000000000
-[76612.983569] RBP: ffffffff80000001 R08: 0000000000000000 R09: 0000000000000007
-[76612.990812] R10: ffffc9002e407e18 R11: ffff888108a38858 R12: ffffc9002e4610f8
-[76612.998060] R13: ffff888108a38858 R14: 00007ffd1ae0ac78 R15: ffffc9002e4610c0
-[76613.005303] FS:  00007f80b6f59740(0000) GS:ffff8897e0ec0000(0000) knlGS:0000000000000000
-[76613.013517] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[76613.019349] CR2: ffffc8fc2e461108 CR3: 000000011e3ef001 CR4: 00000000007726f0
-[76613.026595] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[76613.033841] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[76613.041086] PKRU: 55555554
-[76613.043842] Call Trace:
-[76613.046331]  <TASK>
-[76613.048468]  ? __die+0x20/0x60
-[76613.051581]  ? page_fault_oops+0x15a/0x450
-[76613.055747]  ? search_extable+0x22/0x30
-[76613.059649]  ? search_bpf_extables+0x5f/0x80
-[76613.063988]  ? exc_page_fault+0xa9/0x140
-[76613.067975]  ? asm_exc_page_fault+0x22/0x30
-[76613.072229]  ? xsk_map_delete_elem+0x2d/0x60
-[76613.076573]  ? xsk_map_delete_elem+0x23/0x60
-[76613.080914]  __sys_bpf+0x19b7/0x23c0
-[76613.084555]  __x64_sys_bpf+0x1a/0x20
-[76613.088194]  do_syscall_64+0x37/0xb0
-[76613.091832]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[76613.096962] RIP: 0033:0x7f80b6d1e88d
-[76613.100592] Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 b5 0f 00 f7 d8 64 89 01 48
-[76613.119631] RSP: 002b:00007ffd1ae0ac68 EFLAGS: 00000206 ORIG_RAX: 0000000000000141
-[76613.131330] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f80b6d1e88d
-[76613.142632] RDX: 0000000000000098 RSI: 00007ffd1ae0ad20 RDI: 0000000000000003
-[76613.153967] RBP: 00007ffd1ae0adc0 R08: 0000000000000000 R09: 0000000000000000
-[76613.166030] R10: 00007f80b6f77040 R11: 0000000000000206 R12: 00007ffd1ae0aed8
-[76613.177130] R13: 000055ddf42ce1e9 R14: 000055ddf42d0d98 R15: 00007f80b6fab040
-[76613.188129]  </TASK>
-
-Fix this by simply changing key type from int to u32.
-
-Fixes: fbfc504a24f5 ("bpf: introduce new bpf AF_XDP map type BPF_MAP_TYPE_XSKMAP")
-CC: stable@vger.kernel.org
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Suggested-by: Jordy Zomer <jordyzomer@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20241122121030.716788-2-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20230914183831.587273-18-john.ogness@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2bcacc1c87ac ("serial: amba-pl011: Fix RX stall when DMA is used")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xskmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/amba-pl011.c | 72 ++++++++++++++++-----------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
---- a/net/xdp/xskmap.c
-+++ b/net/xdp/xskmap.c
-@@ -224,7 +224,7 @@ static long xsk_map_delete_elem(struct b
- 	struct xsk_map *m = container_of(map, struct xsk_map, map);
- 	struct xdp_sock __rcu **map_entry;
- 	struct xdp_sock *old_xs;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index 2f0f05259778a..c95351d24f363 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -346,9 +346,9 @@ static int pl011_fifo_to_tty(struct uart_amba_port *uap)
+ 				flag = TTY_FRAME;
+ 		}
  
- 	if (k >= map->max_entries)
- 		return -EINVAL;
+-		spin_unlock(&uap->port.lock);
++		uart_port_unlock(&uap->port);
+ 		sysrq = uart_handle_sysrq_char(&uap->port, ch & 255);
+-		spin_lock(&uap->port.lock);
++		uart_port_lock(&uap->port);
+ 
+ 		if (!sysrq)
+ 			uart_insert_char(&uap->port, ch, UART011_DR_OE, ch, flag);
+@@ -543,7 +543,7 @@ static void pl011_dma_tx_callback(void *data)
+ 	unsigned long flags;
+ 	u16 dmacr;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 	if (uap->dmatx.queued)
+ 		dma_unmap_single(dmatx->chan->device->dev, dmatx->dma,
+ 				dmatx->len, DMA_TO_DEVICE);
+@@ -564,7 +564,7 @@ static void pl011_dma_tx_callback(void *data)
+ 	if (!(dmacr & UART011_TXDMAE) || uart_tx_stopped(&uap->port) ||
+ 	    uart_circ_empty(&uap->port.state->xmit)) {
+ 		uap->dmatx.queued = false;
+-		spin_unlock_irqrestore(&uap->port.lock, flags);
++		uart_port_unlock_irqrestore(&uap->port, flags);
+ 		return;
+ 	}
+ 
+@@ -575,7 +575,7 @@ static void pl011_dma_tx_callback(void *data)
+ 		 */
+ 		pl011_start_tx_pio(uap);
+ 
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
+ /*
+@@ -1004,7 +1004,7 @@ static void pl011_dma_rx_callback(void *data)
+ 	 * routine to flush out the secondary DMA buffer while
+ 	 * we immediately trigger the next DMA job.
+ 	 */
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 	/*
+ 	 * Rx data can be taken by the UART interrupts during
+ 	 * the DMA irq handler. So we check the residue here.
+@@ -1020,7 +1020,7 @@ static void pl011_dma_rx_callback(void *data)
+ 	ret = pl011_dma_rx_trigger_dma(uap);
+ 
+ 	pl011_dma_rx_chars(uap, pending, lastbuf, false);
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ 	/*
+ 	 * Do this check after we picked the DMA chars so we don't
+ 	 * get some IRQ immediately from RX.
+@@ -1086,11 +1086,11 @@ static void pl011_dma_rx_poll(struct timer_list *t)
+ 	if (jiffies_to_msecs(jiffies - dmarx->last_jiffies)
+ 			> uap->dmarx.poll_timeout) {
+ 
+-		spin_lock_irqsave(&uap->port.lock, flags);
++		uart_port_lock_irqsave(&uap->port, &flags);
+ 		pl011_dma_rx_stop(uap);
+ 		uap->im |= UART011_RXIM;
+ 		pl011_write(uap->im, uap, REG_IMSC);
+-		spin_unlock_irqrestore(&uap->port.lock, flags);
++		uart_port_unlock_irqrestore(&uap->port, flags);
+ 
+ 		uap->dmarx.running = false;
+ 		dmaengine_terminate_all(rxchan);
+@@ -1186,10 +1186,10 @@ static void pl011_dma_shutdown(struct uart_amba_port *uap)
+ 	while (pl011_read(uap, REG_FR) & uap->vendor->fr_busy)
+ 		cpu_relax();
+ 
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 	uap->dmacr &= ~(UART011_DMAONERR | UART011_RXDMAE | UART011_TXDMAE);
+ 	pl011_write(uap->dmacr, uap, REG_DMACR);
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ 
+ 	if (uap->using_tx_dma) {
+ 		/* In theory, this should already be done by pl011_dma_flush_buffer */
+@@ -1400,9 +1400,9 @@ static void pl011_throttle_rx(struct uart_port *port)
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	pl011_stop_rx(port);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void pl011_enable_ms(struct uart_port *port)
+@@ -1420,7 +1420,7 @@ __acquires(&uap->port.lock)
+ {
+ 	pl011_fifo_to_tty(uap);
+ 
+-	spin_unlock(&uap->port.lock);
++	uart_port_unlock(&uap->port);
+ 	tty_flip_buffer_push(&uap->port.state->port);
+ 	/*
+ 	 * If we were temporarily out of DMA mode for a while,
+@@ -1445,7 +1445,7 @@ __acquires(&uap->port.lock)
+ #endif
+ 		}
+ 	}
+-	spin_lock(&uap->port.lock);
++	uart_port_lock(&uap->port);
+ }
+ 
+ static bool pl011_tx_char(struct uart_amba_port *uap, unsigned char c,
+@@ -1551,7 +1551,7 @@ static irqreturn_t pl011_int(int irq, void *dev_id)
+ 	unsigned int status, pass_counter = AMBA_ISR_PASS_LIMIT;
+ 	int handled = 0;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 	status = pl011_read(uap, REG_RIS) & uap->im;
+ 	if (status) {
+ 		do {
+@@ -1581,7 +1581,7 @@ static irqreturn_t pl011_int(int irq, void *dev_id)
+ 		handled = 1;
+ 	}
+ 
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ 
+ 	return IRQ_RETVAL(handled);
+ }
+@@ -1653,14 +1653,14 @@ static void pl011_break_ctl(struct uart_port *port, int break_state)
+ 	unsigned long flags;
+ 	unsigned int lcr_h;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 	lcr_h = pl011_read(uap, REG_LCRH_TX);
+ 	if (break_state == -1)
+ 		lcr_h |= UART01x_LCRH_BRK;
+ 	else
+ 		lcr_h &= ~UART01x_LCRH_BRK;
+ 	pl011_write(lcr_h, uap, REG_LCRH_TX);
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
+ #ifdef CONFIG_CONSOLE_POLL
+@@ -1799,7 +1799,7 @@ static void pl011_enable_interrupts(struct uart_amba_port *uap)
+ 	unsigned long flags;
+ 	unsigned int i;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 
+ 	/* Clear out any spuriously appearing RX interrupts */
+ 	pl011_write(UART011_RTIS | UART011_RXIS, uap, REG_ICR);
+@@ -1821,7 +1821,7 @@ static void pl011_enable_interrupts(struct uart_amba_port *uap)
+ 	if (!pl011_dma_rx_running(uap))
+ 		uap->im |= UART011_RXIM;
+ 	pl011_write(uap->im, uap, REG_IMSC);
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
+ static void pl011_unthrottle_rx(struct uart_port *port)
+@@ -1829,7 +1829,7 @@ static void pl011_unthrottle_rx(struct uart_port *port)
+ 	struct uart_amba_port *uap = container_of(port, struct uart_amba_port, port);
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&uap->port.lock, flags);
++	uart_port_lock_irqsave(&uap->port, &flags);
+ 
+ 	uap->im = UART011_RTIM;
+ 	if (!pl011_dma_rx_running(uap))
+@@ -1837,7 +1837,7 @@ static void pl011_unthrottle_rx(struct uart_port *port)
+ 
+ 	pl011_write(uap->im, uap, REG_IMSC);
+ 
+-	spin_unlock_irqrestore(&uap->port.lock, flags);
++	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
+ static int pl011_startup(struct uart_port *port)
+@@ -1857,7 +1857,7 @@ static int pl011_startup(struct uart_port *port)
+ 
+ 	pl011_write(uap->vendor->ifls, uap, REG_IFLS);
+ 
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 
+ 	cr = pl011_read(uap, REG_CR);
+ 	cr &= UART011_CR_RTS | UART011_CR_DTR;
+@@ -1868,7 +1868,7 @@ static int pl011_startup(struct uart_port *port)
+ 
+ 	pl011_write(cr, uap, REG_CR);
+ 
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ 
+ 	/*
+ 	 * initialise the old status of the modem signals
+@@ -1929,12 +1929,12 @@ static void pl011_disable_uart(struct uart_amba_port *uap)
+ 	unsigned int cr;
+ 
+ 	uap->port.status &= ~(UPSTAT_AUTOCTS | UPSTAT_AUTORTS);
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 	cr = pl011_read(uap, REG_CR);
+ 	cr &= UART011_CR_RTS | UART011_CR_DTR;
+ 	cr |= UART01x_CR_UARTEN | UART011_CR_TXE;
+ 	pl011_write(cr, uap, REG_CR);
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ 
+ 	/*
+ 	 * disable break condition and fifos
+@@ -1946,14 +1946,14 @@ static void pl011_disable_uart(struct uart_amba_port *uap)
+ 
+ static void pl011_disable_interrupts(struct uart_amba_port *uap)
+ {
+-	spin_lock_irq(&uap->port.lock);
++	uart_port_lock_irq(&uap->port);
+ 
+ 	/* mask all interrupts and clear all pending ones */
+ 	uap->im = 0;
+ 	pl011_write(uap->im, uap, REG_IMSC);
+ 	pl011_write(0xffff, uap, REG_ICR);
+ 
+-	spin_unlock_irq(&uap->port.lock);
++	uart_port_unlock_irq(&uap->port);
+ }
+ 
+ static void pl011_shutdown(struct uart_port *port)
+@@ -2098,7 +2098,7 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
+ 
+ 	bits = tty_get_frame_size(termios->c_cflag);
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	/*
+ 	 * Update the per-port timeout.
+@@ -2165,7 +2165,7 @@ pl011_set_termios(struct uart_port *port, struct ktermios *termios,
+ 	pl011_write_lcr_h(uap, lcr_h);
+ 	pl011_write(old_cr, uap, REG_CR);
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void
+@@ -2183,10 +2183,10 @@ sbsa_uart_set_termios(struct uart_port *port, struct ktermios *termios,
+ 	termios->c_cflag &= ~(CMSPAR | CRTSCTS);
+ 	termios->c_cflag |= CS8 | CLOCAL;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	uart_update_timeout(port, CS8, uap->fixed_baud);
+ 	pl011_setup_status_masks(port, termios);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static const char *pl011_type(struct uart_port *port)
+@@ -2325,9 +2325,9 @@ pl011_console_write(struct console *co, const char *s, unsigned int count)
+ 	if (uap->port.sysrq)
+ 		locked = 0;
+ 	else if (oops_in_progress)
+-		locked = spin_trylock(&uap->port.lock);
++		locked = uart_port_trylock(&uap->port);
+ 	else
+-		spin_lock(&uap->port.lock);
++		uart_port_lock(&uap->port);
+ 
+ 	/*
+ 	 *	First save the CR then disable the interrupts
+@@ -2353,7 +2353,7 @@ pl011_console_write(struct console *co, const char *s, unsigned int count)
+ 		pl011_write(old_cr, uap, REG_CR);
+ 
+ 	if (locked)
+-		spin_unlock(&uap->port.lock);
++		uart_port_unlock(&uap->port);
+ 	local_irq_restore(flags);
+ 
+ 	clk_disable(uap->clk);
+-- 
+2.43.0
+
 
 
 
