@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD99B9EF241
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB449EEC97
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9D1017B543
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9811283A34
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9E6236958;
-	Thu, 12 Dec 2024 16:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16FC217F26;
+	Thu, 12 Dec 2024 15:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U9JThE9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGC5aSy7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7947215799;
-	Thu, 12 Dec 2024 16:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9ED217707;
+	Thu, 12 Dec 2024 15:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020493; cv=none; b=EHDWpC1avLfnbFNUFMgXwbALDWFm//9x/n59A3zy+yIThCHbKDTYSdhuRDW28bZ2W8QXKm/yUgbfcCkzf52iGiWkxyQbV8oHE2hvW0CS+HS5hQi7jJutX28AxzBAf5Pfv5qIm3KsMyDlPCDB21FQ5Jil62yR7fpdEc1ezrKfwrg=
+	t=1734017770; cv=none; b=AkXeL4ix4riPkT+lG4jYQ9k49H8YcsA83F8ZR91l2LJ8GbdpHCrv6L4PPQ1WBqNbAs1394FO2ClAmrvVX8CqSAX/xYPfwxMj5G0NressURCLUFGXA7QQBPnMeHTfK+jOdf12mNOYT2ChCVqxdcvktmSJTVbCEvSI/YbHpRv5PJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020493; c=relaxed/simple;
-	bh=mSKfD4xnlOx+Z6K3xFUu5NSTOAaTvWJfS+1w+gVMnT8=;
+	s=arc-20240116; t=1734017770; c=relaxed/simple;
+	bh=uv2yKLypi713a+K4CwLux4JxgmYiD49Qaa4Tgg3TobY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1ekwtnIdinfppuVyLgAirxCGG4Di5d3hplNY3vIv61ycgladYYnKc0XnT8ugANed/D/w7DjguvAqvug0dB3pgp2TGsP9drmJtyn4U8pfc2TGgCDs27cDa60RA2dv5CcOVTw5EV7j2DP7TX+KlbY/7NiEY/gIrR0xQ/hnYzva6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U9JThE9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7029C4CECE;
-	Thu, 12 Dec 2024 16:21:30 +0000 (UTC)
+	 MIME-Version; b=L2CDADY+TRMewyqjUYnvckKS4Fljtn6pxGxPJ90G6ekWkgDbJVLh5u8bmDb6HO2iDwCInVJ5Ly9w8vDaxiRpq5ECpDKkOFAQJIXLIOb+DfhFIEsNP79Xd7keSU6AdD2do/4HQspwXXd30gSnBlxrsTqqDlYceNMFzCtRMDYZONM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGC5aSy7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6B0C4CECE;
+	Thu, 12 Dec 2024 15:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020491;
-	bh=mSKfD4xnlOx+Z6K3xFUu5NSTOAaTvWJfS+1w+gVMnT8=;
+	s=korg; t=1734017770;
+	bh=uv2yKLypi713a+K4CwLux4JxgmYiD49Qaa4Tgg3TobY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U9JThE9R8W+zGnCUcFaoDyARIuiQd7NuYONKJ7EslkLJCTpspR/62dXFTIyZQm1+v
-	 TW0PQCXXu3S9TUJ/V6HHwWbaev7PrI5BlhUmOIoHwS3pJ+lrCu7cXhjL3hDpd1Oi6o
-	 UzCMZjuHgOZUPfZMIkKyTAlM+N+CwpHwMrNVfiCo=
+	b=BGC5aSy7r/DBQ36Ju797TxuirMCyMIjd6qFoF61qqSWIqwstr3BolIlDur2DC6Nl3
+	 Am5SzkF5Ngxnw7biW2ym8bab76S1q2h1SoMaxCjEbXgmPZbsAX3f4glY6NdS8eWd+q
+	 mXe6fjd0sVx6Joa9ki/AjzGnHz8FQsWVyuzagabY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.1 480/772] s390/entry: Mark IRQ entries to fix stack depot warnings
+	stable@kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 106/356] i3c: master: Fix dynamic address leak when assigned-address is present
 Date: Thu, 12 Dec 2024 15:57:05 +0100
-Message-ID: <20241212144409.760565185@linuxfoundation.org>
+Message-ID: <20241212144248.825869378@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 45c9f2b856a075a34873d00788d2e8a250c1effd upstream.
+[ Upstream commit 851bd21cdb55e727ab29280bc9f6b678164f802a ]
 
-The stack depot filters out everything outside of the top interrupt
-context as an uninteresting or irrelevant part of the stack traces. This
-helps with stack trace de-duplication, avoiding an explosion of saved
-stack traces that share the same IRQ context code path but originate
-from different randomly interrupted points, eventually exhausting the
-stack depot.
+If the DTS contains 'assigned-address', a dynamic address leak occurs
+during hotjoin events.
 
-Filtering uses in_irqentry_text() to identify functions within the
-.irqentry.text and .softirqentry.text sections, which then become the
-last stack trace entries being saved.
+Assume a device have assigned-address 0xb.
+  - Device issue Hotjoin
+  - Call i3c_master_do_daa()
+  - Call driver xxx_do_daa()
+  - Call i3c_master_get_free_addr() to get dynamic address 0x9
+  - i3c_master_add_i3c_dev_locked(0x9)
+  -     expected_dyn_addr  = newdev->boardinfo->init_dyn_addr (0xb);
+  -     i3c_master_reattach_i3c_dev(newdev(0xb), old_dyn_addr(0x9));
+  -         if (dev->info.dyn_addr != old_dyn_addr &&
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 0xb != 0x9 -> TRUE
+                (!dev->boardinfo ||
+                 ^^^^^^^^^^^^^^^ ->  FALSE
+                 dev->info.dyn_addr != dev->boardinfo->init_dyn_addr)) {
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 0xb != 0xb      ->  FALSE
+                 ...
+                 i3c_bus_set_addr_slot_status(&master->bus, old_dyn_addr,
+                                                     I3C_ADDR_SLOT_FREE);
+		 ^^^
+                 This will be skipped. So old_dyn_addr never free
+            }
 
-While __do_softirq() is placed into the .softirqentry.text section by
-common code, populating .irqentry.text is architecture-specific.
+  - i3c_master_get_free_addr() will return increased sequence number.
 
-Currently, the .irqentry.text section on s390 is empty, which prevents
-stack depot filtering and de-duplication and could result in warnings
-like:
+Remove dev->info.dyn_addr != dev->boardinfo->init_dyn_addr condition check.
+dev->info.dyn_addr should be checked before calling this function because
+i3c_master_setnewda_locked() has already been called and the target device
+has already accepted dyn_addr. It is too late to check if dyn_addr is free
+in i3c_master_reattach_i3c_dev().
 
-Stack depot reached limit capacity
-WARNING: CPU: 0 PID: 286113 at lib/stackdepot.c:252 depot_alloc_stack+0x39a/0x3c8
+Add check to ensure expected_dyn_addr is free before
+i3c_master_setnewda_locked().
 
-with PREEMPT and KASAN enabled.
-
-Fix this by moving the IO/EXT interrupt handlers from .kprobes.text into
-the .irqentry.text section and updating the kprobes blacklist to include
-the .irqentry.text section.
-
-This is done only for asynchronous interrupts and explicitly not for
-program checks, which are synchronous and where the context beyond the
-program check is important to preserve. Despite machine checks being
-somewhat in between, they are extremely rare, and preserving context
-when possible is also of value.
-
-SVCs and Restart Interrupts are not relevant, one being always at the
-boundary to user space and the other being a one-time thing.
-
-IRQ entries filtering is also optionally used in ftrace function graph,
-where the same logic applies.
-
-Cc: stable@vger.kernel.org # 5.15+
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cc3a392d69b6 ("i3c: master: fix for SETDASA and DAA process")
+Cc: stable@kernel.org
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241021-i3c_dts_assign-v8-3-4098b8bde01e@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/entry.S   |    4 ++++
- arch/s390/kernel/kprobes.c |    6 ++++++
- 2 files changed, 10 insertions(+)
+ drivers/i3c/master.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
---- a/arch/s390/kernel/entry.S
-+++ b/arch/s390/kernel/entry.S
-@@ -484,9 +484,13 @@ ENTRY(\name)
- ENDPROC(\name)
- .endm
- 
-+	.section .irqentry.text, "ax"
-+
- INT_HANDLER ext_int_handler,__LC_EXT_OLD_PSW,do_ext_irq
- INT_HANDLER io_int_handler,__LC_IO_OLD_PSW,do_io_irq
- 
-+	.section .kprobes.text, "ax"
-+
- /*
-  * Load idle PSW.
-  */
---- a/arch/s390/kernel/kprobes.c
-+++ b/arch/s390/kernel/kprobes.c
-@@ -549,6 +549,12 @@ int __init arch_init_kprobes(void)
- 	return 0;
- }
- 
-+int __init arch_populate_kprobe_blacklist(void)
-+{
-+	return kprobe_add_area_blacklist((unsigned long)__irqentry_text_start,
-+					 (unsigned long)__irqentry_text_end);
-+}
-+
- int arch_trampoline_kprobe(struct kprobe *p)
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index d2a08a9a54414..5d737bdbfe478 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1507,16 +1507,9 @@ static int i3c_master_reattach_i3c_dev(struct i3c_dev_desc *dev,
+ 				       u8 old_dyn_addr)
  {
- 	return 0;
+ 	struct i3c_master_controller *master = i3c_dev_get_master(dev);
+-	enum i3c_addr_slot_status status;
+ 	int ret;
+ 
+-	if (dev->info.dyn_addr != old_dyn_addr &&
+-	    (!dev->boardinfo ||
+-	     dev->info.dyn_addr != dev->boardinfo->init_dyn_addr)) {
+-		status = i3c_bus_get_addr_slot_status(&master->bus,
+-						      dev->info.dyn_addr);
+-		if (status != I3C_ADDR_SLOT_FREE)
+-			return -EBUSY;
++	if (dev->info.dyn_addr != old_dyn_addr) {
+ 		i3c_bus_set_addr_slot_status(&master->bus,
+ 					     dev->info.dyn_addr,
+ 					     I3C_ADDR_SLOT_I3C_DEV);
+@@ -1919,9 +1912,10 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+ 			goto err_rstdaa;
+ 		}
+ 
++		/* Do not mark as occupied until real device exist in bus */
+ 		i3c_bus_set_addr_slot_status_mask(&master->bus,
+ 						  i3cboardinfo->init_dyn_addr,
+-						  I3C_ADDR_SLOT_I3C_DEV | I3C_ADDR_SLOT_EXT_DESIRED,
++						  I3C_ADDR_SLOT_EXT_DESIRED,
+ 						  I3C_ADDR_SLOT_EXT_STATUS_MASK);
+ 
+ 		/*
+@@ -2085,7 +2079,8 @@ int i3c_master_add_i3c_dev_locked(struct i3c_master_controller *master,
+ 	else
+ 		expected_dyn_addr = newdev->info.dyn_addr;
+ 
+-	if (newdev->info.dyn_addr != expected_dyn_addr) {
++	if (newdev->info.dyn_addr != expected_dyn_addr &&
++	    i3c_bus_get_addr_slot_status(&master->bus, expected_dyn_addr) == I3C_ADDR_SLOT_FREE) {
+ 		/*
+ 		 * Try to apply the expected dynamic address. If it fails, keep
+ 		 * the address assigned by the master.
+-- 
+2.43.0
+
 
 
 
