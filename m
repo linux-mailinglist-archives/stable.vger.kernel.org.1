@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E053F9EF293
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B379EEC22
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17732170EC3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BCDF164D34
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E1A229664;
-	Thu, 12 Dec 2024 16:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFAF20969B;
+	Thu, 12 Dec 2024 15:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afLik/FH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MevQOjzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CAB23EC07;
-	Thu, 12 Dec 2024 16:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6F0217670;
+	Thu, 12 Dec 2024 15:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021361; cv=none; b=p0dS0CI0Poz+4o2ZPOWE/aXMlMfwTJGifsuVn/nevNDvhiVqX73Hc4O1OlpVWcTx4v/G9Cn93rnBxGzpZ1ArLEa+fH3x7LxvFB6kyaSNmBzyw8FuIoT9jWQHr2B2zWClNOV1xFUI4UIb6LKB+ShQhxw99yPbTkjHdSTIcJZbrVE=
+	t=1734017379; cv=none; b=rk9bZXuI8hkorw52HnB/DMQ7eSgPow3lpbkCn/XSCE5lV/9UX2fed54Qys79HGvStBkoPTQA/phFvJpVRslK86WOpBz/jj5Ht/qFMBO4cIE8Yc7ILuSeVJARYS66ScsBxX4vzBMJVuIs1ARFxqjrZMVx+O0ZM/D6idtvLQNakEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021361; c=relaxed/simple;
-	bh=geeh9+2EjfATAAkccU2ZVPBWlzWZ0AW3anOGKN6bB4E=;
+	s=arc-20240116; t=1734017379; c=relaxed/simple;
+	bh=hogSnZuvq2x9Niqh3QFmTzcJSD9P5W5Evtg+c7wkQG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTHj+clk6mkka+EoPTxe8vUYtE0FjR8UYkT6t4pfMEi4/EzG6BuzIIxNQUJOu/ecfOWNy9nlnAfwvhsp+vMWp85jIdpFlo5LHcaXo1B4Z3bxEOtibveWd7s7Z2fpVTGVf+U0Wr7LRP7r0ig0qvSxLoKecbUeYK+EJEkrnuu4Cdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afLik/FH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA36C4CECE;
-	Thu, 12 Dec 2024 16:36:00 +0000 (UTC)
+	 MIME-Version; b=XxyTsIvvrqp1PkRd87qNCGM2sw0EsYA1CObgJ38iXMactVx13kNxW42+z/vnTnn5D8sf6X3bQAuhZfSusvxZPgq9KudRS3FQTpdhsE405cMQcBw+F3hl2Zo2pkkEFQdZxW+H5667DLBUqJS+OfVGbve8krNN0n03WdFhgMPN3mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MevQOjzw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A754BC4CED4;
+	Thu, 12 Dec 2024 15:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021360;
-	bh=geeh9+2EjfATAAkccU2ZVPBWlzWZ0AW3anOGKN6bB4E=;
+	s=korg; t=1734017379;
+	bh=hogSnZuvq2x9Niqh3QFmTzcJSD9P5W5Evtg+c7wkQG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afLik/FHuV5+V+UtMXJ0ki9UbNloqMeAVJBz379x7AsUTdIL/CAQ38hLX5iibfpq2
-	 m83G/wUELljWqqALNeVbidwf/6yRF5xdKeEsjsa1EtgvKiYE5u2gMNCmfdBOlwj4DQ
-	 DNUFmW7YLBPdz14oCTJW566hZXAH4LUSGVnHkfB8=
+	b=MevQOjzw13r7K7A1MZFO9pRv/OU4ZbN1Pd2iGcEyV0zNm+RpnNt0ob9Lo2FjWJeSm
+	 vXWp74i+5EfAtKlxsY+FuoPvqoPBdwek4TvY4UhtOeuHvELaFufuQ/MMLPU2xrshfN
+	 Gvke9FMNS0BGVuvri9bRX90B6l+ij8kHZKR2ULag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
-	Nihar Chaithanya <niharchaithanya@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 686/772] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
-Date: Thu, 12 Dec 2024 16:00:31 +0100
-Message-ID: <20241212144418.263402475@linuxfoundation.org>
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	aurabindo.pillai@amd.com,
+	hamishclaxton@gmail.com
+Subject: [PATCH 6.12 463/466] Revert "drm/amd/display: parse umc_info or vram_info based on ASIC"
+Date: Thu, 12 Dec 2024 16:00:32 +0100
+Message-ID: <20241212144325.161894777@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nihar Chaithanya <niharchaithanya@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
+commit 3c2296b1eec55b50c64509ba15406142d4a958dc upstream.
 
-When the value of lp is 0 at the beginning of the for loop, it will
-become negative in the next assignment and we should bail out.
+This reverts commit 2551b4a321a68134360b860113dd460133e856e5.
 
-Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
-Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was not the root cause.  Revert.
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3678
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: aurabindo.pillai@amd.com
+Cc: hamishclaxton@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 30a56c37d9ecf..6509102e581a1 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -2891,6 +2891,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
- 	/* bubble the new value up the tree as required.
- 	 */
- 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
-+		if (lp == 0)
-+			break;
-+
- 		/* get the index of the first leaf of the 4 leaf
- 		 * group containing the specified leaf (leafno).
- 		 */
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -3127,9 +3127,7 @@ static enum bp_result bios_parser_get_vr
+ 	struct atom_data_revision revision;
+ 
+ 	// vram info moved to umc_info for DCN4x
+-	if (dcb->ctx->dce_version >= DCN_VERSION_4_01 &&
+-		dcb->ctx->dce_version < DCN_VERSION_MAX &&
+-		info && DATA_TABLES(umc_info)) {
++	if (info && DATA_TABLES(umc_info)) {
+ 		header = GET_IMAGE(struct atom_common_table_header,
+ 					DATA_TABLES(umc_info));
+ 
 
 
 
