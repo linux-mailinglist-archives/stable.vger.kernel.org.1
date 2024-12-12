@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-103170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF379EF6BA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5976E9EF62F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD70217F782
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC41189CBD9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34E9222D46;
-	Thu, 12 Dec 2024 17:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C8321576E;
+	Thu, 12 Dec 2024 17:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFTdM1Ep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZJsVHBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC33121660B;
-	Thu, 12 Dec 2024 17:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7171F53365;
+	Thu, 12 Dec 2024 17:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023755; cv=none; b=JlwFIpO5a/0nThG/mk2MRHg9KRTCe6KKY4FPWbW/HgN40eodRvg4tG6k7jaMEBcfeZbXiOC+ZzoktsKDJOmMHhoBo3whGlkrP4jK7CQhG2WcBFPVeiebwxJ77P2oM0NsaqeOY4HG6Bv8ieMME1R6W7iWM3uWOgTh3tjwHgxVajc=
+	t=1734023788; cv=none; b=rD1jZuDEwlcs5z8CUjhTpSr9BByNWrRybTK1+WWoqC0NSN0IXTtIHiJouCaoFyhUvJ99zFoHwN0swdznuXbleGczXQKjcYh8c/3v3hsbNQ2LbNXX7p3i/6ifbTTAmEC9F4apXCD9t+apRwN+P7plDuYgdbanKQnSwBu2uPk8hCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023755; c=relaxed/simple;
-	bh=u1RE3DH3YPUGd360CgD+cwtqtxq6isMJHB32Re6YmqY=;
+	s=arc-20240116; t=1734023788; c=relaxed/simple;
+	bh=lq3VFfVicyiBw5rhOiFkI8PjqcpXppif1UDLGmgmPWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+UXnwSdrPK5dm8h5AInILZGkl1wTcWGlZEqm5k85tTOSxjjntI6d6q6eulUuNzKpLnh/fWk+vloYQexJ2DNDwG4pZliwhSlMLvXORUccMOd+1FCmwsRTHAvNq1qhxYMAJnoTTaWJRB5SN9ebCVU9Ni8M1IvqI81EP+F+jFsUN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFTdM1Ep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32655C4CECE;
-	Thu, 12 Dec 2024 17:15:55 +0000 (UTC)
+	 MIME-Version; b=sb0smyTFRP7V36dNK40uMfKYJsElxFdoANDc2EcC4J8axHm9M7Roln7eysNvZ3ezddyZ8tiQQ3gQ8ydsMXEfHAkwU4RSDD0zQZ1+Q9BHWGY6o7Piz2eWCT1hSatjki7c/CbhdIRdKuGRUdeh6WbSstwzcX5T6zXb+iZ1OQA1pm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZJsVHBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9806C4CECE;
+	Thu, 12 Dec 2024 17:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023755;
-	bh=u1RE3DH3YPUGd360CgD+cwtqtxq6isMJHB32Re6YmqY=;
+	s=korg; t=1734023788;
+	bh=lq3VFfVicyiBw5rhOiFkI8PjqcpXppif1UDLGmgmPWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yFTdM1EpNJlQvcbttL2qvfiAc39zaVZIDfvxRqjl3Y1184SNkzryIZnm4OdlEhfgk
-	 /21SrDurOxMH5kdpjp9/kyHJmcy6WVK4HQXnci8Zv1lMF0qYlnEikqpZ2Xh46cPrCm
-	 5agjeI3yENze8QjE6IjWNXa4cHL/wTrMnRrzqKqg=
+	b=XZJsVHBNvrKuuSfYKII+feKupLeCYKvcpV4ERYWv2qiQMM7KhL8i8ftwJyiuIJsJo
+	 EOptONHIwyw3KvyjqebdmAge6RHyosWiBN3Ok2oBw+Vc961Qz5H3rXh1eAxymaRxeq
+	 OCAIL9BsQnXDKKgOGyol/7XQg5LoBAn3tISVhQAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Kishon Vijay Abraham I <kvijayab@amd.com>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 054/459] x86/barrier: Do not serialize MSR accesses on AMD
-Date: Thu, 12 Dec 2024 15:56:32 +0100
-Message-ID: <20241212144255.655780147@linuxfoundation.org>
+Subject: [PATCH 5.10 055/459] kselftest/arm64: mte: fix printf type warnings about longs
+Date: Thu, 12 Dec 2024 15:56:33 +0100
+Message-ID: <20241212144255.693986085@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
 References: <20241212144253.511169641@linuxfoundation.org>
@@ -66,209 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Andre Przywara <andre.przywara@arm.com>
 
-commit 04c3024560d3a14acd18d0a51a1d0a89d29b7eb5 upstream.
+[ Upstream commit 96dddb7b9406259baace9a1831e8da155311be6f ]
 
-AMD does not have the requirement for a synchronization barrier when
-acccessing a certain group of MSRs. Do not incur that unnecessary
-penalty there.
+When checking MTE tags, we print some diagnostic messages when the tests
+fail. Some variables uses there are "longs", however we only use "%x"
+for the format specifier.
 
-There will be a CPUID bit which explicitly states that a MFENCE is not
-needed. Once that bit is added to the APM, this will be extended with
-it.
+Update the format specifiers to "%lx", to match the variable types they
+are supposed to print.
 
-While at it, move to processor.h to avoid include hell. Untangling that
-file properly is a matter for another day.
-
-Some notes on the performance aspect of why this is relevant, courtesy
-of Kishon VijayAbraham <Kishon.VijayAbraham@amd.com>:
-
-On a AMD Zen4 system with 96 cores, a modified ipi-bench[1] on a VM
-shows x2AVIC IPI rate is 3% to 4% lower than AVIC IPI rate. The
-ipi-bench is modified so that the IPIs are sent between two vCPUs in the
-same CCX. This also requires to pin the vCPU to a physical core to
-prevent any latencies. This simulates the use case of pinning vCPUs to
-the thread of a single CCX to avoid interrupt IPI latency.
-
-In order to avoid run-to-run variance (for both x2AVIC and AVIC), the
-below configurations are done:
-
-  1) Disable Power States in BIOS (to prevent the system from going to
-     lower power state)
-
-  2) Run the system at fixed frequency 2500MHz (to prevent the system
-     from increasing the frequency when the load is more)
-
-With the above configuration:
-
-*) Performance measured using ipi-bench for AVIC:
-  Average Latency:  1124.98ns [Time to send IPI from one vCPU to another vCPU]
-
-  Cumulative throughput: 42.6759M/s [Total number of IPIs sent in a second from
-  				     48 vCPUs simultaneously]
-
-*) Performance measured using ipi-bench for x2AVIC:
-  Average Latency:  1172.42ns [Time to send IPI from one vCPU to another vCPU]
-
-  Cumulative throughput: 40.9432M/s [Total number of IPIs sent in a second from
-  				     48 vCPUs simultaneously]
-
->From above, x2AVIC latency is ~4% more than AVIC. However, the expectation is
-x2AVIC performance to be better or equivalent to AVIC. Upon analyzing
-the perf captures, it is observed significant time is spent in
-weak_wrmsr_fence() invoked by x2apic_send_IPI().
-
-With the fix to skip weak_wrmsr_fence()
-
-*) Performance measured using ipi-bench for x2AVIC:
-  Average Latency:  1117.44ns [Time to send IPI from one vCPU to another vCPU]
-
-  Cumulative throughput: 42.9608M/s [Total number of IPIs sent in a second from
-  				     48 vCPUs simultaneously]
-
-Comparing the performance of x2AVIC with and without the fix, it can be seen
-the performance improves by ~4%.
-
-Performance captured using an unmodified ipi-bench using the 'mesh-ipi' option
-with and without weak_wrmsr_fence() on a Zen4 system also showed significant
-performance improvement without weak_wrmsr_fence(). The 'mesh-ipi' option ignores
-CCX or CCD and just picks random vCPU.
-
-  Average throughput (10 iterations) with weak_wrmsr_fence(),
-        Cumulative throughput: 4933374 IPI/s
-
-  Average throughput (10 iterations) without weak_wrmsr_fence(),
-        Cumulative throughput: 6355156 IPI/s
-
-[1] https://github.com/bytedance/kvm-utils/tree/master/microbenchmark/ipi-bench
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230622095212.20940-1-bp@alien8.de
-Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f3b2a26ca78d ("kselftest/arm64: Verify mte tag inclusion via prctl")
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240816153251.2833702-9-andre.przywara@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/barrier.h     | 18 ------------------
- arch/x86/include/asm/cpufeatures.h |  1 +
- arch/x86/include/asm/processor.h   | 18 ++++++++++++++++++
- arch/x86/kernel/cpu/amd.c          |  3 +++
- arch/x86/kernel/cpu/common.c       |  7 +++++++
- arch/x86/kernel/cpu/hygon.c        |  3 +++
- 6 files changed, 32 insertions(+), 18 deletions(-)
+ tools/testing/selftests/arm64/mte/check_tags_inclusion.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
-index 4819d5e5a3353..7f828fe497978 100644
---- a/arch/x86/include/asm/barrier.h
-+++ b/arch/x86/include/asm/barrier.h
-@@ -84,22 +84,4 @@ do {									\
- 
- #include <asm-generic/barrier.h>
- 
--/*
-- * Make previous memory operations globally visible before
-- * a WRMSR.
-- *
-- * MFENCE makes writes visible, but only affects load/store
-- * instructions.  WRMSR is unfortunately not a load/store
-- * instruction and is unaffected by MFENCE.  The LFENCE ensures
-- * that the WRMSR is not reordered.
-- *
-- * Most WRMSRs are full serializing instructions themselves and
-- * do not require this barrier.  This is only required for the
-- * IA32_TSC_DEADLINE and X2APIC MSRs.
-- */
--static inline void weak_wrmsr_fence(void)
--{
--	asm volatile("mfence; lfence" : : : "memory");
--}
--
- #endif /* _ASM_X86_BARRIER_H */
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 23f563493e810..f3365ec973763 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -305,6 +305,7 @@
- #define X86_FEATURE_SRSO		(11*32+24) /* "" AMD BTB untrain RETs */
- #define X86_FEATURE_SRSO_ALIAS		(11*32+25) /* "" AMD BTB untrain RETs through aliasing */
- #define X86_FEATURE_IBPB_ON_VMEXIT	(11*32+26) /* "" Issue an IBPB only on VMEXIT */
-+#define X86_FEATURE_APIC_MSRS_FENCE	(11*32+27) /* "" IA32_TSC_DEADLINE and X2APIC MSRs need fencing */
- 
- /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
- #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* AVX512 BFLOAT16 instructions */
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index c682a14299e0e..5defef9f286e1 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -858,4 +858,22 @@ enum mds_mitigations {
- 
- extern bool gds_ucode_mitigated(void);
- 
-+/*
-+ * Make previous memory operations globally visible before
-+ * a WRMSR.
-+ *
-+ * MFENCE makes writes visible, but only affects load/store
-+ * instructions.  WRMSR is unfortunately not a load/store
-+ * instruction and is unaffected by MFENCE.  The LFENCE ensures
-+ * that the WRMSR is not reordered.
-+ *
-+ * Most WRMSRs are full serializing instructions themselves and
-+ * do not require this barrier.  This is only required for the
-+ * IA32_TSC_DEADLINE and X2APIC MSRs.
-+ */
-+static inline void weak_wrmsr_fence(void)
-+{
-+	alternative("mfence; lfence", "", ALT_NOT(X86_FEATURE_APIC_MSRS_FENCE));
-+}
-+
- #endif /* _ASM_X86_PROCESSOR_H */
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 3b02cb8b05338..c10f7dcaa7b7c 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1186,6 +1186,9 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
- 	     cpu_has_amd_erratum(c, amd_erratum_1485))
- 		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
-+
-+	/* AMD CPUs don't need fencing after x2APIC/TSC_DEADLINE MSR writes. */
-+	clear_cpu_cap(c, X86_FEATURE_APIC_MSRS_FENCE);
- }
- 
- #ifdef CONFIG_X86_32
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index f8e5598408bfd..97da1dcf5a399 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1716,6 +1716,13 @@ static void identify_cpu(struct cpuinfo_x86 *c)
- 	c->apicid = apic->phys_pkg_id(c->initial_apicid, 0);
- #endif
- 
-+
-+	/*
-+	 * Set default APIC and TSC_DEADLINE MSR fencing flag. AMD and
-+	 * Hygon will clear it in ->c_init() below.
-+	 */
-+	set_cpu_cap(c, X86_FEATURE_APIC_MSRS_FENCE);
-+
- 	/*
- 	 * Vendor-specific initialization.  In this section we
- 	 * canonicalize the feature flags, meaning if there are
-diff --git a/arch/x86/kernel/cpu/hygon.c b/arch/x86/kernel/cpu/hygon.c
-index 3f5c00b15e2c1..b49f662f68718 100644
---- a/arch/x86/kernel/cpu/hygon.c
-+++ b/arch/x86/kernel/cpu/hygon.c
-@@ -363,6 +363,9 @@ static void init_hygon(struct cpuinfo_x86 *c)
- 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
- 
- 	check_null_seg_clears_base(c);
-+
-+	/* Hygon CPUs don't need fencing after x2APIC/TSC_DEADLINE MSR writes. */
-+	clear_cpu_cap(c, X86_FEATURE_APIC_MSRS_FENCE);
- }
- 
- static void cpu_detect_tlb_hygon(struct cpuinfo_x86 *c)
+diff --git a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
+index deaef1f610768..74a3727f640de 100644
+--- a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
++++ b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
+@@ -57,7 +57,7 @@ static int check_single_included_tags(int mem_type, int mode)
+ 			ptr = (char *)mte_insert_tags(ptr, BUFFER_SIZE);
+ 			/* Check tag value */
+ 			if (MT_FETCH_TAG((uintptr_t)ptr) == tag) {
+-				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
++				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%x\n",
+ 					       MT_FETCH_TAG((uintptr_t)ptr),
+ 					       MT_INCLUDE_VALID_TAG(tag));
+ 				result = KSFT_FAIL;
+@@ -89,7 +89,7 @@ static int check_multiple_included_tags(int mem_type, int mode)
+ 			ptr = (char *)mte_insert_tags(ptr, BUFFER_SIZE);
+ 			/* Check tag value */
+ 			if (MT_FETCH_TAG((uintptr_t)ptr) < tag) {
+-				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
++				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%lx\n",
+ 					       MT_FETCH_TAG((uintptr_t)ptr),
+ 					       MT_INCLUDE_VALID_TAGS(excl_mask));
+ 				result = KSFT_FAIL;
 -- 
 2.43.0
 
