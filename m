@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 742C99EEC3C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF979EEAC5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D99F169C33
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0FD51690D3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A556222D58;
-	Thu, 12 Dec 2024 15:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EFD21764F;
+	Thu, 12 Dec 2024 15:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFLfR8SJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BF1eifLm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7D72206A5;
-	Thu, 12 Dec 2024 15:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ED121171A;
+	Thu, 12 Dec 2024 15:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017428; cv=none; b=G3Fa/iSVY+rlNChRctl1MfQQSlqWSi19NQiENW0OsOhtQ8GRiGFw1bvm/d93JrGNOvlbwTAGJBWOzc4bqIt881M6QW0ysGuLWdBFMCoqc8+cc8IeL6LNNF8vp2NJgtfbKtQ6R5+Jj329FkUc8LZZ5D9L0jCmRI5nsA2BeAiTMzE=
+	t=1734016396; cv=none; b=VIFzIIYlI6XOxKx6wfXCADmjJkQUpMFUrb42l0UwfrezclpMERswfomHjpO7H/YMZnb+GptyfDgfviIOYsON928ErfWRIl6Bcw8c+LlJ8DFYbcINGTg45beWiAuA4kRCzUYGpiSwDY3j0NszZUeenoh/wyXIIKMNRqX5RR4gq5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017428; c=relaxed/simple;
-	bh=nUFQChGHhU/xz2wzcavEBb1nNx+99QnqQzX3pXtETcs=;
+	s=arc-20240116; t=1734016396; c=relaxed/simple;
+	bh=cKE8iliZiavBbSnLsu/3HY7BWv2u+jER0+62JZFkBrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EntmViXrWqU41+jgkgl8wzj67yUVCzNyK0ika9RCPr0gq6pG23SQGaTuTLx3mkm3YfIMkU1TrWwKsiAjco35l+XDw8YmDwvzDpyFnKhKNn7yUXejTJjnrIknE66a1LoTvcChdklNvoLqwgZKFCvDcnAsVok4aeoaIxoTqWoKxBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFLfR8SJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D17C4CECE;
-	Thu, 12 Dec 2024 15:30:26 +0000 (UTC)
+	 MIME-Version; b=CCHPzMk6I+z4mjG9G+03TpxbSQGRJ+8Znaj3K7Ui+eA+zoYtPLBTBc1nN0IT5jFggVRFp3ZTPbx4dGOd6QMSgtHvQTwe9h3vD8MiqLNuV7Kj6LrWHoTV/BE/KCne0i1a4R81XVT5s0dR2p6tBXdzWHc8NP22vqbD0H1c6Anm3KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BF1eifLm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D78C4CED0;
+	Thu, 12 Dec 2024 15:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017427;
-	bh=nUFQChGHhU/xz2wzcavEBb1nNx+99QnqQzX3pXtETcs=;
+	s=korg; t=1734016396;
+	bh=cKE8iliZiavBbSnLsu/3HY7BWv2u+jER0+62JZFkBrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFLfR8SJzpgJUhBwA0J339VVSl5JtW3fglTs/zR9Xb7EZsrmm/qrohls7MPRwxW7L
-	 gn1Nbw2L53tD6LYY5EteLR5If8n9zDTa8I9+xTXpjS6MzwKW0Cfe8Or/GWXIW57FF6
-	 jydDU+12OUYlTS9IOWILGyx+rl+UumcJ/s0qSSjA=
+	b=BF1eifLm+m2wI9NmcW6PwKzC6iY1EDamDqT1ZYffB3I1mwVQQc1ql7xypu0xZElvd
+	 lTutgrMPCgQGZLgUHSolV/ZDVe8Pfml+R8Q6L5BuqReeuLSMydIQJwdUb13pv8vs36
+	 WEnCbX435dkPOHMsQsIzVV72HDDdsWJEevdck7P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/356] can: m_can: m_can_handle_lec_err(): fix {rx,tx}_errors statistics
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Li Zetao <lizetao1@huawei.com>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 160/466] io_uring: Change res2 parameter type in io_uring_cmd_done
 Date: Thu, 12 Dec 2024 15:55:29 +0100
-Message-ID: <20241212144245.022551019@linuxfoundation.org>
+Message-ID: <20241212144313.115425486@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Bernd Schubert <bschubert@ddn.com>
 
-[ Upstream commit 988d4222bf9039a875a3d48f2fe35c317831ff68 ]
+commit a07d2d7930c75e6bf88683b376d09ab1f3fed2aa upstream.
 
-The m_can_handle_lec_err() function was incorrectly incrementing only the
-receive error counter, even in cases of bit or acknowledgment errors that
-occur during transmission.
+Change the type of the res2 parameter in io_uring_cmd_done from ssize_t
+to u64. This aligns the parameter type with io_req_set_cqe32_extra,
+which expects u64 arguments.
+The change eliminates potential issues on 32-bit architectures where
+ssize_t might be 32-bit.
 
-Fix the issue by incrementing the appropriate counter based on the
-type of error.
+Only user of passing res2 is drivers/nvme/host/ioctl.c and it actually
+passes u64.
 
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-7-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ee692a21e9bf ("fs,io_uring: add infrastructure for uring-cmd")
+Cc: stable@vger.kernel.org
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Tested-by: Li Zetao <lizetao1@huawei.com>
+Reviewed-by: Li Zetao <lizetao1@huawei.com>
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Link: https://lore.kernel.org/r/20241203-io_uring_cmd_done-res2-as-u64-v2-1-5e59ae617151@ddn.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/m_can/m_can.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ include/linux/io_uring/cmd.h |    4 ++--
+ io_uring/uring_cmd.c         |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index ec6e740b03247..2a258986eed02 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -636,47 +636,60 @@ static int m_can_handle_lec_err(struct net_device *dev,
- 	u32 timestamp = 0;
+--- a/include/linux/io_uring/cmd.h
++++ b/include/linux/io_uring/cmd.h
+@@ -43,7 +43,7 @@ int io_uring_cmd_import_fixed(u64 ubuf,
+  * Note: the caller should never hard code @issue_flags and is only allowed
+  * to pass the mask provided by the core io_uring code.
+  */
+-void io_uring_cmd_done(struct io_uring_cmd *cmd, ssize_t ret, ssize_t res2,
++void io_uring_cmd_done(struct io_uring_cmd *cmd, ssize_t ret, u64 res2,
+ 			unsigned issue_flags);
  
- 	cdev->can.can_stats.bus_error++;
--	stats->rx_errors++;
- 
- 	/* propagate the error condition to the CAN stack */
- 	skb = alloc_can_err_skb(dev, &cf);
--	if (unlikely(!skb))
--		return 0;
- 
- 	/* check for 'last error code' which tells us the
- 	 * type of the last error to occur on the CAN bus
- 	 */
--	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-+	if (likely(skb))
-+		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
- 	switch (lec_type) {
- 	case LEC_STUFF_ERROR:
- 		netdev_dbg(dev, "stuff error\n");
--		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_STUFF;
- 		break;
- 	case LEC_FORM_ERROR:
- 		netdev_dbg(dev, "form error\n");
--		cf->data[2] |= CAN_ERR_PROT_FORM;
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_FORM;
- 		break;
- 	case LEC_ACK_ERROR:
- 		netdev_dbg(dev, "ack error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
- 		break;
- 	case LEC_BIT1_ERROR:
- 		netdev_dbg(dev, "bit1 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT1;
- 		break;
- 	case LEC_BIT0_ERROR:
- 		netdev_dbg(dev, "bit0 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT0;
- 		break;
- 	case LEC_CRC_ERROR:
- 		netdev_dbg(dev, "CRC error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
- 		break;
- 	default:
- 		break;
- 	}
- 
-+	if (unlikely(!skb))
-+		return 0;
-+
- 	if (cdev->is_peripheral)
- 		timestamp = m_can_get_timestamp(cdev);
- 
--- 
-2.43.0
-
+ void __io_uring_cmd_do_in_task(struct io_uring_cmd *ioucmd,
+@@ -67,7 +67,7 @@ static inline int io_uring_cmd_import_fi
+ 	return -EOPNOTSUPP;
+ }
+ static inline void io_uring_cmd_done(struct io_uring_cmd *cmd, ssize_t ret,
+-		ssize_t ret2, unsigned issue_flags)
++		u64 ret2, unsigned issue_flags)
+ {
+ }
+ static inline void __io_uring_cmd_do_in_task(struct io_uring_cmd *ioucmd,
+--- a/io_uring/uring_cmd.c
++++ b/io_uring/uring_cmd.c
+@@ -147,7 +147,7 @@ static inline void io_req_set_cqe32_extr
+  * Called by consumers of io_uring_cmd, if they originally returned
+  * -EIOCBQUEUED upon receiving the command.
+  */
+-void io_uring_cmd_done(struct io_uring_cmd *ioucmd, ssize_t ret, ssize_t res2,
++void io_uring_cmd_done(struct io_uring_cmd *ioucmd, ssize_t ret, u64 res2,
+ 		       unsigned issue_flags)
+ {
+ 	struct io_kiocb *req = cmd_to_io_kiocb(ioucmd);
 
 
 
