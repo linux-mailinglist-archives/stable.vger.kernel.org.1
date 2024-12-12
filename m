@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE259EF60F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:22:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 623DF9EF7EF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7F151942D6D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE50F18997F8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0152F22145E;
-	Thu, 12 Dec 2024 17:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9016021660B;
+	Thu, 12 Dec 2024 17:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UixLqmJ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdRa6Ci9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30D7176AA1;
-	Thu, 12 Dec 2024 17:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4C2211493;
+	Thu, 12 Dec 2024 17:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023040; cv=none; b=oVd6PYPtkAYbtohLIe1p1oOMmaNFu8uPOaJpK8MmiphYvx2Vr3qhqaSuhV+ZMujBIoNACIFp56B0vz8Ei1r/o3yRPg4+0zbVGZZfNYM/XcNVwbJ/rou2RqHl2r7Ee0NzamBk4ycNjm3HwcB7pBk3pUouAhljn0m1KWn/NcxPyBk=
+	t=1734024330; cv=none; b=oOKDxc2YoUivBT7EJia+4+P/hla5ohiNMowZx2cmBU1IjCA77Oaidm7kGcXO1eJ+OLSVsxBC90KiZbz6o47epgb7CYSCdzGlsKLbR2E1AiTXQKsk34zWmWCWEQrQxbL8ffRZQZVow+Z4sTGWp24C1CysojTcIhfvPyx7TFfruvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023040; c=relaxed/simple;
-	bh=3EB7hgkmG+HysZqHjCGHau9geX/i+glwE5lpenQ4Twc=;
+	s=arc-20240116; t=1734024330; c=relaxed/simple;
+	bh=KzJSaFq2Ifv1y96rrJfaT9grORy4Eic+sGsu7peIRR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAYCM4MCNnAYWZx4iJk6qwpcc7REkB+b32LJXT6cVPW52xCXJHIKp3NQSRSh9e+w14HyiyNtENIxqpkN18qqeJCh2R70kb0jpnhneyI4F9+FbdWTXOqRwI9fFR/J+xG12rWMfKJKNxMGzyU8KMCRwhikYO17pzHeynoRGo/51Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UixLqmJ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292B1C4CED0;
-	Thu, 12 Dec 2024 17:03:59 +0000 (UTC)
+	 MIME-Version; b=Rc7hDCNKVpjwNw9aL1PtIKjwUWirfmDDdJciEnZKZUcm30O6zYs9mnLqJCWPyLnK6BFJXcPrN0OdnYoloti/N7mpCCS+582g8ApSZaS/KpF33omoyzeQrxxm4ZaRCXWqCsyZSzxFM3mw8orQYTuKT+PlmCSMnYa4AzlzvBbFcQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdRa6Ci9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36E6C4CECE;
+	Thu, 12 Dec 2024 17:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023040;
-	bh=3EB7hgkmG+HysZqHjCGHau9geX/i+glwE5lpenQ4Twc=;
+	s=korg; t=1734024330;
+	bh=KzJSaFq2Ifv1y96rrJfaT9grORy4Eic+sGsu7peIRR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UixLqmJ/JLUMIZazKkbAsySub+TMrYFNnPi5BaHRDSiTlxyTR4z83hn2X1TBz0qYs
-	 JquV3r/+mNDESdfoImosroPMi2uzCVmZSqIuokt3y963d8Qo8yNUA2fNXyCiQbLIM0
-	 8Jnt33qX6C80IIIlQVfBLSbFYgOWDBOQ8sz+VbM0=
+	b=JdRa6Ci9o10HvWVrAfL6lxLq1cfgrObfrbPDcm6fPlT29wZSgwU9PUZk8wGykWWaD
+	 XMNbFufD22ztL5tN6pCYiUADuDahBkelQlPEnOPN5aUFrbWaMxd/Emk++A0JltMwHx
+	 AtO31/t2nrSUj7fi4uaV0FuZNBiFwqpYoc0AYcAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 404/565] can: m_can: m_can_handle_lec_err(): fix {rx,tx}_errors statistics
+	Michal Vrastil <michal.vrastil@hidglobal.com>,
+	Elson Roy Serrao <quic_eserrao@quicinc.com>,
+	Peter korsgaard <peter@korsgaard.com>
+Subject: [PATCH 5.10 261/459] Revert "usb: gadget: composite: fix OS descriptors w_value logic"
 Date: Thu, 12 Dec 2024 15:59:59 +0100
-Message-ID: <20241212144327.628575700@linuxfoundation.org>
+Message-ID: <20241212144303.912049666@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Michal Vrastil <michal.vrastil@hidglobal.com>
 
-[ Upstream commit 988d4222bf9039a875a3d48f2fe35c317831ff68 ]
+commit 51cdd69d6a857f527d6d0697a2e1f0fa8bca1005 upstream.
 
-The m_can_handle_lec_err() function was incorrectly incrementing only the
-receive error counter, even in cases of bit or acknowledgment errors that
-occur during transmission.
+This reverts commit ec6ce7075ef879b91a8710829016005dc8170f17.
 
-Fix the issue by incrementing the appropriate counter based on the
-type of error.
+Fix installation of WinUSB driver using OS descriptors. Without the
+fix the drivers are not installed correctly and the property
+'DeviceInterfaceGUID' is missing on host side.
 
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-7-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The original change was based on the assumption that the interface
+number is in the high byte of wValue but it is in the low byte,
+instead. Unfortunately, the fix is based on MS documentation which is
+also wrong.
+
+The actual USB request for OS descriptors (using USB analyzer) looks
+like:
+
+Offset  0   1   2   3   4   5   6   7
+0x000   C1  A1  02  00  05  00  0A  00
+
+C1: bmRequestType (device to host, vendor, interface)
+A1: nas magic number
+0002: wValue (2: nas interface)
+0005: wIndex (5: get extended property i.e. nas interface GUID)
+008E: wLength (142)
+
+The fix was tested on Windows 10 and Windows 11.
+
+Cc: stable@vger.kernel.org
+Fixes: ec6ce7075ef8 ("usb: gadget: composite: fix OS descriptors w_value logic")
+Signed-off-by: Michal Vrastil <michal.vrastil@hidglobal.com>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Acked-by: Peter korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/20241113235433.20244-1-quic_eserrao@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/m_can/m_can.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ drivers/usb/gadget/composite.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index abc3907feb739..a4edd7ab37eb2 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -612,47 +612,60 @@ static int m_can_handle_lec_err(struct net_device *dev,
- 	u32 timestamp = 0;
- 
- 	cdev->can.can_stats.bus_error++;
--	stats->rx_errors++;
- 
- 	/* propagate the error condition to the CAN stack */
- 	skb = alloc_can_err_skb(dev, &cf);
--	if (unlikely(!skb))
--		return 0;
- 
- 	/* check for 'last error code' which tells us the
- 	 * type of the last error to occur on the CAN bus
- 	 */
--	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-+	if (likely(skb))
-+		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
- 	switch (lec_type) {
- 	case LEC_STUFF_ERROR:
- 		netdev_dbg(dev, "stuff error\n");
--		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_STUFF;
- 		break;
- 	case LEC_FORM_ERROR:
- 		netdev_dbg(dev, "form error\n");
--		cf->data[2] |= CAN_ERR_PROT_FORM;
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_FORM;
- 		break;
- 	case LEC_ACK_ERROR:
- 		netdev_dbg(dev, "ack error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
- 		break;
- 	case LEC_BIT1_ERROR:
- 		netdev_dbg(dev, "bit1 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT1;
- 		break;
- 	case LEC_BIT0_ERROR:
- 		netdev_dbg(dev, "bit0 error\n");
--		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT0;
- 		break;
- 	case LEC_CRC_ERROR:
- 		netdev_dbg(dev, "CRC error\n");
--		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
- 		break;
- 	default:
- 		break;
- 	}
- 
-+	if (unlikely(!skb))
-+		return 0;
-+
- 	if (cdev->is_peripheral)
- 		timestamp = m_can_get_timestamp(cdev);
- 
--- 
-2.43.0
-
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -1924,8 +1924,20 @@ unknown:
+ 			memset(buf, 0, w_length);
+ 			buf[5] = 0x01;
+ 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
++			/*
++			 * The Microsoft CompatID OS Descriptor Spec(w_index = 0x4) and
++			 * Extended Prop OS Desc Spec(w_index = 0x5) state that the
++			 * HighByte of wValue is the InterfaceNumber and the LowByte is
++			 * the PageNumber. This high/low byte ordering is incorrectly
++			 * documented in the Spec. USB analyzer output on the below
++			 * request packets show the high/low byte inverted i.e LowByte
++			 * is the InterfaceNumber and the HighByte is the PageNumber.
++			 * Since we dont support >64KB CompatID/ExtendedProp descriptors,
++			 * PageNumber is set to 0. Hence verify that the HighByte is 0
++			 * for below two cases.
++			 */
+ 			case USB_RECIP_DEVICE:
+-				if (w_index != 0x4 || (w_value & 0xff))
++				if (w_index != 0x4 || (w_value >> 8))
+ 					break;
+ 				buf[6] = w_index;
+ 				/* Number of ext compat interfaces */
+@@ -1941,9 +1953,9 @@ unknown:
+ 				}
+ 				break;
+ 			case USB_RECIP_INTERFACE:
+-				if (w_index != 0x5 || (w_value & 0xff))
++				if (w_index != 0x5 || (w_value >> 8))
+ 					break;
+-				interface = w_value >> 8;
++				interface = w_value & 0xFF;
+ 				if (interface >= MAX_CONFIG_INTERFACES ||
+ 				    !os_desc_cfg->interface[interface])
+ 					break;
 
 
 
