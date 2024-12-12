@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315279EEE43
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742079EEBC4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7BEA16E629
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3092828391A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973152054F8;
-	Thu, 12 Dec 2024 15:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D466F20969B;
+	Thu, 12 Dec 2024 15:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwnFONdz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5fbu8xZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D76215774;
-	Thu, 12 Dec 2024 15:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A1E748A;
+	Thu, 12 Dec 2024 15:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018562; cv=none; b=eSNN03Nv64129/BUJwCmcWyX23dvfLTgQfzol6dYWG7iD8K0838LYqe+v3T2pLRYC+z9qkdRWwwknoHFHYvh9LkxxBTggZStVKbjL7VXWaO4dTEvZRazBcViYJQ8hSsawkW9y3gMuKGhnXt1xUzwNUoxnNWlOy7ukSc4/ueN3lI=
+	t=1734017321; cv=none; b=MyxQ8cXSS2Aw1foKh4xKIiKN3Ml351UVSbip5IFpmxMnmIZxJ0P2S7H4cPggoxwQFbQt2V6bSZWNImRWGDHuu4+NmQKInBysaub+VWp0ozOPhcA6VyXvKmQlatKQvcE+3YIcEYbzZB0Zq1wuTnv7rIkOpdfd97dlW+obaPTFwRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018562; c=relaxed/simple;
-	bh=KC0NWIWufyGTbhCmmZwTJ1YFtDtimqcddn2l/GpiybU=;
+	s=arc-20240116; t=1734017321; c=relaxed/simple;
+	bh=a4fapku+Cc7GK11s2C4RhiHIWJynnw53OvLqNb5YXMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5981u1SZ7scptCdpm2tF4WRkckXVIhIpJkVQAmLH5EhwG5FXUlcuw5Y4uQMeESOeZveSCfIfkZhXA7nLTBDQHXKzoHvFY7rAzvzrvlYtgnDFnGjXtF3MFV7QJDtXgMAN694/O8J2/isSsMYMY2VZ8USwTPrQNFEa8M4paq/ajc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwnFONdz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A73C4CECE;
-	Thu, 12 Dec 2024 15:49:21 +0000 (UTC)
+	 MIME-Version; b=gJ28MZvREwMn/w8LOt1E353DCHrmDH8+yfcLvPeHLat7VHdTdN3f8IxlbZTm1mfkFP9FIK+BCwYB6DpGY+d37Y5vAw49DofDMO/FgyCAl8WwwzP6q3xi1WGzKw0qMm58yBEpQuVpsZYHptYuxJCuAokAy/SpKRcdc8+QD/mKq1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5fbu8xZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B76DC4CECE;
+	Thu, 12 Dec 2024 15:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018562;
-	bh=KC0NWIWufyGTbhCmmZwTJ1YFtDtimqcddn2l/GpiybU=;
+	s=korg; t=1734017321;
+	bh=a4fapku+Cc7GK11s2C4RhiHIWJynnw53OvLqNb5YXMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CwnFONdzGJYH54p2tzum6skd+BGvUfzBBQnCCBsBJGi7Tgeh3LEhVEK1iJ2XnSXJu
-	 ZyKOAs3gzCZJfDgexMnThihiL7GbqyOJxBxkqvdI67OdKphXCP1vjWhi5tGXMDoMqf
-	 2wVl1ECGi+Oo97fimmBoHrSy91UZ1xbOFZ7+Yue4=
+	b=U5fbu8xZzfmi57ftvbGJgaXaPrcvXzK4cZvq+yQNyL2myJvx2089tcvsbR7WYXLys
+	 9rDEaFthh4X8hACTZIgU3/IXSPY4/n3OBb6Vt3M1Ox7B/DVs2RGphmMjN5NJnWeyfe
+	 5ArLAwkl+E1VgTfHVPIabMPjXZU/MybNGeKubh7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Defa Li <defa.li@mediatek.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Enno Gotthold <egotthold@suse.com>,
+	Fabian Vogt <fvogt@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 296/356] i3c: Use i3cdev->desc->info instead of calling i3c_device_get_info() to avoid deadlock
+Subject: [PATCH 6.12 446/466] btrfs: fix mount failure due to remount races
 Date: Thu, 12 Dec 2024 16:00:15 +0100
-Message-ID: <20241212144256.264497898@linuxfoundation.org>
+Message-ID: <20241212144324.475629985@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +64,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Defa Li <defa.li@mediatek.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 6cf7b65f7029914dc0cd7db86fac9ee5159008c6 ]
+[ Upstream commit 951a3f59d268fe1397aaeb9a96fcb1944890c4cb ]
 
-A deadlock may happen since the i3c_master_register() acquires
-&i3cbus->lock twice. See the log below.
-Use i3cdev->desc->info instead of calling i3c_device_info() to
-avoid acquiring the lock twice.
+[BUG]
+The following reproducer can cause btrfs mount to fail:
 
-v2:
-  - Modified the title and commit message
+  dev="/dev/test/scratch1"
+  mnt1="/mnt/test"
+  mnt2="/mnt/scratch"
 
-============================================
-WARNING: possible recursive locking detected
-6.11.0-mainline
---------------------------------------------
-init/1 is trying to acquire lock:
-f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_bus_normaluse_lock
+  mkfs.btrfs -f $dev
+  mount $dev $mnt1
+  btrfs subvolume create $mnt1/subvol1
+  btrfs subvolume create $mnt1/subvol2
+  umount $mnt1
 
-but task is already holding lock:
-f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_master_register
+  mount $dev $mnt1 -o subvol=subvol1
+  while mount -o remount,ro $mnt1; do mount -o remount,rw $mnt1; done &
+  bg=$!
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+  while mount $dev $mnt2 -o subvol=subvol2; do umount $mnt2; done
 
-       CPU0
-       ----
-  lock(&i3cbus->lock);
-  lock(&i3cbus->lock);
+  kill $bg
+  wait
+  umount -R $mnt1
+  umount -R $mnt2
 
- *** DEADLOCK ***
+The script will fail with the following error:
 
- May be due to missing lock nesting notation
+  mount: /mnt/scratch: /dev/mapper/test-scratch1 already mounted on /mnt/test.
+        dmesg(1) may have more information after failed mount system call.
+  umount: /mnt/test: target is busy.
+  umount: /mnt/scratch/: not mounted
 
-2 locks held by init/1:
- #0: fcffff809b6798f8 (&dev->mutex){....}-{3:3}, at: __driver_attach
- #1: f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_master_register
+And there is no kernel error message.
 
-stack backtrace:
-CPU: 6 UID: 0 PID: 1 Comm: init
-Call trace:
- dump_backtrace+0xfc/0x17c
- show_stack+0x18/0x28
- dump_stack_lvl+0x40/0xc0
- dump_stack+0x18/0x24
- print_deadlock_bug+0x388/0x390
- __lock_acquire+0x18bc/0x32ec
- lock_acquire+0x134/0x2b0
- down_read+0x50/0x19c
- i3c_bus_normaluse_lock+0x14/0x24
- i3c_device_get_info+0x24/0x58
- i3c_device_uevent+0x34/0xa4
- dev_uevent+0x310/0x384
- kobject_uevent_env+0x244/0x414
- kobject_uevent+0x14/0x20
- device_add+0x278/0x460
- device_register+0x20/0x34
- i3c_master_register_new_i3c_devs+0x78/0x154
- i3c_master_register+0x6a0/0x6d4
- mtk_i3c_master_probe+0x3b8/0x4d8
- platform_probe+0xa0/0xe0
- really_probe+0x114/0x454
- __driver_probe_device+0xa0/0x15c
- driver_probe_device+0x3c/0x1ac
- __driver_attach+0xc4/0x1f0
- bus_for_each_dev+0x104/0x160
- driver_attach+0x24/0x34
- bus_add_driver+0x14c/0x294
- driver_register+0x68/0x104
- __platform_driver_register+0x20/0x30
- init_module+0x20/0xfe4
- do_one_initcall+0x184/0x464
- do_init_module+0x58/0x1ec
- load_module+0xefc/0x10c8
- __arm64_sys_finit_module+0x238/0x33c
- invoke_syscall+0x58/0x10c
- el0_svc_common+0xa8/0xdc
- do_el0_svc+0x1c/0x28
- el0_svc+0x50/0xac
- el0t_64_sync_handler+0x70/0xbc
- el0t_64_sync+0x1a8/0x1ac
+[CAUSE]
+During the btrfs mount, to support mounting different subvolumes with
+different RO/RW flags, we need to detect that and retry if needed:
 
-Signed-off-by: Defa Li <defa.li@mediatek.com>
-Link: https://lore.kernel.org/r/20241107132549.25439-1-defa.li@mediatek.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+  Retry with matching RO flags if the initial mount fail with -EBUSY.
+
+The problem is, during that retry we do not hold any super block lock
+(s_umount), this means there can be a remount process changing the RO
+flags of the original fs super block.
+
+If so, we can have an EBUSY error during retry.  And this time we treat
+any failure as an error, without any retry and cause the above EBUSY
+mount failure.
+
+[FIX]
+The current retry behavior is racy because we do not have a super block
+thus no way to hold s_umount to prevent the race with remount.
+
+Solve the root problem by allowing fc->sb_flags to mismatch from the
+sb->s_flags at btrfs_get_tree_super().
+
+Then at the re-entry point btrfs_get_tree_subvol(), manually check the
+fc->s_flags against sb->s_flags, if it's a RO->RW mismatch, then
+reconfigure with s_umount lock hold.
+
+Reported-by: Enno Gotthold <egotthold@suse.com>
+Reported-by: Fabian Vogt <fvogt@suse.com>
+[ Special thanks for the reproducer and early analysis pointing to btrfs. ]
+Fixes: f044b318675f ("btrfs: handle the ro->rw transition for mounting different subvolumes")
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1231836
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/super.c | 66 ++++++++++++++++++++----------------------------
+ 1 file changed, 27 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 5d737bdbfe478..b77ddec6025d7 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -280,7 +280,8 @@ static int i3c_device_uevent(const struct device *dev, struct kobj_uevent_env *e
- 	struct i3c_device_info devinfo;
- 	u16 manuf, part, ext;
+diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
+index 0c477443fbc5f..8292e488d3d77 100644
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1886,18 +1886,21 @@ static int btrfs_get_tree_super(struct fs_context *fc)
  
--	i3c_device_get_info(i3cdev, &devinfo);
-+	if (i3cdev->desc)
-+		devinfo = i3cdev->desc->info;
- 	manuf = I3C_PID_MANUF_ID(devinfo.pid);
- 	part = I3C_PID_PART_ID(devinfo.pid);
- 	ext = I3C_PID_EXTRA_INFO(devinfo.pid);
+ 	if (sb->s_root) {
+ 		btrfs_close_devices(fs_devices);
+-		if ((fc->sb_flags ^ sb->s_flags) & SB_RDONLY)
+-			ret = -EBUSY;
++		/*
++		 * At this stage we may have RO flag mismatch between
++		 * fc->sb_flags and sb->s_flags.  Caller should detect such
++		 * mismatch and reconfigure with sb->s_umount rwsem held if
++		 * needed.
++		 */
+ 	} else {
+ 		snprintf(sb->s_id, sizeof(sb->s_id), "%pg", bdev);
+ 		shrinker_debugfs_rename(sb->s_shrink, "sb-btrfs:%s", sb->s_id);
+ 		btrfs_sb(sb)->bdev_holder = &btrfs_fs_type;
+ 		ret = btrfs_fill_super(sb, fs_devices);
+-	}
+-
+-	if (ret) {
+-		deactivate_locked_super(sb);
+-		return ret;
++		if (ret) {
++			deactivate_locked_super(sb);
++			return ret;
++		}
+ 	}
+ 
+ 	btrfs_clear_oneshot_options(fs_info);
+@@ -1983,39 +1986,18 @@ static int btrfs_get_tree_super(struct fs_context *fc)
+  * btrfs or not, setting the whole super block RO.  To make per-subvolume mounting
+  * work with different options work we need to keep backward compatibility.
+  */
+-static struct vfsmount *btrfs_reconfigure_for_mount(struct fs_context *fc)
++static int btrfs_reconfigure_for_mount(struct fs_context *fc, struct vfsmount *mnt)
+ {
+-	struct vfsmount *mnt;
+-	int ret;
+-	const bool ro2rw = !(fc->sb_flags & SB_RDONLY);
+-
+-	/*
+-	 * We got an EBUSY because our SB_RDONLY flag didn't match the existing
+-	 * super block, so invert our setting here and retry the mount so we
+-	 * can get our vfsmount.
+-	 */
+-	if (ro2rw)
+-		fc->sb_flags |= SB_RDONLY;
+-	else
+-		fc->sb_flags &= ~SB_RDONLY;
+-
+-	mnt = fc_mount(fc);
+-	if (IS_ERR(mnt))
+-		return mnt;
++	int ret = 0;
+ 
+-	if (!ro2rw)
+-		return mnt;
++	if (fc->sb_flags & SB_RDONLY)
++		return ret;
+ 
+-	/* We need to convert to rw, call reconfigure. */
+-	fc->sb_flags &= ~SB_RDONLY;
+ 	down_write(&mnt->mnt_sb->s_umount);
+-	ret = btrfs_reconfigure(fc);
++	if (!(fc->sb_flags & SB_RDONLY) && (mnt->mnt_sb->s_flags & SB_RDONLY))
++		ret = btrfs_reconfigure(fc);
+ 	up_write(&mnt->mnt_sb->s_umount);
+-	if (ret) {
+-		mntput(mnt);
+-		return ERR_PTR(ret);
+-	}
+-	return mnt;
++	return ret;
+ }
+ 
+ static int btrfs_get_tree_subvol(struct fs_context *fc)
+@@ -2025,6 +2007,7 @@ static int btrfs_get_tree_subvol(struct fs_context *fc)
+ 	struct fs_context *dup_fc;
+ 	struct dentry *dentry;
+ 	struct vfsmount *mnt;
++	int ret = 0;
+ 
+ 	/*
+ 	 * Setup a dummy root and fs_info for test/set super.  This is because
+@@ -2067,11 +2050,16 @@ static int btrfs_get_tree_subvol(struct fs_context *fc)
+ 	fc->security = NULL;
+ 
+ 	mnt = fc_mount(dup_fc);
+-	if (PTR_ERR_OR_ZERO(mnt) == -EBUSY)
+-		mnt = btrfs_reconfigure_for_mount(dup_fc);
+-	put_fs_context(dup_fc);
+-	if (IS_ERR(mnt))
++	if (IS_ERR(mnt)) {
++		put_fs_context(dup_fc);
+ 		return PTR_ERR(mnt);
++	}
++	ret = btrfs_reconfigure_for_mount(dup_fc, mnt);
++	put_fs_context(dup_fc);
++	if (ret) {
++		mntput(mnt);
++		return ret;
++	}
+ 
+ 	/*
+ 	 * This free's ->subvol_name, because if it isn't set we have to
 -- 
 2.43.0
 
