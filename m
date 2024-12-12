@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308369EF173
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A55739EECD2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCD8518998CC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4653D1888583
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0A123695B;
-	Thu, 12 Dec 2024 16:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE48216606;
+	Thu, 12 Dec 2024 15:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZtN2r/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1SFfb4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174CA4F218;
-	Thu, 12 Dec 2024 16:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BDD2135C1;
+	Thu, 12 Dec 2024 15:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020495; cv=none; b=oQOb0bkVRtu/BF2oX6sgLrWDzGqFVqxzhwxsZA4G3RoH5ZiXjw+uBx3OXUKs93BY16ZwmAQBmoP8S/yKNFbuOhbnEoF/GAoPxqUk0ULOM31pbBpLGMqpcMY3esV1qRIghf15qOt5UutZ0nP+BDk5qOTk/oZ8qvKehyQKpovnvdA=
+	t=1734017774; cv=none; b=spx2TqxQvPJzZVAY3aGpfgmsLEKespCZNJoUMy14+k/Xd4c9D8XUaCQ5B70zQuQ3qPy3xsx3HJv8Bnyd7zHvFEX11GZqqhREnyixaAC2y3K2eddE6N2Uj4YCTTGF6bzzbhCerK2Nb9u+sBb5NbkfHgvqw2GCb95kkbUW9YEN5j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020495; c=relaxed/simple;
-	bh=yd+thalTRgK4Jh09fgf5sXg2XyD4G98MiV9Xqsx82Bk=;
+	s=arc-20240116; t=1734017774; c=relaxed/simple;
+	bh=R1JwQa48P5Ros2NoJz45zA876NHi3NixWZjbdvAwhjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cn7XbwjDkK7ZcSz8trxshYVgNajmh4bkEFzFM3JqEqC0hrE1sR+KhBkOukyEWMc9ZGrxR8hKV3dGgEhHe0D8Zctijb1sH3LTL1PpcFDnHEG0CDVguo3LvpyEc7tjosDVRRujP9dvOA53IyTDsMxMwko8FJk+o1t1F+nFuE5CiGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZtN2r/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597B9C4CECE;
-	Thu, 12 Dec 2024 16:21:34 +0000 (UTC)
+	 MIME-Version; b=MozBxc8eD2PpX9b0egTubHKBxhh37BA16EPrOr5t4QAGWhaxRovC5/oo2PXl0D558fYsDI54pWXFfzavbI54mxazoTacHzKkrQ8uMdrQTLqf3yUySvML2H2tG4MTxYc7Ko/hrZdlKOZ8wOQ6VN8jXdpgx+OtgkEwK5pBs6zs6kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1SFfb4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70722C4CECE;
+	Thu, 12 Dec 2024 15:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020494;
-	bh=yd+thalTRgK4Jh09fgf5sXg2XyD4G98MiV9Xqsx82Bk=;
+	s=korg; t=1734017773;
+	bh=R1JwQa48P5Ros2NoJz45zA876NHi3NixWZjbdvAwhjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZtN2r/oBCfGegWoIV57nhIhFWCBFYKH8Gckq39971qg9H3uVk6gSLOU8J0eNk8Tr
-	 cBhvzBXXcZ5g1FvhANnqFS8ZYWbjc6CKf7lR7glUz38h2fl2SoPmle1Ni5xIHI+GE8
-	 yYcdgufizgdUTypS/U+H7eTPoj0dxyd1R7qiGMmY=
+	b=n1SFfb4bVdT7CyqBHs6Rj4wjyVtz/3YTDLoMUCHKT6SoG0ooOA8/J8IMaETaHHvyo
+	 pwjkj4pbFh0iepgtkUB/3gJOA6ESpPC+Dr7akCK419n+yPcxbpxAYc4BCHll0Jqt5C
+	 6/5qQQoU98kb7eiUvFaIMYYVUx3TQzm028Wfgb4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clement LE GOFFIC <clement.legoffic@foss.st.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.1 481/772] ARM: 9430/1: entry: Do a dummy read from VMAP shadow
+	Kuro Chung <kuro.chung@ite.com.tw>,
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	Robert Foss <rfoss@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 107/356] drm/bridge: it6505: update usleep_range for RC circuit charge time
 Date: Thu, 12 Dec 2024 15:57:06 +0100
-Message-ID: <20241212144409.810872514@linuxfoundation.org>
+Message-ID: <20241212144248.864041387@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Kuro Chung <kuro.chung@ite.com.tw>
 
-commit 44e9a3bb76e5f2eecd374c8176b2c5163c8bb2e2 upstream.
+[ Upstream commit 8814444e62b8a8b573fba2cbbb327d5817b74eb0 ]
 
-When switching task, in addition to a dummy read from the new
-VMAP stack, also do a dummy read from the VMAP stack's
-corresponding KASAN shadow memory to sync things up in
-the new MM context.
+The spec of timing between IVDD/OVDD and SYSRTEN is 10ms, but SYSRSTN RC
+circuit need at least 25ms for rising time, update for match spec
 
-Cc: stable@vger.kernel.org
-Fixes: a1c510d0adc6 ("ARM: implement support for vmap'ed stacks")
-Link: https://lore.kernel.org/linux-arm-kernel/a1a1d062-f3a2-4d05-9836-3b098de9db6d@foss.st.com/
-Reported-by: Clement LE GOFFIC <clement.legoffic@foss.st.com>
-Suggested-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kuro Chung <kuro.chung@ite.com.tw>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240604024405.1122488-1-kuro.chung@ite.com.tw
+Stable-dep-of: c5f3f21728b0 ("drm/bridge: it6505: Fix inverted reset polarity")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/entry-armv.S |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/bridge/ite-it6505.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/kernel/entry-armv.S
-+++ b/arch/arm/kernel/entry-armv.S
-@@ -25,6 +25,7 @@
- #include <asm/tls.h>
- #include <asm/system_info.h>
- #include <asm/uaccess-asm.h>
-+#include <asm/kasan_def.h>
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 93eb8fba23d42..fda2c565fdb31 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2614,7 +2614,7 @@ static int it6505_poweron(struct it6505 *it6505)
+ 		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
+ 		usleep_range(1000, 2000);
+ 		gpiod_set_value_cansleep(pdata->gpiod_reset, 1);
+-		usleep_range(10000, 20000);
++		usleep_range(25000, 35000);
+ 	}
  
- #include "entry-header.S"
- #include <asm/probes.h>
-@@ -787,6 +788,13 @@ ENTRY(__switch_to)
- 	@ entries covering the vmalloc region.
- 	@
- 	ldr	r2, [ip]
-+#ifdef CONFIG_KASAN_VMALLOC
-+	@ Also dummy read from the KASAN shadow memory for the new stack if we
-+	@ are using KASAN
-+	mov_l	r2, KASAN_SHADOW_OFFSET
-+	add	r2, r2, ip, lsr #KASAN_SHADOW_SCALE_SHIFT
-+	ldr	r2, [r2]
-+#endif
- #endif
- 
- 	@ When CONFIG_THREAD_INFO_IN_TASK=n, the update of SP itself is what
+ 	it6505->powered = true;
+-- 
+2.43.0
+
 
 
 
