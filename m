@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-101066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABCBD9EEA20
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2936C9EEA22
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD44284847
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2AF5285211
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10521216E3B;
-	Thu, 12 Dec 2024 15:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C6521CFEA;
+	Thu, 12 Dec 2024 15:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0wi64LV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pn90AS64"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7992080FC;
-	Thu, 12 Dec 2024 15:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3606D21660C;
+	Thu, 12 Dec 2024 15:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016138; cv=none; b=I9JAq6av+iW/clF3C4zB3lV5qLlejWJHWf3IpZ/M8k6Y/AvGzkMp2kvSE1IAhCHwOzE++dnUawZCH49j2bc7bdmJKvHH6pXvo/vidpSlUcVGIy7QYpnMPAtNiVXJDYC0eMO5ZR0DsgQGfp9qUGDagiLhWTqb//0Y3q9TRSKEkjs=
+	t=1734016152; cv=none; b=TOttks9K7+O/swgMCHQQLviBlmIUE6R8ebcEahFZ42G5OdvA7p/OZeyQ9RGUtC1J6p598Ko0vmw85EemNMomzP9RoKr4KUVeriX6G4Q9D038smZYr+8XfmGuRVKD15agOcBW6ekGM1p+WeE48E0UEZhnv41YxDyFw/h69fs9caQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016138; c=relaxed/simple;
-	bh=dqRdFl/vonbxecwOxnoF27THB1gNBSihhUObUtwRv4k=;
+	s=arc-20240116; t=1734016152; c=relaxed/simple;
+	bh=TRr0fjNalF84kZBPirA0y6RwCSQCMTVPkzByZo6GdFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KuGpCnhA6JntKxjhxkLUIV1yz4Nid67EktVK5hfBDkuWk/1Qifkqn3ye3+h3JueTOZF+Gd0vwRw9lqe23PQ47jTNHvdZNkCs/+3kIlqOL/vhQImyjNgsdarZdcbCBX7GrJwBnFTlhtiMuYq16RcrPRwksgCC/vZMWTrEvv8nGn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0wi64LV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCAFC4CECE;
-	Thu, 12 Dec 2024 15:08:57 +0000 (UTC)
+	 MIME-Version; b=I23a7uYa35vKzH9McHem/QN5b9n4l8WdAzEjCtXqYroMHV0fWSJ90MkHC1BfxY61tQU9fgZyAxkcWjEyT8VI6rBYs3HOFS1VfSxRRV3ww2wGOS+VJq1o/ExGgten2J3VjO5v2WA6615ZIKEsOZTJ0l5DNIfs0C4S/zQU7gCHeYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pn90AS64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991E9C4CECE;
+	Thu, 12 Dec 2024 15:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016138;
-	bh=dqRdFl/vonbxecwOxnoF27THB1gNBSihhUObUtwRv4k=;
+	s=korg; t=1734016152;
+	bh=TRr0fjNalF84kZBPirA0y6RwCSQCMTVPkzByZo6GdFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0wi64LV3h4RiHdvUY28vKFPT0gOhAVp3ZNucC4jz5mMS2EzOOkX+yowZSAj0voNh
-	 M2L3mNo+BVDWQp3ZMltjOpl07Z0odKOLQ3L4VDThbYlGlMxOxhbhzmoJQD72b5pfYg
-	 oqJYC/ZSpEAZf6Hi3q8Dzo9joi3vm668nbW5/E3g=
+	b=pn90AS64DBzBlxiOTuI+MHxF2N+nPnVMQA/5SYcSKf0mokRLBFpMATwGb7IN3WEz6
+	 Z92MHCcE9+GouWSgPhueAWRSoO8H2xwj9xjTSiXzUyFcUC4Nwx+YzJigce/l3ugP+s
+	 D7ppSZ3Sr0H/CwmjXtk6bZdpiHx/rLrJt6RjhWKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jordy Zomer <jordyzomer@google.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 126/466] ksmbd: fix Out-of-Bounds Read in ksmbd_vfs_stream_read
-Date: Thu, 12 Dec 2024 15:54:55 +0100
-Message-ID: <20241212144311.782585742@linuxfoundation.org>
+Subject: [PATCH 6.12 127/466] ksmbd: fix Out-of-Bounds Write in ksmbd_vfs_stream_write
+Date: Thu, 12 Dec 2024 15:54:56 +0100
+Message-ID: <20241212144311.822735638@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -68,10 +68,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Jordy Zomer <jordyzomer@google.com>
 
-commit fc342cf86e2dc4d2edb0fc2ff5e28b6c7845adb9 upstream.
+commit 313dab082289e460391c82d855430ec8a28ddf81 upstream.
 
-An offset from client could be a negative value, It could lead
-to an out-of-bounds read from the stream_buf.
+An offset from client could be a negative value, It could allows
+to write data outside the bounds of the allocated buffer.
 Note that this issue is coming when setting
 'vfs objects = streams_xattr parameter' in ksmbd.conf.
 
@@ -82,22 +82,20 @@ Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/server/smb2pdu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
 --- a/fs/smb/server/smb2pdu.c
 +++ b/fs/smb/server/smb2pdu.c
-@@ -6651,6 +6651,10 @@ int smb2_read(struct ksmbd_work *work)
+@@ -6868,6 +6868,8 @@ int smb2_write(struct ksmbd_work *work)
  	}
  
  	offset = le64_to_cpu(req->Offset);
-+	if (offset < 0) {
-+		err = -EINVAL;
-+		goto out;
-+	}
++	if (offset < 0)
++		return -EINVAL;
  	length = le32_to_cpu(req->Length);
- 	mincount = le32_to_cpu(req->MinimumCount);
  
+ 	if (req->Channel == SMB2_CHANNEL_RDMA_V1 ||
 
 
 
