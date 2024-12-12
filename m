@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-103471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E619EF874
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E998E9EF59F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A0351757B8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFB19189E1A6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D8A221D93;
-	Thu, 12 Dec 2024 17:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB498215764;
+	Thu, 12 Dec 2024 17:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fb7Pol3k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5OB6dbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F383215710;
-	Thu, 12 Dec 2024 17:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8774B211A34;
+	Thu, 12 Dec 2024 17:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024669; cv=none; b=ks8n3uhwdyLCYYffj9JizmNCmooYIXNX4Z1hfJYhYevrpYqOwPHPuSsVcZgglw05zVxy1FmM/VvZOWQLJyvkF2kqE1JSq1ZzMowsTKK4iD3OmsL5oSwHEhkXdFma0hAO+1YIhHE+NsG8JrKcTIJwHi6Il3OVh6n4IQCbKhOZ4GU=
+	t=1734023464; cv=none; b=lg71DbFKFT0X37pQ8odS1WdqOXWFYhhxy4QxJ80v7S5QkDKsjyg31kbNQ2XjYjpPkiakWeAwVFcZ8YKvZvuvoQ15EcW3pBo4NOlnWOXZp9FIBNVlFtT8E29lTtwRUrwWCUJ5oC/ZWSeMq8jcSY6LVMNRKkhfFp3DsxW/2zPOJfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024669; c=relaxed/simple;
-	bh=J9baUNug9xr5agMVykVtyHvbUQlM1QZvIDocJK4lvaQ=;
+	s=arc-20240116; t=1734023464; c=relaxed/simple;
+	bh=u3nfIGHaW/ll2CDNbZsyrtnA7tXh37iliGUqzSIKSsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EduhtkCXoNgNsKnYrh69DBUXl2r3B2nWmxjCycWVQ4BYAFfPdXpzoza/3DYfx3oCJxWN+ZOXhtrbzuKkMjMZBl7qGqfdPGUkaM9XuJ9rM9D3CrqmEE2ef7DdQnFZ/ob88omKyGvGRA0PonVJdjP3X4F9hT7cplhiUyzZYspmDdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fb7Pol3k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0737C4CECE;
-	Thu, 12 Dec 2024 17:31:08 +0000 (UTC)
+	 MIME-Version; b=fEsYa15Odv1uZr5x3iU3yT1SwSY9nmEs0jIZlxfDNOA+Qf4PsRcAtLNg7wykLpMjfoiRGGIht+Umrd7PcHalTf64Fp7+/SXhLNUyj+lSrN3mvuO0YLPewdG6+d5OXKvvJWUTTcd8KMFEXDcOF6BnwXtQYrjSzUavJg4lz4RTSSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5OB6dbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F23C4CECE;
+	Thu, 12 Dec 2024 17:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024669;
-	bh=J9baUNug9xr5agMVykVtyHvbUQlM1QZvIDocJK4lvaQ=;
+	s=korg; t=1734023464;
+	bh=u3nfIGHaW/ll2CDNbZsyrtnA7tXh37iliGUqzSIKSsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fb7Pol3kNC74XyyX1t3ampWk3LBuwBYnvStxR0wW5W58OrNitQTeTFDHQKxe+wGJy
-	 dsCrjd0G0DYvA7SRzG/ajMTYJVv/bcOWNPvgHPlfHe/tr5xVDbfulsWUVRQd28TeI+
-	 DUoX9pG8599EirmWWs6kyRxr0IjJ0TfDwzGiWQys=
+	b=G5OB6dbpWo7Tuj9Nl4Aisp2CSx4sUmFDqffUwnCAgkddK0WwytWQCBJAPiqCjfAY3
+	 dEu5oLHOGbLkFT+hNNbl4UJh2RvEww7rj4QhQGYYVDK42OpPOLtXoQq4T41dDBOkTp
+	 O/pCPeNJdt8jbG0H9VaU6jHk2tXQpVNTXZhE8bMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordy Zomer <jordyzomer@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 5.10 372/459] bpf: fix OOB devmap writes when deleting elements
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Anish Kumar <yesanishhere@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 515/565] leds: class: Protect brightness_show() with led_cdev->led_access mutex
 Date: Thu, 12 Dec 2024 16:01:50 +0100
-Message-ID: <20241212144308.365048115@linuxfoundation.org>
+Message-ID: <20241212144332.150019226@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +61,180 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-commit ab244dd7cf4c291f82faacdc50b45cc0f55b674d upstream.
+[ Upstream commit 4ca7cd938725a4050dcd62ae9472e931d603118d ]
 
-Jordy reported issue against XSKMAP which also applies to DEVMAP - the
-index used for accessing map entry, due to being a signed integer,
-causes the OOB writes. Fix is simple as changing the type from int to
-u32, however, when compared to XSKMAP case, one more thing needs to be
-addressed.
+There is NULL pointer issue observed if from Process A where hid device
+being added which results in adding a led_cdev addition and later a
+another call to access of led_cdev attribute from Process B can result
+in NULL pointer issue.
 
-When map is released from system via dev_map_free(), we iterate through
-all of the entries and an iterator variable is also an int, which
-implies OOB accesses. Again, change it to be u32.
+Use mutex led_cdev->led_access to protect access to led->cdev and its
+attribute inside brightness_show() and max_brightness_show() and also
+update the comment for mutex that it should be used to protect the led
+class device fields.
 
-Example splat below:
+	Process A 				Process B
 
-[  160.724676] BUG: unable to handle page fault for address: ffffc8fc2c001000
-[  160.731662] #PF: supervisor read access in kernel mode
-[  160.736876] #PF: error_code(0x0000) - not-present page
-[  160.742095] PGD 0 P4D 0
-[  160.744678] Oops: Oops: 0000 [#1] PREEMPT SMP
-[  160.749106] CPU: 1 UID: 0 PID: 520 Comm: kworker/u145:12 Not tainted 6.12.0-rc1+ #487
-[  160.757050] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
-[  160.767642] Workqueue: events_unbound bpf_map_free_deferred
-[  160.773308] RIP: 0010:dev_map_free+0x77/0x170
-[  160.777735] Code: 00 e8 fd 91 ed ff e8 b8 73 ed ff 41 83 7d 18 19 74 6e 41 8b 45 24 49 8b bd f8 00 00 00 31 db 85 c0 74 48 48 63 c3 48 8d 04 c7 <48> 8b 28 48 85 ed 74 30 48 8b 7d 18 48 85 ff 74 05 e8 b3 52 fa ff
-[  160.796777] RSP: 0018:ffffc9000ee1fe38 EFLAGS: 00010202
-[  160.802086] RAX: ffffc8fc2c001000 RBX: 0000000080000000 RCX: 0000000000000024
-[  160.809331] RDX: 0000000000000000 RSI: 0000000000000024 RDI: ffffc9002c001000
-[  160.816576] RBP: 0000000000000000 R08: 0000000000000023 R09: 0000000000000001
-[  160.823823] R10: 0000000000000001 R11: 00000000000ee6b2 R12: dead000000000122
-[  160.831066] R13: ffff88810c928e00 R14: ffff8881002df405 R15: 0000000000000000
-[  160.838310] FS:  0000000000000000(0000) GS:ffff8897e0c40000(0000) knlGS:0000000000000000
-[  160.846528] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  160.852357] CR2: ffffc8fc2c001000 CR3: 0000000005c32006 CR4: 00000000007726f0
-[  160.859604] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  160.866847] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  160.874092] PKRU: 55555554
-[  160.876847] Call Trace:
-[  160.879338]  <TASK>
-[  160.881477]  ? __die+0x20/0x60
-[  160.884586]  ? page_fault_oops+0x15a/0x450
-[  160.888746]  ? search_extable+0x22/0x30
-[  160.892647]  ? search_bpf_extables+0x5f/0x80
-[  160.896988]  ? exc_page_fault+0xa9/0x140
-[  160.900973]  ? asm_exc_page_fault+0x22/0x30
-[  160.905232]  ? dev_map_free+0x77/0x170
-[  160.909043]  ? dev_map_free+0x58/0x170
-[  160.912857]  bpf_map_free_deferred+0x51/0x90
-[  160.917196]  process_one_work+0x142/0x370
-[  160.921272]  worker_thread+0x29e/0x3b0
-[  160.925082]  ? rescuer_thread+0x4b0/0x4b0
-[  160.929157]  kthread+0xd4/0x110
-[  160.932355]  ? kthread_park+0x80/0x80
-[  160.936079]  ret_from_fork+0x2d/0x50
-[  160.943396]  ? kthread_park+0x80/0x80
-[  160.950803]  ret_from_fork_asm+0x11/0x20
-[  160.958482]  </TASK>
+ kthread+0x114
+ worker_thread+0x244
+ process_scheduled_works+0x248
+ uhid_device_add_worker+0x24
+ hid_add_device+0x120
+ device_add+0x268
+ bus_probe_device+0x94
+ device_initial_probe+0x14
+ __device_attach+0xfc
+ bus_for_each_drv+0x10c
+ __device_attach_driver+0x14c
+ driver_probe_device+0x3c
+ __driver_probe_device+0xa0
+ really_probe+0x190
+ hid_device_probe+0x130
+ ps_probe+0x990
+ ps_led_register+0x94
+ devm_led_classdev_register_ext+0x58
+ led_classdev_register_ext+0x1f8
+ device_create_with_groups+0x48
+ device_create_groups_vargs+0xc8
+ device_add+0x244
+ kobject_uevent+0x14
+ kobject_uevent_env[jt]+0x224
+ mutex_unlock[jt]+0xc4
+ __mutex_unlock_slowpath+0xd4
+ wake_up_q+0x70
+ try_to_wake_up[jt]+0x48c
+ preempt_schedule_common+0x28
+ __schedule+0x628
+ __switch_to+0x174
+						el0t_64_sync+0x1a8/0x1ac
+						el0t_64_sync_handler+0x68/0xbc
+						el0_svc+0x38/0x68
+						do_el0_svc+0x1c/0x28
+						el0_svc_common+0x80/0xe0
+						invoke_syscall+0x58/0x114
+						__arm64_sys_read+0x1c/0x2c
+						ksys_read+0x78/0xe8
+						vfs_read+0x1e0/0x2c8
+						kernfs_fop_read_iter+0x68/0x1b4
+						seq_read_iter+0x158/0x4ec
+						kernfs_seq_show+0x44/0x54
+						sysfs_kf_seq_show+0xb4/0x130
+						dev_attr_show+0x38/0x74
+						brightness_show+0x20/0x4c
+						dualshock4_led_get_brightness+0xc/0x74
 
-Fixes: 546ac1ffb70d ("bpf: add devmap, a map for storing net device references")
-CC: stable@vger.kernel.org
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Suggested-by: Jordy Zomer <jordyzomer@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20241122121030.716788-3-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ 3313.874295][ T4013] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
+[ 3313.874301][ T4013] Mem abort info:
+[ 3313.874303][ T4013]   ESR = 0x0000000096000006
+[ 3313.874305][ T4013]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 3313.874307][ T4013]   SET = 0, FnV = 0
+[ 3313.874309][ T4013]   EA = 0, S1PTW = 0
+[ 3313.874311][ T4013]   FSC = 0x06: level 2 translation fault
+[ 3313.874313][ T4013] Data abort info:
+[ 3313.874314][ T4013]   ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
+[ 3313.874316][ T4013]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[ 3313.874318][ T4013]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[ 3313.874320][ T4013] user pgtable: 4k pages, 39-bit VAs, pgdp=00000008f2b0a000
+..
+
+[ 3313.874332][ T4013] Dumping ftrace buffer:
+[ 3313.874334][ T4013]    (ftrace buffer empty)
+..
+..
+[ dd3313.874639][ T4013] CPU: 6 PID: 4013 Comm: InputReader
+[ 3313.874648][ T4013] pc : dualshock4_led_get_brightness+0xc/0x74
+[ 3313.874653][ T4013] lr : led_update_brightness+0x38/0x60
+[ 3313.874656][ T4013] sp : ffffffc0b910bbd0
+..
+..
+[ 3313.874685][ T4013] Call trace:
+[ 3313.874687][ T4013]  dualshock4_led_get_brightness+0xc/0x74
+[ 3313.874690][ T4013]  brightness_show+0x20/0x4c
+[ 3313.874692][ T4013]  dev_attr_show+0x38/0x74
+[ 3313.874696][ T4013]  sysfs_kf_seq_show+0xb4/0x130
+[ 3313.874700][ T4013]  kernfs_seq_show+0x44/0x54
+[ 3313.874703][ T4013]  seq_read_iter+0x158/0x4ec
+[ 3313.874705][ T4013]  kernfs_fop_read_iter+0x68/0x1b4
+[ 3313.874708][ T4013]  vfs_read+0x1e0/0x2c8
+[ 3313.874711][ T4013]  ksys_read+0x78/0xe8
+[ 3313.874714][ T4013]  __arm64_sys_read+0x1c/0x2c
+[ 3313.874718][ T4013]  invoke_syscall+0x58/0x114
+[ 3313.874721][ T4013]  el0_svc_common+0x80/0xe0
+[ 3313.874724][ T4013]  do_el0_svc+0x1c/0x28
+[ 3313.874727][ T4013]  el0_svc+0x38/0x68
+[ 3313.874730][ T4013]  el0t_64_sync_handler+0x68/0xbc
+[ 3313.874732][ T4013]  el0t_64_sync+0x1a8/0x1ac
+
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Reviewed-by: Anish Kumar <yesanishhere@gmail.com>
+Link: https://lore.kernel.org/r/20241103160527.82487-1-quic_mojha@quicinc.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/devmap.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/leds/led-class.c | 14 +++++++++++---
+ include/linux/leds.h     |  2 +-
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -198,7 +198,7 @@ static struct bpf_map *dev_map_alloc(uni
- static void dev_map_free(struct bpf_map *map)
+diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+index 6e88df4c87fa8..1e4fed64aee18 100644
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -28,11 +28,14 @@ static ssize_t brightness_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
  {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
--	int i;
-+	u32 i;
+ 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
++	unsigned int brightness;
  
- 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
- 	 * so the programs (can be more than one that used this map) were
-@@ -557,7 +557,7 @@ static int dev_map_delete_elem(struct bp
+-	/* no lock needed for this */
++	mutex_lock(&led_cdev->led_access);
+ 	led_update_brightness(led_cdev);
++	brightness = led_cdev->brightness;
++	mutex_unlock(&led_cdev->led_access);
+ 
+-	return sprintf(buf, "%u\n", led_cdev->brightness);
++	return sprintf(buf, "%u\n", brightness);
+ }
+ 
+ static ssize_t brightness_store(struct device *dev,
+@@ -69,8 +72,13 @@ static ssize_t max_brightness_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
  {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
+ 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
++	unsigned int max_brightness;
++
++	mutex_lock(&led_cdev->led_access);
++	max_brightness = led_cdev->max_brightness;
++	mutex_unlock(&led_cdev->led_access);
  
- 	if (k >= map->max_entries)
- 		return -EINVAL;
-@@ -579,7 +579,7 @@ static int dev_map_hash_delete_elem(stru
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
- 	unsigned long flags;
- 	int ret = -ENOENT;
+-	return sprintf(buf, "%u\n", led_cdev->max_brightness);
++	return sprintf(buf, "%u\n", max_brightness);
+ }
+ static DEVICE_ATTR_RO(max_brightness);
  
+diff --git a/include/linux/leds.h b/include/linux/leds.h
+index 79ab2dfd3c72f..01fccb1c50010 100644
+--- a/include/linux/leds.h
++++ b/include/linux/leds.h
+@@ -161,7 +161,7 @@ struct led_classdev {
+ 	struct kernfs_node	*brightness_hw_changed_kn;
+ #endif
+ 
+-	/* Ensures consistent access to the LED Flash Class device */
++	/* Ensures consistent access to the LED class device */
+ 	struct mutex		led_access;
+ };
+ 
+-- 
+2.43.0
+
 
 
 
