@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F229EF080
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC3D9EEC44
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6CA9292AE9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F8A2188542F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C780C2288EA;
-	Thu, 12 Dec 2024 16:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625A1217F46;
+	Thu, 12 Dec 2024 15:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dax7vTf7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nd+S942U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86354222D74;
-	Thu, 12 Dec 2024 16:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5AB2135C1;
+	Thu, 12 Dec 2024 15:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020276; cv=none; b=U2fHhrraYmCoRfnx7yFrxpnIAxzMmmtgFNZ6jYMClZVmEwWTw2XcMzOzy/88/qeRq99p7A8bEiIMHcPxCJa4Hzu5Ez6xEDbmFVJj+FQWJo/awf/eGrlX18D3bxLcfExT0cBlLbt+Lpli/v5o8rpMzGAvj6m1RYUx8HU1HEZ/Kis=
+	t=1734017465; cv=none; b=XvCG3yjjft2SE3QPuiucIFqwU12HTVo5yv4iclHmVF3rHDPl+wIkjJly2b75y6l4zXGhxQjewVcLLui+xhtECvj3gUv5uvgDrpQca6L7IBEQDQcuUzvD1/ZC9QJp2jIFKz/NgQmDYOQtSbKqCx5pUPo9xL+gI7F4LNcf9bDHnaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020276; c=relaxed/simple;
-	bh=EtOUdIP31eZu1ixrjaC3xp5VuGy/z+9h76CbkksSQIE=;
+	s=arc-20240116; t=1734017465; c=relaxed/simple;
+	bh=Luf2JNkb4+qisc7qc/JIdGvnH6wsMXEUz3uwt033RBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWB5xjorM+6UoeKF+Lt8CgTitfEW/TA9jnoGnHbvIrFJQenUwnx/BXHBhrU/BUA5RxpGDajL4fUkr7yNMNIaCkvaOOR/KYZhrrpbEm+PwubO78E3as/8gGOc3M1Kcbmm1FGoT+QCgVOrZukeytbXte+glopFu684VdCI8jmhWGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dax7vTf7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAF8C4CECE;
-	Thu, 12 Dec 2024 16:17:55 +0000 (UTC)
+	 MIME-Version; b=d8Aiu4yUob4D9F0NjjbJr4xgATPIVI+vVqR0XFMXyLEmmxnuFRYHdsURXjO7q0qvHbgjPpGqeDtpTvBxZaw9lhW7Z3xpW7lnQr0FFzc9H1DbGWNS5MV8COVmqY1WEZ1/FP7l9ohXtGDcqRSGbRBg15WdODbjJYxrZ2V/ytgl9T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nd+S942U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC80C4CECE;
+	Thu, 12 Dec 2024 15:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020276;
-	bh=EtOUdIP31eZu1ixrjaC3xp5VuGy/z+9h76CbkksSQIE=;
+	s=korg; t=1734017465;
+	bh=Luf2JNkb4+qisc7qc/JIdGvnH6wsMXEUz3uwt033RBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dax7vTf7Z93W0PyqSUMYojLs3s+xmSqQYq4BnTGcOzEXfuYQLwiAqvrD+JwsheQcS
-	 h/RJiTo9pFCOrJI1xoYPtb+K/YoYvA3peqjppETYGnZbi7xWiIfcA++96F2nYz9ACP
-	 cTKXK9CFbh/FJwMxfPICLQYZ9yMZQbtKwHyf6iC8=
+	b=nd+S942UtqfR6qW5VM8OclKFBGmo2E9rK8rCoYcjELOJaQquJx2YTM1ep//+xB3my
+	 0wOJzEpmhMlDsKFl14VRRfwltYBYo2nIY+dPM/5miG9TarpARw6HcuTjTxOx5eRHRJ
+	 iMfOqOMiFS3P5oi51jprUTJ8R8bVYuiLUGhHq5pE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.1 394/772] cpufreq: mediatek-hw: Fix wrong return value in mtk_cpufreq_get_cpu_power()
+	Maximilian Heyne <mheyne@amazon.de>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 020/356] selftests: hid: fix typo and exit code
 Date: Thu, 12 Dec 2024 15:55:39 +0100
-Message-ID: <20241212144406.194425869@linuxfoundation.org>
+Message-ID: <20241212144245.418042654@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-commit 172bf5ed04cb6c9e66d58de003938ed5c8756570 upstream.
+[ Upstream commit e8f34747bddedaf3895e5d5066e0f71713fff811 ]
 
-mtk_cpufreq_get_cpu_power() return 0 if the policy is NULL. Then in
-em_create_perf_table(), the later zero check for power is not invalid
-as power is uninitialized. As Lukasz suggested, it must return -EINVAL when
-the 'policy' is not found. So return -EINVAL to fix it.
+The correct exit code to mark a test as skipped is 4.
 
-Cc: stable@vger.kernel.org
-Fixes: 4855e26bcf4d ("cpufreq: mediatek-hw: Add support for CPUFREQ HW")
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Suggested-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ffb85d5c9e80 ("selftests: hid: import hid-tools hid-core tests")
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Link: https://patch.msgid.link/20241126135850.76493-1-mheyne@amazon.de
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/mediatek-cpufreq-hw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../testing/selftests/hid/run-hid-tools-tests.sh | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/cpufreq/mediatek-cpufreq-hw.c
-+++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
-@@ -62,7 +62,7 @@ mtk_cpufreq_get_cpu_power(struct device
+diff --git a/tools/testing/selftests/hid/run-hid-tools-tests.sh b/tools/testing/selftests/hid/run-hid-tools-tests.sh
+index bdae8464da865..af1682a53c27e 100755
+--- a/tools/testing/selftests/hid/run-hid-tools-tests.sh
++++ b/tools/testing/selftests/hid/run-hid-tools-tests.sh
+@@ -2,24 +2,26 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Runs tests for the HID subsystem
  
- 	policy = cpufreq_cpu_get_raw(cpu_dev->id);
- 	if (!policy)
--		return 0;
-+		return -EINVAL;
++KSELFTEST_SKIP_TEST=4
++
+ if ! command -v python3 > /dev/null 2>&1; then
+ 	echo "hid-tools: [SKIP] python3 not installed"
+-	exit 77
++	exit $KSELFTEST_SKIP_TEST
+ fi
  
- 	data = policy->driver_data;
+ if ! python3 -c "import pytest" > /dev/null 2>&1; then
+-	echo "hid: [SKIP/ pytest module not installed"
+-	exit 77
++	echo "hid: [SKIP] pytest module not installed"
++	exit $KSELFTEST_SKIP_TEST
+ fi
  
+ if ! python3 -c "import pytest_tap" > /dev/null 2>&1; then
+-	echo "hid: [SKIP/ pytest_tap module not installed"
+-	exit 77
++	echo "hid: [SKIP] pytest_tap module not installed"
++	exit $KSELFTEST_SKIP_TEST
+ fi
+ 
+ if ! python3 -c "import hidtools" > /dev/null 2>&1; then
+-	echo "hid: [SKIP/ hid-tools module not installed"
+-	exit 77
++	echo "hid: [SKIP] hid-tools module not installed"
++	exit $KSELFTEST_SKIP_TEST
+ fi
+ 
+ TARGET=${TARGET:=.}
+-- 
+2.43.0
+
 
 
 
