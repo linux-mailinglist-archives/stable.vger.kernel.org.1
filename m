@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-102344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0519EF2D0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760909EEB9A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C3731895658
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BD911654FE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FAF22967C;
-	Thu, 12 Dec 2024 16:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F390A212B0F;
+	Thu, 12 Dec 2024 15:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbcKgBUx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8RQipg7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DDB20969B;
-	Thu, 12 Dec 2024 16:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21AD2AF0E;
+	Thu, 12 Dec 2024 15:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020886; cv=none; b=By2AY+eCHbuPPKhLbiBMH3Lpnh5twuYWUs+mnThYeeT/oIxajI+/O0TG1VmsqhIEyOKyljLUonL0uOABiJ+CpkcdCu3JPycoUd7LWv4oKze8d+vjYnUOQWrscJ0ShfzHu0WFLQDN7AOJnAdVHrf2jy7rZD89BfVdY6h5Xzvbu0g=
+	t=1734016922; cv=none; b=FsqyXjBqh03uJ2RfTTtP7uR2mDIaLgSPcP3VSbmTXKh4jX6aC/i3jkVGtXs1csTIFVcrKZ5qMIjXOP8hCPVBdq8fiDQFIClSOc61G023ta5dN8tVKZ57n8mk1x3YbFZL/TYLa23L20LEanbIgWbi7B/hu3bec1GnY9XOQLzJvE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020886; c=relaxed/simple;
-	bh=QhXZg64Ig6KJmSZGcupjzC7icSlf6aYOcXjcFjf6wug=;
+	s=arc-20240116; t=1734016922; c=relaxed/simple;
+	bh=ekLGgfUQm5XPbBkZS54rMm9hezrqNA3uitJuwX6ieL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UxnGRG6zhp1lmm23sJW3neUGsFiSbWIYeKP9Bd27RYGU6Jyuc+j0hj9j2p4oFEtyLrQ6T3fazqClbxgLWkj8sGp2D6nGxLmd9blQXN0s0q0SBbqbqb+eeUadZKVhB3VEgUE5NeqjexoHrzK7sdHbvo74C/s7QlaceSMvfLH8ApE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbcKgBUx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A920C4CECE;
-	Thu, 12 Dec 2024 16:28:05 +0000 (UTC)
+	 MIME-Version; b=Ob8zBsitZ+mVn94xWKkMsay5a7up9XxJcjdHatcYLwNDeiv+OwDrCyjOH8rQfnwPo4lUmv2dK+y5Wo3qEf0c6VuMxERVhQoPTdAvOR658GKBmpZ01fDpiqCb20ks/cTjjopYa96q8DT3+219nV3lzjGDjSeaQ3RvXK8GVVUjY5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8RQipg7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68B5C4CEE0;
+	Thu, 12 Dec 2024 15:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020886;
-	bh=QhXZg64Ig6KJmSZGcupjzC7icSlf6aYOcXjcFjf6wug=;
+	s=korg; t=1734016922;
+	bh=ekLGgfUQm5XPbBkZS54rMm9hezrqNA3uitJuwX6ieL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZbcKgBUxSfNWu8du2OJKnLWCoA2ZUdEmyn5C0YJ9B5vNbUJkNYUUHrQbyjkWY6M7a
-	 jBMsZN3ImILlydQwfuePz7f5eIdEPzg9fcrMLqrklcPTJT6mRxweHXI5JFrPM4JDw+
-	 CFVrfLhXtSOnrT95flS75WcjGQ1mvJaKSMT4PYWQ=
+	b=Q8RQipg7OhaukN4uRMo39iNSH/3QDyUlY0jwTXS2YyGAQd7el4knD9dzX14AozWFj
+	 mFh9GXL33spFXOBvMW2B+8HfnjVsFE6j/ViWTM/JeCsKM+OpSIidiuBOeKj0xAIi8y
+	 KfaKVZGpG5/kqsY861u6JV7e8CvW6wSBN6YRn9Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Segher Boessenkool <segher@kernel.crashing.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Norbert van Bolhuis <nvbolhuis@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 557/772] powerpc/vdso: Remove unused -s flag from ASFLAGS
-Date: Thu, 12 Dec 2024 15:58:22 +0100
-Message-ID: <20241212144412.982712495@linuxfoundation.org>
+Subject: [PATCH 6.12 334/466] wifi: brcmfmac: Fix oops due to NULL pointer dereference in brcmf_sdiod_sglist_rw()
+Date: Thu, 12 Dec 2024 15:58:23 +0100
+Message-ID: <20241212144319.982674083@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,55 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Norbert van Bolhuis <nvbolhuis@gmail.com>
 
-[ Upstream commit 024734d132846dcb27f07deb1ec5be64d4cbfae9 ]
+[ Upstream commit 857282b819cbaa0675aaab1e7542e2c0579f52d7 ]
 
-When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
-warns:
+This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
+when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
+are sent from the pkt queue.
 
-  clang-16: error: argument unused during compilation: '-s' [-Werror,-Wunused-command-line-argument]
+The problem is the number of entries in the pre-allocated sgtable, it is
+nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
+Given the default [rt]xglom_size=32 it's actually 35 which is too small.
+Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
+is added for each original SKB if tailroom isn't enough to hold tail_pad.
+At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
+in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
+NULL and this causes the oops.
 
-The compiler's '-s' flag is a linking option (it is passed along to the
-linker directly), which means it does nothing when the linker is not
-invoked by the compiler. The kernel builds all .o files with '-c', which
-stops the compilation pipeline before linking, so '-s' can be safely
-dropped from ASFLAGS.
+The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
+the worst-case.
+Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
+additional bytes of memory.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Stable-dep-of: d677ce521334 ("powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang")
+Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241107132903.13513-1-nvbolhuis@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/vdso/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 6a977b0d8ffc3..45c0cc5d34b64 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -51,10 +51,10 @@ ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
- ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index d35262335eaf7..8a1e337642448 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -770,7 +770,7 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev)
  
- CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
--AS32FLAGS := -D__VDSO32__ -s
-+AS32FLAGS := -D__VDSO32__
+ 	nents = max_t(uint, BRCMF_DEFAULT_RXGLOM_SIZE,
+ 		      sdiodev->settings->bus.sdio.txglomsz);
+-	nents += (nents >> 4) + 1;
++	nents *= 2;
  
- CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
--AS64FLAGS := -D__VDSO64__ -s
-+AS64FLAGS := -D__VDSO64__
+ 	WARN_ON(nents > sdiodev->max_segment_count);
  
- targets += vdso32.lds
- CPPFLAGS_vdso32.lds += -P -C -Upowerpc
 -- 
 2.43.0
 
