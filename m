@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534AC9EEA75
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:14:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB2C9EF438
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97F03188C93E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 013BD17E5C7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4FB216E0B;
-	Thu, 12 Dec 2024 15:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E683C23A1A2;
+	Thu, 12 Dec 2024 16:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ABgqG3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yH4j0UEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBC521660C;
-	Thu, 12 Dec 2024 15:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FEA229692;
+	Thu, 12 Dec 2024 16:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016148; cv=none; b=Y4L21+dZFH1jf9/wGepvgm2fjU11Xq4Z0t4JeqnYxYdhb27GYo5IRNZnpUbHTp/Ftqiah0oGIL0WW+JkbZXHVGBmpmx2yuFsjER9oksc0gOhecoW5+cplsQy97O+tUIm4UUmeh5vvdQiFSvoKx1fn5o5jvZKYafjEuRpZlYmWF0=
+	t=1734022032; cv=none; b=ImqSR+l3vmOkV6dV4UuinVX7MrAZTdwAAP32INGgmoPyw2028FHi6p+dz1w3jYpxJUqHdVV4mUwuk6vF0EFxah6eMm0qRDEfyGjBzMBw+oarbCJS9g9wyySi0/jU2IZ8I/aeRFqKI2gz2wlqkUM5guEEqgh1txPvwWhiZMELeU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016148; c=relaxed/simple;
-	bh=FR7PI+MSJSPhE0pLxnJjH2RA6DHsUNilWXOLKwTzTnQ=;
+	s=arc-20240116; t=1734022032; c=relaxed/simple;
+	bh=1AmttdjwYf+SGfezzAAsLA7ebyxy38x4AjE7OE2MLXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SMbptd15nSh8nL/DprKnIBviAo00ScjQZFL9vZO5fqnoDroL3MxHKPYQmPEur/aYeVK+mUhkxfq5SRY9iC5r17Hr3P66sjECEkpTpFwXrKcF+afEl0BeN9G72+upFCYekwb86sySd4WJecwp2eRZGPbGnHZAftDV3b5AR23C0s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ABgqG3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A544C4CECE;
-	Thu, 12 Dec 2024 15:09:07 +0000 (UTC)
+	 MIME-Version; b=j8QqVwUELg1TeOO7MNuQkMXANhCBLELt9NK66E4wQ0MPWuvYSsI+MdxL9ZuJ9q4ufzQNly82l5vHf07etCYeBUx96G0bQQ8JzJR0Ds0e6qMUkZd59uRfamOhT819FxPunW6y3sNmQIWLExx9GzahiG087CjqbCJQWxP69tUxFHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yH4j0UEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D64C4CECE;
+	Thu, 12 Dec 2024 16:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016148;
-	bh=FR7PI+MSJSPhE0pLxnJjH2RA6DHsUNilWXOLKwTzTnQ=;
+	s=korg; t=1734022032;
+	bh=1AmttdjwYf+SGfezzAAsLA7ebyxy38x4AjE7OE2MLXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ABgqG3ylf+0uSfc8lerIqJK2n+TZblmjtQjeHI7Dk7t6IHxK18VpAL4w/bZq1325
-	 apqsOT1LuTd1AoTpOZcoDYEOG3Bl1FjnuNynJxYRaqt7nOR7JUmkzdNK5e9xHUZTKg
-	 kSamdz1xw8rWx/K/Za6e0vdcq5kGk7XNFrM9DwNc=
+	b=yH4j0UEkoSbmyID3uU4MQ88a0nAsOIgcarcM1cA1ZkdYJQLkThlo+1kvsKtmEYQT5
+	 AhXWKBcOXBNOcpY1NKaPiV+BA3RSL4Fds7SdTb6QcduSbfzjKanZ6XEAGsut+FW5vs
+	 p+dMiigWUQlAVO4lEt2EmcTrr7v0+ahKfaJ1QJFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 146/466] scsi: qla2xxx: Fix NVMe and NPIV connect issue
-Date: Thu, 12 Dec 2024 15:55:15 +0100
-Message-ID: <20241212144312.564804171@linuxfoundation.org>
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 121/565] arm64: dts: mt8183: fennel: add i2c2s i2c-scl-internal-delay-ns
+Date: Thu, 12 Dec 2024 15:55:16 +0100
+Message-ID: <20241212144316.264804561@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>
 
-commit 4812b7796c144f63a1094f79a5eb8fbdad8d7ebc upstream.
+[ Upstream commit c802db127dfb9602aaa9338e433c0553d34f1a9c ]
 
-NVMe controller fails to send connect command due to failure to locate
-hw context buffer for NVMe queue 0 (blk_mq_hw_ctx, hctx_idx=0). The
-cause of the issue is NPIV host did not initialize the vha->irq_offset
-field.  This field is given to blk-mq (blk_mq_pci_map_queues) to help
-locate the beginning of IO Queues which in turn help locate NVMe queue
-0.
+Add i2c2's i2c-scl-internal-delay-ns.
 
-Initialize this field to allow NVMe to work properly with NPIV host.
-
- kernel: nvme nvme5: Connect command failed, errno: -18
- kernel: nvme nvme5: qid 0: secure concatenation is not supported
- kernel: nvme nvme5: NVME-FC{5}: create_assoc failed, assoc_id 2e9100 ret 401
- kernel: nvme nvme5: NVME-FC{5}: reset: Reconnect attempt failed (401)
- kernel: nvme nvme5: NVME-FC{5}: Reconnect attempt in 2 seconds
-
-Cc: stable@vger.kernel.org
-Fixes: f0783d43dde4 ("scsi: qla2xxx: Use correct number of vectors for online CPUs")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6cd7fdc8c530 ("arm64: dts: mt8183: Add kukui-jacuzzi-fennel board")
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daolong Zhu <jg_daolongzhu@mediatek.corp-partner.google.com>
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by:
+Link: https://lore.kernel.org/r/20241025-i2c-delay-v2-1-9be1bcaf35e0@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_mid.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_mid.c
-+++ b/drivers/scsi/qla2xxx/qla_mid.c
-@@ -506,6 +506,7 @@ qla24xx_create_vhost(struct fc_vport *fc
- 		return(NULL);
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi
+index bbe6c338f465e..f9c1ec366b266 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel.dtsi
+@@ -25,3 +25,6 @@ trackpad@2c {
+ 	};
+ };
  
-+	vha->irq_offset = QLA_BASE_VECTORS;
- 	host = vha->host;
- 	fc_vport->dd_data = vha;
- 	/* New host info */
++&i2c2 {
++	i2c-scl-internal-delay-ns = <21500>;
++};
+-- 
+2.43.0
+
 
 
 
