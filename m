@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854DA9EF418
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5FA9EF156
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 700E9189A3F7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 091421896F93
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FC02358AE;
-	Thu, 12 Dec 2024 16:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470B122689C;
+	Thu, 12 Dec 2024 16:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16XF9UJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12glVAgy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689A12358A6;
-	Thu, 12 Dec 2024 16:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032A2226864;
+	Thu, 12 Dec 2024 16:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021841; cv=none; b=aS/qFWafzKfERcvAf9KJmUk4L5eVX1nZTh/8ast1z/qzvD6GUPMHEJxhKl1WJckAuHbOVRKLWEUpO3I05D7px8Y/4m/zyRQ7d4JhvBPHNJASz/XBIr4g0w0NIABT1sXo1QiqRzmdNV49iUhmsOM5Jwh08gRdfI5qpJNXA5F7FjI=
+	t=1734020025; cv=none; b=VDw9tDjNNJ/ssS2ti1WDsZ83V1jS+9AJggVRnEhTajtoLIRHdwpl1UsifEp6Q3EaP9zPwuMsMLLNDTZ9vL46oAjmU5/rciNWG28ksamSltdcHn1hGsa1xxWN3PLY2tCEha+i8JyfTMxppIzYRyczwp4G1AR+CjhuLpRcWA3u9lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021841; c=relaxed/simple;
-	bh=VdaOEmcH189KEFVjhdKmNeITIMsfl/ARkpNOfsda7DI=;
+	s=arc-20240116; t=1734020025; c=relaxed/simple;
+	bh=7IyJJW/2Yn4McdpotqLvU76TjzHuhdkxAKjys5ZF8dA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUXaXqHjUCrQdi8C1SLRMFu3k5jWXTYSzKYEurQhVVnUCJYsEKukfykT/08BH98f90s8186dCzZsANR3zAEZVypSGlQpk74R4O17xAsjJTxygCIYYvoG6I+t3cX3Ibs9m+A1cEVS6bGmsT31pI8PITOPUoFRpa1r2eegykxYC+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16XF9UJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC891C4CECE;
-	Thu, 12 Dec 2024 16:44:00 +0000 (UTC)
+	 MIME-Version; b=dHYOT4zTnNebDMnz9+y5JfINIGrllZKEbt4IVNdt0plBFVdgnBk0MOqyXYbLeUtXwWcvBxotyBkS2uBMuijkYOTFOgVkRsqxBw1N6y3gRHMRZB5gzz6mL+HjHQznJR+CUt9viPPEJVt11To60F425lagD8SYN2KGSdNCpuT2nn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12glVAgy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E266AC4CECE;
+	Thu, 12 Dec 2024 16:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021841;
-	bh=VdaOEmcH189KEFVjhdKmNeITIMsfl/ARkpNOfsda7DI=;
+	s=korg; t=1734020024;
+	bh=7IyJJW/2Yn4McdpotqLvU76TjzHuhdkxAKjys5ZF8dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16XF9UJKryb7mpKj5iN8ZEiYiKQ13PLSiOZkSRqlJpwEuiF96t35DpkKAM0ejjB4N
-	 GsmsXkf18o/odNzR0e/vYREA9Itrrm7ihqOBHeacWDZvFeKojrVhquHxTnjJw3/Foc
-	 c9ng3LKS/rRD7kpT7SpQ4vQ0d2glF/lsxhM1yheg=
+	b=12glVAgyLtzp0zhvWqT5p3LELdZj9cbsiPKYDueyzziDS2aN8eQEc7QGEhOdOLi3Y
+	 mVjIHuw0iX9BQtwsZsSH8sELxmsYRoz/Q4Ytli+R2XvFfxDnU3zkQP+INd1QLKU2jb
+	 fX1V2VptUL+AJW2PRmCzf1E0e2I7rKNq9UMAfUtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/565] kselftest/arm64: mte: fix printf type warnings about longs
-Date: Thu, 12 Dec 2024 15:54:32 +0100
-Message-ID: <20241212144314.532820285@linuxfoundation.org>
+Subject: [PATCH 6.1 328/772] usb: yurex: make waiting on yurex_write interruptible
+Date: Thu, 12 Dec 2024 15:54:33 +0100
+Message-ID: <20241212144403.461326491@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 96dddb7b9406259baace9a1831e8da155311be6f ]
+[ Upstream commit e0aa9614ab0fd35b404e4b16ebe879f9fc152591 ]
 
-When checking MTE tags, we print some diagnostic messages when the tests
-fail. Some variables uses there are "longs", however we only use "%x"
-for the format specifier.
+The IO yurex_write() needs to wait for in order to have a device
+ready for writing again can take a long time time.
+Consequently the sleep is done in an interruptible state.
+Therefore others waiting for yurex_write() itself to finish should
+use mutex_lock_interruptible.
 
-Update the format specifiers to "%lx", to match the variable types they
-are supposed to print.
-
-Fixes: f3b2a26ca78d ("kselftest/arm64: Verify mte tag inclusion via prctl")
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240816153251.2833702-9-andre.przywara@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 6bc235a2e24a5 ("USB: add driver for Meywa-Denki & Kayac YUREX")
+Rule: add
+Link: https://lore.kernel.org/stable/20240924084415.300557-1-oneukum%40suse.com
+Link: https://lore.kernel.org/r/20240924084415.300557-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/mte/check_tags_inclusion.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/misc/iowarrior.c | 4 ----
+ drivers/usb/misc/yurex.c     | 5 ++++-
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
-index deaef1f610768..74a3727f640de 100644
---- a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
-+++ b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
-@@ -57,7 +57,7 @@ static int check_single_included_tags(int mem_type, int mode)
- 			ptr = (char *)mte_insert_tags(ptr, BUFFER_SIZE);
- 			/* Check tag value */
- 			if (MT_FETCH_TAG((uintptr_t)ptr) == tag) {
--				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
-+				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%x\n",
- 					       MT_FETCH_TAG((uintptr_t)ptr),
- 					       MT_INCLUDE_VALID_TAG(tag));
- 				result = KSFT_FAIL;
-@@ -89,7 +89,7 @@ static int check_multiple_included_tags(int mem_type, int mode)
- 			ptr = (char *)mte_insert_tags(ptr, BUFFER_SIZE);
- 			/* Check tag value */
- 			if (MT_FETCH_TAG((uintptr_t)ptr) < tag) {
--				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
-+				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%lx\n",
- 					       MT_FETCH_TAG((uintptr_t)ptr),
- 					       MT_INCLUDE_VALID_TAGS(excl_mask));
- 				result = KSFT_FAIL;
+diff --git a/drivers/usb/misc/iowarrior.c b/drivers/usb/misc/iowarrior.c
+index 2fde8dd0b3e21..5606c5a2624a7 100644
+--- a/drivers/usb/misc/iowarrior.c
++++ b/drivers/usb/misc/iowarrior.c
+@@ -912,7 +912,6 @@ static int iowarrior_probe(struct usb_interface *interface,
+ static void iowarrior_disconnect(struct usb_interface *interface)
+ {
+ 	struct iowarrior *dev = usb_get_intfdata(interface);
+-	int minor = dev->minor;
+ 
+ 	usb_deregister_dev(interface, &iowarrior_class);
+ 
+@@ -936,9 +935,6 @@ static void iowarrior_disconnect(struct usb_interface *interface)
+ 		mutex_unlock(&dev->mutex);
+ 		iowarrior_delete(dev);
+ 	}
+-
+-	dev_info(&interface->dev, "I/O-Warror #%d now disconnected\n",
+-		 minor - IOWARRIOR_MINOR_BASE);
+ }
+ 
+ /* usb specific object needed to register this driver with the usb subsystem */
+diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
+index c313cd41f7a5a..0eed614ac1273 100644
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -441,7 +441,10 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
+ 	if (count == 0)
+ 		goto error;
+ 
+-	mutex_lock(&dev->io_mutex);
++	retval = mutex_lock_interruptible(&dev->io_mutex);
++	if (retval < 0)
++		return -EINTR;
++
+ 	if (dev->disconnected) {		/* already disconnected */
+ 		mutex_unlock(&dev->io_mutex);
+ 		retval = -ENODEV;
 -- 
 2.43.0
 
