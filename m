@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37359EF759
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8A29EF8FE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5FA71896737
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7797D188F38F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B37217F34;
-	Thu, 12 Dec 2024 17:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4322210F1;
+	Thu, 12 Dec 2024 17:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yE7w0s/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z33v7hSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A71215764;
-	Thu, 12 Dec 2024 17:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08128216E2D;
+	Thu, 12 Dec 2024 17:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024427; cv=none; b=iunfgPamsPj2rBAvOwBnC+CumfQxF+riPpZ2jYB2TybWNBjeOhg7eujf6AlGpq+uRrpZLyb18WtBA0OdorIHQJEDEZw5PCgOXMnh0XR0HQnDtNhTUKU4NM9fwx7YB491AOvygh2ktdjFt94ykbKCOvGy6RycVT6tBfRFfYf5f5w=
+	t=1734025358; cv=none; b=nk0WFno8fg1Ge/13TSa4atMaizxHYEGoS6OhIcAwbWmh/uGdx3KHjB8bJdOr3q+dS6U3MK5iuOOZzdjwPAbDuBfP2eyV3WwagfjOGQ23gIbWR+uQE7+1Hc+MmK/wTEPjYh+vI80vuuzwchOVgs9Mt+zrOQn+wP9jsUQcMFXIrbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024427; c=relaxed/simple;
-	bh=vNXzokRIQWrPPY1QjAKOniy+3XwTHEaG3yFOyOla1i8=;
+	s=arc-20240116; t=1734025358; c=relaxed/simple;
+	bh=lBI/ORXBr9Dw7g6aelKFQ5G7OZLgreiaoCCA/IhJQF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQXXIaNnDmawqXbQRXCEM0nue/EJkaam2JJWKJkWOdGtOXvsRkGJgGKsxZnU/w3ZnyyIslBBsgxhb6TibaA3bTxYRGwLfActVzxn0w86TzKCMUhvIN4lkqFOFfltBTEYA3+lA6mlApdKtyo59Zyej9cYkEjX7Wv7dd1WkZVZcL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yE7w0s/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEAFC4CED0;
-	Thu, 12 Dec 2024 17:27:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fWt3J04rLtb4v9cdU9fIvtMguDCeZWvzJDQ4Tng1w9B689nCtRi2yne+sZhL4JAydMMn1+FqiI97X0ITIA+1orjMiaVxfGGnd2QBB64VYDRRYsayvJsnjCmvDAFns4joDvg1/IuuGTPRbt5G2obH6paXjv0+QorwgbuBFXBHM0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z33v7hSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867F5C4CECE;
+	Thu, 12 Dec 2024 17:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024427;
-	bh=vNXzokRIQWrPPY1QjAKOniy+3XwTHEaG3yFOyOla1i8=;
+	s=korg; t=1734025357;
+	bh=lBI/ORXBr9Dw7g6aelKFQ5G7OZLgreiaoCCA/IhJQF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yE7w0s/IumCMz8GSx+TQwhEzX+RG7y7a/zqjzyKXBPhZeEf621bNv+IpNusap/G2W
-	 3FPhH7juRmVvOdxuhZ97CSi037BJpFp4YC5FcfIVr+0JxfogUCgM+WkmY8ARcFT63c
-	 N6LdPrxzHETT44gKjdeJpm0e6gU+/59Q/TlPGT4o=
+	b=Z33v7hSIaqCbhNUnB2VvOk9wqQnujFwd8UeHmExDWXhbZXIB1A08+q9TkWw7flDGh
+	 7p4rfVdmtoKTLVecUr1Mi59E4bW0UvTJoSIyunqJxaXbavNkGb1eoHlMOWBvhUGW1/
+	 xijAOrz8geUXG/Dka7aC86CH5UB5E+dy7KHxgGEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Gebben <jgebben@sweptlaser.com>,
-	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 293/459] rtc: abx80x: Fix WDT bit position of the status register
+Subject: [PATCH 5.4 113/321] PCI: cpqphp: Fix PCIBIOS_* return value confusion
 Date: Thu, 12 Dec 2024 16:00:31 +0100
-Message-ID: <20241212144305.207832683@linuxfoundation.org>
+Message-ID: <20241212144234.446973062@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 10e078b273ee7a2b8b4f05a64ac458f5e652d18d ]
+[ Upstream commit e2226dbc4a4919d9c8bd9293299b532090bdf020 ]
 
-The WDT bit in the status register is 5, not 6. This fixes from 6 to 5.
+Code in and related to PCI_RefinedAccessConfig() has three types of return
+type confusion:
 
-Link: https://abracon.com/Support/AppsManuals/Precisiontiming/AB08XX-Application-Manual.pdf
-Link: https://www.microcrystal.com/fileadmin/Media/Products/RTC/App.Manual/RV-1805-C3_App-Manual.pdf
-Fixes: 749e36d0a0d7 ("rtc: abx80x: add basic watchdog support")
-Cc: Jeremy Gebben <jgebben@sweptlaser.com>
-Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-Link: https://lore.kernel.org/r/20241008041737.1640633-1-iwamatsu@nigauri.org
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+ - PCI_RefinedAccessConfig() tests pci_bus_read_config_dword() return value
+   against -1.
+
+ - PCI_RefinedAccessConfig() returns both -1 and PCIBIOS_* return codes.
+
+ - Callers of PCI_RefinedAccessConfig() only test for -1.
+
+Make PCI_RefinedAccessConfig() return PCIBIOS_* codes consistently and
+adapt callers accordingly.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/r/20241022091140.3504-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-abx80x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/hotplug/cpqphp_pci.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index 803725b3a02c3..034b314fb3ec9 100644
---- a/drivers/rtc/rtc-abx80x.c
-+++ b/drivers/rtc/rtc-abx80x.c
-@@ -37,7 +37,7 @@
- #define ABX8XX_REG_STATUS	0x0f
- #define ABX8XX_STATUS_AF	BIT(2)
- #define ABX8XX_STATUS_BLF	BIT(4)
--#define ABX8XX_STATUS_WDT	BIT(6)
-+#define ABX8XX_STATUS_WDT	BIT(5)
+diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
+index a20875da4ec70..ce6eb71a63599 100644
+--- a/drivers/pci/hotplug/cpqphp_pci.c
++++ b/drivers/pci/hotplug/cpqphp_pci.c
+@@ -135,11 +135,13 @@ int cpqhp_unconfigure_device(struct pci_func *func)
+ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 offset, u32 *value)
+ {
+ 	u32 vendID = 0;
++	int ret;
  
- #define ABX8XX_REG_CTRL1	0x10
- #define ABX8XX_CTRL_WRITE	BIT(0)
+-	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
+-		return -1;
++	ret = pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID);
++	if (ret != PCIBIOS_SUCCESSFUL)
++		return PCIBIOS_DEVICE_NOT_FOUND;
+ 	if (PCI_POSSIBLE_ERROR(vendID))
+-		return -1;
++		return PCIBIOS_DEVICE_NOT_FOUND;
+ 	return pci_bus_read_config_dword(bus, devfn, offset, value);
+ }
+ 
+@@ -200,13 +202,15 @@ static int PCI_ScanBusForNonBridge(struct controller *ctrl, u8 bus_num, u8 *dev_
+ {
+ 	u16 tdevice;
+ 	u32 work;
++	int ret;
+ 	u8 tbus;
+ 
+ 	ctrl->pci_bus->number = bus_num;
+ 
+ 	for (tdevice = 0; tdevice < 0xFF; tdevice++) {
+ 		/* Scan for access first */
+-		if (PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work) == -1)
++		ret = PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work);
++		if (ret)
+ 			continue;
+ 		dbg("Looking for nonbridge bus_num %d dev_num %d\n", bus_num, tdevice);
+ 		/* Yep we got one. Not a bridge ? */
+@@ -218,7 +222,8 @@ static int PCI_ScanBusForNonBridge(struct controller *ctrl, u8 bus_num, u8 *dev_
+ 	}
+ 	for (tdevice = 0; tdevice < 0xFF; tdevice++) {
+ 		/* Scan for access first */
+-		if (PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work) == -1)
++		ret = PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work);
++		if (ret)
+ 			continue;
+ 		dbg("Looking for bridge bus_num %d dev_num %d\n", bus_num, tdevice);
+ 		/* Yep we got one. bridge ? */
 -- 
 2.43.0
 
