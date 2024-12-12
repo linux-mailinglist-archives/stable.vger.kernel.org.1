@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9829EF506
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE139EF7AE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44C0619427F3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 045D3174C6C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD251216E14;
-	Thu, 12 Dec 2024 17:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6442B20967D;
+	Thu, 12 Dec 2024 17:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPFyVFhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsRPjMVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CB522966E;
-	Thu, 12 Dec 2024 17:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213FF13CA93;
+	Thu, 12 Dec 2024 17:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022819; cv=none; b=sMXadP9NZr9g54x82MqnOxY5oc6zcAPZCLRBuj61kj7TA1RUhebd4liqQ6hrZd9LCSXhHJHowhJi0sa11toN1+9qAGEPcXbeW/w7JKUaDofmWFwmTCTZUAhXbIOmITVdHylZPESIOdN2H8yi+T0RlshXQ1aoZ0NiIqGT0F0q6nI=
+	t=1734024145; cv=none; b=YDPn6QY3GcvJe5qp77umqdk5emZI15CmjrFsPCGI/3xsIbBVyywa5iHPUMMEfN6IogF1Ae8pg7sXwKc8Gc0I1YWRrK2FcX/VoBogQ9ourwWKBkV+qaWMgFFGuiiNoK5Qt9KObOPLFo4RDg/3krxyfklMMhAA0gcMzSCLwFl7vyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022819; c=relaxed/simple;
-	bh=7AeK2c9ThierBOuPMw3gaJFrPK4KxFby4vAsSNBnMa0=;
+	s=arc-20240116; t=1734024145; c=relaxed/simple;
+	bh=rMkmrxeL0VN+8yj+JPc/LpA+rjrrcKaxUZr1E86Ge68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsUoAmxxx8R6r2qgahSbNeWUF3SNAo7sptHtG5oJtcuXddY93edZA+VF1S+zLqML+lnPo+YCQOjMoGr82FEKNZX4qTR9Obf2dLB7AOSqOrGUrHMzDXVTsGduScSm5b6uBzlXBw+Z3Qz7wwzcckpV4OP2QEIQVIvexTsmbQDjhBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPFyVFhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D637CC4CECE;
-	Thu, 12 Dec 2024 17:00:18 +0000 (UTC)
+	 MIME-Version; b=kGBoqHHa7PYffnJk/itP0MIwr/19JRXHIsJ4VtHBaMtGZU6UZenoZ18HLI0d+62QDqfGyco/JURwUl/NPuR9iNqEsVqsrqjTtOq1piiQIsDCBWwwuqG9aAdVeCpzByTaJmgxLdUaSty/t9uxJlHCLVOJTe7tysFM9DrLDOAe5r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsRPjMVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2BDC4CECE;
+	Thu, 12 Dec 2024 17:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022819;
-	bh=7AeK2c9ThierBOuPMw3gaJFrPK4KxFby4vAsSNBnMa0=;
+	s=korg; t=1734024145;
+	bh=rMkmrxeL0VN+8yj+JPc/LpA+rjrrcKaxUZr1E86Ge68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPFyVFhLiOKtkxL3VFadDr3QfV5S4w1u9YGni3qUFleQAAE78n1/bpUPSm4PV/wXL
-	 ios4Ac/9AzynEOJ6DkMjMffTbS7G/8IEwn11TKduJWrjJzQE4FtxaXABf7EXbF0cbM
-	 TJE+uFia5lCYO7ezMxvGEPuaz7onfTrdFBajRVH0=
+	b=SsRPjMVskKexFRvAoVNSQF/jUA3ZnrsD5EIuBmZzbfJJKNjcdpp2NjxdgYzaALvgW
+	 JKMzOEI8m+S8suyRBrnTvaBemsks71/+la66yECCQGlE5LOXasVNIHopfrjMwg7neG
+	 QA0yFWYElsq7VgIro+sFwWhPWCViS6+z/F3xg25c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4bf62a7b1d0f4fdb7ae2@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 343/565] ALSA: pcm: Add sanity NULL check for the default mmap fault handler
-Date: Thu, 12 Dec 2024 15:58:58 +0100
-Message-ID: <20241212144325.155954496@linuxfoundation.org>
+	Benjamin Peterson <benjamin@engflow.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 201/459] perf trace: avoid garbage when not printing a trace events arguments
+Date: Thu, 12 Dec 2024 15:58:59 +0100
+Message-ID: <20241212144301.507784608@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Benjamin Peterson <benjamin@engflow.com>
 
-commit d2913a07d9037fe7aed4b7e680684163eaed6bc4 upstream.
+[ Upstream commit 5fb8e56542a3cf469fdf25d77f50e21cbff3ae7e ]
 
-A driver might allow the mmap access before initializing its
-runtime->dma_area properly.  Add a proper NULL check before passing to
-virt_to_page() for avoiding a panic.
+trace__fprintf_tp_fields may not print any tracepoint arguments. E.g., if the
+argument values are all zero. Previously, this would result in a totally
+uninitialized buffer being passed to fprintf, which could lead to garbage on the
+console. Fix the problem by passing the number of initialized bytes fprintf.
 
-Reported-by: syzbot+4bf62a7b1d0f4fdb7ae2@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241120141104.7060-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f11b2803bb88 ("perf trace: Allow choosing how to augment the tracepoint arguments")
+Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
+Tested-by: Howard Chu <howardchu95@gmail.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lore.kernel.org/r/20241103204816.7834-1-benjamin@engflow.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_native.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/perf/builtin-trace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -3757,9 +3757,11 @@ static vm_fault_t snd_pcm_mmap_data_faul
- 		return VM_FAULT_SIGBUS;
- 	if (substream->ops->page)
- 		page = substream->ops->page(substream, offset);
--	else if (!snd_pcm_get_dma_buf(substream))
-+	else if (!snd_pcm_get_dma_buf(substream)) {
-+		if (WARN_ON_ONCE(!runtime->dma_area))
-+			return VM_FAULT_SIGBUS;
- 		page = virt_to_page(runtime->dma_area + offset);
--	else
-+	} else
- 		page = snd_sgbuf_get_page(snd_pcm_get_dma_buf(substream), offset);
- 	if (!page)
- 		return VM_FAULT_SIGBUS;
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 8de0d0a740de4..3143601c1cb1f 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -2748,7 +2748,7 @@ static size_t trace__fprintf_tp_fields(struct trace *trace, struct evsel *evsel,
+ 		printed += syscall_arg_fmt__scnprintf_val(arg, bf + printed, size - printed, &syscall_arg, val);
+ 	}
+ 
+-	return printed + fprintf(trace->output, "%s", bf);
++	return printed + fprintf(trace->output, "%.*s", (int)printed, bf);
+ }
+ 
+ static int trace__event_handler(struct trace *trace, struct evsel *evsel,
+-- 
+2.43.0
+
 
 
 
