@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453089EF6F8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8299EF867
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50ED3179BAE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70B9617974F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37842225404;
-	Thu, 12 Dec 2024 17:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C83222D67;
+	Thu, 12 Dec 2024 17:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kv7iezae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Vc2jy2h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E865A222D62;
-	Thu, 12 Dec 2024 17:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B233F2153DD;
+	Thu, 12 Dec 2024 17:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023415; cv=none; b=hHUcwO5c4yenxNndSXYD9eCyagrWlZv7cvg9a19SHdZKofIVRU1qPQi4DZ7/apXOhNt+fDplZZqRx9z2/9cPkcyX2mPOYzRP6TOECQBrrjZmFBbJN2aS2/gD3ttWmVV6c2gonF4Xw4k5kuSRa7ALixbP94W3H07VPr3GNBc0uY4=
+	t=1734024798; cv=none; b=hEVQXurTrBZ2xJspwOk/QcESi+B1Bzw3RZMBAgn6DI2Ca+q+0x1SD4FOdYn1Yiy7PDVTjixQqIOcdKZwmLPfLhtonGOFSILLHFoYj93m8EoJgymYETa2d0tbPNhsozkmM7cxUHSYku4f9DLQby26tLJr70rIQEMZI9bPyq/XfDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023415; c=relaxed/simple;
-	bh=PRkIa72uK3jRiulONzmH4BhJHEtpAuXmY+xNI/hA2+0=;
+	s=arc-20240116; t=1734024798; c=relaxed/simple;
+	bh=x86PpJSB4ksdHmHCZ7A46kyKbceh235Z5xFxEsKz1sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMlPU8BwA5VAeEC8UhapLb5lx31XPjUk0QgcYxhaWrZl/pbOdIrxW8QWAadoVFqlFpIbitGnQjaHkCVXUV7TZ/1f5ElCwo57fpi8vIG85tkhuUgCtInw6tHFhYM+IG+QE28NHJiA2FG4LtaoE47PJFikeYGe+i65CCUJalheHI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kv7iezae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AB0C4CECE;
-	Thu, 12 Dec 2024 17:10:14 +0000 (UTC)
+	 MIME-Version; b=W/5hLLRoP7pBp83WLXzkcB0LlRa+5QvZoctVBEb0xL1qXdsOYn9NEe8iVTodRzel4vacg0SawpaBU/i8BlMypjKtTiSCodirFFLCEyxURCRIvM/nG2UOK78u+XKHwRWzYvl+WZZ6OmF2R/WkbHf2Ygp6rXxMUZqayt735s5s6Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Vc2jy2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB44BC4CECE;
+	Thu, 12 Dec 2024 17:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023414;
-	bh=PRkIa72uK3jRiulONzmH4BhJHEtpAuXmY+xNI/hA2+0=;
+	s=korg; t=1734024796;
+	bh=x86PpJSB4ksdHmHCZ7A46kyKbceh235Z5xFxEsKz1sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kv7iezaeNtEVSgZCQrX4EzAIFEV4REBPIaCzAvoYtIRZV9I/DS8CgjjhJtW6YfUFV
-	 G7t/uReG0sMdmbFJyi8vhOVJ+uRwsbODFOXnl/I26DQGMFuiUfpopW4X7Wp+NOUE5C
-	 aC0xgxFQM44gpuAhdOQr1nN1p84GZSDffuXthYhs=
+	b=0Vc2jy2hHlZAXdU1PpxjCPDX/fn9tiVYpWQb5VPUjyzTby/XMphbpFVjoTTOuIW5I
+	 IPxbbrq3dv79OOAeCq70IDIQE5URx+16YUAZAN1+QtZ0pIcc2D2IOLov4gXoDxoGSV
+	 ZzBxgz6zDVmgddSC59wI2ioASL/Ar4WigNC59QUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 527/565] MIPS: Loongson64: DTS: Really fix PCIe port nodes for ls7a
-Date: Thu, 12 Dec 2024 16:02:02 +0100
-Message-ID: <20241212144332.635168772@linuxfoundation.org>
+Subject: [PATCH 5.10 385/459] drm/vc4: hvs: Set AXI panic modes for the HVS
+Date: Thu, 12 Dec 2024 16:02:03 +0100
+Message-ID: <20241212144308.978398096@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,270 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 4fbd66d8254cedfd1218393f39d83b6c07a01917 ]
+[ Upstream commit 014eccc9da7bfc76a3107fceea37dd60f1d63630 ]
 
-Fix the dtc warnings:
+The HVS can change AXI request mode based on how full the COB
+FIFOs are.
+Until now the vc4 driver has been relying on the firmware to
+have set these to sensible values.
 
-    arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
-    arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
-    arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+With HVS channel 2 now being used for live video, change the
+panic mode for all channels to be explicitly set by the driver,
+and the same for all channels.
 
-And a runtime warning introduced in commit 045b14ca5c36 ("of: WARN on
-deprecated #address-cells/#size-cells handling"):
-
-    WARNING: CPU: 0 PID: 1 at drivers/of/base.c:106 of_bus_n_addr_cells+0x9c/0xe0
-    Missing '#address-cells' in /bus@10000000/pci@1a000000/pci_bridge@9,0
-
-The fix is similar to commit d89a415ff8d5 ("MIPS: Loongson64: DTS: Fix PCIe
-port nodes for ls7a"), which has fixed the issue for ls2k (despite its
-subject mentions ls7a).
-
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-7-dave.stevenson@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/loongson/ls7a-pch.dtsi | 73 +++++++++++++++++++----
- 1 file changed, 60 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/vc4/vc4_hvs.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
-index ed99ee316febb..1292e9ab282ad 100644
---- a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
-+++ b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
-@@ -63,7 +63,6 @@
- 			device_type = "pci";
- 			#address-cells = <3>;
- 			#size-cells = <2>;
--			#interrupt-cells = <2>;
- 			msi-parent = <&msi>;
+diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
+index f8f2fc3d15f73..64a02e29b7cb1 100644
+--- a/drivers/gpu/drm/vc4/vc4_hvs.c
++++ b/drivers/gpu/drm/vc4/vc4_hvs.c
+@@ -688,6 +688,17 @@ static int vc4_hvs_bind(struct device *dev, struct device *master, void *data)
+ 	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
+ 	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
  
- 			reg = <0 0x1a000000 0 0x02000000>,
-@@ -227,7 +226,7 @@
- 				};
- 			};
++	/* Set AXI panic mode.
++	 * VC4 panics when < 2 lines in FIFO.
++	 * VC5 panics when less than 1 line in the FIFO.
++	 */
++	dispctrl &= ~(SCALER_DISPCTRL_PANIC0_MASK |
++		      SCALER_DISPCTRL_PANIC1_MASK |
++		      SCALER_DISPCTRL_PANIC2_MASK);
++	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC0);
++	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
++	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
++
+ 	HVS_WRITE(SCALER_DISPCTRL, dispctrl);
  
--			pci_bridge@9,0 {
-+			pcie@9,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -237,12 +236,16 @@
- 				interrupts = <32 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 32 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@a,0 {
-+			pcie@a,0 {
- 				compatible = "pci0014,7a09.1",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
-@@ -252,12 +255,16 @@
- 				interrupts = <33 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 33 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@b,0 {
-+			pcie@b,0 {
- 				compatible = "pci0014,7a09.1",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
-@@ -267,12 +274,16 @@
- 				interrupts = <34 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 34 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@c,0 {
-+			pcie@c,0 {
- 				compatible = "pci0014,7a09.1",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
-@@ -282,12 +293,16 @@
- 				interrupts = <35 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 35 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@d,0 {
-+			pcie@d,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -297,12 +312,16 @@
- 				interrupts = <36 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 36 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@e,0 {
-+			pcie@e,0 {
- 				compatible = "pci0014,7a09.1",
- 						   "pci0014,7a09",
- 						   "pciclass060400",
-@@ -312,12 +331,16 @@
- 				interrupts = <37 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 37 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@f,0 {
-+			pcie@f,0 {
- 				compatible = "pci0014,7a29.1",
- 						   "pci0014,7a29",
- 						   "pciclass060400",
-@@ -327,12 +350,16 @@
- 				interrupts = <40 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 40 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@10,0 {
-+			pcie@10,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -342,12 +369,16 @@
- 				interrupts = <41 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 41 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@11,0 {
-+			pcie@11,0 {
- 				compatible = "pci0014,7a29.1",
- 						   "pci0014,7a29",
- 						   "pciclass060400",
-@@ -357,12 +388,16 @@
- 				interrupts = <42 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 42 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@12,0 {
-+			pcie@12,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -372,12 +407,16 @@
- 				interrupts = <43 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 43 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@13,0 {
-+			pcie@13,0 {
- 				compatible = "pci0014,7a29.1",
- 						   "pci0014,7a29",
- 						   "pciclass060400",
-@@ -387,12 +426,16 @@
- 				interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 38 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 
--			pci_bridge@14,0 {
-+			pcie@14,0 {
- 				compatible = "pci0014,7a19.1",
- 						   "pci0014,7a19",
- 						   "pciclass060400",
-@@ -402,9 +445,13 @@
- 				interrupts = <39 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-parent = <&pic>;
- 
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
- 				#interrupt-cells = <1>;
- 				interrupt-map-mask = <0 0 0 0>;
- 				interrupt-map = <0 0 0 0 &pic 39 IRQ_TYPE_LEVEL_HIGH>;
-+				ranges;
- 			};
- 		};
- 
+ 	ret = devm_request_irq(dev, platform_get_irq(pdev, 0),
 -- 
 2.43.0
 
