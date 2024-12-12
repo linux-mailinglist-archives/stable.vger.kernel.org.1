@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45AA9EF7DC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC199EF70A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A576528A063
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98FCD175A1C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5B52210F1;
-	Thu, 12 Dec 2024 17:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC082165F0;
+	Thu, 12 Dec 2024 17:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsfpRYZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ru4lbUhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC922216E2D;
-	Thu, 12 Dec 2024 17:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC4C176AA1;
+	Thu, 12 Dec 2024 17:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025054; cv=none; b=SjZTVqvHJhXZVgC7slYyWRZH2w+4hXrmQw/PZJix5g9JFsd5BxxzQqvJ1b3Dc4rMgkeOsW0lTUmMyv4pmMJlDF3VEvnCSggtsJ0CEo/LWRXpye6ROAedMSyr1C8EW2PgR5ekecalw5BiKeZOr5YyZ5bOk9Hk/OyYDmwRpXhcOmo=
+	t=1734024296; cv=none; b=t6Abry/G2NH4vy5n6e4PjDfV0Po4a0TH024Iw74v+GlLV9w7ZFjwobW2bEhqnDRMXvLJ9r/8sDKnlgcK580+tbwm7GyFJTDzcc2l2zxRcVyRaBlCVzUT7hPAE5eTzQ6PsQveEbpvmj+JM5R3MW/Aj/3T2+azTpizjA3EXQlDFVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025054; c=relaxed/simple;
-	bh=JAsdKWJQ/e42yQDmOd6rcblI/83G5+xbYVjpH/4J2Yk=;
+	s=arc-20240116; t=1734024296; c=relaxed/simple;
+	bh=X6Lu8TIgofk5PU6A3xHJwtPMxIoryc89ZfhparsaRL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tp5b9w5oPpLx4M38jGXovDmZOkhG/VVyK8BANylhiOi8dLDE8vAfAD+42epdCBAnoVyK/eXKDSLTyP+HeW9f/nlDHU7TvVjQe8XhAdKVpcrCg5l+wvlcP8HQPv1AUfr+ZqjcTuQ9KluyE5YjSa+wpwqiVyZ58GNEFYOWG9EcRhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsfpRYZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B33C4CECE;
-	Thu, 12 Dec 2024 17:37:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RACOWpXnEiSKf6bC574wAeUiU4RoXszBcHaDrCJmT0ckgDEVFDNmMbhRqY7w3f/eVZeCr3Xa8XetehbrzAIA3WxryY01YADnkcXCdC4jyirdpM6RYTWCcb2R83s0wdS3lC2pmKQh3/GunAgFQJ0W+Hpm22FyWEFVrEaikUD8DBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ru4lbUhj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5161CC4CECE;
+	Thu, 12 Dec 2024 17:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025053;
-	bh=JAsdKWJQ/e42yQDmOd6rcblI/83G5+xbYVjpH/4J2Yk=;
+	s=korg; t=1734024296;
+	bh=X6Lu8TIgofk5PU6A3xHJwtPMxIoryc89ZfhparsaRL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PsfpRYZWeP33MMHgB5gWh7Xszg1jgnzPDJfgyO8mNOTjzfnJ4kvfkzr+0r6nPwWY/
-	 IwbG19DFRjGb+vEclxmJmfvawNxXwNP39TloocLDxN4PduVuB24QHvucXNB/okAS2L
-	 NEG+6q3HC9nUsQ2HErQe7XmeRUFKAVnWKf2Sl4m8=
+	b=Ru4lbUhjHY3z1qrh1JZJwtVm5vPJ27LX08yLISAWqIfDwZyLkxGjE1nevKuasnkId
+	 ONLdGxscJGW46x9dOco7m2uP7ZNg7YsAncBgKJyvdySM9b8IJbPFhK7iwlu/+sTpvH
+	 Rao6OY1miysQ7mI94EzjrDqBZ4IfY+jT9dtiRfTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 039/321] firmware: google: Unregister driver_info on failure
+Subject: [PATCH 5.10 219/459] power: supply: bq27xxx: Fix registers of bq27426
 Date: Thu, 12 Dec 2024 15:59:17 +0100
-Message-ID: <20241212144231.541188905@linuxfoundation.org>
+Message-ID: <20241212144302.222474572@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 32b0901e141f6d4cf49d820b53eb09b88b1f72f7 ]
+[ Upstream commit 34f99d3b706a519e556841f405c224ca708b1f54 ]
 
-When platform_device_register_full() returns error, the gsmi_init() returns
-without unregister gsmi_driver_info, fix by add missing
-platform_driver_unregister() when platform_device_register_full() failed.
+Correct bq27426 registers, according to technical reference manual
+it does not have Design Capacity register so it is not register
+compatible with bq27421.
 
-Fixes: 8942b2d5094b ("gsmi: Add GSMI commands to log S0ix info")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Link: https://lore.kernel.org/r/20241015131344.20272-1-yuancan@huawei.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: 5ef6a16033b47 ("power: supply: bq27xxx: Add support for BQ27426")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://lore.kernel.org/r/20241016-fix_bq27426-v2-1-aa6c0f51a9f6@mainlining.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/google/gsmi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c | 37 ++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
-index 633997af4b09e..b25a05c56f537 100644
---- a/drivers/firmware/google/gsmi.c
-+++ b/drivers/firmware/google/gsmi.c
-@@ -898,7 +898,8 @@ static __init int gsmi_init(void)
- 	gsmi_dev.pdev = platform_device_register_full(&gsmi_dev_info);
- 	if (IS_ERR(gsmi_dev.pdev)) {
- 		printk(KERN_ERR "gsmi: unable to register platform device\n");
--		return PTR_ERR(gsmi_dev.pdev);
-+		ret = PTR_ERR(gsmi_dev.pdev);
-+		goto out_unregister;
- 	}
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index 21f6df21c3cc4..be2aac8fbf430 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -448,9 +448,29 @@ static u8
+ 		[BQ27XXX_REG_AP] = 0x18,
+ 		BQ27XXX_DM_REG_ROWS,
+ 	},
++	bq27426_regs[BQ27XXX_REG_MAX] = {
++		[BQ27XXX_REG_CTRL] = 0x00,
++		[BQ27XXX_REG_TEMP] = 0x02,
++		[BQ27XXX_REG_INT_TEMP] = 0x1e,
++		[BQ27XXX_REG_VOLT] = 0x04,
++		[BQ27XXX_REG_AI] = 0x10,
++		[BQ27XXX_REG_FLAGS] = 0x06,
++		[BQ27XXX_REG_TTE] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_TTF] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_TTES] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_TTECP] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_NAC] = 0x08,
++		[BQ27XXX_REG_RC] = 0x0c,
++		[BQ27XXX_REG_FCC] = 0x0e,
++		[BQ27XXX_REG_CYCT] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_AE] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_SOC] = 0x1c,
++		[BQ27XXX_REG_DCAP] = INVALID_REG_ADDR,
++		[BQ27XXX_REG_AP] = 0x18,
++		BQ27XXX_DM_REG_ROWS,
++	},
+ #define bq27411_regs bq27421_regs
+ #define bq27425_regs bq27421_regs
+-#define bq27426_regs bq27421_regs
+ #define bq27441_regs bq27421_regs
+ #define bq27621_regs bq27421_regs
+ 	bq27z561_regs[BQ27XXX_REG_MAX] = {
+@@ -747,10 +767,23 @@ static enum power_supply_property bq27421_props[] = {
+ };
+ #define bq27411_props bq27421_props
+ #define bq27425_props bq27421_props
+-#define bq27426_props bq27421_props
+ #define bq27441_props bq27421_props
+ #define bq27621_props bq27421_props
  
- 	/* SMI access needs to be serialized */
-@@ -1025,10 +1026,11 @@ static __init int gsmi_init(void)
- 	gsmi_buf_free(gsmi_dev.name_buf);
- 	dma_pool_destroy(gsmi_dev.dma_pool);
- 	platform_device_unregister(gsmi_dev.pdev);
--	pr_info("gsmi: failed to load: %d\n", ret);
-+out_unregister:
- #ifdef CONFIG_PM
- 	platform_driver_unregister(&gsmi_driver_info);
- #endif
-+	pr_info("gsmi: failed to load: %d\n", ret);
- 	return ret;
- }
- 
++static enum power_supply_property bq27426_props[] = {
++	POWER_SUPPLY_PROP_STATUS,
++	POWER_SUPPLY_PROP_PRESENT,
++	POWER_SUPPLY_PROP_VOLTAGE_NOW,
++	POWER_SUPPLY_PROP_CURRENT_NOW,
++	POWER_SUPPLY_PROP_CAPACITY,
++	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
++	POWER_SUPPLY_PROP_TEMP,
++	POWER_SUPPLY_PROP_TECHNOLOGY,
++	POWER_SUPPLY_PROP_CHARGE_FULL,
++	POWER_SUPPLY_PROP_CHARGE_NOW,
++	POWER_SUPPLY_PROP_MANUFACTURER,
++};
++
+ static enum power_supply_property bq27z561_props[] = {
+ 	POWER_SUPPLY_PROP_STATUS,
+ 	POWER_SUPPLY_PROP_PRESENT,
 -- 
 2.43.0
 
