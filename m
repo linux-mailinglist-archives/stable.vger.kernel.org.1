@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-103805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B899EF9C5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5AA9EF840
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 804AC189D4D7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274091894F05
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257072288EA;
-	Thu, 12 Dec 2024 17:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095BE20A5EE;
+	Thu, 12 Dec 2024 17:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0X2Zzma+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZpoQ7+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62D7222D74;
-	Thu, 12 Dec 2024 17:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8B02153EC;
+	Thu, 12 Dec 2024 17:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025654; cv=none; b=bY4U9/Zf/7bVq8oa1TclEWHRrdsPWFGvh8ht+l9YBIzJFrTOGpIi/gFlmuy2dIJbNYumbyvBHbLl1OXJRFD+Jw3u4GM98FVD3ODjGwkJpv95cChlaFXjRFxLkBBKxaGlT22/YdG6qWo2ln2KICueHpnUXY3I4o4Ja1k5qwCFMi4=
+	t=1734024726; cv=none; b=WeJ9aObfli7wm8hkG7bKKsH1rsCmrqHFJP0F82RQgrVG4hXbR7n3UE2EZWCk7KOsWmnuWIynj17iqHdeP5Z1M2ekgEG9T1PTegh1jyl8ZD88StJ98lyrmkBpy0YvQNMmXlgLx8Amolv92yJOGAGh5IYTogAq3QC7cPjOk7+j0w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025654; c=relaxed/simple;
-	bh=2zhtGnvwF1/caSpdlQMMocZJEZ9ZiyhFfO0P1vqYMyc=;
+	s=arc-20240116; t=1734024726; c=relaxed/simple;
+	bh=ImcAwkSRxHr9KW/yS3LWJBL0muljiaaQJeUFFzNxf+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPHQIeZ9BrwU7WVGtBT2EvMZpObWBxXUyiF+Ycy77L/VDL1Y/eelw6bCtuEqY1/W4uFAYjMbV9TEFnLzVrN8J/5ANkjFudkPqn895BMX6lyI5oecZNlDrdBsXwewrM6APKPQaYisn8KmjUArDin5WyV2slYml+4rxZm1UND+xUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0X2Zzma+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AEEC4CECE;
-	Thu, 12 Dec 2024 17:47:34 +0000 (UTC)
+	 MIME-Version; b=ocJQF7s+KJf4aM3er75EHRWDz0nigYjsbD+mkqGxgbqVv0HAUdDEdsrvaYcWbYjFPWtvW5qbVOJ1mDMSVe79MyY1h1jfHRPurl611/dnn0d6GohfV5IhcQH+udWDikXrx9k2Z5XmMwns6Syn/XUUl7yk07O+0GKKO834/uuzj3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZpoQ7+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E165C4CECE;
+	Thu, 12 Dec 2024 17:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025654;
-	bh=2zhtGnvwF1/caSpdlQMMocZJEZ9ZiyhFfO0P1vqYMyc=;
+	s=korg; t=1734024726;
+	bh=ImcAwkSRxHr9KW/yS3LWJBL0muljiaaQJeUFFzNxf+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0X2Zzma+snuVn1lHDhBmIIGu93jsaitLJ7QHeQd0pE2EHjNto91q2rMgcZJtHyoSE
-	 i7RgvifcQQp5DkIvwlXoCtFmjHa6d36VtIVV8ZSScjqAq+ZjmaMNDw+LOKe1XyVQgL
-	 JlFwbwds2I74ACZXwPbuI99dHs6ceAUYcrn0qCFc=
+	b=oZpoQ7+DIkWeG7VSlepoh+/p9nMUvmyfYHXpYo13fs5M3PbO4AHT+cI0Yr50uo1On
+	 S97KFXVChYKUbYAM7Jwju6oDxQ2h5CjAis0lQy5kazkv7YLNxA8GUdcgjhh1BYfpTK
+	 FceKx2GkgckrOSHsSYGlMilEHfzoZcpuUF1eVKAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 212/321] ad7780: fix division by zero in ad7780_write_raw()
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 392/459] net: ethernet: fs_enet: Use %pa to format resource_size_t
 Date: Thu, 12 Dec 2024 16:02:10 +0100
-Message-ID: <20241212144238.354705220@linuxfoundation.org>
+Message-ID: <20241212144309.252066574@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: Simon Horman <horms@kernel.org>
 
-commit c174b53e95adf2eece2afc56cd9798374919f99a upstream.
+[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
 
-In the ad7780_write_raw() , val2 can be zero, which might lead to a
-division by zero error in DIV_ROUND_CLOSEST(). The ad7780_write_raw()
-is based on iio_info's write_raw. While val is explicitly declared that
-can be zero (in read mode), val2 is not specified to be non-zero.
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
 
-Fixes: 9085daa4abcc ("staging: iio: ad7780: add gain & filter gpio support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Link: https://patch.msgid.link/20241028142027.1032332-1-quzicheng@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+
+Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+
+Flagged by gcc-14 as:
+
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+      |                                             ~^   ~~~~~~~~~
+      |                                              |      |
+      |                                              |      resource_size_t {aka long long unsigned int}
+      |                                              unsigned int
+      |                                             %llx
+
+No functional change intended.
+Compile tested only.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7780.c |    2 +-
+ drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7780.c
-+++ b/drivers/iio/adc/ad7780.c
-@@ -152,7 +152,7 @@ static int ad7780_write_raw(struct iio_d
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+index 21de56345503f..f743112730194 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+@@ -126,7 +126,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
+ 	 * we get is an int, and the odds of multiple bitbang mdio buses
+ 	 * is low enough that it's not worth going too crazy.
+ 	 */
+-	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
  
- 	switch (m) {
- 	case IIO_CHAN_INFO_SCALE:
--		if (val != 0)
-+		if (val != 0 || val2 == 0)
- 			return -EINVAL;
- 
- 		vref = st->int_vref_mv * 1000000LL;
+ 	data = of_get_property(np, "fsl,mdio-pin", &len);
+ 	if (!data || len != 4)
+-- 
+2.43.0
+
 
 
 
