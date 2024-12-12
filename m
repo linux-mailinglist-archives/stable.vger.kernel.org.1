@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-101513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEB39EECE4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8979EEB49
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590C8188BEFD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEB5F188F0C5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD609218587;
-	Thu, 12 Dec 2024 15:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5152153FC;
+	Thu, 12 Dec 2024 15:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5XxyXE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1H1rowN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E6C2139CB;
-	Thu, 12 Dec 2024 15:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF01713CA93;
+	Thu, 12 Dec 2024 15:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017818; cv=none; b=lvEbfJdGcyqjs5sh3UiErwB33diVHdaOGpCl4Yt8VWcDnbMiz036MyswA5EDGJpZ5S2zwfmGsWjOf+ZlqFmzzsOTIxKtT/youoYEM0f9Dc5btaODy7t0M1V6LH5pd0CsrTwg8xcHpsFmwFdqLChjGSB8z3sgmtTmleNVb57EGxU=
+	t=1734016684; cv=none; b=Vl0wQltDaHOGoQDE8pwREWn/sRe8E3KOexF+AaCxP3UJDz1WAM8Qo/iOPTdz+pfoMEthynU+dCdTcXXtQy9uoXY5ZqkOxiiUhekeWbjpUxmV/XnL0OLWD22gROSls5IQhSVtcQLT7k1JdGgbGs7GDxfJsOeZ4Y9WLIt802bp0og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017818; c=relaxed/simple;
-	bh=pF2HcqScIK46DMFAaA0juOn4w4eqLCYG6UJ/96PPfvQ=;
+	s=arc-20240116; t=1734016684; c=relaxed/simple;
+	bh=12J0URwqVQCFlcZiZ8iLnm+eas1uRR56CFpiApRz9So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFnDPpb1MrW2yRmHHOs/UG2RBGH8/lpYd1hye3CXRm5uUZKqW50mtcF4ldfFEg3yGRiy91HWFLDRgmBnVkXdCqgne6If1ClmNocFHlJCsdalp98Oa0VuOGUFImuNf7uRN5evMlQbtyXaw7r3daAgap3Q7Wvs4aPzcKj5F23T9uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5XxyXE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC21EC4CECE;
-	Thu, 12 Dec 2024 15:36:57 +0000 (UTC)
+	 MIME-Version; b=g+T5ZSl8adaIXEJKAxLFnRr1Ks1XnaWBqfljCGhpT4DhnWAGIB31cZDir9MTxO1mT4RXgNd0iKDPykp1kS3wb+Rr7bz/R3/WfZqY/mvTgw3bbxEntzt1VJ1q53H9RcJeTHPdE0WJ6Rk/e2HMsd9hSnzIiPOD4NxPipycnS/G9fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1H1rowN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1AC5C4CEDE;
+	Thu, 12 Dec 2024 15:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017818;
-	bh=pF2HcqScIK46DMFAaA0juOn4w4eqLCYG6UJ/96PPfvQ=;
+	s=korg; t=1734016683;
+	bh=12J0URwqVQCFlcZiZ8iLnm+eas1uRR56CFpiApRz9So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5XxyXE78s9JaZIFs6ZRvF1lCIeoExLDqf/jBE1BQ0O4rFcAesZ2gZI6TNiPQY3zw
-	 IYvpQwAIc8f7H63uHAVYbF32Gg6jUTYrnRmf5uWB9i1Vs/3d+XMv5uZ9ZUeIK6kAfW
-	 7TRsk+yob8bHrEGcOMGVRegEimjSBTnj2kCZZhus=
+	b=d1H1rowNhv/65DFftmL0SwjejmAq5aYZ6f5EWUJ1DtoxEplAZ9V/g2NuUcccQP44q
+	 BZS3TzWPL0sLQl8KSbxdPoQjFky1nOVkdtIkIleSnVu6BzchB58t1Rbe/xRb+Wnjtt
+	 R0Zu9uwaXpqCSt5c30o3H07iM0qIW/7BWUYzLcjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/356] ALSA: seq: ump: Fix seq port updates per FB info notify
+Subject: [PATCH 6.12 269/466] dlm: fix possible lkb_resource null dereference
 Date: Thu, 12 Dec 2024 15:57:18 +0100
-Message-ID: <20241212144249.356475554@linuxfoundation.org>
+Message-ID: <20241212144317.416194551@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit aaa55faa2495320e44bc643a917c701f2cc89ee7 ]
+[ Upstream commit b98333c67daf887c724cd692e88e2db9418c0861 ]
 
-update_port_infos() is called when a UMP FB Info update notification
-is received, and this function is supposed to update the attributes of
-the corresponding sequencer port.  However, the function had a few
-issues and it brought to the incorrect states.  Namely:
+This patch fixes a possible null pointer dereference when this function is
+called from request_lock() as lkb->lkb_resource is not assigned yet,
+only after validate_lock_args() by calling attach_lkb(). Another issue
+is that a resource name could be a non printable bytearray and we cannot
+assume to be ASCII coded.
 
-- It tried to get a wrong sequencer info for the update without
-  correcting the port number with the group-offset 1
-- The loop exited immediately when a sequencer port isn't present;
-  this ended up with the truncation if a sequencer port in the middle
-  goes away
+The log functionality is probably never being hit when DLM is used in
+normal way and no debug logging is enabled. The null pointer dereference
+can only occur on a new created lkb that does not have the resource
+assigned yet, it probably never hits the null pointer dereference but we
+should be sure that other changes might not change this behaviour and we
+actually can hit the mentioned null pointer dereference.
 
-This patch addresses those bugs.
+In this patch we just drop the printout of the resource name, the lkb id
+is enough to make a possible connection to a resource name if this
+exists.
 
-Fixes: 4a16a3af0571 ("ALSA: seq: ump: Handle FB info update")
-Link: https://patch.msgid.link/20241128170423.23351-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_client.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/dlm/lock.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/sound/core/seq/seq_ump_client.c b/sound/core/seq/seq_ump_client.c
-index 91773f8ca7828..1c6c49560ae12 100644
---- a/sound/core/seq/seq_ump_client.c
-+++ b/sound/core/seq/seq_ump_client.c
-@@ -258,12 +258,12 @@ static void update_port_infos(struct seq_ump_client *client)
- 			continue;
- 
- 		old->addr.client = client->seq_client;
--		old->addr.port = i;
-+		old->addr.port = ump_group_to_seq_port(i);
- 		err = snd_seq_kernel_client_ctl(client->seq_client,
- 						SNDRV_SEQ_IOCTL_GET_PORT_INFO,
- 						old);
- 		if (err < 0)
--			return;
-+			continue;
- 		fill_port_info(new, client, &client->ump->groups[i]);
- 		if (old->capability == new->capability &&
- 		    !strcmp(old->name, new->name))
-@@ -272,7 +272,7 @@ static void update_port_infos(struct seq_ump_client *client)
- 						SNDRV_SEQ_IOCTL_SET_PORT_INFO,
- 						new);
- 		if (err < 0)
--			return;
-+			continue;
- 		/* notify to system port */
- 		snd_seq_system_client_ev_port_change(client->seq_client, i);
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 865dc70a9dfc4..dddedaef5e93d 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -2861,16 +2861,14 @@ static int validate_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
+ 	case -EINVAL:
+ 		/* annoy the user because dlm usage is wrong */
+ 		WARN_ON(1);
+-		log_error(ls, "%s %d %x %x %x %d %d %s", __func__,
++		log_error(ls, "%s %d %x %x %x %d %d", __func__,
+ 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
+-			  lkb->lkb_status, lkb->lkb_wait_type,
+-			  lkb->lkb_resource->res_name);
++			  lkb->lkb_status, lkb->lkb_wait_type);
+ 		break;
+ 	default:
+-		log_debug(ls, "%s %d %x %x %x %d %d %s", __func__,
++		log_debug(ls, "%s %d %x %x %x %d %d", __func__,
+ 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
+-			  lkb->lkb_status, lkb->lkb_wait_type,
+-			  lkb->lkb_resource->res_name);
++			  lkb->lkb_status, lkb->lkb_wait_type);
+ 		break;
  	}
+ 
 -- 
 2.43.0
 
