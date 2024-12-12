@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877BE9EF4BB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96759EF723
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D398617AE5E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92FC918984DA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F1E222D45;
-	Thu, 12 Dec 2024 16:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3062210DE;
+	Thu, 12 Dec 2024 17:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxwdKmLj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWhvDN3m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF721205501;
-	Thu, 12 Dec 2024 16:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5DE13CA93;
+	Thu, 12 Dec 2024 17:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022792; cv=none; b=geZ89vsESaUaHmUc+34tQoBe4oTvtFJd0QxUAqnE3SzaDz1Ck6GvAnnqffzm4K6upYuniBpnQPap8Y4PLlczA4Rrx5Yl6rAI8OTMeO/xjOv2Ah0HpewU6ef0Ra2Du0qr/cisoEkSrhXyWRkyno1w1pKwnXM7u3Ph/rvU6FZdqrk=
+	t=1734024072; cv=none; b=BrOCrbl94uUmCAVcHVyC/raUGZiopwUlTM/0hbS7UPMZqfUXiKAQ39LvlQz7qK7KGCl/5+9dgunHhMiM4NMZMgkas9PZGiIFOWNbMElW4qy7WcQBK56Uvm+1+KtkIL4rTXKy6Op2tNCVEEYICdBCujiAu64yMKP5apCf5I6sT4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022792; c=relaxed/simple;
-	bh=zelIeGNPlxpGnNWCGRC2OBnjtwCXoMtCc6FsrpIu6m4=;
+	s=arc-20240116; t=1734024072; c=relaxed/simple;
+	bh=qwvHZfHejgQ2Z+HonXeJZTSOpvTdlJEl2/nnTEHaOAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P13OiUpPVXYt+J7eAJM8gNYZHRuediMcedAM0UVkLqO9AEZN3nt/TuAfXV+SUwBqq9sm8VoRoAWHQdqdAXpPd40F8DU2i7+wWc6ZeNTTbBmj1EqvKzwghaTQAB0nleKNsuVtcmRS21VXo3ElbSwP5Cinx+htJ1jisyy1GNHgJQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxwdKmLj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B07C4CED0;
-	Thu, 12 Dec 2024 16:59:51 +0000 (UTC)
+	 MIME-Version; b=EO2eCbVY6+RHEm1sN7ECYfZ835f0UVieNeXBDD27q9ffTGtMpSRoDATdH0HBptPWgqwpwvm921CBozeqDLpC+E8/YZQEnzrqcEv0YeGZjmI0xkWqFcytFOpj4Fh6dcSAS7MOH9hTsurkgRIPyL/Dzxc2FLwRQDdkkja6mQ9Shy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWhvDN3m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5258AC4CECE;
+	Thu, 12 Dec 2024 17:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022792;
-	bh=zelIeGNPlxpGnNWCGRC2OBnjtwCXoMtCc6FsrpIu6m4=;
+	s=korg; t=1734024072;
+	bh=qwvHZfHejgQ2Z+HonXeJZTSOpvTdlJEl2/nnTEHaOAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VxwdKmLj40Od8yFVE76SoD25voyqE+ULQmMN53d+JHMDmiumlSOYEFw1LI3OcE0Q/
-	 Ebobprgt/jCz5VaSgG6xtofALxcxsMHWQXT8WJC3RroI0o8JDG8+1vbNIKOh2SKzcf
-	 l1i6m03iD6Wg+MF9HGlMMRbPBvmthw72yUVTOW/0=
+	b=oWhvDN3mYdkPZhARdu9el3sxnlNbLtb6hfZX9nYjMvRtIn9dKa35WtNrKsxcsYxNU
+	 KOGsycj6QHzc3O0Y3Rylp+wp79MIr4bUxGFTSpEqcqjP0iEsBh1zmBMfDp8YhPCVFj
+	 JoJbrRopBpvVobJjgnH5E4i6zKGYnpblsHrxxPp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrej Shadura <andrew.shadura@collabora.co.uk>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Aleksei Vetrov <vvvvvv@google.com>
-Subject: [PATCH 5.15 319/565] Bluetooth: Fix type of len in rfcomm_sock_getsockopt{,_old}()
+	Ye Bin <yebin10@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 176/459] scsi: bfa: Fix use-after-free in bfad_im_module_exit()
 Date: Thu, 12 Dec 2024 15:58:34 +0100
-Message-ID: <20241212144324.210899887@linuxfoundation.org>
+Message-ID: <20241212144300.476599649@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrej Shadura <andrew.shadura@collabora.co.uk>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 5fe6caa62b07fd39cd6a28acc8f92ba2955e11a6 upstream.
+[ Upstream commit 178b8f38932d635e90f5f0e9af1986c6f4a89271 ]
 
-Commit 9bf4e919ccad worked around an issue introduced after an innocuous
-optimisation change in LLVM main:
+BUG: KASAN: slab-use-after-free in __lock_acquire+0x2aca/0x3a20
+Read of size 8 at addr ffff8881082d80c8 by task modprobe/25303
 
-> len is defined as an 'int' because it is assigned from
-> '__user int *optlen'. However, it is clamped against the result of
-> sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
-> platforms). This is done with min_t() because min() requires compatible
-> types, which results in both len and the result of sizeof() being casted
-> to 'unsigned int', meaning len changes signs and the result of sizeof()
-> is truncated. From there, len is passed to copy_to_user(), which has a
-> third parameter type of 'unsigned long', so it is widened and changes
-> signs again. This excessive casting in combination with the KCSAN
-> instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
-> call, failing the build.
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x95/0xe0
+ print_report+0xcb/0x620
+ kasan_report+0xbd/0xf0
+ __lock_acquire+0x2aca/0x3a20
+ lock_acquire+0x19b/0x520
+ _raw_spin_lock+0x2b/0x40
+ attribute_container_unregister+0x30/0x160
+ fc_release_transport+0x19/0x90 [scsi_transport_fc]
+ bfad_im_module_exit+0x23/0x60 [bfa]
+ bfad_init+0xdb/0xff0 [bfa]
+ do_one_initcall+0xdc/0x550
+ do_init_module+0x22d/0x6b0
+ load_module+0x4e96/0x5ff0
+ init_module_from_file+0xcd/0x130
+ idempotent_init_module+0x330/0x620
+ __x64_sys_finit_module+0xb3/0x110
+ do_syscall_64+0xc1/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-The same issue occurs in rfcomm in functions rfcomm_sock_getsockopt and
-rfcomm_sock_getsockopt_old.
+Allocated by task 25303:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x7f/0x90
+ fc_attach_transport+0x4f/0x4740 [scsi_transport_fc]
+ bfad_im_module_init+0x17/0x80 [bfa]
+ bfad_init+0x23/0xff0 [bfa]
+ do_one_initcall+0xdc/0x550
+ do_init_module+0x22d/0x6b0
+ load_module+0x4e96/0x5ff0
+ init_module_from_file+0xcd/0x130
+ idempotent_init_module+0x330/0x620
+ __x64_sys_finit_module+0xb3/0x110
+ do_syscall_64+0xc1/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Change the type of len to size_t in both rfcomm_sock_getsockopt and
-rfcomm_sock_getsockopt_old and replace min_t() with min().
+Freed by task 25303:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ __kasan_slab_free+0x38/0x50
+ kfree+0x212/0x480
+ bfad_im_module_init+0x7e/0x80 [bfa]
+ bfad_init+0x23/0xff0 [bfa]
+ do_one_initcall+0xdc/0x550
+ do_init_module+0x22d/0x6b0
+ load_module+0x4e96/0x5ff0
+ init_module_from_file+0xcd/0x130
+ idempotent_init_module+0x330/0x620
+ __x64_sys_finit_module+0xb3/0x110
+ do_syscall_64+0xc1/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Cc: stable@vger.kernel.org
-Co-authored-by: Aleksei Vetrov <vvvvvv@google.com>
-Improves: 9bf4e919ccad ("Bluetooth: Fix type of len in {l2cap,sco}_sock_getsockopt_old()")
-Link: https://github.com/ClangBuiltLinux/linux/issues/2007
-Link: https://github.com/llvm/llvm-project/issues/85647
-Signed-off-by: Andrej Shadura <andrew.shadura@collabora.co.uk>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Above issue happens as follows:
+
+bfad_init
+  error = bfad_im_module_init()
+    fc_release_transport(bfad_im_scsi_transport_template);
+  if (error)
+    goto ext;
+
+ext:
+  bfad_im_module_exit();
+    fc_release_transport(bfad_im_scsi_transport_template);
+    --> Trigger double release
+
+Don't call bfad_im_module_exit() if bfad_im_module_init() failed.
+
+Fixes: 7725ccfda597 ("[SCSI] bfa: Brocade BFA FC SCSI driver")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Link: https://lore.kernel.org/r/20241023011809.63466-1-yebin@huaweicloud.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/rfcomm/sock.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/scsi/bfa/bfad.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -740,7 +740,8 @@ static int rfcomm_sock_getsockopt_old(st
- 	struct sock *l2cap_sk;
- 	struct l2cap_conn *conn;
- 	struct rfcomm_conninfo cinfo;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 	u32 opt;
+diff --git a/drivers/scsi/bfa/bfad.c b/drivers/scsi/bfa/bfad.c
+index 440ef32be048f..45b5f83ad6da1 100644
+--- a/drivers/scsi/bfa/bfad.c
++++ b/drivers/scsi/bfa/bfad.c
+@@ -1705,9 +1705,8 @@ bfad_init(void)
  
- 	BT_DBG("sk %p", sk);
-@@ -794,7 +795,7 @@ static int rfcomm_sock_getsockopt_old(st
- 		cinfo.hci_handle = conn->hcon->handle;
- 		memcpy(cinfo.dev_class, conn->hcon->dev_class, 3);
+ 	error = bfad_im_module_init();
+ 	if (error) {
+-		error = -ENOMEM;
+ 		printk(KERN_WARNING "bfad_im_module_init failure\n");
+-		goto ext;
++		return -ENOMEM;
+ 	}
  
--		len = min_t(unsigned int, len, sizeof(cinfo));
-+		len = min(len, sizeof(cinfo));
- 		if (copy_to_user(optval, (char *) &cinfo, len))
- 			err = -EFAULT;
- 
-@@ -813,7 +814,8 @@ static int rfcomm_sock_getsockopt(struct
- {
- 	struct sock *sk = sock->sk;
- 	struct bt_security sec;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 
- 	BT_DBG("sk %p", sk);
- 
-@@ -838,7 +840,7 @@ static int rfcomm_sock_getsockopt(struct
- 		sec.level = rfcomm_pi(sk)->sec_level;
- 		sec.key_size = 0;
- 
--		len = min_t(unsigned int, len, sizeof(sec));
-+		len = min(len, sizeof(sec));
- 		if (copy_to_user(optval, (char *) &sec, len))
- 			err = -EFAULT;
- 
+ 	if (strcmp(FCPI_NAME, " fcpim") == 0)
+-- 
+2.43.0
+
 
 
 
