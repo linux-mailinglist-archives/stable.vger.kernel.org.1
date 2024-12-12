@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-101090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4139EEAAA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F193A9EF43F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59CA6164FF5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12E381890A92
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5132163AB;
-	Thu, 12 Dec 2024 15:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09ED23A580;
+	Thu, 12 Dec 2024 16:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPLZ1BdP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYXq2XWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C132213E97;
-	Thu, 12 Dec 2024 15:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED0E22A7E4;
+	Thu, 12 Dec 2024 16:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016323; cv=none; b=lxwlJIOkRAYZrUmo8R6uvdSmdIVUwaurTFAPcFor5AHY27+lgCJxLz7tYoY5Gc8SD+2rzl3Idd6OL4boB6/uvSkpCeIRaR7EvkU3l2BsJvIDXZeUQSOcTSZUzYrzWYJBwMK62tObLYjQ8KE9mEuacqQV+c2texhwHvgzkDTOgkM=
+	t=1734022082; cv=none; b=lU29rdd/Aiha9qkPQFlgzH35fk3ndqvUbIRQsgbE1xGfItm6z1645kbyLw3RX5sCx2KStfiiFGW9H4HOuez7SsTFCAdkH17ZMukHwfjnKcNKDFZH4aXDteHN6zd2o4w5o6t3P+ZNwTLLHCjGc5DEbWkL5ZnCztST1r9HKdBuoc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016323; c=relaxed/simple;
-	bh=itIfiC5wfXNHZ5TiX2+s2dI6VnA8UZ8Km7ZuxJj8iZk=;
+	s=arc-20240116; t=1734022082; c=relaxed/simple;
+	bh=to2ElEYT1dP/EB2PMkrk3YR3lvHqS9u/udmpJfjz6mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTxeyGR8QyZ6ofA9F9sxGtD3AnluQHHj/6rXObgsGs3APQ39Zr1F3QI9tWA/Ore78wf4hvBoO7QTskmIeEaI7uq4v5qbQk4cw8xi7mC1PKxUvDITVLI3jXPnFIt0tSn2cmq00nstvHHtQmKMILYoIzXSf53m+1xlm8XPZtw4ArU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPLZ1BdP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7344C4CED0;
-	Thu, 12 Dec 2024 15:12:02 +0000 (UTC)
+	 MIME-Version; b=eRoe634kX14kNu/mZzSU/38b8Mwmsg+e1jxKeNwLn5/yRwzUJqrTEZ+JQpfwSQSeF1KEW49VjRJbZ/DENC3Uh9a8ilEAhlGSvGdLuEGmRAjJgiWFf4B2zrOLImwhWJTUcwxlCLL9CUTU/mtM9NZjI65f0GQ5JLfp03y5/Ce/7/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYXq2XWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19EAC4CECE;
+	Thu, 12 Dec 2024 16:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016323;
-	bh=itIfiC5wfXNHZ5TiX2+s2dI6VnA8UZ8Km7ZuxJj8iZk=;
+	s=korg; t=1734022082;
+	bh=to2ElEYT1dP/EB2PMkrk3YR3lvHqS9u/udmpJfjz6mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPLZ1BdPmD4KZJrSprt7tJvBjAN4mSv68PpMVVG4n2wxAvus25fkoLfyaVB8HZKrP
-	 F38u/1+KHRogZjfoPzW6vXHUbYxSllhjWmRvR5MmItPoyKraZPTQpATRNiSUis8O1S
-	 HiewQBmMn41sI7gqJtp1muy3cJl3+q8qVADvJIHE=
+	b=ZYXq2XWWF7ygmUNClMTIF1BsWGe4/PYogwafzj3Cc7j8TM7rta0kwcFw46qzFame6
+	 TPFbNumQT2lMpz1Lb9nnGDLbLDjNSR27ooiDtr49r9wMRcjtE+lfW3WmNNUJjtdBCx
+	 Ng3lwBWhgMnCnicoFD81as9JtUwa4AZLlQAa2BGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.12 167/466] x86/cacheinfo: Delete global num_cache_leaves
-Date: Thu, 12 Dec 2024 15:55:36 +0100
-Message-ID: <20241212144313.400721548@linuxfoundation.org>
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 142/565] media: atomisp: remove #ifdef HAS_NO_HMEM
+Date: Thu, 12 Dec 2024 15:55:37 +0100
+Message-ID: <20241212144317.101164085@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,141 +61,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-commit 9677be09e5e4fbe48aeccb06ae3063c5eba331c3 upstream.
+[ Upstream commit 63705da3dfc8922a2dbfc3c805a5faadb4416954 ]
 
-Linux remembers cpu_cachinfo::num_leaves per CPU, but x86 initializes all
-CPUs from the same global "num_cache_leaves".
+This is not defined anywhere, so, solve the ifdefs, getting
+rid of them.
 
-This is erroneous on systems such as Meteor Lake, where each CPU has a
-distinct num_leaves value. Delete the global "num_cache_leaves" and
-initialize num_leaves on each CPU.
-
-init_cache_level() no longer needs to set num_leaves. Also, it never had to
-set num_levels as it is unnecessary in x86. Keep checking for zero cache
-leaves. Such condition indicates a bug.
-
-  [ bp: Cleanup. ]
-
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org # 6.3+
-Link: https://lore.kernel.org/r/20241128002247.26726-3-ricardo.neri-calderon@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: ed61c5913950 ("media: atomisp: Add check for rgby_data memory allocation failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/cacheinfo.c |   43 +++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 22 deletions(-)
+ .../atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c   |  2 --
+ .../raw_aa_binning_1.0/ia_css_raa.host.c               |  2 --
+ .../pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c      |  5 -----
+ .../media/atomisp/pci/runtime/binary/src/binary.c      |  4 ----
+ drivers/staging/media/atomisp/pci/sh_css_params.c      | 10 ----------
+ 5 files changed, 23 deletions(-)
 
---- a/arch/x86/kernel/cpu/cacheinfo.c
-+++ b/arch/x86/kernel/cpu/cacheinfo.c
-@@ -178,8 +178,6 @@ struct _cpuid4_info_regs {
- 	struct amd_northbridge *nb;
- };
+diff --git a/drivers/staging/media/atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c b/drivers/staging/media/atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c
+index 82aa69b74677c..2091f001502d4 100644
+--- a/drivers/staging/media/atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c
++++ b/drivers/staging/media/atomisp/pci/isp/kernels/bh/bh_2/ia_css_bh.host.c
+@@ -13,7 +13,6 @@
+  * more details.
+  */
  
--static unsigned short num_cache_leaves;
--
- /* AMD doesn't have CPUID4. Emulate it here to report the same
-    information to the user.  This makes some assumptions about the machine:
-    L2 not shared, no SMT etc. that is currently true on AMD CPUs.
-@@ -717,20 +715,23 @@ void cacheinfo_hygon_init_llc_id(struct
+-#if !defined(HAS_NO_HMEM)
  
- void init_amd_cacheinfo(struct cpuinfo_x86 *c)
+ #include "ia_css_types.h"
+ #include "sh_css_internal.h"
+@@ -63,4 +62,3 @@ ia_css_bh_encode(
+ 	    uDIGIT_FITTING(from->ae_y_coef_b, 16, SH_CSS_AE_YCOEF_SHIFT);
+ }
+ 
+-#endif
+diff --git a/drivers/staging/media/atomisp/pci/isp/kernels/raw_aa_binning/raw_aa_binning_1.0/ia_css_raa.host.c b/drivers/staging/media/atomisp/pci/isp/kernels/raw_aa_binning/raw_aa_binning_1.0/ia_css_raa.host.c
+index 29c707ecf9f3b..9b756daddee06 100644
+--- a/drivers/staging/media/atomisp/pci/isp/kernels/raw_aa_binning/raw_aa_binning_1.0/ia_css_raa.host.c
++++ b/drivers/staging/media/atomisp/pci/isp/kernels/raw_aa_binning/raw_aa_binning_1.0/ia_css_raa.host.c
+@@ -13,7 +13,6 @@
+  * more details.
+  */
+ 
+-#if !defined(HAS_NO_HMEM)
+ 
+ #include "ia_css_types.h"
+ #include "sh_css_internal.h"
+@@ -32,4 +31,3 @@ ia_css_raa_encode(
+ 	(void)from;
+ }
+ 
+-#endif
+diff --git a/drivers/staging/media/atomisp/pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c b/drivers/staging/media/atomisp/pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c
+index ba52c80df4a58..bd7b89d9475bf 100644
+--- a/drivers/staging/media/atomisp/pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c
++++ b/drivers/staging/media/atomisp/pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c
+@@ -227,10 +227,6 @@ ia_css_s3a_hmem_decode(
+     struct ia_css_3a_statistics *host_stats,
+     const struct ia_css_bh_table *hmem_buf)
  {
-+	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(c->cpu_index);
+-#if defined(HAS_NO_HMEM)
+-	(void)host_stats;
+-	(void)hmem_buf;
+-#else
+ 	struct ia_css_3a_rgby_output	*out_ptr;
+ 	int			i;
  
- 	if (boot_cpu_has(X86_FEATURE_TOPOEXT)) {
--		num_cache_leaves = find_num_cache_leaves(c);
-+		ci->num_leaves = find_num_cache_leaves(c);
- 	} else if (c->extended_cpuid_level >= 0x80000006) {
- 		if (cpuid_edx(0x80000006) & 0xf000)
--			num_cache_leaves = 4;
-+			ci->num_leaves = 4;
- 		else
--			num_cache_leaves = 3;
-+			ci->num_leaves = 3;
+@@ -291,7 +287,6 @@ ia_css_s3a_hmem_decode(
+ 	out_ptr[0].g -= diff;
+ 	out_ptr[0].b -= diff;
+ 	out_ptr[0].y -= diff;
+-#endif
+ }
+ 
+ void
+diff --git a/drivers/staging/media/atomisp/pci/runtime/binary/src/binary.c b/drivers/staging/media/atomisp/pci/runtime/binary/src/binary.c
+index 060d387495704..002bd8cf28634 100644
+--- a/drivers/staging/media/atomisp/pci/runtime/binary/src/binary.c
++++ b/drivers/staging/media/atomisp/pci/runtime/binary/src/binary.c
+@@ -805,11 +805,7 @@ ia_css_binary_3a_grid_info(const struct ia_css_binary *binary,
+ 	s3a_info->deci_factor_log2  = binary->deci_factor_log2;
+ 	s3a_info->elem_bit_depth    = SH_CSS_BAYER_BITS;
+ 	s3a_info->use_dmem          = binary->info->sp.s3a.s3atbl_use_dmem;
+-#if defined(HAS_NO_HMEM)
+-	s3a_info->has_histogram     = 1;
+-#else
+ 	s3a_info->has_histogram     = 0;
+-#endif
+ 	IA_CSS_LEAVE_ERR_PRIVATE(err);
+ 	return err;
+ }
+diff --git a/drivers/staging/media/atomisp/pci/sh_css_params.c b/drivers/staging/media/atomisp/pci/sh_css_params.c
+index deecffd438aeb..013eac639f669 100644
+--- a/drivers/staging/media/atomisp/pci/sh_css_params.c
++++ b/drivers/staging/media/atomisp/pci/sh_css_params.c
+@@ -16,12 +16,10 @@
+ #include "gdc_device.h"		/* gdc_lut_store(), ... */
+ #include "isp.h"			/* ISP_VEC_ELEMBITS */
+ #include "vamem.h"
+-#if !defined(HAS_NO_HMEM)
+ #ifndef __INLINE_HMEM__
+ #define __INLINE_HMEM__
+ #endif
+ #include "hmem.h"
+-#endif /* !defined(HAS_NO_HMEM) */
+ #define IA_CSS_INCLUDE_PARAMETERS
+ #define IA_CSS_INCLUDE_ACC_PARAMETERS
+ 
+@@ -1510,10 +1508,8 @@ ia_css_translate_3a_statistics(
+ 		ia_css_s3a_vmem_decode(host_stats, isp_stats->vmem_stats_hi,
+ 				       isp_stats->vmem_stats_lo);
  	}
+-#if !defined(HAS_NO_HMEM)
+ 	IA_CSS_LOG("3A: HMEM");
+ 	ia_css_s3a_hmem_decode(host_stats, isp_stats->hmem_stats);
+-#endif
+ 
+ 	IA_CSS_LEAVE("void");
  }
+@@ -2250,9 +2246,7 @@ ia_css_isp_3a_statistics_allocate(const struct ia_css_3a_grid_info *grid)
+ 		me->vmem_size = ISP_S3ATBL_HI_LO_STRIDE_BYTES *
+ 				grid->aligned_height;
+ 	}
+-#if !defined(HAS_NO_HMEM)
+ 	me->hmem_size = sizeof_hmem(HMEM0_ID);
+-#endif
  
- void init_hygon_cacheinfo(struct cpuinfo_x86 *c)
- {
--	num_cache_leaves = find_num_cache_leaves(c);
-+	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(c->cpu_index);
-+
-+	ci->num_leaves = find_num_cache_leaves(c);
- }
+ 	/* All subsections need to be aligned to the system bus width */
+ 	me->dmem_size = CEIL_MUL(me->dmem_size, HIVE_ISP_DDR_WORD_BYTES);
+@@ -4339,12 +4333,8 @@ ia_css_3a_statistics_allocate(const struct ia_css_3a_grid_info *grid)
+ 	me->data = kvmalloc(grid_size * sizeof(*me->data), GFP_KERNEL);
+ 	if (!me->data)
+ 		goto err;
+-#if !defined(HAS_NO_HMEM)
+ 	/* No weighted histogram, no structure, treat the histogram data as a byte dump in a byte array */
+ 	me->rgby_data = kvmalloc(sizeof_hmem(HMEM0_ID), GFP_KERNEL);
+-#else
+-	me->rgby_data = NULL;
+-#endif
  
- void init_intel_cacheinfo(struct cpuinfo_x86 *c)
-@@ -740,21 +741,21 @@ void init_intel_cacheinfo(struct cpuinfo
- 	unsigned int new_l1d = 0, new_l1i = 0; /* Cache sizes from cpuid(4) */
- 	unsigned int new_l2 = 0, new_l3 = 0, i; /* Cache sizes from cpuid(4) */
- 	unsigned int l2_id = 0, l3_id = 0, num_threads_sharing, index_msb;
-+	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(c->cpu_index);
- 
- 	if (c->cpuid_level > 3) {
--		static int is_initialized;
--
--		if (is_initialized == 0) {
--			/* Init num_cache_leaves from boot CPU */
--			num_cache_leaves = find_num_cache_leaves(c);
--			is_initialized++;
--		}
-+		/*
-+		 * There should be at least one leaf. A non-zero value means
-+		 * that the number of leaves has been initialized.
-+		 */
-+		if (!ci->num_leaves)
-+			ci->num_leaves = find_num_cache_leaves(c);
- 
- 		/*
- 		 * Whenever possible use cpuid(4), deterministic cache
- 		 * parameters cpuid leaf to find the cache details
- 		 */
--		for (i = 0; i < num_cache_leaves; i++) {
-+		for (i = 0; i < ci->num_leaves; i++) {
- 			struct _cpuid4_info_regs this_leaf = {};
- 			int retval;
- 
-@@ -790,14 +791,14 @@ void init_intel_cacheinfo(struct cpuinfo
- 	 * Don't use cpuid2 if cpuid4 is supported. For P4, we use cpuid2 for
- 	 * trace cache
- 	 */
--	if ((num_cache_leaves == 0 || c->x86 == 15) && c->cpuid_level > 1) {
-+	if ((!ci->num_leaves || c->x86 == 15) && c->cpuid_level > 1) {
- 		/* supports eax=2  call */
- 		int j, n;
- 		unsigned int regs[4];
- 		unsigned char *dp = (unsigned char *)regs;
- 		int only_trace = 0;
- 
--		if (num_cache_leaves != 0 && c->x86 == 15)
-+		if (ci->num_leaves && c->x86 == 15)
- 			only_trace = 1;
- 
- 		/* Number of times to iterate */
-@@ -991,14 +992,12 @@ static void ci_leaf_init(struct cacheinf
- 
- int init_cache_level(unsigned int cpu)
- {
--	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
-+	struct cpu_cacheinfo *ci = get_cpu_cacheinfo(cpu);
- 
--	if (!num_cache_leaves)
-+	/* There should be at least one leaf. */
-+	if (!ci->num_leaves)
- 		return -ENOENT;
--	if (!this_cpu_ci)
--		return -EINVAL;
--	this_cpu_ci->num_levels = 3;
--	this_cpu_ci->num_leaves = num_cache_leaves;
-+
- 	return 0;
- }
- 
+ 	IA_CSS_LEAVE("return=%p", me);
+ 	return me;
+-- 
+2.43.0
+
 
 
 
