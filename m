@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-102197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024F09EF19A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 364B49EEC88
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABBE3189A852
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9C3C284355
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7088B22FE11;
-	Thu, 12 Dec 2024 16:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47639216606;
+	Thu, 12 Dec 2024 15:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTQGV8tC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZfaFfCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1A4223C72;
-	Thu, 12 Dec 2024 16:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C502139CB;
+	Thu, 12 Dec 2024 15:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020337; cv=none; b=rZcmjfgQzG7v56mAtm088VIIwNAq/5OEh6YZrTSjbCZf/IQdccL5kLiY5AySjrgSgfHD4GXqGAaKGP282mBmshKCrSghJ+MgFI6HXqNu3HD4lvqXfaQuCADKPRhODiSfbzLqXDrlvbvKPQAvWeiwCPKihF2lmS2bWUuGiqJA8tc=
+	t=1734017734; cv=none; b=Jqk48oEQ3JykRit9HDJsJwdqRiCMWFhAMGwPIBPxE7/2gNnXFb6CxAMBfpGz79fd2RFetqYWtQ5vhiGc4vTen2YPeV9nBWJNGeBp80BYphU8u/5GjzPdnbvUxc/i1/ySybi8YYK7aAZOM5MfE6Bp7n5bLzFi55PdC3BwoU8CrUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020337; c=relaxed/simple;
-	bh=drcerIuTHABC3GAeIOmv4zx1tEXSyvVZbp94hWUc85o=;
+	s=arc-20240116; t=1734017734; c=relaxed/simple;
+	bh=+Gfa1UD1rIfdUQUQUXHXkesSrd7vxv5EnBmjIg8eP8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmz6CoVLJiUAbcbq5MppJw0Pp/Q6vdQiMUa8l4LtpsrYgmba8YTwM4y+3L1F6ZXogZJwbQa4vVUBhAa1sCf39wJ2TxOXaNz6RVoHGeaNMck8NVhJ+P2CQdeg00e9H5FxMkp5COINnFlXQGNkLxW0hNe43pevsFNxe1/EK0xff2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTQGV8tC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFC2C4CECE;
-	Thu, 12 Dec 2024 16:18:56 +0000 (UTC)
+	 MIME-Version; b=Zy1t03le945dtv6tUvxMjNbBQxVgKHe+tRPeRD7u0Kkyoj2TeW39tcyOFd/KPrZbNEcql5jp6YP9yUQQP9e6KGGYmJhWOXF75u0LkERsSNfuJ8ujGpp/cMxI/R0ZxuLDlAdlNHodBYHMDRGmBubIkTo0Er25yDGMVM0glkfVL1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZfaFfCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A01C4CECE;
+	Thu, 12 Dec 2024 15:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020337;
-	bh=drcerIuTHABC3GAeIOmv4zx1tEXSyvVZbp94hWUc85o=;
+	s=korg; t=1734017733;
+	bh=+Gfa1UD1rIfdUQUQUXHXkesSrd7vxv5EnBmjIg8eP8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTQGV8tC7eVp7OnfAiSu2WO9x5cTnIjQZjQ/BNUF8flToWrW2Nm+EhVJRHyT/LJpa
-	 SuFB2YVGbZlCldK7n3JLkRqISzSuRNgG+k4bHxtPIfaw4wa+SFczSH3kupocWAnj6m
-	 S5U5fitnPsJlGiGfKvOzRyvovwUHvzH+bpm7mKf4=
+	b=WZfaFfCKXp+FekhAfR1f4qK2sdZroOn+xCu9JeXv4OVbZiPJZTAJTfQXOQgLgmm8b
+	 QQ8d8I1GUtNPX1BCorJF+wUt7qfUg/sHY7HD5LiPhfLOlgWtwmXK1cLlmtw8Cl0e1m
+	 1MTQoE8Cmx5Gc9WPmv9ykJISKdVHvY9wT0FkzNas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Zenla <alex@edera.dev>,
-	Alexander Merritt <alexander@edera.dev>,
-	Ariadne Conill <ariadne@ariadne.space>,
-	Juergen Gross <jgross@suse.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 441/772] 9p/xen: fix release of IRQ
+Subject: [PATCH 6.6 067/356] xhci: Combine two if statements for Etron xHCI host
 Date: Thu, 12 Dec 2024 15:56:26 +0100
-Message-ID: <20241212144408.146992911@linuxfoundation.org>
+Message-ID: <20241212144247.278179303@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Zenla <alex@edera.dev>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit e43c608f40c065b30964f0a806348062991b802d ]
+[ Upstream commit d7b11fe5790203fcc0db182249d7bfd945e44ccb ]
 
-Kernel logs indicate an IRQ was double-freed.
+Combine two if statements, because these hosts have the same
+quirk flags applied.
 
-Pass correct device ID during IRQ release.
+[Mathias: has stable tag because other fixes in series depend on this]
 
-Fixes: 71ebd71921e45 ("xen/9pfs: connect to the backend")
-Signed-off-by: Alex Zenla <alex@edera.dev>
-Signed-off-by: Alexander Merritt <alexander@edera.dev>
-Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241121225100.5736-1-alexander@edera.dev>
-[Dominique: remove confusing variable reset to 0]
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: 91f7a1524a92 ("xhci: Apply broken streams quirk to Etron EJ188 xHCI host")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106101459.775897-18-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/trans_xen.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index f95803736ced0..4ad7e7a269ca0 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -285,7 +285,7 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
- 		if (!priv->rings[i].intf)
- 			break;
- 		if (priv->rings[i].irq > 0)
--			unbind_from_irqhandler(priv->rings[i].irq, priv->dev);
-+			unbind_from_irqhandler(priv->rings[i].irq, ring);
- 		if (priv->rings[i].data.in) {
- 			for (j = 0;
- 			     j < (1 << priv->rings[i].intf->ring_order);
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index f74c067b54587..d36158df83afc 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -456,12 +456,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+ 
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ168) {
+-		xhci->quirks |= XHCI_RESET_ON_RESUME;
+-		xhci->quirks |= XHCI_BROKEN_STREAMS;
+-	}
+-	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188) {
++	    (pdev->device == PCI_DEVICE_ID_EJ168 ||
++	     pdev->device == PCI_DEVICE_ID_EJ188)) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
 -- 
 2.43.0
 
