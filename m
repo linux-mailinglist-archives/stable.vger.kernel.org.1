@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADD29EF11B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092E49EEA2E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28D04174012
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B20E188CFB8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5A823E6F4;
-	Thu, 12 Dec 2024 16:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF432153F4;
+	Thu, 12 Dec 2024 15:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tod4y3oL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrsSUUxl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8C023DEAD;
-	Thu, 12 Dec 2024 16:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DC8211476;
+	Thu, 12 Dec 2024 15:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019955; cv=none; b=WQxO4KO7M3xhqjIiwoJ6COHV2kYk3nMZKQxLv5z05wdYM1EoaNIBMe9efYU7K6jQhjVxHWapI4+mhOHNYGAMhIc8+KTUBsQOg2lHnResHboFGscI0lahzGUGOBSVqOsCxrdwwvH8YBBN3P2cJXF3FG3qVfuIT6R1dPVcFE11K+M=
+	t=1734016045; cv=none; b=sRa0U4BIb+LMErzDswtsPdoc2CRuXepBAYDOWKssanEHmX9co4hTmObQ3iDUGZh6jCzaq90fZYw7Qb9vOKWd94UrJyvUWdRwV86iNHjAS/kGG7I4UMRIFAVbu4YrEYeGO8Ti0siqJK84C21usyZ1ep7+VBJYs8pKcsf0vjJO1JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019955; c=relaxed/simple;
-	bh=YcFN0MkYsEJ2AFOU5yVGluXvP6WJet90/ezVlCAgWKE=;
+	s=arc-20240116; t=1734016045; c=relaxed/simple;
+	bh=kFdCjb6DodOy7GihgydLHrubDX0NKjQ10d0zaMlsVCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kQJYwQUQL8anhCYhgFM8qTnPqbI3llmcZw05KW+TtQI1XBStEt+TIAbbV+T+LpwLNcQ1RumHEKC0UxiHYF7veZgjfd7732NJuFSREQkwsnj0n9cGymuP21RgrusZ0627BHS5YBmC+fQjgkoZIj+YabGTnSXQAwGGV4hQVsv/6CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tod4y3oL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F91C4CECE;
-	Thu, 12 Dec 2024 16:12:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nSFnd+yxZLTtHCpMT5FjpMAYcx7CNlFBuTGItoS+0/cbcMb0ujvcu1pPQqIx9QuuB2Z9GJLJKQy0QgQ+fdSSflUMqeYlM747qETu67cRCsliszBP8TbsRwN6dgCVAiWYASGL2H0eSRZjvN0n1apL9W0ZKjglYjDQIRPnLTQ1LXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrsSUUxl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18B6C4CECE;
+	Thu, 12 Dec 2024 15:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019954;
-	bh=YcFN0MkYsEJ2AFOU5yVGluXvP6WJet90/ezVlCAgWKE=;
+	s=korg; t=1734016045;
+	bh=kFdCjb6DodOy7GihgydLHrubDX0NKjQ10d0zaMlsVCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tod4y3oLfw/aym6WEYf9/VXDC6nYlqdxc+TteFZA7hOyHFxlTkDsp1/zsIM4VtKN/
-	 zWX5Eio3w1+683u3EY3ECeeh2i5hG7ccjYyb6tavE9JOJhiOtzGsfujJeKvsWAtpB1
-	 XrUp3V/X30I/qYmj4dL7Gqu3KpqTBNpQR80V6SEs=
+	b=LrsSUUxl4qiukFKPjYKX1zTEIAVbC0xBqdjt1aIiSkI1CPOe8Hse4hVvcDiMel3zG
+	 JlvI5ggfHbiH3PlUWH+WWRwlIWVsARck3cYAfF2PNO2knFKpjcntH3uL4udGWn/l+6
+	 8VkW95XzpRbfnZY4sid8pGpiRuz5GxnbDVYIrJ9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>
-Subject: [PATCH 6.1 340/772] scsi: lpfc: Validate hdwq pointers before dereferencing in reset/errata paths
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 116/466] bpf: Handle BPF_EXIST and BPF_NOEXIST for LPM trie
 Date: Thu, 12 Dec 2024 15:54:45 +0100
-Message-ID: <20241212144403.963829216@linuxfoundation.org>
+Message-ID: <20241212144311.397846335@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 2be1d4f11944cd6283cb97268b3e17c4424945ca upstream.
+[ Upstream commit eae6a075e9537dd69891cf77ca5a88fa8a28b4a1 ]
 
-When the HBA is undergoing a reset or is handling an errata event, NULL ptr
-dereference crashes may occur in routines such as
-lpfc_sli_flush_io_rings(), lpfc_dev_loss_tmo_callbk(), or
-lpfc_abort_handler().
+Add the currently missing handling for the BPF_EXIST and BPF_NOEXIST
+flags. These flags can be specified by users and are relevant since LPM
+trie supports exact matches during update.
 
-Add NULL ptr checks before dereferencing hdwq pointers that may have been
-freed due to operations colliding with a reset or errata event handler.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240726231512.92867-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[Xiangyu: BP to fix CVE: CVE-2024-49891, no test_bit() conflict resolution]
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20241206110622.1161752-4-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c |    3 ++-
- drivers/scsi/lpfc/lpfc_scsi.c    |   13 +++++++++++--
- drivers/scsi/lpfc/lpfc_sli.c     |   11 +++++++++++
- 3 files changed, 24 insertions(+), 3 deletions(-)
+ kernel/bpf/lpm_trie.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -177,7 +177,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport
- 	/* Don't schedule a worker thread event if the vport is going down.
- 	 * The teardown process cleans up the node via lpfc_drop_node.
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 9b60eda0f727b..a82cf3693778a 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -376,6 +376,10 @@ static long trie_update_elem(struct bpf_map *map,
+ 	 * simply assign the @new_node to that slot and be done.
  	 */
--	if (vport->load_flag & FC_UNLOADING) {
-+	if ((vport->load_flag & FC_UNLOADING) ||
-+	    !(phba->hba_flag & HBA_SETUP)) {
- 		((struct lpfc_rport_data *)rport->dd_data)->pnode = NULL;
- 		ndlp->rport = NULL;
- 
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -5554,11 +5554,20 @@ lpfc_abort_handler(struct scsi_cmnd *cmn
- 
- 	iocb = &lpfc_cmd->cur_iocbq;
- 	if (phba->sli_rev == LPFC_SLI_REV4) {
--		pring_s4 = phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring;
--		if (!pring_s4) {
-+		/* if the io_wq & pring are gone, the port was reset. */
-+		if (!phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq ||
-+		    !phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring) {
-+			lpfc_printf_vlog(vport, KERN_WARNING, LOG_FCP,
-+					 "2877 SCSI Layer I/O Abort Request "
-+					 "IO CMPL Status x%x ID %d LUN %llu "
-+					 "HBA_SETUP %d\n", FAILED,
-+					 cmnd->device->id,
-+					 (u64)cmnd->device->lun,
-+					 (HBA_SETUP & phba->hba_flag));
- 			ret = FAILED;
- 			goto out_unlock_hba;
- 		}
-+		pring_s4 = phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring;
- 		spin_lock(&pring_s4->ring_lock);
+ 	if (!node) {
++		if (flags == BPF_EXIST) {
++			ret = -ENOENT;
++			goto out;
++		}
+ 		rcu_assign_pointer(*slot, new_node);
+ 		goto out;
  	}
- 	/* the command is in process of being cancelled */
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -4668,6 +4668,17 @@ lpfc_sli_flush_io_rings(struct lpfc_hba
- 	/* Look on all the FCP Rings for the iotag */
- 	if (phba->sli_rev >= LPFC_SLI_REV4) {
- 		for (i = 0; i < phba->cfg_hdw_queue; i++) {
-+			if (!phba->sli4_hba.hdwq ||
-+			    !phba->sli4_hba.hdwq[i].io_wq) {
-+				lpfc_printf_log(phba, KERN_ERR, LOG_SLI,
-+						"7777 hdwq's deleted %lx "
-+						"%lx %x %x\n",
-+						(unsigned long)phba->pport->load_flag,
-+						(unsigned long)phba->hba_flag,
-+						phba->link_state,
-+						phba->sli.sli_flag);
-+				return;
+@@ -384,18 +388,31 @@ static long trie_update_elem(struct bpf_map *map,
+ 	 * which already has the correct data array set.
+ 	 */
+ 	if (node->prefixlen == matchlen) {
++		if (!(node->flags & LPM_TREE_NODE_FLAG_IM)) {
++			if (flags == BPF_NOEXIST) {
++				ret = -EEXIST;
++				goto out;
 +			}
- 			pring = phba->sli4_hba.hdwq[i].io_wq->pring;
++			trie->n_entries--;
++		} else if (flags == BPF_EXIST) {
++			ret = -ENOENT;
++			goto out;
++		}
++
+ 		new_node->child[0] = node->child[0];
+ 		new_node->child[1] = node->child[1];
  
- 			spin_lock_irq(&pring->ring_lock);
+-		if (!(node->flags & LPM_TREE_NODE_FLAG_IM))
+-			trie->n_entries--;
+-
+ 		rcu_assign_pointer(*slot, new_node);
+ 		free_node = node;
+ 
+ 		goto out;
+ 	}
+ 
++	if (flags == BPF_EXIST) {
++		ret = -ENOENT;
++		goto out;
++	}
++
+ 	/* If the new node matches the prefix completely, it must be inserted
+ 	 * as an ancestor. Simply insert it between @node and *@slot.
+ 	 */
+-- 
+2.43.0
+
 
 
 
