@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE7399EF5B0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBF29EF872
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 392E8179AF6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FBDA295070
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63854223C47;
-	Thu, 12 Dec 2024 17:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC1B215710;
+	Thu, 12 Dec 2024 17:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="of9onT9q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Am13CKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA6E53365;
-	Thu, 12 Dec 2024 17:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF346F2FE;
+	Thu, 12 Dec 2024 17:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023124; cv=none; b=flc+9uOHF0bMKBRQf2Ize7ad1SgDSi9NoopqQ+cJsEuezPWdnEMN5W1xmJZioey9cAB3lMnbc8RKrMztl/hY6JG4t2ceAszkDEsqlthEg1ttr7d17n6da6SBoC+IsvSxTQTAT47EDBr5GAe5fQSFmTfSPoSt1uSL1ryN/WqwZzs=
+	t=1734025337; cv=none; b=lOK5Q4uVJ+nMyBph3JK7R7C1nqScPmGWaF24OUov46s3YFXoOsFEfmjdwI0loPwsjkoNVcdBRnn4NM+KOULruAQSIHFpS/8zl//tcCv2oMgc2WlUPWvoCzK9sthGlkaUadrbuZbX5s8jE8bUCeYJYGeszrTIkNzb1+KZlkyVHxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023124; c=relaxed/simple;
-	bh=nN6yN+CMxT/rwPXTIOgIHom//7N9A2nEwy43KuxHSz4=;
+	s=arc-20240116; t=1734025337; c=relaxed/simple;
+	bh=cooOmRh2cJJ70bCSm2nwwx5qUNAhHXK1d8ADEj450GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rNpsoxvTvUrnzcyV0TUf6/SslGZpYoHXgLA0w0PrjKv8pN6PFxG+ea3KwTyJDT7X6t7LBTsnMrVTxvSBzbd5BgnZApi0feh1zZAKuLBWhE+0ZLNS8FhNYg/3w9+3aMLthWAc6EKVXpFlpMaa2nCeaLCp4efIkJqqb5A/+2/1++s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=of9onT9q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94052C4CECE;
-	Thu, 12 Dec 2024 17:05:23 +0000 (UTC)
+	 MIME-Version; b=BUYOccgIjbcZ7UDHL/zaxcukbL+bVCdRx5clAmPnIFinP6SDYwhs1dfgmxvcCOOTJVQteyXYI+R7pLeTuP6eKKcj9LJ8fjNm3w6RqemX4NKcdkThS/jtxy4jLhJ89lZiKDZSRBm4ZPwJYhsi6QWd3YXCIIC0MxxhXHo8phKepPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Am13CKI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DA1C4CED0;
+	Thu, 12 Dec 2024 17:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023124;
-	bh=nN6yN+CMxT/rwPXTIOgIHom//7N9A2nEwy43KuxHSz4=;
+	s=korg; t=1734025337;
+	bh=cooOmRh2cJJ70bCSm2nwwx5qUNAhHXK1d8ADEj450GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=of9onT9q9/dzredjyUhOrrcs3p0HLM43qq6zSXNSOU5z11u5wiqYR8IO6Cz+VVCz9
-	 JbbO9cMXi2NbiWHIJ11uGqHQU9b05pNbMWlmLUJQ3spKe5orhotXnwXYNzE8z5yiTa
-	 gcoSBS4ol5PEW9zQ6ZwpEJo+vIO3mbd0mSfPWUSw=
+	b=2Am13CKIDpuHlWfvrGr67gjPB/SevrsE8iWhrCFG6G0sdkXpIS0erIDUvv4FBg+c8
+	 8j8BaQiul02l7qimeDgh5quP3FceO5r3yeNd9B/5EYlOMrC3dIkfQSM1pF90aPyYwY
+	 yNwxXoT32QL0nSGNIoYly/sbde76F3BDvPVbxgd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Monnet <quentin@isovalent.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@corigine.com>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 432/565] bpftool: Remove asserts from JIT disassembler
+Subject: [PATCH 5.4 109/321] clk: clk-axi-clkgen: make sure to enable the AXI bus clock
 Date: Thu, 12 Dec 2024 16:00:27 +0100
-Message-ID: <20241212144328.761983849@linuxfoundation.org>
+Message-ID: <20241212144234.291710255@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,244 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Monnet <quentin@isovalent.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 55b4de58d0e2aca810ed2b198a0173640300acf8 ]
+[ Upstream commit c64ef7e4851d1a9abbb7f7833e4936973ac5ba79 ]
 
-The JIT disassembler in bpftool is the only components (with the JSON
-writer) using asserts to check the return values of functions. But it
-does not do so in a consistent way, and diasm_print_insn() returns no
-value, although sometimes the operation failed.
+In order to access the registers of the HW, we need to make sure that
+the AXI bus clock is enabled. Hence let's increase the number of clocks
+by one.
 
-Remove the asserts, and instead check the return values, print messages
-on errors, and propagate the error to the caller from prog.c.
+In order to keep backward compatibility and make sure old DTs still work
+we check if clock-names is available or not. If it is, then we can
+disambiguate between really having the AXI clock or a parent clock and
+so we can enable the bus clock. If not, we fallback to what was done
+before and don't explicitly enable the AXI bus clock.
 
-Remove the inclusion of assert.h from jit_disasm.c, and also from map.c
-where it is unused.
+Note that if clock-names is given, the axi clock must be the last one in
+the phandle array (also enforced in the DT bindings) so that we can reuse
+as much code as possible.
 
-Signed-off-by: Quentin Monnet <quentin@isovalent.com>
-Tested-by: Niklas Söderlund <niklas.soderlund@corigine.com>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20221025150329.97371-3-quentin@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: ef3ba8c258ee ("bpftool: fix potential NULL pointer dereferencing in prog_dump()")
+Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-2-bc5e0733ad76@analog.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/jit_disasm.c | 51 +++++++++++++++++++++++-----------
- tools/bpf/bpftool/main.h       | 25 +++++++++--------
- tools/bpf/bpftool/map.c        |  1 -
- tools/bpf/bpftool/prog.c       | 15 ++++++----
- 4 files changed, 57 insertions(+), 35 deletions(-)
+ drivers/clk/clk-axi-clkgen.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/tools/bpf/bpftool/jit_disasm.c b/tools/bpf/bpftool/jit_disasm.c
-index aaf99a0168c90..fe23c9669a876 100644
---- a/tools/bpf/bpftool/jit_disasm.c
-+++ b/tools/bpf/bpftool/jit_disasm.c
-@@ -16,7 +16,6 @@
- #include <stdarg.h>
- #include <stdint.h>
- #include <stdlib.h>
--#include <assert.h>
- #include <unistd.h>
- #include <string.h>
- #include <bfd.h>
-@@ -29,14 +28,18 @@
- #include "json_writer.h"
- #include "main.h"
+diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
+index 8d0c32e81e787..73f3bfeb44dc5 100644
+--- a/drivers/clk/clk-axi-clkgen.c
++++ b/drivers/clk/clk-axi-clkgen.c
+@@ -7,6 +7,7 @@
+  */
  
--static void get_exec_path(char *tpath, size_t size)
-+static int get_exec_path(char *tpath, size_t size)
- {
- 	const char *path = "/proc/self/exe";
- 	ssize_t len;
+ #include <linux/platform_device.h>
++#include <linux/clk.h>
+ #include <linux/clk-provider.h>
+ #include <linux/slab.h>
+ #include <linux/io.h>
+@@ -412,6 +413,7 @@ static int axi_clkgen_probe(struct platform_device *pdev)
+ 	struct clk_init_data init;
+ 	const char *parent_names[2];
+ 	const char *clk_name;
++	struct clk *axi_clk;
+ 	unsigned int i;
+ 	int ret;
  
- 	len = readlink(path, tpath, size - 1);
--	assert(len > 0);
-+	if (len <= 0)
-+		return -1;
+@@ -431,8 +433,24 @@ static int axi_clkgen_probe(struct platform_device *pdev)
+ 		return PTR_ERR(axi_clkgen->base);
+ 
+ 	init.num_parents = of_clk_get_parent_count(pdev->dev.of_node);
+-	if (init.num_parents < 1 || init.num_parents > 2)
+-		return -EINVAL;
 +
- 	tpath[len] = 0;
++	axi_clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
++	if (!IS_ERR(axi_clk)) {
++		if (init.num_parents < 2 || init.num_parents > 3)
++			return -EINVAL;
 +
-+	return 0;
- }
- 
- static int oper_count;
-@@ -97,30 +100,39 @@ static int fprintf_json_styled(void *out,
- 	return r;
- }
- 
--void disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
--		       const char *arch, const char *disassembler_options,
--		       const struct btf *btf,
--		       const struct bpf_prog_linfo *prog_linfo,
--		       __u64 func_ksym, unsigned int func_idx,
--		       bool linum)
-+int disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
-+		      const char *arch, const char *disassembler_options,
-+		      const struct btf *btf,
-+		      const struct bpf_prog_linfo *prog_linfo,
-+		      __u64 func_ksym, unsigned int func_idx,
-+		      bool linum)
- {
- 	const struct bpf_line_info *linfo = NULL;
- 	disassembler_ftype disassemble;
-+	int count, i, pc = 0, err = -1;
- 	struct disassemble_info info;
- 	unsigned int nr_skip = 0;
--	int count, i, pc = 0;
- 	char tpath[PATH_MAX];
- 	bfd *bfdf;
- 
- 	if (!len)
--		return;
-+		return -1;
- 
- 	memset(tpath, 0, sizeof(tpath));
--	get_exec_path(tpath, sizeof(tpath));
-+	if (get_exec_path(tpath, sizeof(tpath))) {
-+		p_err("failed to create disasembler (get_exec_path)");
-+		return -1;
++		init.num_parents -= 1;
++	} else {
++		/*
++		 * Legacy... So that old DTs which do not have clock-names still
++		 * work. In this case we don't explicitly enable the AXI bus
++		 * clock.
++		 */
++		if (PTR_ERR(axi_clk) != -ENOENT)
++			return PTR_ERR(axi_clk);
++		if (init.num_parents < 1 || init.num_parents > 2)
++			return -EINVAL;
 +	}
  
- 	bfdf = bfd_openr(tpath, NULL);
--	assert(bfdf);
--	assert(bfd_check_format(bfdf, bfd_object));
-+	if (!bfdf) {
-+		p_err("failed to create disassembler (bfd_openr)");
-+		return -1;
-+	}
-+	if (!bfd_check_format(bfdf, bfd_object)) {
-+		p_err("failed to create disassembler (bfd_check_format)");
-+		goto exit_close;
-+	}
- 
- 	if (json_output)
- 		init_disassemble_info_compat(&info, stdout,
-@@ -139,7 +151,7 @@ void disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
- 			bfdf->arch_info = inf;
- 		} else {
- 			p_err("No libbfd support for %s", arch);
--			return;
-+			goto exit_close;
- 		}
- 	}
- 
-@@ -160,7 +172,10 @@ void disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
- #else
- 	disassemble = disassembler(bfdf);
- #endif
--	assert(disassemble);
-+	if (!disassemble) {
-+		p_err("failed to create disassembler");
-+		goto exit_close;
-+	}
- 
- 	if (json_output)
- 		jsonw_start_array(json_wtr);
-@@ -224,7 +239,11 @@ void disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
- 	if (json_output)
- 		jsonw_end_array(json_wtr);
- 
-+	err = 0;
-+
-+exit_close:
- 	bfd_close(bfdf);
-+	return err;
- }
- 
- int disasm_init(void)
-diff --git a/tools/bpf/bpftool/main.h b/tools/bpf/bpftool/main.h
-index 90caa42aac4cf..834f8317b855f 100644
---- a/tools/bpf/bpftool/main.h
-+++ b/tools/bpf/bpftool/main.h
-@@ -193,22 +193,23 @@ int map_parse_fd_and_info(int *argc, char ***argv, void *info, __u32 *info_len);
- 
- struct bpf_prog_linfo;
- #ifdef HAVE_LIBBFD_SUPPORT
--void disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
--		       const char *arch, const char *disassembler_options,
--		       const struct btf *btf,
--		       const struct bpf_prog_linfo *prog_linfo,
--		       __u64 func_ksym, unsigned int func_idx,
--		       bool linum);
-+int disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
-+		      const char *arch, const char *disassembler_options,
-+		      const struct btf *btf,
-+		      const struct bpf_prog_linfo *prog_linfo,
-+		      __u64 func_ksym, unsigned int func_idx,
-+		      bool linum);
- int disasm_init(void);
- #else
- static inline
--void disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
--		       const char *arch, const char *disassembler_options,
--		       const struct btf *btf,
--		       const struct bpf_prog_linfo *prog_linfo,
--		       __u64 func_ksym, unsigned int func_idx,
--		       bool linum)
-+int disasm_print_insn(unsigned char *image, ssize_t len, int opcodes,
-+		      const char *arch, const char *disassembler_options,
-+		      const struct btf *btf,
-+		      const struct bpf_prog_linfo *prog_linfo,
-+		      __u64 func_ksym, unsigned int func_idx,
-+		      bool linum)
- {
-+	return 0;
- }
- static inline int disasm_init(void)
- {
-diff --git a/tools/bpf/bpftool/map.c b/tools/bpf/bpftool/map.c
-index 72ef9ddae2609..c775a677688ae 100644
---- a/tools/bpf/bpftool/map.c
-+++ b/tools/bpf/bpftool/map.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- /* Copyright (C) 2017-2018 Netronome Systems, Inc. */
- 
--#include <assert.h>
- #include <errno.h>
- #include <fcntl.h>
- #include <linux/err.h>
-diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-index afb28fcc66786..75f71c3ad4f62 100644
---- a/tools/bpf/bpftool/prog.c
-+++ b/tools/bpf/bpftool/prog.c
-@@ -744,10 +744,11 @@ prog_dump(struct bpf_prog_info *info, enum dump_mode mode,
- 					printf("%s:\n", sym_name);
- 				}
- 
--				disasm_print_insn(img, lens[i], opcodes,
--						  name, disasm_opt, btf,
--						  prog_linfo, ksyms[i], i,
--						  linum);
-+				if (disasm_print_insn(img, lens[i], opcodes,
-+						      name, disasm_opt, btf,
-+						      prog_linfo, ksyms[i], i,
-+						      linum))
-+					goto exit_free;
- 
- 				img += lens[i];
- 
-@@ -760,8 +761,10 @@ prog_dump(struct bpf_prog_info *info, enum dump_mode mode,
- 			if (json_output)
- 				jsonw_end_array(json_wtr);
- 		} else {
--			disasm_print_insn(buf, member_len, opcodes, name,
--					  disasm_opt, btf, NULL, 0, 0, false);
-+			if (disasm_print_insn(buf, member_len, opcodes, name,
-+					      disasm_opt, btf, NULL, 0, 0,
-+					      false))
-+				goto exit_free;
- 		}
- 	} else if (visual) {
- 		if (json_output)
+ 	for (i = 0; i < init.num_parents; i++) {
+ 		parent_names[i] = of_clk_get_parent_name(pdev->dev.of_node, i);
 -- 
 2.43.0
 
