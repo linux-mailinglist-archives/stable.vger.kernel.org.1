@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-102106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17309EF019
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6431C9EEA58
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCA6228A1A9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6356188C233
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1DE23ED71;
-	Thu, 12 Dec 2024 16:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C1621E0BC;
+	Thu, 12 Dec 2024 15:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/OW4u0s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoWTKIvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37ECC213E99;
-	Thu, 12 Dec 2024 16:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B819213E97;
+	Thu, 12 Dec 2024 15:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019990; cv=none; b=jIfRBcY+yyfnQBYrxc2HpeMWNCmf2NFuJgVmRtd3ebLqZqJiyKgc0H40coFayuAIOcffvqEjQTtgB8CvElE53jpMrbZm1YOj+ouK2wcHGQ1jBI5eCS/Zoqk2tEMBDwHLXgCI4HWzpQ/e7aMYhvbL5ch0/DXYtD110Knqy0JUTsU=
+	t=1734016091; cv=none; b=VQTLET1B7iyUyPNEMJmKleoZIKGxrLDtWXoqCusaC1/5FgYeoVIedyloPkbSXWLT2IJcWk/+ZhPlJLGSwkvTmkjiq24qhyEW7F7IvlKEd88LsEgdMbiR8a7hwjESZS6Hz7royLWypIfy1L42tgGBJsKe+PUumNNn3qRgVdc/KnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019990; c=relaxed/simple;
-	bh=3MkJSMqCAPnGAszj4CIe+i7dIOhKLgx7seVjvcu7tU4=;
+	s=arc-20240116; t=1734016091; c=relaxed/simple;
+	bh=4gqk7jQxdYQPQlWW9HPbFKQz91K0H2VPb9JOEGm21aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axL6uFqmFcK4jwzbhn4KxX/urdH6oBatHjNVW46dZrBBglEPFUaVBBIETp1nQdIIBEMCBKxv0b0ijCXNFegnrZNAbhC/Dmih40+Bq25MhAuXRgCD7dA/hsuUfv489ugMpQgu8VsIjP31AvYtaIlzVYFfDRjFlFsDsEigNJyKp48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/OW4u0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80784C4CECE;
-	Thu, 12 Dec 2024 16:13:09 +0000 (UTC)
+	 MIME-Version; b=NQxWWTeVIAyQzWpMigSNP0CqdFjSfs16hHEkwugK+5wDVLg0ZtGLaC/lECxHBA43ru8gh6LIEO9CgS7W3EpBi9lSkLWBos2vraITfQrNp5g9mK+UDoZrzDNOo4FU15etzfzPKiiN6Yur9BGaepBhJB88g7tQojVzMz5Duz1NljM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoWTKIvN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E28AC4CED7;
+	Thu, 12 Dec 2024 15:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019990;
-	bh=3MkJSMqCAPnGAszj4CIe+i7dIOhKLgx7seVjvcu7tU4=;
+	s=korg; t=1734016091;
+	bh=4gqk7jQxdYQPQlWW9HPbFKQz91K0H2VPb9JOEGm21aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/OW4u0sSmCLw+ac5uijbFbuTWlCiJsNUXMMcDgD/guLIIBlIj0uSuUNj9fYseM7n
-	 d+DkIANSY+JWjx2rEYbbctWoTl2u+uw96nAMn1OwVckK8ZzFbpx/1E75bBebZkvvuS
-	 yvsLhm10F44h3SPKW34Ap9Q1WSZBgvqtplGMDryw=
+	b=MoWTKIvNeCQyYwkH3Hf8w7IdhAdyg1Q1/YJNK8MiPxIzlf1jA84zaExU8r3ZtPhCa
+	 2LPeEytQn5zfqxL+cQ/FA9XJbuaHZGkdc7V361L3ncrM4g0/E+YorYTu1iAwN2E+Uy
+	 UVAi5Mrg3QN2P2FlJEY3TNIM9kY2LUz5WJRQV914=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Jian <liujian56@huawei.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Rudi Horn <rudi.horn@oracle.com>,
+	Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 323/772] tcp: Fix use-after-free of nreq in reqsk_timer_handler().
+Subject: [PATCH 6.12 099/466] x86/pkeys: Ensure updated PKRU value is XRSTORd
 Date: Thu, 12 Dec 2024 15:54:28 +0100
-Message-ID: <20241212144403.252171928@linuxfoundation.org>
+Message-ID: <20241212144310.727783417@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,51 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
 
-[ Upstream commit c31e72d021db2714df03df6c42855a1db592716c ]
+[ Upstream commit ae6012d72fa60c9ff92de5bac7a8021a47458e5b ]
 
-The cited commit replaced inet_csk_reqsk_queue_drop_and_put() with
-__inet_csk_reqsk_queue_drop() and reqsk_put() in reqsk_timer_handler().
+When XSTATE_BV[i] is 0, and XRSTOR attempts to restore state component
+'i' it ignores any value in the XSAVE buffer and instead restores the
+state component's init value.
 
-Then, oreq should be passed to reqsk_put() instead of req; otherwise
-use-after-free of nreq could happen when reqsk is migrated but the
-retry attempt failed (e.g. due to timeout).
+This means that if XSAVE writes XSTATE_BV[PKRU]=0 then XRSTOR will
+ignore the value that update_pkru_in_sigframe() writes to the XSAVE buffer.
 
-Let's pass oreq to reqsk_put().
+XSTATE_BV[PKRU] only gets written as 0 if PKRU is in its init state. On
+Intel CPUs, basically never happens because the kernel usually
+overwrites the init value (aside: this is why we didn't notice this bug
+until now). But on AMD, the init tracker is more aggressive and will
+track PKRU as being in its init state upon any wrpkru(0x0).
+Unfortunately, sig_prepare_pkru() does just that: wrpkru(0x0).
 
-Fixes: e8c526f2bdf1 ("tcp/dccp: Don't use timer_pending() in reqsk_queue_unlink().")
-Reported-by: Liu Jian <liujian56@huawei.com>
-Closes: https://lore.kernel.org/netdev/1284490f-9525-42ee-b7b8-ccadf6606f6d@huawei.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Liu Jian <liujian56@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20241123174236.62438-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This writes XSTATE_BV[PKRU]=0 which makes XRSTOR ignore the PKRU value
+in the sigframe.
+
+To fix this, always overwrite the sigframe XSTATE_BV with a value that
+has XSTATE_BV[PKRU]==1.  This ensures that XRSTOR will not ignore what
+update_pkru_in_sigframe() wrote.
+
+The problematic sequence of events is something like this:
+
+Userspace does:
+	* wrpkru(0xffff0000) (or whatever)
+	* Hardware sets: XINUSE[PKRU]=1
+Signal happens, kernel is entered:
+	* sig_prepare_pkru() => wrpkru(0x00000000)
+	* Hardware sets: XINUSE[PKRU]=0 (aggressive AMD init tracker)
+	* XSAVE writes most of XSAVE buffer, including
+	  XSTATE_BV[PKRU]=XINUSE[PKRU]=0
+	* update_pkru_in_sigframe() overwrites PKRU in XSAVE buffer
+... signal handling
+	* XRSTOR sees XSTATE_BV[PKRU]==0, ignores just-written value
+	  from update_pkru_in_sigframe()
+
+Fixes: 70044df250d0 ("x86/pkeys: Update PKRU to enable all pkeys before XSAVE")
+Suggested-by: Rudi Horn <rudi.horn@oracle.com>
+Signed-off-by: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20241119174520.3987538-3-aruna.ramakrishna%40oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_connection_sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/fpu/xstate.h | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 569186f741fb2..8fa56a17f03a6 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1121,7 +1121,7 @@ static void reqsk_timer_handler(struct timer_list *t)
- 
- drop:
- 	__inet_csk_reqsk_queue_drop(sk_listener, oreq, true);
--	reqsk_put(req);
-+	reqsk_put(oreq);
+diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
+index 6b2924fbe5b8d..aa16f1a1bbcf1 100644
+--- a/arch/x86/kernel/fpu/xstate.h
++++ b/arch/x86/kernel/fpu/xstate.h
+@@ -72,10 +72,22 @@ static inline u64 xfeatures_mask_independent(void)
+ /*
+  * Update the value of PKRU register that was already pushed onto the signal frame.
+  */
+-static inline int update_pkru_in_sigframe(struct xregs_state __user *buf, u32 pkru)
++static inline int update_pkru_in_sigframe(struct xregs_state __user *buf, u64 mask, u32 pkru)
+ {
++	u64 xstate_bv;
++	int err;
++
+ 	if (unlikely(!cpu_feature_enabled(X86_FEATURE_OSPKE)))
+ 		return 0;
++
++	/* Mark PKRU as in-use so that it is restored correctly. */
++	xstate_bv = (mask & xfeatures_in_use()) | XFEATURE_MASK_PKRU;
++
++	err =  __put_user(xstate_bv, &buf->header.xfeatures);
++	if (err)
++		return err;
++
++	/* Update PKRU value in the userspace xsave buffer. */
+ 	return __put_user(pkru, (unsigned int __user *)get_xsave_addr_user(buf, XFEATURE_PKRU));
  }
  
- static bool reqsk_queue_hash_req(struct request_sock *req,
+@@ -292,7 +304,7 @@ static inline int xsave_to_user_sigframe(struct xregs_state __user *buf, u32 pkr
+ 	clac();
+ 
+ 	if (!err)
+-		err = update_pkru_in_sigframe(buf, pkru);
++		err = update_pkru_in_sigframe(buf, mask, pkru);
+ 
+ 	return err;
+ }
 -- 
 2.43.0
 
