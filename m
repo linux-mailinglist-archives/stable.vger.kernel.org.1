@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-102343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4C09EF177
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221549EED50
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC70C28A668
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 526C116AD67
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408832288EA;
-	Thu, 12 Dec 2024 16:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042DE21C172;
+	Thu, 12 Dec 2024 15:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zi/JEnwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgjvQqRG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04E9223C7A;
-	Thu, 12 Dec 2024 16:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F1C6F2FE;
+	Thu, 12 Dec 2024 15:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020883; cv=none; b=Z9SCHCnSGH7uiJvjO5Yh4GMGVlfwnSXhF/KGTU784FRGMi55wN1UH/+s/XttCgIgVXDsj+HJZwyAWpnHbN8MGry21iQGxBeVbKitvhibsGkzLCz8pabeENoPikVM3KKrqiadgP/tahf6i24ni4Aje5PGYc3NiaAy3IIThuRT0yg=
+	t=1734018050; cv=none; b=Zd/pW4fMdWet5cAopjQuZp93hQIJx0VRDrBGVthtFAIroCQwFP3scjvEWPpE1y0gG2kIvf22/mU6qppq+m3Cr51zXwrKpTYn0oyKtc7YxHrX3aEcgYpidOQiV/HL6pqnm2g7ODEYXbjFamQ0OSzgnjz9CLTNZJ5Ei3ajLEuCaLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020883; c=relaxed/simple;
-	bh=HphD5u/5pNAzWWqTlcfOmRLO1bealntrUiStxgsmOXc=;
+	s=arc-20240116; t=1734018050; c=relaxed/simple;
+	bh=rZ/HXjCD39AsO+XbBEO0b1C/ZusI4IIctg+YU7wVUBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLzfGxxN50L/R2s54Ziz6hujAgY2UiAWpSemISi5gnsUmJtat6MrfUgkvOd7NPHhb0+srts95wnecBlnJW6g3OzhrOvl8yH7/FRuDajIUOlARzlFblkPUqAWM/sTmNvaRsS6doAzix5u/FUtzRtPSgvTYEUr6uKvPxdtWJdALS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zi/JEnwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40758C4CECE;
-	Thu, 12 Dec 2024 16:28:02 +0000 (UTC)
+	 MIME-Version; b=T/dxDAhh926GonfohetGtC9NAb4NMWUOuEByqBQk6j46DitDh+QU//Q1B6zj34NtFKXJdYUUqrGRITBouyosXktjlfA0jPo2KXt6BS6qv1epnKENQxlWuF30odLF/wN0D84MmAxK71mceXT9lGBAHX4m2IJEVkVoIZ5kZt98cd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgjvQqRG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB89C4CECE;
+	Thu, 12 Dec 2024 15:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020882;
-	bh=HphD5u/5pNAzWWqTlcfOmRLO1bealntrUiStxgsmOXc=;
+	s=korg; t=1734018050;
+	bh=rZ/HXjCD39AsO+XbBEO0b1C/ZusI4IIctg+YU7wVUBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zi/JEnwj9ZyMYErnNBHcZNvDB9sNIbst/loJScNY07oiv1NzerM8NfstOe5zVTWH9
-	 JbaSEQWyjskgIg4RrTHuTTPZF33dKHwxWoM5HqD9s6n8yx4I92/ixKWaiBVTY4cs8F
-	 lxS9pU6F6O+Fa/pWg6ALC6Bf47XEQV3YVyti/t2E=
+	b=lgjvQqRGZojZHVESd9TINyTE5x7kvj0EBQwf+UdRQSN/noxCna5JOqPI4TftH8vCf
+	 AvF0sXOsmJvZf2WIM/qEIgswh6p+f/wq4Nyz05XLAM6844+DT+ZnziBEGqFtHMgyZG
+	 9C3St7Kj/FrlU+I0XQe7BpSjKjuqY/kgFVWIc4FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Sathvika Vasireddy <sv@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 556/772] powerpc/vdso: Skip objtool from running on VDSO files
-Date: Thu, 12 Dec 2024 15:58:21 +0100
-Message-ID: <20241212144412.942968747@linuxfoundation.org>
+	Dave Hansen <dave.hansen@intel.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Rik van Riel <riel@surriel.com>
+Subject: [PATCH 6.6 183/356] x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables
+Date: Thu, 12 Dec 2024 15:58:22 +0100
+Message-ID: <20241212144251.860218464@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +67,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sathvika Vasireddy <sv@linux.ibm.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit d0160bd5d389da247fb5affb6a35ea393d22fedb ]
+commit d0ceea662d459726487030237689835fcc0483e5 upstream.
 
-Do not run objtool on VDSO files, by using OBJECT_FILES_NON_STANDARD.
+The set_p4d() and set_pgd() functions (in 4-level or 5-level page table setups
+respectively) assume that the root page table is actually a 8KiB allocation,
+with the userspace root immediately after the kernel root page table (so that
+the former can enforce NX on on all the subordinate page tables, which are
+actually shared).
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20221114175754.1131267-8-sv@linux.ibm.com
-Stable-dep-of: d677ce521334 ("powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, users of the kernel_ident_mapping_init() code do not give it an 8KiB
+allocation for its PGD. Both swsusp_arch_resume() and acpi_mp_setup_reset()
+allocate only a single 4KiB page. The kexec code on x86_64 currently gets
+away with it purely by chance, because it allocates 8KiB for its "control
+code page" and then actually uses the first half for the PGD, then copies the
+actual trampoline code into the second half only after the identmap code has
+finished scribbling over it.
+
+Fix this by defining a _PAGE_NOPTISHADOW bit (which can use the same bit as
+_PAGE_SAVED_DIRTY since one is only for the PGD/P4D root and the other is
+exclusively for leaf PTEs.). This instructs __pti_set_user_pgtbl() not to
+write to the userspace 'shadow' PGD.
+
+Strictly, the _PAGE_NOPTISHADOW bit doesn't need to be written out to the
+actual page tables; since __pti_set_user_pgtbl() returns the value to be
+written to the kernel page table, it could be filtered out. But there seems
+to be no benefit to actually doing so.
+
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/412c90a4df7aef077141d9f68d19cbe5602d6c6d.camel@infradead.org
+Cc: stable@kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/vdso/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/pgtable_types.h |    8 ++++++--
+ arch/x86/mm/ident_map.c              |    6 +++---
+ arch/x86/mm/pti.c                    |    2 +-
+ 3 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index a2e7b0ce5b191..6a977b0d8ffc3 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -102,3 +102,5 @@ quiet_cmd_vdso64ld_and_check = VDSO64L $@
-       cmd_vdso64ld_and_check = $(VDSOCC) $(c_flags) $(CC64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
- quiet_cmd_vdso64as = VDSO64A $@
-       cmd_vdso64as = $(VDSOCC) $(a_flags) $(CC64FLAGS) $(AS64FLAGS) -c -o $@ $<
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -36,10 +36,12 @@
+ #define _PAGE_BIT_DEVMAP	_PAGE_BIT_SOFTW4
+ 
+ #ifdef CONFIG_X86_64
+-#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit */
++#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit (leaf) */
++#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW5 /* No PTI shadow (root PGD) */
+ #else
+ /* Shared with _PAGE_BIT_UFFD_WP which is not supported on 32 bit */
+-#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit */
++#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit (leaf) */
++#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW2 /* No PTI shadow (root PGD) */
+ #endif
+ 
+ /* If _PAGE_BIT_PRESENT is clear, we use these: */
+@@ -139,6 +141,8 @@
+ 
+ #define _PAGE_PROTNONE	(_AT(pteval_t, 1) << _PAGE_BIT_PROTNONE)
+ 
++#define _PAGE_NOPTISHADOW (_AT(pteval_t, 1) << _PAGE_BIT_NOPTISHADOW)
 +
-+OBJECT_FILES_NON_STANDARD := y
--- 
-2.43.0
-
+ /*
+  * Set of bits not changed in pte_modify.  The pte's
+  * protection key is treated like _PAGE_RW, for
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -88,7 +88,7 @@ static int ident_p4d_init(struct x86_map
+ 		if (result)
+ 			return result;
+ 
+-		set_p4d(p4d, __p4d(__pa(pud) | info->kernpg_flag));
++		set_p4d(p4d, __p4d(__pa(pud) | info->kernpg_flag | _PAGE_NOPTISHADOW));
+ 	}
+ 
+ 	return 0;
+@@ -132,14 +132,14 @@ int kernel_ident_mapping_init(struct x86
+ 		if (result)
+ 			return result;
+ 		if (pgtable_l5_enabled()) {
+-			set_pgd(pgd, __pgd(__pa(p4d) | info->kernpg_flag));
++			set_pgd(pgd, __pgd(__pa(p4d) | info->kernpg_flag | _PAGE_NOPTISHADOW));
+ 		} else {
+ 			/*
+ 			 * With p4d folded, pgd is equal to p4d.
+ 			 * The pgd entry has to point to the pud page table in this case.
+ 			 */
+ 			pud_t *pud = pud_offset(p4d, 0);
+-			set_pgd(pgd, __pgd(__pa(pud) | info->kernpg_flag));
++			set_pgd(pgd, __pgd(__pa(pud) | info->kernpg_flag | _PAGE_NOPTISHADOW));
+ 		}
+ 	}
+ 
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -132,7 +132,7 @@ pgd_t __pti_set_user_pgtbl(pgd_t *pgdp,
+ 	 * Top-level entries added to init_mm's usermode pgd after boot
+ 	 * will not be automatically propagated to other mms.
+ 	 */
+-	if (!pgdp_maps_userspace(pgdp))
++	if (!pgdp_maps_userspace(pgdp) || (pgd.pgd & _PAGE_NOPTISHADOW))
+ 		return pgd;
+ 
+ 	/*
 
 
 
