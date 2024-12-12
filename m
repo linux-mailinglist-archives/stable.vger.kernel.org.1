@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-101073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0719EEA26
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48ADE9EF2E0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AF8A2828A6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCA0C28C67E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAAB218594;
-	Thu, 12 Dec 2024 15:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC37822968B;
+	Thu, 12 Dec 2024 16:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvyhLhzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vnu3VeC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8FB217F55;
-	Thu, 12 Dec 2024 15:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61A0236938;
+	Thu, 12 Dec 2024 16:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016163; cv=none; b=AdfKSQMoEn0R90amDyloOFPrN6QlPa33FOfaRliGgyn3hCxVuTcz71fO/uOp2Uxq0qPUIJYCvq1J3XFLzOKi1/knEQY2ZVac5bJFg+7yMa4mYzjvFtNzmXyJGP5Gds/kjLKs6SYRpSlJaDULj2E1GJVy2lRSBIH5gKHrIIG4zYA=
+	t=1734021939; cv=none; b=Oj+4rGbiQfwcsAAxkvLoqdvgwzgFVuXn04Py4byAq6ynwwLCLz/finr+2dIeFuh9iZRDyIaa1sbOGNkPABFMTHiz2VyzzN2varOVz7iLSHiYG0cpGf+Wa2r5p3u1RqOb0jR/dIbofnkVU+/7U2CYpkZJDZ9VPdnRi7oLPaAmaac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016163; c=relaxed/simple;
-	bh=aRwRw5hL4tOv6+/CrR9Vewqs/Uowp3R0H075TmX9KfQ=;
+	s=arc-20240116; t=1734021939; c=relaxed/simple;
+	bh=NHBdeuu+NC6slSKD5LLde8zfgGPpEKAsksPS9CgpkyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldKPfN2V2/hUtjToc8bnuQDqTTUZSTa7G42Svd30pX9iIyqY5/D7A1fch2EfiISOh3oMp8a8pcdODv3AVg9XM/jKlw8Hcyxduy83bhtpzhlKFI+2jtTgzhIMTfEcPut9GrktcG2Wp0QTkiQOAaN4UoREYUdJ4ggu/O7OXOlcHps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvyhLhzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE98C4CECE;
-	Thu, 12 Dec 2024 15:09:22 +0000 (UTC)
+	 MIME-Version; b=lcA01gwzxq08WqnckLjRGzs3Uq0XmxUwgbJCWUlDGE4W0kfwAlIxdYpQIfnfXbRy9iQsMaiR01MfNiHQFEm/tLFHUxEw6T5I9Ys4WYf847SKLXv2gj0+VtkZIWpioNob/2b9wz4Z/yijpPGDI1abwB5QvjHgKWHXtyW176rStAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vnu3VeC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08DD9C4CECE;
+	Thu, 12 Dec 2024 16:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016163;
-	bh=aRwRw5hL4tOv6+/CrR9Vewqs/Uowp3R0H075TmX9KfQ=;
+	s=korg; t=1734021939;
+	bh=NHBdeuu+NC6slSKD5LLde8zfgGPpEKAsksPS9CgpkyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvyhLhzMLwDgVLR9A0n9IkVD6uDEG/fp7DkS53XOcQ0te/Ze3iQm67StnCrQx2/RY
-	 CEK4Ez9jx4moE/DiK2QOh1FU3l0+t1s7cLJ48Pyc6JGfYIGXzLzwH4ZxTzkz1bROAs
-	 ZVyQecj5tdWPBYQ/trNuTOxZmeipJ4zXA4+LSc6g=
+	b=Vnu3VeC2j7L5muCUtulJwJAqv11gmA6E7GvuiJCBfm5bEdBSXCd/6Sb532om6Egfg
+	 bg2ABWTPrCgCNvnF86cMOY0x16gvgitSvHIOPyr8/It67y+7ZzIzudTZglkjLG16xP
+	 GqiPiQxowuMWAmIc5OUELJmwJJdY7USqgrs0uNjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 130/466] can: mcp251xfd: mcp251xfd_get_tef_len(): work around erratum DS80000789E 6.
+	Miguel Ojeda <ojeda@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 104/565] time: Fix references to _msecs_to_jiffies() handling of values
 Date: Thu, 12 Dec 2024 15:54:59 +0100
-Message-ID: <20241212144311.940148395@linuxfoundation.org>
+Message-ID: <20241212144315.590669309@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 30447a1bc0e066e492552b3e5ffeb63c1605dfe2 upstream.
+[ Upstream commit 92b043fd995a63a57aae29ff85a39b6f30cd440c ]
 
-Commit b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround
-broken TEF FIFO tail index erratum") introduced
-mcp251xfd_get_tef_len() to get the number of unhandled transmit events
-from the Transmit Event FIFO (TEF).
+The details about the handling of the "normal" values were moved
+to the _msecs_to_jiffies() helpers in commit ca42aaf0c861 ("time:
+Refactor msecs_to_jiffies"). However, the same commit still mentioned
+__msecs_to_jiffies() in the added documentation.
 
-As the TEF has no head index, the driver uses the TX-FIFO's tail index
-instead, assuming that send frames are completed.
+Thus point to _msecs_to_jiffies() instead.
 
-When calculating the number of unhandled TEF events, that commit
-didn't take mcp2518fd erratum DS80000789E 6. into account. According
-to that erratum, the FIFOCI bits of a FIFOSTA register, here the
-TX-FIFO tail index might be corrupted.
-
-However here it seems the bit indicating that the TX-FIFO is
-empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct while the
-TX-FIFO tail index is.
-
-Assume that the TX-FIFO is indeed empty if:
-- Chip's head and tail index are equal (len == 0).
-- The TX-FIFO is less than half full.
-  (The TX-FIFO empty case has already been checked at the
-   beginning of this function.)
-- No free buffers in the TX ring.
-
-If the TX-FIFO is assumed to be empty, assume that the TEF is full and
-return the number of elements in the TX-FIFO (which equals the number
-of TEF elements).
-
-If these assumptions are false, the driver might read to many objects
-from the TEF. mcp251xfd_handle_tefif_one() checks the sequence numbers
-and will refuse to process old events.
-
-Reported-by: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
-Closes: https://patch.msgid.link/CAJ7t6HgaeQ3a_OtfszezU=zB-FqiZXqrnATJ3UujNoQJJf7GgA@mail.gmail.com
-Fixes: b8e0ddd36ce9 ("can: mcp251xfd: tef: prepare to workaround broken TEF FIFO tail index erratum")
-Tested-by: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20241126-mcp251xfd-fix-length-calculation-v2-1-c2ed516ed6ba@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ca42aaf0c861 ("time: Refactor msecs_to_jiffies")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20241025110141.157205-2-ojeda@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c |   29 +++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ include/linux/jiffies.h | 2 +-
+ kernel/time/time.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -21,6 +21,11 @@ static inline bool mcp251xfd_tx_fifo_sta
- 	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
- }
- 
-+static inline bool mcp251xfd_tx_fifo_sta_less_than_half_full(u32 fifo_sta)
-+{
-+	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFHRFHIF;
-+}
-+
- static inline int
- mcp251xfd_tef_tail_get_from_chip(const struct mcp251xfd_priv *priv,
- 				 u8 *tef_tail)
-@@ -147,7 +152,29 @@ mcp251xfd_get_tef_len(struct mcp251xfd_p
- 	BUILD_BUG_ON(sizeof(tx_ring->obj_num) != sizeof(len));
- 
- 	len = (chip_tx_tail << shift) - (tail << shift);
--	*len_p = len >> shift;
-+	len >>= shift;
-+
-+	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
-+	 * bits of a FIFOSTA register, here the TX-FIFO tail index
-+	 * might be corrupted.
-+	 *
-+	 * However here it seems the bit indicating that the TX-FIFO
-+	 * is empty (MCP251XFD_REG_FIFOSTA_TFERFFIF) is not correct
-+	 * while the TX-FIFO tail index is.
-+	 *
-+	 * We assume the TX-FIFO is empty, i.e. all pending CAN frames
-+	 * haven been send, if:
-+	 * - Chip's head and tail index are equal (len == 0).
-+	 * - The TX-FIFO is less than half full.
-+	 *   (The TX-FIFO empty case has already been checked at the
-+	 *    beginning of this function.)
-+	 * - No free buffers in the TX ring.
-+	 */
-+	if (len == 0 && mcp251xfd_tx_fifo_sta_less_than_half_full(fifo_sta) &&
-+	    mcp251xfd_get_tx_free(tx_ring) == 0)
-+		len = tx_ring->obj_num;
-+
-+	*len_p = len;
- 
- 	return 0;
- }
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index 5e13f801c9021..3778e26f7b14c 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -349,7 +349,7 @@ static inline unsigned long _msecs_to_jiffies(const unsigned int m)
+  * - all other values are converted to jiffies by either multiplying
+  *   the input value by a factor or dividing it with a factor and
+  *   handling any 32-bit overflows.
+- *   for the details see __msecs_to_jiffies()
++ *   for the details see _msecs_to_jiffies()
+  *
+  * msecs_to_jiffies() checks for the passed in value being a constant
+  * via __builtin_constant_p() allowing gcc to eliminate most of the
+diff --git a/kernel/time/time.c b/kernel/time/time.c
+index 29923b20e0e47..a7fce68465a38 100644
+--- a/kernel/time/time.c
++++ b/kernel/time/time.c
+@@ -539,7 +539,7 @@ EXPORT_SYMBOL(ns_to_timespec64);
+  * - all other values are converted to jiffies by either multiplying
+  *   the input value by a factor or dividing it with a factor and
+  *   handling any 32-bit overflows.
+- *   for the details see __msecs_to_jiffies()
++ *   for the details see _msecs_to_jiffies()
+  *
+  * msecs_to_jiffies() checks for the passed in value being a constant
+  * via __builtin_constant_p() allowing gcc to eliminate most of the
+-- 
+2.43.0
+
 
 
 
