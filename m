@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D239EEFE4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA839EF430
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2154128C2D6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8E217ED58
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA7F23A19D;
-	Thu, 12 Dec 2024 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345312358B8;
+	Thu, 12 Dec 2024 16:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXrzVL4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUL2psHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A53226532;
-	Thu, 12 Dec 2024 16:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BEE22967A;
+	Thu, 12 Dec 2024 16:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019933; cv=none; b=Vr4e5Hd+PkLGT0qNJshUxH93b4Eo+rGcHHlhnpgqmMjZ83rtcP0e5gL0+3fUDhXPY6D2TM2OgXPKNEbXNJLxZjzIj/hPhvAzlhP4eVP8ZjtvgaV9PhF/krsHGgMNJibHdwr8oKvilcq505QQ6hWUZGXi2rX8mI/LmarT8dujJPA=
+	t=1734021873; cv=none; b=rJ8Bz44E6Dg9yq04IxhLxleZHYMzHalWjlaX8uER456NeUlZbUkkj+E/I35Zw/LP2UVLM5KTPxadQlc+iMS48A93tjRR/e3LDyP9gtmL/dDVpEV9bqL52VxTuHCKIKPkS9mZpHYgU+tI2um9tcT8tT6NmWHgdlGHK0cPcChhBmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019933; c=relaxed/simple;
-	bh=htyk7VkXzhAlBjaCuv7wmagsDNsQF4NZxROE3+rDZbs=;
+	s=arc-20240116; t=1734021873; c=relaxed/simple;
+	bh=bl5IxibqMN9OQuYEOtsopzr9vNG8sBxeXc9ZgU8TWnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXvB3rtfz4EdN1lDwJI9gMlIkjrJi1l/7h01Nmep1lFvtjUJDd/i7V8DJXQL/fJCXiNdZJ6AQdNqt/cFa3qPlRrO0lUjLDCV7CzdsFoFA/cscmbd19muSQ2kv0BpGcjng35b4TtwoQ/vMz6oGw/6ZW4dXcG1wke4FlP+aFEkTm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXrzVL4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C94C4CED0;
-	Thu, 12 Dec 2024 16:12:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YvAWbr2mgfFQpiZaQ4BuzZs54k+uV7NqTjwGkl7ieL0+g9vjxfiXQhmm/CrrX4/dcYxc2gBZJKgylm+tJ+9TXoeYp8fXULfL8sUhyoj9T/rSQoM+FObuqUNaeqMxXjNfQuUEkn91jpmJEQM0bY5sqz9vbjf88hv5NRsgW/dGO0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUL2psHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D49BC4CED0;
+	Thu, 12 Dec 2024 16:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019933;
-	bh=htyk7VkXzhAlBjaCuv7wmagsDNsQF4NZxROE3+rDZbs=;
+	s=korg; t=1734021872;
+	bh=bl5IxibqMN9OQuYEOtsopzr9vNG8sBxeXc9ZgU8TWnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXrzVL4+kqLSBk9ny1K0EgGtiZ5QTzPoodG/vF3uzKPv0xNFd0/dQJTDX2La6tDME
-	 h45SUft2RvHaTOPiNhrwwynCrvu9UYzU7e+KVkIY/DR9Er5j61NgIz/x5Gibh9GI38
-	 u5Rx7InfBckuHXX3p8pOBnW01dKAP/mHYkhZ0lok=
+	b=GUL2psHaj3hjnS/BGFL804Jhr1tcYs6RpncLWgeio+1KZYazGm5R9vS9WR6YWP6CP
+	 HLKClRckX9wdLPp9SnGrw5vsSnztugxwD8M5je+1yCyooS5krvTSpJWJ6jKxTDz4wr
+	 wIy6WjWl6wK96iEyA7zhKTjLMfXSigVcCPdWfVBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chao liu <liuzgyid@outlook.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 335/772] apparmor: fix Do simple duplicate message elimination
+Subject: [PATCH 5.15 085/565] m68k: mvme16x: Add and use "mvme16x.h"
 Date: Thu, 12 Dec 2024 15:54:40 +0100
-Message-ID: <20241212144403.751401683@linuxfoundation.org>
+Message-ID: <20241212144314.848672275@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chao liu <liuzgyid@outlook.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 9b897132424fe76bf6c61f22f9cf12af7f1d1e6a ]
+[ Upstream commit dcec33c1fc4ab63983d93ffb0d82b68fc5775b88 ]
 
-Multiple profiles shared 'ent->caps', so some logs missed.
+When building with W=1:
 
-Fixes: 0ed3b28ab8bf ("AppArmor: mediation of non file objects")
-Signed-off-by: chao liu <liuzgyid@outlook.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+    arch/m68k/mvme16x/config.c:208:6: warning: no previous prototype for ‘mvme16x_cons_write’ [-Wmissing-prototypes]
+      208 | void mvme16x_cons_write(struct console *co, const char *str, unsigned count)
+	  |      ^~~~~~~~~~~~~~~~~~
+
+Fix this by introducing a new header file "mvme16x.h" for holding the
+prototypes of functions implemented in arch/m68k/mvme16x/.
+
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/6200cc3b26fad215c4524748af04692e38c5ecd2.1694613528.git.geert@linux-m68k.org
+Stable-dep-of: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/capability.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/m68k/kernel/early_printk.c | 4 ++--
+ arch/m68k/mvme16x/config.c      | 2 ++
+ arch/m68k/mvme16x/mvme16x.h     | 6 ++++++
+ 3 files changed, 10 insertions(+), 2 deletions(-)
+ create mode 100644 arch/m68k/mvme16x/mvme16x.h
 
-diff --git a/security/apparmor/capability.c b/security/apparmor/capability.c
-index deccea8654ad8..1b13fd89d5a9f 100644
---- a/security/apparmor/capability.c
-+++ b/security/apparmor/capability.c
-@@ -94,6 +94,8 @@ static int audit_caps(struct common_audit_data *sa, struct aa_profile *profile,
- 		return error;
- 	} else {
- 		aa_put_profile(ent->profile);
-+		if (profile != ent->profile)
-+			cap_clear(ent->caps);
- 		ent->profile = aa_get_profile(profile);
- 		cap_raise(ent->caps, cap);
- 	}
+diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
+index 7d3fe08a48eb0..3cc944df04f65 100644
+--- a/arch/m68k/kernel/early_printk.c
++++ b/arch/m68k/kernel/early_printk.c
+@@ -12,8 +12,8 @@
+ #include <linux/string.h>
+ #include <asm/setup.h>
+ 
+-extern void mvme16x_cons_write(struct console *co,
+-			       const char *str, unsigned count);
++
++#include "../mvme16x/mvme16x.h"
+ 
+ asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
+ 
+diff --git a/arch/m68k/mvme16x/config.c b/arch/m68k/mvme16x/config.c
+index b4422c2dfbbf4..bc89a784f4d7a 100644
+--- a/arch/m68k/mvme16x/config.c
++++ b/arch/m68k/mvme16x/config.c
+@@ -38,6 +38,8 @@
+ #include <asm/machdep.h>
+ #include <asm/mvme16xhw.h>
+ 
++#include "mvme16x.h"
++
+ extern t_bdid mvme_bdid;
+ 
+ static MK48T08ptr_t volatile rtc = (MK48T08ptr_t)MVME_RTC_BASE;
+diff --git a/arch/m68k/mvme16x/mvme16x.h b/arch/m68k/mvme16x/mvme16x.h
+new file mode 100644
+index 0000000000000..159c34b700394
+--- /dev/null
++++ b/arch/m68k/mvme16x/mvme16x.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++struct console;
++
++/* config.c */
++void mvme16x_cons_write(struct console *co, const char *str, unsigned count);
 -- 
 2.43.0
 
