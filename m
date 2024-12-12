@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DEBD9EF2E4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9236D9EEE0D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F103D189CDFA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C90A1647B8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647BE2253FB;
-	Thu, 12 Dec 2024 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B66B2288CE;
+	Thu, 12 Dec 2024 15:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5cYnv49"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LT8vg91Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFF722333E;
-	Thu, 12 Dec 2024 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0623F21578F;
+	Thu, 12 Dec 2024 15:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021150; cv=none; b=aCt8jkJBSxCeo5nfZz+sC6L6Cx7JLX3AaDCgpKQxxY2TidOBZe3mqLuxqnWzV0O2WwCd7mBPbJ2dGgmUd7/XR6KpM3tEgtnzFMDNmY38WVC//6cNJoWaWeXglr7nVa/Qk9nHJXYHthQDvr1C1u80t1kXSvepAo1HtVCq3f9qslI=
+	t=1734018412; cv=none; b=WJbKUl4jdGwvX2h2I7pdkSTvt8XSU9mIx3xcKOznY5Qqr3Ps1oo2ok6PezM0MnpgJ0Cn2XzLhzvDZP4JqX5XF7juqLgjwowgROR9VK2taOrwCHoVHwc0nZnzF4fa5mKzqbE8V1CuThCD9k9o57a6NedJ0XobIP04p5ZoXYm8u8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021150; c=relaxed/simple;
-	bh=79NnoUeh9OBmXuBaGNsYHubYBPhedgFx0sBbM/N3qXo=;
+	s=arc-20240116; t=1734018412; c=relaxed/simple;
+	bh=97jZkKzCW67CJAnKX/zrtj7q3CJKd3P6kEcYyReL9OE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4Wf/zEUueiqJjmihv/4FDU2R+G+s8sRX84CfcwH+r0WwCIHkes7ISxxtHBrCBoX81buoINaCc8bMpc9tGknxb48TPmBme644g2txIuWTalvDrYrAeVfFiAwouD02QicynmMDstWfy8deqfRIKHbRorVwifMFW8A/Df5CE+ou3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5cYnv49; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551ABC4CED3;
-	Thu, 12 Dec 2024 16:32:29 +0000 (UTC)
+	 MIME-Version; b=svvDb8mAtwIOoUMvLc0mJdV4VkAAiCaCL0b2r3FmALdyg/QmXsbbnz7zYMfGTgNJaKkdqAxWQRmFbWjFPyzxcJA03GGaV/FtNDc3cjdsXWsVyzQMuSbJPwOcASVXAA3d02CWvEiAq1qEP9I/LOqglPiyRSmgGo42/Yqq3ElxNQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LT8vg91Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CF2C4CECE;
+	Thu, 12 Dec 2024 15:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021150;
-	bh=79NnoUeh9OBmXuBaGNsYHubYBPhedgFx0sBbM/N3qXo=;
+	s=korg; t=1734018411;
+	bh=97jZkKzCW67CJAnKX/zrtj7q3CJKd3P6kEcYyReL9OE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5cYnv49g/KFQ7BBRLKZFR8bGJ3eNRNGtm/yPmH3ftUBJzi4mz0Jy/FWet+hq//ot
-	 GyLy0lu5vzewVHPk+y3ByGjhJhg3GmX3Zxi+5ryMhK3HjulEehePZFq2L9Iif4A3+y
-	 TMIJW/ORUMyNqhE6nqy0+V/oid8AY+P1iBQHS7kA=
+	b=LT8vg91ZPAhHEeZtAeIev+xdDsPJUCedhwPfsA/o14EKWqaI47VdgrO1H2CcuwX46
+	 C2Enc3H0qX0U+H/TlRHOEqL2I0aTnHufT9s62XtK+Ij0ALRweDQcONhe7RJegNhP4n
+	 glmS3xwd01PbxlJ2UiDqRK986kgjO35RceGOseng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 659/772] drm/mcde: Enable module autoloading
+Subject: [PATCH 6.6 285/356] smb: client: memcpy() with surrounding object base address
 Date: Thu, 12 Dec 2024 16:00:04 +0100
-Message-ID: <20241212144417.152875100@linuxfoundation.org>
+Message-ID: <20241212144255.838016576@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 8a16b5cdae26207ff4c22834559384ad3d7bc970 ]
+[ Upstream commit f69b0187f8745a7a9584f6b13f5e792594b88b2e ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
-on the alias from of_device_id table.
+Like commit f1f047bd7ce0 ("smb: client: Fix -Wstringop-overflow issues"),
+adjust the memcpy() destination address to be based off the surrounding
+object rather than based off the 4-byte "Protocol" member. This avoids a
+build-time warning when compiling under CONFIG_FORTIFY_SOURCE with GCC 15:
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240902113320.903147-4-liaochen4@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In function 'fortify_memcpy_chk',
+    inlined from 'CIFSSMBSetPathInfo' at ../fs/smb/client/cifssmb.c:5358:2:
+../include/linux/fortify-string.h:571:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  571 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mcde/mcde_drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/cifssmb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mcde/mcde_drv.c b/drivers/gpu/drm/mcde/mcde_drv.c
-index 1c4482ad507d9..78bdfd855d11b 100644
---- a/drivers/gpu/drm/mcde/mcde_drv.c
-+++ b/drivers/gpu/drm/mcde/mcde_drv.c
-@@ -468,6 +468,7 @@ static const struct of_device_id mcde_of_match[] = {
- 	},
- 	{},
- };
-+MODULE_DEVICE_TABLE(of, mcde_of_match);
- 
- static struct platform_driver mcde_driver = {
- 	.driver = {
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 301189ee1335b..a34db419e46f7 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -5364,7 +5364,7 @@ CIFSSMBSetPathInfo(const unsigned int xid, struct cifs_tcon *tcon,
+ 	param_offset = offsetof(struct smb_com_transaction2_spi_req,
+ 				InformationLevel) - 4;
+ 	offset = param_offset + params;
+-	data_offset = (char *) (&pSMB->hdr.Protocol) + offset;
++	data_offset = (char *)pSMB + offsetof(typeof(*pSMB), hdr.Protocol) + offset;
+ 	pSMB->ParameterOffset = cpu_to_le16(param_offset);
+ 	pSMB->DataOffset = cpu_to_le16(offset);
+ 	pSMB->SetupCount = 1;
 -- 
 2.43.0
 
