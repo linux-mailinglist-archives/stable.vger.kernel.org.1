@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-103314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9597D9EF631
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB57E9EF89B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 402F428EF46
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 169931895AB0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AAF21660B;
-	Thu, 12 Dec 2024 17:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B7F221D93;
+	Thu, 12 Dec 2024 17:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EC+MhXtB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boIBHPSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F9C13CA93;
-	Thu, 12 Dec 2024 17:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F94F223C65;
+	Thu, 12 Dec 2024 17:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024190; cv=none; b=r6KOyuZWArJMR64tUdUt761fYNTq5UN5KGercnNNM1cOpv4Db7XDCGeBViUsDdDqqqrh0BxkmexNGMR9fQow8hXdMzUa5hJ+7tZdvjBaNlNZPbuRkVI1StYi8UCcd9U+tjCC66WEgzYxSPFexP3++ivjaIvEKnzsUcFzUxI9xVw=
+	t=1734024973; cv=none; b=EW0Bvbdf4nGUcDMxkZhrsT7Ms9oHIC85YN2OXsY21A7npRmg4rBnIviJvjCjkfY7vEpKjfBT5PCuDnizArPSorCSosae4GNlW670ABVhMe2hdYcIYxkHvzuIrxF76/UH+leJgVeF/0XH/3+bGJla47y1qaQVqIN8j4cxDxKZTDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024190; c=relaxed/simple;
-	bh=Ba8oJWJWeWcQKNPT1qjcrA6Arv6VJNb6VKRZamDOFTg=;
+	s=arc-20240116; t=1734024973; c=relaxed/simple;
+	bh=zL2naIFc73j4a0Rb5NlJIr8GlGzeKDho1L8aq3ZPlEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qrooWPoVEs86K/BKBDhXi3BTOMMdW/l48hnHjbB2AvZfxZc+0juT6xiyG9YKLRZBjwBxMNq5gWzuH826k53T5n6d4DxIk7JS2mTqFfbSk0ZaRXHqrINoCuZzTVEcg9LcyhczYo3W4MOor8VWROBiux5Gkd5nWXDBDIYab4RqsaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EC+MhXtB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE68BC4CECE;
-	Thu, 12 Dec 2024 17:23:09 +0000 (UTC)
+	 MIME-Version; b=tNLFb+kI+LlP3Jx31GBY/3LB/4GFibA1UAXIeNujbvkQulztWjm+H4yMmvdOtthaKv/z9RshmVFoUQguAhUOIHLSbcLZMM9SHZh5wPaEQhE/PPsCt4XT6tLjpLGzkbuIfGdCCSFz6PWbaLgz5KYaafh21+S68vX/JHLDzHYmdr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boIBHPSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A100C4CECE;
+	Thu, 12 Dec 2024 17:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024190;
-	bh=Ba8oJWJWeWcQKNPT1qjcrA6Arv6VJNb6VKRZamDOFTg=;
+	s=korg; t=1734024972;
+	bh=zL2naIFc73j4a0Rb5NlJIr8GlGzeKDho1L8aq3ZPlEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EC+MhXtBauR0wXiMAKNV4/i0QcDJmLIDQBlb7GoeL8gXoV5cn//Mo6El/tShvxbkY
-	 j5l0BZmovF3oqpbGhEp2b6Tye/r4XbtY6f2uyAob+wr41H3E86pYO4TgZzInqSzo0s
-	 ouqSwlOQtaX253W70rrXjfIhYuwqRLsFChWyKQxc=
+	b=boIBHPSSky+Ymzm8MfgSdcByqCONfqcO+PngxYTTZnqnfunK40OgoKC7VyNipI8wZ
+	 OQ6Kp2fjfeKZaT9QFC1b3BXJX5LYEzPprE7i8GeqvBEDZILOvKK17waU88OwacQqkF
+	 CrXPKZcvZgJ2INlX18+n0F9Arv+3aE67HLymADts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Alexandru Ardelean <alexandru.ardelean@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 186/459] dt-bindings: clock: adi,axi-clkgen: convert old binding to yaml format
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Ubisectech Sirius <bugreport@valiantsec.com>,
+	syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 006/321] nilfs2: fix null-ptr-deref in block_touch_buffer tracepoint
 Date: Thu, 12 Dec 2024 15:58:44 +0100
-Message-ID: <20241212144300.905057578@linuxfoundation.org>
+Message-ID: <20241212144229.778768006@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,131 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit bd91abb218e0ac4a7402d6c25d383e2a706bb511 ]
+commit cd45e963e44b0f10d90b9e6c0e8b4f47f3c92471 upstream.
 
-This change converts the old binding for the AXI clkgen driver to a yaml
-format.
+Patch series "nilfs2: fix null-ptr-deref bugs on block tracepoints".
 
-As maintainers, added:
- - Lars-Peter Clausen <lars@metafoo.de> - as original author of driver &
-   binding
- - Michael Hennerich <michael.hennerich@analog.com> - as supporter of
-   Analog Devices drivers
+This series fixes null pointer dereference bugs that occur when using
+nilfs2 and two block-related tracepoints.
 
-Acked-by: Michael Hennerich <michael.hennerich@analog.com>
-Acked-by: Lars-Peter Clausen <lars@metafoo.de>
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Link: https://lore.kernel.org/r/20201013143421.84188-1-alexandru.ardelean@analog.com
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: 47f3f5a82a31 ("dt-bindings: clock: axi-clkgen: include AXI clk")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+This patch (of 2):
+
+It has been reported that when using "block:block_touch_buffer"
+tracepoint, touch_buffer() called from __nilfs_get_folio_block() causes a
+NULL pointer dereference, or a general protection fault when KASAN is
+enabled.
+
+This happens because since the tracepoint was added in touch_buffer(), it
+references the dev_t member bh->b_bdev->bd_dev regardless of whether the
+buffer head has a pointer to a block_device structure.  In the current
+implementation, the block_device structure is set after the function
+returns to the caller.
+
+Here, touch_buffer() is used to mark the folio/page that owns the buffer
+head as accessed, but the common search helper for folio/page used by the
+caller function was optimized to mark the folio/page as accessed when it
+was reimplemented a long time ago, eliminating the need to call
+touch_buffer() here in the first place.
+
+So this solves the issue by eliminating the touch_buffer() call itself.
+
+Link: https://lkml.kernel.org/r/20241106160811.3316-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20241106160811.3316-2-konishi.ryusuke@gmail.com
+Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: Ubisectech Sirius <bugreport@valiantsec.com>
+Closes: https://lkml.kernel.org/r/86bd3013-887e-4e38-960f-ca45c657f032.bugreport@valiantsec.com
+Reported-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9982fb8d18eba905abe2
+Tested-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../bindings/clock/adi,axi-clkgen.yaml        | 53 +++++++++++++++++++
- .../devicetree/bindings/clock/axi-clkgen.txt  | 25 ---------
- 2 files changed, 53 insertions(+), 25 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
- delete mode 100644 Documentation/devicetree/bindings/clock/axi-clkgen.txt
+ fs/nilfs2/page.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
-new file mode 100644
-index 0000000000000..0d06387184d68
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/adi,axi-clkgen.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Binding for Analog Devices AXI clkgen pcore clock generator
-+
-+maintainers:
-+  - Lars-Peter Clausen <lars@metafoo.de>
-+  - Michael Hennerich <michael.hennerich@analog.com>
-+
-+description: |
-+  The axi_clkgen IP core is a software programmable clock generator,
-+  that can be synthesized on various FPGA platforms.
-+
-+  Link: https://wiki.analog.com/resources/fpga/docs/axi_clkgen
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,axi-clkgen-2.00.a
-+
-+  clocks:
-+    description:
-+      Specifies the reference clock(s) from which the output frequency is
-+      derived. This must either reference one clock if only the first clock
-+      input is connected or two if both clock inputs are connected.
-+    minItems: 1
-+    maxItems: 2
-+
-+  '#clock-cells':
-+    const: 0
-+
-+  reg:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - '#clock-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    clock-controller@ff000000 {
-+      compatible = "adi,axi-clkgen-2.00.a";
-+      #clock-cells = <0>;
-+      reg = <0xff000000 0x1000>;
-+      clocks = <&osc 1>;
-+    };
-diff --git a/Documentation/devicetree/bindings/clock/axi-clkgen.txt b/Documentation/devicetree/bindings/clock/axi-clkgen.txt
-deleted file mode 100644
-index aca94fe9416f0..0000000000000
---- a/Documentation/devicetree/bindings/clock/axi-clkgen.txt
-+++ /dev/null
-@@ -1,25 +0,0 @@
--Binding for the axi-clkgen clock generator
--
--This binding uses the common clock binding[1].
--
--[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
--
--Required properties:
--- compatible : shall be "adi,axi-clkgen-1.00.a" or "adi,axi-clkgen-2.00.a".
--- #clock-cells : from common clock binding; Should always be set to 0.
--- reg : Address and length of the axi-clkgen register set.
--- clocks : Phandle and clock specifier for the parent clock(s). This must
--	either reference one clock if only the first clock input is connected or two
--	if both clock inputs are connected. For the later case the clock connected
--	to the first input must be specified first.
--
--Optional properties:
--- clock-output-names : From common clock binding.
--
--Example:
--	clock@ff000000 {
--		compatible = "adi,axi-clkgen";
--		#clock-cells = <0>;
--		reg = <0xff000000 0x1000>;
--		clocks = <&osc 1>;
--	};
--- 
-2.43.0
-
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -39,7 +39,6 @@ __nilfs_get_page_block(struct page *page
+ 	first_block = (unsigned long)index << (PAGE_SHIFT - blkbits);
+ 	bh = nilfs_page_get_nth_block(page, block - first_block);
+ 
+-	touch_buffer(bh);
+ 	wait_on_buffer(bh);
+ 	return bh;
+ }
 
 
 
