@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-101530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8229EECC5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C62A79EEB6A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EBC7283B3C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F9016AB82
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940E6221D9C;
-	Thu, 12 Dec 2024 15:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D3521578E;
+	Thu, 12 Dec 2024 15:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDsNNARC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGwbXi1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8082210FB;
-	Thu, 12 Dec 2024 15:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3B621578F;
+	Thu, 12 Dec 2024 15:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017877; cv=none; b=OmuI5oH03dBH8mjf6ZVoU9gOa79zZEOnqWuajqukk6GynDQNpMCnrbx5cyCRRQlMEs0r8uFYvnC1VxKwlj15Wyrd9oS1P0G6yXyJ5zYA7DZ1a0UlZr8lOwyUR7TUtmXxDfFHTjk8NMJcHUIpG9jxJ/oV1Y1BUNIimKLcZxa2oW0=
+	t=1734016751; cv=none; b=TQHjDi+hycaPC88pmySTYrEliCfdYsZZP0AVXKWT5ASBBR6yJhGA6VBee+ku3MOYj1jp+qA3xU6JowQK5vcESfxh6wnwWF73Bn/dcflYIpR1DKEwmED6paWj3Ej//jgjjhpFb5/RCQyr7mlNs0/VjTpTHPUgyK9ByFLy8/jCRpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017877; c=relaxed/simple;
-	bh=O+Z1pypRDeaiZEx7pkYSdExqq6P8IjgYRpcDE6dvFxo=;
+	s=arc-20240116; t=1734016751; c=relaxed/simple;
+	bh=qzIym7pKp2UzO0HXuygrTaqhzFXaX5qvLn/C+08x9Wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBH7v62dcmoNkP65vhju4JkcfeTjPBtfOA8+zvxpWYc1NvTd4wSu+NLT2w7BzXqzZheqErcxDq1MBYt+2o48ldDWGfDv/HfG+GWOgL7hH/7A0rzYOOGEtupMHn0ctCqXXN9hmmgOOSb762lrDVpkp98BIozoe3FNw34pEuY8Qws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDsNNARC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73937C4CED7;
-	Thu, 12 Dec 2024 15:37:56 +0000 (UTC)
+	 MIME-Version; b=HXwuhZUwtwy062ED/lrbqoFFRgDOuJUrY6+P9/leMxlDqlrzrj6wGK2oEs0zdKQe5hXiH9Y4AWre55/Afl7MGohQZWP0KmBwICGb5HB4T90ysvHvWi+qALN998OxBixTkyBbDoo6tQUK7fqH3P8aF9M3f2HFiO5Epu2Ne7c9TzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGwbXi1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42D0C4CECE;
+	Thu, 12 Dec 2024 15:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017876;
-	bh=O+Z1pypRDeaiZEx7pkYSdExqq6P8IjgYRpcDE6dvFxo=;
+	s=korg; t=1734016751;
+	bh=qzIym7pKp2UzO0HXuygrTaqhzFXaX5qvLn/C+08x9Wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDsNNARCNJ4bMW9GzzbaNSRaz+PJT8SVFjPn2SZ37gz/cwxHX9NtxfEKOzsMDXg4Z
-	 l3gPawf7OpnE5nQz8wAT+DJoGpMHoiB0QVxjJnnN3NC8rEvQY/DDETs8PWTbj39a0F
-	 Z9DwVM+djuNkNZR/Ri2FdIJKNk/QRDj8rK9bM8dM=
+	b=cGwbXi1BYhWH0u7g3p4DzGz4aRLeNzqHEYKij3REe/MFap4ob2tcmRhsIVx921je4
+	 0wMUQfYWCh/9V7u0/HmgNW9X17RsX6f7Y2uzaFKOcOhlmJm6vau9Rsgmte8SlCWq9M
+	 q88N59bUWLGPQRBO+956NzC4jpSOnilsstVZ+uts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/356] x86/CPU/AMD: WARN when setting EFER.AUTOIBRS if and only if the WRMSR fails
+Subject: [PATCH 6.12 287/466] af_packet: avoid erroring out after sock_init_data() in packet_create()
 Date: Thu, 12 Dec 2024 15:57:36 +0100
-Message-ID: <20241212144250.056404154@linuxfoundation.org>
+Message-ID: <20241212144318.128162403@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 492077668fb453b8b16c842fcf3fafc2ebc190e9 ]
+[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
 
-When ensuring EFER.AUTOIBRS is set, WARN only on a negative return code
-from msr_set_bit(), as '1' is used to indicate the WRMSR was successful
-('0' indicates the MSR bit was already set).
+After sock_init_data() the allocated sk object is attached to the provided
+sock object. On error, packet_create() frees the sk object leaving the
+dangling pointer in the sock object on return. Some other code may try
+to use this pointer and cause use-after-free.
 
-Fixes: 8cc68c9c9e92 ("x86/CPU/AMD: Make sure EFER[AIBRSE] is set")
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/Z1MkNofJjt7Oq0G6@google.com
-Closes: https://lore.kernel.org/all/20241205220604.GA2054199@thelio-3990X
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/packet/af_packet.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 145c81c68394b..9413fb767c6a7 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1205,7 +1205,7 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	 */
- 	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
- 	    cpu_has(c, X86_FEATURE_AUTOIBRS))
--		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS));
-+		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS) < 0);
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index a705ec2142540..97774bd4b6cb1 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3421,17 +3421,17 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	if (sock->type == SOCK_PACKET)
+ 		sock->ops = &packet_ops_spkt;
  
- 	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
- 	     cpu_has_amd_erratum(c, amd_erratum_1485))
++	po = pkt_sk(sk);
++	err = packet_alloc_pending(po);
++	if (err)
++		goto out_sk_free;
++
+ 	sock_init_data(sock, sk);
+ 
+-	po = pkt_sk(sk);
+ 	init_completion(&po->skb_completion);
+ 	sk->sk_family = PF_PACKET;
+ 	po->num = proto;
+ 
+-	err = packet_alloc_pending(po);
+-	if (err)
+-		goto out2;
+-
+ 	packet_cached_dev_reset(po);
+ 
+ 	sk->sk_destruct = packet_sock_destruct;
+@@ -3463,7 +3463,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	sock_prot_inuse_add(net, &packet_proto, 1);
+ 
+ 	return 0;
+-out2:
++out_sk_free:
+ 	sk_free(sk);
+ out:
+ 	return err;
 -- 
 2.43.0
 
