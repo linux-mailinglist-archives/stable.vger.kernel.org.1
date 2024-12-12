@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006DB9EF5F4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C418F9EF5C8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9777B194236B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9D42887D7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55ECD2253F4;
-	Thu, 12 Dec 2024 16:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F76211A34;
+	Thu, 12 Dec 2024 17:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JkEVOVl5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3tCq0aC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137AE223E93;
-	Thu, 12 Dec 2024 16:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021FE4F218;
+	Thu, 12 Dec 2024 17:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022721; cv=none; b=ArfAlxjXVFHzKgUK8sE1LsQDia9qMY11y0U4exj3nAlh5yFo+VKfu/WqvNZCHC46xlC/fHkarOzGZ7oPC16bi+YVDud0ijdOVu+j0kCrr5FzIn2w5w/wWAd6IpYehcvtV/4iGUVwyjoD+NA6t+gfA2fwPhf0DoVvaPEC5zXJ3GE=
+	t=1734023981; cv=none; b=m2ir0adwrs9ekPIZ/eD8yTlUehNcA++d6gmccbZAFxj5siiC12DFWOXvz/LG7NVWPsJXJA/JfGhVn+XZuf+RsgzoiZmRqWfWkoOwc19TZdY6C7fZgSZuxHI0hp2IsWhLTjZ7wT5AWiaU/cHC20xAObzOWm9+lCERJoUcFQxupiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022721; c=relaxed/simple;
-	bh=v3BU3+9ehBaaUTOVS74vQxwZTGEb6fuadN1FEqUi6c0=;
+	s=arc-20240116; t=1734023981; c=relaxed/simple;
+	bh=StoWf+SU9xgNmpQT76ZrOCwfiKY1bavjMRqSyUyVl04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9KWJ6fqU/7MoR+uM0FDlTMCJKnttjf6nzSt9LVnKIgy7cD+8l4M+oiXTsun8XE5mNs10WXaCTg9KF2yR7UAQm8ioICZQFzCE+8xuXClvfnaTCIPCRb4xb+S628G4yFG/68VYaqTBOsTI2s4KVmVgNiKwc6qAnw1GNFpbPkWTJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkEVOVl5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71584C4CECE;
-	Thu, 12 Dec 2024 16:58:40 +0000 (UTC)
+	 MIME-Version; b=lb6rqBxORDejcGKJdQPB08cAcDdboHS9iL6ukKAzTgvs7GuTChgDlDAwVENYyWEiNa2a+dJ/FiK5m6GePhJnTM+5lA0kwrNZ+84R1wBsQRsI1h3EWunOwCAL8HHjzTnPLMNaxKa5Ez7stiMv5enuU0q5hDaQgUpoXNKN7oi4SSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3tCq0aC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B046C4CECE;
+	Thu, 12 Dec 2024 17:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022720;
-	bh=v3BU3+9ehBaaUTOVS74vQxwZTGEb6fuadN1FEqUi6c0=;
+	s=korg; t=1734023980;
+	bh=StoWf+SU9xgNmpQT76ZrOCwfiKY1bavjMRqSyUyVl04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JkEVOVl5JsNoHUUkMYxpgYsvym4zWGkKgalIHbFf1DjyAcj9+WcC4RlmfR+tihRo2
-	 LJynyzXtSlnLRNvjTPfUNla6txyoTP5EXem52vnpdEvDklJrZ9+FTpVjL4NJ2paw/B
-	 Hhlkd7ZH8m31Ckfe1s+gyf05Qy45soKNzEc6jS80=
+	b=E3tCq0aCgLAsG0UsUsWL4P0Z+vvp5qMeJWr7jLn7e4NtvLLEwhHOcuakJQBaZ9I9G
+	 nN6EO/Sp2eB8x1FPidxO4BqmlCOoCHxvLBqoE7K2LIusK/E7nQYDPevMaFh27t4i/s
+	 3XGE/v18Vqve0bjhjfsxBo5SNjmrWqlxAyvq4Zoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 288/565] usb: yurex: make waiting on yurex_write interruptible
-Date: Thu, 12 Dec 2024 15:58:03 +0100
-Message-ID: <20241212144322.845400648@linuxfoundation.org>
+Subject: [PATCH 5.10 146/459] bpf, sockmap: Several fixes to bpf_msg_push_data
+Date: Thu, 12 Dec 2024 15:58:04 +0100
+Message-ID: <20241212144259.279063475@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit e0aa9614ab0fd35b404e4b16ebe879f9fc152591 ]
+[ Upstream commit 15ab0548e3107665c34579ae523b2b6e7c22082a ]
 
-The IO yurex_write() needs to wait for in order to have a device
-ready for writing again can take a long time time.
-Consequently the sleep is done in an interruptible state.
-Therefore others waiting for yurex_write() itself to finish should
-use mutex_lock_interruptible.
+Several fixes to bpf_msg_push_data,
+1. test_sockmap has tests where bpf_msg_push_data is invoked to push some
+data at the end of a message, but -EINVAL is returned. In this case, in
+bpf_msg_push_data, after the first loop, i will be set to msg->sg.end, add
+the logic to handle it.
+2. In the code block of "if (start - offset)", it's possible that "i"
+points to the last of sk_msg_elem. In this case, "sk_msg_iter_next(msg,
+end)" might still be called twice, another invoking is in "if (!copy)"
+code block, but actually only one is needed. Add the logic to handle it,
+and reconstruct the code to make the logic more clear.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 6bc235a2e24a5 ("USB: add driver for Meywa-Denki & Kayac YUREX")
-Rule: add
-Link: https://lore.kernel.org/stable/20240924084415.300557-1-oneukum%40suse.com
-Link: https://lore.kernel.org/r/20240924084415.300557-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Link: https://lore.kernel.org/r/20241106222520.527076-7-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/iowarrior.c | 4 ----
- drivers/usb/misc/yurex.c     | 5 ++++-
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ net/core/filter.c | 53 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 33 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/usb/misc/iowarrior.c b/drivers/usb/misc/iowarrior.c
-index 2fde8dd0b3e21..5606c5a2624a7 100644
---- a/drivers/usb/misc/iowarrior.c
-+++ b/drivers/usb/misc/iowarrior.c
-@@ -912,7 +912,6 @@ static int iowarrior_probe(struct usb_interface *interface,
- static void iowarrior_disconnect(struct usb_interface *interface)
- {
- 	struct iowarrior *dev = usb_get_intfdata(interface);
--	int minor = dev->minor;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 99fdd8afeeda3..0ef77fb72af78 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2774,7 +2774,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		sk_msg_iter_var_next(i);
+ 	} while (i != msg->sg.end);
  
- 	usb_deregister_dev(interface, &iowarrior_class);
+-	if (start >= offset + l)
++	if (start > offset + l)
+ 		return -EINVAL;
  
-@@ -936,9 +935,6 @@ static void iowarrior_disconnect(struct usb_interface *interface)
- 		mutex_unlock(&dev->mutex);
- 		iowarrior_delete(dev);
- 	}
--
--	dev_info(&interface->dev, "I/O-Warror #%d now disconnected\n",
--		 minor - IOWARRIOR_MINOR_BASE);
- }
+ 	space = MAX_MSG_FRAGS - sk_msg_elem_used(msg);
+@@ -2799,6 +2799,8 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
  
- /* usb specific object needed to register this driver with the usb subsystem */
-diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
-index c313cd41f7a5a..0eed614ac1273 100644
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -441,7 +441,10 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
- 	if (count == 0)
- 		goto error;
+ 		raw = page_address(page);
  
--	mutex_lock(&dev->io_mutex);
-+	retval = mutex_lock_interruptible(&dev->io_mutex);
-+	if (retval < 0)
-+		return -EINTR;
++		if (i == msg->sg.end)
++			sk_msg_iter_var_prev(i);
+ 		psge = sk_msg_elem(msg, i);
+ 		front = start - offset;
+ 		back = psge->length - front;
+@@ -2815,7 +2817,13 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		}
+ 
+ 		put_page(sg_page(psge));
+-	} else if (start - offset) {
++		new = i;
++		goto place_new;
++	}
 +
- 	if (dev->disconnected) {		/* already disconnected */
- 		mutex_unlock(&dev->io_mutex);
- 		retval = -ENODEV;
++	if (start - offset) {
++		if (i == msg->sg.end)
++			sk_msg_iter_var_prev(i);
+ 		psge = sk_msg_elem(msg, i);
+ 		rsge = sk_msg_elem_cpy(msg, i);
+ 
+@@ -2826,39 +2834,44 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		sk_msg_iter_var_next(i);
+ 		sg_unmark_end(psge);
+ 		sg_unmark_end(&rsge);
+-		sk_msg_iter_next(msg, end);
+ 	}
+ 
+ 	/* Slot(s) to place newly allocated data */
++	sk_msg_iter_next(msg, end);
+ 	new = i;
++	sk_msg_iter_var_next(i);
++
++	if (i == msg->sg.end) {
++		if (!rsge.length)
++			goto place_new;
++		sk_msg_iter_next(msg, end);
++		goto place_new;
++	}
+ 
+ 	/* Shift one or two slots as needed */
+-	if (!copy) {
+-		sge = sk_msg_elem_cpy(msg, i);
++	sge = sk_msg_elem_cpy(msg, new);
++	sg_unmark_end(&sge);
+ 
++	nsge = sk_msg_elem_cpy(msg, i);
++	if (rsge.length) {
+ 		sk_msg_iter_var_next(i);
+-		sg_unmark_end(&sge);
++		nnsge = sk_msg_elem_cpy(msg, i);
+ 		sk_msg_iter_next(msg, end);
++	}
+ 
+-		nsge = sk_msg_elem_cpy(msg, i);
++	while (i != msg->sg.end) {
++		msg->sg.data[i] = sge;
++		sge = nsge;
++		sk_msg_iter_var_next(i);
+ 		if (rsge.length) {
+-			sk_msg_iter_var_next(i);
++			nsge = nnsge;
+ 			nnsge = sk_msg_elem_cpy(msg, i);
+-		}
+-
+-		while (i != msg->sg.end) {
+-			msg->sg.data[i] = sge;
+-			sge = nsge;
+-			sk_msg_iter_var_next(i);
+-			if (rsge.length) {
+-				nsge = nnsge;
+-				nnsge = sk_msg_elem_cpy(msg, i);
+-			} else {
+-				nsge = sk_msg_elem_cpy(msg, i);
+-			}
++		} else {
++			nsge = sk_msg_elem_cpy(msg, i);
+ 		}
+ 	}
+ 
++place_new:
+ 	/* Place newly allocated data buffer */
+ 	sk_mem_charge(msg->sk, len);
+ 	msg->sg.size += len;
 -- 
 2.43.0
 
