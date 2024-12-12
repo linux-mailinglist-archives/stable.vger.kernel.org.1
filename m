@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1128E9EF476
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 302569EF5BA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23D01188ED84
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 070F6189F7CA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A02322FDE6;
-	Thu, 12 Dec 2024 16:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E014222D68;
+	Thu, 12 Dec 2024 17:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Niw0qlPc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwdfQhtZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E945622FDE1;
-	Thu, 12 Dec 2024 16:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF85222D5E;
+	Thu, 12 Dec 2024 17:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022260; cv=none; b=VFCeqnWEvapUmZr0tc9P674uX6CCDH/VlxpS0BNi7Mepq8+Io8kVTgW6sPD/brhA/N3HFMpEtpBlrxwFuk5/3hw8Yc5S3lVyw0DuexzgVdz6H1V+pUGUPdO1KM6AkAnMJClyQOsMtyqtGZucS1VLiGq8I42Gk/j9RPssJN+xgjg=
+	t=1734023591; cv=none; b=COAEN3msVaec2DTVDKfDA6aUU7rLQoUM5jJW1hr/SO/GF1u8A51JoIpxV318IH3JKiY1ZjKRskxkvK2sUjTm7eOZyVvmQa1Ngmt64h6jalb5zncYW6RwuLpWEyntjRFqA7y3U3UOLP+iZ4/0eRGWtSCaf4OnNcvlft5q2nDpg40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022260; c=relaxed/simple;
-	bh=biGtUnGTNkVY2HG50fTxHHp9HeYEYn7rWK1971TJruc=;
+	s=arc-20240116; t=1734023591; c=relaxed/simple;
+	bh=q7YDbxljZFVYgeNtxj4lI9xGIaq8lwUTXupbmOrBaxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GTBQfhUZndmwKwM9kws0K7JRvLpp6XPz/IPdEtDBHKDlCx+Xsxm4xOXrWxt0EP44oagfBLw7NIqVINMH9F0tTyPGo8u85Y/EgY8eJDAYZe+GCbENCT7IQoP0HpRiC0HifBL4pK2tHdspe+KgFI+35moDGZGWZpwLK/hDxuHPsLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Niw0qlPc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA5CC4CECE;
-	Thu, 12 Dec 2024 16:50:59 +0000 (UTC)
+	 MIME-Version; b=Wr1w+8+HiC4qmeHA4wbZ/02zKs3/NKf445pAsZpIgfCtWRvJ+F84yN2Fs0/k0NUVgGqd69W8H4EDhnf8EcilySNxtgRM8S3Ib+x5oi4n4wHoSZ2FBOA3tEJA3OyZJg1Iv2hDmFdyNFXVMYne6iNsTHqNBEwjYmvh1AF6OIP+hMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwdfQhtZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49898C4CED0;
+	Thu, 12 Dec 2024 17:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022259;
-	bh=biGtUnGTNkVY2HG50fTxHHp9HeYEYn7rWK1971TJruc=;
+	s=korg; t=1734023591;
+	bh=q7YDbxljZFVYgeNtxj4lI9xGIaq8lwUTXupbmOrBaxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Niw0qlPcbTHFrCnNOAP11+RLRP3EKuHgpX8yhdXZuhvKWkgSWm5FX8Dgdd6R4ABDE
-	 XPkPzD9DWa32FCxO38RWQ7Db/yS3vZE0LUg7RH45GnntB47Aii6ctRQ6wZ10CXRNEW
-	 U5UXhuZ5m8fC7+OoCaHgoXHQhH9XUx3Az4TOI35w=
+	b=OwdfQhtZRcQ7VYyPSevm4h8jeeHKQjnTg3i4zl8sK0Uz4ixZcb0SojSHi2ffnIz30
+	 Kay6dXIh4USPIa889avWQWH4z+xvYroooi7RRchgeb5xt6TmTyBfeaLW+VSmi7NTmW
+	 i/H7Yvl6zgZsEscHnf6LsY7v/cngUHO95rlR0UNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 161/565] ASoC: fsl_micfil: fix regmap_write_bits usage
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.10 018/459] KVM: VMX: Bury Intel PT virtualization (guest/host mode) behind CONFIG_BROKEN
 Date: Thu, 12 Dec 2024 15:55:56 +0100
-Message-ID: <20241212144317.840110050@linuxfoundation.org>
+Message-ID: <20241212144254.247407361@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 06df673d20230afb0e383e39235a4fa8b9a62464 ]
+commit aa0d42cacf093a6fcca872edc954f6f812926a17 upstream.
 
-The last parameter 1 means BIT(0), which should be the
-correct BIT(X).
+Hide KVM's pt_mode module param behind CONFIG_BROKEN, i.e. disable support
+for virtualizing Intel PT via guest/host mode unless BROKEN=y.  There are
+myriad bugs in the implementation, some of which are fatal to the guest,
+and others which put the stability and health of the host at risk.
 
-Fixes: 47a70e6fc9a8 ("ASoC: Add MICFIL SoC Digital Audio Interface driver.")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://patch.msgid.link/1727424031-19551-2-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For guest fatalities, the most glaring issue is that KVM fails to ensure
+tracing is disabled, and *stays* disabled prior to VM-Enter, which is
+necessary as hardware disallows loading (the guest's) RTIT_CTL if tracing
+is enabled (enforced via a VMX consistency check).  Per the SDM:
+
+  If the logical processor is operating with Intel PT enabled (if
+  IA32_RTIT_CTL.TraceEn = 1) at the time of VM entry, the "load
+  IA32_RTIT_CTL" VM-entry control must be 0.
+
+On the host side, KVM doesn't validate the guest CPUID configuration
+provided by userspace, and even worse, uses the guest configuration to
+decide what MSRs to save/load at VM-Enter and VM-Exit.  E.g. configuring
+guest CPUID to enumerate more address ranges than are supported in hardware
+will result in KVM trying to passthrough, save, and load non-existent MSRs,
+which generates a variety of WARNs, ToPA ERRORs in the host, a potential
+deadlock, etc.
+
+Fixes: f99e3daf94ff ("KVM: x86: Add Intel PT virtualization work mode")
+Cc: stable@vger.kernel.org
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Tested-by: Adrian Hunter <adrian.hunter@intel.com>
+Message-ID: <20241101185031.1799556-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_micfil.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/vmx/vmx.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 6e5025b15ac63..ccf66f59a8314 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -609,7 +609,7 @@ static irqreturn_t micfil_isr(int irq, void *devid)
- 			regmap_write_bits(micfil->regmap,
- 					  REG_MICFIL_STAT,
- 					  MICFIL_STAT_CHXF(i),
--					  1);
-+					  MICFIL_STAT_CHXF(i));
- 	}
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -199,9 +199,11 @@ module_param(ple_window_shrink, uint, 04
+ static unsigned int ple_window_max        = KVM_VMX_DEFAULT_PLE_WINDOW_MAX;
+ module_param(ple_window_max, uint, 0444);
  
- 	for (i = 0; i < MICFIL_FIFO_NUM; i++) {
-@@ -644,7 +644,7 @@ static irqreturn_t micfil_err_isr(int irq, void *devid)
- 	if (stat_reg & MICFIL_STAT_LOWFREQF) {
- 		dev_dbg(&pdev->dev, "isr: ipg_clk_app is too low\n");
- 		regmap_write_bits(micfil->regmap, REG_MICFIL_STAT,
--				  MICFIL_STAT_LOWFREQF, 1);
-+				  MICFIL_STAT_LOWFREQF, MICFIL_STAT_LOWFREQF);
- 	}
+-/* Default is SYSTEM mode, 1 for host-guest mode */
++/* Default is SYSTEM mode, 1 for host-guest mode (which is BROKEN) */
+ int __read_mostly pt_mode = PT_MODE_SYSTEM;
++#ifdef CONFIG_BROKEN
+ module_param(pt_mode, int, S_IRUGO);
++#endif
  
- 	return IRQ_HANDLED;
--- 
-2.43.0
-
+ static DEFINE_STATIC_KEY_FALSE(vmx_l1d_should_flush);
+ static DEFINE_STATIC_KEY_FALSE(vmx_l1d_flush_cond);
 
 
 
