@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-102650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CF39EF4A3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF09D9EF4B7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D44B1899E4F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50450189A973
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1D42397A5;
-	Thu, 12 Dec 2024 16:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76F5222D79;
+	Thu, 12 Dec 2024 16:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sbgqz+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBCWloWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26587238E39;
-	Thu, 12 Dec 2024 16:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936C3222D52;
+	Thu, 12 Dec 2024 16:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021996; cv=none; b=QRh8JsDpV2IEzcpQJbOEfL4Dpb4i4BZ2Nj8rplZulPsb9jJiCqn0TbAYrkI+a5KaMP8g8pO8lTc6wH0iDzAJYeM1IdsLsL4A+KXXBsCQ1fKh6CsrJnWgca7ZZUQ+0T0t24vtGM5f0vOx4PlCwBWzJ1ULEF9ij7jGvU/Q92AAduo=
+	t=1734022131; cv=none; b=ssFsIPIRHpfNPope+kHWLMvGHCUewqAtJ8l5Bj9CiYmvEiLS03DcSBgBD7y3oAWL0LLHTmoCKUdJvob0edNi7LlgXsxpQTYfciRYReI2E22hvPxK4m/nMcIhYmdJE/8rbznDakcqzdHrUrI88AQzh5jtSvxTVbrLU23plEXXk1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021996; c=relaxed/simple;
-	bh=NzcXhrPvrJl69Is95A+V3YYMCGbaTDXU9JyM7H1W4YM=;
+	s=arc-20240116; t=1734022131; c=relaxed/simple;
+	bh=h95J9gJlQQq/H+f0bDtUvJPuTL6T1L71nw80ncYS3jI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oN2NAt5uu7zvOvh/XtVWsZM79G0agc+Y70WIM0sSOUx3aYHRlDrPYQ07c1FvcR0dSMZ/VUnQABdb5hnGFkNNZBnatvz94n1M8A7sAWvB1E+ngRfbO7S96CG2Nk+/kJsNABWrYK85LVrvWZcUu9iqAhPFegrJu71Jm9fkG6zqTl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sbgqz+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A164C4CED3;
-	Thu, 12 Dec 2024 16:46:35 +0000 (UTC)
+	 MIME-Version; b=R+MKwWAN1iLvbsYna5sYEiiLA85ApUJEnysXL4i4zVBsLfCfWErYP3y7JINXnyzDN25FFoA5LXHCBkJ+CwdRIdIvAnpa368HzBs0Jj/Vo7nhqrMRy4+ItDL10EpV6lOvpO5hSy3K5Y7HQXXfkTLo76mIISZE+o6GCbrB0m+8cTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBCWloWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB3FC4CED3;
+	Thu, 12 Dec 2024 16:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021996;
-	bh=NzcXhrPvrJl69Is95A+V3YYMCGbaTDXU9JyM7H1W4YM=;
+	s=korg; t=1734022131;
+	bh=h95J9gJlQQq/H+f0bDtUvJPuTL6T1L71nw80ncYS3jI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2sbgqz+uVpXSgzC7kO9V7MU0jvK8L/FZYNuXBrvYte7QDjdbdlLBL5y2/8g2VRa+n
-	 DqUdsk+Oya895RAf+RNli6iSykqNqfboODdBbV8rytUOmlD99ONUSYcvHcKs+oWFkI
-	 pyBHq3x9irnlBEHAbiWSzJXq0ASaAXe95FSPztfI=
+	b=bBCWloWdVURI7/yGrvcreUC0KO0aw7wr78WoLsR85Y23SuEAQPcWaeXPJbOqWfLj2
+	 my6B7+HaaUOcqJxwGeyh5cx8P4/pJKpfo323cIN7A8VixU0h+Wglw5e0GXZXyC7kko
+	 3g3DPstgHzmThFqK/Xewou3uKHdvwwlbDzdsORaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Breno Leitao <leitao@debian.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 117/565] arm64: dts: mt8183: kukui: Fix the address of eeprom at i2c4
-Date: Thu, 12 Dec 2024 15:55:12 +0100
-Message-ID: <20241212144316.111232213@linuxfoundation.org>
+Subject: [PATCH 5.15 127/565] spi: tegra210-quad: Avoid shift-out-of-bounds
+Date: Thu, 12 Dec 2024 15:55:22 +0100
+Message-ID: <20241212144316.505122199@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
 References: <20241212144311.432886635@linuxfoundation.org>
@@ -67,57 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit edbde4923f208aa83abb48d4b2463299e5fc2586 ]
+[ Upstream commit f399051ec1ff02e74ae5c2517aed2cc486fd005b ]
 
-The address of eeprom should be 50.
+A shift-out-of-bounds issue was identified by UBSAN in the
+tegra_qspi_fill_tx_fifo_from_client_txbuf() function.
 
-Fixes: ff33d889567e ("arm64: dts: mt8183: Add kukui kodama board")
-Fixes: d1eaf77f2c66 ("arm64: dts: mt8183: Add kukui kakadu board")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240909-eeprom-v1-2-1ed2bc5064f4@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+	 UBSAN: shift-out-of-bounds in drivers/spi/spi-tegra210-quad.c:345:27
+	 shift exponent 32 is too large for 32-bit type 'u32' (aka 'unsigned int')
+	 Call trace:
+	  tegra_qspi_start_cpu_based_transfer
+
+The problem arises when shifting the contents of tx_buf left by 8 times
+the value of i, which can exceed 4 and result in an exponent larger than
+32 bits.
+
+Resolve this by restrict the value of i to be less than 4, preventing
+the shift operation from overflowing.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
+Link: https://patch.msgid.link/20241004125400.1791089-1-leitao@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi | 4 ++--
- arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi
-index fa90708956945..9676e704a0d28 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtsi
-@@ -105,9 +105,9 @@ &i2c4 {
- 	clock-frequency = <400000>;
- 	vbus-supply = <&mt6358_vcn18_reg>;
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 7967073c13545..3432058b0a7bd 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -298,7 +298,7 @@ tegra_qspi_fill_tx_fifo_from_client_txbuf(struct tegra_qspi *tqspi, struct spi_t
+ 		for (count = 0; count < max_n_32bit; count++) {
+ 			u32 x = 0;
  
--	eeprom@54 {
-+	eeprom@50 {
- 		compatible = "atmel,24c32";
--		reg = <0x54>;
-+		reg = <0x50>;
- 		pagesize = <32>;
- 		vcc-supply = <&mt6358_vcn18_reg>;
- 	};
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi
-index 03724c80c0804..863338925472c 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama.dtsi
-@@ -79,9 +79,9 @@ &i2c4 {
- 	clock-frequency = <400000>;
- 	vbus-supply = <&mt6358_vcn18_reg>;
- 
--	eeprom@54 {
-+	eeprom@50 {
- 		compatible = "atmel,24c64";
--		reg = <0x54>;
-+		reg = <0x50>;
- 		pagesize = <32>;
- 		vcc-supply = <&mt6358_vcn18_reg>;
- 	};
+-			for (i = 0; len && (i < bytes_per_word); i++, len--)
++			for (i = 0; len && (i < min(4, bytes_per_word)); i++, len--)
+ 				x |= (u32)(*tx_buf++) << (i * 8);
+ 			tegra_qspi_writel(tqspi, x, QSPI_TX_FIFO);
+ 		}
 -- 
 2.43.0
 
