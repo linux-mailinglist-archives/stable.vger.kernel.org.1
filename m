@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-101343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9147B9EEBEE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A429EEDB5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2CE1649EC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:27:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9235C188EEBB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526D9205ACF;
-	Thu, 12 Dec 2024 15:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013CF226540;
+	Thu, 12 Dec 2024 15:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvKE2QpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WooTEUeW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBD1748A;
-	Thu, 12 Dec 2024 15:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FD2226537;
+	Thu, 12 Dec 2024 15:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017228; cv=none; b=TnhUdQ9zkz618NBBU1zWgn2lGGwP1QfMsmodMQY2LuCDAuOgf0SVeFJ22zES4IrEhd7+bX6lFdvm6hMVwgqbbVxffgxNSyN3ryqewMLU+05MkSiMBB4x4g2AlOrfPlfaKXXJB5YIURXR1cUCwU7UEksm36Rem6nz5dC26sauYHI=
+	t=1734018249; cv=none; b=Pto5uZkmsRiA2zS3G9KbEQW4ybh4JMXihh51h1ir/jXXz9eDUu74MxzDKzlADZl1uKGHEs6VW92qIfujIZwBDDxaEEi6//GVwwlXmb8sqtfTTT6XDnCYCAd6VH6Nu6YzArrmHlnjNCTGdI9IYG/zNiglrk/xi9j8NlDa/eq9U/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017228; c=relaxed/simple;
-	bh=kk7ZC4gIZi6utwI2b+JasTOXYiWJAOkPSfqzhAjlOow=;
+	s=arc-20240116; t=1734018249; c=relaxed/simple;
+	bh=xjKlUxVD2Zb7UpedXt6rdSoYNclOKirumoyguxk20xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a2bEJIx/j30fqNJxd/F5ktYItTi/yU80M+TSv81YXMYdsfqwJeeSc/9x75QOgxsAC/lwV7Xth80gXOGuZ3gswLvJI8hB81X3r8etWv/5CzJk4WQfwa6D3X3W5ZwpV0nPJX89ceYywAyB11DRm91uAoixfVrmXoeDZT7ifA0j8o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvKE2QpJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0F6C4CECE;
-	Thu, 12 Dec 2024 15:27:07 +0000 (UTC)
+	 MIME-Version; b=HrEpBl14D/1GmFItr4cGhzAyeESVFbOaYtXfOVwL7Ft483QgeVnZUFJj7tbEavVXev6hHk2+Fbi1LujB97OEIYiNu912KHl3kkx5Ny3qzu9s3Hbq5dHxe8XB+lwlzQ50b1GA47wqgJeBNwR55hY2cihei1v1CD2zZTuEp8Hky24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WooTEUeW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33ED2C4CED7;
+	Thu, 12 Dec 2024 15:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017227;
-	bh=kk7ZC4gIZi6utwI2b+JasTOXYiWJAOkPSfqzhAjlOow=;
+	s=korg; t=1734018249;
+	bh=xjKlUxVD2Zb7UpedXt6rdSoYNclOKirumoyguxk20xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvKE2QpJqtbF7gV/ZKBkVS0xM1iX6AZRQVWbNn/Z0DYkOLIrmaEYKram1oF909S42
-	 inr4Lr1R2NnUyFaMusCpa5zCryC1+6vjTFTe+Tp8+FGwv7vqN52CrlTpHboUIIaIuT
-	 TYwhDCLjISE2FkPdcxUVbdlWX+vdCa7WEmBa2jsk=
+	b=WooTEUeWY2nXiv4+XGr9mYw0h3ohjEnYNk8oHq+UzHwoylFd1+pWKNzgWVByjqgYb
+	 02cpAU4Xz4/rKIVpIqPx0N4J5AcDnCKRd8EVHkKZXCFwLhUQguP02biDBkGOo+jhUE
+	 Kn/plulHuq6EDPTxklikfjcHCvMFm4VhwEe1XAB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anusha Rao <quic_anusha@quicinc.com>,
-	devi priya <quic_devipriy@quicinc.com>,
-	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lang Yu <lang.yu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 391/466] PCI: qcom: Add support for IPQ9574
+Subject: [PATCH 6.6 241/356] drm/amdgpu: refine error handling in amdgpu_ttm_tt_pin_userptr
 Date: Thu, 12 Dec 2024 15:59:20 +0100
-Message-ID: <20241212144322.217151074@linuxfoundation.org>
+Message-ID: <20241212144254.135817597@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: devi priya <quic_devipriy@quicinc.com>
+From: Lang Yu <lang.yu@amd.com>
 
-[ Upstream commit a63b74f2e35be3829f256922037ae5cee6bb844a ]
+[ Upstream commit 46186667f98fb7158c98f4ff5da62c427761ffcd ]
 
-Add the new IPQ9574 platform which is based on the Qcom IP rev. 1.27.0
-and Synopsys IP rev. 5.80a.
+Free sg table when dma_map_sgtable() failed to avoid memory leak.
 
-The platform itself has four PCIe Gen3 controllers: two single-lane and
-two dual-lane, all are based on Synopsys IP rev. 5.70a. As such, reuse
-all the members of 'ops_2_9_0'.
-
-Link: https://lore.kernel.org/r/20240801054803.3015572-5-quic_srichara@quicinc.com
-Co-developed-by: Anusha Rao <quic_anusha@quicinc.com>
-Signed-off-by: Anusha Rao <quic_anusha@quicinc.com>
-Signed-off-by: devi priya <quic_devipriy@quicinc.com>
-Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Lang Yu <lang.yu@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index b5447228696dc..6483e1874477e 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1830,6 +1830,7 @@ static const struct of_device_id qcom_pcie_match[] = {
- 	{ .compatible = "qcom,pcie-ipq8064-v2", .data = &cfg_2_1_0 },
- 	{ .compatible = "qcom,pcie-ipq8074", .data = &cfg_2_3_3 },
- 	{ .compatible = "qcom,pcie-ipq8074-gen3", .data = &cfg_2_9_0 },
-+	{ .compatible = "qcom,pcie-ipq9574", .data = &cfg_2_9_0 },
- 	{ .compatible = "qcom,pcie-msm8996", .data = &cfg_2_3_2 },
- 	{ .compatible = "qcom,pcie-qcs404", .data = &cfg_2_4_0 },
- 	{ .compatible = "qcom,pcie-sa8540p", .data = &cfg_sc8280xp },
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index 8c3fb1562ffef..6f06183e82b2b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -794,7 +794,7 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
+ 	/* Map SG to device */
+ 	r = dma_map_sgtable(adev->dev, ttm->sg, direction, 0);
+ 	if (r)
+-		goto release_sg;
++		goto release_sg_table;
+ 
+ 	/* convert SG to linear array of pages and dma addresses */
+ 	drm_prime_sg_to_dma_addr_array(ttm->sg, gtt->ttm.dma_address,
+@@ -802,6 +802,8 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
+ 
+ 	return 0;
+ 
++release_sg_table:
++	sg_free_table(ttm->sg);
+ release_sg:
+ 	kfree(ttm->sg);
+ 	ttm->sg = NULL;
 -- 
 2.43.0
 
