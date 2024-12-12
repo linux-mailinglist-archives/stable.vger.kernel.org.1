@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-103870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FEE9EF9FE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F389EF7A0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6345917547C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96F24289C43
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E24F221D93;
-	Thu, 12 Dec 2024 17:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39520223C48;
+	Thu, 12 Dec 2024 17:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sgytflqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOBaEjIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E4F2080D9;
-	Thu, 12 Dec 2024 17:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E858A213E6F;
+	Thu, 12 Dec 2024 17:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025848; cv=none; b=Q/Mdl+eKJ9bP3GN/kR4SOM/5nE9feU4AQvG+M6DNu+D6zlXX2BasKAl4B/ovsoQJ1HVvcT2ZtohT/zvlIRcJQuH/60Ra6JWPNzQKN+HvDgZgnjjJdEtOqdalLedwPleZ0S7xyW1wY9IZaFoARwoscOboDuS50P0Diw4YlpsPqvY=
+	t=1734024925; cv=none; b=f2nr6+6fSk0E9VosILrAnKvIiAcACmbCfUYbLf8zqRXXxPPdFxFy1vbIsl+w2NxdmssRQwS4EarjHMujeN3zZjtQ28w7uPs5A77rPORuaeBC7lPnEDuJxwmfF4TxNOH/hnt1K3YRtZEbRZJ4G9WJAJ9zt3Bw6fS3mnQF127YpK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025848; c=relaxed/simple;
-	bh=VPOn3M18wPIpmAQYuCz0+6Yir30HXfsemOpthLERoGw=;
+	s=arc-20240116; t=1734024925; c=relaxed/simple;
+	bh=o2InuvvTPBUdEVOIhWF3OZXHuP2/s8Q/hVw9V1Z0L4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/IxEAZ6GkMPOeXRBmPEQrpkw/dDkScT0GJ4LPBCKRbATtWlqMWZsgLwNk+thBbYg17C/bV0kTvQJaIpU7K/iKonh47P0Z/m0GNz1tFWgo4GYYUU4rRw2VVRmTEJE+9L9+RPICN9l2jcwfyoVjdXbCRQVrDIi0RVkduIuTuZm1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sgytflqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3A0C4CECE;
-	Thu, 12 Dec 2024 17:50:47 +0000 (UTC)
+	 MIME-Version; b=q6WhpQ37LjSAlsfyFsOBtRzFkWXvr+zUEYXW6V2W23XZuJiljpSPz6qSzXnfZZRcic9jF2kMa6xV5qxMVrRFVvCUStCpXvNG4qC7G2Z96rNjnnFzyFPaNFgcvtMhnfhms1ZKtac5iEn+d5WXPPJTNu6BYjbw7ylICtKRQYZKOEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOBaEjIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2E6C4CECE;
+	Thu, 12 Dec 2024 17:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025848;
-	bh=VPOn3M18wPIpmAQYuCz0+6Yir30HXfsemOpthLERoGw=;
+	s=korg; t=1734024924;
+	bh=o2InuvvTPBUdEVOIhWF3OZXHuP2/s8Q/hVw9V1Z0L4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgytflqrMXOhHoW9RdCOwL3kBXfxfucl/0htf2D8b6naSPoKBlP5p4onqBa8gA7Xf
-	 Yhw2iV1toSLUV+g9jjvmwQhf+ES6dHcPEYTl9YtPok34YxLSTUWdtzy9x0Fevwv59k
-	 PAmRu9kBnkNVCtDrp/+GizjWNipPpiLCAxHW4FJ8=
+	b=wOBaEjIMxA5/CbrXXpOHT7FO8nyBXV18aBs0yIiJTrQUyk0vC6lqDDdOP7DxTWyKR
+	 oeNzC9UjKUU4mkiB+vZweljJxJp0CtQBFm6WNrGOxwsURPiMxWpxAL6InGNP4Al6wS
+	 tNjqf0isFjkPIOX9v65D54NQC9sDXVSkNP115tY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 277/321] net: ieee802154: do not leave a dangling sk pointer in ieee802154_create()
-Date: Thu, 12 Dec 2024 16:03:15 +0100
-Message-ID: <20241212144240.921283053@linuxfoundation.org>
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 458/459] octeontx2: Fix condition.
+Date: Thu, 12 Dec 2024 16:03:16 +0100
+Message-ID: <20241212144311.860716788@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +60,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: David S. Miller <davem@davemloft.net>
 
-[ Upstream commit b4fcd63f6ef79c73cafae8cf4a114def5fc3d80d ]
+commit b0aae0bde26f276401640e05e81a8a0ce3d8f70e upstream.
 
-sock_init_data() attaches the allocated sk object to the provided sock
-object. If ieee802154_create() fails later, the allocated sk object is
-freed, but the dangling pointer remains in the provided sock object, which
-may allow use-after-free.
-
-Clear the sk pointer in the sock object on error.
-
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-6-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 93efb0c656837 ("octeontx2-pf: Fix out-of-bounds read in otx2_get_fecparam()")
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ieee802154/socket.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
-index ce5f25c89dfaf..b5f8aaa428844 100644
---- a/net/ieee802154/socket.c
-+++ b/net/ieee802154/socket.c
-@@ -1055,19 +1055,21 @@ static int ieee802154_create(struct net *net, struct socket *sock,
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -801,7 +801,7 @@ static int otx2_get_fecparam(struct net_
+ 	if (IS_ERR(rsp))
+ 		return PTR_ERR(rsp);
  
- 	if (sk->sk_prot->hash) {
- 		rc = sk->sk_prot->hash(sk);
--		if (rc) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (rc)
-+			goto out_sk_release;
- 	}
- 
- 	if (sk->sk_prot->init) {
- 		rc = sk->sk_prot->init(sk);
- 		if (rc)
--			sk_common_release(sk);
-+			goto out_sk_release;
- 	}
- out:
- 	return rc;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- static const struct net_proto_family ieee802154_family_ops = {
--- 
-2.43.0
-
+-	if (rsp->fwdata.supported_fec <= FEC_MAX_INDEX) {
++	if (rsp->fwdata.supported_fec < FEC_MAX_INDEX) {
+ 		if (!rsp->fwdata.supported_fec)
+ 			fecparam->fec = ETHTOOL_FEC_NONE;
+ 		else
 
 
 
