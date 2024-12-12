@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27909EF213
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7A79EEB45
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37BC9189A6B4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7CB281AD8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F96022A813;
-	Thu, 12 Dec 2024 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB982080FC;
+	Thu, 12 Dec 2024 15:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INEMdn8z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nettyItW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEAA53365;
-	Thu, 12 Dec 2024 16:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D132AF0E;
+	Thu, 12 Dec 2024 15:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020835; cv=none; b=Wv+kWL34pn3dI2qtvfi1GZzen8/2IE6idNvr22/7KL7kNOh4/NseQRdK+vkZjYqLo7NZkB7MhBVgsMIACWec3SEmPMIG1tVzxx8cKPo2M+jj5Uh5WJOQvTR9RsJx6qty71Lh42RiIzeVhHSIBUN7AWGrNOht835NX2PYyMj55rw=
+	t=1734016982; cv=none; b=JrLyQK9H2/u63xROJ9siH04RLvOzU9nGIjUX/WsR7q8ugtCX6hrGIZG2saAnUg2oeY00Fu0QGJLvwcMHIztSGvpVFFHY0l1gWdgcZihOtwq8b/zndB4CdHIBpzsQXIbkK6eUyfdLZJ/IPxszVaU8XaM6BEbKc+ZTyMfgYuJBR4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020835; c=relaxed/simple;
-	bh=+bSixAxJCa+WvMMcxW18RoN1z0LLYhE3ZnsKI1ZnsjM=;
+	s=arc-20240116; t=1734016982; c=relaxed/simple;
+	bh=ABbYLaYNOSDZ/z7PC8h7bLODGzyaE7qyn5QbbDnmqpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXwpUNURwuSc3PxE6d/SytYYSeFy3XV5JWvTjsG729p4sVKfxg5nidA8JqKww/Fss+80eVeRjxFftvZ4pTSG3gMK78psIa39b9STub6Bgw98bEiOI0e/qvXadoTcBi2bGjtfYHdqiqGILXTZRMtlOT5x+mUYXTPh2DG1dbaTuf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INEMdn8z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCCDC4CECE;
-	Thu, 12 Dec 2024 16:27:14 +0000 (UTC)
+	 MIME-Version; b=Fg2PU6B3jAMm/IWhX+q0FwQZfvZ60UhlXDjvw+uyv+qIABo3VtryFyAt6JqHMDh8iRTnu+o4sesNmwkpb25nWbzTGAGiEMDDrc3/Dld+pWxEkt5siD+wKvUJZqmUvZUvw3CfJOI37Je8nVIr9uYxAnbclYBA72MsLNDnsQ+oV2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nettyItW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FF6C4CECE;
+	Thu, 12 Dec 2024 15:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020835;
-	bh=+bSixAxJCa+WvMMcxW18RoN1z0LLYhE3ZnsKI1ZnsjM=;
+	s=korg; t=1734016982;
+	bh=ABbYLaYNOSDZ/z7PC8h7bLODGzyaE7qyn5QbbDnmqpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INEMdn8zs0uEwTeaoWORQuCnRhXjfliQvWypwnC6Jscetzkm+0aMYpgtGObIwr+dC
-	 Pd0+6kBPXMGbJvW1ySQkzn4LR52X5d98XC680yYg2zIf8RDD6iUKvu+MBvyv9t9oLs
-	 EOIzaj7UO6HBFQITBO8AU2uncgsoCdBIWn3RnEJc=
+	b=nettyItWQfgM8/I0B6wxCMyQu4rlzr6hLm/U2sVLCqmQTAzQgSOwSRS6diMVM0CgU
+	 CN2gpG8ZtAbUD8pn1QN705ZYiLH90kbE3VCfdnAarwHW6hJKKxrOH1T+UXa8CfEgTZ
+	 NRXtoszU4cOdnw04GAfgpl1ezPUmWKaj8mqvX/3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Frank Li <frank.li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jonathan McCrohan <jmccrohan@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 572/772] i3c: master: svc: use slow speed for first broadcast address
+Subject: [PATCH 6.12 348/466] Bluetooth: btusb: Add new VID/PID 0489/e124 for MT7925
 Date: Thu, 12 Dec 2024 15:58:37 +0100
-Message-ID: <20241212144413.594459311@linuxfoundation.org>
+Message-ID: <20241212144320.538228166@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Jonathan McCrohan <jmccrohan@gmail.com>
 
-[ Upstream commit 20ade67bb1645f5ce8f37fa79ddfebbc5b5b24ef ]
+[ Upstream commit 679cb60fd60774798719c3e449874a168642a8e6 ]
 
-I3C controller should support adjusting open drain timing for the first
-broadcast address to make I3C device working as a i2c device can see slow
-broadcast address to close its Spike Filter to change working at i3c mode.
+Add VID 0489 & PID e124 for MediaTek MT7925 USB Bluetooth chip.
 
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Reviewed-by: Frank Li <frank.li@nxp.com>
-Link: https://lore.kernel.org/r/20240910051626.4052552-2-carlos.song@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 25bc99be5fe5 ("i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter")
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
+
+T:  Bus=01 Lev=01 Prnt=01 Port=08 Cnt=02 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e124 Rev= 1.00
+S:  Manufacturer=MediaTek Inc.
+S:  Product=Wireless_Device
+S:  SerialNumber=000000000
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
+A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
+I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
+E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+
+Signed-off-by: Jonathan McCrohan <jmccrohan@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 52 +++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 807a9fe647b7c..3dc34b31767d9 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -175,6 +175,7 @@ struct svc_i3c_xfer {
-  * @ibi.lock: IBI lock
-  * @lock: Transfer lock, protect between IBI work thread and callbacks from master
-  * @enabled_events: Bit masks for enable events (IBI, HotJoin).
-+ * @mctrl_config: Configuration value in SVC_I3C_MCTRL for setting speed back.
-  */
- struct svc_i3c_master {
- 	struct i3c_master_controller base;
-@@ -204,6 +205,7 @@ struct svc_i3c_master {
- 	} ibi;
- 	struct mutex lock;
- 	int enabled_events;
-+	u32 mctrl_config;
- };
- 
- /**
-@@ -521,6 +523,54 @@ static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
-+static int svc_i3c_master_set_speed(struct i3c_master_controller *m,
-+				     enum i3c_open_drain_speed speed)
-+{
-+	struct svc_i3c_master *master = to_svc_i3c_master(m);
-+	struct i3c_bus *bus = i3c_master_get_bus(&master->base);
-+	u32 ppbaud, odbaud, odhpp, mconfig;
-+	unsigned long fclk_rate;
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(master->dev);
-+	if (ret < 0) {
-+		dev_err(master->dev, "<%s> Cannot get runtime PM.\n", __func__);
-+		return ret;
-+	}
-+
-+	switch (speed) {
-+	case I3C_OPEN_DRAIN_SLOW_SPEED:
-+		fclk_rate = clk_get_rate(master->fclk);
-+		if (!fclk_rate) {
-+			ret = -EINVAL;
-+			goto rpm_out;
-+		}
-+		/*
-+		 * Set 50% duty-cycle I2C speed to I3C OPEN-DRAIN mode, so the first
-+		 * broadcast address is visible to all I2C/I3C devices on the I3C bus.
-+		 * I3C device working as a I2C device will turn off its 50ns Spike
-+		 * Filter to change to I3C mode.
-+		 */
-+		mconfig = master->mctrl_config;
-+		ppbaud = FIELD_GET(GENMASK(11, 8), mconfig);
-+		odhpp = 0;
-+		odbaud = DIV_ROUND_UP(fclk_rate, bus->scl_rate.i2c * (2 + 2 * ppbaud)) - 1;
-+		mconfig &= ~GENMASK(24, 16);
-+		mconfig |= SVC_I3C_MCONFIG_ODBAUD(odbaud) | SVC_I3C_MCONFIG_ODHPP(odhpp);
-+		writel(mconfig, master->regs + SVC_I3C_MCONFIG);
-+		break;
-+	case I3C_OPEN_DRAIN_NORMAL_SPEED:
-+		writel(master->mctrl_config, master->regs + SVC_I3C_MCONFIG);
-+		break;
-+	}
-+
-+rpm_out:
-+	pm_runtime_mark_last_busy(master->dev);
-+	pm_runtime_put_autosuspend(master->dev);
-+
-+	return ret;
-+}
-+
- static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
- {
- 	struct svc_i3c_master *master = to_svc_i3c_master(m);
-@@ -603,6 +653,7 @@ static int svc_i3c_master_bus_init(struct i3c_master_controller *m)
- 	      SVC_I3C_MCONFIG_I2CBAUD(i2cbaud);
- 	writel(reg, master->regs + SVC_I3C_MCONFIG);
- 
-+	master->mctrl_config = reg;
- 	/* Master core's registration */
- 	ret = i3c_master_get_free_addr(m, 0);
- 	if (ret < 0)
-@@ -1575,6 +1626,7 @@ static const struct i3c_master_controller_ops svc_i3c_master_ops = {
- 	.disable_ibi = svc_i3c_master_disable_ibi,
- 	.enable_hotjoin = svc_i3c_master_enable_hotjoin,
- 	.disable_hotjoin = svc_i3c_master_disable_hotjoin,
-+	.set_speed = svc_i3c_master_set_speed,
- };
- 
- static int svc_i3c_master_prepare_clks(struct svc_i3c_master *master)
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index d922fa8e8b3ce..9208b5b7fc86f 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -650,6 +650,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe11e), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe124), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe139), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3602), .driver_info = BTUSB_MEDIATEK |
 -- 
 2.43.0
 
