@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7719EF816
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABD79EF745
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C6E9293117
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88F6F175582
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63D315696E;
-	Thu, 12 Dec 2024 17:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBB7215782;
+	Thu, 12 Dec 2024 17:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlCSD74w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNEOaD0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39EA216E0B;
-	Thu, 12 Dec 2024 17:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE7E215762;
+	Thu, 12 Dec 2024 17:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025154; cv=none; b=cVQAXWExxDA1nqQ/XUyR9nXLrtRBPaZOOtVd9vk5XywSxKM/BBXXmz7BfUsaE7NIXE6UHzduTN7Yzzw2kO1BsXCkaK5OJyJYjpYR02wCEkqNlWRxlQ/N6zW55DjewBOeCb2O921YzrYZ81R0J/gOqelr2cAeUpHYDwI+4gCbv+A=
+	t=1734024216; cv=none; b=mrPQbPbAT2yWferg9GEB8nB5gz1UN9y5s3m4s+y7ifEiO3xwOaRTYL28niJb/0HpL2w4uK0lI8O2+QpuNLdSehVz8jJ1Qv0YPOc7A4chjgbT0cSRrJz9rp7WMU4N7NFDhFCFSnGOISAjUhG/D7gVRg976ehHLBdKFbwphBgtqsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025154; c=relaxed/simple;
-	bh=RlogMfDQq7cmzFaNeJ4T4A+GVPJ0tEELX0d5asV0dtc=;
+	s=arc-20240116; t=1734024216; c=relaxed/simple;
+	bh=iWJDrnJkS9igJ8xdE/F0TuVH4gJCf71zoe/E7gSFzQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DC1kCQRA23LdrHOJDY29G8vcKe80JVJmR8jz+Jl6AoqBTC3rMQUveGCjb0E2vQ1qFcsWGtEVtG8paee6F4sHK6rLLw3WFOIPpMTLGsn0Z7USok5+ZIxgZzUxcqIIYmqJ8Fqn95C3Lsm1IHKeCjwIYPfQKvLeqgOW35/TQcl+8VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlCSD74w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27549C4CECE;
-	Thu, 12 Dec 2024 17:39:13 +0000 (UTC)
+	 MIME-Version; b=Jz1O3/aAzKkYlSbA2TIkv3RpSVfZypM5+3Z53LboVTQiAMfcQ0FcZDVAqOMFOYL3k0ispm0Wafn8QNtPopGJ+boDhpYYdSrVTeH1tbXppmHmb3rClXGVMsvUlq4nXrbMc0vMB463hT0iyLxeCB8vqo0i8gngLG6kLVkUvliLhgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNEOaD0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8ADC4CECE;
+	Thu, 12 Dec 2024 17:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025154;
-	bh=RlogMfDQq7cmzFaNeJ4T4A+GVPJ0tEELX0d5asV0dtc=;
+	s=korg; t=1734024216;
+	bh=iWJDrnJkS9igJ8xdE/F0TuVH4gJCf71zoe/E7gSFzQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlCSD74wPJH2d9q8IkUvqges2WawICHn1BboJI22NDOGNj5PyW/ZJvFIIW/3XU46J
-	 7q8Hda17gMFH0lnDFimCa4zeOkWPoCmi7LdnSgwsXQZjCUiWUQ66s9w476u1aMICX9
-	 mKtkc71c2ahWNHesZfoSvlQn+23DAow2jX4VP8P0=
+	b=jNEOaD0rkhjAkFeSQLSb13hCQ44rm0WjFee0GBU7lngjSM3fOpHheDuCVxjLwhWGR
+	 wO9WgHqWTprj2eZkNHLSvsQG8nu1M74wzwPBfDf595hVEw1hpstHqgbW9PP08kVvPo
+	 KuDpTwKYiR5wZi2TvGYcAac8w1y6IiOxZwWwBjUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 044/321] crypto: bcm - add error check in the ahash_hmac_init function
+Subject: [PATCH 5.10 224/459] net: stmmac: dwmac-socfpga: Set RX watchdog interrupt as broken
 Date: Thu, 12 Dec 2024 15:59:22 +0100
-Message-ID: <20241212144231.734594471@linuxfoundation.org>
+Message-ID: <20241212144302.419638384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit 19630cf57233e845b6ac57c9c969a4888925467b ]
+[ Upstream commit 407618d66dba55e7db1278872e8be106808bbe91 ]
 
-The ahash_init functions may return fails. The ahash_hmac_init should
-not return ok when ahash_init returns error. For an example, ahash_init
-will return -ENOMEM when allocation memory is error.
+On DWMAC3 and later, there's a RX Watchdog interrupt that's used for
+interrupt coalescing. It's known to be buggy on some platforms, and
+dwmac-socfpga appears to be one of them. Changing the interrupt
+coalescing from ethtool doesn't appear to have any effect here.
 
-Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Without disabling RIWT (Received Interrupt Watchdog Timer, I
+believe...), we observe latencies while receiving traffic that amount to
+around ~0.4ms. This was discovered with NTP but can be easily reproduced
+with a simple ping. Without this patch :
+
+64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.657 ms
+
+With this patch :
+
+64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.254 ms
+
+Fixes: 801d233b7302 ("net: stmmac: Add SOCFPGA glue driver")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20241122141256.764578-1-maxime.chevallier@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/bcm/cipher.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/crypto/bcm/cipher.c b/drivers/crypto/bcm/cipher.c
-index 98b8483577ce2..75fdaa311c4a6 100644
---- a/drivers/crypto/bcm/cipher.c
-+++ b/drivers/crypto/bcm/cipher.c
-@@ -2478,6 +2478,7 @@ static int ahash_hmac_setkey(struct crypto_ahash *ahash, const u8 *key,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+index 142bf912011e2..263235a4fc554 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+@@ -426,6 +426,8 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
+ 	plat_dat->bsp_priv = dwmac;
+ 	plat_dat->fix_mac_speed = socfpga_dwmac_fix_mac_speed;
  
- static int ahash_hmac_init(struct ahash_request *req)
- {
-+	int ret;
- 	struct iproc_reqctx_s *rctx = ahash_request_ctx(req);
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
- 	struct iproc_ctx_s *ctx = crypto_ahash_ctx(tfm);
-@@ -2487,7 +2488,9 @@ static int ahash_hmac_init(struct ahash_request *req)
- 	flow_log("ahash_hmac_init()\n");
- 
- 	/* init the context as a hash */
--	ahash_init(req);
-+	ret = ahash_init(req);
-+	if (ret)
-+		return ret;
- 
- 	if (!spu_no_incr_hash(ctx)) {
- 		/* SPU-M can do incr hashing but needs sw for outer HMAC */
++	plat_dat->riwt_off = 1;
++
+ 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
+ 	if (ret)
+ 		goto err_remove_config_dt;
 -- 
 2.43.0
 
