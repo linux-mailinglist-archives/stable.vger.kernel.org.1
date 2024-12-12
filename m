@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471F29EF809
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5A99EF8F4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F14F172ED6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEE5F1896EC8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C582165F0;
-	Thu, 12 Dec 2024 17:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87900221D93;
+	Thu, 12 Dec 2024 17:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYmyLLB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNPCY/94"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BC613CA93;
-	Thu, 12 Dec 2024 17:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4358A20A5EE;
+	Thu, 12 Dec 2024 17:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024412; cv=none; b=Q0ALvAdY5YUTUI3qRgsPSeU3NS+aihWaajGvAFgAYXhD1iCdwj4qMEnitLge3nOsQBTgseWYsqrRYPpNoGxXagZki1GdZ5sGlMqiVjpsv/AvFktXlKGeNSsD2F6LnNM8idNWlBQoMva82MiTwbcabyZ0kUS47uQXqLkOCE6QzN4=
+	t=1734025232; cv=none; b=ZCmAiDqegwd0Yvefccs5kJ4z5p5pwBUJgabn9NcXLNJkSGnoh5h4wZopzPg7fn4ZBzZygH+OolsdNX/TY83dBlsnwUKvnBfJQSs7XGAl+EtbNVhuzNN+6MEKL3NzD/0vrdf7Mw3KzHHHhlbsBmueomCzzmU15aXlKZTs0/94JD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024412; c=relaxed/simple;
-	bh=/xlGs0R0QMBr5ou0r6LvAsAeSHRgYlFsPri/GrS4DME=;
+	s=arc-20240116; t=1734025232; c=relaxed/simple;
+	bh=4As/Dmpa9sBNQpTnQraNaytGtC13vDgx2diHbaPtPkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+ZDUvkqoxzElzE+Vj3mrkyRpKk5FSUNGZixul0JnUGrS2l9ZHjE4POPZrtsprHxMOYQ/v9ROkAu+yk8LHitcD5sqbRUCHe1rzSCI/z5lbHWhmjNgffGYghQ8XRWwcD5kRqOzu5HCUh1jIOndpZ97tIAKbi8uN5eUY+1TdyCTc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYmyLLB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCBEBC4CED3;
-	Thu, 12 Dec 2024 17:26:51 +0000 (UTC)
+	 MIME-Version; b=aLEsLECBqVRex3bafxa0nOAiPOKWe6TkyopSoQkjbT0012odNXc2MwUWH/U9aH0lLPw0sZcBNXwoKQs8Mip7/FhMc0W7jqhyb9VjchfT6Rt7kuO1+PrY2lTzuDvrxExhlbQRfOLuMkjiWmGw7/+3BJikETanGoYIF43gYJwHCFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNPCY/94; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD118C4CECE;
+	Thu, 12 Dec 2024 17:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024412;
-	bh=/xlGs0R0QMBr5ou0r6LvAsAeSHRgYlFsPri/GrS4DME=;
+	s=korg; t=1734025232;
+	bh=4As/Dmpa9sBNQpTnQraNaytGtC13vDgx2diHbaPtPkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYmyLLB2c2xb81w+BUUiyG3RpL0nQeNUUb3jxJ1LLJrZGLINwohLSu3XwNb8rtlLe
-	 2ASGTs4reo+6D/njw65LrAe3GZdAyFRf5hLJjGjFVj161mzEzNeFmwJ6ujrcKqhgQp
-	 /bIovjzs7SZL+CfNoNoqwgfhvRrLWmKKBUOylvKU=
+	b=QNPCY/94RXSVfXPBS0EDey/8jJPJAIKNSI5eax4CGvsZp/hZPbtlHDwFY3rTQpywl
+	 5LJRO3sWX2fGgTTCgE9XJ0O6KHBbP8e7XVksLBO6L+ZZWnTi8w7H/0M5iaz8J3/jvB
+	 rEBq7QT7Uxsh75Nv3gUN+eiQ02x3ChGX3Z2ZvyZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinesh Kumar <desikumar81@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 280/459] ALSA: hda/realtek: Fix Internal Speaker and Mic boost of Infinix Y4 Max
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 100/321] scsi: qedf: Fix a possible memory leak in qedf_alloc_and_init_sb()
 Date: Thu, 12 Dec 2024 16:00:18 +0100
-Message-ID: <20241212144304.689498307@linuxfoundation.org>
+Message-ID: <20241212144233.941467232@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinesh Kumar <desikumar81@gmail.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-commit 5ebe792a5139f1ce6e4aed22bef12e7e2660df96 upstream.
+[ Upstream commit c62c30429db3eb4ced35c7fcf6f04a61ce3a01bb ]
 
-Internal Speaker of Infinix Y4 Max remains muted due to incorrect
-Pin configuration, and the Internal Mic records high noise. This patch
-corrects the Pin configuration for the Internal Speaker and limits
-the Internal Mic boost.
-HW Probe for device: https://linux-hardware.org/?probe=6d4386c347
-Test: Internal Speaker works fine, Mic has low noise.
+Hook "qed_ops->common->sb_init = qed_sb_init" does not release the DMA
+memory sb_virt when it fails. Add dma_free_coherent() to free it. This
+is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
 
-Signed-off-by: Dinesh Kumar <desikumar81@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241125092842.13208-1-desikumar81@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20241026125711.484-2-thunder.leizhen@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/scsi/qedf/qedf_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6869,6 +6869,7 @@ enum {
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
- 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
-+	ALC269VC_FIXUP_INFINIX_Y4_MAX,
- 	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
- 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
-@@ -7180,6 +7181,15 @@ static const struct hda_fixup alc269_fix
- 		.chained = true,
- 		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
- 	},
-+	[ALC269VC_FIXUP_INFINIX_Y4_MAX] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1b, 0x90170150 }, /* use as internal speaker */
-+			{ }
-+		},
-+		.chained = true,
-+		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
-+	},
- 	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -9453,6 +9463,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
-+	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index e0601b5520b78..3f137ca650388 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -2596,6 +2596,7 @@ static int qedf_alloc_and_init_sb(struct qedf_ctx *qedf,
+ 	    sb_id, QED_SB_TYPE_STORAGE);
+ 
+ 	if (ret) {
++		dma_free_coherent(&qedf->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
+ 		QEDF_ERR(&qedf->dbg_ctx,
+ 			 "Status block initialization failed (0x%x) for id = %d.\n",
+ 			 ret, sb_id);
+-- 
+2.43.0
+
 
 
 
