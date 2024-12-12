@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E00B9EEA97
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 212F09EF13E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4BC0168547
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:11:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F71F171478
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058872165F0;
-	Thu, 12 Dec 2024 15:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C147F229662;
+	Thu, 12 Dec 2024 16:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u89z43aN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQO4wVQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52E8213E97;
-	Thu, 12 Dec 2024 15:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6FF228C8D;
+	Thu, 12 Dec 2024 16:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016288; cv=none; b=GIQMTT3kdM9YSX/0LSiZWpPsiPBfww3+dVB1wJaOGGby01kanYaQXtC51RtbhHyeJ553MQzSjkbOq1l0ufVWA504dSYntbXRcQvoqtMcWxFc1JAsCFfHnHNgG07HFTZR3/53L3C4cL8siSf7CkFG1B2kqUqzfuScTRR7F+dCioU=
+	t=1734020075; cv=none; b=kEeYcHbjSdzKBEUKeycsppfKotQAH0u6hqSy6s9TpB0tnqwZy32lX0ZPcII19zLjtYj2Nh6jXqHD7PzNA759jBrp8HmacWqoIjdj5TTCsImulCLZPBj/y7CZLE0YwE1yfcajNTkSIW4XlwnemFmDuhYKn3tPyXo+yw+AhKs6rds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016288; c=relaxed/simple;
-	bh=MIvFZCa+gaGEPCweQGSRH6KPlZFMnxEAx09Zwz8ZkVs=;
+	s=arc-20240116; t=1734020075; c=relaxed/simple;
+	bh=q+x1aDQMZ2bNv1tqaKzneIrhFs6FFfjXX1Q/D3FFuM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXFOuDeRhiN7i+9/EMlJvUQnt6TZZC8BIMDnUlTkdxL2QtTzsQ/qS29Ia7vc2SY2HZCOhdRL1jHW5p1QWHEBfmPKWAmrdGBixbVzbn/KJV3M9b1BI1DVx1OS4Nm9Ml/Ulzz9BY2fZ+rXNmWi4HKr6TXGn58Lt82hmxMSojXTYkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u89z43aN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBC1C4CECE;
-	Thu, 12 Dec 2024 15:11:27 +0000 (UTC)
+	 MIME-Version; b=Rp6W2+Ix9VSjKrdGVWxep1acLYZn5E2B3g405vWVLF0zXeEDVgxF4kEwiROXd4AdSiXB6YEE8EyiT7khLBzRvFsJs4QkoyDz+aRdEOgr1zObtwcF1CtTeEin3pMX+zipOs6U/D2ZKCMb3exjYsz6ikNRKwqv/QFlFqjclafZgHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQO4wVQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80605C4CECE;
+	Thu, 12 Dec 2024 16:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016288;
-	bh=MIvFZCa+gaGEPCweQGSRH6KPlZFMnxEAx09Zwz8ZkVs=;
+	s=korg; t=1734020075;
+	bh=q+x1aDQMZ2bNv1tqaKzneIrhFs6FFfjXX1Q/D3FFuM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u89z43aN4fMIFBaU4frIN8WtJK/a4lo8XjYu5DMs4F+cYgPp9sWEkFhAuZnMDogx+
-	 QD4av9K5nLXjaQPH0XsMWga/7uX6hXWZpcPHCYp/mawopRmDZTPULjRA12PLdk2c54
-	 k6tjlnWwyYH4mlsVqXbANdRZYARId/ixUP263cTg=
+	b=PQO4wVQim8+ry7KrO5itAEOSrhJcMlS0n+yewSxmZyPb1LyU7su3eAmMzVwlWST14
+	 RdOtR3zWw2Q1oTiN7b+YPWF8ew7vnffRmiOCtXaodqnpNx8xSe67OirUlOg+QQ2XHc
+	 vRxwRYauGvL2m2H0FMIASjP+fGuComAffkLcCHcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 148/466] scsi: qla2xxx: Fix use after free on unload
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.1 372/772] KVM: arm64: Ignore PMCNTENSET_EL0 while checking for overflow status
 Date: Thu, 12 Dec 2024 15:55:17 +0100
-Message-ID: <20241212144312.643376074@linuxfoundation.org>
+Message-ID: <20241212144405.280122644@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Raghavendra Rao Ananta <rananta@google.com>
 
-commit 07c903db0a2ff84b68efa1a74a4de353ea591eb0 upstream.
+commit 54bbee190d42166209185d89070c58a343bf514b upstream.
 
-System crash is observed with stack trace warning of use after
-free. There are 2 signals to tell dpc_thread to terminate (UNLOADING
-flag and kthread_stop).
+DDI0487K.a D13.3.1 describes the PMU overflow condition, which evaluates
+to true if any counter's global enable (PMCR_EL0.E), overflow flag
+(PMOVSSET_EL0[n]), and interrupt enable (PMINTENSET_EL1[n]) are all 1.
+Of note, this does not require a counter to be enabled
+(i.e. PMCNTENSET_EL0[n] = 1) to generate an overflow.
 
-On setting the UNLOADING flag when dpc_thread happens to run at the time
-and sees the flag, this causes dpc_thread to exit and clean up
-itself. When kthread_stop is called for final cleanup, this causes use
-after free.
-
-Remove UNLOADING signal to terminate dpc_thread.  Use the kthread_stop
-as the main signal to exit dpc_thread.
-
-[596663.812935] kernel BUG at mm/slub.c:294!
-[596663.812950] invalid opcode: 0000 [#1] SMP PTI
-[596663.812957] CPU: 13 PID: 1475935 Comm: rmmod Kdump: loaded Tainted: G          IOE    --------- -  - 4.18.0-240.el8.x86_64 #1
-[596663.812960] Hardware name: HP ProLiant DL380p Gen8, BIOS P70 08/20/2012
-[596663.812974] RIP: 0010:__slab_free+0x17d/0x360
-
-...
-[596663.813008] Call Trace:
-[596663.813022]  ? __dentry_kill+0x121/0x170
-[596663.813030]  ? _cond_resched+0x15/0x30
-[596663.813034]  ? _cond_resched+0x15/0x30
-[596663.813039]  ? wait_for_completion+0x35/0x190
-[596663.813048]  ? try_to_wake_up+0x63/0x540
-[596663.813055]  free_task+0x5a/0x60
-[596663.813061]  kthread_stop+0xf3/0x100
-[596663.813103]  qla2x00_remove_one+0x284/0x440 [qla2xxx]
+Align kvm_pmu_overflow_status() with the reality of the architecture
+and stop using PMCNTENSET_EL0 as part of the overflow condition. The
+bug was discovered while running an SBSA PMU test [*], which only sets
+PMCR.E, PMOVSSET<0>, PMINTENSET<0>, and expects an overflow interrupt.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-3-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 76d883c4e640 ("arm64: KVM: Add access handler for PMOVSSET and PMOVSCLR register")
+Link: https://github.com/ARM-software/sbsa-acs/blob/master/test_pool/pmu/operating_system/test_pmu001.c
+Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+[ oliver: massaged changelog ]
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241120005230.2335682-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/arm64/kvm/pmu-emul.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -6902,12 +6902,15 @@ qla2x00_do_dpc(void *data)
- 	set_user_nice(current, MIN_NICE);
+--- a/arch/arm64/kvm/pmu-emul.c
++++ b/arch/arm64/kvm/pmu-emul.c
+@@ -294,7 +294,6 @@ static u64 kvm_pmu_overflow_status(struc
  
- 	set_current_state(TASK_INTERRUPTIBLE);
--	while (!kthread_should_stop()) {
-+	while (1) {
- 		ql_dbg(ql_dbg_dpc, base_vha, 0x4000,
- 		    "DPC handler sleeping.\n");
- 
- 		schedule();
- 
-+		if (kthread_should_stop())
-+			break;
-+
- 		if (test_and_clear_bit(DO_EEH_RECOVERY, &base_vha->dpc_flags))
- 			qla_pci_set_eeh_busy(base_vha);
- 
-@@ -6920,15 +6923,16 @@ qla2x00_do_dpc(void *data)
- 			goto end_loop;
- 		}
- 
-+		if (test_bit(UNLOADING, &base_vha->dpc_flags))
-+			/* don't do any work. Wait to be terminated by kthread_stop */
-+			goto end_loop;
-+
- 		ha->dpc_active = 1;
- 
- 		ql_dbg(ql_dbg_dpc + ql_dbg_verbose, base_vha, 0x4001,
- 		    "DPC handler waking up, dpc_flags=0x%lx.\n",
- 		    base_vha->dpc_flags);
- 
--		if (test_bit(UNLOADING, &base_vha->dpc_flags))
--			break;
--
- 		if (IS_P3P_TYPE(ha)) {
- 			if (IS_QLA8044(ha)) {
- 				if (test_and_clear_bit(ISP_UNRECOVERABLE,
-@@ -7241,9 +7245,6 @@ end_loop:
- 	 */
- 	ha->dpc_active = 0;
- 
--	/* Cleanup any residual CTX SRBs. */
--	qla2x00_abort_all_cmds(base_vha, DID_NO_CONNECT << 16);
--
- 	return 0;
- }
+ 	if ((__vcpu_sys_reg(vcpu, PMCR_EL0) & ARMV8_PMU_PMCR_E)) {
+ 		reg = __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
+-		reg &= __vcpu_sys_reg(vcpu, PMCNTENSET_EL0);
+ 		reg &= __vcpu_sys_reg(vcpu, PMINTENSET_EL1);
+ 	}
  
 
 
