@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95CC9EF843
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8259EF643
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 890EE293FC3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B0271941CB8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21938216E2D;
-	Thu, 12 Dec 2024 17:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4367B223331;
+	Thu, 12 Dec 2024 17:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdwIhd4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGJ+fFVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D338120A5EE;
-	Thu, 12 Dec 2024 17:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2B422331C;
+	Thu, 12 Dec 2024 17:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025243; cv=none; b=RD22xfuU7OmWbzp9WNWQyq2atibgBAqkjUwnqH5rcn0aiLqFqe/NI8nd4VpbApTV6FIXMzGiyCdnE+YnAZL2i6c/amkj/shWEIb5wGodQ+/vJYUgfnMTWHdb27sV0cJyhepBpTNWdoVQPR2w7IZz4qh7J4RSV60dm97tVXYvo6s=
+	t=1734023107; cv=none; b=WL48gWqv5W/ZdS3fwwXehB8lA9qRBldpkIu2Kj/3GI8ybARvP60HsOlM9tuSbNJp5SfLUtgqcEgI8uJZpyDrDSvZxeic6nziYUXK84ObJuKzr5QN50fMglk0h8hsm+maSW2jMZNCt9sgdsEy7S2CgBuad4njTj0i7VK2TXpxSSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025243; c=relaxed/simple;
-	bh=owewg07qQg5rGh8gG6pGebaEKP4N1AGhUaf3M560Qwc=;
+	s=arc-20240116; t=1734023107; c=relaxed/simple;
+	bh=OtUG1MV05MuCtugYcf9cdzSL1AaEIXKAe8qJdOQVSxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fae0/gt8UY0IaseSElLovtP3r4lFxrJUO+Ac9J3brq5oalZkvpnjkGibRFEyXYEOtnhmO9muGelntT+1160NRyH3JwI2cOldxbtsXwT71gcr5rll9tZhTFB+Mtk50a6P2wuP50fOyZRVrnvVYPic0O1Zh2Qm/viz4TghsnHBq8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdwIhd4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B69CC4CECE;
-	Thu, 12 Dec 2024 17:40:43 +0000 (UTC)
+	 MIME-Version; b=pFGOJiWxXuaCaSy9ox8V2RSEJ8E2V9C1TLXDZET3exHHx1bPJkHAcesg0q6UUdo9skWg48h8t85M7gd/5zUJmBPeeoiv0jwC7JYxEL9N9gBWnB8tiIIeNa114IWheMXJSHJxLLNHC/lNZX6dwthw/jzlkKNg3wipN6hwpjpPVCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGJ+fFVU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5683BC4CED0;
+	Thu, 12 Dec 2024 17:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025243;
-	bh=owewg07qQg5rGh8gG6pGebaEKP4N1AGhUaf3M560Qwc=;
+	s=korg; t=1734023105;
+	bh=OtUG1MV05MuCtugYcf9cdzSL1AaEIXKAe8qJdOQVSxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HdwIhd4EBgqcVq5/wNaqXI+hMAWGJkDIptInuypX4z26vNdBW33zBOo8quDQRE3TP
-	 dj1QeZnTL54Hqtn9xQgj/wAcHj80e7s8f2IyUHCXWqSzI4kr3j+QvfIXVavWIwVdFR
-	 E522eT69UI8gOH7ZQYzs46iapuVSYgpyLN+CwjqY=
+	b=GGJ+fFVUqiFP14zonoebYWVGKgwyBmHEMaWo4OeHNHWZLTWK2jK0o1gf0vHsCWGeE
+	 nsOKcp0rNEtCPoQPQwbq6VJvqvNGz3lHCFU0MZ9HMZWFEy9BcW/jAo55pNErTADsGm
+	 unh3PM5+7awLKK6ejZ3E4375zxtZxFH1p8U/Gxvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Suchanek <msuchanek@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 103/321] powerpc/sstep: make emulate_vsx_load and emulate_vsx_store static
+Subject: [PATCH 5.15 426/565] gpio: grgpio: use a helper variable to store the address of ofdev->dev
 Date: Thu, 12 Dec 2024 16:00:21 +0100
-Message-ID: <20241212144234.059289636@linuxfoundation.org>
+Message-ID: <20241212144328.510333605@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Suchanek <msuchanek@suse.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit a26c4dbb3d9c1821cb0fc11cb2dbc32d5bf3463b ]
+[ Upstream commit d036ae41cebdfae92666024163c109b8fef516fa ]
 
-These functions are not used outside of sstep.c
+Instead of dereferencing the platform device pointer repeatedly, just
+store its address in a helper variable.
 
-Fixes: 350779a29f11 ("powerpc: Handle most loads and stores in instruction emulation code")
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241001130356.14664-1-msuchanek@suse.de
+Link: https://lore.kernel.org/r/20241015131832.44678-3-brgl@bgdev.pl
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 050b23d081da ("gpio: grgpio: Add NULL check in grgpio_probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/sstep.h |  5 -----
- arch/powerpc/lib/sstep.c         | 12 ++++--------
- 2 files changed, 4 insertions(+), 13 deletions(-)
+ drivers/gpio/gpio-grgpio.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
-index 769f055509c9a..eef81dd406075 100644
---- a/arch/powerpc/include/asm/sstep.h
-+++ b/arch/powerpc/include/asm/sstep.h
-@@ -160,9 +160,4 @@ extern int emulate_step(struct pt_regs *regs, unsigned int instr);
-  */
- extern int emulate_loadstore(struct pt_regs *regs, struct instruction_op *op);
- 
--extern void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
--			     const void *mem, bool cross_endian);
--extern void emulate_vsx_store(struct instruction_op *op,
--			      const union vsx_reg *reg, void *mem,
--			      bool cross_endian);
- extern int emulate_dcbz(unsigned long ea, struct pt_regs *regs);
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 490162fb0893f..368a36079cb6c 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -663,8 +663,8 @@ static nokprobe_inline int emulate_stq(struct pt_regs *regs, unsigned long ea,
- #endif /* __powerpc64 */
- 
- #ifdef CONFIG_VSX
--void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
--		      const void *mem, bool rev)
-+static nokprobe_inline void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
-+					     const void *mem, bool rev)
+diff --git a/drivers/gpio/gpio-grgpio.c b/drivers/gpio/gpio-grgpio.c
+index 21204a5dca3d4..bf5ecf23cbceb 100644
+--- a/drivers/gpio/gpio-grgpio.c
++++ b/drivers/gpio/gpio-grgpio.c
+@@ -328,6 +328,7 @@ static const struct irq_domain_ops grgpio_irq_domain_ops = {
+ static int grgpio_probe(struct platform_device *ofdev)
  {
- 	int size, read_size;
- 	int i, j;
-@@ -744,11 +744,9 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
- 		break;
- 	}
- }
--EXPORT_SYMBOL_GPL(emulate_vsx_load);
--NOKPROBE_SYMBOL(emulate_vsx_load);
+ 	struct device_node *np = ofdev->dev.of_node;
++	struct device *dev = &ofdev->dev;
+ 	void  __iomem *regs;
+ 	struct gpio_chip *gc;
+ 	struct grgpio_priv *priv;
+@@ -337,7 +338,7 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 	int size;
+ 	int i;
  
--void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
--		       void *mem, bool rev)
-+static nokprobe_inline void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
-+					      void *mem, bool rev)
- {
- 	int size, write_size;
- 	int i, j;
-@@ -820,8 +818,6 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
- 		break;
- 	}
- }
--EXPORT_SYMBOL_GPL(emulate_vsx_store);
--NOKPROBE_SYMBOL(emulate_vsx_store);
+-	priv = devm_kzalloc(&ofdev->dev, sizeof(*priv), GFP_KERNEL);
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
  
- static nokprobe_inline int do_vsx_load(struct instruction_op *op,
- 				       unsigned long ea, struct pt_regs *regs,
+@@ -346,29 +347,29 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 		return PTR_ERR(regs);
+ 
+ 	gc = &priv->gc;
+-	err = bgpio_init(gc, &ofdev->dev, 4, regs + GRGPIO_DATA,
++	err = bgpio_init(gc, dev, 4, regs + GRGPIO_DATA,
+ 			 regs + GRGPIO_OUTPUT, NULL, regs + GRGPIO_DIR, NULL,
+ 			 BGPIOF_BIG_ENDIAN_BYTE_ORDER);
+ 	if (err) {
+-		dev_err(&ofdev->dev, "bgpio_init() failed\n");
++		dev_err(dev, "bgpio_init() failed\n");
+ 		return err;
+ 	}
+ 
+ 	priv->regs = regs;
+ 	priv->imask = gc->read_reg(regs + GRGPIO_IMASK);
+-	priv->dev = &ofdev->dev;
++	priv->dev = dev;
+ 
+ 	gc->of_node = np;
+ 	gc->owner = THIS_MODULE;
+ 	gc->to_irq = grgpio_to_irq;
+-	gc->label = devm_kasprintf(&ofdev->dev, GFP_KERNEL, "%pOF", np);
++	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
+ 	gc->base = -1;
+ 
+ 	err = of_property_read_u32(np, "nbits", &prop);
+ 	if (err || prop <= 0 || prop > GRGPIO_MAX_NGPIO) {
+ 		gc->ngpio = GRGPIO_MAX_NGPIO;
+-		dev_dbg(&ofdev->dev,
+-			"No or invalid nbits property: assume %d\n", gc->ngpio);
++		dev_dbg(dev, "No or invalid nbits property: assume %d\n",
++			gc->ngpio);
+ 	} else {
+ 		gc->ngpio = prop;
+ 	}
+@@ -380,7 +381,7 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 	irqmap = (s32 *)of_get_property(np, "irqmap", &size);
+ 	if (irqmap) {
+ 		if (size < gc->ngpio) {
+-			dev_err(&ofdev->dev,
++			dev_err(dev,
+ 				"irqmap shorter than ngpio (%d < %d)\n",
+ 				size, gc->ngpio);
+ 			return -EINVAL;
+@@ -390,7 +391,7 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 						     &grgpio_irq_domain_ops,
+ 						     priv);
+ 		if (!priv->domain) {
+-			dev_err(&ofdev->dev, "Could not add irq domain\n");
++			dev_err(dev, "Could not add irq domain\n");
+ 			return -EINVAL;
+ 		}
+ 
+@@ -420,13 +421,13 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 
+ 	err = gpiochip_add_data(gc, priv);
+ 	if (err) {
+-		dev_err(&ofdev->dev, "Could not add gpiochip\n");
++		dev_err(dev, "Could not add gpiochip\n");
+ 		if (priv->domain)
+ 			irq_domain_remove(priv->domain);
+ 		return err;
+ 	}
+ 
+-	dev_info(&ofdev->dev, "regs=0x%p, base=%d, ngpio=%d, irqs=%s\n",
++	dev_info(dev, "regs=0x%p, base=%d, ngpio=%d, irqs=%s\n",
+ 		 priv->regs, gc->base, gc->ngpio, priv->domain ? "on" : "off");
+ 
+ 	return 0;
 -- 
 2.43.0
 
