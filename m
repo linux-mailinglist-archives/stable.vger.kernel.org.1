@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-101193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8979EEB49
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370C69EF1A8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEB5F188F0C5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05734189E8F1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5152153FC;
-	Thu, 12 Dec 2024 15:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BEB239BB6;
+	Thu, 12 Dec 2024 16:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1H1rowN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHtMulbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF01713CA93;
-	Thu, 12 Dec 2024 15:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5E82397B6;
+	Thu, 12 Dec 2024 16:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016684; cv=none; b=Vl0wQltDaHOGoQDE8pwREWn/sRe8E3KOexF+AaCxP3UJDz1WAM8Qo/iOPTdz+pfoMEthynU+dCdTcXXtQy9uoXY5ZqkOxiiUhekeWbjpUxmV/XnL0OLWD22gROSls5IQhSVtcQLT7k1JdGgbGs7GDxfJsOeZ4Y9WLIt802bp0og=
+	t=1734020645; cv=none; b=kFuTj/NBoMX05pILMYtExUW/zkLcG/kfA+zqN5AEOVqhQemAhnLsV8I7wTwOFBRdV5afJax4xV9lWzmodSAkZz6oKKdESsIHmjTCO41UrRkosRxP0ypmnuhf+3FnN4hUxvcSee/94ZUWCIeyte/uGBdz1jlUYmhig0qvSUyDiBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016684; c=relaxed/simple;
-	bh=12J0URwqVQCFlcZiZ8iLnm+eas1uRR56CFpiApRz9So=;
+	s=arc-20240116; t=1734020645; c=relaxed/simple;
+	bh=/9qnkpbRaXj7E/n0SYvhJGh5NfMmsZsbsMCFyLG0wt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+T5ZSl8adaIXEJKAxLFnRr1Ks1XnaWBqfljCGhpT4DhnWAGIB31cZDir9MTxO1mT4RXgNd0iKDPykp1kS3wb+Rr7bz/R3/WfZqY/mvTgw3bbxEntzt1VJ1q53H9RcJeTHPdE0WJ6Rk/e2HMsd9hSnzIiPOD4NxPipycnS/G9fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1H1rowN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1AC5C4CEDE;
-	Thu, 12 Dec 2024 15:18:02 +0000 (UTC)
+	 MIME-Version; b=L1UYbksnfhTAITcRr+EmapvEIiy6+O12aHkQfony3buZcfK5rKghSK6F75+HFVuDsamP8R2e1imDryn7AXpl9jgNJ5r14jNscRhSUR76CaR1vQ84G6SI9r9P+eyrXRz1qIh2TR/wWpgFoAC1yMIuE3LKIC1BR6wwMfY5MvCMdcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHtMulbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87FEC4CECE;
+	Thu, 12 Dec 2024 16:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016683;
-	bh=12J0URwqVQCFlcZiZ8iLnm+eas1uRR56CFpiApRz9So=;
+	s=korg; t=1734020645;
+	bh=/9qnkpbRaXj7E/n0SYvhJGh5NfMmsZsbsMCFyLG0wt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1H1rowNhv/65DFftmL0SwjejmAq5aYZ6f5EWUJ1DtoxEplAZ9V/g2NuUcccQP44q
-	 BZS3TzWPL0sLQl8KSbxdPoQjFky1nOVkdtIkIleSnVu6BzchB58t1Rbe/xRb+Wnjtt
-	 R0Zu9uwaXpqCSt5c30o3H07iM0qIW/7BWUYzLcjs=
+	b=XHtMulbgBmJRPbWDqDdOG1tpjmjxVM7YNMhvB1KUB48BVr5/pwYm7DHYmQfSot5AB
+	 tJooFPWs4WyocEu+Q52plU72GxQ2l9GZuyZvoW9+4AkwJ2jBeWm663nFOJtK4b1awu
+	 5gMqwFvAg+8epR0pNP4iyjwGXWiCBMD/olp2cx2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 269/466] dlm: fix possible lkb_resource null dereference
+	Yuan Can <yuancan@huawei.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 493/772] dm thin: Add missing destroy_work_on_stack()
 Date: Thu, 12 Dec 2024 15:57:18 +0100
-Message-ID: <20241212144317.416194551@linuxfoundation.org>
+Message-ID: <20241212144410.324011728@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit b98333c67daf887c724cd692e88e2db9418c0861 ]
+commit e74fa2447bf9ed03d085b6d91f0256cc1b53f1a8 upstream.
 
-This patch fixes a possible null pointer dereference when this function is
-called from request_lock() as lkb->lkb_resource is not assigned yet,
-only after validate_lock_args() by calling attach_lkb(). Another issue
-is that a resource name could be a non printable bytearray and we cannot
-assume to be ASCII coded.
+This commit add missed destroy_work_on_stack() operations for pw->worker in
+pool_work_wait().
 
-The log functionality is probably never being hit when DLM is used in
-normal way and no debug logging is enabled. The null pointer dereference
-can only occur on a new created lkb that does not have the resource
-assigned yet, it probably never hits the null pointer dereference but we
-should be sure that other changes might not change this behaviour and we
-actually can hit the mentioned null pointer dereference.
-
-In this patch we just drop the printout of the resource name, the lkb id
-is enough to make a possible connection to a resource name if this
-exists.
-
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e7a3e871d895 ("dm thin: cleanup noflush_work to use a proper completion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lock.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/md/dm-thin.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 865dc70a9dfc4..dddedaef5e93d 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -2861,16 +2861,14 @@ static int validate_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
- 	case -EINVAL:
- 		/* annoy the user because dlm usage is wrong */
- 		WARN_ON(1);
--		log_error(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_error(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	default:
--		log_debug(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_debug(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	}
+--- a/drivers/md/dm-thin.c
++++ b/drivers/md/dm-thin.c
+@@ -2457,6 +2457,7 @@ static void pool_work_wait(struct pool_w
+ 	init_completion(&pw->complete);
+ 	queue_work(pool->wq, &pw->worker);
+ 	wait_for_completion(&pw->complete);
++	destroy_work_on_stack(&pw->worker);
+ }
  
--- 
-2.43.0
-
+ /*----------------------------------------------------------------*/
 
 
 
