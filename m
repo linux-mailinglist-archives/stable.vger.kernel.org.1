@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017A49EF981
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8233B9EF835
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 624271890E51
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3536D189E41B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A028D2210DE;
-	Thu, 12 Dec 2024 17:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93566217F34;
+	Thu, 12 Dec 2024 17:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usnqYgnP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4wA3L6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD95223313;
-	Thu, 12 Dec 2024 17:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F26176AA1;
+	Thu, 12 Dec 2024 17:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025396; cv=none; b=ouhVK7AbIWp17uBXBctpvKmOCZsnmqrqTzjvVtHDBnyTkgJcdAQZqPn+qYDeoAgp16VnxxkGFZaMEYFH6o1KMdJL2Lq+WB2yqNETrkp1z3ZNSjHXoHutjbAvbhgwXRctMK+rosSFLbBNbicHS8vFrJ18+t9s1R6NQeqLpljDyvc=
+	t=1734024559; cv=none; b=upl+TS4xyVQIDcanw2PDlceVzCkE3qSWi15T2WFIttEouXdjEhhapKmCfjea+Ps3Qz9ZuZmVDupCg6t7LynN09iqGTrqWgddiOsOsJOELyj9KXkaTue1jd1IH5NWy9Kz86okb2UEoYqp5px937lDzrLK9spaFDcd0TeQ7Vv5+2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025396; c=relaxed/simple;
-	bh=foLi0UgPkYBibXgGp6IGFN9PNRAJBO2a3rnyuoIH+P0=;
+	s=arc-20240116; t=1734024559; c=relaxed/simple;
+	bh=LWeWqyjQ3p+ITXNBb3kFFAIMmGYx3BW36xWvRgcc7xE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9CzcVqS50wPu4gWIcFvZiZv7J+frZBDOxGwrQRmC8+ncd6lTAy/MDT99kc5Ft0PJuAPSj9/GTQjRfHmQZLJIzaGqDwwHZAVALa0U1lknVu/aGL+AfTC27E+xXj9D1O+gvqddQmAUU8eeWj9jrrwt4vHs6bgMH06s3CbblE8XR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usnqYgnP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482BAC4CED0;
-	Thu, 12 Dec 2024 17:43:15 +0000 (UTC)
+	 MIME-Version; b=JJtD7RCqeOMPTjt6qGvCAqN2GM9nJhl+brs9TL2KHW5WniTMsEUNRPKU3mFtTKYo5kCt1Jxkk274ExTFTyoLvYplrSljmGJREGD0oXYnSJ3UEdQUgbzsf2Pb1DeP+cExoDgK73Ad5QZHDTu3f57LErM707UJS3znb5588zlomD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4wA3L6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE122C4CED0;
+	Thu, 12 Dec 2024 17:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025395;
-	bh=foLi0UgPkYBibXgGp6IGFN9PNRAJBO2a3rnyuoIH+P0=;
+	s=korg; t=1734024559;
+	bh=LWeWqyjQ3p+ITXNBb3kFFAIMmGYx3BW36xWvRgcc7xE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usnqYgnPQXSKALNW5sjPUfwoTUwyBWDLF8gwm4uJ8kXki7uOff2PF2adWctlvMljM
-	 dSm6kGnBsvfIxeFQTt1Ex12DmuqTqpToPIpHL+ogX0YxqARzuRfNt6f9Gp1aXOgum4
-	 IdPtU7fOLjrnBz3Ji5EhVb277XI0Dd9xIIwq5bT4=
+	b=q4wA3L6f6HpoVwqponozbGUeyPtmpHypFudvtT4HUS6umGIZkvH8xf9z8iLtSAKCj
+	 7rZdaIJzlJ0F7ddUxUXbBL4u2dufA88Wb+XiEN3hdI6bytUaYLT3Z0EG0ysVEBx5U4
+	 +0HeeVfHmJa9RHO27zb9tW195ekbsB1+6wLPGAH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	stable <stable@kernel.org>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.4 156/321] Revert "serial: sh-sci: Clean sci_ports[0] after at earlycon exit"
+	Ivan Solodovnikov <solodovnikov.ia@phystech.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 336/459] dccp: Fix memory leak in dccp_feat_change_recv
 Date: Thu, 12 Dec 2024 16:01:14 +0100
-Message-ID: <20241212144236.138510769@linuxfoundation.org>
+Message-ID: <20241212144306.935079480@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
 
-commit 718632467d88e98816fa01ab12681ef1c2aa56f8 upstream.
+[ Upstream commit 22be4727a8f898442066bcac34f8a1ad0bc72e14 ]
 
-This reverts commit 3791ea69a4858b81e0277f695ca40f5aae40f312.
+If dccp_feat_push_confirm() fails after new value for SP feature was accepted
+without reconciliation ('entry == NULL' branch), memory allocated for that value
+with dccp_feat_clone_sp_val() is never freed.
 
-It was reported to cause boot-time issues, so revert it for now.
+Here is the kmemleak stack for this:
 
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Fixes: 3791ea69a485 ("serial: sh-sci: Clean sci_ports[0] after at earlycon exit")
-Cc: stable <stable@kernel.org>
-Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+unreferenced object 0xffff88801d4ab488 (size 8):
+  comm "syz-executor310", pid 1127, jiffies 4295085598 (age 41.666s)
+  hex dump (first 8 bytes):
+    01 b4 4a 1d 80 88 ff ff                          ..J.....
+  backtrace:
+    [<00000000db7cabfe>] kmemdup+0x23/0x50 mm/util.c:128
+    [<0000000019b38405>] kmemdup include/linux/string.h:465 [inline]
+    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:371 [inline]
+    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:367 [inline]
+    [<0000000019b38405>] dccp_feat_change_recv net/dccp/feat.c:1145 [inline]
+    [<0000000019b38405>] dccp_feat_parse_options+0x1196/0x2180 net/dccp/feat.c:1416
+    [<00000000b1f6d94a>] dccp_parse_options+0xa2a/0x1260 net/dccp/options.c:125
+    [<0000000030d7b621>] dccp_rcv_state_process+0x197/0x13d0 net/dccp/input.c:650
+    [<000000001f74c72e>] dccp_v4_do_rcv+0xf9/0x1a0 net/dccp/ipv4.c:688
+    [<00000000a6c24128>] sk_backlog_rcv include/net/sock.h:1041 [inline]
+    [<00000000a6c24128>] __release_sock+0x139/0x3b0 net/core/sock.c:2570
+    [<00000000cf1f3a53>] release_sock+0x54/0x1b0 net/core/sock.c:3111
+    [<000000008422fa23>] inet_wait_for_connect net/ipv4/af_inet.c:603 [inline]
+    [<000000008422fa23>] __inet_stream_connect+0x5d0/0xf70 net/ipv4/af_inet.c:696
+    [<0000000015b6f64d>] inet_stream_connect+0x53/0xa0 net/ipv4/af_inet.c:735
+    [<0000000010122488>] __sys_connect_file+0x15c/0x1a0 net/socket.c:1865
+    [<00000000b4b70023>] __sys_connect+0x165/0x1a0 net/socket.c:1882
+    [<00000000f4cb3815>] __do_sys_connect net/socket.c:1892 [inline]
+    [<00000000f4cb3815>] __se_sys_connect net/socket.c:1889 [inline]
+    [<00000000f4cb3815>] __x64_sys_connect+0x6e/0xb0 net/socket.c:1889
+    [<00000000e7b1e839>] do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+    [<0000000055e91434>] entry_SYSCALL_64_after_hwframe+0x67/0xd1
+
+Clean up the allocated memory in case of dccp_feat_push_confirm() failure
+and bail out with an error reset code.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: e77b8363b2ea ("dccp: Process incoming Change feature-negotiation options")
+Signed-off-by: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
+Link: https://patch.msgid.link/20241126143902.190853-1-solodovnikov.ia@phystech.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c |   28 ----------------------------
- 1 file changed, 28 deletions(-)
+ net/dccp/feat.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -3457,32 +3457,6 @@ early_platform_init_buffer("earlyprintk"
- #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
- static struct plat_sci_port port_cfg __initdata;
+diff --git a/net/dccp/feat.c b/net/dccp/feat.c
+index 788dd629c4204..e9cc7415ba484 100644
+--- a/net/dccp/feat.c
++++ b/net/dccp/feat.c
+@@ -1160,8 +1160,12 @@ static u8 dccp_feat_change_recv(struct list_head *fn, u8 is_mandatory, u8 opt,
+ 			goto not_valid_or_not_known;
+ 		}
  
--static int early_console_exit(struct console *co)
--{
--	struct sci_port *sci_port = &sci_ports[0];
--	struct uart_port *port = &sci_port->port;
--	unsigned long flags;
--	int locked = 1;
--
--	if (port->sysrq)
--		locked = 0;
--	else if (oops_in_progress)
--		locked = uart_port_trylock_irqsave(port, &flags);
--	else
--		uart_port_lock_irqsave(port, &flags);
--
--	/*
--	 * Clean the slot used by earlycon. A new SCI device might
--	 * map to this slot.
--	 */
--	memset(sci_ports, 0, sizeof(*sci_port));
--
--	if (locked)
--		uart_port_unlock_irqrestore(port, flags);
--
--	return 0;
--}
--
- static int __init early_console_setup(struct earlycon_device *device,
- 				      int type)
- {
-@@ -3501,8 +3475,6 @@ static int __init early_console_setup(st
- 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
+-		return dccp_feat_push_confirm(fn, feat, local, &fval);
++		if (dccp_feat_push_confirm(fn, feat, local, &fval)) {
++			kfree(fval.sp.vec);
++			return DCCP_RESET_CODE_TOO_BUSY;
++		}
  
- 	device->con->write = serial_console_write;
--	device->con->exit = early_console_exit;
--
- 	return 0;
- }
- static int __init sci_early_console_setup(struct earlycon_device *device,
++		return 0;
+ 	} else if (entry->state == FEAT_UNSTABLE) {	/* 6.6.2 */
+ 		return 0;
+ 	}
+-- 
+2.43.0
+
 
 
 
