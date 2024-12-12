@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-102804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AE79EF54B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C629EF5AD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1E9170C33
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B618528BFC0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D72D22968F;
-	Thu, 12 Dec 2024 16:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0001216E3B;
+	Thu, 12 Dec 2024 17:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1j9VmlIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZvXcRU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F452288F5;
-	Thu, 12 Dec 2024 16:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD404F218;
+	Thu, 12 Dec 2024 17:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022553; cv=none; b=IRYlODVZLK9uCpO6yWAxMTB+lmDd7OmCCXv/+D88FI/VGTNCIO+RmwLpDKVID2St0S5DWm5TZBkmHGbJp8tcruXYONct/4oqE2pzzmWi3nomhJYhd4e057LFKxq0+JdD3jBFnizMSSpPb1dTG6ulrjzWhjrTGyMW+9zu9H47jT4=
+	t=1734023929; cv=none; b=GlBYymA81SM/uaO+u4JWFtkSciwIuEmfeQa5vDAhivB2YL6qo/Ja93QIlKf44Q8DK8mnYVZnlMlo9SM7PDwzSRxDfnyZ5voOCxbc2LDYxGP5jheAZA9m1FJauNLEh2U/8IQKV4cN5bEVe1jxnfm6HoENfphS4q0M6suSh3spBxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022553; c=relaxed/simple;
-	bh=i0ARyF5ushn4AXN0OZ4tCGXhN5zWJJ/MxN/k2lVwEKw=;
+	s=arc-20240116; t=1734023929; c=relaxed/simple;
+	bh=Ier/+F8OUatuL18Pz78WdpMP9zJDe+zBaZ1osLdvgME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAeJEjqkdebXXhuPHMNKn167u8qJzf+uMD9s/eth9aSCj2jLzW5ktmNVGhV3qfkHty4RaNpOLmpMQpgCdXMZ9lecc64F+Il4DYwMC1pCsYR/lu6WWrcAqjJxIk8CgZ1kj/KE4lYc36S83f8lK/x8OOgYhlFe1azd4wyFskKa7aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1j9VmlIt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A98AC4CED4;
-	Thu, 12 Dec 2024 16:55:52 +0000 (UTC)
+	 MIME-Version; b=iq+is4kh8ANmxAqbKCg6Pq3SxsMOWqg0CUJANihcUmJK5yLOnG9Oz/nwLFmKDAklW1mjfYpaZawJb7wmdsWHnt59pUq9QZLLcWYF5XYWIKy8j8qi6TtCcMvDnIkO+iQtTw/hntyc2xmVs6OKxwOLN17JyNJeeJwWNawBpY4hskI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZvXcRU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A7CC4CED0;
+	Thu, 12 Dec 2024 17:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022553;
-	bh=i0ARyF5ushn4AXN0OZ4tCGXhN5zWJJ/MxN/k2lVwEKw=;
+	s=korg; t=1734023929;
+	bh=Ier/+F8OUatuL18Pz78WdpMP9zJDe+zBaZ1osLdvgME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1j9VmlItcN8UvFMNC2jfGOT7anobyA1I/gDo2+slfELPcdl1QrF9z+SjcouvdE4cY
-	 YC1L0AuAPruwCKXA3NEw1GRU1prFBc/dZYNjYX8NDI4TADetWCxlKSoyIfUIBuJZ/E
-	 dwjqzrS7Z7CTziHBBy/j4N9ZN2FtqO5VblZNnj8M=
+	b=gZvXcRU2YrBrcinYQj12Ubedzgai8H7elG5Siooanb4xwxNH6CbeU8dcVHXj89oej
+	 In8STgGuoUZ0LzoloVta285pzNMvZnROH/iIb3txf001+EPcF4/RuuQrDm13kds1uc
+	 UxtUjOEEGcpUvC8xsXSOtLwbzrR2tjg4OLlxGpfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Eric Sandeen <sandeen@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org,
+	Dipendra Khadka <kdipendra88@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 272/565] fs_parser: update mount_api doc to match function signature
-Date: Thu, 12 Dec 2024 15:57:47 +0100
-Message-ID: <20241212144322.214671679@linuxfoundation.org>
+Subject: [PATCH 5.10 130/459] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_ethtool.c
+Date: Thu, 12 Dec 2024 15:57:48 +0100
+Message-ID: <20241212144258.639571157@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,47 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit c66f759832a83cb273ba5a55c66dcc99384efa74 ]
+[ Upstream commit e26f8eac6bb20b20fdb8f7dc695711ebce4c7c5c ]
 
-Add the missing 'name' parameter to the mount_api documentation for
-fs_validate_description().
+Add error pointer check after calling otx2_mbox_get_rsp().
 
-Fixes: 96cafb9ccb15 ("fs_parser: remove fs_parameter_description name field")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20241125215021.231758-1-rdunlap@infradead.org
-Cc: Eric Sandeen <sandeen@redhat.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool")
+Fixes: d0cf9503e908 ("octeontx2-pf: ethtool fec mode support")
+Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/filesystems/mount_api.rst | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c  | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/Documentation/filesystems/mount_api.rst b/Documentation/filesystems/mount_api.rst
-index eb358a00be279..12e30da6a511c 100644
---- a/Documentation/filesystems/mount_api.rst
-+++ b/Documentation/filesystems/mount_api.rst
-@@ -778,7 +778,8 @@ process the parameters it is given.
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index 540a16d0a3274..3d0c090551e76 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -317,6 +317,11 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
+ 		rsp = (struct cgx_pause_frm_cfg *)
+ 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
++		if (IS_ERR(rsp)) {
++			mutex_unlock(&pfvf->mbox.lock);
++			return;
++		}
++
+ 		pause->rx_pause = rsp->rx_pause;
+ 		pause->tx_pause = rsp->tx_pause;
+ 	}
+@@ -847,6 +852,11 @@ static int otx2_set_fecparam(struct net_device *netdev,
  
-    * ::
- 
--       bool fs_validate_description(const struct fs_parameter_description *desc);
-+       bool fs_validate_description(const char *name,
-+                                    const struct fs_parameter_description *desc);
- 
-      This performs some validation checks on a parameter description.  It
-      returns true if the description is good and false if it is not.  It will
+ 	rsp = (struct fec_mode *)otx2_mbox_get_rsp(&pfvf->mbox.mbox,
+ 						   0, &req->hdr);
++	if (IS_ERR(rsp)) {
++		err = PTR_ERR(rsp);
++		goto end;
++	}
++
+ 	if (rsp->fec >= 0)
+ 		pfvf->linfo.fec = rsp->fec;
+ 	else
 -- 
 2.43.0
 
