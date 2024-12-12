@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-102007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C459EF07D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9B29EF028
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8422A17817F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21DE16CA88
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1E72358A6;
-	Thu, 12 Dec 2024 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F510223C72;
+	Thu, 12 Dec 2024 16:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1HoGKAF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYiMoJhW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB03B2336A9;
-	Thu, 12 Dec 2024 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC972336A7;
+	Thu, 12 Dec 2024 16:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019613; cv=none; b=Iv93NJWr5DS7NkRGsbP8tB52cgcIB1MPi7CGBAyFShSXMUo9Z4ING3Z+CAfY3+/P3HoM8hTtwV/Uz7NZLu3haZ/DDyGHCkJ7ZI8ZebdEFHpzc4NzuTZm1YBQUvxeuM2nDIn9ygwldJJN5zNsIMobawKzDk0PBLZFeGdPyDAtOng=
+	t=1734019621; cv=none; b=sSTnsScjPxurFwBV6dxtzX+jhuKMjSla3KbdjihwxBkhycBsuCI/+Ex4rurUWyYVVAQF61HrNU7M1IwZ6t2YM+1dOdyX/WRw4wqt42IFmB/kltl5dBR1AKosCvQucnJtZI9yyiFTRA3q54gCJrLEMuSkuHM80vB1IuF5CQrNTxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019613; c=relaxed/simple;
-	bh=cj22shcpSXWeFyEeYrMQXf7ikurx9PbJtk1IlpoINVo=;
+	s=arc-20240116; t=1734019621; c=relaxed/simple;
+	bh=PYcon676aJZWBYm9H3Q6VYcIuLDrxO/07OTEJ50u9x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o87/AlgEPqzypgBL2u6BvfybY3xsPqJyRZBBTx9q22CIYAWhO6L7Jkcwxk2RsuV29nygv5y3uGcJmfIIXZQbLzNf83gSXF/ERz/40T/lSLpLDJ01daHax83AZrIZhkjG/Rh9NzsbZJ2RdMPS4sbbhRq8jq4p4bzzjS2o76hWNlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1HoGKAF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AAEC4CECE;
-	Thu, 12 Dec 2024 16:06:52 +0000 (UTC)
+	 MIME-Version; b=Vtso5GK+HkoqT1jc5XkS+WHQw2tTWG3OJzApW5GouD0emAM/AcB9qkmCSj6kIPECHmS4o0BLN4MZfINln/z51yYiZIpGxRt+MIt3yuXqVRwKlfQie67xzLxglbUJNpYnOFSOo7a6AZc7+PxZK83rsOOtgekOE7kqjQ3hv/dd5s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYiMoJhW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC88C4CECE;
+	Thu, 12 Dec 2024 16:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019613;
-	bh=cj22shcpSXWeFyEeYrMQXf7ikurx9PbJtk1IlpoINVo=;
+	s=korg; t=1734019620;
+	bh=PYcon676aJZWBYm9H3Q6VYcIuLDrxO/07OTEJ50u9x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B1HoGKAF5Qe8K/W65orln0bpjYV0VL1clJ3M9Rg881d61LiB7M4Vk+53yWGP06VLr
-	 HYsFo0PEoRpnLYYBcNGphBc6czyFJSYmqQqhnXF7IQdo+AOMGUwn1nq7LfoSd4CV/W
-	 pNetzNk+wNtPyvHZGXefwp7OGIxfvHvRJx7+AKKw=
+	b=bYiMoJhWjdaXKq/qVHgrwW9R4WxhaIDEG+1T2HlmA++aiAqVBZWgUV2m3HT5i0Ssp
+	 cGGB2inusncyP7ovsgKmpUDgixiAoXRwCZ8K00C3EuelQt441tbH1Ov03+QfF4UkOE
+	 Gm8JekswYQX4FsEK7zdsEsqfTaIb7sd9g33Jovqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 252/772] powerpc/kexec: Fix return of uninitialized variable
-Date: Thu, 12 Dec 2024 15:53:17 +0100
-Message-ID: <20241212144400.334198889@linuxfoundation.org>
+Subject: [PATCH 6.1 253/772] fbdev/sh7760fb: Alloc DMA memory from hardware device
+Date: Thu, 12 Dec 2024 15:53:18 +0100
+Message-ID: <20241212144400.372879244@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,47 +66,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 83b5a407fbb73e6965adfb4bd0a803724bf87f96 ]
+[ Upstream commit 8404e56f4bc1d1a65bfc98450ba3dae5e653dda1 ]
 
-of_property_read_u64() can fail and leave the variable uninitialized,
-which will then be used. Return error if reading the property failed.
+Pass the hardware device to the DMA helpers dma_alloc_coherent() and
+dma_free_coherent(). The fbdev device that is currently being used is
+a software device and does not provide DMA memory. Also update the
+related dev_*() output statements similarly.
 
-Fixes: 2e6bd221d96f ("powerpc/kexec_file: Enable early kernel OPAL calls")
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20240930075628.125138-1-zhangzekun11@huawei.com
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-28-tzimmermann@suse.de
+Stable-dep-of: f89d17ae2ac4 ("fbdev: sh7760fb: Fix a possible memory leak in sh7760fb_alloc_mem()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/file_load_64.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/sh7760fb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 180c1dfe4aa77..04d100ca18b86 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -911,13 +911,18 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
- 	if (dn) {
- 		u64 val;
+diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
+index 5978a89212322..6adf048c1bae8 100644
+--- a/drivers/video/fbdev/sh7760fb.c
++++ b/drivers/video/fbdev/sh7760fb.c
+@@ -359,7 +359,7 @@ static void sh7760fb_free_mem(struct fb_info *info)
+ 	if (!info->screen_base)
+ 		return;
  
--		of_property_read_u64(dn, "opal-base-address", &val);
-+		ret = of_property_read_u64(dn, "opal-base-address", &val);
-+		if (ret)
-+			goto out;
-+
- 		ret = kexec_purgatory_get_set_symbol(image, "opal_base", &val,
- 						     sizeof(val), false);
- 		if (ret)
- 			goto out;
+-	dma_free_coherent(info->dev, info->screen_size,
++	dma_free_coherent(info->device, info->screen_size,
+ 			  info->screen_base, par->fbdma);
  
--		of_property_read_u64(dn, "opal-entry-address", &val);
-+		ret = of_property_read_u64(dn, "opal-entry-address", &val);
-+		if (ret)
-+			goto out;
- 		ret = kexec_purgatory_get_set_symbol(image, "opal_entry", &val,
- 						     sizeof(val), false);
+ 	par->fbdma = 0;
+@@ -408,14 +408,14 @@ static int sh7760fb_alloc_mem(struct fb_info *info)
+ 	if (vram < PAGE_SIZE)
+ 		vram = PAGE_SIZE;
+ 
+-	fbmem = dma_alloc_coherent(info->dev, vram, &par->fbdma, GFP_KERNEL);
++	fbmem = dma_alloc_coherent(info->device, vram, &par->fbdma, GFP_KERNEL);
+ 
+ 	if (!fbmem)
+ 		return -ENOMEM;
+ 
+ 	if ((par->fbdma & SH7760FB_DMA_MASK) != SH7760FB_DMA_MASK) {
+ 		sh7760fb_free_mem(info);
+-		dev_err(info->dev, "kernel gave me memory at 0x%08lx, which is"
++		dev_err(info->device, "kernel gave me memory at 0x%08lx, which is"
+ 			"unusable for the LCDC\n", (unsigned long)par->fbdma);
+ 		return -ENOMEM;
  	}
+@@ -486,7 +486,7 @@ static int sh7760fb_probe(struct platform_device *pdev)
+ 
+ 	ret = sh7760fb_alloc_mem(info);
+ 	if (ret) {
+-		dev_dbg(info->dev, "framebuffer memory allocation failed!\n");
++		dev_dbg(info->device, "framebuffer memory allocation failed!\n");
+ 		goto out_unmap;
+ 	}
+ 
 -- 
 2.43.0
 
