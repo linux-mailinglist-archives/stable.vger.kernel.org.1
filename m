@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-102304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31EF9EF212
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A16B9EED10
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8B0C173E1F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC54D16716F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196CE23A59D;
-	Thu, 12 Dec 2024 16:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BB321E085;
+	Thu, 12 Dec 2024 15:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DlBiL9np"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2irnqQXj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3E9229665;
-	Thu, 12 Dec 2024 16:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F48B2135C1;
+	Thu, 12 Dec 2024 15:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020740; cv=none; b=Ze9FZnhZNaawQfR9O3TWBTDAhcMp73Z4iAqUrMpsCB/S8WYdMxvNXanPVhHE2IW+vTlfs3+hKlxHTcHyzdGbikS4kQphCRAfl2QVwxmuLcrRwtat+EneFqOUtDflREhD9jFy4Y2guJdns8MMjUlgp/mrYnUdzq53hysMygQ/pLM=
+	t=1734017915; cv=none; b=qp1b6j2i17ernl95nN4whv+ETy+eie2jfCFu6qZrM1xROkIUiY+jnlWhH6uYDudYR8qwGS8pdINdUnv1Bp3MDC/ls6rqeuhDTq7U+cjMf7NE0eoqLqzYSGhqqEYshrVChlnPIaaoKypDTxH14+t2Kgun156ePTuPgPz5Ixuzk70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020740; c=relaxed/simple;
-	bh=RMfvk7U8uL0opvXdUvW3mGQHFUGSPuFl5nAzMMHS0nM=;
+	s=arc-20240116; t=1734017915; c=relaxed/simple;
+	bh=ZcdjgIkHJFtLugoHfjYwEkPMgON7ktW0QKqp9JrOx+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLmn6EgfBGXh7OgJxt+4Ijw7YnQRES1WG2WvKIDd7k04nWCYuv+Ek/FoeGi/WjToPvL7I9/3Jk/MMkh3FKE9QZMCRCpjdwuj8zO4NntdBXZryuwVGO5qi2/oQy2bXLddhsyu84ULAjdXfb9CeyxP681mNU1/YnI6mH/WGh2+3Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DlBiL9np; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E147C4CECE;
-	Thu, 12 Dec 2024 16:25:39 +0000 (UTC)
+	 MIME-Version; b=cBLI2FFMup6A3RwVzg7P0NEWjsTbEqL3Q8qZ3795AQLVg8wlNJ+fD+FLCuoYXA5387naEFC1IXGDgMis8pHrUQp5OXIaa0VEzV9qGBgipOWTGrsV8YianMtz0EXkMVV2D1GkFmMGImwAAoBxDjLkgTjmXlEEwwFYWbmEYJzItQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2irnqQXj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCED9C4CECE;
+	Thu, 12 Dec 2024 15:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020740;
-	bh=RMfvk7U8uL0opvXdUvW3mGQHFUGSPuFl5nAzMMHS0nM=;
+	s=korg; t=1734017915;
+	bh=ZcdjgIkHJFtLugoHfjYwEkPMgON7ktW0QKqp9JrOx+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DlBiL9npXas1PufNZELjK2GYZa9PWmfYWNqbSY2w3rP8r+bLX3Xn+6F978E6E4LX2
-	 nk9CnUzYWeyVQuHIXgyxPEWEYzXvIpRdGdJf/gFvX44jGkzOkD4Q8Ij2ksm9ckOV4p
-	 n5P0hWk7Fa8sos+C910nQLjERkKlecT38nIfMSz0=
+	b=2irnqQXj87OMFnJRbs0v011OgAcRtK1w0rFr2SFN4t1n6w3PUcBMP08o2VoTpjdox
+	 mxCLQEGwgIvyTWq+iLF4CzMANeqjRj+YOQTvv4fz8WzRTKMCEjwFzIW/coBgnRtk+4
+	 Oz4f2joDerG8l8rOCwGmu52qN3OOQZb4smBfEYu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 520/772] can: hi311x: hi3110_can_ist(): fix {rx,tx}_errors statistics
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 146/356] tracing: Fix cmp_entries_dup() to respect sort() comparison rules
 Date: Thu, 12 Dec 2024 15:57:45 +0100
-Message-ID: <20241212144411.453922544@linuxfoundation.org>
+Message-ID: <20241212144250.409062561@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 3e4645931655776e757f9fb5ae29371cd7cb21a2 ]
+commit e63fbd5f6810ed756bbb8a1549c7d4132968baa9 upstream.
 
-The hi3110_can_ist() function was incorrectly incrementing only the
-receive error counter, even in cases of bit or acknowledgment errors that
-occur during transmission.
+The cmp_entries_dup() function used as the comparator for sort()
+violated the symmetry and transitivity properties required by the
+sorting algorithm. Specifically, it returned 1 whenever memcmp() was
+non-zero, which broke the following expectations:
 
-The fix the issue by incrementing the appropriate counter based on the
-type of error.
+* Symmetry: If x < y, then y > x.
+* Transitivity: If x < y and y < z, then x < z.
 
-Fixes: 57e83fb9b746 ("can: hi311x: Add Holt HI-311x CAN driver")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-9-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+These violations could lead to incorrect sorting and failure to
+correctly identify duplicate elements.
+
+Fix the issue by directly returning the result of memcmp(), which
+adheres to the required comparison properties.
+
+Cc: stable@vger.kernel.org
+Fixes: 08d43a5fa063 ("tracing: Add lock-free tracing_map")
+Link: https://lore.kernel.org/20241203202228.1274403-1-visitorckw@gmail.com
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/hi311x.c | 47 ++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 18 deletions(-)
+ kernel/trace/tracing_map.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index fb58e294f7b79..b757555ed4c4f 100644
---- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -697,27 +697,38 @@ static irqreturn_t hi3110_can_ist(int irq, void *dev_id)
- 			/* Check for protocol errors */
- 			if (eflag & HI3110_ERR_PROTOCOL_MASK) {
- 				skb = alloc_can_err_skb(net, &cf);
--				if (!skb)
--					break;
-+				if (skb)
-+					cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -845,15 +845,11 @@ int tracing_map_init(struct tracing_map
+ static int cmp_entries_dup(const void *A, const void *B)
+ {
+ 	const struct tracing_map_sort_entry *a, *b;
+-	int ret = 0;
  
--				cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 				priv->can.can_stats.bus_error++;
--				priv->net->stats.rx_errors++;
--				if (eflag & HI3110_ERR_BITERR)
--					cf->data[2] |= CAN_ERR_PROT_BIT;
--				else if (eflag & HI3110_ERR_FRMERR)
--					cf->data[2] |= CAN_ERR_PROT_FORM;
--				else if (eflag & HI3110_ERR_STUFERR)
--					cf->data[2] |= CAN_ERR_PROT_STUFF;
--				else if (eflag & HI3110_ERR_CRCERR)
--					cf->data[3] |= CAN_ERR_PROT_LOC_CRC_SEQ;
--				else if (eflag & HI3110_ERR_ACKERR)
--					cf->data[3] |= CAN_ERR_PROT_LOC_ACK;
+ 	a = *(const struct tracing_map_sort_entry **)A;
+ 	b = *(const struct tracing_map_sort_entry **)B;
+ 
+-	if (memcmp(a->key, b->key, a->elt->map->key_size))
+-		ret = 1;
 -
--				cf->data[6] = hi3110_read(spi, HI3110_READ_TEC);
--				cf->data[7] = hi3110_read(spi, HI3110_READ_REC);
-+				if (eflag & HI3110_ERR_BITERR) {
-+					priv->net->stats.tx_errors++;
-+					if (skb)
-+						cf->data[2] |= CAN_ERR_PROT_BIT;
-+				} else if (eflag & HI3110_ERR_FRMERR) {
-+					priv->net->stats.rx_errors++;
-+					if (skb)
-+						cf->data[2] |= CAN_ERR_PROT_FORM;
-+				} else if (eflag & HI3110_ERR_STUFERR) {
-+					priv->net->stats.rx_errors++;
-+					if (skb)
-+						cf->data[2] |= CAN_ERR_PROT_STUFF;
-+				} else if (eflag & HI3110_ERR_CRCERR) {
-+					priv->net->stats.rx_errors++;
-+					if (skb)
-+						cf->data[3] |= CAN_ERR_PROT_LOC_CRC_SEQ;
-+				} else if (eflag & HI3110_ERR_ACKERR) {
-+					priv->net->stats.tx_errors++;
-+					if (skb)
-+						cf->data[3] |= CAN_ERR_PROT_LOC_ACK;
-+				}
-+
- 				netdev_dbg(priv->net, "Bus Error\n");
--				netif_rx(skb);
-+				if (skb) {
-+					cf->data[6] = hi3110_read(spi, HI3110_READ_TEC);
-+					cf->data[7] = hi3110_read(spi, HI3110_READ_REC);
-+					netif_rx(skb);
-+				}
- 			}
- 		}
+-	return ret;
++	return memcmp(a->key, b->key, a->elt->map->key_size);
+ }
  
--- 
-2.43.0
-
+ static int cmp_entries_sum(const void *A, const void *B)
 
 
 
