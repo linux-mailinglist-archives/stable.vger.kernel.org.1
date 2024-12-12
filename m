@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A0A9EF286
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5239EEF93
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83AC928D437
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:49:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EDD529786A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC2C22C375;
-	Thu, 12 Dec 2024 16:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203B42358A5;
+	Thu, 12 Dec 2024 16:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xtlf3lCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNMxJ+nh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868911487CD;
-	Thu, 12 Dec 2024 16:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDA72358A4;
+	Thu, 12 Dec 2024 16:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021594; cv=none; b=MFQghArSonPkVojwcHRZZmi0LdxkflyStT9HkDMOhWDtI0/1T15XbezgjEHtsxw06PiUMaBzA4wkzjeH7jpfH6kT6rvO6CbIgs6szPpyvCG6Czmt/Vqn8uBO6v2FHa5wrCUkjBpYn4h4UfBMby2D4JMHRzMNveBG1eyJsyyxrlA=
+	t=1734019609; cv=none; b=E/YcmfyWbwbffZHFUIHxsILri8dwiL/Ub61vxmu3Mvls1eK6BQyjIwNkXQLvbsl37OOgM1Fr2F4aMJMFGUToAHpvPq/oxn6IqDxu6ItVGmUKUAmLXfQ8halsiO5xMzi3aT9+lu9bCalv/0pey+Tz3yZFd2ByF57zSGmBSOwbblo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021594; c=relaxed/simple;
-	bh=rRlpDW87PlzpTGaXVSYos5d5IUVwLXWZ59HjFgoAarI=;
+	s=arc-20240116; t=1734019609; c=relaxed/simple;
+	bh=vrecT50twi8bGCZscCTRc/Pk+TlMwdZk/tdOIxByPHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4UgmOIl2gBLBh9oXqEl9CinmZK75tUxl5v7n3vSminWWk+My6sSpE01BqezptbD0dxV0wOq+4zX0GO8rMQzCex6dGNBaWVjRyeKnjpSUdf1gkxG830FfGLu9+BRompj5qFWMeOW4uYEpwbrvNq6Lzln7tkD2KejfgjOBezQSf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xtlf3lCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A92C4CECE;
-	Thu, 12 Dec 2024 16:39:53 +0000 (UTC)
+	 MIME-Version; b=WNKarKXbs7IKi1j4J2Tx7jVUhL6ksJMP03mrZTyhIaLRLEMqAqeuD9yCIcd7ILm596ZKrL5nG0+sVMTNEc+Ej/W4tpfYHS54QcQTURGVswgByjc495t+AneVufB2HxhIRGoih4PJ58UvXoKzzgEiedC86cBfwGIo2dbzDsaE6M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNMxJ+nh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19886C4CECE;
+	Thu, 12 Dec 2024 16:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021594;
-	bh=rRlpDW87PlzpTGaXVSYos5d5IUVwLXWZ59HjFgoAarI=;
+	s=korg; t=1734019609;
+	bh=vrecT50twi8bGCZscCTRc/Pk+TlMwdZk/tdOIxByPHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xtlf3lCGm91+zQvtyJNFgkF8Bk1QTangT2iO1CAqup73CVj8yt7nLWT+1y9ozrdq/
-	 Bkp2uDWo1lYFZ8rYpT+IUDBgE6kj5G/8REetPYk86wiR2GjKyYEUXczU1zudHs80hE
-	 Pt21LcqZWzhilbKwgjwqXvt2b+6jMtAGh23ldcAk=
+	b=eNMxJ+nh/2xGHAxOQEGRcEsE4r84VDHoNi549D1aHqt3lz1fing2PhxlPWqHxe8ZM
+	 1ZT5crpnQLjWzsfm77pSh+z1T6ez/JBdPZK36zxj4OeiH1lBDpTMy7fu0g3qx3Jvja
+	 X1i6O43hrghLGSjW7TznFXa256KVPZV+iPtVspBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Jirman <megi@xff.cz>,
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Chen-Yu Tsai <wens@csie.org>
-Subject: [PATCH 5.15 001/565] arm64: dts: allwinner: pinephone: Add mount matrix to accelerometer
+	Michal Suchanek <msuchanek@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 251/772] powerpc/sstep: make emulate_vsx_load and emulate_vsx_store static
 Date: Thu, 12 Dec 2024 15:53:16 +0100
-Message-ID: <20241212144311.498516163@linuxfoundation.org>
+Message-ID: <20241212144400.294495379@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Michal Suchanek <msuchanek@suse.de>
 
-commit 2496b2aaacf137250f4ca449f465e2cadaabb0e8 upstream.
+[ Upstream commit a26c4dbb3d9c1821cb0fc11cb2dbc32d5bf3463b ]
 
-The way InvenSense MPU-6050 accelerometer is mounted on the user-facing side
-of the Pine64 PinePhone mainboard, which makes it rotated 90 degrees counter-
-clockwise, [1] requires the accelerometer's x- and y-axis to be swapped, and
-the direction of the accelerometer's y-axis to be inverted.
+These functions are not used outside of sstep.c
 
-Rectify this by adding a mount-matrix to the accelerometer definition in the
-Pine64 PinePhone dtsi file.
-
-[1] https://files.pine64.org/doc/PinePhone/PinePhone%20mainboard%20bottom%20placement%20v1.1%2020191031.pdf
-
-Fixes: 91f480d40942 ("arm64: dts: allwinner: Add initial support for Pine64 PinePhone")
-Cc: stable@vger.kernel.org
-Suggested-by: Ondrej Jirman <megi@xff.cz>
-Suggested-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Link: https://patch.msgid.link/129f0c754d071cca1db5d207d9d4a7bd9831dff7.1726773282.git.dsimic@manjaro.org
-[wens@csie.org: Replaced Helped-by with Suggested-by]
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 350779a29f11 ("powerpc: Handle most loads and stores in instruction emulation code")
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20241001130356.14664-1-msuchanek@suse.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/include/asm/sstep.h |  5 -----
+ arch/powerpc/lib/sstep.c         | 12 ++++--------
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
---- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
-@@ -200,6 +200,9 @@
- 		interrupts = <7 5 IRQ_TYPE_EDGE_RISING>; /* PH5 */
- 		vdd-supply = <&reg_dldo1>;
- 		vddio-supply = <&reg_dldo1>;
-+		mount-matrix = "0", "1", "0",
-+			       "-1", "0", "0",
-+			       "0", "0", "1";
- 	};
- };
+diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
+index 50950deedb873..e3d0e714ff280 100644
+--- a/arch/powerpc/include/asm/sstep.h
++++ b/arch/powerpc/include/asm/sstep.h
+@@ -173,9 +173,4 @@ int emulate_step(struct pt_regs *regs, ppc_inst_t instr);
+  */
+ extern int emulate_loadstore(struct pt_regs *regs, struct instruction_op *op);
  
+-extern void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+-			     const void *mem, bool cross_endian);
+-extern void emulate_vsx_store(struct instruction_op *op,
+-			      const union vsx_reg *reg, void *mem,
+-			      bool cross_endian);
+ extern int emulate_dcbz(unsigned long ea, struct pt_regs *regs);
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index ec30af8eadb7d..289690814ad40 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -780,8 +780,8 @@ static nokprobe_inline int emulate_stq(struct pt_regs *regs, unsigned long ea,
+ #endif /* __powerpc64 */
+ 
+ #ifdef CONFIG_VSX
+-void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+-		      const void *mem, bool rev)
++static nokprobe_inline void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
++					     const void *mem, bool rev)
+ {
+ 	int size, read_size;
+ 	int i, j;
+@@ -863,11 +863,9 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 		break;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(emulate_vsx_load);
+-NOKPROBE_SYMBOL(emulate_vsx_load);
+ 
+-void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+-		       void *mem, bool rev)
++static nokprobe_inline void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
++					      void *mem, bool rev)
+ {
+ 	int size, write_size;
+ 	int i, j;
+@@ -955,8 +953,6 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 		break;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(emulate_vsx_store);
+-NOKPROBE_SYMBOL(emulate_vsx_store);
+ 
+ static nokprobe_inline int do_vsx_load(struct instruction_op *op,
+ 				       unsigned long ea, struct pt_regs *regs,
+-- 
+2.43.0
+
 
 
 
