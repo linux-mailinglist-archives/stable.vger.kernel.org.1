@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A9B9EEC3F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 419D49EF149
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD97E169D74
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2AE2171D0D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980802210D5;
-	Thu, 12 Dec 2024 15:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F65A22969F;
+	Thu, 12 Dec 2024 16:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Rel33ie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sESSZ0P0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548832210CF;
-	Thu, 12 Dec 2024 15:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B34222D59;
+	Thu, 12 Dec 2024 16:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017431; cv=none; b=qx11/GM3WUbSVxZB7jM4Nj4iIrRdN10ffAv29wV4hoprvj3M/Xy5ojHow+jm6j6P+Smkz++WIYm/5jO+IIGE06GK1ile6BlIXQ8xcNkUsl1HTRzU8LkcrKouP4Md5o0zzXtWKYHrYDI3/1WpsmtPDCljhU1nNyf+vw7mm4vZPrY=
+	t=1734020136; cv=none; b=F2qK9GcnisE3uuGDzqxxcjgkX8sgc9FeOxpcrmYxCRzuNNcd3R26/hRT/k25NqMs2q40deELSojLbl3z6hvHfVo8l0WvZ49QRvwJXrWJLgGoGcWULz4yMuJ1RGG+/aRPJB7iZEEbXEwNmQ4ulnDPiac1MwCxIu7Hky8Ylk0dvpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017431; c=relaxed/simple;
-	bh=jZg9zb5dDqQtO7GuJf0hY56c6BUhL9z9vKmpl3Q4e8k=;
+	s=arc-20240116; t=1734020136; c=relaxed/simple;
+	bh=goDvfWRsKVExnBiIhqWe5ayAzJuHM2U5FnY95bSHQ/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8QrhMzeEIi48KK307tSwTC+ioy64lk/r5T/G/oIQYn8r1Nw+jDR60wqlqtO/NeiyUsR0Uc3W4fCeOBhvCMl+FajaqTEFgTuAYfvdlm7wbX90Uk7rzO/E+aG33zBRUuwE3xLIr6WQfhE/p1jze5s2QRx2IOaWI80a42hfSU5MWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Rel33ie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FB4C4CED0;
-	Thu, 12 Dec 2024 15:30:30 +0000 (UTC)
+	 MIME-Version; b=fWOp5Q/eLiRoxxIrBRNF+w+eT9lJxVHCGQBViUutWrBEMXzZZeAZKhauJJLPPjQjpzMsXwnzA/UtOXfwtDZn9Ub/EVDH6D7AvPlrj63wz+nBB7ew3kpZRWu683H3rEDbzy1+gbZcznABqTZVlZmSDmX13bb5y91atN8n2Zy0PqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sESSZ0P0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4015C4CECE;
+	Thu, 12 Dec 2024 16:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017430;
-	bh=jZg9zb5dDqQtO7GuJf0hY56c6BUhL9z9vKmpl3Q4e8k=;
+	s=korg; t=1734020135;
+	bh=goDvfWRsKVExnBiIhqWe5ayAzJuHM2U5FnY95bSHQ/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Rel33ieykK7djL3vcFGlGrJYZLvFkh6Y1lQK+R+Mbna4hqerUE+btgATQn+Qd2Qn
-	 Iu52zLs2YCoY4GmwC7iDnQGUFyDJQvBExyie7UAgr11hJGex9143t+YHnGAbPnbBg7
-	 8Vz3dArVBwHG6szI/DM4x/SDwknrdg7U07/jvm0g=
+	b=sESSZ0P0x/U6UaNIfHQKc33MBGHI7jpucnydze5DduAvgVkG63JqgO5XI7n6A6Gsp
+	 0wtxEzfVUErAB1MwaMqsDFLLBPFTQ8Rjkniqk+R1vKMuAubNDBBTa6xsuiAcCOWr3O
+	 F96vPJOJTjZ0EpnkvZQbD4uEeG0eq2tXJWW+DfOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marek Vasut <marex@denx.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/356] can: ifi_canfd: ifi_canfd_handle_lec_err(): fix {rx,tx}_errors statistics
+	syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.1 385/772] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
 Date: Thu, 12 Dec 2024 15:55:30 +0100
-Message-ID: <20241212144245.063904307@linuxfoundation.org>
+Message-ID: <20241212144405.819097748@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-[ Upstream commit bb03d568bb21b4afe7935d1943bcf68ddea3ea45 ]
+commit 5c1b544563005a00591a3aa86ecff62ed4d11be3 upstream.
 
-The ifi_canfd_handle_lec_err() function was incorrectly incrementing only
-the receive error counter, even in cases of bit or acknowledgment errors
-that occur during transmission.
+Syzkaller reported a hung task with uevent_show() on stack trace. That
+specific issue was addressed by another commit [0], but even with that
+fix applied (for example, running v6.12-rc5) we face another type of hung
+task that comes from the same reproducer [1]. By investigating that, we
+could narrow it to the following path:
 
-Fix the issue by incrementing the appropriate counter based on the
-type of error.
+(a) Syzkaller emulates a Realtek USB WiFi adapter using raw-gadget and
+dummy_hcd infrastructure.
 
-Fixes: 5bbd655a8bd0 ("can: ifi: Add more detailed error reporting")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Link: https://patch.msgid.link/20241122221650.633981-8-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+(b) During the probe of rtl8192cu, the driver ends-up performing an efuse
+read procedure (which is related to EEPROM load IIUC), and here lies the
+issue: the function read_efuse() calls read_efuse_byte() many times, as
+loop iterations depending on the efuse size (in our example, 512 in total).
+
+This procedure for reading efuse bytes relies in a loop that performs an
+I/O read up to *10k* times in case of failures. We measured the time of
+the loop inside read_efuse_byte() alone, and in this reproducer (which
+involves the dummy_hcd emulation layer), it takes 15 seconds each. As a
+consequence, we have the driver stuck in its probe routine for big time,
+exposing a stack trace like below if we attempt to reboot the system, for
+example:
+
+task:kworker/0:3 state:D stack:0 pid:662 tgid:662 ppid:2 flags:0x00004000
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+ __schedule+0xe22/0xeb6
+ schedule_timeout+0xe7/0x132
+ __wait_for_common+0xb5/0x12e
+ usb_start_wait_urb+0xc5/0x1ef
+ ? usb_alloc_urb+0x95/0xa4
+ usb_control_msg+0xff/0x184
+ _usbctrl_vendorreq_sync+0xa0/0x161
+ _usb_read_sync+0xb3/0xc5
+ read_efuse_byte+0x13c/0x146
+ read_efuse+0x351/0x5f0
+ efuse_read_all_map+0x42/0x52
+ rtl_efuse_shadow_map_update+0x60/0xef
+ rtl_get_hwinfo+0x5d/0x1c2
+ rtl92cu_read_eeprom_info+0x10a/0x8d5
+ ? rtl92c_read_chip_version+0x14f/0x17e
+ rtl_usb_probe+0x323/0x851
+ usb_probe_interface+0x278/0x34b
+ really_probe+0x202/0x4a4
+ __driver_probe_device+0x166/0x1b2
+ driver_probe_device+0x2f/0xd8
+ [...]
+
+We propose hereby to drastically reduce the attempts of doing the I/O
+reads in case of failures, restricted to USB devices (given that
+they're inherently slower than PCIe ones). By retrying up to 10 times
+(instead of 10000), we got reponsiveness in the reproducer, while seems
+reasonable to believe that there's no sane USB device implementation in
+the field requiring this amount of retries at every I/O read in order
+to properly work. Based on that assumption, it'd be good to have it
+backported to stable but maybe not since driver implementation (the 10k
+number comes from day 0), perhaps up to 6.x series makes sense.
+
+[0] Commit 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
+
+[1] A note about that: this syzkaller report presents multiple reproducers
+that differs by the type of emulated USB device. For this specific case,
+check the entry from 2024/08/08 06:23 in the list of crashes; the C repro
+is available at https://syzkaller.appspot.com/text?tag=ReproC&x=1521fc83980000.
+
+Cc: stable@vger.kernel.org # v6.1+
+Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
+Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241101193412.1390391-1-gpiccoli@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/ifi_canfd/ifi_canfd.c | 58 ++++++++++++++++++---------
- 1 file changed, 40 insertions(+), 18 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/efuse.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/ifi_canfd/ifi_canfd.c b/drivers/net/can/ifi_canfd/ifi_canfd.c
-index 72307297d75e4..5145a6a73d2d7 100644
---- a/drivers/net/can/ifi_canfd/ifi_canfd.c
-+++ b/drivers/net/can/ifi_canfd/ifi_canfd.c
-@@ -390,36 +390,55 @@ static int ifi_canfd_handle_lec_err(struct net_device *ndev)
- 		return 0;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+index 82cf5fb5175f..6518e77b89f5 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
++++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+@@ -162,10 +162,19 @@ void efuse_write_1byte(struct ieee80211_hw *hw, u16 address, u8 value)
+ void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u16 max_attempts = 10000;
+ 	u32 value32;
+ 	u8 readbyte;
+ 	u16 retry;
  
- 	priv->can.can_stats.bus_error++;
--	stats->rx_errors++;
- 
- 	/* Propagate the error condition to the CAN stack. */
- 	skb = alloc_can_err_skb(ndev, &cf);
--	if (unlikely(!skb))
--		return 0;
- 
- 	/* Read the error counter register and check for new errors. */
--	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
-+	if (likely(skb))
-+		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_OVERLOAD_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_OVERLOAD;
-+	if (errctr & IFI_CANFD_ERROR_CTR_OVERLOAD_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_OVERLOAD;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_ACK_ERROR_FIRST)
--		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+	if (errctr & IFI_CANFD_ERROR_CTR_ACK_ERROR_FIRST) {
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_BIT0_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_BIT0;
-+	if (errctr & IFI_CANFD_ERROR_CTR_BIT0_ERROR_FIRST) {
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT0;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_BIT1_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_BIT1;
-+	if (errctr & IFI_CANFD_ERROR_CTR_BIT1_ERROR_FIRST) {
-+		stats->tx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_BIT1;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_STUFF_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_STUFF;
-+	if (errctr & IFI_CANFD_ERROR_CTR_STUFF_ERROR_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_STUFF;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_CRC_ERROR_FIRST)
--		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+	if (errctr & IFI_CANFD_ERROR_CTR_CRC_ERROR_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
-+	}
- 
--	if (errctr & IFI_CANFD_ERROR_CTR_FORM_ERROR_FIRST)
--		cf->data[2] |= CAN_ERR_PROT_FORM;
-+	if (errctr & IFI_CANFD_ERROR_CTR_FORM_ERROR_FIRST) {
-+		stats->rx_errors++;
-+		if (likely(skb))
-+			cf->data[2] |= CAN_ERR_PROT_FORM;
-+	}
- 
- 	/* Reset the error counter, ack the IRQ and re-enable the counter. */
- 	writel(IFI_CANFD_ERROR_CTR_ER_RESET, priv->base + IFI_CANFD_ERROR_CTR);
-@@ -427,6 +446,9 @@ static int ifi_canfd_handle_lec_err(struct net_device *ndev)
- 	       priv->base + IFI_CANFD_INTERRUPT);
- 	writel(IFI_CANFD_ERROR_CTR_ER_ENABLE, priv->base + IFI_CANFD_ERROR_CTR);
- 
-+	if (unlikely(!skb))
-+		return 0;
++	/*
++	 * In case of USB devices, transfer speeds are limited, hence
++	 * efuse I/O reads could be (way) slower. So, decrease (a lot)
++	 * the read attempts in case of failures.
++	 */
++	if (rtlpriv->rtlhal.interface == INTF_USB)
++		max_attempts = 10;
 +
- 	netif_receive_skb(skb);
+ 	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 1,
+ 		       (_offset & 0xff));
+ 	readbyte = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 2);
+@@ -178,7 +187,7 @@ void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
  
- 	return 1;
+ 	retry = 0;
+ 	value32 = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+-	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < 10000)) {
++	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < max_attempts)) {
+ 		value32 = rtl_read_dword(rtlpriv,
+ 					 rtlpriv->cfg->maps[EFUSE_CTRL]);
+ 		retry++;
 -- 
-2.43.0
+2.47.1
 
 
 
