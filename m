@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-102250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC989EF0F4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D20E9EEAD1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CD3E29E1EB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43A42282A45
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C4D236FA0;
-	Thu, 12 Dec 2024 16:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9101537C8;
+	Thu, 12 Dec 2024 15:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJ3mZaqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPmxUNy3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E25E2253EC;
-	Thu, 12 Dec 2024 16:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473F613BC26;
+	Thu, 12 Dec 2024 15:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020544; cv=none; b=VfKP+KBOsQbeuykFyWImUFcTvCa0EmwNC/JtnoQ+4K+TTyo8p4QkNOyVFe40g235iEfFBe6bFZagH6aW/ShJiywXhdlzNs8H8rKvdjKY8ShuY77c7A0Za9CczU0Ioqm6yk5eFQN0OOLJS3UWABiNi8wh3J4PbuFoPX96u+MQZV0=
+	t=1734016690; cv=none; b=ETtcCbgcc+w09oZjm2+JjgyO0/HORGeuEUwpHUWkPB2H4zgV9wl2cTfgPEaSvijqdXuhPzSYwUuW+wDnmq2d3+Qc9Cv2/x3b9MecqNsE6ewNgdFzLR6v4pV7tvuuuLKS5ebHktDsqwvurG8GDsTSkiq1eTb7AjaD1sIqXqMKS2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020544; c=relaxed/simple;
-	bh=yrbjlVqYIrcPGyy+AIWiZnLUgkuC0RDmCIzBVIuboUs=;
+	s=arc-20240116; t=1734016690; c=relaxed/simple;
+	bh=vcu3Tf4Z1kgBz1E8S0mUQlGoG8LX/zGHxQfMfDa+C0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qw+FqMwEI8eHsJa2ErsPYPsXMEUPtxQhHfml1uRlx32F93j0X8gX5TeySklrL0A91nwGLws7OzHBUY+UY1R6JIaraMXueme1TBjnQCsVrJNTlJUUB72fiX7tMQtOKuZOJS8FzfEXnv/De5ybgMEA9uQUfc/v/z+p9FatPodBZyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJ3mZaqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6297AC4CECE;
-	Thu, 12 Dec 2024 16:22:23 +0000 (UTC)
+	 MIME-Version; b=BICGCLubhp7+0DsB87BpZSYh33rE/xx3HQMZnp5tC+djBIVLy4TXDyQdbE2c6vHyQLGsmlnjngskjzTLLOuS8nYOLwTd59zOU77hSmUDCY4ulKlTbK5OKeQHtuU0/Z8ndr/P5DVYib4EEVWs4GB9NNGSe0cAno75zaQOysSvjAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPmxUNy3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B66FC4CECE;
+	Thu, 12 Dec 2024 15:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020544;
-	bh=yrbjlVqYIrcPGyy+AIWiZnLUgkuC0RDmCIzBVIuboUs=;
+	s=korg; t=1734016689;
+	bh=vcu3Tf4Z1kgBz1E8S0mUQlGoG8LX/zGHxQfMfDa+C0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJ3mZaqPfsVCueFCn/ysEbfGO9Zr9U+ZgervomRmGMqHRln8XyaO4QYQrPCIBlGMA
-	 bFVF+qkqU1jIoBvDdPh1ooOVoLRr0mrmmRmvvkb+4el9nWRTXxcAksFV+fuB/n1xAP
-	 lQwDjkAz0NWgBaq5OMT5YbpdL6MdwLRlQuAyCGwM=
+	b=DPmxUNy3nJP/FQlyM0UD/BVDL0rOX+O66ED71ehy0r4Z5hdvueiFacSLHk8ytjVUX
+	 uVPKGt9Y72UEG0cSxcE4i/280Ewm2XTV2aDgVORraY22JCRBa0T9cs8K0Qi1Vn8T7S
+	 EhfAxLLLac3N5K5NFwUOdiK/LkEPQAplGOJPd2MU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 495/772] nfsd: make sure exp active before svc_export_show
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Zhongwei <Zhongwei.Zhang@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 271/466] drm/amd/display: Fix garbage or black screen when resetting otg
 Date: Thu, 12 Dec 2024 15:57:20 +0100
-Message-ID: <20241212144410.404219301@linuxfoundation.org>
+Message-ID: <20241212144317.491865663@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +65,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Zhongwei <Zhongwei.Zhang@amd.com>
 
-commit be8f982c369c965faffa198b46060f8853e0f1f0 upstream.
+[ Upstream commit ffa1e31f70d2e97c121709b44a8960f5d7becb10 ]
 
-The function `e_show` was called with protection from RCU. This only
-ensures that `exp` will not be freed. Therefore, the reference count for
-`exp` can drop to zero, which will trigger a refcount use-after-free
-warning when `exp_get` is called. To resolve this issue, use
-`cache_get_rcu` to ensure that `exp` remains active.
+[Why]
+For some EDP to MIPI panel, disabling OTG when link is alive like boot
+case, the converter might output garbage or show no display because our
+GPU is not sending required pixel data.
+Alos Dig fifo underflow was found which might cause garbage, when
+resetting otg for other types of EDP panels.
 
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 3 PID: 819 at lib/refcount.c:25
-refcount_warn_saturate+0xb1/0x120
-CPU: 3 UID: 0 PID: 819 Comm: cat Not tainted 6.12.0-rc3+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.16.1-2.fc37 04/01/2014
-RIP: 0010:refcount_warn_saturate+0xb1/0x120
-...
-Call Trace:
- <TASK>
- e_show+0x20b/0x230 [nfsd]
- seq_read_iter+0x589/0x770
- seq_read+0x1e5/0x270
- vfs_read+0x125/0x530
- ksys_read+0xc1/0x160
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[How]
+Skipping resetting OTG if the dig fifo is on. Make sure that the otg for
+the pipe is the one that the dig fifo is selecting via the FE mask.
 
-Fixes: bf18f163e89c ("NFSD: Using exp_get for export getting")
-Cc: stable@vger.kernel.org # 4.20+
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Zhongwei <Zhongwei.Zhang@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/export.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../dc/dio/dcn314/dcn314_dio_stream_encoder.c    | 10 ++++++++++
+ .../amd/display/dc/hwss/dcn314/dcn314_hwseq.c    | 16 ++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -1324,9 +1324,12 @@ static int e_show(struct seq_file *m, vo
- 		return 0;
- 	}
- 
--	exp_get(exp);
-+	if (!cache_get_rcu(&exp->h))
-+		return 0;
-+
- 	if (cache_check(cd, &exp->h, NULL))
- 		return 0;
-+
- 	exp_put(exp);
- 	return svc_export_show(m, cd, cp);
+diff --git a/drivers/gpu/drm/amd/display/dc/dio/dcn314/dcn314_dio_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dio/dcn314/dcn314_dio_stream_encoder.c
+index 5b343f745cf33..ae81451a3a725 100644
+--- a/drivers/gpu/drm/amd/display/dc/dio/dcn314/dcn314_dio_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dio/dcn314/dcn314_dio_stream_encoder.c
+@@ -83,6 +83,15 @@ void enc314_disable_fifo(struct stream_encoder *enc)
+ 	REG_UPDATE(DIG_FIFO_CTRL0, DIG_FIFO_ENABLE, 0);
  }
+ 
++static bool enc314_is_fifo_enabled(struct stream_encoder *enc)
++{
++	struct dcn10_stream_encoder *enc1 = DCN10STRENC_FROM_STRENC(enc);
++	uint32_t reset_val;
++
++	REG_GET(DIG_FIFO_CTRL0, DIG_FIFO_ENABLE, &reset_val);
++	return (reset_val != 0);
++}
++
+ void enc314_dp_set_odm_combine(
+ 	struct stream_encoder *enc,
+ 	bool odm_combine)
+@@ -468,6 +477,7 @@ static const struct stream_encoder_funcs dcn314_str_enc_funcs = {
+ 
+ 	.enable_fifo = enc314_enable_fifo,
+ 	.disable_fifo = enc314_disable_fifo,
++	.is_fifo_enabled = enc314_is_fifo_enabled,
+ 	.set_input_mode = enc314_set_dig_input_mode,
+ };
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
+index a8e04a39a19e5..efcc1a6b364c2 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
+@@ -355,6 +355,20 @@ void dcn314_calculate_pix_rate_divider(
+ 	}
+ }
+ 
++static bool dcn314_is_pipe_dig_fifo_on(struct pipe_ctx *pipe)
++{
++	return pipe && pipe->stream
++		// Check dig's otg instance.
++		&& pipe->stream_res.stream_enc
++		&& pipe->stream_res.stream_enc->funcs->dig_source_otg
++		&& pipe->stream_res.tg->inst == pipe->stream_res.stream_enc->funcs->dig_source_otg(pipe->stream_res.stream_enc)
++		&& pipe->stream->link && pipe->stream->link->link_enc
++		&& pipe->stream->link->link_enc->funcs->is_dig_enabled
++		&& pipe->stream->link->link_enc->funcs->is_dig_enabled(pipe->stream->link->link_enc)
++		&& pipe->stream_res.stream_enc->funcs->is_fifo_enabled
++		&& pipe->stream_res.stream_enc->funcs->is_fifo_enabled(pipe->stream_res.stream_enc);
++}
++
+ void dcn314_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc_state *context, unsigned int current_pipe_idx)
+ {
+ 	unsigned int i;
+@@ -374,6 +388,8 @@ void dcn314_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc
+ 		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal)) &&
+ 			!pipe->stream->apply_seamless_boot_optimization &&
+ 			!pipe->stream->apply_edp_fast_boot_optimization) {
++			if (dcn314_is_pipe_dig_fifo_on(pipe))
++				continue;
+ 			pipe->stream_res.tg->funcs->disable_crtc(pipe->stream_res.tg);
+ 			reset_sync_context_for_pipe(dc, context, i);
+ 			otg_disabled[i] = true;
+-- 
+2.43.0
+
 
 
 
