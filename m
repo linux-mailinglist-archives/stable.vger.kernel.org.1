@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DABF59EF67D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7C99EF77B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E3F5172402
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82C69188E937
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FF12210EA;
-	Thu, 12 Dec 2024 17:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D572215764;
+	Thu, 12 Dec 2024 17:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcgzU8gN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMFFuoIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B8921CFF0;
-	Thu, 12 Dec 2024 17:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F862144C4;
+	Thu, 12 Dec 2024 17:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023020; cv=none; b=ZLtICrwEe0sNOrjL/irsPtJI5Op12DidR54qooPy6g8GXhG4X1SHuGF4RBg6lt2aTrg92oyd5UAvfF1PSOzh8f2d6wqaDy4ARa/xPLLoeWcJZdNs6+nvUAADxS9RsFbkd41lulp9fKrdJy0Hqfeq4j2nroOP6mBPK2X2Eezr7mI=
+	t=1734024318; cv=none; b=od2hDcaFy0oeb2Z8NJRgLPIBzIvJi/IivUaT4ApEy6Ul9t+oqveZ33dRror04I+AxsDAbLyNi08FkAN7AbwmzBxZPRQQ0RAlxWWTcDvI0TGvPiKiEQXzHY4rX4L6L6vSrJFCjuxDusxWszRwYybelp1m44g5e7drury+DU3g2O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023020; c=relaxed/simple;
-	bh=5kONmg/bP/iRuGYnA4EFDiWRXWMppEwsAyDCdTgTrEE=;
+	s=arc-20240116; t=1734024318; c=relaxed/simple;
+	bh=NQQxk9ARyrFvjyVL4TBjI7rrc0IQgu5unzgLrgInSe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t34t7mBuzoe2lkZftOcKQgQ7kh1DnudfPG0DCdMIzkLQ43KrIS8PnzSeYDEYmdnYYcbqZVU0j0zC1uJAp3XvRuJWuGJsqUbS9qiYoTY4tQsukV6iNJNQXt3LYCPXgS8d96cKSluzO3mk/Z6H04zf4MFih0BLyjLkAVnhe9u0sWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcgzU8gN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AF0C4CECE;
-	Thu, 12 Dec 2024 17:03:39 +0000 (UTC)
+	 MIME-Version; b=tR5+uqv4wScyFQhyts8593TLYDe0ECPn4kMcrNkGocbG/nJwEWlNlLtfBUFuQfeTDCdKQ+SlI9JdEPk8TxlW2wMloHFgOnyGx0O+uBCuL9sKVqNthSaF3XX7xLrj2EwsRZzqPVzVYip3KztMKQPo86/zGUwHhaj7FSTSOrKPpis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMFFuoIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C16AC4CECE;
+	Thu, 12 Dec 2024 17:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023020;
-	bh=5kONmg/bP/iRuGYnA4EFDiWRXWMppEwsAyDCdTgTrEE=;
+	s=korg; t=1734024318;
+	bh=NQQxk9ARyrFvjyVL4TBjI7rrc0IQgu5unzgLrgInSe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcgzU8gNlSQCF+oYAuaUiG0mBFfqH9HB4Iu03Ucp7nyg6+EbuawyfIrpV2CK3K529
-	 v7JRQMKEYhhM8FPGMbivAWZNkH/Pb3Awd3iswb2AyCTySLoSILkRDzBDRa8ALkpkO+
-	 tjGeu/mQXJAHjiL/XIsQ4VNLLFCk6d40VHjFnLaI=
+	b=SMFFuoIcwucO3S/viBAPUht2O7HmUmLOMXms0xq0CTWOPU7fUtYSoDSRS1E0p8HKA
+	 OOlIW7R+n5Fgnsc/tGw8eW/HimCGIvUcjUCR5IYnjdhRMSdhIIpI/AFxcHbV4VJEKy
+	 ES2ZtgOocNzHwXx6lvOrZ2ZW13Jc/D+BCCEJ2AAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yassine Oudjana <y.oudjana@protonmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 399/565] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
-Date: Thu, 12 Dec 2024 15:59:54 +0100
-Message-ID: <20241212144327.422408737@linuxfoundation.org>
+	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
+	Ahmed Ehab <bottaawesome633@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [PATCH 5.10 257/459] locking/lockdep: Avoid creating new name string literals in lockdep_set_subclass()
+Date: Thu, 12 Dec 2024 15:59:55 +0100
+Message-ID: <20241212144303.751132906@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+From: Ahmed Ehab <bottaawesome633@gmail.com>
 
-[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
+commit d7fe143cb115076fed0126ad8cf5ba6c3e575e43 upstream.
 
-Clear the IRQ enable bit of WDT_MODE before asserting software reset
-in order to make TOPRGU issue a system reset signal instead of an IRQ.
+Syzbot reports a problem that a warning will be triggered while
+searching a lock class in look_up_lock_class().
 
-Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The cause of the issue is that a new name is created and used by
+lockdep_set_subclass() instead of using the existing one. This results
+in a lock instance has a different name pointer than previous registered
+one stored in lock class, and WARN_ONCE() is triggered because of that
+in look_up_lock_class().
+
+To fix this, change lockdep_set_subclass() to use the existing name
+instead of a new one. Hence, no new name will be created by
+lockdep_set_subclass(). Hence, the warning is avoided.
+
+[boqun: Reword the commit log to state the correct issue]
+
+Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
+Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/lkml/20240824221031.7751-1-bottaawesome633@gmail.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/mtk_wdt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/lockdep.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
-index 796fbb048cbea..a9d67ead94838 100644
---- a/drivers/watchdog/mtk_wdt.c
-+++ b/drivers/watchdog/mtk_wdt.c
-@@ -164,9 +164,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
- {
- 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
- 	void __iomem *wdt_base;
-+	u32 reg;
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -233,7 +233,7 @@ static inline void lockdep_init_map(stru
+ 			      (lock)->dep_map.lock_type)
  
- 	wdt_base = mtk_wdt->wdt_base;
- 
-+	/* Enable reset in order to issue a system reset instead of an IRQ */
-+	reg = readl(wdt_base + WDT_MODE);
-+	reg &= ~WDT_MODE_IRQ_EN;
-+	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
-+
- 	while (1) {
- 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
- 		mdelay(5);
--- 
-2.43.0
-
+ #define lockdep_set_subclass(lock, sub)					\
+-	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
++	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
+ 			      (lock)->dep_map.wait_type_inner,		\
+ 			      (lock)->dep_map.wait_type_outer,		\
+ 			      (lock)->dep_map.lock_type)
 
 
 
