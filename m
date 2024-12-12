@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDF89EF804
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD749EF508
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6ABC292704
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F10417AAAC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1522236EB;
-	Thu, 12 Dec 2024 17:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB799222D52;
+	Thu, 12 Dec 2024 17:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RogJKBNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKQ/fcdp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D4A222D6A;
-	Thu, 12 Dec 2024 17:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9911B222D4B;
+	Thu, 12 Dec 2024 17:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025119; cv=none; b=uTOE20NHuv3AIrgct2jnV/AzlSZDXwPHpQsAZU7avLqr7gz2436uX/9hRdttjxh1EmsV/fY4oL8FjGSDg6KrlmcMeOqQBZB7Cl+XG6/QsTSRtBhZQjmuxMRIHHxYy6mSq8NkazHaSmGOkRYkIDpL66Fs8xw+Z0+lhsS04S2W9ag=
+	t=1734023075; cv=none; b=OPXrYrcRUTD67cVx6DTUTbzszPo3ecf0ikumhlH4hvNz5GdZ6OA0352crY5wMWx5cl7tcbm6MzoCpie8fCC9rk2EMPCgIEZDaVRTRDQlfNCVYjH8Jn+pCthrL6/hYintL23/RjN+u8FVAZ8jJeWPvaBZPZyBlIQTj+EAtk8xIKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025119; c=relaxed/simple;
-	bh=j2oM5m377zC/bx3ykb4gcmVmkg5vLLb4ksU2ZWktpjU=;
+	s=arc-20240116; t=1734023075; c=relaxed/simple;
+	bh=02wX2kPWbcLVzyF9k3tVNF67Qh5olNc1Ekbz8S5ZH58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUTM1qHfYK8kJ9BIFRGKnV0OXCaUbhZqhTSXibUTNWhZY4XXaT5+t7xl5btemFAgL9mt+EVwSYMS0xmcyViNDItAWmiUDTa0cXcG6cJRLLMVw9cunVOIbvS4rBJ18R82JpMMXd9vBIVG/j/1QhkLdETludkDtyfWOwitDaQUkAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RogJKBNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF546C4CECE;
-	Thu, 12 Dec 2024 17:38:38 +0000 (UTC)
+	 MIME-Version; b=t41i5e4JR0FL80fS7EtcnT3efeD8j2XJgCQnX+6rw0W+ccva3i1duPgEkbCIm5mlRolK4HeSvcGCJBbukoV+XRy2wMcSG8HjEDcJyxQralCIKra4sASNN9muEQWYJfRS1CtX+iKRzfkH36VVTPbUYK8Fc3cJZ7tzga+Mi7P/WQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKQ/fcdp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D70C4CECE;
+	Thu, 12 Dec 2024 17:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025119;
-	bh=j2oM5m377zC/bx3ykb4gcmVmkg5vLLb4ksU2ZWktpjU=;
+	s=korg; t=1734023075;
+	bh=02wX2kPWbcLVzyF9k3tVNF67Qh5olNc1Ekbz8S5ZH58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RogJKBNOcrSRHAyrJFlK/9zEKJpl9vuk3chQBy6hZSPA7quL2GcEifSeoJ4gC5KXp
-	 fP4f4BbyzEV4mNChexTS0R6EqPtKtYITOgJkN3zF9t0tOUGEbo0kZ7Ao8FOq0jeKvH
-	 SpnHebE37d3o1GX9VOF49pqcQ6tjy55aVMK2yhOc=
+	b=NKQ/fcdpRq6ZhH/5KXuXhwgiEcCj0E4snL67vHU70zrVk777IF25+UIJDVq0+P0EN
+	 alWDP6Y4ovAC45P/wFOiRBMU/GMR5dIhdeG5iO4YXil0BA2bS2SeMNu73DLC6IbRaJ
+	 I3xwd6A6E9pmJ50sYt3m7EsF0555y9Wqc7DwiuKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/321] ASoC: fsl_micfil: Drop unnecessary register read
-Date: Thu, 12 Dec 2024 15:59:40 +0100
-Message-ID: <20241212144232.442105540@linuxfoundation.org>
+	stable@kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.15 386/565] i3c: master: Fix miss free init_dyn_addr at i3c_master_put_i3c_addrs()
+Date: Thu, 12 Dec 2024 15:59:41 +0100
+Message-ID: <20241212144326.896424219@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit c808e277bcdfce37aed80a443be305ac1aec1623 ]
+commit 3082990592f7c6d7510a9133afa46e31bbe26533 upstream.
 
-in get_pdm_clk() REG_MICFIL_CTRL2 is read twice. Drop second read.
+if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+                                      ^^^ here check "init_dyn_addr"
+	i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr, ...)
+						             ^^^^
+							free "dyn_addr"
+Fix copy/paste error "dyn_addr" by replacing it with "init_dyn_addr".
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://lore.kernel.org/r/20220414162249.3934543-2-s.hauer@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 06df673d2023 ("ASoC: fsl_micfil: fix regmap_write_bits usage")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241001162608.224039-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_micfil.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/i3c/master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 6285ee8f829e5..a69237b7f564a 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -117,8 +117,6 @@ static inline int get_pdm_clk(struct fsl_micfil *micfil,
- 	regmap_read(micfil->regmap, REG_MICFIL_CTRL2, &ctrl2_reg);
- 	osr = 16 - ((ctrl2_reg & MICFIL_CTRL2_CICOSR_MASK)
- 		    >> MICFIL_CTRL2_CICOSR_SHIFT);
--
--	regmap_read(micfil->regmap, REG_MICFIL_CTRL2, &ctrl2_reg);
- 	qsel = ctrl2_reg & MICFIL_CTRL2_QSEL_MASK;
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1282,7 +1282,7 @@ static void i3c_master_put_i3c_addrs(str
+ 					     I3C_ADDR_SLOT_FREE);
  
- 	switch (qsel) {
--- 
-2.43.0
-
+ 	if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+-		i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr,
++		i3c_bus_set_addr_slot_status(&master->bus, dev->boardinfo->init_dyn_addr,
+ 					     I3C_ADDR_SLOT_FREE);
+ }
+ 
 
 
 
