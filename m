@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769569EEE1F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B409EEBD8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F30531887B8B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C84EB283A87
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A31D222D4E;
-	Thu, 12 Dec 2024 15:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9400215764;
+	Thu, 12 Dec 2024 15:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlsWYhzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAj9hY/m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC47D4F218;
-	Thu, 12 Dec 2024 15:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861FE1487CD;
+	Thu, 12 Dec 2024 15:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018469; cv=none; b=QdQtympsLXNi0qoYQ1LY3lpnzr4vfBxi+w1SudzvuctF6v1CWQ2VI6xNwB7k8o9bWwr2pYgIjoaRbIeHOLZ1TErpBj0m3fltTuTj1SXA5l/MH3dmLcmf0KCr5qFCAF2QCJ3b50fv5NAejO+RhOwU/ZcbjDnYw6OxV//VVIkCAVw=
+	t=1734017347; cv=none; b=DyZwh2H6agXyqVmJatPPqMVuHqfrQoAFvoN5Ez28BZkwf8ZlD8+049niwZfwF5gQv1NXErI0sSw5htChYozhvkIrYq66yL+qcCxrpe69rd/BZb/olxXWszKHioecloPQL5uZk5YvV3yfgU8HK5r6cpxXVoZ8ssRvyMvw+b1zP2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018469; c=relaxed/simple;
-	bh=3yEMbT22CAtHUTN+nG2iWu4swCHHn6k5elL1Xi0OAOU=;
+	s=arc-20240116; t=1734017347; c=relaxed/simple;
+	bh=afecilv0NAcg925xGAILk54qS12Nx5XWqpOpRo46bD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZbOFsY+7RfiU2KyAVk+J3uM6Q9urpY4LmOY6yHNrxfKchcPeStqKjhKyH9pVJN075f1o8S/u7whseHiV6YQ+qDLm/RIrA1xMHXt3O1Thq5Acwvt6xMHIsAlOEqEr2/fKCqCVcKHciZyguwQQipxxnKIPWY+S700PxbGOp+jvJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlsWYhzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CF8C4CECE;
-	Thu, 12 Dec 2024 15:47:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Mmfv4hKP/ULOZxS2PTv+W557N41mLfM+W/3WntENwQWkcTW60ZvR/jhpx2n5tpTP+2OLdWgZgmSg3dr3W1ckJgzfqFnlR8ZMAsMWmZNJjw0Dy/ehY5/ubZ5+UaK50ieSYq0LSgjQHjSWuEXr+W2kUSK0r+Ezn36KBNXZ8F2Aa/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vAj9hY/m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E924BC4CECE;
+	Thu, 12 Dec 2024 15:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018468;
-	bh=3yEMbT22CAtHUTN+nG2iWu4swCHHn6k5elL1Xi0OAOU=;
+	s=korg; t=1734017347;
+	bh=afecilv0NAcg925xGAILk54qS12Nx5XWqpOpRo46bD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlsWYhzmOpzmtkpAxHUsgUSZe1sRb7l+SLajVdBavNrxdWry6uajBDth3wvWVbp2H
-	 2zbXYcDYMxJaTaBWTMw4RouKSbeB6JWu8ZO4eFgpVbXGuLz/dS9YdokpC7VnaCCjc9
-	 LkofH5beJTgJELegYAoaxyWVIPfjP1vCJgfU6C9M=
+	b=vAj9hY/mJMYakOn1ssYHF2kRT4PLbP2uENkciwawz+jN3wnEx/Iws0PF6DPwXIVj3
+	 0GSGOVMr4OFjYwsCC0EtBKR6zq7OyiJVe/rsYW63sSNDdVu3SEQa3pgosjpUDVgFPM
+	 FiLfnjOM+qJ6oKTpq28ArZlV2JVyY3NMY5u24g2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7f3761b790fa41d0f3d5@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+	Yingshun Cui <yicui@redhat.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 302/356] fs/ntfs3: Fix case when unmarked clusters intersect with zone
+Subject: [PATCH 6.12 452/466] vfio/mlx5: Align the page tracking max message size with the device capability
 Date: Thu, 12 Dec 2024 16:00:21 +0100
-Message-ID: <20241212144256.496286011@linuxfoundation.org>
+Message-ID: <20241212144324.727308968@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +62,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Yishai Hadas <yishaih@nvidia.com>
 
-[ Upstream commit 5fc982fe7eca9d0cf7b25832450ebd4f7c8e1c36 ]
+[ Upstream commit 9c7c5430bca36e9636eabbba0b3b53251479c7ab ]
 
-Reported-by: syzbot+7f3761b790fa41d0f3d5@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Align the page tracking maximum message size with the device's
+capability instead of relying on PAGE_SIZE.
+
+This adjustment resolves a mismatch on systems where PAGE_SIZE is 64K,
+but the firmware only supports a maximum message size of 4K.
+
+Now that we rely on the device's capability for max_message_size, we
+must account for potential future increases in its value.
+
+Key considerations include:
+- Supporting message sizes that exceed a single system page (e.g., an 8K
+  message on a 4K system).
+- Ensuring the RQ size is adjusted to accommodate at least 4
+  WQEs/messages, in line with the device specification.
+
+The above has been addressed as part of the patch.
+
+Fixes: 79c3cf279926 ("vfio/mlx5: Init QP based resources for dirty tracking")
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Tested-by: Yingshun Cui <yicui@redhat.com>
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Link: https://lore.kernel.org/r/20241205122654.235619-1-yishaih@nvidia.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/run.c | 40 ++++++++++++++++++++++++++++++----------
- 1 file changed, 30 insertions(+), 10 deletions(-)
+ drivers/vfio/pci/mlx5/cmd.c | 47 +++++++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 12 deletions(-)
 
-diff --git a/fs/ntfs3/run.c b/fs/ntfs3/run.c
-index cb8cf0161177b..44e93ad491ba7 100644
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -1053,8 +1053,8 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- {
- 	int ret, err;
- 	CLST next_vcn, lcn, len;
--	size_t index;
--	bool ok;
-+	size_t index, done;
-+	bool ok, zone;
- 	struct wnd_bitmap *wnd;
- 
- 	ret = run_unpack(run, sbi, ino, svcn, evcn, vcn, run_buf, run_buf_size);
-@@ -1085,8 +1085,9 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- 			continue;
- 
- 		down_read_nested(&wnd->rw_lock, BITMAP_MUTEX_CLUSTERS);
-+		zone = max(wnd->zone_bit, lcn) < min(wnd->zone_end, lcn + len);
- 		/* Check for free blocks. */
--		ok = wnd_is_used(wnd, lcn, len);
-+		ok = !zone && wnd_is_used(wnd, lcn, len);
- 		up_read(&wnd->rw_lock);
- 		if (ok)
- 			continue;
-@@ -1094,14 +1095,33 @@ int run_unpack_ex(struct runs_tree *run, struct ntfs_sb_info *sbi, CLST ino,
- 		/* Looks like volume is corrupted. */
- 		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
- 
--		if (down_write_trylock(&wnd->rw_lock)) {
--			/* Mark all zero bits as used in range [lcn, lcn+len). */
--			size_t done;
--			err = wnd_set_used_safe(wnd, lcn, len, &done);
--			up_write(&wnd->rw_lock);
--			if (err)
--				return err;
-+		if (!down_write_trylock(&wnd->rw_lock))
-+			continue;
-+
-+		if (zone) {
-+			/*
-+			 * Range [lcn, lcn + len) intersects with zone.
-+			 * To avoid complex with zone just turn it off.
-+			 */
-+			wnd_zone_set(wnd, 0, 0);
-+		}
-+
-+		/* Mark all zero bits as used in range [lcn, lcn+len). */
-+		err = wnd_set_used_safe(wnd, lcn, len, &done);
-+		if (zone) {
-+			/* Restore zone. Lock mft run. */
-+			struct rw_semaphore *lock;
-+			lock = is_mounted(sbi) ? &sbi->mft.ni->file.run_lock :
-+						 NULL;
-+			if (lock)
-+				down_read(lock);
-+			ntfs_refresh_zone(sbi);
-+			if (lock)
-+				up_read(lock);
- 		}
-+		up_write(&wnd->rw_lock);
-+		if (err)
-+			return err;
+diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+index 7527e277c8989..eb7387ee6ebd1 100644
+--- a/drivers/vfio/pci/mlx5/cmd.c
++++ b/drivers/vfio/pci/mlx5/cmd.c
+@@ -1517,7 +1517,8 @@ int mlx5vf_start_page_tracker(struct vfio_device *vdev,
+ 	struct mlx5_vhca_qp *host_qp;
+ 	struct mlx5_vhca_qp *fw_qp;
+ 	struct mlx5_core_dev *mdev;
+-	u32 max_msg_size = PAGE_SIZE;
++	u32 log_max_msg_size;
++	u32 max_msg_size;
+ 	u64 rq_size = SZ_2M;
+ 	u32 max_recv_wr;
+ 	int err;
+@@ -1534,6 +1535,12 @@ int mlx5vf_start_page_tracker(struct vfio_device *vdev,
  	}
  
- 	return ret;
+ 	mdev = mvdev->mdev;
++	log_max_msg_size = MLX5_CAP_ADV_VIRTUALIZATION(mdev, pg_track_log_max_msg_size);
++	max_msg_size = (1ULL << log_max_msg_size);
++	/* The RQ must hold at least 4 WQEs/messages for successful QP creation */
++	if (rq_size < 4 * max_msg_size)
++		rq_size = 4 * max_msg_size;
++
+ 	memset(tracker, 0, sizeof(*tracker));
+ 	tracker->uar = mlx5_get_uars_page(mdev);
+ 	if (IS_ERR(tracker->uar)) {
+@@ -1623,25 +1630,41 @@ set_report_output(u32 size, int index, struct mlx5_vhca_qp *qp,
+ {
+ 	u32 entry_size = MLX5_ST_SZ_BYTES(page_track_report_entry);
+ 	u32 nent = size / entry_size;
++	u32 nent_in_page;
++	u32 nent_to_set;
+ 	struct page *page;
++	u32 page_offset;
++	u32 page_index;
++	u32 buf_offset;
++	void *kaddr;
+ 	u64 addr;
+ 	u64 *buf;
+ 	int i;
+ 
+-	if (WARN_ON(index >= qp->recv_buf.npages ||
++	buf_offset = index * qp->max_msg_size;
++	if (WARN_ON(buf_offset + size >= qp->recv_buf.npages * PAGE_SIZE ||
+ 		    (nent > qp->max_msg_size / entry_size)))
+ 		return;
+ 
+-	page = qp->recv_buf.page_list[index];
+-	buf = kmap_local_page(page);
+-	for (i = 0; i < nent; i++) {
+-		addr = MLX5_GET(page_track_report_entry, buf + i,
+-				dirty_address_low);
+-		addr |= (u64)MLX5_GET(page_track_report_entry, buf + i,
+-				      dirty_address_high) << 32;
+-		iova_bitmap_set(dirty, addr, qp->tracked_page_size);
+-	}
+-	kunmap_local(buf);
++	do {
++		page_index = buf_offset / PAGE_SIZE;
++		page_offset = buf_offset % PAGE_SIZE;
++		nent_in_page = (PAGE_SIZE - page_offset) / entry_size;
++		page = qp->recv_buf.page_list[page_index];
++		kaddr = kmap_local_page(page);
++		buf = kaddr + page_offset;
++		nent_to_set = min(nent, nent_in_page);
++		for (i = 0; i < nent_to_set; i++) {
++			addr = MLX5_GET(page_track_report_entry, buf + i,
++					dirty_address_low);
++			addr |= (u64)MLX5_GET(page_track_report_entry, buf + i,
++					      dirty_address_high) << 32;
++			iova_bitmap_set(dirty, addr, qp->tracked_page_size);
++		}
++		kunmap_local(kaddr);
++		buf_offset += (nent_to_set * entry_size);
++		nent -= nent_to_set;
++	} while (nent);
+ }
+ 
+ static void
 -- 
 2.43.0
 
