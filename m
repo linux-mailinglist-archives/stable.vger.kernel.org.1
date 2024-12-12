@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-101886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74E69EEF30
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AAB9EEF40
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7915E292EE1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:12:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07727294784
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31A8226541;
-	Thu, 12 Dec 2024 15:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F8822689C;
+	Thu, 12 Dec 2024 15:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kO8r9Q7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJrVYaos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEB122653A;
-	Thu, 12 Dec 2024 15:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0B5217640;
+	Thu, 12 Dec 2024 15:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019154; cv=none; b=lf9/i6PlceZ2M3DcWxzSgYbaLVaHUbpOUF8HMEOZKQiJEDnSbzXwabhxhPrQ7nahjPQaEfSYwO89wttToJ19Vq+xJ4TM+BoM595A9O04s1O+CLi/xqEQRacT73ngrivZXvNJdl2+yHZzmT5l+pgfWT1vDZgD4s0CjFsMMmnz0bQ=
+	t=1734019195; cv=none; b=JDT64r650ujEDBjtm2s1hwh8NJd6MCacAn8HGWydF1EaUroQRCD8CESWgDCm4J0/Pb8jj0KJ6SNZVNx3WHPB0tw6oWio5O7C4pS02z7Syz1Mmi/b4k22kTyKXNuLTsZVG8AfhinsUd/hd9Ry13MYbvlz8sz1RhEKq06X2rZAIxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019154; c=relaxed/simple;
-	bh=bCwfErPdbkmx/VsmotQDgd+xG0ZKBVnZEQ3fAtM5rkw=;
+	s=arc-20240116; t=1734019195; c=relaxed/simple;
+	bh=o5xwaTu/1HuC5C+Ju7FgcZihfDzYPp2Ml+WdWvb8p7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lttupwi0mMLVeY42PnbRWcM6WeFBLQjfvbmNK60xB10m4PhH59qb6N99Nm+YXx+MQ7ixC53diM9n6o28PhpdOtd39TgDohqLe6KWsDQyA5Skb9kVLiG3lLQEEjqTSjshUkBL8Vb/V8VZdviUUD/Mk4U7FQ2Ii6Mpr8rwMybxNmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kO8r9Q7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF43C4CED3;
-	Thu, 12 Dec 2024 15:59:13 +0000 (UTC)
+	 MIME-Version; b=K/h1ClWDh5R1Myfod5HQvekwLIWwCFEU83D+gDE6x8xPxeC016YSeDplEa3CzOHn5fK0stJUKP/v71ysSdDQq9S7H/C2GnnMY1ZUsSO5uXl74wEoXGx5/gksn0pBDZt9r5nQFOq+TKhEqBHIODo/8aVwOJeQnU5aaymOFy5uf/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJrVYaos; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E585C4CECE;
+	Thu, 12 Dec 2024 15:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019154;
-	bh=bCwfErPdbkmx/VsmotQDgd+xG0ZKBVnZEQ3fAtM5rkw=;
+	s=korg; t=1734019195;
+	bh=o5xwaTu/1HuC5C+Ju7FgcZihfDzYPp2Ml+WdWvb8p7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kO8r9Q7I8gamfP48dJBvifxuT102R3JWy2H8XE3NJgm1BGAeMxFg3eQrPv0jGa6OF
-	 wTrL80rmSahRPeylL+hcBVInYgSz6VF0FRO1872+4UjRiJI81GUnr9QMyiCwztcfv7
-	 vAsnSc1S/GPeBtLLMI2UxM2vFScFeW/6s+CTJe3A=
+	b=WJrVYaosBG5s6w8AltwptYebLmzUV4cTHviaQ81/YigL0XnQ/vDvkBGUubCZLbSz6
+	 WPAUJkuN2iiMN7CyidzBKOly6sRjeTKtIFK/hpGdxXRPA6qemNZwXLyCRl97iu3ngK
+	 4LGJpvuf+HfLfMDMhrk75nuLx1lVnL1wakBxAgqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/772] drm/mm: Mark drm_mm_interval_tree*() functions with __maybe_unused
-Date: Thu, 12 Dec 2024 15:51:10 +0100
-Message-ID: <20241212144355.086870587@linuxfoundation.org>
+Subject: [PATCH 6.1 126/772] drm/vc4: hvs: Dont write gamma luts on 2711
+Date: Thu, 12 Dec 2024 15:51:11 +0100
+Message-ID: <20241212144355.134091877@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,50 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 53bd7c1c0077db533472ae32799157758302ef48 ]
+[ Upstream commit 52efe364d1968ee3e3ed45eb44eb924b63635315 ]
 
-The INTERVAL_TREE_DEFINE() uncoditionally provides a bunch of helper
-functions which in some cases may be not used. This, in particular,
-prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
+The gamma block has changed in 2711, therefore writing the lut
+in vc4_hvs_lut_load is incorrect.
 
-.../drm/drm_mm.c:152:1: error: unused function 'drm_mm_interval_tree_insert' [-Werror,-Wunused-function]
-  152 | INTERVAL_TREE_DEFINE(struct drm_mm_node, rb,
-      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  153 |                      u64, __subtree_last,
-      |                      ~~~~~~~~~~~~~~~~~~~~
-  154 |                      START, LAST, static inline, drm_mm_interval_tree)
-      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Whilst the gamma property isn't created for 2711, it is called
+from vc4_hvs_init_channel, so abort if attempted.
 
-Fix this by marking drm_mm_interval_tree*() functions with __maybe_unused.
-
-See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
-
-Fixes: 202b52b7fbf7 ("drm: Track drm_mm nodes with an interval tree")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240829154640.1120050-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: c54619b0bfb3 ("drm/vc4: Add support for the BCM2711 HVS5")
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-15-dave.stevenson@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_mm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vc4/vc4_hvs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_mm.c b/drivers/gpu/drm/drm_mm.c
-index 8257f9d4f6190..22a373eaffefd 100644
---- a/drivers/gpu/drm/drm_mm.c
-+++ b/drivers/gpu/drm/drm_mm.c
-@@ -151,7 +151,7 @@ static void show_leaks(struct drm_mm *mm) { }
+diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
+index 47990ecbfc4df..cf017b59114e9 100644
+--- a/drivers/gpu/drm/vc4/vc4_hvs.c
++++ b/drivers/gpu/drm/vc4/vc4_hvs.c
+@@ -220,6 +220,9 @@ static void vc4_hvs_lut_load(struct vc4_hvs *hvs,
+ 	if (!drm_dev_enter(drm, &idx))
+ 		return;
  
- INTERVAL_TREE_DEFINE(struct drm_mm_node, rb,
- 		     u64, __subtree_last,
--		     START, LAST, static inline, drm_mm_interval_tree)
-+		     START, LAST, static inline __maybe_unused, drm_mm_interval_tree)
- 
- struct drm_mm_node *
- __drm_mm_interval_first(const struct drm_mm *mm, u64 start, u64 last)
++	if (hvs->vc4->is_vc5)
++		return;
++
+ 	/* The LUT memory is laid out with each HVS channel in order,
+ 	 * each of which takes 256 writes for R, 256 for G, then 256
+ 	 * for B.
 -- 
 2.43.0
 
