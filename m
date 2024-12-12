@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA1669EF82C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F6E9EF509
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9537F170FD5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5883528AAD6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E922210F1;
-	Thu, 12 Dec 2024 17:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD242236FC;
+	Thu, 12 Dec 2024 17:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjFYDVab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ky6+WehY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20049222D75;
-	Thu, 12 Dec 2024 17:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4A5222D7B;
+	Thu, 12 Dec 2024 17:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024811; cv=none; b=e0BeNVpOYAi9N9F4XXSgj9gvM6m2JRr+lr7G6lCDgdutD16f9Z8z6XXkq9LYEwJES1sbrLuFWH6b+1a4OAxDJiUal/vFxdp/57cF4Tk7pxBVbO43lNodkLXgynOW1DGuNjfoSOQec31IH+gLd4uz2/Sc6/jS5njGY4Nr71ZCYbc=
+	t=1734023526; cv=none; b=DmtXXpr+qbrnBkGo/HqPjC2xvZqHHlTUaRtnzFvfz2sQtT7XsYiGvIkV71KLSdNFOC1F2nPNwFwsEc33E6eT0OQgKVPN+VuSSbLnD6lhgfEKFlruwWHSYXPp7tswafzbAzFtOaHO//7dv0bQJ95NPsFig9+4nI5N6ePlFgtcuKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024811; c=relaxed/simple;
-	bh=yPIusaj2I+lOvUMSuXwVJJd/H03OwJEU32nDaQx+/e8=;
+	s=arc-20240116; t=1734023526; c=relaxed/simple;
+	bh=j06c0CXn4qKpq26d0G6BxJVY2pNvTUUv6+3pJdMeCN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AyFATEMXE2Dyga6TODgVD/WyFPbSDeCCo1hLeYf0g8v9ZZnUnTJM96T+vfxESQavc69pbUkHq0aWTMmJZMXQMV6AKeb2K5Q9RJRwpqJnKFcotTdk31HnlIgR4TbaADGKF52GJIiFy/0TaRXdunKrAP5TpzMnaW6XdjFr9zbkZAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjFYDVab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB67C4CECE;
-	Thu, 12 Dec 2024 17:33:30 +0000 (UTC)
+	 MIME-Version; b=bfLGcpdY1Ya8fY+Qpgg0bUMb4qBuX3DdX3tyvRUyxins1c8I5CEuOL1bxnmNMKMlP2CH0mbMkAC/GYt1eShw1qFmNRaBz17RKuXFS2Oos1WASrX0qDwQslrFc5AYd2dRGs/C1XtDlFTT9kjkUoqzaFfi8pm7gO6bqUTcDIvaTkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ky6+WehY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E142C4CED0;
+	Thu, 12 Dec 2024 17:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024811;
-	bh=yPIusaj2I+lOvUMSuXwVJJd/H03OwJEU32nDaQx+/e8=;
+	s=korg; t=1734023526;
+	bh=j06c0CXn4qKpq26d0G6BxJVY2pNvTUUv6+3pJdMeCN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AjFYDVabrrH0uisK29yWJ0DIjVjqkewtIVyNeHK31LMzey1b/cwhhBrxL7gf/eBlq
-	 HBcLFE8++nYDYm0TBJDx4lySX4AndC5zmO4vv7KGT4rN0nfgVvVh5jDlnAl3fbGz5g
-	 xqep7/KwHQ2O+ic0IkQKGQVtHpYQzO5p64BcICIs=
+	b=ky6+WehYIj/WMPDGVEme3BKvChWWT3AtsYz7d7dgHMwCt7/ZqkHwOns3uQx7bFYHc
+	 BIPXChjSuz3WzrCd1C6+WLWU2rQZ2RIAgjSJ5lPnNC5DyBub7KJYLwf6W7eAxPPtqI
+	 +FuJobryG1jThm2XbJhsCajwrBPoeSMAaEhyfAgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Anish Kumar <yesanishhere@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 420/459] leds: class: Protect brightness_show() with led_cdev->led_access mutex
+	Ameer Hamza <amhamza.mgc@gmail.com>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 5.15 563/565] media: venus: vdec: fixed possible memory leak issue
 Date: Thu, 12 Dec 2024 16:02:38 +0100
-Message-ID: <20241212144310.353863769@linuxfoundation.org>
+Message-ID: <20241212144334.129182069@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: Ameer Hamza <amhamza.mgc@gmail.com>
 
-[ Upstream commit 4ca7cd938725a4050dcd62ae9472e931d603118d ]
+commit 8403fdd775858a7bf04868d43daea0acbe49ddfc upstream.
 
-There is NULL pointer issue observed if from Process A where hid device
-being added which results in adding a led_cdev addition and later a
-another call to access of led_cdev attribute from Process B can result
-in NULL pointer issue.
+The venus_helper_alloc_dpb_bufs() implementation allows an early return
+on an error path when checking the id from ida_alloc_min() which would
+not release the earlier buffer allocation.
 
-Use mutex led_cdev->led_access to protect access to led->cdev and its
-attribute inside brightness_show() and max_brightness_show() and also
-update the comment for mutex that it should be used to protect the led
-class device fields.
+Move the direct kfree() from the error checking of dma_alloc_attrs() to
+the common fail path to ensure that allocations are released on all
+error paths in this function.
 
-	Process A 				Process B
+Addresses-Coverity: 1494120 ("Resource leak")
 
- kthread+0x114
- worker_thread+0x244
- process_scheduled_works+0x248
- uhid_device_add_worker+0x24
- hid_add_device+0x120
- device_add+0x268
- bus_probe_device+0x94
- device_initial_probe+0x14
- __device_attach+0xfc
- bus_for_each_drv+0x10c
- __device_attach_driver+0x14c
- driver_probe_device+0x3c
- __driver_probe_device+0xa0
- really_probe+0x190
- hid_device_probe+0x130
- ps_probe+0x990
- ps_led_register+0x94
- devm_led_classdev_register_ext+0x58
- led_classdev_register_ext+0x1f8
- device_create_with_groups+0x48
- device_create_groups_vargs+0xc8
- device_add+0x244
- kobject_uevent+0x14
- kobject_uevent_env[jt]+0x224
- mutex_unlock[jt]+0xc4
- __mutex_unlock_slowpath+0xd4
- wake_up_q+0x70
- try_to_wake_up[jt]+0x48c
- preempt_schedule_common+0x28
- __schedule+0x628
- __switch_to+0x174
-						el0t_64_sync+0x1a8/0x1ac
-						el0t_64_sync_handler+0x68/0xbc
-						el0_svc+0x38/0x68
-						do_el0_svc+0x1c/0x28
-						el0_svc_common+0x80/0xe0
-						invoke_syscall+0x58/0x114
-						__arm64_sys_read+0x1c/0x2c
-						ksys_read+0x78/0xe8
-						vfs_read+0x1e0/0x2c8
-						kernfs_fop_read_iter+0x68/0x1b4
-						seq_read_iter+0x158/0x4ec
-						kernfs_seq_show+0x44/0x54
-						sysfs_kf_seq_show+0xb4/0x130
-						dev_attr_show+0x38/0x74
-						brightness_show+0x20/0x4c
-						dualshock4_led_get_brightness+0xc/0x74
-
-[ 3313.874295][ T4013] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
-[ 3313.874301][ T4013] Mem abort info:
-[ 3313.874303][ T4013]   ESR = 0x0000000096000006
-[ 3313.874305][ T4013]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 3313.874307][ T4013]   SET = 0, FnV = 0
-[ 3313.874309][ T4013]   EA = 0, S1PTW = 0
-[ 3313.874311][ T4013]   FSC = 0x06: level 2 translation fault
-[ 3313.874313][ T4013] Data abort info:
-[ 3313.874314][ T4013]   ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
-[ 3313.874316][ T4013]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[ 3313.874318][ T4013]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[ 3313.874320][ T4013] user pgtable: 4k pages, 39-bit VAs, pgdp=00000008f2b0a000
-..
-
-[ 3313.874332][ T4013] Dumping ftrace buffer:
-[ 3313.874334][ T4013]    (ftrace buffer empty)
-..
-..
-[ dd3313.874639][ T4013] CPU: 6 PID: 4013 Comm: InputReader
-[ 3313.874648][ T4013] pc : dualshock4_led_get_brightness+0xc/0x74
-[ 3313.874653][ T4013] lr : led_update_brightness+0x38/0x60
-[ 3313.874656][ T4013] sp : ffffffc0b910bbd0
-..
-..
-[ 3313.874685][ T4013] Call trace:
-[ 3313.874687][ T4013]  dualshock4_led_get_brightness+0xc/0x74
-[ 3313.874690][ T4013]  brightness_show+0x20/0x4c
-[ 3313.874692][ T4013]  dev_attr_show+0x38/0x74
-[ 3313.874696][ T4013]  sysfs_kf_seq_show+0xb4/0x130
-[ 3313.874700][ T4013]  kernfs_seq_show+0x44/0x54
-[ 3313.874703][ T4013]  seq_read_iter+0x158/0x4ec
-[ 3313.874705][ T4013]  kernfs_fop_read_iter+0x68/0x1b4
-[ 3313.874708][ T4013]  vfs_read+0x1e0/0x2c8
-[ 3313.874711][ T4013]  ksys_read+0x78/0xe8
-[ 3313.874714][ T4013]  __arm64_sys_read+0x1c/0x2c
-[ 3313.874718][ T4013]  invoke_syscall+0x58/0x114
-[ 3313.874721][ T4013]  el0_svc_common+0x80/0xe0
-[ 3313.874724][ T4013]  do_el0_svc+0x1c/0x28
-[ 3313.874727][ T4013]  el0_svc+0x38/0x68
-[ 3313.874730][ T4013]  el0t_64_sync_handler+0x68/0xbc
-[ 3313.874732][ T4013]  el0t_64_sync+0x1a8/0x1ac
-
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Reviewed-by: Anish Kumar <yesanishhere@gmail.com>
-Link: https://lore.kernel.org/r/20241103160527.82487-1-quic_mojha@quicinc.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cc: stable@vger.kernel.org # 5.16+
+Fixes: 40d87aafee29 ("media: venus: vdec: decoded picture buffer handling during reconfig sequence")
+Signed-off-by: Ameer Hamza <amhamza.mgc@gmail.com>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/led-class.c | 14 +++++++++++---
- include/linux/leds.h     |  2 +-
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/media/platform/qcom/venus/helpers.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
-index e28a4bb716032..d7c1f2263a57a 100644
---- a/drivers/leds/led-class.c
-+++ b/drivers/leds/led-class.c
-@@ -28,11 +28,14 @@ static ssize_t brightness_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
- 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-+	unsigned int brightness;
+--- a/drivers/media/platform/qcom/venus/helpers.c
++++ b/drivers/media/platform/qcom/venus/helpers.c
+@@ -189,7 +189,6 @@ int venus_helper_alloc_dpb_bufs(struct v
+ 		buf->va = dma_alloc_attrs(dev, buf->size, &buf->da, GFP_KERNEL,
+ 					  buf->attrs);
+ 		if (!buf->va) {
+-			kfree(buf);
+ 			ret = -ENOMEM;
+ 			goto fail;
+ 		}
+@@ -209,6 +208,7 @@ int venus_helper_alloc_dpb_bufs(struct v
+ 	return 0;
  
--	/* no lock needed for this */
-+	mutex_lock(&led_cdev->led_access);
- 	led_update_brightness(led_cdev);
-+	brightness = led_cdev->brightness;
-+	mutex_unlock(&led_cdev->led_access);
- 
--	return sprintf(buf, "%u\n", led_cdev->brightness);
-+	return sprintf(buf, "%u\n", brightness);
+ fail:
++	kfree(buf);
+ 	venus_helper_free_dpb_bufs(inst);
+ 	return ret;
  }
- 
- static ssize_t brightness_store(struct device *dev,
-@@ -69,8 +72,13 @@ static ssize_t max_brightness_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
- 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-+	unsigned int max_brightness;
-+
-+	mutex_lock(&led_cdev->led_access);
-+	max_brightness = led_cdev->max_brightness;
-+	mutex_unlock(&led_cdev->led_access);
- 
--	return sprintf(buf, "%u\n", led_cdev->max_brightness);
-+	return sprintf(buf, "%u\n", max_brightness);
- }
- static DEVICE_ATTR_RO(max_brightness);
- 
-diff --git a/include/linux/leds.h b/include/linux/leds.h
-index 6a8d6409c993e..d8b4a73454e96 100644
---- a/include/linux/leds.h
-+++ b/include/linux/leds.h
-@@ -155,7 +155,7 @@ struct led_classdev {
- 	struct kernfs_node	*brightness_hw_changed_kn;
- #endif
- 
--	/* Ensures consistent access to the LED Flash Class device */
-+	/* Ensures consistent access to the LED class device */
- 	struct mutex		led_access;
- };
- 
--- 
-2.43.0
-
 
 
 
