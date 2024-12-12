@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2629EF15F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7449EEC57
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BA4A18999DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B248A18870DE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377B2223C40;
-	Thu, 12 Dec 2024 16:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603C2217F5D;
+	Thu, 12 Dec 2024 15:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xur1fsir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlJzmczE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EA12210F2;
-	Thu, 12 Dec 2024 16:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB68217F40;
+	Thu, 12 Dec 2024 15:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020188; cv=none; b=iViU3gNu2E9EyN2VQCjZoELtv3ZfPmhH8Ih2KzfoajaOet1B18Lz6w4fFhZjFM34OOlg+T9SfR6t9bwnSn3HkwI6mP57cw0ou7abSpWTn97jRk55Pr4P+CxDE+o0dYaA0jJVeSNXXV95t2VsZAp9sRIsYo+SKBqIhonV4uaZbQo=
+	t=1734017514; cv=none; b=p00VwfgOZaP2BCeI7QLlmrj/jFiUYvqGtAHmk4sFqpYSP3VRAqCWJMQ8PQxYk1vNgNL+LI+sHrVDo5k/zygsvtvM5Tus5dQqPng7ALYE8DTnDfLGX6dKYeb/AL5PYi/PE/uz86C0liBpYvfQU9NZeaAc1b5J2rmKzo6imewFRcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020188; c=relaxed/simple;
-	bh=p3wc7KMPmbmkijJo5Y7p/i4F5JDnowj6dyAT4VAw5qA=;
+	s=arc-20240116; t=1734017514; c=relaxed/simple;
+	bh=EF/Gmb6l0Ko+ZLF4bavDIbJeK5H0Q4HmTRl/CyNCS/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqX3/hGB+JR6wYbTMF24+vv2iVfDucbVuZjm/BA5axtXDFrRAV2OMS8O3BrAX8U0P2kJMWCD8n4wlw+1S1oNJ7WEXNKJoiVfvqrq3aPu75rifiHCORunDGmJqUKszWFxHvYsS3U8edOgVTAozarSx2hQKdStC76X4mh5Yy7EOsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xur1fsir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593E3C4CECE;
-	Thu, 12 Dec 2024 16:16:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ND3n7BJUmGUBXXVHsPBeLf0VjkNUkFsR4dru3oGhp0VfTTKURBuWkvlINyu4TeNY5Ek5EOp8k8qmsv+ayNt8mbVgCUmhWCQYTg8PooLD4P4nLbWyomytsPIszt3KikE4pzwM0ZUnO3zIZPPLk062j1miXfdWkeK9eqyG/SncEmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlJzmczE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8781C4CED4;
+	Thu, 12 Dec 2024 15:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020187;
-	bh=p3wc7KMPmbmkijJo5Y7p/i4F5JDnowj6dyAT4VAw5qA=;
+	s=korg; t=1734017513;
+	bh=EF/Gmb6l0Ko+ZLF4bavDIbJeK5H0Q4HmTRl/CyNCS/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xur1fsirvaxuk9dERDozGjGhmBHo+4J/NiI7C3BDolGCl18bRqFN81b4L2oylpEF5
-	 xqH5yiPqZvnW0f7PoT2YUOT7XgYZkUG+5sX9OeCOZpx02bR6TGD7KESAqMEwmZA9XL
-	 rsVNdi5aLTckga3RaJMZywwCe/E1ij42fQzz5rNc=
+	b=zlJzmczEw4CgTYAew/iLmDevinrRIWs2q1Pu/nbtP9ynd4NNAiYn7fTN/zuSSBJnv
+	 I7HW/a4+KllYcy0CZR5ZwazWg3DDYeTXoYgAAgyYbySxQ/txBlwQfY1mkVnkA8DgFa
+	 pSGmTe+JE2pbEbbSsyM3lTqjWZ3mAAiYH06H3GEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filip Brozovic <fbrozovic@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 401/772] serial: 8250_fintek: Add support for F81216E
+	Casey G Bowman <casey.g.bowman@intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 027/356] platform/x86: asus-wmi: Fix inconsistent use of thermal policies
 Date: Thu, 12 Dec 2024 15:55:46 +0100
-Message-ID: <20241212144406.486614046@linuxfoundation.org>
+Message-ID: <20241212144245.701327359@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,99 +62,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filip Brozovic <fbrozovic@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-commit 166105c9030a30ba08574a9998afc7b60bc72dd7 upstream.
+[ Upstream commit 895085ec3f2ed7a26389943729e2904df1f88dc0 ]
 
-The F81216E is a LPC/eSPI to 4 UART Super I/O and is mostly compatible with
-the F81216H, but does not support RS-485 auto-direction delays on any port.
+When changing the thermal policy using the platform profile API,
+a Vivobook thermal policy is stored in throttle_thermal_policy_mode.
 
-Signed-off-by: Filip Brozovic <fbrozovic@gmail.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20241110111703.15494-1-fbrozovic@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However everywhere else a normal thermal policy is stored inside this
+variable, potentially confusing the platform profile.
+
+Fix this by always storing normal thermal policy values inside
+throttle_thermal_policy_mode and only do the conversion when writing
+the thermal policy to hardware. This also fixes the order in which
+throttle_thermal_policy_switch_next() steps through the thermal modes
+on Vivobook machines.
+
+Tested-by: Casey G Bowman <casey.g.bowman@intel.com>
+Fixes: bcbfcebda2cb ("platform/x86: asus-wmi: add support for vivobook fan profiles")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241107003811.615574-2-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 25fb5f47f34d ("platform/x86: asus-wmi: Ignore return value when writing thermal policy")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_fintek.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/platform/x86/asus-wmi.c | 64 +++++++++++----------------------
+ 1 file changed, 21 insertions(+), 43 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_fintek.c
-+++ b/drivers/tty/serial/8250/8250_fintek.c
-@@ -21,6 +21,7 @@
- #define CHIP_ID_F81866 0x1010
- #define CHIP_ID_F81966 0x0215
- #define CHIP_ID_F81216AD 0x1602
-+#define CHIP_ID_F81216E 0x1617
- #define CHIP_ID_F81216H 0x0501
- #define CHIP_ID_F81216 0x0802
- #define VENDOR_ID1 0x23
-@@ -158,6 +159,7 @@ static int fintek_8250_check_id(struct f
- 	case CHIP_ID_F81866:
- 	case CHIP_ID_F81966:
- 	case CHIP_ID_F81216AD:
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81216:
- 		break;
-@@ -181,6 +183,7 @@ static int fintek_8250_get_ldn_range(str
- 		return 0;
- 
- 	case CHIP_ID_F81216AD:
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81216:
- 		*min = F81216_LDN_LOW;
-@@ -250,6 +253,7 @@ static void fintek_8250_set_irq_mode(str
- 		break;
- 
- 	case CHIP_ID_F81216AD:
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81216:
- 		sio_write_mask_reg(pdata, FINTEK_IRQ_MODE, IRQ_SHARE,
-@@ -263,7 +267,8 @@ static void fintek_8250_set_irq_mode(str
- static void fintek_8250_set_max_fifo(struct fintek_8250 *pdata)
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index d0ba8bd83fc3d..e36c299dcfb17 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -3386,10 +3386,28 @@ static int asus_wmi_custom_fan_curve_init(struct asus_wmi *asus)
+ /* Throttle thermal policy ****************************************************/
+ static int throttle_thermal_policy_write(struct asus_wmi *asus)
  {
- 	switch (pdata->pid) {
--	case CHIP_ID_F81216H: /* 128Bytes FIFO */
-+	case CHIP_ID_F81216E: /* 128Bytes FIFO */
-+	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81966:
- 	case CHIP_ID_F81866:
- 		sio_write_mask_reg(pdata, FIFO_CTRL,
-@@ -297,6 +302,7 @@ static void fintek_8250_set_termios(stru
- 		goto exit;
+-	u8 value = asus->throttle_thermal_policy_mode;
+ 	u32 retval;
++	u8 value;
+ 	int err;
  
- 	switch (pdata->pid) {
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 		reg = RS485;
- 		break;
-@@ -346,6 +352,7 @@ static void fintek_8250_set_termios_hand
- 	struct fintek_8250 *pdata = uart->port.private_data;
- 
- 	switch (pdata->pid) {
-+	case CHIP_ID_F81216E:
- 	case CHIP_ID_F81216H:
- 	case CHIP_ID_F81966:
- 	case CHIP_ID_F81866:
-@@ -438,6 +445,11 @@ static void fintek_8250_set_rs485_handle
- 			uart->port.rs485_supported = fintek_8250_rs485_supported;
- 		break;
- 
-+	case CHIP_ID_F81216E: /* F81216E does not support RS485 delays */
-+		uart->port.rs485_config = fintek_8250_rs485_config;
-+		uart->port.rs485_supported = fintek_8250_rs485_supported;
-+		break;
++	if (asus->throttle_thermal_policy_dev == ASUS_WMI_DEVID_THROTTLE_THERMAL_POLICY_VIVO) {
++		switch (asus->throttle_thermal_policy_mode) {
++		case ASUS_THROTTLE_THERMAL_POLICY_DEFAULT:
++			value = ASUS_THROTTLE_THERMAL_POLICY_DEFAULT_VIVO;
++			break;
++		case ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST:
++			value = ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST_VIVO;
++			break;
++		case ASUS_THROTTLE_THERMAL_POLICY_SILENT:
++			value = ASUS_THROTTLE_THERMAL_POLICY_SILENT_VIVO;
++			break;
++		default:
++			return -EINVAL;
++		}
++	} else {
++		value = asus->throttle_thermal_policy_mode;
++	}
 +
- 	default: /* No RS485 Auto direction functional */
+ 	err = asus_wmi_set_devstate(asus->throttle_thermal_policy_dev,
+ 				    value, &retval);
+ 
+@@ -3494,46 +3512,6 @@ static ssize_t throttle_thermal_policy_store(struct device *dev,
+ static DEVICE_ATTR_RW(throttle_thermal_policy);
+ 
+ /* Platform profile ***********************************************************/
+-static int asus_wmi_platform_profile_to_vivo(struct asus_wmi *asus, int mode)
+-{
+-	bool vivo;
+-
+-	vivo = asus->throttle_thermal_policy_dev == ASUS_WMI_DEVID_THROTTLE_THERMAL_POLICY_VIVO;
+-
+-	if (vivo) {
+-		switch (mode) {
+-		case ASUS_THROTTLE_THERMAL_POLICY_DEFAULT:
+-			return ASUS_THROTTLE_THERMAL_POLICY_DEFAULT_VIVO;
+-		case ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST:
+-			return ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST_VIVO;
+-		case ASUS_THROTTLE_THERMAL_POLICY_SILENT:
+-			return ASUS_THROTTLE_THERMAL_POLICY_SILENT_VIVO;
+-		}
+-	}
+-
+-	return mode;
+-}
+-
+-static int asus_wmi_platform_profile_mode_from_vivo(struct asus_wmi *asus, int mode)
+-{
+-	bool vivo;
+-
+-	vivo = asus->throttle_thermal_policy_dev == ASUS_WMI_DEVID_THROTTLE_THERMAL_POLICY_VIVO;
+-
+-	if (vivo) {
+-		switch (mode) {
+-		case ASUS_THROTTLE_THERMAL_POLICY_DEFAULT_VIVO:
+-			return ASUS_THROTTLE_THERMAL_POLICY_DEFAULT;
+-		case ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST_VIVO:
+-			return ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST;
+-		case ASUS_THROTTLE_THERMAL_POLICY_SILENT_VIVO:
+-			return ASUS_THROTTLE_THERMAL_POLICY_SILENT;
+-		}
+-	}
+-
+-	return mode;
+-}
+-
+ static int asus_wmi_platform_profile_get(struct platform_profile_handler *pprof,
+ 					enum platform_profile_option *profile)
+ {
+@@ -3543,7 +3521,7 @@ static int asus_wmi_platform_profile_get(struct platform_profile_handler *pprof,
+ 	asus = container_of(pprof, struct asus_wmi, platform_profile_handler);
+ 	tp = asus->throttle_thermal_policy_mode;
+ 
+-	switch (asus_wmi_platform_profile_mode_from_vivo(asus, tp)) {
++	switch (tp) {
+ 	case ASUS_THROTTLE_THERMAL_POLICY_DEFAULT:
+ 		*profile = PLATFORM_PROFILE_BALANCED;
  		break;
+@@ -3582,7 +3560,7 @@ static int asus_wmi_platform_profile_set(struct platform_profile_handler *pprof,
+ 		return -EOPNOTSUPP;
  	}
+ 
+-	asus->throttle_thermal_policy_mode = asus_wmi_platform_profile_to_vivo(asus, tp);
++	asus->throttle_thermal_policy_mode = tp;
+ 	return throttle_thermal_policy_write(asus);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
