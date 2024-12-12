@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-101076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754729EEA28
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D73C29EEA17
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36B4D282D42
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97AAF284414
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD5B2165F0;
-	Thu, 12 Dec 2024 15:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A18218594;
+	Thu, 12 Dec 2024 15:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq2ZlVBQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jiu3tDLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3CF215764;
-	Thu, 12 Dec 2024 15:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E131216E29;
+	Thu, 12 Dec 2024 15:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016174; cv=none; b=ofp0KeQ4O5UczriNSvgMMlk2JNam1smxgNrTeCeKrUWx6H5Mf6iAjGyhH8f3Vdh8m/bCZAjdRYGDTE3OdLgtq755JkCym2jG1fV76bK7xc/4FxA0vj0rTCQW+FGx1REFP7Ogtv8kCHbtAG9TxUvXrUMp6kKRqcD9aPmzjvQEiRw=
+	t=1734016104; cv=none; b=ZuX7gQQHZtpX/t8Jq9t0LNngNRdc9n9HLO+5XNWPzjNejJrZeGhWv/yEq/A9tCMJc4+cW5io6U5TVxRD5fBriPDn9xMw2RQQDN5qPO2lQOjiyl8ZzK7esAZfnnL/eHfLeQJsUiUt91oi5urfiiQxWZYjE1r+AUzoNApyDaT0MZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016174; c=relaxed/simple;
-	bh=pOaXTeQyLgpt1RAPzKOq4mEDsbQfwb3XHj+jsN2yZ1Y=;
+	s=arc-20240116; t=1734016104; c=relaxed/simple;
+	bh=n6PivKZJM8QSqbZPerQO8s9E1k+8H2H9DBgRBhGxzcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEQH0IgTfW31NPhYrWRyRuW7GzeknjMfXk2DsLXDRq+gkf5BLPnpb8WDLQAwpTRI3RV3ycih0/QpMX6f7ljlCqZYH7cadfZXhd3Xv6QKZGWL0poE2LxVMEhwCCHhQoByZIx5xfeRDJOZvyBN9n0l214qsIPw3WKI7CdwQi8MsRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq2ZlVBQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27EAC4CECE;
-	Thu, 12 Dec 2024 15:09:32 +0000 (UTC)
+	 MIME-Version; b=tBXAG76YQ122ihAuIxANKi3idJRENJ2kzhCuaEPaLIB/lYkCJYWjOAjtYJtGhu7z1XgnRbfmOx4Wwdah4wKXW8IH8HObLLCdusrIDLU28mLHu+lXy2Tpgwqux4uVkVJs0lIi2mFuzQgs0EdURpryq3weyJ2c2p2x6i+Jr9KOisI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jiu3tDLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7095C4CECE;
+	Thu, 12 Dec 2024 15:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016173;
-	bh=pOaXTeQyLgpt1RAPzKOq4mEDsbQfwb3XHj+jsN2yZ1Y=;
+	s=korg; t=1734016104;
+	bh=n6PivKZJM8QSqbZPerQO8s9E1k+8H2H9DBgRBhGxzcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tq2ZlVBQUu9TOaaJnzUBiZNEVWr+MIzHJOqZBKGwMpksPLkcWNPaHFbHNi1l4wzfu
-	 vqOpHunp/NXIDpB0nBm5m+9TUOn2iAtZieCuE5KJk+6jq8AZfR2AJiSyI4MJ53+Df7
-	 vju39XbxBvVcCqzY1hgeIuz3eJeqW2ToN5lSl1w4=
+	b=Jiu3tDLx732bhompztP7Nw25SxtqXHVRzrOkMSbCSnFrgyCbgo8dE4DYT9NQZbIuJ
+	 7sszA2HGJ4gd7IMmU/c56mrSvLl+HNKtB1Rg2w+FqmBxqdD3Ihb+71agh5pOQ10A/Y
+	 9Bl6EUxepe0zkZb/2eX4G5GC3SrTMslrlqk1WmWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.12 133/466] iommufd: Fix out_fput in iommufd_fault_alloc()
-Date: Thu, 12 Dec 2024 15:55:02 +0100
-Message-ID: <20241212144312.060422762@linuxfoundation.org>
+	Yutang Jiang <jiangyutang@os.amperecomputing.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 134/466] arm64: mm: Fix zone_dma_limit calculation
+Date: Thu, 12 Dec 2024 15:55:03 +0100
+Message-ID: <20241212144312.099490335@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -66,58 +66,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Yang Shi <yang@os.amperecomputing.com>
 
-commit af7f4780514f850322b2959032ecaa96e4b26472 upstream.
+commit 56a708742a8bf127eb66798bfc9c9516c61f9930 upstream.
 
-As fput() calls the file->f_op->release op, where fault obj and ictx are
-getting released, there is no need to release these two after fput() one
-more time, which would result in imbalanced refcounts:
-  refcount_t: decrement hit 0; leaking memory.
-  WARNING: CPU: 48 PID: 2369 at lib/refcount.c:31 refcount_warn_saturate+0x60/0x230
-  Call trace:
-   refcount_warn_saturate+0x60/0x230 (P)
-   refcount_warn_saturate+0x60/0x230 (L)
-   iommufd_fault_fops_release+0x9c/0xe0 [iommufd]
-  ...
-  VFS: Close: file count is 0 (f_op=iommufd_fops [iommufd])
-  WARNING: CPU: 48 PID: 2369 at fs/open.c:1507 filp_flush+0x3c/0xf0
-  Call trace:
-   filp_flush+0x3c/0xf0 (P)
-   filp_flush+0x3c/0xf0 (L)
-   __arm64_sys_close+0x34/0x98
-  ...
-  imbalanced put on file reference count
-  WARNING: CPU: 48 PID: 2369 at fs/file.c:74 __file_ref_put+0x100/0x138
-  Call trace:
-   __file_ref_put+0x100/0x138 (P)
-   __file_ref_put+0x100/0x138 (L)
-   __fput_sync+0x4c/0xd0
+Commit ba0fb44aed47 ("dma-mapping: replace zone_dma_bits by
+zone_dma_limit") and subsequent patches changed how zone_dma_limit is
+calculated to allow a reduced ZONE_DMA even when RAM starts above 4GB.
+Commit 122c234ef4e1 ("arm64: mm: keep low RAM dma zone") further fixed
+this to ensure ZONE_DMA remains below U32_MAX if RAM starts below 4GB,
+especially on platforms that do not have IORT or DT description of the
+device DMA ranges. While zone boundaries calculation was fixed by the
+latter commit, zone_dma_limit, used to determine the GFP_DMA flag in the
+core code, was not updated. This results in excessive use of GFP_DMA and
+unnecessary ZONE_DMA allocations on some platforms.
 
-Drop those two lines to fix the warnings above.
+Update zone_dma_limit to match the actual upper bound of ZONE_DMA.
 
-Cc: stable@vger.kernel.org
-Fixes: 07838f7fd529 ("iommufd: Add iommufd fault object")
-Link: https://patch.msgid.link/r/b5651beb3a6b1adeef26fffac24607353bf67ba1.1733212723.git.nicolinc@nvidia.com
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: ba0fb44aed47 ("dma-mapping: replace zone_dma_bits by zone_dma_limit")
+Cc: <stable@vger.kernel.org> # 6.12.x
+Reported-by: Yutang Jiang <jiangyutang@os.amperecomputing.com>
+Tested-by: Yutang Jiang <jiangyutang@os.amperecomputing.com>
+Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+Link: https://lore.kernel.org/r/20241125171650.77424-1-yang@os.amperecomputing.com
+[catalin.marinas@arm.com: some tweaking of the commit log]
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/fault.c |    2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/mm/init.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/iommu/iommufd/fault.c
-+++ b/drivers/iommu/iommufd/fault.c
-@@ -415,8 +415,6 @@ out_put_fdno:
- 	put_unused_fd(fdno);
- out_fput:
- 	fput(filep);
--	refcount_dec(&fault->obj.users);
--	iommufd_ctx_put(fault->ictx);
- out_abort:
- 	iommufd_object_abort_and_destroy(ucmd->ictx, &fault->obj);
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -116,15 +116,6 @@ static void __init arch_reserve_crashker
  
+ static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
+ {
+-	/**
+-	 * Information we get from firmware (e.g. DT dma-ranges) describe DMA
+-	 * bus constraints. Devices using DMA might have their own limitations.
+-	 * Some of them rely on DMA zone in low 32-bit memory. Keep low RAM
+-	 * DMA zone on platforms that have RAM there.
+-	 */
+-	if (memblock_start_of_DRAM() < U32_MAX)
+-		zone_limit = min(zone_limit, U32_MAX);
+-
+ 	return min(zone_limit, memblock_end_of_DRAM() - 1) + 1;
+ }
+ 
+@@ -140,6 +131,14 @@ static void __init zone_sizes_init(void)
+ 	acpi_zone_dma_limit = acpi_iort_dma_get_max_cpu_address();
+ 	dt_zone_dma_limit = of_dma_get_max_cpu_address(NULL);
+ 	zone_dma_limit = min(dt_zone_dma_limit, acpi_zone_dma_limit);
++	/*
++	 * Information we get from firmware (e.g. DT dma-ranges) describe DMA
++	 * bus constraints. Devices using DMA might have their own limitations.
++	 * Some of them rely on DMA zone in low 32-bit memory. Keep low RAM
++	 * DMA zone on platforms that have RAM there.
++	 */
++	if (memblock_start_of_DRAM() < U32_MAX)
++		zone_dma_limit = min(zone_dma_limit, U32_MAX);
+ 	arm64_dma_phys_limit = max_zone_phys(zone_dma_limit);
+ 	max_zone_pfns[ZONE_DMA] = PFN_DOWN(arm64_dma_phys_limit);
+ #endif
 
 
 
