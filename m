@@ -1,135 +1,138 @@
-Return-Path: <stable+bounces-103946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AB49EFF3D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 23:25:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133A09EFF6A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 23:33:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73A5B2822E1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 22:25:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D954165537
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 22:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFA81DE2BB;
-	Thu, 12 Dec 2024 22:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1224C1DE2BB;
+	Thu, 12 Dec 2024 22:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SsF6rDsm"
+	dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b="cferv90b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC371DDC14
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 22:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597981DB34B
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 22:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734042344; cv=none; b=fVeLVF7hnTgExtETl7yZtn3Bg/I/cbkKxz30/V7b98YMqzZYC0VQroYZ22mpoTIMQsIt+lxjeo5BdnwPOEmVDfqynkL4qhXYaT+MbeK1LLrsyV8/JWB+SVFPxe/V80Y47SFhw09GiKmgTt2azSLe6YmODRQMso5y47qMhcNFc6M=
+	t=1734042796; cv=none; b=dBSfF58hiudK+Mz0UAjeYGJuiEXFHFKdaY8OdZ1ocD3KSCR09PG3SGKIw5ZUdDTTzOiin34eJZ7OSnv9QYob9OfFrhOOFhC6wA3RsFKAKug/A10uoXmqcTvW+9U0mgrkLqf0JArvTvCfSUcvgZ1p+CoVY7DsjWhkq/NHUibrIrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734042344; c=relaxed/simple;
-	bh=b/3CRAdu+7T5QJ4e6en1KgG9dbEf1XStUpVNzdnyvog=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ArlrXCpbFCokhWEjVycytPaCvnC/2VOxmxmS7AQwv1Qhw/liiWb2fq9vBtDMpB4zDI/QSTpA89wchs6fi1F4NNsPbYU2WxZDOsb9Sg39Dxou79BJTu/G0rbfi78J+Ox3KTSJj/83zuXQUUK7BS1BUKT8xpPwAYfuuYIM/t/9LZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SsF6rDsm; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-728e4e30163so872424b3a.1
-        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 14:25:42 -0800 (PST)
+	s=arc-20240116; t=1734042796; c=relaxed/simple;
+	bh=oR/uSTr5+GWNNfhF7KM0Y91bZHI1qlHXD//OzY77V9I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g+47RtJVvAyxEkCvBlIPXJ4z/Wb0A94eCH9BS1WiqVSTFFOyNlLIkCo5lTu3Bzn+ikI+tnAFLEJ1ZASwLzQctUKKA3hzYMnnAGJG/oA7iAIiVr/iMyStE6Z42jT3PQKS82NP5+Lm9BdvnRXLbiaDpi66/NT9I2WcFldoNo1LNjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com; spf=pass smtp.mailfrom=fastly.com; dkim=pass (1024-bit key) header.d=fastly.com header.i=@fastly.com header.b=cferv90b; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fastly.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastly.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-728ec840a8aso1281941b3a.0
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 14:33:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1734042342; x=1734647142; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZeVEYyAeRFWzZUfEKgzMQxC3tRUbE6NlpO6Eh07fKpo=;
-        b=SsF6rDsmdBTlDdVAoozOF36NToBrSeOtneghfO+3+at6SD9LQoXpquYGIeEh4NXkIM
-         7RxtXF+apf+/7GowtAN/W77X0GtxEqvXfawVKfZDq8Ols8dr4Q4xYD7cmnoldX1yb8s9
-         7m9yfIdhRwKcAITxQerx4BN5PrERKPPSTBag5D8HBFJg9NDeC1NvHIWkAEOftLY+meDF
-         ReyPAwddquSxzoqnLAYWKlflv00b2UZV8Z6YUXiK4zmshKC3TVMI3+mCLpHKlg6+ikGa
-         2QQtuZDZPK49cSlh3TPTMQu0sPkVf9+NagHP/bznPzd/8oaJ1Dy0e+gfC3UvaaIDeBe9
-         tJsA==
+        d=fastly.com; s=google; t=1734042794; x=1734647594; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WD9rsf9ii00yY+ms0VR1R7pLgJ7ZdV0Me6Cly3PFX2A=;
+        b=cferv90bRS8BAo//w4nii9Bm/1Ft6jcDrx7inRW3kL9BIKSEzO9od5bYWleQolNVSN
+         CxrBFLbfKKeXrKwNhd/aX+3qC8yKZwasVRyAuRy4QDfPw2S/yEe+J3CsdWznxLmfl/cb
+         ApwVVDqtMVe+OUsc02hfQBKQJTElueoZ3jD6U=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734042342; x=1734647142;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZeVEYyAeRFWzZUfEKgzMQxC3tRUbE6NlpO6Eh07fKpo=;
-        b=lVGC46wGbx3Gfvl71E3jetO14vx18fTZNrIp06GD3Ynhut4/PQ4ATZcfr1vr46LYog
-         lHzuBY/94dQDxXPyxIO/6Oo3ntCoaygkqgeqMvqWr1/A9B7uQJWD+FDdY5clGplaPcHE
-         JWPkT2Dzf2giNECC7RHjkqHm21P3fBiAvujC0dSGiK4CKWVD1WsHgJl6EBePld0GPsVn
-         dT0I+2CNba/bDJbgJ3dBfjM6w/kRPbA4WyDYOCQiTlZIuUh6PM2vZellS3ZboaDe2Iyn
-         yyhivyAevpGosp5D455NVbnZpTRlOlit5Ke+XOLDzpUZNzxFT7foKVKmMr0cJSf6bXx3
-         xq4Q==
-X-Gm-Message-State: AOJu0Yx47lzPp+gJCV2RBuAANnyrAkU39OOn/hgPoTMgWKtsOYCo0n8o
-	t9NccmS+EyxjFxzOJRIzVrWW+LCroVnah2pYAvt+t1BJNrBxvBx9qAz+t4adnqrw90dgRiK+D0Z
-	y1g==
-X-Google-Smtp-Source: AGHT+IGeog0JTNRLA0KDM2T3PGKhKDD4c0F8DMDQlKvrmOtVMEuF6PyrIFHqMD/w4E0ENaVhrbHRstdPXF4=
-X-Received: from pfiu11.prod.google.com ([2002:a05:6a00:124b:b0:727:3a40:52d7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1893:b0:725:f1b1:cb9f
- with SMTP id d2e1a72fcca58-7290c25d946mr382070b3a.20.1734042341886; Thu, 12
- Dec 2024 14:25:41 -0800 (PST)
-Date: Thu, 12 Dec 2024 14:25:40 -0800
-In-Reply-To: <20241208083743.77295-1-kniv@yandex-team.ru>
+        d=1e100.net; s=20230601; t=1734042794; x=1734647594;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WD9rsf9ii00yY+ms0VR1R7pLgJ7ZdV0Me6Cly3PFX2A=;
+        b=jtGWtlVwI9ooaK1MJBOZpb4zFFKqimATFvokXKzUaxDHwOmBvKuqtZduNeIlHrRnyp
+         2TBgbwwgT5I07IySxewf9WxaK2hLci7ZCPPuYqbiILCfDla4BU7M5RX2W6XD0l3YWowW
+         khZnNwR/JoigO22n0sU3tNvnesQ/mfd398q5ZW/T76Gn06jrIcoMpKCkVHFcYKWvRnmB
+         AzvHi889QYljfL8LILEQeCVBC6bVukdOiq5RwP9l8X5iFj8CF4DP9o3WJZXG03UuswY1
+         ptgaKGdyPqtuZKEANx8H2zFD4HaVMpLZsvjc/KWxW0WlDkWFdXNk5x/6GZdqLEwFCi2+
+         Hv6A==
+X-Forwarded-Encrypted: i=1; AJvYcCXLXltiVjKWhJS4/ekJhkRbJcaxQ6VXkOZadrKQPW3UizFELyA2mF2AIN3I8O00ioR6AfgGdFM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVD9UtyWhhTJHsAza0W0eifZwkgJ+mhxZEY8r0FrBGtuobRADA
+	Fp6NIP8L8+TT+vZH7ER5HSNK8iDIK7BMP1DAPDohwHB9owbo7smODeZKI7hX4Ks=
+X-Gm-Gg: ASbGnctZWKJlqsNG/Wfc+k5rIOo9eNa1pVyMnVPuJR0eqTRyWk933eczwtrCXFrWNJi
+	e0qNFU6KzE/UfQeXWrBRflU6n5XUw8IQ/RpQRbVJkJtwO/KU1Q8MIcLzeS9eKKDx3kEUrCouTO1
+	4r05AsitxXQMrMG8sljLGaTbU/3v0VUccw0KcLRraYQxlnUueBBYlsdO7kazB6ooty9Scdnn4LE
+	i9bI5KkQZiEdUqDbIQhtnhJdXG+NJJ92k6wMi9+NRqOs5uhwNdoPKawwCbZoRtppUIthl5Q/vb3
+	gHe5JWjzyc0g7pGNzqFmBYI=
+X-Google-Smtp-Source: AGHT+IGBhJZFJOsE23TpYp1eNUTDR7TcgwhfQ9p9lzE6GTdMW919AlD7RPLG6833ZIudNlx4NioaNQ==
+X-Received: by 2002:a05:6a00:3d12:b0:728:ea15:6d68 with SMTP id d2e1a72fcca58-7290c25b948mr293213b3a.18.1734042794708;
+        Thu, 12 Dec 2024 14:33:14 -0800 (PST)
+Received: from LQ3V64L9R2 (c-24-6-151-244.hsd1.ca.comcast.net. [24.6.151.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725e62bb302sm8523229b3a.139.2024.12.12.14.33.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Dec 2024 14:33:14 -0800 (PST)
+Date: Thu, 12 Dec 2024 14:33:11 -0800
+From: Joe Damato <jdamato@fastly.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+	eric.dumazet@gmail.com,
+	syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com,
+	stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH net] net: tun: fix tun_napi_alloc_frags()
+Message-ID: <Z1tkp3m7hNxQ8hF6@LQ3V64L9R2>
+Mail-Followup-To: Joe Damato <jdamato@fastly.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+	eric.dumazet@gmail.com,
+	syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com,
+	stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+References: <20241212222247.724674-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20241208083743.77295-1-kniv@yandex-team.ru>
-Message-ID: <Z1ti5K6hs6-sWIG_@google.com>
-Subject: Re: [PATCH v2 6.1] KVM: x86/mmu: Ensure that kvm_release_pfn_clean()
- takes exact pfn from kvm_faultin_pfn()
-From: Sean Christopherson <seanjc@google.com>
-To: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241212222247.724674-1-edumazet@google.com>
 
-On Sun, Dec 08, 2024, Nikolay Kuratov wrote:
-> Since 5.16 and prior to 6.13 KVM can't be used with FSDAX
-> guest memory (PMD pages). To reproduce the issue you need to reserve
-> guest memory with `memmap=` cmdline, create and mount FS in DAX mode
-> (tested both XFS and ext4), see doc link below. ndctl command for test:
-> ndctl create-namespace -v -e namespace1.0 --map=dev --mode=fsdax -a 2M
-> Then pass memory object to qemu like:
-> -m 8G -object memory-backend-file,id=ram0,size=8G,\
-> mem-path=/mnt/pmem/guestmem,share=on,prealloc=on,dump=off,align=2097152 \
-> -numa node,memdev=ram0,cpus=0-1
-> QEMU fails to run guest with error: kvm run failed Bad address
-> and there are two warnings in dmesg:
-> WARN_ON_ONCE(!page_count(page)) in kvm_is_zone_device_page() and
-> WARN_ON_ONCE(folio_ref_count(folio) <= 0) in try_grab_folio() (v6.6.63)
+On Thu, Dec 12, 2024 at 10:22:47PM +0000, Eric Dumazet wrote:
+> syzbot reported the following crash [1]
 > 
-> It looks like in the past assumption was made that pfn won't change from
-> faultin_pfn() to release_pfn_clean(), e.g. see
-> commit 4cd071d13c5c ("KVM: x86/mmu: Move calls to thp_adjust() down a level")
-> But kvm_page_fault structure made pfn part of mutable state, so
-> now release_pfn_clean() can take hugepage-adjusted pfn.
-> And it works for all cases (/dev/shm, hugetlb, devdax) except fsdax.
-> Apparently in fsdax mode faultin-pfn and adjusted-pfn may refer to
-> different folios, so we're getting get_page/put_page imbalance.
-> 
-> To solve this preserve faultin pfn in separate local variable
-> and pass it in kvm_release_pfn_clean().
-> 
-> Patch tested for all mentioned guest memory backends with tdp_mmu={0,1}.
-> 
-> No bug in upstream as it was solved fundamentally by
-> commit 8dd861cc07e2 ("KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns")
-> and related patch series.
-> 
-> Link: https://nvdimm.docs.kernel.org/2mib_fs_dax.html
-> Fixes: 2f6305dd5676 ("KVM: MMU: change kvm_tdp_mmu_map() arguments to kvm_page_fault")
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Sean Christopherson <seanjc@google.com>
+> Issue came with the blamed commit. Instead of going through
+> all the iov components, we keep using the first one
+> and end up with a malformed skb.
 
-First off, thank you very much for the fixes+backports, and testing!
+[...]
 
-However, in the future, please don't record a Reviewed-by or Acked-tag unless it
-is explicitly given, especially for backports to LTS kernels.  I know it's weird
-and pedantic in this case since I provided the code, but it's still important to
-give maintainers the opportunity to review exactly what will be applied.
+> 
+> Fixes: de4f5fed3f23 ("iov_iter: add iter_iovec() helper")
+> Reported-by: syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/675b61aa.050a0220.599f4.00bb.GAE@google.com/T/#u
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> ---
+>  drivers/net/tun.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index d7a865ef370b6968c095510ae16b5196e30e54b9..e816aaba8e5f2ed06f8832f79553b6c976e75bb8 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -1481,7 +1481,7 @@ static struct sk_buff *tun_napi_alloc_frags(struct tun_file *tfile,
+>  	skb->truesize += skb->data_len;
+>  
+>  	for (i = 1; i < it->nr_segs; i++) {
+> -		const struct iovec *iov = iter_iov(it);
+> +		const struct iovec *iov = iter_iov(it) + i;
+>  		size_t fragsz = iov->iov_len;
+>  		struct page *page;
+>  		void *frag;
+> -- 
 
-Anyways, all the patches look good and Greg has grabbed them, so there's nothing
-more to be done.
-
-Thanks again!
+Reviewed-by: Joe Damato <jdamato@fastly.com>
 
