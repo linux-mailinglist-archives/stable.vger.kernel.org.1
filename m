@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441F89EF3BB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A839EED4D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B172890AD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4223F1887B7D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC299223C7B;
-	Thu, 12 Dec 2024 16:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F5C223E84;
+	Thu, 12 Dec 2024 15:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1llVgOr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAwSzk0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E4422333E;
-	Thu, 12 Dec 2024 16:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E946321CFF0;
+	Thu, 12 Dec 2024 15:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022665; cv=none; b=RVK+0ufIRjV//jMXGxTJ313T75qBMW4OfDPpMJ3XfKMezaTSSU/tlFFEvEVu0dcp+M0p0Brjb/FG+Bdr01pRqrhMcNZoO1DFIO0oNqrhI/+DvXRahbq1eM0dy36rUc+Mrb7Nmc6oKKEAfqEz/0mHCCyFxZla4Daw4M1cOyxvHAI=
+	t=1734018037; cv=none; b=O/kp0HzR4B5qpn0bmjWxhuXWR85xBqNftJeksV28kdfVEDYIFvpEeILJLB1fNBWagT87ziwyd64uuOPIEvTIo4KLAADRlCubAxgqUVQOlmlOV+CiZ9gAxjOfyeysynfJeIoeUZHcDrPqlReuTdww/q3h4b6JiB0bYp1e8ZwDVY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022665; c=relaxed/simple;
-	bh=oTwi6xK2ZhCA4IAtCNQufSVgdk4yI1b78ihAuuuUPyY=;
+	s=arc-20240116; t=1734018037; c=relaxed/simple;
+	bh=OdCzEQsr+hOwDl+J+4pm5BxyIeDTc/MYJoy0q6f0QUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r9ZAo7DGtAk0+7W6e+nANmuNqYoBLkK+mdaU6QVtFS7WHyHZqSO9GDx0ogI+pHOoH/wMKjCq0DcuUkouLzNqjx+VqX2RQIEXKGaZyzuFo52vjSb0SGiRecFXQrnH8BDrHXinzdB1VyXK43FCiH24RaZ+c5dI2VfjKJDIFygNFag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1llVgOr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5490C4CED0;
-	Thu, 12 Dec 2024 16:57:44 +0000 (UTC)
+	 MIME-Version; b=lU/wsvjPfEXrU+CDIoiCRe6f1n2oq5RlAdsAbL5/7+wosSbp8T0YVCFuu5cw3+KZAAwwQYGcoItkVVSL08qi2EcQDpKi36RiEX2S8+6H8HPSx7KvcWZmizEUifFARKRgV/PMtLbdPQOZdqG5kM+nR7lcFazGtEu4WvcLu/sF2ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAwSzk0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0BDC4CED4;
+	Thu, 12 Dec 2024 15:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022665;
-	bh=oTwi6xK2ZhCA4IAtCNQufSVgdk4yI1b78ihAuuuUPyY=;
+	s=korg; t=1734018036;
+	bh=OdCzEQsr+hOwDl+J+4pm5BxyIeDTc/MYJoy0q6f0QUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1llVgOr+uZ9mTIg9nCCCEf5YmNQdmjuRnHdZT6Bhzh2fXy7Rxz9DaxajhxLq96xe
-	 xDSELE8WRwYAy9SNcVuWlWgWlJOy2+JxfGxuHye0vlbThX9j1+wUc9d460nopgCCVX
-	 4p/P9s7WBws9T6sl0tfgLND/Gxic4+bvut5GiCXw=
+	b=TAwSzk0T3T2bVPWnc7inC+AMuR7jkfnPDjja8sX3/XTjDPyGAm5D22lqDGdWj/nBQ
+	 OKOmV7rFpHHWxOAVWqaKdUSq3GbWKFOyI+W/62GD/9IVT1AbgX/T8HwWQfqQcgBTcj
+	 QqDUtTHCbnw70Qe3I+PzXaM6XCNXMEbyHyoxwXlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	stable@kernel.org,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 303/565] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
+	Anthony Pighin <anthony.pighin@nokia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>
+Subject: [PATCH 6.6 179/356] mmc: core: Further prevent card detect during shutdown
 Date: Thu, 12 Dec 2024 15:58:18 +0100
-Message-ID: <20241212144323.444764471@linuxfoundation.org>
+Message-ID: <20241212144251.705130965@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Sevens <bsevens@google.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit b909df18ce2a998afef81d58bbd1a05dc0788c40 upstream.
+commit 87a0d90fcd31c0f36da0332428c9e1a1e0f97432 upstream.
 
-A bogus device can provide a bNumConfigurations value that exceeds the
-initial value used in usb_get_configuration for allocating dev->config.
+Disabling card detect from the host's ->shutdown_pre() callback turned out
+to not be the complete solution. More precisely, beyond the point when the
+mmc_bus->shutdown() has been called, to gracefully power off the card, we
+need to prevent card detect. Otherwise the mmc_rescan work may poll for the
+card with a CMD13, to see if it's still alive, which then will fail and
+hang as the card has already been powered off.
 
-This can lead to out-of-bounds accesses later, e.g. in
-usb_destroy_configuration.
+To fix this problem, let's disable mmc_rescan prior to power off the card
+during shutdown.
 
-Signed-off-by: Benoît Sevens <bsevens@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Anthony Pighin <anthony.pighin@nokia.com>
+Fixes: 66c915d09b94 ("mmc: core: Disable card detect during shutdown")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Closes: https://lore.kernel.org/all/BN0PR08MB695133000AF116F04C3A9FFE83212@BN0PR08MB6951.namprd08.prod.outlook.com/
+Tested-by: Anthony Pighin <anthony.pighin@nokia.com>
+Message-ID: <20241125122446.18684-1-ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/mmc/core/bus.c  |    2 ++
+ drivers/mmc/core/core.c |    3 +++
+ 2 files changed, 5 insertions(+)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -591,6 +591,7 @@ int snd_usb_create_quirk(struct snd_usb_
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
+--- a/drivers/mmc/core/bus.c
++++ b/drivers/mmc/core/bus.c
+@@ -149,6 +149,8 @@ static void mmc_bus_shutdown(struct devi
+ 	if (dev->driver && drv->shutdown)
+ 		drv->shutdown(card);
+ 
++	__mmc_stop_host(host);
++
+ 	if (host->bus_ops->shutdown) {
+ 		ret = host->bus_ops->shutdown(host);
+ 		if (ret)
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -2296,6 +2296,9 @@ void mmc_start_host(struct mmc_host *hos
+ 
+ void __mmc_stop_host(struct mmc_host *host)
  {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
- 
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
-@@ -602,10 +603,14 @@ static int snd_usb_extigy_boot_quirk(str
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
- 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&dev->descriptor, sizeof(dev->descriptor));
--		config = dev->actconfig;
-+				&new_device_descriptor, sizeof(new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
-+		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
-+				new_device_descriptor.bNumConfigurations);
-+		else
-+			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
- 		err = usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -937,6 +942,7 @@ static void mbox2_setup_48_24_magic(stru
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -972,10 +978,14 @@ static int snd_usb_mbox2_boot_quirk(stru
- 	dev_dbg(&dev->dev, "device initialised!\n");
- 
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&dev->descriptor, sizeof(dev->descriptor));
--	config = dev->actconfig;
-+		&new_device_descriptor, sizeof(new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
-+	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
-+			new_device_descriptor.bNumConfigurations);
-+	else
-+		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
- 
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
-@@ -1020,7 +1030,6 @@ static int snd_usb_axefx3_boot_quirk(str
- 	return 0;
- }
- 
--
- #define MICROBOOK_BUF_SIZE 128
- 
- static int snd_usb_motu_microbookii_communicate(struct usb_device *dev, u8 *buf,
++	if (host->rescan_disable)
++		return;
++
+ 	if (host->slot.cd_irq >= 0) {
+ 		mmc_gpio_set_cd_wake(host, false);
+ 		disable_irq(host->slot.cd_irq);
 
 
 
