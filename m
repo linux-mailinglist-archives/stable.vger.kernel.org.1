@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677609EF447
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2C69EF55F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0D6017F614
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 091BD28EB77
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7B6226547;
-	Thu, 12 Dec 2024 16:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D118F21576E;
+	Thu, 12 Dec 2024 17:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByFHZT9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpRCSG6G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF18226545;
-	Thu, 12 Dec 2024 16:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC44211493;
+	Thu, 12 Dec 2024 17:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022349; cv=none; b=ehVHr3n+XU9peTXtiokVi3FMaNVXTTPYWv3txqwIG+4V57+A8kVY31iYhD6kCnB3ba1U0vRtpgKOopxz76eq084xUZURU20VJ2H6nljbTqr/Fl3ZoH2Pj5gZPVOMYgIjO7h4z8uplDK8yZoh2ORq6ZeFeceTbjFgShvc5GFsP28=
+	t=1734023761; cv=none; b=XAP3D5S74RFupaCBQvGR2EUMHQtLEghw4g+iidyNUkfS8QMhCx3Xa2PKnx1XKAWHCzamWmJ+ARNhSbgOyBTqrwkRjx7dxLzDyJ46FxW59/qTpal3qvpP3MeuAnnODllA+asQ4k6S5R/Zjih5va1OiamzeEZ84eoAsQCTSquR/VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022349; c=relaxed/simple;
-	bh=/7kOipKMMRcnVsj25rxbf5gSLaGfW9BtUc5I/h5iz+c=;
+	s=arc-20240116; t=1734023761; c=relaxed/simple;
+	bh=lshbM1FzpGUcUzkbd2h5efTyM/fVNoMn4CBCsIg53yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhlZpILcAZnzb3m/d1MbX64vmG4Wb8tdw6xReb9aeUmEd/B7jBx1/NoUFnCXkGiR/S+PkzA7j4ynPWkni9ZiF02Gb4CYmKQRioa/Ecb775pG/uLped6NjCLuVX5w2gBFxtCWUinI74B7x2Qy2yxVKgCtgjoFe9zmL86GRJSX9tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByFHZT9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AA2C4CECE;
-	Thu, 12 Dec 2024 16:52:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GKiT+85zhhvmhQw4Oj4E9EdIJjBKdrGx4bxFkbrsNYhZ3B2Xo+1sqli+5yUE/s4p2tTQVp0pSpgHgRVacszE/9hGa5pMp6prtWOBXQCzlXR76Ry0jME3GVx3/y+peBdQSAb0brL1itFOQzoALNQp40KSQDSvh4AblGiGArMQKtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpRCSG6G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF3BC4CECE;
+	Thu, 12 Dec 2024 17:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022349;
-	bh=/7kOipKMMRcnVsj25rxbf5gSLaGfW9BtUc5I/h5iz+c=;
+	s=korg; t=1734023761;
+	bh=lshbM1FzpGUcUzkbd2h5efTyM/fVNoMn4CBCsIg53yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByFHZT9JdGhgiPW4K+TcM3OzckwZClvnWumSpA8pozUMjlxKqe4vjEwxqVGo8sOG1
-	 FII2YlQX4d12eMlQK/XbbvoaOdvMINmzmQU3ATIqEiEH0FDsSYPVzosrE3Bk9YHQVY
-	 dfLtYJ3wXTaNcbjkw/+X4ucZ2vYE26MVC44ULtDI=
+	b=HpRCSG6GUtq4sgHW2ibajrwYs2BKerHDgxptEHPCztL7pXapOajLpwR93OgQgl112
+	 AqVyKvfjghJrMNk6Haw2ZqZx/uRwCiT4eWb4RHIcpog4h95TQ6tLbnwoOaVmJTXC4q
+	 lj/Q4EPxmdCJaD+/bALDPBy24IXnMqwvDc350FE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Ning <zhangn1985@outlook.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
+	Chen Ridong <chenridong@huawei.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 215/565] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for USB Type-C device
-Date: Thu, 12 Dec 2024 15:56:50 +0100
-Message-ID: <20241212144319.993226444@linuxfoundation.org>
+Subject: [PATCH 5.10 073/459] crypto: caam - add error check to caam_rsa_set_priv_key_form
+Date: Thu, 12 Dec 2024 15:56:51 +0100
+Message-ID: <20241212144256.406957030@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,146 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 686fb77712a4bc94b76a0c5ae74c60118b7a0d79 ]
+[ Upstream commit b64140c74e954f1db6eae5548ca3a1f41b6fad79 ]
 
-While design wise the idea of converting the driver to use
-the hierarchy of the IRQ chips is correct, the implementation
-has (inherited) flaws. This was unveiled when platform_get_irq()
-had started WARN() on IRQ 0 that is supposed to be a Linux
-IRQ number (also known as vIRQ).
+The caam_rsa_set_priv_key_form did not check for memory allocation errors.
+Add the checks to the caam_rsa_set_priv_key_form functions.
 
-Rework the driver to respect IRQ domain when creating each MFD
-device separately, as the domain is not the same for all of them.
-
-Fixes: 9c6235c86332 ("mfd: intel_soc_pmic_bxtwc: Add bxt_wcove_usbc device")
-Fixes: d2061f9cc32d ("usb: typec: add driver for Intel Whiskey Cove PMIC USB Type-C PHY")
-Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
-Reported-by: Zhang Ning <zhangn1985@outlook.com>
-Closes: https://lore.kernel.org/r/TY2PR01MB3322FEDCDC048B7D3794F922CDBA2@TY2PR01MB3322.jpnprd01.prod.outlook.com
-Tested-by: Zhang Ning <zhangn1985@outlook.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20241005193029.1929139-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 52e26d77b8b3 ("crypto: caam - add support for RSA key form 2")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Gaurav Jain <gaurav.jain@nxp.com>
+Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_bxtwc.c | 57 +++++++++++++++++++++---------
- drivers/usb/typec/tcpm/wcove.c     |  4 ---
- 2 files changed, 40 insertions(+), 21 deletions(-)
+ drivers/crypto/caam/caampkc.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
-index 8e699844f23ba..d2c13ef4bf33f 100644
---- a/drivers/mfd/intel_soc_pmic_bxtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
-@@ -240,16 +240,6 @@ static struct mfd_cell bxt_wc_dev[] = {
- 		.num_resources = ARRAY_SIZE(thermal_resources),
- 		.resources = thermal_resources,
- 	},
--	{
--		.name = "bxt_wcove_usbc",
--		.num_resources = ARRAY_SIZE(usbc_resources),
--		.resources = usbc_resources,
--	},
--	{
--		.name = "bxt_wcove_ext_charger",
--		.num_resources = ARRAY_SIZE(charger_resources),
--		.resources = charger_resources,
--	},
- 	{
- 		.name = "bxt_wcove_bcu",
- 		.num_resources = ARRAY_SIZE(bcu_resources),
-@@ -271,6 +261,19 @@ static struct mfd_cell bxt_wc_dev[] = {
- 	},
- };
- 
-+static struct mfd_cell bxt_wc_chgr_dev[] = {
-+	{
-+		.name = "bxt_wcove_usbc",
-+		.num_resources = ARRAY_SIZE(usbc_resources),
-+		.resources = usbc_resources,
-+	},
-+	{
-+		.name = "bxt_wcove_ext_charger",
-+		.num_resources = ARRAY_SIZE(charger_resources),
-+		.resources = charger_resources,
-+	},
-+};
-+
- static int regmap_ipc_byte_reg_read(void *context, unsigned int reg,
- 				    unsigned int *val)
- {
-@@ -418,6 +421,26 @@ static int bxtwc_add_chained_irq_chip(struct intel_soc_pmic *pmic,
- 					0, chip, data);
+diff --git a/drivers/crypto/caam/caampkc.c b/drivers/crypto/caam/caampkc.c
+index 5bd70a59f4ce2..c3c47756f25fe 100644
+--- a/drivers/crypto/caam/caampkc.c
++++ b/drivers/crypto/caam/caampkc.c
+@@ -975,7 +975,7 @@ static int caam_rsa_set_pub_key(struct crypto_akcipher *tfm, const void *key,
+ 	return -ENOMEM;
  }
  
-+static int bxtwc_add_chained_devices(struct intel_soc_pmic *pmic,
-+				     const struct mfd_cell *cells, int n_devs,
-+				     struct regmap_irq_chip_data *pdata,
-+				     int pirq, int irq_flags,
-+				     const struct regmap_irq_chip *chip,
-+				     struct regmap_irq_chip_data **data)
-+{
-+	struct device *dev = pmic->dev;
-+	struct irq_domain *domain;
-+	int ret;
-+
-+	ret = bxtwc_add_chained_irq_chip(pmic, pdata, pirq, irq_flags, chip, data);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add %s IRQ chip\n", chip->name);
-+
-+	domain = regmap_irq_get_domain(*data);
-+
-+	return devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE, cells, n_devs, NULL, 0, domain);
-+}
-+
- static int bxtwc_probe(struct platform_device *pdev)
+-static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
++static int caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
+ 				       struct rsa_key *raw_key)
  {
- 	struct device *dev = &pdev->dev;
-@@ -496,14 +519,14 @@ static int bxtwc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
+ 	struct caam_rsa_key *rsa_key = &ctx->key;
+@@ -984,7 +984,7 @@ static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
  
--	/* Add chained IRQ handler for CHGR IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_CHGR_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_chgr,
--					 &pmic->irq_chip_data_chgr);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_chgr_dev, ARRAY_SIZE(bxt_wc_chgr_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_CHGR_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_chgr,
-+					&pmic->irq_chip_data_chgr);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add CHGR IRQ chip\n");
-+		return ret;
+ 	rsa_key->p = caam_read_raw_data(raw_key->p, &p_sz);
+ 	if (!rsa_key->p)
+-		return;
++		return -ENOMEM;
+ 	rsa_key->p_sz = p_sz;
  
- 	/* Add chained IRQ handler for CRIT IRQs */
- 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
-diff --git a/drivers/usb/typec/tcpm/wcove.c b/drivers/usb/typec/tcpm/wcove.c
-index 20917d85d6f4c..5d34466a0abf2 100644
---- a/drivers/usb/typec/tcpm/wcove.c
-+++ b/drivers/usb/typec/tcpm/wcove.c
-@@ -621,10 +621,6 @@ static int wcove_typec_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
+ 	rsa_key->q = caam_read_raw_data(raw_key->q, &q_sz);
+@@ -1017,7 +1017,7 @@ static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
  
--	irq = regmap_irq_get_virq(pmic->irq_chip_data_chgr, irq);
--	if (irq < 0)
--		return irq;
--
- 	ret = guid_parse(WCOVE_DSM_UUID, &wcove->guid);
- 	if (ret)
- 		return ret;
+ 	rsa_key->priv_form = FORM3;
+ 
+-	return;
++	return 0;
+ 
+ free_dq:
+ 	kfree_sensitive(rsa_key->dq);
+@@ -1031,6 +1031,7 @@ static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
+ 	kfree_sensitive(rsa_key->q);
+ free_p:
+ 	kfree_sensitive(rsa_key->p);
++	return -ENOMEM;
+ }
+ 
+ static int caam_rsa_set_priv_key(struct crypto_akcipher *tfm, const void *key,
+@@ -1076,7 +1077,9 @@ static int caam_rsa_set_priv_key(struct crypto_akcipher *tfm, const void *key,
+ 	rsa_key->e_sz = raw_key.e_sz;
+ 	rsa_key->n_sz = raw_key.n_sz;
+ 
+-	caam_rsa_set_priv_key_form(ctx, &raw_key);
++	ret = caam_rsa_set_priv_key_form(ctx, &raw_key);
++	if (ret)
++		goto err;
+ 
+ 	return 0;
+ 
 -- 
 2.43.0
 
