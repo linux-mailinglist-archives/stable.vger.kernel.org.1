@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6DA9EF814
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:39:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FAB9EF4EA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66735189667F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0309280A0B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39366217664;
-	Thu, 12 Dec 2024 17:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3D1223C4F;
+	Thu, 12 Dec 2024 17:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5XKnNhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqpMuT2B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB09E20A5EE;
-	Thu, 12 Dec 2024 17:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AF42139D2;
+	Thu, 12 Dec 2024 17:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024718; cv=none; b=qHI/Tgcf0nx/aLP7h/Mgz+Tupe55in6sUWZf0hFk1XvC0OppTYgryGEuZvioZ5d2Yg9Th+t16VMWDMq/t/E5YD/7WJV/7dWGcQZ+mP1CZHV9fXXw6clALyqFr7NVbQzrMhKBhrzb3FGRf8nv+f82dY8xjGlHIBkM2iDSfS7+Quw=
+	t=1734023433; cv=none; b=uvOPGJgiBQQTWVkaPihV7L2omvhgH9HRDqR6hb6zNHq1a4trc2mYmAIhhQJEH9flB+xCtZaQfNBX0eMSVrY5of/GgXPupbBfwbLkM/qJ3U84JOgHYuQiaythZB/0CLbGaqP3ZeP/xYvZ3JvfL9G/f0NY+4W3zESGQTx2IZDYJ8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024718; c=relaxed/simple;
-	bh=q2LBRjYnhkgy3h0Dbew9A1r/fufdJiEDNiLmXLZH4W8=;
+	s=arc-20240116; t=1734023433; c=relaxed/simple;
+	bh=ZyU16AcwGxtwGmVQlT9yLe93eg2K+V2E9iLWPijRK8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CniXeMn/+3qKozKtz5GaVBJyHxsLxca0oEOXEJiiMLksWf/oOm2Dk7xSie9uKg7tFQXfCb3Mph9QQLKHXDqFugL7J8z7LbovRcLlWR7/SrTZfRpG11hjODEFwoGwrseLfVuqYh4UGD/s5DPBEy40BJb2RUfLXYuo+0oK3Hs3QvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5XKnNhc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E22C4CECE;
-	Thu, 12 Dec 2024 17:31:57 +0000 (UTC)
+	 MIME-Version; b=MttAciYIZ93BmAQH/UkwJoOstsAi/Vd1ADg+dtbEiTt01si2VLunFO4bUJX1pmXlli+pq8s31Ypj4DYOJBkQL0G+JsWmIUvp7aiQT6cAXD9Xj2HhH26LObKhQG3xJnIo0FSFjI+eCehbeHH+33q5hFbFcP5NAeGWg0eIzUFueT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqpMuT2B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93CFC4CED3;
+	Thu, 12 Dec 2024 17:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024717;
-	bh=q2LBRjYnhkgy3h0Dbew9A1r/fufdJiEDNiLmXLZH4W8=;
+	s=korg; t=1734023433;
+	bh=ZyU16AcwGxtwGmVQlT9yLe93eg2K+V2E9iLWPijRK8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5XKnNhcxPw6vFlTA0WTPCbr+MOTYyV200Ip3Bi/bLdTbRX/cvKdMicb4amrVQCdz
-	 D8FpPIJvQ3hxSIrJBFfls68ZmKqmBTQhR+G0JoyNzoJuqk9h1ZT9TFlYVEgNeKB4uh
-	 j87F36NKyL0Xp1TyPcN7PmLqQd5jGOkOLzt+jF9Y=
+	b=PqpMuT2Bf6aRX/AoU4NnjG8Um4pfQMlsQOWwTw67KYXmevsTcMMT6pYe+P95OJsJO
+	 0dqIm0B+HEx0KOTjZ8cJazVcHbvtlXZUnakP9AnCkLbppVs60imMW0+1L3yTcFhKHc
+	 PqbGIb0/lgFwkP8xaABwbCUfXRQ4YyQD6vyOL54k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 389/459] r8169: dont apply UDP padding quirk on RTL8126A
+Subject: [PATCH 5.15 532/565] sched/core: Remove the unnecessary need_resched() check in nohz_csd_func()
 Date: Thu, 12 Dec 2024 16:02:07 +0100
-Message-ID: <20241212144309.135366313@linuxfoundation.org>
+Message-ID: <20241212144332.851083551@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-[ Upstream commit 87e26448dbda4523b73a894d96f0f788506d3795 ]
+[ Upstream commit ea9cffc0a154124821531991d5afdd7e8b20d7aa ]
 
-Vendor drivers r8125/r8126 indicate that this quirk isn't needed
-any longer for RTL8126A. Mimic this in r8169.
+The need_resched() check currently in nohz_csd_func() can be tracked
+to have been added in scheduler_ipi() back in 2011 via commit
+ca38062e57e9 ("sched: Use resched IPI to kick off the nohz idle balance")
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/d1317187-aa81-4a69-b831-678436e4de62@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Since then, it has travelled quite a bit but it seems like an idle_cpu()
+check currently is sufficient to detect the need to bail out from an
+idle load balancing. To justify this removal, consider all the following
+case where an idle load balancing could race with a task wakeup:
+
+o Since commit f3dd3f674555b ("sched: Remove the limitation of WF_ON_CPU
+  on wakelist if wakee cpu is idle") a target perceived to be idle
+  (target_rq->nr_running == 0) will return true for
+  ttwu_queue_cond(target) which will offload the task wakeup to the idle
+  target via an IPI.
+
+  In all such cases target_rq->ttwu_pending will be set to 1 before
+  queuing the wake function.
+
+  If an idle load balance races here, following scenarios are possible:
+
+  - The CPU is not in TIF_POLLING_NRFLAG mode in which case an actual
+    IPI is sent to the CPU to wake it out of idle. If the
+    nohz_csd_func() queues before sched_ttwu_pending(), the idle load
+    balance will bail out since idle_cpu(target) returns 0 since
+    target_rq->ttwu_pending is 1. If the nohz_csd_func() is queued after
+    sched_ttwu_pending() it should see rq->nr_running to be non-zero and
+    bail out of idle load balancing.
+
+  - The CPU is in TIF_POLLING_NRFLAG mode and instead of an actual IPI,
+    the sender will simply set TIF_NEED_RESCHED for the target to put it
+    out of idle and flush_smp_call_function_queue() in do_idle() will
+    execute the call function. Depending on the ordering of the queuing
+    of nohz_csd_func() and sched_ttwu_pending(), the idle_cpu() check in
+    nohz_csd_func() should either see target_rq->ttwu_pending = 1 or
+    target_rq->nr_running to be non-zero if there is a genuine task
+    wakeup racing with the idle load balance kick.
+
+o The waker CPU perceives the target CPU to be busy
+  (targer_rq->nr_running != 0) but the CPU is in fact going idle and due
+  to a series of unfortunate events, the system reaches a case where the
+  waker CPU decides to perform the wakeup by itself in ttwu_queue() on
+  the target CPU but target is concurrently selected for idle load
+  balance (XXX: Can this happen? I'm not sure, but we'll consider the
+  mother of all coincidences to estimate the worst case scenario).
+
+  ttwu_do_activate() calls enqueue_task() which would increment
+  "rq->nr_running" post which it calls wakeup_preempt() which is
+  responsible for setting TIF_NEED_RESCHED (via a resched IPI or by
+  setting TIF_NEED_RESCHED on a TIF_POLLING_NRFLAG idle CPU) The key
+  thing to note in this case is that rq->nr_running is already non-zero
+  in case of a wakeup before TIF_NEED_RESCHED is set which would
+  lead to idle_cpu() check returning false.
+
+In all cases, it seems that need_resched() check is unnecessary when
+checking for idle_cpu() first since an impending wakeup racing with idle
+load balancer will either set the "rq->ttwu_pending" or indicate a newly
+woken task via "rq->nr_running".
+
+Chasing the reason why this check might have existed in the first place,
+I came across  Peter's suggestion on the fist iteration of Suresh's
+patch from 2011 [1] where the condition to raise the SCHED_SOFTIRQ was:
+
+	sched_ttwu_do_pending(list);
+
+	if (unlikely((rq->idle == current) &&
+	    rq->nohz_balance_kick &&
+	    !need_resched()))
+		raise_softirq_irqoff(SCHED_SOFTIRQ);
+
+Since the condition to raise the SCHED_SOFIRQ was preceded by
+sched_ttwu_do_pending() (which is equivalent of sched_ttwu_pending()) in
+the current upstream kernel, the need_resched() check was necessary to
+catch a newly queued task. Peter suggested modifying it to:
+
+	if (idle_cpu() && rq->nohz_balance_kick && !need_resched())
+		raise_softirq_irqoff(SCHED_SOFTIRQ);
+
+where idle_cpu() seems to have replaced "rq->idle == current" check.
+
+Even back then, the idle_cpu() check would have been sufficient to catch
+a new task being enqueued. Since commit b2a02fc43a1f ("smp: Optimize
+send_call_function_single_ipi()") overloads the interpretation of
+TIF_NEED_RESCHED for TIF_POLLING_NRFLAG idling, remove the
+need_resched() check in nohz_csd_func() to raise SCHED_SOFTIRQ based
+on Peter's suggestion.
+
+Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241119054432.6405-3-kprateek.nayak@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 3aa1dda3406cd..b60add52f4497 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4155,8 +4155,8 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
- {
- 	unsigned int padto = 0, len = skb->len;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 21b4f96d80a1b..7946c73dca31d 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1106,7 +1106,7 @@ static void nohz_csd_func(void *info)
+ 	WARN_ON(!(flags & NOHZ_KICK_MASK));
  
--	if (rtl_is_8125(tp) && len < 128 + RTL_MIN_PATCH_LEN &&
--	    rtl_skb_is_udp(skb) && skb_transport_header_was_set(skb)) {
-+	if (len < 128 + RTL_MIN_PATCH_LEN && rtl_skb_is_udp(skb) &&
-+	    skb_transport_header_was_set(skb)) {
- 		unsigned int trans_data_len = skb_tail_pointer(skb) -
- 					      skb_transport_header(skb);
- 
-@@ -4180,9 +4180,15 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
- static unsigned int rtl_quirk_packet_padto(struct rtl8169_private *tp,
- 					   struct sk_buff *skb)
- {
--	unsigned int padto;
-+	unsigned int padto = 0;
- 
--	padto = rtl8125_quirk_udp_padto(tp, skb);
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+		padto = rtl8125_quirk_udp_padto(tp, skb);
-+		break;
-+	default:
-+		break;
-+	}
- 
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_34:
+ 	rq->idle_balance = idle_cpu(cpu);
+-	if (rq->idle_balance && !need_resched()) {
++	if (rq->idle_balance) {
+ 		rq->nohz_idle_balance = flags;
+ 		raise_softirq_irqoff(SCHED_SOFTIRQ);
+ 	}
 -- 
 2.43.0
 
