@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAB09EEB95
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AA49EF23F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072E21884568
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32E8118831D7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2240209693;
-	Thu, 12 Dec 2024 15:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D280E222D64;
+	Thu, 12 Dec 2024 16:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEaJsuh+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKlG9aDz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC442AF0E;
-	Thu, 12 Dec 2024 15:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90915222D52;
+	Thu, 12 Dec 2024 16:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016933; cv=none; b=mm8EQMXGh7QMWNHsQK/FuNwaqfoOfRrHcOwaUena163DKphccAQbMWLLU2qXQ7BDtx9pCc9/XQzlhHMLKPpoUKkfqtk9XR4uE21wxv30U6eRUT7IaDa5xaHuFljbNyScAQKB1QmYOlCz/Zd2CYAH4mEuHKfaA9Y5Imrc8wgY3iI=
+	t=1734020794; cv=none; b=VBE3ex0vdZYMKgw+OKg8ENQa2FFRcLH1q+XQ0tJt/+L6AJgLVydHKE6q9CjwAwZPvuDjPsFCA6fJL2iJc4XE2YEkDxpH47/TIXnbwkdfaZJz+R5poBO+bCvRBk4+tEFEfBmlU8F0LekGbzU21vo+RvzMAzH4t8BYriIYcQz70z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016933; c=relaxed/simple;
-	bh=/MVwksO2mLQnqSCrzJskPMsUk4AJnETT2Of1oFwxMOg=;
+	s=arc-20240116; t=1734020794; c=relaxed/simple;
+	bh=2pU3KpXxWERS5twEwG674NfWRIqawJUBpa/Utw9Ci8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HyYwAGP8TcNy96ZsJjaT14c3/i65o86xYTrQ2JqluTotfs/CtLVyheAcSUj8jtjPWPe890RgK9xEOQi84GgkSo7lKUfSfyBf9vOEQp4sBWb/sMD7w1SvnEOVyghi5F28X002mCuZmex6cUqRh/jX3sYKktx9Kvgp17JFwVjxqu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEaJsuh+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE704C4CED4;
-	Thu, 12 Dec 2024 15:22:12 +0000 (UTC)
+	 MIME-Version; b=ObUTJjWae8ekTTu+xAwiebFjGzM5bZaXGb/UP4yr7/PuRv+NHebpf0ZZ5bS3keUt8kE3ck+EadBShnmosO2c4ZgjSMRw7u7lwKSzAoLRGQivsoDSN9sXA1qoUVNxn/qTTgTZdXmklTjUtcKkbHMX/v1qu9UbkIHqYTwZongHKXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKlG9aDz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7873C4CED0;
+	Thu, 12 Dec 2024 16:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016933;
-	bh=/MVwksO2mLQnqSCrzJskPMsUk4AJnETT2Of1oFwxMOg=;
+	s=korg; t=1734020794;
+	bh=2pU3KpXxWERS5twEwG674NfWRIqawJUBpa/Utw9Ci8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KEaJsuh+Lvlf96TlGPAiOGmv16N3UWBb05MazfLv7XpcvZ/JtFn7unuJQ3xolA9ka
-	 f9UsdHAIfHqzZMTs1JJYRjx92G9gvzLwH2/dodIyuDeoZaLB99UHNHkLZerqG1wtYe
-	 SXqeYoQYfccO9r+O9CYRbGqXKlL9JLo/Vzr5GVAM=
+	b=CKlG9aDz/KYZ3lJa/pYMmpjeFW6gG74fJKfpWCB54J9FmJDeuQU5QEeFEmubd9tQN
+	 INpFThG1NWCarOeMXcUS4/mS4e2/NMQWSFCTm0XanKuyEUphehe7s8btJwRFOPFkn8
+	 oufLKB1j2BiDiSegRdQM/9wdabp36U0pPdXNg+Iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 337/466] dsa: qca8k: Use nested lock to avoid splat
-Date: Thu, 12 Dec 2024 15:58:26 +0100
-Message-ID: <20241212144320.099878442@linuxfoundation.org>
+Subject: [PATCH 6.1 562/772] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
+Date: Thu, 12 Dec 2024 15:58:27 +0100
+Message-ID: <20241212144413.183220667@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Lunn <andrew@lunn.ch>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 078e0d596f7b5952dad8662ace8f20ed2165e2ce ]
+[ Upstream commit d677ce521334d8f1f327cafc8b1b7854b0833158 ]
 
-qca8k_phy_eth_command() is used to probe the child MDIO bus while the
-parent MDIO is locked. This causes lockdep splat, reporting a possible
-deadlock. It is not an actually deadlock, because different locks are
-used. By making use of mutex_lock_nested() we can avoid this false
-positive.
+Under certain conditions, the 64-bit '-mstack-protector-guard' flags may
+end up in the 32-bit vDSO flags, resulting in build failures due to the
+structure of clang's argument parsing of the stack protector options,
+which validates the arguments of the stack protector guard flags
+unconditionally in the frontend, choking on the 64-bit values when
+targeting 32-bit:
 
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20241110175955.3053664-1-andrew@lunn.ch
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
+  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
+  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:85: arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
+  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:87: arch/powerpc/kernel/vdso/vgetrandom-32.o] Error 1
+
+Remove these flags by adding them to the CC32FLAGSREMOVE variable, which
+already handles situations similar to this. Additionally, reformat and
+align a comment better for the expanding CONFIG_CC_IS_CLANG block.
+
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/qca/qca8k-8xxx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/vdso/Makefile | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
-index f8d8c70642c4f..59b4a7240b583 100644
---- a/drivers/net/dsa/qca/qca8k-8xxx.c
-+++ b/drivers/net/dsa/qca/qca8k-8xxx.c
-@@ -673,7 +673,7 @@ qca8k_phy_eth_command(struct qca8k_priv *priv, bool read, int phy,
- 	 * We therefore need to lock the MDIO bus onto which the switch is
- 	 * connected.
- 	 */
--	mutex_lock(&priv->bus->mdio_lock);
-+	mutex_lock_nested(&priv->bus->mdio_lock, MDIO_MUTEX_NESTED);
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index c12be984dccdf..ee9fd65dd8cb3 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -48,10 +48,14 @@ ldflags-y += $(filter-out $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
  
- 	/* Actually start the request:
- 	 * 1. Send mdio master packet
+ CC32FLAGS := -m32
+ CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
+-  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
+-  # an unused command line flag warning for this file.
+ ifdef CONFIG_CC_IS_CLANG
++# This flag is supported by clang for 64-bit but not 32-bit so it will cause
++# an unused command line flag warning for this file.
+ CC32FLAGSREMOVE += -fno-stack-clash-protection
++# -mstack-protector-guard values from the 64-bit build are not valid for the
++# 32-bit one. clang validates the values passed to these arguments during
++# parsing, even when -fno-stack-protector is passed afterwards.
++CC32FLAGSREMOVE += -mstack-protector-guard%
+ endif
+ LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
+ AS32FLAGS := -D__VDSO32__
 -- 
 2.43.0
 
