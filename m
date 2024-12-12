@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D34F9EF4EF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5469EF910
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0448340983
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02AC718986DA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A02218594;
-	Thu, 12 Dec 2024 17:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99B2221D93;
+	Thu, 12 Dec 2024 17:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WExWbr3m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBxWrICA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A102E213E6B;
-	Thu, 12 Dec 2024 17:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935C415696E;
+	Thu, 12 Dec 2024 17:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023010; cv=none; b=nESWyKH+N56Yl7faqMEFpkuQhlEVoz+ocz8HhIsECIsSG5wUghQ6H47JOr1iAhr4/M1spTrR/mmsGpxz/eWNx1v2WlqOSn3QVxFJ2P2ni5Stjyr9sjg8XUTJ4PHZfDvaryCDUZ/S8GSUAi6ADjoUjYPvzG8jXFUCxkqwFLF4mmY=
+	t=1734025270; cv=none; b=IlCaIggRLeSZKW/vIJuSb1Rkmrm/9mmyfNR35d6s8qwmvAeKDP+8mmDSAFT4ZsKIu6voimtlWuMXNKdX++R9EdzG7rEX/YkyQGBwDKRFEVZeioU8sCD3D+KT7bPkFWSpcMmK36zZX5EYeMfDGqti8sV8IzH92NA3zj2DoNLujLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023010; c=relaxed/simple;
-	bh=G7HP7JWA+O/Atvg5FgrByv3ZgGE8QEAkyF5XwTisHKI=;
+	s=arc-20240116; t=1734025270; c=relaxed/simple;
+	bh=ETarZRPySSCyPI1AVPq48vIOyTXtY+jksDQWJlKF6N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNiUyKM7mHMVPpyoR7NVLDDoAT/5CVX+fEAO/LdZDmsLcKWMop2S5nLVdBuoYwUJ1eGEoY1yj2O/QowPm7zi69pUBzNilNROZQ21OEylqrBWmISKzKfgXUXqITOGsIep+oTovR1mt0Yjpmy9M1H84vVorS0g5y/dJo+QVQKOWyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WExWbr3m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E032C4CECE;
-	Thu, 12 Dec 2024 17:03:29 +0000 (UTC)
+	 MIME-Version; b=amp1Ado06ndVWkLIwQzeqGantkhT6WQVjoVtxhWTFk/ueWKnC/ZjuEI2l8F7z3YXc+9kGwSl3Dw5Aqgmb1kKolxiTuHBNlKzN2VkAe+oDJFtKoEpciQ3JF5q5nfoZomxVMeFrvzSqC/qf2ooyyxEOfZ6aVnLS02Qv7uAimEDKmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBxWrICA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19509C4CED0;
+	Thu, 12 Dec 2024 17:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023010;
-	bh=G7HP7JWA+O/Atvg5FgrByv3ZgGE8QEAkyF5XwTisHKI=;
+	s=korg; t=1734025270;
+	bh=ETarZRPySSCyPI1AVPq48vIOyTXtY+jksDQWJlKF6N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WExWbr3m51I8tcPEqPTpe9JGjlnp9p7kVwovpxFDvWvqUEZjYHdLWJkDEd1POAb7P
-	 iWF4PFkaI8x7nwGT2UB9/2zdJBxYJid5UW2Np540oPprghuR8DEkowKoQHA1pMN3KZ
-	 euCP5x1QezBkxtaspGKMxPadcR2TYFPsoHEatYdk=
+	b=cBxWrICAudfCGL3AXTdge8iRotxVvPpZtzEjtj8H33fP6vE++md1XaXFAhVdbhhVJ
+	 oL/j93E1tG2uTB0F2YfplwcYx8+g3KbSUBFwWpxW7PeZNCHrCUI5zUabEYUnj1f09z
+	 RjVaHUYGM9PlKFVG8qCTH3KrdeqwzemWCPHufQO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Alain Volmat <alain.volmat@foss.st.com>
-Subject: [PATCH 5.15 396/565] drm/sti: avoid potential dereference of error pointers
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 073/321] drm/msm/adreno: Use IRQF_NO_AUTOEN flag in request_irq()
 Date: Thu, 12 Dec 2024 15:59:51 +0100
-Message-ID: <20241212144327.302182178@linuxfoundation.org>
+Message-ID: <20241212144232.875887682@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 831214f77037de02afc287eae93ce97f218d8c04 upstream.
+[ Upstream commit 394679f322649d06fea3c646ba65f5a0887f52c3 ]
 
-The return value of drm_atomic_get_crtc_state() needs to be
-checked. To avoid use of error pointer 'crtc_state' in case
-of the failure.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Cc: stable@vger.kernel.org
-Fixes: dd86dc2f9ae1 ("drm/sti: implement atomic_check for the planes")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240913090412.2022848-1-make24@iscas.ac.cn
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Patchwork: https://patchwork.freedesktop.org/patch/614075/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sti/sti_cursor.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/sti/sti_cursor.c
-+++ b/drivers/gpu/drm/sti/sti_cursor.c
-@@ -199,6 +199,9 @@ static int sti_cursor_atomic_check(struc
- 		return 0;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 40431a09dc97c..55ff242292f3d 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1233,15 +1233,13 @@ static int a6xx_gmu_get_irq(struct a6xx_gmu *gmu, struct platform_device *pdev,
  
- 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
-+	if (IS_ERR(crtc_state))
-+		return PTR_ERR(crtc_state);
-+
- 	mode = &crtc_state->mode;
- 	dst_x = new_plane_state->crtc_x;
- 	dst_y = new_plane_state->crtc_y;
+ 	irq = platform_get_irq_byname(pdev, name);
+ 
+-	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH, name, gmu);
++	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH | IRQF_NO_AUTOEN, name, gmu);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(&pdev->dev, "Unable to get interrupt %s %d\n",
+ 			      name, ret);
+ 		return ret;
+ 	}
+ 
+-	disable_irq(irq);
+-
+ 	return irq;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
