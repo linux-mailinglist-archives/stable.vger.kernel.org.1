@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C619EF3D7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF529EF0D1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1FFF175565
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2310E29D04B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41DF22A809;
-	Thu, 12 Dec 2024 16:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B232253F9;
+	Thu, 12 Dec 2024 16:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzyxgVft"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQKrlvWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17C9223E8C;
-	Thu, 12 Dec 2024 16:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805052210E1;
+	Thu, 12 Dec 2024 16:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022201; cv=none; b=ezBLNoi93EXQcK+s49urKgY9IqS7u99NQSE8hzCR6ZImaUzWLWhec5MI/tQ/QeJ6fVn4+Pt/Ly4T6zXiF22V2msv7JVdUWdgja9AmNFinM32wjPc255LL/E/R9ePR19xpU8FE0yb+JnKLlDrOSlvmkYSLiZFxhFjEOckIvOmyy4=
+	t=1734020395; cv=none; b=OC4QHXNAg0riCsqhPjDBArVlWPGP7ksK09OjKsoYMeOGjlE3VCe8fX5T4ZHzYJoRTAr8H+IZy9xpzMln3gHu5Xjv6r8DhfgL8FjSAkgjpdmQlO30ReH5xY/vvqk7DQfn/vzU87SmWDgJrPeeq5FwRVbP+RNLsJ3KYcI0JomRM50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022201; c=relaxed/simple;
-	bh=69jT4KTrEuMDHkh6He+Cz/9yCt60hCClANUDqWrJaQQ=;
+	s=arc-20240116; t=1734020395; c=relaxed/simple;
+	bh=k4D0/DIT6CgsnOtR1BSEr5PVoGELu+2nsHHy0QXdxYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=smWbuur7c8CDwcyXxNvOUcI6tLXi0nKxEG+u6wH8QCIevXXlZwz+Kg8QlbTBJylTwbKspC3cTZYTCUyVYIiF2NtBz8m4Dh6w0OjsE1UqVkxbxTtj8h4/Ccs7kSTXtoBdJ3X43l2oHPiNLhRX9on6IsokxBO9CQ5+HNflx7RoEgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzyxgVft; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A546DC4CECE;
-	Thu, 12 Dec 2024 16:50:00 +0000 (UTC)
+	 MIME-Version; b=ZEDjEaBlZN2CxVQVf4mj6FlbcpjtK/o6RbywUR8iCDCIquB5K4qys3uAp2y1nzHomdvNK/MNW/FGLmt/EK9exIisWQbrRbqe7wyF3o8ptnPwrS8EsxLV1Twd0wAd1B5eXguYKJuYv88gRv6GIzzYii2QYYDL0LViWU/Ur5oLlfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQKrlvWE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E197AC4CECE;
+	Thu, 12 Dec 2024 16:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022201;
-	bh=69jT4KTrEuMDHkh6He+Cz/9yCt60hCClANUDqWrJaQQ=;
+	s=korg; t=1734020395;
+	bh=k4D0/DIT6CgsnOtR1BSEr5PVoGELu+2nsHHy0QXdxYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IzyxgVftusta2dvh4wh03JQpDIKsDtkgE2feaH5FrVkquho+eX96Cz+8qUttg7/NN
-	 CCZ+I9EfSF3SnHiNnyZcRmD3XIsBMnbjh0I9p4xbLgtFYtTSp6KfaXnIhVGDUXnt1l
-	 Q7ifVjNDZcg7XQ4G4qaVi10lBuE/ShE7VI4k9oGc=
+	b=oQKrlvWE0qZQ5rkbJDjEQnRObJHzzVA1aOiIomd4JpZBU01PyZiHhfLh4bJx+SRNj
+	 E1y23eceBmpBnxAO+sigCJaz4UmO7q08DTKumg3TFDdvV4oBXTOFdm/bBcxpeegbLw
+	 ZxSLa/Km6rNYfgsz2WY8NihlSdJxpCNWpRh0E9Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 175/565] drm: fsl-dcu: enable PIXCLK on LS1021A
-Date: Thu, 12 Dec 2024 15:56:10 +0100
-Message-ID: <20241212144318.391854497@linuxfoundation.org>
+Subject: [PATCH 6.1 426/772] um: Fix potential integer overflow during physmem setup
+Date: Thu, 12 Dec 2024 15:56:11 +0100
+Message-ID: <20241212144407.524457727@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@tq-group.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit ffcde9e44d3e18fde3d18bfff8d9318935413bfd ]
+[ Upstream commit a98b7761f697e590ed5d610d87fa12be66f23419 ]
 
-The PIXCLK needs to be enabled in SCFG before accessing certain DCU
-registers, or the access will hang. For simplicity, the PIXCLK is enabled
-unconditionally, resulting in increased power consumption.
+This issue happens when the real map size is greater than LONG_MAX,
+which can be easily triggered on UML/i386.
 
-Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Fixes: 109eee2f2a18 ("drm/layerscape: Add Freescale DCU DRM driver")
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240926055552.1632448-2-alexander.stein@ew.tq-group.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: fe205bdd1321 ("um: Print minimum physical memory requirement")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20240916045950.508910-3-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/fsl-dcu/Kconfig           |  1 +
- drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 15 +++++++++++++++
- drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h |  3 +++
- 3 files changed, 19 insertions(+)
+ arch/um/kernel/physmem.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/fsl-dcu/Kconfig b/drivers/gpu/drm/fsl-dcu/Kconfig
-index d7dd8ba90e3af..9e5a35e7c00cc 100644
---- a/drivers/gpu/drm/fsl-dcu/Kconfig
-+++ b/drivers/gpu/drm/fsl-dcu/Kconfig
-@@ -8,6 +8,7 @@ config DRM_FSL_DCU
- 	select DRM_PANEL
- 	select REGMAP_MMIO
- 	select VIDEOMODE_HELPERS
-+	select MFD_SYSCON if SOC_LS1021A
- 	help
- 	  Choose this option if you have an Freescale DCU chipset.
- 	  If M is selected the module will be called fsl-dcu-drm.
-diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-index 660fe573db969..ab1d718fda5b5 100644
---- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-+++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-@@ -100,6 +100,7 @@ static void fsl_dcu_irq_uninstall(struct drm_device *dev)
- static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
+diff --git a/arch/um/kernel/physmem.c b/arch/um/kernel/physmem.c
+index 91485119ae67a..4339580f5a4f6 100644
+--- a/arch/um/kernel/physmem.c
++++ b/arch/um/kernel/physmem.c
+@@ -80,10 +80,10 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
+ 			  unsigned long len, unsigned long long highmem)
  {
- 	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
-+	struct regmap *scfg;
- 	int ret;
+ 	unsigned long reserve = reserve_end - start;
+-	long map_size = len - reserve;
++	unsigned long map_size = len - reserve;
+ 	int err;
  
- 	ret = fsl_dcu_drm_modeset_init(fsl_dev);
-@@ -108,6 +109,20 @@ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
- 		return ret;
- 	}
- 
-+	scfg = syscon_regmap_lookup_by_compatible("fsl,ls1021a-scfg");
-+	if (PTR_ERR(scfg) != -ENODEV) {
-+		/*
-+		 * For simplicity, enable the PIXCLK unconditionally,
-+		 * resulting in increased power consumption. Disabling
-+		 * the clock in PM or on unload could be implemented as
-+		 * a future improvement.
-+		 */
-+		ret = regmap_update_bits(scfg, SCFG_PIXCLKCR, SCFG_PIXCLKCR_PXCEN,
-+					 SCFG_PIXCLKCR_PXCEN);
-+		if (ret < 0)
-+			return dev_err_probe(dev->dev, ret, "failed to enable pixclk\n");
-+	}
-+
- 	ret = drm_vblank_init(dev, dev->mode_config.num_crtc);
- 	if (ret < 0) {
- 		dev_err(dev->dev, "failed to initialize vblank\n");
-diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h
-index e2049a0e8a92a..566396013c04a 100644
---- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h
-+++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h
-@@ -160,6 +160,9 @@
- #define FSL_DCU_ARGB4444		12
- #define FSL_DCU_YUV422			14
- 
-+#define SCFG_PIXCLKCR			0x28
-+#define SCFG_PIXCLKCR_PXCEN		BIT(31)
-+
- #define VF610_LAYER_REG_NUM		9
- #define LS1021A_LAYER_REG_NUM		10
- 
+-	if(map_size <= 0) {
++	if (len <= reserve) {
+ 		os_warn("Too few physical memory! Needed=%lu, given=%lu\n",
+ 			reserve, len);
+ 		exit(1);
+@@ -94,7 +94,7 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
+ 	err = os_map_memory((void *) reserve_end, physmem_fd, reserve,
+ 			    map_size, 1, 1, 1);
+ 	if (err < 0) {
+-		os_warn("setup_physmem - mapping %ld bytes of memory at 0x%p "
++		os_warn("setup_physmem - mapping %lu bytes of memory at 0x%p "
+ 			"failed - errno = %d\n", map_size,
+ 			(void *) reserve_end, err);
+ 		exit(1);
 -- 
 2.43.0
 
