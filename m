@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-103490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5AA9EF840
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6588F9EF4EC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274091894F05
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52D31291122
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095BE20A5EE;
-	Thu, 12 Dec 2024 17:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47A022541E;
+	Thu, 12 Dec 2024 17:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZpoQ7+D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gie94+9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8B02153EC;
-	Thu, 12 Dec 2024 17:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F138223711;
+	Thu, 12 Dec 2024 17:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024726; cv=none; b=WeJ9aObfli7wm8hkG7bKKsH1rsCmrqHFJP0F82RQgrVG4hXbR7n3UE2EZWCk7KOsWmnuWIynj17iqHdeP5Z1M2ekgEG9T1PTegh1jyl8ZD88StJ98lyrmkBpy0YvQNMmXlgLx8Amolv92yJOGAGh5IYTogAq3QC7cPjOk7+j0w4=
+	t=1734023442; cv=none; b=LFHVXWmz1apdcdyo55ojem3PBvJe/I/hPSdDBv+LPQ3XdGLmblo8Vl/amj/2ofZ8EPtWokRlxcURN3JJbx8jKC13Ys/IoNIGsFwzgaJLLEwEi0pInWGdNkgKeyNQsp6D6c5KtiGZiXuB2WiK6/BwurzO+hzw5P2qV9MjreUTlPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024726; c=relaxed/simple;
-	bh=ImcAwkSRxHr9KW/yS3LWJBL0muljiaaQJeUFFzNxf+k=;
+	s=arc-20240116; t=1734023442; c=relaxed/simple;
+	bh=CcjlJKw3B/d+U8oFUHqCFvdhZ8yzPjqSBNfcgNUk/4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocJQF7s+KJf4aM3er75EHRWDz0nigYjsbD+mkqGxgbqVv0HAUdDEdsrvaYcWbYjFPWtvW5qbVOJ1mDMSVe79MyY1h1jfHRPurl611/dnn0d6GohfV5IhcQH+udWDikXrx9k2Z5XmMwns6Syn/XUUl7yk07O+0GKKO834/uuzj3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZpoQ7+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E165C4CECE;
-	Thu, 12 Dec 2024 17:32:06 +0000 (UTC)
+	 MIME-Version; b=mxOHz7+qV0+sPGKwrFFbApJ39VNmqzaCvTtsgedSZkW9eI//uFI2xLSvK5Galrr8OJtcsJ7bA9MFidXdEioHgRAYRoEto0PpCqGJBgzwmvzWqc37hu4CHMZma0cedubBZkyVAOkYZBeyTPmNy+0KsukYFK6q7bfHgCkuxm/xjv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gie94+9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C261DC4CECE;
+	Thu, 12 Dec 2024 17:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024726;
-	bh=ImcAwkSRxHr9KW/yS3LWJBL0muljiaaQJeUFFzNxf+k=;
+	s=korg; t=1734023442;
+	bh=CcjlJKw3B/d+U8oFUHqCFvdhZ8yzPjqSBNfcgNUk/4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZpoQ7+DIkWeG7VSlepoh+/p9nMUvmyfYHXpYo13fs5M3PbO4AHT+cI0Yr50uo1On
-	 S97KFXVChYKUbYAM7Jwju6oDxQ2h5CjAis0lQy5kazkv7YLNxA8GUdcgjhh1BYfpTK
-	 FceKx2GkgckrOSHsSYGlMilEHfzoZcpuUF1eVKAk=
+	b=Gie94+9Rqhw4MPQA4tsQMuAG7ZNHRIdEZiydOfXke9RegxSdZTysXXstJ5/99wYOh
+	 o2+HNiMg09PIuK18icO8++uthlYFqHeBOWs4+fjrynvPPv2r6qTNX5DVSbu2AkwvaK
+	 K9FAFOJa5IgU1Bu+DAfdOSBQWgJ1lMopXed1ilcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 392/459] net: ethernet: fs_enet: Use %pa to format resource_size_t
+Subject: [PATCH 5.15 535/565] sched/core: Prevent wakeup of ksoftirqd during idle load balance
 Date: Thu, 12 Dec 2024 16:02:10 +0100
-Message-ID: <20241212144309.252066574@linuxfoundation.org>
+Message-ID: <20241212144332.973096489@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
+[ Upstream commit e932c4ab38f072ce5894b2851fea8bc5754bb8e5 ]
 
-The correct format string for resource_size_t is %pa which
-acts on the address of the variable to be formatted [1].
+Scheduler raises a SCHED_SOFTIRQ to trigger a load balancing event on
+from the IPI handler on the idle CPU. If the SMP function is invoked
+from an idle CPU via flush_smp_call_function_queue() then the HARD-IRQ
+flag is not set and raise_softirq_irqoff() needlessly wakes ksoftirqd
+because soft interrupts are handled before ksoftirqd get on the CPU.
 
-[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+Adding a trace_printk() in nohz_csd_func() at the spot of raising
+SCHED_SOFTIRQ and enabling trace events for sched_switch, sched_wakeup,
+and softirq_entry (for SCHED_SOFTIRQ vector alone) helps observing the
+current behavior:
 
-Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+       <idle>-0   [000] dN.1.:  nohz_csd_func: Raising SCHED_SOFTIRQ from nohz_csd_func
+       <idle>-0   [000] dN.4.:  sched_wakeup: comm=ksoftirqd/0 pid=16 prio=120 target_cpu=000
+       <idle>-0   [000] .Ns1.:  softirq_entry: vec=7 [action=SCHED]
+       <idle>-0   [000] .Ns1.:  softirq_exit: vec=7  [action=SCHED]
+       <idle>-0   [000] d..2.:  sched_switch: prev_comm=swapper/0 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=ksoftirqd/0 next_pid=16 next_prio=120
+  ksoftirqd/0-16  [000] d..2.:  sched_switch: prev_comm=ksoftirqd/0 prev_pid=16 prev_prio=120 prev_state=S ==> next_comm=swapper/0 next_pid=0 next_prio=120
+       ...
 
-Flagged by gcc-14 as:
+Use __raise_softirq_irqoff() to raise the softirq. The SMP function call
+is always invoked on the requested CPU in an interrupt handler. It is
+guaranteed that soft interrupts are handled at the end.
 
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-      |                                             ~^   ~~~~~~~~~
-      |                                              |      |
-      |                                              |      resource_size_t {aka long long unsigned int}
-      |                                              unsigned int
-      |                                             %llx
+Following are the observations with the changes when enabling the same
+set of events:
 
-No functional change intended.
-Compile tested only.
+       <idle>-0       [000] dN.1.: nohz_csd_func: Raising SCHED_SOFTIRQ for nohz_idle_balance
+       <idle>-0       [000] dN.1.: softirq_raise: vec=7 [action=SCHED]
+       <idle>-0       [000] .Ns1.: softirq_entry: vec=7 [action=SCHED]
 
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+No unnecessary ksoftirqd wakeups are seen from idle task's context to
+service the softirq.
+
+Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
+Closes: https://lore.kernel.org/lkml/fcf823f-195e-6c9a-eac3-25f870cb35ac@inria.fr/ [1]
+Reported-by: Julia Lawall <julia.lawall@inria.fr>
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20241119054432.6405-5-kprateek.nayak@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+ kernel/sched/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-index 21de56345503f..f743112730194 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-@@ -126,7 +126,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
- 	 * we get is an int, and the odds of multiple bitbang mdio buses
- 	 * is low enough that it's not worth going too crazy.
- 	 */
--	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-+	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 7946c73dca31d..ed92b75f7e024 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -1108,7 +1108,7 @@ static void nohz_csd_func(void *info)
+ 	rq->idle_balance = idle_cpu(cpu);
+ 	if (rq->idle_balance) {
+ 		rq->nohz_idle_balance = flags;
+-		raise_softirq_irqoff(SCHED_SOFTIRQ);
++		__raise_softirq_irqoff(SCHED_SOFTIRQ);
+ 	}
+ }
  
- 	data = of_get_property(np, "fsl,mdio-pin", &len);
- 	if (!data || len != 4)
 -- 
 2.43.0
 
