@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6DA49EED2B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:43:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4C69EF261
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7F491882A59
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:40:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76D451899CF1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447842185A8;
-	Thu, 12 Dec 2024 15:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9DA22912B;
+	Thu, 12 Dec 2024 16:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6RgFQ7D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/PfkS9K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01866217F28;
-	Thu, 12 Dec 2024 15:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA352288FD;
+	Thu, 12 Dec 2024 16:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017998; cv=none; b=RTHVZYZFoCiDf5wOM0/B2IhHtxdnZFSo5wvYakl88HgtV1Q/d4E8A8KleeD6Rar8qDCdAS8eMD+ukdHk8qfJBVqK4PzgpoNbnVVtStITYBAAwYFPN/C5QmfmOveI46Fr+Gj9xg544nCwaJriSArCI0yx3sRn7ZgUr2QQ+1F244k=
+	t=1734020725; cv=none; b=Wx98neSjw28p8o2fURwCsjYhkjTGGVMB3d5R7tkPWBbBMnfonIWQehVj6zLbvjffMOepcZNAGJp1LRFcX5xSO6kwbw9Xh0soUxrkuIejwTal/Pg/88aQQ9CveYa9Ti/EZT2VUTsmyoEu5hgEf+BUoRsOJIXgFkC1jmk+3rYPm1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017998; c=relaxed/simple;
-	bh=oVKW0QxO0eMnLIsmh706IwHp87GKmKOpn308ITeF1IU=;
+	s=arc-20240116; t=1734020725; c=relaxed/simple;
+	bh=TZA+j1P7V31/rCMU6RNCJTqKSqhWSoK6Fzxnp9vGIV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBSz86bsoYZg5X/GTaiuHQHtVKNWkBvgMvkCsX719LZdi7LiIia90XM49jASoMMD7QrIFcZR+ZtqBOfyokgrief+NRHt7Uys4ycSL3PUbb1vCHkOPaNg0zfCnrSYIrQ+ztIXd35tffEgSD9skZEcFC/cpOKYrbmAlL6coa42E+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6RgFQ7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64CC9C4CED0;
-	Thu, 12 Dec 2024 15:39:57 +0000 (UTC)
+	 MIME-Version; b=CTeSp71P4XcHBV2ZyTk83/F6pAtxrJ0OcNDyUgqAJTI+G94cvNxlRW0IyULithmBXzECO3AXoVYIueMO5URQOS9Ad3rLirqYxlRLx1/hEFIlFDeBdtt8ecjJMCnpHM1X/3BWOyQR9LHD8Bwenk4/ni97lPdvRd6cNnuIkRrNgEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/PfkS9K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133A8C4CECE;
+	Thu, 12 Dec 2024 16:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017997;
-	bh=oVKW0QxO0eMnLIsmh706IwHp87GKmKOpn308ITeF1IU=;
+	s=korg; t=1734020725;
+	bh=TZA+j1P7V31/rCMU6RNCJTqKSqhWSoK6Fzxnp9vGIV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6RgFQ7DUTEoQvMrtsymX1JzXICFno+hzBZsJo//5nC5qkeH3IGxiOgB85Yt6ElHJ
-	 4RW5Fej0ocaA2irdwbnClQjyVHZyyxcq73xj/hTrodr+4ZVmn5gzqF5aIpxLDZP9Y7
-	 oDGZWr9JDu59t/U62sI8bAFb6NEJ8R40364Kg+yg=
+	b=P/PfkS9Km+PpzcCzyrwjlvTbIGXwszT7RasLLDp20305sm/UsEtpsB5nIJ/v/aco7
+	 yxA3FE+qjNaXjJZ52Kbe/KyoK0PWaOFTcRRmc+kn3+XZ8QGvy9J3IQQOp13vpgnKq3
+	 yi86EVRbM4OuZFzBpFLxxsRuW380ExL7/kjooQGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Belanger <david.belanger@amd.com>,
-	Frank Min <frank.min@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 169/356] drm/amdgpu/hdp5.2: do a posting read when flushing HDP
+	Laurent Fasnacht <laurent.fasnacht@proton.ch>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 543/772] netfilter: nft_set_hash: skip duplicated elements pending gc run
 Date: Thu, 12 Dec 2024 15:58:08 +0100
-Message-ID: <20241212144251.311316549@linuxfoundation.org>
+Message-ID: <20241212144412.402009586@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit f756dbac1ce1d5f9a2b35e3b55fa429cf6336437 upstream.
+[ Upstream commit 7ffc7481153bbabf3332c6a19b289730c7e1edf5 ]
 
-Need to read back to make sure the write goes through.
+rhashtable does not provide stable walk, duplicated elements are
+possible in case of resizing. I considered that checking for errors when
+calling rhashtable_walk_next() was sufficient to detect the resizing.
+However, rhashtable_walk_next() returns -EAGAIN only at the end of the
+iteration, which is too late, because a gc work containing duplicated
+elements could have been already scheduled for removal to the worker.
 
-Cc: David Belanger <david.belanger@amd.com>
-Reviewed-by: Frank Min <frank.min@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a u32 gc worker sequence number per set, bump it on every workqueue
+run. Annotate gc worker sequence number on the expired element. Use it
+to skip those already seen in this gc workqueue run.
+
+Note that this new field is never reset in case gc transaction fails, so
+next gc worker run on the expired element overrides it. Wraparound of gc
+worker sequence number should not be an issue with stale gc worker
+sequence number in the element, that would just postpone the element
+removal in one gc run.
+
+Note that it is not possible to use flags to annotate that element is
+pending gc run to detect duplicates, given that gc transaction can be
+invalidated in case of update from the control plane, therefore, not
+allowing to clear such flag.
+
+On x86_64, pahole reports no changes in the size of nft_rhash_elem.
+
+Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
+Reported-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
+Tested-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/netfilter/nft_set_hash.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
-@@ -31,13 +31,15 @@
- static void hdp_v5_2_flush_hdp(struct amdgpu_device *adev,
- 				struct amdgpu_ring *ring)
- {
--	if (!ring || !ring->funcs->emit_wreg)
-+	if (!ring || !ring->funcs->emit_wreg) {
- 		WREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
- 			0);
--	else
-+		RREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
-+	} else {
- 		amdgpu_ring_emit_wreg(ring,
- 			(adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
- 			0);
-+	}
- }
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 1fd3b413350dc..5c4209b49bda7 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -24,10 +24,12 @@
+ struct nft_rhash {
+ 	struct rhashtable		ht;
+ 	struct delayed_work		gc_work;
++	u32				wq_gc_seq;
+ };
  
- static void hdp_v5_2_update_mem_power_gating(struct amdgpu_device *adev,
+ struct nft_rhash_elem {
+ 	struct rhash_head		node;
++	u32				wq_gc_seq;
+ 	struct nft_set_ext		ext;
+ };
+ 
+@@ -339,6 +341,10 @@ static void nft_rhash_gc(struct work_struct *work)
+ 	if (!gc)
+ 		goto done;
+ 
++	/* Elements never collected use a zero gc worker sequence number. */
++	if (unlikely(++priv->wq_gc_seq == 0))
++		priv->wq_gc_seq++;
++
+ 	rhashtable_walk_enter(&priv->ht, &hti);
+ 	rhashtable_walk_start(&hti);
+ 
+@@ -356,6 +362,14 @@ static void nft_rhash_gc(struct work_struct *work)
+ 			goto try_later;
+ 		}
+ 
++		/* rhashtable walk is unstable, already seen in this gc run?
++		 * Then, skip this element. In case of (unlikely) sequence
++		 * wraparound and stale element wq_gc_seq, next gc run will
++		 * just find this expired element.
++		 */
++		if (he->wq_gc_seq == priv->wq_gc_seq)
++			continue;
++
+ 		if (nft_set_elem_is_dead(&he->ext))
+ 			goto dead_elem;
+ 
+@@ -372,6 +386,8 @@ static void nft_rhash_gc(struct work_struct *work)
+ 		if (!gc)
+ 			goto try_later;
+ 
++		/* annotate gc sequence for this attempt. */
++		he->wq_gc_seq = priv->wq_gc_seq;
+ 		nft_trans_gc_elem_add(gc, he);
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
