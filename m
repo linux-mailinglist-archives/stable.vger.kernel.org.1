@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A6F9EF027
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C0A9EF2FF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C90A28FBF9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B33FE287933
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E9623ED4E;
-	Thu, 12 Dec 2024 16:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B94239BC0;
+	Thu, 12 Dec 2024 16:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVa/a2MM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K04n86/Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C8823ED45;
-	Thu, 12 Dec 2024 16:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830892253E0;
+	Thu, 12 Dec 2024 16:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019972; cv=none; b=tUBybkhUf/qUAS8rjQwlGsUyzuD9nin8hr5zEQe/re/sECW4bnBj5LLPhwetQ0pRROwJX7dHw8msHS7lWMnhcvpbB+BcfsFL0790mk8A8cFM0h6aTi8AY0UYMNdg0agEDbRSIiRxeKSIpRqrx/HijILtOf8tcWhZz5ALUpQokdM=
+	t=1734022024; cv=none; b=WeC1Rq8JdSfp6N++gY7Bq1i026dILtwygNU2qx8PyWclGdFWTlQ3ItDFyj0U6bNfxfchM6pPx81b08LU4j55KtjqzRdE1vfek6rLCSbp3/12EZD9XU22Bsr6H0Qngll720bEOtXPkbzoMNbIRaJivVcBf+Jn/7ODCaBn5HSgB3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019972; c=relaxed/simple;
-	bh=CgHLtzEaS5c1ah46wXom79o8CEAuQlcQKpccM4h1x1I=;
+	s=arc-20240116; t=1734022024; c=relaxed/simple;
+	bh=BRH5H580Ylx0+68g3GEW8QZnUcH+LfNywdjrQoJvcyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNL/6OmC26B2y6WB8tirFw0W/g8O4QwGOK12qjUwNnljt3Iy/kuW/OqGtIQK4nVU2GxmuWY8gA8GV16adcMzN+EmAFJtmVv6zvYCAX8/1kl9awNcjreQ+UXTpw/0cyJ+4i2t1FOmeTuj0SjulgjqJbx1Tt4ZXYsuTIEAncmzwH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVa/a2MM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0F8C4CECE;
-	Thu, 12 Dec 2024 16:12:51 +0000 (UTC)
+	 MIME-Version; b=oBqsEBAN/wBqj/AO+CuAFncOOddfzK/o89B9VioFh4hiXRU6VPnYHzGRvWXS+U/rwxepVlITzv9JZjwTsFLPg7d1MdALPaSkAWgERiu5TcAASIbAUlU9m/c82fkyoFgqspad0qNd4+NIIusrrTcGjXxOY+AbsoLO3HPGqfpUkFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K04n86/Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E439EC4CECE;
+	Thu, 12 Dec 2024 16:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019972;
-	bh=CgHLtzEaS5c1ah46wXom79o8CEAuQlcQKpccM4h1x1I=;
+	s=korg; t=1734022024;
+	bh=BRH5H580Ylx0+68g3GEW8QZnUcH+LfNywdjrQoJvcyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVa/a2MMv+uBadd9vNB0QqWxvjk5oiUMRFT+EVK/ptHncwatMpUccTKd+d4vdpA4L
-	 KgmHEMZxyy4P0WekvughXw5Kdyja3B9W5wU8RIV5tJxGXCUlu3LbIxgj+l7VXwX8yx
-	 ruPidYRDbYCq/aO9RYI+knW7JsxCWMzTL0fcu/9I=
+	b=K04n86/Qloir4HD3DBjOCzlPwqRvjap0G4h/RWhO+MaOG0tS7j6I6mc7nCAX/FDSi
+	 uBYmAVYmu4zGTxJu4irIN/p7EqPs3vb4tfFA9N0bUh2aggvD2Hw38Csg/53ZktNfGL
+	 eZ4DqZ4wDffEFiKudTLE3HdMbtTg2xg4wCHa5oi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jammy Huang <jammy_huang@aspeedtech.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Bin Lan <bin.lan.cn@windriver.com>
-Subject: [PATCH 6.1 345/772] media: aspeed: Fix memory overwrite if timing is 1600x900
-Date: Thu, 12 Dec 2024 15:54:50 +0100
-Message-ID: <20241212144404.168783546@linuxfoundation.org>
+	Priyanka Singh <priyanka.singh@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 096/565] EDAC/fsl_ddr: Fix bad bit shift operations
+Date: Thu, 12 Dec 2024 15:54:51 +0100
+Message-ID: <20241212144315.281042608@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jammy Huang <jammy_huang@aspeedtech.com>
+From: Priyanka Singh <priyanka.singh@nxp.com>
 
-commit c281355068bc258fd619c5aefd978595bede7bfe upstream.
+[ Upstream commit 9ec22ac4fe766c6abba845290d5139a3fbe0153b ]
 
-When capturing 1600x900, system could crash when system memory usage is
-tight.
+Fix undefined behavior caused by left-shifting a negative value in the
+expression:
 
-The way to reproduce this issue:
-1. Use 1600x900 to display on host
-2. Mount ISO through 'Virtual media' on OpenBMC's web
-3. Run script as below on host to do sha continuously
-  #!/bin/bash
-  while [ [1] ];
-  do
-	find /media -type f -printf '"%h/%f"\n' | xargs sha256sum
-  done
-4. Open KVM on OpenBMC's web
+    cap_high ^ (1 << (bad_data_bit - 32))
 
-The size of macro block captured is 8x8. Therefore, we should make sure
-the height of src-buf is 8 aligned to fix this issue.
+The variable bad_data_bit ranges from 0 to 63. When it is less than 32,
+bad_data_bit - 32 becomes negative, and left-shifting by a negative
+value in C is undefined behavior.
 
-Signed-off-by: Jammy Huang <jammy_huang@aspeedtech.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by combining cap_high and cap_low into a 64-bit variable.
+
+  [ bp: Massage commit message, simplify error bits handling. ]
+
+Fixes: ea2eb9a8b620 ("EDAC, fsl-ddr: Separate FSL DDR driver from MPC85xx")
+Signed-off-by: Priyanka Singh <priyanka.singh@nxp.com>
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241016-imx95_edac-v3-3-86ae6fc2756a@nxp.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/aspeed/aspeed-video.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/edac/fsl_ddr_edac.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/drivers/media/platform/aspeed/aspeed-video.c
-+++ b/drivers/media/platform/aspeed/aspeed-video.c
-@@ -1047,7 +1047,7 @@ static void aspeed_video_get_resolution(
- static void aspeed_video_set_resolution(struct aspeed_video *video)
- {
- 	struct v4l2_bt_timings *act = &video->active_timings;
--	unsigned int size = act->width * act->height;
-+	unsigned int size = act->width * ALIGN(act->height, 8);
+diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
+index 6d8ea226010d2..61e59341a41f9 100644
+--- a/drivers/edac/fsl_ddr_edac.c
++++ b/drivers/edac/fsl_ddr_edac.c
+@@ -331,21 +331,25 @@ static void fsl_mc_check(struct mem_ctl_info *mci)
+ 	 * TODO: Add support for 32-bit wide buses
+ 	 */
+ 	if ((err_detect & DDR_EDE_SBE) && (bus_width == 64)) {
++		u64 cap = (u64)cap_high << 32 | cap_low;
++		u32 s = syndrome;
++
+ 		sbe_ecc_decode(cap_high, cap_low, syndrome,
+ 				&bad_data_bit, &bad_ecc_bit);
  
- 	/* Set capture/compression frame sizes */
- 	aspeed_video_calc_compressed_size(video, size);
-@@ -1064,7 +1064,7 @@ static void aspeed_video_set_resolution(
- 		u32 width = ALIGN(act->width, 64);
+-		if (bad_data_bit != -1)
+-			fsl_mc_printk(mci, KERN_ERR,
+-				"Faulty Data bit: %d\n", bad_data_bit);
+-		if (bad_ecc_bit != -1)
+-			fsl_mc_printk(mci, KERN_ERR,
+-				"Faulty ECC bit: %d\n", bad_ecc_bit);
++		if (bad_data_bit >= 0) {
++			fsl_mc_printk(mci, KERN_ERR, "Faulty Data bit: %d\n", bad_data_bit);
++			cap ^= 1ULL << bad_data_bit;
++		}
++
++		if (bad_ecc_bit >= 0) {
++			fsl_mc_printk(mci, KERN_ERR, "Faulty ECC bit: %d\n", bad_ecc_bit);
++			s ^= 1 << bad_ecc_bit;
++		}
  
- 		aspeed_video_write(video, VE_CAP_WINDOW, width << 16 | act->height);
--		size = width * act->height;
-+		size = width * ALIGN(act->height, 8);
- 	} else {
- 		aspeed_video_write(video, VE_CAP_WINDOW,
- 				   act->width << 16 | act->height);
+ 		fsl_mc_printk(mci, KERN_ERR,
+ 			"Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
+-			cap_high ^ (1 << (bad_data_bit - 32)),
+-			cap_low ^ (1 << bad_data_bit),
+-			syndrome ^ (1 << bad_ecc_bit));
++			upper_32_bits(cap), lower_32_bits(cap), s);
+ 	}
+ 
+ 	fsl_mc_printk(mci, KERN_ERR,
+-- 
+2.43.0
+
 
 
 
