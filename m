@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E829EEB4E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205F89EED6A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20633282797
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:23:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4853188EF3E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDC71487CD;
-	Thu, 12 Dec 2024 15:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23E3223321;
+	Thu, 12 Dec 2024 15:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2t0qL7Ov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GblxLoYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285822054F8;
-	Thu, 12 Dec 2024 15:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF8F223316;
+	Thu, 12 Dec 2024 15:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017007; cv=none; b=uhn7ygF5UVR0NO5xMQYq/et8xTw6bpVKiQkdXhVN5EzJxoH369s6FXBCbjUkGpzdXaj3/c++ARSnkmDLjBBAgIsNSYiUWba1zxYlvC/Z/zAsCOztdfKSxhW8RmQkh9jxEXamltAtVucN7v1n+UP9fzV+vncbOMXmlAHIfqlABC8=
+	t=1734018120; cv=none; b=gKNDDAuDNDnmPb3NN4ajoDcG/7JtNvn+HhxeG8Wikfck5LGYSGabNVRI0nJqSUdwjGzc0hXulmlV72CNXX1ZkN946J2kxsFiUspZHxKS711y3/yJzlQlBhCuZaHrhV/kbBpmFNRWQPYF+yQUKOCQjW61WRid4UzGTsF73vwW4SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017007; c=relaxed/simple;
-	bh=5JwtVALgFHovo6fRMNPeZN+MNHcr5LPE+XCsTk0/eoA=;
+	s=arc-20240116; t=1734018120; c=relaxed/simple;
+	bh=FPw1WXRttd+5FVf6/lLX941/NYKxSIBGV49kY5YzQPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QRmr3pANEF4LNozUkgf5Kxg7udlOuEJpyxviV1aS0FukVy1GWt6i0Y2w7aQgTPGf8eXOQ9+2OigghYt4I5YKfC++kpx6MINnmxA9sBusqzXX777yv+rRIInBY1IPJeTF10/4V3SdV/yXKwwBGYcXzNVY01Cxxb+x/R3vLkLmRig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2t0qL7Ov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D67FC4CECE;
-	Thu, 12 Dec 2024 15:23:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uY5pfAfJTFSBoorD7ocI4md0Ij0s403DoSbvmB93nLaz8kFlf0te69+4IkCz+XpVWnUdp2jUTL5w+Y6SMJYudQtjfXl2iHZnel5vFA0JMtOzXPfmEqICnmjikxGJeTshR+iHBJOSKFYhAle5JdCcUw4Vqb51XAI7YamM5z0xnM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GblxLoYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF44BC4CECE;
+	Thu, 12 Dec 2024 15:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017007;
-	bh=5JwtVALgFHovo6fRMNPeZN+MNHcr5LPE+XCsTk0/eoA=;
+	s=korg; t=1734018120;
+	bh=FPw1WXRttd+5FVf6/lLX941/NYKxSIBGV49kY5YzQPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2t0qL7OvZ8/xWBQgJmyFO7hiFf34qPgq5j8ufDu+L8aty8cLznMgLxpqvdf5Z2aIT
-	 cwts8Rts3dRSqBNVd964UkGNUB0+X2Ym/TmnsXxkKIWjWTph+afL6IQkphiY/ePeq0
-	 0Xl0FOMMdn4vM0z2J/zz5KeJ1x6JGdi8UgYTCZhQ=
+	b=GblxLoYMGZJhlXWH86cH3uqSuN5RlqoAc403E/REbmSe+jM6+iRk9Uq/umJU3+O1l
+	 gKmCrf1j/37MiPluF3Ldfq7EItYoAuYU9/yTfzyooh+73IjGjhwcQNfX4nA6N1eNTU
+	 xyZa68M3TjAx7RUylEfrrwFxTF/hxq7VP2az+iRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Esben Haabendal <esben@geanix.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 354/466] pinctrl: freescale: fix COMPILE_TEST error with PINCTRL_IMX_SCU
+Subject: [PATCH 6.6 204/356] selftests/resctrl: Protect against array overflow when reading strings
 Date: Thu, 12 Dec 2024 15:58:43 +0100
-Message-ID: <20241212144320.773155779@linuxfoundation.org>
+Message-ID: <20241212144252.675509964@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Reinette Chatre <reinette.chatre@intel.com>
 
-[ Upstream commit 58414a31c5713afb5449fd74a26a843d34cc62e8 ]
+[ Upstream commit 46058430fc5d39c114f7e1b9c6ff14c9f41bd531 ]
 
-When PINCTRL_IMX_SCU was selected by PINCTRL_IMX8DXL or PINCTRL_IMX8QM
-combined with COMPILE_TEST on a non-arm platforms, the IMX_SCU
-dependency could not be enabled.
+resctrl selftests discover system properties via a variety of sysfs files.
+The MBM and MBA tests need to discover the event and umask with which to
+configure the performance event used to measure read memory bandwidth.
+This is done by parsing the contents of
+/sys/bus/event_source/devices/uncore_imc_<imc instance>/events/cas_count_read
+Similarly, the resctrl selftests discover the cache size via
+/sys/bus/cpu/devices/cpu<id>/cache/index<index>/size.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410031439.GyTSa0kX-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202410030852.q0Hukplf-lkp@intel.com/
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/20241003-imx-pinctrl-compile-test-fix-v1-1-145ca1948cc3@geanix.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Take care to do bounds checking when using fscanf() to read the
+contents of files into a string buffer because by default fscanf() assumes
+arbitrarily long strings. If the file contains more bytes than the array
+can accommodate then an overflow will occur.
+
+Provide a maximum field width to the conversion specifier to protect
+against array overflow. The maximum is one less than the array size because
+string input stores a terminating null byte that is not covered by the
+maximum field width.
+
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/freescale/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/resctrl_val.c | 4 ++--
+ tools/testing/selftests/resctrl/resctrlfs.c   | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/freescale/Kconfig b/drivers/pinctrl/freescale/Kconfig
-index 3b59d71890045..139bc0fb8a9db 100644
---- a/drivers/pinctrl/freescale/Kconfig
-+++ b/drivers/pinctrl/freescale/Kconfig
-@@ -20,7 +20,7 @@ config PINCTRL_IMX_SCMI
+diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
+index d77fdf356e98e..710058eb25407 100644
+--- a/tools/testing/selftests/resctrl/resctrl_val.c
++++ b/tools/testing/selftests/resctrl/resctrl_val.c
+@@ -178,7 +178,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
  
- config PINCTRL_IMX_SCU
- 	tristate
--	depends on IMX_SCU
-+	depends on IMX_SCU || COMPILE_TEST
- 	select PINCTRL_IMX
+ 		return -1;
+ 	}
+-	if (fscanf(fp, "%s", cas_count_cfg) <= 0) {
++	if (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
+ 		ksft_perror("Could not get iMC cas count read");
+ 		fclose(fp);
  
- config PINCTRL_IMX1_CORE
+@@ -196,7 +196,7 @@ static int read_from_imc_dir(char *imc_dir, int count)
+ 
+ 		return -1;
+ 	}
+-	if  (fscanf(fp, "%s", cas_count_cfg) <= 0) {
++	if  (fscanf(fp, "%1023s", cas_count_cfg) <= 0) {
+ 		ksft_perror("Could not get iMC cas count write");
+ 		fclose(fp);
+ 
+diff --git a/tools/testing/selftests/resctrl/resctrlfs.c b/tools/testing/selftests/resctrl/resctrlfs.c
+index 71ad2b335b83f..fe3241799841b 100644
+--- a/tools/testing/selftests/resctrl/resctrlfs.c
++++ b/tools/testing/selftests/resctrl/resctrlfs.c
+@@ -160,7 +160,7 @@ int get_cache_size(int cpu_no, char *cache_type, unsigned long *cache_size)
+ 
+ 		return -1;
+ 	}
+-	if (fscanf(fp, "%s", cache_str) <= 0) {
++	if (fscanf(fp, "%63s", cache_str) <= 0) {
+ 		ksft_perror("Could not get cache_size");
+ 		fclose(fp);
+ 
 -- 
 2.43.0
 
