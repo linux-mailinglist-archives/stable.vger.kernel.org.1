@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2109EECAE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDCA9EF174
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E40F166C41
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74EC5189C8B2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F291216E0B;
-	Thu, 12 Dec 2024 15:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A57236F85;
+	Thu, 12 Dec 2024 16:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+gQP999"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHi+g2Az"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B1D2153DF;
-	Thu, 12 Dec 2024 15:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D39C2253EC;
+	Thu, 12 Dec 2024 16:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017696; cv=none; b=Lt90b6YcsmyhrF/6e4e5cOZvJfh/Rwr0ZPx8wPKG/sdGs2O7AHjm1PRzW8tOUXuJCJn8e7bJWaN6csMM+ff7ER4eriyknfCAzZ6SD/ZDq5Ad4C/y7hs7IqPzBh0YxaOGgNweS1u+Ea2+m5yTj/Nsh7cxjFDA5awy65OY9OQIXb4=
+	t=1734020525; cv=none; b=F6Er3yAalHnIUtEa12+nG7aacr1jX8ynzGebBPuhy1IkCQ1NE7OPChsDLUw9hJU0Wqj5VaHLeWZ/Xehw6aF/SlJbaM9z0Acn8vJHqFkcQgTse+g/GtFXmTdH8ZSN02bGfTsdfjSwN+u9JUGoOMWOtHCDLr/X5cm3D9u9nQdgUsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017696; c=relaxed/simple;
-	bh=/rAOENTSbDEXg358n0LiqQgL/v86ln6WkwS2xHCzj6c=;
+	s=arc-20240116; t=1734020525; c=relaxed/simple;
+	bh=JEAoMkbZKIWxnGLXnASydz6Q1zP9PMRa9iws7PMYOGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBYej3zy/zPSqyqL++LcWlnkQY0KJSrF2DvM8dUzY6MAWUqw0TMrjEF9SIF4RD5/uFbUG2LX4xb+d9BeF/FdV4hQjFSuiELBm4HAXsa0oB+Y7b049A981TvWjz8SPzr2zXiLUAs9A5r8FC+LgloXpHGb9wixV8/ShBGcaOCBqIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+gQP999; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99730C4CECE;
-	Thu, 12 Dec 2024 15:34:55 +0000 (UTC)
+	 MIME-Version; b=r/Uvl9uBtzPCGdESrdEZDyqqOwd5ihk/14tx5IOp/5gh7a8XV9ug6SyK4Ea12PWf+z08dLirC1Kgtg/YdmabETqY6Bz6P/nKWskbBHSVGL2XPjDe2hEucSZXl2g2TUIYbhtrfIGF7f0Adoa/gAlV0lrbKbL2njSTDD/J+8BKkg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHi+g2Az; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FA7C4CECE;
+	Thu, 12 Dec 2024 16:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017696;
-	bh=/rAOENTSbDEXg358n0LiqQgL/v86ln6WkwS2xHCzj6c=;
+	s=korg; t=1734020524;
+	bh=JEAoMkbZKIWxnGLXnASydz6Q1zP9PMRa9iws7PMYOGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+gQP9992hVEp2EOtSoiFH+JUpzacDtbi0qlpkSo0LoKJiNsH6HCSVCtfEWlLSOr3
-	 CxuoyL21b8kGSWOu3PAsqFKrlfOU6Ke6LZSZ4DTTdWUEnJnxx3pbjc8lrMwmDq/jIs
-	 +hKT2R57F4XBS4vWi3WEqM7alrHMEnY4d+27HBE8=
+	b=RHi+g2AzEk313nNWZvRH8ZNtn3vcj+SO7Oajtf2qrWsH41I8UdmRagUHx1thasjOH
+	 mvBizwQEYkQWANJ64UB4caywgIkHl8cara05k0u3x3QbkuNTcqVD+oacKqovh52xCZ
+	 9A3RKntgAFhz51aDKPgXlvwYVqkmMIBYbvZy7Hoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/356] mmc: mtk-sd: fix devm_clk_get_optional usage
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 459/772] media: i2c: dw9768: Fix pm_runtime_set_suspended() with runtime pm enabled
 Date: Thu, 12 Dec 2024 15:56:44 +0100
-Message-ID: <20241212144247.981607539@linuxfoundation.org>
+Message-ID: <20241212144408.896299631@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit ed299eda8fbb37cb0e05c7001ab6a6b2627ec087 ]
+commit d6594d50761728d09f23238cf9c368bab6260ef3 upstream.
 
-This already returns NULL when not found. However, it can return
-EPROBE_DEFER and should thus return here.
+It is not valid to call pm_runtime_set_suspended() and
+pm_runtime_set_active() for devices with runtime PM enabled because it
+returns -EAGAIN if it is enabled already and working. So, adjust the
+order to fix it.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://lore.kernel.org/r/20240930224919.355359-4-rosenp@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 2508925fb346 ("mmc: mtk-sd: Fix MMC_CAP2_CRYPTO flag setting")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5f9a089b6de3 ("dw9768: Enable low-power probe on ACPI")
+Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mtk-sd.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/media/i2c/dw9768.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index a97034388cdff..c5e96a2c079e5 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -2711,9 +2711,8 @@ static int msdc_drv_probe(struct platform_device *pdev)
- 	if (!(mmc->caps2 & MMC_CAP2_NO_MMC)) {
- 		host->crypto_clk = devm_clk_get_optional(&pdev->dev, "crypto");
- 		if (IS_ERR(host->crypto_clk))
--			host->crypto_clk = NULL;
--		else
--			mmc->caps2 |= MMC_CAP2_CRYPTO;
-+			return PTR_ERR(host->crypto_clk);
-+		mmc->caps2 |= MMC_CAP2_CRYPTO;
+--- a/drivers/media/i2c/dw9768.c
++++ b/drivers/media/i2c/dw9768.c
+@@ -476,10 +476,9 @@ static int dw9768_probe(struct i2c_clien
+ 	 * to be powered on in an ACPI system. Similarly for power off in
+ 	 * remove.
+ 	 */
+-	pm_runtime_enable(dev);
+ 	full_power = (is_acpi_node(dev_fwnode(dev)) &&
+ 		      acpi_dev_state_d0(dev)) ||
+-		     (is_of_node(dev_fwnode(dev)) && !pm_runtime_enabled(dev));
++		     (is_of_node(dev_fwnode(dev)) && !IS_ENABLED(CONFIG_PM));
+ 	if (full_power) {
+ 		ret = dw9768_runtime_resume(dev);
+ 		if (ret < 0) {
+@@ -489,6 +488,7 @@ static int dw9768_probe(struct i2c_clien
+ 		pm_runtime_set_active(dev);
  	}
  
- 	host->irq = platform_get_irq(pdev, 0);
--- 
-2.43.0
-
++	pm_runtime_enable(dev);
+ 	ret = v4l2_async_register_subdev(&dw9768->sd);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to register V4L2 subdev: %d", ret);
+@@ -500,12 +500,12 @@ static int dw9768_probe(struct i2c_clien
+ 	return 0;
+ 
+ err_power_off:
++	pm_runtime_disable(dev);
+ 	if (full_power) {
+ 		dw9768_runtime_suspend(dev);
+ 		pm_runtime_set_suspended(dev);
+ 	}
+ err_clean_entity:
+-	pm_runtime_disable(dev);
+ 	media_entity_cleanup(&dw9768->sd.entity);
+ err_free_handler:
+ 	v4l2_ctrl_handler_free(&dw9768->ctrls);
+@@ -522,12 +522,12 @@ static void dw9768_remove(struct i2c_cli
+ 	v4l2_async_unregister_subdev(&dw9768->sd);
+ 	v4l2_ctrl_handler_free(&dw9768->ctrls);
+ 	media_entity_cleanup(&dw9768->sd.entity);
++	pm_runtime_disable(dev);
+ 	if ((is_acpi_node(dev_fwnode(dev)) && acpi_dev_state_d0(dev)) ||
+-	    (is_of_node(dev_fwnode(dev)) && !pm_runtime_enabled(dev))) {
++	    (is_of_node(dev_fwnode(dev)) && !IS_ENABLED(CONFIG_PM))) {
+ 		dw9768_runtime_suspend(dev);
+ 		pm_runtime_set_suspended(dev);
+ 	}
+-	pm_runtime_disable(dev);
+ }
+ 
+ static const struct of_device_id dw9768_of_table[] = {
 
 
 
