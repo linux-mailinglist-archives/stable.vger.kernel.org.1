@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CDD9EF3B2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DF39EF03D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E7F4189DD5B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FB12189B8E5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0816C2288CE;
-	Thu, 12 Dec 2024 16:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD6D223E9A;
+	Thu, 12 Dec 2024 16:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccZOII04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfjwj20s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93D0221DBE;
-	Thu, 12 Dec 2024 16:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C4922333E;
+	Thu, 12 Dec 2024 16:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021777; cv=none; b=LE3dDHGNAaX0EMWrlzaN24M2EI2WhoroF4mxrjRBmRS1p6JouGRMvqzYedq84VdqVLTgZ6OLBHDROx76Y1BUUeVGBlECfGg0G66QYm2D5N/vW2NAJO+dwsN54nWNJthobOJBECrHXZXjbxK0VV2S1Qsp7d9oBVgQz9PrzUCZXVY=
+	t=1734019723; cv=none; b=N+rpswOHh+dfSRZ9oV7xamB7DFUpu3ICD4EsA1u4CGEyoIkWBvDmV3M6qW9Qu7FpmxxEV/ikt3yHo9Vg6yW4MzGA2sO1j/BXLZC1InkyxJZdxPz8HIVbu4InU/0Rw1TftwP9DxE3hmBrVLibPaDTBMXAYfu/iHey7V5G7N6qyko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021777; c=relaxed/simple;
-	bh=HvX7mMabEz3JksvG8ijdNC7otWltTjX961IKaBi236o=;
+	s=arc-20240116; t=1734019723; c=relaxed/simple;
+	bh=MLVAhf1UARtv6wcQOLS89tPB9N0+cYTZCRs+HciOStY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XA3Lxpu4zWOPe2EywN3mhPEp8eaNzUV4N+pQBJk2ivdhdyxQG1TjMJ93bd37eIsRCjgGUygXB6IsznB5xe1H56VVkQB0keu3nDuFMeh4K/VrSGKSLdol5xGd3iiXmyvozYLZz/7OcXugMCC4mPhDcGhafI7osNC0itzs3Ky5noc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccZOII04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED69C4CECE;
-	Thu, 12 Dec 2024 16:42:56 +0000 (UTC)
+	 MIME-Version; b=ksMKYRon2g48cfYs1YNDMUkP78RoHmi0wrZ3BkUPu0NSge7OmfsxPlvDgn8CWk1cmunKJrhdWyG6z4bTesOs9bYZd2xgyG6ZxxMaxOdVFSkheMnJiDM6/efC+3vf5vW5wa3qcE0xQ5RAjjV+7dJtmI20ODQ9K6QOvGLWIfMUjQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfjwj20s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FE6C4CECE;
+	Thu, 12 Dec 2024 16:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021777;
-	bh=HvX7mMabEz3JksvG8ijdNC7otWltTjX961IKaBi236o=;
+	s=korg; t=1734019723;
+	bh=MLVAhf1UARtv6wcQOLS89tPB9N0+cYTZCRs+HciOStY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccZOII04OAadQtd9YGy8lwh+MeTaq3WCu9l02LiQxSi3KsCF/GH4OWeURfXTMrCk+
-	 Qij2BwS4zDMcbCVNEj9YtkIoJkgtdvKJ1LFE984wrjVIT8poeBAPZf7V/JBc4YEhgq
-	 6oBAdQ1iik9RNc2RmAkvZMOCz3GMTYxnDUl+mfow=
+	b=xfjwj20sHvTxDuvQtrUIcUROrZY4Iisrp5hz/oNmiHyTAuUYPWDwNLAy/uS0227UU
+	 uGsot31Wu3UTUGsfBAS9RPszNYFcOD/WrWwX9It7oZNpoTpWNhO/fjnWtlO5WnJNTM
+	 CgDqOFuNTLI7/7OqKaWKIsS9ckeno2eVqOiRqpq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Ubisectech Sirius <bugreport@valiantsec.com>,
-	syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 030/565] nilfs2: fix null-ptr-deref in block_touch_buffer tracepoint
+	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
+	Greg Ungerer <gerg@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 280/772] m68k: mcfgpio: Fix incorrect register offset for CONFIG_M5441x
 Date: Thu, 12 Dec 2024 15:53:45 +0100
-Message-ID: <20241212144312.640962170@linuxfoundation.org>
+Message-ID: <20241212144401.476085634@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
 
-commit cd45e963e44b0f10d90b9e6c0e8b4f47f3c92471 upstream.
+[ Upstream commit f212140962c93cd5da43283a18e31681540fc23d ]
 
-Patch series "nilfs2: fix null-ptr-deref bugs on block tracepoints".
+Fix a typo in the CONFIG_M5441x preprocessor condition, where the GPIO
+register offset was incorrectly set to 8 instead of 0. This prevented
+proper GPIO configuration for m5441x targets.
 
-This series fixes null pointer dereference bugs that occur when using
-nilfs2 and two block-related tracepoints.
-
-
-This patch (of 2):
-
-It has been reported that when using "block:block_touch_buffer"
-tracepoint, touch_buffer() called from __nilfs_get_folio_block() causes a
-NULL pointer dereference, or a general protection fault when KASAN is
-enabled.
-
-This happens because since the tracepoint was added in touch_buffer(), it
-references the dev_t member bh->b_bdev->bd_dev regardless of whether the
-buffer head has a pointer to a block_device structure.  In the current
-implementation, the block_device structure is set after the function
-returns to the caller.
-
-Here, touch_buffer() is used to mark the folio/page that owns the buffer
-head as accessed, but the common search helper for folio/page used by the
-caller function was optimized to mark the folio/page as accessed when it
-was reimplemented a long time ago, eliminating the need to call
-touch_buffer() here in the first place.
-
-So this solves the issue by eliminating the touch_buffer() call itself.
-
-Link: https://lkml.kernel.org/r/20241106160811.3316-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20241106160811.3316-2-konishi.ryusuke@gmail.com
-Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: Ubisectech Sirius <bugreport@valiantsec.com>
-Closes: https://lkml.kernel.org/r/86bd3013-887e-4e38-960f-ca45c657f032.bugreport@valiantsec.com
-Reported-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9982fb8d18eba905abe2
-Tested-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bea8bcb12da0 ("m68knommu: Add support for the Coldfire m5441x.")
+Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+Signed-off-by: Greg Ungerer <gerg@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/page.c |    1 -
- 1 file changed, 1 deletion(-)
+ arch/m68k/include/asm/mcfgpio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -39,7 +39,6 @@ __nilfs_get_page_block(struct page *page
- 	first_block = (unsigned long)index << (PAGE_SHIFT - blkbits);
- 	bh = nilfs_page_get_nth_block(page, block - first_block);
- 
--	touch_buffer(bh);
- 	wait_on_buffer(bh);
- 	return bh;
- }
+diff --git a/arch/m68k/include/asm/mcfgpio.h b/arch/m68k/include/asm/mcfgpio.h
+index 27f32cc81da6b..02049568198c9 100644
+--- a/arch/m68k/include/asm/mcfgpio.h
++++ b/arch/m68k/include/asm/mcfgpio.h
+@@ -144,7 +144,7 @@ static inline void gpio_free(unsigned gpio)
+  * read-modify-write as well as those controlled by the EPORT and GPIO modules.
+  */
+ #define MCFGPIO_SCR_START		40
+-#elif defined(CONFIGM5441x)
++#elif defined(CONFIG_M5441x)
+ /* The m5441x EPORT doesn't have its own GPIO port, uses PORT C */
+ #define MCFGPIO_SCR_START		0
+ #else
+-- 
+2.43.0
+
 
 
 
