@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B109EF3F9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACE39EEBF4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:58 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3E4729061D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20799188C27F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35398217656;
-	Thu, 12 Dec 2024 17:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671B3215F6A;
+	Thu, 12 Dec 2024 15:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="078qm2Ap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtENqdv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47B053365;
-	Thu, 12 Dec 2024 17:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B6821578E;
+	Thu, 12 Dec 2024 15:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022914; cv=none; b=DuaCH6tO4aefJDyb1e+AEfPgMXvXbrd/Kmo4UlZlL5B+lL1Udl56YbCP8nOIQOgY6ZcZFkdv3tvOF7l1kY3warFW9sNVWyMyYhKQgVM0oGghASTJF2XxrTqdl8a0BjLTh4lFDx9YnZG7N/SQ6H2RLX6HSD7lEoTK50U0YKxHq/U=
+	t=1734017253; cv=none; b=YwIV+wFLabx2o8wMRCjEO9ZMkduEaHZFvgRkP4hb4pWmU/XUuZylNbJJxtF3zI8ApuFzIgN61J7ugr6moyq1R6TOAGsPQzLnGjqPLLqMZ3dLroHaV4JIh1NfrdZ9YwMubOwf7gXjrn/XBKxOdWZGw/htxG2MymVskhoUklh+3QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022914; c=relaxed/simple;
-	bh=e1S9d50QnzFBRG+OuiPy43poZ7vU+3Y6A1SgQt9y2ag=;
+	s=arc-20240116; t=1734017253; c=relaxed/simple;
+	bh=S/iB0917nK56neTx0osRJHBXNA81TWPx6COc9+SJcOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnSS6dB1PfAvxBrIv0KT8kmpqPjWl+cnQaEu1NPF0hY/hix8vf4moXejraYZ8ID2ZoNRlvlkFAswqsw5dzGo+98NLAVV42FI57D+r8EBKB/MG953PalQSfp16lp+nF4lXQtANg8pT4iBVICKD8W6aHMWGRPg9A6y8Leo4jnb9XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=078qm2Ap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CD9C4CED0;
-	Thu, 12 Dec 2024 17:01:52 +0000 (UTC)
+	 MIME-Version; b=pYNHEzJkniw89H8pgOAEBlPO8To3qaeoHGPthnfIbwA7bRQYYMpYsqFbq2S1d+S/kTdvPY5FUXfafWRu2+g0VJoNimJBe5uBOlQAKoTk8GDa9DcEA2KpsXiMbPojz7/Arf40T+3gj5hzQNvatwJecun5EH47+d1eDMkvlHd4fHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtENqdv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3F9C4CECE;
+	Thu, 12 Dec 2024 15:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022913;
-	bh=e1S9d50QnzFBRG+OuiPy43poZ7vU+3Y6A1SgQt9y2ag=;
+	s=korg; t=1734017253;
+	bh=S/iB0917nK56neTx0osRJHBXNA81TWPx6COc9+SJcOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=078qm2ApcZLhp06zLHk0jpGdtqm9OyH/HQwYtf8gFR6l6IvMlK67yy10dhXacUu1b
-	 HHzodODCKnhbi57f4PmEAVTW0D9t+Pm5ETVK78FWh7zwWNYhvLX0CCSXWFwX1dDr02
-	 CrXjWsmqFiSaHTtxtLuJ0U04BjrKGmuRnC7TsEqQ=
+	b=BtENqdv2oxVGYDoTOgSvK4HzIWfbTYQWT86dVTm8H2c/IsxiWOAMJK+FFMhLWsO8c
+	 GMvdt8mRmUMtBYsNF+HPoxG9SMwgzMdLkKJSv1K27pWxcdFwbYiXgwAJix27pjQnN7
+	 7IZaDkOEJZzsZo+nMGUOb7MLh27Rarr/eIs2/RvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Mayank Rana <quic_mrana@quicinc.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 368/565] rtc: ab-eoz9: dont fail temperature reads on undervoltage notification
-Date: Thu, 12 Dec 2024 15:59:23 +0100
-Message-ID: <20241212144326.171309632@linuxfoundation.org>
+Subject: [PATCH 6.12 395/466] PCI: starfive: Enable controller runtime PM before probing host bridge
+Date: Thu, 12 Dec 2024 15:59:24 +0100
+Message-ID: <20241212144322.371235839@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+From: Mayank Rana <quic_mrana@quicinc.com>
 
-[ Upstream commit e0779a0dcf41a6452ac0a169cd96863feb5787c7 ]
+[ Upstream commit 6168efbebace0db443185d4c6701ca8170a8788d ]
 
-The undervoltage flags reported by the RTC are useful to know if the
-time and date are reliable after a reboot. Although the threshold VLOW1
-indicates that the thermometer has been shutdown and time compensation
-is off, it doesn't mean that the temperature readout is currently
-impossible.
+A PCI controller device, e.g., StarFive, is parent to PCI host bridge
+device. We must enable runtime PM of the controller before enabling runtime
+PM of the host bridge, which will happen in pci_host_probe(), to avoid this
+warning:
 
-As the system is running, the RTC voltage is now fully established and
-we can read the temperature.
+  pcie-starfive 940000000.pcie: Enabling runtime PM for inactive device with active children
 
-Fixes: 67075b63cce2 ("rtc: add AB-RTCMC-32.768kHz-EOZ9 RTC support")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://lore.kernel.org/r/20241122101031.68916-3-maxime.chevallier@bootlin.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fix this issue by enabling StarFive controller device's runtime PM before
+calling pci_host_probe() in plda_pcie_host_init().
+
+Link: https://lore.kernel.org/r/20241111-runtime_pm-v7-1-9c164eefcd87@quicinc.com
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Mayank Rana <quic_mrana@quicinc.com>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ab-eoz9.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/pci/controller/plda/pcie-starfive.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ab-eoz9.c b/drivers/rtc/rtc-ab-eoz9.c
-index a9b355510cd47..31c264100d781 100644
---- a/drivers/rtc/rtc-ab-eoz9.c
-+++ b/drivers/rtc/rtc-ab-eoz9.c
-@@ -396,13 +396,6 @@ static int abeoz9z3_temp_read(struct device *dev,
- 	if (ret < 0)
+diff --git a/drivers/pci/controller/plda/pcie-starfive.c b/drivers/pci/controller/plda/pcie-starfive.c
+index c9933ecf68338..0564fdce47c2a 100644
+--- a/drivers/pci/controller/plda/pcie-starfive.c
++++ b/drivers/pci/controller/plda/pcie-starfive.c
+@@ -404,6 +404,9 @@ static int starfive_pcie_probe(struct platform_device *pdev)
+ 	if (ret)
  		return ret;
  
--	if ((val & ABEOZ9_REG_CTRL_STATUS_V1F) ||
--	    (val & ABEOZ9_REG_CTRL_STATUS_V2F)) {
--		dev_err(dev,
--			"thermometer might be disabled due to low voltage\n");
--		return -EINVAL;
--	}
--
- 	switch (attr) {
- 	case hwmon_temp_input:
- 		ret = regmap_read(regmap, ABEOZ9_REG_REG_TEMP, &val);
++	pm_runtime_enable(&pdev->dev);
++	pm_runtime_get_sync(&pdev->dev);
++
+ 	plda->host_ops = &sf_host_ops;
+ 	plda->num_events = PLDA_MAX_EVENT_NUM;
+ 	/* mask doorbell event */
+@@ -413,11 +416,12 @@ static int starfive_pcie_probe(struct platform_device *pdev)
+ 	plda->events_bitmap <<= PLDA_NUM_DMA_EVENTS;
+ 	ret = plda_pcie_host_init(&pcie->plda, &starfive_pcie_ops,
+ 				  &stf_pcie_event);
+-	if (ret)
++	if (ret) {
++		pm_runtime_put_sync(&pdev->dev);
++		pm_runtime_disable(&pdev->dev);
+ 		return ret;
++	}
+ 
+-	pm_runtime_enable(&pdev->dev);
+-	pm_runtime_get_sync(&pdev->dev);
+ 	platform_set_drvdata(pdev, pcie);
+ 
+ 	return 0;
 -- 
 2.43.0
 
