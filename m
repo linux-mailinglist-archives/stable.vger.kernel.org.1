@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-102345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405F19EF17C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCC79EED56
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 017F428EDAF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73D6F188EBF4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F6922C36A;
-	Thu, 12 Dec 2024 16:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EB52210E1;
+	Thu, 12 Dec 2024 15:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XR4F56HI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvvTnbAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E40A22C354;
-	Thu, 12 Dec 2024 16:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58F52210D5;
+	Thu, 12 Dec 2024 15:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020889; cv=none; b=Y6XXacfKGXIPIVMIeEDepKaZ0xoPHb/+CsZbofHPJ3PQKeNlmmUf8bJLZ9q+rtbSdp01j75VXQZ3XKS4gkjmRTUGO5fPaWHxK+BS+Ap1JVBMryiwLEwEBr0XHNUQJ22XT27WGr23SPNk/mG2VC9T95DRBNh4rFD8pY53+k9Evuc=
+	t=1734018053; cv=none; b=kYtZRD0+LMsAeboUXDW9NXTyTSi3L5C3FTJaU6W4PHnF/jGQXBMr44Y+Uf/9T4PhXv9mkAOPLPBMS8c4/XsLb8zQmYFnvEe1RVVHVpaM77BvUmrvxiiENpAumLoJtZchOIQotvt1rXzLslbUMRRGQNC065QHzk1wbmFvwvwOhO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020889; c=relaxed/simple;
-	bh=qFIkncYmvslN1Aodfv6vyL5PHopOUmxqVs9zFDx9rTs=;
+	s=arc-20240116; t=1734018053; c=relaxed/simple;
+	bh=xzCpKEO9pdP6tofcEUof7P5zkhL/+TwzRQjhEagoOCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LCSy9Ggi9RqjaNMe/NEm5uUyg5e/DOr3STg2UVOGCIdZQFwdDkfBzyIdfcolMQE2BItIMynkY+pJqBKDEGGnLuE3UhgwnQJHzyVNAP8j58nCWUBYIMSK+3LkMQTowdNdDPjv8slPKNMVUFOu9jbj41lP6KBCR9bWBRwexoChUto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XR4F56HI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF05CC4CECE;
-	Thu, 12 Dec 2024 16:28:08 +0000 (UTC)
+	 MIME-Version; b=LnjdM/n0AhsmE1puWte9vi2SOE9KxVBxSjfxil72z4lXjqB3ULh4WwNjeaB4pS71BaSzUMQQCQEFRRNs+qtOzfZwXdYB1PHTaFi9CEBkrWr2t7XOD4fgZUCnMloCtbyCiPntfNOfv46FyPj/9Zg0Gbgw6DcThautIb0LYRBNEQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvvTnbAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B54C4CECE;
+	Thu, 12 Dec 2024 15:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020889;
-	bh=qFIkncYmvslN1Aodfv6vyL5PHopOUmxqVs9zFDx9rTs=;
+	s=korg; t=1734018053;
+	bh=xzCpKEO9pdP6tofcEUof7P5zkhL/+TwzRQjhEagoOCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XR4F56HIzyTwO8SHYCCTisY6tlAquKX8nmPB6RysOzCF0+xbNqCHu4pxu9HQfSx+Z
-	 assIIuBrAdGhAIp16hS7HlahPe8320QRtgC1neN5SjPgvA2bT0nWi/CJBxzy7h5jR7
-	 ToOK2qBXKAC8cWzYfPTMz3h6AoW2P4LQaBqlHbjI=
+	b=gvvTnbAPUqTzNoh+Z/+e96GvXk+Tbt9cBbZnElF3xBFwyE8C+Su3rddaH7qOsz16z
+	 7iFD9/7AEKc6rf9SSc3I3UAntWpOm3uRqM0IKraYj6Kb+pJIEC1h/rmlluZTBvQuSU
+	 kZwQpn2WWC3Lu31Rj6iybu7vA1zuXXaTFcEqssyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 558/772] powerpc/vdso: Improve linker flags
+Subject: [PATCH 6.6 184/356] epoll: annotate racy check
 Date: Thu, 12 Dec 2024 15:58:23 +0100
-Message-ID: <20241212144413.021916638@linuxfoundation.org>
+Message-ID: <20241212144251.899211347@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit f0a42fbab447ed9f55bbd99751183e71f3a1f6ec ]
+[ Upstream commit 6474353a5e3d0b2cf610153cea0c61f576a36d0a ]
 
-When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, there
-are several warnings in the PowerPC vDSO:
+Epoll relies on a racy fastpath check during __fput() in
+eventpoll_release() to avoid the hit of pointlessly acquiring a
+semaphore. Annotate that race by using WRITE_ONCE() and READ_ONCE().
 
-  clang-16: error: -Wl,-soname=linux-vdso32.so.1: 'linker' input unused [-Werror,-Wunused-command-line-argument]
-  clang-16: error: -Wl,--hash-style=both: 'linker' input unused [-Werror,-Wunused-command-line-argument]
-  clang-16: error: argument unused during compilation: '-shared' [-Werror,-Wunused-command-line-argument]
-
-  clang-16: error: argument unused during compilation: '-nostdinc' [-Werror,-Wunused-command-line-argument]
-  clang-16: error: argument unused during compilation: '-Wa,-maltivec' [-Werror,-Wunused-command-line-argument]
-
-The first group of warnings point out that linker flags were being added
-to all invocations of $(CC), even though they will only be used during
-the final vDSO link. Move those flags to ldflags-y.
-
-The second group of warnings are compiler or assembler flags that will
-be unused during linking. Filter them out from KBUILD_CFLAGS so that
-they are not used during linking.
-
-Additionally, '-z noexecstack' was added directly to the ld_and_check
-rule in commit 1d53c0192b15 ("powerpc/vdso: link with -z noexecstack")
-but now that there is a common ldflags variable, it can be moved there.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Stable-dep-of: d677ce521334 ("powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang")
+Link: https://lore.kernel.org/r/66edfb3c.050a0220.3195df.001a.GAE@google.com
+Link: https://lore.kernel.org/r/20240925-fungieren-anbauen-79b334b00542@brauner
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reported-by: syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/vdso/Makefile | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ fs/eventpoll.c            | 6 ++++--
+ include/linux/eventpoll.h | 2 +-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 45c0cc5d34b64..d4023bceec348 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -47,13 +47,17 @@ KCOV_INSTRUMENT := n
- UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 0ed73bc7d4652..bcaad495930c3 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -741,7 +741,8 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+ 	to_free = NULL;
+ 	head = file->f_ep;
+ 	if (head->first == &epi->fllink && !epi->fllink.next) {
+-		file->f_ep = NULL;
++		/* See eventpoll_release() for details. */
++		WRITE_ONCE(file->f_ep, NULL);
+ 		if (!is_file_epoll(file)) {
+ 			struct epitems_head *v;
+ 			v = container_of(head, struct epitems_head, epitems);
+@@ -1498,7 +1499,8 @@ static int attach_epitem(struct file *file, struct epitem *epi)
+ 			spin_unlock(&file->f_lock);
+ 			goto allocate;
+ 		}
+-		file->f_ep = head;
++		/* See eventpoll_release() for details. */
++		WRITE_ONCE(file->f_ep, head);
+ 		to_free = NULL;
+ 	}
+ 	hlist_add_head_rcu(&epi->fllink, file->f_ep);
+diff --git a/include/linux/eventpoll.h b/include/linux/eventpoll.h
+index 3337745d81bd6..0c0d00fcd131f 100644
+--- a/include/linux/eventpoll.h
++++ b/include/linux/eventpoll.h
+@@ -42,7 +42,7 @@ static inline void eventpoll_release(struct file *file)
+ 	 * because the file in on the way to be removed and nobody ( but
+ 	 * eventpoll ) has still a reference to this file.
+ 	 */
+-	if (likely(!file->f_ep))
++	if (likely(!READ_ONCE(file->f_ep)))
+ 		return;
  
--ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
--ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
--
--CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
-+ccflags-y := -fno-common -fno-builtin
-+ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack
-+ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
-+# Filter flags that clang will warn are unused for linking
-+ldflags-y += $(filter-out $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
-+
-+CC32FLAGS := -m32
-+LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
- AS32FLAGS := -D__VDSO32__
- 
--CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
-+LD64FLAGS := -Wl,-soname=linux-vdso64.so.1
- AS64FLAGS := -D__VDSO64__
- 
- targets += vdso32.lds
-@@ -92,15 +96,15 @@ include/generated/vdso64-offsets.h: $(obj)/vdso64.so.dbg FORCE
- 
- # actual build commands
- quiet_cmd_vdso32ld_and_check = VDSO32L $@
--      cmd_vdso32ld_and_check = $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
-+      cmd_vdso32ld_and_check = $(VDSOCC) $(ldflags-y) $(CC32FLAGS) $(LD32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
- quiet_cmd_vdso32as = VDSO32A $@
-       cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) $(AS32FLAGS) -c -o $@ $<
- quiet_cmd_vdso32cc = VDSO32C $@
-       cmd_vdso32cc = $(VDSOCC) $(c_flags) $(CC32FLAGS) -c -o $@ $<
- 
- quiet_cmd_vdso64ld_and_check = VDSO64L $@
--      cmd_vdso64ld_and_check = $(VDSOCC) $(c_flags) $(CC64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
-+      cmd_vdso64ld_and_check = $(VDSOCC) $(ldflags-y) $(LD64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
- quiet_cmd_vdso64as = VDSO64A $@
--      cmd_vdso64as = $(VDSOCC) $(a_flags) $(CC64FLAGS) $(AS64FLAGS) -c -o $@ $<
-+      cmd_vdso64as = $(VDSOCC) $(a_flags) $(AS64FLAGS) -c -o $@ $<
- 
- OBJECT_FILES_NON_STANDARD := y
+ 	/*
 -- 
 2.43.0
 
