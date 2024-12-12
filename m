@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-101364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC859EEC05
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAAD9EEE1E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8346E168BF2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8471B188E35D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063C02153D9;
-	Thu, 12 Dec 2024 15:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5A5222D4A;
+	Thu, 12 Dec 2024 15:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cy50/XuE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFcbvZME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52E6748A;
-	Thu, 12 Dec 2024 15:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AC6222D46;
+	Thu, 12 Dec 2024 15:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017298; cv=none; b=AptRT7/1SVJs4+Z4SgPPKkjbnZXp3dQ0Dl2/zGs63IsMA8EICgsZ1wGwb7aq8xHDuBLFsBtSeFRhMuAf0aJJ3DGVmv1mBR5fXeq7BLAag4W51m9GquGwE0dJXmmq4Y6p7Re6cwJ8gV0KPS/tD+GXX4VIZODcjufLlP/7bNcrgus=
+	t=1734018455; cv=none; b=IS+bkLG99tychyYlTVYCn4ORO3vWDwRavNwdZIl0oHf4acbwUQodJWbq+EFkpxdXFj/SmR8Ie9sNn4RwHyanXFMBvQ8p5BzgITfTsOCG6HCvlXl4TQHEY0iNkIAQZEjhoVhCTNtZBwpGhRwydORHcvz5VlHSDTpvGeiJ9etpMug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017298; c=relaxed/simple;
-	bh=PMBIxOXlcUNFKqbM8LBM8m+AtO6RF9oRGbEsin6I8hI=;
+	s=arc-20240116; t=1734018455; c=relaxed/simple;
+	bh=4ZVzlEtNjGNBKdpdSn5KmBeDeeksxeqoCM2Ns7IqL08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZGz71JdVHvbQGZiHC52HrcIz6DZZZCCV/9MyYiCQYItZJB5x7zny5RaPaWngcknP5AQ0a5CcszDIn6qv8GHGknkggksLLOSSN9XXkyfD2GL5kAU+K+1ld34jqMhbXzo3vCZ5QNC+eCGFlzU1O1UMe8c/GC1P9w77HaoBw8+i3jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cy50/XuE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FECC4CECE;
-	Thu, 12 Dec 2024 15:28:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lLoA82+rFSEFcUllsP8Ty6n0cboPOH+a3in5JC4/AllZ4x48fYWzxLO5oqnIQucqRV2/C0VLakefCSkqfEmkGV2cw5jDtl6sAKGeHNsUn62bD7j8IQx5YTVkRIf9wkGfiEaBeljOCV+CLsVP6DDQv9q+/DkiBZQ5nlByNhiafJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFcbvZME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4526C4CECE;
+	Thu, 12 Dec 2024 15:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017298;
-	bh=PMBIxOXlcUNFKqbM8LBM8m+AtO6RF9oRGbEsin6I8hI=;
+	s=korg; t=1734018455;
+	bh=4ZVzlEtNjGNBKdpdSn5KmBeDeeksxeqoCM2Ns7IqL08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cy50/XuEu1EX++HedKIAsFWPmxViekXun62P03l4tNXy02LKQMtEyQuH81nGOAg60
-	 U3WXfbeOpzUF7mprx1eN9bFfnaDjqht0oS1k72QS/c3XRus/oewVQvtJtd2kRyGFNI
-	 bqUmea2kQRNLV8/46wq8vnj8H57G27U+b9OksCAY=
+	b=TFcbvZMECDwRBzqb0l8L4SMMRajs1JNt61+0iTEWpTBW4qT1792f0LVu1OkbHV60L
+	 EOayz67RvWilAE8nMbNODaWZL/LpZ7Icn7PRhT/8DfDl5LMLsp3/5x8jwUrRTKUhVP
+	 PRwVC3oBQqyHWerWFbfUjLBrTVoZnW+2/OQeylH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Anusha Rao <quic_anusha@quicinc.com>,
+	devi priya <quic_devipriy@quicinc.com>,
+	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 440/466] sched/core: Remove the unnecessary need_resched() check in nohz_csd_func()
+Subject: [PATCH 6.6 290/356] PCI: qcom: Add support for IPQ9574
 Date: Thu, 12 Dec 2024 16:00:09 +0100
-Message-ID: <20241212144324.242299901@linuxfoundation.org>
+Message-ID: <20241212144256.030712797@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,125 +64,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: devi priya <quic_devipriy@quicinc.com>
 
-[ Upstream commit ea9cffc0a154124821531991d5afdd7e8b20d7aa ]
+[ Upstream commit a63b74f2e35be3829f256922037ae5cee6bb844a ]
 
-The need_resched() check currently in nohz_csd_func() can be tracked
-to have been added in scheduler_ipi() back in 2011 via commit
-ca38062e57e9 ("sched: Use resched IPI to kick off the nohz idle balance")
+Add the new IPQ9574 platform which is based on the Qcom IP rev. 1.27.0
+and Synopsys IP rev. 5.80a.
 
-Since then, it has travelled quite a bit but it seems like an idle_cpu()
-check currently is sufficient to detect the need to bail out from an
-idle load balancing. To justify this removal, consider all the following
-case where an idle load balancing could race with a task wakeup:
+The platform itself has four PCIe Gen3 controllers: two single-lane and
+two dual-lane, all are based on Synopsys IP rev. 5.70a. As such, reuse
+all the members of 'ops_2_9_0'.
 
-o Since commit f3dd3f674555b ("sched: Remove the limitation of WF_ON_CPU
-  on wakelist if wakee cpu is idle") a target perceived to be idle
-  (target_rq->nr_running == 0) will return true for
-  ttwu_queue_cond(target) which will offload the task wakeup to the idle
-  target via an IPI.
-
-  In all such cases target_rq->ttwu_pending will be set to 1 before
-  queuing the wake function.
-
-  If an idle load balance races here, following scenarios are possible:
-
-  - The CPU is not in TIF_POLLING_NRFLAG mode in which case an actual
-    IPI is sent to the CPU to wake it out of idle. If the
-    nohz_csd_func() queues before sched_ttwu_pending(), the idle load
-    balance will bail out since idle_cpu(target) returns 0 since
-    target_rq->ttwu_pending is 1. If the nohz_csd_func() is queued after
-    sched_ttwu_pending() it should see rq->nr_running to be non-zero and
-    bail out of idle load balancing.
-
-  - The CPU is in TIF_POLLING_NRFLAG mode and instead of an actual IPI,
-    the sender will simply set TIF_NEED_RESCHED for the target to put it
-    out of idle and flush_smp_call_function_queue() in do_idle() will
-    execute the call function. Depending on the ordering of the queuing
-    of nohz_csd_func() and sched_ttwu_pending(), the idle_cpu() check in
-    nohz_csd_func() should either see target_rq->ttwu_pending = 1 or
-    target_rq->nr_running to be non-zero if there is a genuine task
-    wakeup racing with the idle load balance kick.
-
-o The waker CPU perceives the target CPU to be busy
-  (targer_rq->nr_running != 0) but the CPU is in fact going idle and due
-  to a series of unfortunate events, the system reaches a case where the
-  waker CPU decides to perform the wakeup by itself in ttwu_queue() on
-  the target CPU but target is concurrently selected for idle load
-  balance (XXX: Can this happen? I'm not sure, but we'll consider the
-  mother of all coincidences to estimate the worst case scenario).
-
-  ttwu_do_activate() calls enqueue_task() which would increment
-  "rq->nr_running" post which it calls wakeup_preempt() which is
-  responsible for setting TIF_NEED_RESCHED (via a resched IPI or by
-  setting TIF_NEED_RESCHED on a TIF_POLLING_NRFLAG idle CPU) The key
-  thing to note in this case is that rq->nr_running is already non-zero
-  in case of a wakeup before TIF_NEED_RESCHED is set which would
-  lead to idle_cpu() check returning false.
-
-In all cases, it seems that need_resched() check is unnecessary when
-checking for idle_cpu() first since an impending wakeup racing with idle
-load balancer will either set the "rq->ttwu_pending" or indicate a newly
-woken task via "rq->nr_running".
-
-Chasing the reason why this check might have existed in the first place,
-I came across  Peter's suggestion on the fist iteration of Suresh's
-patch from 2011 [1] where the condition to raise the SCHED_SOFTIRQ was:
-
-	sched_ttwu_do_pending(list);
-
-	if (unlikely((rq->idle == current) &&
-	    rq->nohz_balance_kick &&
-	    !need_resched()))
-		raise_softirq_irqoff(SCHED_SOFTIRQ);
-
-Since the condition to raise the SCHED_SOFIRQ was preceded by
-sched_ttwu_do_pending() (which is equivalent of sched_ttwu_pending()) in
-the current upstream kernel, the need_resched() check was necessary to
-catch a newly queued task. Peter suggested modifying it to:
-
-	if (idle_cpu() && rq->nohz_balance_kick && !need_resched())
-		raise_softirq_irqoff(SCHED_SOFTIRQ);
-
-where idle_cpu() seems to have replaced "rq->idle == current" check.
-
-Even back then, the idle_cpu() check would have been sufficient to catch
-a new task being enqueued. Since commit b2a02fc43a1f ("smp: Optimize
-send_call_function_single_ipi()") overloads the interpretation of
-TIF_NEED_RESCHED for TIF_POLLING_NRFLAG idling, remove the
-need_resched() check in nohz_csd_func() to raise SCHED_SOFTIRQ based
-on Peter's suggestion.
-
-Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241119054432.6405-3-kprateek.nayak@amd.com
+Link: https://lore.kernel.org/r/20240801054803.3015572-5-quic_srichara@quicinc.com
+Co-developed-by: Anusha Rao <quic_anusha@quicinc.com>
+Signed-off-by: Anusha Rao <quic_anusha@quicinc.com>
+Signed-off-by: devi priya <quic_devipriy@quicinc.com>
+Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 76b27b2a9c56a..33bc43b223cba 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1242,7 +1242,7 @@ static void nohz_csd_func(void *info)
- 	WARN_ON(!(flags & NOHZ_KICK_MASK));
- 
- 	rq->idle_balance = idle_cpu(cpu);
--	if (rq->idle_balance && !need_resched()) {
-+	if (rq->idle_balance) {
- 		rq->nohz_idle_balance = flags;
- 		raise_softirq_irqoff(SCHED_SOFTIRQ);
- 	}
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index d3ca6d3493130..2427237cbe9c7 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -1618,6 +1618,7 @@ static const struct of_device_id qcom_pcie_match[] = {
+ 	{ .compatible = "qcom,pcie-ipq8064-v2", .data = &cfg_2_1_0 },
+ 	{ .compatible = "qcom,pcie-ipq8074", .data = &cfg_2_3_3 },
+ 	{ .compatible = "qcom,pcie-ipq8074-gen3", .data = &cfg_2_9_0 },
++	{ .compatible = "qcom,pcie-ipq9574", .data = &cfg_2_9_0 },
+ 	{ .compatible = "qcom,pcie-msm8996", .data = &cfg_2_3_2 },
+ 	{ .compatible = "qcom,pcie-qcs404", .data = &cfg_2_4_0 },
+ 	{ .compatible = "qcom,pcie-sa8540p", .data = &cfg_1_9_0 },
 -- 
 2.43.0
 
