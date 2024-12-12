@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F57D9EF0C8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7929EF340
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86599189BD63
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8627189268E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915F923692F;
-	Thu, 12 Dec 2024 16:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4964225A21;
+	Thu, 12 Dec 2024 16:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPsdmd9c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ym75PPzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FFE225405;
-	Thu, 12 Dec 2024 16:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7209A2210DA;
+	Thu, 12 Dec 2024 16:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019782; cv=none; b=sPlSNV+SMWlfMrm7X1QvRP1suED7CQW8jCLdzPwYpBvc2/dbq8vqtuHvTa2XPjeDjtNvFLWRSVb5RJ1IGqfCyN61AG2xat/6fnpTabkw6Y7eccDbEQGiwfUJlfZQ7usyWGTR8LAZEuslryhxvuq1EkydzI49CrDNTQwqCN4BAZE=
+	t=1734021702; cv=none; b=RHc8Z9997vdklSVOZXyPY8GcZ8ouUf12zKm6qgbKiD3GvsZM4lxuPN/ZwQYzGbI8F+UahAOn0dBq3NUg41B7izvI5syz2jgp58v+Rb0yvrwKNFov3hUEfgaJjpYEnyql/Z2kFYo77ECdlAcnu9uQJbC8gHQY3HFwgVuTo39XNYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019782; c=relaxed/simple;
-	bh=Hkx31Qoa7cPJFLZx7q50S0myZYrHhVnj1lNVD9PhdfY=;
+	s=arc-20240116; t=1734021702; c=relaxed/simple;
+	bh=jyl0CJj+ZMheTed/tHosHoxCvAssiAt6uFgflkSGAdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b89F4FH895AwGzWjQlG8XLOG/cxTlZPL+ieYE98xazp168aU17nPjgtx48id+x3ER3xvQc+I4gJ7s/iEgLHjxLAPdQEkA8//woOqMUWJCe1Qo6+TutpGKUmUAeC2rWEfg6RngvkzA9K3/ktEj83Wi2Btu6vhKqyouVUtjOyXmVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPsdmd9c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D70C4CECE;
-	Thu, 12 Dec 2024 16:09:41 +0000 (UTC)
+	 MIME-Version; b=LbxG1Qcrvm+M2/Mdsf44U4a5N1oAV+79tCYExhkKIKIFfDz8P+TKZvixYPuZzcmZrev8amkrBLwlxvORMj/h89RcOGvwYQiqhe0JzQZKWR+evZ7f329i0DMNRO9YDIg8gmCPhjGj41ESs5JpmTCzZK5yQC3RYg4JTVgyL5WnmqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ym75PPzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7581C4CECE;
+	Thu, 12 Dec 2024 16:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019781;
-	bh=Hkx31Qoa7cPJFLZx7q50S0myZYrHhVnj1lNVD9PhdfY=;
+	s=korg; t=1734021702;
+	bh=jyl0CJj+ZMheTed/tHosHoxCvAssiAt6uFgflkSGAdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPsdmd9cSEUt3Zs4gUGGTlpd3juxdOs+WTNIsXESMYX7sETaroLRhDxFmAAgaGWAG
-	 LYxfcYCYzFWcMrgxY7/Q55xHL7IOsT0pwayPoJ4hUIIKINzc9/pveDs1Ww7/rTqb+7
-	 Ml37hRdRufj52FJAspS8W/sN+AU/0n3Z+2glJCKo=
+	b=Ym75PPzFYGuhMn1IkKQKIuoh+R39lsa3Xn0o3GQsGI/wiMj68iAAK5BVpwvO2xYjl
+	 TW/QuaQQigPOPJDWI/K43/o3cEizVWQautDJmxaM6XUvpNMf9PkFOTRKM6ZGE8sQcq
+	 NrJiEd6nlMqVSCsWJE2sDkdCTwWrfE6peV1KNhXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 289/772] remoteproc: qcom_q6v5_mss: Re-order writes to the IMEM region
+	Dai Ngo <dai.ngo@oracle.com>,
+	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 039/565] NFSD: initialize copy->cp_clp early in nfsd4_copy for use by trace point
 Date: Thu, 12 Dec 2024 15:53:54 +0100
-Message-ID: <20241212144401.846510027@linuxfoundation.org>
+Message-ID: <20241212144313.005370341@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 7b22b7719fc17d5979a991c918c868ab041be5c8 ]
+[ Upstream commit 15d1975b7279693d6f09398e0e2e31aca2310275 ]
 
-Any write access to the IMEM region when the Q6 is setting up XPU
-protection on it will result in a XPU violation. Fix this by ensuring
-IMEM writes related to the MBA post-mortem logs happen before the Q6
-is brought out of reset.
+Prepare for adding server copy trace points.
 
-Fixes: 318130cc9362 ("remoteproc: qcom_q6v5_mss: Add MBA log extraction support")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240819073020.3291287-1-quic_sibis@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Tested-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+Stable-dep-of: 9ed666eba4e0 ("NFSD: Async COPY result needs to return a write verifier")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/qcom_q6v5_mss.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4proc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-index 7dbab5fcbe1e7..e4ef8e6ed8aaa 100644
---- a/drivers/remoteproc/qcom_q6v5_mss.c
-+++ b/drivers/remoteproc/qcom_q6v5_mss.c
-@@ -1118,6 +1118,9 @@ static int q6v5_mba_load(struct q6v5 *qproc)
- 		goto disable_active_clks;
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1769,6 +1769,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
+ 	__be32 status;
+ 	struct nfsd4_copy *async_copy = NULL;
+ 
++	copy->cp_clp = cstate->clp;
+ 	if (nfsd4_ssc_is_inter(copy)) {
+ 		if (!inter_copy_offload_enable || nfsd4_copy_is_sync(copy)) {
+ 			status = nfserr_notsupp;
+@@ -1783,7 +1784,6 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
+ 			return status;
  	}
  
-+	if (qproc->has_mba_logs)
-+		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
-+
- 	writel(qproc->mba_phys, qproc->rmb_base + RMB_MBA_IMAGE_REG);
- 	if (qproc->dp_size) {
- 		writel(qproc->mba_phys + SZ_1M, qproc->rmb_base + RMB_PMI_CODE_START_REG);
-@@ -1128,9 +1131,6 @@ static int q6v5_mba_load(struct q6v5 *qproc)
- 	if (ret)
- 		goto reclaim_mba;
- 
--	if (qproc->has_mba_logs)
--		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
--
- 	ret = q6v5_rmb_mba_wait(qproc, 0, 5000);
- 	if (ret == -ETIMEDOUT) {
- 		dev_err(qproc->dev, "MBA boot timed out\n");
--- 
-2.43.0
-
+-	copy->cp_clp = cstate->clp;
+ 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
+ 		sizeof(struct knfsd_fh));
+ 	if (nfsd4_copy_is_async(copy)) {
 
 
 
