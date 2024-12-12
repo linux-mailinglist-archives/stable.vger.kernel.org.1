@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-103052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5669EF4DF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FCE9EF7EB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B6A8290AEE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A96941890E70
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26F7223C41;
-	Thu, 12 Dec 2024 17:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9003C2210F1;
+	Thu, 12 Dec 2024 17:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGDXBwwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJzXqGvU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4BB22331E;
-	Thu, 12 Dec 2024 17:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA76211493;
+	Thu, 12 Dec 2024 17:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023396; cv=none; b=oK/9ah2oqeE9ZZXjLY+LvqMqzQpaggaNcShMv8b0zpfXuJU5J19t1WGZ/sDrYWdGGn7NiBRX8YcWQ9yTy2OsP80xjtbBMRCy5o3O6DXDMqIjFd1PwiWUIkrs/gNZ3WwjRduIJyCJoXQruaJ0XzrDRyWLFY5rpwaVjs/EDC80yic=
+	t=1734024666; cv=none; b=dTqDhblupoo19FvwywekkbZruZ/YpC2V/dvnxV0HGUz42pi1c5ELeWCBKkZK+91RRk6NmtR/xRXSVBdmhHfYRIOhH0AHtK5yqzzGruBf5bsgj9lwa2lDuANIas3O49PquN/swqyAnaOxt/lFSHpgaYR+cEljWVULuOt/RgoMqTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023396; c=relaxed/simple;
-	bh=lfS4xdA6cuMAL4OJ3227DnOk94dJ86ZT0MZinFDFpK0=;
+	s=arc-20240116; t=1734024666; c=relaxed/simple;
+	bh=kdDdsBJ6czEk7gdEZlhpmIjgQ1rUBsjSTql2WvrWfQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HS2n5vI72dMpF37OlWGn6NwMkAI16dyL9/0xRUjwnn05V+eKVkoaFy9Nlvk4LFwINYpnjK+X0t0kJ+72Ugujkd/h53IWuKtg1rkT87UKEpArEt/SsVxSArvroD86MPW7+wWQjdP3LNPex474nn3CVtNmmfcbz72NqQdadXc4vkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGDXBwwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058CDC4CECE;
-	Thu, 12 Dec 2024 17:09:55 +0000 (UTC)
+	 MIME-Version; b=h06HmW/zP4uimJJXFpjCHBVZgbNSOPf3XeFhfpF2DI4PS2BKn0Uw5+hz/Lcm93/g0NeTyUcay2e4KxqvDr4iRgXtaIiuMVQsfyKV27vTEWUSd8dZ1B+eewXjh5iDXQJ2CN7Yi1wXM1/cQsftXDl7qZyV0jLO9evnQItVDiffLn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJzXqGvU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A95C4CECE;
+	Thu, 12 Dec 2024 17:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023396;
-	bh=lfS4xdA6cuMAL4OJ3227DnOk94dJ86ZT0MZinFDFpK0=;
+	s=korg; t=1734024666;
+	bh=kdDdsBJ6czEk7gdEZlhpmIjgQ1rUBsjSTql2WvrWfQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGDXBwwY2/AuBkSGBEAAnV/bIvk+z0nZPMthygO/sjvtNSoAKjOobxiuKuKjr4He7
-	 yLjIR5FTzycaDYSrXpTOaO7ebdLusrfX9rMmgdS4WnBWmRrQamhv6SeEoXIm880bjm
-	 8kBpPasJsjKuo6hlh8jc3LRWZTic+vWz5I1t/bZE=
+	b=fJzXqGvUQ2NTSROD0VMl8w8HClBIh1irKZhfcySxUqZrgnBYOR5u5Cby76RPQ4GzU
+	 Ss4643NBXP/mlu7RKzcQy1i9znCAx/+dytfmEpjuL+ulkFxylLArvN31ZwTgcCXEXY
+	 vkB1AODtTUIM3TafgSvVbwllELnTkf0r1UThIpgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 513/565] tracing: Use atomic64_inc_return() in trace_clock_counter()
-Date: Thu, 12 Dec 2024 16:01:48 +0100
-Message-ID: <20241212144332.058645687@linuxfoundation.org>
+	Liequan Che <cheliequan@inspur.com>,
+	Zheng Wang <zyytlz.wz@163.com>,
+	Mingzhe Zou <mingzhe.zou@easystack.cn>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 371/459] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR again
+Date: Thu, 12 Dec 2024 16:01:49 +0100
+Message-ID: <20241212144308.325439166@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Liequan Che <cheliequan@inspur.com>
 
-[ Upstream commit eb887c4567d1b0e7684c026fe7df44afa96589e6 ]
+commit b2e382ae12a63560fca35050498e19e760adf8c0 upstream.
 
-Use atomic64_inc_return(&ref) instead of atomic64_add_return(1, &ref)
-to use optimized implementation and ease register pressure around
-the primitive for targets that implement optimized variant.
+Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+node allocations") leads a NULL pointer deference in cache_set_flush().
 
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241007085651.48544-1-ubizjak@gmail.com
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1721         if (!IS_ERR_OR_NULL(c->root))
+1722                 list_add(&c->root->list, &c->btree_cache);
+
+>From the above code in cache_set_flush(), if previous registration code
+fails before allocating c->root, it is possible c->root is NULL as what
+it is initialized. __bch_btree_node_alloc() never returns NULL but
+c->root is possible to be NULL at above line 1721.
+
+This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
+
+Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
+Signed-off-by: Liequan Che <cheliequan@inspur.com>
+Cc: stable@vger.kernel.org
+Cc: Zheng Wang <zyytlz.wz@163.com>
+Reviewed-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20241202115638.28957-1-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_clock.c | 2 +-
+ drivers/md/bcache/super.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_clock.c b/kernel/trace/trace_clock.c
-index 4702efb00ff21..4cb2ebc439be6 100644
---- a/kernel/trace/trace_clock.c
-+++ b/kernel/trace/trace_clock.c
-@@ -154,5 +154,5 @@ static atomic64_t trace_counter;
-  */
- u64 notrace trace_clock_counter(void)
- {
--	return atomic64_add_return(1, &trace_counter);
-+	return atomic64_inc_return(&trace_counter);
- }
--- 
-2.43.0
-
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1750,7 +1750,7 @@ static void cache_set_flush(struct closu
+ 	if (!IS_ERR_OR_NULL(c->gc_thread))
+ 		kthread_stop(c->gc_thread);
+ 
+-	if (!IS_ERR(c->root))
++	if (!IS_ERR_OR_NULL(c->root))
+ 		list_add(&c->root->list, &c->btree_cache);
+ 
+ 	/*
 
 
 
