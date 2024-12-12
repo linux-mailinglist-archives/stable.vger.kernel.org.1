@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8809EED4F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75AD69EEBCB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0121287304
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:45:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6789D1887827
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A09C2054F8;
-	Thu, 12 Dec 2024 15:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D89820969B;
+	Thu, 12 Dec 2024 15:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxBz2SJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpPziOBc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE62215774;
-	Thu, 12 Dec 2024 15:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B73913792B;
+	Thu, 12 Dec 2024 15:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018235; cv=none; b=Nst4ULtjGyDkY+l4G2uKb8fwVVgOYgY8TZWvAAPmnNk+N4IOMEVvvnGyhyGBwyzBFvAXUpAZnbYE10ULRnEu/cuh0UIgiXMyeEt5b/HtyNIpBx6y1+BeenBF6vJvehthorgph9EXbgSAu+fuqLznG51r4u8WlgF0/YozsVPpVpI=
+	t=1734017121; cv=none; b=iUgvJ00aBwv4KA8/Kd/UoZfVW6OWzMgo/oX4A4Czp7CyFJ70boLhEmx9xXE0V45PRdvvdjbn/chH3s7NcdGR4fJ/5dAPjxNZcyuOrktuN8NWUva7lzTtqSyo7Hfuk5oz+7d+f7g3XQA4RhXoY7sdWdzTWx/I5pegranNEnG1+Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018235; c=relaxed/simple;
-	bh=OEBgii6E3+lDXv8qYuoJbbk0f0SLYa/OgVqkc53R2is=;
+	s=arc-20240116; t=1734017121; c=relaxed/simple;
+	bh=yRKJQ37vpMQiRM6FwB3vLuDtq+9bSsSkhg2z+pvtjxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RGndh8Ru57dAcg8pNd0eOTbn7j2i2wwhDcXCuCjgkHj403gIKYRFtu+t/iEU5ONYHm9H5iVoYYQz0RXwoRx9qV0CE133Vx4NogfBU+CkJt74mHE1bbjOEMecHyvSbbCc+gGH1GToxiIpzCYjg4AYNBeoY+9ymOprgwwt2ZaHTRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxBz2SJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6476C4CECE;
-	Thu, 12 Dec 2024 15:43:54 +0000 (UTC)
+	 MIME-Version; b=MkDOYICrvskIAWdELoIPyl+FB7UwDWq/lvEo8WPHQGwtP2/Qud56panzjFLX4YV5XNn0US+/h/fGmtHCOFlAD6nHyl+FnXTYYoKHwPl4n60B59Bs7I9WGfhm19RYKyYge+glPfNDK10cJqZUsQ+ZyuH1Ai1cb7TiQKsrMjRRcyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpPziOBc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C41BC4CECE;
+	Thu, 12 Dec 2024 15:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018235;
-	bh=OEBgii6E3+lDXv8qYuoJbbk0f0SLYa/OgVqkc53R2is=;
+	s=korg; t=1734017120;
+	bh=yRKJQ37vpMQiRM6FwB3vLuDtq+9bSsSkhg2z+pvtjxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HxBz2SJNtPJhGMoJrtVS5ZB9TWpeGzvkh/Pik2dY00IPqk7Zu8qXvg+YYiTgE3pvJ
-	 W1t1LfJZj/JNzm3AciBiAKRE2Ju144PQLjnRlNl3Fy05JRcnEbFoGXIRvWDQoz18gA
-	 98M9u8M4s9BPkbSIagI6vmNbs0lAup3aCOCKhVEU=
+	b=wpPziOBcLdJ4Cx8J+QLsU0h5ZcM3eQG/7ir+EP47pjf5m+r442Wo7NH/jeo8QApki
+	 c1TaiC5b9uf5ZmYwrdxhduGGLbqg0cpK67Ao1TNKsowBYDS7LqLVkPiDRsQXRRRVYY
+	 XGJacb85HGOUdt5cFaW5HU/hy/0O6phjNQA6P7lQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Stanner <pstanner@redhat.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/356] drm/sched: memset() job in drm_sched_job_init()
+Subject: [PATCH 6.12 387/466] mailbox: pcc: Check before sending MCTP PCC response ACK
 Date: Thu, 12 Dec 2024 15:59:16 +0100
-Message-ID: <20241212144253.980302811@linuxfoundation.org>
+Message-ID: <20241212144322.058318019@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +61,170 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <pstanner@redhat.com>
+From: Adam Young <admiyo@os.amperecomputing.com>
 
-[ Upstream commit 2320c9e6a768d135c7b0039995182bb1a4e4fd22 ]
+[ Upstream commit 7f9e19f207be0c534d517d65e01417ba968cdd34 ]
 
-drm_sched_job_init() has no control over how users allocate struct
-drm_sched_job. Unfortunately, the function can also not set some struct
-members such as job->sched.
+Type 4 PCC channels have an option to send back a response
+to the platform when they are done processing the request.
+The flag to indicate whether or not to respond is inside
+the message body, and thus is not available to the pcc
+mailbox.
 
-This could theoretically lead to UB by users dereferencing the struct's
-pointer members too early.
+If the flag is not set, still set command completion
+bit after processing message.
 
-It is easier to debug such issues if these pointers are initialized to
-NULL, so dereferencing them causes a NULL pointer exception.
-Accordingly, drm_sched_entity_init() does precisely that and initializes
-its struct with memset().
+In order to read the flag, this patch maps the shared
+buffer to virtual memory. To avoid duplication of mapping
+the shared buffer is then made available to be used by
+the driver that uses the mailbox.
 
-Initialize parameter "job" to 0 in drm_sched_job_init().
-
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241021105028.19794-2-pstanner@redhat.com
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Adam Young <admiyo@os.amperecomputing.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/mailbox/pcc.c | 61 +++++++++++++++++++++++++++++++++++++------
+ include/acpi/pcc.h    |  7 +++++
+ 2 files changed, 60 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-index 5a3a622fc672f..fa4652f234718 100644
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -635,6 +635,14 @@ int drm_sched_job_init(struct drm_sched_job *job,
- 	if (!entity->rq)
- 		return -ENOENT;
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 94885e411085a..82102a4c5d688 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -269,6 +269,35 @@ static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
+ 	return !!val;
+ }
  
-+	/*
-+	 * We don't know for sure how the user has allocated. Thus, zero the
-+	 * struct so that unallowed (i.e., too early) usage of pointers that
-+	 * this function does not set is guaranteed to lead to a NULL pointer
-+	 * exception instead of UB.
-+	 */
-+	memset(job, 0, sizeof(*job));
++static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
++{
++	struct acpi_pcct_ext_pcc_shared_memory pcc_hdr;
 +
- 	job->entity = entity;
- 	job->s_fence = drm_sched_fence_alloc(entity, owner);
- 	if (!job->s_fence)
++	if (pchan->type != ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
++		return;
++	/* If the memory region has not been mapped, we cannot
++	 * determine if we need to send the message, but we still
++	 * need to set the cmd_update flag before returning.
++	 */
++	if (pchan->chan.shmem == NULL) {
++		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
++		return;
++	}
++	memcpy_fromio(&pcc_hdr, pchan->chan.shmem,
++		      sizeof(struct acpi_pcct_ext_pcc_shared_memory));
++	/*
++	 * The PCC slave subspace channel needs to set the command complete bit
++	 * after processing message. If the PCC_ACK_FLAG is set, it should also
++	 * ring the doorbell.
++	 *
++	 * The PCC master subspace channel clears chan_in_use to free channel.
++	 */
++	if (le32_to_cpup(&pcc_hdr.flags) & PCC_ACK_FLAG_MASK)
++		pcc_send_data(chan, NULL);
++	else
++		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
++}
++
+ /**
+  * pcc_mbox_irq - PCC mailbox interrupt handler
+  * @irq:	interrupt number
+@@ -306,14 +335,7 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 
+ 	mbox_chan_received_data(chan, NULL);
+ 
+-	/*
+-	 * The PCC slave subspace channel needs to set the command complete bit
+-	 * and ring doorbell after processing message.
+-	 *
+-	 * The PCC master subspace channel clears chan_in_use to free channel.
+-	 */
+-	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
+-		pcc_send_data(chan, NULL);
++	check_and_ack(pchan, chan);
+ 	pchan->chan_in_use = false;
+ 
+ 	return IRQ_HANDLED;
+@@ -365,14 +387,37 @@ EXPORT_SYMBOL_GPL(pcc_mbox_request_channel);
+ void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
+ {
+ 	struct mbox_chan *chan = pchan->mchan;
++	struct pcc_chan_info *pchan_info;
++	struct pcc_mbox_chan *pcc_mbox_chan;
+ 
+ 	if (!chan || !chan->cl)
+ 		return;
++	pchan_info = chan->con_priv;
++	pcc_mbox_chan = &pchan_info->chan;
++	if (pcc_mbox_chan->shmem) {
++		iounmap(pcc_mbox_chan->shmem);
++		pcc_mbox_chan->shmem = NULL;
++	}
+ 
+ 	mbox_free_channel(chan);
+ }
+ EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
+ 
++int pcc_mbox_ioremap(struct mbox_chan *chan)
++{
++	struct pcc_chan_info *pchan_info;
++	struct pcc_mbox_chan *pcc_mbox_chan;
++
++	if (!chan || !chan->cl)
++		return -1;
++	pchan_info = chan->con_priv;
++	pcc_mbox_chan = &pchan_info->chan;
++	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
++				       pcc_mbox_chan->shmem_size);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
++
+ /**
+  * pcc_send_data - Called from Mailbox Controller code. Used
+  *		here only to ring the channel doorbell. The PCC client
+diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
+index 9b373d172a776..699c1a37b8e78 100644
+--- a/include/acpi/pcc.h
++++ b/include/acpi/pcc.h
+@@ -12,6 +12,7 @@
+ struct pcc_mbox_chan {
+ 	struct mbox_chan *mchan;
+ 	u64 shmem_base_addr;
++	void __iomem *shmem;
+ 	u64 shmem_size;
+ 	u32 latency;
+ 	u32 max_access_rate;
+@@ -31,11 +32,13 @@ struct pcc_mbox_chan {
+ #define PCC_CMD_COMPLETION_NOTIFY	BIT(0)
+ 
+ #define MAX_PCC_SUBSPACES	256
++#define PCC_ACK_FLAG_MASK	0x1
+ 
+ #ifdef CONFIG_PCC
+ extern struct pcc_mbox_chan *
+ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id);
+ extern void pcc_mbox_free_channel(struct pcc_mbox_chan *chan);
++extern int pcc_mbox_ioremap(struct mbox_chan *chan);
+ #else
+ static inline struct pcc_mbox_chan *
+ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
+@@ -43,6 +46,10 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
+ 	return ERR_PTR(-ENODEV);
+ }
+ static inline void pcc_mbox_free_channel(struct pcc_mbox_chan *chan) { }
++static inline int pcc_mbox_ioremap(struct mbox_chan *chan)
++{
++	return 0;
++};
+ #endif
+ 
+ #endif /* _PCC_H */
 -- 
 2.43.0
 
