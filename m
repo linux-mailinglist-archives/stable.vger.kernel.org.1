@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 185AA9EF700
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 510049EF7B2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A75117A5A8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA11917874E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEC1223E84;
-	Thu, 12 Dec 2024 17:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B77521E085;
+	Thu, 12 Dec 2024 17:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEH7pzyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnRdTyFC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500EB223E75;
-	Thu, 12 Dec 2024 17:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0895820A5EE;
+	Thu, 12 Dec 2024 17:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023368; cv=none; b=a1ocoP0ghL1U8KRe4fYB0EveEXLNcbrupNNDSM4HkztMC3Y91pBBSm3ZnRkYFpGJyldfqeCetkiwtYJnsWxrvIfNNvqjiZvFLfyN6ORn9sFUrqB/uViotPylaywAwsh47LZGE6ZhAzqGWdvKnCOE9x0L1LCocOPTANQg+LKNDlo=
+	t=1734024657; cv=none; b=SeDgZRSZAXZ75HRZdLRp78vo5KDNvjU2iu4Vrlq+N4EPrMWdSoYsH5hpQEAts4dXfvSoyIS1DVBY+A6pYVvm4SUdE+pVMSMH6ZIuQRFA+VhatOomDmqFbl7ct7qMNGQB8BAPjkf7dQEt5j4ddnrsjQfvqBNVatETZfCP40DLFyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023368; c=relaxed/simple;
-	bh=yMUW/j0m6FQEt9oaTsTx3HmkFu3J+5ep59kmScUb2EA=;
+	s=arc-20240116; t=1734024657; c=relaxed/simple;
+	bh=Gbrfb6S45Tm9Ai14cI4zAApp9N/bKDANFyKQxddnNKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnEUY8T5VWMSF0SI8bAEAis1WJetKaSmHm/PSzIzisOeLe0hzonlWBOUnZzBRXWsK5BGDXAqgiofQvS14vnInyrtto9cTEw62NTAwp+CSNdWjvDwJmVv5x/NFiElBtC33PILiaOeYVBunCiXtQ4pE8vhKDSvYgcb8pDYKuXv0Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEH7pzyC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E632C4CEE1;
-	Thu, 12 Dec 2024 17:09:27 +0000 (UTC)
+	 MIME-Version; b=amx7S7mbr942VKT5y6u6kzENJ02PbcLHELZB8r+9MSl3xY6jUWAThce9GAtJHufHdT8wHDPFJEescKWZbCtpXEKkadILWNAhUSfu6skWQn0npr1CmsB9T/eKaQwXtKfeDXPKdcHaDW0CPEeFo6VoSHMZhYqBNhBlrBjWabb+5BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnRdTyFC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7677BC4CECE;
+	Thu, 12 Dec 2024 17:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023368;
-	bh=yMUW/j0m6FQEt9oaTsTx3HmkFu3J+5ep59kmScUb2EA=;
+	s=korg; t=1734024656;
+	bh=Gbrfb6S45Tm9Ai14cI4zAApp9N/bKDANFyKQxddnNKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZEH7pzyCZLh8pNCD9uxJaJxvx+D3tE3KkftPnHnLYP7KzIxWMPDGBiGPUeviKJah2
-	 0d+pUsmJH3aM5VERMt/2SL01ed3BkfWLDUk+iaZOy9AIEB0Rf7V11vIIQXp+7OFkZs
-	 Xvw9We0vkcsPMQKCzCUp00DiKWcbFgnJ/lRgbbj0=
+	b=QnRdTyFC52lZJGT3l2ne3+u5uoibF6tODB2xmB4Eg+3rF/AsV20mre6vOs+J4MfCF
+	 ZrpFZClDAQ2v2WNxBO2ttqPat6nzFInfF+LefeLF+rRZPXqAt0coI7jA2fmF3vDC0g
+	 O+bKgzbYm5ozaM1rfRDbu9frgFKOqOBN2blPzdaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 510/565] net/neighbor: clear error in case strict check is not set
-Date: Thu, 12 Dec 2024 16:01:45 +0100
-Message-ID: <20241212144331.928530144@linuxfoundation.org>
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 368/459] scsi: qla2xxx: Fix use after free on unload
+Date: Thu, 12 Dec 2024 16:01:46 +0100
+Message-ID: <20241212144308.209113291@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 0de6a472c3b38432b2f184bd64eb70d9ea36d107 ]
+commit 07c903db0a2ff84b68efa1a74a4de353ea591eb0 upstream.
 
-Commit 51183d233b5a ("net/neighbor: Update neigh_dump_info for strict
-data checking") added strict checking. The err variable is not cleared,
-so if we find no table to dump we will return the validation error even
-if user did not want strict checking.
+System crash is observed with stack trace warning of use after
+free. There are 2 signals to tell dpc_thread to terminate (UNLOADING
+flag and kthread_stop).
 
-I think the only way to hit this is to send an buggy request, and ask
-for a table which doesn't exist, so there's no point treating this
-as a real fix. I only noticed it because a syzbot repro depended on it
-to trigger another bug.
+On setting the UNLOADING flag when dpc_thread happens to run at the time
+and sees the flag, this causes dpc_thread to exit and clean up
+itself. When kthread_stop is called for final cleanup, this causes use
+after free.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241115003221.733593-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove UNLOADING signal to terminate dpc_thread.  Use the kthread_stop
+as the main signal to exit dpc_thread.
+
+[596663.812935] kernel BUG at mm/slub.c:294!
+[596663.812950] invalid opcode: 0000 [#1] SMP PTI
+[596663.812957] CPU: 13 PID: 1475935 Comm: rmmod Kdump: loaded Tainted: G          IOE    --------- -  - 4.18.0-240.el8.x86_64 #1
+[596663.812960] Hardware name: HP ProLiant DL380p Gen8, BIOS P70 08/20/2012
+[596663.812974] RIP: 0010:__slab_free+0x17d/0x360
+
+...
+[596663.813008] Call Trace:
+[596663.813022]  ? __dentry_kill+0x121/0x170
+[596663.813030]  ? _cond_resched+0x15/0x30
+[596663.813034]  ? _cond_resched+0x15/0x30
+[596663.813039]  ? wait_for_completion+0x35/0x190
+[596663.813048]  ? try_to_wake_up+0x63/0x540
+[596663.813055]  free_task+0x5a/0x60
+[596663.813061]  kthread_stop+0xf3/0x100
+[596663.813103]  qla2x00_remove_one+0x284/0x440 [qla2xxx]
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-3-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/qla2xxx/qla_os.c |   15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 5829477efbba5..6f3bd1a4ec8ca 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -2738,6 +2738,7 @@ static int neigh_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 	err = neigh_valid_dump_req(nlh, cb->strict_check, &filter, cb->extack);
- 	if (err < 0 && cb->strict_check)
- 		return err;
-+	err = 0;
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -6655,12 +6655,15 @@ qla2x00_do_dpc(void *data)
+ 	set_user_nice(current, MIN_NICE);
  
- 	s_t = cb->args[0];
+ 	set_current_state(TASK_INTERRUPTIBLE);
+-	while (!kthread_should_stop()) {
++	while (1) {
+ 		ql_dbg(ql_dbg_dpc, base_vha, 0x4000,
+ 		    "DPC handler sleeping.\n");
  
--- 
-2.43.0
-
+ 		schedule();
+ 
++		if (kthread_should_stop())
++			break;
++
+ 		if (test_and_clear_bit(DO_EEH_RECOVERY, &base_vha->dpc_flags))
+ 			qla_pci_set_eeh_busy(base_vha);
+ 
+@@ -6673,15 +6676,16 @@ qla2x00_do_dpc(void *data)
+ 			goto end_loop;
+ 		}
+ 
++		if (test_bit(UNLOADING, &base_vha->dpc_flags))
++			/* don't do any work. Wait to be terminated by kthread_stop */
++			goto end_loop;
++
+ 		ha->dpc_active = 1;
+ 
+ 		ql_dbg(ql_dbg_dpc + ql_dbg_verbose, base_vha, 0x4001,
+ 		    "DPC handler waking up, dpc_flags=0x%lx.\n",
+ 		    base_vha->dpc_flags);
+ 
+-		if (test_bit(UNLOADING, &base_vha->dpc_flags))
+-			break;
+-
+ 		if (IS_P3P_TYPE(ha)) {
+ 			if (IS_QLA8044(ha)) {
+ 				if (test_and_clear_bit(ISP_UNRECOVERABLE,
+@@ -6999,9 +7003,6 @@ end_loop:
+ 	 */
+ 	ha->dpc_active = 0;
+ 
+-	/* Cleanup any residual CTX SRBs. */
+-	qla2x00_abort_all_cmds(base_vha, DID_NO_CONNECT << 16);
+-
+ 	return 0;
+ }
+ 
 
 
 
