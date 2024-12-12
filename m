@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1479D9EF2CC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 907849EED89
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30B2C173AE1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5122628A2FA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E1A226194;
-	Thu, 12 Dec 2024 16:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6D3223315;
+	Thu, 12 Dec 2024 15:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynjmPUfN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzqoFBll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E62205501;
-	Thu, 12 Dec 2024 16:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D34223313;
+	Thu, 12 Dec 2024 15:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021234; cv=none; b=RyrqAP4S7AuE/Cjy5ofVr2l9xpDAzhvyVCA9aZxLyvcYx8OKufjrNrMW9zvPqTZB3/oVCdqPgFqdLAbcm/skAuIQ7nCwLWUzzfgZqcOwLy6bh6b6mpoHlHvPaKoA1NnSbpgt4908lbUKY8HUtqylc6MGSF5XHUVq7Y430sBy0Q8=
+	t=1734018393; cv=none; b=OVRO8Uo0O6Ug9mdZDAb7z5viy03RgqmdEkimQy3s+EqpS4pw4QyVSJp5jytttB5uvOdV7kBYu+qJKkg2pXQJG6t8lb20U1Tz65E6g91x77r1KFX6c00y0bVx3D+7vUm1MWpdJ3QWeEsQBw4JHM3Cs87k5+ZJviXHx+1DhWWmMFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021234; c=relaxed/simple;
-	bh=lkLoE4zVZW9XeO9QzMvQKBnJu9p3basbAEeuhBO9TAE=;
+	s=arc-20240116; t=1734018393; c=relaxed/simple;
+	bh=ZPoPwSzxeyBEiaHH/+VqjqY4pleb06POjnARIIXNYc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5ShN+egtEKLK4eISfHjKpyicxjgtj3QrLIwnvgs/b3BvlcM1bHkpxw/PxPfYkh+Wc9dDCNZx+OcghUlNq3HIeVMci+99Tg1qbQqSGFqkbFOjBJeMFuzmNWXSSpEN1RuRxc8FP896JsV9aFxK9cBcnVWnN5AgWq/pmVFoUrtXOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynjmPUfN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D66C4CECE;
-	Thu, 12 Dec 2024 16:33:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JeXI0v7s5egaZUpCGC7o2KE6pE+n9pHBxXpNPi/zdoOwAky7kDrpwXv4W0wAhZFt5Am8saMQrEMX9AO4IXvZH7Wi/lHaAns5lhryzgvPkqnWKebEjx6RqWhATB9Zqw/HRjhcFpHgV6EWJOCusuwI4MayZZMSEHtdjO9oUu5Q/qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzqoFBll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FA2C4CECE;
+	Thu, 12 Dec 2024 15:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021234;
-	bh=lkLoE4zVZW9XeO9QzMvQKBnJu9p3basbAEeuhBO9TAE=;
+	s=korg; t=1734018393;
+	bh=ZPoPwSzxeyBEiaHH/+VqjqY4pleb06POjnARIIXNYc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ynjmPUfNVvcMp3sDh9eGoDNbmQ31mrB1WLNEBC6xJp/tKPrNrh62JT/I//md1U98+
-	 c51o57ycOlQED+7TNyik1jqwBMFCeZ5fdiRJi8Xwo5wPLgUo6xu+AL/Ry3aBz42+rK
-	 O03BtM/kVJ/xB1+wEWcmW386BH5tuHTvvKSaxdIQ=
+	b=vzqoFBllirj81Jqmcvv0NK6jtUy+G6aiF3ISOd+3ODIqB6YHcKP7lRmp7A0F+pGqX
+	 QDg94q9SRjwN9S4aUEolodUq+HIpf1WqdVspxBBzClHjXYPIwNEnDGEEEcyuEiNjV+
+	 PgP4+EhkxwnwJVSngEN51q7EyzSLnaKNZAJJJR9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dom Cobley <popcornmix@gmail.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 653/772] drm/vc4: hdmi: Avoid log spam for audio start failure
-Date: Thu, 12 Dec 2024 15:59:58 +0100
-Message-ID: <20241212144416.900242192@linuxfoundation.org>
+Subject: [PATCH 6.6 280/356] scsi: st: Add MTIOCGET and MTLOAD to ioctls allowed after device reset
+Date: Thu, 12 Dec 2024 15:59:59 +0100
+Message-ID: <20241212144255.645775253@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dom Cobley <popcornmix@gmail.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit b4e5646178e86665f5caef2894578600f597098a ]
+[ Upstream commit 0b120edb37dc9dd8ca82893d386922eb6b16f860 ]
 
-We regularly get dmesg error reports of:
-[   18.184066] hdmi-audio-codec hdmi-audio-codec.3.auto: ASoC: error at snd_soc_dai_startup on i2s-hifi: -19
-[   18.184098]  MAI: soc_pcm_open() failed (-19)
+Most drives rewind the tape when the device is reset. Reading and writing
+are not allowed until something is done to make the tape position match the
+user's expectation (e.g., rewind the tape). Add MTIOCGET and MTLOAD to
+operations allowed after reset. MTIOCGET is modified to not touch the tape
+if pos_unknown is non-zero. The tape location is known after MTLOAD.
 
-These are generated for any disconnected hdmi interface when pulseaudio
-attempts to open the associated ALSA device (numerous times). Each open
-generates a kernel error message, generating general log spam.
-
-The error messages all come from _soc_pcm_ret in sound/soc/soc-pcm.c#L39
-which suggests returning ENOTSUPP, rather that ENODEV will be quiet.
-And indeed it is.
-
-Signed-off-by: Dom Cobley <popcornmix@gmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-5-dave.stevenson@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219419#c14
+Link: https://lore.kernel.org/r/20241106095723.63254-3-Kai.Makisara@kolumbus.fi
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Tested-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/st.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
-index 649fd5c03f21d..3573db34a26b7 100644
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -2160,7 +2160,7 @@ static int vc4_hdmi_audio_startup(struct device *dev, void *data)
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 1537f4a9347f9..4e872f2559d13 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -3507,6 +3507,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 	int i, cmd_nr, cmd_type, bt;
+ 	int retval = 0;
+ 	unsigned int blk;
++	bool cmd_mtiocget;
+ 	struct scsi_tape *STp = file->private_data;
+ 	struct st_modedef *STm;
+ 	struct st_partstat *STps;
+@@ -3620,6 +3621,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 			 */
+ 			if (mtc.mt_op != MTREW &&
+ 			    mtc.mt_op != MTOFFL &&
++			    mtc.mt_op != MTLOAD &&
+ 			    mtc.mt_op != MTRETEN &&
+ 			    mtc.mt_op != MTERASE &&
+ 			    mtc.mt_op != MTSEEK &&
+@@ -3733,17 +3735,28 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 		goto out;
  	}
  
- 	if (!vc4_hdmi_audio_can_stream(vc4_hdmi)) {
--		ret = -ENODEV;
-+		ret = -ENOTSUPP;
- 		goto out_dev_exit;
++	cmd_mtiocget = cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET);
++
+ 	if ((i = flush_buffer(STp, 0)) < 0) {
+-		retval = i;
+-		goto out;
+-	}
+-	if (STp->can_partitions &&
+-	    (i = switch_partition(STp)) < 0) {
+-		retval = i;
+-		goto out;
++		if (cmd_mtiocget && STp->pos_unknown) {
++			/* flush fails -> modify status accordingly */
++			reset_state(STp);
++			STp->pos_unknown = 1;
++		} else { /* return error */
++			retval = i;
++			goto out;
++		}
++	} else { /* flush_buffer succeeds */
++		if (STp->can_partitions) {
++			i = switch_partition(STp);
++			if (i < 0) {
++				retval = i;
++				goto out;
++			}
++		}
  	}
  
+-	if (cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET)) {
++	if (cmd_mtiocget) {
+ 		struct mtget mt_status;
+ 
+ 		if (_IOC_SIZE(cmd_in) != sizeof(struct mtget)) {
 -- 
 2.43.0
 
