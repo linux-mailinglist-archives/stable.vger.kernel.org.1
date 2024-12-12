@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195119EEC36
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F629EEB0D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:58 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE01D28454F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2A716BB37
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BBE21765E;
-	Thu, 12 Dec 2024 15:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6205F2210C6;
+	Thu, 12 Dec 2024 15:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcf99dQy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNfl+yH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FBD212D6A;
-	Thu, 12 Dec 2024 15:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFF1212D6A;
+	Thu, 12 Dec 2024 15:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017541; cv=none; b=td1W4eyGlIItFnAYIZTGXIfCoyesoVk9d2PZjtW7B68oongv0ayl8h+qj63Mxz/xY+EZmJdHwOM424KNAuQyE3nwhayeFYDMjqw/wPXqw0ic8stTAlVZCQxn7dNCKU6a54LVJoNotYkdH+3FGe/POnHmau9+ktGaJtTVAuoOuPI=
+	t=1734016515; cv=none; b=iMLwdI1dPWJThXchg00RtcaHVAXPoqMnKBuxUEOAxDPN+wujNH1kZDe7Sm6A4CgGX/YNJRC00LqWNRH2IMqQ7W89sn8WRRf389Aj26OfVqNiY3xLa7dGZv21y7YWRAvmJT/cthz9W5Qm5iBZ1R7a52rPxiMtdimn2vBZqHmr/us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017541; c=relaxed/simple;
-	bh=44VPj4jdnUtq9yWamfYo3E5tgJZTA68AXxwWIZqrqLY=;
+	s=arc-20240116; t=1734016515; c=relaxed/simple;
+	bh=3ljR3H2VnuxQyp5T4zHF+YTSvDxMv+XGY9QUVF39xqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tl4EFZz7RFiooK1UVDqU7SD2OZWr2rCMCmYd0d/EcGDTpZAEH5N5ed67g4DCa888+CfQijz4V3XNLX2VJVyPR/A7vxp21xRT3ob0JICuyKdUEtrZFF2j0nelDT0bsTY1y+rg8MpFluToqSfuNNwJu6qVL0wxDPgdLb+e1V6CtcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcf99dQy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0C7C4CECE;
-	Thu, 12 Dec 2024 15:32:21 +0000 (UTC)
+	 MIME-Version; b=RisYdLekYVngJ8qSU2kaezhZgp0SZM9x+uftcoSKtYIQgVQ7chGhF4CM7J/QsA+9K4vEN9N4ibjEr9iz+nppOeWXOyJBTeTmJmG9Js0TSDlT2N0+Prbju8dYfcAqb32yjNI0RnVX5liQmpdnb297YKxmnOAjm5akfonuE/Equ6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNfl+yH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BE9C4CED4;
+	Thu, 12 Dec 2024 15:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017541;
-	bh=44VPj4jdnUtq9yWamfYo3E5tgJZTA68AXxwWIZqrqLY=;
+	s=korg; t=1734016515;
+	bh=3ljR3H2VnuxQyp5T4zHF+YTSvDxMv+XGY9QUVF39xqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcf99dQy5i2kjrxPJcsxc3AWvdx+KXCUgd9x26K49Myj6wcdexZyqo0DDgvMWI9ft
-	 gGYEREBqJjaOM4wo6DtNfTZhYRcwIwB5gtSEu3d9mhbMbE7K2V5R2qift8BFHQz/Xg
-	 bsrUFKATMkSAUTW6BiyiRU/Ess0LeG/5owglbGcQ=
+	b=HNfl+yH8FXncpPKm5abImr1PsF/aiYiFO3elq+alFGaj1Dx8gLTXHDNPUmhaB4t53
+	 7vfjxXK0goKeAo2+VRkUEcLJiTG1ohl2HVIqi6KYL0zVzgIP3FtExG2ipmoLwemjeg
+	 spSvpo+DyTS9FbAurqoJ7lM7bauNFPG+cf981XxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/356] net/smc: initialize close_work early to avoid warning
+	Len Brown <len.brown@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 193/466] x86/cpu: Add Lunar Lake to list of CPUs with a broken MONITOR implementation
 Date: Thu, 12 Dec 2024 15:56:02 +0100
-Message-ID: <20241212144246.330987611@linuxfoundation.org>
+Message-ID: <20241212144314.419843609@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit 0541db8ee32c09463a72d0987382b3a3336b0043 ]
+commit c9a4b55431e5220347881e148725bed69c84e037 upstream.
 
-We encountered a warning that close_work was canceled before
-initialization.
+Under some conditions, MONITOR wakeups on Lunar Lake processors
+can be lost, resulting in significant user-visible delays.
 
-  WARNING: CPU: 7 PID: 111103 at kernel/workqueue.c:3047 __flush_work+0x19e/0x1b0
-  Workqueue: events smc_lgr_terminate_work [smc]
-  RIP: 0010:__flush_work+0x19e/0x1b0
-  Call Trace:
-   ? __wake_up_common+0x7a/0x190
-   ? work_busy+0x80/0x80
-   __cancel_work_timer+0xe3/0x160
-   smc_close_cancel_work+0x1a/0x70 [smc]
-   smc_close_active_abort+0x207/0x360 [smc]
-   __smc_lgr_terminate.part.38+0xc8/0x180 [smc]
-   process_one_work+0x19e/0x340
-   worker_thread+0x30/0x370
-   ? process_one_work+0x340/0x340
-   kthread+0x117/0x130
-   ? __kthread_cancel_work+0x50/0x50
-   ret_from_fork+0x22/0x30
+Add Lunar Lake to X86_BUG_MONITOR so that wake_up_idle_cpu()
+always sends an IPI, avoiding this potential delay.
 
-This is because when smc_close_cancel_work is triggered, e.g. the RDMA
-driver is rmmod and the LGR is terminated, the conn->close_work is
-flushed before initialization, resulting in WARN_ON(!work->func).
+Reported originally here:
 
-__smc_lgr_terminate             | smc_connect_{rdma|ism}
--------------------------------------------------------------
-                                | smc_conn_create
-				| \- smc_lgr_register_conn
-for conn in lgr->conns_all      |
-\- smc_conn_kill                |
-   \- smc_close_active_abort    |
-      \- smc_close_cancel_work  |
-         \- cancel_work_sync    |
-            \- __flush_work     |
-	         (close_work)   |
-	                        | smc_close_init
-	                        | \- INIT_WORK(&close_work)
+	https://bugzilla.kernel.org/show_bug.cgi?id=219364
 
-So fix this by initializing close_work before establishing the
-connection.
+[ dhansen: tweak subject ]
 
-Fixes: 46c28dbd4c23 ("net/smc: no socket state changes in tasklet context")
-Fixes: 413498440e30 ("net/smc: add SMC-D support in af_smc")
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/a4aa8842a3c3bfdb7fe9807710eef159cbf0e705.1731463305.git.len.brown%40intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/x86/kernel/cpu/intel.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index f343e91eec0e4..755659703a625 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -383,6 +383,7 @@ void smc_sk_init(struct net *net, struct sock *sk, int protocol)
- 	smc->limit_smc_hs = net->smc.limit_smc_hs;
- 	smc->use_fallback = false; /* assume rdma capability first */
- 	smc->fallback_rsn = 0;
-+	smc_close_init(smc);
- }
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -586,7 +586,9 @@ static void init_intel(struct cpuinfo_x8
+ 	     c->x86_vfm == INTEL_WESTMERE_EX))
+ 		set_cpu_bug(c, X86_BUG_CLFLUSH_MONITOR);
  
- static struct sock *smc_sock_alloc(struct net *net, struct socket *sock,
-@@ -1298,7 +1299,6 @@ static int smc_connect_rdma(struct smc_sock *smc,
- 		goto connect_abort;
- 	}
+-	if (boot_cpu_has(X86_FEATURE_MWAIT) && c->x86_vfm == INTEL_ATOM_GOLDMONT)
++	if (boot_cpu_has(X86_FEATURE_MWAIT) &&
++	    (c->x86_vfm == INTEL_ATOM_GOLDMONT ||
++	     c->x86_vfm == INTEL_LUNARLAKE_M))
+ 		set_cpu_bug(c, X86_BUG_MONITOR);
  
--	smc_close_init(smc);
- 	smc_rx_init(smc);
- 
- 	if (ini->first_contact_local) {
-@@ -1434,7 +1434,6 @@ static int smc_connect_ism(struct smc_sock *smc,
- 			goto connect_abort;
- 		}
- 	}
--	smc_close_init(smc);
- 	smc_rx_init(smc);
- 	smc_tx_init(smc);
- 
-@@ -2486,7 +2485,6 @@ static void smc_listen_work(struct work_struct *work)
- 		goto out_decl;
- 
- 	mutex_lock(&smc_server_lgr_pending);
--	smc_close_init(new_smc);
- 	smc_rx_init(new_smc);
- 	smc_tx_init(new_smc);
- 
--- 
-2.43.0
-
+ #ifdef CONFIG_X86_64
 
 
 
