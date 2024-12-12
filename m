@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5EE9EED76
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9182B9EF19B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5E9A164E10
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D4A728F725
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828C72210E3;
-	Thu, 12 Dec 2024 15:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5AE22FE08;
+	Thu, 12 Dec 2024 16:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K73xJ6lz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTfiYqVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF01217F34;
-	Thu, 12 Dec 2024 15:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484B722FDF7;
+	Thu, 12 Dec 2024 16:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018164; cv=none; b=Ln/OTmklc4PwGvKdpR1TFTATihnNMLSAlmoC87qphepOB/6QQYN1Ep9I4godIrTmqgQ5SbL5hwAMSlbW8TMb683tyAD1y7N3o+WZBmotU035tK3XtCwqOC4UlNcnmzlYrF3pcQg4SG6CSYurM668YfFZIdMV6y9TSqa7v+dBFnk=
+	t=1734021003; cv=none; b=CMP5hP+IE8z58OQCyfLIWijuOKE6TdiihMy4FnkQ4k3MUt4pQmqqTtQy1OCxB+JG0QeYpQY3d9u6Pu9Q1CYUGGnB4bHScIuLN8j/PAlafvFULQq8WUk85WBC/xMC1KJYIgc4mwmPDjznDdl5oo2Mc1NY34m4T5vZ14hM/B4OJA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018164; c=relaxed/simple;
-	bh=HwvJ0CWgP5N8EnFK2dE5gVQQGJwVWCdyDgiW5nV11Zs=;
+	s=arc-20240116; t=1734021003; c=relaxed/simple;
+	bh=UOQGwEg1443Gx3vom/j4Ft1Tz4WF21bncxa3sTzXr8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=roPk6Wx1VdhbRLytOgTVTFI3YnAQ4dPYuqxZ3r75XD1XM23ZrgwhPT/9EnKWjGWMKKRp9S7GiOv30PfEukfItqsszlIkKWNS6LIdoMBLZxAuau2z7GaHuKUQaGwffUwtISZmo8EoVNmsSVP0X05oQspmcGXJnbAcJlE5HQx9xsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K73xJ6lz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FD7C4CECE;
-	Thu, 12 Dec 2024 15:42:43 +0000 (UTC)
+	 MIME-Version; b=BHQ46mv0eRWlCGc67HZ+8DXQTCr+OKO2az5em0kp6fg8KR6Kig284OLCMyxcdkHg3iVvKuv/8GCOhC9KRY4q/EK+qVIB1QxhSzyQAVOhwzYkDOXOLS6QlXgdUrjS5BMwR9bJKwExcf5kWuARXeOIP4Z5j7BtuWsM3GEGYWkLbxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTfiYqVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439B0C4CECE;
+	Thu, 12 Dec 2024 16:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018163;
-	bh=HwvJ0CWgP5N8EnFK2dE5gVQQGJwVWCdyDgiW5nV11Zs=;
+	s=korg; t=1734021002;
+	bh=UOQGwEg1443Gx3vom/j4Ft1Tz4WF21bncxa3sTzXr8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K73xJ6lzgZ/4GhK1gndNtLoSpu4MWXpDuc5FpojCu+e2lWU2TiUcCjd0V20BvQ6PB
-	 VJYNYauce/1+/sUqNcwbFsGhsAgxhzS3OcPQLbBWDfa2Ps3do8RUupFC0u5E7Cblk9
-	 zx+CNxb749ebzjSOvJhAtt3WhK5CyyBJJPT4h9Xg=
+	b=pTfiYqVjdwr3yRrdRUiQA1Q5ospwEypKbKW2AP53C2jTro3EbUT4/YMtRhf6M2VLr
+	 xMFdZwW5N15OV5cntYIOVKqTyZuWiIMvfOm9X4lIYP23jpnpq40zq6KZAVDx5VXqHO
+	 sxn9+qWFLyHXuIGo4elWn1VRc/KSVLGm1jwEoQik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 215/356] dlm: fix possible lkb_resource null dereference
+Subject: [PATCH 6.1 589/772] tcp_bpf: Fix the sk_mem_uncharge logic in tcp_bpf_sendmsg
 Date: Thu, 12 Dec 2024 15:58:54 +0100
-Message-ID: <20241212144253.115469117@linuxfoundation.org>
+Message-ID: <20241212144414.277600196@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit b98333c67daf887c724cd692e88e2db9418c0861 ]
+[ Upstream commit ca70b8baf2bd125b2a4d96e76db79375c07d7ff2 ]
 
-This patch fixes a possible null pointer dereference when this function is
-called from request_lock() as lkb->lkb_resource is not assigned yet,
-only after validate_lock_args() by calling attach_lkb(). Another issue
-is that a resource name could be a non printable bytearray and we cannot
-assume to be ASCII coded.
+The current sk memory accounting logic in __SK_REDIRECT is pre-uncharging
+tosend bytes, which is either msg->sg.size or a smaller value apply_bytes.
 
-The log functionality is probably never being hit when DLM is used in
-normal way and no debug logging is enabled. The null pointer dereference
-can only occur on a new created lkb that does not have the resource
-assigned yet, it probably never hits the null pointer dereference but we
-should be sure that other changes might not change this behaviour and we
-actually can hit the mentioned null pointer dereference.
+Potential problems with this strategy are as follows:
 
-In this patch we just drop the printout of the resource name, the lkb id
-is enough to make a possible connection to a resource name if this
-exists.
+- If the actual sent bytes are smaller than tosend, we need to charge some
+  bytes back, as in line 487, which is okay but seems not clean.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+- When tosend is set to apply_bytes, as in line 417, and (ret < 0), we may
+  miss uncharging (msg->sg.size - apply_bytes) bytes.
+
+[...]
+415 tosend = msg->sg.size;
+416 if (psock->apply_bytes && psock->apply_bytes < tosend)
+417   tosend = psock->apply_bytes;
+[...]
+443 sk_msg_return(sk, msg, tosend);
+444 release_sock(sk);
+446 origsize = msg->sg.size;
+447 ret = tcp_bpf_sendmsg_redir(sk_redir, redir_ingress,
+448                             msg, tosend, flags);
+449 sent = origsize - msg->sg.size;
+[...]
+454 lock_sock(sk);
+455 if (unlikely(ret < 0)) {
+456   int free = sk_msg_free_nocharge(sk, msg);
+458   if (!cork)
+459     *copied -= free;
+460 }
+[...]
+487 if (eval == __SK_REDIRECT)
+488   sk_mem_charge(sk, tosend - sent);
+[...]
+
+When running the selftest test_txmsg_redir_wait_sndmem with txmsg_apply,
+the following warning will be reported:
+
+------------[ cut here ]------------
+WARNING: CPU: 6 PID: 57 at net/ipv4/af_inet.c:156 inet_sock_destruct+0x190/0x1a0
+Modules linked in:
+CPU: 6 UID: 0 PID: 57 Comm: kworker/6:0 Not tainted 6.12.0-rc1.bm.1-amd64+ #43
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+Workqueue: events sk_psock_destroy
+RIP: 0010:inet_sock_destruct+0x190/0x1a0
+RSP: 0018:ffffad0a8021fe08 EFLAGS: 00010206
+RAX: 0000000000000011 RBX: ffff9aab4475b900 RCX: ffff9aab481a0800
+RDX: 0000000000000303 RSI: 0000000000000011 RDI: ffff9aab4475b900
+RBP: ffff9aab4475b990 R08: 0000000000000000 R09: ffff9aab40050ec0
+R10: 0000000000000000 R11: ffff9aae6fdb1d01 R12: ffff9aab49c60400
+R13: ffff9aab49c60598 R14: ffff9aab49c60598 R15: dead000000000100
+FS:  0000000000000000(0000) GS:ffff9aae6fd80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffec7e47bd8 CR3: 00000001a1a1c004 CR4: 0000000000770ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+<TASK>
+? __warn+0x89/0x130
+? inet_sock_destruct+0x190/0x1a0
+? report_bug+0xfc/0x1e0
+? handle_bug+0x5c/0xa0
+? exc_invalid_op+0x17/0x70
+? asm_exc_invalid_op+0x1a/0x20
+? inet_sock_destruct+0x190/0x1a0
+__sk_destruct+0x25/0x220
+sk_psock_destroy+0x2b2/0x310
+process_scheduled_works+0xa3/0x3e0
+worker_thread+0x117/0x240
+? __pfx_worker_thread+0x10/0x10
+kthread+0xcf/0x100
+? __pfx_kthread+0x10/0x10
+ret_from_fork+0x31/0x40
+? __pfx_kthread+0x10/0x10
+ret_from_fork_asm+0x1a/0x30
+</TASK>
+---[ end trace 0000000000000000 ]---
+
+In __SK_REDIRECT, a more concise way is delaying the uncharging after sent
+bytes are finalized, and uncharge this value. When (ret < 0), we shall
+invoke sk_msg_free.
+
+Same thing happens in case __SK_DROP, when tosend is set to apply_bytes,
+we may miss uncharging (msg->sg.size - apply_bytes) bytes. The same
+warning will be reported in selftest.
+
+[...]
+468 case __SK_DROP:
+469 default:
+470 sk_msg_free_partial(sk, msg, tosend);
+471 sk_msg_apply_bytes(psock, tosend);
+472 *copied -= (tosend + delta);
+473 return -EACCES;
+[...]
+
+So instead of sk_msg_free_partial we can do sk_msg_free here.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Fixes: 8ec95b94716a ("bpf, sockmap: Fix the sk->sk_forward_alloc warning of sk_stream_kill_queues")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20241016234838.3167769-3-zijianzhang@bytedance.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lock.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/ipv4/tcp_bpf.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index 652c51fbbf768..6712d733fc90b 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -2698,16 +2698,14 @@ static int validate_lock_args(struct dlm_ls *ls, struct dlm_lkb *lkb,
- 	case -EINVAL:
- 		/* annoy the user because dlm usage is wrong */
- 		WARN_ON(1);
--		log_error(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_error(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	default:
--		log_debug(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_debug(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, dlm_iflags_val(lkb), args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	}
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index f67e4c9f8d40e..deb6286b58810 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -436,7 +436,6 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+ 			cork = true;
+ 			psock->cork = NULL;
+ 		}
+-		sk_msg_return(sk, msg, tosend);
+ 		release_sock(sk);
  
+ 		origsize = msg->sg.size;
+@@ -448,8 +447,9 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+ 			sock_put(sk_redir);
+ 
+ 		lock_sock(sk);
++		sk_mem_uncharge(sk, sent);
+ 		if (unlikely(ret < 0)) {
+-			int free = sk_msg_free_nocharge(sk, msg);
++			int free = sk_msg_free(sk, msg);
+ 
+ 			if (!cork)
+ 				*copied -= free;
+@@ -463,7 +463,7 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+ 		break;
+ 	case __SK_DROP:
+ 	default:
+-		sk_msg_free_partial(sk, msg, tosend);
++		sk_msg_free(sk, msg);
+ 		sk_msg_apply_bytes(psock, tosend);
+ 		*copied -= (tosend + delta);
+ 		return -EACCES;
+@@ -479,11 +479,8 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+ 		}
+ 		if (msg &&
+ 		    msg->sg.data[msg->sg.start].page_link &&
+-		    msg->sg.data[msg->sg.start].length) {
+-			if (eval == __SK_REDIRECT)
+-				sk_mem_charge(sk, tosend - sent);
++		    msg->sg.data[msg->sg.start].length)
+ 			goto more_data;
+-		}
+ 	}
+ 	return ret;
+ }
 -- 
 2.43.0
 
