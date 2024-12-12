@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-101574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D319EED51
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF85F9EF208
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F8D31883BEF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F146117C6E1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB45223E6B;
-	Thu, 12 Dec 2024 15:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338BC223C4E;
+	Thu, 12 Dec 2024 16:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJmTX8VB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjOJ/H36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A638621E0BC;
-	Thu, 12 Dec 2024 15:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E560921E0BC;
+	Thu, 12 Dec 2024 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018040; cv=none; b=kGO6Jm6va9vMoW5EgfJDkFbByYZJNCtFLZ3pEwet5S6Hk3mf/QlNC9/IKdzDvcs6KaBc8yGn5XdnrEG1kBwcn60PTma6D3SCplTxvMyjSpV5ClDkntLDizSDP225nVbtOC4ifVZjmmS04r5Cc/gTWtc5hX7xP+qzrEuMHQrlRaI=
+	t=1734020876; cv=none; b=Vs3kdGfG+OZiZD93M8Di+KeBzgjgLyxGnFspKbBRnhDwEvZU/IpOgITaS7zFMxxiR12hOhEVKeraaa0BpCYPDgPFDl2Ruc8J0y7mIJ9N486RH0XMy05++af60Gy0/TLhpJG/pfKyO3glqMSsNAaYGht3cVOJKKS+EesR6WygRF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018040; c=relaxed/simple;
-	bh=cD3cyBqrGP9uTZ8A/PxTAF25RmyB1ZfxaT2X6IupUC4=;
+	s=arc-20240116; t=1734020876; c=relaxed/simple;
+	bh=DNw/OJrnt8J9VEMzCPhu6RD2wjzs0ibT33aK7S/fQkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8hwVoC+54Gz80VGPmfZSPbYQpeh/rKV03yQx6wqnceuecUs6LdlmyPfsPSsVUN9lpCodq0jhATnzcQR04fvFGv42kjXM2CZOqBxNFTw0fT6WlNo0VU2Wtm1W3qMZVnr7l/7pNuXRBARocU/hViJPzH1bm8B7irEYjn23f+mTTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJmTX8VB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DA1C4CED4;
-	Thu, 12 Dec 2024 15:40:39 +0000 (UTC)
+	 MIME-Version; b=WuEw2iugmKuGB/DtONrPHrTLzpf1QoFrh+HEF5A76xK86d4GdUvtEfwIZqrCeG8yzO6G3MhIF98UxhR3D9PJ9nSgiLXIS13pP2fE+j+JUp1J8BQNlpMH/e+7WVp/uh28zFXjJHrLphLfXzokGzdEnd5bCk/QjZZpBmqmqaJopL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjOJ/H36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3EEC4CED0;
+	Thu, 12 Dec 2024 16:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018040;
-	bh=cD3cyBqrGP9uTZ8A/PxTAF25RmyB1ZfxaT2X6IupUC4=;
+	s=korg; t=1734020875;
+	bh=DNw/OJrnt8J9VEMzCPhu6RD2wjzs0ibT33aK7S/fQkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJmTX8VBirzHYGzrQ7Rec6jVbNYQFfHyH6ukKi699VNdRZ8IYrV4zXVyDhjMYSXXd
-	 fI/mU3JcOqd06lMhFCIMmXIs4E9QqUl7BVOLi5Ct3rqUz6iP7oa68YsOjHtX9CyNV9
-	 5fDQ71w80yvH1XVaWkVlTNX/GOM2kRSH95LGBTXc=
+	b=AjOJ/H36+F5DD32wZOSy/RI89upPMGGXAvPPX7g2HfOmOHTf97YP940Fnll4hmDkl
+	 JrSk9YZHWi8Sfbepx9q62bgmqc+mEyonvKuFhqlPnvMw0zAIgjwFRGgCJ9jloNfKlW
+	 XDiIRRq59L6nLZz2+pwEynlGkhL08FWWbMRy6la8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wengang Wang <wen.gang.wang@oracle.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 180/356] ocfs2: update seq_file index in ocfs2_dlm_seq_next
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 554/772] usb: dwc3: ep0: Dont reset resource alloc flag (including ep0)
 Date: Thu, 12 Dec 2024 15:58:19 +0100
-Message-ID: <20241212144251.742854427@linuxfoundation.org>
+Message-ID: <20241212144412.853592705@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,48 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wengang Wang <wen.gang.wang@oracle.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-commit 914eec5e980171bc128e7e24f7a22aa1d803570e upstream.
+[ Upstream commit 72fca8371f205d654f95b09cd023a71fd5307041 ]
 
-The following INFO level message was seen:
+The DWC3_EP_RESOURCE_ALLOCATED flag ensures that the resource of an
+endpoint is only assigned once. Unless the endpoint is reset, don't
+clear this flag. Otherwise we may set endpoint resource again, which
+prevents the driver from initiate transfer after handling a STALL or
+endpoint halt to the control endpoint.
 
-seq_file: buggy .next function ocfs2_dlm_seq_next [ocfs2] did not
-update position index
+Commit f2e0eee47038 ("usb: dwc3: ep0: Don't reset resource alloc flag")
+was fixing the initial issue, but did this only for physical ep1. Since
+the function dwc3_ep0_stall_and_restart is resetting the flags for both
+physical endpoints, this also has to be done for ep0.
 
-Fix:
-Update *pos (so m->index) to make seq_read_iter happy though the index its
-self makes no sense to ocfs2_dlm_seq_next.
-
-Link: https://lkml.kernel.org/r/20241119174500.9198-1-wen.gang.wang@oracle.com
-Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: b311048c174d ("usb: dwc3: gadget: Rewrite endpoint allocation flow")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Link: https://lore.kernel.org/r/20240814-dwc3hwep0reset-v2-1-29e1d7d923ea@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 5d2fb074dea2 ("usb: dwc3: ep0: Don't clear ep0 DWC3_EP_TRANSFER_STARTED")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/dlmglue.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/ep0.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ocfs2/dlmglue.c
-+++ b/fs/ocfs2/dlmglue.c
-@@ -3110,6 +3110,7 @@ static void *ocfs2_dlm_seq_next(struct s
- 	struct ocfs2_lock_res *iter = v;
- 	struct ocfs2_lock_res *dummy = &priv->p_iter_res;
+diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
+index afaaff33862bb..2da36f02a10e8 100644
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -229,7 +229,8 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
+ 	/* stall is always issued on EP0 */
+ 	dep = dwc->eps[0];
+ 	__dwc3_gadget_ep_set_halt(dep, 1, false);
+-	dep->flags = DWC3_EP_ENABLED;
++	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED;
++	dep->flags |= DWC3_EP_ENABLED;
+ 	dwc->delayed_status = false;
  
-+	(*pos)++;
- 	spin_lock(&ocfs2_dlm_tracking_lock);
- 	iter = ocfs2_dlm_next_res(iter, priv);
- 	list_del_init(&dummy->l_debug_list);
+ 	if (!list_empty(&dep->pending_list)) {
+-- 
+2.43.0
+
 
 
 
