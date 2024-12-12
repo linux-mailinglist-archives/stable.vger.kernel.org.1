@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-101024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB559EE9E9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0C69EE9F8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B69B283B87
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61CE2284BDB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72772213E97;
-	Thu, 12 Dec 2024 15:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9803B21578A;
+	Thu, 12 Dec 2024 15:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yazh2N6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NJD7g4W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCCD2EAE5;
-	Thu, 12 Dec 2024 15:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5407F2153F4;
+	Thu, 12 Dec 2024 15:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015993; cv=none; b=qaH59haKHCTkgEzgydmIlPpcglSiOcPhEQZtmt7UpqYbWYcs6Axi4QZdRAut9gO/c1U1/7aJEu2XuVO30epnhGefqT9IzBgWTgQEpYncCNaYehZs5aQsMzkmgaQ/p9H9RDwgtCPh0dHpWHfDW3tWoEwHQdgu6r70n1uLBMjyVoQ=
+	t=1734016039; cv=none; b=jM+DKXaH3cujukw2UiX1p+HPBmCicpvs6PM8WzH+B6LAqHGgaGajI7+70+MpwW3NiMIGQoC5DIdI0NPqJ5bdO8bay/9HX/GQlx4ojqba6veOu1/hW8NXSCk/OBACMKwRAhZIutX8slqMhsTV80xFGDSk80HNfrWra6rrNM3Deu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015993; c=relaxed/simple;
-	bh=qm40uhayvrkO1McX1eecFbaY8SYyMGw9EXWVIbPrMbU=;
+	s=arc-20240116; t=1734016039; c=relaxed/simple;
+	bh=HMVX/2P71yqzoOGam2NHdkjczzeZZPFm4Mhmw1gE/Lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGVDxohSwFhak266kc0OzNDSNTBQcvc7lTWZFDMRXACJ/zPbIF29lXKdU60qkKglgBPGLOsD6sg3Zbg/9Rie017ZrV1cSiJUMYMIwJIbkWXQ+6p0kHs0cQXWt/pu+UZ9xZcrrKOofaAZMug0L0Q4qLTf+MRv/xvo5EfIrkczNzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yazh2N6f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D8DC4CECE;
-	Thu, 12 Dec 2024 15:06:32 +0000 (UTC)
+	 MIME-Version; b=IrhCw1YTpVntYSHOHIY/nBSsiF0mmTTg1lYUi26i9cTm2VkNg4avruQDezUAdb0yJW0gQ/UzRVbaK/YJIUs3d2vnwl+HHZ58qVI21kNJActv1MoajwQKg1cvEwcZ9h0Xay+FzEmf/8QQE5qFNhkHWqIyB1qZVbI5TXc56Cum1hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NJD7g4W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB45C4CECE;
+	Thu, 12 Dec 2024 15:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015992;
-	bh=qm40uhayvrkO1McX1eecFbaY8SYyMGw9EXWVIbPrMbU=;
+	s=korg; t=1734016038;
+	bh=HMVX/2P71yqzoOGam2NHdkjczzeZZPFm4Mhmw1gE/Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yazh2N6fqpt0FlqkadaaDijt3IXk3h0Ovtw2fWKYXKLN1nSq0kQUsN4eYHw9CHFMU
-	 KoL5+qBAEZn5rVcaULOEAMV7qwM2aEhKi00gWN1iotaCqmyj/EKojC3i++F3jtlgBQ
-	 RQ3lcW3CIWui+Q0nJaT4/B1XfVlW+sHxnJQ6sx8g=
+	b=0NJD7g4WOedHZpS73pQgQx/bscos8mgqB3kO2oibQ8UEYz1shPMtr+ZvaVB0H/cPl
+	 vMOY2Dsb9W+8cC5tM+06gmOSURsFxIsdlDWjfFQNtDPjHS856orUKKdFp+jspXOaUn
+	 kEhD9/m/INc8GhSwP+TNCZdADRpua3KMxMqTCBrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Jakob Hauser <jahau@rocketmail.com>,
+	kernel test robot <lkp@intel.com>,
+	David Laight <david.laight@aculab.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/466] drivers/virt: pkvm: Dont fail ioremap() call if MMIO_GUARD fails
-Date: Thu, 12 Dec 2024 15:54:31 +0100
-Message-ID: <20241212144310.843922773@linuxfoundation.org>
+Subject: [PATCH 6.12 114/466] iio: magnetometer: yas530: use signed integer type for clamp limits
+Date: Thu, 12 Dec 2024 15:54:43 +0100
+Message-ID: <20241212144311.321906615@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -66,43 +71,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Jakob Hauser <jahau@rocketmail.com>
 
-[ Upstream commit d44679fb954ffea961036ed1aeb7d65035f78489 ]
+[ Upstream commit f1ee5483e40881d8ad5a63aa148b753b5c6a839b ]
 
-Calling the MMIO_GUARD hypercall from guests which have not been
-enrolled (e.g. because they are running without pvmfw) results in
--EINVAL being returned. In this case, MMIO_GUARD is not active
-and so we can simply proceed with the normal ioremap() routine.
+In the function yas537_measure() there is a clamp_val() with limits of
+-BIT(13) and BIT(13) - 1.  The input clamp value h[] is of type s32.  The
+BIT() is of type unsigned long integer due to its define in
+include/vdso/bits.h.  The lower limit -BIT(13) is recognized as -8192 but
+expressed as an unsigned long integer.  The size of an unsigned long
+integer differs between 32-bit and 64-bit architectures.  Converting this
+to type s32 may lead to undesired behavior.
 
-Don't fail ioremap() if MMIO_GUARD fails; instead WARN_ON_ONCE()
-to highlight that the pvm environment is slightly wonky.
+Additionally, in the calculation lines h[0], h[1] and h[2] the unsigned
+long integer divisor BIT(13) causes an unsigned division, shifting the
+left-hand side of the equation back and forth, possibly ending up in large
+positive values instead of negative values on 32-bit architectures.
 
-Fixes: 0f1269495800 ("drivers/virt: pkvm: Intercept ioremap using pKVM MMIO_GUARD hypercall")
-Signed-off-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241202145731.6422-2-will@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+To solve those two issues, declare a signed integer with a value of
+BIT(13).
+
+There is another omission in the clamp line: clamp_val() returns a value
+and it's going nowhere here.  Self-assign it to h[i] to make use of the
+clamp macro.
+
+Finally, replace clamp_val() macro by clamp() because after changing the
+limits from type unsigned long integer to signed integer it's fine that
+way.
+
+Link: https://lkml.kernel.org/r/11609b2243c295d65ab4d47e78c239d61ad6be75.1732914810.git.jahau@rocketmail.com
+Fixes: 65f79b501030 ("iio: magnetometer: yas530: Add YAS537 variant")
+Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411230458.dhZwh3TT-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202411282222.oF0B4110-lkp@intel.com/
+Reviewed-by: David Laight <david.laight@aculab.com>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/iio/magnetometer/yamaha-yas530.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
-index 56a3859dda8a1..4230b817a80bd 100644
---- a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
-+++ b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
-@@ -87,12 +87,8 @@ static int mmio_guard_ioremap_hook(phys_addr_t phys, size_t size,
+diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
+index 65011a8598d33..c55a38650c0d4 100644
+--- a/drivers/iio/magnetometer/yamaha-yas530.c
++++ b/drivers/iio/magnetometer/yamaha-yas530.c
+@@ -372,6 +372,7 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
+ 	u8 data[8];
+ 	u16 xy1y2[3];
+ 	s32 h[3], s[3];
++	int half_range = BIT(13);
+ 	int i, ret;
  
- 	while (phys < end) {
- 		const int func_id = ARM_SMCCC_VENDOR_HYP_KVM_MMIO_GUARD_FUNC_ID;
--		int err;
--
--		err = arm_smccc_do_one_page(func_id, phys);
--		if (err)
--			return err;
- 
-+		WARN_ON_ONCE(arm_smccc_do_one_page(func_id, phys));
- 		phys += PAGE_SIZE;
+ 	mutex_lock(&yas5xx->lock);
+@@ -406,13 +407,13 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
+ 	/* The second version of YAS537 needs to include calibration coefficients */
+ 	if (yas5xx->version == YAS537_VERSION_1) {
+ 		for (i = 0; i < 3; i++)
+-			s[i] = xy1y2[i] - BIT(13);
+-		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / BIT(13);
+-		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / BIT(13);
+-		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / BIT(13);
++			s[i] = xy1y2[i] - half_range;
++		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / half_range;
++		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / half_range;
++		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / half_range;
+ 		for (i = 0; i < 3; i++) {
+-			clamp_val(h[i], -BIT(13), BIT(13) - 1);
+-			xy1y2[i] = h[i] + BIT(13);
++			h[i] = clamp(h[i], -half_range, half_range - 1);
++			xy1y2[i] = h[i] + half_range;
+ 		}
  	}
  
 -- 
