@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-103214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F839EF6FD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4EA9EF6D3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D42AC17BFCF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DA6F189D22E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C822144C4;
-	Thu, 12 Dec 2024 17:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEA4216E2D;
+	Thu, 12 Dec 2024 17:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7utqNGF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEXubEcL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E85D53365;
-	Thu, 12 Dec 2024 17:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49996205501;
+	Thu, 12 Dec 2024 17:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023888; cv=none; b=t4JW7aYeVVSPSaVSmG5Th4mbHSUgzrLUEUsVTnfHM9yqJIYs3oSFt/356j7HOtoYBS7Sa/citsWUQYmnKvshiyzsombm4aWwTnnoZjT6sIysYPXDxzgjyPxtcUF6+ww8RWyUTDmZkaRqk/HQvRia7KUKB2aSXfFJftz2t4qVA88=
+	t=1734023901; cv=none; b=nPpGLQScLeMOcyPbkHxFqihXlNKbDyNkypx1bmIVvWKVK6/DITiJ/F3+k/grxq4HchNgneIYu+5SNRJZN7lJ6+eNWoO91hqFI6oxdeqkk+p+ykbkB/S0chvov106/mPhxIePIRvweU/To6HV3TYhbQQPu+CEkfVFCx4H5jAT3Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023888; c=relaxed/simple;
-	bh=7jyrvU8kZgwoL+uprP+nRm2jqYnmcQX8u0P+thLfG1U=;
+	s=arc-20240116; t=1734023901; c=relaxed/simple;
+	bh=z6wVPX7f+S9kvXCCFi3O3nf+F1BfMxpCM3DltFERuj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNvtqV+AtR61mRvqXCdrodhyMLB69L8MBQDKBIUhbDF9gQpzEWWTkMwPuJCmvNsl8Xg357t+B+QpzEHdoAnMgA7yVUhvJ2RcWcIc00GXfbFA8LJGH8iIcjymKXlgQLDpGTIOy6dTrCCP7c6uKuGEar9sWq/OImiZ6nnAswWLlog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7utqNGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66ADAC4CECE;
-	Thu, 12 Dec 2024 17:18:07 +0000 (UTC)
+	 MIME-Version; b=FOp/YsoStUWgmpuE/uawRhQPOKNwuwG5Zu/SndaSeXt+QDFJn6Q3yDVve38ki/GzrN3PHreedPNLkYXWzcmWZ0a66A4nLoS0Oz9oEc3zbKcco3Be36IgGPB3cyd39sLdqg8mVZSoCmIE6NVz+hBgTy1Xxgz5KkCEHacneZvlUSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEXubEcL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74651C4CECE;
+	Thu, 12 Dec 2024 17:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023887;
-	bh=7jyrvU8kZgwoL+uprP+nRm2jqYnmcQX8u0P+thLfG1U=;
+	s=korg; t=1734023899;
+	bh=z6wVPX7f+S9kvXCCFi3O3nf+F1BfMxpCM3DltFERuj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7utqNGFYtg5Vu9V7XI8imXDugi7+ScZW+hJVVqjrttaDYeiBJDmghU1GE+ccusHj
-	 arwHKOsCAGkbkgbM//K2VVRm9/8lF2DPnaiev404lwhrYifJH2yBJbqBbpvqGOZ0Q4
-	 C2GU3ZS8vcX6Xjm8K/ERfBwhxCcTmaQgtnOXK2GQ=
+	b=oEXubEcL8heSEymlxk+I2MBM79FdrbGBJJoMeohyrfayZ/AH4YGy7VZN1kBkMTzM8
+	 Yci/h+PVBhN5rC50uj22wSpt1DWpBJC8+XJzBytRXBgdBkMU1+IUtLrz1eEYBDeBLx
+	 tlyZilfigC/gt+8vaNJ/j23sCCCEKV9BSPupoFNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chen Ridong <chenridong@huawei.com>,
 	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/459] Revert "cgroup: Fix memory leak caused by missing cgroup_bpf_offline"
-Date: Thu, 12 Dec 2024 15:57:06 +0100
-Message-ID: <20241212144256.991985456@linuxfoundation.org>
+Subject: [PATCH 5.10 089/459] cgroup/bpf: only cgroup v2 can be attached by bpf programs
+Date: Thu, 12 Dec 2024 15:57:07 +0100
+Message-ID: <20241212144257.030353244@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
 References: <20241212144253.511169641@linuxfoundation.org>
@@ -68,39 +68,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit feb301c60970bd2a1310a53ce2d6e4375397a51b ]
+[ Upstream commit 2190df6c91373fdec6db9fc07e427084f232f57e ]
 
-This reverts commit 04f8ef5643bcd8bcde25dfdebef998aea480b2ba.
+Only cgroup v2 can be attached by bpf programs, so this patch introduces
+that cgroup_bpf_inherit and cgroup_bpf_offline can only be called in
+cgroup v2, and this can fix the memleak mentioned by commit 04f8ef5643bc
+("cgroup: Fix memory leak caused by missing cgroup_bpf_offline"), which
+has been reverted.
 
-Only cgroup v2 can be attached by cgroup by BPF programs. Revert this
-commit and cgroup_bpf_inherit and cgroup_bpf_offline won't be called in
-cgroup v1. The memory leak issue will be fixed with next patch.
-
-Fixes: 04f8ef5643bc ("cgroup: Fix memory leak caused by missing cgroup_bpf_offline")
+Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
+Fixes: 4bfc0bb2c60e ("bpf: decouple the lifetime of cgroup_bpf from cgroup itself")
 Link: https://lore.kernel.org/cgroups/aka2hk5jsel5zomucpwlxsej6iwnfw4qu5jkrmjhyfhesjlfdw@46zxhg5bdnr7/
 Signed-off-by: Chen Ridong <chenridong@huawei.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/cgroup/cgroup.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index e0fd62d56110a..c5e51bad62473 100644
+index c5e51bad62473..efeb0b7427501 100644
 --- a/kernel/cgroup/cgroup.c
 +++ b/kernel/cgroup/cgroup.c
-@@ -2187,10 +2187,8 @@ static void cgroup_kill_sb(struct super_block *sb)
- 	 * And don't kill the default root.
- 	 */
- 	if (list_empty(&root->cgrp.self.children) && root != &cgrp_dfl_root &&
--	    !percpu_ref_is_dying(&root->cgrp.self.refcnt)) {
--		cgroup_bpf_offline(&root->cgrp);
-+	    !percpu_ref_is_dying(&root->cgrp.self.refcnt))
- 		percpu_ref_kill(&root->cgrp.self.refcnt);
--	}
- 	cgroup_put(&root->cgrp);
- 	kernfs_kill_sb(sb);
- }
+@@ -2018,8 +2018,10 @@ int cgroup_setup_root(struct cgroup_root *root, u16 ss_mask)
+ 	if (ret)
+ 		goto destroy_root;
+ 
+-	ret = cgroup_bpf_inherit(root_cgrp);
+-	WARN_ON_ONCE(ret);
++	if (root == &cgrp_dfl_root) {
++		ret = cgroup_bpf_inherit(root_cgrp);
++		WARN_ON_ONCE(ret);
++	}
+ 
+ 	trace_cgroup_setup_root(root);
+ 
+@@ -5355,9 +5357,11 @@ static struct cgroup *cgroup_create(struct cgroup *parent, const char *name,
+ 	if (ret)
+ 		goto out_kernfs_remove;
+ 
+-	ret = cgroup_bpf_inherit(cgrp);
+-	if (ret)
+-		goto out_psi_free;
++	if (cgrp->root == &cgrp_dfl_root) {
++		ret = cgroup_bpf_inherit(cgrp);
++		if (ret)
++			goto out_psi_free;
++	}
+ 
+ 	/*
+ 	 * New cgroup inherits effective freeze counter, and
+@@ -5676,7 +5680,8 @@ static int cgroup_destroy_locked(struct cgroup *cgrp)
+ 
+ 	cgroup1_check_for_release(parent);
+ 
+-	cgroup_bpf_offline(cgrp);
++	if (cgrp->root == &cgrp_dfl_root)
++		cgroup_bpf_offline(cgrp);
+ 
+ 	/* put the base reference */
+ 	percpu_ref_kill(&cgrp->self.refcnt);
 -- 
 2.43.0
 
