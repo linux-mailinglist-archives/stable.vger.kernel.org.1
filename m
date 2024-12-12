@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-102607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7E29EF466
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7962B9EF4B3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13BB517D7DC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 527331899C20
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D62235881;
-	Thu, 12 Dec 2024 16:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886412358A6;
+	Thu, 12 Dec 2024 16:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDnGCVcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxVYbvf0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EFD229661;
-	Thu, 12 Dec 2024 16:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4569922967A;
+	Thu, 12 Dec 2024 16:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021837; cv=none; b=DwaJw8UgqczeGdlW7oPLVTaasb4mNvbAb0wquIoEikprMuJJDnc2BnW7fyEgZt5NzxWtnZHjFnJKK7hXc62MzURr8BlocGLa2wE3k+b6/qZ9JeCI/jeCyTI/qfzDL9lGXrsNZMsqFwyHyRVpuv7tKU9Da0h8lkC0FcmHvnlpRR0=
+	t=1734021852; cv=none; b=AyRw78rVBfhEHBNixjwFeTPc7H9N85qVcWmIoi71Zf/Oh4hrkQdlt5rQW/FAN1ybV7ORlcXVRVY0UxXCzDcFai31PLrQ/iJFr1YjO8JgUPLBuTHibg6hAonKfJO/dR7vAAJLlunAA61eP3OXupSFwUEoCfVPmDR1LhogVqvm7p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021837; c=relaxed/simple;
-	bh=Kvg11Ssks1J0nYlpwz3d7wf5TsMi6WcjHWdgwM8vutU=;
+	s=arc-20240116; t=1734021852; c=relaxed/simple;
+	bh=0yqBnj0Y99D6qCQb9QRxxXoykw9/PSFixnPQNuKZGp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTlUuK9m2Mo4zwkCpggFf2W2jek62djjjuTl3SXvgiNhUWGeqIJHO85KN2nvPFWRm6CLBGTIcWBC6yctyHI+TmFhe9tRbJVXSc4gGd6/YvaowKbTKu47X9gkElX0Mhirc8T2dXfhIu/TaKzQ7/oRD+fuDA4PzWK+9Mf2gN6vfe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDnGCVcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9D9C4CECE;
-	Thu, 12 Dec 2024 16:43:56 +0000 (UTC)
+	 MIME-Version; b=O57NxVSfJbBj2t1nCtTTo0d7L/GRSCNeFd9DO4bUz0IzQc5PthL1c419FgFgBCOqt50zUFeMc4tVPAUu7DXULDkkPYx12Qfp76427xyh38vIoM9PS6NFGx7raA7HAGXwInlVTy3xtwN6k3OG1m7G94Uy7qLExqTUQD+OPYzbwTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxVYbvf0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917B3C4CECE;
+	Thu, 12 Dec 2024 16:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021837;
-	bh=Kvg11Ssks1J0nYlpwz3d7wf5TsMi6WcjHWdgwM8vutU=;
+	s=korg; t=1734021852;
+	bh=0yqBnj0Y99D6qCQb9QRxxXoykw9/PSFixnPQNuKZGp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDnGCVcZuuQmPNAQYfRLhwt/+cdQXIEonvafLiwD339RvtNMGIFMMTtlyndgdIU/7
-	 Kn/WdvbWSI5LMY/eBFAfCecDfMTstjOfqgHQ2f7rigiKmuiD2p9G3IhbD6yIWqefrz
-	 HV13up+UymS/j450UGiLQQD2YDjsY+XzxySQ4ozI=
+	b=bxVYbvf0umwj9VUF0YwEpGgLHGmN+nYEVEDy1mA5B+WZYoSW9nV/0H2Ve9znvPbGe
+	 dKWwA7j1zols9AOX9mttvdmqtGIgCTSI8+ibzevzt7Cre4FUyuxxD5Ce4HLbXSCh6/
+	 SCdETaeICMIx9yCaUDXIpRVNDuFiU4+JNsPLeiPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Kishon Vijay Abraham I <kvijayab@amd.com>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/565] x86/barrier: Do not serialize MSR accesses on AMD
-Date: Thu, 12 Dec 2024 15:54:31 +0100
-Message-ID: <20241212144314.491627435@linuxfoundation.org>
+Subject: [PATCH 5.15 080/565] brd: defer automatic disk creation until module initialization succeeds
+Date: Thu, 12 Dec 2024 15:54:35 +0100
+Message-ID: <20241212144314.649965673@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
 References: <20241212144311.432886635@linuxfoundation.org>
@@ -66,209 +68,206 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Yang Erkun <yangerkun@huawei.com>
 
-commit 04c3024560d3a14acd18d0a51a1d0a89d29b7eb5 upstream.
+[ Upstream commit 826cc42adf44930a633d11a5993676d85ddb0842 ]
 
-AMD does not have the requirement for a synchronization barrier when
-acccessing a certain group of MSRs. Do not incur that unnecessary
-penalty there.
+My colleague Wupeng found the following problems during fault injection:
 
-There will be a CPUID bit which explicitly states that a MFENCE is not
-needed. Once that bit is added to the APM, this will be extended with
-it.
+BUG: unable to handle page fault for address: fffffbfff809d073
+PGD 6e648067 P4D 123ec8067 PUD 123ec4067 PMD 100e38067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 5 UID: 0 PID: 755 Comm: modprobe Not tainted 6.12.0-rc3+ #17
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.16.1-2.fc37 04/01/2014
+RIP: 0010:__asan_load8+0x4c/0xa0
+...
+Call Trace:
+ <TASK>
+ blkdev_put_whole+0x41/0x70
+ bdev_release+0x1a3/0x250
+ blkdev_release+0x11/0x20
+ __fput+0x1d7/0x4a0
+ task_work_run+0xfc/0x180
+ syscall_exit_to_user_mode+0x1de/0x1f0
+ do_syscall_64+0x6b/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-While at it, move to processor.h to avoid include hell. Untangling that
-file properly is a matter for another day.
+loop_init() is calling loop_add() after __register_blkdev() succeeds and
+is ignoring disk_add() failure from loop_add(), for loop_add() failure
+is not fatal and successfully created disks are already visible to
+bdev_open().
 
-Some notes on the performance aspect of why this is relevant, courtesy
-of Kishon VijayAbraham <Kishon.VijayAbraham@amd.com>:
+brd_init() is currently calling brd_alloc() before __register_blkdev()
+succeeds and is releasing successfully created disks when brd_init()
+returns an error. This can cause UAF for the latter two case:
 
-On a AMD Zen4 system with 96 cores, a modified ipi-bench[1] on a VM
-shows x2AVIC IPI rate is 3% to 4% lower than AVIC IPI rate. The
-ipi-bench is modified so that the IPIs are sent between two vCPUs in the
-same CCX. This also requires to pin the vCPU to a physical core to
-prevent any latencies. This simulates the use case of pinning vCPUs to
-the thread of a single CCX to avoid interrupt IPI latency.
+case 1:
+    T1:
+modprobe brd
+  brd_init
+    brd_alloc(0) // success
+      add_disk
+        disk_scan_partitions
+          bdev_file_open_by_dev // alloc file
+          fput // won't free until back to userspace
+    brd_alloc(1) // failed since mem alloc error inject
+  // error path for modprobe will release code segment
+  // back to userspace
+  __fput
+    blkdev_release
+      bdev_release
+        blkdev_put_whole
+          bdev->bd_disk->fops->release // fops is freed now, UAF!
 
-In order to avoid run-to-run variance (for both x2AVIC and AVIC), the
-below configurations are done:
+case 2:
+    T1:                            T2:
+modprobe brd
+  brd_init
+    brd_alloc(0) // success
+                                   open(/dev/ram0)
+    brd_alloc(1) // fail
+  // error path for modprobe
 
-  1) Disable Power States in BIOS (to prevent the system from going to
-     lower power state)
+                                   close(/dev/ram0)
+                                   ...
+                                   /* UAF! */
+                                   bdev->bd_disk->fops->release
 
-  2) Run the system at fixed frequency 2500MHz (to prevent the system
-     from increasing the frequency when the load is more)
+Fix this problem by following what loop_init() does. Besides,
+reintroduce brd_devices_mutex to help serialize modifications to
+brd_list.
 
-With the above configuration:
-
-*) Performance measured using ipi-bench for AVIC:
-  Average Latency:  1124.98ns [Time to send IPI from one vCPU to another vCPU]
-
-  Cumulative throughput: 42.6759M/s [Total number of IPIs sent in a second from
-  				     48 vCPUs simultaneously]
-
-*) Performance measured using ipi-bench for x2AVIC:
-  Average Latency:  1172.42ns [Time to send IPI from one vCPU to another vCPU]
-
-  Cumulative throughput: 40.9432M/s [Total number of IPIs sent in a second from
-  				     48 vCPUs simultaneously]
-
->From above, x2AVIC latency is ~4% more than AVIC. However, the expectation is
-x2AVIC performance to be better or equivalent to AVIC. Upon analyzing
-the perf captures, it is observed significant time is spent in
-weak_wrmsr_fence() invoked by x2apic_send_IPI().
-
-With the fix to skip weak_wrmsr_fence()
-
-*) Performance measured using ipi-bench for x2AVIC:
-  Average Latency:  1117.44ns [Time to send IPI from one vCPU to another vCPU]
-
-  Cumulative throughput: 42.9608M/s [Total number of IPIs sent in a second from
-  				     48 vCPUs simultaneously]
-
-Comparing the performance of x2AVIC with and without the fix, it can be seen
-the performance improves by ~4%.
-
-Performance captured using an unmodified ipi-bench using the 'mesh-ipi' option
-with and without weak_wrmsr_fence() on a Zen4 system also showed significant
-performance improvement without weak_wrmsr_fence(). The 'mesh-ipi' option ignores
-CCX or CCD and just picks random vCPU.
-
-  Average throughput (10 iterations) with weak_wrmsr_fence(),
-        Cumulative throughput: 4933374 IPI/s
-
-  Average throughput (10 iterations) without weak_wrmsr_fence(),
-        Cumulative throughput: 6355156 IPI/s
-
-[1] https://github.com/bytedance/kvm-utils/tree/master/microbenchmark/ipi-bench
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230622095212.20940-1-bp@alien8.de
-Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7f9b348cb5e9 ("brd: convert to blk_alloc_disk/blk_cleanup_disk")
+Reported-by: Wupeng Ma <mawupeng1@huawei.com>
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241030034914.907829-1-yangerkun@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/barrier.h     | 18 ------------------
- arch/x86/include/asm/cpufeatures.h |  1 +
- arch/x86/include/asm/processor.h   | 18 ++++++++++++++++++
- arch/x86/kernel/cpu/amd.c          |  3 +++
- arch/x86/kernel/cpu/common.c       |  7 +++++++
- arch/x86/kernel/cpu/hygon.c        |  3 +++
- 6 files changed, 32 insertions(+), 18 deletions(-)
+ drivers/block/brd.c | 66 ++++++++++++++++++++++++++++++---------------
+ 1 file changed, 44 insertions(+), 22 deletions(-)
 
-diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
-index 3ba772a69cc8b..dab2db15a8c47 100644
---- a/arch/x86/include/asm/barrier.h
-+++ b/arch/x86/include/asm/barrier.h
-@@ -81,22 +81,4 @@ do {									\
+diff --git a/drivers/block/brd.c b/drivers/block/brd.c
+index db816baca5567..e4f470cc702f9 100644
+--- a/drivers/block/brd.c
++++ b/drivers/block/brd.c
+@@ -362,8 +362,40 @@ __setup("ramdisk_size=", ramdisk_size);
+  * (should share code eventually).
+  */
+ static LIST_HEAD(brd_devices);
++static DEFINE_MUTEX(brd_devices_mutex);
+ static struct dentry *brd_debugfs_dir;
  
- #include <asm-generic/barrier.h>
- 
--/*
-- * Make previous memory operations globally visible before
-- * a WRMSR.
-- *
-- * MFENCE makes writes visible, but only affects load/store
-- * instructions.  WRMSR is unfortunately not a load/store
-- * instruction and is unaffected by MFENCE.  The LFENCE ensures
-- * that the WRMSR is not reordered.
-- *
-- * Most WRMSRs are full serializing instructions themselves and
-- * do not require this barrier.  This is only required for the
-- * IA32_TSC_DEADLINE and X2APIC MSRs.
-- */
--static inline void weak_wrmsr_fence(void)
--{
--	asm volatile("mfence; lfence" : : : "memory");
--}
--
- #endif /* _ASM_X86_BARRIER_H */
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 3c0f7e3324788..4faa47cc1a5c3 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -309,6 +309,7 @@
- #define X86_FEATURE_SRSO		(11*32+24) /* "" AMD BTB untrain RETs */
- #define X86_FEATURE_SRSO_ALIAS		(11*32+25) /* "" AMD BTB untrain RETs through aliasing */
- #define X86_FEATURE_IBPB_ON_VMEXIT	(11*32+26) /* "" Issue an IBPB only on VMEXIT */
-+#define X86_FEATURE_APIC_MSRS_FENCE	(11*32+27) /* "" IA32_TSC_DEADLINE and X2APIC MSRs need fencing */
- 
- /* Intel-defined CPU features, CPUID level 0x00000007:1 (EAX), word 12 */
- #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* AVX VNNI instructions */
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 0702e0c5dbb8d..b7186deb8262b 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -860,4 +860,22 @@ enum mds_mitigations {
- 
- extern bool gds_ucode_mitigated(void);
- 
-+/*
-+ * Make previous memory operations globally visible before
-+ * a WRMSR.
-+ *
-+ * MFENCE makes writes visible, but only affects load/store
-+ * instructions.  WRMSR is unfortunately not a load/store
-+ * instruction and is unaffected by MFENCE.  The LFENCE ensures
-+ * that the WRMSR is not reordered.
-+ *
-+ * Most WRMSRs are full serializing instructions themselves and
-+ * do not require this barrier.  This is only required for the
-+ * IA32_TSC_DEADLINE and X2APIC MSRs.
-+ */
-+static inline void weak_wrmsr_fence(void)
++static struct brd_device *brd_find_or_alloc_device(int i)
 +{
-+	alternative("mfence; lfence", "", ALT_NOT(X86_FEATURE_APIC_MSRS_FENCE));
++	struct brd_device *brd;
++
++	mutex_lock(&brd_devices_mutex);
++	list_for_each_entry(brd, &brd_devices, brd_list) {
++		if (brd->brd_number == i) {
++			mutex_unlock(&brd_devices_mutex);
++			return ERR_PTR(-EEXIST);
++		}
++	}
++
++	brd = kzalloc(sizeof(*brd), GFP_KERNEL);
++	if (!brd) {
++		mutex_unlock(&brd_devices_mutex);
++		return ERR_PTR(-ENOMEM);
++	}
++	brd->brd_number	= i;
++	list_add_tail(&brd->brd_list, &brd_devices);
++	mutex_unlock(&brd_devices_mutex);
++	return brd;
 +}
 +
- #endif /* _ASM_X86_PROCESSOR_H */
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 9fb890574f36b..ce5b27db65e10 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1158,6 +1158,9 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
- 	     cpu_has_amd_erratum(c, amd_erratum_1485))
- 		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
++static void brd_free_device(struct brd_device *brd)
++{
++	mutex_lock(&brd_devices_mutex);
++	list_del(&brd->brd_list);
++	mutex_unlock(&brd_devices_mutex);
++	kfree(brd);
++}
 +
-+	/* AMD CPUs don't need fencing after x2APIC/TSC_DEADLINE MSR writes. */
-+	clear_cpu_cap(c, X86_FEATURE_APIC_MSRS_FENCE);
+ static int brd_alloc(int i)
+ {
+ 	struct brd_device *brd;
+@@ -371,14 +403,9 @@ static int brd_alloc(int i)
+ 	char buf[DISK_NAME_LEN];
+ 	int err = -ENOMEM;
+ 
+-	list_for_each_entry(brd, &brd_devices, brd_list)
+-		if (brd->brd_number == i)
+-			return -EEXIST;
+-	brd = kzalloc(sizeof(*brd), GFP_KERNEL);
+-	if (!brd)
+-		return -ENOMEM;
+-	brd->brd_number		= i;
+-	list_add_tail(&brd->brd_list, &brd_devices);
++	brd = brd_find_or_alloc_device(i);
++	if (IS_ERR(brd))
++		return PTR_ERR(brd);
+ 
+ 	spin_lock_init(&brd->brd_lock);
+ 	INIT_RADIX_TREE(&brd->brd_pages, GFP_ATOMIC);
+@@ -423,8 +450,7 @@ static int brd_alloc(int i)
+ out_cleanup_disk:
+ 	blk_cleanup_disk(disk);
+ out_free_dev:
+-	list_del(&brd->brd_list);
+-	kfree(brd);
++	brd_free_device(brd);
+ 	return err;
  }
  
- #ifdef CONFIG_X86_32
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 5db433cfaaa78..13edf20c10768 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1733,6 +1733,13 @@ static void identify_cpu(struct cpuinfo_x86 *c)
- 	c->apicid = apic->phys_pkg_id(c->initial_apicid, 0);
- #endif
+@@ -443,8 +469,7 @@ static void brd_cleanup(void)
+ 		del_gendisk(brd->brd_disk);
+ 		blk_cleanup_disk(brd->brd_disk);
+ 		brd_free_pages(brd);
+-		list_del(&brd->brd_list);
+-		kfree(brd);
++		brd_free_device(brd);
+ 	}
+ }
  
-+
-+	/*
-+	 * Set default APIC and TSC_DEADLINE MSR fencing flag. AMD and
-+	 * Hygon will clear it in ->c_init() below.
-+	 */
-+	set_cpu_cap(c, X86_FEATURE_APIC_MSRS_FENCE);
-+
+@@ -471,16 +496,6 @@ static int __init brd_init(void)
+ {
+ 	int err, i;
+ 
+-	brd_check_and_reset_par();
+-
+-	brd_debugfs_dir = debugfs_create_dir("ramdisk_pages", NULL);
+-
+-	for (i = 0; i < rd_nr; i++) {
+-		err = brd_alloc(i);
+-		if (err)
+-			goto out_free;
+-	}
+-
  	/*
- 	 * Vendor-specific initialization.  In this section we
- 	 * canonicalize the feature flags, meaning if there are
-diff --git a/arch/x86/kernel/cpu/hygon.c b/arch/x86/kernel/cpu/hygon.c
-index 9e8380bd4fb9f..8a80d5343f3a1 100644
---- a/arch/x86/kernel/cpu/hygon.c
-+++ b/arch/x86/kernel/cpu/hygon.c
-@@ -347,6 +347,9 @@ static void init_hygon(struct cpuinfo_x86 *c)
- 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
+ 	 * brd module now has a feature to instantiate underlying device
+ 	 * structure on-demand, provided that there is an access dev node.
+@@ -496,11 +511,18 @@ static int __init brd_init(void)
+ 	 *	dynamically.
+ 	 */
  
- 	check_null_seg_clears_base(c);
++	brd_check_and_reset_par();
 +
-+	/* Hygon CPUs don't need fencing after x2APIC/TSC_DEADLINE MSR writes. */
-+	clear_cpu_cap(c, X86_FEATURE_APIC_MSRS_FENCE);
- }
++	brd_debugfs_dir = debugfs_create_dir("ramdisk_pages", NULL);
++
+ 	if (__register_blkdev(RAMDISK_MAJOR, "ramdisk", brd_probe)) {
+ 		err = -EIO;
+ 		goto out_free;
+ 	}
  
- static void cpu_detect_tlb_hygon(struct cpuinfo_x86 *c)
++	for (i = 0; i < rd_nr; i++)
++		brd_alloc(i);
++
+ 	pr_info("brd: module loaded\n");
+ 	return 0;
+ 
 -- 
 2.43.0
 
