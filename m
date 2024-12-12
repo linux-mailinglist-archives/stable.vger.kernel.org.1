@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8407E9EEA5C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 927669EF023
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F62316A723
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E614285633
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EDF21578A;
-	Thu, 12 Dec 2024 15:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47A222654E;
+	Thu, 12 Dec 2024 16:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlmMQtbJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dSyHyur"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C782163AB;
-	Thu, 12 Dec 2024 15:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16792210CF;
+	Thu, 12 Dec 2024 16:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016094; cv=none; b=rcUlFdnJ0QRS+86hbt0NJM7Ht3qppv+V4U0iNRY8oGS3cTnj8kxZCZi/otkaZEJvYBHLLUnjoamr35fkSw4kpOIESXmF6mJemzlM0q17K08hCr7DVs8tE07Izn80F62ect6SPp7AywDHjOVaRhh7Cuvg+/f7PbXEErQUytIEvIw=
+	t=1734020012; cv=none; b=RYIYwtKNCFyZYmsYdS/9HoluQPleyhsR3leBnvyqldj/Q1+s6arp4HpVZDPSSawvpdFXOjmJI7BMQZCZ1xRTHaeS36K2DkTqB52Uw8FqMi6RcXvjx0c40UkhtMgZ/EGzcFQi1+Xk0ZjtjqMjwYunpEixs6Di5ehloM8O4rpy7T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016094; c=relaxed/simple;
-	bh=QNs04o5wKwEJZ8VigCa51mj/wTcuOH9cFHoSnSC0RnA=;
+	s=arc-20240116; t=1734020012; c=relaxed/simple;
+	bh=PFv/YKq1OLV2mvrgPXF4UQurvSVqEqyOL9bi+/Ef5M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHiNDRjAFO1cJ9QCLUHcX6J2irBx8cWu4D3HyUtPe5AzyDZEcALldhiCdvjDsVublxIyr2s0Pa5JSFGVVyHyTSYb3SftgQuMoHd5SZmxBIgwtucavd8ZDpTu7yFvGGNG2INjbzlirzFj/FcYcSfCXxLSK9gY3zbxnO8YT0yGZEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlmMQtbJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA04C4CECE;
-	Thu, 12 Dec 2024 15:08:13 +0000 (UTC)
+	 MIME-Version; b=s+Mm+sXkAjSplRkTimvzawDT5e8uc4cfs0k5QP64EQAZbLa2hcqRw8KGsknojyDVpuaYE3Wow3LLSR7nZChB9PHFgrsn0FWam6f/y0UcTKs442NSRZeuFHdBrB4/DtNMohYl6A3y44UZwHhGQkSGT/EmXm9gKcCwUSaqmk/9fkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dSyHyur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8251C4CECE;
+	Thu, 12 Dec 2024 16:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016094;
-	bh=QNs04o5wKwEJZ8VigCa51mj/wTcuOH9cFHoSnSC0RnA=;
+	s=korg; t=1734020012;
+	bh=PFv/YKq1OLV2mvrgPXF4UQurvSVqEqyOL9bi+/Ef5M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rlmMQtbJzNtKMuwBRQjYj0Xf2EZ/D3UDQERbdjFf9rENIXuTnNxsUlK1mbZN7Mc9h
-	 RQh2/AstyFNzQM/MqicFfpmowTI5uL1Qo3up8PqUPgkS3Tc3w55GQ9E4TFi3DB9J3L
-	 axLJbd8dkxNsUiwdyRPIF3KOy/iB9S9h7jt8FSsw=
+	b=0dSyHyurLHnAm0ivlCFbxYjsaDbQDVKmUr+CKW5fCyrkGLWe9O78TpF+KTTK1awyK
+	 RrcDPoPduEH6zXquXTkCKSRwb+6NZI8KfVKbhh+8fqPV9hAJ0OOVknkGundu7DtsQA
+	 y4RiOrlHHzdR15k7gX2YIQIShkCJRRwU9yxVtFDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Tao Lyu <tao.lyu@epfl.ch>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/466] bpf: Ensure reg is PTR_TO_STACK in process_iter_arg
-Date: Thu, 12 Dec 2024 15:54:29 +0100
-Message-ID: <20241212144310.765861597@linuxfoundation.org>
+Subject: [PATCH 6.1 325/772] ipmr: fix tables suspicious RCU usage
+Date: Thu, 12 Dec 2024 15:54:30 +0100
+Message-ID: <20241212144403.329740277@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Lyu <tao.lyu@epfl.ch>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 12659d28615d606b36e382f4de2dd05550d202af ]
+[ Upstream commit fc9c273d6daaa9866f349bbe8cae25c67764c456 ]
 
-Currently, KF_ARG_PTR_TO_ITER handling missed checking the reg->type and
-ensuring it is PTR_TO_STACK. Instead of enforcing this in the caller of
-process_iter_arg, move the check into it instead so that all callers
-will gain the check by default. This is similar to process_dynptr_func.
+Similar to the previous patch, plumb the RCU lock inside
+the ipmr_get_table(), provided a lockless variant and apply
+the latter in the few spots were the lock is already held.
 
-An existing selftest in verifier_bits_iter.c fails due to this change,
-but it's because it was passing a NULL pointer into iter_next helper and
-getting an error further down the checks, but probably meant to pass an
-uninitialized iterator on the stack (as is done in the subsequent test
-below it). We will gain coverage for non-PTR_TO_STACK arguments in later
-patches hence just change the declaration to zero-ed stack object.
-
-Fixes: 06accc8779c1 ("bpf: add support for open-coded iterator loops")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Tao Lyu <tao.lyu@epfl.ch>
-[ Kartikeya: move check into process_iter_arg, rewrite commit log ]
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241203000238.3602922-2-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 709b46e8d90b ("net: Add compat ioctl support for the ipv4 multicast ioctl SIOCGETSGCNT")
+Fixes: f0ad0860d01e ("ipv4: ipmr: support multiple tables")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                                  | 5 +++++
- tools/testing/selftests/bpf/progs/verifier_bits_iter.c | 4 ++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ net/ipv4/ipmr.c | 42 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 91317857ea3ee..8955259112c03 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -8021,6 +8021,11 @@ static int process_iter_arg(struct bpf_verifier_env *env, int regno, int insn_id
- 	const struct btf_type *t;
- 	int spi, err, i, nr_slots, btf_id;
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 3ed9ed2bffd29..f64651c0dea6c 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -136,7 +136,7 @@ static struct mr_table *ipmr_mr_table_iter(struct net *net,
+ 	return ret;
+ }
  
-+	if (reg->type != PTR_TO_STACK) {
-+		verbose(env, "arg#%d expected pointer to an iterator on stack\n", regno - 1);
-+		return -EINVAL;
-+	}
-+
- 	/* For iter_{new,next,destroy} functions, btf_check_iter_kfuncs()
- 	 * ensures struct convention, so we wouldn't need to do any BTF
- 	 * validation here. But given iter state can be passed as a parameter
-diff --git a/tools/testing/selftests/bpf/progs/verifier_bits_iter.c b/tools/testing/selftests/bpf/progs/verifier_bits_iter.c
-index 7c881bca9af5c..a7a6ae6c162fe 100644
---- a/tools/testing/selftests/bpf/progs/verifier_bits_iter.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_bits_iter.c
-@@ -35,9 +35,9 @@ __description("uninitialized iter in ->next()")
- __failure __msg("expected an initialized iter_bits as arg #1")
- int BPF_PROG(next_uninit, struct bpf_iter_meta *meta, struct cgroup *cgrp)
+-static struct mr_table *ipmr_get_table(struct net *net, u32 id)
++static struct mr_table *__ipmr_get_table(struct net *net, u32 id)
  {
--	struct bpf_iter_bits *it = NULL;
-+	struct bpf_iter_bits it = {};
+ 	struct mr_table *mrt;
  
--	bpf_iter_bits_next(it);
-+	bpf_iter_bits_next(&it);
- 	return 0;
+@@ -147,6 +147,16 @@ static struct mr_table *ipmr_get_table(struct net *net, u32 id)
+ 	return NULL;
+ }
+ 
++static struct mr_table *ipmr_get_table(struct net *net, u32 id)
++{
++	struct mr_table *mrt;
++
++	rcu_read_lock();
++	mrt = __ipmr_get_table(net, id);
++	rcu_read_unlock();
++	return mrt;
++}
++
+ static int ipmr_fib_lookup(struct net *net, struct flowi4 *flp4,
+ 			   struct mr_table **mrt)
+ {
+@@ -188,7 +198,7 @@ static int ipmr_rule_action(struct fib_rule *rule, struct flowi *flp,
+ 
+ 	arg->table = fib_rule_get_table(rule, arg);
+ 
+-	mrt = ipmr_get_table(rule->fr_net, arg->table);
++	mrt = __ipmr_get_table(rule->fr_net, arg->table);
+ 	if (!mrt)
+ 		return -EAGAIN;
+ 	res->mrt = mrt;
+@@ -314,6 +324,8 @@ static struct mr_table *ipmr_get_table(struct net *net, u32 id)
+ 	return net->ipv4.mrt;
+ }
+ 
++#define __ipmr_get_table ipmr_get_table
++
+ static int ipmr_fib_lookup(struct net *net, struct flowi4 *flp4,
+ 			   struct mr_table **mrt)
+ {
+@@ -402,7 +414,7 @@ static struct mr_table *ipmr_new_table(struct net *net, u32 id)
+ 	if (id != RT_TABLE_DEFAULT && id >= 1000000000)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	mrt = ipmr_get_table(net, id);
++	mrt = __ipmr_get_table(net, id);
+ 	if (mrt)
+ 		return mrt;
+ 
+@@ -1373,7 +1385,7 @@ int ip_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		goto out_unlock;
+ 	}
+ 
+-	mrt = ipmr_get_table(net, raw_sk(sk)->ipmr_table ? : RT_TABLE_DEFAULT);
++	mrt = __ipmr_get_table(net, raw_sk(sk)->ipmr_table ? : RT_TABLE_DEFAULT);
+ 	if (!mrt) {
+ 		ret = -ENOENT;
+ 		goto out_unlock;
+@@ -2247,11 +2259,13 @@ int ipmr_get_route(struct net *net, struct sk_buff *skb,
+ 	struct mr_table *mrt;
+ 	int err;
+ 
+-	mrt = ipmr_get_table(net, RT_TABLE_DEFAULT);
+-	if (!mrt)
++	rcu_read_lock();
++	mrt = __ipmr_get_table(net, RT_TABLE_DEFAULT);
++	if (!mrt) {
++		rcu_read_unlock();
+ 		return -ENOENT;
++	}
+ 
+-	rcu_read_lock();
+ 	cache = ipmr_cache_find(mrt, saddr, daddr);
+ 	if (!cache && skb->dev) {
+ 		int vif = ipmr_find_vif(mrt, skb->dev);
+@@ -2536,7 +2550,7 @@ static int ipmr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	grp = tb[RTA_DST] ? nla_get_in_addr(tb[RTA_DST]) : 0;
+ 	tableid = tb[RTA_TABLE] ? nla_get_u32(tb[RTA_TABLE]) : 0;
+ 
+-	mrt = ipmr_get_table(net, tableid ? tableid : RT_TABLE_DEFAULT);
++	mrt = __ipmr_get_table(net, tableid ? tableid : RT_TABLE_DEFAULT);
+ 	if (!mrt) {
+ 		err = -ENOENT;
+ 		goto errout_free;
+@@ -2588,7 +2602,7 @@ static int ipmr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb)
+ 	if (filter.table_id) {
+ 		struct mr_table *mrt;
+ 
+-		mrt = ipmr_get_table(sock_net(skb->sk), filter.table_id);
++		mrt = __ipmr_get_table(sock_net(skb->sk), filter.table_id);
+ 		if (!mrt) {
+ 			if (rtnl_msg_family(cb->nlh) != RTNL_FAMILY_IPMR)
+ 				return skb->len;
+@@ -2696,7 +2710,7 @@ static int rtm_to_ipmr_mfcc(struct net *net, struct nlmsghdr *nlh,
+ 			break;
+ 		}
+ 	}
+-	mrt = ipmr_get_table(net, tblid);
++	mrt = __ipmr_get_table(net, tblid);
+ 	if (!mrt) {
+ 		ret = -ENOENT;
+ 		goto out;
+@@ -2904,13 +2918,15 @@ static void *ipmr_vif_seq_start(struct seq_file *seq, loff_t *pos)
+ 	struct net *net = seq_file_net(seq);
+ 	struct mr_table *mrt;
+ 
+-	mrt = ipmr_get_table(net, RT_TABLE_DEFAULT);
+-	if (!mrt)
++	rcu_read_lock();
++	mrt = __ipmr_get_table(net, RT_TABLE_DEFAULT);
++	if (!mrt) {
++		rcu_read_unlock();
+ 		return ERR_PTR(-ENOENT);
++	}
+ 
+ 	iter->mrt = mrt;
+ 
+-	rcu_read_lock();
+ 	return mr_vif_seq_start(seq, pos);
  }
  
 -- 
