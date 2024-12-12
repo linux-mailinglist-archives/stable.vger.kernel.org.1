@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1099EF311
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B5F9EF108
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F05902905D7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC1D16EFC1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12837222D59;
-	Thu, 12 Dec 2024 16:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A9E229665;
+	Thu, 12 Dec 2024 16:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGwVLbg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfYFidwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D902054EF;
-	Thu, 12 Dec 2024 16:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6382122969A;
+	Thu, 12 Dec 2024 16:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022120; cv=none; b=i0whA3ec79r76kAqZMh4S8aEMcGDzMGYp6HrTu5871VRLliMQSas0MeZygEg/6oAfO4rcxV5NdVYj25ucXP9QS5LBhZJYFXDVX4YMelxmjksdy6ROgnwTFaYFeCeBMoGgRSoW05Subc4BbMOhJh8tnwIK6W4BhF7R+DTqH+qNrU=
+	t=1734020087; cv=none; b=oJCS5D+yebdVcZKPvAFqyliPGi+PzZulhB2x/26UY1CDUmfPlzE3nPtZMMgyu2CiJuiEX36DPppRAAlmlojTZN0pCp4OH1tQIzdUZvyxqjaIULbEBXMIIj/dxazBLjv2iGNEi1gvTWYWfNGGg2WIzYY+mJsbodz4Wizj9LQz7qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022120; c=relaxed/simple;
-	bh=WaNxOEmqoE99jKjdXXHjA2BEunfGzjL+AROqRcb86ds=;
+	s=arc-20240116; t=1734020087; c=relaxed/simple;
+	bh=1dHYo5BrLtqrve83hhg6UWQTZbVxlU6Ke0bOURb3C2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aTh4EFC73WQxOzemz3Wp9FIsdmnY/OIHdVYSLpOMyty5uEHov5cR1D8F3q+PhXrk9T3eaI+xFZtEv2JoFaL3hBnXuX5WfCtxPWjNQMVuOhIRjPreU8sVaOrQmuzZ8+pfKITqq+fJM1vWlGdhWfbFqN+IZREw960G9w/+PZIUeZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGwVLbg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315D5C4CECE;
-	Thu, 12 Dec 2024 16:48:39 +0000 (UTC)
+	 MIME-Version; b=QzUHsTY0ShsGDacMHfAs+NJvnqlJ+MLSjkFtUtxr+7KVDJJcgvNNbJGSUAC+RqNlWhvs7U1x+wOmhT+4A62bIs0b8BfMHQrocMFk1NM1uh3yI9wmUohscjklfSzg8CVKIrBPDdD+WUs4vjCVTsQbGJdDkg7ThkrNMMFnxbfcp8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfYFidwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7633C4CECE;
+	Thu, 12 Dec 2024 16:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022120;
-	bh=WaNxOEmqoE99jKjdXXHjA2BEunfGzjL+AROqRcb86ds=;
+	s=korg; t=1734020087;
+	bh=1dHYo5BrLtqrve83hhg6UWQTZbVxlU6Ke0bOURb3C2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGwVLbg0hO5g+DgHiVziTRZ/x3LDrKQjZO77PLoHKfThzPEw+nbjHvXQUKFF2dI9A
-	 b94X8xPXY4U5XmZJ6Bstcv66K3XdRH+qi7zrqEFmDARBUjhUHZ5J/q9GgDLn72Ob09
-	 /Q3+2CmJivSiHowiF/NICdxHOQmsAb2sPL150Anw=
+	b=nfYFidwrAINxIC/5c9uBqweucusau79D1MfbSzLizk+JX8Jyh8iGPDJhYnxcuvMJD
+	 D5xYC0BIBMjOC/XVyHzkbFs5dseCD2rj3cFvbacjsJvHO1McglTTcX94ecWYHJ2Lps
+	 FDDBkf487xtQKs9n/Xex2kK6/eBb5AH9/JaoBtPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jun Li <jun.li@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 124/565] pwm: imx27: Workaround of the pwm output bug when decrease the duty cycle
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1 374/772] fsnotify: fix sending inotify event with unexpected filename
 Date: Thu, 12 Dec 2024 15:55:19 +0100
-Message-ID: <20241212144316.386752948@linuxfoundation.org>
+Message-ID: <20241212144405.363770994@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit a25351e4c7740eb22561a3ee4ef17611c6f410b0 ]
+commit aa52c54da40d9eee3ba87c05cdcb0cd07c04fa13 upstream.
 
-Implement workaround for ERR051198
-(https://www.nxp.com/docs/en/errata/IMX8MN_0N14Y.pdf)
+We got a report that adding a fanotify filsystem watch prevents tail -f
+from receiving events.
 
-PWM output may not function correctly if the FIFO is empty when a new SAR
-value is programmed.
+Reproducer:
 
-Description:
-  When the PWM FIFO is empty, a new value programmed to the PWM Sample
-  register (PWM_PWMSAR) will be directly applied even if the current timer
-  period has not expired. If the new SAMPLE value programmed in the
-  PWM_PWMSAR register is less than the previous value, and the PWM counter
-  register (PWM_PWMCNR) that contains the current COUNT value is greater
-  than the new programmed SAMPLE value, the current period will not flip
-  the level. This may result in an output pulse with a duty cycle of 100%.
+1. Create 3 windows / login sessions. Become root in each session.
+2. Choose a mounted filesystem that is pretty quiet; I picked /boot.
+3. In the first window, run: fsnotifywait -S -m /boot
+4. In the second window, run: echo data >> /boot/foo
+5. In the third window, run: tail -f /boot/foo
+6. Go back to the second window and run: echo more data >> /boot/foo
+7. Observe that the tail command doesn't show the new data.
+8. In the first window, hit control-C to interrupt fsnotifywait.
+9. In the second window, run: echo still more data >> /boot/foo
+10. Observe that the tail command in the third window has now printed
+the missing data.
 
-Workaround:
-  Program the current SAMPLE value in the PWM_PWMSAR register before
-  updating the new duty cycle to the SAMPLE value in the PWM_PWMSAR
-  register. This will ensure that the new SAMPLE value is modified during
-  a non-empty FIFO, and can be successfully updated after the period
-  expires.
+When stracing tail, we observed that when fanotify filesystem mark is
+set, tail does get the inotify event, but the event is receieved with
+the filename:
 
-Write the old SAR value before updating the new duty cycle to SAR. This
-avoids writing the new value into an empty FIFO.
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\20\0\0\0foo\0\0\0\0\0\0\0\0\0\0\0\0\0",
+50) = 32
 
-This only resolves the issue when the PWM period is longer than 2us
-(or <500kHz) because write register is not quick enough when PWM period is
-very short.
+This is unexpected, because tail is watching the file itself and not its
+parent and is inconsistent with the inotify event received by tail when
+fanotify filesystem mark is not set:
 
-Reproduce steps:
-  cd /sys/class/pwm/pwmchip1/pwm0
-  echo 2000000000 > period     # It is easy to observe by using long period
-  echo 1000000000 > duty_cycle
-  echo 1 > enable
-  echo       8000 > duty_cycle # One full high pulse will be seen by scope
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0", 50) = 16
 
-Fixes: 166091b1894d ("[ARM] MXC: add pwm driver for i.MX SoCs")
-Reviewed-by: Jun Li <jun.li@nxp.com>
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241008194123.1943141-1-Frank.Li@nxp.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The inteference between different fsnotify groups was caused by the fact
+that the mark on the sb requires the filename, so the filename is passed
+to fsnotify().  Later on, fsnotify_handle_event() tries to take care of
+not passing the filename to groups (such as inotify) that are interested
+in the filename only when the parent is watching.
+
+But the logic was incorrect for the case that no group is watching the
+parent, some groups are watching the sb and some watching the inode.
+
+Reported-by: Miklos Szeredi <miklos@szeredi.hu>
+Fixes: 7372e79c9eb9 ("fanotify: fix logic of reporting name info with watched parent")
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-imx27.c | 98 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 96 insertions(+), 2 deletions(-)
+ fs/notify/fsnotify.c |   23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pwm/pwm-imx27.c b/drivers/pwm/pwm-imx27.c
-index ea91a2f81a9fc..ce8dbd5d174f6 100644
---- a/drivers/pwm/pwm-imx27.c
-+++ b/drivers/pwm/pwm-imx27.c
-@@ -26,6 +26,7 @@
- #define MX3_PWMSR			0x04    /* PWM Status Register */
- #define MX3_PWMSAR			0x0C    /* PWM Sample Register */
- #define MX3_PWMPR			0x10    /* PWM Period Register */
-+#define MX3_PWMCNR			0x14    /* PWM Counter Register */
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -310,16 +310,19 @@ static int fsnotify_handle_event(struct
+ 	if (!inode_mark)
+ 		return 0;
  
- #define MX3_PWMCR_FWM			GENMASK(27, 26)
- #define MX3_PWMCR_STOPEN		BIT(25)
-@@ -215,11 +216,13 @@ static void pwm_imx27_wait_fifo_slot(struct pwm_chip *chip,
- static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			   const struct pwm_state *state)
- {
--	unsigned long period_cycles, duty_cycles, prescale;
-+	unsigned long period_cycles, duty_cycles, prescale, period_us, tmp;
- 	struct pwm_imx27_chip *imx = to_pwm_imx27_chip(chip);
- 	struct pwm_state cstate;
- 	unsigned long long c;
- 	unsigned long long clkrate;
-+	unsigned long flags;
-+	int val;
- 	int ret;
- 	u32 cr;
- 
-@@ -262,7 +265,98 @@ static int pwm_imx27_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 		pwm_imx27_sw_reset(chip);
- 	}
- 
--	writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
-+	val = readl(imx->mmio_base + MX3_PWMPR);
-+	val = val >= MX3_PWMPR_MAX ? MX3_PWMPR_MAX : val;
-+	cr = readl(imx->mmio_base + MX3_PWMCR);
-+	tmp = NSEC_PER_SEC * (u64)(val + 2) * MX3_PWMCR_PRESCALER_GET(cr);
-+	tmp = DIV_ROUND_UP_ULL(tmp, clkrate);
-+	period_us = DIV_ROUND_UP_ULL(tmp, 1000);
-+
+-	if (mask & FS_EVENT_ON_CHILD) {
+-		/*
+-		 * Some events can be sent on both parent dir and child marks
+-		 * (e.g. FS_ATTRIB).  If both parent dir and child are
+-		 * watching, report the event once to parent dir with name (if
+-		 * interested) and once to child without name (if interested).
+-		 * The child watcher is expecting an event without a file name
+-		 * and without the FS_EVENT_ON_CHILD flag.
+-		 */
+-		mask &= ~FS_EVENT_ON_CHILD;
 +	/*
-+	 * ERR051198:
-+	 * PWM: PWM output may not function correctly if the FIFO is empty when
-+	 * a new SAR value is programmed
++	 * Some events can be sent on both parent dir and child marks (e.g.
++	 * FS_ATTRIB).  If both parent dir and child are watching, report the
++	 * event once to parent dir with name (if interested) and once to child
++	 * without name (if interested).
 +	 *
-+	 * Description:
-+	 * When the PWM FIFO is empty, a new value programmed to the PWM Sample
-+	 * register (PWM_PWMSAR) will be directly applied even if the current
-+	 * timer period has not expired.
-+	 *
-+	 * If the new SAMPLE value programmed in the PWM_PWMSAR register is
-+	 * less than the previous value, and the PWM counter register
-+	 * (PWM_PWMCNR) that contains the current COUNT value is greater than
-+	 * the new programmed SAMPLE value, the current period will not flip
-+	 * the level. This may result in an output pulse with a duty cycle of
-+	 * 100%.
-+	 *
-+	 * Consider a change from
-+	 *     ________
-+	 *    /        \______/
-+	 *    ^      *        ^
-+	 * to
-+	 *     ____
-+	 *    /    \__________/
-+	 *    ^               ^
-+	 * At the time marked by *, the new write value will be directly applied
-+	 * to SAR even the current period is not over if FIFO is empty.
-+	 *
-+	 *     ________        ____________________
-+	 *    /        \______/                    \__________/
-+	 *    ^               ^      *        ^               ^
-+	 *    |<-- old SAR -->|               |<-- new SAR -->|
-+	 *
-+	 * That is the output is active for a whole period.
-+	 *
-+	 * Workaround:
-+	 * Check new SAR less than old SAR and current counter is in errata
-+	 * windows, write extra old SAR into FIFO and new SAR will effect at
-+	 * next period.
-+	 *
-+	 * Sometime period is quite long, such as over 1 second. If add old SAR
-+	 * into FIFO unconditional, new SAR have to wait for next period. It
-+	 * may be too long.
-+	 *
-+	 * Turn off the interrupt to ensure that not IRQ and schedule happen
-+	 * during above operations. If any irq and schedule happen, counter
-+	 * in PWM will be out of data and take wrong action.
-+	 *
-+	 * Add a safety margin 1.5us because it needs some time to complete
-+	 * IO write.
-+	 *
-+	 * Use writel_relaxed() to minimize the interval between two writes to
-+	 * the SAR register to increase the fastest PWM frequency supported.
-+	 *
-+	 * When the PWM period is longer than 2us(or <500kHz), this workaround
-+	 * can solve this problem. No software workaround is available if PWM
-+	 * period is shorter than IO write. Just try best to fill old data
-+	 * into FIFO.
++	 * In any case regardless whether the parent is watching or not, the
++	 * child watcher is expecting an event without the FS_EVENT_ON_CHILD
++	 * flag. The file name is expected if and only if this is a directory
++	 * event.
 +	 */
-+	c = clkrate * 1500;
-+	do_div(c, NSEC_PER_SEC);
-+
-+	local_irq_save(flags);
-+	val = FIELD_GET(MX3_PWMSR_FIFOAV, readl_relaxed(imx->mmio_base + MX3_PWMSR));
-+
-+	if (duty_cycles < imx->duty_cycle && (cr & MX3_PWMCR_EN)) {
-+		if (period_us < 2) { /* 2us = 500 kHz */
-+			/* Best effort attempt to fix up >500 kHz case */
-+			udelay(3 * period_us);
-+			writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
-+			writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
-+		} else if (val < MX3_PWMSR_FIFOAV_2WORDS) {
-+			val = readl_relaxed(imx->mmio_base + MX3_PWMCNR);
-+			/*
-+			 * If counter is close to period, controller may roll over when
-+			 * next IO write.
-+			 */
-+			if ((val + c >= duty_cycles && val < imx->duty_cycle) ||
-+			    val + c >= period_cycles)
-+				writel_relaxed(imx->duty_cycle, imx->mmio_base + MX3_PWMSAR);
-+		}
-+	}
-+	writel_relaxed(duty_cycles, imx->mmio_base + MX3_PWMSAR);
-+	local_irq_restore(flags);
-+
- 	writel(period_cycles, imx->mmio_base + MX3_PWMPR);
- 
- 	/*
--- 
-2.43.0
-
++	mask &= ~FS_EVENT_ON_CHILD;
++	if (!(mask & ALL_FSNOTIFY_DIRENT_EVENTS)) {
+ 		dir = NULL;
+ 		name = NULL;
+ 	}
 
 
 
