@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9155D9EF3F0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B399EED69
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49CCF28B1B9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9562F1885632
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A1422A7EF;
-	Thu, 12 Dec 2024 17:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346B622331C;
+	Thu, 12 Dec 2024 15:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSXPoL3o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y85EnDE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E42822969E;
-	Thu, 12 Dec 2024 17:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43A4223302;
+	Thu, 12 Dec 2024 15:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022867; cv=none; b=HRgCT3izfANlOVgLiwpwOPX97/m3cyUoMLy59U4lzSGf+iK75DkpSe58scDQPx1iCYETM6nHgsymcqZZoW25igF1JGF39CjsRjvrvFue2I86vOA3AiSSoCb8qnmQynEsJLQZweSKP7KnrdLUubZ5XpdEYNbA98y6Lp5Lf5KU5ko=
+	t=1734018117; cv=none; b=IfbJ0SxJ7uNkXrd7lNJyRsFbYMR6uoLcj/yMevxc578+hn8TLgS0PSvOdNmwB1sy2+JGxy9ge+1bkxR19ECKbFieJMR3dLLotqM+2gm+YCvnccqP1wffVv9p5QnwpjGh81RbahGE1OtJxg4buVDBMBSu7W/9PtSolQSqWc+Uu/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022867; c=relaxed/simple;
-	bh=n2KyBmDCGarKp49akKEZEAK6NyaC5LxkpaTYLXkW89c=;
+	s=arc-20240116; t=1734018117; c=relaxed/simple;
+	bh=0cs0Sm5D2q8DNCFhNqLoUwBy5rmkBLbev/H9mz3ryTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVdwIMmsRR9DrMu4/xLyJRBvoioByLUqtRxJQ4RCRLdmtvM/7l40nZRkXTSvOoEVICqWf2i6F+uD2ELvhZklmJw8WaYhFTlNj8svrmbWYeK9FcLGuzuKajO84a99twHUWswH3T2Re8I/rAxvsP6mlA3C9FQnyEyf5PlKKEDjk+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSXPoL3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41154C4CECE;
-	Thu, 12 Dec 2024 17:01:04 +0000 (UTC)
+	 MIME-Version; b=Qw56sDTCFuvt4koLIOQK81jwIaAEXKw1vN/Uh6sMwpN2kqT8He9l6jRgCigJ4M7G72S/f9TvGbOknQi9F/6yKnNDd/Q871cpv+0UZSfpgmq1xN8pgJpW5aWa/iixlkLbQk9kL+ruIHwaWT1vn+l8AS4dzRQ/DLK5tKlhflM+y04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y85EnDE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4801DC4CECE;
+	Thu, 12 Dec 2024 15:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022865;
-	bh=n2KyBmDCGarKp49akKEZEAK6NyaC5LxkpaTYLXkW89c=;
+	s=korg; t=1734018116;
+	bh=0cs0Sm5D2q8DNCFhNqLoUwBy5rmkBLbev/H9mz3ryTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSXPoL3ok77XRRe+W6DQmm1bQjP2LYTjIcb/93nwlnR/RWBRXe/O1ZbZbBkXUODBf
-	 hs/v1EVt8s5n2zF+z1AymRzy2C/ItPu3fjQ8Ydr2JTqLY96merkE0F52SnVbXkAjls
-	 13jE33LtcWfmNEaccvi5g/NGJoHvGu5Zlhkksmc0=
+	b=Y85EnDE6FIXgiB7GOa/l972vjk92qD//PU1JbMyua5Wbb5NQR4lf3oLTxTdAtvGpu
+	 hrJCwXR1lQiDwOVO9atHwIMcrOnLvt3tj54LW5htSQ9LgVDdy+bQWBbByYFAWdHw6F
+	 jFI4c+mzyHQE21BeZDMrZAzE1xZFNRMsuLS+Hmi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 326/565] netfilter: ipset: add missing range check in bitmap_ip_uadt
-Date: Thu, 12 Dec 2024 15:58:41 +0100
-Message-ID: <20241212144324.485589729@linuxfoundation.org>
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 203/356] regmap: maple: Provide lockdep (sub)class for maple trees internal lock
+Date: Thu, 12 Dec 2024 15:58:42 +0100
+Message-ID: <20241212144252.637829193@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 35f56c554eb1b56b77b3cf197a6b00922d49033d upstream.
+[ Upstream commit 1ed9b927e7dd8b8cff13052efe212a8ff72ec51d ]
 
-When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
-the values of ip and ip_to are slightly swapped. Therefore, the range check
-for ip should be done later, but this part is missing and it seems that the
-vulnerability occurs.
+In some cases when using the maple tree register cache, the lockdep
+validator might complain about invalid deadlocks:
 
-So we should add missing range checks and remove unnecessary range checks.
+[7.131886]  Possible interrupt unsafe locking scenario:
 
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
-Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Acked-by: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[7.131890]        CPU0                    CPU1
+[7.131893]        ----                    ----
+[7.131896]   lock(&mt->ma_lock);
+[7.131904]                                local_irq_disable();
+[7.131907]                                lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
+[7.131916]                                lock(&mt->ma_lock);
+[7.131925]   <Interrupt>
+[7.131928]     lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
+[7.131936]
+                *** DEADLOCK ***
+
+[7.131939] no locks held by swapper/0/0.
+[7.131944]
+               the shortest dependencies between 2nd lock and 1st lock:
+[7.131950]  -> (&mt->ma_lock){+.+.}-{2:2} {
+[7.131966]     HARDIRQ-ON-W at:
+[7.131973]                       lock_acquire+0x200/0x330
+[7.131986]                       _raw_spin_lock+0x50/0x70
+[7.131998]                       regcache_maple_write+0x68/0xe0
+[7.132010]                       regcache_write+0x6c/0x90
+[7.132019]                       _regmap_read+0x19c/0x1d0
+[7.132029]                       _regmap_update_bits+0xc0/0x148
+[7.132038]                       regmap_update_bits_base+0x6c/0xa8
+[7.132048]                       rk8xx_probe+0x22c/0x3d8
+[7.132057]                       rk8xx_spi_probe+0x74/0x88
+[7.132065]                       spi_probe+0xa8/0xe0
+
+[...]
+
+[7.132675]   }
+[7.132678]   ... key      at: [<ffff800082943c20>] __key.0+0x0/0x10
+[7.132691]   ... acquired at:
+[7.132695]    _raw_spin_lock+0x50/0x70
+[7.132704]    regcache_maple_write+0x68/0xe0
+[7.132714]    regcache_write+0x6c/0x90
+[7.132724]    _regmap_read+0x19c/0x1d0
+[7.132732]    _regmap_update_bits+0xc0/0x148
+[7.132741]    regmap_field_update_bits_base+0x74/0xb8
+[7.132751]    vop2_plane_atomic_update+0x480/0x14d8 [rockchipdrm]
+[7.132820]    drm_atomic_helper_commit_planes+0x1a0/0x320 [drm_kms_helper]
+
+[...]
+
+[7.135112] -> (rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock){-...}-{2:2} {
+[7.135130]    IN-HARDIRQ-W at:
+[7.135136]                     lock_acquire+0x200/0x330
+[7.135147]                     _raw_spin_lock_irqsave+0x6c/0x98
+[7.135157]                     regmap_lock_spinlock+0x20/0x40
+[7.135166]                     regmap_read+0x44/0x90
+[7.135175]                     vop2_isr+0x90/0x290 [rockchipdrm]
+[7.135225]                     __handle_irq_event_percpu+0x124/0x2d0
+
+In the example above, the validator seems to get the scope of
+dependencies wrong, since the regmap instance used in rk8xx-spi driver
+has nothing to do with the instance from vop2.
+
+Improve validation by sharing the regmap's lockdep class with the maple
+tree's internal lock, while also providing a subclass for the latter.
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://patch.msgid.link/20241031-regmap-maple-lockdep-fix-v2-1-06a3710f3623@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_bitmap_ip.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/base/regmap/internal.h       | 1 +
+ drivers/base/regmap/regcache-maple.c | 3 +++
+ drivers/base/regmap/regmap.c         | 1 +
+ 3 files changed, 5 insertions(+)
 
---- a/net/netfilter/ipset/ip_set_bitmap_ip.c
-+++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
-@@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struc
- 		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
- 		if (ret)
- 			return ret;
--		if (ip > ip_to) {
-+		if (ip > ip_to)
- 			swap(ip, ip_to);
--			if (ip < map->first_ip)
--				return -IPSET_ERR_BITMAP_RANGE;
--		}
- 	} else if (tb[IPSET_ATTR_CIDR]) {
- 		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
+diff --git a/drivers/base/regmap/internal.h b/drivers/base/regmap/internal.h
+index 9a9ea514c2d81..a29f24b15928c 100644
+--- a/drivers/base/regmap/internal.h
++++ b/drivers/base/regmap/internal.h
+@@ -59,6 +59,7 @@ struct regmap {
+ 			unsigned long raw_spinlock_flags;
+ 		};
+ 	};
++	struct lock_class_key *lock_key;
+ 	regmap_lock lock;
+ 	regmap_unlock unlock;
+ 	void *lock_arg; /* This is passed to lock/unlock functions */
+diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
+index 0b6c2277128b4..fb5761a5ef6ee 100644
+--- a/drivers/base/regmap/regcache-maple.c
++++ b/drivers/base/regmap/regcache-maple.c
+@@ -356,6 +356,9 @@ static int regcache_maple_init(struct regmap *map)
  
-@@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struc
- 		ip_to = ip;
+ 	mt_init(mt);
+ 
++	if (!mt_external_lock(mt) && map->lock_key)
++		lockdep_set_class_and_subclass(&mt->ma_lock, map->lock_key, 1);
++
+ 	if (!map->num_reg_defaults)
+ 		return 0;
+ 
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index b2b26e44b8842..1db04886def61 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -756,6 +756,7 @@ struct regmap *__regmap_init(struct device *dev,
+ 						   lock_key, lock_name);
+ 		}
+ 		map->lock_arg = map;
++		map->lock_key = lock_key;
  	}
  
--	if (ip_to > map->last_ip)
-+	if (ip < map->first_ip || ip_to > map->last_ip)
- 		return -IPSET_ERR_BITMAP_RANGE;
- 
- 	for (; !before(ip_to, ip); ip += map->hosts) {
+ 	/*
+-- 
+2.43.0
+
 
 
 
