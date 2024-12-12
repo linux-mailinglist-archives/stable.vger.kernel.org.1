@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-103804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32EE9EF93B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:49:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD91E9EF83C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB3CE28E713
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D806C178769
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305C821660B;
-	Thu, 12 Dec 2024 17:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D8F222D4A;
+	Thu, 12 Dec 2024 17:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RG/zhyJP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNza8hh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E071F2236F0;
-	Thu, 12 Dec 2024 17:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109D8213E6F;
+	Thu, 12 Dec 2024 17:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025652; cv=none; b=Vg2L7UF+Db38WDp8XYvxzEPGe/NW/SAMPjE0oANbz65ll3CRfB7CPe/7RMDZ65Ta1ZZvuacoraakvCc8j4BYnFlrwLo2rOCW1tBh/kYd/4+fT5bbxzIstdId/ykRW85mwfMeypE9ujAf7+Q6a1u7ol3TJIgVQ6FBq+T8p+b7l6w=
+	t=1734024724; cv=none; b=WTHqbvJMDHxmYtj3Be9yKgDVgsDw/ivYYbNctSF0y9nomPFDHqCfNJL8fWTauo7/qYn9Sh7dmBmSvnLmm7M1iI3/L9Urjb8UuFBeOutibbH7r7QbZEon+ihj4oB4iMs740fp7mvtadAeONVPXWTRk5mJgr3pCdaBMT90HIi65ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025652; c=relaxed/simple;
-	bh=4SWuT9gypCf+T/t7QOWEfrdKJu6qjOq0tCz3ZLUd1Ic=;
+	s=arc-20240116; t=1734024724; c=relaxed/simple;
+	bh=Q3/gKtVmACoWubPxoExeajyBKmPvTz0snIcVs3FBz+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezpvVsTsx8oDRGq/0wMHRVhm4cOXGzksC+T2eHTvudw65LR3Wm3BqvfAlH9YSgljS+QcBH2I7TYkTUF4dIuj5kuslySdFx8ayYJaJi/vQrm1pwfPgfmRoNDCZ95Wm5q/q7FncwhGBE3+sYV9fWvxJ4eVl+SAMS842yjvlICzEwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RG/zhyJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E7CC4CECE;
-	Thu, 12 Dec 2024 17:47:31 +0000 (UTC)
+	 MIME-Version; b=P9cB07eA/EB12InVF2lX2rI+QX5V9tlgr6VcweoPUrLgJKbIdrk6uAqWnZAsZJW+8FQU8gqqmyW09IIEfw3Or6MjP4ok0stkDYN5+Ge39ISlAAK/5QfQhY1GWwPpjolknK5gg4keMnDqHA8RNRJ+xb1NkPdxn+aLR6ltjS7txSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNza8hh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F200C4CECE;
+	Thu, 12 Dec 2024 17:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025651;
-	bh=4SWuT9gypCf+T/t7QOWEfrdKJu6qjOq0tCz3ZLUd1Ic=;
+	s=korg; t=1734024723;
+	bh=Q3/gKtVmACoWubPxoExeajyBKmPvTz0snIcVs3FBz+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RG/zhyJPmXSxYuSqf8kzG4Dpa7T0kPcNwafYnrsoNiDOvEYKQttHsiW5R/1dSpczn
-	 b3mEvTd2x4hkk3+VLaDXsN1jMuEzu/YWLb2VJTN1BL5NfoGzFaO80vl9+ugBy9J7pE
-	 uzSAal+kkMh7+VFYBWzD/Ob7jnek33QErGAXbHVQ=
+	b=eNza8hh7F/OkzSHKZ5uaglJ5UUvkwBHpk1WyOF0zC8Ij6Mae4uT8r8Ifh/LDa9fIw
+	 Dq/RObEenUH4zs9ut67vqpVuAPnhEozCd6w2hJz38NPKhlpr/6TKKrwMwadF82aldm
+	 iuzc9x4ADBhET5U2sSnSK4U/TtOK+X3knW7/5VVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.4 211/321] clk: qcom: gcc-qcs404: fix initial rate of GPLL3
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 391/459] net: fec_mpc52xx_phy: Use %pa to format resource_size_t
 Date: Thu, 12 Dec 2024 16:02:09 +0100
-Message-ID: <20241212144238.315250230@linuxfoundation.org>
+Message-ID: <20241212144309.213570378@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Simon Horman <horms@kernel.org>
 
-commit 36d202241d234fa4ac50743510d098ad52bd193a upstream.
+[ Upstream commit 020bfdc4ed94be472138c891bde4d14241cf00fd ]
 
-The comment before the config of the GPLL3 PLL says that the
-PLL should run at 930 MHz. In contrary to this, calculating
-the frequency from the current configuration values by using
-19.2 MHz as input frequency defined in 'qcs404.dtsi', it gives
-921.6 MHz:
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
 
-  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x0
-  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
-  921600000.00000000000000000000
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
 
-Set 'alpha_hi' in the configuration to a value used in downstream
-kernels [1][2] in order to get the correct output rate:
+Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
 
-  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x70
-  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
-  930000000.00000000000000000000
+Flagged by gcc-14 as:
 
-The change is based on static code analysis, compile tested only.
+drivers/net/ethernet/freescale/fec_mpc52xx_phy.c: In function 'mpc52xx_fec_mdio_probe':
+drivers/net/ethernet/freescale/fec_mpc52xx_phy.c:97:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+   97 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+      |                                             ~^   ~~~~~~~~~
+      |                                              |      |
+      |                                              |      resource_size_t {aka long long unsigned int}
+      |                                              unsigned int
+      |                                             %llx
 
-[1] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/kernel.lnx.5.4.r56-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L335
-[2} https://git.codelinaro.org/clo/la/kernel/msm-5.15/-/blob/kernel.lnx.5.15.r49-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L127
+No functional change intended.
+Compile tested only.
 
-Cc: stable@vger.kernel.org
-Fixes: 652f1813c113 ("clk: qcom: gcc: Add global clock controller driver for QCS404")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/r/20241022-fix-gcc-qcs404-gpll3-v1-1-c4d30d634d19@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-1-dcc9afb8858b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-qcs404.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/fec_mpc52xx_phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/gcc-qcs404.c
-+++ b/drivers/clk/qcom/gcc-qcs404.c
-@@ -337,6 +337,7 @@ static struct clk_alpha_pll gpll1_out_ma
- /* 930MHz configuration */
- static const struct alpha_pll_config gpll3_config = {
- 	.l = 48,
-+	.alpha_hi = 0x70,
- 	.alpha = 0x0,
- 	.alpha_en_mask = BIT(24),
- 	.post_div_mask = 0xf << 8,
+diff --git a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
+index b5497e3083020..7e631e2f710fb 100644
+--- a/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
++++ b/drivers/net/ethernet/freescale/fec_mpc52xx_phy.c
+@@ -92,7 +92,7 @@ static int mpc52xx_fec_mdio_probe(struct platform_device *of)
+ 		goto out_free;
+ 	}
+ 
+-	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
+ 	bus->priv = priv;
+ 
+ 	bus->parent = dev;
+-- 
+2.43.0
+
 
 
 
