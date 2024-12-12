@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-102483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E479EF314
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59D09EEE71
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9087617CA75
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E9716B9E4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C15241F32;
-	Thu, 12 Dec 2024 16:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B521121E085;
+	Thu, 12 Dec 2024 15:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0ZL78fV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVOp8aZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03495241F2C;
-	Thu, 12 Dec 2024 16:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F3321C166;
+	Thu, 12 Dec 2024 15:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021393; cv=none; b=eCICWPdbnFGNTJxXgxePDBIZ1fsa1PwXiBlLlzoGgZvRY/RxGoDwQajAvyrkjSOPfLuNPx0sdJV1iBbY5k122AbTzmuNo9VRtX45U8y9fn8NTCf2PbUoMpOdiUsht5DGtpguDr/iZgDDfa5eiq6ETa9YH7BtoKt3KlVb7pI6umU=
+	t=1734018661; cv=none; b=XYk0NC+y+wUzfxAWOiopmlA5iBwxY5MNB7KZz4wxdyr2op/4xWUQR9EXgiAKKwskOWjpMMcOp6KSDiOJSTCw2GMv5Cy9s//93ZP1a8RU/0ZsfVoIcNaCm2OShBb/Mcr6paRzqfqey6RcOtaojreebsbM8QpZuebE2W9OwylWBeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021393; c=relaxed/simple;
-	bh=Dnq4+UiVG61FBKM5mEiZw9Ig1kYHnV17Hq6X/A87NRE=;
+	s=arc-20240116; t=1734018661; c=relaxed/simple;
+	bh=mrgGo+PJzadVvgVymd9gO6WWa8mQYkxEmAdCY9ytMyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VyphebPTiSqGFWABZXD8ODW3VkBBT9pSm8aHz5Zp+AARudySt8ByzE5uiWuoNeYGlvO7F/Qh6XVuuVbZd+54Q69YijrpcGan2m4iW6oGB3MWJ1GTe/hjXET/oqpiSsanQ53lqD0ci2TkKHtg0Es7WQd8VrSc6TchH242Xz8FviM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0ZL78fV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6785BC4CECE;
-	Thu, 12 Dec 2024 16:36:32 +0000 (UTC)
+	 MIME-Version; b=nuR7BiSroKCsUijDs4tlCa9oIbqxmD+Py40N8brV7z1O++FcvgfIraighN2gT89yNc1iItQFV03ItfDgo1V0AYwJdHvNTzQHEzoWPqouiZKKpsfguls+ajXsxQSvKy/KmbzLbVOVEqoZIr6a7Ow1ev3nNB48kBhxS1wKP2+u4s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVOp8aZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2ACC4CECE;
+	Thu, 12 Dec 2024 15:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021392;
-	bh=Dnq4+UiVG61FBKM5mEiZw9Ig1kYHnV17Hq6X/A87NRE=;
+	s=korg; t=1734018661;
+	bh=mrgGo+PJzadVvgVymd9gO6WWa8mQYkxEmAdCY9ytMyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0ZL78fVub4hJ2GkOKXZakNNtkZ+jz9rEZBEvoG+HZAZj+tmSd7Z2qTWpcCnTYyhO
-	 4dBD/nQ5OdJQfytKTkwI0US4pLnhCqdMOl3+NdKfsMeSySrRW3ueW++xoW6GSNjz9G
-	 7skTxmkRzITMoLLfMKIEMLgTYavk54JLdZaV1Y7g=
+	b=tVOp8aZAtrvvCcGzgCprHxdEueSnsPRg38FJduGoZk4fUbXs6mVjdWea3SRiAMPPW
+	 QrvNVM/vGaIpVt3bHhRL3RF0HnjG1w1OzX4DetM00ZOkZs/12JyTxwQ/OKVjcBQ70P
+	 ze1NVBogT1kUGrx7WF8d0Q/WLSUzwCyd6kHEhtIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 726/772] rtc: cmos: avoid taking rtc_lock for extended period of time
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 352/356] ALSA: usb-audio: Update UMP group attributes for GTB blocks, too
 Date: Thu, 12 Dec 2024 16:01:11 +0100
-Message-ID: <20241212144419.888836551@linuxfoundation.org>
+Message-ID: <20241212144258.481130541@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +58,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 0a6efab33eab4e973db26d9f90c3e97a7a82e399 ]
+commit ebaa86c0bddd2c47c516bf2096b17c0bed71d914 upstream.
 
-On my device reading entirety of /sys/devices/pnp0/00:03/cmos_nvram0/nvmem
-takes about 9 msec during which time interrupts are off on the CPU that
-does the read and the thread that performs the read can not be migrated
-or preempted by another higher priority thread (RT or not).
+When a FB is created from a GTB instead of UMP FB Info inquiry, we
+missed the update of the corresponding UMP Group attributes.
+Export the call of updater and let it be called from the USB driver.
 
-Allow readers and writers be preempted by taking and releasing rtc_lock
-spinlock for each individual byte read or written rather than once per
-read/write request.
-
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Link: https://lore.kernel.org/r/Zxv8QWR21AV4ztC5@google.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0642a3c5cacc ("ALSA: ump: Update substream name from assigned FB names")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20240807092303.1935-5-tiwai@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-cmos.c | 31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ include/sound/ump.h |    1 +
+ sound/core/ump.c    |    9 +++++----
+ sound/usb/midi2.c   |    2 ++
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index 542568cd72b32..5f43773900d18 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -645,18 +645,17 @@ static int cmos_nvram_read(void *priv, unsigned int off, void *val,
- 	unsigned char *buf = val;
+--- a/include/sound/ump.h
++++ b/include/sound/ump.h
+@@ -122,6 +122,7 @@ static inline int snd_ump_attach_legacy_
  
- 	off += NVRAM_OFFSET;
--	spin_lock_irq(&rtc_lock);
--	for (; count; count--, off++) {
-+	for (; count; count--, off++, buf++) {
-+		guard(spinlock_irq)(&rtc_lock);
- 		if (off < 128)
--			*buf++ = CMOS_READ(off);
-+			*buf = CMOS_READ(off);
- 		else if (can_bank2)
--			*buf++ = cmos_read_bank2(off);
-+			*buf = cmos_read_bank2(off);
- 		else
--			break;
-+			return -EIO;
- 	}
--	spin_unlock_irq(&rtc_lock);
+ int snd_ump_receive_ump_val(struct snd_ump_endpoint *ump, u32 val);
+ int snd_ump_switch_protocol(struct snd_ump_endpoint *ump, unsigned int protocol);
++void snd_ump_update_group_attrs(struct snd_ump_endpoint *ump);
  
--	return count ? -EIO : 0;
-+	return 0;
+ /*
+  * Some definitions for UMP
+--- a/sound/core/ump.c
++++ b/sound/core/ump.c
+@@ -525,7 +525,7 @@ static void snd_ump_proc_read(struct snd
  }
  
- static int cmos_nvram_write(void *priv, unsigned int off, void *val,
-@@ -671,23 +670,23 @@ static int cmos_nvram_write(void *priv, unsigned int off, void *val,
- 	 * NVRAM to update, updating checksums is also part of its job.
- 	 */
- 	off += NVRAM_OFFSET;
--	spin_lock_irq(&rtc_lock);
--	for (; count; count--, off++) {
-+	for (; count; count--, off++, buf++) {
- 		/* don't trash RTC registers */
- 		if (off == cmos->day_alrm
- 				|| off == cmos->mon_alrm
- 				|| off == cmos->century)
--			buf++;
--		else if (off < 128)
--			CMOS_WRITE(*buf++, off);
-+			continue;
+ /* update dir_bits and active flag for all groups in the client */
+-static void update_group_attrs(struct snd_ump_endpoint *ump)
++void snd_ump_update_group_attrs(struct snd_ump_endpoint *ump)
+ {
+ 	struct snd_ump_block *fb;
+ 	struct snd_ump_group *group;
+@@ -575,6 +575,7 @@ static void update_group_attrs(struct sn
+ 		}
+ 	}
+ }
++EXPORT_SYMBOL_GPL(snd_ump_update_group_attrs);
+ 
+ /*
+  * UMP endpoint and function block handling
+@@ -848,7 +849,7 @@ static int ump_handle_fb_info_msg(struct
+ 	if (fb) {
+ 		fill_fb_info(ump, &fb->info, buf);
+ 		if (ump->parsed) {
+-			update_group_attrs(ump);
++			snd_ump_update_group_attrs(ump);
+ 			seq_notify_fb_change(ump, fb);
+ 		}
+ 	}
+@@ -880,7 +881,7 @@ static int ump_handle_fb_name_msg(struct
+ 				buf->raw, 3);
+ 	/* notify the FB name update to sequencer, too */
+ 	if (ret > 0 && ump->parsed) {
+-		update_group_attrs(ump);
++		snd_ump_update_group_attrs(ump);
+ 		seq_notify_fb_change(ump, fb);
+ 	}
+ 	return ret;
+@@ -1055,7 +1056,7 @@ int snd_ump_parse_endpoint(struct snd_um
+ 	}
+ 
+ 	/* initialize group attributions */
+-	update_group_attrs(ump);
++	snd_ump_update_group_attrs(ump);
+ 
+  error:
+ 	ump->parsed = true;
+--- a/sound/usb/midi2.c
++++ b/sound/usb/midi2.c
+@@ -873,6 +873,8 @@ static int create_gtb_block(struct snd_u
+ 		fb->info.flags |= SNDRV_UMP_BLOCK_IS_MIDI1 |
+ 			SNDRV_UMP_BLOCK_IS_LOWSPEED;
+ 
++	snd_ump_update_group_attrs(rmidi->ump);
 +
-+		guard(spinlock_irq)(&rtc_lock);
-+		if (off < 128)
-+			CMOS_WRITE(*buf, off);
- 		else if (can_bank2)
--			cmos_write_bank2(*buf++, off);
-+			cmos_write_bank2(*buf, off);
- 		else
--			break;
-+			return -EIO;
- 	}
--	spin_unlock_irq(&rtc_lock);
- 
--	return count ? -EIO : 0;
-+	return 0;
- }
- 
- /*----------------------------------------------------------------*/
--- 
-2.43.0
-
+ 	usb_audio_dbg(umidi->chip,
+ 		      "Created a UMP block %d from GTB, name=%s\n",
+ 		      blk, fb->info.name);
 
 
 
