@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-103496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906F29EF838
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E5A9EF4F2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1930F16A37F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAC2A28B9F6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E7521E086;
-	Thu, 12 Dec 2024 17:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5C02144C4;
+	Thu, 12 Dec 2024 17:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lM48wPyM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRQB9CBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5531C213E6F;
-	Thu, 12 Dec 2024 17:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DC06F2FE;
+	Thu, 12 Dec 2024 17:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024744; cv=none; b=VxEWvIeHEC7ZCJNkfZE8ijUB0EU1vO8uSsev/EezqkjaVQZ1tIAv2iC/5XQEu6lrxjdJcWah0AMhqRP6+llAgCl/zh0J94hXO4qm7C08U77VaQSRq8hr/6bYfuuAR9Cvuxl1xDN6QQxbLBOju4dvo7883itUORvw2yau8Fd5+KY=
+	t=1734023461; cv=none; b=doXhmCVd0eY94CFSKL3NG78eDFwyxHYmpbx37vYnMGDWjLxjpD5l/c+GETok0PNGManFXmmKRF4jD1D2VknJ5y5ufyC5ANl9Z59ZuB87T+Pl9NXL5UHg14tItaIhOeR/hcWDkAOgV4nHiKyh7GhuAf7VGEBdC6J6sewCpZVwGZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024744; c=relaxed/simple;
-	bh=3ZA3wF3Tw+14hA9D9IIk1Z1w8xpuEbrQTCCFMzyIVXI=;
+	s=arc-20240116; t=1734023461; c=relaxed/simple;
+	bh=rXI1lycVqAYoMjEO0H/xmssX2o8bxtO8Or0zd68frY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfS0pUovZwJ2meaDKvXVGAEFsklsDh9uOFCc9AACK/zAnt5KmMfaY1iCQ2r7z42tDJ4KLiyIGuqXMRXjNhqiYeTBQyrn5BhaFifQmFzOH90pXpCoEPTGmh4nj0HjX/a2F0WwuIikuGGuoIf9b3gM2op2AfpFX0kVlFgCvwQydJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lM48wPyM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9654C4CECE;
-	Thu, 12 Dec 2024 17:32:23 +0000 (UTC)
+	 MIME-Version; b=jHhDw6uk8LR3GDHZW0uXB317ziBFlIgJ1yCCBdIIXnnuqquA4Oyv/lRkk27uOKY56ZUCYlZVnGi3UQ7Y/fruFDWYk5MuY/b//6tihSdJb+HwG/h0R6tVOerrXbIMBv7w4WWh/eutwSzOzHouFZOjG62z9PbZQyGZK2mtIya7Txk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRQB9CBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF56FC4CECE;
+	Thu, 12 Dec 2024 17:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024744;
-	bh=3ZA3wF3Tw+14hA9D9IIk1Z1w8xpuEbrQTCCFMzyIVXI=;
+	s=korg; t=1734023461;
+	bh=rXI1lycVqAYoMjEO0H/xmssX2o8bxtO8Or0zd68frY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lM48wPyMYwUBWNCtWs6wiUOToRT87qFxywyxNJCxAdGrJ0+CxNTPkTFo/OnaeE/GK
-	 4Nx0sYjJUqpkB6GX9VdJXvJ02sv5OCNLUOGew5JmCcTh/rHHRnSmXX4YxULUrpfICl
-	 H2AxFZrvpeFXsUu/Dz/tvEQkF+Dwxkzft6mOvteI=
+	b=LRQB9CBTJG8IzMNDIqlnoNzupA9lBA82lGYF6i/V5pJuklBMwrucBsG4e5IgDdzLy
+	 Q3qGLqkquEHqmVd3N0JXysLFS2QvFC5yS8oKlKel0tDV8lQsacO/wuRfSvYjAJIcjx
+	 2aUhETfdvkg6ZXSd81MkCC/MC+5zcbrdU1F84ebY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 397/459] net: ieee802154: do not leave a dangling sk pointer in ieee802154_create()
-Date: Thu, 12 Dec 2024 16:02:15 +0100
-Message-ID: <20241212144309.445689059@linuxfoundation.org>
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 5.15 541/565] KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
+Date: Thu, 12 Dec 2024 16:02:16 +0100
+Message-ID: <20241212144333.237346449@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Kunkun Jiang <jiangkunkun@huawei.com>
 
-[ Upstream commit b4fcd63f6ef79c73cafae8cf4a114def5fc3d80d ]
+commit 7602ffd1d5e8927fadd5187cb4aed2fdc9c47143 upstream.
 
-sock_init_data() attaches the allocated sk object to the provided sock
-object. If ieee802154_create() fails later, the allocated sk object is
-freed, but the dangling pointer remains in the provided sock object, which
-may allow use-after-free.
+When DISCARD frees an ITE, it does not invalidate the
+corresponding ITE. In the scenario of continuous saves and
+restores, there may be a situation where an ITE is not saved
+but is restored. This is unreasonable and may cause restore
+to fail. This patch clears the corresponding ITE when DISCARD
+frees an ITE.
 
-Clear the sk pointer in the sock object on error.
-
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-6-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: eff484e0298d ("KVM: arm64: vgic-its: ITT save and restore")
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+[Jing: Update with entry write helper]
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
+Link: https://lore.kernel.org/r/20241107214137.428439-6-jingzhangos@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ieee802154/socket.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/arm64/kvm/vgic/vgic-its.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
-index d4c275e56d825..c8b9efc92b45a 100644
---- a/net/ieee802154/socket.c
-+++ b/net/ieee802154/socket.c
-@@ -1047,19 +1047,21 @@ static int ieee802154_create(struct net *net, struct socket *sock,
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -855,6 +855,9 @@ static int vgic_its_cmd_handle_discard(s
  
- 	if (sk->sk_prot->hash) {
- 		rc = sk->sk_prot->hash(sk);
--		if (rc) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (rc)
-+			goto out_sk_release;
+ 	ite = find_ite(its, device_id, event_id);
+ 	if (ite && its_is_collection_mapped(ite->collection)) {
++		struct its_device *device = find_its_device(its, device_id);
++		int ite_esz = vgic_its_get_abi(its)->ite_esz;
++		gpa_t gpa = device->itt_addr + ite->event_id * ite_esz;
+ 		/*
+ 		 * Though the spec talks about removing the pending state, we
+ 		 * don't bother here since we clear the ITTE anyway and the
+@@ -863,7 +866,8 @@ static int vgic_its_cmd_handle_discard(s
+ 		vgic_its_invalidate_cache(kvm);
+ 
+ 		its_free_ite(kvm, ite);
+-		return 0;
++
++		return vgic_its_write_entry_lock(its, gpa, 0, ite_esz);
  	}
  
- 	if (sk->sk_prot->init) {
- 		rc = sk->sk_prot->init(sk);
- 		if (rc)
--			sk_common_release(sk);
-+			goto out_sk_release;
- 	}
- out:
- 	return rc;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- static const struct net_proto_family ieee802154_family_ops = {
--- 
-2.43.0
-
+ 	return E_ITS_DISCARD_UNMAPPED_INTERRUPT;
 
 
 
