@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-103405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F00D9EF7F0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DAC9EF90E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45BE817958C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539ED189461D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5E12210DE;
-	Thu, 12 Dec 2024 17:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F393C2153EC;
+	Thu, 12 Dec 2024 17:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h833vzjT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvZ5IlPT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABA2216E3B;
-	Thu, 12 Dec 2024 17:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07776F2FE;
+	Thu, 12 Dec 2024 17:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024469; cv=none; b=tVutM82NEWdg2bW4jPeqJVpOPWQl/06Xb/ISXBw6JvKmPTREvks7fwuQn0bYyJhdLM/VotYCFpov0j4dc+LEy9jeDh2Maie6EGZQhVdez3t9Sx+UCH9U6S05nQV8kIfXtfKwMBsxpCzLW5b5XNfI3wAZutsaf6+a4/QIYYA3HE8=
+	t=1734025308; cv=none; b=Z+3X7meK8mx86HrdmVyXOPSNzMdymN9pjx9vbnBaVeyBRCKIKrDNQKRadPK7gftAPvDSco9ZzvWP5AC5quKhRWKfSspxixwXIEUIO3vgH1MVYDqQqiB8nsgWLkgXPtC8CmGDT3xXp79NcNfWYUPDR8axzZ0fi87B5bNJPzErAtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024469; c=relaxed/simple;
-	bh=6awoLZnR6v4yOlPysJgF4cm6FqNuZsOlewr+hSSXzQ0=;
+	s=arc-20240116; t=1734025308; c=relaxed/simple;
+	bh=kDrsaTU66xr0BKEdPVTdBaQ6GwWrwsHJY+hEJ3fkjrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ow3iRl94REpGl0StlNIbAwXg9H9fgvcZXu2mZh8TJ6UZv5unOYBaE/fcx8fOs2akbGplzUGK6TT5ouv0WvrJU5AVPrA5i9I80wO60J/4QICKrWi1A/LgF45gKyaQWlq+LqXeEVJKZA/bG2vgRu3FubqdQd9QI+gt7dBTfhyypfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h833vzjT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9F4C4CECE;
-	Thu, 12 Dec 2024 17:27:48 +0000 (UTC)
+	 MIME-Version; b=PeYulj4fMnmBhFubSLu+JlNTPaJK/Hchi0fc5RvOn9+YndfRChcrYSRQrAOwIwT+Ma8fWBvkx2CgYcFHTZX2nEYWzbmXn8/lvV/MrKAuPnWPb85xqJxbqL5pL2rFblttQKiQFNUaWgRiWI7XpuOFSOfK3LdnIrWUgm2CcpG+FfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvZ5IlPT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37472C4CECE;
+	Thu, 12 Dec 2024 17:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024469;
-	bh=6awoLZnR6v4yOlPysJgF4cm6FqNuZsOlewr+hSSXzQ0=;
+	s=korg; t=1734025308;
+	bh=kDrsaTU66xr0BKEdPVTdBaQ6GwWrwsHJY+hEJ3fkjrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h833vzjTj1PsqcRi3df4Mf3w60Sw/Z7FFfLlvid3cZIUxa6hIG900UgqnqQ8b6wZN
-	 qfO3nhFkM5uEZ+7D72myoXg8S8DAGnvKygf4hzcNYAH2hfU50i8Wka6QvYgH6nAe5w
-	 r5tqiwrXQUGLiaYgbo5VHlF67ZQGElNrx+EUfktc=
+	b=hvZ5IlPTSLy+9cKXjZjgTXfh1yI/Db+Srd3CXndt7eZ32Zz+cI/a/TT0FomzMvAte
+	 Hpap1tGZ3/HKKdYiXJ+1PCC2k33pEkLDHz4bVwpgCLuO6wIvAQx5uDJJwfn33+Vyu0
+	 94GBH8p2piePsgLH5MbQ53vF7cJXY0K4QUKsst5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiyu Yang <xiyuyang19@fudan.edu.cn>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Kyle Tso <kyletso@google.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 306/459] SUNRPC: Convert rpc_client refcount to use refcount_t
+Subject: [PATCH 5.4 126/321] power: supply: core: Remove might_sleep() from power_supply_put()
 Date: Thu, 12 Dec 2024 16:00:44 +0100
-Message-ID: <20241212144305.732907756@linuxfoundation.org>
+Message-ID: <20241212144234.954673068@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,163 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 71d3d0ebc894294ef9454e45a3ac2e9ba60b3351 ]
+[ Upstream commit f6da4553ff24a5d1c959c9627c965323adc3d307 ]
 
-There are now tools in the refcount library that allow us to convert the
-client shutdown code.
+The put_device() call in power_supply_put() may call
+power_supply_dev_release(). The latter function does not sleep so
+power_supply_put() doesn't sleep either. Hence, remove the might_sleep()
+call from power_supply_put(). This patch suppresses false positive
+complaints about calling a sleeping function from atomic context if
+power_supply_put() is called from atomic context.
 
-Reported-by: Xiyu Yang <xiyuyang19@fudan.edu.cn>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
+Cc: Kyle Tso <kyletso@google.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Fixes: 1a352462b537 ("power_supply: Add power_supply_put for decrementing device reference counter")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240917193914.47566-1-bvanassche@acm.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/clnt.h          |  3 ++-
- net/sunrpc/auth_gss/gss_rpc_upcall.c |  2 +-
- net/sunrpc/clnt.c                    | 22 ++++++++++------------
- net/sunrpc/debugfs.c                 |  2 +-
- net/sunrpc/rpc_pipe.c                |  2 +-
- 5 files changed, 15 insertions(+), 16 deletions(-)
+ drivers/power/supply/power_supply_core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/linux/sunrpc/clnt.h b/include/linux/sunrpc/clnt.h
-index 187e9f06cf64b..33691492dafb8 100644
---- a/include/linux/sunrpc/clnt.h
-+++ b/include/linux/sunrpc/clnt.h
-@@ -14,6 +14,7 @@
- #include <linux/socket.h>
- #include <linux/in.h>
- #include <linux/in6.h>
-+#include <linux/refcount.h>
- 
- #include <linux/sunrpc/msg_prot.h>
- #include <linux/sunrpc/sched.h>
-@@ -34,7 +35,7 @@ struct rpc_inode;
-  * The high-level client handle
+diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
+index 2d6836b33da33..606e21fe599d2 100644
+--- a/drivers/power/supply/power_supply_core.c
++++ b/drivers/power/supply/power_supply_core.c
+@@ -479,8 +479,6 @@ EXPORT_SYMBOL_GPL(power_supply_get_by_name);
   */
- struct rpc_clnt {
--	atomic_t		cl_count;	/* Number of references */
-+	refcount_t		cl_count;	/* Number of references */
- 	unsigned int		cl_clid;	/* client id */
- 	struct list_head	cl_clients;	/* Global list of clients */
- 	struct list_head	cl_tasks;	/* List of tasks */
-diff --git a/net/sunrpc/auth_gss/gss_rpc_upcall.c b/net/sunrpc/auth_gss/gss_rpc_upcall.c
-index af9c7f43859c4..05ff66b86b4eb 100644
---- a/net/sunrpc/auth_gss/gss_rpc_upcall.c
-+++ b/net/sunrpc/auth_gss/gss_rpc_upcall.c
-@@ -160,7 +160,7 @@ static struct rpc_clnt *get_gssp_clnt(struct sunrpc_net *sn)
- 	mutex_lock(&sn->gssp_lock);
- 	clnt = sn->gssp_clnt;
- 	if (clnt)
--		atomic_inc(&clnt->cl_count);
-+		refcount_inc(&clnt->cl_count);
- 	mutex_unlock(&sn->gssp_lock);
- 	return clnt;
- }
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 86397f9c4bc83..457042b653bba 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -169,7 +169,7 @@ static int rpc_clnt_skip_event(struct rpc_clnt *clnt, unsigned long event)
- 	case RPC_PIPEFS_MOUNT:
- 		if (clnt->cl_pipedir_objects.pdh_dentry != NULL)
- 			return 1;
--		if (atomic_read(&clnt->cl_count) == 0)
-+		if (refcount_read(&clnt->cl_count) == 0)
- 			return 1;
- 		break;
- 	case RPC_PIPEFS_UMOUNT:
-@@ -419,7 +419,7 @@ static struct rpc_clnt * rpc_new_client(const struct rpc_create_args *args,
- 	clnt->cl_rtt = &clnt->cl_rtt_default;
- 	rpc_init_rtt(&clnt->cl_rtt_default, clnt->cl_timeout->to_initval);
- 
--	atomic_set(&clnt->cl_count, 1);
-+	refcount_set(&clnt->cl_count, 1);
- 
- 	if (nodename == NULL)
- 		nodename = utsname()->nodename;
-@@ -430,7 +430,7 @@ static struct rpc_clnt * rpc_new_client(const struct rpc_create_args *args,
- 	if (err)
- 		goto out_no_path;
- 	if (parent)
--		atomic_inc(&parent->cl_count);
-+		refcount_inc(&parent->cl_count);
- 
- 	trace_rpc_clnt_new(clnt, xprt, program->name, args->servername);
- 	return clnt;
-@@ -917,18 +917,16 @@ rpc_free_client(struct rpc_clnt *clnt)
- static struct rpc_clnt *
- rpc_free_auth(struct rpc_clnt *clnt)
+ void power_supply_put(struct power_supply *psy)
  {
--	if (clnt->cl_auth == NULL)
--		return rpc_free_client(clnt);
+-	might_sleep();
 -
- 	/*
- 	 * Note: RPCSEC_GSS may need to send NULL RPC calls in order to
- 	 *       release remaining GSS contexts. This mechanism ensures
- 	 *       that it can do so safely.
- 	 */
--	atomic_inc(&clnt->cl_count);
--	rpcauth_release(clnt->cl_auth);
--	clnt->cl_auth = NULL;
--	if (atomic_dec_and_test(&clnt->cl_count))
-+	if (clnt->cl_auth != NULL) {
-+		rpcauth_release(clnt->cl_auth);
-+		clnt->cl_auth = NULL;
-+	}
-+	if (refcount_dec_and_test(&clnt->cl_count))
- 		return rpc_free_client(clnt);
- 	return NULL;
+ 	atomic_dec(&psy->use_cnt);
+ 	put_device(&psy->dev);
  }
-@@ -942,7 +940,7 @@ rpc_release_client(struct rpc_clnt *clnt)
- 	do {
- 		if (list_empty(&clnt->cl_tasks))
- 			wake_up(&destroy_wait);
--		if (!atomic_dec_and_test(&clnt->cl_count))
-+		if (refcount_dec_not_one(&clnt->cl_count))
- 			break;
- 		clnt = rpc_free_auth(clnt);
- 	} while (clnt != NULL);
-@@ -1083,7 +1081,7 @@ void rpc_task_set_client(struct rpc_task *task, struct rpc_clnt *clnt)
- 	if (clnt != NULL) {
- 		rpc_task_set_transport(task, clnt);
- 		task->tk_client = clnt;
--		atomic_inc(&clnt->cl_count);
-+		refcount_inc(&clnt->cl_count);
- 		if (clnt->cl_softrtry)
- 			task->tk_flags |= RPC_TASK_SOFT;
- 		if (clnt->cl_softerr)
-diff --git a/net/sunrpc/debugfs.c b/net/sunrpc/debugfs.c
-index 56029e3af6ff0..79995eb959279 100644
---- a/net/sunrpc/debugfs.c
-+++ b/net/sunrpc/debugfs.c
-@@ -90,7 +90,7 @@ static int tasks_open(struct inode *inode, struct file *filp)
- 		struct seq_file *seq = filp->private_data;
- 		struct rpc_clnt *clnt = seq->private = inode->i_private;
- 
--		if (!atomic_inc_not_zero(&clnt->cl_count)) {
-+		if (!refcount_inc_not_zero(&clnt->cl_count)) {
- 			seq_release(inode, filp);
- 			ret = -EINVAL;
- 		}
-diff --git a/net/sunrpc/rpc_pipe.c b/net/sunrpc/rpc_pipe.c
-index bb13620e62468..a3545ecf9a6e5 100644
---- a/net/sunrpc/rpc_pipe.c
-+++ b/net/sunrpc/rpc_pipe.c
-@@ -423,7 +423,7 @@ rpc_info_open(struct inode *inode, struct file *file)
- 		spin_lock(&file->f_path.dentry->d_lock);
- 		if (!d_unhashed(file->f_path.dentry))
- 			clnt = RPC_I(inode)->private;
--		if (clnt != NULL && atomic_inc_not_zero(&clnt->cl_count)) {
-+		if (clnt != NULL && refcount_inc_not_zero(&clnt->cl_count)) {
- 			spin_unlock(&file->f_path.dentry->d_lock);
- 			m->private = clnt;
- 		} else {
 -- 
 2.43.0
 
