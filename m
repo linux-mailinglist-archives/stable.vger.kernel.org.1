@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED7F9EE990
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:01:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C02D29EE995
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:02:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 398F81884FF8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:01:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81D27280B40
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A14213E97;
-	Thu, 12 Dec 2024 15:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3532A2139B2;
+	Thu, 12 Dec 2024 15:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTb9Hkbw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rmgp1LGE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68EE209F27;
-	Thu, 12 Dec 2024 15:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50A02EAE5;
+	Thu, 12 Dec 2024 15:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734015697; cv=none; b=VuMNraF+MsCs2YqbXDC7i9dquZHOwKau+N+0xbvS/gZn+znU9lCegHTDz6wMZtDTM8E21N1jvRK4oBZeiXwXqiAYQ/kbmLcSRBjSUT8py8LOV32UfK2xbNIpr4t0671UZ9nM0CMDsAM02GXcP9mzvhtaLJN/ooCl82O2WCPOoU0=
+	t=1734015722; cv=none; b=EyTlkXrEV9OvVFPr5RLZOci9fhX9B108c2RDXOnTpQVmiuearJmK2VkropPrvvhdm8cFcG7trP4b2O6Xm7K4jb6k44ErU2JOIugyOSRhotPlEdYhrgNbgsVvPu6RJvHgg7GKghLY8CzB1F5jeAF+Ayvo3L0IOl71I5+i4544NHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734015697; c=relaxed/simple;
-	bh=Jwy3EhtsHxqbc8RKO5Bxu7TSEAozmTDI5vDUwSNEqcY=;
+	s=arc-20240116; t=1734015722; c=relaxed/simple;
+	bh=iChowekVdJyLBbnoTVeEcq1l2nTB+lgMbayFBFwPmyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STitf9FD14uykPCyZlYjEeM4jGoQpIQ8JlQOwIuYzu9SW7/SHy87nqRBig5sC2Ba4dJ2btSyAt2SKE7pOnH+nkSCELWD0rH8L//v5TJ38huB9A1ES6DF+9OrdDtA0i7mg0hjNqrYWdWbceolFHh9BW8KUh12ZmpoTJf88bhP2JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTb9Hkbw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D342AC4CECE;
-	Thu, 12 Dec 2024 15:01:36 +0000 (UTC)
+	 MIME-Version; b=l9GYfcCfs5JxFr655t8PC0eW8FymS1q71SZpRp0Z896PLCWp70q3SDhbfl5jRAQYCXxyL+a8r6lHjiAYyY/8NiPa4a+RXRNmjH6Fux7RTm7P239Cvr3Us1XiGn+HfeKq9a+DqOrehGkB/ZdxTbxNTNdJMo9yxWvcb64LC969h+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rmgp1LGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5041AC4CECE;
+	Thu, 12 Dec 2024 15:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734015697;
-	bh=Jwy3EhtsHxqbc8RKO5Bxu7TSEAozmTDI5vDUwSNEqcY=;
+	s=korg; t=1734015721;
+	bh=iChowekVdJyLBbnoTVeEcq1l2nTB+lgMbayFBFwPmyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTb9HkbwsWRSaK9IMShsBunhQf40TlR9p0tudxHxIdYo4cnWvraifMSS8PwSdaioR
-	 Yvw6wz0sz8UuJoCEH4XKL+BcJGtZVH5BTje6o1c8GBcK3Ryl6bB6OgKvzcOLKdPXNZ
-	 u/m/BY5Q9EWYkFrPEQSTFkMMMt5x6+7OTiXgFifc=
+	b=Rmgp1LGEo855fdmQpObIVe5TiK7idhA/KHVvGYdw0r83WLd7Z1mdGtY/PdAsUk2E/
+	 CbUockFSQ8UtpL/70dz8gZKZcjRklJOmWR5to+kKXrrV2iQGph7hJfiRvFYhSaEKFj
+	 YB+wPB05YgPmVEBUpCT9CnVotLpX7UEzgEVVGYic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nick Chan <towinchenmi@gmail.com>,
+	Yassine Oudjana <y.oudjana@protonmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/466] watchdog: apple: Actually flush writes after requesting watchdog restart
-Date: Thu, 12 Dec 2024 15:52:52 +0100
-Message-ID: <20241212144306.798911087@linuxfoundation.org>
+Subject: [PATCH 6.12 004/466] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
+Date: Thu, 12 Dec 2024 15:52:53 +0100
+Message-ID: <20241212144306.838345797@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -68,40 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nick Chan <towinchenmi@gmail.com>
+From: Yassine Oudjana <y.oudjana@protonmail.com>
 
-[ Upstream commit 51dfe714c03c066aabc815a2bb2adcc998dfcb30 ]
+[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
 
-Although there is an existing code comment about flushing the writes,
-writes were not actually being flushed.
+Clear the IRQ enable bit of WDT_MODE before asserting software reset
+in order to make TOPRGU issue a system reset signal instead of an IRQ.
 
-Actually flush the writes by changing readl_relaxed() to readl().
-
-Fixes: 4ed224aeaf661 ("watchdog: Add Apple SoC watchdog driver")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Nick Chan <towinchenmi@gmail.com>
-Reviewed-by: Guenter Roeck  <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241001170018.20139-2-towinchenmi@gmail.com
+Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
+Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/apple_wdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/mtk_wdt.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/watchdog/apple_wdt.c b/drivers/watchdog/apple_wdt.c
-index d4f739932f0be..62dabf223d909 100644
---- a/drivers/watchdog/apple_wdt.c
-+++ b/drivers/watchdog/apple_wdt.c
-@@ -130,7 +130,7 @@ static int apple_wdt_restart(struct watchdog_device *wdd, unsigned long mode,
- 	 * can take up to ~20-25ms until the SoC is actually reset. Just wait
- 	 * 50ms here to be safe.
- 	 */
--	(void)readl_relaxed(wdt->regs + APPLE_WDT_WD1_CUR_TIME);
-+	(void)readl(wdt->regs + APPLE_WDT_WD1_CUR_TIME);
- 	mdelay(50);
+diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
+index c35f85ce8d69c..e2d7a57d6ea2e 100644
+--- a/drivers/watchdog/mtk_wdt.c
++++ b/drivers/watchdog/mtk_wdt.c
+@@ -225,9 +225,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
+ {
+ 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
+ 	void __iomem *wdt_base;
++	u32 reg;
  
- 	return 0;
+ 	wdt_base = mtk_wdt->wdt_base;
+ 
++	/* Enable reset in order to issue a system reset instead of an IRQ */
++	reg = readl(wdt_base + WDT_MODE);
++	reg &= ~WDT_MODE_IRQ_EN;
++	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
++
+ 	while (1) {
+ 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
+ 		mdelay(5);
 -- 
 2.43.0
 
