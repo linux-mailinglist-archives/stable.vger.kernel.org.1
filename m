@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4C69EF261
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E666F9EEB1D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76D451899CF1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A723D280CFD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9DA22912B;
-	Thu, 12 Dec 2024 16:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136E1217F55;
+	Thu, 12 Dec 2024 15:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/PfkS9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLGl/oRR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA352288FD;
-	Thu, 12 Dec 2024 16:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C530B21578E;
+	Thu, 12 Dec 2024 15:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020725; cv=none; b=Wx98neSjw28p8o2fURwCsjYhkjTGGVMB3d5R7tkPWBbBMnfonIWQehVj6zLbvjffMOepcZNAGJp1LRFcX5xSO6kwbw9Xh0soUxrkuIejwTal/Pg/88aQQ9CveYa9Ti/EZT2VUTsmyoEu5hgEf+BUoRsOJIXgFkC1jmk+3rYPm1M=
+	t=1734016875; cv=none; b=IpbfRPXMfFQstLKn6XA/6s5ewTGxApJIqmpWMglELViAUk5rwK1J3AFMre9HEmBBlJBuVGdFJh04vFL3VLHsVSrm+QXQyjV7z8+O+pxddZU8zOdVpQp2vzQjId8seCphA3JAk0dAzNCLgtIlb/uGO/DvVgp0SqqNLQqtLCBb13o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020725; c=relaxed/simple;
-	bh=TZA+j1P7V31/rCMU6RNCJTqKSqhWSoK6Fzxnp9vGIV4=;
+	s=arc-20240116; t=1734016875; c=relaxed/simple;
+	bh=WgjfDnQoYsdrJ6B/NHP6Wngup37s6D+UPJ9MKQd+Tyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTeSp71P4XcHBV2ZyTk83/F6pAtxrJ0OcNDyUgqAJTI+G94cvNxlRW0IyULithmBXzECO3AXoVYIueMO5URQOS9Ad3rLirqYxlRLx1/hEFIlFDeBdtt8ecjJMCnpHM1X/3BWOyQR9LHD8Bwenk4/ni97lPdvRd6cNnuIkRrNgEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/PfkS9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133A8C4CECE;
-	Thu, 12 Dec 2024 16:25:24 +0000 (UTC)
+	 MIME-Version; b=L3jM2MBIR9nwGPk2nfhL4/+KQ4Z13+LcGHEmWL4Z25y2cy1hP6iRqjUrJPUzc+yjtCTmqGRa0/8LifWOmVrec+ItzFUMPt2IqqbKWshSiOG4S3YTbox1Wa0ckKja2VHOll5p++1vZMzcSpiCJNL0P6tcMKQqYru82fbXXvHJxZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLGl/oRR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30566C4CED7;
+	Thu, 12 Dec 2024 15:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020725;
-	bh=TZA+j1P7V31/rCMU6RNCJTqKSqhWSoK6Fzxnp9vGIV4=;
+	s=korg; t=1734016875;
+	bh=WgjfDnQoYsdrJ6B/NHP6Wngup37s6D+UPJ9MKQd+Tyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/PfkS9Km+PpzcCzyrwjlvTbIGXwszT7RasLLDp20305sm/UsEtpsB5nIJ/v/aco7
-	 yxA3FE+qjNaXjJZ52Kbe/KyoK0PWaOFTcRRmc+kn3+XZ8QGvy9J3IQQOp13vpgnKq3
-	 yi86EVRbM4OuZFzBpFLxxsRuW380ExL7/kjooQGs=
+	b=iLGl/oRRtFVO3zbk5+MO6Rwgzyb+6vROgQnTaLJ4Y/qwQ559+j5iQ24Pd4SWN0rJ6
+	 e5gkNs+XuIsAM8powe2YH33/qLkSFxkFYVTWyvrbIyLes68DnJ399JvyLq1OX8H4m0
+	 UtkIlBGNuMz/0fnFFsmU6abM/G7Jkca++qXqpA+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Fasnacht <laurent.fasnacht@proton.ch>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com,
+	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 543/772] netfilter: nft_set_hash: skip duplicated elements pending gc run
-Date: Thu, 12 Dec 2024 15:58:08 +0100
-Message-ID: <20241212144412.402009586@linuxfoundation.org>
+Subject: [PATCH 6.12 320/466] jfs: fix shift-out-of-bounds in dbSplit
+Date: Thu, 12 Dec 2024 15:58:09 +0100
+Message-ID: <20241212144319.438842314@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-[ Upstream commit 7ffc7481153bbabf3332c6a19b289730c7e1edf5 ]
+[ Upstream commit a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ]
 
-rhashtable does not provide stable walk, duplicated elements are
-possible in case of resizing. I considered that checking for errors when
-calling rhashtable_walk_next() was sufficient to detect the resizing.
-However, rhashtable_walk_next() returns -EAGAIN only at the end of the
-iteration, which is too late, because a gc work containing duplicated
-elements could have been already scheduled for removal to the worker.
+When dmt_budmin is less than zero, it causes errors
+in the later stages. Added a check to return an error beforehand
+in dbAllocCtl itself.
 
-Add a u32 gc worker sequence number per set, bump it on every workqueue
-run. Annotate gc worker sequence number on the expired element. Use it
-to skip those already seen in this gc workqueue run.
-
-Note that this new field is never reset in case gc transaction fails, so
-next gc worker run on the expired element overrides it. Wraparound of gc
-worker sequence number should not be an issue with stale gc worker
-sequence number in the element, that would just postpone the element
-removal in one gc run.
-
-Note that it is not possible to use flags to annotate that element is
-pending gc run to detect duplicates, given that gc transaction can be
-invalidated in case of update from the control plane, therefore, not
-allowing to clear such flag.
-
-On x86_64, pahole reports no changes in the size of nft_rhash_elem.
-
-Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
-Reported-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
-Tested-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reported-by: syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b5ca8a249162c4b9a7d0
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_hash.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ fs/jfs/jfs_dmap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
-index 1fd3b413350dc..5c4209b49bda7 100644
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -24,10 +24,12 @@
- struct nft_rhash {
- 	struct rhashtable		ht;
- 	struct delayed_work		gc_work;
-+	u32				wq_gc_seq;
- };
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 3ab410059dc20..39957361a7eed 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1820,6 +1820,9 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
+ 			return -EIO;
+ 		dp = (struct dmap *) mp->data;
  
- struct nft_rhash_elem {
- 	struct rhash_head		node;
-+	u32				wq_gc_seq;
- 	struct nft_set_ext		ext;
- };
- 
-@@ -339,6 +341,10 @@ static void nft_rhash_gc(struct work_struct *work)
- 	if (!gc)
- 		goto done;
- 
-+	/* Elements never collected use a zero gc worker sequence number. */
-+	if (unlikely(++priv->wq_gc_seq == 0))
-+		priv->wq_gc_seq++;
++		if (dp->tree.budmin < 0)
++			return -EIO;
 +
- 	rhashtable_walk_enter(&priv->ht, &hti);
- 	rhashtable_walk_start(&hti);
- 
-@@ -356,6 +362,14 @@ static void nft_rhash_gc(struct work_struct *work)
- 			goto try_later;
- 		}
- 
-+		/* rhashtable walk is unstable, already seen in this gc run?
-+		 * Then, skip this element. In case of (unlikely) sequence
-+		 * wraparound and stale element wq_gc_seq, next gc run will
-+		 * just find this expired element.
-+		 */
-+		if (he->wq_gc_seq == priv->wq_gc_seq)
-+			continue;
-+
- 		if (nft_set_elem_is_dead(&he->ext))
- 			goto dead_elem;
- 
-@@ -372,6 +386,8 @@ static void nft_rhash_gc(struct work_struct *work)
- 		if (!gc)
- 			goto try_later;
- 
-+		/* annotate gc sequence for this attempt. */
-+		he->wq_gc_seq = priv->wq_gc_seq;
- 		nft_trans_gc_elem_add(gc, he);
- 	}
- 
+ 		/* try to allocate the blocks.
+ 		 */
+ 		rc = dbAllocDmapLev(bmp, dp, (int) nblocks, l2nb, results);
 -- 
 2.43.0
 
