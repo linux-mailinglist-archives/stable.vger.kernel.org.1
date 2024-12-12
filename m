@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68B19EF762
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C6B9EF86C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3071899FA0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEA5C294EEA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEC7217F40;
-	Thu, 12 Dec 2024 17:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F7A216E2D;
+	Thu, 12 Dec 2024 17:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6KLUv5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apg5woRz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C2C13CA81;
-	Thu, 12 Dec 2024 17:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D80B211493;
+	Thu, 12 Dec 2024 17:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024484; cv=none; b=jyguBSO20hcwnN/Y5zrBtw1ygkwapNaiRbIflPP+BRHhsCw1/jsk4AEKBpGL79WI6YAycpnzfDgsSapzRLXa2+Cf45T/Wl5pAxfwnJRqPTAPVVQN5UxYa/Y7ZtgB43d5BwkWipcFo5egJ3pbTIYsh6pCFxdvjjaMV6+bXUH9xZo=
+	t=1734025323; cv=none; b=mh9UFp0fzfcRuAfTYyZa18je1zC1mZw6XuDRcUKt/umyKsKsA3bPx5k9oJyhr5yTdb2i6AFRV4a9sG0/HrYbwn1KURxz9Kh9oewNkaX7oPT7QPVcVhhDBop7hd8RBVVk0aCDhTl7b3VywBw1pSDlW8Cpskjm/o0eBsX/FDjFWNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024484; c=relaxed/simple;
-	bh=AsezJIzwEhWY2yT6/tkq+fMNRwaKW6XCg3pLkMmmmvM=;
+	s=arc-20240116; t=1734025323; c=relaxed/simple;
+	bh=UZ3xRCKgv45dFDpIuWf9QEiRzmKNB2bin/Ks6poTlz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9TwEH5kG8JHYIC1gVzWgUeLpOYttGipUN2BOqJN3znfmKHQoFLmtkF2VIFR+Gy/yyqI51hlCFC2IbIH2iSHQBXKQAXMMuyXls7JVR7t7Hm4Q2bqys9OU810De8y3iIF5xm9cA1wT3k4g2CO7iEoj5CV9suTiMC5l3WW3LlN780=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6KLUv5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED526C4CECE;
-	Thu, 12 Dec 2024 17:28:03 +0000 (UTC)
+	 MIME-Version; b=b9jHfSHNINpOBtN+GWzdeErS8D0uXt8nwqb5L7DMhkNTJiikZqgMMj+lhHtUFrF52OwV5o3re2Y5wkxC7NLDT5n/S0azqYBY35LNrnyvluJZgStacjhIFQGeA7kvKJRub+VhgnA7ZNCss2d/WiQqw9OJ9ziGjJa8s29v/kDRaXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apg5woRz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C817CC4CECE;
+	Thu, 12 Dec 2024 17:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024484;
-	bh=AsezJIzwEhWY2yT6/tkq+fMNRwaKW6XCg3pLkMmmmvM=;
+	s=korg; t=1734025323;
+	bh=UZ3xRCKgv45dFDpIuWf9QEiRzmKNB2bin/Ks6poTlz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H6KLUv5oGLn4C+X7HuN8u1qCKotZogEs+zIphddY2H6Rx87QgiK4gCSE8co+cIq8B
-	 8XHVEVBPnKB9SmrOGwd6ciHIGmi06fw35YnGdghCgLm+9VJ/4o+iukNjO6VZ9l8EPZ
-	 aaVTLZUUGjl8YSrlL3XEsxKTjNnn/4AscBNoZHh4=
+	b=apg5woRzeZ/kAoc28egtKU+6TyPYV1caHXH1rvDix5JhIGofG9cJFcm60THM/ljU1
+	 1kSMshTX5ejje+Wdc/UYljjPf6F0uluQM2s3I+3FBbn1FXvPsgFN2vd6wT9dPxAaHp
+	 5zDR54Vzcb0UY6yu2vv07fnnuBzkPZ/ObhdswNsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 310/459] sh: intc: Fix use-after-free bug in register_intc_controller()
-Date: Thu, 12 Dec 2024 16:00:48 +0100
-Message-ID: <20241212144305.891737130@linuxfoundation.org>
+Subject: [PATCH 5.4 131/321] net: stmmac: dwmac-socfpga: Set RX watchdog interrupt as broken
+Date: Thu, 12 Dec 2024 16:00:49 +0100
+Message-ID: <20241212144235.153422579@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit 63e72e551942642c48456a4134975136cdcb9b3c ]
+[ Upstream commit 407618d66dba55e7db1278872e8be106808bbe91 ]
 
-In the error handling for this function, d is freed without ever
-removing it from intc_list which would lead to a use after free.
-To fix this, let's only add it to the list after everything has
-succeeded.
+On DWMAC3 and later, there's a RX Watchdog interrupt that's used for
+interrupt coalescing. It's known to be buggy on some platforms, and
+dwmac-socfpga appears to be one of them. Changing the interrupt
+coalescing from ethtool doesn't appear to have any effect here.
 
-Fixes: 2dcec7a988a1 ("sh: intc: set_irq_wake() support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Without disabling RIWT (Received Interrupt Watchdog Timer, I
+believe...), we observe latencies while receiving traffic that amount to
+around ~0.4ms. This was discovered with NTP but can be easily reproduced
+with a simple ping. Without this patch :
+
+64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.657 ms
+
+With this patch :
+
+64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.254 ms
+
+Fixes: 801d233b7302 ("net: stmmac: Add SOCFPGA glue driver")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20241122141256.764578-1-maxime.chevallier@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/sh/intc/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
-index f8e070d67fa32..51586c5e993bb 100644
---- a/drivers/sh/intc/core.c
-+++ b/drivers/sh/intc/core.c
-@@ -194,7 +194,6 @@ int __init register_intc_controller(struct intc_desc *desc)
- 		goto err0;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+index 934c34e98d55f..0333c97c2b995 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+@@ -426,6 +426,8 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
+ 	plat_dat->bsp_priv = dwmac;
+ 	plat_dat->fix_mac_speed = socfpga_dwmac_fix_mac_speed;
  
- 	INIT_LIST_HEAD(&d->list);
--	list_add_tail(&d->list, &intc_list);
- 
- 	raw_spin_lock_init(&d->lock);
- 	INIT_RADIX_TREE(&d->tree, GFP_ATOMIC);
-@@ -380,6 +379,7 @@ int __init register_intc_controller(struct intc_desc *desc)
- 
- 	d->skip_suspend = desc->skip_syscore_suspend;
- 
-+	list_add_tail(&d->list, &intc_list);
- 	nr_intc_controllers++;
- 
- 	return 0;
++	plat_dat->riwt_off = 1;
++
+ 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
+ 	if (ret)
+ 		goto err_remove_config_dt;
 -- 
 2.43.0
 
