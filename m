@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5C09EF633
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA0C09EF635
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2BA3282945
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21607179E1E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DA92165F0;
-	Thu, 12 Dec 2024 17:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481712210F1;
+	Thu, 12 Dec 2024 16:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rc0xp1mS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0KsoJAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7337D13CA93;
-	Thu, 12 Dec 2024 17:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FF721660B;
+	Thu, 12 Dec 2024 16:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024199; cv=none; b=LiU0h0fPtP0aVFE1q6tUHITi0q6DQ+rlMb4GGDBky7nBXI52+m4kcsnaPTbLQepJxImoI49TcKxCqDsGO90da8cYJPT2+SoObyuvbYJnzr8Vl3RYnIpj7kEhk0D80t4vH4Z2ynX+d0dEz448LfKZrr8AxiYD5sau+HEq1hJX+cM=
+	t=1734022773; cv=none; b=ZsmmpIp5MjDpPX3TYDsUj1bsFUI+/w7JdTmDNrn6JBJf1aHY7plpdKrzStX9jn3Y+sDi2hcTdlDGBInRWRPviWqWPPbR5yRcpxM4U+C036CUhnIBzFII/Td+A7dl5nbnIJ5p1tF8CxE+cOBzl42N7ULtGFZUl+HR31znaqEKvCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024199; c=relaxed/simple;
-	bh=7ij68q00kIv8QSY6JtPJY85yWzq96oTmkLW+6iCNEbc=;
+	s=arc-20240116; t=1734022773; c=relaxed/simple;
+	bh=t8n1ElJMAIs8dVZOaUQ7AJeFdOs/sCjli2b9bnOj5gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYJ+vHZDC03RPwgaOWv+HBtA2eZ7nmpXTScUBrV1N7VJC2BZ9fGTEsMgHcgtUCQRsZtehRnIg7pTrY+4an+mkYfImZyP/cN8liSwOAqUFgHzUbH1p6d4fOJietKCSJAIFNtyZRpMvhfAoxZkfpAgGR5rYSNk3s8ZuBeK/UKhyDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rc0xp1mS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01EAC4CEDE;
-	Thu, 12 Dec 2024 17:23:18 +0000 (UTC)
+	 MIME-Version; b=l9iknU1zA2iX6bl6KLHhEc/H9YtLgVrEZWqafnpCnLQDs/KslQ3eq4GN+JulbRpH+Wkprs3hzq72umkgRjBnKDH8gDnwjkpKJ1iycOlU0PnGDlyMzwCrsnjnqrz24RY0yi3Re4RB3gIAFZ20NbS4sxlR3WF4CBbq5EqLQ25Kom8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0KsoJAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAF6C4CECE;
+	Thu, 12 Dec 2024 16:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024199;
-	bh=7ij68q00kIv8QSY6JtPJY85yWzq96oTmkLW+6iCNEbc=;
+	s=korg; t=1734022772;
+	bh=t8n1ElJMAIs8dVZOaUQ7AJeFdOs/sCjli2b9bnOj5gA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rc0xp1mSOrO5DZIiLCC/9KhW/a+RJlUMvKMNeH/RC7vA5m3kaKsPXhxoB89vOfhXf
-	 RqNX2NOKgs1oqfr6RMye0W/mzgzfhU5QYaMN3RX3rRfnN6rJ87KucEtlgX727EP6ih
-	 N/OF4/rt34rFOu24Ssi2N4EtXeBxb8iZTKSUpKIo=
+	b=p0KsoJAxtKEKps3NSLk4NtSsXo3uPD4rYeWf3OgVyTMnSMd0ZBbN8ubI0q9aRv4zF
+	 vGWaKOiQtGG7avyFAVH68bENlY8oQLa8RxY3RxNvB9k1eR+2J76wwHL2p9TP3HJ8SI
+	 njWOJADwmf6MzTUrUpg+8SKw2shAOrlCEKSWzGkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 189/459] clk: clk-axi-clkgen: make sure to enable the AXI bus clock
-Date: Thu, 12 Dec 2024 15:58:47 +0100
-Message-ID: <20241212144301.024238973@linuxfoundation.org>
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 333/565] um: net: Do not use drvdata in release
+Date: Thu, 12 Dec 2024 15:58:48 +0100
+Message-ID: <20241212144324.757846197@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit c64ef7e4851d1a9abbb7f7833e4936973ac5ba79 ]
+commit d1db692a9be3b4bd3473b64fcae996afaffe8438 upstream.
 
-In order to access the registers of the HW, we need to make sure that
-the AXI bus clock is enabled. Hence let's increase the number of clocks
-by one.
+The drvdata is not available in release. Let's just use container_of()
+to get the uml_net instance. Otherwise, removing a network device will
+result in a crash:
 
-In order to keep backward compatibility and make sure old DTs still work
-we check if clock-names is available or not. If it is, then we can
-disambiguate between really having the AXI clock or a parent clock and
-so we can enable the bus clock. If not, we fallback to what was done
-before and don't explicitly enable the AXI bus clock.
+RIP: 0033:net_device_release+0x10/0x6f
+RSP: 00000000e20c7c40  EFLAGS: 00010206
+RAX: 000000006002e4e7 RBX: 00000000600f1baf RCX: 00000000624074e0
+RDX: 0000000062778000 RSI: 0000000060551c80 RDI: 00000000627af028
+RBP: 00000000e20c7c50 R08: 00000000603ad594 R09: 00000000e20c7b70
+R10: 000000000000135a R11: 00000000603ad422 R12: 0000000000000000
+R13: 0000000062c7af00 R14: 0000000062406d60 R15: 00000000627700b6
+Kernel panic - not syncing: Segfault with no mm
+CPU: 0 UID: 0 PID: 29 Comm: kworker/0:2 Not tainted 6.12.0-rc6-g59b723cd2adb #1
+Workqueue: events mc_work_proc
+Stack:
+ 627af028 62c7af00 e20c7c80 60276fcd
+ 62778000 603f5820 627af028 00000000
+ e20c7cb0 603a2bcd 627af000 62770010
+Call Trace:
+ [<60276fcd>] device_release+0x70/0xba
+ [<603a2bcd>] kobject_put+0xba/0xe7
+ [<60277265>] put_device+0x19/0x1c
+ [<60281266>] platform_device_put+0x26/0x29
+ [<60281e5f>] platform_device_unregister+0x2c/0x2e
+ [<6002ec9c>] net_remove+0x63/0x69
+ [<60031316>] ? mconsole_reply+0x0/0x50
+ [<600310c8>] mconsole_remove+0x160/0x1cc
+ [<60087d40>] ? __remove_hrtimer+0x38/0x74
+ [<60087ff8>] ? hrtimer_try_to_cancel+0x8c/0x98
+ [<6006b3cf>] ? dl_server_stop+0x3f/0x48
+ [<6006b390>] ? dl_server_stop+0x0/0x48
+ [<600672e8>] ? dequeue_entities+0x327/0x390
+ [<60038fa6>] ? um_set_signals+0x0/0x43
+ [<6003070c>] mc_work_proc+0x77/0x91
+ [<60057664>] process_scheduled_works+0x1b3/0x2dd
+ [<60055f32>] ? assign_work+0x0/0x58
+ [<60057f0a>] worker_thread+0x1e9/0x293
+ [<6005406f>] ? set_pf_worker+0x0/0x64
+ [<6005d65d>] ? arch_local_irq_save+0x0/0x2d
+ [<6005d748>] ? kthread_exit+0x0/0x3a
+ [<60057d21>] ? worker_thread+0x0/0x293
+ [<6005dbf1>] kthread+0x126/0x12b
+ [<600219c5>] new_thread_handler+0x85/0xb6
 
-Note that if clock-names is given, the axi clock must be the last one in
-the phandle array (also enforced in the DT bindings) so that we can reuse
-as much code as possible.
-
-Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-2-bc5e0733ad76@analog.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://patch.msgid.link/20241104163203.435515-4-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk-axi-clkgen.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ arch/um/drivers/net_kern.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
-index 1aa3d9fd8d0ac..3e2cf1fad262e 100644
---- a/drivers/clk/clk-axi-clkgen.c
-+++ b/drivers/clk/clk-axi-clkgen.c
-@@ -7,6 +7,7 @@
-  */
+--- a/arch/um/drivers/net_kern.c
++++ b/arch/um/drivers/net_kern.c
+@@ -335,7 +335,7 @@ static struct platform_driver uml_net_dr
  
- #include <linux/platform_device.h>
-+#include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/slab.h>
- #include <linux/io.h>
-@@ -497,6 +498,7 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 	struct clk_init_data init;
- 	const char *parent_names[2];
- 	const char *clk_name;
-+	struct clk *axi_clk;
- 	unsigned int i;
- 	int ret;
+ static void net_device_release(struct device *dev)
+ {
+-	struct uml_net *device = dev_get_drvdata(dev);
++	struct uml_net *device = container_of(dev, struct uml_net, pdev.dev);
+ 	struct net_device *netdev = device->dev;
+ 	struct uml_net_private *lp = netdev_priv(netdev);
  
-@@ -516,8 +518,24 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 		return PTR_ERR(axi_clkgen->base);
- 
- 	init.num_parents = of_clk_get_parent_count(pdev->dev.of_node);
--	if (init.num_parents < 1 || init.num_parents > 2)
--		return -EINVAL;
-+
-+	axi_clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
-+	if (!IS_ERR(axi_clk)) {
-+		if (init.num_parents < 2 || init.num_parents > 3)
-+			return -EINVAL;
-+
-+		init.num_parents -= 1;
-+	} else {
-+		/*
-+		 * Legacy... So that old DTs which do not have clock-names still
-+		 * work. In this case we don't explicitly enable the AXI bus
-+		 * clock.
-+		 */
-+		if (PTR_ERR(axi_clk) != -ENOENT)
-+			return PTR_ERR(axi_clk);
-+		if (init.num_parents < 1 || init.num_parents > 2)
-+			return -EINVAL;
-+	}
- 
- 	for (i = 0; i < init.num_parents; i++) {
- 		parent_names[i] = of_clk_get_parent_name(pdev->dev.of_node, i);
--- 
-2.43.0
-
 
 
 
