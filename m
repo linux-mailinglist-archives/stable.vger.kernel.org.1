@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5689EF0AD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D4E9EF3BF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6289176951
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B77D917C9CC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66412253EE;
-	Thu, 12 Dec 2024 16:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AEF223E98;
+	Thu, 12 Dec 2024 16:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhnY4063"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP0SRrMO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49322210E1;
-	Thu, 12 Dec 2024 16:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A54222D68;
+	Thu, 12 Dec 2024 16:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019740; cv=none; b=d43WocXLEnbrU7LKZb54R3wCdzmJ9y55BboxhmF+QhOntN+K5Qm2W/LQIuPIVGyrpDxPT+QDPbXuuncOESgaG8m9ija3DdXQSvFA18lqRd5IUcR9gh1Em6HcEGEQbrhNRs337P3LTm7JySuqlcOOi78TIp+5ld1jX8BHLHv2JiA=
+	t=1734021662; cv=none; b=t+sRClixw8miwPXseAih9aCdbdexgDdxv8LU2WD+9kVSUjUoIoj/PVY4slgG2RgD3avL6NWrKrcuIoc/Cx/NhswnraCBPSzmImMU/M3IN+jHGcDK6g7Tcx2yWuVtsXeQ9B92mUh6u+6bOz7fPVKgx9CGKvKtRaeg8hO0gQFDd4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019740; c=relaxed/simple;
-	bh=G0bD15sS6rA666Ely72FNLAzPXdxyBzyYJddhtRd+5I=;
+	s=arc-20240116; t=1734021662; c=relaxed/simple;
+	bh=W3hDoAZJG2Kn5vgAXqxnaMnAEyYWe8sNVwU0D44uU14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObD55TM0/STFLGOhx/eRGXA3vwhkRx8iu47cZeho6FBWCvfLn2HFLHFBHh7lHeGMCJy0p/FzWlNwd6r5fPgwElkNeDtTsQjhZzhHnibQnaWAMk5cGvv4vjG712gCmmeEgrLnQfxpXinzRpTZsEeukqL4d48vlMYWYCiwQ5iGKAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YhnY4063; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CF0C4CECE;
-	Thu, 12 Dec 2024 16:08:59 +0000 (UTC)
+	 MIME-Version; b=kLlV5uyfGJ+MLLlmwmm3wuMYdN/XgwfVjXoSuDEXNR5dyhIYog8D8flLP68Q5yxxDggpfkMk7j/dfxqC8pwVxHvtuxasoVyPSMT/8d7oJwtg/eFczk21FJSDjoq+GBArbN9vu4vJmxNYDzbi3z3KM793RSPmfy6W2Y3Szhq162I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP0SRrMO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C5BC4CECE;
+	Thu, 12 Dec 2024 16:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019740;
-	bh=G0bD15sS6rA666Ely72FNLAzPXdxyBzyYJddhtRd+5I=;
+	s=korg; t=1734021662;
+	bh=W3hDoAZJG2Kn5vgAXqxnaMnAEyYWe8sNVwU0D44uU14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhnY4063L+aM/d+xw8iUrd86JTGE3ko+dBQiXmcyPC4mJr17wFqN3VIZn2A79yOJz
-	 e85XAS1v18dngPXPbqEWevO7Vilg+8smebGv8bKyeUjfs891Zy0LqqIclDmygvgB1b
-	 r+y+We7+fr+79JR7f3Iqg6WbiAS2CxHSWOf0ZgFA=
+	b=nP0SRrMOkIJzNmD8PC1LNCQ7HWzapRm0DTuYCzDm7P20gxl07cXngvydtHE09kK8P
+	 tLgm9W32awqlt+gq4Qw6GpPkDUwyRD3svEKK2+85RIj9TIWZRPMzPuyNFhof/gLBxj
+	 Zko0HL7Q+iF6PR+PrA1Re2XA6O97o5XSo0u5E8HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 258/772] pinctrl: k210: Undef K210_PC_DEFAULT
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.15 008/565] media: platform: allegro-dvt: Fix possible memory leak in allocate_buffers_internal()
 Date: Thu, 12 Dec 2024 15:53:23 +0100
-Message-ID: <20241212144400.577404668@linuxfoundation.org>
+Message-ID: <20241212144311.775086872@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 7e86490c5dee5c41a55f32d0dc34269e200e6909 ]
+commit 0f514068fbc5d4d189c817adc7c4e32cffdc2e47 upstream.
 
-When the temporary macro K210_PC_DEFAULT is not needed anymore,
-use its name in the #undef statement instead of
-the incorrect "DEFAULT" name.
+The buffer in the loop should be released under the exception path,
+otherwise there may be a memory leak here.
 
-Fixes: d4c34d09ab03 ("pinctrl: Add RISC-V Canaan Kendryte K210 FPIOA driver")
-Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/20241113071201.5440-1-zhangjiao2@cmss.chinamobile.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To mitigate this, free the buffer when allegro_alloc_buffer fails.
+
+Fixes: f20387dfd065 ("media: allegro: add Allegro DVT video IP core driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-k210.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/allegro-dvt/allegro-core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-k210.c b/drivers/pinctrl/pinctrl-k210.c
-index ad4db99094a79..e75c96c6b3daf 100644
---- a/drivers/pinctrl/pinctrl-k210.c
-+++ b/drivers/pinctrl/pinctrl-k210.c
-@@ -181,7 +181,7 @@ static const u32 k210_pinconf_mode_id_to_mode[] = {
- 	[K210_PC_DEFAULT_INT13] = K210_PC_MODE_IN | K210_PC_PU,
- };
+--- a/drivers/media/platform/allegro-dvt/allegro-core.c
++++ b/drivers/media/platform/allegro-dvt/allegro-core.c
+@@ -1431,8 +1431,10 @@ static int allocate_buffers_internal(str
+ 		INIT_LIST_HEAD(&buffer->head);
  
--#undef DEFAULT
-+#undef K210_PC_DEFAULT
+ 		err = allegro_alloc_buffer(dev, buffer, size);
+-		if (err)
++		if (err) {
++			kfree(buffer);
+ 			goto err;
++		}
+ 		list_add(&buffer->head, list);
+ 	}
  
- /*
-  * Pin functions configuration information.
--- 
-2.43.0
-
 
 
 
