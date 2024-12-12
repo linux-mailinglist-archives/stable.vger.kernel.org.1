@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3476D9EF7DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441A89EF446
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F21E189C862
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D066E28F927
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA370217F40;
-	Thu, 12 Dec 2024 17:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6855C223C43;
+	Thu, 12 Dec 2024 17:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lorZ29PP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8K6no64"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960E5215764;
-	Thu, 12 Dec 2024 17:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244DE21576E;
+	Thu, 12 Dec 2024 17:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024505; cv=none; b=lxhk4a1nxPdvzlG8/KiyoaMrO16Tjr250TKd53xgLws9v76lnCAQtowXK0lxOESn10VrXRT7U11tkQjtmuJopCBRpsaUHvPukwT7sUIi1/EA9QZ50K633fBY8uqYyuCfRkmqMYRjTyA5Qf+/VM76YT+WIofZWHPOUUYVAlQgXZ0=
+	t=1734023121; cv=none; b=Md/+rYBOzqjBLhdg9Y/T8MYFi5P0gQ1CZkZeKoYodIw2DS/XQ6GU+oE2dzPK0eF+geKfvuQkzaOLEG16HQNtaBcV4s9O0yBcXF/C37FqiWZJ+YdmK9MrCFTxZgWVDgcBaMefnJOpPJ7gSz7QtxI2wfgC78aLFnS5wYSwXR2RIh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024505; c=relaxed/simple;
-	bh=P15TW9F4MboHJKCX2mWs0AukkMqV88d/Q0OHfdN/9DA=;
+	s=arc-20240116; t=1734023121; c=relaxed/simple;
+	bh=yZgl0xnJefUlaN8Eu7aMYquTjTqWtwBoFi11iV39o38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGVEKRqiee4mskq0MyF6dneFJavf9fTSwNrKUGj0r74YJvbgSl4XjulkxsEwI0lWWK9IYpGuSACOPqqjuMPSHrXeFNbFv3B7+kxyj1uWLDjnVWpp4+X6wPf9RxzL2uhfLQSOssngXIXNzSy5ww8EAY+x20utoOK7f67iL+o2dN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lorZ29PP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10577C4CED0;
-	Thu, 12 Dec 2024 17:28:24 +0000 (UTC)
+	 MIME-Version; b=dP52eQb9egZY7AN8f+ZX9CQvldT9HBkOjHOXPCIRBjKcNDjRDTYY86Cq/5I+4imLU9LG3SnohhG0B9N3vJlCjBiUSK6gwfWSI4xHov0Dp/tyAlZfRBok19RJm5Qu9e6Qckw3+B547HEcOirMtYCMmftNgQRAXPiU1dfeACxA2jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8K6no64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3B0C4CECE;
+	Thu, 12 Dec 2024 17:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024505;
-	bh=P15TW9F4MboHJKCX2mWs0AukkMqV88d/Q0OHfdN/9DA=;
+	s=korg; t=1734023121;
+	bh=yZgl0xnJefUlaN8Eu7aMYquTjTqWtwBoFi11iV39o38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lorZ29PPTO2CCuH1jrIhJt2bSLONwjlEav57dQmbHWeG0t/9C91uTnVSDjJqRjDyI
-	 2/EVxjMbqiAIWHBLPCynyxVGSgehqzhY9pp+jzRDGJwGbMEB7tQDpHLGcPvGQdlMfk
-	 aCrXPQOz/hCH9/J4h1uiUUjm2kifVcNF/CS7owTI=
+	b=n8K6no640pm9d5HD4NNdng50y4yxAeV7ZEP+dOTdm3WuL9ry2jP+TEL0F9qoXj43P
+	 lfM8y1JKErljNd35jClwDsu6p91FXwy/niawBpuyRs0nouLW0/x402Mn6B4f+GL2Bo
+	 zZ10zBOKX3b9mVwHeebPvR/tB+mltsSMamixNXnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kartik Rajput <kkartik@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 288/459] um: Fix potential integer overflow during physmem setup
+Subject: [PATCH 5.15 431/565] serial: amba-pl011: Fix RX stall when DMA is used
 Date: Thu, 12 Dec 2024 16:00:26 +0100
-Message-ID: <20241212144305.010280215@linuxfoundation.org>
+Message-ID: <20241212144328.723841879@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Kartik Rajput <kkartik@nvidia.com>
 
-[ Upstream commit a98b7761f697e590ed5d610d87fa12be66f23419 ]
+[ Upstream commit 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf ]
 
-This issue happens when the real map size is greater than LONG_MAX,
-which can be easily triggered on UML/i386.
+Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
+also disables the RX DMA by clearing the RXDMAE bit of the DMACR
+register. However, to properly unthrottle RX when DMA is used, the
+function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
+the DMACR register, which it currently lacks. This causes RX to stall
+after the throttle API is called.
 
-Fixes: fe205bdd1321 ("um: Print minimum physical memory requirement")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20240916045950.508910-3-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
+used.
+
+Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/physmem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/amba-pl011.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/um/kernel/physmem.c b/arch/um/kernel/physmem.c
-index e7c7b53a1435b..87b51089b0616 100644
---- a/arch/um/kernel/physmem.c
-+++ b/arch/um/kernel/physmem.c
-@@ -80,10 +80,10 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 			  unsigned long len, unsigned long long highmem)
- {
- 	unsigned long reserve = reserve_end - start;
--	long map_size = len - reserve;
-+	unsigned long map_size = len - reserve;
- 	int err;
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index 16fc159bdf3b9..8ae8fb8132d5b 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -1842,6 +1842,11 @@ static void pl011_unthrottle_rx(struct uart_port *port)
  
--	if(map_size <= 0) {
-+	if (len <= reserve) {
- 		os_warn("Too few physical memory! Needed=%lu, given=%lu\n",
- 			reserve, len);
- 		exit(1);
-@@ -94,7 +94,7 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 	err = os_map_memory((void *) reserve_end, physmem_fd, reserve,
- 			    map_size, 1, 1, 1);
- 	if (err < 0) {
--		os_warn("setup_physmem - mapping %ld bytes of memory at 0x%p "
-+		os_warn("setup_physmem - mapping %lu bytes of memory at 0x%p "
- 			"failed - errno = %d\n", map_size,
- 			(void *) reserve_end, err);
- 		exit(1);
+ 	pl011_write(uap->im, uap, REG_IMSC);
+ 
++	if (uap->using_rx_dma) {
++		uap->dmacr |= UART011_RXDMAE;
++		pl011_write(uap->dmacr, uap, REG_DMACR);
++	}
++
+ 	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
 -- 
 2.43.0
 
