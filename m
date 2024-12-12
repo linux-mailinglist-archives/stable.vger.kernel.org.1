@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-101648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A52A9EED70
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6534A9EF3F2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 122F9288824
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9A2E288FB9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B19223315;
-	Thu, 12 Dec 2024 15:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFFB22969A;
+	Thu, 12 Dec 2024 17:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oshIAd9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kW657lVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C981521E0AE;
-	Thu, 12 Dec 2024 15:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598A7215782;
+	Thu, 12 Dec 2024 17:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018296; cv=none; b=iOy8KUAl9oNFHgUKg0W9CsgN/KQUSWWF1P6wvBrX/wQLyv1Ds8LDrNmXgJCRp5vX9AMsvYzSy5g63LfLz4CSO48XiozaPWfGuI0ueLX0QckKoU57agDBMMT3QiIRV+p/yncR5vbuB6sIunZ8B7/3Kv29asTTKOtyjhBKPy15524=
+	t=1734022874; cv=none; b=MWJ6yJNoZFMhN/3SfMayivMLw16srfVOaaeYSNmhXoeL5PlC0Uo4o6kV5077/UoA4laVWie6BVKLOEhdVGvbC7tgZwSQe29YB85lfDcS0Vk4FtcoyQeqPFSeEmqN4GdyU7e/fyoCKZyj3z1a3elv01y4WZ2pq7Alx3kVCmenQns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018296; c=relaxed/simple;
-	bh=khhYCPcN5U1AaoxDTy7YZEXS0Ew/RHr5c3WPlwOS5Ws=;
+	s=arc-20240116; t=1734022874; c=relaxed/simple;
+	bh=WYm02KkL2MIB0lzRCizbXr751wzTZN3CmPcyHDw7Cm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iiBrupzEJ/SlryWL6ZISlDw5rCW4akK2iyThrIEOBNMGp4dQWows4pPkAriXHOu61axlFdqffocbCyXSuFyQXs302pVu5PEPkAxsxmQ/XwDx7Od5Ov1voFepeUPljOgAOw1d3iu02MIDPrhOGKfe1kHXp/5vkv/UP+WKKIO/UsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oshIAd9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4ABCC4CECE;
-	Thu, 12 Dec 2024 15:44:55 +0000 (UTC)
+	 MIME-Version; b=EcURQj/ED4otEizRPeh07v8BnjYcczFJg9oXEeNcBiydEuVCmYUd2iaNuiDwFXDIxa/bWafd7gEBbP8qEVZFefD86yoiZ7XrVEEYLvcjjqiRv0kwFZU7SMmN2WNDdhI1Z2vG4UtV2fhFrpXxC0HVmC3PEBpVGk/37CO4fn4qqtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kW657lVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F1FC4CECE;
+	Thu, 12 Dec 2024 17:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018296;
-	bh=khhYCPcN5U1AaoxDTy7YZEXS0Ew/RHr5c3WPlwOS5Ws=;
+	s=korg; t=1734022874;
+	bh=WYm02KkL2MIB0lzRCizbXr751wzTZN3CmPcyHDw7Cm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oshIAd9Hv3V4OLd2Ch/HrKd5w/kuPVERge/elUxd9ORN46keg1RERQESHWcxfYmYV
-	 tUVgExdBN6CQRwhLYyGAYoVxLbbw3rKSxbvagvsNHWAqjtLWhGKX4UbPWdoeAgM9D5
-	 gKWihbm7slIcmF7VAOPLImID80UO2+QsdI5hBUtw=
+	b=kW657lVxplspRJVUAyg5chZpWthxGuR4/TeSUW0datjD3YNtZkUwBO1MU6JyFJ/r9
+	 BjxEu+bobsFWNm1XVP0yzRyWgjPagQwl41H0XQzO6Gl8Ia2H5YEilfylMXUsUyzyji
+	 21afLGyYxOsRzlzLnsTN2CewAfsLyMI5/pA/Znbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 226/356] Bluetooth: RFCOMM: avoid leaving dangling sk pointer in rfcomm_sock_alloc()
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 350/565] lib: string_helpers: silence snprintf() output truncation warning
 Date: Thu, 12 Dec 2024 15:59:05 +0100
-Message-ID: <20241212144253.548346566@linuxfoundation.org>
+Message-ID: <20241212144325.433349110@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 3945c799f12b8d1f49a3b48369ca494d981ac465 ]
+commit a508ef4b1dcc82227edc594ffae583874dd425d7 upstream.
 
-bt_sock_alloc() attaches allocated sk object to the provided sock object.
-If rfcomm_dlc_alloc() fails, we release the sk object, but leave the
-dangling pointer in the sock object, which may cause use-after-free.
+The output of ".%03u" with the unsigned int in range [0, 4294966295] may
+get truncated if the target buffer is not 12 bytes. This can't really
+happen here as the 'remainder' variable cannot exceed 999 but the
+compiler doesn't know it. To make it happy just increase the buffer to
+where the warning goes away.
 
-Fix this by swapping calls to bt_sock_alloc() and rfcomm_dlc_alloc().
-
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-4-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3c9f3681d0b4 ("[SCSI] lib: add generic helper to print sizes rounded to the correct SI range")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/20241101205453.9353-1-brgl@bgdev.pl
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/rfcomm/sock.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ lib/string_helpers.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index 4fae82fedccaf..1cf6543bdec55 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -274,13 +274,13 @@ static struct sock *rfcomm_sock_alloc(struct net *net, struct socket *sock,
- 	struct rfcomm_dlc *d;
- 	struct sock *sk;
+--- a/lib/string_helpers.c
++++ b/lib/string_helpers.c
+@@ -51,7 +51,7 @@ void string_get_size(u64 size, u64 blk_s
+ 	static const unsigned int rounding[] = { 500, 50, 5 };
+ 	int i = 0, j;
+ 	u32 remainder = 0, sf_cap;
+-	char tmp[8];
++	char tmp[12];
+ 	const char *unit;
  
--	sk = bt_sock_alloc(net, sock, &rfcomm_proto, proto, prio, kern);
--	if (!sk)
-+	d = rfcomm_dlc_alloc(prio);
-+	if (!d)
- 		return NULL;
- 
--	d = rfcomm_dlc_alloc(prio);
--	if (!d) {
--		sk_free(sk);
-+	sk = bt_sock_alloc(net, sock, &rfcomm_proto, proto, prio, kern);
-+	if (!sk) {
-+		rfcomm_dlc_free(d);
- 		return NULL;
- 	}
- 
--- 
-2.43.0
-
+ 	tmp[0] = '\0';
 
 
 
