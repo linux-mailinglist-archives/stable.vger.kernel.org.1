@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-102411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE44A9EF1C1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9147B9EEBEE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E8E228FA93
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2CE1649EC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CDB235895;
-	Thu, 12 Dec 2024 16:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526D9205ACF;
+	Thu, 12 Dec 2024 15:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2d31C7T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvKE2QpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12F622EA0A;
-	Thu, 12 Dec 2024 16:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBD1748A;
+	Thu, 12 Dec 2024 15:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021134; cv=none; b=m3jheCD0uEm+rTAU7rVoAJ+N88bfDwCriL1AycxZJTdwEJxkWvA3IEARE4tFed+SOSPdy0pGLYE9OnDZrP0U5gXjhQB8npW6GI3EP/AXWIYQlMHba4Rm6H6tA+zAvPFtOtgyeYtx0HcIppZYp4G1bqJWHlzDaTgqOUqV5l/Jeng=
+	t=1734017228; cv=none; b=TnhUdQ9zkz618NBBU1zWgn2lGGwP1QfMsmodMQY2LuCDAuOgf0SVeFJ22zES4IrEhd7+bX6lFdvm6hMVwgqbbVxffgxNSyN3ryqewMLU+05MkSiMBB4x4g2AlOrfPlfaKXXJB5YIURXR1cUCwU7UEksm36Rem6nz5dC26sauYHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021134; c=relaxed/simple;
-	bh=QhYXuBS9FrK/ym4LJtU76EOW8DlQFG/SENQ1Dy4nwLg=;
+	s=arc-20240116; t=1734017228; c=relaxed/simple;
+	bh=kk7ZC4gIZi6utwI2b+JasTOXYiWJAOkPSfqzhAjlOow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+oTrFQ/l9gFycceHua3W6J4W7s/ERwXFamFbHlducwmVqf9IjiObFTu5FLpxcfkKaZIKdHZClcMQlfK9QUGW4ZKSpWFmMNLztiHQ3Tpx5fT0UVnpJREcU4fhJ951LqPZrID2r1r7DrmQV7D9khYAwFusc9AtmL/bIl2Bi/b7D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2d31C7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41519C4CECE;
-	Thu, 12 Dec 2024 16:32:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a2bEJIx/j30fqNJxd/F5ktYItTi/yU80M+TSv81YXMYdsfqwJeeSc/9x75QOgxsAC/lwV7Xth80gXOGuZ3gswLvJI8hB81X3r8etWv/5CzJk4WQfwa6D3X3W5ZwpV0nPJX89ceYywAyB11DRm91uAoixfVrmXoeDZT7ifA0j8o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvKE2QpJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0F6C4CECE;
+	Thu, 12 Dec 2024 15:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021134;
-	bh=QhYXuBS9FrK/ym4LJtU76EOW8DlQFG/SENQ1Dy4nwLg=;
+	s=korg; t=1734017227;
+	bh=kk7ZC4gIZi6utwI2b+JasTOXYiWJAOkPSfqzhAjlOow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2d31C7TX9aXExCJ7jCqS7VBQU2ZSxWErCEo8dC4ZV/U1c/P7XwMAUmKVkVUrz5yp
-	 egNW0SaW5pOWfsfQYee3vJVpXov/Swo8z/pH+tjEefKEzFvYNhBVEScouP4xNG7VKE
-	 Yv2el5GTfpyqshLJl6mQwHN9nGMAA7mbPwsGVBrs=
+	b=XvKE2QpJqtbF7gV/ZKBkVS0xM1iX6AZRQVWbNn/Z0DYkOLIrmaEYKram1oF909S42
+	 inr4Lr1R2NnUyFaMusCpa5zCryC1+6vjTFTe+Tp8+FGwv7vqN52CrlTpHboUIIaIuT
+	 TYwhDCLjISE2FkPdcxUVbdlWX+vdCa7WEmBa2jsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 615/772] ALSA: hda/realtek: Add support for Samsung Galaxy Book3 360 (NP730QFG)
+	Anusha Rao <quic_anusha@quicinc.com>,
+	devi priya <quic_devipriy@quicinc.com>,
+	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 391/466] PCI: qcom: Add support for IPQ9574
 Date: Thu, 12 Dec 2024 15:59:20 +0100
-Message-ID: <20241212144415.346039577@linuxfoundation.org>
+Message-ID: <20241212144322.217151074@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +64,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
+From: devi priya <quic_devipriy@quicinc.com>
 
-commit e2974a220594c06f536e65dfd7b2447e0e83a1cb upstream.
+[ Upstream commit a63b74f2e35be3829f256922037ae5cee6bb844a ]
 
-Fixes the 3.5mm headphone jack on the Samsung Galaxy Book 3 360
-NP730QFG laptop.
-Unlike the other Galaxy Book3 series devices, this device only needs
-the ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET quirk.
-Verified changes on the device and compared with codec state in Windows.
+Add the new IPQ9574 platform which is based on the Qcom IP rev. 1.27.0
+and Synopsys IP rev. 5.80a.
 
-[ white-space fixes by tiwai ]
+The platform itself has four PCIe Gen3 controllers: two single-lane and
+two dual-lane, all are based on Synopsys IP rev. 5.70a. As such, reuse
+all the members of 'ops_2_9_0'.
 
-Signed-off-by: Sahas Leelodharry <sahas.leelodharry@mail.mcgill.ca>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/QB1PR01MB40047D4CC1282DB7F1333124CC352@QB1PR01MB4004.CANPRD01.PROD.OUTLOOK.COM
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240801054803.3015572-5-quic_srichara@quicinc.com
+Co-developed-by: Anusha Rao <quic_anusha@quicinc.com>
+Signed-off-by: Anusha Rao <quic_anusha@quicinc.com>
+Signed-off-by: devi priya <quic_devipriy@quicinc.com>
+Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ drivers/pci/controller/dwc/pcie-qcom.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10016,6 +10016,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x144d, 0xc830, "Samsung Galaxy Book Ion (NT950XCJ-X716A)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc832, "Samsung Galaxy Book Flex Alpha (NP730QCJ)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
- 	SND_PCI_QUIRK(0x144d, 0xca03, "Samsung Galaxy Book2 Pro 360 (NP930QED)", ALC298_FIXUP_SAMSUNG_AMP),
-+	SND_PCI_QUIRK(0x144d, 0xca06, "Samsung Galaxy Book3 360 (NP730QFG)", ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
- 	SND_PCI_QUIRK(0x144d, 0xc868, "Samsung Galaxy Book2 Pro (NP930XED)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x1458, 0xfa53, "Gigabyte BXBT-2807", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1462, 0xb120, "MSI Cubi MS-B120", ALC283_FIXUP_HEADSET_MIC),
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index b5447228696dc..6483e1874477e 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -1830,6 +1830,7 @@ static const struct of_device_id qcom_pcie_match[] = {
+ 	{ .compatible = "qcom,pcie-ipq8064-v2", .data = &cfg_2_1_0 },
+ 	{ .compatible = "qcom,pcie-ipq8074", .data = &cfg_2_3_3 },
+ 	{ .compatible = "qcom,pcie-ipq8074-gen3", .data = &cfg_2_9_0 },
++	{ .compatible = "qcom,pcie-ipq9574", .data = &cfg_2_9_0 },
+ 	{ .compatible = "qcom,pcie-msm8996", .data = &cfg_2_3_2 },
+ 	{ .compatible = "qcom,pcie-qcs404", .data = &cfg_2_4_0 },
+ 	{ .compatible = "qcom,pcie-sa8540p", .data = &cfg_sc8280xp },
+-- 
+2.43.0
+
 
 
 
