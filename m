@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB8E9EF182
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C099EF406
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD89D189D8C2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8B9B1897B7E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101E1223C53;
-	Thu, 12 Dec 2024 16:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768C8223335;
+	Thu, 12 Dec 2024 16:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJcdw59E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SA+8U6rF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F8721E0BC;
-	Thu, 12 Dec 2024 16:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B7F215764;
+	Thu, 12 Dec 2024 16:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020240; cv=none; b=oTrOyQU9HjNE23GZ1d9A+sRPuvjNEp6ZSdoNUyKcHhruVIc07304k8SJbFOMM5NH4KCrLx5h0F73w/huEc/EIzKns0UX4Q2ZgUc6PwXqQ9buVLl8oIbLmH2573Z5BoM181Fl5yUEcnqtmj0qmxhtKFelzHq3AZZreeWGiiNq7do=
+	t=1734022160; cv=none; b=BYUqua28tESNTUdgfwe3Ep41xrGGXPk8wRGrOssfuiiHJnbTTKICDORMFdPz4LR+skzulMCZttfUmOMqXjbIWBjM/n0PqJSgqk9y9gvaRUx+T9AK0qtkTNAzS8sWGhrTEEvxYY4yLm/SpEsHkOElrcWmB58L8DPz/j7MU+hlVLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020240; c=relaxed/simple;
-	bh=nZnNn93YNpYUUA2goygRPkdD4q84Ehu/LtMIAZAMf7U=;
+	s=arc-20240116; t=1734022160; c=relaxed/simple;
+	bh=l0lYLfOJIBWOAOPHPQNuTmgBogg21RiNmxMKOafr+Uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhoFQLTrLY0uNXnDmB+D9fU5tEpT3r5SUkrab2NqpqjfDs9YuMNq7ie+npwI2E3mpOpSweGAmCg1AmbT6YwpE8NaiAvEhlvRCZWs3zBIQQdGyjYTOXnCyEDFIGqX3Elgfjy5JMF3B+MdWOZUCB7ljvbaDm4YrTCvAWqQf5B7//w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJcdw59E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1887EC4CED0;
-	Thu, 12 Dec 2024 16:17:19 +0000 (UTC)
+	 MIME-Version; b=dQgeVIqOc8b4/NSZxNpWk2WkEiUC0MdAutsJASzY/UCzyML2YH4QUJgjrd8X7n2xp87U98D2dRLdS0AW8tDMoV9vs6e0OX0niw1lq5QGA56C3r5GrUPucl7AJzeTa5UXaF3X4Njb/gn36REncumVHHCImKlztkTH2T1zt60C5gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SA+8U6rF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7BFC4CECE;
+	Thu, 12 Dec 2024 16:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020240;
-	bh=nZnNn93YNpYUUA2goygRPkdD4q84Ehu/LtMIAZAMf7U=;
+	s=korg; t=1734022160;
+	bh=l0lYLfOJIBWOAOPHPQNuTmgBogg21RiNmxMKOafr+Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJcdw59EAeXNBExGkekKkxVv3m1O1tYa+vTv2P4yf5XQ1IgPqVYY7/nYB30GaMFd6
-	 hZXyv6tnwbum3he/3iTpxtaFhGHg6ggvCKAK+5nyN++zUOiCK2NrigslPIUEDVvwA5
-	 6IeSVXJXYLpC8BZ/vSPThYDa/WclcEqZF/Tp8Zpk=
+	b=SA+8U6rFXMcbY0QcVU0u4J4h11qHmm3ujNziHnu3iV7oENsQzkARn/qNLoCoL+b38
+	 XfK0THATvbn2OmGTgs2IO8w+BsEMcTTi4k4UakvfT/EbjuVUwkGCOjhK1QOBLBYKAr
+	 cxGy0rdLOo1SM3lgZBpcSh6hQ1vdEtzQYt3Yjoj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 414/772] ALSA: hda/realtek: Set PCBeep to default value for ALC274
-Date: Thu, 12 Dec 2024 15:55:59 +0100
-Message-ID: <20241212144407.023998960@linuxfoundation.org>
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 165/565] bpf: Fix the xdp_adjust_tail sample prog issue
+Date: Thu, 12 Dec 2024 15:56:00 +0100
+Message-ID: <20241212144318.000035417@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-commit 155699ccab7c78cbba69798242b68bc8ac66d5d2 upstream.
+[ Upstream commit 4236f114a3ffbbfd217436c08852e94cae372f57 ]
 
-BIOS Enable PC beep path cause pop noise via speaker during boot time.
-Set to default value from driver will solve the issue.
+During the xdp_adjust_tail test, probabilistic failure occurs and SKB package
+is discarded by the kernel. After checking the issues by tracking SKB package,
+it is identified that they were caused by checksum errors. Refer to checksum
+of the arch/arm64/include/asm/checksum.h for fixing.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/2721bb57e20a44c3826c473e933f9105@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v2: Based on Alexei Starovoitov's suggestions, it is necessary to keep the code
+ implementation consistent.
+
+Fixes: c6ffd1ff7856 (bpf: add bpf_xdp_adjust_tail sample prog)
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240930024115.52841-1-chenyuan_fl@163.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ samples/bpf/xdp_adjust_tail_kern.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -469,6 +469,8 @@ static void alc_fill_eapd_coef(struct hd
- 		break;
- 	case 0x10ec0234:
- 	case 0x10ec0274:
-+		alc_write_coef_idx(codec, 0x6e, 0x0c25);
-+		fallthrough;
- 	case 0x10ec0294:
- 	case 0x10ec0700:
- 	case 0x10ec0701:
+diff --git a/samples/bpf/xdp_adjust_tail_kern.c b/samples/bpf/xdp_adjust_tail_kern.c
+index ffdd548627f0a..da67bcad1c638 100644
+--- a/samples/bpf/xdp_adjust_tail_kern.c
++++ b/samples/bpf/xdp_adjust_tail_kern.c
+@@ -57,6 +57,7 @@ static __always_inline void swap_mac(void *data, struct ethhdr *orig_eth)
+ 
+ static __always_inline __u16 csum_fold_helper(__u32 csum)
+ {
++	csum = (csum & 0xffff) + (csum >> 16);
+ 	return ~((csum & 0xffff) + (csum >> 16));
+ }
+ 
+-- 
+2.43.0
+
 
 
 
