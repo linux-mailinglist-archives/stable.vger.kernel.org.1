@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C09C9EEDC6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A297C9EF2E6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CF1A2832B6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD8661896FA8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F152210F2;
-	Thu, 12 Dec 2024 15:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3D5238E17;
+	Thu, 12 Dec 2024 16:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcSdVv+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBjiDlbV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC1A2210E3;
-	Thu, 12 Dec 2024 15:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485CE229661;
+	Thu, 12 Dec 2024 16:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018587; cv=none; b=Z04s7i8hJAxgceIKoz2XJGv934ziqI8HMPgOQPXhP3G0LE6wzdmsqdfE7cRoFy/p1XHXtIAFbjXisokFfJzAJfwyFd1fm5DeAYjBGSqmQYYKc97dPyqHOtZ/xSUsKNTUA4/M5MWsrV5emzIE02z7nFCgH0Z99XSwrJJlrRCsl18=
+	t=1734021330; cv=none; b=XPme75a0bYacHUOqvGQ08MER/DRiXXI4JG2Q3VkNpSeW33Fcr/K4ycGPPvoqVTluFy7g6cOJ66sRDFOqntGMx5ywAu/ZvNlMZplIdXALOblOSzaSzcdByMjjxYiatb9stLuqN/yar2AYcGqKlEkyPpaUTRm6BzCXeI/uvcZAyuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018587; c=relaxed/simple;
-	bh=ftuH3ab+NfiP/e6tHtuovDz/53B9oE9GYshOClt8P/M=;
+	s=arc-20240116; t=1734021330; c=relaxed/simple;
+	bh=EZMNECxZCVtvCQ+Ju3hiqucOG08EJ7mOTEzjC2hY3Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJPMwvlEq9szLZ4LUbhtrya3SZQL74xmA/MGJ2J/ZhWcQVekAOloyibCuOdSr1en2FQ+ME/LDq7iyuEj/TvV7mWy9qDI1/o2cU4qcyyU9uIBiwrakkPwvxGzmHwGSwAjK/I5KEcbW4azcztz7StnNMdGiBoaRogUpXQCTniKv/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcSdVv+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0975EC4CECE;
-	Thu, 12 Dec 2024 15:49:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iE8RxXRkj1ub813XZXqEE4Xf4cx+t+Ha0bSWDdHTdGw+Gfj5ld9lk41h2AZIeTKY3Wv7RPUENm/3mFRFdp6rhcC3FrtP8dM4jyfKrzyXBwcQ8wZ/lrLbhSwgjk9mwnb/H+KTJ+jVd5NagVAC0Rs4O99EhusKLD6lp9J2ajmBxPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBjiDlbV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA780C4CED4;
+	Thu, 12 Dec 2024 16:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018587;
-	bh=ftuH3ab+NfiP/e6tHtuovDz/53B9oE9GYshOClt8P/M=;
+	s=korg; t=1734021330;
+	bh=EZMNECxZCVtvCQ+Ju3hiqucOG08EJ7mOTEzjC2hY3Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WcSdVv+LHXjdGByy9s6LjWH8/ZeM5TBfLbe19PiaLyx+4JUb12VvJHW4aT80VpjEU
-	 qVHAvtyo2x2IH7M830ejoNLr5gxyhunUxEyFeEP32owlmzsaVupLaZchTaeayPNJah
-	 9s3AINUMYn6XlvAhlXucl8g6JY9GcwstfJTQTHdY=
+	b=rBjiDlbVOlhFvo/Lc8mGIPsMtiM45xnsBkzRkV0N+ZEJsqskwexltlyVQj2GeFNke
+	 zo3eNmfgAYNuRjGfCnbM6Rr6H7+MqeuICB7cWAF8h9d7PwCLZDLSq++6/1CtX3LuIq
+	 es8cJoX5a8j//nMiXtfGFeU312BwfMjwQT/rMEps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 334/356] tracing/eprobe: Fix to release eprobe when failed to add dyn_event
+Subject: [PATCH 6.1 708/772] pinctrl: qcom-pmic-gpio: add support for PM8937
 Date: Thu, 12 Dec 2024 16:00:53 +0100
-Message-ID: <20241212144257.754929153@linuxfoundation.org>
+Message-ID: <20241212144419.154124695@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 494b332064c0ce2f7392fa92632bc50191c1b517 ]
+[ Upstream commit 89265a58ff24e3885c2c9ca722bc3aaa47018be9 ]
 
-Fix eprobe event to unregister event call and release eprobe when it fails
-to add dynamic event correctly.
+PM8937 has 8 GPIO-s with holes on GPIO3, GPIO4 and GPIO6.
 
-Link: https://lore.kernel.org/all/173289886698.73724.1959899350183686006.stgit@devnote2/
-
-Fixes: 7491e2c44278 ("tracing: Add a probe that attaches to trace events")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/20241031-msm8917-v2-2-8a075faa89b1@mainlining.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_eprobe.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/trace/trace_eprobe.c b/kernel/trace/trace_eprobe.c
-index 31bb977670bdf..f1f12ce5efb0a 100644
---- a/kernel/trace/trace_eprobe.c
-+++ b/kernel/trace/trace_eprobe.c
-@@ -966,6 +966,11 @@ static int __trace_eprobe_create(int argc, const char *argv[])
- 		goto error;
- 	}
- 	ret = dyn_event_add(&ep->devent, &ep->tp.event->call);
-+	if (ret < 0) {
-+		trace_probe_unregister_event_call(&ep->tp);
-+		mutex_unlock(&event_mutex);
-+		goto error;
-+	}
- 	mutex_unlock(&event_mutex);
- 	return ret;
- parse_error:
+diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+index effe32996bac6..63255cd35bd70 100644
+--- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
++++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+@@ -1219,6 +1219,8 @@ static const struct of_device_id pmic_gpio_of_match[] = {
+ 	{ .compatible = "qcom,pm8350c-gpio", .data = (void *) 9 },
+ 	{ .compatible = "qcom,pm8450-gpio", .data = (void *) 4 },
+ 	{ .compatible = "qcom,pm8916-gpio", .data = (void *) 4 },
++	/* pm8937 has 8 GPIOs with holes on 3, 4 and 6 */
++	{ .compatible = "qcom,pm8937-gpio", .data = (void *) 8 },
+ 	{ .compatible = "qcom,pm8941-gpio", .data = (void *) 36 },
+ 	/* pm8950 has 8 GPIOs with holes on 3 */
+ 	{ .compatible = "qcom,pm8950-gpio", .data = (void *) 8 },
 -- 
 2.43.0
 
