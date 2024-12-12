@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902479EEE74
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F9B9EF330
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AB00188B37F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67B61899B2F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37905223E60;
-	Thu, 12 Dec 2024 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0FC024036F;
+	Thu, 12 Dec 2024 16:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVx12tRT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Adng9LL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8887222D59;
-	Thu, 12 Dec 2024 15:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D52324036B;
+	Thu, 12 Dec 2024 16:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018644; cv=none; b=gvFWl0hutrY+YKwUv+ZpTGxYlltNPx6U2PpjSQ8I0lxFGXjIoGgfivMUPOBV+ZGqw6YgvAmGikDoL3UByaipuBJkkFuXe4DKWUqkegGX9dgKdAfMeblMaZYT/oJnjr+yrUowRmIczqAwTpWCTsdxJUibMeLRX0mNzjLyLvr9DIo=
+	t=1734021382; cv=none; b=Z03+12rAWkCwpFmjKpR1UdML1KITrCIXxwjG0M4OEF5y7WSwxNru0btCvVE8uFcNZrLquTOojgrdS40FXSQskKoJYJn1YEEteYjXNLCEeCTfozOC3WRRtyAWd9yrQmUZ7MNxtgOOTD37T4bCSNyIS1JmkiKCiRktBQZ40iNr+LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018644; c=relaxed/simple;
-	bh=sKkY0pPicXav0Fl1zErp5BFbcWL1oYC7QWvJQPgPNok=;
+	s=arc-20240116; t=1734021382; c=relaxed/simple;
+	bh=aVVQRb+iDj3LXzoKSX0UZvDH4AtP03OxELowBUjV9Sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HRReuUfduEhjSveVSYGdC5XAXHTIoxe6fvKirNF1BA1FxRS0h9ejWanufgGe7MiOVruJFsaT2lxa40K4ThqAhFopjp47/QU4KwkgGPB8dCsLRzi58gbFKsICBGBddmp22tl1moyI32LslFN5Rq8YjuAcBQUb0FgUjcTfcKcjfQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVx12tRT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571A1C4CECE;
-	Thu, 12 Dec 2024 15:50:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ylmedl8JdBO3MsQuRO1v8noHKpsTbIiRVJgW+cVpKR6jpbT/k5HXIaAMPmSdhksoj90ysjMZtEgECWxwEvzVddkC9v0GfPdjIO1zcg+YQ2rEtGekh05vxC5WDNmD0ZIHNBip9VwWStyuX0iVXkIz4ZE9Wn6b6NJlSNlzPE7lIR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Adng9LL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847AFC4CEE0;
+	Thu, 12 Dec 2024 16:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018643;
-	bh=sKkY0pPicXav0Fl1zErp5BFbcWL1oYC7QWvJQPgPNok=;
+	s=korg; t=1734021382;
+	bh=aVVQRb+iDj3LXzoKSX0UZvDH4AtP03OxELowBUjV9Sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVx12tRTyf2sPEogA+N9oAOzTwoFxzYKaalejkrQWQ5ZaICmXykDrVtn/vshcgCOE
-	 CQUr4Z5tdP0jBmK42vTuhQlq5ja+E+ama6Kt30nS3yRmHk/X3UHqHJZid2Yr4j6Wvp
-	 Bor2DPuqT4b4q+zMMTPrabFGR34fLcgZ79TWd4m0=
+	b=Adng9LL2bb432276mdO1W4hQI7nX1GCfBzn6i8CL253wOO3Odgy+lhASeQVty4KOE
+	 zLF55OkkQfmUUU1Dwk+zw8BNG1zbDTaG+Bp3Pjd3R6pvXZrtRln75Epfx+MTQieqis
+	 o+gaQmaT0CWtNQnklmgJ+RYgoGgUH7rSHg/Q4Pag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 348/356] drm/amdgpu: rework resume handling for display (v2)
-Date: Thu, 12 Dec 2024 16:01:07 +0100
-Message-ID: <20241212144258.316208206@linuxfoundation.org>
+	Tova <blueaddagio@laposte.net>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 723/772] ASoC: amd: yc: Add quirk for microphone on Lenovo Thinkpad T14s Gen 6 21M1CTO1WW
+Date: Thu, 12 Dec 2024 16:01:08 +0100
+Message-ID: <20241212144419.766629436@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +64,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Uwe Kleine-König <ukleinek@debian.org>
 
-commit 73dae652dcac776296890da215ee7dec357a1032 upstream.
+[ Upstream commit cbc86dd0a4fe9f8c41075328c2e740b68419d639 ]
 
-Split resume into a 3rd step to handle displays when DCC is
-enabled on DCN 4.0.1.  Move display after the buffer funcs
-have been re-enabled so that the GPU will do the move and
-properly set the DCC metadata for DCN.
+Add a quirk for Tova's Lenovo Thinkpad T14s with product name 21M1.
 
-v2: fix fence irq resume ordering
-
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.11.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Tova <blueaddagio@laposte.net>
+Link: https://bugs.debian.org/1087673
+Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
+Link: https://patch.msgid.link/20241122075606.213132-2-ukleinek@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   45 +++++++++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 2 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3172,7 +3172,7 @@ static int amdgpu_device_ip_resume_phase
-  *
-  * @adev: amdgpu_device pointer
-  *
-- * First resume function for hardware IPs.  The list of all the hardware
-+ * Second resume function for hardware IPs.  The list of all the hardware
-  * IPs that make up the asic is walked and the resume callbacks are run for
-  * all blocks except COMMON, GMC, and IH.  resume puts the hardware into a
-  * functional state after a suspend and updates the software state as
-@@ -3190,6 +3190,7 @@ static int amdgpu_device_ip_resume_phase
- 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_COMMON ||
- 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GMC ||
- 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_IH ||
-+		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE ||
- 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_PSP)
- 			continue;
- 		r = adev->ip_blocks[i].version->funcs->resume(adev);
-@@ -3205,6 +3206,36 @@ static int amdgpu_device_ip_resume_phase
- }
- 
- /**
-+ * amdgpu_device_ip_resume_phase3 - run resume for hardware IPs
-+ *
-+ * @adev: amdgpu_device pointer
-+ *
-+ * Third resume function for hardware IPs.  The list of all the hardware
-+ * IPs that make up the asic is walked and the resume callbacks are run for
-+ * all DCE.  resume puts the hardware into a functional state after a suspend
-+ * and updates the software state as necessary.  This function is also used
-+ * for restoring the GPU after a GPU reset.
-+ *
-+ * Returns 0 on success, negative error code on failure.
-+ */
-+static int amdgpu_device_ip_resume_phase3(struct amdgpu_device *adev)
-+{
-+	int i, r;
-+
-+	for (i = 0; i < adev->num_ip_blocks; i++) {
-+		if (!adev->ip_blocks[i].status.valid || adev->ip_blocks[i].status.hw)
-+			continue;
-+		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE) {
-+			r = adev->ip_blocks[i].version->funcs->resume(adev);
-+			if (r)
-+				return r;
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index f38f882fd55ec..af9601bea275e 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -220,6 +220,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21M1"),
 +		}
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-  * amdgpu_device_ip_resume - run resume for hardware IPs
-  *
-  * @adev: amdgpu_device pointer
-@@ -3230,6 +3261,13 @@ static int amdgpu_device_ip_resume(struc
- 
- 	r = amdgpu_device_ip_resume_phase2(adev);
- 
-+	if (r)
-+		return r;
-+
-+	amdgpu_fence_driver_hw_init(adev);
-+
-+	r = amdgpu_device_ip_resume_phase3(adev);
-+
- 	return r;
- }
- 
-@@ -4229,7 +4267,6 @@ int amdgpu_device_resume(struct drm_devi
- 		dev_err(adev->dev, "amdgpu_device_ip_resume failed (%d).\n", r);
- 		goto exit;
- 	}
--	amdgpu_fence_driver_hw_init(adev);
- 
- 	r = amdgpu_device_ip_late_init(adev);
- 	if (r)
-@@ -4999,6 +5036,10 @@ int amdgpu_do_asic_reset(struct list_hea
- 				if (r)
- 					goto out;
- 
-+				r = amdgpu_device_ip_resume_phase3(tmp_adev);
-+				if (r)
-+					goto out;
-+
- 				if (vram_lost)
- 					amdgpu_device_fill_reset_magic(tmp_adev);
- 
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+-- 
+2.43.0
+
 
 
 
