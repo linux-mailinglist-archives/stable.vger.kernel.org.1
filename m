@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-101755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2FB9EEDF0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2774C9EEE52
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65B7D286648
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD5E31885ACA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56B8222D66;
-	Thu, 12 Dec 2024 15:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BBA2210DE;
+	Thu, 12 Dec 2024 15:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L78Rn9WT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhaDPJj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C21217F34;
-	Thu, 12 Dec 2024 15:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C16C2135B0;
+	Thu, 12 Dec 2024 15:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018686; cv=none; b=FYjDZXhTMUN/p8EmV9X4l/KrTI9t4WGKnf8qpbX8IvlQHoWqzc5DUm3qr+b638KVC7eyEmzXi1Yy8oVlDPsBf9U9hT7QNbx7i6KGEu83smaKCV2Tz1XypcP+3JrmbIGfT0VtVEnQIyCJiBD98kbfnE3zC26GcqRkL/G7AwRQ3Qc=
+	t=1734018580; cv=none; b=Qy5l5If5zYeZTVg+aiOiW6au48wZLIkXovJ/+36u0hpv8FlpcWC7Qtzm59eNZjcAyi/XS8B+fxPxcOMguZutKiUbLL+qk1GkuHNeDq8mS+0JDywySJuthL3dPaWTXDry5i6Iz5vNamZ2fcN9BcUEDvfQq0lrGmHFl+8KrX5lHK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018686; c=relaxed/simple;
-	bh=iO8/4uM+46q2yPKilqqbfFFpgj5c99YMhb+ZuM7/PPA=;
+	s=arc-20240116; t=1734018580; c=relaxed/simple;
+	bh=aRIix01378oFnUwNYDAxQ7iKmPgAxptFBlG8yJlhuC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQnz8+gcnFagEVUtBEfvdcon5/bcbRowIA41dD9LRmZCwjd8dd5kOK2rHp6XvYSZ0VX48npMiD3TMiJllP8RY3IeqZfJh5U7Ud9n1gMPAJTPxCkEWoGyRvBtfKiPRqbpzUVhfR5g90hJ7fZvnotobCpqIjxMlOyfcA7vXWgSdEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L78Rn9WT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E73CC4CECE;
-	Thu, 12 Dec 2024 15:51:25 +0000 (UTC)
+	 MIME-Version; b=usl5dAXtZlHPxzN2nlDvvEgRXP4lvpXax6Cp7bJCA6LWJ9ba/nF+Z6Axl/1I+6r57D6EHRPPfL/4D6kaeZqE9WTzulAD5zSg2pWSTy2nes9cgnkUYF/G3XSnIUydcsO7YTcz9c/UR0RqsYkC4PFwJe5uwtX5768FSa0w0k1cZaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhaDPJj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED504C4CECE;
+	Thu, 12 Dec 2024 15:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018686;
-	bh=iO8/4uM+46q2yPKilqqbfFFpgj5c99YMhb+ZuM7/PPA=;
+	s=korg; t=1734018580;
+	bh=aRIix01378oFnUwNYDAxQ7iKmPgAxptFBlG8yJlhuC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L78Rn9WTj9X7f7AmZ2LC1QxZN+GUCa/lUiREFKr2OdGPy80tZWOZdeFIm19df8/NQ
-	 Lj39GVrjnnO3eJgh9DV2GnSnOD98LZo9P/ruy0MIU7mygaFT85X6FCyuJpRsoVuOTT
-	 dpHGWY94NWW1cFe6JFewAJ/6m0Nsb05zS4k9GPf0=
+	b=FhaDPJj4mpC7oLKMlcixWql96nT4c/dqhwzhCXeZbTjZUjSCjyJLdozpOComRStqf
+	 uHnXU4EB0y0cL9/IcwwVbTEMjrBn8rSmMO9ByHc2qdtvTet0xEHClkxYGKAd9KDm91
+	 HtWU4w6V1ioP/bn3XWRjdXRT4BZEeYsAFeGYIkrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 331/356] sched/deadline: Fix warning in migrate_enable for boosted tasks
-Date: Thu, 12 Dec 2024 16:00:50 +0100
-Message-ID: <20241212144257.639344223@linuxfoundation.org>
+Subject: [PATCH 6.6 332/356] btrfs: fix missing snapshot drew unlock when root is dead during swap activation
+Date: Thu, 12 Dec 2024 16:00:51 +0100
+Message-ID: <20241212144257.678906663@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
 References: <20241212144244.601729511@linuxfoundation.org>
@@ -67,78 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 0664e2c311b9fa43b33e3e81429cd0c2d7f9c638 ]
+[ Upstream commit 9c803c474c6c002d8ade68ebe99026cc39c37f85 ]
 
-When running the following command:
+When activating a swap file we acquire the root's snapshot drew lock and
+then check if the root is dead, failing and returning with -EPERM if it's
+dead but without unlocking the root's snapshot lock. Fix this by adding
+the missing unlock.
 
-while true; do
-    stress-ng --cyclic 30 --timeout 30s --minimize --quiet
-done
-
-a warning is eventually triggered:
-
-WARNING: CPU: 43 PID: 2848 at kernel/sched/deadline.c:794
-setup_new_dl_entity+0x13e/0x180
-...
-Call Trace:
- <TASK>
- ? show_trace_log_lvl+0x1c4/0x2df
- ? enqueue_dl_entity+0x631/0x6e0
- ? setup_new_dl_entity+0x13e/0x180
- ? __warn+0x7e/0xd0
- ? report_bug+0x11a/0x1a0
- ? handle_bug+0x3c/0x70
- ? exc_invalid_op+0x14/0x70
- ? asm_exc_invalid_op+0x16/0x20
- enqueue_dl_entity+0x631/0x6e0
- enqueue_task_dl+0x7d/0x120
- __do_set_cpus_allowed+0xe3/0x280
- __set_cpus_allowed_ptr_locked+0x140/0x1d0
- __set_cpus_allowed_ptr+0x54/0xa0
- migrate_enable+0x7e/0x150
- rt_spin_unlock+0x1c/0x90
- group_send_sig_info+0xf7/0x1a0
- ? kill_pid_info+0x1f/0x1d0
- kill_pid_info+0x78/0x1d0
- kill_proc_info+0x5b/0x110
- __x64_sys_kill+0x93/0xc0
- do_syscall_64+0x5c/0xf0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
- RIP: 0033:0x7f0dab31f92b
-
-This warning occurs because set_cpus_allowed dequeues and enqueues tasks
-with the ENQUEUE_RESTORE flag set. If the task is boosted, the warning
-is triggered. A boosted task already had its parameters set by
-rt_mutex_setprio, and a new call to setup_new_dl_entity is unnecessary,
-hence the WARN_ON call.
-
-Check if we are requeueing a boosted task and avoid calling
-setup_new_dl_entity if that's the case.
-
-Fixes: 295d6d5e3736 ("sched/deadline: Fix switching to -deadline")
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lore.kernel.org/r/20240724142253.27145-2-wander@redhat.com
+Fixes: 60021bd754c6 ("btrfs: prevent subvol with swapfile from being deleted")
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 1 +
+ fs/btrfs/inode.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index aacd3bf9fa4e7..b9e99bc3b1cf2 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1674,6 +1674,7 @@ enqueue_dl_entity(struct sched_dl_entity *dl_se, int flags)
- 	} else if (flags & ENQUEUE_REPLENISH) {
- 		replenish_dl_entity(dl_se);
- 	} else if ((flags & ENQUEUE_RESTORE) &&
-+		  !is_dl_boosted(dl_se) &&
- 		  dl_time_before(dl_se->deadline,
- 				 rq_clock(rq_of_dl_rq(dl_rq_of_se(dl_se))))) {
- 		setup_new_dl_entity(dl_se);
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index ea19ea75674d2..035815c439498 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -10693,6 +10693,7 @@ static int btrfs_swap_activate(struct swap_info_struct *sis, struct file *file,
+ 	if (btrfs_root_dead(root)) {
+ 		spin_unlock(&root->root_item_lock);
+ 
++		btrfs_drew_write_unlock(&root->snapshot_lock);
+ 		btrfs_exclop_finish(fs_info);
+ 		btrfs_warn(fs_info,
+ 		"cannot activate swapfile because subvolume %llu is being deleted",
 -- 
 2.43.0
 
