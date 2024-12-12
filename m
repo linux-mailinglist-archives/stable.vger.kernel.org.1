@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ACF19EF02E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ACCD9EEA8F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADA7A28FF47
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C29418851AD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991FF2139D2;
-	Thu, 12 Dec 2024 16:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B90215F5A;
+	Thu, 12 Dec 2024 15:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQDVvCyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HA4leAy5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D66228C8D;
-	Thu, 12 Dec 2024 16:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702B3213E97;
+	Thu, 12 Dec 2024 15:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020071; cv=none; b=asPgvIxBzSizr2GUdtBQ2sX1Y4djCTQJ7kfVEMB/BB0pM4ELgqn/8isJKGNZKhb+dlgjlWpYxDeICcM96m+/oNqtNQBqBhT4A2cq2EQJheKiQszmAlU0ReutJ1hj52CKNlWrgR9s0e/SPwJz/EYRurFqQO7NghbWCBLOmExubGk=
+	t=1734016285; cv=none; b=LxKbYlHIa4xL+MEqI63W2X02/enRxq4dJdH+fxSluGxOK49GgDQttug9HTzGXIM/uIN1lik0r0t+Tb+vB4yJjVJYHtEyk6qCSFOqsD4qsetn2ujgOQzDuJPJi1wJEGegoz9HRT1y/Jn3DuXPkrHHggXrWY5FXdGWooVoHHb8xK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020071; c=relaxed/simple;
-	bh=rufw4Vxv90xXQhhhJqyyLt/1ytHPmaMwB3sGScdZyBQ=;
+	s=arc-20240116; t=1734016285; c=relaxed/simple;
+	bh=8G0/eB+DDB6JdmY7JQs6dXKVEtlzm16EllfiUHDItCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LuDGmzVyUDksokdKbFvrL5+qusSzssGTVxYlChAYqULEmk/ARc3CPtiTKxApid75g5INcOF4kpt0rq0z0kE3Fooy+2DPlJbDFtXSmjBz2l6Zgq1XwrSbPiiqfE8sRG4GKBEKTCicjhzs02Uxdm8qhmiyh6YKBddL0FnhaOD6HMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQDVvCyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F422C4CED0;
-	Thu, 12 Dec 2024 16:14:30 +0000 (UTC)
+	 MIME-Version; b=HegjM95qtnJQvVJaZOG611j2wEZzcyY6aTEngOi9uS4mG22ER4uvOTsDAeCePViInpaTHQngSA+hpJtV1eSawcYn4A78yWU7umuAte99iKUjpVS6nCdRc5rg0N7Pn58WdntsCDHg0rEcPaicYfgp83M5GN2PWvDW9tndfZk524A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HA4leAy5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB1BC4CECE;
+	Thu, 12 Dec 2024 15:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020071;
-	bh=rufw4Vxv90xXQhhhJqyyLt/1ytHPmaMwB3sGScdZyBQ=;
+	s=korg; t=1734016285;
+	bh=8G0/eB+DDB6JdmY7JQs6dXKVEtlzm16EllfiUHDItCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQDVvCynU1JUgCkpjTl16zpOM9I/q4XOMcdVz6iIBjElEZfL6ZgBmJOFsXRzM1lG2
-	 XQorMmuyXboCxgaTBMmiNxpNG0ieXrLemg5FKDYZOGG7Ytf0p2ErU1rQ2aA+EDQlva
-	 SaOo+n3yM67pCQOn3xQ2qE3hv6RHGON6mDWIzRow=
+	b=HA4leAy5TmG0R1ZjUqvy4W0aEGsq8zAKzNEAbRNmUSszDrB8s+mYkvjMWgWjySS2R
+	 vm+pAos+1fUUwn2SqgEcwRM4sxq2+M3cCBnI2X3wBwAgHQPq6VU/kUBujR5Z++LWfl
+	 DY3kyEY6eWu9zg3L5gc634QAns8Qst1Hth7QOLkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.1 371/772] KVM: arm64: vgic-v3: Sanitise guest writes to GICR_INVLPIR
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 147/466] scsi: qla2xxx: Supported speed displayed incorrectly for VPorts
 Date: Thu, 12 Dec 2024 15:55:16 +0100
-Message-ID: <20241212144405.241000522@linuxfoundation.org>
+Message-ID: <20241212144312.605378464@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-commit d561491ba927cb5634094ff311795e9d618e9b86 upstream.
+commit e4e268f898c8a08f0a1188677e15eadbc06e98f6 upstream.
 
-Make sure we filter out non-LPI invalidation when handling writes
-to GICR_INVLPIR.
+The fc_function_template for vports was missing the
+.show_host_supported_speeds. The base port had the same.
 
-Fixes: 4645d11f4a553 ("KVM: arm64: vgic-v3: Implement MMIO-based LPI invalidation")
-Reported-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Add .show_host_supported_speeds to the vport template as well.
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241117165757.247686-2-maz@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Fixes: 2c3dfe3f6ad8 ("[SCSI] qla2xxx: add support for NPIV")
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-mmio-v3.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_attr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -555,6 +555,7 @@ static void vgic_mmio_write_invlpi(struc
- 				   unsigned long val)
- {
- 	struct vgic_irq *irq;
-+	u32 intid;
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -3304,6 +3304,7 @@ struct fc_function_template qla2xxx_tran
+ 	.show_host_node_name = 1,
+ 	.show_host_port_name = 1,
+ 	.show_host_supported_classes = 1,
++	.show_host_supported_speeds = 1,
  
- 	/*
- 	 * If the guest wrote only to the upper 32bit part of the
-@@ -566,9 +567,13 @@ static void vgic_mmio_write_invlpi(struc
- 	if ((addr & 4) || !vgic_lpis_enabled(vcpu))
- 		return;
- 
-+	intid = lower_32_bits(val);
-+	if (intid < VGIC_MIN_LPI)
-+		return;
-+
- 	vgic_set_rdist_busy(vcpu, true);
- 
--	irq = vgic_get_irq(vcpu->kvm, NULL, lower_32_bits(val));
-+	irq = vgic_get_irq(vcpu->kvm, NULL, intid);
- 	if (irq) {
- 		vgic_its_inv_lpi(vcpu->kvm, irq);
- 		vgic_put_irq(vcpu->kvm, irq);
+ 	.get_host_port_id = qla2x00_get_host_port_id,
+ 	.show_host_port_id = 1,
 
 
 
