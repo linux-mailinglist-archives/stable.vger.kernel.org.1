@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBFE9EEA3B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:11:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5DA89EF0CA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 872F4168E8D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC8AD179402
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E739821661F;
-	Thu, 12 Dec 2024 15:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E8923A57F;
+	Thu, 12 Dec 2024 16:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGe4SLqv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/f4p1f1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36CA215773;
-	Thu, 12 Dec 2024 15:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2179023A57E;
+	Thu, 12 Dec 2024 16:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016034; cv=none; b=l00C9GVCa4/KeP9RQ2dLZ9+bH4h5M7DOf4k+/lQVbkGTiHSBCsk+dmyzrkxvKHUALoS26Hh/nxPCG5bFs97yCSAmwauVUYiYy4rImmrIkw25zv0tulWFdV54YDuhAW/gmZuPNTee0kdmLimm9BnfwotzKrb+NUQv1Z9OBwaaCR0=
+	t=1734019941; cv=none; b=nqzh7wZkNPGrdHjA/bGIMYNwdxV9hwkIv+WVaQYa8D9r1loKqT7YPEjn/mxP+lHzR8qayVGQ7xm6p+BsghFfwHdeTwpeGC4cQK1VcfT0Ar8Ps52Q+I0hR9/AO5n1iNCRBHVFLQe5AHQxyF05FOdO3gnip5zBgPLFvY3tKfEM3ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016034; c=relaxed/simple;
-	bh=BRKd7JFQtDk+RGaKdymorSuonRdtVBBMM8fmDk1mWzA=;
+	s=arc-20240116; t=1734019941; c=relaxed/simple;
+	bh=RkeeqQ2JJLmAi+TwtQ+4oUFNSBrRmQpWg0M30M9Jpro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSB5afl9rg3YV2asl+CrBmKcfrUoY6m40mdGNCLX32t8KczHGIiVRVgxee2DsD+LYd5Qduf6tjl4Iw7ePBhZD+saf55UBXBcmvuIVAvDEf1Y2//qIx+eUA483JIzTkhfVyarh+VLwUZ2m30eHMu9xTvuVNmXU9RODXdboRDP+eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGe4SLqv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC382C4CECE;
-	Thu, 12 Dec 2024 15:07:13 +0000 (UTC)
+	 MIME-Version; b=goFpfuCAp61Y/fFUhXazSD8rqZtiW5DmTIq9Fbl4y1bENxKrYSQZWjyr0bC9hGX4pXcqgcMatCQ60d7cAc+fczN9rw8TVIAbs6DkMyP3wCzinsE3FIRmdTD8raQ4a7Ef4RPCwyMDQrrBrD4Jd6XWUt5mw7mDFgO4k/u9N4TLZCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/f4p1f1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC2BC4CECE;
+	Thu, 12 Dec 2024 16:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016034;
-	bh=BRKd7JFQtDk+RGaKdymorSuonRdtVBBMM8fmDk1mWzA=;
+	s=korg; t=1734019940;
+	bh=RkeeqQ2JJLmAi+TwtQ+4oUFNSBrRmQpWg0M30M9Jpro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGe4SLqvthasAE7QANnbi5GG+6hM7iEh6Kma7mMUrti3eaL8BBoytF9bEy02IqhIZ
-	 z7b0fT+NjFxtMvyUo352uukL6aAE27S+QSQtnW95Wi1h3r6jLl/1+Nu0UjNvBNST/U
-	 IyuOnacXXwSvg886FcqHeeYR+y2qExrh1xaOcsf4=
+	b=z/f4p1f1Os47f8y/QdOH/QdW02m8nOe/FOlc4tnp9GGcsJgfnmJwdlgNuPLvolhod
+	 /wYikGdyi6yFsGhR5cfFU5a2KSz6U9gSDpZIY5EQfLUKqOPEiMW5WC8xiMTk4ZestZ
+	 hKlfgBAiNpfRL3dFpXcCRXD4NHLouagnWhYM9P90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/466] scatterlist: fix incorrect func name in kernel-doc
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Bin Lan <bin.lan.cn@windriver.com>
+Subject: [PATCH 6.1 337/772] mailbox: mtk-cmdq: Move devm_mbox_controller_register() after devm_pm_runtime_enable()
 Date: Thu, 12 Dec 2024 15:54:42 +0100
-Message-ID: <20241212144311.282883742@linuxfoundation.org>
+Message-ID: <20241212144403.832907797@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit d89c8ec0546184267cb211b579514ebaf8916100 ]
+commit a8bd68e4329f9a0ad1b878733e0f80be6a971649 upstream.
 
-Fix a kernel-doc warning by making the kernel-doc function description
-match the function name:
+When mtk-cmdq unbinds, a WARN_ON message with condition
+pm_runtime_get_sync() < 0 occurs.
 
-include/linux/scatterlist.h:323: warning: expecting prototype for sg_unmark_bus_address(). Prototype was for sg_dma_unmark_bus_address() instead
+According to the call tracei below:
+  cmdq_mbox_shutdown
+  mbox_free_channel
+  mbox_controller_unregister
+  __devm_mbox_controller_unregister
+  ...
 
-Link: https://lkml.kernel.org/r/20241130022406.537973-1-rdunlap@infradead.org
-Fixes: 42399301203e ("lib/scatterlist: add flag for indicating P2PDMA segments in an SGL")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Logan Gunthorpe <logang@deltatee.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The root cause can be deduced to be calling pm_runtime_get_sync() after
+calling pm_runtime_disable() as observed below:
+1. CMDQ driver uses devm_mbox_controller_register() in cmdq_probe()
+   to bind the cmdq device to the mbox_controller, so
+   devm_mbox_controller_unregister() will automatically unregister
+   the device bound to the mailbox controller when the device-managed
+   resource is removed. That means devm_mbox_controller_unregister()
+   and cmdq_mbox_shoutdown() will be called after cmdq_remove().
+2. CMDQ driver also uses devm_pm_runtime_enable() in cmdq_probe() after
+   devm_mbox_controller_register(), so that devm_pm_runtime_disable()
+   will be called after cmdq_remove(), but before
+   devm_mbox_controller_unregister().
+
+To fix this problem, cmdq_probe() needs to move
+devm_mbox_controller_register() after devm_pm_runtime_enable() to make
+devm_pm_runtime_disable() be called after
+devm_mbox_controller_unregister().
+
+Fixes: 623a6143a845 ("mailbox: mediatek: Add Mediatek CMDQ driver")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/scatterlist.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/mtk-cmdq-mailbox.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/scatterlist.h b/include/linux/scatterlist.h
-index e61d164622db4..1bad36e3e4ef1 100644
---- a/include/linux/scatterlist.h
-+++ b/include/linux/scatterlist.h
-@@ -313,7 +313,7 @@ static inline void sg_dma_mark_bus_address(struct scatterlist *sg)
+--- a/drivers/mailbox/mtk-cmdq-mailbox.c
++++ b/drivers/mailbox/mtk-cmdq-mailbox.c
+@@ -605,18 +605,18 @@ static int cmdq_probe(struct platform_de
+ 		cmdq->mbox.chans[i].con_priv = (void *)&cmdq->thread[i];
+ 	}
+ 
+-	err = devm_mbox_controller_register(dev, &cmdq->mbox);
+-	if (err < 0) {
+-		dev_err(dev, "failed to register mailbox: %d\n", err);
+-		return err;
+-	}
+-
+ 	platform_set_drvdata(pdev, cmdq);
+ 
+ 	WARN_ON(clk_bulk_prepare(cmdq->gce_num, cmdq->clocks));
+ 
+ 	cmdq_init(cmdq);
+ 
++	err = devm_mbox_controller_register(dev, &cmdq->mbox);
++	if (err < 0) {
++		dev_err(dev, "failed to register mailbox: %d\n", err);
++		return err;
++	}
++
+ 	return 0;
  }
  
- /**
-- * sg_unmark_bus_address - Unmark the scatterlist entry as a bus address
-+ * sg_dma_unmark_bus_address - Unmark the scatterlist entry as a bus address
-  * @sg:		 SG entry
-  *
-  * Description:
--- 
-2.43.0
-
 
 
 
