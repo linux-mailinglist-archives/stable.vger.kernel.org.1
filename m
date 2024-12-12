@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FFD9EEB46
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 987559EF34F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF46B188C718
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F9D328B40C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAD021504F;
-	Thu, 12 Dec 2024 15:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACDB222D70;
+	Thu, 12 Dec 2024 16:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkRym9sD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnPxV1Th"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0D513BC26;
-	Thu, 12 Dec 2024 15:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F462210E2;
+	Thu, 12 Dec 2024 16:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016667; cv=none; b=cgPftURLhLJpce0QLKi3XnqfTuhWtgoL/5t4wbGT32aoc75enf6cZmo3WgrJsaW9IwOtPPk4r4dbE038tsLN81vEv5YUNAVv2Ffe9CE3niMJObXKHLWYmG+ATD0hcnUwstWwI/AkUPKZKDz5OmnrUqrgErLcRE0K9xKzyLT6biw=
+	t=1734022277; cv=none; b=j94ervY3URC+5Vk6EjVYnofXE+dxzmDKpUgJlTGvbZyrYzk9kV8Y/t00j2izttXRCvApyNeHxpDgXOUYkjSfq9SL1mQqNVymyBVurp/wNywhkI52EephwAESvr56YK1CURljZDv4foRQb8l6Ei0k0a7GRMqX07aVFWCVCzVo5Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016667; c=relaxed/simple;
-	bh=VPDfMqqzcNfuo+DLxvNMR2GACQvivbs1G0wk4wDrvTE=;
+	s=arc-20240116; t=1734022277; c=relaxed/simple;
+	bh=MAYYOnI+WIlV+eiteJnWevrswNY7rt6GJ/+8VXq5wsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWtYcnVWiflLy25miifSSThIV0XvUMPtJ1pqjdia9pH1SuEbEHWikAFMZVK/n+YSGyzCBniYGjztJR5pbUoRwuUgPFKIKmidHuqN0b3RDms6amjpCPlqz03zzRtJEXsHM+eCCdLNB59ZCXQ+wP1C/PxuMzQ47+vz3lPPbPn5PXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkRym9sD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C6CC4CECE;
-	Thu, 12 Dec 2024 15:17:46 +0000 (UTC)
+	 MIME-Version; b=BZ9nTklPeegkNwxyazSu21yBWtdsg3yVcsBLZjg6PnWw3G141j82KmOD12LEz7oyvsqMyIEj3YuE393VPNJMIahsnosvlTRovrVhX5hXcHflkLcdgVcrGG/4uhZfMAjTHxKf5tbYYo+1ZAK7MBNYbU+nf+W2lZDMqhcGTANOzsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnPxV1Th; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFD4C4CECE;
+	Thu, 12 Dec 2024 16:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016666;
-	bh=VPDfMqqzcNfuo+DLxvNMR2GACQvivbs1G0wk4wDrvTE=;
+	s=korg; t=1734022277;
+	bh=MAYYOnI+WIlV+eiteJnWevrswNY7rt6GJ/+8VXq5wsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IkRym9sDSuFoNBgYcH4nCovSSrP7tzu/GYup5NBL/RCL6P9AtmoIAttHzXIqsXMx5
-	 Okc9CeAei7AiMGOur1AN708LdsH2Hhfk2lVKmMmGifGOmnHeutR3kZAoKZy6LARLql
-	 1sXAyUVSf6+xLvmVGouc1fhlqdJgDQek3OBqP1qo=
+	b=HnPxV1ThnUEk2p7Mh6Jzthr4o/JxMd391SxO+z943/DgYNqehkGD3S82M8E/V0SSo
+	 IM/QP1IjvS1rctBFuJqwhP/rPWjQD+2+K9E0hrjfzxqj5arjwe6doZ8mTljcn/xeA6
+	 WaVL9uHM/Avo9poyGEvTSjbWdMKWeQHbaXFxubIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/466] kselftest/arm64: Dont leak pipe fds in pac.exec_sign_all()
+Subject: [PATCH 5.15 197/565] selftests: net: really check for bg process completion
 Date: Thu, 12 Dec 2024 15:56:32 +0100
-Message-ID: <20241212144315.590653329@linuxfoundation.org>
+Message-ID: <20241212144319.274481686@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 27141b690547da5650a420f26ec369ba142a9ebb ]
+[ Upstream commit 52ed077aa6336dbef83a2d6d21c52d1706fb7f16 ]
 
-The PAC exec_sign_all() test spawns some child processes, creating pipes
-to be stdin and stdout for the child. It cleans up most of the file
-descriptors that are created as part of this but neglects to clean up the
-parent end of the child stdin and stdout. Add the missing close() calls.
+A recent refactor transformed the check for process completion
+in a true statement, due to a typo.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20241111-arm64-pac-test-collisions-v1-1-171875f37e44@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+As a result, the relevant test-case is unable to catch the
+regression it was supposed to detect.
+
+Restore the correct condition.
+
+Fixes: 691bb4e49c98 ("selftests: net: avoid just another constant wait")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/0e6f213811f8e93a235307e683af8225cc6277ae.1730828007.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/pauth/pac.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/pmtu.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/arm64/pauth/pac.c b/tools/testing/selftests/arm64/pauth/pac.c
-index b743daa772f55..5a07b3958fbf2 100644
---- a/tools/testing/selftests/arm64/pauth/pac.c
-+++ b/tools/testing/selftests/arm64/pauth/pac.c
-@@ -182,6 +182,9 @@ int exec_sign_all(struct signatures *signed_vals, size_t val)
- 		return -1;
- 	}
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+index 31e3d0db7a12e..84c05e533056d 100755
+--- a/tools/testing/selftests/net/pmtu.sh
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -1799,7 +1799,7 @@ check_running() {
+ 	pid=${1}
+ 	cmd=${2}
  
-+	close(new_stdin[1]);
-+	close(new_stdout[0]);
-+
- 	return 0;
+-	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "{cmd}" ]
++	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "${cmd}" ]
  }
  
+ test_cleanup_vxlanX_exception() {
 -- 
 2.43.0
 
