@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8582F9EF88F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7C89EF55C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2605317B2F6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1C8317E401
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76E122333E;
-	Thu, 12 Dec 2024 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDED22332B;
+	Thu, 12 Dec 2024 17:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5vihbgh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpnbrHWU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651CB216E2D;
-	Thu, 12 Dec 2024 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7DF2153DD;
+	Thu, 12 Dec 2024 17:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025030; cv=none; b=ZOJJtftCmKZhSolvxQc+krhEe/gwgIvAVT2W+RYydyQY1lKobMlpk7TYYGq40H2WbG4kF1ZTsKv4QUm8eSMOKD8wPW/8xsn7PUOZmrsI+yR2903mi/8e3ZPfEjszJlvQ1y3VU+dL6cIeRMoI3bY/hv2BNocSKwe6L62dbZg5/7o=
+	t=1734022977; cv=none; b=NiP0qrqJFyqW1HYxD1USFHF7JxLSFB1XgtDPwN3L7beTqprdNXfT/FNKWdHs9XCANK2Q3buXZkgTynaoE0ucs3DShV9arg9ZnxVT9IClzakrZeSlP0Sjc43MY4Ex4hDmduf5TJN2icQGcBuUQx6lITUeVy9hPBgie8tVtCD9eho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025030; c=relaxed/simple;
-	bh=9dT6f2o3bqOd/vFNBDCzjLRXwZJ6208j7YILrlk6Xks=;
+	s=arc-20240116; t=1734022977; c=relaxed/simple;
+	bh=3kRjESqyhqvYIg1Ox9O7u0b2W4TC3pCatdaYBGyP3ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOXSew79wtZ5WMaYiItIqeYOezK3iLsaUEmBMv10IU2wKzUqKQJeyXOVFcAacuPZ8GBA9+VwXLwt2DnCHdJ+j+fawup8cFEhKxgRKlqkJaWE+jzUjmOfG1pXNHDcU6tc5b8T8si0Gx8g9bJAEB0/GrldfmuerS0E+ggvw1xe+vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5vihbgh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAC6C4CECE;
-	Thu, 12 Dec 2024 17:37:09 +0000 (UTC)
+	 MIME-Version; b=LNL0owAQhC7Qw52Myx4XyV725rPj/m7InAnzRGA9VLv3mlwtXy2NAsE9lrmcSf4wpb/xxz/OLioqIZgdzqksF04M19GqObJebn8hPW5AvQVBDJ9+DkkV4AijfR3qrkSPG6ODG4ZEmx1WEC1RLD005esvRBPj+zv1BkHfKfsm1/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpnbrHWU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303ACC4CED0;
+	Thu, 12 Dec 2024 17:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025030;
-	bh=9dT6f2o3bqOd/vFNBDCzjLRXwZJ6208j7YILrlk6Xks=;
+	s=korg; t=1734022977;
+	bh=3kRjESqyhqvYIg1Ox9O7u0b2W4TC3pCatdaYBGyP3ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5vihbghyateIdyXc7PbuZu53URXnCjQJcAKxQUWtEJw9Vm+LLwMtrxOWuLRAt4lb
-	 vPbQZApCxi5Hsxd9T5gUTCoHBXcgd6fQvxjStFkJG/ANH4Mt3Oq0GRNnWsWIVKkra7
-	 HB94jx5yKfMpfDZJ8YsEVILvko5pSicipO36uyrg=
+	b=ZpnbrHWUHUSmFc89QjRdUrK1xmKWMGZIyrrxeQ8GVccgqP+ykUSCVRG2hHj/5yydT
+	 z4Tk5CuGhscIRrOx6bSpBbZsie/cAIFEPGVv54qH/TMPXIuPw9ZAB+ubo0AzMmxyx7
+	 bzInAPrOm9kan/ik4YFZEtWCOv4nuLzKM7Tm191w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 032/321] m68k: mvme147: Fix SCSI controller IRQ numbers
+Subject: [PATCH 5.15 355/565] um: Fix the return value of elf_core_copy_task_fpregs
 Date: Thu, 12 Dec 2024 15:59:10 +0100
-Message-ID: <20241212144231.274823370@linuxfoundation.org>
+Message-ID: <20241212144325.635833727@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 47bc874427382018fa2e3e982480e156271eee70 ]
+[ Upstream commit 865e3845eeaa21e9a62abc1361644e67124f1ec0 ]
 
-Sometime long ago the m68k IRQ code was refactored and the interrupt
-numbers for SCSI controller on this board ended up wrong, and it hasn't
-worked since.
+This function is expected to return a boolean value, which should be
+true on success and false on failure.
 
-The PCC adds 0x40 to the vector for its interrupts so they end up in
-the user interrupt range. Hence, the kernel number should be the kernel
-offset for user interrupt range + the PCC interrupt number.
-
-Fixes: 200a3d352cd5 ("[PATCH] m68k: convert VME irq code")
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Reviewed-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/0e7636a21a0274eea35bfd5d874459d5078e97cc.1727926187.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: d1254b12c93e ("uml: fix x86_64 core dump crash")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20240913023302.130300-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/include/asm/mvme147hw.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/um/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/m68k/include/asm/mvme147hw.h b/arch/m68k/include/asm/mvme147hw.h
-index e28eb1c0e0bfb..dbf88059e47a4 100644
---- a/arch/m68k/include/asm/mvme147hw.h
-+++ b/arch/m68k/include/asm/mvme147hw.h
-@@ -93,8 +93,8 @@ struct pcc_regs {
- #define M147_SCC_B_ADDR		0xfffe3000
- #define M147_SCC_PCLK		5000000
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index 4b6179a8a3e8f..8d84684000b0b 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -403,6 +403,6 @@ int elf_core_copy_fpregs(struct task_struct *t, elf_fpregset_t *fpu)
+ {
+ 	int cpu = current_thread_info()->cpu;
  
--#define MVME147_IRQ_SCSI_PORT	(IRQ_USER+0x45)
--#define MVME147_IRQ_SCSI_DMA	(IRQ_USER+0x46)
-+#define MVME147_IRQ_SCSI_PORT	(IRQ_USER + 5)
-+#define MVME147_IRQ_SCSI_DMA	(IRQ_USER + 6)
- 
- /* SCC interrupts, for MVME147 */
+-	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu);
++	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu) == 0;
+ }
  
 -- 
 2.43.0
