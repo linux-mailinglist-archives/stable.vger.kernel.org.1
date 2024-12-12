@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-103020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3605D9EF4CA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B71629EF98C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3F0828590D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0398D1897D30
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6203A216E2D;
-	Thu, 12 Dec 2024 17:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BDD223E77;
+	Thu, 12 Dec 2024 17:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwMcw2H0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HR0jsI/k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F39C2054EF;
-	Thu, 12 Dec 2024 17:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6E822370C;
+	Thu, 12 Dec 2024 17:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023302; cv=none; b=iqM6eQnXCfICKx7nRLPcfsTXf35/LQX29ZYIxLcoJOO7dq4oej4MIz/LLTkXw6U0YnJ30EVLDJH2eoRiO0Xe8dG8UAU4FZ6W+5KxBEHcfDYDvs/+W7WbM41ifAbagp+hkHRVdcqhqvStvIMwo74iqpd3WSqepkPzayEfAU2USqQ=
+	t=1734025435; cv=none; b=OZdixfYbJyr0dTMizkYjdC7TSbM1QYze2F3EaDXF/KlBPSXGpKYn1GnJmLN7hpeABJLR48QPrysESZccbD1laKS0B26VLZhdWC3PKDTXqgPjmk1D94qcl25SxUFqEjiX8PphhtSYvg/v0iR2RmT4ssD8bfUP0YI5LpIQvULiDkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023302; c=relaxed/simple;
-	bh=2aK++RlA23jWlaHmOEr7m7El++geUCYpL2fLI6UH2Fg=;
+	s=arc-20240116; t=1734025435; c=relaxed/simple;
+	bh=yW+4VT8LVR0MX0Gjtpdjn3w354bqYuMWY1FhQtv9TP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=trIfUgFu9KzAj9iMzLFs9E9Lbz9FXm/y9K3QgJRu1tcigVJpv5LcixphK0tsOl+iZA/SozqbRagor+StmiEHt57+8YU1L5cEQxvGhISv2yMpaRpcVxtx3sbm9EKas9MuRbw3DsgKyUCuzhZvGHr027jeQQ45JxQn42MrnfMYcJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwMcw2H0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C39C4CECE;
-	Thu, 12 Dec 2024 17:08:21 +0000 (UTC)
+	 MIME-Version; b=BIarUXNxC37oV+EBlhmW6WG28xMwj+T/+wqNVC+z4VksfhfclPZraxcVNbYou54wxue3O9/W7qJZF6RnR89AiKwtch9jP3rQelIz/f6ExkPgrLeNN5O7hEsx/vBaTDvuv9J4xW4MxQeleGH/g8jKjw0zgwrvzqDMxCgtlXfm0iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HR0jsI/k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7FFC4CEDD;
+	Thu, 12 Dec 2024 17:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023302;
-	bh=2aK++RlA23jWlaHmOEr7m7El++geUCYpL2fLI6UH2Fg=;
+	s=korg; t=1734025434;
+	bh=yW+4VT8LVR0MX0Gjtpdjn3w354bqYuMWY1FhQtv9TP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwMcw2H0vHpBCiVLT6FmCKE1agD3xMjhHxzlqQyTwDChFLBjm72BUZLxNFjRQrt7S
-	 5LhB65fHIp24Y5J0FyTEVJ624nFwky4F0tHkp1O2EJ4yklHj+LySL+iNd1xbWhaTxj
-	 LlXB9pUfyym+zOhZ1AEirl5qVibhA9fpGvGvnLKU=
+	b=HR0jsI/kL+S5DpSvjAPPPrjtthK54Gr6o91OeFd5mPDhggux6ftXtuQ9E9f+Z9jL9
+	 3eZDqnidRVr0YhvkLM/+Ecmx+d6ccz3vDpKv7+6gRDr30TQ65CZEzVQQa1ZpPe1JZL
+	 qFxmeaBmyK+u7BzdZn81k1wg22WHkTFIWZz5PB7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 490/565] net: inet: do not leave a dangling sk pointer in inet_create()
-Date: Thu, 12 Dec 2024 16:01:25 +0100
-Message-ID: <20241212144331.138226196@linuxfoundation.org>
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.4 168/321] media: wl128x: Fix atomicity violation in fmc_send_cmd()
+Date: Thu, 12 Dec 2024 16:01:26 +0100
+Message-ID: <20241212144236.614578733@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit 9365fa510c6f82e3aa550a09d0c5c6b44dbc78ff ]
+commit ca59f9956d4519ab18ab2270be47c6b8c6ced091 upstream.
 
-sock_init_data() attaches the allocated sk object to the provided sock
-object. If inet_create() fails later, the sk object is freed, but the
-sock object retains the dangling pointer, which may create use-after-free
-later.
+Atomicity violation occurs when the fmc_send_cmd() function is executed
+simultaneously with the modification of the fmdev->resp_skb value.
+Consider a scenario where, after passing the validity check within the
+function, a non-null fmdev->resp_skb variable is assigned a null value.
+This results in an invalid fmdev->resp_skb variable passing the validity
+check. As seen in the later part of the function, skb = fmdev->resp_skb;
+when the invalid fmdev->resp_skb passes the check, a null pointer
+dereference error may occur at line 478, evt_hdr = (void *)skb->data;
 
-Clear the sk pointer in the sock object on error.
+To address this issue, it is recommended to include the validity check of
+fmdev->resp_skb within the locked section of the function. This
+modification ensures that the value of fmdev->resp_skb does not change
+during the validation process, thereby maintaining its validity.
 
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-7-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations.
+
+Fixes: e8454ff7b9a4 ("[media] drivers:media:radio: wl128x: FM Driver Common sources")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/af_inet.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ drivers/media/radio/wl128x/fmdrv_common.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index b225e049daea2..0701de762c4c0 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -373,32 +373,30 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
- 		inet->inet_sport = htons(inet->inet_num);
- 		/* Add to protocol hash chains. */
- 		err = sk->sk_prot->hash(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
+--- a/drivers/media/radio/wl128x/fmdrv_common.c
++++ b/drivers/media/radio/wl128x/fmdrv_common.c
+@@ -463,11 +463,12 @@ int fmc_send_cmd(struct fmdev *fmdev, u8
+ 			   jiffies_to_msecs(FM_DRV_TX_TIMEOUT) / 1000);
+ 		return -ETIMEDOUT;
  	}
- 
- 	if (sk->sk_prot->init) {
- 		err = sk->sk_prot->init(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
++	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
+ 	if (!fmdev->resp_skb) {
++		spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
+ 		fmerr("Response SKB is missing\n");
+ 		return -EFAULT;
  	}
- 
- 	if (!kern) {
- 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- out:
- 	return err;
- out_rcu_unlock:
- 	rcu_read_unlock();
- 	goto out;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- 
--- 
-2.43.0
-
+-	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
+ 	skb = fmdev->resp_skb;
+ 	fmdev->resp_skb = NULL;
+ 	spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
 
 
 
