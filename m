@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03A49EF55A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9049EF5AF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C7C116A512
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CE87287BE4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E63D222D79;
-	Thu, 12 Dec 2024 16:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA29211493;
+	Thu, 12 Dec 2024 17:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBJxbb2f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lN84yBn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192C7222D58;
-	Thu, 12 Dec 2024 16:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD1E1487CD;
+	Thu, 12 Dec 2024 17:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022564; cv=none; b=P5EdWH9Ilbqe1YCKrs8XIQU+SS98h+eJJUT2jvhlTUj6Z21e9CT3F7i7Otaz3XlyPMtnYKjKgOH3LFEQZNuv60AE0sFHWW5oEigzE3rp/ZZSFrb7qYaZ3/Oq51oej484972f/EYvJ4ItiSf6iyx+5RQN5k8iEuC007tkECwDcWs=
+	t=1734023938; cv=none; b=Xel2vQvrYe+klnFGdxw+lj/rijookXyAH83lFjFT3IjnXVB7auvmNAlYEMVLBWY4AVao/bSulsCfvilhrdG7+IKoeM96IJ3zYhQkLHM3uEPevhqjCKpZoGGnRNdDzCL+qZrezCrbrVejXeyAH5CzgafBNF+NjFN3/QDftRbYlKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022564; c=relaxed/simple;
-	bh=OqpScns4Gfwn7oAf9PYZUTMqWAXQS/qyX2IYU3b4h9o=;
+	s=arc-20240116; t=1734023938; c=relaxed/simple;
+	bh=61698ppP8qy5rcMN0Ky2TyMzRjkWgIlkqZSceWL+T/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aEarAOEIRC2QzejT/kNUFLurahFu1/WkfEprU17NXWharjwr7zet1EP2kaGoWlyI91oHqqtZDcXI1W1/A4N2bP/xeltvbnbhBe7cnLeDkkWvZEGN6gnl6xIDaVRP5q3/STrAB8Lt5YaRPvy7wx3A7FKJppJJsWe3FfpAjlRSy8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBJxbb2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E39FC4CED3;
-	Thu, 12 Dec 2024 16:56:03 +0000 (UTC)
+	 MIME-Version; b=c6RtTCz044JKi6QACGlOuTz739Pu1+XLo5g7YZurHyqpjiJOQZAm7iWWU7Z1E8LSOFp4mVE0cM5ylg76OldHaT6q/YqDzLc0mjV146FgyWX3QtgMdN45HYXNFsQvN9anDa51wj3SOrX8UkAcBD2YrHzn8gqJEqaH+i/Le7u4lMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lN84yBn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED3DC4CECE;
+	Thu, 12 Dec 2024 17:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022564;
-	bh=OqpScns4Gfwn7oAf9PYZUTMqWAXQS/qyX2IYU3b4h9o=;
+	s=korg; t=1734023938;
+	bh=61698ppP8qy5rcMN0Ky2TyMzRjkWgIlkqZSceWL+T/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tBJxbb2fKBrT3kCUAho5qJB4OMI3OeQxVo9HMkME+2LqZDzBOxvJlP7YRS22gHXPC
-	 /7O31ofgWMBxADu/p9IsWarOGKiqy7tO/rpvlI4CqqnoL/p/qeqIqgKXsQYY91Zq+j
-	 wwgfI8eoaTIOHkYc1KLrQ+hZIqqK0TMhyGkje1E0=
+	b=lN84yBn9YQyJ/0SHqMD0a6EgO6QIvvfkM6K3QFII/JPr+aDh5h5F8HDcpl/lwd3L9
+	 Pte3OgwMLU70tp/CCOOdQ12j4J7pTzsRl9bCYF6H+3ucxoJPmbvAwRLZNhurWtmt8n
+	 gaPxhcN6AkdCbkD9htgCWYwdqMEEKfdSrM8lHHGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghuram Chary J <raghuramchary.jallipalli@microchip.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Primoz Fiser <primoz.fiser@norik.com>,
+	Christian Gmeiner <christian.gmeiner@gmail.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 275/565] net: usb: lan78xx: Fix memory leak on device unplug by freeing PHY device
-Date: Thu, 12 Dec 2024 15:57:50 +0100
-Message-ID: <20241212144322.331951738@linuxfoundation.org>
+Subject: [PATCH 5.10 133/459] drm/etnaviv: rework linear window offset calculation
+Date: Thu, 12 Dec 2024 15:57:51 +0100
+Message-ID: <20241212144258.767117707@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit ae7370e61c5d8f5bcefc2d4fca724bd4e9bbf789 ]
+[ Upstream commit 4bfdd2aa67fbfba09d7c32a4c7fd4c5eb1052bce ]
 
-Add calls to `phy_device_free` after `fixed_phy_unregister` to fix a
-memory leak that occurs when the device is unplugged. This ensures
-proper cleanup of pseudo fixed-link PHYs.
+The current calculation based on the required_dma mask can be significantly
+off, so that the linear window only overlaps a small part of the DRAM
+address space. This can lead to the command buffer being unmappable, which
+is obviously bad.
 
-Fixes: 89b36fb5e532 ("lan78xx: Lan7801 Support for Fixed PHY")
-Cc: Raghuram Chary J <raghuramchary.jallipalli@microchip.com>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20241116130558.1352230-2-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Rework the linear window offset calculation to be based on the command buffer
+physical address, making sure that the command buffer is always mappable.
+
+Tested-by: Primoz Fiser <primoz.fiser@norik.com>
+Reviewed-by: Christian Gmeiner <christian.gmeiner@gmail.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Stable-dep-of: 13c96ac9a3f0 ("drm/etnaviv: Request pages from DMA32 zone on addressing_limited")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/lan78xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 52 +++++++++++++--------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 77cb30259dca7..9d0d67e11eb14 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -2220,6 +2220,7 @@ static int lan78xx_phy_init(struct lan78xx_net *dev)
- 		if (dev->chipid == ID_REV_CHIP_ID_7801_) {
- 			if (phy_is_pseudo_fixed_link(phydev)) {
- 				fixed_phy_unregister(phydev);
-+				phy_device_free(phydev);
- 			} else {
- 				phy_unregister_fixup_for_uid(PHY_KSZ9031RNX,
- 							     0xfffffff0);
-@@ -3930,8 +3931,10 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+index f3281d56b1d82..8baa59fb32f2d 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+@@ -27,10 +27,6 @@
+ #include "state_hi.xml.h"
+ #include "cmdstream.xml.h"
  
- 	phy_disconnect(net->phydev);
+-#ifndef PHYS_OFFSET
+-#define PHYS_OFFSET 0
+-#endif
+-
+ static const struct platform_device_id gpu_ids[] = {
+ 	{ .name = "etnaviv-gpu,2d" },
+ 	{ },
+@@ -741,6 +737,7 @@ static void etnaviv_gpu_hw_init(struct etnaviv_gpu *gpu)
+ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+ {
+ 	struct etnaviv_drm_private *priv = gpu->drm->dev_private;
++	dma_addr_t cmdbuf_paddr;
+ 	int ret, i;
  
--	if (phy_is_pseudo_fixed_link(phydev))
-+	if (phy_is_pseudo_fixed_link(phydev)) {
- 		fixed_phy_unregister(phydev);
-+		phy_device_free(phydev);
+ 	ret = pm_runtime_get_sync(gpu->dev);
+@@ -783,28 +780,6 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+ 	if (ret)
+ 		goto fail;
+ 
+-	/*
+-	 * Set the GPU linear window to be at the end of the DMA window, where
+-	 * the CMA area is likely to reside. This ensures that we are able to
+-	 * map the command buffers while having the linear window overlap as
+-	 * much RAM as possible, so we can optimize mappings for other buffers.
+-	 *
+-	 * For 3D cores only do this if MC2.0 is present, as with MC1.0 it leads
+-	 * to different views of the memory on the individual engines.
+-	 */
+-	if (!(gpu->identity.features & chipFeatures_PIPE_3D) ||
+-	    (gpu->identity.minor_features0 & chipMinorFeatures0_MC20)) {
+-		u32 dma_mask = (u32)dma_get_required_mask(gpu->dev);
+-		if (dma_mask < PHYS_OFFSET + SZ_2G)
+-			priv->mmu_global->memory_base = PHYS_OFFSET;
+-		else
+-			priv->mmu_global->memory_base = dma_mask - SZ_2G + 1;
+-	} else if (PHYS_OFFSET >= SZ_2G) {
+-		dev_info(gpu->dev, "Need to move linear window on MC1.0, disabling TS\n");
+-		priv->mmu_global->memory_base = PHYS_OFFSET;
+-		gpu->identity.features &= ~chipFeatures_FAST_CLEAR;
+-	}
+-
+ 	/*
+ 	 * If the GPU is part of a system with DMA addressing limitations,
+ 	 * request pages for our SHM backend buffers from the DMA32 zone to
+@@ -821,6 +796,31 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+ 		goto fail;
+ 	}
+ 
++	/*
++	 * Set the GPU linear window to cover the cmdbuf region, as the GPU
++	 * won't be able to start execution otherwise. The alignment to 128M is
++	 * chosen arbitrarily but helps in debugging, as the MMU offset
++	 * calculations are much more straight forward this way.
++	 *
++	 * On MC1.0 cores the linear window offset is ignored by the TS engine,
++	 * leading to inconsistent memory views. Avoid using the offset on those
++	 * cores if possible, otherwise disable the TS feature.
++	 */
++	cmdbuf_paddr = ALIGN_DOWN(etnaviv_cmdbuf_get_pa(&gpu->buffer), SZ_128M);
++
++	if (!(gpu->identity.features & chipFeatures_PIPE_3D) ||
++	    (gpu->identity.minor_features0 & chipMinorFeatures0_MC20)) {
++		if (cmdbuf_paddr >= SZ_2G)
++			priv->mmu_global->memory_base = SZ_2G;
++		else
++			priv->mmu_global->memory_base = cmdbuf_paddr;
++	} else if (cmdbuf_paddr + SZ_128M >= SZ_2G) {
++		dev_info(gpu->dev,
++			 "Need to move linear window on MC1.0, disabling TS\n");
++		gpu->identity.features &= ~chipFeatures_FAST_CLEAR;
++		priv->mmu_global->memory_base = SZ_2G;
 +	}
- 
- 	usb_scuttle_anchored_urbs(&dev->deferred);
- 
++
+ 	/* Setup event management */
+ 	spin_lock_init(&gpu->event_spinlock);
+ 	init_completion(&gpu->event_free);
 -- 
 2.43.0
 
