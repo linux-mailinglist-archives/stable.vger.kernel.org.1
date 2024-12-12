@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5289EEFC3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E049EF2C2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9800297C8D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0E3285443
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615C0236F8C;
-	Thu, 12 Dec 2024 16:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064FF222D4A;
+	Thu, 12 Dec 2024 16:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOm/CCqV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0jIOG9L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B0B237FD3;
-	Thu, 12 Dec 2024 16:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B9E6F2FE;
+	Thu, 12 Dec 2024 16:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019854; cv=none; b=W3Ut3pLBvk0hHlEuwtiNu/Uv0vlHaqYe9ElXVWXI9r0oTw8FOAeRUuEpPQxwgMWgejqKTUZk2v94QzP4c9vJlyv3lxZpykeqr4xENQ1xtEoLKU5mdZ2BZlrh8OZLndQCXNPXBSvIRRoJP93mH8HxtkVeyv/tAxXQ+1A40ZgZHtM=
+	t=1734021794; cv=none; b=r7GdspmjHHWBOhN7ohGieqnpsUgy1BfdV79cTcQpxB35tZ6hS9OM+gvrlyfCiDnelpYZBbhrVEKp7x+lFp5Mby2YmTfPdUbw3g/rPVO45xmZSBI3Q150m7ZScomKboh43VPmQnUNSEdJ4AKEBPiecRacmxxX2RaukqvO4VGupVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019854; c=relaxed/simple;
-	bh=iANmz/qIuLDy5WcOI6eiW7hF+AYnMMRPCtRSgTtTFNM=;
+	s=arc-20240116; t=1734021794; c=relaxed/simple;
+	bh=fBGt7jhlTq/uiF3DhN68OqTvCH8ZDXGxOxyOr+78J3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=etof27l8H9AjXljrUpdhyr348h0vn7Z0Uwbxe3s+us0XO/DGWGFpO8V61uxM+jRVvtNUcg++iWAuoSaU0CMdHiGvIQ8t3cQMjn2Zl8qr3lccJDWU+0iR9RhAXUuO15PrnfisXgbogzWdYuRJtNDf0f1TaVhPEeW/wFFGTXUmNyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOm/CCqV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39646C4CED0;
-	Thu, 12 Dec 2024 16:10:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=apU+89nmuLGB19l1NK7AlGgu5svowadhRtaFeNaWXMaSDgr+JvlfZJEAlL5+Felb8WOZMGOKY65TRKzhbkibReSVDwVfkzuCw1K/bJ8sSyNeApqltMsp1tr9dZtERlXyEkZGy/efwhy0sFj2WwhADRZ8eZX4h5xTIKjdhGqipyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0jIOG9L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C30BC4CECE;
+	Thu, 12 Dec 2024 16:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019853;
-	bh=iANmz/qIuLDy5WcOI6eiW7hF+AYnMMRPCtRSgTtTFNM=;
+	s=korg; t=1734021794;
+	bh=fBGt7jhlTq/uiF3DhN68OqTvCH8ZDXGxOxyOr+78J3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOm/CCqV79CaXaHuDm2Jh5coblfasfKrnef695d5v5B4XL8cMl+dxUF/tqyRmtnK6
-	 wJXgaLzn71LE+G0tQy8epdm0qOWqLwBC+EehpQiXhLvHpLLZ5ktpGiacQa7VbXsu2t
-	 t9PANnJL2vx5Keu59fIi5tTpATzrgTfKFYbNE9IE=
+	b=z0jIOG9L4X0znHBKvBSZGdXG///i+rBMAd0mQgZSF0mo8wi3r+BIxG1Al7nZW53p8
+	 KvccBBRfOx7AdA5WMxmLvYy5Hg8lryrcRJC3uGAJFrTtsfk0T77peuuQXPS6zzFna7
+	 FeWM4mD339Bo0D1JaUArdhE3y8tNGCY9c7PpnRuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Alexander Dahl <ada@thorsis.com>, Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 315/772] spi: atmel-quadspi: Fix register name in verbose logging function
+Subject: [PATCH 5.15 065/565] can: j1939: fix error in J1939 documentation.
 Date: Thu, 12 Dec 2024 15:54:20 +0100
-Message-ID: <20241212144402.906881710@linuxfoundation.org>
+Message-ID: <20241212144314.063500894@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +65,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Alexander Hölzl <alexander.hoelzl@gmx.net>
 
-[ Upstream commit 2ac40e6d0ccdd93031f8b1af61b0fe5cdd704923 ]
+[ Upstream commit b6ec62e01aa4229bc9d3861d1073806767ea7838 ]
 
-`atmel_qspi_reg_name()` is used for pretty-printing register offsets
-for verbose logging of register accesses. However, due to a typo
-(likely a copy-paste error), QSPI_RD's offset prints as "MR", the
-name of the previous register. Fix this typo.
+The description of PDU1 format usage mistakenly referred to PDU2 format.
 
-Fixes: c528ecfbef04 ("spi: atmel-quadspi: Add verbose debug facilities to monitor register accesses")
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Alexander Dahl <ada@thorsis.com>
-Link: https://patch.msgid.link/20241122141302.2599636-1-csokas.bence@prolan.hu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20241023145257.82709-1-alexander.hoelzl@gmx.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/atmel-quadspi.c | 2 +-
+ Documentation/networking/j1939.rst | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index d96c40e7c8123..b5afe5790b1d2 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -183,7 +183,7 @@ static const char *atmel_qspi_reg_name(u32 offset, char *tmp, size_t sz)
- 	case QSPI_MR:
- 		return "MR";
- 	case QSPI_RD:
--		return "MR";
-+		return "RD";
- 	case QSPI_TD:
- 		return "TD";
- 	case QSPI_SR:
+diff --git a/Documentation/networking/j1939.rst b/Documentation/networking/j1939.rst
+index b705d2801e9c3..80b1c5e19fd53 100644
+--- a/Documentation/networking/j1939.rst
++++ b/Documentation/networking/j1939.rst
+@@ -121,7 +121,7 @@ format, the Group Extension is set in the PS-field.
+ 
+ On the other hand, when using PDU1 format, the PS-field contains a so-called
+ Destination Address, which is _not_ part of the PGN. When communicating a PGN
+-from user space to kernel (or vice versa) and PDU2 format is used, the PS-field
++from user space to kernel (or vice versa) and PDU1 format is used, the PS-field
+ of the PGN shall be set to zero. The Destination Address shall be set
+ elsewhere.
+ 
 -- 
 2.43.0
 
