@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300769EEB38
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 316079EF232
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB4992827C6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D92F189D140
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7CA212B0F;
-	Thu, 12 Dec 2024 15:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B969322A7FA;
+	Thu, 12 Dec 2024 16:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4M/vTTc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rfewotgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189792AF0E;
-	Thu, 12 Dec 2024 15:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76488222D63;
+	Thu, 12 Dec 2024 16:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016944; cv=none; b=bWgokGX2LdvPzTVptjUf9dWBWqflbLvB7MVUBHX1qhs2GCw92HwNIAbvDs4lqMkT6sdC/9LTu+Es34vOX8eecwFrrcZi+34bb9OBcpxWCqTxrGqniWA0tpFyg8RSBYaJDerg4i3tN3E+cwHTalAEkFr1LgJyilXB65PHBcdNHaQ=
+	t=1734020802; cv=none; b=Dhlr4VKQGjSA4vnx9yM62it2L6poZ8K9j2hKe5UggKVeU6990njFzrvfeEMK3JSXgKcnw119jwJFcrOoTD+gFOO+/vqUfvY6QEZDuwKND/raEcOAturUum1iTUFe437rdWtZ4Ka50PeojHUvjg9I//KcWdc4JiFCSGQTsZE+Fz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016944; c=relaxed/simple;
-	bh=E0uzK/boG5F+M4Qjwx5lFBugQg/IjLfT1YSgPxmb7cY=;
+	s=arc-20240116; t=1734020802; c=relaxed/simple;
+	bh=/ZW/C7LAHBzb1BD5NWrCHKmzoKQ4nexyFgPrNtEnBR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRFkdtYWdTKq8Gp/5m1HyPExXo0k8R8B/KjYGsA8ftN3f9ACm977bkzxReDEnUAw2VWWZgnaWljRS7+xmELujSbR0x67kn0ihtq87jCOloJIJfiqnVTKS1kfKJop2m8uo9t16TzAdJIrMvrliSMDdUBFLfFmJ0hiVFqvs0Bb1RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4M/vTTc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF4AC4CECE;
-	Thu, 12 Dec 2024 15:22:23 +0000 (UTC)
+	 MIME-Version; b=CQXlous2TEHC5fP4vZk+lXsocQYbnY3drjRnPKVt16ie3KtzBMBlqaPoRHTHSKdIUOLSoKq1/bhnrmnC6ZZlY5+Du9PCn4RbUcPsYUDjJHARVW/nO3gARXVLz6DHe9ABvichpYiuZkG1nJCtVkrFX+xUOYxSvifu3wwuHHxjDIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rfewotgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6216C4CECE;
+	Thu, 12 Dec 2024 16:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016944;
-	bh=E0uzK/boG5F+M4Qjwx5lFBugQg/IjLfT1YSgPxmb7cY=;
+	s=korg; t=1734020802;
+	bh=/ZW/C7LAHBzb1BD5NWrCHKmzoKQ4nexyFgPrNtEnBR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4M/vTTcj2HKxtvidvJedKzFCeEgFbWFAGSdIzXJM88BbH9bcjmx6JyEMF7XYVH6X
-	 xc6Nu8v2mFMZK7Qi9pkHUZvQyUwazHyeZVaYx/kSVZ8OQa1IbT22mkHarFnfDLRpFY
-	 cbxim9OlNZ1baODL1eYIrOxaBOWz2sSn6vnaU9tk=
+	b=RfewotgkG9bizlD4d/Rf8oIOADRU5HKbVAwP2Gzow+s67mpDKQuJ6k06P+x6ryGfY
+	 rLcWWgnr7fNl+mrAjtI8TUWRlpwzDwLfct7TZLWI3iMZxCbCVKEErb9HZVDXU98NVr
+	 xpHAsFgQ+gBF2JUcEaXp4CTeIFsE/9kaN5o3PflA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 340/466] Bluetooth: btusb: Add RTL8852BE device 0489:e123 to device tables
+Subject: [PATCH 6.1 564/772] driver core: fw_devlink: Improve logs for cycle detection
 Date: Thu, 12 Dec 2024 15:58:29 +0100
-Message-ID: <20241212144320.215030414@linuxfoundation.org>
+Message-ID: <20241212144413.264564461@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hilda Wu <hildawu@realtek.com>
+From: Saravana Kannan <saravanak@google.com>
 
-[ Upstream commit 69b84ffce260ff13826dc10aeb3c3e5c2288a552 ]
+[ Upstream commit 6e7ad1aebb4fc9fed0217dd50ef6e58a53f17d81 ]
 
-Add the support ID 0489:e123 to usb_device_id table for
-Realtek RTL8852B chip.
+The links in a cycle are not all logged in a consistent manner or not
+logged at all. Make them consistent by adding a "cycle:" string and log all
+the link in the cycles (even the child ==> parent dependency) so that it's
+easier to debug cycle detection code. Also, mark the start and end of a
+cycle so it's easy to tell when multiple cycles are logged back to back.
 
-The device info from /sys/kernel/debug/usb/devices as below.
-
-T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=04 Dev#=  7 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e123 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Tested-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240202095636.868578-4-saravanak@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bac3b10b78e5 ("driver core: fw_devlink: Stop trying to optimize cycle detection logic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/base/core.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 4ccaddb46ddd8..c247fffbd6361 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -524,6 +524,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe123), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 30204e62497c2..f0a66fec4fa75 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -137,7 +137,7 @@ static void __fwnode_link_del(struct fwnode_link *link)
+  */
+ static void __fwnode_link_cycle(struct fwnode_link *link)
+ {
+-	pr_debug("%pfwf: Relaxing link with %pfwf\n",
++	pr_debug("%pfwf: cycle: depends on %pfwf\n",
+ 		 link->consumer, link->supplier);
+ 	link->flags |= FWLINK_FLAG_CYCLE;
+ }
+@@ -1956,6 +1956,7 @@ static bool __fw_devlink_relax_cycles(struct device *con,
  
+ 	/* Termination condition. */
+ 	if (sup_dev == con) {
++		pr_debug("----- cycle: start -----\n");
+ 		ret = true;
+ 		goto out;
+ 	}
+@@ -1987,8 +1988,11 @@ static bool __fw_devlink_relax_cycles(struct device *con,
+ 	else
+ 		par_dev = fwnode_get_next_parent_dev(sup_handle);
+ 
+-	if (par_dev && __fw_devlink_relax_cycles(con, par_dev->fwnode))
++	if (par_dev && __fw_devlink_relax_cycles(con, par_dev->fwnode)) {
++		pr_debug("%pfwf: cycle: child of %pfwf\n", sup_handle,
++			 par_dev->fwnode);
+ 		ret = true;
++	}
+ 
+ 	if (!sup_dev)
+ 		goto out;
+@@ -2004,6 +2008,8 @@ static bool __fw_devlink_relax_cycles(struct device *con,
+ 
+ 		if (__fw_devlink_relax_cycles(con,
+ 					      dev_link->supplier->fwnode)) {
++			pr_debug("%pfwf: cycle: depends on %pfwf\n", sup_handle,
++				 dev_link->supplier->fwnode);
+ 			fw_devlink_relax_link(dev_link);
+ 			dev_link->flags |= DL_FLAG_CYCLE;
+ 			ret = true;
+@@ -2083,6 +2089,7 @@ static int fw_devlink_create_devlink(struct device *con,
+ 		if (__fw_devlink_relax_cycles(con, sup_handle)) {
+ 			__fwnode_link_cycle(link);
+ 			flags = fw_devlink_get_flags(link->flags);
++			pr_debug("----- cycle: end -----\n");
+ 			dev_info(con, "Fixed dependency cycle(s) with %pfwf\n",
+ 				 sup_handle);
+ 		}
 -- 
 2.43.0
 
