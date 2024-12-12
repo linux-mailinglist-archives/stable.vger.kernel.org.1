@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-101930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496749EEFF3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146EA9EEF6B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44DAD16E3B6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8A2D296E64
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A5022A815;
-	Thu, 12 Dec 2024 16:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9932D223320;
+	Thu, 12 Dec 2024 16:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6FBXrv3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+FNM9rL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80933223301;
-	Thu, 12 Dec 2024 16:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549E7223304;
+	Thu, 12 Dec 2024 16:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019321; cv=none; b=AUTMOh37OHzEq926hTv4JMH1oiX/o6pagRTmIBd4joYqJ12QJ5/f8r6Sti92kLLhEW/w6dJkdcNS/nnOcP4sMgQ+dQwbrQSjb2D2HRZBtaCBDRWnEVaZelD65hTdaV9QY2tJpyY+HfirRY00zsU4LXMXz8ptkLF6hYF3QUjkKGE=
+	t=1734019363; cv=none; b=ekP5MS4AjdbFAkoUHYaur5yAseTUUizEOOImcreMCS2d3W9CUFXKtxu4oixhsGeDEe0jNiHBfuH81JY4SlH8YitFvML+xJHQvNzzFIpj2Whh44Qz3HUzbcu3vyz/LfpSDzyVnGncA3is5hXykwh51I50ITXaGwqzwJPTDAtybvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019321; c=relaxed/simple;
-	bh=QUyH5/+6hNe1w9DMfHHmCOq/mMLCOeUXWGA+gBwMJTI=;
+	s=arc-20240116; t=1734019363; c=relaxed/simple;
+	bh=zjVlyBvB0CZjTmGCeIZXSmrzLVdD8OABLWGLt1EYCOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJRnVNEBY0/F0ymycWkE+tQDxtQf0dZDtpAT05zf1zzCceIs/PNfmN0CwkTuSNAMihZ1W14ai3zxy/aPmeR32it/nPa2Oiw9/eD2lI7362+jY7O3rQwJuHAupIcTt9jvhNSDT+jekiRW1+FyTi7zLectgcrvbPyOZWBx/iOJvVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6FBXrv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A338C4CECE;
-	Thu, 12 Dec 2024 16:02:00 +0000 (UTC)
+	 MIME-Version; b=tW6cYmmvH7bT5nDL2DVBkOCOp3V6w3uHhOgsBwY0JlgHv0a2qzXtp/+xoYT8khQU7fPQA4BmqbmnhjJ4YRB32vTKRFIS8gWOxS0uH4njQ/Q41zMhSMOQtnK8u1eIMkX+9JltwkLRh7bIQntd0GcGNwNhQFMx9+jbeHlA3U70pws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+FNM9rL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2E8C4CEDE;
+	Thu, 12 Dec 2024 16:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019321;
-	bh=QUyH5/+6hNe1w9DMfHHmCOq/mMLCOeUXWGA+gBwMJTI=;
+	s=korg; t=1734019363;
+	bh=zjVlyBvB0CZjTmGCeIZXSmrzLVdD8OABLWGLt1EYCOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6FBXrv3iPAceCWPkn/0oJ4wP+4HRj4WcJLSwZMvGXFh1uJoJvgWmBE9Y1TavNcCC
-	 zmELaGai+aRlysm3ig3m5i9J1tHcyWgkq1qeUkvnlWNPKYStltZZbe7FhW3T/92LUC
-	 lGysSirhHA6pN0zC4fgwcsOde0wqmdmvOtSZQSF4=
+	b=A+FNM9rLaNE5to/b1Buf6Y26uHG2naX/eeOk+/YQMc8H/lyonhgSjd1E6egCtmbjK
+	 CBYo0k/LfVAvK8zQaHHcqVRvuCyhud2vg+HubPaSyJob7erxPjKYkIwgITR4OsJJIR
+	 r+hrrFeMP0d9tzUSPk9XidRgTFdwxG2BOqPo1dic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/772] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_ethtool.c
-Date: Thu, 12 Dec 2024 15:51:44 +0100
-Message-ID: <20241212144356.500554355@linuxfoundation.org>
+Subject: [PATCH 6.1 160/772] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_flows.c
+Date: Thu, 12 Dec 2024 15:51:45 +0100
+Message-ID: <20241212144356.540623691@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -69,48 +69,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit e26f8eac6bb20b20fdb8f7dc695711ebce4c7c5c ]
+[ Upstream commit bd3110bc102ab6292656b8118be819faa0de8dd0 ]
 
-Add error pointer check after calling otx2_mbox_get_rsp().
+Adding error pointer check after calling otx2_mbox_get_rsp().
 
-Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool")
-Fixes: d0cf9503e908 ("octeontx2-pf: ethtool fec mode support")
+Fixes: 9917060fc30a ("octeontx2-pf: Cleanup flow rule management")
+Fixes: f0a1913f8a6f ("octeontx2-pf: Add support for ethtool ntuple filters")
+Fixes: 674b3e164238 ("octeontx2-pf: Add additional checks while configuring ucast/bcast/mcast rules")
 Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c  | 10 ++++++++++
+ .../net/ethernet/marvell/octeontx2/nic/otx2_flows.c    | 10 ++++++++++
  1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index af779ae40d3c2..2d6f6edb15106 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -333,6 +333,11 @@ static void otx2_get_pauseparam(struct net_device *netdev,
- 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
- 		rsp = (struct cgx_pause_frm_cfg *)
- 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
-+		if (IS_ERR(rsp)) {
-+			mutex_unlock(&pfvf->mbox.lock);
-+			return;
-+		}
-+
- 		pause->rx_pause = rsp->rx_pause;
- 		pause->tx_pause = rsp->tx_pause;
- 	}
-@@ -1072,6 +1077,11 @@ static int otx2_set_fecparam(struct net_device *netdev,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+index 5c757508322b9..7c7f8814fb3f9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+@@ -121,6 +121,8 @@ int otx2_alloc_mcam_entries(struct otx2_nic *pfvf, u16 count)
  
- 	rsp = (struct fec_mode *)otx2_mbox_get_rsp(&pfvf->mbox.mbox,
- 						   0, &req->hdr);
+ 		rsp = (struct npc_mcam_alloc_entry_rsp *)otx2_mbox_get_rsp
+ 			(&pfvf->mbox.mbox, 0, &req->hdr);
++		if (IS_ERR(rsp))
++			goto exit;
+ 
+ 		for (ent = 0; ent < rsp->count; ent++)
+ 			flow_cfg->flow_ent[ent + allocated] = rsp->entry_list[ent];
+@@ -199,6 +201,10 @@ static int otx2_mcam_entry_init(struct otx2_nic *pfvf)
+ 
+ 	rsp = (struct npc_mcam_alloc_entry_rsp *)otx2_mbox_get_rsp
+ 	       (&pfvf->mbox.mbox, 0, &req->hdr);
 +	if (IS_ERR(rsp)) {
-+		err = PTR_ERR(rsp);
-+		goto end;
++		mutex_unlock(&pfvf->mbox.lock);
++		return PTR_ERR(rsp);
 +	}
-+
- 	if (rsp->fec >= 0)
- 		pfvf->linfo.fec = rsp->fec;
- 	else
+ 
+ 	if (rsp->count != req->count) {
+ 		netdev_info(pfvf->netdev,
+@@ -234,6 +240,10 @@ static int otx2_mcam_entry_init(struct otx2_nic *pfvf)
+ 
+ 	frsp = (struct npc_get_field_status_rsp *)otx2_mbox_get_rsp
+ 	       (&pfvf->mbox.mbox, 0, &freq->hdr);
++	if (IS_ERR(frsp)) {
++		mutex_unlock(&pfvf->mbox.lock);
++		return PTR_ERR(frsp);
++	}
+ 
+ 	if (frsp->enable) {
+ 		pfvf->flags |= OTX2_FLAG_RX_VLAN_SUPPORT;
 -- 
 2.43.0
 
