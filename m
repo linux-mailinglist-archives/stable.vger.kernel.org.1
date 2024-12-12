@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C5D9EF567
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 273CE9EF861
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:42 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA3F116D1FA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB6C62946B5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD0020969B;
-	Thu, 12 Dec 2024 17:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E00920A5EE;
+	Thu, 12 Dec 2024 17:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvbIApMc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KfUf6Jb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2025176AA1;
-	Thu, 12 Dec 2024 17:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF8713CA81;
+	Thu, 12 Dec 2024 17:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023293; cv=none; b=BZtOE3hKR8YYWwUGkFRvel4auT17bgrlABOhamSRx1YcJOz4fctizCPbcB8WVwW+37GI46smvMiAv3SWgcFyzuMQ1zy9w64qziXfNnVIq5ftb5CC6ZqTemaJgloh2FkC20WIZ0IjcXmxdct+u8SaWvjJfyk/m1fAi4PnDkj4/aI=
+	t=1734025300; cv=none; b=k5UWVTpMYS0oLjWAXrRaldVgmuHeM44NVJMe3c917gdIlWHaQ+73e2GrInwRhkQ7kFiqI/OQJvpIEd2I2JCapoyElGw8OAhfrAw5DTuNmlRhFdsfh2cFMMOv4SN1S1rjcZ1iIM3N/BGjs75P5DOCsslbWgjUSWJrEEsi7h44Dzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023293; c=relaxed/simple;
-	bh=eX56A0pVVlOyMXxkxKTtY/jPKB3U+T0ZHFQuQzThZVU=;
+	s=arc-20240116; t=1734025300; c=relaxed/simple;
+	bh=w426cREw3Y0ml7CSYqex9lGXCn61VIP2j1AQx5KTNZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KgPS6b9kwzmSetJY2Vul2w8Uv7iRbCQRb6l2e4lCTotfNGf6dBGb4GfW5kC/UXDkVYvQLcwV5zZLblKIc5hsgHDluV6S3IciUjpM5CiMv0PTCg1ekzwU6+kZwe9gFKDYGa/noWVmTsGdzGUerMMheO2RowOm7c8NNnc8tOjA0A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvbIApMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F12C4CECE;
-	Thu, 12 Dec 2024 17:08:12 +0000 (UTC)
+	 MIME-Version; b=tdN2FTVXo/BindOUb73liPtQzBvutLoF3zosRVbNk4CAu+LWm97Zx7Ta1h1YvdzciwUHNb10HsCBr7zrb1mlAwzkllB7psszrmL1Yv+EiVyC53aM2+VpOWnlX8Kgr+cGD9Jr+egZEn7O3dkNjcCyjMYQBeKuHoG2Q1RNj74JX6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KfUf6Jb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DA5C4CECE;
+	Thu, 12 Dec 2024 17:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023292;
-	bh=eX56A0pVVlOyMXxkxKTtY/jPKB3U+T0ZHFQuQzThZVU=;
+	s=korg; t=1734025299;
+	bh=w426cREw3Y0ml7CSYqex9lGXCn61VIP2j1AQx5KTNZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NvbIApMcrGGG/hnIhYBuciXTLVYFvdW4aScRbMk6fQO2IjNlyzgdRAjTEdFgqpahy
-	 vfGTvkQZaflpIvWj1Foz7xtpm608zwm91lAwyvdbaqubWhi+Q+Z0+ADXlRSnlXPm9C
-	 /3Z+jLqTiskxM9DqtDxZio+foxX7y+EOLex14lCg=
+	b=2KfUf6Jbjm3SuiBApJ4FUKgYi156EUz/uKgDnE+K8iGVoQEto4UbPPsntAoMMpuIU
+	 jna3NQIP7ziTZA2pi1qpS9Zn1G1kDQcwMM92I175G2QLQu8xkISPtTBQVt3zTBjyAt
+	 eeVn4LJ4uigA+suMGMDMp3USX+o7dR4TXm9Nh6rA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.15 447/565] can: dev: can_set_termination(): allow sleeping GPIOs
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 124/321] NFSD: Fix nfsd4_shutdown_copy()
 Date: Thu, 12 Dec 2024 16:00:42 +0100
-Message-ID: <20241212144329.384579151@linuxfoundation.org>
+Message-ID: <20241212144234.876260295@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit ee1dfbdd8b4b6de85e96ae2059dc9c1bdb6b49b5 upstream.
+[ Upstream commit 62a8642ba00aa8ceb0a02ade942f5ec52e877c95 ]
 
-In commit 6e86a1543c37 ("can: dev: provide optional GPIO based
-termination support") GPIO based termination support was added.
+nfsd4_shutdown_copy() is just this:
 
-For no particular reason that patch uses gpiod_set_value() to set the
-GPIO. This leads to the following warning, if the systems uses a
-sleeping GPIO, i.e. behind an I2C port expander:
+	while ((copy = nfsd4_get_copy(clp)) != NULL)
+		nfsd4_stop_copy(copy);
 
-| WARNING: CPU: 0 PID: 379 at /drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x50/0x6c
-| CPU: 0 UID: 0 PID: 379 Comm: ip Not tainted 6.11.0-20241016-1 #1 823affae360cc91126e4d316d7a614a8bf86236c
+nfsd4_get_copy() bumps @copy's reference count, preventing
+nfsd4_stop_copy() from releasing @copy.
 
-Replace gpiod_set_value() by gpiod_set_value_cansleep() to allow the
-use of sleeping GPIOs.
+A while loop like this usually works by removing the first element
+of the list, but neither nfsd4_get_copy() nor nfsd4_stop_copy()
+alters the async_copies list.
 
-Cc: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Cc: stable@vger.kernel.org
-Reported-by: Leonard Göhrs <l.goehrs@pengutronix.de>
-Tested-by: Leonard Göhrs <l.goehrs@pengutronix.de>
-Fixes: 6e86a1543c37 ("can: dev: provide optional GPIO based termination support")
-Link: https://patch.msgid.link/20241121-dev-fix-can_set_termination-v1-1-41fa6e29216d@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Best I can tell, then, is that nfsd4_shutdown_copy() continues to
+loop until other threads manage to remove all the items from this
+list. The spinning loop blocks shutdown until these items are gone.
+
+Possibly the reason we haven't seen this issue in the field is
+because client_has_state() prevents __destroy_client() from calling
+nfsd4_shutdown_copy() if there are any items on this list. In a
+subsequent patch I plan to remove that restriction.
+
+Fixes: e0639dc5805a ("NFSD introduce async copy feature")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/dev/dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4proc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -409,7 +409,7 @@ static int can_set_termination(struct ne
- 	else
- 		set = 0;
- 
--	gpiod_set_value(priv->termination_gpio, set);
-+	gpiod_set_value_cansleep(priv->termination_gpio, set);
- 
- 	return 0;
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 27e9754ad3b9d..3bae364048f6f 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1117,7 +1117,7 @@ static void nfsd4_stop_copy(struct nfsd4_copy *copy)
+ 	nfs4_put_copy(copy);
  }
+ 
+-static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
++static struct nfsd4_copy *nfsd4_unhash_copy(struct nfs4_client *clp)
+ {
+ 	struct nfsd4_copy *copy = NULL;
+ 
+@@ -1126,6 +1126,9 @@ static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
+ 		copy = list_first_entry(&clp->async_copies, struct nfsd4_copy,
+ 					copies);
+ 		refcount_inc(&copy->refcount);
++		copy->cp_clp = NULL;
++		if (!list_empty(&copy->copies))
++			list_del_init(&copy->copies);
+ 	}
+ 	spin_unlock(&clp->async_lock);
+ 	return copy;
+@@ -1135,7 +1138,7 @@ void nfsd4_shutdown_copy(struct nfs4_client *clp)
+ {
+ 	struct nfsd4_copy *copy;
+ 
+-	while ((copy = nfsd4_get_copy(clp)) != NULL)
++	while ((copy = nfsd4_unhash_copy(clp)) != NULL)
+ 		nfsd4_stop_copy(copy);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
