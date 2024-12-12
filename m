@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-102488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499769EF24F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C06859EF250
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1F4E290C51
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5278F290D33
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8FD242EF3;
-	Thu, 12 Dec 2024 16:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F6023E6C7;
+	Thu, 12 Dec 2024 16:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmTLGOwh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CskJJAm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871B8223C5C;
-	Thu, 12 Dec 2024 16:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6242623E6CA;
+	Thu, 12 Dec 2024 16:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021411; cv=none; b=fo0ivF21rV/YhoFo3S/g/BNXnFbz0d1PTO8vsi5PoNJ5xcT0qnhe24VUynfyul8zuEoSaaK0ckmexjX6G8Cb0F5jygkwQd5cHDy27EE01C9I/d9qK7b9wUEcfRg/PYO5P7XQHwZV5/SJuhY4WintYuN6TZHlWFwABkgzN43SEaE=
+	t=1734021419; cv=none; b=dqFRABbFnwLsAoIkJO6f2ZoyJSp5X/A7AumexjRS08wCXmh8xyze+X7UJkxiuAAPKWeGAQ7p7DubQfVpDSL2wSeK2fuRPJdVkvHD2eecOBYlIrFIgm7JZTZvvIMp6YDksh8Nhx/9+sxv23KOkD/Fhgz44N/NFCHY0TimTQtNpAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021411; c=relaxed/simple;
-	bh=tCyyaTSL3iPzy/fAluQv9SdqTP/MhluPL5eLvdu5/PI=;
+	s=arc-20240116; t=1734021419; c=relaxed/simple;
+	bh=mwq0Mr/sHasPs/Ny2xkLtffgxk3oMJdnoB2/CW9pufg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nXOk935LNKeh0X9oAVR/g7XkAD/dfuIQLJTUO85AhRVjw94boWVcwiBbLmPwBmMJv1TUIzkej8QMBP/6P8EQjOmzRn8RAKpoiW2AMFlFW4PHkx0izN5KhKxjiE/R6SZlkRIvsyU5JEFO+o32OzplZv5l3naZ1SGsz06xcBby7dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmTLGOwh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1744C4CECE;
-	Thu, 12 Dec 2024 16:36:50 +0000 (UTC)
+	 MIME-Version; b=FLSNcxI79XG1W5OfHCwdxDoX/Bc+DKNnYPJSMfBd2ygoITz2upyWnxGu6KFAUOwmnZyc8eOcDqIAQT1YxyfhCiKV55IVH0V+SPDMcw4FdNWdTEFLuhSBRSUxWmonEYLhJWgsl+RKLH2Tj8wQ3KtuAKE9g7CVA5Nknn8veGPkFe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CskJJAm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51745C4CECE;
+	Thu, 12 Dec 2024 16:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021411;
-	bh=tCyyaTSL3iPzy/fAluQv9SdqTP/MhluPL5eLvdu5/PI=;
+	s=korg; t=1734021419;
+	bh=mwq0Mr/sHasPs/Ny2xkLtffgxk3oMJdnoB2/CW9pufg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmTLGOwhr/4QZrg5vaQNog8HMusKIXD+HMQompl0Fmd9bNW6+XBdDwMdutfcPjPFW
-	 7SzLh9AtblYAfK4qsiWh86y34y23sjGUu9/in0x+0dT/iLG/NPEru6Wj0PeYGMxDNz
-	 XnozzZIxtlP9EQOg5G5EhQKl5S1E05VSYsZsRLJY=
+	b=CskJJAm/ppeVAM8sH7fHsfasC4x7rX9+d1QPXZ6l0UmhU/O9c3lFjkAr6IEZbRcp4
+	 PLLMNPaKzRnjB5ATGxSABcU+bQ1mEtmaaN6FPUAwxt7qYFvk8Izs3AoHQ80L4WinY2
+	 x8fa5SEYFJGY44Ij4ApzWiuZ3GNRhxzok/n8/DGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
 	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 731/772] sched/core: Remove the unnecessary need_resched() check in nohz_csd_func()
-Date: Thu, 12 Dec 2024 16:01:16 +0100
-Message-ID: <20241212144420.116951730@linuxfoundation.org>
+Subject: [PATCH 6.1 732/772] sched/fair: Check idle_cpu() before need_resched() to detect ilb CPU turning busy
+Date: Thu, 12 Dec 2024 16:01:17 +0100
+Message-ID: <20241212144420.156748489@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -68,117 +68,55 @@ Content-Transfer-Encoding: 8bit
 
 From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-[ Upstream commit ea9cffc0a154124821531991d5afdd7e8b20d7aa ]
+[ Upstream commit ff47a0acfcce309cf9e175149c75614491953c8f ]
 
-The need_resched() check currently in nohz_csd_func() can be tracked
-to have been added in scheduler_ipi() back in 2011 via commit
-ca38062e57e9 ("sched: Use resched IPI to kick off the nohz idle balance")
+Commit b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
+optimizes IPIs to idle CPUs in TIF_POLLING_NRFLAG mode by setting the
+TIF_NEED_RESCHED flag in idle task's thread info and relying on
+flush_smp_call_function_queue() in idle exit path to run the
+call-function. A softirq raised by the call-function is handled shortly
+after in do_softirq_post_smp_call_flush() but the TIF_NEED_RESCHED flag
+remains set and is only cleared later when schedule_idle() calls
+__schedule().
 
-Since then, it has travelled quite a bit but it seems like an idle_cpu()
-check currently is sufficient to detect the need to bail out from an
-idle load balancing. To justify this removal, consider all the following
-case where an idle load balancing could race with a task wakeup:
+need_resched() check in _nohz_idle_balance() exists to bail out of load
+balancing if another task has woken up on the CPU currently in-charge of
+idle load balancing which is being processed in SCHED_SOFTIRQ context.
+Since the optimization mentioned above overloads the interpretation of
+TIF_NEED_RESCHED, check for idle_cpu() before going with the existing
+need_resched() check which can catch a genuine task wakeup on an idle
+CPU processing SCHED_SOFTIRQ from do_softirq_post_smp_call_flush(), as
+well as the case where ksoftirqd needs to be preempted as a result of
+new task wakeup or slice expiry.
 
-o Since commit f3dd3f674555b ("sched: Remove the limitation of WF_ON_CPU
-  on wakelist if wakee cpu is idle") a target perceived to be idle
-  (target_rq->nr_running == 0) will return true for
-  ttwu_queue_cond(target) which will offload the task wakeup to the idle
-  target via an IPI.
-
-  In all such cases target_rq->ttwu_pending will be set to 1 before
-  queuing the wake function.
-
-  If an idle load balance races here, following scenarios are possible:
-
-  - The CPU is not in TIF_POLLING_NRFLAG mode in which case an actual
-    IPI is sent to the CPU to wake it out of idle. If the
-    nohz_csd_func() queues before sched_ttwu_pending(), the idle load
-    balance will bail out since idle_cpu(target) returns 0 since
-    target_rq->ttwu_pending is 1. If the nohz_csd_func() is queued after
-    sched_ttwu_pending() it should see rq->nr_running to be non-zero and
-    bail out of idle load balancing.
-
-  - The CPU is in TIF_POLLING_NRFLAG mode and instead of an actual IPI,
-    the sender will simply set TIF_NEED_RESCHED for the target to put it
-    out of idle and flush_smp_call_function_queue() in do_idle() will
-    execute the call function. Depending on the ordering of the queuing
-    of nohz_csd_func() and sched_ttwu_pending(), the idle_cpu() check in
-    nohz_csd_func() should either see target_rq->ttwu_pending = 1 or
-    target_rq->nr_running to be non-zero if there is a genuine task
-    wakeup racing with the idle load balance kick.
-
-o The waker CPU perceives the target CPU to be busy
-  (targer_rq->nr_running != 0) but the CPU is in fact going idle and due
-  to a series of unfortunate events, the system reaches a case where the
-  waker CPU decides to perform the wakeup by itself in ttwu_queue() on
-  the target CPU but target is concurrently selected for idle load
-  balance (XXX: Can this happen? I'm not sure, but we'll consider the
-  mother of all coincidences to estimate the worst case scenario).
-
-  ttwu_do_activate() calls enqueue_task() which would increment
-  "rq->nr_running" post which it calls wakeup_preempt() which is
-  responsible for setting TIF_NEED_RESCHED (via a resched IPI or by
-  setting TIF_NEED_RESCHED on a TIF_POLLING_NRFLAG idle CPU) The key
-  thing to note in this case is that rq->nr_running is already non-zero
-  in case of a wakeup before TIF_NEED_RESCHED is set which would
-  lead to idle_cpu() check returning false.
-
-In all cases, it seems that need_resched() check is unnecessary when
-checking for idle_cpu() first since an impending wakeup racing with idle
-load balancer will either set the "rq->ttwu_pending" or indicate a newly
-woken task via "rq->nr_running".
-
-Chasing the reason why this check might have existed in the first place,
-I came across  Peter's suggestion on the fist iteration of Suresh's
-patch from 2011 [1] where the condition to raise the SCHED_SOFTIRQ was:
-
-	sched_ttwu_do_pending(list);
-
-	if (unlikely((rq->idle == current) &&
-	    rq->nohz_balance_kick &&
-	    !need_resched()))
-		raise_softirq_irqoff(SCHED_SOFTIRQ);
-
-Since the condition to raise the SCHED_SOFIRQ was preceded by
-sched_ttwu_do_pending() (which is equivalent of sched_ttwu_pending()) in
-the current upstream kernel, the need_resched() check was necessary to
-catch a newly queued task. Peter suggested modifying it to:
-
-	if (idle_cpu() && rq->nohz_balance_kick && !need_resched())
-		raise_softirq_irqoff(SCHED_SOFTIRQ);
-
-where idle_cpu() seems to have replaced "rq->idle == current" check.
-
-Even back then, the idle_cpu() check would have been sufficient to catch
-a new task being enqueued. Since commit b2a02fc43a1f ("smp: Optimize
-send_call_function_single_ipi()") overloads the interpretation of
-TIF_NEED_RESCHED for TIF_POLLING_NRFLAG idling, remove the
-need_resched() check in nohz_csd_func() to raise SCHED_SOFTIRQ based
-on Peter's suggestion.
+In case of PREEMPT_RT or threadirqs, although the idle load balancing
+may be inhibited in some cases on the ilb CPU, the fact that ksoftirqd
+is the only fair task going back to sleep will trigger a newidle balance
+on the CPU which will alleviate some imbalance if it exists if idle
+balance fails to do so.
 
 Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241119054432.6405-3-kprateek.nayak@amd.com
+Link: https://lore.kernel.org/r/20241119054432.6405-4-kprateek.nayak@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 2 +-
+ kernel/sched/fair.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 8388575759378..860391d057802 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1162,7 +1162,7 @@ static void nohz_csd_func(void *info)
- 	WARN_ON(!(flags & NOHZ_KICK_MASK));
- 
- 	rq->idle_balance = idle_cpu(cpu);
--	if (rq->idle_balance && !need_resched()) {
-+	if (rq->idle_balance) {
- 		rq->nohz_idle_balance = flags;
- 		raise_softirq_irqoff(SCHED_SOFTIRQ);
- 	}
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 1e12f731a0337..cf3bbddd4b7fc 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -11401,7 +11401,7 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags)
+ 		 * work being done for other CPUs. Next load
+ 		 * balancing owner will pick it up.
+ 		 */
+-		if (need_resched()) {
++		if (!idle_cpu(this_cpu) && need_resched()) {
+ 			if (flags & NOHZ_STATS_KICK)
+ 				has_blocked_load = true;
+ 			if (flags & NOHZ_NEXT_KICK)
 -- 
 2.43.0
 
