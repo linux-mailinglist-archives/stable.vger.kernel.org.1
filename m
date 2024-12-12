@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0DC9EF2F7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A179EEE4B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 917A61898730
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2676E169CEA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB4C229675;
-	Thu, 12 Dec 2024 16:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9494E222D67;
+	Thu, 12 Dec 2024 15:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUttgiD6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2TiJPFu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF46B2397A8;
-	Thu, 12 Dec 2024 16:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510CF2210FB;
+	Thu, 12 Dec 2024 15:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021339; cv=none; b=odeWYW07KeXK3Ejydq1k5hcCgueigZBXjfohEpwb+ST+8BufrlUiuRUy32/dIiwII8kKr7tD3E6YuH2iL1u53kRo/de9c47ch/agMrvAr10doWOTfFX+AjGy1Nhp/WyCJw66VItQeluWO+2KlJ4ZWj0eqp/lJkeF+VFu9QeC2PA=
+	t=1734018591; cv=none; b=f1DzwoH7AcHRSbulfQ2HxouILEK+PmcDKlsDpSl3dvCk9fwGqUOKHWgn8Kk8f/Xr3mlcVqepKA2sTouy2eBsEASmM1a0VYeXGUYKXcmChz0QcVpfvogcqIbxnxo6rb+cCCjCadCIDqC2Va75y21f2hp32sdhbTycbcpPtx7j060=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021339; c=relaxed/simple;
-	bh=3XjKXGiMDPx8O03KyPYilV8g8DJfAlb469HHQlaByeg=;
+	s=arc-20240116; t=1734018591; c=relaxed/simple;
+	bh=cO18gw1aq1zbiSuySH1B2pnx1dnyLnNrPHkrveZjgpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BFruhkHO2tq6US7dKURv9YScja3R/VmkPGxhiZnrNpUeiGwQ8+NzXfV3tdjYz/FlohbsJq+eAKb7hx8heGf1HHXH2/JYnD6cHZ/X5zB9o+c/6RnC1FSXgw3NnIeKHHvyFRniEufEBzcV2F5XCyVLsp0y858yGoLQSsYTEzkDv9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUttgiD6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5208DC4CECE;
-	Thu, 12 Dec 2024 16:35:37 +0000 (UTC)
+	 MIME-Version; b=MwfZy3TEaJfH5R3d4XR8ytNL6TwjnS2bl6fnAKBqdkSJ7CNGzJqKWatD+6/q4p2h/q2FmmmotwRz58a9BS+olWpD6RMWiT1vsddhk8G9FnfamTAfsHOgoq3AV8TYCFllQ+RLyYA2Vn45o7VIEeHju0rewLG/9xAIeW4dQFkTF14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2TiJPFu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9693DC4AF09;
+	Thu, 12 Dec 2024 15:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021338;
-	bh=3XjKXGiMDPx8O03KyPYilV8g8DJfAlb469HHQlaByeg=;
+	s=korg; t=1734018591;
+	bh=cO18gw1aq1zbiSuySH1B2pnx1dnyLnNrPHkrveZjgpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUttgiD6VCPvCVaBXdQsJFs8OwJVxAB9yoVzQvzk2RmiyYvRa+T6dVW4kSUIezL/s
-	 d9q9v6zRimsR1lKmUwnwyP4kB3OSKCBrYuRRjh3CniFG2h5ZyQcJOxe8ZZs1x8FzuC
-	 Mc0k+U7yldnFgamaDlelt7HChe6Vb+yBDFemfn2o=
+	b=u2TiJPFuOCUd5YGpjUA/+G3fzDKgxzUa4n/7cYkveDu0CPzf0YplBosA8iseO+8fE
+	 DBp/i7K0QV0xzyFSOd2RQJxHuLhb+s13wOlbYlViRg88uDGxbl2mHi3mzisW5tMUSu
+	 rgaH9d/Mp5nH5ARwpenbDkr2uP4/A7Uspsrl3fr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 709/772] pinctrl: qcom: spmi-mpp: Add PM8937 compatible
+Subject: [PATCH 6.6 335/356] x86: Fix build regression with CONFIG_KEXEC_JUMP enabled
 Date: Thu, 12 Dec 2024 16:00:54 +0100
-Message-ID: <20241212144419.195393453@linuxfoundation.org>
+Message-ID: <20241212144257.793458259@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit f755261190e88f5d19fe0a3b762f0bbaff6bd438 ]
+[ Upstream commit aeb68937614f4aeceaaa762bd7f0212ce842b797 ]
 
-The PM8937 provides 4 MPPs.
-Add a compatible to support them.
+Build 6.13-rc12 for x86_64 with gcc 14.2.1 fails with the error:
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/20241031-msm8917-v2-4-8a075faa89b1@mainlining.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+  ld: vmlinux.o: in function `virtual_mapped':
+  linux/arch/x86/kernel/relocate_kernel_64.S:249:(.text+0x5915b): undefined reference to `saved_context_gdt_desc'
+
+when CONFIG_KEXEC_JUMP is enabled.
+
+This was introduced by commit 07fa619f2a40 ("x86/kexec: Restore GDT on
+return from ::preserve_context kexec") which introduced a use of
+saved_context_gdt_desc without a declaration for it.
+
+Fix that by including asm/asm-offsets.h where saved_context_gdt_desc
+is defined (indirectly in include/generated/asm-offsets.h which
+asm/asm-offsets.h includes).
+
+Fixes: 07fa619f2a40 ("x86/kexec: Restore GDT on return from ::preserve_context kexec")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: David Woodhouse <dwmw@amazon.co.uk>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411270006.ZyyzpYf8-lkp@intel.com/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-spmi-mpp.c | 1 +
+ arch/x86/kernel/relocate_kernel_64.S | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-index 6937157f50b3c..148cc107b7aff 100644
---- a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-@@ -964,6 +964,7 @@ static const struct of_device_id pmic_mpp_of_match[] = {
- 	{ .compatible = "qcom,pm8226-mpp", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8841-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pm8916-mpp", .data = (void *) 4 },
-+	{ .compatible = "qcom,pm8937-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pm8941-mpp", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8950-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pmi8950-mpp", .data = (void *) 4 },
+diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+index 569d5577059db..fb00a9e8b0879 100644
+--- a/arch/x86/kernel/relocate_kernel_64.S
++++ b/arch/x86/kernel/relocate_kernel_64.S
+@@ -11,6 +11,7 @@
+ #include <asm/pgtable_types.h>
+ #include <asm/nospec-branch.h>
+ #include <asm/unwind_hints.h>
++#include <asm/asm-offsets.h>
+ 
+ /*
+  * Must be relocatable PIC code callable as a C function, in particular
 -- 
 2.43.0
 
