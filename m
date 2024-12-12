@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 859369EF4C1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7848F9EF78C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 230EE28CF0A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1163D18903BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04667222D46;
-	Thu, 12 Dec 2024 17:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F74222D57;
+	Thu, 12 Dec 2024 17:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2PrWAG+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsuA5zTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C972F44;
-	Thu, 12 Dec 2024 17:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F52E222D4C;
+	Thu, 12 Dec 2024 17:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023268; cv=none; b=dsN2oIfDRebH3xFR1IgTZ24wjZfG4tGqpZvETjEjm+Ju4GTLCUGaN/y4rLM54kD6/8Wr3FhCMYv0SOfpUUjxfJthaweKzY7eRJ/gUJxjPgWPILCV0zb1PQwJoBO5fCYGlyS+GIUkHvkVAVTke+P7VcfLoDXfTsZPTxFIw0gzXso=
+	t=1734024553; cv=none; b=EyuR7X+TQh9GipITw59AN8zCjiwXpDxWQANzKRYk5nryQ4y6tybICmJrh3wlD3G80mJ0OJLnHkbPKKkIFQ5WkIrUac23COp/3LyL+03HUX23HawgX9RMDsfctBfCBsLDxuUkmQmyiPJ44X2An9CkxkQq/jHSC33SN0ad19vV2j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023268; c=relaxed/simple;
-	bh=Qr0Sn5LAJiNTUPV/T4Ba8VpSJ3yuz+Z3NG/5/q5lMzc=;
+	s=arc-20240116; t=1734024553; c=relaxed/simple;
+	bh=6xYqisBupcpvqghjWLQ/PHLHyRMnlvpDBhvleHtDhb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juwR7xeWxjxvXLLSKhSpyH4cqGfwt5xdhTG+q/dh3uFScWP2nYgZOKDsUgSePic6MZgObHi46TKb15P/7UiYlXtmEhISUN5FvlOBBnpoD4apgvXxmmTwQ7kmL96/rjQalDxj7xzHKdgDG4BTeyw/4y60WhXAotCyR43q/Sl+rwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2PrWAG+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35298C4CECE;
-	Thu, 12 Dec 2024 17:07:48 +0000 (UTC)
+	 MIME-Version; b=kAr6mpS+qmuXXBqZJPqtbahuaayJ4OoAMoUZNS3pk2tcOOF4wYDaYZaKC7fIjL5u22zu4CmHzS0HtnUYwFUtBMpBsHSRbiVnytJs+u1RAUOmx79pXPznQQa8y2+zMLQoK+RLFYFKaMjievTNV3ceULREVkVlFYEHR1nBfNvlecI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsuA5zTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094E7C4CED0;
+	Thu, 12 Dec 2024 17:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023268;
-	bh=Qr0Sn5LAJiNTUPV/T4Ba8VpSJ3yuz+Z3NG/5/q5lMzc=;
+	s=korg; t=1734024553;
+	bh=6xYqisBupcpvqghjWLQ/PHLHyRMnlvpDBhvleHtDhb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2PrWAG+qADTnharIn/VreFdXf0ofN/oAc2WhuG2Pt6hLwpWh9LPas//5g/jv2tf1
-	 t54sYJ0TQbiPK6bWgrr+dhm5ZnK74zsJuJJEG97/Lw3estCHO2hi9C+uxfkeoKOV5w
-	 trhjHR927f6paOcwJknFwUDTkK0zNfPPcTBXR4gQ=
+	b=wsuA5zTXInrNd5btzEx3Ki2XNQ3B0nWS6E5U3A4GCZvXXz6UkcFrutsntQII5DPaq
+	 r2qIxcvZg73dGRJPnpVxsdqPfW3n8moSSqpks4fvTlpiQn9BvOKa1TY/h/2giHHhDF
+	 L9F8aM6AdokLlJBeYOwd3IiV+bIjALjVJ3hkTLt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 477/565] drm/vc4: hvs: Set AXI panic modes for the HVS
+Subject: [PATCH 5.10 334/459] can: j1939: j1939_session_new(): fix skb reference counting
 Date: Thu, 12 Dec 2024 16:01:12 +0100
-Message-ID: <20241212144330.609516856@linuxfoundation.org>
+Message-ID: <20241212144306.855769133@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 014eccc9da7bfc76a3107fceea37dd60f1d63630 ]
+[ Upstream commit a8c695005bfe6569acd73d777ca298ddddd66105 ]
 
-The HVS can change AXI request mode based on how full the COB
-FIFOs are.
-Until now the vc4 driver has been relying on the firmware to
-have set these to sensible values.
+Since j1939_session_skb_queue() does an extra skb_get() for each new
+skb, do the same for the initial one in j1939_session_new() to avoid
+refcount underflow.
 
-With HVS channel 2 now being used for live video, change the
-panic mode for all channels to be explicitly set by the driver,
-and the same for all channels.
-
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-7-dave.stevenson@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reported-by: syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d4e8dc385d9258220c31
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20241105094823.2403806-1-dmantipov@yandex.ru
+[mkl: clean up commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/can/j1939/transport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index 3856ac289d380..69b2936a5f4ad 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -729,6 +729,17 @@ static int vc4_hvs_bind(struct device *dev, struct device *master, void *data)
- 	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
- 	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
+diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
+index a86256ab14022..84d63fb29ca1f 100644
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1489,7 +1489,7 @@ static struct j1939_session *j1939_session_new(struct j1939_priv *priv,
+ 	session->state = J1939_SESSION_NEW;
  
-+	/* Set AXI panic mode.
-+	 * VC4 panics when < 2 lines in FIFO.
-+	 * VC5 panics when less than 1 line in the FIFO.
-+	 */
-+	dispctrl &= ~(SCALER_DISPCTRL_PANIC0_MASK |
-+		      SCALER_DISPCTRL_PANIC1_MASK |
-+		      SCALER_DISPCTRL_PANIC2_MASK);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC0);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC1);
-+	dispctrl |= VC4_SET_FIELD(2, SCALER_DISPCTRL_PANIC2);
-+
- 	HVS_WRITE(SCALER_DISPCTRL, dispctrl);
+ 	skb_queue_head_init(&session->skb_queue);
+-	skb_queue_tail(&session->skb_queue, skb);
++	skb_queue_tail(&session->skb_queue, skb_get(skb));
  
- 	ret = devm_request_irq(dev, platform_get_irq(pdev, 0),
+ 	skcb = j1939_skb_to_cb(skb);
+ 	memcpy(&session->skcb, skcb, sizeof(session->skcb));
 -- 
 2.43.0
 
