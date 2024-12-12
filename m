@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97E79EEAA7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 412FA9EF03A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B94DC163FEA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:11:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D904128BA8D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ADE21660B;
-	Thu, 12 Dec 2024 15:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1644322A7F9;
+	Thu, 12 Dec 2024 16:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0HcPiLW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhnsDMGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D3D21504F;
-	Thu, 12 Dec 2024 15:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75CE23F9FF;
+	Thu, 12 Dec 2024 16:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016309; cv=none; b=FyG/xNRQDsZ34E8m9JMMV9a8L0aFUpDqndQZneCE00a7T7r4u5eFF4msyqkv4VC1Uoc9qdoyaUhmdjmI+vXoZM7oYz6mvYmt5LgRhRi5KlV7S0RCCQWAdO7ldudtG3MF6StGC0qqzI8qbBgKWPXhFSVHbYBwEo+/iFc5urqoQrc=
+	t=1734020104; cv=none; b=cA0VcdU+QE3cIfai0HT0KWMAujmLqMw54o7ApmEMFNQTCQ2ZMRa0vanqvlG6iyWYZfUUNCA5jEZoCrQNDPNTvKCjskhCZ+ew6s8f7ti/wupSyT09dziTYrOGVOek7LES7iZPaWy4NwQSg0ZHBExGsisxeJJHIHNEhbmxn+eRZI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016309; c=relaxed/simple;
-	bh=0PTAS2LBaZPb0ie9o7+Z/o7CUv2aoPqr0l9e+w2nYas=;
+	s=arc-20240116; t=1734020104; c=relaxed/simple;
+	bh=iNeoI3mlimzKLt6fjmH/2hKxmknqckg0u5tHZCjNrHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vl0yiVBu9i9XgaQEDRn0ulGQKlqixpXLEynmckZ3hUfhgrGiJvcSrehvvfQPgOP+ImSV2OZu4fiWAJifTkqBopD9oFF0ckBrdpSefZTLShe/+Ba26rZDam8DysBmPQ3c+Wq9TPo1XS2jaRKR/SY20jbWxfZVtt5N2TolzpBo4r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0HcPiLW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7AC0C4CED7;
-	Thu, 12 Dec 2024 15:11:48 +0000 (UTC)
+	 MIME-Version; b=NG32+InphCDmJ8qO70hDr+EbYKJbDsWPFVOV5vF79yPCwal9vtqEYetb5io6gkSqXXUTgdR6Neyu1+fn7zDiL1RIBqrq01Vjgk1prASXlXWRs5tSliBqaUernVyksxTJ2gkA6obKkKJsSZ+LoxYsa/tKMCZcpVJkDNddP8O0Ky4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhnsDMGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC84FC4CED4;
+	Thu, 12 Dec 2024 16:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016309;
-	bh=0PTAS2LBaZPb0ie9o7+Z/o7CUv2aoPqr0l9e+w2nYas=;
+	s=korg; t=1734020104;
+	bh=iNeoI3mlimzKLt6fjmH/2hKxmknqckg0u5tHZCjNrHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M0HcPiLWQP2OEh1dH6L5EHErmoRJe1ft7DTtc4Wprb/BB8zESyo8Rwm8pBJzc+9lA
-	 EIF9fkwv2cYfv3U2zSz8c2c9FWa5ExlWeGkRfJ95I0Du7Pcpcnb99kM7dlkKCVLCF5
-	 8srgPVmMOmZa9GuTTVzGpoHEyZQYWUiJtSzbXMd8=
+	b=rhnsDMGnLrL6egER36hdujgoZpjrVerpq0Gqcfrv76UJkTKSRnm1A8t+AhgPfQxFL
+	 xYMxcDssk3BrCt8IqRq6PtqP7ZMcCiRkUteXXWOrTvax6yJYrPqfRvk8f+NkQSgDQ/
+	 aOhxFVEAlUSo+J99sQdUVuOXwBqBAyrjr0Ixjifs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 154/466] scsi: ufs: core: Add missing post notify for power mode change
+	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
+	Ahmed Ehab <bottaawesome633@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [PATCH 6.1 378/772] locking/lockdep: Avoid creating new name string literals in lockdep_set_subclass()
 Date: Thu, 12 Dec 2024 15:55:23 +0100
-Message-ID: <20241212144312.882527590@linuxfoundation.org>
+Message-ID: <20241212144405.519183281@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Ahmed Ehab <bottaawesome633@gmail.com>
 
-commit 7f45ed5f0cd5ccbbec79adc6c48a67d6a85fba56 upstream.
+commit d7fe143cb115076fed0126ad8cf5ba6c3e575e43 upstream.
 
-When the power mode change is successful but the power mode hasn't
-actually changed, the post notification was missed.  Similar to the
-approach with hibernate/clock scale/hce enable, having pre/post
-notifications in the same function will make it easier to maintain.
+Syzbot reports a problem that a warning will be triggered while
+searching a lock class in look_up_lock_class().
 
-Additionally, supplement the description of power parameters for the
-pwr_change_notify callback.
+The cause of the issue is that a new name is created and used by
+lockdep_set_subclass() instead of using the existing one. This results
+in a lock instance has a different name pointer than previous registered
+one stored in lock class, and WARN_ONCE() is triggered because of that
+in look_up_lock_class().
 
-Fixes: 7eb584db73be ("ufs: refactor configuring power mode")
-Cc: stable@vger.kernel.org #6.11.x
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20241122024943.30589-1-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+To fix this, change lockdep_set_subclass() to use the existing name
+instead of a new one. Hence, no new name will be created by
+lockdep_set_subclass(). Hence, the warning is avoided.
+
+[boqun: Reword the commit log to state the correct issue]
+
+Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
+Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/lkml/20240824221031.7751-1-bottaawesome633@gmail.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |    7 ++++---
- include/ufs/ufshcd.h      |   10 ++++++----
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ include/linux/lockdep.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -4684,9 +4684,6 @@ static int ufshcd_change_power_mode(stru
- 		dev_err(hba->dev,
- 			"%s: power mode change failed %d\n", __func__, ret);
- 	} else {
--		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
--								pwr_mode);
--
- 		memcpy(&hba->pwr_info, pwr_mode,
- 			sizeof(struct ufs_pa_layer_attr));
- 	}
-@@ -4715,6 +4712,10 @@ int ufshcd_config_pwr_mode(struct ufs_hb
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -229,7 +229,7 @@ static inline void lockdep_init_map(stru
+ 			      (lock)->dep_map.lock_type)
  
- 	ret = ufshcd_change_power_mode(hba, &final_params);
- 
-+	if (!ret)
-+		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
-+					&final_params);
-+
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(ufshcd_config_pwr_mode);
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -308,7 +308,9 @@ struct ufs_pwr_mode_info {
-  *                       to allow variant specific Uni-Pro initialization.
-  * @pwr_change_notify: called before and after a power mode change
-  *			is carried out to allow vendor spesific capabilities
-- *			to be set.
-+ *			to be set. PRE_CHANGE can modify final_params based
-+ *			on desired_pwr_mode, but POST_CHANGE must not alter
-+ *			the final_params parameter
-  * @setup_xfer_req: called before any transfer request is issued
-  *                  to set some things
-  * @setup_task_mgmt: called before any task management request is issued
-@@ -350,9 +352,9 @@ struct ufs_hba_variant_ops {
- 	int	(*link_startup_notify)(struct ufs_hba *,
- 				       enum ufs_notify_change_status);
- 	int	(*pwr_change_notify)(struct ufs_hba *,
--					enum ufs_notify_change_status status,
--					struct ufs_pa_layer_attr *,
--					struct ufs_pa_layer_attr *);
-+				enum ufs_notify_change_status status,
-+				struct ufs_pa_layer_attr *desired_pwr_mode,
-+				struct ufs_pa_layer_attr *final_params);
- 	void	(*setup_xfer_req)(struct ufs_hba *hba, int tag,
- 				  bool is_scsi_cmd);
- 	void	(*setup_task_mgmt)(struct ufs_hba *, int, u8);
+ #define lockdep_set_subclass(lock, sub)					\
+-	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
++	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
+ 			      (lock)->dep_map.wait_type_inner,		\
+ 			      (lock)->dep_map.wait_type_outer,		\
+ 			      (lock)->dep_map.lock_type)
 
 
 
