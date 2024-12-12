@@ -1,111 +1,152 @@
-Return-Path: <stable+bounces-100888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49979EE49E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 12:01:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64AF39EE4B1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 12:06:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E80A165580
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 11:01:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5977E1885F15
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 11:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929D01EC4D2;
-	Thu, 12 Dec 2024 11:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A86210F47;
+	Thu, 12 Dec 2024 11:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NPE/sJrC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z9zC0RT+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593C31D934B
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 11:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1710C1EC4D2
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 11:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734001277; cv=none; b=EGyskyf9mt7E4SLbfZLpmAG0V2lEo/Shty71KgDH2g39pnyuRjIL7O0fuxe4YQmfLOZKMTlt40O4PrgxYCGiUx6XIbi/8nFA428sYrs5T8jS2OF0+IKsSkm5bzWnc/ac2pkYSGVh8UXfS8gbHN80magAchhZpGOBg58dwdX+K1Q=
+	t=1734001557; cv=none; b=RheXqzeRyC/k/nDhjvk5SmX2pyNxK6VyqKaIB9b5MdJZhFDt5AVpGf2NID6ise5CS0GHPFvMkk9lxe4fnhxnqgh2uQQHSkR+DweIdayja/5e4UvDXU+SQYGVq9Uszc6cNGBQHJ75bcXhnlCuZnzUA9f94SDDLnAVJJm0frvMU8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734001277; c=relaxed/simple;
-	bh=twVGA8ShMbfollzhVXm5TME2LGjGdXv4aWH/WyMId1M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M8TGEh8bIvuZeKleCtw4YwQkDmkOqMzPsm9tlZHV30msoHA8OX+DV7O4TFfkNsr9gQOEsB8RWRsATo3/cUGcXWQy17MM+1Ac0iX4oxeQ9ml2X5Cix2aJRa0f2ZvkvvbD+e7zTZ1LD6WrTOZpGsyhSPRSqPuPRLPHuRV+Zcs1s1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NPE/sJrC; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-387897fae5dso34621f8f.2
-        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 03:01:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1734001273; x=1734606073; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7Z/A1NNbk9LFsqFidYQef1aR/SJg+4pPqIce2DoNjO0=;
-        b=NPE/sJrCjenz0+TULpZOiJ8/Py7nKJm44ghR44c9/nIjJF8xkFrXmDDu2l7+A/zwdn
-         9W0BVNsqJMITJNZZDuhLF7q7tnNeqpgj1Jj2VDeMEbsrGFKPENgWgqPCFgkhPytiEOnG
-         bXMnZL5ipWDsazC9+/+d+gISFpnXQ/Eg65sLqmHsLIqhQfMSLH4UHpXOFWTMgxuVA+Yz
-         YQqsXhT/ejYa705nwkBLsnxDw9lEFFospQU+NpfANjeZPpNSxO9iJAxKCoo40SDsgTk8
-         chp91AwXHAVy5ZEqYkDfjxg3HRlfMYArXzQGwQDXHXTdkQpKQ6C+p03KjQk+41rOanq8
-         uPdQ==
+	s=arc-20240116; t=1734001557; c=relaxed/simple;
+	bh=b17I4wVwDx/N+KOJByIynEV4MjVriLu3Q4f+Xu760Go=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=rGW9yLHhhOLIimi6kcu26wy+ENFEdekAS3ubmqZubaIvRsRxjUCzUBt9NJ79unU4tTpsUVPQn4nXjnQOJZOu8MhnIgvTpnll0GP2PY2jPqrDDehOxGBFDo6Ajnk+WJabfk9WtT4Es0IF7C84Hr5lSFHd+7W1abo7Mh4tcsH6+Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z9zC0RT+; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734001555;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b17I4wVwDx/N+KOJByIynEV4MjVriLu3Q4f+Xu760Go=;
+	b=Z9zC0RT+nINwz8Owy0jFFCTjB4kE9CBW6iFvzwli1IG0uzvclYYloAcM6uGUuDY99KFQE4
+	a9kyQ0QND4mdSEtp5vHH7HKJSdR8GqjhPnxD/odwNeQGMxSbGCSQf69ys666rq7bpXBjM0
+	bGHg6zCV8WVLM8ZL4vv9nHUHryuZTvM=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-377-mkS3o0RMO7WhR0zDArXr4A-1; Thu, 12 Dec 2024 06:05:53 -0500
+X-MC-Unique: mkS3o0RMO7WhR0zDArXr4A-1
+X-Mimecast-MFC-AGG-ID: mkS3o0RMO7WhR0zDArXr4A
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3860bc1d4f1so267957f8f.2
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 03:05:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734001273; x=1734606073;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Z/A1NNbk9LFsqFidYQef1aR/SJg+4pPqIce2DoNjO0=;
-        b=AWoSYEAUTnSeJuSjPhSuqmInpUsDyk+nj2V66QC4IoH2UUpT64RUgnuk80vdxjqscA
-         6hIOGZHB1R0fML7BLmJS0VpH2tFT0NLvVtmYvnXPSgG3XZ/w1K1EijK+ixppw0Z8iYZd
-         Qg/EtVP5gNjx135xODLv6KrSwAbJzYVeEvRur4Q9WwDB2sXzJXIOnIZhMIbGklqHyFGh
-         ujBKaRlu4awxhwzxgad54A2d1lyoMQKffLFvdBVcDK+Xl4WoD32nhUpLpv9C5VEuJs/l
-         kdmRg7booQIYJKXEU5mGK4FWJ/c1b6BkTvqwWPMa1LlDC2wRndMDANjgPcsMeyUMcVkp
-         Dtcw==
-X-Forwarded-Encrypted: i=1; AJvYcCV/4bjQnNGC9L/K+Zb5wkhxurv5I5T+GIAKppbsB82I5XOT9KFfOvQ0aDI2oP/GpCnId84Oieo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjIPS46Zzm0WU7qFn8rG75WFfdPEK8w1SE9lRYzN+BG0zGJpJs
-	b+aC3W1mbzEkULT8P2Xk6UIBpbqP4+jTM+m685MTpqGEwTq3QfzZJFR3Tc87HlA=
-X-Gm-Gg: ASbGncsJWBO3vqseh/biHWzF+g6kWV9RJ0Usjn+R4WrAqzlE7il22ssxFuldb02E5Kt
-	9J3bgkfb4YnUtzCQ6FgJjdSiE4IA2IOWyXwrFvGjBXnn0mEZhWPJYSVlxkW3gWn5ZoJ98OgfNAQ
-	pJWgJzv65/TlSOKfszYEOLVekAS9DYgoB2NKeGSLpUbs5KZ3BAOG+5JFAdUVFNN6H7PSVDxsrKi
-	VsSFnIb9F5cw5GZ/epcPqtgZ20CEsylkb1jj+/mvi/3vVWTpDh0jrl+mc4v
-X-Google-Smtp-Source: AGHT+IEeOxzGb4p627Kx1TCAYRGi4FdbjCU9Sj1IwO+s4vfay9ExoJ+SwiuzUucyu1JxAhP0rnzoaA==
-X-Received: by 2002:a05:6000:1f85:b0:385:faec:d93d with SMTP id ffacd0b85a97d-3864ced38d3mr1982606f8f.13.1734001272654;
-        Thu, 12 Dec 2024 03:01:12 -0800 (PST)
-Received: from [10.202.32.28] ([202.127.77.110])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd40e37fdcsm8085274a12.53.2024.12.12.03.01.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Dec 2024 03:01:12 -0800 (PST)
-Message-ID: <a6054a83-2dda-4548-afd3-96dcea453159@suse.com>
-Date: Thu, 12 Dec 2024 19:01:08 +0800
+        d=1e100.net; s=20230601; t=1734001552; x=1734606352;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b17I4wVwDx/N+KOJByIynEV4MjVriLu3Q4f+Xu760Go=;
+        b=uQdISCuvarRKpnHACpdq1y1buPnRxRSjYTNq2rqVxrenp42Pw0Ulusn4ocQw86LfC8
+         Ql0dUGyioOhYGPF6tkzRlC0x62CmQkd78x2zPcfrEsQ6JukI01EA/hIUySMhmNnaop1B
+         H500jPxcWbXUWiuQmCKtW2G3FEfcDtS3WUSSmUUEcN41f/Rfouc6omZlTYtL7ex3rWKU
+         sppLS+XF3vrTVFetSAUySKRWydp/BdfDtj8ovTPm+Zv9PStC9d+E5gXOb6mNXc3MpHEf
+         xlOqu08oWeEqHqW28O2G3pMOEWAIIVTtV/Zr2FNjhXtYc5JCdyVfaeQsv3MemXntPczo
+         5/Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCXrSotlLe8Lr+0mjeOkd3E2BEvqyH0bnV/ES62j8/Ks9fUbbPybKkjkRxylm0Oynq90EWklBAE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeKeW55jnGLeDrPVAw9yXGh2DYdHWtgF+ZxhktJRwPj8BhdN6f
+	30PMiewNB06F9txx0fken0jQkBIT87lHnhGl3OFKyHB8U0ucaKI1Sdg9ydPqBYqkZttiGcgczij
+	/GdcwhNgHqXrwCBBde6jn00BdFkIEkaA+xU6jaLN0XiCFBxQaV6O1lQ==
+X-Gm-Gg: ASbGncsvhyyoj8rQWQhp4i3sNtUkXMcHpaO9XvOHT5wQR65AT4clq87PkafiGA24Mtn
+	oqOD9m/LMjbTKf1SfZ3eoulb3zZKgDQNxv7uYCIDyxRwk9aMc3hEn+gmv0E1Oa8bxoXc6w5I67v
+	SSUA9vk8uaO0n3hbyn363WLXKXXxkN3AskevH6yuQvGGnAPhEw6G0MYEiNCmhP8Z4MXe0s7B4R3
+	D5l7bm+Zbluq8IRcwv7xv6sT0vyH9hlACxZy3jZyJf/57cKs57bXtTLlVF3euazjlz/FFJJ3SY1
+	cnpLEocgMFbWDClpeR+EB0YKHpW4YU9YfpUvh0c=
+X-Received: by 2002:a05:6000:1545:b0:385:eb85:f111 with SMTP id ffacd0b85a97d-3864ce901bfmr5282480f8f.14.1734001552647;
+        Thu, 12 Dec 2024 03:05:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEsjNFpuayrSgHHBa1FRUQVFGwVe0rOy1eihWuPgSfYokpYEiwBVfBti8HIe9PDLwRPTSbepg==
+X-Received: by 2002:a05:6000:1545:b0:385:eb85:f111 with SMTP id ffacd0b85a97d-3864ce901bfmr5282454f8f.14.1734001552308;
+        Thu, 12 Dec 2024 03:05:52 -0800 (PST)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436255a0d5dsm13244985e9.27.2024.12.12.03.05.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Dec 2024 03:05:51 -0800 (PST)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Simona Vetter <simona.vetter@ffwll.ch>, Thomas Zimmermann
+ <tzimmermann@suse.de>
+Cc: maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ airlied@gmail.com, simona@ffwll.ch, regressions@leemhuis.info,
+ nunojpg@gmail.com, dri-devel@lists.freedesktop.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/fbdev-dma: Add shadow buffering for deferred I/O
+In-Reply-To: <Z1rBTcM4xbi_jrXb@phenom.ffwll.local>
+References: <20241211090643.74250-1-tzimmermann@suse.de>
+ <Z1rBTcM4xbi_jrXb@phenom.ffwll.local>
+Date: Thu, 12 Dec 2024 12:05:50 +0100
+Message-ID: <87jzc5nott.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ocfs2 broken for me in 6.6.y since 6.6.55
-To: Greg KH <gregkh@linuxfoundation.org>,
- Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Thomas Voegtle <tv@lio96.de>, Su Yue <glass.su@suse.com>,
- stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-References: <21aac734-4ab5-d651-cb76-ff1f7dffa779@lio96.de>
- <0f122ee5-56e3-45b0-b531-455fcf9cea3c@linux.alibaba.com>
- <2024121244-virtuous-avenge-f052@gregkh>
-Content-Language: en-US
-From: Heming Zhao <heming.zhao@suse.com>
-In-Reply-To: <2024121244-virtuous-avenge-f052@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg,
+Simona Vetter <simona.vetter@ffwll.ch> writes:
 
-On 12/12/24 18:54, Greg KH wrote:
-> On Thu, Dec 12, 2024 at 06:41:58PM +0800, Joseph Qi wrote:
->> See: https://lore.kernel.org/ocfs2-devel/20241205104835.18223-1-heming.zhao@suse.com/T/#t
-> 
-> And I need a working backport that I can apply to fix this :(
+> On Wed, Dec 11, 2024 at 10:06:28AM +0100, Thomas Zimmermann wrote:
+>> DMA areas are not necessarily backed by struct page, so we cannot
+>> rely on it for deferred I/O. Allocate a shadow buffer for drivers
+>> that require deferred I/O and use it as framebuffer memory.
+>>=20
+>> Fixes driver errors about being "Unable to handle kernel NULL pointer
+>> dereference at virtual address" or "Unable to handle kernel paging
+>> request at virtual address".
+>>=20
+>> The patch splits drm_fbdev_dma_driver_fbdev_probe() in an initial
+>> allocation, which creates the DMA-backed buffer object, and a tail
+>> that sets up the fbdev data structures. There is a tail function for
+>> direct memory mappings and a tail function for deferred I/O with
+>> the shadow buffer.
+>>=20
+>> It is no longer possible to use deferred I/O without shadow buffer.
+>> It can be re-added if there exists a reliably test for usable struct
+>> page in the allocated DMA-backed buffer object.
+>>=20
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> Reported-by: Nuno Gon=C3=A7alves <nunojpg@gmail.com>
+>> CLoses: https://lore.kernel.org/dri-devel/CAEXMXLR55DziAMbv_+2hmLeH-jP96=
+pmit6nhs6siB22cpQFr9w@mail.gmail.com/
+>> Tested-by: Nuno Gon=C3=A7alves <nunojpg@gmail.com>
+>> Fixes: 5ab91447aa13 ("drm/tiny/ili9225: Use fbdev-dma")
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: <stable@vger.kernel.org> # v6.11+
+>
+> fbdev code scares me, but I at least tried to check a few things and looks
+> all good.
+>
+> Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+>
 
-I submitted a v2 patch set [1], which has been passed review.
+Same here, is always scary to review fbdev code but the patch looks good to=
+ me.
 
-[1]:
-https://lore.kernel.org/ocfs2-devel/20241205104835.18223-1-heming.zhao@suse.com/T/#mc63e77487c4c7baba6d28fd536509e964ce3b892
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
--Heming
+--=20
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
+
 
