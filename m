@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-102149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B709EF13C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FAE9EF0C4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E6616FD64
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64EE118988D8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3D222A813;
-	Thu, 12 Dec 2024 16:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD43222D4C;
+	Thu, 12 Dec 2024 16:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HamBqsrT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uo4S2yt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F66211A34;
-	Thu, 12 Dec 2024 16:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A570221DB0;
+	Thu, 12 Dec 2024 16:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020162; cv=none; b=Q1iHdeYEjkEI7QId2NioaE7PSF2TcZUQgWN2mv2hCHwp9MgLmREaYSDpF76kgX7q3/FjGT4EcLEw4nZS8DxLgjlzXkvaPwHg1RTakMfKx7i9Mpm3xnPLWE/OYTjDWhM/ajwxPE4ZvBD3sRxNt3FgQveszcRtyFRBmslyEfjL60Q=
+	t=1734020036; cv=none; b=tpl9jGHdgph9kdX/hn+NK3bsAKPRtbR6dhOGLh0CZpIm+LJtTrscc09X7kUMXhk4jiP5pLVVugovhqhd5W2ggMcFvQ1zNi1+vVKvuGfJSYEAgdoiCNgudANVilwy9CEaLYDminyS4KzDDQeR+pOitXeafAhAYT06NMlUyuZvebI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020162; c=relaxed/simple;
-	bh=xg2/+CcoMLDbBr0KR6F3LQBJXJDw6+HaES1XuYEG4c8=;
+	s=arc-20240116; t=1734020036; c=relaxed/simple;
+	bh=Mp/QABc3NY6SFnjlaaBCamG6zjfZGyHKwAJpneYUyew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xk54NhfrmR8w05HeQfqnXeG64HV+dpLkUolPeA7+kePokRuc5BrQvjpGiTx+H64oLimWmSMobuIr8NtzoW1bIBihnA1yuOBZJVoFG1pgaQZuAhfcccp8neNLnrqlu92IzHbLIwhUoU9c554e1RX9lvWIiwABuQPwI0+monw9aNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HamBqsrT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3F3C4CECE;
-	Thu, 12 Dec 2024 16:16:01 +0000 (UTC)
+	 MIME-Version; b=JMB7IRUIS0Xnhax+mS+Lugamk4Cc26a6AUiu2HXFv25Dq4WfaDwZnNr/tMKXXnVoZ/w87wc+Di36/yy+fGbyGcByXLDmqFOHoh2Sl9YvFFpuc5VLPyCtuwvazw380HRZ4MboX6m/wqWQ2jMkI7qYfi4N9QBc4uF6f5aUrypsVKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uo4S2yt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934EFC4CECE;
+	Thu, 12 Dec 2024 16:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020162;
-	bh=xg2/+CcoMLDbBr0KR6F3LQBJXJDw6+HaES1XuYEG4c8=;
+	s=korg; t=1734020036;
+	bh=Mp/QABc3NY6SFnjlaaBCamG6zjfZGyHKwAJpneYUyew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HamBqsrTsYqouFRRW2TmAvcIruseNrZP1hAt+1XhM6akkibFf1+Agz+rhbwvYZ5ah
-	 xYG7lkZt8O3yJLp/8y8vompUtLttPqec3//vKZZrM6wr/kN4AO7LL38E20H1oR88cd
-	 DV6wMK191ndxtZJfA9WVJNqZd2ovE+BfJy2Pytxg=
+	b=Uo4S2yt9c4QV8owdzQh8eRtp5oXSZXBfvCeggUNbbtW1ZhiNSPjxPhV/RG/CNPxdq
+	 ugV7m/In9bJbIsp3iYA9opgVEGjwnu4SkXPogjF99Qwr5jn53HRqnR7tI27pK5CFY1
+	 iWcgqYJp5UTlDNUhOW9XHO2XapMI9sCjOA+vDZuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Hagar Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 6.1 353/772] perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
-Date: Thu, 12 Dec 2024 15:54:58 +0100
-Message-ID: <20241212144404.500059207@linuxfoundation.org>
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Bin Lan <bin.lan.cn@windriver.com>
+Subject: [PATCH 6.1 354/772] mlxsw: spectrum_acl_tcam: Fix NULL pointer dereference in error path
+Date: Thu, 12 Dec 2024 15:54:59 +0100
+Message-ID: <20241212144404.539179440@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -67,96 +70,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 556a7c039a52c21da33eaae9269984a1ef59189b upstream.
+commit efeb7dfea8ee10cdec11b6b6ba4e405edbe75809 upstream.
 
-The below error is observed on Ice Lake VM.
+When calling mlxsw_sp_acl_tcam_region_destroy() from an error path after
+failing to attach the region to an ACL group, we hit a NULL pointer
+dereference upon 'region->group->tcam' [1].
 
-$ perf stat
-Error:
-The sys_perf_event_open() syscall returned with 22 (Invalid argument)
-for event (slots).
-/bin/dmesg | grep -i perf may provide additional information.
+Fix by retrieving the 'tcam' pointer using mlxsw_sp_acl_to_tcam().
 
-In a virtualization env, the Topdown metrics and the slots event haven't
-been supported yet. The guest CPUID doesn't enumerate them. However, the
-current kernel unconditionally exposes the slots event and the Topdown
-metrics events to sysfs, which misleads the perf tool and triggers the
-error.
+[1]
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+[...]
+RIP: 0010:mlxsw_sp_acl_tcam_region_destroy+0xa0/0xd0
+[...]
+Call Trace:
+ mlxsw_sp_acl_tcam_vchunk_get+0x88b/0xa20
+ mlxsw_sp_acl_tcam_ventry_add+0x25/0xe0
+ mlxsw_sp_acl_rule_add+0x47/0x240
+ mlxsw_sp_flower_replace+0x1a9/0x1d0
+ tc_setup_cb_add+0xdc/0x1c0
+ fl_hw_replace_filter+0x146/0x1f0
+ fl_change+0xc17/0x1360
+ tc_new_tfilter+0x472/0xb90
+ rtnetlink_rcv_msg+0x313/0x3b0
+ netlink_rcv_skb+0x58/0x100
+ netlink_unicast+0x244/0x390
+ netlink_sendmsg+0x1e4/0x440
+ ____sys_sendmsg+0x164/0x260
+ ___sys_sendmsg+0x9a/0xe0
+ __sys_sendmsg+0x7a/0xc0
+ do_syscall_64+0x40/0xe0
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Hide the perf-metrics topdown events and the slots event if the
-perf-metrics feature is not enumerated.
-
-The big core of a hybrid platform can also supports the perf-metrics
-feature. Fix the hybrid platform as well.
-
-Closes: https://lore.kernel.org/lkml/CAM9d7cj8z+ryyzUHR+P1Dcpot2jjW+Qcc4CPQpfafTXN=LEU0Q@mail.gmail.com/
-Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
-Link: https://lkml.kernel.org/r/20240708193336.1192217-2-kan.liang@linux.intel.com
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Fixes: 22a677661f56 ("mlxsw: spectrum: Introduce ACL core with simple TCAM implementation")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/fb6a4542bbc9fcab5a523802d97059bffbca7126.1705502064.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ For the function mlxsw_sp_acl_to_tcam() is not exist in 6.1.y, pick
+mlxsw_sp_acl_to_tcam() from commit 74cbc3c03c828ccf265a72f9bcb5aee906978744 ]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c |   34 +++++++++++++++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum.h          |    1 +
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c      |    5 +++++
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c |    4 ++--
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -5409,8 +5409,22 @@ default_is_visible(struct kobject *kobj,
- 	return attr->mode;
- }
- 
-+static umode_t
-+td_is_visible(struct kobject *kobj, struct attribute *attr, int i)
-+{
-+	/*
-+	 * Hide the perf metrics topdown events
-+	 * if the feature is not enumerated.
-+	 */
-+	if (x86_pmu.num_topdown_events)
-+		return x86_pmu.intel_cap.perf_metrics ? attr->mode : 0;
-+
-+	return attr->mode;
-+}
-+
- static struct attribute_group group_events_td  = {
- 	.name = "events",
-+	.is_visible = td_is_visible,
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum.h
+@@ -970,6 +970,7 @@ enum mlxsw_sp_acl_profile {
  };
  
- static struct attribute_group group_events_mem = {
-@@ -5587,9 +5601,27 @@ static umode_t hybrid_format_is_visible(
- 	return (cpu >= 0) && (pmu->cpu_type & pmu_attr->pmu_type) ? attr->mode : 0;
+ struct mlxsw_afk *mlxsw_sp_acl_afk(struct mlxsw_sp_acl *acl);
++struct mlxsw_sp_acl_tcam *mlxsw_sp_acl_to_tcam(struct mlxsw_sp_acl *acl);
+ 
+ int mlxsw_sp_acl_ruleset_bind(struct mlxsw_sp *mlxsw_sp,
+ 			      struct mlxsw_sp_flow_block *block,
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl.c
+@@ -40,6 +40,11 @@ struct mlxsw_afk *mlxsw_sp_acl_afk(struc
+ 	return acl->afk;
  }
  
-+static umode_t hybrid_td_is_visible(struct kobject *kobj,
-+				    struct attribute *attr, int i)
++struct mlxsw_sp_acl_tcam *mlxsw_sp_acl_to_tcam(struct mlxsw_sp_acl *acl)
 +{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct x86_hybrid_pmu *pmu =
-+		 container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
-+
-+	if (!is_attr_for_this_pmu(kobj, attr))
-+		return 0;
-+
-+
-+	/* Only the big core supports perf metrics */
-+	if (pmu->cpu_type == hybrid_big)
-+		return pmu->intel_cap.perf_metrics ? attr->mode : 0;
-+
-+	return attr->mode;
++	return &acl->tcam;
 +}
 +
- static struct attribute_group hybrid_group_events_td  = {
- 	.name		= "events",
--	.is_visible	= hybrid_events_is_visible,
-+	.is_visible	= hybrid_td_is_visible,
- };
+ struct mlxsw_sp_acl_ruleset_ht_key {
+ 	struct mlxsw_sp_flow_block *block;
+ 	u32 chain_index;
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -747,13 +747,13 @@ static void
+ mlxsw_sp_acl_tcam_region_destroy(struct mlxsw_sp *mlxsw_sp,
+ 				 struct mlxsw_sp_acl_tcam_region *region)
+ {
++	struct mlxsw_sp_acl_tcam *tcam = mlxsw_sp_acl_to_tcam(mlxsw_sp->acl);
+ 	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
  
- static struct attribute_group hybrid_group_events_mem = {
+ 	ops->region_fini(mlxsw_sp, region->priv);
+ 	mlxsw_sp_acl_tcam_region_disable(mlxsw_sp, region);
+ 	mlxsw_sp_acl_tcam_region_free(mlxsw_sp, region);
+-	mlxsw_sp_acl_tcam_region_id_put(region->group->tcam,
+-					region->id);
++	mlxsw_sp_acl_tcam_region_id_put(tcam, region->id);
+ 	kfree(region);
+ }
+ 
 
 
 
