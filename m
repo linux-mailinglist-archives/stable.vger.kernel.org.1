@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC639EF66C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1228F9EF904
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A0C428193E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55F8E1898341
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C54C21660C;
-	Thu, 12 Dec 2024 17:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1E1222D68;
+	Thu, 12 Dec 2024 17:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLJoJZze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/EQuAsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390A4211493;
-	Thu, 12 Dec 2024 17:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADA613CA81;
+	Thu, 12 Dec 2024 17:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024324; cv=none; b=m6Kr3swG6eqCdV35Np9mpxo1T/iqzZXKxfxdMMFU7Mt5nkk6C96u/vh3g+/nfy3Vhm7fhSDn5f+vc/bcOpsQ1glVEAPzTzd3sF4T3pNfAmw2SsVSgjyBDdkY/SewDryKxCouTwIYHfWoBZC9iX2htFuE8nvPjVwR8sop15YfnDg=
+	t=1734025258; cv=none; b=L4i9kpSL4XTqTJPNePojE+p1vN4Y8uhGStPHPDS/Hi2AGuWDtpMkjZv4mM0198MvfOyllauO+5RBTOCbLSbRg3iNKEJRZJpjIcYt4Fk5rO1LhJCbTtVngCKL1b7kPabOdpw4Rt24YQdtXbcApCZnFW7HM1hfizP945DzbBc7bJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024324; c=relaxed/simple;
-	bh=wxLngrrDYs9ST71AWg9vRRjfI3FuKYQ0PlWlc/Hctok=;
+	s=arc-20240116; t=1734025258; c=relaxed/simple;
+	bh=s4XBvM0EzOm5Z1SAhSqs2vKp2V7QR335S6qM6CTtV4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kd7iNT43PogsyxcNxwIoS1t8s1zAdWEZGKOqdCTzCTeOnrKR3OMk5xmkfoEJAEJzBAzXXNEpTEo+xv6hLo5FMAmZ1BVx60wSKdID3iNnvuz5fFGzoytOEcEYVcdVw4XYkXQqHvEq53YagJ701BAcCLMBDCKBMkD6X8kaV8x5lVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLJoJZze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04B2C4CECE;
-	Thu, 12 Dec 2024 17:25:23 +0000 (UTC)
+	 MIME-Version; b=EsnVhoJY3MUCibHqA8IYQpiWsiNw3x92u04C+PISm9tflhLjIdBljnloj7t86BZTl6zzeYmUaosPTHG/4wI5ALjJwJbMtrbVDt53EthOQ4r8eIVpMCuO8UGEFtI74WOq0UQ31BaAp1rc660YLtmt0iKdkM8rdMKADYZFc859LrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/EQuAsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1FEC4CECE;
+	Thu, 12 Dec 2024 17:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024324;
-	bh=wxLngrrDYs9ST71AWg9vRRjfI3FuKYQ0PlWlc/Hctok=;
+	s=korg; t=1734025258;
+	bh=s4XBvM0EzOm5Z1SAhSqs2vKp2V7QR335S6qM6CTtV4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLJoJZzev3JHnPfAYyLbWEtmjNwVmHQFz01hkou+e8srRaGsf/WP7ojCYuTPkbGll
-	 1GuXs/wlwWr0mgEl2T0jIStK2KWTLMLlg0CPEU53JRXtceh+UzQwVuXYuTad1iaxus
-	 o3QaBhB25Rf7ocvDJBwx2Jn34O+3WhMo8MxoPCy8=
+	b=L/EQuAsXZPqrVoDbdNMX0mbNhhtDxOv1s2+YD0Lmx9+wcmtISKcLOi8Gj9FWTzLr7
+	 NNXJUKpJiC9nsJ8AG100kt2V4Ap8HG+oXxfwmiwKSABp4uT2J6AwkFBCcYnu0q7PwD
+	 OmfjQIKD1AhrJLCDnqQkCVfaAiE7ktXgfpgRL9bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrej Shadura <andrew.shadura@collabora.co.uk>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Aleksei Vetrov <vvvvvv@google.com>
-Subject: [PATCH 5.10 259/459] Bluetooth: Fix type of len in rfcomm_sock_getsockopt{,_old}()
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 079/321] bpf, sockmap: Fix sk_msg_reset_curr
 Date: Thu, 12 Dec 2024 15:59:57 +0100
-Message-ID: <20241212144303.829452560@linuxfoundation.org>
+Message-ID: <20241212144233.106738621@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrej Shadura <andrew.shadura@collabora.co.uk>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-commit 5fe6caa62b07fd39cd6a28acc8f92ba2955e11a6 upstream.
+[ Upstream commit 955afd57dc4bf7e8c620a0a9e3af3c881c2c6dff ]
 
-Commit 9bf4e919ccad worked around an issue introduced after an innocuous
-optimisation change in LLVM main:
+Found in the test_txmsg_pull in test_sockmap,
+```
+txmsg_cork = 512; // corking is importrant here
+opt->iov_length = 3;
+opt->iov_count = 1;
+opt->rate = 512; // sendmsg will be invoked 512 times
+```
+The first sendmsg will send an sk_msg with size 3, and bpf_msg_pull_data
+will be invoked the first time. sk_msg_reset_curr will reset the copybreak
+from 3 to 0. In the second sendmsg, since we are in the stage of corking,
+psock->cork will be reused in func sk_msg_alloc. msg->sg.copybreak is 0
+now, the second msg will overwrite the first msg. As a result, we could
+not pass the data integrity test.
 
-> len is defined as an 'int' because it is assigned from
-> '__user int *optlen'. However, it is clamped against the result of
-> sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
-> platforms). This is done with min_t() because min() requires compatible
-> types, which results in both len and the result of sizeof() being casted
-> to 'unsigned int', meaning len changes signs and the result of sizeof()
-> is truncated. From there, len is passed to copy_to_user(), which has a
-> third parameter type of 'unsigned long', so it is widened and changes
-> signs again. This excessive casting in combination with the KCSAN
-> instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
-> call, failing the build.
+The same problem happens in push and pop test. Thus, fix sk_msg_reset_curr
+to restore the correct copybreak.
 
-The same issue occurs in rfcomm in functions rfcomm_sock_getsockopt and
-rfcomm_sock_getsockopt_old.
-
-Change the type of len to size_t in both rfcomm_sock_getsockopt and
-rfcomm_sock_getsockopt_old and replace min_t() with min().
-
-Cc: stable@vger.kernel.org
-Co-authored-by: Aleksei Vetrov <vvvvvv@google.com>
-Improves: 9bf4e919ccad ("Bluetooth: Fix type of len in {l2cap,sco}_sock_getsockopt_old()")
-Link: https://github.com/ClangBuiltLinux/linux/issues/2007
-Link: https://github.com/llvm/llvm-project/issues/85647
-Signed-off-by: Andrej Shadura <andrew.shadura@collabora.co.uk>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bb9aefde5bba ("bpf: sockmap, updating the sg structure should also update curr")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Link: https://lore.kernel.org/r/20241106222520.527076-9-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/rfcomm/sock.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/core/filter.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -735,7 +735,8 @@ static int rfcomm_sock_getsockopt_old(st
- 	struct sock *l2cap_sk;
- 	struct l2cap_conn *conn;
- 	struct rfcomm_conninfo cinfo;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 	u32 opt;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 5c9b7c270739f..9f67d9f20ae09 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2221,18 +2221,16 @@ BPF_CALL_2(bpf_msg_cork_bytes, struct sk_msg *, msg, u32, bytes)
  
- 	BT_DBG("sk %p", sk);
-@@ -789,7 +790,7 @@ static int rfcomm_sock_getsockopt_old(st
- 		cinfo.hci_handle = conn->hcon->handle;
- 		memcpy(cinfo.dev_class, conn->hcon->dev_class, 3);
- 
--		len = min_t(unsigned int, len, sizeof(cinfo));
-+		len = min(len, sizeof(cinfo));
- 		if (copy_to_user(optval, (char *) &cinfo, len))
- 			err = -EFAULT;
- 
-@@ -808,7 +809,8 @@ static int rfcomm_sock_getsockopt(struct
+ static void sk_msg_reset_curr(struct sk_msg *msg)
  {
- 	struct sock *sk = sock->sk;
- 	struct bt_security sec;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
+-	u32 i = msg->sg.start;
+-	u32 len = 0;
+-
+-	do {
+-		len += sk_msg_elem(msg, i)->length;
+-		sk_msg_iter_var_next(i);
+-		if (len >= msg->sg.size)
+-			break;
+-	} while (i != msg->sg.end);
++	if (!msg->sg.size) {
++		msg->sg.curr = msg->sg.start;
++		msg->sg.copybreak = 0;
++	} else {
++		u32 i = msg->sg.end;
  
- 	BT_DBG("sk %p", sk);
+-	msg->sg.curr = i;
+-	msg->sg.copybreak = 0;
++		sk_msg_iter_var_prev(i);
++		msg->sg.curr = i;
++		msg->sg.copybreak = msg->sg.data[i].length;
++	}
+ }
  
-@@ -833,7 +835,7 @@ static int rfcomm_sock_getsockopt(struct
- 		sec.level = rfcomm_pi(sk)->sec_level;
- 		sec.key_size = 0;
- 
--		len = min_t(unsigned int, len, sizeof(sec));
-+		len = min(len, sizeof(sec));
- 		if (copy_to_user(optval, (char *) &sec, len))
- 			err = -EFAULT;
- 
+ static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
+-- 
+2.43.0
+
 
 
 
