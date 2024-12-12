@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388319EEA81
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B709EF13C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3417D16C2E4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E6616FD64
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7A9217F40;
-	Thu, 12 Dec 2024 15:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3D222A813;
+	Thu, 12 Dec 2024 16:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTSaG9Xm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HamBqsrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE037217F30;
-	Thu, 12 Dec 2024 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F66211A34;
+	Thu, 12 Dec 2024 16:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016161; cv=none; b=Uw6j3DhnmPapGmUHNaneK6OhhOW49tScODJrkp7tF6DNChoG+JSV60bizFEVQfzqflncRvRXMOkrsrJmGx661MdEes7znmWTtVu2d75S9H7mvPxJqQtr9ep1rl2GHVnUpvpmJno8bQWplF0rwg+f5C2cv5sC+JYZBpWRj1WEE8U=
+	t=1734020162; cv=none; b=Q1iHdeYEjkEI7QId2NioaE7PSF2TcZUQgWN2mv2hCHwp9MgLmREaYSDpF76kgX7q3/FjGT4EcLEw4nZS8DxLgjlzXkvaPwHg1RTakMfKx7i9Mpm3xnPLWE/OYTjDWhM/ajwxPE4ZvBD3sRxNt3FgQveszcRtyFRBmslyEfjL60Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016161; c=relaxed/simple;
-	bh=lSRc0EQ4oU3PkE8PNBsj6Oj0eQ2aRYYbG6I65xUiITI=;
+	s=arc-20240116; t=1734020162; c=relaxed/simple;
+	bh=xg2/+CcoMLDbBr0KR6F3LQBJXJDw6+HaES1XuYEG4c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oNethYXlETb46apes50Y7gZwcWUiks38qaZOet26IlNB9bT+JHbgH7MlcScXwmMxdj0cpIlW7l7ltfYe5k8kjcwxIryoLC3tszppIGgfntE4SnADV1ppSHcY6b2cqBZ7qzOb8P3ZHsWpX8FqDXSZL0+ydbw/aDaKcUuR4Bv2XsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTSaG9Xm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABBFC4CECE;
-	Thu, 12 Dec 2024 15:09:18 +0000 (UTC)
+	 MIME-Version; b=Xk54NhfrmR8w05HeQfqnXeG64HV+dpLkUolPeA7+kePokRuc5BrQvjpGiTx+H64oLimWmSMobuIr8NtzoW1bIBihnA1yuOBZJVoFG1pgaQZuAhfcccp8neNLnrqlu92IzHbLIwhUoU9c554e1RX9lvWIiwABuQPwI0+monw9aNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HamBqsrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3F3C4CECE;
+	Thu, 12 Dec 2024 16:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016159;
-	bh=lSRc0EQ4oU3PkE8PNBsj6Oj0eQ2aRYYbG6I65xUiITI=;
+	s=korg; t=1734020162;
+	bh=xg2/+CcoMLDbBr0KR6F3LQBJXJDw6+HaES1XuYEG4c8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTSaG9XmqDS2U3qNGEGPdCDdVZYKi5CUhRuDwo0vVnIiE3D4RPIECcoDY4byvu0yr
-	 WVEqfB2pKH4J3fPAKz9GSyBdvjkMGKYuvFHOy9ip9ALDZfzXI9Kqzc2jQCT3462/+x
-	 jaIwzCG5Lm/+9rMWf1NZuBQoPZ2ucO0vecjNL+Hs=
+	b=HamBqsrTsYqouFRRW2TmAvcIruseNrZP1hAt+1XhM6akkibFf1+Agz+rhbwvYZ5ah
+	 xYG7lkZt8O3yJLp/8y8vompUtLttPqec3//vKZZrM6wr/kN4AO7LL38E20H1oR88cd
+	 DV6wMK191ndxtZJfA9WVJNqZd2ovE+BfJy2Pytxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 129/466] can: dev: can_set_termination(): allow sleeping GPIOs
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Hagar Hemdan <hagarhem@amazon.com>
+Subject: [PATCH 6.1 353/772] perf/x86/intel: Hide Topdown metrics events if the feature is not enumerated
 Date: Thu, 12 Dec 2024 15:54:58 +0100
-Message-ID: <20241212144311.901341240@linuxfoundation.org>
+Message-ID: <20241212144404.500059207@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit ee1dfbdd8b4b6de85e96ae2059dc9c1bdb6b49b5 upstream.
+commit 556a7c039a52c21da33eaae9269984a1ef59189b upstream.
 
-In commit 6e86a1543c37 ("can: dev: provide optional GPIO based
-termination support") GPIO based termination support was added.
+The below error is observed on Ice Lake VM.
 
-For no particular reason that patch uses gpiod_set_value() to set the
-GPIO. This leads to the following warning, if the systems uses a
-sleeping GPIO, i.e. behind an I2C port expander:
+$ perf stat
+Error:
+The sys_perf_event_open() syscall returned with 22 (Invalid argument)
+for event (slots).
+/bin/dmesg | grep -i perf may provide additional information.
 
-| WARNING: CPU: 0 PID: 379 at /drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x50/0x6c
-| CPU: 0 UID: 0 PID: 379 Comm: ip Not tainted 6.11.0-20241016-1 #1 823affae360cc91126e4d316d7a614a8bf86236c
+In a virtualization env, the Topdown metrics and the slots event haven't
+been supported yet. The guest CPUID doesn't enumerate them. However, the
+current kernel unconditionally exposes the slots event and the Topdown
+metrics events to sysfs, which misleads the perf tool and triggers the
+error.
 
-Replace gpiod_set_value() by gpiod_set_value_cansleep() to allow the
-use of sleeping GPIOs.
+Hide the perf-metrics topdown events and the slots event if the
+perf-metrics feature is not enumerated.
 
-Cc: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Cc: stable@vger.kernel.org
-Reported-by: Leonard Göhrs <l.goehrs@pengutronix.de>
-Tested-by: Leonard Göhrs <l.goehrs@pengutronix.de>
-Fixes: 6e86a1543c37 ("can: dev: provide optional GPIO based termination support")
-Link: https://patch.msgid.link/20241121-dev-fix-can_set_termination-v1-1-41fa6e29216d@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The big core of a hybrid platform can also supports the perf-metrics
+feature. Fix the hybrid platform as well.
+
+Closes: https://lore.kernel.org/lkml/CAM9d7cj8z+ryyzUHR+P1Dcpot2jjW+Qcc4CPQpfafTXN=LEU0Q@mail.gmail.com/
+Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
+Link: https://lkml.kernel.org/r/20240708193336.1192217-2-kan.liang@linux.intel.com
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/dev/dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/core.c |   34 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -468,7 +468,7 @@ static int can_set_termination(struct ne
- 	else
- 		set = 0;
- 
--	gpiod_set_value(priv->termination_gpio, set);
-+	gpiod_set_value_cansleep(priv->termination_gpio, set);
- 
- 	return 0;
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -5409,8 +5409,22 @@ default_is_visible(struct kobject *kobj,
+ 	return attr->mode;
  }
+ 
++static umode_t
++td_is_visible(struct kobject *kobj, struct attribute *attr, int i)
++{
++	/*
++	 * Hide the perf metrics topdown events
++	 * if the feature is not enumerated.
++	 */
++	if (x86_pmu.num_topdown_events)
++		return x86_pmu.intel_cap.perf_metrics ? attr->mode : 0;
++
++	return attr->mode;
++}
++
+ static struct attribute_group group_events_td  = {
+ 	.name = "events",
++	.is_visible = td_is_visible,
+ };
+ 
+ static struct attribute_group group_events_mem = {
+@@ -5587,9 +5601,27 @@ static umode_t hybrid_format_is_visible(
+ 	return (cpu >= 0) && (pmu->cpu_type & pmu_attr->pmu_type) ? attr->mode : 0;
+ }
+ 
++static umode_t hybrid_td_is_visible(struct kobject *kobj,
++				    struct attribute *attr, int i)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct x86_hybrid_pmu *pmu =
++		 container_of(dev_get_drvdata(dev), struct x86_hybrid_pmu, pmu);
++
++	if (!is_attr_for_this_pmu(kobj, attr))
++		return 0;
++
++
++	/* Only the big core supports perf metrics */
++	if (pmu->cpu_type == hybrid_big)
++		return pmu->intel_cap.perf_metrics ? attr->mode : 0;
++
++	return attr->mode;
++}
++
+ static struct attribute_group hybrid_group_events_td  = {
+ 	.name		= "events",
+-	.is_visible	= hybrid_events_is_visible,
++	.is_visible	= hybrid_td_is_visible,
+ };
+ 
+ static struct attribute_group hybrid_group_events_mem = {
 
 
 
