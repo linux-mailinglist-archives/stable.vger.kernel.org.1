@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6769EF126
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F93D9EECED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0660B29F2FE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06B9E2849DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F08F223C56;
-	Thu, 12 Dec 2024 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE65217F34;
+	Thu, 12 Dec 2024 15:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QND/qGGC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxu/MSnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D07A2210CA;
-	Thu, 12 Dec 2024 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DFB6F2FE;
+	Thu, 12 Dec 2024 15:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020722; cv=none; b=WaosGyA9MYjDffpR4TVUSlz+hPTBueebikOb/MYHMndWMbXKAoHC4go2cbG5xmM0xkQ0FI40xKWhgO+4ZkKMz/3mTFF4POGgxvTidnMrr3LI0PhJ6j0Sw0PKJV2FsC/qrYUzRFrzUr9U6vWnJNsvjHU62xD8281r7Q/yjQVfER8=
+	t=1734017994; cv=none; b=P+Hye0+xGXn7/UWVEB46NVnUqJZjynZeD12Xb4A4eA8zmyHQKDlyUgH1WZRBmxCvc4GNgzkvcxMFTtuEaz8FWY8jGw406zHLcqpQZNT4pFy7DwZb+vVXKKJONW3kHVgabVhGT8IrEXg93LMi95dzmHycdpdXyzfHR9iUDVVgBgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020722; c=relaxed/simple;
-	bh=oy/2a1AJW8dXFBOdNQT1EMGgQc7PNJyuBgGuzMov9pI=;
+	s=arc-20240116; t=1734017994; c=relaxed/simple;
+	bh=IQDwcpsYjy5kfgGq2Is642ZbQW+pd9UK6wBYp1I6Q4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4gqdyJOtX04O8l+46FakSd7W+66/8OMGsOl4rPb+RyWs/2yJ5+q10q8cFQy7QIUQXCTauhFbEXf2GqhcMBimqwkGpHLJwdV+O/SUMxX1QLce4rfLIIk25IIiE1CE8ADKE2q6aIcy0z1xECYJemK6Q4Oyz+WDOgTGYmKspt5DEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QND/qGGC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7E4C4CECE;
-	Thu, 12 Dec 2024 16:25:21 +0000 (UTC)
+	 MIME-Version; b=SZ5dbbt0b13WMNHW3S7frBUMTgelJKW5vi4WJXvYsjAubODVeEb1+1LYUo/yk9FOsRRHj46xMkT2nDUiKydGes3hs5EpfEEn1GFAp4fxi8y2JtZ6THWA5Bmsh2HClTnusM4wBAaIaiQbYIcF3bB5aAkmZQKeZ5PiYU3v1MFepOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxu/MSnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06CAC4CECE;
+	Thu, 12 Dec 2024 15:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020722;
-	bh=oy/2a1AJW8dXFBOdNQT1EMGgQc7PNJyuBgGuzMov9pI=;
+	s=korg; t=1734017994;
+	bh=IQDwcpsYjy5kfgGq2Is642ZbQW+pd9UK6wBYp1I6Q4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QND/qGGCvVishI0kJ5d4SkE9Amv7CLyLQCt2CoL3ass0bwVCqMxVAEXIqS6b7Z4tx
-	 IKXBcgGQJZQGnVEysyDvU+rulE02hyIiaBXic2ZJcR6iNip9TD5tKGBKS4bB3S77YP
-	 QLTd+rZ3TGqi4PE71jDg9Z5c3hXP83jQdQGO0Sjs=
+	b=cxu/MSnYG1hSg542lkrqbP1klKntjt1CrQFZx+ir6gPTgGjwXAJh8tDV6EE/THzra
+	 hwBRkUlClOYN2wD8R4q1qZVjJBIBUAKPmqtZFFASD5R/xR4jKspikOCIGoNulLlz2l
+	 bH6GrZ8VKZxO+WIBDozaa8YV7b7Xr+U36yzfuwws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 542/772] netfilter: ipset: Hold module reference while requesting a module
+	Lyude Paul <lyude@redhat.com>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.6 168/356] drm/dp_mst: Fix resetting msg rx state after topology removal
 Date: Thu, 12 Dec 2024 15:58:07 +0100
-Message-ID: <20241212144412.361092405@linuxfoundation.org>
+Message-ID: <20241212144251.273042401@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 456f010bfaefde84d3390c755eedb1b0a5857c3c ]
+commit a6fa67d26de385c3c7a23c1e109a0e23bfda4ec7 upstream.
 
-User space may unload ip_set.ko while it is itself requesting a set type
-backend module, leading to a kernel crash. The race condition may be
-provoked by inserting an mdelay() right after the nfnl_unlock() call.
+If the MST topology is removed during the reception of an MST down reply
+or MST up request sideband message, the
+drm_dp_mst_topology_mgr::up_req_recv/down_rep_recv states could be reset
+from one thread via drm_dp_mst_topology_mgr_set_mst(false), racing with
+the reading/parsing of the message from another thread via
+drm_dp_mst_handle_down_rep() or drm_dp_mst_handle_up_req(). The race is
+possible since the reader/parser doesn't hold any lock while accessing
+the reception state. This in turn can lead to a memory corruption in the
+reader/parser as described by commit bd2fccac61b4 ("drm/dp_mst: Fix MST
+sideband message body length check").
 
-Fixes: a7b4f989a629 ("netfilter: ipset: IP set core support")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the above by resetting the message reception state if needed before
+reading/parsing a message. Another solution would be to hold the
+drm_dp_mst_topology_mgr::lock for the whole duration of the message
+reception/parsing in drm_dp_mst_handle_down_rep() and
+drm_dp_mst_handle_up_req(), however this would require a bigger change.
+Since the fix is also needed for stable, opting for the simpler solution
+in this patch.
+
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 1d082618bbf3 ("drm/display/dp_mst: Fix down/up message handling after sink disconnect")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13056
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-2-imre.deak@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |   21 +++++++++++++++++++--
+ include/drm/display/drm_dp_mst_helper.h       |    7 +++++++
+ 2 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 0b24b638bfd2e..56215fb63b645 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -104,14 +104,19 @@ find_set_type(const char *name, u8 family, u8 revision)
- static bool
- load_settype(const char *name)
- {
-+	if (!try_module_get(THIS_MODULE))
-+		return false;
-+
- 	nfnl_unlock(NFNL_SUBSYS_IPSET);
- 	pr_debug("try to load ip_set_%s\n", name);
- 	if (request_module("ip_set_%s", name) < 0) {
- 		pr_warn("Can't find ip_set type %s\n", name);
- 		nfnl_lock(NFNL_SUBSYS_IPSET);
-+		module_put(THIS_MODULE);
- 		return false;
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3655,8 +3655,7 @@ int drm_dp_mst_topology_mgr_set_mst(stru
+ 		ret = 0;
+ 		mgr->payload_id_table_cleared = false;
+ 
+-		memset(&mgr->down_rep_recv, 0, sizeof(mgr->down_rep_recv));
+-		memset(&mgr->up_req_recv, 0, sizeof(mgr->up_req_recv));
++		mgr->reset_rx_state = true;
  	}
- 	nfnl_lock(NFNL_SUBSYS_IPSET);
-+	module_put(THIS_MODULE);
- 	return true;
+ 
+ out_unlock:
+@@ -3784,6 +3783,11 @@ out_fail:
+ }
+ EXPORT_SYMBOL(drm_dp_mst_topology_mgr_resume);
+ 
++static void reset_msg_rx_state(struct drm_dp_sideband_msg_rx *msg)
++{
++	memset(msg, 0, sizeof(*msg));
++}
++
+ static bool
+ drm_dp_get_one_sb_msg(struct drm_dp_mst_topology_mgr *mgr, bool up,
+ 		      struct drm_dp_mst_branch **mstb)
+@@ -4097,6 +4101,17 @@ out:
+ 	return 0;
  }
  
--- 
-2.43.0
-
++static void update_msg_rx_state(struct drm_dp_mst_topology_mgr *mgr)
++{
++	mutex_lock(&mgr->lock);
++	if (mgr->reset_rx_state) {
++		mgr->reset_rx_state = false;
++		reset_msg_rx_state(&mgr->down_rep_recv);
++		reset_msg_rx_state(&mgr->up_req_recv);
++	}
++	mutex_unlock(&mgr->lock);
++}
++
+ /**
+  * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
+  * @mgr: manager to notify irq for.
+@@ -4131,6 +4146,8 @@ int drm_dp_mst_hpd_irq_handle_event(stru
+ 		*handled = true;
+ 	}
+ 
++	update_msg_rx_state(mgr);
++
+ 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
+ 		ret = drm_dp_mst_handle_down_rep(mgr);
+ 		*handled = true;
+--- a/include/drm/display/drm_dp_mst_helper.h
++++ b/include/drm/display/drm_dp_mst_helper.h
+@@ -690,6 +690,13 @@ struct drm_dp_mst_topology_mgr {
+ 	bool payload_id_table_cleared : 1;
+ 
+ 	/**
++	 * @reset_rx_state: The down request's reply and up request message
++	 * receiver state must be reset, after the topology manager got
++	 * removed. Protected by @lock.
++	 */
++	bool reset_rx_state : 1;
++
++	/**
+ 	 * @payload_count: The number of currently active payloads in hardware. This value is only
+ 	 * intended to be used internally by MST helpers for payload tracking, and is only safe to
+ 	 * read/write from the atomic commit (not check) context.
 
 
 
