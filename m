@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-101258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760909EEB9A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 405F19EF17C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BD911654FE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 017F428EDAF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F390A212B0F;
-	Thu, 12 Dec 2024 15:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F6922C36A;
+	Thu, 12 Dec 2024 16:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8RQipg7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XR4F56HI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21AD2AF0E;
-	Thu, 12 Dec 2024 15:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E40A22C354;
+	Thu, 12 Dec 2024 16:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016922; cv=none; b=FsqyXjBqh03uJ2RfTTtP7uR2mDIaLgSPcP3VSbmTXKh4jX6aC/i3jkVGtXs1csTIFVcrKZ5qMIjXOP8hCPVBdq8fiDQFIClSOc61G023ta5dN8tVKZ57n8mk1x3YbFZL/TYLa23L20LEanbIgWbi7B/hu3bec1GnY9XOQLzJvE8=
+	t=1734020889; cv=none; b=Y6XXacfKGXIPIVMIeEDepKaZ0xoPHb/+CsZbofHPJ3PQKeNlmmUf8bJLZ9q+rtbSdp01j75VXQZ3XKS4gkjmRTUGO5fPaWHxK+BS+Ap1JVBMryiwLEwEBr0XHNUQJ22XT27WGr23SPNk/mG2VC9T95DRBNh4rFD8pY53+k9Evuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016922; c=relaxed/simple;
-	bh=ekLGgfUQm5XPbBkZS54rMm9hezrqNA3uitJuwX6ieL4=;
+	s=arc-20240116; t=1734020889; c=relaxed/simple;
+	bh=qFIkncYmvslN1Aodfv6vyL5PHopOUmxqVs9zFDx9rTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ob8zBsitZ+mVn94xWKkMsay5a7up9XxJcjdHatcYLwNDeiv+OwDrCyjOH8rQfnwPo4lUmv2dK+y5Wo3qEf0c6VuMxERVhQoPTdAvOR658GKBmpZ01fDpiqCb20ks/cTjjopYa96q8DT3+219nV3lzjGDjSeaQ3RvXK8GVVUjY5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8RQipg7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68B5C4CEE0;
-	Thu, 12 Dec 2024 15:22:01 +0000 (UTC)
+	 MIME-Version; b=LCSy9Ggi9RqjaNMe/NEm5uUyg5e/DOr3STg2UVOGCIdZQFwdDkfBzyIdfcolMQE2BItIMynkY+pJqBKDEGGnLuE3UhgwnQJHzyVNAP8j58nCWUBYIMSK+3LkMQTowdNdDPjv8slPKNMVUFOu9jbj41lP6KBCR9bWBRwexoChUto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XR4F56HI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF05CC4CECE;
+	Thu, 12 Dec 2024 16:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016922;
-	bh=ekLGgfUQm5XPbBkZS54rMm9hezrqNA3uitJuwX6ieL4=;
+	s=korg; t=1734020889;
+	bh=qFIkncYmvslN1Aodfv6vyL5PHopOUmxqVs9zFDx9rTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q8RQipg7OhaukN4uRMo39iNSH/3QDyUlY0jwTXS2YyGAQd7el4knD9dzX14AozWFj
-	 mFh9GXL33spFXOBvMW2B+8HfnjVsFE6j/ViWTM/JeCsKM+OpSIidiuBOeKj0xAIi8y
-	 KfaKVZGpG5/kqsY861u6JV7e8CvW6wSBN6YRn9Rw=
+	b=XR4F56HIzyTwO8SHYCCTisY6tlAquKX8nmPB6RysOzCF0+xbNqCHu4pxu9HQfSx+Z
+	 assIIuBrAdGhAIp16hS7HlahPe8320QRtgC1neN5SjPgvA2bT0nWi/CJBxzy7h5jR7
+	 ToOK2qBXKAC8cWzYfPTMz3h6AoW2P4LQaBqlHbjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert van Bolhuis <nvbolhuis@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 334/466] wifi: brcmfmac: Fix oops due to NULL pointer dereference in brcmf_sdiod_sglist_rw()
+Subject: [PATCH 6.1 558/772] powerpc/vdso: Improve linker flags
 Date: Thu, 12 Dec 2024 15:58:23 +0100
-Message-ID: <20241212144319.982674083@linuxfoundation.org>
+Message-ID: <20241212144413.021916638@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +65,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert van Bolhuis <nvbolhuis@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 857282b819cbaa0675aaab1e7542e2c0579f52d7 ]
+[ Upstream commit f0a42fbab447ed9f55bbd99751183e71f3a1f6ec ]
 
-This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
-when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
-are sent from the pkt queue.
+When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, there
+are several warnings in the PowerPC vDSO:
 
-The problem is the number of entries in the pre-allocated sgtable, it is
-nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
-Given the default [rt]xglom_size=32 it's actually 35 which is too small.
-Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
-is added for each original SKB if tailroom isn't enough to hold tail_pad.
-At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
-in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
-NULL and this causes the oops.
+  clang-16: error: -Wl,-soname=linux-vdso32.so.1: 'linker' input unused [-Werror,-Wunused-command-line-argument]
+  clang-16: error: -Wl,--hash-style=both: 'linker' input unused [-Werror,-Wunused-command-line-argument]
+  clang-16: error: argument unused during compilation: '-shared' [-Werror,-Wunused-command-line-argument]
 
-The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
-the worst-case.
-Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
-additional bytes of memory.
+  clang-16: error: argument unused during compilation: '-nostdinc' [-Werror,-Wunused-command-line-argument]
+  clang-16: error: argument unused during compilation: '-Wa,-maltivec' [-Werror,-Wunused-command-line-argument]
 
-Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241107132903.13513-1-nvbolhuis@gmail.com
+The first group of warnings point out that linker flags were being added
+to all invocations of $(CC), even though they will only be used during
+the final vDSO link. Move those flags to ldflags-y.
+
+The second group of warnings are compiler or assembler flags that will
+be unused during linking. Filter them out from KBUILD_CFLAGS so that
+they are not used during linking.
+
+Additionally, '-z noexecstack' was added directly to the ld_and_check
+rule in commit 1d53c0192b15 ("powerpc/vdso: link with -z noexecstack")
+but now that there is a common ldflags variable, it can be moved there.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: d677ce521334 ("powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/vdso/Makefile | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index d35262335eaf7..8a1e337642448 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -770,7 +770,7 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev)
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index 45c0cc5d34b64..d4023bceec348 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -47,13 +47,17 @@ KCOV_INSTRUMENT := n
+ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
  
- 	nents = max_t(uint, BRCMF_DEFAULT_RXGLOM_SIZE,
- 		      sdiodev->settings->bus.sdio.txglomsz);
--	nents += (nents >> 4) + 1;
-+	nents *= 2;
+-ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
+-ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
+-
+-CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
++ccflags-y := -fno-common -fno-builtin
++ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack
++ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
++# Filter flags that clang will warn are unused for linking
++ldflags-y += $(filter-out $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
++
++CC32FLAGS := -m32
++LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
+ AS32FLAGS := -D__VDSO32__
  
- 	WARN_ON(nents > sdiodev->max_segment_count);
+-CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
++LD64FLAGS := -Wl,-soname=linux-vdso64.so.1
+ AS64FLAGS := -D__VDSO64__
  
+ targets += vdso32.lds
+@@ -92,15 +96,15 @@ include/generated/vdso64-offsets.h: $(obj)/vdso64.so.dbg FORCE
+ 
+ # actual build commands
+ quiet_cmd_vdso32ld_and_check = VDSO32L $@
+-      cmd_vdso32ld_and_check = $(VDSOCC) $(c_flags) $(CC32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
++      cmd_vdso32ld_and_check = $(VDSOCC) $(ldflags-y) $(CC32FLAGS) $(LD32FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
+ quiet_cmd_vdso32as = VDSO32A $@
+       cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) $(AS32FLAGS) -c -o $@ $<
+ quiet_cmd_vdso32cc = VDSO32C $@
+       cmd_vdso32cc = $(VDSOCC) $(c_flags) $(CC32FLAGS) -c -o $@ $<
+ 
+ quiet_cmd_vdso64ld_and_check = VDSO64L $@
+-      cmd_vdso64ld_and_check = $(VDSOCC) $(c_flags) $(CC64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
++      cmd_vdso64ld_and_check = $(VDSOCC) $(ldflags-y) $(LD64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
+ quiet_cmd_vdso64as = VDSO64A $@
+-      cmd_vdso64as = $(VDSOCC) $(a_flags) $(CC64FLAGS) $(AS64FLAGS) -c -o $@ $<
++      cmd_vdso64as = $(VDSOCC) $(a_flags) $(AS64FLAGS) -c -o $@ $<
+ 
+ OBJECT_FILES_NON_STANDARD := y
 -- 
 2.43.0
 
