@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5E59EF469
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D439EF56D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB5D0189F927
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27560283F9E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3262225A33;
-	Thu, 12 Dec 2024 16:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA76A205501;
+	Thu, 12 Dec 2024 17:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUtQspaV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jq8chHyq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704412253FE;
-	Thu, 12 Dec 2024 16:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861704F218;
+	Thu, 12 Dec 2024 17:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022295; cv=none; b=tjfbKPSOu/SSGt4KJ1eAqQmqsZQ3I5N+aErlHnUUWrOhMq5PzE2OzaPMZfLl1QDmhojmtBv69PLlMD/EMpHH5f9Dnbs/Jty85DUg2JM6lgYlGE66I5sceG4N9g/SRjXgAYFF4B72kDxrA7yDiTLlFB96UlbtQzn2ogkVpmknEyA=
+	t=1734023812; cv=none; b=ckUXlek/cVe2VR+VxwFpQREV8nbHXiKy1eV8rlxVHI/KXFlkLeiaMbG6Qy36uUlVvGlBP6e44xSEdUuIDqpBQT6/6iBjNsYnuE+5OLvsA4E+lWBAjtCDzwRkKSZiJydbqD1T9KkxdeTvm9wdNMV5oQUHROMEpmC4XzAEzqCPub4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022295; c=relaxed/simple;
-	bh=YSNcvKmYU0Y9yvweYJraQKXFL3NLxISA/qUZEZB+nkY=;
+	s=arc-20240116; t=1734023812; c=relaxed/simple;
+	bh=FLR1Wt9CcALZhQNa/hT8TgO4CFOrhKxio+GK8c6uRVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZquhsDUFrBNL6q6APKvKI/gIK+bEnzDWTMDaXT6FYpf0eLpVpfcNjcaK8jGYW3kLPBGFKbJp5XbC9RiGGqqhToGX4QIg+KfyXhwoQjmj95SGGG5bk7xQzDfYtcTV9eUOBy2H/G9xDbAm4dFieaog5riS7ASXUxJuOfVYhRJ9DTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUtQspaV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68FEC4CECE;
-	Thu, 12 Dec 2024 16:51:34 +0000 (UTC)
+	 MIME-Version; b=NptXJcXk0z6d/k628zuKzoMmnZxRLVcNqvCqPuFVgQA1oZCkBAWn5R08qd7OB4KbQSoKJSnylM44wkhPXnTAZTgiUTLiWIP3xtqbZukoH+gLAZzwYdiI7/OOdGgQ55e3cV1KuDje+kJPXSbe6f9FtCKxNHJf/e/qwHyIaqwRAYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jq8chHyq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0593BC4CECE;
+	Thu, 12 Dec 2024 17:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022295;
-	bh=YSNcvKmYU0Y9yvweYJraQKXFL3NLxISA/qUZEZB+nkY=;
+	s=korg; t=1734023812;
+	bh=FLR1Wt9CcALZhQNa/hT8TgO4CFOrhKxio+GK8c6uRVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUtQspaVmzecmt2/qOh/9LJ6FHNDMhmLtb4R9A4srsBDSn2rOhr52NuRqVdVtVAyn
-	 jGEMvF1LY/bTBACthjBSWKQuMa8lfJzrrIaThnsAhklZIPtpSClEgCj5q0PBPxXw4q
-	 8nmwl4ZhBjy6BHNPpGKaAPiUXGHs/rpYcWAKSCmI=
+	b=jq8chHyqzpo1hSX05ATEc2gtgq3av1w1ww1UduE9APBOtxLglGHhNa6RGSDNKyU5l
+	 C4LzpDs0hpSBeX4kNk3Ef80E73oDzET5RQ120XypPheo/ud74VaZMYw50m3ZMk4O1V
+	 YhS2hcumau7OvJs/V1n05ZFHjTTIzjxgF1z+j45I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 203/565] ALSA: 6fire: Release resources at card release
+Subject: [PATCH 5.10 060/459] m68k: mvme147: Fix SCSI controller IRQ numbers
 Date: Thu, 12 Dec 2024 15:56:38 +0100
-Message-ID: <20241212144319.516460783@linuxfoundation.org>
+Message-ID: <20241212144255.888700343@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit a0810c3d6dd2d29a9b92604d682eacd2902ce947 ]
+[ Upstream commit 47bc874427382018fa2e3e982480e156271eee70 ]
 
-The current 6fire code tries to release the resources right after the
-call of usb6fire_chip_abort().  But at this moment, the card object
-might be still in use (as we're calling snd_card_free_when_closed()).
+Sometime long ago the m68k IRQ code was refactored and the interrupt
+numbers for SCSI controller on this board ended up wrong, and it hasn't
+worked since.
 
-For avoid potential UAFs, move the release of resources to the card's
-private_free instead of the manual call of usb6fire_chip_destroy() at
-the USB disconnect callback.
+The PCC adds 0x40 to the vector for its interrupts so they end up in
+the user interrupt range. Hence, the kernel number should be the kernel
+offset for user interrupt range + the PCC interrupt number.
 
-Fixes: c6d43ba816d1 ("ALSA: usb/6fire - Driver for TerraTec DMX 6Fire USB")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-6-tiwai@suse.de
+Fixes: 200a3d352cd5 ("[PATCH] m68k: convert VME irq code")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/0e7636a21a0274eea35bfd5d874459d5078e97cc.1727926187.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/6fire/chip.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/m68k/include/asm/mvme147hw.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/6fire/chip.c b/sound/usb/6fire/chip.c
-index 33e962178c936..d562a30b087f0 100644
---- a/sound/usb/6fire/chip.c
-+++ b/sound/usb/6fire/chip.c
-@@ -61,8 +61,10 @@ static void usb6fire_chip_abort(struct sfire_chip *chip)
- 	}
- }
+diff --git a/arch/m68k/include/asm/mvme147hw.h b/arch/m68k/include/asm/mvme147hw.h
+index e28eb1c0e0bfb..dbf88059e47a4 100644
+--- a/arch/m68k/include/asm/mvme147hw.h
++++ b/arch/m68k/include/asm/mvme147hw.h
+@@ -93,8 +93,8 @@ struct pcc_regs {
+ #define M147_SCC_B_ADDR		0xfffe3000
+ #define M147_SCC_PCLK		5000000
  
--static void usb6fire_chip_destroy(struct sfire_chip *chip)
-+static void usb6fire_card_free(struct snd_card *card)
- {
-+	struct sfire_chip *chip = card->private_data;
-+
- 	if (chip) {
- 		if (chip->pcm)
- 			usb6fire_pcm_destroy(chip);
-@@ -72,8 +74,6 @@ static void usb6fire_chip_destroy(struct sfire_chip *chip)
- 			usb6fire_comm_destroy(chip);
- 		if (chip->control)
- 			usb6fire_control_destroy(chip);
--		if (chip->card)
--			snd_card_free(chip->card);
- 	}
- }
+-#define MVME147_IRQ_SCSI_PORT	(IRQ_USER+0x45)
+-#define MVME147_IRQ_SCSI_DMA	(IRQ_USER+0x46)
++#define MVME147_IRQ_SCSI_PORT	(IRQ_USER + 5)
++#define MVME147_IRQ_SCSI_DMA	(IRQ_USER + 6)
  
-@@ -136,6 +136,7 @@ static int usb6fire_chip_probe(struct usb_interface *intf,
- 	chip->regidx = regidx;
- 	chip->intf_count = 1;
- 	chip->card = card;
-+	card->private_free = usb6fire_card_free;
+ /* SCC interrupts, for MVME147 */
  
- 	ret = usb6fire_comm_init(chip);
- 	if (ret < 0)
-@@ -162,7 +163,7 @@ static int usb6fire_chip_probe(struct usb_interface *intf,
- 	return 0;
- 
- destroy_chip:
--	usb6fire_chip_destroy(chip);
-+	snd_card_free(card);
- 	return ret;
- }
- 
-@@ -181,7 +182,6 @@ static void usb6fire_chip_disconnect(struct usb_interface *intf)
- 
- 			chip->shutdown = true;
- 			usb6fire_chip_abort(chip);
--			usb6fire_chip_destroy(chip);
- 		}
- 	}
- }
 -- 
 2.43.0
 
