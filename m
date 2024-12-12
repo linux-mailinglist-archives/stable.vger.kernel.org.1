@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-101798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AF39EEE47
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F191E9EEE4F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91778285C41
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9139284E16
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696CD215764;
-	Thu, 12 Dec 2024 15:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B64522333A;
+	Thu, 12 Dec 2024 15:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bm3dADX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voCMWuJq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234CF221D88;
-	Thu, 12 Dec 2024 15:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E6D14A82;
+	Thu, 12 Dec 2024 15:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018834; cv=none; b=LsqF4X8Zvvk0HloiUUKACgJe7jZhb/eBgL+raPTrDQcHDJf41xNpFcvU2RJkiauivUU9rDM7ruRt2XlUZFr1ZDM+vxu4Ryw16CNTN0/0p6fAuw9zBO7jIC1657dbytyCCUzdj36Tuja9vrpO8nup9OsLsHnsw+Mx+S484+PFbYg=
+	t=1734018876; cv=none; b=WYn1V6AFs64ULhoFXpPR5cPH6ZUBnj7L80Yq5JVQBAPooNSbTWb5e3vkidHU8X7OJt11IOz2kG9TMdY/GIkXkKN5zc5oO4Rm17JgxrMtz/rzlysUKftIStQD/HsIyrOn6hb2WgH9OtjS8CV8Mb6v7KJa6wLVFE5WSeCBmY2JZaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018834; c=relaxed/simple;
-	bh=dxmedroYItT/TE2fDRLU3SdtJZWBDUZ+wLIqVz2bqG8=;
+	s=arc-20240116; t=1734018876; c=relaxed/simple;
+	bh=te40OVqwEpDUAjNFXRG0ZZcM5vRdV02+uT55jEMtXqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBqNwugjeadYJP9eWgD2mYSbAxmqHK4aPtQGoUci0/Oj1yf/t/4CTqMPWRn1X8FswTHrqb+X7aTcjgaF7HaSWP4DFV84LVKL3caaBB0BhKpmSDt8Ph9tLd5jNszgfPuW4qQ6XLyBiimX96dsN9jNvCwg+4NYNDlzqPkSL3yfDGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bm3dADX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65652C4CED0;
-	Thu, 12 Dec 2024 15:53:53 +0000 (UTC)
+	 MIME-Version; b=BTOkLJXDDhQI/zb5wQA1kyDhVSOvg0kmhcLkEA2kpChlT3junLOms7KBAQvnNphtfJmpXlrByreBVnSwiAHQ2JIHv4gWq9CWfUy6+dH4zv7Bb4pTnPTNk/f8BFMgHbNveo5caMxeXOZ6lhqJIkPcPOPPLJ+1rUR1DUZSUrCwDFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voCMWuJq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4FDC4CED0;
+	Thu, 12 Dec 2024 15:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018834;
-	bh=dxmedroYItT/TE2fDRLU3SdtJZWBDUZ+wLIqVz2bqG8=;
+	s=korg; t=1734018875;
+	bh=te40OVqwEpDUAjNFXRG0ZZcM5vRdV02+uT55jEMtXqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bm3dADX2w3tdijuPTH0vvF+yzhS86b2xqhRKwV91lcyErCd++ubzwM5WakpEnpMh6
-	 03zppnt+0RdKx6hsWMglwA6gG36fPziEUMUrv8z45W69rGi1MsskQ5/pq5ESzNP0um
-	 +bEw3QfYZynW+Oz+PXJQCwGxudwwpgc+glWF4WpI=
+	b=voCMWuJqHHeltqIah1yCx4Zcp37CA2VmqLu1nfaK7Ufo22kSjwcf7g47WKxriynP0
+	 hsQhL8RutMEl+z9BfiaKa3JXGSv2xQMPxGo0bBtXiJyjN074EOprXKaVClZGOlBVik
+	 18xtSisujre2kmSR1AtFX95lnGfjvD/2yHKBivy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
+	Wang Liang <wangliang74@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Bin Lan <bin.lan.cn@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/772] closures: Change BUG_ON() to WARN_ON()
-Date: Thu, 12 Dec 2024 15:49:34 +0100
-Message-ID: <20241212144351.153147754@linuxfoundation.org>
+Subject: [PATCH 6.1 030/772] net: fix crash when config small gso_max_size/gso_ipv4_max_size
+Date: Thu, 12 Dec 2024 15:49:35 +0100
+Message-ID: <20241212144351.192674743@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,93 +68,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit 339b84ab6b1d66900c27bd999271cb2ae40ce812 ]
+[ Upstream commit 9ab5cf19fb0e4680f95e506d6c544259bf1111c4 ]
 
-If a BUG_ON() can be hit in the wild, it shouldn't be a BUG_ON()
+Config a small gso_max_size/gso_ipv4_max_size will lead to an underflow
+in sk_dst_gso_max_size(), which may trigger a BUG_ON crash,
+because sk->sk_gso_max_size would be much bigger than device limits.
+Call Trace:
+tcp_write_xmit
+    tso_segs = tcp_init_tso_segs(skb, mss_now);
+        tcp_set_skb_tso_segs
+            tcp_skb_pcount_set
+                // skb->len = 524288, mss_now = 8
+                // u16 tso_segs = 524288/8 = 65535 -> 0
+                tso_segs = DIV_ROUND_UP(skb->len, mss_now)
+    BUG_ON(!tso_segs)
+Add check for the minimum value of gso_max_size and gso_ipv4_max_size.
 
-For reference, this has popped up once in the CI, and we'll need more
-info to debug it:
-
-03240 ------------[ cut here ]------------
-03240 kernel BUG at lib/closure.c:21!
-03240 kernel BUG at lib/closure.c:21!
-03240 Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
-03240 Modules linked in:
-03240 CPU: 15 PID: 40534 Comm: kworker/u80:1 Not tainted 6.10.0-rc4-ktest-ga56da69799bd #25570
-03240 Hardware name: linux,dummy-virt (DT)
-03240 Workqueue: btree_update btree_interior_update_work
-03240 pstate: 00001005 (nzcv daif -PAN -UAO -TCO -DIT +SSBS BTYPE=--)
-03240 pc : closure_put+0x224/0x2a0
-03240 lr : closure_put+0x24/0x2a0
-03240 sp : ffff0000d12071c0
-03240 x29: ffff0000d12071c0 x28: dfff800000000000 x27: ffff0000d1207360
-03240 x26: 0000000000000040 x25: 0000000000000040 x24: 0000000000000040
-03240 x23: ffff0000c1f20180 x22: 0000000000000000 x21: ffff0000c1f20168
-03240 x20: 0000000040000000 x19: ffff0000c1f20140 x18: 0000000000000001
-03240 x17: 0000000000003aa0 x16: 0000000000003ad0 x15: 1fffe0001c326974
-03240 x14: 0000000000000a1e x13: 0000000000000000 x12: 1fffe000183e402d
-03240 x11: ffff6000183e402d x10: dfff800000000000 x9 : ffff6000183e402e
-03240 x8 : 0000000000000001 x7 : 00009fffe7c1bfd3 x6 : ffff0000c1f2016b
-03240 x5 : ffff0000c1f20168 x4 : ffff6000183e402e x3 : ffff800081391954
-03240 x2 : 0000000000000001 x1 : 0000000000000000 x0 : 00000000a8000000
-03240 Call trace:
-03240  closure_put+0x224/0x2a0
-03240  bch2_check_for_deadlock+0x910/0x1028
-03240  bch2_six_check_for_deadlock+0x1c/0x30
-03240  six_lock_slowpath.isra.0+0x29c/0xed0
-03240  six_lock_ip_waiter+0xa8/0xf8
-03240  __bch2_btree_node_lock_write+0x14c/0x298
-03240  bch2_trans_lock_write+0x6d4/0xb10
-03240  __bch2_trans_commit+0x135c/0x5520
-03240  btree_interior_update_work+0x1248/0x1c10
-03240  process_scheduled_works+0x53c/0xd90
-03240  worker_thread+0x370/0x8c8
-03240  kthread+0x258/0x2e8
-03240  ret_from_fork+0x10/0x20
-03240 Code: aa1303e0 d63f0020 a94363f7 17ffff8c (d4210000)
-03240 ---[ end trace 0000000000000000 ]---
-03240 Kernel panic - not syncing: Oops - BUG: Fatal exception
-03240 SMP: stopping secondary CPUs
-03241 SMP: failed to stop secondary CPUs 13,15
-03241 Kernel Offset: disabled
-03241 CPU features: 0x00,00000003,80000008,4240500b
-03241 Memory Limit: none
-03241 ---[ end Kernel panic - not syncing: Oops - BUG: Fatal exception ]---
-03246 ========= FAILED TIMEOUT copygc_torture_no_checksum in 7200s
-
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-[ Resolve minor conflicts to fix CVE-2024-42252 ]
+Fixes: 46e6b992c250 ("rtnetlink: allow GSO maximums to be set on device creation")
+Fixes: 9eefedd58ae1 ("net: add gso_ipv4_max_size and gro_ipv4_max_size per device")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241023035213.517386-1-wangliang74@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Resolve minor conflicts to fix CVE-2024-50258 ]
 Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/closure.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/core/rtnetlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/bcache/closure.c b/drivers/md/bcache/closure.c
-index d8d9394a6beb1..18f21d4e9aaae 100644
---- a/drivers/md/bcache/closure.c
-+++ b/drivers/md/bcache/closure.c
-@@ -17,10 +17,16 @@ static inline void closure_put_after_sub(struct closure *cl, int flags)
- {
- 	int r = flags & CLOSURE_REMAINING_MASK;
- 
--	BUG_ON(flags & CLOSURE_GUARD_MASK);
--	BUG_ON(!r && (flags & ~CLOSURE_DESTRUCTOR));
-+	if (WARN(flags & CLOSURE_GUARD_MASK,
-+		 "closure has guard bits set: %x (%u)",
-+		 flags & CLOSURE_GUARD_MASK, (unsigned) __fls(r)))
-+		r &= ~CLOSURE_GUARD_MASK;
- 
- 	if (!r) {
-+		WARN(flags & ~CLOSURE_DESTRUCTOR,
-+		     "closure ref hit 0 with incorrect flags set: %x (%u)",
-+		     flags & ~CLOSURE_DESTRUCTOR, (unsigned) __fls(flags));
-+
- 		if (cl->fn && !(flags & CLOSURE_DESTRUCTOR)) {
- 			atomic_set(&cl->remaining,
- 				   CLOSURE_REMAINING_INITIALIZER);
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index afb52254a47ec..45c54fb9ad03f 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1939,7 +1939,7 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+ 	[IFLA_NUM_TX_QUEUES]	= { .type = NLA_U32 },
+ 	[IFLA_NUM_RX_QUEUES]	= { .type = NLA_U32 },
+ 	[IFLA_GSO_MAX_SEGS]	= { .type = NLA_U32 },
+-	[IFLA_GSO_MAX_SIZE]	= { .type = NLA_U32 },
++	[IFLA_GSO_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
+ 	[IFLA_PHYS_PORT_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
+ 	[IFLA_CARRIER_CHANGES]	= { .type = NLA_U32 },  /* ignored */
+ 	[IFLA_PHYS_SWITCH_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
 -- 
 2.43.0
 
