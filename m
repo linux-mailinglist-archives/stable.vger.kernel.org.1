@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17D09EEC00
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC659EEDA4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66F911680B0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:27:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6FB9188F3E4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D5421578F;
-	Thu, 12 Dec 2024 15:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A52A221DAB;
+	Thu, 12 Dec 2024 15:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZW0MKcd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rx/D9yqH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE73F1487CD;
-	Thu, 12 Dec 2024 15:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C24E221D88;
+	Thu, 12 Dec 2024 15:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017262; cv=none; b=IemI2N/hfhEHEGfIBcFWyVOceZHM2LoJFpW/mwyOvZGU0kYF8K6zOnSJwbTbeCYgkmVtIcpcjWY7QxIfR0E1a/JydJUVQl1Tnegpf49mWo+lBDKWv0EqmHKsT9iyenjWmtmnceFhpdlEaQbDdeGhGeYuXsD29FKySz5swuzE3j8=
+	t=1734018242; cv=none; b=uxl4Xhx1Xzq5W6G56kVCyZsqWH5sxBBNUv+FWlk5UcNIU4+OLli8cNMEAlrWv4huEiKJ+g4/OGABfIEhDuX88DXmn3etbngs5S7KODhtauRaK2RffEFfb3W825BBJNqAxNI9ozNhjLYjGcmzLjMC7PV3nbLNgCv65l9h6iV0pEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017262; c=relaxed/simple;
-	bh=3isLC30Ncs02+UiLchcBJ45wo4lqNBg62waeTJA/5x0=;
+	s=arc-20240116; t=1734018242; c=relaxed/simple;
+	bh=Q4RKRNLv+9UKKSwFWVsWbAIthjJMiKU2im4fjtblZUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KI8QQrcdfXJvVvgAXPM751j9S5lOSHr/WU7XF8Sw1Yuu30xJIDEW5TuSAjb3vLTvPx0my3dC01gxD2f2ExvmvqsGKjZUvCtTBXuT/T0ee5vsqJFeJHxYKB+aRujvDw9L3VhCxfYm4yLo9OHf5bldjlvRk/iHlNfSEcp6u7Z4bfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZW0MKcd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCEEC4CECE;
-	Thu, 12 Dec 2024 15:27:41 +0000 (UTC)
+	 MIME-Version; b=PZ1UeA1QYMBUgK264PQJvnIi9Sp11ajx//wXBajcBqwvzMf4R0/+9LAJpWmIl9NIgbGh8nMpU7GODnKMdPgualWhL8jBq/cJucoRiu+z3xufl2VpeQV6+6bwljdFuQbZJC/Bw9PA7iFq8cVqHgBb9PsCdffVbrcO43zzA+075XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rx/D9yqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BCCC4CED0;
+	Thu, 12 Dec 2024 15:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017262;
-	bh=3isLC30Ncs02+UiLchcBJ45wo4lqNBg62waeTJA/5x0=;
+	s=korg; t=1734018242;
+	bh=Q4RKRNLv+9UKKSwFWVsWbAIthjJMiKU2im4fjtblZUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZW0MKcdLGfxEYXKzZP5nbhXvAm1j4avbOJqOimAiRh7/+mzVYjh939kvmmMt9Wht
-	 rm+Ys/qKufjCRKd+2d0Xcdrb81bXV22cLbZHnSMi0QYb6cxMKQrJxKDVMVw+nZfhmv
-	 kQNeTP+vcfztKxL00KKgrKMgs2n99WrPBXfuMl/o=
+	b=rx/D9yqHDF395VsVg/l4rEX37jfiOCKBV9kUlXA3iXeOzsTYlgx8eIegCCqdlK5g5
+	 6gCf6c9jLGfVIHn3l8NEvwqcTmVFKLqUN0Oh2fAVmya76mf8A8N2tTIIre4eUchefi
+	 muIIB7UE4SanTCtqd3soUW5NSeeGE0sQu1NjAKc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Han <hanqi@vivo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Prike Liang <Prike.Liang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 388/466] f2fs: fix f2fs_bug_on when uninstalling filesystem call f2fs_evict_inode.
-Date: Thu, 12 Dec 2024 15:59:17 +0100
-Message-ID: <20241212144322.096417958@linuxfoundation.org>
+Subject: [PATCH 6.6 239/356] drm/amdgpu: Dereference the ATCS ACPI buffer
+Date: Thu, 12 Dec 2024 15:59:18 +0100
+Message-ID: <20241212144254.055148768@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Han <hanqi@vivo.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-[ Upstream commit d5c367ef8287fb4d235c46a2f8c8d68715f3a0ca ]
+[ Upstream commit 32e7ee293ff476c67b51be006e986021967bc525 ]
 
-creating a large files during checkpoint disable until it runs out of
-space and then delete it, then remount to enable checkpoint again, and
-then unmount the filesystem triggers the f2fs_bug_on as below:
+Need to dereference the atcs acpi buffer after
+the method is executed, otherwise it will result in
+a memory leak.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/inode.c:896!
-CPU: 2 UID: 0 PID: 1286 Comm: umount Not tainted 6.11.0-rc7-dirty #360
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-RIP: 0010:f2fs_evict_inode+0x58c/0x610
-Call Trace:
- __die_body+0x15/0x60
- die+0x33/0x50
- do_trap+0x10a/0x120
- f2fs_evict_inode+0x58c/0x610
- do_error_trap+0x60/0x80
- f2fs_evict_inode+0x58c/0x610
- exc_invalid_op+0x53/0x60
- f2fs_evict_inode+0x58c/0x610
- asm_exc_invalid_op+0x16/0x20
- f2fs_evict_inode+0x58c/0x610
- evict+0x101/0x260
- dispose_list+0x30/0x50
- evict_inodes+0x140/0x190
- generic_shutdown_super+0x2f/0x150
- kill_block_super+0x11/0x40
- kill_f2fs_super+0x7d/0x140
- deactivate_locked_super+0x2a/0x70
- cleanup_mnt+0xb3/0x140
- task_work_run+0x61/0x90
-
-The root cause is: creating large files during disable checkpoint
-period results in not enough free segments, so when writing back root
-inode will failed in f2fs_enable_checkpoint. When umount the file
-system after enabling checkpoint, the root inode is dirty in
-f2fs_evict_inode function, which triggers BUG_ON. The steps to
-reproduce are as follows:
-
-dd if=/dev/zero of=f2fs.img bs=1M count=55
-mount f2fs.img f2fs_dir -o checkpoint=disable:10%
-dd if=/dev/zero of=big bs=1M count=50
-sync
-rm big
-mount -o remount,checkpoint=enable f2fs_dir
-umount f2fs_dir
-
-Let's redirty inode when there is not free segments during checkpoint
-is disable.
-
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 1ed86df343a5d..10780e37fc7b6 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -775,8 +775,10 @@ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
- 		!is_inode_flag_set(inode, FI_DIRTY_INODE))
- 		return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+index 12a0ac42fcfea..8b2f2b921d9de 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -798,6 +798,7 @@ int amdgpu_acpi_power_shift_control(struct amdgpu_device *adev,
+ 		return -EIO;
+ 	}
  
--	if (!f2fs_is_checkpoint_ready(sbi))
-+	if (!f2fs_is_checkpoint_ready(sbi)) {
-+		f2fs_mark_inode_dirty_sync(inode, true);
- 		return -ENOSPC;
-+	}
++	kfree(info);
+ 	return 0;
+ }
  
- 	/*
- 	 * We need to balance fs here to prevent from producing dirty node pages
 -- 
 2.43.0
 
