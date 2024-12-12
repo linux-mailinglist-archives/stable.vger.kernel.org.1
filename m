@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368219EF1C9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E8D9EED22
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3AA8171E84
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 973011654C5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA9E2144C4;
-	Thu, 12 Dec 2024 16:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F441217F34;
+	Thu, 12 Dec 2024 15:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eC6LXFop"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPeaMHhC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC3A2210CA;
-	Thu, 12 Dec 2024 16:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB806F2FE;
+	Thu, 12 Dec 2024 15:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020714; cv=none; b=qUBEGOU/ecgoBzIkvQ77LCKlfFr+mNaCnNGoNP+mbWndt1iu7G79A75hOeYRcqFmhzaRfT7X6t+928A2m3RTo1wl8/O3OMP91Ku7Kcl7dhEnef7cjG9c4wfeSPH8vaugJFKKnB0Nk1MLlaMwnodF8x8I8EaAre+z8K49pNs37j8=
+	t=1734017986; cv=none; b=Ff9X+h3ghwNl7n+N32BFDr52/IefX3dz76XjiqvJgArJN0uqqm5GbHexsK56uTJywZV+MrsNl/kgREAHqIpXic7XwCQ19nQy4Wu+h05lSmt+J6aYQ71FA/AUQPuzHhaYx5lFfR5noxzOSFdcVIkKuJPHQNBftfB7dcQv6/4HYsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020714; c=relaxed/simple;
-	bh=dmIxerM0iiNWUDWnlK6wA9mwh6wGLOztmvJhSZ3Z4VI=;
+	s=arc-20240116; t=1734017986; c=relaxed/simple;
+	bh=6/HOC1tZavkIT+IUwhmQPwbl6txPm3leAsWR65L+ZKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=euSnHsyja1YnIBpJGhbktGAJ/5m6hAP6QJKu3UF+bLAUHabo4CoMfWojP/98bEZwQRxRCMenQJ3UD40tj/n6wslP5SZ+aR+V2fO73O7aymdvWqSAE8h1MlLGXGHS1NsGW+AwB75lAbw4jMlxiehrQXfRU2lyzYWL8r2V3PPZepg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eC6LXFop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94325C4CECE;
-	Thu, 12 Dec 2024 16:25:13 +0000 (UTC)
+	 MIME-Version; b=niK72WuSXuLOeCCq2r7LaoN0JCFF5rgdGHwewE/WEddiwdFMg0SysiVuQn8uEWyZCeYulNDqo/JwiakYmYqlk+Km2d6oGhseRdkQI9JuOsWrjDHsM/MFlynctOVgjXsz55vm63iz/DO4hvtPk1RmNyroUnf0gF468EIay6Q5zng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPeaMHhC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23914C4CED4;
+	Thu, 12 Dec 2024 15:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020714;
-	bh=dmIxerM0iiNWUDWnlK6wA9mwh6wGLOztmvJhSZ3Z4VI=;
+	s=korg; t=1734017986;
+	bh=6/HOC1tZavkIT+IUwhmQPwbl6txPm3leAsWR65L+ZKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eC6LXFopzkT9B7r8MJjrT1xb+g6XBewf06QPj4L1dNBa6nzkpPaGsjCAMOAdcCSWl
-	 Cz9Kl3385JT3DFNIdPFmrJcNmetDdP4TNE2g0DC8f8o/T9VUps9JtbUvEDoteEq8go
-	 jF31wE3ADhNLSpwjmKlr+eIc8viqZ4ifzb3KQ7vo=
+	b=IPeaMHhCEvMc3Zz4y9eYEWw6LmSRhHADrbnPDuKApUvEe8/cAoEa3JJrGokmE4YRL
+	 ZttgjAqig6o5Dl2VxpMqfwCjwX/JxsoHx0jqGjKkIt5wXuUnzkxH61cBCQir4fHmtG
+	 DYe5OZUuePs/YTCjQ1ZHsfXzmS/EMH7S7ZRk95RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 540/772] igb: Fix potential invalid memory access in igb_init_module()
+	Lyude Paul <lyude@redhat.com>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.6 166/356] drm/dp_mst: Fix MST sideband message body length check
 Date: Thu, 12 Dec 2024 15:58:05 +0100
-Message-ID: <20241212144412.283077519@linuxfoundation.org>
+Message-ID: <20241212144251.195017625@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 0566f83d206c7a864abcd741fe39d6e0ae5eef29 ]
+commit bd2fccac61b40eaf08d9546acc9fef958bfe4763 upstream.
 
-The pci_register_driver() can fail and when this happened, the dca_notifier
-needs to be unregistered, otherwise the dca_notifier can be called when
-igb fails to install, resulting to invalid memory access.
+Fix the MST sideband message body length check, which must be at least 1
+byte accounting for the message body CRC (aka message data CRC) at the
+end of the message.
 
-Fixes: bbd98fe48a43 ("igb: Fix DCA errors and do not use context index for 82576")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a case where an MST branch device returns a header with a
+correct header CRC (indicating a correctly received body length), with
+the body length being incorrectly set to 0. This will later lead to a
+memory corruption in drm_dp_sideband_append_payload() and the following
+errors in dmesg:
+
+   UBSAN: array-index-out-of-bounds in drivers/gpu/drm/display/drm_dp_mst_topology.c:786:25
+   index -1 is out of range for type 'u8 [48]'
+   Call Trace:
+    drm_dp_sideband_append_payload+0x33d/0x350 [drm_display_helper]
+    drm_dp_get_one_sb_msg+0x3ce/0x5f0 [drm_display_helper]
+    drm_dp_mst_hpd_irq_handle_event+0xc8/0x1580 [drm_display_helper]
+
+   memcpy: detected field-spanning write (size 18446744073709551615) of single field "&msg->msg[msg->curlen]" at drivers/gpu/drm/display/drm_dp_mst_topology.c:791 (size 256)
+   Call Trace:
+    drm_dp_sideband_append_payload+0x324/0x350 [drm_display_helper]
+    drm_dp_get_one_sb_msg+0x3ce/0x5f0 [drm_display_helper]
+    drm_dp_mst_hpd_irq_handle_event+0xc8/0x1580 [drm_display_helper]
+
+Cc: <stable@vger.kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241125205314.1725887-1-imre.deak@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 2e2caf559d00a..d53076210f3aa 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -665,6 +665,10 @@ static int __init igb_init_module(void)
- 	dca_register_notify(&dca_notifier);
- #endif
- 	ret = pci_register_driver(&igb_driver);
-+#ifdef CONFIG_IGB_DCA
-+	if (ret)
-+		dca_unregister_notify(&dca_notifier);
-+#endif
- 	return ret;
- }
- 
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -319,6 +319,9 @@ static bool drm_dp_decode_sideband_msg_h
+ 	hdr->broadcast = (buf[idx] >> 7) & 0x1;
+ 	hdr->path_msg = (buf[idx] >> 6) & 0x1;
+ 	hdr->msg_len = buf[idx] & 0x3f;
++	if (hdr->msg_len < 1)		/* min space for body CRC */
++		return false;
++
+ 	idx++;
+ 	hdr->somt = (buf[idx] >> 7) & 0x1;
+ 	hdr->eomt = (buf[idx] >> 6) & 0x1;
 
 
 
