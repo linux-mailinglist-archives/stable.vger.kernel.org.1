@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-103241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3C69EF772
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E4A9EF45F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB551172140
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D459618971A9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7DE217F34;
-	Thu, 12 Dec 2024 17:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DF120967D;
+	Thu, 12 Dec 2024 16:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cdf3b3/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFUhhkiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAAB4F218;
-	Thu, 12 Dec 2024 17:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555BA223C4B;
+	Thu, 12 Dec 2024 16:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023968; cv=none; b=DoSB47C1bL+8bhhjZ5FyRWpxCiahtoyAJj4ka54QAowmG+m+lF88WZcS6popkJEdvcO4IhICxmFsD2c+6SS7l57FN1IvlPEArj0Ae0ZuSQrHOjdguCW1FNcFJlAKMrGWXWvPgq7z4YWmflT+gdU78vwuFEZsX1DY1ezVgGqeI8k=
+	t=1734022629; cv=none; b=gyF6KRrZeTAKVRiizALoxKVcXXw+wy+twgSPDLxKi/YIhIr2FBUobRA/0lck92EYnutUMucIdrDHjK+2hl4N5ZyRg4b9YtAzIAOMA4HXhbB0VmByPQR/I+zqptdTQzl3HWYsaQZI7KJD0KZsWYgKlaOWmVrVGx1NW5uTlu1x8uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023968; c=relaxed/simple;
-	bh=bT6gtu9pGUdng91KvfwGq9LvsqR19kJbIrtRnredWFM=;
+	s=arc-20240116; t=1734022629; c=relaxed/simple;
+	bh=KLsftxmMm5o7qsITaqt0i2MPVrqYL/YpBnEZnMSo86A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fx+WOyUHhg5baQzi/esSpBdIZ0FHu2FFC6WdDkgCZQtZG2BlC1ZrCiZ/wm/NZZmJ8QDqi3pSd74wHm0ePkkkI4UYLzrMs3nhsJR9rat3sIzzFpe2Dl2h4WGrBmgW3m3F33Bdqv6Sm4GPDMwcihL6fh4WcuPbUMRomc8aGmJ4O1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cdf3b3/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C047C4CECE;
-	Thu, 12 Dec 2024 17:19:28 +0000 (UTC)
+	 MIME-Version; b=P33K4xLkZ/LaYncuM1ymAwWXIE8LBfcBZQbQUbs0Bv5iKcWnu0sctX8NDzt6e9WNnDW+BKI+yJaEcwwc91R+n0avkObw8lV1091SgXRL9yKxa5MXAtSimTj05EoTU1Kma6/mGYaAcXGIcBRcQmgzzxKzbqOqj1jFo4nQGsF3rnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFUhhkiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987F5C4CECE;
+	Thu, 12 Dec 2024 16:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023968;
-	bh=bT6gtu9pGUdng91KvfwGq9LvsqR19kJbIrtRnredWFM=;
+	s=korg; t=1734022629;
+	bh=KLsftxmMm5o7qsITaqt0i2MPVrqYL/YpBnEZnMSo86A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cdf3b3/T+ZkUMmECupmA+GLxu+uru0KDkoc0L8CPjSpAn/m1kwPnStqPlbLV8EeqN
-	 BBIx1+69Fezf9eIQNbeFqJn86M/NpfT3s+jsiyfahIsBCmH1iT1NCcpcaCLA1+ajR3
-	 LlVRhuR6SQuk+xDx/NrUiULRGHlimN0AqX9RuvwI=
+	b=IFUhhkiSMJ44mG9FeCCnsxyS0U3fiFPrWXhfNyTukHDHwHweGDWiqTLk5/BPJbF3f
+	 CypNAgMXoQkN4V7pfUdlL7OjtAkU/NN9lovLJfXqpd/fQdmoppJYFgjl5YQMxoe4Uv
+	 vGxKQpDltk2aOF2gd3VhTcwuyhFObfyCnSyn6F4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Liu Jian <liujian56@huawei.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
 	Martin KaFai Lau <martin.lau@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/459] selftests/bpf: Fix SENDPAGE data logic in test_sockmap
+Subject: [PATCH 5.15 285/565] tcp: Fix use-after-free of nreq in reqsk_timer_handler().
 Date: Thu, 12 Dec 2024 15:58:00 +0100
-Message-ID: <20241212144259.120144391@linuxfoundation.org>
+Message-ID: <20241212144322.716881533@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +66,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 4095031463d4e99b534d2cd82035a417295764ae ]
+[ Upstream commit c31e72d021db2714df03df6c42855a1db592716c ]
 
-In the SENDPAGE test, "opt->iov_length * cnt" size of data will be sent
-cnt times by sendfile.
-1. In push/pop tests, they will be invoked cnt times, for the simplicity of
-msg_verify_data, change chunk_sz to iov_length
-2. Change iov_length in test_send_large from 1024 to 8192. We have pop test
-where txmsg_start_pop is 4096. 4096 > 1024, an error will be returned.
+The cited commit replaced inet_csk_reqsk_queue_drop_and_put() with
+__inet_csk_reqsk_queue_drop() and reqsk_put() in reqsk_timer_handler().
 
-Fixes: 328aa08a081b ("bpf: Selftests, break down test_sockmap into subtests")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-3-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Then, oreq should be passed to reqsk_put() instead of req; otherwise
+use-after-free of nreq could happen when reqsk is migrated but the
+retry attempt failed (e.g. due to timeout).
+
+Let's pass oreq to reqsk_put().
+
+Fixes: e8c526f2bdf1 ("tcp/dccp: Don't use timer_pending() in reqsk_queue_unlink().")
+Reported-by: Liu Jian <liujian56@huawei.com>
+Closes: https://lore.kernel.org/netdev/1284490f-9525-42ee-b7b8-ccadf6606f6d@huawei.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Liu Jian <liujian56@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20241123174236.62438-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ net/ipv4/inet_connection_sock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index cd3ecf12535c1..46a1ca4f699e2 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -419,16 +419,18 @@ static int msg_loop_sendpage(int fd, int iov_length, int cnt,
- {
- 	bool drop = opt->drop_expected;
- 	unsigned char k = 0;
-+	int i, j, fp;
- 	FILE *file;
--	int i, fp;
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 63e5aa6d4b0bc..73ef8b4f57049 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -935,7 +935,7 @@ static void reqsk_timer_handler(struct timer_list *t)
  
- 	file = tmpfile();
- 	if (!file) {
- 		perror("create file for sendpage");
- 		return 1;
- 	}
--	for (i = 0; i < iov_length * cnt; i++, k++)
--		fwrite(&k, sizeof(char), 1, file);
-+	for (i = 0; i < cnt; i++, k = 0) {
-+		for (j = 0; j < iov_length; j++, k++)
-+			fwrite(&k, sizeof(char), 1, file);
-+	}
- 	fflush(file);
- 	fseek(file, 0, SEEK_SET);
- 
-@@ -614,7 +616,9 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 		 * This is really only useful for testing edge cases in code
- 		 * paths.
- 		 */
--		total_bytes = (float)iov_count * (float)iov_length * (float)cnt;
-+		total_bytes = (float)iov_length * (float)cnt;
-+		if (!opt->sendpage)
-+			total_bytes *= (float)iov_count;
- 		if (txmsg_apply)
- 			txmsg_pop_total = txmsg_pop * (total_bytes / txmsg_apply);
- 		else
-@@ -676,7 +680,7 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 
- 			if (data) {
- 				int chunk_sz = opt->sendpage ?
--						iov_length * cnt :
-+						iov_length :
- 						iov_length * iov_count;
- 
- 				errno = msg_verify_data(&msg, recv, chunk_sz, &k, &bytes_cnt);
-@@ -1425,8 +1429,8 @@ static void test_send_many(struct sockmap_options *opt, int cgrp)
- 
- static void test_send_large(struct sockmap_options *opt, int cgrp)
- {
--	opt->iov_length = 256;
--	opt->iov_count = 1024;
-+	opt->iov_length = 8192;
-+	opt->iov_count = 32;
- 	opt->rate = 2;
- 	test_exec(cgrp, opt);
+ drop:
+ 	__inet_csk_reqsk_queue_drop(sk_listener, oreq, true);
+-	reqsk_put(req);
++	reqsk_put(oreq);
  }
+ 
+ static bool reqsk_queue_hash_req(struct request_sock *req,
 -- 
 2.43.0
 
