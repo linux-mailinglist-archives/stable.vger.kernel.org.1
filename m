@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9323A9EEBC3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E969EF235
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94AA816280C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B0A417A61F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A733A2153DF;
-	Thu, 12 Dec 2024 15:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4054D22E9F5;
+	Thu, 12 Dec 2024 16:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j56ejRWD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gow5oqqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FDA209693;
-	Thu, 12 Dec 2024 15:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09C4221D9F;
+	Thu, 12 Dec 2024 16:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017100; cv=none; b=Kpa6mKHG9Op4pM1JcnGLmFPwyw0hGckMrLGBjQwpbmgcXUe1sJ51dDwk7l1NPSAV34aiFaCTyLqSxJF0nFca4hg98XHOydJrbOk3tmM2PZDLMaDjerwDJ2RvwP679uYPiLeFoHWJT/gk/4NEhwhDI7c+p2xIZFUesq7E7AOzMb4=
+	t=1734020957; cv=none; b=HD9wAelLcBFZwYdOZE4ZiutPg6L+5cL5zLfNy/dcubQ4ftn5+mpBuXjtPE08ssU1K1Vb2QnJtr2sAadzT4m92QjAy8zIcKDykf1raxtPG3mYymgOgOIsinvivSpZO8V1+m0qyb0kyBuV+1Z7aQI3cmWwdBfE5JW3Xx6G06d/cus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017100; c=relaxed/simple;
-	bh=JVtlSF+APY28tgrap3sJmUxfBWPrhB/O8fX77el2GzU=;
+	s=arc-20240116; t=1734020957; c=relaxed/simple;
+	bh=wBe2R8gFRhTz19ihLfMZOa5Fp+aw800jgMkClChwrRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0CPAHoX5NxktjxLVJ2vAyOYsJBOlIFQO9AZcdMUHDVNr0q5eGHsSn1seIxIMXYMkFs+ZZiHnGWc+FoBPIHA78OX+37WHg07D9G2lYhtGkJzf6MWOFuxiFFKiILh4gWg/tRabxT2Ps+psXYqeR62c8j2aQc/3AZ79GfL6P7IMmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j56ejRWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F287C4CECE;
-	Thu, 12 Dec 2024 15:24:59 +0000 (UTC)
+	 MIME-Version; b=gKuXbgiwv+XihYgqn1sqC0+2H9/zNBEGgh7OuQVqrP5YEuQx3CEmoZ5UALVmttp9X2w5fE1l5gNG9VYt+7/S0zYNzUJWtGgaxUutCHDTgXip/SlWiyrFtucx25DQQ6xV5/dS65IIK726A3CwXtI4YuvKNvJ52/614DuruQO27aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gow5oqqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48251C4CED0;
+	Thu, 12 Dec 2024 16:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017099;
-	bh=JVtlSF+APY28tgrap3sJmUxfBWPrhB/O8fX77el2GzU=;
+	s=korg; t=1734020956;
+	bh=wBe2R8gFRhTz19ihLfMZOa5Fp+aw800jgMkClChwrRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j56ejRWDaMVS7CW0SBoAcf2tE73Rs8IiQcmiILROJvQyHigws8dsC1Zhhk5CatGGQ
-	 WIdOkAXuoXfUliloOnpGqBl8KzEq42QfOfcEaR1Q2u+8nLY6+xWM//GLMda1QNCnGs
-	 u5Ug9egTVDWvLd7x1TowDRI0NWbRs0Oh/5wEWLvg=
+	b=Gow5oqqfkn+iLhDAYJlB0uURr3SPnPF0Pe4LG5iyG5SzNuq9zhUSjXSEcEpytsBbc
+	 7Vo04v65GFpEJs4v6oC3wR8HIG9Ob72VvrG8alQj1iTqrF/KlLlV8Mk/ZZJ9UghDCW
+	 OphYMdVnn8KsHosLw0WoLLHbjcqyCI/DI0eUhrkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 382/466] nvdimm: rectify the illogical code within nd_dax_probe()
-Date: Thu, 12 Dec 2024 15:59:11 +0100
-Message-ID: <20241212144321.866875299@linuxfoundation.org>
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>
+Subject: [PATCH 6.1 607/772] watchdog: rti: of: honor timeout-sec property
+Date: Thu, 12 Dec 2024 15:59:12 +0100
+Message-ID: <20241212144415.005360298@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit b61352101470f8b68c98af674e187cfaa7c43504 ]
+commit 4962ee045d8f06638714d801ab0fb72f89c16690 upstream.
 
-When nd_dax is NULL, nd_pfn is consequently NULL as well. Nevertheless,
-it is inadvisable to perform pointer arithmetic or address-taking on a
-NULL pointer.
-Introduce the nd_dax_devinit() function to enhance the code's logic and
-improve its readability.
+Currently "timeout-sec" Device Tree property is being silently ignored:
+even though watchdog_init_timeout() is being used, the driver always passes
+"heartbeat" == DEFAULT_HEARTBEAT == 60 as argument.
 
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/20241108085526.527957-1-yiyang13@huawei.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by setting struct watchdog_device::timeout to DEFAULT_HEARTBEAT
+and passing real module parameter value to watchdog_init_timeout() (which
+may now be 0 if not specified).
+
+Cc: stable@vger.kernel.org
+Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241107203830.1068456-1-alexander.sverdlin@siemens.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvdimm/dax_devs.c | 4 ++--
- drivers/nvdimm/nd.h       | 7 +++++++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/watchdog/rti_wdt.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
-index 6b4922de30477..37b743acbb7ba 100644
---- a/drivers/nvdimm/dax_devs.c
-+++ b/drivers/nvdimm/dax_devs.c
-@@ -106,12 +106,12 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -54,7 +54,7 @@
  
- 	nvdimm_bus_lock(&ndns->dev);
- 	nd_dax = nd_dax_alloc(nd_region);
--	nd_pfn = &nd_dax->nd_pfn;
--	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
-+	dax_dev = nd_dax_devinit(nd_dax, ndns);
- 	nvdimm_bus_unlock(&ndns->dev);
- 	if (!dax_dev)
- 		return -ENOMEM;
- 	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
-+	nd_pfn = &nd_dax->nd_pfn;
- 	nd_pfn->pfn_sb = pfn_sb;
- 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
- 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
-diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
-index 2dbb1dca17b53..5ca06e9a2d292 100644
---- a/drivers/nvdimm/nd.h
-+++ b/drivers/nvdimm/nd.h
-@@ -600,6 +600,13 @@ struct nd_dax *to_nd_dax(struct device *dev);
- int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns);
- bool is_nd_dax(const struct device *dev);
- struct device *nd_dax_create(struct nd_region *nd_region);
-+static inline struct device *nd_dax_devinit(struct nd_dax *nd_dax,
-+					    struct nd_namespace_common *ndns)
-+{
-+	if (!nd_dax)
-+		return NULL;
-+	return nd_pfn_devinit(&nd_dax->nd_pfn, ndns);
-+}
- #else
- static inline int nd_dax_probe(struct device *dev,
- 		struct nd_namespace_common *ndns)
--- 
-2.43.0
-
+ #define MAX_HW_ERROR		250
+ 
+-static int heartbeat = DEFAULT_HEARTBEAT;
++static int heartbeat;
+ 
+ /*
+  * struct to hold data for each WDT device
+@@ -240,6 +240,7 @@ static int rti_wdt_probe(struct platform
+ 	wdd->min_timeout = 1;
+ 	wdd->max_hw_heartbeat_ms = (WDT_PRELOAD_MAX << WDT_PRELOAD_SHIFT) /
+ 		wdt->freq * 1000;
++	wdd->timeout = DEFAULT_HEARTBEAT;
+ 	wdd->parent = dev;
+ 
+ 	watchdog_set_drvdata(wdd, wdt);
 
 
 
