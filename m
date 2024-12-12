@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA2A9EEAC1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA8D9EF33F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ED0A1669AD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4944A29167F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BE921504F;
-	Thu, 12 Dec 2024 15:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FF32253E1;
+	Thu, 12 Dec 2024 16:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiL+f69J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecXvyIHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FB021171A;
-	Thu, 12 Dec 2024 15:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA5A213E99;
+	Thu, 12 Dec 2024 16:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016383; cv=none; b=Vr+B7dHq7+bcWoWdsaRPlon60ie6oX39CRlC5jTFI2+wzEmcqoBktvRciY4qxBWG0APLv98c0i4UyrzUNuorvEk1kjHvl9I0W2R2W+tRXwkFPejyxYxiD8s6yl65XBZCLtPtpW0LHS9XDaNNf72g5t+cJCiBH4XkFK8J2Ll8AGU=
+	t=1734022246; cv=none; b=Jypb1kGPPlQc3lWZvMAOKTo5ATXfi4gLsSFo7MIr7labdSoXOlAmL+hAKP0GsZsPO7Cns/cIVnXYVeBmS2xdhEtBLqFIUP0B3xkqRf4FI7Gjz6vNVUNa66vteyttKyW0qqU/l28qewExrnGklPsALuur1TnZaLuCWaBEJN8nUx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016383; c=relaxed/simple;
-	bh=DhbKy0KZ+iqR/IKIy71/Rjl4GZ54hAVoIsSzZ9zb72I=;
+	s=arc-20240116; t=1734022246; c=relaxed/simple;
+	bh=P87MmYXbG6O8pbBdRnGoKpGDLGFxzdOXCT+3i6T3Yjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ki7mwYyneHI25oOBmHILgudglZ4B1rTFdYoN4QSy00tAV+bXoqgIGxhF7d8gnn21eefIswCAlNCfvJfaRGCwzVaVuMUG+qxRW7nZkekFc5Sgw1+EjCkv9KWKAcpG8jIDqHxkmO7Xcq7BJXwnILnb3u2bd/HkzKAdjdJXzco8sIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiL+f69J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCFBC4CED0;
-	Thu, 12 Dec 2024 15:13:02 +0000 (UTC)
+	 MIME-Version; b=UjqwPHWbz6ccUNOknpKx90MlCCkz9RuthIkZ9YEJYR5fy5RrITf1RKGk7/UhXW6z3vswU81wQbPzm4Ne8leLW44L3B9g6eqPLR35QCSAPMBpJZvOvGHlHEwvMRFiQa8Z4x6v05Nnz7/GMWCtEFjTdCTsznCJ6c/Igrbf9LRKphQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecXvyIHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05A5C4CECE;
+	Thu, 12 Dec 2024 16:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016383;
-	bh=DhbKy0KZ+iqR/IKIy71/Rjl4GZ54hAVoIsSzZ9zb72I=;
+	s=korg; t=1734022245;
+	bh=P87MmYXbG6O8pbBdRnGoKpGDLGFxzdOXCT+3i6T3Yjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eiL+f69JUQjKQbjUmspyuaz0XeeCfJP/9MK6CbOeMjLcjcsH+u3KxgxP2z3iDr669
-	 H5De8Zd22NE0ak8VUGP0f61fKvIrhDyCa6TLitYTThChn9pnUIoF2Is4WkjwSTZX3N
-	 tzlM8luPMhgjqX9aSySnXyZ5Ie/By7Olyl8DcIGQ=
+	b=ecXvyIHz9wCByizqC7sondNYgFmk8LOQpShek2xA82nXnk+MZybL9vDNXtHOPhr8B
+	 g87yMLOFgpIz9gwQNrQLs3gr4lWG7vJrWp0vPvobhq8QkYMLG1Dn9PymyqaCZjmK2s
+	 PqLVn5nNz+alh45y+9xDRaqMlm5kvWxtrv/aizq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.12 183/466] x86/kexec: Restore GDT on return from ::preserve_context kexec
+	Igor Prusov <ivprusov@salutedevices.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 157/565] dt-bindings: vendor-prefixes: Add NeoFidelity, Inc
 Date: Thu, 12 Dec 2024 15:55:52 +0100
-Message-ID: <20241212144314.036273074@linuxfoundation.org>
+Message-ID: <20241212144317.685577707@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Igor Prusov <ivprusov@salutedevices.com>
 
-commit 07fa619f2a40c221ea27747a3323cabc59ab25eb upstream.
+[ Upstream commit 5d9e6d6fc1b98c8c22d110ee931b3b233d43cd13 ]
 
-The restore_processor_state() function explicitly states that "the asm code
-that gets us here will have restored a usable GDT". That wasn't true in the
-case of returning from a ::preserve_context kexec. Make it so.
+Add vendor prefix for NeoFidelity, Inc
 
-Without this, the kernel was depending on the called function to reload a
-GDT which is appropriate for the kernel before returning.
-
-Test program:
-
- #include <unistd.h>
- #include <errno.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <linux/kexec.h>
- #include <linux/reboot.h>
- #include <sys/reboot.h>
- #include <sys/syscall.h>
-
- int main (void)
- {
-        struct kexec_segment segment = {};
-	unsigned char purgatory[] = {
-		0x66, 0xba, 0xf8, 0x03,	// mov $0x3f8, %dx
-		0xb0, 0x42,		// mov $0x42, %al
-		0xee,			// outb %al, (%dx)
-		0xc3,			// ret
-	};
-	int ret;
-
-	segment.buf = &purgatory;
-	segment.bufsz = sizeof(purgatory);
-	segment.mem = (void *)0x400000;
-	segment.memsz = 0x1000;
-	ret = syscall(__NR_kexec_load, 0x400000, 1, &segment, KEXEC_PRESERVE_CONTEXT);
-	if (ret) {
-		perror("kexec_load");
-		exit(1);
-	}
-
-	ret = syscall(__NR_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2, LINUX_REBOOT_CMD_KEXEC);
-	if (ret) {
-		perror("kexec reboot");
-		exit(1);
-	}
-	printf("Success\n");
-	return 0;
- }
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20241205153343.3275139-2-dwmw2@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Igor Prusov <ivprusov@salutedevices.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240925-ntp-amps-8918-8835-v3-1-e2459a8191a6@salutedevices.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/relocate_kernel_64.S |    7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kernel/relocate_kernel_64.S
-+++ b/arch/x86/kernel/relocate_kernel_64.S
-@@ -242,6 +242,13 @@ SYM_CODE_START_LOCAL_NOALIGN(virtual_map
- 	movq	CR0(%r8), %r8
- 	movq	%rax, %cr3
- 	movq	%r8, %cr0
-+
-+#ifdef CONFIG_KEXEC_JUMP
-+	/* Saved in save_processor_state. */
-+	movq    $saved_context, %rax
-+	lgdt    saved_context_gdt_desc(%rax)
-+#endif
-+
- 	movq	%rbp, %rax
- 
- 	popf
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index a867f7102c35b..38fc30b90f6cd 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -782,6 +782,8 @@ patternProperties:
+     description: National Semiconductor
+   "^nec,.*":
+     description: NEC LCD Technologies, Ltd.
++  "^neofidelity,.*":
++    description: Neofidelity Inc.
+   "^neonode,.*":
+     description: Neonode Inc.
+   "^netgear,.*":
+-- 
+2.43.0
+
 
 
 
