@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1FA9EF2DF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 694359EEA25
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6047628BC71
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A773280F1B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CB623692F;
-	Thu, 12 Dec 2024 16:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C4D2210DD;
+	Thu, 12 Dec 2024 15:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkLzEEoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBdkg81W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787512153FA;
-	Thu, 12 Dec 2024 16:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C96217739;
+	Thu, 12 Dec 2024 15:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021932; cv=none; b=VSIGs2E0ppTTU39ynRScMrhVuE0/GOvQIeNj/Fa+hzJjHLibCVOrPnoVgseYuhKf5mH/u0zlSeMO+N3I52rv27Z2F8hvsj1Hdr2BduVaktKgTUBRADxTg4Dh+GJKqvbZTaVm/9EOLd8MR8B4y3fkG0VCpbQo9JTiqRf3BQcYppk=
+	t=1734016155; cv=none; b=GbIG2jY6N+kmMZkvjEdjcHmNgibXrlfwxB5ysBtrfNWrWe+GPvw6EOEzs5O27G+fqE259i3s21SnQiC5d5H/+8yGGvxwgiA/HUq6Czg8ZkNeE/CfWsWXoa3ELdQo1WCcCH+jdkHwKQa+ceBlW1dLf8F3mjQo7NW0lwu76ZpCCks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021932; c=relaxed/simple;
-	bh=ZtVHVnl7MsilfKwYE+s18UG0n8CQeAWKtQtjdPNpgiY=;
+	s=arc-20240116; t=1734016155; c=relaxed/simple;
+	bh=g1v+FZ9E/+BFHMcVQJxIA38+9rTr4EaiTYCBV7INom8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJHKp83/uZia3UPtCfqCxmNk/a5zk3o8Rz66UHAMqlscpjDP2OryrBnq2D6712AwCUnE1O/VF+b0Qy208K7mehvz+f/lj7KZ8y0oQQMPios0aDB6pOvwGlZuWO9552/3gEWJy+8AG79o4K6eiPpZLPS61NbuhZJf8/sBXZm4+sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkLzEEoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7D0C4CED3;
-	Thu, 12 Dec 2024 16:45:31 +0000 (UTC)
+	 MIME-Version; b=OIAYNpwjpD8BpPDsLE2KUysnSsUmhAJOQMssQH9YkvgZIPZUvWkBxBMt/AlCompFw+M6jPe3h25luaOIkS26nxDhjEbaVrUU/uc9RiC8Sq6mPosT30p1fMhy+0ZBN7L235quSWHGmOK2I2YHefrUNOCaDnbrU8PzqBjYNGcSVUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBdkg81W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9BFC4CED4;
+	Thu, 12 Dec 2024 15:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021932;
-	bh=ZtVHVnl7MsilfKwYE+s18UG0n8CQeAWKtQtjdPNpgiY=;
+	s=korg; t=1734016155;
+	bh=g1v+FZ9E/+BFHMcVQJxIA38+9rTr4EaiTYCBV7INom8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkLzEEoKQDjhlOBlzRmQPFj+pzl2fOkpdb8PLJaOHrWzVtTdRVQs3lgCsBVv/XuIl
-	 F4sRRpkBf/0jYyRbtbZTBX29fFoKcd0CWFFNNkZM6I7Pt/31LjTPFU9ZN0bnSUKn8j
-	 PwyvQUgmnmV+YpQweNJReaaw9IdJFdW/0YWEIBKY=
+	b=XBdkg81WnTaJkj18odzm6oKiDmb3NAHAmmbysCLpvE0Vkorw+r/kTUtHogsDKt0/a
+	 h3XhBGO4U8qcjSD2sd/5M7v2Jw0mI3+0WmQgJUTEyXYmY7fhopQ1oaPibg1R/YhU0W
+	 04kxJ2LhKtnFLtDzl0ESc/1s4pXTAtB9q+JOy6j4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/565] crypto: bcm - add error check in the ahash_hmac_init function
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>
+Subject: [PATCH 6.12 128/466] watchdog: rti: of: honor timeout-sec property
 Date: Thu, 12 Dec 2024 15:54:57 +0100
-Message-ID: <20241212144315.515742503@linuxfoundation.org>
+Message-ID: <20241212144311.863726908@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 19630cf57233e845b6ac57c9c969a4888925467b ]
+commit 4962ee045d8f06638714d801ab0fb72f89c16690 upstream.
 
-The ahash_init functions may return fails. The ahash_hmac_init should
-not return ok when ahash_init returns error. For an example, ahash_init
-will return -ENOMEM when allocation memory is error.
+Currently "timeout-sec" Device Tree property is being silently ignored:
+even though watchdog_init_timeout() is being used, the driver always passes
+"heartbeat" == DEFAULT_HEARTBEAT == 60 as argument.
 
-Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by setting struct watchdog_device::timeout to DEFAULT_HEARTBEAT
+and passing real module parameter value to watchdog_init_timeout() (which
+may now be 0 if not specified).
+
+Cc: stable@vger.kernel.org
+Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241107203830.1068456-1-alexander.sverdlin@siemens.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/bcm/cipher.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/watchdog/rti_wdt.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/bcm/cipher.c b/drivers/crypto/bcm/cipher.c
-index 053315e260c22..e86b268d42f32 100644
---- a/drivers/crypto/bcm/cipher.c
-+++ b/drivers/crypto/bcm/cipher.c
-@@ -2415,6 +2415,7 @@ static int ahash_hmac_setkey(struct crypto_ahash *ahash, const u8 *key,
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -61,7 +61,7 @@
  
- static int ahash_hmac_init(struct ahash_request *req)
- {
-+	int ret;
- 	struct iproc_reqctx_s *rctx = ahash_request_ctx(req);
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
- 	struct iproc_ctx_s *ctx = crypto_ahash_ctx(tfm);
-@@ -2424,7 +2425,9 @@ static int ahash_hmac_init(struct ahash_request *req)
- 	flow_log("ahash_hmac_init()\n");
+ #define MAX_HW_ERROR		250
  
- 	/* init the context as a hash */
--	ahash_init(req);
-+	ret = ahash_init(req);
-+	if (ret)
-+		return ret;
+-static int heartbeat = DEFAULT_HEARTBEAT;
++static int heartbeat;
  
- 	if (!spu_no_incr_hash(ctx)) {
- 		/* SPU-M can do incr hashing but needs sw for outer HMAC */
--- 
-2.43.0
-
+ /*
+  * struct to hold data for each WDT device
+@@ -252,6 +252,7 @@ static int rti_wdt_probe(struct platform
+ 	wdd->min_timeout = 1;
+ 	wdd->max_hw_heartbeat_ms = (WDT_PRELOAD_MAX << WDT_PRELOAD_SHIFT) /
+ 		wdt->freq * 1000;
++	wdd->timeout = DEFAULT_HEARTBEAT;
+ 	wdd->parent = dev;
+ 
+ 	watchdog_set_drvdata(wdd, wdt);
 
 
 
