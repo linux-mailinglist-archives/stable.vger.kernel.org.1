@@ -1,60 +1,53 @@
-Return-Path: <stable+bounces-100853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2399EE124
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:21:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E39109EE13E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:27:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B94371887406
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 08:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26DF82818D0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 08:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302F320CCC1;
-	Thu, 12 Dec 2024 08:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C2B20C03D;
+	Thu, 12 Dec 2024 08:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYT1lsYW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+fh3KBU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D758C20C03D;
-	Thu, 12 Dec 2024 08:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E58558BA
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 08:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733991606; cv=none; b=WKXsUemJp3okokKpLxrah2UI52pNQGBbP/ldRm8oi0sE+hCDXTlFZWNYcCAPCzwOpXGIGl9HaN3mxEnKzr+iuNDdYJrguJwVHJLT6yGpH5Cq3OqqJaAFqweA3/mWn1NBDYVOL5zYVC3NlKItezxV7zFiSM6q4CKWNEYFy5ZhyP0=
+	t=1733992044; cv=none; b=G8rJdIjrOy/c/EUhWvmRTtHW0Eh83RId8Blp39sT23MwraFF8ZP93qR8MWLBB+QxWkpJ6TKUeQ+cCPJUM1RBu5+otlxmppX/ojLT4X3ZWfZ2OMqecX8O4OH1Swh4SztoBHQPW+3tI2dlPIfmmCoUpGm6JKm8Hc/bIaS7gJvU9VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733991606; c=relaxed/simple;
-	bh=8BzNrdXpRYK3J5Zj0vYLHTDTPwgoL6DooDD/zG7Is4A=;
+	s=arc-20240116; t=1733992044; c=relaxed/simple;
+	bh=Tel1BkHJpen074ZtOGgaIX6RbRgWdbKYKdq8pdZTfEw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e1iVePo7rlACcjVWMUpsC+HfMhEzRP9/41ssncNU11KxLLM/Rpg1idOdYRr0C0GPYSAIlzL0KgPcoy1zwIngsHO9+5/4mGXDL/GkzKd9u0casZq9WhAG+6AMAw5O++CgcaGk75cxvfeS/Q6prX2SkpAjoU3NT8w345rZR3tx0io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYT1lsYW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38D7C4CECE;
-	Thu, 12 Dec 2024 08:20:04 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=hRtiiYEcIW4OlNk8pkQvYssLl8RPn4oFw86tFA7l5rc8xT5z41xo18dQFCbgrVL4egdyY2iz1PFklVHs68x5QGOqbBRJR/pJn4wt5lBJDV28GELx9wNhuvkLHt55CjV/l9tocyI4ZEoyZVunu1tF2kKEJVHYnp7kG1lelMTG7X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+fh3KBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABB9C4CED1;
+	Thu, 12 Dec 2024 08:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733991605;
-	bh=8BzNrdXpRYK3J5Zj0vYLHTDTPwgoL6DooDD/zG7Is4A=;
+	s=korg; t=1733992044;
+	bh=Tel1BkHJpen074ZtOGgaIX6RbRgWdbKYKdq8pdZTfEw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OYT1lsYWI2OxomAdKDSYqD0kthQ1HdQzJFN+ix+HycMDP7h7nfI0mRddKps7TmU3c
-	 Qu3f4fcCfahwwnFGAsm6xd0RFXtN9MKHd7N7qNu4YItLzgyPm07H6M9tRaMcihCQcn
-	 9qFlgrMjeVPwzH7RVk0sE2QqDdGAt+H16Xk5dsfs=
-Date: Thu, 12 Dec 2024 09:20:02 +0100
+	b=o+fh3KBU3wYEZDBSmZ9OuCoaI75S3UWp5zazMM008Rm7CzCNz3X4SMAPKXf8Z0FG1
+	 CSbY5UdV++wYpCjYqkz0vAb0/tAzjQwui3LgCVZ1FP4RD6Fd8VKyXvEeiwt1ZA3JP0
+	 hbB/02WxVAB/5CVCIqiAIx2KWXaRKGeVTahG+Ex4=
+Date: Thu, 12 Dec 2024 09:27:20 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Hardik Gohil <hgohil@mvista.com>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org,
-	Kenton Groombridge <concord@gentoo.org>,
-	Kees Cook <kees@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v5.10.y v5.4.y] wifi: mac80211: Avoid address
- calculations via out of bounds array indexing
-Message-ID: <2024121233-washing-sputter-11f4@gregkh>
-References: <1729316200-15234-1-git-send-email-hgohil@mvista.com>
- <2024102147-paralyses-roast-0cec@gregkh>
- <CAH+zgeGXXQOqg5aZnvCXfBhd4ONG25oGoukYJL5-uHYJAo11gQ@mail.gmail.com>
- <2024110634-reformed-frightful-990d@gregkh>
- <CAH+zgeGs7Tk+3sP=Bn4=11i5pH3xjZquy-x1ykTXMBE8HcOtew@mail.gmail.com>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: stable@vger.kernel.org, Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH] KVM: arm64: Ignore PMCNTENSET_EL0 while checking for
+ overflow status
+Message-ID: <2024121209-dreaded-champion-4cae@gregkh>
+References: <2024120223-stunner-letter-9d09@gregkh>
+ <20241203190236.2711302-1-rananta@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,48 +56,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAH+zgeGs7Tk+3sP=Bn4=11i5pH3xjZquy-x1ykTXMBE8HcOtew@mail.gmail.com>
+In-Reply-To: <20241203190236.2711302-1-rananta@google.com>
 
-On Thu, Dec 05, 2024 at 11:41:45AM +0530, Hardik Gohil wrote:
-> From: Kenton Groombridge <concord@gentoo.org>
+On Tue, Dec 03, 2024 at 07:02:36PM +0000, Raghavendra Rao Ananta wrote:
+> commit 54bbee190d42166209185d89070c58a343bf514b upstream.
 > 
-> [ Upstream commit 2663d0462eb32ae7c9b035300ab6b1523886c718 ]
+> DDI0487K.a D13.3.1 describes the PMU overflow condition, which evaluates
+> to true if any counter's global enable (PMCR_EL0.E), overflow flag
+> (PMOVSSET_EL0[n]), and interrupt enable (PMINTENSET_EL1[n]) are all 1.
+> Of note, this does not require a counter to be enabled
+> (i.e. PMCNTENSET_EL0[n] = 1) to generate an overflow.
 > 
-> req->n_channels must be set before req->channels[] can be used.
+> Align kvm_pmu_overflow_status() with the reality of the architecture
+> and stop using PMCNTENSET_EL0 as part of the overflow condition. The
+> bug was discovered while running an SBSA PMU test [*], which only sets
+> PMCR.E, PMOVSSET<0>, PMINTENSET<0>, and expects an overflow interrupt.
 > 
-> This patch fixes one of the issues encountered in [1].
-> 
-> [   83.964255] UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:364:4
-> [   83.964258] index 0 is out of range for type 'struct ieee80211_channel *[]'
-> [...]
-> [   83.964264] Call Trace:
-> [   83.964267]  <TASK>
-> [   83.964269]  dump_stack_lvl+0x3f/0xc0
-> [   83.964274]  __ubsan_handle_out_of_bounds+0xec/0x110
-> [   83.964278]  ieee80211_prep_hw_scan+0x2db/0x4b0
-> [   83.964281]  __ieee80211_start_scan+0x601/0x990
-> [   83.964291]  nl80211_trigger_scan+0x874/0x980
-> [   83.964295]  genl_family_rcv_msg_doit+0xe8/0x160
-> [   83.964298]  genl_rcv_msg+0x240/0x270
-> [...]
-> 
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=218810
-> 
-> Co-authored-by: Kees Cook <keescook@chromium.org>
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> Signed-off-by: Kenton Groombridge <concord@gentoo.org>
-> Link: https://msgid.link/20240605152218.236061-1-concord@gentoo.org
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> [Xiangyu: Modified to apply on 6.1.y and 6.6.y]
-> Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> Signed-off-by: Hardik Gohil <hgohil@mvista.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 76d883c4e640 ("arm64: KVM: Add access handler for PMOVSSET and PMOVSCLR register")
+> Link: https://github.com/ARM-software/sbsa-acs/blob/master/test_pool/pmu/operating_system/test_pmu001.c
+> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+> [ oliver: massaged changelog ]
+> Reviewed-by: Marc Zyngier <maz@kernel.org>
+> Link: https://lore.kernel.org/r/20241120005230.2335682-2-oliver.upton@linux.dev
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> ---
+>  virt/kvm/arm/pmu.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-What did you do to change this patch?
-
-Also, what about 5.15.y, you can't "skip" a stable tree :(
-
-thanks,
-
-greg k-h
+What kernel branch(es) is this backport for?
 
