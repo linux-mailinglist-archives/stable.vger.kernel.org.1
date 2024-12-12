@@ -1,137 +1,385 @@
-Return-Path: <stable+bounces-101055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3E99EEA16
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED299EE998
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BEF72840B8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AFE6280CD7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8164D2163AB;
-	Thu, 12 Dec 2024 15:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B032080FC;
+	Thu, 12 Dec 2024 15:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbjcV18X"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rESBc7Da";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5JFiNov1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE87217F34;
-	Thu, 12 Dec 2024 15:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91287213E97
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 15:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016101; cv=none; b=uijZR7Q1fzImn9LSGYBdlOps3Lfa4ft+yUqFu9+j35bLk5Y8pxysDygUtaOgBfrL/tROkoPeNCeDXjDLEgEbzT8tM86RkRkHYY3F/jwkMyImgZ4lDJG8Wrw8QdKJL6KI4hyQsDdm/H3cVYYOS4+cMFiCECyh3eWWZ5uvXjvrxYY=
+	t=1734015731; cv=none; b=cVfaDUJuX4SH40hl6JNGwn25vJ7kALqGCW7MAWT4MdM0/cpC3tyB8Ly+iSW9rEzL1qJKf4AR5KHq49NVFYjBkf6RkvKahH7RR+3WMVBIGQVOCcMNGm719BUGGIFhxbVIk980wvWgpYop8iREbXF0ZO83LUvc6IDhiGaqZQ8+ZMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016101; c=relaxed/simple;
-	bh=1IBtwzBzVnwFhlDQeUeJ1aGp6ad88gC6AoUKSIrkn/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZ9bCfFJEu35dOB5OikF3oPBMn5BGArJ2ca5/U8JY4mSKZtlGKoIHboI7QsJd9kf0HrIeQgYGobt7Z3RF/qDvRzc/htPxdp/kQ+Hc2nmuzsSztfzumRY9bgGKo12Bb/AitopVj0u4ELfu6yjxcOHmasJsLOVgtf4x1Kln2MOsgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbjcV18X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A947C4CEDD;
-	Thu, 12 Dec 2024 15:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016101;
-	bh=1IBtwzBzVnwFhlDQeUeJ1aGp6ad88gC6AoUKSIrkn/M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbjcV18XUfBDfBa73NjY8VTCdG6UIJm16d90Y9jzhDUl5adf9nkkDVDev9qrYbCfy
-	 BydWN6Cqqt6svAOYQTvt79Lohiko6mPGBOaSlL5bcr6eiwKPRW0VvV6HpCkuj6G/vQ
-	 VouQxV2uo29daiekD6RWT5zM5EliXqonaqM69KtU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 125/466] LoongArch: KVM: Protect kvm_check_requests() with SRCU
-Date: Thu, 12 Dec 2024 15:54:54 +0100
-Message-ID: <20241212144311.744179045@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1734015731; c=relaxed/simple;
+	bh=8gZhjEop+4H4/UIJC0AWI8W8hpFOGgzk8STfp10Jm6Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ivFbJtcl3+M3lnpVs+v1mM/DJOC55oHGFhhO+VbTMFlPGO7ff5nx4ySv/Z38bujRDOYLQgHz1C7HByQmqjVIbK+JGhbTJf7Ectz1F6D+qZl8+l85f5levAAaSRT5+5SnnFfLXB5veQeZM6/1UFLfZXDUrCeZ5eFbgELXBphHWkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rESBc7Da; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5JFiNov1; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1734015726;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OvdKC2WkupAqsNOAoRYlOXYwQS8i1HwE801YVXxdDOk=;
+	b=rESBc7DaeBuyg14lECYp0gRvZmUAGEUbUJIaML/KiqKmvPRfqnymApADLAJTPe0YeivNSI
+	iAoYVPwN+wnwEaP+WYkDK1g4wE/+wwG0W1G4fu8oWf7h2bH84MnQWfhPM1wv+d7RRT8LU3
+	/9ng7IbFOBpEuuT6KHs97XZ0pRnTzFLjlU+d/4ixoAIQLtsDzgb8A35v3UrxUzp6pv+scu
+	ZUFvg0rfe2ztQ11R5vOJ4O0QbGYb4dsZE2ECah6ZLavNGwz1rYm9xfgIcqLeZDKnWgdfVM
+	usZd5WJrok02L3mURit5CDodaflNjmMHpGQ4OhPfFuyPWTW6debSa/tTJQLMZQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1734015726;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OvdKC2WkupAqsNOAoRYlOXYwQS8i1HwE801YVXxdDOk=;
+	b=5JFiNov15xe1E+cwExgGMhdxDPOdxDco0GUhArnVlyaugZk475h4nbZrRWkBWsOuReeKt0
+	Idv+UwnA+MiaMqBw==
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: linux@roeck-us.net, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] clocksource: Make negative motion
+ detection more robust" failed to apply to 6.12-stable tree
+In-Reply-To: <2024121255-handled-ample-e394@gregkh>
+References: <2024121203-griminess-blah-4e97@gregkh> <87ikrp9f59.ffs@tglx>
+ <2024121232-obligate-varsity-e68f@gregkh>
+ <2024121235-impale-paddle-8f94@gregkh> <87frmt9dl3.ffs@tglx>
+ <2024121205-override-postbox-5ed6@gregkh>
+ <2024121255-handled-ample-e394@gregkh>
+Date: Thu, 12 Dec 2024 16:02:06 +0100
+Message-ID: <87cyhx9c7l.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+On Thu, Dec 12 2024 at 15:37, Greg KH wrote:
+> On Thu, Dec 12, 2024 at 03:35:14PM +0100, Greg KH wrote:
+>> On Thu, Dec 12, 2024 at 03:32:24PM +0100, Thomas Gleixner wrote:
+>> > On Thu, Dec 12 2024 at 15:18, Greg KH wrote:
+>> > > On Thu, Dec 12, 2024 at 03:17:03PM +0100, Greg KH wrote:
+>> > >> > But I don't think these two commits are necessarily stable materi=
+al,
+>> > >> > though I don't have a strong opinion on it. If c163e40af9b2 is
+>> > >> > backported, then it has it's own large dependency chain on pre 6.=
+10
+>> > >> > kernels...
+>> > >>=20
+>> > >> It's in the queues for some reason, let me figure out why...
+>> > >
+>> > > Ah, it was an AUTOSEL thing, I'll go drop it from all queues except
+>> > > 6.12.y for now, thanks.
+>> > >
+>> > > But, for 6.12.y, we want this fixup too, right?
+>> >=20
+>> > If you have c163e40af9b2 pulled back into 6.12.y, then yes. I don't kn=
+ow
+>> > why this actually rejects. I just did
+>> >=20
+>> > git-cherry-pick c163e40af9b2
+>> > git-cherry-pick 51f109e92935
+>> >=20
+>> > on top of v6.12.4 and that just worked fine.
+>>=20
+>> The build breaks :(
+>
+> To be specific:
+>
+> kernel/time/timekeeping.c: In function =E2=80=98timekeeping_debug_get_ns=
+=E2=80=99:
+> kernel/time/timekeeping.c:263:17: error: too few arguments to function =
+=E2=80=98clocksource_delta=E2=80=99
+>   263 |         delta =3D clocksource_delta(now, last, mask);
+>       |                 ^~~~~~~~~~~~~~~~~
+> In file included from kernel/time/timekeeping.c:30:
 
-------------------
+Ah. You also need:
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+d44d26987bb3 ("timekeeping: Remove CONFIG_DEBUG_TIMEKEEPING")
 
-commit 589e6cc7597655bed7b8543b8286925f631f597c upstream.
+which in turn does not apply cleanly and needs the backport
+below. *shrug*
 
-When we enable lockdep we get such a warning:
+Thanks,
 
- =============================
- WARNING: suspicious RCU usage
- 6.12.0-rc7+ #1891 Tainted: G        W
- -----------------------------
- include/linux/kvm_host.h:1043 suspicious rcu_dereference_check() usage!
- other info that might help us debug this:
- rcu_scheduler_active = 2, debug_locks = 1
- 1 lock held by qemu-system-loo/948:
-  #0: 90000001184a00a8 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0xf4/0xe20 [kvm]
- stack backtrace:
- CPU: 0 UID: 0 PID: 948 Comm: qemu-system-loo Tainted: G        W          6.12.0-rc7+ #1891
- Tainted: [W]=WARN
- Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
- Stack : 0000000000000089 9000000005a0db9c 90000000071519c8 900000012c578000
-         900000012c57b920 0000000000000000 900000012c57b928 9000000007e53788
-         900000000815bcc8 900000000815bcc0 900000012c57b790 0000000000000001
-         0000000000000001 4b031894b9d6b725 0000000004dec000 90000001003299c0
-         0000000000000414 0000000000000001 000000000000002d 0000000000000003
-         0000000000000030 00000000000003b4 0000000004dec000 90000001184a0000
-         900000000806d000 9000000007e53788 00000000000000b4 0000000000000004
-         0000000000000004 0000000000000000 0000000000000000 9000000107baf600
-         9000000008916000 9000000007e53788 9000000005924778 0000000010000044
-         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
-         ...
- Call Trace:
- [<9000000005924778>] show_stack+0x38/0x180
- [<90000000071519c4>] dump_stack_lvl+0x94/0xe4
- [<90000000059eb754>] lockdep_rcu_suspicious+0x194/0x240
- [<ffff8000022143bc>] kvm_gfn_to_hva_cache_init+0xfc/0x120 [kvm]
- [<ffff80000222ade4>] kvm_pre_enter_guest+0x3a4/0x520 [kvm]
- [<ffff80000222b3dc>] kvm_handle_exit+0x23c/0x480 [kvm]
-
-Fix it by protecting kvm_check_requests() with SRCU.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        tglx
 ---
- arch/loongarch/kvm/vcpu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -240,7 +240,7 @@ static void kvm_late_check_requests(stru
-  */
- static int kvm_enter_guest_check(struct kvm_vcpu *vcpu)
- {
--	int ret;
-+	int idx, ret;
- 
- 	/*
- 	 * Check conditions before entering the guest
-@@ -249,7 +249,9 @@ static int kvm_enter_guest_check(struct
- 	if (ret < 0)
- 		return ret;
- 
-+	idx = srcu_read_lock(&vcpu->kvm->srcu);
- 	ret = kvm_check_requests(vcpu);
-+	srcu_read_unlock(&vcpu->kvm->srcu, idx);
- 
- 	return ret;
+diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
+index 2341393cfac1..26c01b9e3434 100644
+--- a/arch/riscv/configs/defconfig
++++ b/arch/riscv/configs/defconfig
+@@ -301,7 +301,6 @@ CONFIG_DEBUG_MEMORY_INIT=3Dy
+ CONFIG_DEBUG_PER_CPU_MAPS=3Dy
+ CONFIG_SOFTLOCKUP_DETECTOR=3Dy
+ CONFIG_WQ_WATCHDOG=3Dy
+-CONFIG_DEBUG_TIMEKEEPING=3Dy
+ CONFIG_DEBUG_RT_MUTEXES=3Dy
+ CONFIG_DEBUG_SPINLOCK=3Dy
+ CONFIG_DEBUG_MUTEXES=3Dy
+diff --git a/include/linux/timekeeper_internal.h b/include/linux/timekeeper=
+_internal.h
+index 902c20ef495a..715e0919972e 100644
+--- a/include/linux/timekeeper_internal.h
++++ b/include/linux/timekeeper_internal.h
+@@ -68,9 +68,6 @@ struct tk_read_base {
+  *			shifted nano seconds.
+  * @ntp_error_shift:	Shift conversion between clock shifted nano seconds a=
+nd
+  *			ntp shifted nano seconds.
+- * @last_warning:	Warning ratelimiter (DEBUG_TIMEKEEPING)
+- * @underflow_seen:	Underflow warning flag (DEBUG_TIMEKEEPING)
+- * @overflow_seen:	Overflow warning flag (DEBUG_TIMEKEEPING)
+  *
+  * Note: For timespec(64) based interfaces wall_to_monotonic is what
+  * we need to add to xtime (or xtime corrected for sub jiffy times)
+@@ -124,18 +121,6 @@ struct timekeeper {
+ 	u32			ntp_err_mult;
+ 	/* Flag used to avoid updating NTP twice with same second */
+ 	u32			skip_second_overflow;
+-#ifdef CONFIG_DEBUG_TIMEKEEPING
+-	long			last_warning;
+-	/*
+-	 * These simple flag variables are managed
+-	 * without locks, which is racy, but they are
+-	 * ok since we don't really care about being
+-	 * super precise about how many events were
+-	 * seen, just that a problem was observed.
+-	 */
+-	int			underflow_seen;
+-	int			overflow_seen;
+-#endif
+ };
+=20
+ #ifdef CONFIG_GENERIC_TIME_VSYSCALL
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 1f003247b89b..96933082431f 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -195,97 +195,6 @@ static inline u64 tk_clock_read(const struct tk_read_b=
+ase *tkr)
+ 	return clock->read(clock);
  }
+=20
+-#ifdef CONFIG_DEBUG_TIMEKEEPING
+-#define WARNING_FREQ (HZ*300) /* 5 minute rate-limiting */
+-
+-static void timekeeping_check_update(struct timekeeper *tk, u64 offset)
+-{
+-
+-	u64 max_cycles =3D tk->tkr_mono.clock->max_cycles;
+-	const char *name =3D tk->tkr_mono.clock->name;
+-
+-	if (offset > max_cycles) {
+-		printk_deferred("WARNING: timekeeping: Cycle offset (%lld) is larger tha=
+n allowed by the '%s' clock's max_cycles value (%lld): time overflow danger=
+\n",
+-				offset, name, max_cycles);
+-		printk_deferred("         timekeeping: Your kernel is sick, but tries to=
+ cope by capping time updates\n");
+-	} else {
+-		if (offset > (max_cycles >> 1)) {
+-			printk_deferred("INFO: timekeeping: Cycle offset (%lld) is larger than =
+the '%s' clock's 50%% safety margin (%lld)\n",
+-					offset, name, max_cycles >> 1);
+-			printk_deferred("      timekeeping: Your kernel is still fine, but is f=
+eeling a bit nervous\n");
+-		}
+-	}
+-
+-	if (tk->underflow_seen) {
+-		if (jiffies - tk->last_warning > WARNING_FREQ) {
+-			printk_deferred("WARNING: Underflow in clocksource '%s' observed, time =
+update ignored.\n", name);
+-			printk_deferred("         Please report this, consider using a differen=
+t clocksource, if possible.\n");
+-			printk_deferred("         Your kernel is probably still fine.\n");
+-			tk->last_warning =3D jiffies;
+-		}
+-		tk->underflow_seen =3D 0;
+-	}
+-
+-	if (tk->overflow_seen) {
+-		if (jiffies - tk->last_warning > WARNING_FREQ) {
+-			printk_deferred("WARNING: Overflow in clocksource '%s' observed, time u=
+pdate capped.\n", name);
+-			printk_deferred("         Please report this, consider using a differen=
+t clocksource, if possible.\n");
+-			printk_deferred("         Your kernel is probably still fine.\n");
+-			tk->last_warning =3D jiffies;
+-		}
+-		tk->overflow_seen =3D 0;
+-	}
+-}
+-
+-static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr,=
+ u64 cycles);
+-
+-static inline u64 timekeeping_debug_get_ns(const struct tk_read_base *tkr)
+-{
+-	struct timekeeper *tk =3D &tk_core.timekeeper;
+-	u64 now, last, mask, max, delta;
+-	unsigned int seq;
+-
+-	/*
+-	 * Since we're called holding a seqcount, the data may shift
+-	 * under us while we're doing the calculation. This can cause
+-	 * false positives, since we'd note a problem but throw the
+-	 * results away. So nest another seqcount here to atomically
+-	 * grab the points we are checking with.
+-	 */
+-	do {
+-		seq =3D read_seqcount_begin(&tk_core.seq);
+-		now =3D tk_clock_read(tkr);
+-		last =3D tkr->cycle_last;
+-		mask =3D tkr->mask;
+-		max =3D tkr->clock->max_cycles;
+-	} while (read_seqcount_retry(&tk_core.seq, seq));
+-
+-	delta =3D clocksource_delta(now, last, mask);
+-
+-	/*
+-	 * Try to catch underflows by checking if we are seeing small
+-	 * mask-relative negative values.
+-	 */
+-	if (unlikely((~delta & mask) < (mask >> 3)))
+-		tk->underflow_seen =3D 1;
+-
+-	/* Check for multiplication overflows */
+-	if (unlikely(delta > max))
+-		tk->overflow_seen =3D 1;
+-
+-	/* timekeeping_cycles_to_ns() handles both under and overflow */
+-	return timekeeping_cycles_to_ns(tkr, now);
+-}
+-#else
+-static inline void timekeeping_check_update(struct timekeeper *tk, u64 off=
+set)
+-{
+-}
+-static inline u64 timekeeping_debug_get_ns(const struct tk_read_base *tkr)
+-{
+-	BUG();
+-}
+-#endif
+-
+ /**
+  * tk_setup_internals - Set up internals to use clocksource clock.
+  *
+@@ -390,19 +299,11 @@ static inline u64 timekeeping_cycles_to_ns(const stru=
+ct tk_read_base *tkr, u64 c
+ 	return ((delta * tkr->mult) + tkr->xtime_nsec) >> tkr->shift;
+ }
+=20
+-static __always_inline u64 __timekeeping_get_ns(const struct tk_read_base =
+*tkr)
++static __always_inline u64 timekeeping_get_ns(const struct tk_read_base *t=
+kr)
+ {
+ 	return timekeeping_cycles_to_ns(tkr, tk_clock_read(tkr));
+ }
+=20
+-static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
+-{
+-	if (IS_ENABLED(CONFIG_DEBUG_TIMEKEEPING))
+-		return timekeeping_debug_get_ns(tkr);
+-
+-	return __timekeeping_get_ns(tkr);
+-}
+-
+ /**
+  * update_fast_timekeeper - Update the fast and NMI safe monotonic timekee=
+per.
+  * @tkr: Timekeeping readout base from which we take the update
+@@ -446,7 +347,7 @@ static __always_inline u64 __ktime_get_fast_ns(struct t=
+k_fast *tkf)
+ 		seq =3D raw_read_seqcount_latch(&tkf->seq);
+ 		tkr =3D tkf->base + (seq & 0x01);
+ 		now =3D ktime_to_ns(tkr->base);
+-		now +=3D __timekeeping_get_ns(tkr);
++		now +=3D timekeeping_get_ns(tkr);
+ 	} while (raw_read_seqcount_latch_retry(&tkf->seq, seq));
+=20
+ 	return now;
+@@ -562,7 +463,7 @@ static __always_inline u64 __ktime_get_real_fast(struct=
+ tk_fast *tkf, u64 *mono)
+ 		tkr =3D tkf->base + (seq & 0x01);
+ 		basem =3D ktime_to_ns(tkr->base);
+ 		baser =3D ktime_to_ns(tkr->base_real);
+-		delta =3D __timekeeping_get_ns(tkr);
++		delta =3D timekeeping_get_ns(tkr);
+ 	} while (raw_read_seqcount_latch_retry(&tkf->seq, seq));
+=20
+ 	if (mono)
+@@ -2300,9 +2201,6 @@ static bool timekeeping_advance(enum timekeeping_adv_=
+mode mode)
+ 	if (offset < real_tk->cycle_interval && mode =3D=3D TK_ADV_TICK)
+ 		goto out;
+=20
+-	/* Do some additional sanity checking */
+-	timekeeping_check_update(tk, offset);
+-
+ 	/*
+ 	 * With NO_HZ we may have to accumulate many cycle_intervals
+ 	 * (think "ticks") worth of time at once. To do this efficiently,
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 7312ae7c3cc5..3f9c238bb58e 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1328,19 +1328,6 @@ config SCHEDSTATS
+=20
+ endmenu
+=20
+-config DEBUG_TIMEKEEPING
+-	bool "Enable extra timekeeping sanity checking"
+-	help
+-	  This option will enable additional timekeeping sanity checks
+-	  which may be helpful when diagnosing issues where timekeeping
+-	  problems are suspected.
+-
+-	  This may include checks in the timekeeping hotpaths, so this
+-	  option may have a (very small) performance impact to some
+-	  workloads.
+-
+-	  If unsure, say N.
+-
+ config DEBUG_PREEMPT
+ 	bool "Debug preemptible kernel"
+ 	depends on DEBUG_KERNEL && PREEMPTION && TRACE_IRQFLAGS_SUPPORT
+diff --git a/tools/testing/selftests/wireguard/qemu/debug.config b/tools/te=
+sting/selftests/wireguard/qemu/debug.config
+index 9d172210e2c6..139fd9aa8b12 100644
+--- a/tools/testing/selftests/wireguard/qemu/debug.config
++++ b/tools/testing/selftests/wireguard/qemu/debug.config
+@@ -31,7 +31,6 @@ CONFIG_SCHED_DEBUG=3Dy
+ CONFIG_SCHED_INFO=3Dy
+ CONFIG_SCHEDSTATS=3Dy
+ CONFIG_SCHED_STACK_END_CHECK=3Dy
+-CONFIG_DEBUG_TIMEKEEPING=3Dy
+ CONFIG_DEBUG_PREEMPT=3Dy
+ CONFIG_DEBUG_RT_MUTEXES=3Dy
+ CONFIG_DEBUG_SPINLOCK=3Dy
 
 
 
