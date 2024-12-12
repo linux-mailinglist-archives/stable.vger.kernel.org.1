@@ -1,120 +1,223 @@
-Return-Path: <stable+bounces-101828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FB89EEED1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DFC9EEF69
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339B516489B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:56:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 331271896375
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C4222D4E;
-	Thu, 12 Dec 2024 15:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3CB2253EE;
+	Thu, 12 Dec 2024 15:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JbTyuEFz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqyBykSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F08215764;
-	Thu, 12 Dec 2024 15:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8E623E6D5
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 15:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018941; cv=none; b=HaA+Qukjxt+CksE8MEAFg9MngHr9DEIG/bWnUiAbN5mefpMiuUyT4gUpViKqRQKl8gTBMuuKXzkQbpQ2TReVMvKejWffvljvMNrWwu3WylfnVWxdMtHnGe/DbTfEs29LVMg5S6Ge8wdxoWO8L3vwegDuWs55JaIPxRAVTks9uDo=
+	t=1734019116; cv=none; b=R2+pMYN898DJllV2mkmda2lP4CV/mHivQaV5nZiezNBRYq5QSGTsBl9fSQ0Rlj5gbnioToX74Gui0UkP5UeRgYqXMK2JQUocD4JUn+qFUsW/iO/TUiR0DMVhMz/gDw0HE3Oi7uMX8d+OdPd9tY50eKMq3uaV95cpfhrQ9ItyKD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018941; c=relaxed/simple;
-	bh=PKNBf0TCKuwNcifWvhSa7hUFVANZKsYx7vGJQEMnWHs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oo3yWXeinRwcFx5xeplb7M8e7G3MBAiGur17IHghqY+fTz0AMxkQxv1xo3Dl1gnBXqk+W7RxDDLHnFCtEBbCNYbheuCrTaFPex47aPBk1zKrvx8yH5I5ar7Wxl7XTejV612SuBv5dnpAGwWlqXQpCNAjrjzZ3kMGTkgKnie8PtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JbTyuEFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9073DC4CED3;
-	Thu, 12 Dec 2024 15:55:36 +0000 (UTC)
+	s=arc-20240116; t=1734019116; c=relaxed/simple;
+	bh=KK0O8y9eNgjmb0qxL9/XgBHBD4XbecIwOdl/COhFqec=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oOdaJ+4RgeXdlFH6Iiimk8tOfeGw+DBmtLBkgrAPoXtoizJApO7W2NOk3sSFPmeL0mekXQpvTdqfEKzcc41yxgIQ8seH/JcQaiFK9PljEYzLPasESeunwueQffngt1zR3VRr0/Y2gPf0k9J9W+BOtuPacUUQcqgjsNY3WyDoPMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqyBykSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8209C4CED3
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 15:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734018940;
-	bh=PKNBf0TCKuwNcifWvhSa7hUFVANZKsYx7vGJQEMnWHs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JbTyuEFzQhdRJOmDrKJyk9vWtv59qHQf6NV5vzbP3QL+w07scAiTpND/D+fCd5C8M
-	 HGFo7Zr4lA5KuhQLh7wMkG5WWx5Kwal2PKprL1LophqlY/WN+VyLBpsZN7PTE0uCjd
-	 XCQ0F8h0QOZONPX2obr7xgnwPTHDCgpgZWYhjXMhHfrPQXzgzL7yfoJDVJvO65o1bq
-	 w/zHPnbEtKLRQh0t0kyUZvpJsBX6ZnpdESQlKb/vt8tTSwZJc/KFJ6+Q+rhQJ5VEUp
-	 PKEBQhBU2DPnV/ofyaUbQV54Hzth2cvwnkNcKOatzAiuYps8eAMqojXzk68jfIL7aF
-	 PBNJQBAh1PLCA==
-Date: Thu, 12 Dec 2024 15:55:33 +0000
-From: Lee Jones <lee@kernel.org>
-To: Jiri Kosina <jikos@kernel.org>
-Cc: Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>, jic23@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	jdelvare@suse.com, linux@roeck-us.net,
-	srinivas.pandruvada@linux.intel.com, bentiss@kernel.org,
-	dmitry.torokhov@gmail.com, pavel@ucw.cz, ukleinek@debian.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-input@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v9 1/9] HID: hid-sensor-hub: don't use stale
- platform-data on remove
-Message-ID: <20241212155533.GG7139@google.com>
-References: <20241107114712.538976-1-heiko@sntech.de>
- <20241211120844.GD7139@google.com>
- <n914pn7o-pr9n-5ss0-p744-73402nnn843p@xreary.bet>
- <3196449.TQGk6oTFT5@diego>
- <4s41717n-3888-os6o-384n-7678n0361r0s@xreary.bet>
+	s=k20201202; t=1734019115;
+	bh=KK0O8y9eNgjmb0qxL9/XgBHBD4XbecIwOdl/COhFqec=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LqyBykSqdR9SGA8/IaaZLXGYXD/W55Ad6f6RiQJHDrJjeo7Uv7gauk9A/rUL5PeHy
+	 Ywf3d682F0kriYrUyuh/zILHAMoYDQoo2Rci1vG299OItSpkzTRPjDpelu2NzsyEJq
+	 xDBlbll9VupOwl+SmEUJrpeKwmgN/h8FdW2GZSHvoqosn+A36wJtg0zuG8mtFL8e3n
+	 iJ1G84Nes7mHkzypQold7Tlj1/kWTy7wWva2jNQDcuV4LIyi3eNhO/t14Vj6z4RQn/
+	 mWOV5xXMFE71AAh0zj0VlMRqpnf/8Y/xtw7JjA9ilTBcJqhk9xJTHBPZLTPjPRew+B
+	 nLsDMT+L3PZxA==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-30225b2586cso19374781fa.0
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 07:58:35 -0800 (PST)
+X-Gm-Message-State: AOJu0YzwBPfs1f9bnmBP8bJB37Y9uQmLvkRzrn28bxz3Z0xj3jHlLFo5
+	MDUP8p/Ymb3jTs/UNKyR24Pak8LdXRI4Cz4ZWwXwhdKtejFHdYMTxid3rwogE+9VRa1j3M5TACn
+	oFKWIFq+5s4W4m5G6hp8WdflT6rU=
+X-Google-Smtp-Source: AGHT+IEehlYgwfoiimpQ7GDIYs3PGo6YxsYOeWkxoKuF2tvZvSylROVt5BE4PwmwIfczjdeyhogB+QkthHYnalah5fc=
+X-Received: by 2002:a2e:bea5:0:b0:302:49b6:dfaf with SMTP id
+ 38308e7fff4ca-30251f3b58cmr2928431fa.20.1734019114037; Thu, 12 Dec 2024
+ 07:58:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4s41717n-3888-os6o-384n-7678n0361r0s@xreary.bet>
+References: <20241212144349.797589255@linuxfoundation.org> <20241212144351.271628434@linuxfoundation.org>
+In-Reply-To: <20241212144351.271628434@linuxfoundation.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 12 Dec 2024 16:58:22 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHtbZNrrehr2bhkA8A_Ab0mAcG_X1PerVEWqdFJv-aUUw@mail.gmail.com>
+Message-ID: <CAMj1kXHtbZNrrehr2bhkA8A_Ab0mAcG_X1PerVEWqdFJv-aUUw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 032/772] x86/stackprotector: Work around strict Clang
+ TLS symbol requirements
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Brian Gerst <brgerst@gmail.com>, "Borislav Petkov (AMD)" <bp@alien8.de>, Nathan Chancellor <nathan@kernel.org>, 
+	Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 11 Dec 2024, Jiri Kosina wrote:
+On Thu, 12 Dec 2024 at 16:54, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
+>
+> ------------------
+>
+> From: Ard Biesheuvel <ardb@kernel.org>
+>
+> [ Upstream commit 577c134d311b9b94598d7a0c86be1f431f823003 ]
+>
 
-> On Wed, 11 Dec 2024, Heiko Stübner wrote:
-> 
-> > > > > > > This change was more or less a surprise find, because I wanted to make
-> > > > > > > the platform_data pointer in the mfd_cell struct const and this the hid
-> > > > > > > sensor hub stood out as doing something strange ;-) .
-> > > > > > > 
-> > > > > > > So patch 2 of this series actually depends on this change to not cause
-> > > > > > > build errors.
-> > > > > > 
-> > > > > > Ah, right.
-> > > > > > 
-> > > > > > > But seeing that we're after -rc6 alredy, I would assume the brunt of the 
-> > > > > > > mcu series might need to wait after 6.13-rc1 anyway - but I guess that 
-> > > > > > > depends on how Lee sees things ;-) .
-> > > > > > 
-> > > > > > OK, I am keeping my hands off it for the time being.
-> > > > > 
-> > > > > I can take it now with an Ack.
-> > > > 
-> > > > Looking to apply this set now.
-> > > > 
-> > > > Ack please.
-> > > 
-> > > I'd preferer if Srinivas could ack this as the more specific maintainer. 
-> > > Srinivas, please? 
-> > 
-> > The patch already includes the
-> >    Ack from Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> > from a previous version, so I guess it should be ok already?
-> 
-> Ah, I missed that, indeed, sorry for the noise.
-> 
-> With that
-> 
-> 	Acked-by: Jiri Kosina <jkosina@suse.com>
-> 
-> and Lee, please feel free to take it.
+There is a follow-up patch that addresses a build issue with this
+patch and older GCC versions. Given that this fix is for 32-bit only,
+whereas the build issue affects 64-bit too, let's hold off on this one
+until we can apply them as a pair.
 
-Thanks, will do.
 
--- 
-Lee Jones [李琼斯]
+
+> GCC and Clang both implement stack protector support based on Thread Local
+> Storage (TLS) variables, and this is used in the kernel to implement per-task
+> stack cookies, by copying a task's stack cookie into a per-CPU variable every
+> time it is scheduled in.
+>
+> Both now also implement -mstack-protector-guard-symbol=, which permits the TLS
+> variable to be specified directly. This is useful because it will allow to
+> move away from using a fixed offset of 40 bytes into the per-CPU area on
+> x86_64, which requires a lot of special handling in the per-CPU code and the
+> runtime relocation code.
+>
+> However, while GCC is rather lax in its implementation of this command line
+> option, Clang actually requires that the provided symbol name refers to a TLS
+> variable (i.e., one declared with __thread), although it also permits the
+> variable to be undeclared entirely, in which case it will use an implicit
+> declaration of the right type.
+>
+> The upshot of this is that Clang will emit the correct references to the stack
+> cookie variable in most cases, e.g.,
+>
+>   10d:       64 a1 00 00 00 00       mov    %fs:0x0,%eax
+>                      10f: R_386_32   __stack_chk_guard
+>
+> However, if a non-TLS definition of the symbol in question is visible in the
+> same compilation unit (which amounts to the whole of vmlinux if LTO is
+> enabled), it will drop the per-CPU prefix and emit a load from a bogus
+> address.
+>
+> Work around this by using a symbol name that never occurs in C code, and emit
+> it as an alias in the linker script.
+>
+> Fixes: 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Brian Gerst <brgerst@gmail.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Tested-by: Nathan Chancellor <nathan@kernel.org>
+> Cc: stable@vger.kernel.org
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1854
+> Link: https://lore.kernel.org/r/20241105155801.1779119-2-brgerst@gmail.com
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/x86/Makefile                     |  3 ++-
+>  arch/x86/entry/entry.S                | 15 +++++++++++++++
+>  arch/x86/include/asm/asm-prototypes.h |  3 +++
+>  arch/x86/kernel/cpu/common.c          |  2 ++
+>  arch/x86/kernel/vmlinux.lds.S         |  3 +++
+>  5 files changed, 25 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> index 3419ffa2a3507..a88eede6e7db4 100644
+> --- a/arch/x86/Makefile
+> +++ b/arch/x86/Makefile
+> @@ -113,7 +113,8 @@ ifeq ($(CONFIG_X86_32),y)
+>
+>         ifeq ($(CONFIG_STACKPROTECTOR),y)
+>                 ifeq ($(CONFIG_SMP),y)
+> -                       KBUILD_CFLAGS += -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard
+> +                       KBUILD_CFLAGS += -mstack-protector-guard-reg=fs \
+> +                                        -mstack-protector-guard-symbol=__ref_stack_chk_guard
+>                 else
+>                         KBUILD_CFLAGS += -mstack-protector-guard=global
+>                 endif
+> diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+> index f4419afc7147d..23f9efbe9d705 100644
+> --- a/arch/x86/entry/entry.S
+> +++ b/arch/x86/entry/entry.S
+> @@ -48,3 +48,18 @@ EXPORT_SYMBOL_GPL(mds_verw_sel);
+>
+>  .popsection
+>
+> +#ifndef CONFIG_X86_64
+> +/*
+> + * Clang's implementation of TLS stack cookies requires the variable in
+> + * question to be a TLS variable. If the variable happens to be defined as an
+> + * ordinary variable with external linkage in the same compilation unit (which
+> + * amounts to the whole of vmlinux with LTO enabled), Clang will drop the
+> + * segment register prefix from the references, resulting in broken code. Work
+> + * around this by avoiding the symbol used in -mstack-protector-guard-symbol=
+> + * entirely in the C code, and use an alias emitted by the linker script
+> + * instead.
+> + */
+> +#ifdef CONFIG_STACKPROTECTOR
+> +EXPORT_SYMBOL(__ref_stack_chk_guard);
+> +#endif
+> +#endif
+> diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
+> index 5cdccea455544..390b13db24b81 100644
+> --- a/arch/x86/include/asm/asm-prototypes.h
+> +++ b/arch/x86/include/asm/asm-prototypes.h
+> @@ -18,3 +18,6 @@
+>  extern void cmpxchg8b_emu(void);
+>  #endif
+>
+> +#if defined(__GENKSYMS__) && defined(CONFIG_STACKPROTECTOR)
+> +extern unsigned long __ref_stack_chk_guard;
+> +#endif
+> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+> index 7f922a359ccc5..b4e999048e9a4 100644
+> --- a/arch/x86/kernel/cpu/common.c
+> +++ b/arch/x86/kernel/cpu/common.c
+> @@ -2158,8 +2158,10 @@ EXPORT_PER_CPU_SYMBOL(cpu_current_top_of_stack);
+>
+>  #ifdef CONFIG_STACKPROTECTOR
+>  DEFINE_PER_CPU(unsigned long, __stack_chk_guard);
+> +#ifndef CONFIG_SMP
+>  EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
+>  #endif
+> +#endif
+>
+>  #endif /* CONFIG_X86_64 */
+>
+> diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+> index 78ccb5ec3c0e7..c1e776ed71b06 100644
+> --- a/arch/x86/kernel/vmlinux.lds.S
+> +++ b/arch/x86/kernel/vmlinux.lds.S
+> @@ -486,6 +486,9 @@ SECTIONS
+>         ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
+>  }
+>
+> +/* needed for Clang - see arch/x86/entry/entry.S */
+> +PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
+> +
+>  /*
+>   * The ASSERT() sink to . is intentional, for binutils 2.14 compatibility:
+>   */
+> --
+> 2.43.0
+>
+>
+>
 
