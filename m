@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-103550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619A29EF79C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 224B79EF978
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 218AC287395
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D774B28816E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56722236F0;
-	Thu, 12 Dec 2024 17:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87589216E2D;
+	Thu, 12 Dec 2024 17:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3DpfODW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znQ5eWXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6366B22333D;
-	Thu, 12 Dec 2024 17:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4273B2080D9;
+	Thu, 12 Dec 2024 17:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024906; cv=none; b=fUIpdAJi59sa+pAbJzIA5YXzOExM5Eht3f2Z6k08Q5X1NJ6GYErcMkm2POWX/vZFN/yMCB/hYum2ckMXGJyGuGxItsKHtJSDi6ZQeNTluA3eZFH1BPqST2YKtfwwKOlWoXxFqa3ZCesjwaHcP4/jo21jMu6CvfTC9qjz5x1+4Yo=
+	t=1734025863; cv=none; b=d98WewbChS1oipqLaZBoEvDEdFY5KXZodW16Zc7tBZvdOENgJIVZV6qiCiMZsy2mnqfmssNNDkY1jxbnL4Q3KJo4ztIyLK1yMrsSvROEk5b9IQvdOXzIMHaz9sGIDgEmk+GWQa2Uv7dHvjeLp0tCxh+PDSlH0GmhM/x3t0Gnxvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024906; c=relaxed/simple;
-	bh=fz5IMC84DK+dcEP35jfxY8vBLno0juO6nwODlHXHLLw=;
+	s=arc-20240116; t=1734025863; c=relaxed/simple;
+	bh=ff0GypvfYURFDDZH57v8VLFghGzFJF4RP4JpYZkGCvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYwBiIX1nkq7t1Wbrc/0ap4tfNd5i2tyaPYA1Bp+iZmd6OvmYt9oXibL928cQrDxsoHp8F+E3f6rGUOgj6cjNTlDO1xQjy1rLegfqvjNx7vvqbzVoiq4zJ7E7lbfkAYaultuD75or5kXY1gIGwxbx5xCBS4rWBeRjOTjibIFI30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3DpfODW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92AAC4CED0;
-	Thu, 12 Dec 2024 17:35:05 +0000 (UTC)
+	 MIME-Version; b=XGVbcM1LyGKdFuHVhG9UXrbMecCfCJVZvQ1JDLVHipKkpthmt4TfgWUGdLnDtcAESJT3uwkd8LvKA6zE4+HqH5A3I/QwCeTqv8th/o0uJwcwuML7pynCQv5mrHm/e9b0RjXQBL8JwIDPqX99oxG4ko3xcOqCsi0sIXJHrBozcXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znQ5eWXc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F721C4CECE;
+	Thu, 12 Dec 2024 17:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024906;
-	bh=fz5IMC84DK+dcEP35jfxY8vBLno0juO6nwODlHXHLLw=;
+	s=korg; t=1734025862;
+	bh=ff0GypvfYURFDDZH57v8VLFghGzFJF4RP4JpYZkGCvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m3DpfODWNjRx8G9SDm83czqfhmNCsY3RpUfD8DqAP6OzMIv65NAk/JiW2nwJeyxFY
-	 MmbfZ/9aXjAjI0MQ2jjzuueSdjq5UpwvDRwIA55f3YMrdlQeeVQ4+0TrTzsF5vPXZ6
-	 kemlXVEK1LxMKwFlnB+vlTQhubN4icUYzS+Mvw4c=
+	b=znQ5eWXcbFLYVbS7Cvb5aoEtfPqcDU327HKqrKusXVnNtY+VcZQy9IV3t2Gv6Caci
+	 xHmeyjD0Hbiz2dXPCv2RtRZJb/dLC3X+QLpEAGMrObCzf5bF2Ae91nvcZ6gbxl2KGU
+	 IC0EZjVsmyoH/ghcpZGRMBlOIkNS439nGhRGfB8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>
-Subject: [PATCH 5.10 452/459] Revert "drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()"
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 272/321] net: ethernet: fs_enet: Use %pa to format resource_size_t
 Date: Thu, 12 Dec 2024 16:03:10 +0100
-Message-ID: <20241212144311.626966237@linuxfoundation.org>
+Message-ID: <20241212144240.723527666@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,36 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Simon Horman <horms@kernel.org>
 
-This reverts commit 17f5f18085acb5e9d8d13d84a4e12bb3aff2bd64.
+[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
 
-The origin mainline patch fix a buffer overflow issue in
-amdgpu_debugfs_gprwave_read(), but it has not been introduced in kernel
-6.1 and older kernels. This patch add a check in a wrong function in the
-same file.
+The correct format string for resource_size_t is %pa which
+acts on the address of the variable to be formatted [1].
 
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+
+Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+
+Flagged by gcc-14 as:
+
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
+drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
+  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
+      |                                             ~^   ~~~~~~~~~
+      |                                              |      |
+      |                                              |      resource_size_t {aka long long unsigned int}
+      |                                              unsigned int
+      |                                             %llx
+
+No functional change intended.
+Compile tested only.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c |    2 +-
+ drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -396,7 +396,7 @@ static ssize_t amdgpu_debugfs_regs_pcie_
- 	ssize_t result = 0;
- 	int r;
+diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+index 21de56345503f..f743112730194 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
++++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
+@@ -126,7 +126,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
+ 	 * we get is an int, and the odds of multiple bitbang mdio buses
+ 	 * is low enough that it's not worth going too crazy.
+ 	 */
+-	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
++	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
  
--	if (size > 4096 || size & 0x3 || *pos & 0x3)
-+	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
- 
- 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
+ 	data = of_get_property(np, "fsl,mdio-pin", &len);
+ 	if (!data || len != 4)
+-- 
+2.43.0
+
 
 
 
