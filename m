@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-101758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703D29EEE7D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D828C9EF246
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48EAB16CAC6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A09B290827
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A2F222D6F;
-	Thu, 12 Dec 2024 15:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0549223DEA6;
+	Thu, 12 Dec 2024 16:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTrfYqFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9MKP0Vs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6AB217F46;
-	Thu, 12 Dec 2024 15:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B00223C5C;
+	Thu, 12 Dec 2024 16:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018697; cv=none; b=uDfoEhTRWX1GN1JSIppNJ9Sfnq7IHsWyBT83GtE72+PRTJeAhUlhYr+IkmIhVUByMfJBl4qyiA1F9ykdXwIbLE4qZa2sJnkiC9lmav4yH8eeN3nsqNzY/CarKJuxOQzcnZThWBSn7CC13Gx2M7vtIUZi9BAvKsc/ru2WZND73rQ=
+	t=1734021407; cv=none; b=bD5vynMlRt+PYj8VZ1OcSsaqKEH8PYb5+5rGN4LGjLmh/Ph/0tIMacqLjCgeDu4l9PLZJMo3YLJtlGcwmyQtau0D4QCcXV6EnN6QXvJWXHdFyLjSNnT+89mJpAZLx6qLNg3zRUasL9gncs1iGqblWV2+w1lW+ALU4M3eQH4MPmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018697; c=relaxed/simple;
-	bh=3A1PFGGOkdvwReNfV8Qd1igdeYbtXRjhACi2BlUg6iw=;
+	s=arc-20240116; t=1734021407; c=relaxed/simple;
+	bh=CsZGV4bH1w19SIIifY4uEQ1ShfBfp5V1nswZ7Ve3O1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geJ5J49QokvLYdHynfLiIb8manaoe4gTvKnRjPBNRFdQ8HpmkW3T9yiSUmHmNiOkZQD4xtGf1izPJxP4ropg33lJBJk7maCCUfydBfRX+rDNb/3PBT1kSwJ6m8UMglLhf86uIAq5EFNKQKmxQ7PFc4GGNNfqxwj4uA+yMBaw5sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTrfYqFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A054CC4CED0;
-	Thu, 12 Dec 2024 15:51:36 +0000 (UTC)
+	 MIME-Version; b=OsmSTmOeucd+dgV6TpxKk+H320IppsyaQ352enFFbXkWtzv/b5KTVTPHAayITCzo+8/yqHkYjhI9Agpr0Hcf52Q5cqvjRgen/KBQ0ALolsvUrGwybJEjgNulcwnPqIC6prMhz0k8Qbexigx29xHXHJYq28OJ5T2KaGHVIyGlEbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9MKP0Vs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E06C4CECE;
+	Thu, 12 Dec 2024 16:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018697;
-	bh=3A1PFGGOkdvwReNfV8Qd1igdeYbtXRjhACi2BlUg6iw=;
+	s=korg; t=1734021407;
+	bh=CsZGV4bH1w19SIIifY4uEQ1ShfBfp5V1nswZ7Ve3O1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mTrfYqFItiYnoPEpLjvyOZjJlDq4cJsdb7lVZVs49sIYH88xORnjoBnCiUJnHHryH
-	 z6HKYfdLs+d+KUcth1Dtd++gpuR1HwMyUvTAZN5e+01Prt+ncuABtO7CQds8ErSVLy
-	 ptlTd0Fb72epEZtT/mOAwRJSNvlRN+SlAhSPzawA=
+	b=k9MKP0VsJHkDts2ciEZ/BaHEYjs8/nkxPfcAuBJdnEAMnuJwbM9yGu+eO8i6NchrL
+	 WqOO5Y7kvQzKOy8Ty7zc4ADXkh23D5DK9ObhYSdPxSsAFpxA9fv3OZg662WNr+Zgn6
+	 K4ZWjNRUn5W1geEupBgZ5VTuEXBvpA2MB8aZu5s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 356/356] i3c: master: svc: fix possible assignment of the same address to two devices
+	Jared Kangas <jkangas@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 730/772] kasan: make report_lock a raw spinlock
 Date: Thu, 12 Dec 2024 16:01:15 +0100
-Message-ID: <20241212144258.632742181@linuxfoundation.org>
+Message-ID: <20241212144420.068931417@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +67,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jared Kangas <jkangas@redhat.com>
 
-commit 3b2ac810d86eb96e882db80a3320a3848b133208 upstream.
+[ Upstream commit e30a0361b8515d424c73c67de1a43e45a13b8ba2 ]
 
-svc_i3c_master_do_daa() {
-    ...
-    for (i = 0; i < dev_nb; i++) {
-        ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
-        if (ret)
-            goto rpm_out;
-    }
-}
+If PREEMPT_RT is enabled, report_lock is a sleeping spinlock and must not
+be locked when IRQs are disabled.  However, KASAN reports may be triggered
+in such contexts.  For example:
 
-If two devices (A and B) are detected in DAA and address 0xa is assigned to
-device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
-for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
-registered on the bus. The I3C stack might still consider 0xb a free
-address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device A,
-causing both devices A and B to use the same address 0xb, violating the I3C
-specification.
+        char *s = kzalloc(1, GFP_KERNEL);
+        kfree(s);
+        local_irq_disable();
+        char c = *s;  /* KASAN report here leads to spin_lock() */
+        local_irq_enable();
 
-The return value for i3c_master_add_i3c_dev_locked() should not be checked
-because subsequent steps will scan the entire I3C bus, independent of
-whether i3c_master_add_i3c_dev_locked() returns success.
+Make report_spinlock a raw spinlock to prevent rescheduling when
+PREEMPT_RT is enabled.
 
-If device A registration fails, there is still a chance to register device
-B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
-retrieving device information.
-
-Cc: stable@kernel.org
-Fixes: 317bacf960a4 ("i3c: master: add enable(disable) hot join in sys entry")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241002-svc-i3c-hj-v6-6-7e6e1d3569ae@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20241119210234.1602529-1-jkangas@redhat.com
+Fixes: 342a93247e08 ("locking/spinlock: Provide RT variant header: <linux/spinlock_rt.h>")
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ mm/kasan/report.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1018,12 +1018,27 @@ static int svc_i3c_master_do_daa(struct
- 		goto rpm_out;
- 	}
+diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+index 821cd12e8c8a7..6ad986c267b5e 100644
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -173,7 +173,7 @@ static void update_kunit_status(bool sync)
+ static void update_kunit_status(bool sync) { }
+ #endif
  
--	/* Register all devices who participated to the core */
--	for (i = 0; i < dev_nb; i++) {
--		ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
--		if (ret)
--			goto rpm_out;
--	}
-+	/*
-+	 * Register all devices who participated to the core
-+	 *
-+	 * If two devices (A and B) are detected in DAA and address 0xa is assigned to
-+	 * device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
-+	 * for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
-+	 * registered on the bus. The I3C stack might still consider 0xb a free
-+	 * address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device A,
-+	 * causing both devices A and B to use the same address 0xb, violating the I3C
-+	 * specification.
-+	 *
-+	 * The return value for i3c_master_add_i3c_dev_locked() should not be checked
-+	 * because subsequent steps will scan the entire I3C bus, independent of
-+	 * whether i3c_master_add_i3c_dev_locked() returns success.
-+	 *
-+	 * If device A registration fails, there is still a chance to register device
-+	 * B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
-+	 * retrieving device information.
-+	 */
-+	for (i = 0; i < dev_nb; i++)
-+		i3c_master_add_i3c_dev_locked(m, addrs[i]);
+-static DEFINE_SPINLOCK(report_lock);
++static DEFINE_RAW_SPINLOCK(report_lock);
  
- 	/* Configure IBI auto-rules */
- 	ret = svc_i3c_update_ibirules(master);
+ static void start_report(unsigned long *flags, bool sync)
+ {
+@@ -185,7 +185,7 @@ static void start_report(unsigned long *flags, bool sync)
+ 	lockdep_off();
+ 	/* Make sure we don't end up in loop. */
+ 	report_suppress_start();
+-	spin_lock_irqsave(&report_lock, *flags);
++	raw_spin_lock_irqsave(&report_lock, *flags);
+ 	pr_err("==================================================================\n");
+ }
+ 
+@@ -195,7 +195,7 @@ static void end_report(unsigned long *flags, void *addr)
+ 		trace_error_report_end(ERROR_DETECTOR_KASAN,
+ 				       (unsigned long)addr);
+ 	pr_err("==================================================================\n");
+-	spin_unlock_irqrestore(&report_lock, *flags);
++	raw_spin_unlock_irqrestore(&report_lock, *flags);
+ 	if (!test_bit(KASAN_BIT_MULTI_SHOT, &kasan_flags))
+ 		check_panic_on_warn("KASAN");
+ 	if (kasan_arg_fault == KASAN_ARG_FAULT_PANIC)
+-- 
+2.43.0
+
 
 
 
