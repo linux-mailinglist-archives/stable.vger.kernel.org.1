@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-101096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2F79EEAA4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B558B9EEC20
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E346D1886788
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76CF42848B2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33944216E29;
-	Thu, 12 Dec 2024 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B693217F29;
+	Thu, 12 Dec 2024 15:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/VyiUhy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neYDFP2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC13121504F;
-	Thu, 12 Dec 2024 15:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093E32135C1;
+	Thu, 12 Dec 2024 15:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016345; cv=none; b=abZ8MfAMG0xu+1UG089Rx5PrcQtQCYd1wRwT2CkxcXYRM+D7QiqNu6bHfirfvruf+o5BLJatoTBam2V8VqzT/Y38MvnNDSxq+2L2eD2BzzQ2pQbebtGQ0SJwToMArXSjEUD7zdDMJQYkerxWmWRCcJfI8dP6wrY/eXYXnBbWVIA=
+	t=1734017479; cv=none; b=hAY1FLY2YHqK96qomrbMX5lMfsAwpQZtq930YV8k2tLkA5mRjyl4c2pqh4UkHAS/OO6nUd5zf44XC4TIeTZKNxlW6UoJb/zxr05l7QgRUwzpqsKzEl4l0qRNhX8CiKfZWiWpt/5NroCihm1ux0Rus+ro8a6p1YyxR7G+XOA/Alg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016345; c=relaxed/simple;
-	bh=9KMvNZLpUOnEb1L7qM0Ur3nbPKbVntKMsJpnQID33EQ=;
+	s=arc-20240116; t=1734017479; c=relaxed/simple;
+	bh=+HCKjpkNo3YnVoFbMnMHbU9i+PB18ZfQfUKggocindU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxPzY7EdCrYhuxuuCpEmPKxAzx5gKIhjZs49aFhsW7yWDu9wTKbhuwlwhDDyhahwO5pVqb+5YSN6RF9A3mQU0Bl18AEvdl+8SxIgoo7zOs+EiXRoq+7DE7DNMzhThXvTOjUCSoy/TWKiZOpsC3B4rx1D8CKEdlkcApnpArO7aLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/VyiUhy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30992C4CEE1;
-	Thu, 12 Dec 2024 15:12:25 +0000 (UTC)
+	 MIME-Version; b=bI2PtCcK7B0YyGogF96LxoQUOgfv6KSAaOflwEKLX0MBi2UENVhcOybCwB/ZKkQL14kmnkxycI86W+Ct3Ipr0mBJPuOl1ICR/VjWZhG+qGdXFiCYZwmDZ/OHK+B+H2FlqxxFnAgi0Vuv7APJNtt3riwnIgcT9u0xAg57ofZVhPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neYDFP2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37005C4CECE;
+	Thu, 12 Dec 2024 15:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016345;
-	bh=9KMvNZLpUOnEb1L7qM0Ur3nbPKbVntKMsJpnQID33EQ=;
+	s=korg; t=1734017478;
+	bh=+HCKjpkNo3YnVoFbMnMHbU9i+PB18ZfQfUKggocindU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/VyiUhyKVSNXezW180Y7U1T6DaHSBJhp0ikqtdmO+SXzqpxKUDqxde176WV+Imf1
-	 iJQIsTcFsoflhQqHWoWPaWCTZYQqpFKwtjloGzLgMALYdMJQgcspWQBKOmEOq8jyhG
-	 822FyGhTdgbhJHI9Le+rL1G9KsaA9OaLERixQhkc=
+	b=neYDFP2eRzLh6sY21Bbd6KcMqfRf4BH/iszxblueOV/UyhQgkDXOKJeSF+tgxx9BV
+	 TDUe3SbmtHByOVk7VyRE1QoB+qAPb2OSC59G47kmNw23CHy2UpbUzH9i4khrM0W0v0
+	 8gmE19HIx0zrQLPhUADn/dA9eDNzBa51Do0IYT7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Imre Deak <imre.deak@intel.com>
-Subject: [PATCH 6.12 173/466] drm/dp_mst: Fix resetting msg rx state after topology removal
-Date: Thu, 12 Dec 2024 15:55:42 +0100
-Message-ID: <20241212144313.635214754@linuxfoundation.org>
+	syzbot+671e2853f9851d039551@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	WingMan Kwok <w-kwok2@ti.com>,
+	Murali Karicheri <m-karicheri2@ti.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	George McCollister <george.mccollister@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 024/356] net: hsr: avoid potential out-of-bound access in fill_frame_info()
+Date: Thu, 12 Dec 2024 15:55:43 +0100
+Message-ID: <20241212144245.585618400@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +68,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit a6fa67d26de385c3c7a23c1e109a0e23bfda4ec7 upstream.
+[ Upstream commit b9653d19e556c6afd035602927a93d100a0d7644 ]
 
-If the MST topology is removed during the reception of an MST down reply
-or MST up request sideband message, the
-drm_dp_mst_topology_mgr::up_req_recv/down_rep_recv states could be reset
-from one thread via drm_dp_mst_topology_mgr_set_mst(false), racing with
-the reading/parsing of the message from another thread via
-drm_dp_mst_handle_down_rep() or drm_dp_mst_handle_up_req(). The race is
-possible since the reader/parser doesn't hold any lock while accessing
-the reception state. This in turn can lead to a memory corruption in the
-reader/parser as described by commit bd2fccac61b4 ("drm/dp_mst: Fix MST
-sideband message body length check").
+syzbot is able to feed a packet with 14 bytes, pretending
+it is a vlan one.
 
-Fix the above by resetting the message reception state if needed before
-reading/parsing a message. Another solution would be to hold the
-drm_dp_mst_topology_mgr::lock for the whole duration of the message
-reception/parsing in drm_dp_mst_handle_down_rep() and
-drm_dp_mst_handle_up_req(), however this would require a bigger change.
-Since the fix is also needed for stable, opting for the simpler solution
-in this patch.
+Since fill_frame_info() is relying on skb->mac_len already,
+extend the check to cover this case.
 
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: <stable@vger.kernel.org>
-Fixes: 1d082618bbf3 ("drm/display/dp_mst: Fix down/up message handling after sink disconnect")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13056
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-2-imre.deak@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KMSAN: uninit-value in fill_frame_info net/hsr/hsr_forward.c:709 [inline]
+ BUG: KMSAN: uninit-value in hsr_forward_skb+0x9ee/0x3b10 net/hsr/hsr_forward.c:724
+  fill_frame_info net/hsr/hsr_forward.c:709 [inline]
+  hsr_forward_skb+0x9ee/0x3b10 net/hsr/hsr_forward.c:724
+  hsr_dev_xmit+0x2f0/0x350 net/hsr/hsr_device.c:235
+  __netdev_start_xmit include/linux/netdevice.h:5002 [inline]
+  netdev_start_xmit include/linux/netdevice.h:5011 [inline]
+  xmit_one net/core/dev.c:3590 [inline]
+  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3606
+  __dev_queue_xmit+0x366a/0x57d0 net/core/dev.c:4434
+  dev_queue_xmit include/linux/netdevice.h:3168 [inline]
+  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
+  packet_snd net/packet/af_packet.c:3146 [inline]
+  packet_sendmsg+0x91ae/0xa6f0 net/packet/af_packet.c:3178
+  sock_sendmsg_nosec net/socket.c:711 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:726
+  __sys_sendto+0x594/0x750 net/socket.c:2197
+  __do_sys_sendto net/socket.c:2204 [inline]
+  __se_sys_sendto net/socket.c:2200 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2200
+  x64_sys_call+0x346a/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:4091 [inline]
+  slab_alloc_node mm/slub.c:4134 [inline]
+  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4186
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:587
+  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:678
+  alloc_skb include/linux/skbuff.h:1323 [inline]
+  alloc_skb_with_frags+0xc8/0xd00 net/core/skbuff.c:6612
+  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2881
+  packet_alloc_skb net/packet/af_packet.c:2995 [inline]
+  packet_snd net/packet/af_packet.c:3089 [inline]
+  packet_sendmsg+0x74c6/0xa6f0 net/packet/af_packet.c:3178
+  sock_sendmsg_nosec net/socket.c:711 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:726
+  __sys_sendto+0x594/0x750 net/socket.c:2197
+  __do_sys_sendto net/socket.c:2204 [inline]
+  __se_sys_sendto net/socket.c:2200 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2200
+  x64_sys_call+0x346a/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Reported-by: syzbot+671e2853f9851d039551@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6745dc7f.050a0220.21d33d.0018.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: WingMan Kwok <w-kwok2@ti.com>
+Cc: Murali Karicheri <m-karicheri2@ti.com>
+Cc: MD Danish Anwar <danishanwar@ti.com>
+Cc: Jiri Pirko <jiri@nvidia.com>
+Cc: George McCollister <george.mccollister@gmail.com>
+Link: https://patch.msgid.link/20241126144344.4177332-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c |   21 +++++++++++++++++++--
- include/drm/display/drm_dp_mst_helper.h       |    7 +++++++
- 2 files changed, 26 insertions(+), 2 deletions(-)
+ net/hsr/hsr_forward.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3700,8 +3700,7 @@ int drm_dp_mst_topology_mgr_set_mst(stru
- 		ret = 0;
- 		mgr->payload_id_table_cleared = false;
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index 0323ab5023c69..2790f3964d6bd 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -588,6 +588,8 @@ static int fill_frame_info(struct hsr_frame_info *frame,
+ 		frame->is_vlan = true;
  
--		memset(&mgr->down_rep_recv, 0, sizeof(mgr->down_rep_recv));
--		memset(&mgr->up_req_recv, 0, sizeof(mgr->up_req_recv));
-+		mgr->reset_rx_state = true;
- 	}
- 
- out_unlock:
-@@ -3859,6 +3858,11 @@ out_fail:
- }
- EXPORT_SYMBOL(drm_dp_mst_topology_mgr_resume);
- 
-+static void reset_msg_rx_state(struct drm_dp_sideband_msg_rx *msg)
-+{
-+	memset(msg, 0, sizeof(*msg));
-+}
-+
- static bool
- drm_dp_get_one_sb_msg(struct drm_dp_mst_topology_mgr *mgr, bool up,
- 		      struct drm_dp_mst_branch **mstb)
-@@ -4172,6 +4176,17 @@ out:
- 	return 0;
- }
- 
-+static void update_msg_rx_state(struct drm_dp_mst_topology_mgr *mgr)
-+{
-+	mutex_lock(&mgr->lock);
-+	if (mgr->reset_rx_state) {
-+		mgr->reset_rx_state = false;
-+		reset_msg_rx_state(&mgr->down_rep_recv);
-+		reset_msg_rx_state(&mgr->up_req_recv);
-+	}
-+	mutex_unlock(&mgr->lock);
-+}
-+
- /**
-  * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
-  * @mgr: manager to notify irq for.
-@@ -4206,6 +4221,8 @@ int drm_dp_mst_hpd_irq_handle_event(stru
- 		*handled = true;
- 	}
- 
-+	update_msg_rx_state(mgr);
-+
- 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
- 		ret = drm_dp_mst_handle_down_rep(mgr);
- 		*handled = true;
---- a/include/drm/display/drm_dp_mst_helper.h
-+++ b/include/drm/display/drm_dp_mst_helper.h
-@@ -700,6 +700,13 @@ struct drm_dp_mst_topology_mgr {
- 	bool payload_id_table_cleared : 1;
- 
- 	/**
-+	 * @reset_rx_state: The down request's reply and up request message
-+	 * receiver state must be reset, after the topology manager got
-+	 * removed. Protected by @lock.
-+	 */
-+	bool reset_rx_state : 1;
-+
-+	/**
- 	 * @payload_count: The number of currently active payloads in hardware. This value is only
- 	 * intended to be used internally by MST helpers for payload tracking, and is only safe to
- 	 * read/write from the atomic commit (not check) context.
+ 	if (frame->is_vlan) {
++		if (skb->mac_len < offsetofend(struct hsr_vlan_ethhdr, vlanhdr))
++			return -EINVAL;
+ 		vlan_hdr = (struct hsr_vlan_ethhdr *)ethhdr;
+ 		proto = vlan_hdr->vlanhdr.h_vlan_encapsulated_proto;
+ 		/* FIXME: */
+-- 
+2.43.0
+
 
 
 
