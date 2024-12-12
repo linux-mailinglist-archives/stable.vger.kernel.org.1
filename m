@@ -1,162 +1,173 @@
-Return-Path: <stable+bounces-103912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C2E9EFAB9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:21:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FA29EFACB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:23:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E20228DCDD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6FD1896960
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222D920ADD9;
-	Thu, 12 Dec 2024 18:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23407223C59;
+	Thu, 12 Dec 2024 18:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Lo1ganxf"
 X-Original-To: stable@vger.kernel.org
-Received: from granite.fifsource.com (granite.fifsource.com [173.255.216.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062912063F8
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 18:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.255.216.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEE129A9;
+	Thu, 12 Dec 2024 18:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734027690; cv=none; b=oB+yZOqr59YN+xXzNFKTrFrTDEux+6ysJp3z6z28Xtyez9vltRKb4zOfnhTfYFUn/xo7w4RxLhl85iMAzs4+5739LGlcy98bFpZaxar3IC0oXusEdn11z/QLKSFqBSb2OjJG+jb1V+95h5VJo3mlU/L+a4J9CmgW17VgUWKzVmw=
+	t=1734027351; cv=none; b=GOHV16TDd8TgmsmDIUM3nQAbUkTcUEHkivsIA/8KYGMwjiDRmRKGHty/KTkcQAV2ymbX7+qjWljozo37NrPrVdI01lm80D5+hZpV8ZTW1QgKB6/S1YfUfQl2CMZb3sYaE1BLb/+ZaQWkrnSPi87bynLMDyxcYS0chaBFORxnIjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734027690; c=relaxed/simple;
-	bh=NIkDmvBjolDoZEQipRon8YsqoPGSaBfwo7XhYHo8DyY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T5BibY6kBoJTJqqWXVO5abO00oKtsfn/0ml2i8FDvFwh0/yh0CrehCaIGWvlsW89Wr9m96BN+ecL+6HNAS4GDO4fVbpP3PysSKTRIPkOS/RuZaX+f5UaOT37d/Mfz1szILnpVZaUVrc24xav590Na6HdtJxW0Jqq3fMapJdBpXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fifi.org; spf=pass smtp.mailfrom=fifi.org; arc=none smtp.client-ip=173.255.216.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fifi.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fifi.org
-Received: from ceramic.fifi.org (107-142-44-66.lightspeed.sntcca.sbcglobal.net [107.142.44.66])
-	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-	(Client did not present a certificate)
-	by granite.fifsource.com (Postfix) with ESMTPSA id 80EF34076;
-	Thu, 12 Dec 2024 10:12:54 -0800 (PST)
-Message-ID: <4ab51fdc37c39bd077b4bcea281d301af4c3ef1a.camel@fifi.org>
-Subject: Re: [PATCH 6.12 162/466] Revert "readahead: properly shorten
- readahead when falling back to do_page_cache_ra()"
-From: Philippe Troin <phil@fifi.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Anders Blomdell <anders.blomdell@gmail.com>, 
- Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, Andrew
- Morton <akpm@linux-foundation.org>
-Date: Thu, 12 Dec 2024 10:12:54 -0800
-In-Reply-To: <20241212144313.202242815@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
-	 <20241212144313.202242815@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1734027351; c=relaxed/simple;
+	bh=NonqIIpR2rZqfuU/6o62PeGLSlzdLle31fGOi6fT5zg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hcfl/vYHRYWPbTPv2QsVfKy96uyJ0lOBC9jiIANAgIMkhFS+164LpypLvIxMVuBiHCnHZ4oWg5MYvV5QTl2rLDzxsjkXAmqG0DqpvUdfcsUPcb40JVKu2fzyVA19yhq5IEUD7HX9VAcG7v4Vi9EhLPlDRecBVnuIdsTY7cQNqSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Lo1ganxf; arc=none smtp.client-ip=80.12.242.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id Lnirtq7nnaH0QLnistCYQy; Thu, 12 Dec 2024 19:15:40 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1734027340;
+	bh=CTi2UNElzpzeGsPWf9yWpV5Gm1O9oqnXVg6317n4Hhw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=Lo1ganxfVOLwGMLUOoC/RZqOizklywFG503w2dQXXbYAJxhSoKv2gOmte9/A5UCVP
+	 OHXhKRuWV8St9+lAneGVDnzdN4JZpFdtwcFx5GnZyh2W+RzQWasRRrDRG5FHiGxewh
+	 5gCHYCxmimVmIuSMunzVj+JOp8aFC7ntBdieHqFyRz6HFu5ZUJ1Q8ysSl6vjILZFzk
+	 TlDlZwc16vHQGUTmTJsHQEWmHs5h4a/ZC2taawez3qwxPth8SEJ/eqLJr4sJ7IL2g/
+	 zsoVVvX6E/v+ysellVnGS+rIVzDcnHKJxIMqVT3lNQCq7K1FABuEWYZJ2VUvJO3wy2
+	 IrSrp1tGjKl4g==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Thu, 12 Dec 2024 19:15:40 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <e8564c63-0c2b-4327-8e39-767530b29b11@wanadoo.fr>
+Date: Thu, 12 Dec 2024 19:15:37 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] iio: light: as73211: fix channel handling in
+ only-color triggered buffer
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Christian Eggers <ceggers@arri.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-12-12 at 15:55 +0100, Greg Kroah-Hartman wrote:
-> 6.12-stable review patch.=C2=A0 If anyone has any objections, please let
-> me know.
->=20
-> ------------------
->=20
-> From: Jan Kara <jack@suse.cz>
->=20
-> commit a220d6b95b1ae12c7626283d7609f0a1438e6437 upstream.
->=20
-> This reverts commit 7c877586da3178974a8a94577b6045a48377ff25.
+Le 12/12/2024 à 18:56, Javier Carrasco a écrit :
+> The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
+> set (optimized path for color channel readings), and it must be shifted
+> instead of leaving an empty channel for the temperature when it is off.
+> 
+> Once the channel index is fixed, the uninitialized channel must be set
+> to zero to avoid pushing uninitialized data.
+> 
+> Add available_scan_masks for all channels and only-color channels to let
+> the IIO core demux and repack the enabled channels.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+> Tested-by: Christian Eggers <ceggers@arri.de>
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-Isn't that moot now with 0938b1614648d5fbd832449a5a8a1b51d985323d that
-in Linus's tree? It's not in 6.12 (yet?).
-It may be worth backporting 0938b1614 to the stable tree, but it's
-beyond my pay grade.
+...
 
-Phil.
+> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+> index be0068081ebb..4be2e349a068 100644
+> --- a/drivers/iio/light/as73211.c
+> +++ b/drivers/iio/light/as73211.c
+> @@ -177,6 +177,12 @@ struct as73211_data {
+>   	BIT(AS73211_SCAN_INDEX_TEMP) | \
+>   	AS73211_SCAN_MASK_COLOR)
+>   
+> +static const unsigned long as73211_scan_masks[] = {
+> +	AS73211_SCAN_MASK_ALL,
+> +	AS73211_SCAN_MASK_COLOR,
+> +	0,
+> +};
+> +
+>   static const struct iio_chan_spec as73211_channels[] = {
+>   	{
+>   		.type = IIO_TEMP,
+> @@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+>   
+>   		/* AS73211 starts reading at address 2 */
 
-https://lore.kernel.org/all/20241017062342.478973-1-kernel@pankajraghav.com=
-/T/#u
+Should this comment be updated?
 
-commit 0938b1614648d5fbd832449a5a8a1b51d985323d
-Author: Pankaj Raghav <p.raghav@samsung.com>
-Date:   Thu Oct 17 08:23:42 2024 +0200
+Or maybe moved close to "if (*indio_dev->active_scan_mask == 
+AS73211_SCAN_MASK_ALL)" below?
 
-    mm: don't set readahead flag on a folio when lookahead_size > nr_to_rea=
-d
-   =20
-    The readahead flag is set on a folio based on the lookahead_size and
-    nr_to_read.  For example, when the readahead happens from index to inde=
-x +
-    nr_to_read, then the readahead `mark` offset from index is set at
-    nr_to_read - lookahead_size.
-   =20
-    There are some scenarios where the lookahead_size > nr_to_read.  For
-    example, readahead window was created, but the file was truncated befor=
-e
-    the readahead starts.  do_page_cache_ra() will clamp the nr_to_read if =
-the
-    readahead window extends beyond EOF after truncation.  If this happens,
-    readahead flag should not be set on any folio on the current readahead
-    window.
-   =20
-    The current calculation for `mark` with mapping_min_order > 0 gives
-    incorrect results when lookahead_size > nr_to_read due to rounding up
-    operation:
-   =20
-    index =3D 128
-    nr_to_read =3D 16
-    lookahead_size =3D 28
-    mapping_min_order =3D 4 (16 pages)
-   =20
-    ra_folio_index =3D round_up(128 + 16 - 28, 16) =3D 128;
-    mark =3D 128 - 128 =3D 0; # offset from index to set RA flag
-   =20
-    In the above example, the lookahead_size is actually lying outside the
-    current readahead window.  Without this patch, RA flag will be set
-    incorrectly on the folio at index 128.  This can lead to marking the
-    readahead flag on the wrong folio, therefore, triggering a readahead wh=
-en
-    it is not necessary.
-   =20
-    Explicitly initialize `mark` to be ULONG_MAX and only calculate it when
-    lookahead_size is within the readahead window.
+>   		ret = i2c_master_recv(data->client,
+> -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
+> +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
+>   		if (ret < 0)
+>   			goto done;
+> +
+> +		/* Avoid pushing uninitialized data */
+> +		scan.chan[3] = 0;
+>   	}
+>   
+>   	if (data_result) {
+> @@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+>   		 * Saturate all channels (in case of overflows). Temperature channel
+>   		 * is not affected by overflows.
+>   		 */
+> -		scan.chan[1] = cpu_to_le16(U16_MAX);
+> -		scan.chan[2] = cpu_to_le16(U16_MAX);
+> -		scan.chan[3] = cpu_to_le16(U16_MAX);
+> +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
 
-diff --git a/mm/readahead.c b/mm/readahead.c
-index 3dc6c7a128dd..475d2940a1ed 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -206,9 +206,9 @@ void page_cache_ra_unbounded(struct readahead_control *=
-ractl,
-                unsigned long nr_to_read, unsigned long lookahead_size)
- {
-        struct address_space *mapping =3D ractl->mapping;
--       unsigned long ra_folio_index, index =3D readahead_index(ractl);
-+       unsigned long index =3D readahead_index(ractl);
-        gfp_t gfp_mask =3D readahead_gfp_mask(mapping);
--       unsigned long mark, i =3D 0;
-+       unsigned long mark =3D ULONG_MAX, i =3D 0;
-        unsigned int min_nrpages =3D mapping_min_folio_nrpages(mapping);
-=20
-        /*
-@@ -232,9 +232,14 @@ void page_cache_ra_unbounded(struct readahead_control =
-*ractl,
-         * index that only has lookahead or "async_region" to set the
-         * readahead flag.
-         */
--       ra_folio_index =3D round_up(readahead_index(ractl) + nr_to_read - l=
-ookahead_size,
--                                 min_nrpages);
--       mark =3D ra_folio_index - index;
-+       if (lookahead_size <=3D nr_to_read) {
-+               unsigned long ra_folio_index;
-+
-+               ra_folio_index =3D round_up(readahead_index(ractl) +
-+                                         nr_to_read - lookahead_size,
-+                                         min_nrpages);
-+               mark =3D ra_folio_index - index;
-+       }
-        nr_to_read +=3D readahead_index(ractl) - index;
-        ractl->_index =3D index;
+Should [0]...
+
+> +			scan.chan[1] = cpu_to_le16(U16_MAX);
+> +			scan.chan[2] = cpu_to_le16(U16_MAX);
+> +			scan.chan[3] = cpu_to_le16(U16_MAX);
+> +		} else {
+> +			scan.chan[0] = cpu_to_le16(U16_MAX);
+> +			scan.chan[1] = cpu_to_le16(U16_MAX);
+> +			scan.chan[2] = cpu_to_le16(U16_MAX);
+
+... and [3] be forced as-well?
+(just a blind guess)
+
+CJ
+
+> +		}
+>   	}
+>   
+>   	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+> @@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_client *client)
+>   	indio_dev->channels = data->spec_dev->channels;
+>   	indio_dev->num_channels = data->spec_dev->num_channels;
+>   	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->available_scan_masks = as73211_scan_masks;
+>   
+>   	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
+>   	if (ret < 0)
+> 
+> ---
+> base-commit: 91e71d606356e50f238d7a87aacdee4abc427f07
+> change-id: 20241123-iio_memset_scan_holes-a673833ef932
+> 
+> Best regards,
 
 
