@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DDE9EF1DD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27BAB9EEC68
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BA6C18945E6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD44A281D8F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D39235C36;
-	Thu, 12 Dec 2024 16:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B47D217F48;
+	Thu, 12 Dec 2024 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSW5SgVB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYYwfI1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538AF223E81;
-	Thu, 12 Dec 2024 16:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DFB4F218;
+	Thu, 12 Dec 2024 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020365; cv=none; b=Jnx3l0ewm5llEKLLq3ZuWrua0sGJULEAuCrIW/77XobMu6a4i4WKDKCaw2H1FXhLudalY8H1XOeLp5CsKfBMlAds8aE+N2HYFyNKWHByYpOP2t/PCH4yZMK5Tl0CeTaKMDH23LWjjZFV4RqEy/UgL2OePx4t2Pdrrnhd2h8JZ/I=
+	t=1734017658; cv=none; b=k5n+y2Uz2ljCqGJcM0RLZOuxLwafn2D0As6l1RymBRgvFT9aSISAdMNUNTXw7winMJFXIH0UcRBCPP7u6/X/Ik49AGrufRRsurfQRIv05fwbwUNf2DJejAsv10O4Tny/dZojHzafuSg1atwjpVQjjKC/TJ+2bjU0LMCs0NQD5CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020365; c=relaxed/simple;
-	bh=ex5dRL/V0Uid0vXFx3i+2pthC2MITxOAHn3mDCFNt04=;
+	s=arc-20240116; t=1734017658; c=relaxed/simple;
+	bh=JWKkrGywqFocVhK7AiOt+ybllWMiq8uyw3uJAZ74t90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBd0jiLcW7bnk2dB+J5jOrTOVIvLp5G8c7GW0EB8qJvtbFIsFvnEmKpxzYJzb10ia4vV1RNBs0jmezkVoxm3EAS3nvsgPae7fIDlCmCTW3weE9E86Ug61bB6GbypQZ8E7j+ZzzyB67EGrfJFFVY7zl4ysfHefE85VXJrs0hrvWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSW5SgVB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC39C4CECE;
-	Thu, 12 Dec 2024 16:19:24 +0000 (UTC)
+	 MIME-Version; b=MG7xomah28wYIbyHHLcXGWAV5jqJvCSPQyoz5QIsGjoQncBKIte1XT/X37fLVQuqynvG9YGaT79t1dg9O0JWQtDMhUln9qg4rhKcd2UpF6/lZEPKZOsYG1hb2ldi2McKPlV3m8DNNzc0M3bSyvhceO2hsty1hAQlwMcth1eszAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYYwfI1U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD21C4CECE;
+	Thu, 12 Dec 2024 15:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020365;
-	bh=ex5dRL/V0Uid0vXFx3i+2pthC2MITxOAHn3mDCFNt04=;
+	s=korg; t=1734017657;
+	bh=JWKkrGywqFocVhK7AiOt+ybllWMiq8uyw3uJAZ74t90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSW5SgVBqZErU+6ETKaao95wFojlUAr57QPC9KFo3pIXxCSREOxkW88Jpd8a7VfG1
-	 a+DKIDx4ckDfp2pcJEYfxQKGWiERreLH7O9WSCfHyqQ5vtr37k1Hj9//H5Xgc3fSCy
-	 wMpr2vIGi2kLoNrq90PMtl9ULFZmkd6gf7XBQ+w8=
+	b=eYYwfI1Uqut0Fb8ZPua2GpCPJ3rXzYVK3uyhF9nBR+gfx0+pWjhX/89sLdlhNAlNZ
+	 r3K3uLxG0+dCmi2enwitIwSKhZ8PoNzCD9OwqsOkUPvTtd75pVnh7uv7JySwGzAJJT
+	 WN3JH4tyk+ZpSursI4vVew/q1dlB/J1k9U6MenII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 448/772] sh: intc: Fix use-after-free bug in register_intc_controller()
-Date: Thu, 12 Dec 2024 15:56:33 +0100
-Message-ID: <20241212144408.434216922@linuxfoundation.org>
+Subject: [PATCH 6.6 075/356] soc: fsl: cpm1: qmc: Fix blank line and spaces
+Date: Thu, 12 Dec 2024 15:56:34 +0100
+Message-ID: <20241212144247.591135851@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 63e72e551942642c48456a4134975136cdcb9b3c ]
+[ Upstream commit f06ab938bcddcb3c3a0b458b03a827c701919c9e ]
 
-In the error handling for this function, d is freed without ever
-removing it from intc_list which would lead to a use after free.
-To fix this, let's only add it to the list after everything has
-succeeded.
+checkpatch.pl raises the following issues
+  CHECK: Please don't use multiple blank lines
+  CHECK: Alignment should match open parenthesis
 
-Fixes: 2dcec7a988a1 ("sh: intc: set_irq_wake() support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Fix them.
+
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20240808071132.149251-20-herve.codina@bootlin.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Stable-dep-of: cb3daa51db81 ("soc: fsl: cpm1: qmc: Set the ret error code on platform_get_irq() failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/sh/intc/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/fsl/qe/qmc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
-index ca4f4ca413f11..b19388b349be3 100644
---- a/drivers/sh/intc/core.c
-+++ b/drivers/sh/intc/core.c
-@@ -209,7 +209,6 @@ int __init register_intc_controller(struct intc_desc *desc)
- 		goto err0;
+diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+index 2312152a44b3e..f22d1d85d1021 100644
+--- a/drivers/soc/fsl/qe/qmc.c
++++ b/drivers/soc/fsl/qe/qmc.c
+@@ -253,7 +253,6 @@ static inline void qmc_setbits32(void __iomem *addr, u32 set)
+ 	qmc_write32(addr, qmc_read32(addr) | set);
+ }
  
- 	INIT_LIST_HEAD(&d->list);
--	list_add_tail(&d->list, &intc_list);
+-
+ int qmc_chan_get_info(struct qmc_chan *chan, struct qmc_chan_info *info)
+ {
+ 	struct tsa_serial_info tsa_info;
+@@ -1093,7 +1092,7 @@ static int qmc_setup_chan(struct qmc *qmc, struct qmc_chan *chan)
+ 		qmc_write32(chan->s_param + QMC_SPE_ZDSTATE, 0x00000080);
+ 		qmc_write16(chan->s_param + QMC_SPE_MFLR, 60);
+ 		qmc_write16(chan->s_param + QMC_SPE_CHAMR,
+-			QMC_SPE_CHAMR_MODE_HDLC | QMC_SPE_CHAMR_HDLC_IDLM);
++			    QMC_SPE_CHAMR_MODE_HDLC | QMC_SPE_CHAMR_HDLC_IDLM);
+ 	}
  
- 	raw_spin_lock_init(&d->lock);
- 	INIT_RADIX_TREE(&d->tree, GFP_ATOMIC);
-@@ -369,6 +368,7 @@ int __init register_intc_controller(struct intc_desc *desc)
+ 	/* Do not enable interrupts now. They will be enabled later */
+@@ -1286,7 +1285,6 @@ static int qmc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(qmc->scc_regs))
+ 		return PTR_ERR(qmc->scc_regs);
  
- 	d->skip_suspend = desc->skip_syscore_suspend;
+-
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "scc_pram");
+ 	if (!res)
+ 		return -EINVAL;
+@@ -1332,7 +1330,7 @@ static int qmc_probe(struct platform_device *pdev)
+ 	 */
+ 	qmc->bd_size = (nb_chans * (QMC_NB_TXBDS + QMC_NB_RXBDS)) * sizeof(cbd_t);
+ 	qmc->bd_table = dmam_alloc_coherent(qmc->dev, qmc->bd_size,
+-		&qmc->bd_dma_addr, GFP_KERNEL);
++					    &qmc->bd_dma_addr, GFP_KERNEL);
+ 	if (!qmc->bd_table) {
+ 		dev_err(qmc->dev, "Failed to allocate bd table\n");
+ 		ret = -ENOMEM;
+@@ -1345,7 +1343,7 @@ static int qmc_probe(struct platform_device *pdev)
+ 	/* Allocate the interrupt table */
+ 	qmc->int_size = QMC_NB_INTS * sizeof(u16);
+ 	qmc->int_table = dmam_alloc_coherent(qmc->dev, qmc->int_size,
+-		&qmc->int_dma_addr, GFP_KERNEL);
++					     &qmc->int_dma_addr, GFP_KERNEL);
+ 	if (!qmc->int_table) {
+ 		dev_err(qmc->dev, "Failed to allocate interrupt table\n");
+ 		ret = -ENOMEM;
+@@ -1393,7 +1391,7 @@ static int qmc_probe(struct platform_device *pdev)
  
-+	list_add_tail(&d->list, &intc_list);
- 	nr_intc_controllers++;
+ 	/* Enable interrupts */
+ 	qmc_write16(qmc->scc_regs + SCC_SCCM,
+-		SCC_SCCE_IQOV | SCC_SCCE_GINT | SCC_SCCE_GUN | SCC_SCCE_GOV);
++		    SCC_SCCE_IQOV | SCC_SCCE_GINT | SCC_SCCE_GUN | SCC_SCCE_GOV);
  
- 	return 0;
+ 	ret = qmc_finalize_chans(qmc);
+ 	if (ret < 0)
 -- 
 2.43.0
 
