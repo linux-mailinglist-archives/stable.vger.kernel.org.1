@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1509EF2C6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 627E79EF0D9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DB22287298
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 447CC170310
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205926F2FE;
-	Thu, 12 Dec 2024 16:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511B623ED76;
+	Thu, 12 Dec 2024 16:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCTJv2SB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZOHQzne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF9322912F;
-	Thu, 12 Dec 2024 16:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5AD22654D;
+	Thu, 12 Dec 2024 16:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021823; cv=none; b=AWqrbLhQHyGEzDBwd54crMg+JNGuN8kAQL6AECH4ZdNDCCu8tcl3mdyaYlRzCRutqzPH7gSx5PgoyoKd7AK/+enTxtJI1+Ds15bPNK6RkAFL8y5HkLU48rkfYbFQIR+5gVAkPbZXTMB1HxlbwUFnSDLRVBYYq5mpEOKd9aSSmag=
+	t=1734020009; cv=none; b=NfRIMd7QCQZzvbevqQZxbu+n20r+d1HAiBxV8838uyPVv66keXRNUo7tT9pr3kV7A+DWBMBrdvz+RldyPWNW2T7/PjOU+Nlyl1ucBdrvwcg3kaNuhGqnrOZWOwkpMScxa1V7iQ9qsg2W1wd5J4o8cTZkrSGo7hmivRk4TZSW3dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021823; c=relaxed/simple;
-	bh=Xz149ggTHoliDBnkrTEkSIjYhNGL+Y3OIGjJaInC2eo=;
+	s=arc-20240116; t=1734020009; c=relaxed/simple;
+	bh=M92+gLIDoGhWsnl4sZSpkZgODG8KQ+P0hczHSzuvsn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMTVSwZhMiEWYxS6mGQrIPI+JWXAcDQznj5do0MasG0ohBMdbWLOaOw36A8qJwuHqjX2L1XzEF5c85LXFxtH2JhSMP1rUa65R8g1fMIkhRozLz+DbZtZ/yP7RvFU2gaWJxvxaSKZWdN7hgIrqDrhGNEovj4AVZfG541QeCb7AuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCTJv2SB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147E2C4CECE;
-	Thu, 12 Dec 2024 16:43:42 +0000 (UTC)
+	 MIME-Version; b=fqcR0ZZCPVG7XyTHlFOlIRqAchNmXr8v0FRkIY4j9afLwODQSs89ehY/FitPHUVYnudq0lLzkJ1To6VFYdDJLH/d6jzQR7oeltfp2Lgtrl4zhCVn4AT4BOW0hyHNr/Xj1u+Ruo4/VYjvfNljGc9V17bV1APvp4G3b0ZhzWZnptg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZOHQzne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264CEC4CECE;
+	Thu, 12 Dec 2024 16:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021823;
-	bh=Xz149ggTHoliDBnkrTEkSIjYhNGL+Y3OIGjJaInC2eo=;
+	s=korg; t=1734020008;
+	bh=M92+gLIDoGhWsnl4sZSpkZgODG8KQ+P0hczHSzuvsn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCTJv2SBfBhsfdz8QFDkK/RDrhG2AnBtBsRXOGRM4UMUbRBzREKjgpIXMra4EXmap
-	 KwrXcIkoEQ7Md8bP32wCdZlBWdpfeZOBSV4ViUcEh+R8bg7Auf5bvZE9f5Y15L6GvW
-	 flZt6txjPlnoXpF0HAij5lpH0b3Z3zG7sSQhmHg8=
+	b=1ZOHQznedQ2zJ0Rv5szoaZ7B7rtIKTTcexXh7GToAun4AhMoY+IT4R5/nET7MOhhY
+	 b4MHOFiYpnfSiBxO5tt3tmzrcjulpc006hUo8KABNy6QEcQg+nFy+W2zNO1H9XeV8n
+	 +iBFgeTgUaFdF/ATUd6Mxd05F7DWs4z+MCaqkXsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nathan Chancellor <nathan@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 073/565] x86/stackprotector: Work around strict Clang TLS symbol requirements
-Date: Thu, 12 Dec 2024 15:54:28 +0100
-Message-ID: <20241212144314.376068717@linuxfoundation.org>
+Subject: [PATCH 6.1 324/772] ip6mr: fix tables suspicious RCU usage
+Date: Thu, 12 Dec 2024 15:54:29 +0100
+Message-ID: <20241212144403.290395036@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 577c134d311b9b94598d7a0c86be1f431f823003 ]
+[ Upstream commit f1553c9894b4dbeb10a2ab15ab1aa113b3b4047c ]
 
-GCC and Clang both implement stack protector support based on Thread Local
-Storage (TLS) variables, and this is used in the kernel to implement per-task
-stack cookies, by copying a task's stack cookie into a per-CPU variable every
-time it is scheduled in.
+Several places call ip6mr_get_table() with no RCU nor RTNL lock.
+Add RCU protection inside such helper and provide a lockless variant
+for the few callers that already acquired the relevant lock.
 
-Both now also implement -mstack-protector-guard-symbol=, which permits the TLS
-variable to be specified directly. This is useful because it will allow to
-move away from using a fixed offset of 40 bytes into the per-CPU area on
-x86_64, which requires a lot of special handling in the per-CPU code and the
-runtime relocation code.
+Note that some users additionally reference the table outside the RCU
+lock. That is actually safe as the table deletion can happen only
+after all table accesses are completed.
 
-However, while GCC is rather lax in its implementation of this command line
-option, Clang actually requires that the provided symbol name refers to a TLS
-variable (i.e., one declared with __thread), although it also permits the
-variable to be undeclared entirely, in which case it will use an implicit
-declaration of the right type.
-
-The upshot of this is that Clang will emit the correct references to the stack
-cookie variable in most cases, e.g.,
-
-  10d:       64 a1 00 00 00 00       mov    %fs:0x0,%eax
-                     10f: R_386_32   __stack_chk_guard
-
-However, if a non-TLS definition of the symbol in question is visible in the
-same compilation unit (which amounts to the whole of vmlinux if LTO is
-enabled), it will drop the per-CPU prefix and emit a load from a bogus
-address.
-
-Work around this by using a symbol name that never occurs in C code, and emit
-it as an alias in the linker script.
-
-Fixes: 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://github.com/ClangBuiltLinux/linux/issues/1854
-Link: https://lore.kernel.org/r/20241105155801.1779119-2-brgerst@gmail.com
+Fixes: e2d57766e674 ("net: Provide compat support for SIOCGETMIFCNT_IN6 and SIOCGETSGCNT_IN6.")
+Fixes: d7c31cbde4bc ("net: ip6mr: add RTM_GETROUTE netlink op")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Makefile                     |  3 ++-
- arch/x86/entry/entry.S                | 15 +++++++++++++++
- arch/x86/include/asm/asm-prototypes.h |  3 +++
- arch/x86/kernel/cpu/common.c          |  2 ++
- arch/x86/kernel/vmlinux.lds.S         |  3 +++
- 5 files changed, 25 insertions(+), 1 deletion(-)
+ net/ipv6/ip6mr.c | 38 +++++++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 9c09bbd390cec..f8a7d2a654347 100644
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -81,7 +81,8 @@ ifeq ($(CONFIG_X86_32),y)
- 
- 	ifeq ($(CONFIG_STACKPROTECTOR),y)
- 		ifeq ($(CONFIG_SMP),y)
--			KBUILD_CFLAGS += -mstack-protector-guard-reg=fs -mstack-protector-guard-symbol=__stack_chk_guard
-+			KBUILD_CFLAGS += -mstack-protector-guard-reg=fs \
-+					 -mstack-protector-guard-symbol=__ref_stack_chk_guard
- 		else
- 			KBUILD_CFLAGS += -mstack-protector-guard=global
- 		endif
-diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
-index f4419afc7147d..23f9efbe9d705 100644
---- a/arch/x86/entry/entry.S
-+++ b/arch/x86/entry/entry.S
-@@ -48,3 +48,18 @@ EXPORT_SYMBOL_GPL(mds_verw_sel);
- 
- .popsection
- 
-+#ifndef CONFIG_X86_64
-+/*
-+ * Clang's implementation of TLS stack cookies requires the variable in
-+ * question to be a TLS variable. If the variable happens to be defined as an
-+ * ordinary variable with external linkage in the same compilation unit (which
-+ * amounts to the whole of vmlinux with LTO enabled), Clang will drop the
-+ * segment register prefix from the references, resulting in broken code. Work
-+ * around this by avoiding the symbol used in -mstack-protector-guard-symbol=
-+ * entirely in the C code, and use an alias emitted by the linker script
-+ * instead.
-+ */
-+#ifdef CONFIG_STACKPROTECTOR
-+EXPORT_SYMBOL(__ref_stack_chk_guard);
-+#endif
-+#endif
-diff --git a/arch/x86/include/asm/asm-prototypes.h b/arch/x86/include/asm/asm-prototypes.h
-index 5cdccea455544..390b13db24b81 100644
---- a/arch/x86/include/asm/asm-prototypes.h
-+++ b/arch/x86/include/asm/asm-prototypes.h
-@@ -18,3 +18,6 @@
- extern void cmpxchg8b_emu(void);
- #endif
- 
-+#if defined(__GENKSYMS__) && defined(CONFIG_STACKPROTECTOR)
-+extern unsigned long __ref_stack_chk_guard;
-+#endif
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index f0cc4c616ceb3..5db433cfaaa78 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2000,8 +2000,10 @@ EXPORT_PER_CPU_SYMBOL(cpu_current_top_of_stack);
- 
- #ifdef CONFIG_STACKPROTECTOR
- DEFINE_PER_CPU(unsigned long, __stack_chk_guard);
-+#ifndef CONFIG_SMP
- EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
- #endif
-+#endif
- 
- #endif	/* CONFIG_X86_64 */
- 
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index 351c604de263a..ab36dacb4cc50 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -490,6 +490,9 @@ SECTIONS
- 	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index 27fb5479988af..138f6aee70afc 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -125,7 +125,7 @@ static struct mr_table *ip6mr_mr_table_iter(struct net *net,
+ 	return ret;
  }
  
-+/* needed for Clang - see arch/x86/entry/entry.S */
-+PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
+-static struct mr_table *ip6mr_get_table(struct net *net, u32 id)
++static struct mr_table *__ip6mr_get_table(struct net *net, u32 id)
+ {
+ 	struct mr_table *mrt;
+ 
+@@ -136,6 +136,16 @@ static struct mr_table *ip6mr_get_table(struct net *net, u32 id)
+ 	return NULL;
+ }
+ 
++static struct mr_table *ip6mr_get_table(struct net *net, u32 id)
++{
++	struct mr_table *mrt;
 +
- /*
-  * The ASSERT() sink to . is intentional, for binutils 2.14 compatibility:
-  */
++	rcu_read_lock();
++	mrt = __ip6mr_get_table(net, id);
++	rcu_read_unlock();
++	return mrt;
++}
++
+ static int ip6mr_fib_lookup(struct net *net, struct flowi6 *flp6,
+ 			    struct mr_table **mrt)
+ {
+@@ -177,7 +187,7 @@ static int ip6mr_rule_action(struct fib_rule *rule, struct flowi *flp,
+ 
+ 	arg->table = fib_rule_get_table(rule, arg);
+ 
+-	mrt = ip6mr_get_table(rule->fr_net, arg->table);
++	mrt = __ip6mr_get_table(rule->fr_net, arg->table);
+ 	if (!mrt)
+ 		return -EAGAIN;
+ 	res->mrt = mrt;
+@@ -304,6 +314,8 @@ static struct mr_table *ip6mr_get_table(struct net *net, u32 id)
+ 	return net->ipv6.mrt6;
+ }
+ 
++#define __ip6mr_get_table ip6mr_get_table
++
+ static int ip6mr_fib_lookup(struct net *net, struct flowi6 *flp6,
+ 			    struct mr_table **mrt)
+ {
+@@ -382,7 +394,7 @@ static struct mr_table *ip6mr_new_table(struct net *net, u32 id)
+ {
+ 	struct mr_table *mrt;
+ 
+-	mrt = ip6mr_get_table(net, id);
++	mrt = __ip6mr_get_table(net, id);
+ 	if (mrt)
+ 		return mrt;
+ 
+@@ -411,13 +423,15 @@ static void *ip6mr_vif_seq_start(struct seq_file *seq, loff_t *pos)
+ 	struct net *net = seq_file_net(seq);
+ 	struct mr_table *mrt;
+ 
+-	mrt = ip6mr_get_table(net, RT6_TABLE_DFLT);
+-	if (!mrt)
++	rcu_read_lock();
++	mrt = __ip6mr_get_table(net, RT6_TABLE_DFLT);
++	if (!mrt) {
++		rcu_read_unlock();
+ 		return ERR_PTR(-ENOENT);
++	}
+ 
+ 	iter->mrt = mrt;
+ 
+-	rcu_read_lock();
+ 	return mr_vif_seq_start(seq, pos);
+ }
+ 
+@@ -2288,11 +2302,13 @@ int ip6mr_get_route(struct net *net, struct sk_buff *skb, struct rtmsg *rtm,
+ 	struct mfc6_cache *cache;
+ 	struct rt6_info *rt = (struct rt6_info *)skb_dst(skb);
+ 
+-	mrt = ip6mr_get_table(net, RT6_TABLE_DFLT);
+-	if (!mrt)
++	rcu_read_lock();
++	mrt = __ip6mr_get_table(net, RT6_TABLE_DFLT);
++	if (!mrt) {
++		rcu_read_unlock();
+ 		return -ENOENT;
++	}
+ 
+-	rcu_read_lock();
+ 	cache = ip6mr_cache_find(mrt, &rt->rt6i_src.addr, &rt->rt6i_dst.addr);
+ 	if (!cache && skb->dev) {
+ 		int vif = ip6mr_find_vif(mrt, skb->dev);
+@@ -2573,7 +2589,7 @@ static int ip6mr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 		grp = nla_get_in6_addr(tb[RTA_DST]);
+ 	tableid = tb[RTA_TABLE] ? nla_get_u32(tb[RTA_TABLE]) : 0;
+ 
+-	mrt = ip6mr_get_table(net, tableid ?: RT_TABLE_DEFAULT);
++	mrt = __ip6mr_get_table(net, tableid ?: RT_TABLE_DEFAULT);
+ 	if (!mrt) {
+ 		NL_SET_ERR_MSG_MOD(extack, "MR table does not exist");
+ 		return -ENOENT;
+@@ -2618,7 +2634,7 @@ static int ip6mr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb)
+ 	if (filter.table_id) {
+ 		struct mr_table *mrt;
+ 
+-		mrt = ip6mr_get_table(sock_net(skb->sk), filter.table_id);
++		mrt = __ip6mr_get_table(sock_net(skb->sk), filter.table_id);
+ 		if (!mrt) {
+ 			if (rtnl_msg_family(cb->nlh) != RTNL_FAMILY_IP6MR)
+ 				return skb->len;
 -- 
 2.43.0
 
