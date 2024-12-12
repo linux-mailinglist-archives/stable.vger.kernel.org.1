@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F989EF3FE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A799EEBD4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA65228D351
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A3421670BA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D92B222D7D;
-	Thu, 12 Dec 2024 17:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D78320969B;
+	Thu, 12 Dec 2024 15:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3SYQMN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4DVAAbR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AFD53365;
-	Thu, 12 Dec 2024 17:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCE013792B;
+	Thu, 12 Dec 2024 15:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022940; cv=none; b=MEM3n0Tfb5r96jl00ktaWVF3ie0fOBPGKwkCx4rVUzsnU3DKlSvH7tn1SFCB0WyhmTBdIAeAbt6733GBYNURVv6o+mDY3XfAYYrCJTcmgOjATy5NxPa2BeqAigXrOC/QxMVo0IMzG4TtQROovDAV4MX6Gy+yUDUopdSaV+wcfxc=
+	t=1734017160; cv=none; b=mSsVP7xqLno0anDNrbDQ4xJ/PA/T65pzxtyguFLz1lguwehrEmUNueOZMpz4q1YgRlJX1wgE9XJjCYJnKa7ih/s76VOrkwwylmmURyJcAcJIAJIQvJo6M8yvysD2wXYHG/FkyxczWNPvylH7MnbCdLe55ovpekBSePx0s7+EwLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022940; c=relaxed/simple;
-	bh=kfyhCfGCD/KoQv/Cg+P4mPoCIDOTzVN5Gea6Mqs/XhM=;
+	s=arc-20240116; t=1734017160; c=relaxed/simple;
+	bh=2QJbjF+6ZdLkOgShIGvqqtzeTVZQHE8mTj1PnYA4bxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GG9PSXLv5FpG6h19Gc6u4m3ypiZjmzhSuusKQf8QrtLjijKaQwKLLlbnYGk3bxbBByyWDosTJfKiW5crjdtJVkngMWVZMvCXEt20toHoQqH57g1HE59caOP3nsCIX7mbNLA3ygcXIA0rquV+1AR+ITGu4ima11viHhkGncQMDSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3SYQMN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B40DC4CECE;
-	Thu, 12 Dec 2024 17:02:19 +0000 (UTC)
+	 MIME-Version; b=ha3JAmjqCCzA8GaqsNjSY6pgN4gkE/alfOf2Lxqak6ap85cj1Ej//YLpfhezNZAr2C5Rb6w9L8NdK+VTyyGGoZSdy9XRqze4cKBKrP92yI9FXH4Ts2bhEHA748m8lAZmrrN+d9qF1hgcO7qKMYquvxXZt6G+/vZDNNrI6nzLLNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4DVAAbR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129DFC4CECE;
+	Thu, 12 Dec 2024 15:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022940;
-	bh=kfyhCfGCD/KoQv/Cg+P4mPoCIDOTzVN5Gea6Mqs/XhM=;
+	s=korg; t=1734017160;
+	bh=2QJbjF+6ZdLkOgShIGvqqtzeTVZQHE8mTj1PnYA4bxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b3SYQMN0fZDskkvTkks+JD+5x8TXEZ3Tvn+cxD2SKo12pXXK8v/SQUI+3p8Z8wuu9
-	 UCKlrN5yTYBY6HvSN41c42F6WQRxC9TUabLGwKAVFO0rfnXspgfgceJ7HVLTQFYhnO
-	 s+C6OlcMsjcSmDn+GKGEmhv4WkTIlk6vg5YwT3/g=
+	b=u4DVAAbRybSQAErZKLE+rhKn9zdoz1p9/D3E9a5FYxtMcogHHT60iMGCFgK4Ui4Sx
+	 hIZXDQExIrcDCYo6Nz7MmBjF+ZnuTYWLnm2SzlAKytUebrpDrgj9AqIfc4K1XFX/cV
+	 O/+Fm8I2yV/QariBwm+vFI/axxENs+vlZEWFDRh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 374/565] sh: intc: Fix use-after-free bug in register_intc_controller()
+Subject: [PATCH 6.12 400/466] f2fs: print message if fscorrupted was found in f2fs_new_node_page()
 Date: Thu, 12 Dec 2024 15:59:29 +0100
-Message-ID: <20241212144326.409063057@linuxfoundation.org>
+Message-ID: <20241212144322.561872873@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 63e72e551942642c48456a4134975136cdcb9b3c ]
+[ Upstream commit 81520c684ca67aea6a589461a3caebb9b11dcc90 ]
 
-In the error handling for this function, d is freed without ever
-removing it from intc_list which would lead to a use after free.
-To fix this, let's only add it to the list after everything has
-succeeded.
+If fs corruption occurs in f2fs_new_node_page(), let's print
+more information about corrupted metadata into kernel log.
 
-Fixes: 2dcec7a988a1 ("sh: intc: set_irq_wake() support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Meanwhile, it updates to record ERROR_INCONSISTENT_NAT instead
+of ERROR_INVALID_BLKADDR if blkaddr in nat entry is not
+NULL_ADDR which means nat bitmap and nat entry is inconsistent.
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/sh/intc/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/node.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/sh/intc/core.c b/drivers/sh/intc/core.c
-index ca4f4ca413f11..b19388b349be3 100644
---- a/drivers/sh/intc/core.c
-+++ b/drivers/sh/intc/core.c
-@@ -209,7 +209,6 @@ int __init register_intc_controller(struct intc_desc *desc)
- 		goto err0;
- 
- 	INIT_LIST_HEAD(&d->list);
--	list_add_tail(&d->list, &intc_list);
- 
- 	raw_spin_lock_init(&d->lock);
- 	INIT_RADIX_TREE(&d->tree, GFP_ATOMIC);
-@@ -369,6 +368,7 @@ int __init register_intc_controller(struct intc_desc *desc)
- 
- 	d->skip_suspend = desc->skip_syscore_suspend;
- 
-+	list_add_tail(&d->list, &intc_list);
- 	nr_intc_controllers++;
- 
- 	return 0;
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index af36c6d6542b8..4d7b9fd6ef31a 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1341,7 +1341,12 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 		err = -EFSCORRUPTED;
+ 		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+-		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
++		f2fs_warn_ratelimited(sbi,
++			"f2fs_new_node_page: inconsistent nat entry, "
++			"ino:%u, nid:%u, blkaddr:%u, ver:%u, flag:%u",
++			new_ni.ino, new_ni.nid, new_ni.blk_addr,
++			new_ni.version, new_ni.flag);
++		f2fs_handle_error(sbi, ERROR_INCONSISTENT_NAT);
+ 		goto fail;
+ 	}
+ #endif
 -- 
 2.43.0
 
