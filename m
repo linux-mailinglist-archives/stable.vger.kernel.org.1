@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF559EEB75
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 924D69EED0D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E823E188ABAC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD8E216AE51
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC7120E034;
-	Thu, 12 Dec 2024 15:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEC921B8E1;
+	Thu, 12 Dec 2024 15:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpozNx6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UX0YIToL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982EC1537C8;
-	Thu, 12 Dec 2024 15:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF836217F46;
+	Thu, 12 Dec 2024 15:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016834; cv=none; b=HUgY4rmXSTjiqxQYHxMw6O1XZWAVyha08rLIUwVVOqCTXAPWz/UvOCa0W6SQlD9ny7ULvPSuFNBxsS2UJLQLOHpHR/wPUM7pxD+pV/PbPg9KO5CoYOjI4Fuyle6IwBgfH8fMBg9jhDbjv2bkTtrYsQ9Wm0LhLFwBqeP6pR62dCI=
+	t=1734017897; cv=none; b=kBD69yuWd21YC9VK3dJUcFNBXoVTVTlTIbH2ObmxEVBblX5KtpCtJip58U2uKXm+3oqWQ0WtzWC5YoSpQ4AFf8R0QX7sy2OeyG8l3R4o9yOx9RahqVXlNZSNi/vDmv8/19ihAcnhosOgBNZMcLtLMDPd/EMleWCRi0jk8+teSGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016834; c=relaxed/simple;
-	bh=epHdGEASkMmKwlMes/M/cbqWIhKkmhTQXnzA3j7YNGQ=;
+	s=arc-20240116; t=1734017897; c=relaxed/simple;
+	bh=BLrQJikhizs2thdn9Qi3PG2Yn+2PpEEExr5OnyAZANc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SetmKCEkmLh4DtPckWUBxLnElwK6z85Kh5sIVk3o2ixQSOaWGoefW8Ft3CdnOnQu9nsnhu3AysApCsV+xJBsCNj5LzYncXgPC3hg51q+OvjqQA1MiqIusNt+ejAH3mY1z4xWLohMWIUYhRFgW/Jy6BvpdNkD1K5WIfmK4BIjWKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpozNx6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FADC4CECE;
-	Thu, 12 Dec 2024 15:20:33 +0000 (UTC)
+	 MIME-Version; b=Bzu77NpZgp1lueA5Vcoo04p2XiOItziqf2BZVrHSMjxPsJR3fd6tdzAyf5KtEFHTvSMh9WfCYefLTgK/SgbZS0VEnPQmgrow/tRSvOA6ljC/drq99y3Zd7OEPuqiHDg7Xu02FSzu6cmYCm5+HIzhuMT5uULRb3/hAX9InB7FDsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UX0YIToL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CD7C4CECE;
+	Thu, 12 Dec 2024 15:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016834;
-	bh=epHdGEASkMmKwlMes/M/cbqWIhKkmhTQXnzA3j7YNGQ=;
+	s=korg; t=1734017897;
+	bh=BLrQJikhizs2thdn9Qi3PG2Yn+2PpEEExr5OnyAZANc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YpozNx6X13OPCE8ESMjsbvXcW2tA9+EY6n0Ni4u6Ziwnfvl1/ti+S6YN69eCvjvHW
-	 8qzDaQaai2sr0mLXqIWquwkg+CSEGuRKPPL4i9s8mYcF82Nf/5RHGe3CeUlLJeYLDM
-	 4Pf1drLWurHcm3f+YBr5LF10sC1e/eUpr9wv3mmY=
+	b=UX0YIToL2dQl1Mu48inN9TbVJ/T72OCxENGR1L0eOqhfqfLlZTjTyfu8hWATTE3S/
+	 Nk02ka59S7GAO46/DqP7Ku1n40VZUWN+Vv/uN/PnVyr32hzgTsiJiPWCaNa0KUAKeV
+	 pPRwt0Nh9WDKPdVNu+RpidsHJgnHPjYw2dvnCe/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 292/466] net: inet: do not leave a dangling sk pointer in inet_create()
+	Jordy Zomer <jordyzomer@google.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 142/356] ksmbd: fix Out-of-Bounds Write in ksmbd_vfs_stream_write
 Date: Thu, 12 Dec 2024 15:57:41 +0100
-Message-ID: <20241212144318.323045870@linuxfoundation.org>
+Message-ID: <20241212144250.251156011@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Jordy Zomer <jordyzomer@google.com>
 
-[ Upstream commit 9365fa510c6f82e3aa550a09d0c5c6b44dbc78ff ]
+commit 313dab082289e460391c82d855430ec8a28ddf81 upstream.
 
-sock_init_data() attaches the allocated sk object to the provided sock
-object. If inet_create() fails later, the sk object is freed, but the
-sock object retains the dangling pointer, which may create use-after-free
-later.
+An offset from client could be a negative value, It could allows
+to write data outside the bounds of the allocated buffer.
+Note that this issue is coming when setting
+'vfs objects = streams_xattr parameter' in ksmbd.conf.
 
-Clear the sk pointer in the sock object on error.
-
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-7-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.15+
+Reported-by: Jordy Zomer <jordyzomer@google.com>
+Signed-off-by: Jordy Zomer <jordyzomer@google.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/af_inet.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ fs/smb/server/smb2pdu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index b24d74616637a..8095e82de8083 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -376,32 +376,30 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
- 		inet->inet_sport = htons(inet->inet_num);
- 		/* Add to protocol hash chains. */
- 		err = sk->sk_prot->hash(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6869,6 +6869,8 @@ int smb2_write(struct ksmbd_work *work)
  	}
  
- 	if (sk->sk_prot->init) {
- 		err = sk->sk_prot->init(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
+ 	offset = le64_to_cpu(req->Offset);
++	if (offset < 0)
++		return -EINVAL;
+ 	length = le32_to_cpu(req->Length);
  
- 	if (!kern) {
- 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- out:
- 	return err;
- out_rcu_unlock:
- 	rcu_read_unlock();
- 	goto out;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- 
--- 
-2.43.0
-
+ 	if (req->Channel == SMB2_CHANNEL_RDMA_V1 ||
 
 
 
