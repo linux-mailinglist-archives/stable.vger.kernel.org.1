@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-101844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A80C9EEE79
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 641129EEF2C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0234286FBD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:57:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 105A0292AE9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F301A2236FC;
-	Thu, 12 Dec 2024 15:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC6F241F45;
+	Thu, 12 Dec 2024 15:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSnQQpbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDD5ANC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF447215764;
-	Thu, 12 Dec 2024 15:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA06241F40;
+	Thu, 12 Dec 2024 15:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019004; cv=none; b=TinxRDwH5ki9Quu84IY0aEMLh9OivvL8P4Z7nDrkcoiBM6ebZh9l4+NvgbzebslAQLKReOp0zyh4d2roYVfNwLqkxV0ZveYhjhCKWa5+eixAaqYqFU/Ftytn3VXCwdprdMdqA24YmRySCYxX8ZjBf8rfAfuTxdYC4Lpc06hww78=
+	t=1734019150; cv=none; b=t6P0GoHFtrBw1Ix7R/5Fzk2LxAR/EgoVJpMlDPTLcvnjkMTps+GLcHkC29ZoH/g1VbvwKp9sP5lS4pgRj2W2m5H2Ux4x/oRYFUxqhPoate64c1Hl6g+5sizug7E3T+KMDn3q5bxjsZo3dJ750zJUwpCb2nF3GgdKha9eaV2EiOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019004; c=relaxed/simple;
-	bh=7KgaqQKdorTHn90pw9qMz7bRDjOxdX4rycGVClfH6s0=;
+	s=arc-20240116; t=1734019150; c=relaxed/simple;
+	bh=TELLZLcqINJvTCdCGp5jf/6HUqmeujhotutaeuQWH30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FntWD4yGyXppp5XbwVAj9GA+JPpIbh3y4vQ1e6LQ/Vxeqsi17lxVjkW+fBLUs90vyTOGQFxYNUhAoCE3+tj54R1UtNVYx1QZMyJpDAyJiOGAR9ggBCENGSjBK06f5b05rNOqz7GOeBENIAInhf2IDO2gToOcjMF+/rsV+0uLZik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSnQQpbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEA5C4CECE;
-	Thu, 12 Dec 2024 15:56:43 +0000 (UTC)
+	 MIME-Version; b=fFHXSo2JMwCtINzrgNfzS+7umxviqGe90BZUolRXJLTJOMGFJH9anY6S8fmfuxnw3Ly5Ugx43e+5QC6bWjzGeVsbl8P90+4Lr1Hk1PnB9hJB+dM9xBktfonFyPeUtTlCNV2bakiVJaV8rY053yJT5zuUU25G+ROkJx7DNy2tluw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDD5ANC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0F8C4CED3;
+	Thu, 12 Dec 2024 15:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019004;
-	bh=7KgaqQKdorTHn90pw9qMz7bRDjOxdX4rycGVClfH6s0=;
+	s=korg; t=1734019150;
+	bh=TELLZLcqINJvTCdCGp5jf/6HUqmeujhotutaeuQWH30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSnQQpbQnFu5n4WJXbMtbOtfoipitbjZ/cVV+l0u6w3sUDIsuQF3OW1U1UGdwPwPa
-	 3UwKreJcG5i4JWVxdhyLFRMzAzWcatzDyEqodxXuEMxSmQ+SRxNdIrvkYCoFw3Wt0E
-	 MbqMI5QzgO21u8pgWjW3nPWJjf9Hee3HBOrg56V4=
+	b=uDD5ANC7xMQRyy9MYPJAlQEP8OCHE6PWZtZ/zpMELswFBBnH5smdomrSqRwCOnuOb
+	 swy5+O7aqT3x88MDpv7UR22A21cmn64zBG/moFwvLotycILBIrIxrdwN+w1L2rsImD
+	 /Z6SPb1kw1SUyn9xS57GOIApB4Vstg77VOmNTCWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ross Burton <ross.burton@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/772] clocksource/drivers:sp804: Make user selectable
-Date: Thu, 12 Dec 2024 15:50:35 +0100
-Message-ID: <20241212144353.667041711@linuxfoundation.org>
+Subject: [PATCH 6.1 091/772] clocksource/drivers/timer-ti-dm: Fix child node refcount handling
+Date: Thu, 12 Dec 2024 15:50:36 +0100
+Message-ID: <20241212144353.706016634@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -69,47 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 0309f714a0908e947af1c902cf6a330cb593e75e ]
+[ Upstream commit e5cfc0989d9a2849c51c720a16b90b2c061a1aeb ]
 
-The sp804 is currently only user selectable if COMPILE_TEST, this was
-done by commit dfc82faad725 ("clocksource/drivers/sp804: Add
-COMPILE_TEST to CONFIG_ARM_TIMER_SP804") in order to avoid it being
-spuriously offered on platforms that won't have the hardware since it's
-generally only seen on Arm based platforms.  This config is overly
-restrictive, while platforms that rely on the SP804 do select it in
-their Kconfig there are others such as the Arm fast models which have a
-SP804 available but currently unused by Linux.  Relax the dependency to
-allow it to be user selectable on arm and arm64 to avoid surprises and
-in case someone comes up with a use for extra timer hardware.
+of_find_compatible_node() increments the node's refcount, and it must be
+decremented again with a call to of_node_put() when the pointer is no
+longer required to avoid leaking the resource.
 
-Fixes: dfc82faad725 ("clocksource/drivers/sp804: Add COMPILE_TEST to CONFIG_ARM_TIMER_SP804")
-Reported-by: Ross Burton <ross.burton@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20241001-arm64-vexpress-sp804-v3-1-0a2d3f7883e4@kernel.org
+Instead of adding the missing calls to of_node_put() in all execution
+paths, use the cleanup attribute for 'arm_timer' by means of the
+__free() macro, which automatically calls of_node_put() when the
+variable goes out of scope.
+
+Fixes: 25de4ce5ed02 ("clocksource/drivers/timer-ti-dm: Handle dra7 timer wrap errata i940")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20241031-timer-ti-dm-systimer-of_node_put-v3-1-063ee822b73a@gmail.com
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-ti-dm-systimer.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 4469e7f555e97..c957bd470507e 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -390,7 +390,8 @@ config ARM_GT_INITIAL_PRESCALER_VAL
- 	  This affects CPU_FREQ max delta from the initial frequency.
+diff --git a/drivers/clocksource/timer-ti-dm-systimer.c b/drivers/clocksource/timer-ti-dm-systimer.c
+index 632523c1232f6..734920e8c5759 100644
+--- a/drivers/clocksource/timer-ti-dm-systimer.c
++++ b/drivers/clocksource/timer-ti-dm-systimer.c
+@@ -688,9 +688,9 @@ subsys_initcall(dmtimer_percpu_timer_startup);
  
- config ARM_TIMER_SP804
--	bool "Support for Dual Timer SP804 module" if COMPILE_TEST
-+	bool "Support for Dual Timer SP804 module"
-+	depends on ARM || ARM64 || COMPILE_TEST
- 	depends on GENERIC_SCHED_CLOCK && HAVE_CLK
- 	select CLKSRC_MMIO
- 	select TIMER_OF if OF
+ static int __init dmtimer_percpu_quirk_init(struct device_node *np, u32 pa)
+ {
+-	struct device_node *arm_timer;
++	struct device_node *arm_timer __free(device_node) =
++		of_find_compatible_node(NULL, NULL, "arm,armv7-timer");
+ 
+-	arm_timer = of_find_compatible_node(NULL, NULL, "arm,armv7-timer");
+ 	if (of_device_is_available(arm_timer)) {
+ 		pr_warn_once("ARM architected timer wrap issue i940 detected\n");
+ 		return 0;
 -- 
 2.43.0
 
