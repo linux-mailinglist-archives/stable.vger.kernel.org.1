@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A949EF4B6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA52C9EF685
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEA6517B18D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 092D217B680
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D57E22967D;
-	Thu, 12 Dec 2024 16:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA26216E2D;
+	Thu, 12 Dec 2024 17:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/+26j4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXH1LBBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19889216E14;
-	Thu, 12 Dec 2024 16:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CBF215799;
+	Thu, 12 Dec 2024 17:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022469; cv=none; b=pukfok70ZQZMYlSuf9NKrMDkZTFVzTtzwMWKCMAf7rgfU7QRHLt52tOzhIiH9F3reZw0SYzUvwi7OPSAe055M7YYXh4hStu4wappWs2hqeddh4qXwePYUPivywvBK7NTHBiOfNdoaWlrcg+JnXRxp0k3YYQNqKWRp9JSbb4IaUM=
+	t=1734023861; cv=none; b=P6NCzkMd8eKuVygnd5Eae1sgH87u53bSnt1V8iQS95fOL+JuaL6s86dJD/KdLGr38nqkrKHJAYP7we5oj2HwJ9Y3lVnBsRbcZLkPn3vY6vY07++4gjY+EVoaJh38TkrHNa+A9q2fOZZPGp4NzSNfaQBcU5SKEDk+z1Af6bFTzso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022469; c=relaxed/simple;
-	bh=eEYjobiDbq0AAVZxkFPa8ZPD5IHG1WJPjwaPC7hVnfM=;
+	s=arc-20240116; t=1734023861; c=relaxed/simple;
+	bh=vbv4t2Xi3cZOrX0I1jso66QxUYoxvF8Rp+doh21tbAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OARsl8SIagPQ+wPxTEJtRl7XX2TsWmDL/vc5iLIojXBOknX/WB2PGSXFf90iHSH/RmMsRi7gyHpbMMmQn9aZZGwhGmgtHg4WKo1xdCm0CfAZ5u19eP0Nv0vveAanLGYqpEhMCB1DpsM4bWasZ5fxOS+H5R6M+7/W+giVhxI1ZLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/+26j4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56ABCC4CED3;
-	Thu, 12 Dec 2024 16:54:28 +0000 (UTC)
+	 MIME-Version; b=d42bpP/njicZubiLoxk5d113c6KSezMUGfUjnh3sQbgwfxSbvNAB0EIaPNleYAzKMcNZqrjN2eMGC4OSVGWrA6j+QoT/LvYzlZyoqPIOglLJuy7NNk1EccOZ5jeUDJIIDmMQ+8yp+1A5L4A5cjLN6OIW3dNLOSczYgiBNfjMrr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXH1LBBV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA47C4CED0;
+	Thu, 12 Dec 2024 17:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022468;
-	bh=eEYjobiDbq0AAVZxkFPa8ZPD5IHG1WJPjwaPC7hVnfM=;
+	s=korg; t=1734023860;
+	bh=vbv4t2Xi3cZOrX0I1jso66QxUYoxvF8Rp+doh21tbAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/+26j4M0lv22V56CdY43roc0M6hh/1N2S0z0vhqKmLlKBLAQgdLqWOT+4TU/7hyR
-	 eNd/U3aIpibcOpAv79Iy8hqKjUHlNKhxyjm9YLWuHFpmzCsu3FoCN9xCvW4qdotDnL
-	 LFLsoLVG+XZ116eAay6rQo3ZY2Y84853bAEVBRFU=
+	b=YXH1LBBVbtlEcKnRQnn3Y22Ho2rOVac+LTsiN1QEFPYeiOoLUVYmJs6QFDzJXbN5R
+	 g9ruCr20fKv0XnkAuJwJUODQgLd5fq5Eke2DlX47xPmi8r0XdmBSRtRsLKZ3henLa4
+	 WTvAfp8htTrMywriFODgaqOdZ3pm9x4sXEiKDqiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 248/565] f2fs: remove struct segment_allocation default_salloc_ops
-Date: Thu, 12 Dec 2024 15:57:23 +0100
-Message-ID: <20241212144321.282224948@linuxfoundation.org>
+Subject: [PATCH 5.10 106/459] wifi: ath10k: fix invalid VHT parameters in supported_vht_mcs_rate_nss1
+Date: Thu, 12 Dec 2024 15:57:24 +0100
+Message-ID: <20241212144257.698992941@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 1c8a8ec0a0e9a1176022a35c4daf04fe1594d270 ]
+[ Upstream commit d50886b27850447d90c0cd40c725238097909d1e ]
 
-There is only  single instance of these ops, so remove the indirection
-and call allocate_segment_by_default directly.
+In supported_vht_mcs_rate_nss1, the rate for MCS9 & VHT20 is defined as
+{780,  867}, this does not align with firmware's definition and therefore
+fails the verification in ath10k_mac_get_rate_flags_vht():
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 43563069e1c1 ("f2fs: check curseg->inited before write_sum_page in change_curseg")
+	invalid vht params rate 960 100kbps nss 1 mcs 9
+
+Change it to {865,  960} to align with firmware, so this issue could be
+fixed.
+
+Since ath10k_hw_params::supports_peer_stats_info is enabled only for
+QCA6174, this change does not affect other chips.
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
+
+Fixes: 3344b99d69ab ("ath10k: add bitrate parse for peer stats info")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/lkml/fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240711020344.98040-2-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 11 ++---------
- fs/f2fs/segment.h |  6 ------
- 2 files changed, 2 insertions(+), 15 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 9e6c4a475d6d0..91c7593965c47 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2999,7 +2999,7 @@ static void __allocate_new_segment(struct f2fs_sb_info *sbi, int type,
- 		return;
- alloc:
- 	old_segno = curseg->segno;
--	SIT_I(sbi)->s_ops->allocate_segment(sbi, type, true);
-+	allocate_segment_by_default(sbi, type, true);
- 	locate_dirty_segment(sbi, old_segno);
- }
- 
-@@ -3030,10 +3030,6 @@ void f2fs_allocate_new_segments(struct f2fs_sb_info *sbi)
- 	up_read(&SM_I(sbi)->curseg_lock);
- }
- 
--static const struct segment_allocation default_salloc_ops = {
--	.allocate_segment = allocate_segment_by_default,
--};
--
- bool f2fs_exist_trim_candidates(struct f2fs_sb_info *sbi,
- 						struct cp_control *cpc)
- {
-@@ -3452,7 +3448,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
- 			get_atssr_segment(sbi, type, se->type,
- 						AT_SSR, se->mtime);
- 		else
--			sit_i->s_ops->allocate_segment(sbi, type, false);
-+			allocate_segment_by_default(sbi, type, false);
- 	}
- 	/*
- 	 * segment dirty status should be updated after segment allocation,
-@@ -4434,9 +4430,6 @@ static int build_sit_info(struct f2fs_sb_info *sbi)
- 		return -ENOMEM;
- #endif
- 
--	/* init SIT information */
--	sit_i->s_ops = &default_salloc_ops;
--
- 	sit_i->sit_base_addr = le32_to_cpu(raw_super->sit_blkaddr);
- 	sit_i->sit_blocks = sit_segs << sbi->log_blocks_per_seg;
- 	sit_i->written_valid_blocks = 0;
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 2c1165e8f1283..e59b330ed8335 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -225,10 +225,6 @@ struct sec_entry {
- 	unsigned int valid_blocks;	/* # of valid blocks in a section */
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 15f02bf23e9bd..2bf3e66c83f63 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -8955,7 +8955,7 @@ static const struct ath10k_index_vht_data_rate_type supported_vht_mcs_rate_nss1[
+ 	{6,  {2633, 2925}, {1215, 1350}, {585,  650} },
+ 	{7,  {2925, 3250}, {1350, 1500}, {650,  722} },
+ 	{8,  {3510, 3900}, {1620, 1800}, {780,  867} },
+-	{9,  {3900, 4333}, {1800, 2000}, {780,  867} }
++	{9,  {3900, 4333}, {1800, 2000}, {865,  960} }
  };
  
--struct segment_allocation {
--	void (*allocate_segment)(struct f2fs_sb_info *, int, bool);
--};
--
- #define MAX_SKIP_GC_COUNT			16
- 
- struct inmem_pages {
-@@ -238,8 +234,6 @@ struct inmem_pages {
- };
- 
- struct sit_info {
--	const struct segment_allocation *s_ops;
--
- 	block_t sit_base_addr;		/* start block address of SIT area */
- 	block_t sit_blocks;		/* # of blocks used by SIT area */
- 	block_t written_valid_blocks;	/* # of valid blocks in main area */
+ /*MCS parameters with Nss = 2 */
 -- 
 2.43.0
 
