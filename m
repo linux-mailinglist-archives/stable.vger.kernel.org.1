@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-101962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE94E9EEF74
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6BD9EEFEA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F24E2977D4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DF91171248
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0E522E9FE;
-	Thu, 12 Dec 2024 16:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6009B22EA19;
+	Thu, 12 Dec 2024 16:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpxAglDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jV4OaAoH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FF422E9FC;
-	Thu, 12 Dec 2024 16:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC8722EA12;
+	Thu, 12 Dec 2024 16:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019442; cv=none; b=IajDGMptOaajLS05XoxbBK7zgSbAcfhocuFz4tpgiKgJPg+nvK3wcBXLDkT1oJBoM0qIl+7T0SpB4fX9Bd/FkYl4yUfOoWq7Lvcft2bbSPyLZRh6M0OBK9uTqY2anpyyI0OND9yxqIGAl0bZPLabI42GYRZoQuY7Ld8eIXPGVjw=
+	t=1734019450; cv=none; b=hyXPkRbno29cQnYWBFyf6ApTpu3njjBjW+W3zx3Dux26vtIK40w5vE6u3Wj6vdKrVKAb0zYibzEtn93xAV9pq8Gmb6QABEFL8mnECxbs+9gmyo6R+Zd069tnF092d6kMn3RV4MWWrVv2b0Rzh4TdUruHR2IX3US7aPz7K099l3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019442; c=relaxed/simple;
-	bh=Fg0dY3SzgylKGfJG6tIeG1EzT1rFUSICEO+W1Ig06QY=;
+	s=arc-20240116; t=1734019450; c=relaxed/simple;
+	bh=04HrMAW91GGpl4Lj8Qw3nEPtElggqwyhUZMKVJ6xvp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PKYOTDNfxCXDpdp3RRhlmhB2JApCNjKU/8GOWlRCEfO9Zk9bwXR+pC3lM0pHtKBJ/Uds4hBNnPqYOTfnGk2IOF0zkRmjOscwzYIGiJ1+aXqNMiYPivsw98gUL7WASOTu0vhKG836YzLL//l6q2tNiwCJC6F4OTDv8OAAXBfhLIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpxAglDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D99C4CECE;
-	Thu, 12 Dec 2024 16:04:01 +0000 (UTC)
+	 MIME-Version; b=CutTJeXgJvU97NQawe7kbabY1n7fmfV83VbBCwo7Mu4vg1LadZ9giXnMXuyj8EjCuqhIabD1lFJZVCqjtVCfddqcLOisDaU3LbDVhciPboGU0JYmlLDQT1+W2S7rCv71Gylr6+BYN8Xu8IapyH/q4jOvu2DxbCgF2Ag5aC56XKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jV4OaAoH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D45C4CED0;
+	Thu, 12 Dec 2024 16:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019441;
-	bh=Fg0dY3SzgylKGfJG6tIeG1EzT1rFUSICEO+W1Ig06QY=;
+	s=korg; t=1734019449;
+	bh=04HrMAW91GGpl4Lj8Qw3nEPtElggqwyhUZMKVJ6xvp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpxAglDRfDenPZ2x2XW1aMW4+Je2xZNRv5V9ckl3/FiEBqvrq1w8yk3i6wQ1MKSGt
-	 50r5J9lJPRgcEVefOOC97Fr05PemqHAaYClsZqai2Zvy9buWkANHGeonKLBYccTKmu
-	 sEn6h4Eyhf8Cr/FV8D3vgyhuJ6GulFc2SHe43y5Y=
+	b=jV4OaAoH4moCqNYCsGK3zF2YElrRU0wSCfWJjVrpJj10WSPPUCCzAufjMa0pSblwT
+	 uwTpKVeEXfPca3CYlKzrYFHdwgOnD+tLifkISQ439hsvSGshb93iWtanUW5rxCDbpL
+	 aGSI9MsecDJvXZQJz1bVB64z1uEoU0xNJbUeAd0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Ning <zhangn1985@outlook.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
+	Yuan Can <yuancan@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/772] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for PMIC devices
-Date: Thu, 12 Dec 2024 15:52:34 +0100
-Message-ID: <20241212144358.562745455@linuxfoundation.org>
+Subject: [PATCH 6.1 210/772] cpufreq: loongson2: Unregister platform_driver on failure
+Date: Thu, 12 Dec 2024 15:52:35 +0100
+Message-ID: <20241212144358.600909333@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -67,116 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 0350d783ab888cb1cb48ced36cc28b372723f1a4 ]
+[ Upstream commit 5f856d71ccdf89b4bac0ff70ebb0bb582e7f7f18 ]
 
-While design wise the idea of converting the driver to use
-the hierarchy of the IRQ chips is correct, the implementation
-has (inherited) flaws. This was unveiled when platform_get_irq()
-had started WARN() on IRQ 0 that is supposed to be a Linux
-IRQ number (also known as vIRQ).
+When cpufreq_register_driver() returns error, the cpufreq_init() returns
+without unregister platform_driver, fix by add missing
+platform_driver_unregister() when cpufreq_register_driver() failed.
 
-Rework the driver to respect IRQ domain when creating each MFD
-device separately, as the domain is not the same for all of them.
-
-Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
-Tested-by: Zhang Ning <zhangn1985@outlook.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241005193029.1929139-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: f8ede0f700f5 ("MIPS: Loongson 2F: Add CPU frequency scaling support")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_bxtwc.c | 54 +++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 24 deletions(-)
+ drivers/cpufreq/loongson2_cpufreq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
-index 5fc9d3aa61428..3aa7857271dad 100644
---- a/drivers/mfd/intel_soc_pmic_bxtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
-@@ -231,21 +231,11 @@ static const struct resource tmu_resources[] = {
- };
+diff --git a/drivers/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
+index afc59b292153d..63cae4037deb1 100644
+--- a/drivers/cpufreq/loongson2_cpufreq.c
++++ b/drivers/cpufreq/loongson2_cpufreq.c
+@@ -154,7 +154,9 @@ static int __init cpufreq_init(void)
  
- static struct mfd_cell bxt_wc_dev[] = {
--	{
--		.name = "bxt_wcove_gpadc",
--		.num_resources = ARRAY_SIZE(adc_resources),
--		.resources = adc_resources,
--	},
- 	{
- 		.name = "bxt_wcove_thermal",
- 		.num_resources = ARRAY_SIZE(thermal_resources),
- 		.resources = thermal_resources,
- 	},
--	{
--		.name = "bxt_wcove_bcu",
--		.num_resources = ARRAY_SIZE(bcu_resources),
--		.resources = bcu_resources,
--	},
- 	{
- 		.name = "bxt_wcove_gpio",
- 		.num_resources = ARRAY_SIZE(gpio_resources),
-@@ -264,6 +254,22 @@ static const struct mfd_cell bxt_wc_tmu_dev[] = {
- 	},
- };
+ 	ret = cpufreq_register_driver(&loongson2_cpufreq_driver);
  
-+static const struct mfd_cell bxt_wc_bcu_dev[] = {
-+	{
-+		.name = "bxt_wcove_bcu",
-+		.num_resources = ARRAY_SIZE(bcu_resources),
-+		.resources = bcu_resources,
-+	},
-+};
-+
-+static const struct mfd_cell bxt_wc_adc_dev[] = {
-+	{
-+		.name = "bxt_wcove_gpadc",
-+		.num_resources = ARRAY_SIZE(adc_resources),
-+		.resources = adc_resources,
-+	},
-+};
-+
- static struct mfd_cell bxt_wc_chgr_dev[] = {
- 	{
- 		.name = "bxt_wcove_usbc",
-@@ -509,23 +515,23 @@ static int bxtwc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
- 
--	/* Add chained IRQ handler for BCU IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_BCU_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_bcu,
--					 &pmic->irq_chip_data_bcu);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_bcu_dev, ARRAY_SIZE(bxt_wc_bcu_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_BCU_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_bcu,
-+					&pmic->irq_chip_data_bcu);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add BUC IRQ chip\n");
-+		return ret;
- 
--	/* Add chained IRQ handler for ADC IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_ADC_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_adc,
--					 &pmic->irq_chip_data_adc);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_adc_dev, ARRAY_SIZE(bxt_wc_adc_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_ADC_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_adc,
-+					&pmic->irq_chip_data_adc);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
-+		return ret;
- 
- 	ret = bxtwc_add_chained_devices(pmic, bxt_wc_chgr_dev, ARRAY_SIZE(bxt_wc_chgr_dev),
- 					pmic->irq_chip_data,
+-	if (!ret && !nowait) {
++	if (ret) {
++		platform_driver_unregister(&platform_driver);
++	} else if (!nowait) {
+ 		saved_cpu_wait = cpu_wait;
+ 		cpu_wait = loongson2_cpu_wait;
+ 	}
 -- 
 2.43.0
 
