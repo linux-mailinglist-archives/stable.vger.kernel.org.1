@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714399EF898
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 583369EF656
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:24:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF0C81657AF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F08177628
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC6F223C42;
-	Thu, 12 Dec 2024 17:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8F022A7EC;
+	Thu, 12 Dec 2024 17:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUnrtLma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L04/Wi8L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C0B22333F;
-	Thu, 12 Dec 2024 17:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACC92253E0;
+	Thu, 12 Dec 2024 17:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024958; cv=none; b=k25jhjuw6YxqkqAKpGiXodZEcoScyqj60+0jSKKx91lev/HeMzYQtmPmWLbF8g4JbTUsOsek+V/MoFTqJfg2+N7Mif443+oaHLMuuZaZ4+SQ4E2cFDOu7RXUs94I2RPC/M1TsrWVOWD1i06R63f2pCtbhHWrEjMDMdt29nAtPSU=
+	t=1734022857; cv=none; b=LX/uwCO2baYtQjgD6SBJZvBkWndLivfMQu3PN+SjZ+k8MaDEhX7A+6U+rUNjiDtbyK466X6vimDIbn3vOXiDzYY97YWEzMqxv9CTZhfTJxFOOyEkdaiviQr9wpIYSvvsRNezMsbPxwUAKDUCO5MNYKwv38mHT3xI8nG/ZjLPySg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024958; c=relaxed/simple;
-	bh=8LiWcANfiGLIxk1rsbqMhOWk4gjPCpI5R4tg7E74R0E=;
+	s=arc-20240116; t=1734022857; c=relaxed/simple;
+	bh=t1y+78AIHiikiLHWVFOQ28auUGwELy51azDLRRQusCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pa20NSRba7B+h6a+7kFx+7ANYM6stUpGuZG3u4Yw3j+ccLgroTx0d+cg0nYkh+2uP7URUm5BBAG+8krzhWVQx6izRHjk/kC4yguFBtTKFHiQu1zCTVNWTEGVf9lq/Hl1IUTNuzY/RjMenM0UcqrYWNnBl2eC0ACw1P6OZ0rS8vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUnrtLma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33CBC4CECE;
-	Thu, 12 Dec 2024 17:35:57 +0000 (UTC)
+	 MIME-Version; b=obKzF7OMbXgFTZDpQmp3BWT0NzRSnuJsAEhhs21yP5EMyA1HpnMseru+v04xbEqkGT7vJJ53OgsE0yEKFnwOGJxvUbUV5Q5GxR0C442PbWofaqHf8mlBhvo/l1e+NvjGfgN9TgJjwjMFw+tEp5Cg3B5YWM7AuepUOTkwN1bKwPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L04/Wi8L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DB1C4CED3;
+	Thu, 12 Dec 2024 17:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024958;
-	bh=8LiWcANfiGLIxk1rsbqMhOWk4gjPCpI5R4tg7E74R0E=;
+	s=korg; t=1734022857;
+	bh=t1y+78AIHiikiLHWVFOQ28auUGwELy51azDLRRQusCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wUnrtLmaeEE8g+83E8/SJVN9vOv4NpDDs/rXgQWhYRH/Zeoo6TgDrv0ayxWn7qs1m
-	 WOOClG29jozjbYK3pe/SVwxrLMv2u4yGwGmMdF/GyqknCZwa90+/AFbFxmmLIsEoVA
-	 nBEYBuWK0B51JQnrOoApCyWQnZNnYpr+SoFFytHg=
+	b=L04/Wi8LkoSHtk6cb736TuggrRbZcP3u9V0TZmkCxdXgGSL4vPYVU/Id9GW/TmNp6
+	 OpN4BKvmGtsNAc05qjNkMgpDMaAyuIElrNF4GOhFEpym1urCBHoptIIjgFd0sQWza6
+	 Mq1GtR3AXSSupJaYpnHR5XTeAIz1Osp9SR/2J/KA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 001/321] netlink: terminate outstanding dump on socket close
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	stable <stable@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.15 324/565] Revert "serial: sh-sci: Clean sci_ports[0] after at earlycon exit"
 Date: Thu, 12 Dec 2024 15:58:39 +0100
-Message-ID: <20241212144229.368838967@linuxfoundation.org>
+Message-ID: <20241212144324.408737326@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,147 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 1904fb9ebf911441f90a68e96b22aa73e4410505 ]
+commit 718632467d88e98816fa01ab12681ef1c2aa56f8 upstream.
 
-Netlink supports iterative dumping of data. It provides the families
-the following ops:
- - start - (optional) kicks off the dumping process
- - dump  - actual dump helper, keeps getting called until it returns 0
- - done  - (optional) pairs with .start, can be used for cleanup
-The whole process is asynchronous and the repeated calls to .dump
-don't actually happen in a tight loop, but rather are triggered
-in response to recvmsg() on the socket.
+This reverts commit 3791ea69a4858b81e0277f695ca40f5aae40f312.
 
-This gives the user full control over the dump, but also means that
-the user can close the socket without getting to the end of the dump.
-To make sure .start is always paired with .done we check if there
-is an ongoing dump before freeing the socket, and if so call .done.
+It was reported to cause boot-time issues, so revert it for now.
 
-The complication is that sockets can get freed from BH and .done
-is allowed to sleep. So we use a workqueue to defer the call, when
-needed.
-
-Unfortunately this does not work correctly. What we defer is not
-the cleanup but rather releasing a reference on the socket.
-We have no guarantee that we own the last reference, if someone
-else holds the socket they may release it in BH and we're back
-to square one.
-
-The whole dance, however, appears to be unnecessary. Only the user
-can interact with dumps, so we can clean up when socket is closed.
-And close always happens in process context. Some async code may
-still access the socket after close, queue notification skbs to it etc.
-but no dumps can start, end or otherwise make progress.
-
-Delete the workqueue and flush the dump state directly from the release
-handler. Note that further cleanup is possible in -next, for instance
-we now always call .done before releasing the main module reference,
-so dump doesn't have to take a reference of its own.
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Fixes: ed5d7788a934 ("netlink: Do not schedule work from sk_destruct")
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241106015235.2458807-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 3791ea69a485 ("serial: sh-sci: Clean sci_ports[0] after at earlycon exit")
+Cc: stable <stable@kernel.org>
+Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/af_netlink.c | 31 ++++++++-----------------------
- net/netlink/af_netlink.h |  2 --
- 2 files changed, 8 insertions(+), 25 deletions(-)
+ drivers/tty/serial/sh-sci.c |   28 ----------------------------
+ 1 file changed, 28 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 719af25cd4d11..17d86eee8bd8b 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -384,15 +384,6 @@ static void netlink_skb_set_owner_r(struct sk_buff *skb, struct sock *sk)
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3433,32 +3433,6 @@ sh_early_platform_init_buffer("earlyprin
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+ static struct plat_sci_port port_cfg __initdata;
  
- static void netlink_sock_destruct(struct sock *sk)
- {
--	struct netlink_sock *nlk = nlk_sk(sk);
--
--	if (nlk->cb_running) {
--		if (nlk->cb.done)
--			nlk->cb.done(&nlk->cb);
--		module_put(nlk->cb.module);
--		kfree_skb(nlk->cb.skb);
--	}
--
- 	skb_queue_purge(&sk->sk_receive_queue);
- 
- 	if (!sock_flag(sk, SOCK_DEAD)) {
-@@ -405,14 +396,6 @@ static void netlink_sock_destruct(struct sock *sk)
- 	WARN_ON(nlk_sk(sk)->groups);
- }
- 
--static void netlink_sock_destruct_work(struct work_struct *work)
+-static int early_console_exit(struct console *co)
 -{
--	struct netlink_sock *nlk = container_of(work, struct netlink_sock,
--						work);
+-	struct sci_port *sci_port = &sci_ports[0];
+-	struct uart_port *port = &sci_port->port;
+-	unsigned long flags;
+-	int locked = 1;
 -
--	sk_free(&nlk->sk);
+-	if (port->sysrq)
+-		locked = 0;
+-	else if (oops_in_progress)
+-		locked = uart_port_trylock_irqsave(port, &flags);
+-	else
+-		uart_port_lock_irqsave(port, &flags);
+-
+-	/*
+-	 * Clean the slot used by earlycon. A new SCI device might
+-	 * map to this slot.
+-	 */
+-	memset(sci_ports, 0, sizeof(*sci_port));
+-
+-	if (locked)
+-		uart_port_unlock_irqrestore(port, flags);
+-
+-	return 0;
 -}
 -
- /* This lock without WQ_FLAG_EXCLUSIVE is good on UP and it is _very_ bad on
-  * SMP. Look, when several writers sleep and reader wakes them up, all but one
-  * immediately hit write lock and grab all the cpus. Exclusive sleep solves
-@@ -729,12 +712,6 @@ static void deferred_put_nlk_sk(struct rcu_head *head)
- 	if (!refcount_dec_and_test(&sk->sk_refcnt))
- 		return;
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
+ {
+@@ -3477,8 +3451,6 @@ static int __init early_console_setup(st
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
  
--	if (nlk->cb_running && nlk->cb.done) {
--		INIT_WORK(&nlk->work, netlink_sock_destruct_work);
--		schedule_work(&nlk->work);
--		return;
--	}
+ 	device->con->write = serial_console_write;
+-	device->con->exit = early_console_exit;
 -
- 	sk_free(sk);
+ 	return 0;
  }
- 
-@@ -784,6 +761,14 @@ static int netlink_release(struct socket *sock)
- 				NETLINK_URELEASE, &n);
- 	}
- 
-+	/* Terminate any outstanding dump */
-+	if (nlk->cb_running) {
-+		if (nlk->cb.done)
-+			nlk->cb.done(&nlk->cb);
-+		module_put(nlk->cb.module);
-+		kfree_skb(nlk->cb.skb);
-+	}
-+
- 	module_put(nlk->module);
- 
- 	if (netlink_is_kernel(sk)) {
-diff --git a/net/netlink/af_netlink.h b/net/netlink/af_netlink.h
-index 5f454c8de6a4d..fca9556848885 100644
---- a/net/netlink/af_netlink.h
-+++ b/net/netlink/af_netlink.h
-@@ -4,7 +4,6 @@
- 
- #include <linux/rhashtable.h>
- #include <linux/atomic.h>
--#include <linux/workqueue.h>
- #include <net/sock.h>
- 
- /* flags */
-@@ -46,7 +45,6 @@ struct netlink_sock {
- 
- 	struct rhash_head	node;
- 	struct rcu_head		rcu;
--	struct work_struct	work;
- };
- 
- static inline struct netlink_sock *nlk_sk(struct sock *sk)
--- 
-2.43.0
-
+ static int __init sci_early_console_setup(struct earlycon_device *device,
 
 
 
