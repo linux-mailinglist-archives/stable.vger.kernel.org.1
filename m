@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-101975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C62079EF018
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1329EF003
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0702017124B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98CC71897626
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0AB22FDF9;
-	Thu, 12 Dec 2024 16:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D1D22FE05;
+	Thu, 12 Dec 2024 16:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dh7vNY7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nX3+1C5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765CE223C65;
-	Thu, 12 Dec 2024 16:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F432236EA;
+	Thu, 12 Dec 2024 16:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019488; cv=none; b=GPPN3Fxfj/b5COi+OP2rbuB+ObZlOxQA0HbIx5/u48bdC8d1GIOY6mwgR+dndR0XLXaRS8mpeHtKdBkPveE93c12nPT136xijU6tDEgiX7c+J2kpWLYKPu3Qecu+Hjn619qXhGtrAAcQKzaBvoXwXEtvSl1GAvmqCmz8GnjnlOg=
+	t=1734019504; cv=none; b=qbV0tyWo350a6u93/GKwP2eLlfRPup764oHWjtEmArynoHwFbX0ZyMKaKdbSGpLLusWxv5SZ8W2z0BSdgaW6YcNtwa2NwYNgojjtAYgNN+7Z6mSnhRg7Vj7PefWqZx4QNbZoQ2LkWdyvJTtS68RiOtKPSFevLw+UXqHvGC/pg3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019488; c=relaxed/simple;
-	bh=STQsrYBYxYjRGYPd0BGLpHza6ztcuzF6Ht5EE2wD9MQ=;
+	s=arc-20240116; t=1734019504; c=relaxed/simple;
+	bh=cjt/IG/0m3p0cG4TwFVgt426+kqh7XxYdPmScmLT6tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPfZ9mord1Rj5DJiygdpMxW2sCta/QUcSI/CQZEEn62lQ0BzRywgV00z3twjR6WywQO8pNpBrC76is010BGVNRnoEdsnVJV/p03fflsHZZHlyUcSb0On0rqVIAthcTI0LSOSSJ5PnbKv4xprnmf5q6xQ+zwoLbygrOPqz+gBCEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dh7vNY7o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA073C4CED3;
-	Thu, 12 Dec 2024 16:04:47 +0000 (UTC)
+	 MIME-Version; b=OdviZxs3qjhziBcxIgJCe5p6aJm0g8GmDAO0vOBQ4E/E156bvb0XkqEU/iCNoypMhzO6uP7BJZpY3HUsYY6ea7SVSoEAHZxrGgzDQK0FQqfTXu+DPmfmMJWq0B9ry2MS9tJDbV7gUvnZd8MpQ1IU9qq27wQ2Kn7pUzSvyf0D6Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nX3+1C5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C39C4CECE;
+	Thu, 12 Dec 2024 16:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019488;
-	bh=STQsrYBYxYjRGYPd0BGLpHza6ztcuzF6Ht5EE2wD9MQ=;
+	s=korg; t=1734019503;
+	bh=cjt/IG/0m3p0cG4TwFVgt426+kqh7XxYdPmScmLT6tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dh7vNY7ocJQjnQRnlf6qTVOwIY/lCl9wrNYITi6ti7SwWYOLkVreLf3SaQEP2r+lZ
-	 hcPAgtCp7E7AuV336rZtRpXne7FH3wgQROmGeG/aFc3QfHkUQE6e4Hb2jJ+k0aYqcG
-	 tt3MeN3wOPJgdC8+S01PoKG5CS5Vfc7pztYiaVXQ=
+	b=nX3+1C5YJfDFSK99tYQ4DziGAuiANgqbh8ziJeSJIeIMWPggFWqYl6l1rN8L9aGq5
+	 5fLZaC8fzzPlL5GvfBkCkQk3mzxyKcF5/IkIXYxTsuDZWimRJhdcKe8I7L/MHYbdTc
+	 mOdotUQAI2n01ibJWXDXsBLlvmu6TlUFyFiML8MM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+73582d08864d8268b6fd@syzkaller.appspotmail.com,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/772] ALSA: usx2y: Use snd_card_free_when_closed() at disconnection
-Date: Thu, 12 Dec 2024 15:52:18 +0100
-Message-ID: <20241212144357.917022934@linuxfoundation.org>
+Subject: [PATCH 6.1 194/772] ALSA: us122l: Use snd_card_free_when_closed() at disconnection
+Date: Thu, 12 Dec 2024 15:52:19 +0100
+Message-ID: <20241212144357.956003717@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -68,7 +67,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit dafb28f02be407e07a6f679e922a626592b481b0 ]
+[ Upstream commit b7df09bb348016943f56b09dcaafe221e3f73947 ]
 
 The USB disconnect callback is supposed to be short and not too-long
 waiting.  OTOH, the current code uses snd_card_free() at
@@ -81,29 +80,33 @@ snd_card_free_when_closed().  This variant returns immediately while
 the release of resources is done asynchronously by the card device
 release at the last close.
 
-Fixes: 230cd5e24853 ("[ALSA] prevent oops & dead keyboard on usb unplugging while the device is be ing used")
-Reported-by: syzbot+73582d08864d8268b6fd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=73582d08864d8268b6fd
+The loop of us122l->mmap_count check is dropped as well.  The check is
+useless for the asynchronous operation with *_when_closed().
+
+Fixes: 030a07e44129 ("ALSA: Add USB US122L driver")
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-2-tiwai@suse.de
+Link: https://patch.msgid.link/20241113111042.15058-3-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/usx2y/usbusx2y.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/usx2y/us122l.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
-index 52f4e6652407d..4c4ce0319d624 100644
---- a/sound/usb/usx2y/usbusx2y.c
-+++ b/sound/usb/usx2y/usbusx2y.c
-@@ -423,7 +423,7 @@ static void snd_usx2y_disconnect(struct usb_interface *intf)
- 	}
- 	if (usx2y->us428ctls_sharedmem)
- 		wake_up(&usx2y->us428ctls_wait_queue_head);
+diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
+index e558931cce16e..23d7d542a3de6 100644
+--- a/sound/usb/usx2y/us122l.c
++++ b/sound/usb/usx2y/us122l.c
+@@ -617,10 +617,7 @@ static void snd_us122l_disconnect(struct usb_interface *intf)
+ 	usb_put_intf(usb_ifnum_to_if(us122l->dev, 1));
+ 	usb_put_dev(us122l->dev);
+ 
+-	while (atomic_read(&us122l->mmap_count))
+-		msleep(500);
+-
 -	snd_card_free(card);
 +	snd_card_free_when_closed(card);
  }
  
- static int snd_usx2y_probe(struct usb_interface *intf,
+ static int snd_us122l_suspend(struct usb_interface *intf, pm_message_t message)
 -- 
 2.43.0
 
