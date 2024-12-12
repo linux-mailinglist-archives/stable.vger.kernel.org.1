@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-103399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD549EF737
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842D79EF91B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084EC188E89B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C43E188C94F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7BB216E2D;
-	Thu, 12 Dec 2024 17:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53473222D59;
+	Thu, 12 Dec 2024 17:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/eFG3dl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdddNkVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DED215764;
-	Thu, 12 Dec 2024 17:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFBC20A5EE;
+	Thu, 12 Dec 2024 17:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024451; cv=none; b=pymsAOzjd6NRu6Wif2JMXoJp7DqcSsv+UwIGpt2DFuY/cEsS8yNRzkMs8YlP25Rlx/TEfRdxQB0RobqeBgyQOBFZ6ma22+rVt9UQ24IJk5jE8miA9FSSjw8kQNmXhMUcfPLfhy3gBiHLr6Wr9vvJTRhOqlr+mqpnrLb1BDLXj9k=
+	t=1734025291; cv=none; b=BJvBuepcCj1a1kXSQpZgd4n1H46Pgl6oFrqc4xp2GgkQuihRJPJcIjQG/KMW1M2Cu9Uu3nXotEPn2YreRHtH4c5rCLHz9T8G6WAgkgEYwOOk2LDhsmIayNQgTi9sjH/K9DLkKIJyCDClm4QonAj7IHLXXXaH0LMEbdZq4ljrMDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024451; c=relaxed/simple;
-	bh=0u4PesDOO1OqmywZ8Jl5s7nLAEu9Sl9zfofZZk0XTy0=;
+	s=arc-20240116; t=1734025291; c=relaxed/simple;
+	bh=mTFxcyZdkNNNV46g+Nu+JfpnkvdRemPlwTnHJ2+OVh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWrNqzXumOw4exo+mdnCU6xIVNW9WgQltMpwcEsm4HYq74zbOcUvYW2tt5E/o9vLOZ6GmU2djnPndKNaX/Li060HE71LGiF+11jxTBApl09qFga8rW4d5Kva/4xfFcLoHn/6Fa/KWzzeB1WF3+sf+6zizmjgtHfr4pwaTdg/Xao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/eFG3dl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBB9C4CED0;
-	Thu, 12 Dec 2024 17:27:30 +0000 (UTC)
+	 MIME-Version; b=Tw1fw2TYnwgA3RQFypP898EQ+kRykQp7vkA1I/QJA+2Mh0lytPeJf3omHeJ/AwpFWdRyEBNhI3CITvOplx9F18EFWxO0dMbQUpNr1sVjl8ac5c/I3l4a5VKKGtFCz+7fgxP0JO7jnjtGw/b/rDYI5SX/h4Aj23UfUuHvv+AzKD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdddNkVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B189C4CECE;
+	Thu, 12 Dec 2024 17:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024451;
-	bh=0u4PesDOO1OqmywZ8Jl5s7nLAEu9Sl9zfofZZk0XTy0=;
+	s=korg; t=1734025290;
+	bh=mTFxcyZdkNNNV46g+Nu+JfpnkvdRemPlwTnHJ2+OVh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/eFG3dlH2G4LEhzWOkyZQKlVhgdYhJj4YJX8PJA3P7R8DTs7UzpHVMnXMMCcSZfR
-	 DcMM3csuzbNlhtIO6K0K0jMhGJ8+HYaYlLPcxKPC6l54D41XasV0AJRFZdMc0KtnQ0
-	 loMZe15jO+UBcmU7tFrTrGt+dvxxIMwj+5wBpx7M=
+	b=qdddNkVkvQDacWrg6kJvL0suAJ8jWolmabdtahwCNcwpS88Lb52Gh5+Q1Ej0qW29w
+	 yXVSyuwfumi9FDikIktouEVN/8V79tEHmVhhzxnyhKfGr4zlVH1tCN7NJLnN55nV25
+	 JTJwQ40utl8oJvFMHiz/N1O0qPGYIn+TmO1Or9ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Zenla <alex@edera.dev>,
-	Alexander Merritt <alexander@edera.dev>,
-	Ariadne Conill <ariadne@ariadne.space>,
-	Juergen Gross <jgross@suse.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Jonathan Marek <jonathan@marek.ca>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 300/459] 9p/xen: fix init sequence
-Date: Thu, 12 Dec 2024 16:00:38 +0100
-Message-ID: <20241212144305.492630908@linuxfoundation.org>
+Subject: [PATCH 5.4 121/321] rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length
+Date: Thu, 12 Dec 2024 16:00:39 +0100
+Message-ID: <20241212144234.759620663@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Zenla <alex@edera.dev>
+From: Jonathan Marek <jonathan@marek.ca>
 
-[ Upstream commit 7ef3ae82a6ebbf4750967d1ce43bcdb7e44ff74b ]
+[ Upstream commit 06c59d97f63c1b8af521fa5aef8a716fb988b285 ]
 
-Large amount of mount hangs observed during hotplugging of 9pfs devices. The
-9pfs Xen driver attempts to initialize itself more than once, causing the
-frontend and backend to disagree: the backend listens on a channel that the
-frontend does not send on, resulting in stalled processing.
+The name len field of the CMD_OPEN packet is only 16-bits and the upper
+16-bits of "param2" are a different "prio" field, which can be nonzero in
+certain situations, and CMD_OPEN packets can be unexpectedly dropped
+because of this.
 
-Only allow initialization of 9p frontend once.
+Fix this by masking out the upper 16 bits of param2.
 
-Fixes: c15fe55d14b3b ("9p/xen: fix connection sequence")
-Signed-off-by: Alex Zenla <alex@edera.dev>
-Signed-off-by: Alexander Merritt <alexander@edera.dev>
-Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241119211633.38321-1-alexander@edera.dev>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: b4f8e52b89f6 ("rpmsg: Introduce Qualcomm RPM glink driver")
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241007235935.6216-1-jonathan@marek.ca
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/trans_xen.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/rpmsg/qcom_glink_native.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index da056170849bf..dc8702024c555 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -487,6 +487,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 		goto error;
- 	}
- 
-+	xenbus_switch_state(dev, XenbusStateInitialised);
- 	return 0;
- 
-  error_xenbus:
-@@ -534,8 +535,10 @@ static void xen_9pfs_front_changed(struct xenbus_device *dev,
- 		break;
- 
- 	case XenbusStateInitWait:
--		if (!xen_9pfs_front_init(dev))
--			xenbus_switch_state(dev, XenbusStateInitialised);
-+		if (dev->state != XenbusStateInitialising)
-+			break;
-+
-+		xen_9pfs_front_init(dev);
- 		break;
- 
- 	case XenbusStateConnected:
+diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
+index 4766c21f96901..47ffaca8d86b5 100644
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1045,7 +1045,8 @@ static irqreturn_t qcom_glink_native_intr(int irq, void *data)
+ 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
+ 			break;
+ 		case GLINK_CMD_OPEN:
+-			ret = qcom_glink_rx_defer(glink, param2);
++			/* upper 16 bits of param2 are the "prio" field */
++			ret = qcom_glink_rx_defer(glink, param2 & 0xffff);
+ 			break;
+ 		case GLINK_CMD_TX_DATA:
+ 		case GLINK_CMD_TX_DATA_CONT:
 -- 
 2.43.0
 
