@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0959EEBCA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48019EED4C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474CA18873DD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76224287229
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB16520969B;
-	Thu, 12 Dec 2024 15:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071C9223E96;
+	Thu, 12 Dec 2024 15:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NogG6TXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQjsZE4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8992B13792B;
-	Thu, 12 Dec 2024 15:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B073C2210D6;
+	Thu, 12 Dec 2024 15:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017117; cv=none; b=CYrmcyFUBigzY7vX16WZW5Ml/ZQvctE/m8dx26iwz69Ui3z9ghksHF3z/KPhBJ8gauHXMidr6vJL5ocCg4OqNvlzfLUtdRNvbO2ZfWGjeTGDCz/dabEpGubQV1neGfcOM+sQap3d7/HTsAMFm0w7Fftuq83Ea8se4suG7PuRFZA=
+	t=1734018231; cv=none; b=YcJBSr0VLhrMlhrDSCeUHJn8hIfoRHbOpHZbb2QUTDttnzv2AEJX5BbpxFi+J6BrxNDM6wx09e/P1NSUmkjWQM5eWlpop5xTaAA6sGalxl45H1xm7rYCHxlq4GNKUazKeIcFxCqfpUEvYo8F9/CWij8smb9vFE+Yx5/TcitXJ9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017117; c=relaxed/simple;
-	bh=Gbf6l7BYBSss6zHf8AFb7dUQlJRiE52/Op8FxzonVRQ=;
+	s=arc-20240116; t=1734018231; c=relaxed/simple;
+	bh=q+LlA3sx0oezNMi96Lq6Kb1qYKniM1+90OrnQoPm/CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7vhhT6mE6cxgw3KA+VzclL638Pe1TkPtdLV1lBPhKMk8sCMVj7zq/nbL/PI6eiSHa5r1AuJuVmBaHs3SDE4VykT4/MHG8ux0Xj4ougYwJlsC2eY8mvYdghXLOrBiYLxwiLEvKAk3NyZzcPMszM4DXGYhpSSjKHVgHeYfFa/ZtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NogG6TXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC08C4CED0;
-	Thu, 12 Dec 2024 15:25:16 +0000 (UTC)
+	 MIME-Version; b=oZZpwXIBEHihTHj96THJxN1bHYJro32Hzdkz5U6s5qPXB/fTMeLVerqWfhXqftvrc2D/SVMGmA6pq2bTWkdJfeqFBolmOPxP1Ymgigf3O40E6LbbWFL3xc+e86IuMeBf/CzG+ES7Tfeezynj1T0LwyPKWo1VbezWqumAbJUNOZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQjsZE4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F843C4CECE;
+	Thu, 12 Dec 2024 15:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017117;
-	bh=Gbf6l7BYBSss6zHf8AFb7dUQlJRiE52/Op8FxzonVRQ=;
+	s=korg; t=1734018231;
+	bh=q+LlA3sx0oezNMi96Lq6Kb1qYKniM1+90OrnQoPm/CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NogG6TXVbjX1Mw0VTSaZJOqqNl4hq9KvfWt0EfnOLIQ9U6Q8S4QafZfaAHIqZugV4
-	 a4Xg29ORs8g+MepB3aNdyTeJvVykyXpzTK+IPiXBO3fpN0oNmVwzDTEdBqTo1rHnVI
-	 2mdx+kfLoSzbqxrDfs+RfFW4liGXMKDS+RGd+fgw=
+	b=cQjsZE4Mvy19lwvxFZuGjywjsN0Hj2agq2esN1XBbygpHi06UUda8JQV656FbbOIN
+	 HvYozV9JssaSKV36ICnRcXWfCwV1Zn0cMcsSGlkmv/v6b9g+2chY+A2mPQQEaxcG+u
+	 r+E6GLtXIs4fsi4ivAi//ZlITxw6cBbcYZNKCBS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Abhishek Chauhan <quic_abchauha@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 386/466] verification/dot2: Improve dot parser robustness
+Subject: [PATCH 6.6 236/356] net: stmmac: Programming sequence for VLAN packets with split header
 Date: Thu, 12 Dec 2024 15:59:15 +0100
-Message-ID: <20241212144322.019373075@linuxfoundation.org>
+Message-ID: <20241212144253.942676929@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Abhishek Chauhan <quic_abchauha@quicinc.com>
 
-[ Upstream commit 571f8b3f866a6d990a50fe5c89fe0ea78784d70b ]
+[ Upstream commit d10f1a4e44c3bf874701f86f8cc43490e1956acf ]
 
-This patch makes the dot parser used by dot2c and dot2k slightly more
-robust, namely:
-* allows parsing files with the gv extension (GraphViz)
-* correctly parses edges with any indentation
-    * used to work only with a single character (e.g. '\t')
-Additionally it fixes a couple of warnings reported by pylint such as
-wrong indentation and comparison to False instead of `not ...`
+Currently reset state configuration of split header works fine for
+non-tagged packets and we see no corruption in payload of any size
 
-Link: https://lore.kernel.org/20241017064238.41394-2-gmonaco@redhat.com
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+We need additional programming sequence with reset configuration to
+handle VLAN tagged packets to avoid corruption in payload for packets
+of size greater than 256 bytes.
+
+Without this change ping application complains about corruption
+in payload when the size of the VLAN packet exceeds 256 bytes.
+
+With this change tagged and non-tagged packets of any size works fine
+and there is no corruption seen.
+
+Current configuration which has the issue for VLAN packet
+----------------------------------------------------------
+
+Split happens at the position at Layer 3 header
+|MAC-DA|MAC-SA|Vlan Tag|Ether type|IP header|IP data|Rest of the payload|
+                         2 bytes            ^
+                                            |
+
+With the fix we are making sure that the split happens now at
+Layer 2 which is end of ethernet header and start of IP payload
+
+Ip traffic split
+-----------------
+
+Bits which take care of this are SPLM and SPLOFST
+SPLM = Split mode is set to Layer 2
+SPLOFST = These bits indicate the value of offset from the beginning
+of Length/Type field at which header split should take place when the
+appropriate SPLM is selected. Reset value is 2bytes.
+
+Un-tagged data (without VLAN)
+|MAC-DA|MAC-SA|Ether type|IP header|IP data|Rest of the payload|
+                  2bytes ^
+			 |
+
+Tagged data (with VLAN)
+|MAC-DA|MAC-SA|VLAN Tag|Ether type|IP header|IP data|Rest of the payload|
+                          2bytes  ^
+				  |
+
+Non-IP traffic split such AV packet
+------------------------------------
+
+Bits which take care of this are
+SAVE = Split AV Enable
+SAVO = Split AV Offset, similar to SPLOFST but this is for AVTP
+packets.
+
+|Preamble|MAC-DA|MAC-SA|VLAN tag|Ether type|IEEE 1722 payload|CRC|
+				    2bytes ^
+					   |
+
+Signed-off-by: Abhishek Chauhan <quic_abchauha@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241016234313.3992214-1-quic_abchauha@quicinc.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/verification/dot2/automata.py | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac4.h     | 5 +++++
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c | 5 +++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/tools/verification/dot2/automata.py b/tools/verification/dot2/automata.py
-index baffeb960ff0b..bdeb98baa8b06 100644
---- a/tools/verification/dot2/automata.py
-+++ b/tools/verification/dot2/automata.py
-@@ -29,11 +29,11 @@ class Automata:
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
+index d3c5306f1c41f..26cbb8f2ac2d0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
+@@ -44,6 +44,7 @@
+ #define GMAC_MDIO_DATA			0x00000204
+ #define GMAC_GPIO_STATUS		0x0000020C
+ #define GMAC_ARP_ADDR			0x00000210
++#define GMAC_EXT_CFG1			0x00000238
+ #define GMAC_ADDR_HIGH(reg)		(0x300 + reg * 8)
+ #define GMAC_ADDR_LOW(reg)		(0x304 + reg * 8)
+ #define GMAC_L3L4_CTRL(reg)		(0x900 + (reg) * 0x30)
+@@ -284,6 +285,10 @@ enum power_event {
+ #define GMAC_HW_FEAT_DVLAN		BIT(5)
+ #define GMAC_HW_FEAT_NRVF		GENMASK(2, 0)
  
-     def __get_model_name(self):
-         basename = ntpath.basename(self.__dot_path)
--        if basename.endswith(".dot") == False:
-+        if not basename.endswith(".dot") and not basename.endswith(".gv"):
-             print("not a dot file")
-             raise Exception("not a dot file: %s" % self.__dot_path)
++/* MAC extended config 1 */
++#define GMAC_CONFIG1_SAVE_EN		BIT(24)
++#define GMAC_CONFIG1_SPLM(v)		FIELD_PREP(GENMASK(9, 8), v)
++
+ /* GMAC GPIO Status reg */
+ #define GMAC_GPO0			BIT(16)
+ #define GMAC_GPO1			BIT(17)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+index 071f128aa4907..7805a66a0bc08 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_dma.c
+@@ -534,6 +534,11 @@ static void dwmac4_enable_sph(struct stmmac_priv *priv, void __iomem *ioaddr,
+ 	value |= GMAC_CONFIG_HDSMS_256; /* Segment max 256 bytes */
+ 	writel(value, ioaddr + GMAC_EXT_CONFIG);
  
--        model_name = basename[0:-4]
-+        model_name = ntpath.splitext(basename)[0]
-         if model_name.__len__() == 0:
-             raise Exception("not a dot file: %s" % self.__dot_path)
- 
-@@ -68,9 +68,9 @@ class Automata:
-     def __get_cursor_begin_events(self):
-         cursor = 0
-         while self.__dot_lines[cursor].split()[0] != "{node":
--           cursor += 1
-+            cursor += 1
-         while self.__dot_lines[cursor].split()[0] == "{node":
--           cursor += 1
-+            cursor += 1
-         # skip initial state transition
-         cursor += 1
-         return cursor
-@@ -94,11 +94,11 @@ class Automata:
-                 initial_state = state[7:]
-             else:
-                 states.append(state)
--                if self.__dot_lines[cursor].__contains__("doublecircle") == True:
-+                if "doublecircle" in self.__dot_lines[cursor]:
-                     final_states.append(state)
-                     has_final_states = True
- 
--                if self.__dot_lines[cursor].__contains__("ellipse") == True:
-+                if "ellipse" in self.__dot_lines[cursor]:
-                     final_states.append(state)
-                     has_final_states = True
- 
-@@ -110,7 +110,7 @@ class Automata:
-         # Insert the initial state at the bein og the states
-         states.insert(0, initial_state)
- 
--        if has_final_states == False:
-+        if not has_final_states:
-             final_states.append(initial_state)
- 
-         return states, initial_state, final_states
-@@ -120,7 +120,7 @@ class Automata:
-         cursor = self.__get_cursor_begin_events()
- 
-         events = []
--        while self.__dot_lines[cursor][1] == '"':
-+        while self.__dot_lines[cursor].lstrip()[0] == '"':
-             # transitions have the format:
-             # "all_fired" -> "both_fired" [ label = "disable_irq" ];
-             #  ------------ event is here ------------^^^^^
-@@ -161,7 +161,7 @@ class Automata:
-         # and we are back! Let's fill the matrix
-         cursor = self.__get_cursor_begin_events()
- 
--        while self.__dot_lines[cursor][1] == '"':
-+        while self.__dot_lines[cursor].lstrip()[0] == '"':
-             if self.__dot_lines[cursor].split()[1] == "->":
-                 line = self.__dot_lines[cursor].split()
-                 origin_state = line[0].replace('"','').replace(',','_')
++	value = readl(ioaddr + GMAC_EXT_CFG1);
++	value |= GMAC_CONFIG1_SPLM(1); /* Split mode set to L2OFST */
++	value |= GMAC_CONFIG1_SAVE_EN; /* Enable Split AV mode */
++	writel(value, ioaddr + GMAC_EXT_CFG1);
++
+ 	value = readl(ioaddr + DMA_CHAN_CONTROL(dwmac4_addrs, chan));
+ 	if (en)
+ 		value |= DMA_CONTROL_SPH;
 -- 
 2.43.0
 
