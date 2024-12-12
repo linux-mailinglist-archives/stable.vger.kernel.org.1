@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-103122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071E89EF701
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E340D9EF5D7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C2E171545
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:14:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82C7418879FE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBED216E2D;
-	Thu, 12 Dec 2024 17:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B074521B8E1;
+	Thu, 12 Dec 2024 17:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXiVBWKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+wh4c3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5A3176AA1;
-	Thu, 12 Dec 2024 17:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE7021766D;
+	Thu, 12 Dec 2024 17:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023613; cv=none; b=HXG40UkZJQxouig5pflM2+z7Ca8vEshqWYruXF+rZu9BI3P91tTVv2jP178v6kw85K6orOL34lXrceuRq1mZJsUoi81v2L8g40vi4XvL/knf8icpa1WE9sUVodCWVJsjDuvqambbnrtVvriXrLvcREjKrljXoRU7WwsZEqKEAGU=
+	t=1734023616; cv=none; b=mjznVK6bgPrH+Q9SY6mlwl1V3k36OMcDnQ3vR5nqEULGc+gQqOa3v5PUQ/JKKXY0ctaOYp89lptRQs6V239KJjTDsb+SY1Lcw2v+OE6lvKB2HBAtKgpvd6fqdoR1NA/XgVZPPDmD07mX+LYHNBOs+g/w0C3ewqfQ/egps88ZV74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023613; c=relaxed/simple;
-	bh=kw6Vz1YBUyi11newayDzzmrT0/cYlfKNiXdt22AyFQ8=;
+	s=arc-20240116; t=1734023616; c=relaxed/simple;
+	bh=vsSh4lF4dQS0I6+i62LIxC9qaq2yK6GONrrO0OlgXlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SAUVTtogTbluodve5qN3mKSQ9Zpuj8z8qFEQgWbcoqOdS+9rS3eBYm5QIUwMEiBQVFyQWTd8qu6/tXEPnQLgP9cwBjWLgQUNAmrLm74Ev7lofmqxEmufNBjG1lYBcWAxMj7xIBc9DJEqjE4JugYmqHgPoQTAG104V4rKN4nDQsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXiVBWKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87489C4CECE;
-	Thu, 12 Dec 2024 17:13:32 +0000 (UTC)
+	 MIME-Version; b=jU+PHyKg9wDH+Wt0sk0hJdZ0aZVEu/f1t/gWN/8hN3LSJQimGpbvJu3cdg44oqfyLJlXv9LYYKWNxtnVx3r+0wSghDC8ODFNeBQ8KS5GxzVo8c1vt+c6/8Pz0oLVmpMzomCKti9/x8NqbbOFSFYqKIzbFO9wkSgH9Ks/mKpL0Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+wh4c3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCC1C4CECE;
+	Thu, 12 Dec 2024 17:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023612;
-	bh=kw6Vz1YBUyi11newayDzzmrT0/cYlfKNiXdt22AyFQ8=;
+	s=korg; t=1734023615;
+	bh=vsSh4lF4dQS0I6+i62LIxC9qaq2yK6GONrrO0OlgXlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GXiVBWKYzvS5KSChEirMJPJpIrmcA1T9xZIVuVQkWeeKAGesNFo21mSM46kDYDwTr
-	 UEYdhx6R/nQ+fjEMR4DtH75SqG+nduSYEZF4UONWfQf+aZpObYx6X7pVi0aTVzS99A
-	 Zgr/GtQejDf4pd06OKJIjA1tknWEI6Ns2tK90Dv4=
+	b=k+wh4c3t72uS4cfIs4Gb/d4pEoHJ2ahmjhnzuVwEQV2kb39YASAao6YGbJW3xD0Dt
+	 oREJjwA1FzKVEToMVGr4f6rE1LtNGz/khidhyZk5v5fzKKOxez+upx5hcN6dtr8xUM
+	 g9U5bsZMyxp7t+G9azSQzrWNj0v15VO1YjkQS69U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 5.10 008/459] ovl: Filter invalid inodes with missing lookup function
-Date: Thu, 12 Dec 2024 15:55:46 +0100
-Message-ID: <20241212144253.856709025@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	guoweikang <guoweikang.kernel@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 009/459] ftrace: Fix regression with module command in stack_trace_filter
+Date: Thu, 12 Dec 2024 15:55:47 +0100
+Message-ID: <20241212144253.895789317@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
 References: <20241212144253.511169641@linuxfoundation.org>
@@ -67,39 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: guoweikang <guoweikang.kernel@gmail.com>
 
-commit c8b359dddb418c60df1a69beea01d1b3322bfe83 upstream.
+commit 45af52e7d3b8560f21d139b3759735eead8b1653 upstream.
 
-Add a check to the ovl_dentry_weird() function to prevent the
-processing of directory inodes that lack the lookup function.
-This is important because such inodes can cause errors in overlayfs
-when passed to the lowerstack.
+When executing the following command:
 
-Reported-by: syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=a8c9d476508bd14a90e5
-Suggested-by: Miklos Szeredi <miklos@szeredi.hu>
-Link: https://lore.kernel.org/linux-unionfs/CAJfpegvx-oS9XGuwpJx=Xe28_jzWx5eRo1y900_ZzWY+=gGzUg@mail.gmail.com/
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+    # echo "write*:mod:ext3" > /sys/kernel/tracing/stack_trace_filter
+
+The current mod command causes a null pointer dereference. While commit
+0f17976568b3f ("ftrace: Fix regression with module command in stack_trace_filter")
+has addressed part of the issue, it left a corner case unhandled, which still
+results in a kernel crash.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241120052750.275463-1-guoweikang.kernel@gmail.com
+Fixes: 04ec7bb642b77 ("tracing: Have the trace_array hold the list of registered func probes");
+Signed-off-by: guoweikang <guoweikang.kernel@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/util.c |    3 +++
+ kernel/trace/ftrace.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/fs/overlayfs/util.c
-+++ b/fs/overlayfs/util.c
-@@ -131,6 +131,9 @@ void ovl_dentry_init_flags(struct dentry
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -4311,6 +4311,9 @@ ftrace_mod_callback(struct trace_array *
+ 	char *func;
+ 	int ret;
  
- bool ovl_dentry_weird(struct dentry *dentry)
- {
-+	if (!d_can_lookup(dentry) && !d_is_file(dentry) && !d_is_symlink(dentry))
-+		return true;
++	if (!tr)
++		return -ENODEV;
 +
- 	return dentry->d_flags & (DCACHE_NEED_AUTOMOUNT |
- 				  DCACHE_MANAGE_TRANSIT |
- 				  DCACHE_OP_HASH |
+ 	/* match_records() modifies func, and we need the original */
+ 	func = kstrdup(func_orig, GFP_KERNEL);
+ 	if (!func)
 
 
 
