@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-101555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F39EED25
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9159EEB5C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EE801889056
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E3B018831C5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4C421B91D;
-	Thu, 12 Dec 2024 15:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B58C212B0F;
+	Thu, 12 Dec 2024 15:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5VdqtlR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2FJwGON"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4AB217F28;
-	Thu, 12 Dec 2024 15:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA34713CA93;
+	Thu, 12 Dec 2024 15:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017972; cv=none; b=BPo+Bj0JIV0rBAKqb2EWUQ47Ki9fsdMMzqLgF8xDfSHK6rxPafSWD7m+xWPpWhfr3RTDlQNtWsTneUx9I6uq2t6U6IJNwhL+KwmDW57kRKU5a+TvcJe7zz/Lv12ZvbalwL+jUQ0C8pSvDxqzkN5iOMTNFG7Pdi9abVNx8oNOPXU=
+	t=1734016730; cv=none; b=FlP5x2NBkWQ796yuOnnfpEaYSNd96eVyyVBjyXb9+V4kiaBuZ5Po36VyyxnLJVYGvsKHn8Myud18FZo3L9qxT+PNjeGQEpS1PIOBC5lAX0ewywNVBsh0r979Z9QvP10BN3IuSyv30ZBfSPHdwrQ/QbL26a+Crw9zjfl0v10fC88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017972; c=relaxed/simple;
-	bh=9bvhotV5hYYZgGezP/CH6YBqQw3WB85M1RtGEj/w8g8=;
+	s=arc-20240116; t=1734016730; c=relaxed/simple;
+	bh=RAPzDKVz7GCslkY1cufuQqXTPwZGhqlYI2DJouCZlZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJ7L/NjaNel0fb8GwDpVNQAhwDV1dKmG5tA1vSRGub9lhLNgGGclvoK8NfU8SKraruv88mAvhdCBph0QquPteF84OUkO/ZLs1h5bABNNQiBLblOc2aY04Tq1n2C6YxWqumZca+g9aHHWvQxt/bsI0EaKbK+6165b3bmU39VHUjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5VdqtlR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C311EC4CECE;
-	Thu, 12 Dec 2024 15:39:31 +0000 (UTC)
+	 MIME-Version; b=irz/JJJxXjeRlQPa/1VC4iMcnPMQXtLDi5heueR35DNSNbzkrIYPbA+W7PnLpKnXiDIJwlXxQt8iuVpypwZ1HEYEajCPJsbRPtjnt1XhGYNmGuyheWqKtSfu0OT8/9Z35PfU2WO/ZBeLEu5oCtXDFtMm4Z7A4G1JydufF5t5Gag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2FJwGON; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B913C4CECE;
+	Thu, 12 Dec 2024 15:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017972;
-	bh=9bvhotV5hYYZgGezP/CH6YBqQw3WB85M1RtGEj/w8g8=;
+	s=korg; t=1734016729;
+	bh=RAPzDKVz7GCslkY1cufuQqXTPwZGhqlYI2DJouCZlZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5VdqtlRHoLHHVyWYXbBmRVIb+cb0xyZU6yVrmZpL2IXIwtQ80WsgrjCHo5sB8PiV
-	 ybHmDoda6jL8U6xXjvcN9E1sEgYHTG+tDVRtviHXJY9SXso37fdCPIWpaR6tmw/EBF
-	 7M4vk77QgGSde4/qm4Xx/z5+mnm/SHc+uMhoCZDw=
+	b=t2FJwGONkdASVJKeFw9TjQvkPOuS8YrqnEcW+e0tHVIoml+1qTdb6xlkrFXDZUqLv
+	 IVUfveX66xExCsj4LRlXycmKTO9iu6WOljUpAliloLIZawDu481aQHtYKjj9PjAXqh
+	 QvrtopHrnWjfM+AR0cmgEMc87lJveylYb22voV24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Hauser <jahau@rocketmail.com>,
-	kernel test robot <lkp@intel.com>,
-	David Laight <david.laight@aculab.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Troy Hanson <quic_thanson@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/356] iio: magnetometer: yas530: use signed integer type for clamp limits
+Subject: [PATCH 6.12 282/466] accel/qaic: Add AIC080 support
 Date: Thu, 12 Dec 2024 15:57:31 +0100
-Message-ID: <20241212144249.865400192@linuxfoundation.org>
+Message-ID: <20241212144317.931735977@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,87 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakob Hauser <jahau@rocketmail.com>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
-[ Upstream commit f1ee5483e40881d8ad5a63aa148b753b5c6a839b ]
+[ Upstream commit b8128f7815ff135f0333c1b46dcdf1543c41b860 ]
 
-In the function yas537_measure() there is a clamp_val() with limits of
--BIT(13) and BIT(13) - 1.  The input clamp value h[] is of type s32.  The
-BIT() is of type unsigned long integer due to its define in
-include/vdso/bits.h.  The lower limit -BIT(13) is recognized as -8192 but
-expressed as an unsigned long integer.  The size of an unsigned long
-integer differs between 32-bit and 64-bit architectures.  Converting this
-to type s32 may lead to undesired behavior.
+Add basic support for the new AIC080 product. The PCIe Device ID is
+0xa080. AIC080 is a lower cost, lower performance SKU variant of AIC100.
+>From the qaic perspective, it is the same as AIC100.
 
-Additionally, in the calculation lines h[0], h[1] and h[2] the unsigned
-long integer divisor BIT(13) causes an unsigned division, shifting the
-left-hand side of the equation back and forth, possibly ending up in large
-positive values instead of negative values on 32-bit architectures.
-
-To solve those two issues, declare a signed integer with a value of
-BIT(13).
-
-There is another omission in the clamp line: clamp_val() returns a value
-and it's going nowhere here.  Self-assign it to h[i] to make use of the
-clamp macro.
-
-Finally, replace clamp_val() macro by clamp() because after changing the
-limits from type unsigned long integer to signed integer it's fine that
-way.
-
-Link: https://lkml.kernel.org/r/11609b2243c295d65ab4d47e78c239d61ad6be75.1732914810.git.jahau@rocketmail.com
-Fixes: 65f79b501030 ("iio: magnetometer: yas530: Add YAS537 variant")
-Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411230458.dhZwh3TT-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202411282222.oF0B4110-lkp@intel.com/
-Reviewed-by: David Laight <david.laight@aculab.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241004195209.3910996-1-quic_jhugo@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/magnetometer/yamaha-yas530.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ Documentation/accel/qaic/aic080.rst | 14 ++++++++++++++
+ Documentation/accel/qaic/index.rst  |  1 +
+ drivers/accel/qaic/qaic_drv.c       |  4 +++-
+ 3 files changed, 18 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/accel/qaic/aic080.rst
 
-diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index c5e485bfc6fc0..0b6cabc7501bb 100644
---- a/drivers/iio/magnetometer/yamaha-yas530.c
-+++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -372,6 +372,7 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
- 	u8 data[8];
- 	u16 xy1y2[3];
- 	s32 h[3], s[3];
-+	int half_range = BIT(13);
- 	int i, ret;
+diff --git a/Documentation/accel/qaic/aic080.rst b/Documentation/accel/qaic/aic080.rst
+new file mode 100644
+index 0000000000000..d563771ea6ce4
+--- /dev/null
++++ b/Documentation/accel/qaic/aic080.rst
+@@ -0,0 +1,14 @@
++.. SPDX-License-Identifier: GPL-2.0-only
++
++===============================
++ Qualcomm Cloud AI 80 (AIC080)
++===============================
++
++Overview
++========
++
++The Qualcomm Cloud AI 80/AIC080 family of products are a derivative of AIC100.
++The number of NSPs and clock rates are reduced to fit within resource
++constrained solutions. The PCIe Product ID is 0xa080.
++
++As a derivative product, all AIC100 documentation applies.
+diff --git a/Documentation/accel/qaic/index.rst b/Documentation/accel/qaic/index.rst
+index ad19b88d1a669..967b9dd8bacea 100644
+--- a/Documentation/accel/qaic/index.rst
++++ b/Documentation/accel/qaic/index.rst
+@@ -10,4 +10,5 @@ accelerator cards.
+ .. toctree::
  
- 	mutex_lock(&yas5xx->lock);
-@@ -406,13 +407,13 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
- 	/* The second version of YAS537 needs to include calibration coefficients */
- 	if (yas5xx->version == YAS537_VERSION_1) {
- 		for (i = 0; i < 3; i++)
--			s[i] = xy1y2[i] - BIT(13);
--		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / BIT(13);
--		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / BIT(13);
--		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / BIT(13);
-+			s[i] = xy1y2[i] - half_range;
-+		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / half_range;
-+		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / half_range;
-+		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / half_range;
- 		for (i = 0; i < 3; i++) {
--			clamp_val(h[i], -BIT(13), BIT(13) - 1);
--			xy1y2[i] = h[i] + BIT(13);
-+			h[i] = clamp(h[i], -half_range, half_range - 1);
-+			xy1y2[i] = h[i] + half_range;
- 		}
- 	}
+    qaic
++   aic080
+    aic100
+diff --git a/drivers/accel/qaic/qaic_drv.c b/drivers/accel/qaic/qaic_drv.c
+index bf10156c334e7..f139c564eadf9 100644
+--- a/drivers/accel/qaic/qaic_drv.c
++++ b/drivers/accel/qaic/qaic_drv.c
+@@ -34,6 +34,7 @@
  
+ MODULE_IMPORT_NS(DMA_BUF);
+ 
++#define PCI_DEV_AIC080			0xa080
+ #define PCI_DEV_AIC100			0xa100
+ #define QAIC_NAME			"qaic"
+ #define QAIC_DESC			"Qualcomm Cloud AI Accelerators"
+@@ -365,7 +366,7 @@ static struct qaic_device *create_qdev(struct pci_dev *pdev, const struct pci_de
+ 		return NULL;
+ 
+ 	qdev->dev_state = QAIC_OFFLINE;
+-	if (id->device == PCI_DEV_AIC100) {
++	if (id->device == PCI_DEV_AIC080 || id->device == PCI_DEV_AIC100) {
+ 		qdev->num_dbc = 16;
+ 		qdev->dbc = devm_kcalloc(dev, qdev->num_dbc, sizeof(*qdev->dbc), GFP_KERNEL);
+ 		if (!qdev->dbc)
+@@ -607,6 +608,7 @@ static struct mhi_driver qaic_mhi_driver = {
+ };
+ 
+ static const struct pci_device_id qaic_ids[] = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, PCI_DEV_AIC080), },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, PCI_DEV_AIC100), },
+ 	{ }
+ };
 -- 
 2.43.0
 
