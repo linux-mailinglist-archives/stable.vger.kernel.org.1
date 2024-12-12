@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-101576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031369EED4E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4C09EF177
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 175C3165C38
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC70C28A668
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9805421E0AE;
-	Thu, 12 Dec 2024 15:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408832288EA;
+	Thu, 12 Dec 2024 16:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvp181UH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zi/JEnwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C056F2FE;
-	Thu, 12 Dec 2024 15:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04E9223C7A;
+	Thu, 12 Dec 2024 16:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018047; cv=none; b=VbiiuITIrsbvyNC2XQlkhehQ+f3Mu1TUyBexTu6xHC348miNGE2xxWG0spkHZmjog8Wryc+D3SO1DDZ9HWIas/ky1dmTK9a/kIfeG590GY78rKvF++Zj5/aIilzlqIahIkHKcK+ml6Yhxwgxzwiepn5GqdO4pEb1zUHXkY0zcb0=
+	t=1734020883; cv=none; b=Z9SCHCnSGH7uiJvjO5Yh4GMGVlfwnSXhF/KGTU784FRGMi55wN1UH/+s/XttCgIgVXDsj+HJZwyAWpnHbN8MGry21iQGxBeVbKitvhibsGkzLCz8pabeENoPikVM3KKrqiadgP/tahf6i24ni4Aje5PGYc3NiaAy3IIThuRT0yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018047; c=relaxed/simple;
-	bh=YOddXO79Phe41kj+WUMtht2J3++Df1pkTEtnEo5+U8M=;
+	s=arc-20240116; t=1734020883; c=relaxed/simple;
+	bh=HphD5u/5pNAzWWqTlcfOmRLO1bealntrUiStxgsmOXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toJSGS1VPMRbghTxTjsPK584glIERrc3bMexhc13sCK35PLgH4ycgbE7D7KUDJtJM/mtuGzBeXJLdREqty6Pe3Vrpo4EmnEEhNGiacdJza+H/IH15YwlqawXvqL0mjN5OYadQ4RI01044D+TPUKRewGYJKFQaWok9avGY3WZBlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvp181UH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86351C4CECE;
-	Thu, 12 Dec 2024 15:40:46 +0000 (UTC)
+	 MIME-Version; b=hLzfGxxN50L/R2s54Ziz6hujAgY2UiAWpSemISi5gnsUmJtat6MrfUgkvOd7NPHhb0+srts95wnecBlnJW6g3OzhrOvl8yH7/FRuDajIUOlARzlFblkPUqAWM/sTmNvaRsS6doAzix5u/FUtzRtPSgvTYEUr6uKvPxdtWJdALS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zi/JEnwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40758C4CECE;
+	Thu, 12 Dec 2024 16:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018046;
-	bh=YOddXO79Phe41kj+WUMtht2J3++Df1pkTEtnEo5+U8M=;
+	s=korg; t=1734020882;
+	bh=HphD5u/5pNAzWWqTlcfOmRLO1bealntrUiStxgsmOXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rvp181UHLDSzaa/hfA90PQmx00zge2Xo1ho3HJvVVMoLPUeXpW/RaqqmtMadLoBSq
-	 hc9EuGKmNBynvmGZ618qqCxWpAgjvI8SpgyLNGVUyoTIcSV2MXQTrDSie4RpruBz1X
-	 OoC4ZrD204r0CsyiiTjzDafdh09Ctumo59DACUqw=
+	b=Zi/JEnwj9ZyMYErnNBHcZNvDB9sNIbst/loJScNY07oiv1NzerM8NfstOe5zVTWH9
+	 JbaSEQWyjskgIg4RrTHuTTPZF33dKHwxWoM5HqD9s6n8yx4I92/ixKWaiBVTY4cs8F
+	 lxS9pU6F6O+Fa/pWg6ALC6Bf47XEQV3YVyti/t2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jared Kangas <jkangas@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 182/356] kasan: make report_lock a raw spinlock
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Sathvika Vasireddy <sv@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 556/772] powerpc/vdso: Skip objtool from running on VDSO files
 Date: Thu, 12 Dec 2024 15:58:21 +0100
-Message-ID: <20241212144251.820701534@linuxfoundation.org>
+Message-ID: <20241212144412.942968747@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jared Kangas <jkangas@redhat.com>
+From: Sathvika Vasireddy <sv@linux.ibm.com>
 
-commit e30a0361b8515d424c73c67de1a43e45a13b8ba2 upstream.
+[ Upstream commit d0160bd5d389da247fb5affb6a35ea393d22fedb ]
 
-If PREEMPT_RT is enabled, report_lock is a sleeping spinlock and must not
-be locked when IRQs are disabled.  However, KASAN reports may be triggered
-in such contexts.  For example:
+Do not run objtool on VDSO files, by using OBJECT_FILES_NON_STANDARD.
 
-        char *s = kzalloc(1, GFP_KERNEL);
-        kfree(s);
-        local_irq_disable();
-        char c = *s;  /* KASAN report here leads to spin_lock() */
-        local_irq_enable();
-
-Make report_spinlock a raw spinlock to prevent rescheduling when
-PREEMPT_RT is enabled.
-
-Link: https://lkml.kernel.org/r/20241119210234.1602529-1-jkangas@redhat.com
-Fixes: 342a93247e08 ("locking/spinlock: Provide RT variant header: <linux/spinlock_rt.h>")
-Signed-off-by: Jared Kangas <jkangas@redhat.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Reviewed-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20221114175754.1131267-8-sv@linux.ibm.com
+Stable-dep-of: d677ce521334 ("powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kasan/report.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/vdso/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/kasan/report.c
-+++ b/mm/kasan/report.c
-@@ -199,7 +199,7 @@ static inline void fail_non_kasan_kunit_
- 
- #endif /* CONFIG_KUNIT */
- 
--static DEFINE_SPINLOCK(report_lock);
-+static DEFINE_RAW_SPINLOCK(report_lock);
- 
- static void start_report(unsigned long *flags, bool sync)
- {
-@@ -210,7 +210,7 @@ static void start_report(unsigned long *
- 	lockdep_off();
- 	/* Make sure we don't end up in loop. */
- 	report_suppress_start();
--	spin_lock_irqsave(&report_lock, *flags);
-+	raw_spin_lock_irqsave(&report_lock, *flags);
- 	pr_err("==================================================================\n");
- }
- 
-@@ -220,7 +220,7 @@ static void end_report(unsigned long *fl
- 		trace_error_report_end(ERROR_DETECTOR_KASAN,
- 				       (unsigned long)addr);
- 	pr_err("==================================================================\n");
--	spin_unlock_irqrestore(&report_lock, *flags);
-+	raw_spin_unlock_irqrestore(&report_lock, *flags);
- 	if (!test_bit(KASAN_BIT_MULTI_SHOT, &kasan_flags))
- 		check_panic_on_warn("KASAN");
- 	switch (kasan_arg_fault) {
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index a2e7b0ce5b191..6a977b0d8ffc3 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -102,3 +102,5 @@ quiet_cmd_vdso64ld_and_check = VDSO64L $@
+       cmd_vdso64ld_and_check = $(VDSOCC) $(c_flags) $(CC64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^) -z noexecstack ; $(cmd_vdso_check)
+ quiet_cmd_vdso64as = VDSO64A $@
+       cmd_vdso64as = $(VDSOCC) $(a_flags) $(CC64FLAGS) $(AS64FLAGS) -c -o $@ $<
++
++OBJECT_FILES_NON_STANDARD := y
+-- 
+2.43.0
+
 
 
 
