@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67569EF2E2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADD29EF11B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7621728C877
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28D04174012
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8099236953;
-	Thu, 12 Dec 2024 16:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5A823E6F4;
+	Thu, 12 Dec 2024 16:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnQPYFvZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tod4y3oL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93416236942;
-	Thu, 12 Dec 2024 16:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8C023DEAD;
+	Thu, 12 Dec 2024 16:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021950; cv=none; b=GSMTGT9pUzpwvVzY3eNJ8PsCpqcYSVW3kqgr5bsERqiH5gCXQAO3fADkpsmoFofgB/SEWNcsSdfdyOYDBSKMPmAWN07KsdCGWrELUvXE1drSTg/PRR03EwLnFQLt9lUBk4wCTyCrt9TMtLnI/ryHkw+73ZsTM49fo/260pLBHys=
+	t=1734019955; cv=none; b=WQxO4KO7M3xhqjIiwoJ6COHV2kYk3nMZKQxLv5z05wdYM1EoaNIBMe9efYU7K6jQhjVxHWapI4+mhOHNYGAMhIc8+KTUBsQOg2lHnResHboFGscI0lahzGUGOBSVqOsCxrdwwvH8YBBN3P2cJXF3FG3qVfuIT6R1dPVcFE11K+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021950; c=relaxed/simple;
-	bh=Z1cP6uYQlH214bnzZaQfqwXW4Q23RB76Q9RbMFSVpmI=;
+	s=arc-20240116; t=1734019955; c=relaxed/simple;
+	bh=YcFN0MkYsEJ2AFOU5yVGluXvP6WJet90/ezVlCAgWKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9WsSIlWnTa7Z0B6mAdIHxZT29hJrjAaKiAePkgP9Nbe9J01gIFmJ4dz7gbKFV8xBR0uMxEyF+LLAGcOxlzHiMbsN1p/XhqhMAFMD7l5n47zTTW68TPOl95hiFW8gGP5HEAlDb2FuVZzegQZhilfxNsgbfY9b+phAwF7H8sVI0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnQPYFvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903E4C4CECE;
-	Thu, 12 Dec 2024 16:45:49 +0000 (UTC)
+	 MIME-Version; b=kQJYwQUQL8anhCYhgFM8qTnPqbI3llmcZw05KW+TtQI1XBStEt+TIAbbV+T+LpwLNcQ1RumHEKC0UxiHYF7veZgjfd7732NJuFSREQkwsnj0n9cGymuP21RgrusZ0627BHS5YBmC+fQjgkoZIj+YabGTnSXQAwGGV4hQVsv/6CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tod4y3oL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F91C4CECE;
+	Thu, 12 Dec 2024 16:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021950;
-	bh=Z1cP6uYQlH214bnzZaQfqwXW4Q23RB76Q9RbMFSVpmI=;
+	s=korg; t=1734019954;
+	bh=YcFN0MkYsEJ2AFOU5yVGluXvP6WJet90/ezVlCAgWKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nnQPYFvZTOr0ILVm61mDWjm7VTa9JmDur8mjXF0XxMFio24MvYyW0EkP13Dmpnmox
-	 uGvRDDLvtIl2ba0MQiLuwuVBphOuzTPJmYnwf7M2E3BTU6KyHw43XuiNCPi+CVWobK
-	 6HN2sOvQ/6JGc9a6yupmGJ7wGgTg4zXjBX6MpyCU=
+	b=tod4y3oLfw/aym6WEYf9/VXDC6nYlqdxc+TteFZA7hOyHFxlTkDsp1/zsIM4VtKN/
+	 zWX5Eio3w1+683u3EY3ECeeh2i5hG7ccjYyb6tavE9JOJhiOtzGsfujJeKvsWAtpB1
+	 XrUp3V/X30I/qYmj4dL7Gqu3KpqTBNpQR80V6SEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/565] s390/syscalls: Avoid creation of arch/arch/ directory
-Date: Thu, 12 Dec 2024 15:54:44 +0100
-Message-ID: <20241212144315.005648391@linuxfoundation.org>
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>
+Subject: [PATCH 6.1 340/772] scsi: lpfc: Validate hdwq pointers before dereferencing in reset/errata paths
+Date: Thu, 12 Dec 2024 15:54:45 +0100
+Message-ID: <20241212144403.963829216@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 0708967e2d56e370231fd07defa0d69f9ad125e8 ]
+commit 2be1d4f11944cd6283cb97268b3e17c4424945ca upstream.
 
-Building the kernel with ARCH=s390 creates a weird arch/arch/ directory.
+When the HBA is undergoing a reset or is handling an errata event, NULL ptr
+dereference crashes may occur in routines such as
+lpfc_sli_flush_io_rings(), lpfc_dev_loss_tmo_callbk(), or
+lpfc_abort_handler().
 
-  $ find arch/arch
-  arch/arch
-  arch/arch/s390
-  arch/arch/s390/include
-  arch/arch/s390/include/generated
-  arch/arch/s390/include/generated/asm
-  arch/arch/s390/include/generated/uapi
-  arch/arch/s390/include/generated/uapi/asm
+Add NULL ptr checks before dereferencing hdwq pointers that may have been
+freed due to operations colliding with a reset or errata event handler.
 
-The root cause is 'targets' in arch/s390/kernel/syscalls/Makefile,
-where the relative path is incorrect.
-
-Strictly speaking, 'targets' was not necessary in the first place
-because this Makefile uses 'filechk' instead of 'if_changed'.
-
-However, this commit keeps it, as it will be useful when converting
-'filechk' to 'if_changed' later.
-
-Fixes: 5c75824d915e ("s390/syscalls: add Makefile to generate system call header files")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20241111134603.2063226-1-masahiroy@kernel.org
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20240726231512.92867-4-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[Xiangyu: BP to fix CVE: CVE-2024-49891, no test_bit() conflict resolution]
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/syscalls/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c |    3 ++-
+ drivers/scsi/lpfc/lpfc_scsi.c    |   13 +++++++++++--
+ drivers/scsi/lpfc/lpfc_sli.c     |   11 +++++++++++
+ 3 files changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/arch/s390/kernel/syscalls/Makefile b/arch/s390/kernel/syscalls/Makefile
-index b98f25029b8e6..7b77ed779c7b2 100644
---- a/arch/s390/kernel/syscalls/Makefile
-+++ b/arch/s390/kernel/syscalls/Makefile
-@@ -12,7 +12,7 @@ kapi-hdrs-y := $(kapi)/unistd_nr.h
- uapi-hdrs-y := $(uapi)/unistd_32.h
- uapi-hdrs-y += $(uapi)/unistd_64.h
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -177,7 +177,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport
+ 	/* Don't schedule a worker thread event if the vport is going down.
+ 	 * The teardown process cleans up the node via lpfc_drop_node.
+ 	 */
+-	if (vport->load_flag & FC_UNLOADING) {
++	if ((vport->load_flag & FC_UNLOADING) ||
++	    !(phba->hba_flag & HBA_SETUP)) {
+ 		((struct lpfc_rport_data *)rport->dd_data)->pnode = NULL;
+ 		ndlp->rport = NULL;
  
--targets += $(addprefix ../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
-+targets += $(addprefix ../../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -5554,11 +5554,20 @@ lpfc_abort_handler(struct scsi_cmnd *cmn
  
- PHONY += kapi uapi
+ 	iocb = &lpfc_cmd->cur_iocbq;
+ 	if (phba->sli_rev == LPFC_SLI_REV4) {
+-		pring_s4 = phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring;
+-		if (!pring_s4) {
++		/* if the io_wq & pring are gone, the port was reset. */
++		if (!phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq ||
++		    !phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring) {
++			lpfc_printf_vlog(vport, KERN_WARNING, LOG_FCP,
++					 "2877 SCSI Layer I/O Abort Request "
++					 "IO CMPL Status x%x ID %d LUN %llu "
++					 "HBA_SETUP %d\n", FAILED,
++					 cmnd->device->id,
++					 (u64)cmnd->device->lun,
++					 (HBA_SETUP & phba->hba_flag));
+ 			ret = FAILED;
+ 			goto out_unlock_hba;
+ 		}
++		pring_s4 = phba->sli4_hba.hdwq[iocb->hba_wqidx].io_wq->pring;
+ 		spin_lock(&pring_s4->ring_lock);
+ 	}
+ 	/* the command is in process of being cancelled */
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -4668,6 +4668,17 @@ lpfc_sli_flush_io_rings(struct lpfc_hba
+ 	/* Look on all the FCP Rings for the iotag */
+ 	if (phba->sli_rev >= LPFC_SLI_REV4) {
+ 		for (i = 0; i < phba->cfg_hdw_queue; i++) {
++			if (!phba->sli4_hba.hdwq ||
++			    !phba->sli4_hba.hdwq[i].io_wq) {
++				lpfc_printf_log(phba, KERN_ERR, LOG_SLI,
++						"7777 hdwq's deleted %lx "
++						"%lx %x %x\n",
++						(unsigned long)phba->pport->load_flag,
++						(unsigned long)phba->hba_flag,
++						phba->link_state,
++						phba->sli.sli_flag);
++				return;
++			}
+ 			pring = phba->sli4_hba.hdwq[i].io_wq->pring;
  
--- 
-2.43.0
-
+ 			spin_lock_irq(&pring->ring_lock);
 
 
 
