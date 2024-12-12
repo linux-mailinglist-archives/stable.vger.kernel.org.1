@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-102975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3CC9EF572
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD549EF737
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C47CB1943247
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084EC188E89B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA650222D44;
-	Thu, 12 Dec 2024 17:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7BB216E2D;
+	Thu, 12 Dec 2024 17:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YuNUAmKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/eFG3dl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65AF2F44;
-	Thu, 12 Dec 2024 17:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DED215764;
+	Thu, 12 Dec 2024 17:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023161; cv=none; b=KDl1RK0vTfa5hM2nGiDPw89Bif+SYTWmO2e6zkvvoCfICrZvWqD3ORq+U2aissK+UsEWdbUmRdxrY6u6dcajE6ZoI4Aync9nhsM4ZExLbVKzaLsa7bEfG+tk/s9F76mDaX8MyZ76H2h2Y16KLPxDMv9mhHll7MKmfTqHB8Q8CpI=
+	t=1734024451; cv=none; b=pymsAOzjd6NRu6Wif2JMXoJp7DqcSsv+UwIGpt2DFuY/cEsS8yNRzkMs8YlP25Rlx/TEfRdxQB0RobqeBgyQOBFZ6ma22+rVt9UQ24IJk5jE8miA9FSSjw8kQNmXhMUcfPLfhy3gBiHLr6Wr9vvJTRhOqlr+mqpnrLb1BDLXj9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023161; c=relaxed/simple;
-	bh=dUg7lEErABV4duRgyFK3KdsT4Fyo40NJUE16Z6Rt2SI=;
+	s=arc-20240116; t=1734024451; c=relaxed/simple;
+	bh=0u4PesDOO1OqmywZ8Jl5s7nLAEu9Sl9zfofZZk0XTy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p7PSGxG9lHmr3sspdJr2/TnnOUW4LfhjR+6h0+pqinupzAFPs8RCRyt+TR7iOwAU1D7wEzSbEFB4H4b32vYDpyT8oLXDui2uTkZr0Y6qjonmYz79CVMqUapAE7A9fk4xs9qitbp8F/jMdthAjWFTTC8wjNOKBnZLMzdJITLYVNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YuNUAmKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246F9C4CECE;
-	Thu, 12 Dec 2024 17:06:00 +0000 (UTC)
+	 MIME-Version; b=FWrNqzXumOw4exo+mdnCU6xIVNW9WgQltMpwcEsm4HYq74zbOcUvYW2tt5E/o9vLOZ6GmU2djnPndKNaX/Li060HE71LGiF+11jxTBApl09qFga8rW4d5Kva/4xfFcLoHn/6Fa/KWzzeB1WF3+sf+6zizmjgtHfr4pwaTdg/Xao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/eFG3dl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBB9C4CED0;
+	Thu, 12 Dec 2024 17:27:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023161;
-	bh=dUg7lEErABV4duRgyFK3KdsT4Fyo40NJUE16Z6Rt2SI=;
+	s=korg; t=1734024451;
+	bh=0u4PesDOO1OqmywZ8Jl5s7nLAEu9Sl9zfofZZk0XTy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YuNUAmKQqiQ8XZpzZnvMRfEOT3ipiRU0PpHoL0qF6f4OU2JIuLlfUYB+qCDDK6hJT
-	 OzX8Y+oWOYA2nc3akmn/wGDlngz2pTp+gqmFTqLxuRbxmKRN+G6gR7dqoKRIaHLm/z
-	 wSKMgZkR58fZpQYNPJk7R8lFCUatiVrfiNmQbQG8=
+	b=u/eFG3dlH2G4LEhzWOkyZQKlVhgdYhJj4YJX8PJA3P7R8DTs7UzpHVMnXMMCcSZfR
+	 DcMM3csuzbNlhtIO6K0K0jMhGJ8+HYaYlLPcxKPC6l54D41XasV0AJRFZdMc0KtnQ0
+	 loMZe15jO+UBcmU7tFrTrGt+dvxxIMwj+5wBpx7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Alex Zenla <alex@edera.dev>,
+	Alexander Merritt <alexander@edera.dev>,
+	Ariadne Conill <ariadne@ariadne.space>,
+	Juergen Gross <jgross@suse.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 443/565] bpf: Handle BPF_EXIST and BPF_NOEXIST for LPM trie
+Subject: [PATCH 5.10 300/459] 9p/xen: fix init sequence
 Date: Thu, 12 Dec 2024 16:00:38 +0100
-Message-ID: <20241212144329.209115895@linuxfoundation.org>
+Message-ID: <20241212144305.492630908@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Alex Zenla <alex@edera.dev>
 
-[ Upstream commit eae6a075e9537dd69891cf77ca5a88fa8a28b4a1 ]
+[ Upstream commit 7ef3ae82a6ebbf4750967d1ce43bcdb7e44ff74b ]
 
-Add the currently missing handling for the BPF_EXIST and BPF_NOEXIST
-flags. These flags can be specified by users and are relevant since LPM
-trie supports exact matches during update.
+Large amount of mount hangs observed during hotplugging of 9pfs devices. The
+9pfs Xen driver attempts to initialize itself more than once, causing the
+frontend and backend to disagree: the backend listens on a channel that the
+frontend does not send on, resulting in stalled processing.
 
-Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241206110622.1161752-4-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Only allow initialization of 9p frontend once.
+
+Fixes: c15fe55d14b3b ("9p/xen: fix connection sequence")
+Signed-off-by: Alex Zenla <alex@edera.dev>
+Signed-off-by: Alexander Merritt <alexander@edera.dev>
+Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241119211633.38321-1-alexander@edera.dev>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ net/9p/trans_xen.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 6b2bf71f8de4b..0ab0ad989eaff 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -366,6 +366,10 @@ static int trie_update_elem(struct bpf_map *map,
- 	 * simply assign the @new_node to that slot and be done.
- 	 */
- 	if (!node) {
-+		if (flags == BPF_EXIST) {
-+			ret = -ENOENT;
-+			goto out;
-+		}
- 		rcu_assign_pointer(*slot, new_node);
- 		goto out;
- 	}
-@@ -374,18 +378,31 @@ static int trie_update_elem(struct bpf_map *map,
- 	 * which already has the correct data array set.
- 	 */
- 	if (node->prefixlen == matchlen) {
-+		if (!(node->flags & LPM_TREE_NODE_FLAG_IM)) {
-+			if (flags == BPF_NOEXIST) {
-+				ret = -EEXIST;
-+				goto out;
-+			}
-+			trie->n_entries--;
-+		} else if (flags == BPF_EXIST) {
-+			ret = -ENOENT;
-+			goto out;
-+		}
-+
- 		new_node->child[0] = node->child[0];
- 		new_node->child[1] = node->child[1];
- 
--		if (!(node->flags & LPM_TREE_NODE_FLAG_IM))
--			trie->n_entries--;
--
- 		rcu_assign_pointer(*slot, new_node);
- 		kfree_rcu(node, rcu);
- 
- 		goto out;
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index da056170849bf..dc8702024c555 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -487,6 +487,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 		goto error;
  	}
  
-+	if (flags == BPF_EXIST) {
-+		ret = -ENOENT;
-+		goto out;
-+	}
++	xenbus_switch_state(dev, XenbusStateInitialised);
+ 	return 0;
+ 
+  error_xenbus:
+@@ -534,8 +535,10 @@ static void xen_9pfs_front_changed(struct xenbus_device *dev,
+ 		break;
+ 
+ 	case XenbusStateInitWait:
+-		if (!xen_9pfs_front_init(dev))
+-			xenbus_switch_state(dev, XenbusStateInitialised);
++		if (dev->state != XenbusStateInitialising)
++			break;
 +
- 	/* If the new node matches the prefix completely, it must be inserted
- 	 * as an ancestor. Simply insert it between @node and *@slot.
- 	 */
++		xen_9pfs_front_init(dev);
+ 		break;
+ 
+ 	case XenbusStateConnected:
 -- 
 2.43.0
 
