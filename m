@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-101986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665A69EEF84
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:17:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8149EF048
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23CC12978C1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93CEE177E88
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDDC230278;
-	Thu, 12 Dec 2024 16:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2FC233687;
+	Thu, 12 Dec 2024 16:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOtrQT6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3YguFFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADFA222D75;
-	Thu, 12 Dec 2024 16:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378FD223E62;
+	Thu, 12 Dec 2024 16:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019531; cv=none; b=SC+W2wFFxqXxZsKq5ib8K26A7tBG2hf9NAbqc2cS33noEFb5gWqvVUW7cDdMv7QcFKXJ6rd0Oz4ZcNjW07UjvkWWz6+ZSX5IPa6g8hCvBeC7XSUYm3QBB21IAe50oaC/kX3QvXzPdlSyE73Uui12z75vm2JRFzw+muWwpAWcu1g=
+	t=1734019575; cv=none; b=cYbmkG+mlnZXDC1x1G7/VLRZOvk8SNMf/3bw53bvpeIHzVtw4uqPXNzpR6eWuEaBsVhZu2GshXPfAo0Lw7LBwdy4/3SpLgqIP58eP7yLH3qUmi/WdXeDPLj74jvxmyzAK9IXrZ2nJLXfB+rGEYb8t/o/exD6CcEhsujIW4Vtu/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019531; c=relaxed/simple;
-	bh=Ra9rIS/DKZCYCjgOrIXLSmB7xF3yMs18vx24WtVa5os=;
+	s=arc-20240116; t=1734019575; c=relaxed/simple;
+	bh=j9zebcePuHgjLvfgf1KMRBqSjl9+BQKTIDn+lRcEi+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a55BURMnCaI161Sd8zwfX2EsAKoHMGAe5WwF+3i9JM1NbTk2x2T220sCQ5sdDlU1VRjz+kR1FpT1CakYG5+y8S0nZlm2whm0wjTaEjdPo4Beb/Q9JqHfSsj2Moo7/PeiAN1YzDFdfKl9aX5Y48Kp0ZmZ7CjVsMVE2j/ryhs/+sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOtrQT6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69622C4CED0;
-	Thu, 12 Dec 2024 16:05:30 +0000 (UTC)
+	 MIME-Version; b=WLaBUoJD/aRmCos6H9WEH+UXrV6JIbPQI60J/y1G3kbNNaSO/JpynRjRmctm/i88WgRD8doRSuvdYoTUYvrhciQB9YtT0OkF4acyTNJJs+mkiFmkbsO8z35lIiDtikjjG4YjB2EXtEVwEob3hi57cAlI6wLZeYEbCJ05dhqHT64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3YguFFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FFBC4CECE;
+	Thu, 12 Dec 2024 16:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019530;
-	bh=Ra9rIS/DKZCYCjgOrIXLSmB7xF3yMs18vx24WtVa5os=;
+	s=korg; t=1734019575;
+	bh=j9zebcePuHgjLvfgf1KMRBqSjl9+BQKTIDn+lRcEi+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOtrQT6EmRhn/kVzKkH+tUxRNRmUROOqtGhcxPSTWhWhNTyEUw61ej2k9Mw4yQ/Wi
-	 iZS0J6iPcxj90I78kmAFBhzjAj8EB/TS/mHm+X5FPKnCkR9PrWjxjqnbgrEaG/nQzl
-	 6MSPhRDIDb45JDYuJ2vzEEuXxBZ+wrBqW7yGN5VE=
+	b=q3YguFFtdv+Yu73cjB1YUGsZofdN5J3zKQziWwoHPRYPLhBopagXnuXWvOqhGp7Ph
+	 8ArYK+oePdkwZnrPqd0ew1I4qfOft7bnVV4JTd8c7ljxmmuyh2664iugVjXj4uMhw/
+	 WsjveVm9nMZNTBBiLNyXqF4NNKIFXWZPXp1+nAcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
 	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 224/772] RDMA/hns: Add clear_hem return value to log
-Date: Thu, 12 Dec 2024 15:52:49 +0100
-Message-ID: <20241212144359.163430592@linuxfoundation.org>
+Subject: [PATCH 6.1 225/772] RDMA/hns: Use dev_* printings in hem code instead of ibdev_*
+Date: Thu, 12 Dec 2024 15:52:50 +0100
+Message-ID: <20241212144359.202863032@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -67,113 +66,180 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit a519a612a71848b69b70b18b4d14d165b2d8aaf7 ]
+[ Upstream commit d81fb6511abf18591befaa5f4a972ffc838690ec ]
 
-Log return value of clear_hem() to help diagnose.
+The hem code is executed before ib_dev is registered, so use dev_*
+printing instead of ibdev_* to avoid log like this:
 
-Link: https://lore.kernel.org/r/20230523121641.3132102-4-huangjunxian6@hisilicon.com
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+(null): set HEM address to HW failed!
+
+Fixes: 2f49de21f3e9 ("RDMA/hns: Optimize mhop get flow for multi-hop addressing")
 Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: d81fb6511abf ("RDMA/hns: Use dev_* printings in hem code instead of ibdev_*")
+Link: https://patch.msgid.link/20241024124000.2931869-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.c | 44 ++++++++++++++++--------
- 1 file changed, 30 insertions(+), 14 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.c | 44 ++++++++++++------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-index 2c8f0fd9557d1..d0f338ff78df5 100644
+index d0f338ff78df5..d1b00bb389d9f 100644
 --- a/drivers/infiniband/hw/hns/hns_roce_hem.c
 +++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-@@ -619,6 +619,7 @@ static void clear_mhop_hem(struct hns_roce_dev *hr_dev,
+@@ -337,7 +337,7 @@ static int calc_hem_config(struct hns_roce_dev *hr_dev,
+ 			   struct hns_roce_hem_mhop *mhop,
+ 			   struct hns_roce_hem_index *index)
+ {
+-	struct ib_device *ibdev = &hr_dev->ib_dev;
++	struct device *dev = hr_dev->dev;
+ 	unsigned long mhop_obj = obj;
+ 	u32 l0_idx, l1_idx, l2_idx;
+ 	u32 chunk_ba_num;
+@@ -368,14 +368,14 @@ static int calc_hem_config(struct hns_roce_dev *hr_dev,
+ 		index->buf = l0_idx;
+ 		break;
+ 	default:
+-		ibdev_err(ibdev, "table %u not support mhop.hop_num = %u!\n",
+-			  table->type, mhop->hop_num);
++		dev_err(dev, "table %u not support mhop.hop_num = %u!\n",
++			table->type, mhop->hop_num);
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (unlikely(index->buf >= table->num_hem)) {
+-		ibdev_err(ibdev, "table %u exceed hem limt idx %llu, max %lu!\n",
+-			  table->type, index->buf, table->num_hem);
++		dev_err(dev, "table %u exceed hem limt idx %llu, max %lu!\n",
++			table->type, index->buf, table->num_hem);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -487,14 +487,14 @@ static int set_mhop_hem(struct hns_roce_dev *hr_dev,
+ 			struct hns_roce_hem_mhop *mhop,
+ 			struct hns_roce_hem_index *index)
+ {
+-	struct ib_device *ibdev = &hr_dev->ib_dev;
++	struct device *dev = hr_dev->dev;
+ 	u32 step_idx;
+ 	int ret = 0;
+ 
+ 	if (index->inited & HEM_INDEX_L0) {
+ 		ret = hr_dev->hw->set_hem(hr_dev, table, obj, 0);
+ 		if (ret) {
+-			ibdev_err(ibdev, "set HEM step 0 failed!\n");
++			dev_err(dev, "set HEM step 0 failed!\n");
+ 			goto out;
+ 		}
+ 	}
+@@ -502,7 +502,7 @@ static int set_mhop_hem(struct hns_roce_dev *hr_dev,
+ 	if (index->inited & HEM_INDEX_L1) {
+ 		ret = hr_dev->hw->set_hem(hr_dev, table, obj, 1);
+ 		if (ret) {
+-			ibdev_err(ibdev, "set HEM step 1 failed!\n");
++			dev_err(dev, "set HEM step 1 failed!\n");
+ 			goto out;
+ 		}
+ 	}
+@@ -514,7 +514,7 @@ static int set_mhop_hem(struct hns_roce_dev *hr_dev,
+ 			step_idx = mhop->hop_num;
+ 		ret = hr_dev->hw->set_hem(hr_dev, table, obj, step_idx);
+ 		if (ret)
+-			ibdev_err(ibdev, "set HEM step last failed!\n");
++			dev_err(dev, "set HEM step last failed!\n");
+ 	}
+ out:
+ 	return ret;
+@@ -524,14 +524,14 @@ static int hns_roce_table_mhop_get(struct hns_roce_dev *hr_dev,
+ 				   struct hns_roce_hem_table *table,
+ 				   unsigned long obj)
+ {
+-	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_hem_index index = {};
+ 	struct hns_roce_hem_mhop mhop = {};
++	struct device *dev = hr_dev->dev;
+ 	int ret;
+ 
+ 	ret = calc_hem_config(hr_dev, table, obj, &mhop, &index);
+ 	if (ret) {
+-		ibdev_err(ibdev, "calc hem config failed!\n");
++		dev_err(dev, "calc hem config failed!\n");
+ 		return ret;
+ 	}
+ 
+@@ -543,7 +543,7 @@ static int hns_roce_table_mhop_get(struct hns_roce_dev *hr_dev,
+ 
+ 	ret = alloc_mhop_hem(hr_dev, table, &mhop, &index);
+ 	if (ret) {
+-		ibdev_err(ibdev, "alloc mhop hem failed!\n");
++		dev_err(dev, "alloc mhop hem failed!\n");
+ 		goto out;
+ 	}
+ 
+@@ -551,7 +551,7 @@ static int hns_roce_table_mhop_get(struct hns_roce_dev *hr_dev,
+ 	if (table->type < HEM_TYPE_MTT) {
+ 		ret = set_mhop_hem(hr_dev, table, obj, &mhop, &index);
+ 		if (ret) {
+-			ibdev_err(ibdev, "set HEM address to HW failed!\n");
++			dev_err(dev, "set HEM address to HW failed!\n");
+ 			goto err_alloc;
+ 		}
+ 	}
+@@ -615,7 +615,7 @@ static void clear_mhop_hem(struct hns_roce_dev *hr_dev,
+ 			   struct hns_roce_hem_mhop *mhop,
+ 			   struct hns_roce_hem_index *index)
+ {
+-	struct ib_device *ibdev = &hr_dev->ib_dev;
++	struct device *dev = hr_dev->dev;
  	u32 hop_num = mhop->hop_num;
  	u32 chunk_ba_num;
  	u32 step_idx;
-+	int ret;
+@@ -645,21 +645,21 @@ static void clear_mhop_hem(struct hns_roce_dev *hr_dev,
  
- 	index->inited = HEM_INDEX_BUF;
- 	chunk_ba_num = mhop->bt_chunk_size / BA_BYTE_LEN;
-@@ -642,16 +643,24 @@ static void clear_mhop_hem(struct hns_roce_dev *hr_dev,
- 		else
- 			step_idx = hop_num;
+ 		ret = hr_dev->hw->clear_hem(hr_dev, table, obj, step_idx);
+ 		if (ret)
+-			ibdev_warn(ibdev, "failed to clear hop%u HEM, ret = %d.\n",
+-				   hop_num, ret);
++			dev_warn(dev, "failed to clear hop%u HEM, ret = %d.\n",
++				 hop_num, ret);
  
--		if (hr_dev->hw->clear_hem(hr_dev, table, obj, step_idx))
--			ibdev_warn(ibdev, "failed to clear hop%u HEM.\n", hop_num);
--
--		if (index->inited & HEM_INDEX_L1)
--			if (hr_dev->hw->clear_hem(hr_dev, table, obj, 1))
--				ibdev_warn(ibdev, "failed to clear HEM step 1.\n");
-+		ret = hr_dev->hw->clear_hem(hr_dev, table, obj, step_idx);
-+		if (ret)
-+			ibdev_warn(ibdev, "failed to clear hop%u HEM, ret = %d.\n",
-+				   hop_num, ret);
-+
-+		if (index->inited & HEM_INDEX_L1) {
-+			ret = hr_dev->hw->clear_hem(hr_dev, table, obj, 1);
-+			if (ret)
-+				ibdev_warn(ibdev, "failed to clear HEM step 1, ret = %d.\n",
-+					   ret);
-+		}
+ 		if (index->inited & HEM_INDEX_L1) {
+ 			ret = hr_dev->hw->clear_hem(hr_dev, table, obj, 1);
+ 			if (ret)
+-				ibdev_warn(ibdev, "failed to clear HEM step 1, ret = %d.\n",
+-					   ret);
++				dev_warn(dev, "failed to clear HEM step 1, ret = %d.\n",
++					 ret);
+ 		}
  
--		if (index->inited & HEM_INDEX_L0)
--			if (hr_dev->hw->clear_hem(hr_dev, table, obj, 0))
--				ibdev_warn(ibdev, "failed to clear HEM step 0.\n");
-+		if (index->inited & HEM_INDEX_L0) {
-+			ret = hr_dev->hw->clear_hem(hr_dev, table, obj, 0);
-+			if (ret)
-+				ibdev_warn(ibdev, "failed to clear HEM step 0, ret = %d.\n",
-+					   ret);
-+		}
+ 		if (index->inited & HEM_INDEX_L0) {
+ 			ret = hr_dev->hw->clear_hem(hr_dev, table, obj, 0);
+ 			if (ret)
+-				ibdev_warn(ibdev, "failed to clear HEM step 0, ret = %d.\n",
+-					   ret);
++				dev_warn(dev, "failed to clear HEM step 0, ret = %d.\n",
++					 ret);
+ 		}
  	}
  }
- 
-@@ -688,6 +697,7 @@ void hns_roce_table_put(struct hns_roce_dev *hr_dev,
+@@ -669,14 +669,14 @@ static void hns_roce_table_mhop_put(struct hns_roce_dev *hr_dev,
+ 				    unsigned long obj,
+ 				    int check_refcount)
  {
- 	struct device *dev = hr_dev->dev;
- 	unsigned long i;
-+	int ret;
+-	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_hem_index index = {};
+ 	struct hns_roce_hem_mhop mhop = {};
++	struct device *dev = hr_dev->dev;
+ 	int ret;
  
- 	if (hns_roce_check_whether_mhop(hr_dev, table->type)) {
- 		hns_roce_table_mhop_put(hr_dev, table, obj, 1);
-@@ -700,8 +710,10 @@ void hns_roce_table_put(struct hns_roce_dev *hr_dev,
- 					 &table->mutex))
+ 	ret = calc_hem_config(hr_dev, table, obj, &mhop, &index);
+ 	if (ret) {
+-		ibdev_err(ibdev, "calc hem config failed!\n");
++		dev_err(dev, "calc hem config failed!\n");
  		return;
+ 	}
  
--	if (hr_dev->hw->clear_hem(hr_dev, table, obj, HEM_HOP_STEP_DIRECT))
--		dev_warn(dev, "failed to clear HEM base address.\n");
-+	ret = hr_dev->hw->clear_hem(hr_dev, table, obj, HEM_HOP_STEP_DIRECT);
-+	if (ret)
-+		dev_warn(dev, "failed to clear HEM base address, ret = %d.\n",
-+			 ret);
- 
- 	hns_roce_free_hem(hr_dev, table->hem[i]);
- 	table->hem[i] = NULL;
-@@ -917,6 +929,8 @@ void hns_roce_cleanup_hem_table(struct hns_roce_dev *hr_dev,
- {
- 	struct device *dev = hr_dev->dev;
- 	unsigned long i;
-+	int obj;
-+	int ret;
- 
- 	if (hns_roce_check_whether_mhop(hr_dev, table->type)) {
- 		hns_roce_cleanup_mhop_hem_table(hr_dev, table);
-@@ -925,9 +939,11 @@ void hns_roce_cleanup_hem_table(struct hns_roce_dev *hr_dev,
- 
- 	for (i = 0; i < table->num_hem; ++i)
- 		if (table->hem[i]) {
--			if (hr_dev->hw->clear_hem(hr_dev, table,
--			    i * table->table_chunk_size / table->obj_size, 0))
--				dev_err(dev, "clear HEM base address failed.\n");
-+			obj = i * table->table_chunk_size / table->obj_size;
-+			ret = hr_dev->hw->clear_hem(hr_dev, table, obj, 0);
-+			if (ret)
-+				dev_err(dev, "clear HEM base address failed, ret = %d.\n",
-+					ret);
- 
- 			hns_roce_free_hem(hr_dev, table->hem[i]);
- 		}
 -- 
 2.43.0
 
