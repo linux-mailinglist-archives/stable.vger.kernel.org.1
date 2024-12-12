@@ -1,115 +1,118 @@
-Return-Path: <stable+bounces-100871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40CA9EE322
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 10:35:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 079A49EE325
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 10:35:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BD7C188922B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:35:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE83F188758F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E983120E318;
-	Thu, 12 Dec 2024 09:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8CF20E30D;
+	Thu, 12 Dec 2024 09:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dm/A1yj6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hHx2qL0s"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A682920E311
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 09:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B2C20E30C
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 09:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733996101; cv=none; b=sIOM70aT3ZrQPIzw03tR6Y0ydubtYLorTTTI63Wl158vHcpZ0YgmBYQ7E7nCmDHDTxGziKnBZC/E3XmtSdCJpPzcy5IGB4HR0s4VvhPc+A2Qx0kBWigw8Jaqq5mGtRS3rUu6PfYKAaEsPGeb3JdVfm1Sf1XDCYOJszusA3FdNY4=
+	t=1733996114; cv=none; b=DJ7ZZDfNQxsiSXDwHDf+4bIoTTNbmNXpLpxSemgm8WXMBWibDbyedmyWuee6ogd1+Zy8PSHPA5OTHmGAQyjXGPD52GwaG7UXsppSjb/Lii036NvIkJNDVJtU2B4Vu8/eNwPTAyTmW4Kpa0ibu0CJKJyeY2IFraLdBcMDmId/Ch0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733996101; c=relaxed/simple;
-	bh=HHclkJEe7ltjnV5LPkMt6YBe5vpfC581sZsic1DZYno=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YX/uevPII7ga4xCZchcWnomW+O/nJSHOv3hHVGFNn8wBE2/gNovUqMfVGa4n75lYC6KRaaOCDMg5bzIG7ZkCFpf3uPy9+gW2+7XVPrAeSbblTAHtU+2dFgez7esFt6hMDsbT6gQIOvf+tGi2CHzxwpcAWe2F8u6mNMBhztOBrc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dm/A1yj6; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aa67ac42819so57647166b.0
-        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 01:34:59 -0800 (PST)
+	s=arc-20240116; t=1733996114; c=relaxed/simple;
+	bh=Va7Rbm4URrvIDt/DyH6qR9FjFuQwl7M8B+lnkEdmojI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NQN25ukvZr3zRvvqoWPT7ul2xEgnWxnixa+Pew70+m7Ze4YBcp2/NxGc/qxXYeo6VewMJSm4VVWSa8cofMeD7IOPchlOOEc75kA0sXIDAaVzGKO5gkXezybTAUrioL+TRnC/YU9pxhNenUhiL/zgcVei97XkrBbTYyr4I5PN4Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hHx2qL0s; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4361d5dcf5bso3979275e9.3
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 01:35:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1733996098; x=1734600898; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HHclkJEe7ltjnV5LPkMt6YBe5vpfC581sZsic1DZYno=;
-        b=dm/A1yj6i/bNJkGbkc7RTTAXe1u5S7qlb3bXU8SWdFKPl29E9HDHrfDZD0U32zTIzw
-         jGXLRG4VKr0BNdok5TNMfjzD7ZbKZq4eW12x767WmqB3TGPRYanBIzRchWncrolt36ZP
-         bLGyRTXrnEnQVgf70x5dGnkn7kiuZGyRjHhAmrCL51xvtOPHPAbN0Xn1zegl1xNngqqJ
-         uLw6XbrKajB0Zn7dYtY/EU8UPoPHpKKFF2cMcVhsEPyP1v/lCQlaYH1p0KOR99o/WNKM
-         BJkegtILYSXOzo49VfwV0vdn+0k9Qx+w6dh4SVcpUDj5UzF23ANOTeNcR/ep0QfD0wa4
-         wBDQ==
+        d=linaro.org; s=google; t=1733996111; x=1734600911; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8c4l7lRS2bRhcX4yC4do8L3ZZ1P+9nyFTMOBopT/2GQ=;
+        b=hHx2qL0suimF4/i617UkBK/fOS+3VIjXHioNBPzo2FTACMU0te/AISNnmEBiYSvhTi
+         W1Lt/ZM4DNHJ7nMKmsRXmY2gaeHSnOe9Y2PqMulfcUUPUAtWNK8yidCZ6GcTq0h9jM/C
+         IdboEt/kEufShJmTCrLPpNNF0vYtui6LabZjeiqKbJ3kshEpWosjhV3tSVKs3W0sagMU
+         r/8DJKX5/ebUtPBFMikYwyFs8iGC+nP9DVpkiHdUnKVqpdeV7s+Rnyv2zbmQMU9d9wF0
+         nQKmjGCC/d4ixSCqab8FwrUC+zlKOWuWAWlaLlkoE3+K63E1NrmzROV1cVxcaRNn0l/Y
+         uhvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733996098; x=1734600898;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HHclkJEe7ltjnV5LPkMt6YBe5vpfC581sZsic1DZYno=;
-        b=BX5UE+C8HlbC5/l2jgJNLGKmyfZy3UbmgsEOerYWazJ+kU7bV8wXjZziBapGZlygZJ
-         9COFVGGKkIgkM00rca0iIOzSq7psbtkurtP0zx9saqK59eJRRBTaSg3GNsQc6hZ0YjFQ
-         iALX0+zBdULiiFT4gCd7xP9aVK4p5/YvP8OYONgaeaiEpmkqD9ZA9AFY6j4us5Vgaya6
-         wpOa6wPeML0xaB0tKjvCIqVGgpeqqMGKpnSfOvQ212yWapD3dWPbmPn+t6ki9kKM1MGG
-         psE1jkCYFKcZbBYVnXj+oyc+4K/2JR4vhzW6I6s88nHU03biyr9WgurUHcVdyYFfOGK4
-         iCAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVVqS5uiyigX29OZfom6hwPzCY3o7VmX/GgXjXegzWqjkD/p/XaRYRPtNt6ukc0Kw+zJIo/Ze4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxkN+00ZY8THmw7XXx1hjhRyG29bqxqASGSYY1vJBKvmyXYL8p
-	t7jMCJ9HEu1bOsJssRsTqaBU9VQLzW8LKiK44HekQXMO83nABDG9iorG/e7r407tg+LC3doww8m
-	HfDwIdNRWHFok72JAF5JlwN2VigsE5Za9JzlZRg==
-X-Gm-Gg: ASbGncvrp8JsH6BEI1PZgvFIzd9jAMA2yUh7LCFZdDxQSa962TG8bdTJNgzxalcGbaz
-	V6OCgUwoeWIoYlqlHLv01+OWb9nUEdwM3wEHx
-X-Google-Smtp-Source: AGHT+IGjmOUF0dmAFvQ+spqIORx1VvFbP7DOU+11FOPHLYxp+IkPWpvwS4gEQHgdr928IyJxvQcPXfqsqgvUnrfIthM=
-X-Received: by 2002:a17:906:1da9:b0:aa6:a33c:70a7 with SMTP id
- a640c23a62f3a-aa6c1d02831mr275658766b.49.1733996097955; Thu, 12 Dec 2024
- 01:34:57 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733996111; x=1734600911;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8c4l7lRS2bRhcX4yC4do8L3ZZ1P+9nyFTMOBopT/2GQ=;
+        b=h+uOzMUXkQTCJ6JFd5k5jQESsQCX1o3X0fJvDOc0j/p+R54wUuWxGT9EHCoNvOch4L
+         WXpEAyJ1C0le6r2S9KlxRW5favSb/G3whKa1ssQYVccPIGi8tVQyNufspj27rwmUJyWC
+         uGpWCStr6tVXVYD2LPctBAsuXe8PpP/blkT4eTI1Ub05X7o2uWSEeW3Zup5yQsvMxQhy
+         olY4ef+sNJqKvslitbUdFRyhrEfDEiD6siX324cGXNrhIRh/jVPSEgWUrQMY87kbPa8o
+         hFKxxswM7l0SLaY0stcKC5CEsLLmNnIeQHdHHFPl3zOydbrJQdyInvYpjl+JkAs88IiN
+         hIEA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQmSmQg7nCRAPZgWZ2l1fe1I4UzbmTByqlssE0YTZgxIMcUQaUVHNrm87eFrJdzzyZUc8vfpM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLtHi/pfEa+aI5nZkJU1pf9IeletmKC7oLs9Zl7JjrkTZK13lQ
+	T6aylhppBx3xLcg33+agqdYWgt8S0N1xaPA/xGSGC+1hrq1NXCRDIlcnqtiuCmU=
+X-Gm-Gg: ASbGncuaQ+f+p/2+NVhCtK0jOKTDlOES6RNzagxorSEe6T8j8xnJjzCdZ+rLuXiss/M
+	fLM3Rbye08hgdXUy6TXIEGgzXjmCwrEh2ocYUtk7iCVzAicw9Amh25OdlFHbCNhrJNoZCIDNGAV
+	GVn83Ka+5Nsm900SfTnLYvbNEbblKx8ckbt4k+biYKY1PcmJIUZECAoZpxe+hdb3glHlNCaQLSI
+	fNZ8HRdybn0hXk959/eXMMcNnM8GgJNKBxaejZwGLIVl30qYunhSauPHEHMHw==
+X-Google-Smtp-Source: AGHT+IGized2vRZ+5/jSNeWf5x91CH3k8LiPPRqNJnZVzhvP9p1wXolywFcegCjc1TiC1IePEY+Hsw==
+X-Received: by 2002:a05:600c:3548:b0:435:40be:3949 with SMTP id 5b1f17b1804b1-43622844ab5mr24401495e9.16.1733996111444;
+        Thu, 12 Dec 2024 01:35:11 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4362559eedcsm10990545e9.23.2024.12.12.01.35.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Dec 2024 01:35:10 -0800 (PST)
+Date: Thu, 12 Dec 2024 12:35:07 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Joao Pinto <jpinto@synopsys.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Wei Yongjun <weiyongjun1@huawei.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
+	stable@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: Re: [PATCH v3 0/3] PCI: endpoint: fix bug for 2 APIs and simplify 1
+ API
+Message-ID: <1fac71d8-dcfe-4924-ab01-dc85a822b740@stanley.mountain>
+References: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241212075303.2538880-1-neelx@suse.com> <ac4c4ae5-0890-4f47-8a85-3c4447feaa90@wdc.com>
- <CAPjX3FcAZM4dSbnMkTpJPNJMcPDxKbEMwbg3ScaTWVg+5JqfDg@mail.gmail.com>
- <133f4cb5-516d-4e11-b03a-d2007ff667ee@wdc.com> <CAPjX3FchmM24-Afv7ueeK-Z1zBYivfj4yKXhVq6bARiGjqQOwQ@mail.gmail.com>
- <9d5b4776-e3c8-449c-bb0d-c200a1f76603@wdc.com>
-In-Reply-To: <9d5b4776-e3c8-449c-bb0d-c200a1f76603@wdc.com>
-From: Daniel Vacek <neelx@suse.com>
-Date: Thu, 12 Dec 2024 10:34:47 +0100
-Message-ID: <CAPjX3FdU1mOkRr+JVE+S4og4NvjFerZhHC_qupFBTgjn9=s8MA@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: fix a race in encoded read
-To: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Omar Sandoval <osandov@fb.com>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-rt-devel@lists.linux.dev" <linux-rt-devel@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
 
-On Thu, Dec 12, 2024 at 10:14=E2=80=AFAM Johannes Thumshirn
-<Johannes.Thumshirn@wdc.com> wrote:
-> It got recently force pushed, 34725028ec5500018f1cb5bfd55c669c7bbf1346
-> it is now, sorry.
+On Tue, Dec 10, 2024 at 10:00:17PM +0800, Zijun Hu wrote:
+> This patch series is to fix bug for APIs
+> - devm_pci_epc_destroy().
+> - pci_epf_remove_vepf().
+> 
+> and simplify APIs below:
+> - pci_epc_get().
+> 
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> ---
 
-Yeah, this looks very similar and it should fix the bug as well. In
-fact the fix part looks exactly the same, I just also changed the
-slab/stack allocation while you changed the atomic/refcount. But these
-are unrelated, IIUC. I actually planned to split it into two patches
-but David told me it's not necessary and I should send it as it is.
+This is very good.  This is Config FS.  Is there a kself test for configfs
+or did you create your own test?
 
-Just nitpicking about your patch, the subject says simplify while I
-don't really see any simplification.
-Also it does not mention the UAF bug leading to crashes it fixes,
-missing the Fixes: and CC: stable tags.
+regards,
+dan carpenter
 
-What do we do now?
 
---nX
 
