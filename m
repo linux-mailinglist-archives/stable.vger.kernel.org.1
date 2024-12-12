@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-102450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3189EF337
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DD99EEE4A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E6716CC9F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 259D81882B04
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E608235C3E;
-	Thu, 12 Dec 2024 16:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965FF22541B;
+	Thu, 12 Dec 2024 15:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2fAVGsE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQ63eMRt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E3522652A;
-	Thu, 12 Dec 2024 16:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535602253FD;
+	Thu, 12 Dec 2024 15:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021272; cv=none; b=poUlQ4fHKISsDRFxEh36iDxSyEPfByTkRYCwVtMG1MadJXw+fVumW07qU9BPIiCEYgux9ir6PhhUjUpoFCn5d6Vj6Lblqtr0esMrE/suXYagTf6KAUGnJIyEdJeErmb/2pKa9436GDSUnBS+UvNqhwhO5UfoQ0c381FowVcV0vo=
+	t=1734018536; cv=none; b=m1rx3/5gVV+TcXN4Tie0WzK6ZdprjPs2qd+tdu7Ku3N8HnGz9MtFUO8dZ1qyFIR3ZD4D7GVXMlG9LvP0b0/yttODJKBt0OSUD5kRVnL+hXB8J3I1V7uE72ddDf9guAqkdqh9fxlmh56+X+hX0DKRI8F1usysZklhEJZ3SGOKtXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021272; c=relaxed/simple;
-	bh=enYf3csh2m5Wr+7/igNNLqcH6vI6f6gUoytrnMIBfMU=;
+	s=arc-20240116; t=1734018536; c=relaxed/simple;
+	bh=4FY5LQ/924MCaCTizGiy6LQcbNv33RPnOcUyirhPKeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljT4cSvgZUOTMTUcIAGZf19rwAedlcqs1WJUNivQQPliyslAE5eRQQfn/0nKOuZzYS6ZF+xlK1R5r5YtGxCxzqsA6rN8yKta/yHHNa5TH5v+4m6+0cjs7aSbufmHraJEUDGjKsJhX1m6QmtyH1WZT4nMWyf+iQIodDRFFF9Pc4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2fAVGsE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BA8C4CECE;
-	Thu, 12 Dec 2024 16:34:31 +0000 (UTC)
+	 MIME-Version; b=TiqSQRMbfKDgKv2Fonc0cH4E6zuWt3mEyYX9S3zNKHNTHYxFAGeLpHwNBOrHQ5bvhns1HqO5WhzocZSDNDxEYegxlRqCDktv3Txk9hc6iWGDe32Azp+Isu7osW9S6Z+ZqAyuNTD5+ZSt5QAnvBFxbNTNczEWalSHKU1ZKmgDY+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQ63eMRt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F037C4CECE;
+	Thu, 12 Dec 2024 15:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021272;
-	bh=enYf3csh2m5Wr+7/igNNLqcH6vI6f6gUoytrnMIBfMU=;
+	s=korg; t=1734018535;
+	bh=4FY5LQ/924MCaCTizGiy6LQcbNv33RPnOcUyirhPKeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2fAVGsEi6MOR6QJVEWChQUzxiMCmj+kCFtQMGCJP9GsMObn8ggfWLpR3pHGO6iKi
-	 UqiB1592VFq48/3zMqITEiaCVhqypcHUalScYLervU2V0NRg+tsq2Uaxm4x1ZBBhow
-	 KRlPYsumVjDhFrC6XeuPxFdqeayVVE2P+LKtrovY=
+	b=lQ63eMRtyl7r+cs2m2blzwC6Lp/0Y/QaGdE65O06q3THJpGr5HExIHrHtVYu72ojb
+	 F9Irz+vULX9ndaz9Q5xb//mPZzHJjTq2Yf3Y5AscaVWvrtu4ZTB0jOox4sGofP21dj
+	 EkWKuwK2buGtwl2tqJ9Vx4GRByHpxVVcv4uBa4kA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	syzbot+3511625422f7aa637f0d@syzkaller.appspotmail.com,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Christoph Lameter <cl@linux.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 693/772] Bluetooth: btusb: Add RTL8852BE device 0489:e123 to device tables
+Subject: [PATCH 6.6 319/356] mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM
 Date: Thu, 12 Dec 2024 16:00:38 +0100
-Message-ID: <20241212144418.543771730@linuxfoundation.org>
+Message-ID: <20241212144257.157048429@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hilda Wu <hildawu@realtek.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 69b84ffce260ff13826dc10aeb3c3e5c2288a552 ]
+[ Upstream commit 091c1dd2d4df6edd1beebe0e5863d4034ade9572 ]
 
-Add the support ID 0489:e123 to usb_device_id table for
-Realtek RTL8852B chip.
+We currently assume that there is at least one VMA in a MM, which isn't
+true.
 
-The device info from /sys/kernel/debug/usb/devices as below.
+So we might end up having find_vma() return NULL, to then de-reference
+NULL.  So properly handle find_vma() returning NULL.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=04 Dev#=  7 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e123 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+This fixes the report:
 
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 1 UID: 0 PID: 6021 Comm: syz-executor284 Not tainted 6.12.0-rc7-syzkaller-00187-gf868cd251776 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
+RIP: 0010:migrate_to_node mm/mempolicy.c:1090 [inline]
+RIP: 0010:do_migrate_pages+0x403/0x6f0 mm/mempolicy.c:1194
+Code: ...
+RSP: 0018:ffffc9000375fd08 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffffc9000375fd78 RCX: 0000000000000000
+RDX: ffff88807e171300 RSI: dffffc0000000000 RDI: ffff88803390c044
+RBP: ffff88807e171428 R08: 0000000000000014 R09: fffffbfff2039ef1
+R10: ffffffff901cf78f R11: 0000000000000000 R12: 0000000000000003
+R13: ffffc9000375fe90 R14: ffffc9000375fe98 R15: ffffc9000375fdf8
+FS:  00005555919e1380(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005555919e1ca8 CR3: 000000007f12a000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ kernel_migrate_pages+0x5b2/0x750 mm/mempolicy.c:1709
+ __do_sys_migrate_pages mm/mempolicy.c:1727 [inline]
+ __se_sys_migrate_pages mm/mempolicy.c:1723 [inline]
+ __x64_sys_migrate_pages+0x96/0x100 mm/mempolicy.c:1723
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+[akpm@linux-foundation.org: add unlikely()]
+Link: https://lkml.kernel.org/r/20241120201151.9518-1-david@redhat.com
+Fixes: 39743889aaf7 ("[PATCH] Swap Migration V5: sys_migrate_pages interface")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: syzbot+3511625422f7aa637f0d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/673d2696.050a0220.3c9d61.012f.GAE@google.com/T/
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Reviewed-by: Christoph Lameter <cl@linux.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/mempolicy.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 0b915f2c76078..4c9747de0d6de 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -549,6 +549,8 @@ static const struct usb_device_id blacklist_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe123), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 54f1b78d1b2c0..94c74c594d102 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1071,6 +1071,10 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
  
+ 	VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
+ 	vma = find_vma(mm, 0);
++	if (unlikely(!vma)) {
++		mmap_read_unlock(mm);
++		return 0;
++	}
+ 
+ 	/*
+ 	 * This does not migrate the range, but isolates all pages that
 -- 
 2.43.0
 
