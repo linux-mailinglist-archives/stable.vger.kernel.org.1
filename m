@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563E89EF8D9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6C99EF6FB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C5E328D332
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8472C289373
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE022223E89;
-	Thu, 12 Dec 2024 17:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329F4221D93;
+	Thu, 12 Dec 2024 17:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmYEUjy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tm0AMFPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0AF223E77;
-	Thu, 12 Dec 2024 17:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28CD20A5EE;
+	Thu, 12 Dec 2024 17:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025431; cv=none; b=Vla5h5EBeCh4kCdcp2n6qf0Olf4WXooV2LdFkDA0XfnHJ1LeZrc5enQCOy1IeynENBvkYzF9DtmQ8Ni3Hnyt7aajuPBJViagqjrH2AG0Hw6jJKUscXXdR/qqNecreSrBO0+SxhID3zsTI1Mnjr20FIIIbA32lLTUDBTHxK7kR7M=
+	t=1734024645; cv=none; b=QPm0e8bp07YOc6E1ARyJbu6ClgF8dmnkxkp+xCn2T8QeQlNOCNoOKCHZoZdh6gEabzrObhkhxL+8sWKOF26TBepFjfYxgca3nfQIr5wD+Yvi4dZB+KvUzrsOnBK80v07B9WrtRuhisz/0lVhcXbGXW+9WnCxKmkLCJkX4He6Hkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025431; c=relaxed/simple;
-	bh=eq2E/Vps1O0CL0pyDU54obhV6Z3Z4gUreU3y+oJiUs8=;
+	s=arc-20240116; t=1734024645; c=relaxed/simple;
+	bh=qvoKOT2bvOVtcqUfiqlYOEhHmdvtDJIkpR7JdL0iqv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlSRIQT3Jq6ZHzjCzygL/uY/iy5PTJtXaTuc9+bO93jY0YNCTkLk2cugnH1WVRRk2H5GbO40tkcIHGN0sEi4uibWiPTWLm/PNcuDFjC9koggyQUI+FlLG9k6a9NisoW/CvO0WfWUAC06+UPxjKJvHOmV5xWZ6Oc/l6AH/2ScecQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmYEUjy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D124C4CECE;
-	Thu, 12 Dec 2024 17:43:50 +0000 (UTC)
+	 MIME-Version; b=JPJVqeIRPrsEFWJMbPhD5MEmjQ8v1ytN5a7q+nzMiZDnVULHkpAuLjQdaLghysNKNeV/JU1Q5U6gGUYKx9etB0B+rmXnsFtGnTQJteM3osiBgId02chix8ZsFl9jnByRpLrPQUxxWtkv9v9Ga1i4zRpPLPajEkH/p0cxMdbz80I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tm0AMFPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56290C4CECE;
+	Thu, 12 Dec 2024 17:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025431;
-	bh=eq2E/Vps1O0CL0pyDU54obhV6Z3Z4gUreU3y+oJiUs8=;
+	s=korg; t=1734024644;
+	bh=qvoKOT2bvOVtcqUfiqlYOEhHmdvtDJIkpR7JdL0iqv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmYEUjy+4VncxmzmUDJ0zMv3k6ny3IpZvuH3mLWwFGk84JagacY/Z1K9Owf3q54YX
-	 wKQlUnSMddLQaeHWDA9tVNA3S1A2Y/hQYsd2044QNM2Tf84qs8yJdcwUyGdo8/qT+c
-	 Fah+YHA/8Ci8a/7VvLdFdx9JC0FEM4f3ylEQJfz0=
+	b=Tm0AMFPNMyGBwkvnfgBpit+nvT00UoNF8IJ2KTTtWg0dAtCFKrhdI/XCkGGWNY0Qe
+	 aBoNa43wAGprfLiiYTG/iAQhVNQG6JootXgWMwvR4FkCNcJM7M4voJZzoV8q1Ha/Mp
+	 O6JUlcxxyr5ie3o1DLUf5cUytRXrTNnEPjn1IRtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.4 167/321] HID: wacom: Interpret tilt data from Intuos Pro BT as signed values
+	Rob Herring <robh@kernel.org>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 347/459] dt_bindings: rs485: Correct delay values
 Date: Thu, 12 Dec 2024 16:01:25 +0100
-Message-ID: <20241212144236.574564357@linuxfoundation.org>
+Message-ID: <20241212144307.369209942@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-commit 49a397ad24ee5e2c53a59dada2780d7e71bd3f77 upstream.
+[ Upstream commit 885dcb08c93d75b784468e65fd4f1f82d5313061 ]
 
-The tilt data contained in the Bluetooth packets of an Intuos Pro are
-supposed to be interpreted as signed values. Simply casting the values
-to type `char` is not guaranteed to work since it is implementation-
-defined whether it is signed or unsigned. At least one user has noticed
-the data being reported incorrectly on their system. To ensure that the
-data is interpreted properly, we specifically cast to `signed char`
-instead.
+Currently the documentation claims that a maximum of 1000 msecs is allowed
+for RTS delays. However nothing actually checks the values read from device
+tree/ACPI and so it is possible to set much higher values.
 
-Link: https://github.com/linuxwacom/input-wacom/issues/445
-Fixes: 4922cd26f03c ("HID: wacom: Support 2nd-gen Intuos Pro's Bluetooth classic interface")
-CC: stable@vger.kernel.org # 4.11+
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+There is already a maximum of 100 ms enforced for RTS delays that are set
+via the UART TIOCSRS485 ioctl. To be consistent with that use the same
+limit for DT/ACPI values.
+
+Although this change is visible to userspace the risk of breaking anything
+when reducing the max delays from 1000 to 100 ms should be very low, since
+100 ms is already a very high maximum for delays that are usually rather in
+the usecs range.
+
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20220710164442.2958979-7-LinoSanfilippo@gmx.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 12b3642b6c24 ("dt-bindings: serial: rs485: Fix rs485-rts-delay property")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    4 ++--
+ Documentation/devicetree/bindings/serial/rs485.yaml | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1394,9 +1394,9 @@ static void wacom_intuos_pro2_bt_pen(str
- 					rotation -= 1800;
+diff --git a/Documentation/devicetree/bindings/serial/rs485.yaml b/Documentation/devicetree/bindings/serial/rs485.yaml
+index 0c9fa694f85c8..518949737c86e 100644
+--- a/Documentation/devicetree/bindings/serial/rs485.yaml
++++ b/Documentation/devicetree/bindings/serial/rs485.yaml
+@@ -22,12 +22,12 @@ properties:
+         - description: Delay between rts signal and beginning of data sent in
+             milliseconds. It corresponds to the delay before sending data.
+           default: 0
+-          maximum: 1000
++          maximum: 100
+         - description: Delay between end of data sent and rts signal in milliseconds.
+             It corresponds to the delay after sending data and actual release
+             of the line.
+           default: 0
+-          maximum: 1000
++          maximum: 100
  
- 				input_report_abs(pen_input, ABS_TILT_X,
--						 (char)frame[7]);
-+						 (signed char)frame[7]);
- 				input_report_abs(pen_input, ABS_TILT_Y,
--						 (char)frame[8]);
-+						 (signed char)frame[8]);
- 				input_report_abs(pen_input, ABS_Z, rotation);
- 				input_report_abs(pen_input, ABS_WHEEL,
- 						 get_unaligned_le16(&frame[11]));
+   rs485-rts-active-low:
+     description: drive RTS low when sending (default is high).
+-- 
+2.43.0
+
 
 
 
