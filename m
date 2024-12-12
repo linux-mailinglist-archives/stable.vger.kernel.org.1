@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-103021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7E89EF64F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7112F9EF845
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EE1C171878
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5291B17BDA1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A614E2054EF;
-	Thu, 12 Dec 2024 17:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F77215710;
+	Thu, 12 Dec 2024 17:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2tjmg6L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulqLbT0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665A7217656;
-	Thu, 12 Dec 2024 17:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906E0213E6F;
+	Thu, 12 Dec 2024 17:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023302; cv=none; b=lBKRQWgApOhx9wIqAeZxRgeoJ3kPN1Fsnf6dWH5g0NJKip5r2YZ846agsx5ZmFURiTcqNQwCVp0T6UJaKRzGC1RfstikwMv71nF40B8ia7Thr9l5/jIm4vp7BBclql6iyycXETRp4TQo4orRaj73lL2vbam0KAue+KwBerUxUCU=
+	t=1734024611; cv=none; b=EMLq6k1TxkP9Lc0DWYXVBynbJHrNiVQcgQqgirZgKKaFi8j775pkf0Ggn2ugMnfsLm2ChBpL5XlutkXy4OnPC2WP3JF3H9OaXY7USl3KbFdjItNFSrgCHkODRiHUIwezl7DZmxpkzkG/W9k7kAJxheMq6DbB1cWGZa/2IHNz2Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023302; c=relaxed/simple;
-	bh=EDuDeSDH/Gnaxj/w/KIac3WqqyvWfpbFmvEJ5P8th7o=;
+	s=arc-20240116; t=1734024611; c=relaxed/simple;
+	bh=patnt3JB/x3iWzA+1QLzOn7w6QV/Qzt12K1OYvQznBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdJPcfjnepFnQpR8zBEnXea/dwZktqPPDmU20xV8wt8+sXiT8O7TZ3VAIW/VnE3S8xWRUPUq0FVxt7emFo9FUpxReRPcocWqXX2/4lDpJ2V+C0ahv4sBcKK6g8PSv5K/zjbNItUizuosSzbfdPLGnivLg96v0+4jYxfN91tK4uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2tjmg6L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FC8C4CED3;
-	Thu, 12 Dec 2024 17:08:18 +0000 (UTC)
+	 MIME-Version; b=mmi8KHdLC+Qq3204m2zl18tbdjXBGsYjavuSe3AQ9ZzLeVZq/uu715IJndy6JVJpWpHfnjYgEmBzrrRXjg1oQvgR5z+cIh5rqeTCWYz2u3l3ER/ct8tCukNLCv0YI8TOMSuCHPqmyAbo5HgTjKVIF8YkAOYaa9kwRxpFKzN1fJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulqLbT0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFB4C4CECE;
+	Thu, 12 Dec 2024 17:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023298;
-	bh=EDuDeSDH/Gnaxj/w/KIac3WqqyvWfpbFmvEJ5P8th7o=;
+	s=korg; t=1734024611;
+	bh=patnt3JB/x3iWzA+1QLzOn7w6QV/Qzt12K1OYvQznBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2tjmg6L8CdkWsxadGhSRCW6RnhlxtHBcYTaIqK40EBgRDKqffHtLd7cDSwHppSpY
-	 Uvw04S2E9YLW9KJ8s31SnOHTHDER95vQdBWvW3/8k5BtBA3KSLS5tNdvK9mI2ZANpd
-	 K1cvY9vWyNL5Efrrzq/088z4OoQK6j3ll0O9FG+E=
+	b=ulqLbT0hBci21QyIojvqrwmYJ4RIyzYnR3jScoCCXrss14L7XBN3BWsg2d6ZjwTBD
+	 FluaqM0UbW4ZIw5Ya/Xk+hPPkPS5aVU6U1fhtJ5BQISCjrHHbsGqXBQHnpPTZVU2Zp
+	 YEZ8ifn3MehIFhzIJSiX1u7kGttI5jA85A/cdZL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Charles Han <hanchunchao@inspur.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 489/565] net: ieee802154: do not leave a dangling sk pointer in ieee802154_create()
+Subject: [PATCH 5.10 346/459] gpio: grgpio: Add NULL check in grgpio_probe
 Date: Thu, 12 Dec 2024 16:01:24 +0100
-Message-ID: <20241212144331.090573840@linuxfoundation.org>
+Message-ID: <20241212144307.329936250@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit b4fcd63f6ef79c73cafae8cf4a114def5fc3d80d ]
+[ Upstream commit 050b23d081da0f29474de043e9538c1f7a351b3b ]
 
-sock_init_data() attaches the allocated sk object to the provided sock
-object. If ieee802154_create() fails later, the allocated sk object is
-freed, but the dangling pointer remains in the provided sock object, which
-may allow use-after-free.
+devm_kasprintf() can return a NULL pointer on failure,but this
+returned value in grgpio_probe is not checked.
+Add NULL check in grgpio_probe, to handle kernel NULL
+pointer dereference error.
 
-Clear the sk pointer in the sock object on error.
-
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-6-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7eb6ce2f2723 ("gpio: Convert to using %pOF instead of full_name")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20241114091822.78199-1-hanchunchao@inspur.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ieee802154/socket.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpio/gpio-grgpio.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
-index 586a6c4adf246..d7fa862b81ef5 100644
---- a/net/ieee802154/socket.c
-+++ b/net/ieee802154/socket.c
-@@ -1046,19 +1046,21 @@ static int ieee802154_create(struct net *net, struct socket *sock,
+diff --git a/drivers/gpio/gpio-grgpio.c b/drivers/gpio/gpio-grgpio.c
+index ca3bf8d51d5aa..506891115bb3e 100644
+--- a/drivers/gpio/gpio-grgpio.c
++++ b/drivers/gpio/gpio-grgpio.c
+@@ -363,6 +363,9 @@ static int grgpio_probe(struct platform_device *ofdev)
+ 	gc->owner = THIS_MODULE;
+ 	gc->to_irq = grgpio_to_irq;
+ 	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
++	if (!gc->label)
++		return -ENOMEM;
++
+ 	gc->base = -1;
  
- 	if (sk->sk_prot->hash) {
- 		rc = sk->sk_prot->hash(sk);
--		if (rc) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (rc)
-+			goto out_sk_release;
- 	}
- 
- 	if (sk->sk_prot->init) {
- 		rc = sk->sk_prot->init(sk);
- 		if (rc)
--			sk_common_release(sk);
-+			goto out_sk_release;
- 	}
- out:
- 	return rc;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- static const struct net_proto_family ieee802154_family_ops = {
+ 	err = of_property_read_u32(np, "nbits", &prop);
 -- 
 2.43.0
 
