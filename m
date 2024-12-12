@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180DA9EF4ED
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E7B9EF5F6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54396189F819
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45D02189FC67
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55A022969A;
-	Thu, 12 Dec 2024 16:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A7A213E99;
+	Thu, 12 Dec 2024 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMRMPzzO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDmyRWfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA911F2381;
-	Thu, 12 Dec 2024 16:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C621F2381;
+	Thu, 12 Dec 2024 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022103; cv=none; b=p9vARmQefO228FhN+GLiFvGsxErZtY9Brcm5hwoOXrdNQ8P2YawZe+CKLcAun1vQ94w925hf0/SvY6eNQze5FAeH8yAnyVjwiDnQO7m38lhyGD0o36aFnxnm01eRAZFHakr1LfGufhyS5+Mld/XyvQj4i8Rd83l+jqjGwy9WU8g=
+	t=1734023604; cv=none; b=mzcFm5CYOGyx4PceUjhXTi3dAAbDi0kpkrs0x2ifM7LdxbZ5DfLl9iG90jnf1xg6aadZBgT1vGcXARSkOoa0GZsThuWDL8gGQv9lU+9euTXS5KwBjk6J8WfRiWvisoI8SjB+fACYUR9ouJM0iu+13icP/7YWG+HxKliYDeUt3Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022103; c=relaxed/simple;
-	bh=Y8gdgW3LhOEc8t3QmBLTAOgTD+iNdmyt769P37I/lh4=;
+	s=arc-20240116; t=1734023604; c=relaxed/simple;
+	bh=smxHBzsiNsnRfNtTRsa6bwVQ4H2yghowpk374csa7hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSaO4ZEgGAKHnRqX9zynRWY89nBenZ4rd29ByE/egGaYNwxABWUT8oFHp3abl28rlKJ/7bqUcO8p8YhMowzKB6BOyptXQX8n3LPXlppoLHaBig6VvkVdCYZ3nvsnoszXY9wZ7BQpANSV2XjCcdTu+IuR2f1v9PcdowZIScdQ0Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMRMPzzO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89D7C4CECE;
-	Thu, 12 Dec 2024 16:48:22 +0000 (UTC)
+	 MIME-Version; b=rlZRmqE3rvEZDq3nrpYukQYfBG0VBw91ICE2MzHW5PqRavcJwjdz1dcxCUqvmrLq6SAUxz+VItIXaaXCpNrIFNjDQ37iIOVq7Se4qtsP91Dj22mFemvokvb81xepJMqCSXRl/7bkzmnT3T665QgHQp+iRH3tPBDgb3mi2ASZ0AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDmyRWfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E42C4CECE;
+	Thu, 12 Dec 2024 17:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022103;
-	bh=Y8gdgW3LhOEc8t3QmBLTAOgTD+iNdmyt769P37I/lh4=;
+	s=korg; t=1734023604;
+	bh=smxHBzsiNsnRfNtTRsa6bwVQ4H2yghowpk374csa7hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMRMPzzOWAAotvS07hbVadRZvAg1B6UUr0UWx37uCifHqGbWfSrldzULPFpt/+pSb
-	 pZbN9g9zeFLi6+Fcl+yWA1DzOZxJqjfLsCozW5Mke3n9DJav0D3D860zu7L1FM8LNk
-	 Z6VKwDGFyRo/Xo68GSnuK204cYcJt/UvQegK001k=
+	b=mDmyRWfDokmcNAgQIE/g2ykzfn81EwgM0fQTESfeVmVQfjb4V1HtihendrWqFZ2yn
+	 76Ii0nYMO3UplRlq5Fl6vlakSmG+42FP59v3JHz+oww6Z8yx9MhSAy5C9IXLDMMnav
+	 H/JT8h888YjKExA0D1OSDsDOVkF8v4utQnJSf/6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/565] drm/omap: Fix possible NULL dereference
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 005/459] media: gspca: ov534-ov772x: Fix off-by-one error in set_frame_rate()
 Date: Thu, 12 Dec 2024 15:55:43 +0100
-Message-ID: <20241212144317.337245910@linuxfoundation.org>
+Message-ID: <20241212144253.738941651@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit a88fee2d67d9b78c24630a987a88ccf886b2498b ]
+commit d2842dec577900031826dc44e9bf0c66416d7173 upstream.
 
-smatch reports:
+In set_frame_rate(), select a rate in rate_0 or rate_1 by checking
+sd->frame_rate >= r->fps in a loop, but the loop condition terminates when
+the index reaches zero, which fails to check the last elememt in rate_0 or
+rate_1.
 
-drivers/gpu/drm/omapdrm/dss/base.c:176 omapdss_device_disconnect() error: we previously assumed 'src' could be null (see line 169)
+Check for >= 0 so that the last one in rate_0 or rate_1 is also checked.
 
-This code is mostly from a time when omapdrm had its own display device
-model. I can't honestly remember the details, and I don't think it's
-worth digging in deeply into that for a legacy driver.
-
-However, it looks like we only call omapdss_device_disconnect() and
-omapdss_device_connect() with NULL as the src parameter. We can thus
-drop the src parameter from both functions, and fix the smatch warning.
-
-I don't think omapdss_device_disconnect() ever gets NULL for the dst
-parameter (if it did, we'd crash soon after returning from the
-function), but I have kept the !dst check, just in case, but I added a
-WARN_ON() there.
-
-Also, if the dst parameter can be NULL, we can't always get the struct
-dss_device pointer from dst->dss (which is only used for a debug print).
-To make sure we can't hit that issue, do it similarly to the
-omapdss_device_connect() function: add 'struct dss_device *dss' as the
-first parameter, so that we always have it regardless of the dst.
-
-Fixes: 79107f274b2f ("drm/omap: Add support for drm_bridge")
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240806-omapdrm-misc-fixes-v1-1-15d31aea0831@ideasonboard.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 189d92af707e ("V4L/DVB (13422): gspca - ov534: ov772x changes from Richard Kaswy.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/omapdrm/dss/base.c    | 25 ++++++-------------------
- drivers/gpu/drm/omapdrm/dss/omapdss.h |  3 +--
- drivers/gpu/drm/omapdrm/omap_drv.c    |  4 ++--
- 3 files changed, 9 insertions(+), 23 deletions(-)
+ drivers/media/usb/gspca/ov534.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/dss/base.c b/drivers/gpu/drm/omapdrm/dss/base.c
-index 050ca7eafac58..556e0f9026bed 100644
---- a/drivers/gpu/drm/omapdrm/dss/base.c
-+++ b/drivers/gpu/drm/omapdrm/dss/base.c
-@@ -139,21 +139,13 @@ static bool omapdss_device_is_connected(struct omap_dss_device *dssdev)
- }
- 
- int omapdss_device_connect(struct dss_device *dss,
--			   struct omap_dss_device *src,
- 			   struct omap_dss_device *dst)
- {
--	dev_dbg(&dss->pdev->dev, "connect(%s, %s)\n",
--		src ? dev_name(src->dev) : "NULL",
-+	dev_dbg(&dss->pdev->dev, "connect(%s)\n",
- 		dst ? dev_name(dst->dev) : "NULL");
- 
--	if (!dst) {
--		/*
--		 * The destination is NULL when the source is connected to a
--		 * bridge instead of a DSS device. Stop here, we will attach
--		 * the bridge later when we will have a DRM encoder.
--		 */
--		return src && src->bridge ? 0 : -EINVAL;
--	}
-+	if (!dst)
-+		return -EINVAL;
- 
- 	if (omapdss_device_is_connected(dst))
- 		return -EBUSY;
-@@ -163,19 +155,14 @@ int omapdss_device_connect(struct dss_device *dss,
- 	return 0;
- }
- 
--void omapdss_device_disconnect(struct omap_dss_device *src,
-+void omapdss_device_disconnect(struct dss_device *dss,
- 			       struct omap_dss_device *dst)
- {
--	struct dss_device *dss = src ? src->dss : dst->dss;
--
--	dev_dbg(&dss->pdev->dev, "disconnect(%s, %s)\n",
--		src ? dev_name(src->dev) : "NULL",
-+	dev_dbg(&dss->pdev->dev, "disconnect(%s)\n",
- 		dst ? dev_name(dst->dev) : "NULL");
- 
--	if (!dst) {
--		WARN_ON(!src->bridge);
-+	if (WARN_ON(!dst))
- 		return;
--	}
- 
- 	if (!dst->id && !omapdss_device_is_connected(dst)) {
- 		WARN_ON(1);
-diff --git a/drivers/gpu/drm/omapdrm/dss/omapdss.h b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-index 040d5a3e33d68..4c22c09c93d52 100644
---- a/drivers/gpu/drm/omapdrm/dss/omapdss.h
-+++ b/drivers/gpu/drm/omapdrm/dss/omapdss.h
-@@ -242,9 +242,8 @@ struct omap_dss_device *omapdss_device_get(struct omap_dss_device *dssdev);
- void omapdss_device_put(struct omap_dss_device *dssdev);
- struct omap_dss_device *omapdss_find_device_by_node(struct device_node *node);
- int omapdss_device_connect(struct dss_device *dss,
--			   struct omap_dss_device *src,
- 			   struct omap_dss_device *dst);
--void omapdss_device_disconnect(struct omap_dss_device *src,
-+void omapdss_device_disconnect(struct dss_device *dss,
- 			       struct omap_dss_device *dst);
- 
- int omap_dss_get_num_overlay_managers(void);
-diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
-index 939597ab5b76d..05b7481f977ab 100644
---- a/drivers/gpu/drm/omapdrm/omap_drv.c
-+++ b/drivers/gpu/drm/omapdrm/omap_drv.c
-@@ -135,7 +135,7 @@ static void omap_disconnect_pipelines(struct drm_device *ddev)
- 	for (i = 0; i < priv->num_pipes; i++) {
- 		struct omap_drm_pipeline *pipe = &priv->pipes[i];
- 
--		omapdss_device_disconnect(NULL, pipe->output);
-+		omapdss_device_disconnect(priv->dss, pipe->output);
- 
- 		omapdss_device_put(pipe->output);
- 		pipe->output = NULL;
-@@ -153,7 +153,7 @@ static int omap_connect_pipelines(struct drm_device *ddev)
- 	int r;
- 
- 	for_each_dss_output(output) {
--		r = omapdss_device_connect(priv->dss, NULL, output);
-+		r = omapdss_device_connect(priv->dss, output);
- 		if (r == -EPROBE_DEFER) {
- 			omapdss_device_put(output);
- 			return r;
--- 
-2.43.0
-
+--- a/drivers/media/usb/gspca/ov534.c
++++ b/drivers/media/usb/gspca/ov534.c
+@@ -847,7 +847,7 @@ static void set_frame_rate(struct gspca_
+ 		r = rate_1;
+ 		i = ARRAY_SIZE(rate_1);
+ 	}
+-	while (--i > 0) {
++	while (--i >= 0) {
+ 		if (sd->frame_rate >= r->fps)
+ 			break;
+ 		r++;
 
 
 
