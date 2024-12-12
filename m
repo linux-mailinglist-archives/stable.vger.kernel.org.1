@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58419EF902
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DC09EF725
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8617C1894880
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A24A8188B023
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E369222D59;
-	Thu, 12 Dec 2024 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DF921660C;
+	Thu, 12 Dec 2024 17:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6t6IIDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X34GwAO4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFE415696E;
-	Thu, 12 Dec 2024 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437F7215764;
+	Thu, 12 Dec 2024 17:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025226; cv=none; b=VepTpEU0dZ0+JBAurnmcyVvxG38YiGcwqZQXZBWuBLaYtlQa9dZTISqwqO1aGouH8vyx+lCGozl6qULgmc2BCOLDCT7nWozu86ERKTtcjBQI83hHoA5rzRf9I5/Q4wjy2QIicCPTUneFKAvYHvaPNo3uSQPO2u3BkJW4enogmEo=
+	t=1734024389; cv=none; b=JFOJjm/pq/+Nl+k53WPyMhB8qTstC5532a7MGxGds0qY6kof3fWcoFCWQITSHan1Skk+n9nWNZ+S+djAVNVfn7gGh1fG1e6ilLKGwHXquyiJPUtyaznGWnSnmIihcm5TCBp53taOqwh2NTepKye/l3qqKSEPl0SVEUMf29Ny9JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025226; c=relaxed/simple;
-	bh=Cm/ZczhCLtzutJr0CWW8qoWWM9JEUzkeh/TYd/JIG3s=;
+	s=arc-20240116; t=1734024389; c=relaxed/simple;
+	bh=VAz5zEk697APLFcVNePyTr3dl6ccOvzLnG6dCHaK1fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enU9t3wf0/lQLswVQjJs0u54AtWE/PDfKCOrAVNVWwvM5t6jndt7r0tkNpaeqZidwsK3hiw4ucQRHQLOaCugAM0zVV+vgMHsYGduYSqfkEau8H6TDN+Dct+WeslbW6CKsAE3rFC7htVvGo+dlgDq9IqunY85HdT9Si0qwSbrzV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6t6IIDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7469C4CECE;
-	Thu, 12 Dec 2024 17:40:25 +0000 (UTC)
+	 MIME-Version; b=CvRZ3MQaSLMQ1NRGvWlCUAFRaS6BbOSrayur1N2+aGBSStMW0TUu+qbWoHbqpjJfCc6Sk4t2UN6mFzdbHD7+xVd5+lCx3qhYfgPo0aHnGzGZwFMeYvByMs1PUC1njoItyExFd+Jp0/HuVi1gXgKPOdylf/YhwuQ7xJtmR2g9D70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X34GwAO4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF2DC4CED0;
+	Thu, 12 Dec 2024 17:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025226;
-	bh=Cm/ZczhCLtzutJr0CWW8qoWWM9JEUzkeh/TYd/JIG3s=;
+	s=korg; t=1734024387;
+	bh=VAz5zEk697APLFcVNePyTr3dl6ccOvzLnG6dCHaK1fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6t6IIDbSsb5SwjB3dfd9rCxl/2koVvXSanA60j0tEuGqRO396QRS5+cNOz8tNyuG
-	 joO0QCjDTQJ3aW0C6ldLXHk/nX1MHYYB+08lsdWaQcDt7U5JNJgBvQ8Snu9llxXaJP
-	 TJbYUPNtfZEKMrbmE7yaKFoXIThsKF6z3gN1gbmQ=
+	b=X34GwAO4M6SKd2ND5Z8BQNvPCNpYWglYyOJwIPZht3KBgtV7PeYAwPUu7jNz4ofSI
+	 mVNPURcwtmteUA5SBYCB1SkvYYADx8pcIUONG7cCTQGhkZ+CR/9rcAGNMXCdz249w0
+	 Kv5QSC3NRp/Ht5KG8XTLIirekVlT8tnwoz3Hrep8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 098/321] scsi: bfa: Fix use-after-free in bfad_im_module_exit()
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 278/459] ALSA: hda/realtek: Update ALC225 depop procedure
 Date: Thu, 12 Dec 2024 16:00:16 +0100
-Message-ID: <20241212144233.862785511@linuxfoundation.org>
+Message-ID: <20241212144304.606859161@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +61,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 178b8f38932d635e90f5f0e9af1986c6f4a89271 ]
+commit 1fd50509fe14a9adc9329e0454b986157a4c155a upstream.
 
-BUG: KASAN: slab-use-after-free in __lock_acquire+0x2aca/0x3a20
-Read of size 8 at addr ffff8881082d80c8 by task modprobe/25303
+Old procedure has a chance to meet Headphone no output.
 
-Call Trace:
- <TASK>
- dump_stack_lvl+0x95/0xe0
- print_report+0xcb/0x620
- kasan_report+0xbd/0xf0
- __lock_acquire+0x2aca/0x3a20
- lock_acquire+0x19b/0x520
- _raw_spin_lock+0x2b/0x40
- attribute_container_unregister+0x30/0x160
- fc_release_transport+0x19/0x90 [scsi_transport_fc]
- bfad_im_module_exit+0x23/0x60 [bfa]
- bfad_init+0xdb/0xff0 [bfa]
- do_one_initcall+0xdc/0x550
- do_init_module+0x22d/0x6b0
- load_module+0x4e96/0x5ff0
- init_module_from_file+0xcd/0x130
- idempotent_init_module+0x330/0x620
- __x64_sys_finit_module+0xb3/0x110
- do_syscall_64+0xc1/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-Allocated by task 25303:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x7f/0x90
- fc_attach_transport+0x4f/0x4740 [scsi_transport_fc]
- bfad_im_module_init+0x17/0x80 [bfa]
- bfad_init+0x23/0xff0 [bfa]
- do_one_initcall+0xdc/0x550
- do_init_module+0x22d/0x6b0
- load_module+0x4e96/0x5ff0
- init_module_from_file+0xcd/0x130
- idempotent_init_module+0x330/0x620
- __x64_sys_finit_module+0xb3/0x110
- do_syscall_64+0xc1/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 25303:
- kasan_save_stack+0x24/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x60
- __kasan_slab_free+0x38/0x50
- kfree+0x212/0x480
- bfad_im_module_init+0x7e/0x80 [bfa]
- bfad_init+0x23/0xff0 [bfa]
- do_one_initcall+0xdc/0x550
- do_init_module+0x22d/0x6b0
- load_module+0x4e96/0x5ff0
- init_module_from_file+0xcd/0x130
- idempotent_init_module+0x330/0x620
- __x64_sys_finit_module+0xb3/0x110
- do_syscall_64+0xc1/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Above issue happens as follows:
-
-bfad_init
-  error = bfad_im_module_init()
-    fc_release_transport(bfad_im_scsi_transport_template);
-  if (error)
-    goto ext;
-
-ext:
-  bfad_im_module_exit();
-    fc_release_transport(bfad_im_scsi_transport_template);
-    --> Trigger double release
-
-Don't call bfad_im_module_exit() if bfad_im_module_init() failed.
-
-Fixes: 7725ccfda597 ("[SCSI] bfa: Brocade BFA FC SCSI driver")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Link: https://lore.kernel.org/r/20241023011809.63466-1-yebin@huaweicloud.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: da911b1f5e98 ("ALSA: hda/realtek - update ALC225 depop optimize")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/5a27b016ba9d42b4a4e6dadce50a3ba4@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/bfa/bfad.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |   95 +++++++++++++++++++-----------------------
+ 1 file changed, 43 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/scsi/bfa/bfad.c b/drivers/scsi/bfa/bfad.c
-index 93e4011809919..df848d2bd08e7 100644
---- a/drivers/scsi/bfa/bfad.c
-+++ b/drivers/scsi/bfa/bfad.c
-@@ -1706,9 +1706,8 @@ bfad_init(void)
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3691,33 +3691,28 @@ static void alc225_init(struct hda_codec
+ 	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 	hp2_pin_sense = snd_hda_jack_detect(codec, 0x16);
  
- 	error = bfad_im_module_init();
- 	if (error) {
--		error = -ENOMEM;
- 		printk(KERN_WARNING "bfad_im_module_init failure\n");
--		goto ext;
-+		return -ENOMEM;
+-	if (hp1_pin_sense || hp2_pin_sense)
++	if (hp1_pin_sense || hp2_pin_sense) {
+ 		msleep(2);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+ 
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
+ 
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(85);
+-
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(100);
+-
+-	alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
++		msleep(75);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
++	}
+ }
+ 
+ static void alc225_shutup(struct hda_codec *codec)
+@@ -3729,36 +3724,35 @@ static void alc225_shutup(struct hda_cod
+ 	if (!hp_pin)
+ 		hp_pin = 0x21;
+ 
+-	alc_disable_headset_jack_key(codec);
+-	/* 3k pull low control for Headset jack. */
+-	alc_update_coef_idx(codec, 0x4a, 0, 3 << 10);
+-
+ 	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 	hp2_pin_sense = snd_hda_jack_detect(codec, 0x16);
+ 
+-	if (hp1_pin_sense || hp2_pin_sense)
++	if (hp1_pin_sense || hp2_pin_sense) {
++		alc_disable_headset_jack_key(codec);
++		/* 3k pull low control for Headset jack. */
++		alc_update_coef_idx(codec, 0x4a, 0, 3 << 10);
+ 		msleep(2);
+ 
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(85);
+-
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(100);
+-
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++
++		msleep(75);
++		alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
++		alc_enable_headset_jack_key(codec);
++	}
+ 	alc_auto_setup_eapd(codec, false);
+ 	alc_shutup_pins(codec);
+ 	if (spec->ultra_low_power) {
+@@ -3769,9 +3763,6 @@ static void alc225_shutup(struct hda_cod
+ 		alc_update_coef_idx(codec, 0x4a, 3<<4, 2<<4);
+ 		msleep(30);
  	}
+-
+-	alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+-	alc_enable_headset_jack_key(codec);
+ }
  
- 	if (strcmp(FCPI_NAME, " fcpim") == 0)
--- 
-2.43.0
-
+ static void alc_default_init(struct hda_codec *codec)
 
 
 
