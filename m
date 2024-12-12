@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F079EF7A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400D79EF4BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BF4716B330
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E02D828B73F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C8921CFF0;
-	Thu, 12 Dec 2024 17:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD2721660C;
+	Thu, 12 Dec 2024 17:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BmrV6lOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOTAe4Cr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794F4217F34;
-	Thu, 12 Dec 2024 17:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADFB22CBEF;
+	Thu, 12 Dec 2024 17:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024529; cv=none; b=cPb0+rf7qIn3TFMSz3fjUWbsnPW6xVwTx+HmmWor8/qSVr5xsI0KxopH8ciscH2NxNkI+F887oLTjs6CvO97Ep92k1u+j5J4Q2fOKwoSOg7x0o7Bpaja0Ydcrz0iMsP5JsHAzk+fxBrEsv27mdz3venDScIAePL2nyqJ1cDfNYQ=
+	t=1734023244; cv=none; b=k4nRop2w41MmknJ1ARvP7g7v1d0NPuMAGUJDVEr0jwdDpdQfna0hfa3DAb95XiyUijbQ+EwqDzLVnGk02XJM8p9W350aenaOjzER9nlO4UlYfzYD+86ErfT7Oir004d8RituRi6wLcTCVlkOFBsHVefVn0PKdUS3q1lq3tEgaAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024529; c=relaxed/simple;
-	bh=l0TDv4NGktI5EQlLvbYIhubjOj5Z/RwOJY3FiI3STu8=;
+	s=arc-20240116; t=1734023244; c=relaxed/simple;
+	bh=IMVCVzf159gwNglLNFcZn3orjeOPwHHS136ehlbnxos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDUntiveknuXNCqrK1cEMC8uDV3JpT9GJDp4EqcvDM3ISHtUMZFNE9poICqrEwxHDS6Nft3rsvKjEfo+yYXLEIemTguBC5rUzQtIebzs0SG+6c6cmgcT4udjyVnwtLVhhPspY0VgBnu82vDGRSGcdN0/mcgv8Qirn3+92IaVfO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmrV6lOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03EDC4CED0;
-	Thu, 12 Dec 2024 17:28:48 +0000 (UTC)
+	 MIME-Version; b=aSJ3blj7yNiXgOZSWuUI7pMkGzMyi+T/Yzb5gcG4uqZCrycZr/bvGK0pZ3RnGCMGlPWHd1H3LAj/nQdtp/6TegV3NFXpwyHMczooytf3ADrtaC575hi+v5Z0dEmS/BHw3lzUUfOQRSeNra8l9RORcszuYbVcEyR1jtdvfz0ZAAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOTAe4Cr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EDFC4CECE;
+	Thu, 12 Dec 2024 17:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024529;
-	bh=l0TDv4NGktI5EQlLvbYIhubjOj5Z/RwOJY3FiI3STu8=;
+	s=korg; t=1734023244;
+	bh=IMVCVzf159gwNglLNFcZn3orjeOPwHHS136ehlbnxos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BmrV6lOj10KrFos6cAiPQwuFFnwQVICNemTPPaL56qQgspyBjipr0wYShLScnwaS4
-	 pYirzsculkkr6bk1Mqytc4tavbK8G3LU287RQcdHM/CB8JqKHIktLDUfOVs/rMVwiw
-	 c4CF/pisvaeJ05yFLtGxOqk5x77wvHGTHl7n8az4=
+	b=vOTAe4Cr6qEevNJEB9e3sCstOH/xmDPf3cDWPfP5AqX6+LdobRF3VSauhHK7hYOah
+	 bXCtsM7gGKDemD4fjjlZrHPSm/b0G+FSwX8odOneCeI1KCOfnSnVuLUVdcfP3zUpBb
+	 eRre+6HK2c3luaZZKqNzRs6QxhG6aA1fiK0q/tuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 327/459] can: sun4i_can: sun4i_can_err(): call can_change_state() even if cf is NULL
+Subject: [PATCH 5.15 470/565] s390/cpum_sf: Handle CPU hotplug remove during sampling
 Date: Thu, 12 Dec 2024 16:01:05 +0100
-Message-ID: <20241212144306.578918316@linuxfoundation.org>
+Message-ID: <20241212144330.313721184@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit ee6bf3677ae03569d833795064e17f605c2163c7 ]
+[ Upstream commit a0bd7dacbd51c632b8e2c0500b479af564afadf3 ]
 
-Call the function can_change_state() if the allocation of the skb
-fails, as it handles the cf parameter when it is null.
+CPU hotplug remove handling triggers the following function
+call sequence:
 
-Additionally, this ensures that the statistics related to state error
-counters (i. e. warning, passive, and bus-off) are updated.
+   CPUHP_AP_PERF_S390_SF_ONLINE  --> s390_pmu_sf_offline_cpu()
+   ...
+   CPUHP_AP_PERF_ONLINE          --> perf_event_exit_cpu()
 
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-3-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The s390 CPUMF sampling CPU hotplug handler invokes:
+
+ s390_pmu_sf_offline_cpu()
+ +-->  cpusf_pmu_setup()
+       +--> setup_pmc_cpu()
+            +--> deallocate_buffers()
+
+This function de-allocates all sampling data buffers (SDBs) allocated
+for that CPU at event initialization. It also clears the
+PMU_F_RESERVED bit. The CPU is gone and can not be sampled.
+
+With the event still being active on the removed CPU, the CPU event
+hotplug support in kernel performance subsystem triggers the
+following function calls on the removed CPU:
+
+  perf_event_exit_cpu()
+  +--> perf_event_exit_cpu_context()
+       +--> __perf_event_exit_context()
+	    +--> __perf_remove_from_context()
+	         +--> event_sched_out()
+	              +--> cpumsf_pmu_del()
+	                   +--> cpumsf_pmu_stop()
+                                +--> hw_perf_event_update()
+
+to stop and remove the event. During removal of the event, the
+sampling device driver tries to read out the remaining samples from
+the sample data buffers (SDBs). But they have already been freed
+(and may have been re-assigned). This may lead to a use after free
+situation in which case the samples are most likely invalid. In the
+best case the memory has not been reassigned and still contains
+valid data.
+
+Remedy this situation and check if the CPU is still in reserved
+state (bit PMU_F_RESERVED set). In this case the SDBs have not been
+released an contain valid data. This is always the case when
+the event is removed (and no CPU hotplug off occured).
+If the PMU_F_RESERVED bit is not set, the SDB buffers are gone.
+
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/sun4i_can.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/s390/kernel/perf_cpum_sf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index 39ddb3d849dd8..e9fa3921efbed 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -613,10 +613,10 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
- 		tx_state = txerr >= rxerr ? state : 0;
- 		rx_state = txerr <= rxerr ? state : 0;
+diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
+index a8ba3887b367f..22893bf86f650 100644
+--- a/arch/s390/kernel/perf_cpum_sf.c
++++ b/arch/s390/kernel/perf_cpum_sf.c
+@@ -1896,7 +1896,9 @@ static void cpumsf_pmu_stop(struct perf_event *event, int flags)
+ 	event->hw.state |= PERF_HES_STOPPED;
  
--		if (likely(skb))
--			can_change_state(dev, cf, tx_state, rx_state);
--		else
--			priv->can.state = state;
-+		/* The skb allocation might fail, but can_change_state()
-+		 * handles cf == NULL.
-+		 */
-+		can_change_state(dev, cf, tx_state, rx_state);
- 		if (state == CAN_STATE_BUS_OFF)
- 			can_bus_off(dev);
+ 	if ((flags & PERF_EF_UPDATE) && !(event->hw.state & PERF_HES_UPTODATE)) {
+-		hw_perf_event_update(event, 1);
++		/* CPU hotplug off removes SDBs. No samples to extract. */
++		if (cpuhw->flags & PMU_F_RESERVED)
++			hw_perf_event_update(event, 1);
+ 		event->hw.state |= PERF_HES_UPTODATE;
  	}
+ 	perf_pmu_enable(event->pmu);
 -- 
 2.43.0
 
