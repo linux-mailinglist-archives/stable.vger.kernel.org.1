@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0D729EEC92
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE989EEB2A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 710DE2839FF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BB9D188A2BE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012121547F0;
-	Thu, 12 Dec 2024 15:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FD92080FC;
+	Thu, 12 Dec 2024 15:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ny1+SGRC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KulT993h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1D0216E12;
-	Thu, 12 Dec 2024 15:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BE52EAE5;
+	Thu, 12 Dec 2024 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017744; cv=none; b=VLEzxMPP2PExVWO9cZ8AMLRCCNivrzF1pB/33oTrdyLR+Oi7VUQUw50Rv9vaCxwb2owhG+SOOMSN7v6nTJ9Ebc1HTHMdl9wyGCjc/JdHOLR+Kk1b9ES4m3/h1ODbFzYShx0fyGqODSG/OwWFCSAhQlIGShFxmnYewA+uNhfR/2I=
+	t=1734016598; cv=none; b=QUi7P5C2TPyvXX5ZBBkY3Ik9EVGj+/WJx/K8U47i/c3+WFmRF4Jv1y8Y94iWpC6IuPdjn29jjpngnXSKouqSFdqChTXhoqqNTVaH0SL/f1NbN81JyfP0MT+CwE6aYyyHCEbYOz+oJww8BFbr5W93eQOkKMVkD/6Wy7hvrhW/7+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017744; c=relaxed/simple;
-	bh=8gawyf8NwzEl2m0DEF71EdaMHQKQvVRw8O/82zwQg8s=;
+	s=arc-20240116; t=1734016598; c=relaxed/simple;
+	bh=sQ/pFhZAxKM2KLImzB/SFX6m0xBTWmKIXfHfd96rgLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtSKNr/UPnkdb30XjWf2WEnopvBZoKlsdUPahJmxlyCtV37tlvKxc/YY0jFeeCuigLNZMXlFMWnGdBM0H8G5kQ/SIv/FluN6i0lg6NwAfXhWgmuURynqBU7WrCZtCHhGpUGoGkIfGO65H0i2GU1NlXhiTaIiVWPujFBhJNnm6vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ny1+SGRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC577C4CED0;
-	Thu, 12 Dec 2024 15:35:43 +0000 (UTC)
+	 MIME-Version; b=ig+nZ3dO4k7lTV0wnLfsmhfcA1vR4QuQd3SKHBO/vSZ0cfn4hGTNdrBI3fed6Z9zqSpKI+IeUjQIcPmJDkdRNG/0CdLN9jgn4SwLk8IUSxp1UsiFUcjenEuMdD8pm7w4QhlZszwWEGz98LHw/URiYOmPqK/tZt8gHUQAuL6ldYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KulT993h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A33C4CECE;
+	Thu, 12 Dec 2024 15:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017744;
-	bh=8gawyf8NwzEl2m0DEF71EdaMHQKQvVRw8O/82zwQg8s=;
+	s=korg; t=1734016598;
+	bh=sQ/pFhZAxKM2KLImzB/SFX6m0xBTWmKIXfHfd96rgLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ny1+SGRC3TVsZJBKCGBvF7bcN+IGOplZ/Hxpzz4LfHtYabOzWblaw8zukpQJ83hL1
-	 gN5eNhmLQDiQrL0QxnWziDi3HaDwSHyaaa3BDN1/YyNcXYydrqLllTnMps90pipnSK
-	 3vZ5BNFFHY+bol1Pbn6nG0qAUYNHDoaprIIabUAI=
+	b=KulT993h2NXqrG6+F7v7mJYlk6xt5R1wbDc1KTFGjryGW8MyTyP6dYB9aGJSQBZbs
+	 n2fUJr1cSnwWSuVFD/R9l7CgtChdB7yXgCLpiM9zyci3/RhNpoZyLDEMj+QmSE3wAa
+	 HKNTcLC8euKKnW0WyZeAnhLwJRDjR3HGW5BmtXB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Giuliano Lotta <giuliano.lotta@gmail.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/356] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
-Date: Thu, 12 Dec 2024 15:56:51 +0100
-Message-ID: <20241212144248.249219846@linuxfoundation.org>
+Subject: [PATCH 6.12 243/466] media: uvcvideo: Force UVC version to 1.0a for 0408:4033
+Date: Thu, 12 Dec 2024 15:56:52 +0100
+Message-ID: <20241212144316.385830644@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit d677ce521334d8f1f327cafc8b1b7854b0833158 ]
+[ Upstream commit c9df99302fff53b6007666136b9f43fbac7ee3d8 ]
 
-Under certain conditions, the 64-bit '-mstack-protector-guard' flags may
-end up in the 32-bit vDSO flags, resulting in build failures due to the
-structure of clang's argument parsing of the stack protector options,
-which validates the arguments of the stack protector guard flags
-unconditionally in the frontend, choking on the 64-bit values when
-targeting 32-bit:
+The Quanta ACER HD User Facing camera reports a UVC 1.50 version, but
+implements UVC 1.0a as shown by the UVC probe control being 26 bytes
+long. Force the UVC version for that device.
 
-  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
-  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
-  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:85: arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
-  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:87: arch/powerpc/kernel/vdso/vgetrandom-32.o] Error 1
-
-Remove these flags by adding them to the CC32FLAGSREMOVE variable, which
-already handles situations similar to this. Additionally, reformat and
-align a comment better for the expanding CONFIG_CC_IS_CLANG block.
-
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org
+Reported-by: Giuliano Lotta <giuliano.lotta@gmail.com>
+Closes: https://lore.kernel.org/linux-media/fce4f906-d69b-417d-9f13-bf69fe5c81e3@koyu.space/
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240924-uvc-quanta-v1-1-2de023863767@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/vdso/Makefile | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 5c7af93018865..d5defff8472da 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -51,10 +51,14 @@ ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -W
- 
- CC32FLAGS := -m32
- CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
--  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
--  # an unused command line flag warning for this file.
- ifdef CONFIG_CC_IS_CLANG
-+# This flag is supported by clang for 64-bit but not 32-bit so it will cause
-+# an unused command line flag warning for this file.
- CC32FLAGSREMOVE += -fno-stack-clash-protection
-+# -mstack-protector-guard values from the 64-bit build are not valid for the
-+# 32-bit one. clang validates the values passed to these arguments during
-+# parsing, even when -fno-stack-protector is passed afterwards.
-+CC32FLAGSREMOVE += -mstack-protector-guard%
- endif
- LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
- AS32FLAGS := -D__VDSO32__
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 17aa313613356..9f38a9b23c018 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -2479,6 +2479,17 @@ static const struct uvc_device_info uvc_quirk_force_y8 = {
+  */
+ static const struct usb_device_id uvc_ids[] = {
+ 	/* Quanta ACER HD User Facing */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x0408,
++	  .idProduct		= 0x4033,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= UVC_PC_PROTOCOL_15,
++	  .driver_info		= (kernel_ulong_t)&(const struct uvc_device_info){
++		.uvc_version = 0x010a,
++	  } },
++	/* Quanta ACER HD User Facing */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
+ 	  .idVendor		= 0x0408,
 -- 
 2.43.0
 
