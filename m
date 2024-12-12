@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-101160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77D99EEB27
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB31C9EF21A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C57D163094
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 963B7188257E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26452210E5;
-	Thu, 12 Dec 2024 15:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596E1236F8E;
+	Thu, 12 Dec 2024 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMPk/7au"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVurO18d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F36C2210DF;
-	Thu, 12 Dec 2024 15:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AB4226529;
+	Thu, 12 Dec 2024 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016569; cv=none; b=h7sMLScHDndhC967u/27I41nVIgYiaVpB1S5Mz0QILVFgcN56nhKTejEdMgVzmfn7w0TNfAJJmVHA87kSV/DBmZNAe6WjHFUjwdN575GsXUGhpbpcbjo1+IzgT9YTJD0lQ4oJZmxXGpKn9sOrh+2myuV4LQZC1hSn+SJMFgO5SU=
+	t=1734020529; cv=none; b=E/yua1hRrCuBMicXZJvQ+/Bh/BMrP0VLw9n9I2UQESCOwLA08y54ceqWQB4PtsOrftSmm+SxGXDeKqwiziM0Pd61S0pAWZH8APVE1kIwjXgS30s5NvDdvxKeTxS+EgudfRowxn5PbSFj5MxEm+OmIYGv+3Tx2LoKDeLWMLDUjqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016569; c=relaxed/simple;
-	bh=/hu+UM0g7byTMxdX7pwy15YoI/wG254KuSMs4nLyZZ8=;
+	s=arc-20240116; t=1734020529; c=relaxed/simple;
+	bh=MUvijHd+/CF0kifBpgfUeFTz8rIfmCLJS455+RSV7jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9Aizp7qOT2m+AqdoqJ4cbHndNEvDeCAxYPdY4gkq8SCtjgEcp1XTjEtI+mu8kKEVxNN6k+StGMlQAFMuObszg9M948xep/CNqQFcY6yK7updsTdaaLd5OX46Wu4Epfm4YODJw0vsvdohzcz9BgwGpWAsaQvSX0Kuucfh62TjyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMPk/7au; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C641AC4CECE;
-	Thu, 12 Dec 2024 15:16:08 +0000 (UTC)
+	 MIME-Version; b=XJ/+wMPRmo49r7qL6eIJk8rEbfbrMXstr00ECzNGkOs3GYKbch/whTf6iqXT8lzqCGHbKWApGqqIlrgCLkcbPhWlp/b9rKKYjJs+kZm6polfWn7UHO8J59QGDR05NdcK7EnCS5sKNbv4/lZBi9Ax/78nx7cYycpey1AjiMBQgOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVurO18d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5894EC4CECE;
+	Thu, 12 Dec 2024 16:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016569;
-	bh=/hu+UM0g7byTMxdX7pwy15YoI/wG254KuSMs4nLyZZ8=;
+	s=korg; t=1734020528;
+	bh=MUvijHd+/CF0kifBpgfUeFTz8rIfmCLJS455+RSV7jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMPk/7auj3GonQMAvsZoKUcigCVDebDWZ0NcrXfixaSEaDjwUjYF7msZ1OsorqvaT
-	 fqCyC1RwWIVydKggyd99dRrL66P8NUJsbLqbJ4dlUaHQXQpLw4qElkTiFMwWnRGOPf
-	 ua1dvIA96I79xfSBMZDpZUiU0GUTYwL7OkrkYS1A=
+	b=SVurO18dGVtUyBX0gWifndsH7QuqDXgXzNe/5KbdJk3MTjRaGrZpIn4nmmxMyLets
+	 ncLNd0PWwonB039wKCtUN7F80srv9zWoA7fHJuB1mzPRL89fpNV04qQfqJsDPACJmp
+	 92FGe4px0yyU0yCqBHMaa6Qc464z2+RQtGnH+K48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 236/466] spi: spi-fsl-lpspi: Adjust type of scldiv
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.1 460/772] arm64: dts: freescale: imx8mp-verdin: Fix SD regulator startup delay
 Date: Thu, 12 Dec 2024 15:56:45 +0100
-Message-ID: <20241212144316.103679702@linuxfoundation.org>
+Message-ID: <20241212144408.935165146@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit fa8ecda9876ac1e7b29257aa82af1fd0695496e2 ]
+commit 6c5789c9d2c06968532243daa235f6ff809ad71e upstream.
 
-The target value of scldiv is just a byte, but its calculation in
-fsl_lpspi_set_bitrate could be negative. So use an adequate type to store
-the result and avoid overflows. After that this needs range check
-adjustments, but this should make the code less opaque.
+The power switch used to power the SD card interface might have
+more than 2ms turn-on time, increase the startup delay to 20ms to
+prevent failures.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240930093056.93418-2-wahrenst@gmx.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a39ed23bdf6e ("arm64: dts: freescale: add initial support for verdin imx8m plus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 9573b8fa4fbfc..29b9676fe43d8 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -315,9 +315,10 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
- static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	struct lpspi_config config = fsl_lpspi->config;
--	unsigned int perclk_rate, scldiv, div;
-+	unsigned int perclk_rate, div;
- 	u8 prescale_max;
- 	u8 prescale;
-+	int scldiv;
+--- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
+@@ -133,7 +133,7 @@
+ 		regulator-max-microvolt = <3300000>;
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-name = "+V3.3_SD";
+-		startup-delay-us = <2000>;
++		startup-delay-us = <20000>;
+ 	};
  
- 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
- 	prescale_max = fsl_lpspi->devtype_data->prescale_max;
-@@ -338,13 +339,13 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 
- 	for (prescale = 0; prescale <= prescale_max; prescale++) {
- 		scldiv = div / (1 << prescale) - 2;
--		if (scldiv < 256) {
-+		if (scldiv >= 0 && scldiv < 256) {
- 			fsl_lpspi->config.prescale = prescale;
- 			break;
- 		}
- 	}
- 
--	if (scldiv >= 256)
-+	if (scldiv < 0 || scldiv >= 256)
- 		return -EINVAL;
- 
- 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
--- 
-2.43.0
-
+ 	reserved-memory {
 
 
 
