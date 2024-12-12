@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC079EED43
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA749EEBB9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BD02285956
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6FCC188D1E1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0835D222D57;
-	Thu, 12 Dec 2024 15:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92A421578E;
+	Thu, 12 Dec 2024 15:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBXpv0A6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brQXeOj9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65392185A8;
-	Thu, 12 Dec 2024 15:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650061487CD;
+	Thu, 12 Dec 2024 15:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018190; cv=none; b=Y23ak+dyQEBusGFAsdoPQM1mRQjpEjp/v08t0wNgV6LetRwKd7GiRr2lcGidiAEp3b9yqoP3DL245wYjj+zGQHpRPvCaltx1qinnC6NjWUfW1ktlMgnOfr6iUB3lxN+C2jXQV4jQjTPeNEIWFhRpUgNI646ttYT6szw6EWsUnYw=
+	t=1734017065; cv=none; b=WWokSq1g/1G76Pkd3QZNeXoVz4m/in0aeIog5769ElnKDz9uUvGxckG+bNIZIZcLmgwQ57mc1cYGIEq1JY6eY8dCTJXKSGD1+tjg9kD7sczLJNhhHs28GpHa3SwHdJM7KdcL8xZRP/etyQYZ7KZ8OVOmXABZbz1ZOUX5S19RGcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018190; c=relaxed/simple;
-	bh=afX4iyfVrZ/rSD223IHZCRR8ERRSvr9wm89NcNu4RS4=;
+	s=arc-20240116; t=1734017065; c=relaxed/simple;
+	bh=MnNF9z6M6wNSdzZkKHuY8uDjBPJ83J4jZqkoYCm5NAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CL/O58oKamkcVy8O5mrmTlGP+Spyb/mjcqfty6XzS6GWdrmm5npYUtjMS7ZI7SbQWO5FnFk0fm9ZQrHPiUjc4tk3a6PJIk+pm/tlHth+x6ZAps5KXNx7mnzITwE2vqZwxOYCjEMj2cHf/iBhAnnejeWCEqdpJEMJ11fz12P5Ugg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBXpv0A6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F96AC4CECE;
-	Thu, 12 Dec 2024 15:43:09 +0000 (UTC)
+	 MIME-Version; b=CWMaoIygngmO5u5LP6h6dfPvOWKT9pj7PfG/KgAeNoaKxnjK2YmolhSwc0Z3c1hYU4OJ415cF7IkBl3QdzZq15SxBrS+zf93yepDRWxcRq/M6RpXec1emEVn3ivTXXZrL4TUluLna/WSE7E9JEH7c/E8gHHEsc1/bejNYs6TIBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brQXeOj9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF30C4CECE;
+	Thu, 12 Dec 2024 15:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018190;
-	bh=afX4iyfVrZ/rSD223IHZCRR8ERRSvr9wm89NcNu4RS4=;
+	s=korg; t=1734017065;
+	bh=MnNF9z6M6wNSdzZkKHuY8uDjBPJ83J4jZqkoYCm5NAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBXpv0A63DvmDVRf3I15K2KNVW1wGtkqbsQlj6Cgxz859+fgHXR5kIIC91OHK4k8g
-	 ZyJMxYsi1bgndgBzJHdyMnZkZG4cdpwzdblfVEWuWB2IFQNoD1KYC+FJQrAUZh9PYr
-	 pQoKkb4MX7K4F07RZT7Q9y2FSTRLtCpxN8/X/fwM=
+	b=brQXeOj9uJ5FsWSAJS2kPBXNxoqwRUxmTv3HB/5EFvsq7CunxFpkWCGoUNUlJdTMY
+	 e2hRcNLMpWemdEEzFmn8E/Q4EVtKP9A2ba8ZY9B8+Mttbpe2ijl3NWsiAlM9P6urRn
+	 TdKHX3eYXrp5cPfBrT01sA3T3wSPfa1epAXxdnZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 222/356] net: ethernet: fs_enet: Use %pa to format resource_size_t
-Date: Thu, 12 Dec 2024 15:59:01 +0100
-Message-ID: <20241212144253.389097794@linuxfoundation.org>
+Subject: [PATCH 6.12 373/466] clk: qcom: tcsrcc-sm8550: add SAR2130P support
+Date: Thu, 12 Dec 2024 15:59:02 +0100
+Message-ID: <20241212144321.514694388@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
+[ Upstream commit d2e0a043530b9d6f37a8de8f05e0725667aba0a6 ]
 
-The correct format string for resource_size_t is %pa which
-acts on the address of the variable to be formatted [1].
+The SAR2130P platform has the same TCSR Clock Controller as the SM8550,
+except for the lack of the UFS clocks. Extend the SM8550 TCSRCC driver
+to support SAR2130P.
 
-[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
-
-Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
-
-Flagged by gcc-14 as:
-
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-      |                                             ~^   ~~~~~~~~~
-      |                                              |      |
-      |                                              |      resource_size_t {aka long long unsigned int}
-      |                                              unsigned int
-      |                                             %llx
-
-No functional change intended.
-Compile tested only.
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241027-sar2130p-clocks-v5-9-ecad2a1432ba@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/tcsrcc-sm8550.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-index f965a2329055e..2f4442072d059 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-@@ -126,7 +126,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
- 	 * we get is an int, and the odds of multiple bitbang mdio buses
- 	 * is low enough that it's not worth going too crazy.
- 	 */
--	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-+	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
+diff --git a/drivers/clk/qcom/tcsrcc-sm8550.c b/drivers/clk/qcom/tcsrcc-sm8550.c
+index e5e8f2e82b949..41d73f92a000a 100644
+--- a/drivers/clk/qcom/tcsrcc-sm8550.c
++++ b/drivers/clk/qcom/tcsrcc-sm8550.c
+@@ -129,6 +129,13 @@ static struct clk_branch tcsr_usb3_clkref_en = {
+ 	},
+ };
  
- 	data = of_get_property(np, "fsl,mdio-pin", &len);
- 	if (!data || len != 4)
++static struct clk_regmap *tcsr_cc_sar2130p_clocks[] = {
++	[TCSR_PCIE_0_CLKREF_EN] = &tcsr_pcie_0_clkref_en.clkr,
++	[TCSR_PCIE_1_CLKREF_EN] = &tcsr_pcie_1_clkref_en.clkr,
++	[TCSR_USB2_CLKREF_EN] = &tcsr_usb2_clkref_en.clkr,
++	[TCSR_USB3_CLKREF_EN] = &tcsr_usb3_clkref_en.clkr,
++};
++
+ static struct clk_regmap *tcsr_cc_sm8550_clocks[] = {
+ 	[TCSR_PCIE_0_CLKREF_EN] = &tcsr_pcie_0_clkref_en.clkr,
+ 	[TCSR_PCIE_1_CLKREF_EN] = &tcsr_pcie_1_clkref_en.clkr,
+@@ -146,6 +153,12 @@ static const struct regmap_config tcsr_cc_sm8550_regmap_config = {
+ 	.fast_io = true,
+ };
+ 
++static const struct qcom_cc_desc tcsr_cc_sar2130p_desc = {
++	.config = &tcsr_cc_sm8550_regmap_config,
++	.clks = tcsr_cc_sar2130p_clocks,
++	.num_clks = ARRAY_SIZE(tcsr_cc_sar2130p_clocks),
++};
++
+ static const struct qcom_cc_desc tcsr_cc_sm8550_desc = {
+ 	.config = &tcsr_cc_sm8550_regmap_config,
+ 	.clks = tcsr_cc_sm8550_clocks,
+@@ -153,7 +166,8 @@ static const struct qcom_cc_desc tcsr_cc_sm8550_desc = {
+ };
+ 
+ static const struct of_device_id tcsr_cc_sm8550_match_table[] = {
+-	{ .compatible = "qcom,sm8550-tcsr" },
++	{ .compatible = "qcom,sar2130p-tcsr", .data = &tcsr_cc_sar2130p_desc },
++	{ .compatible = "qcom,sm8550-tcsr", .data = &tcsr_cc_sm8550_desc },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, tcsr_cc_sm8550_match_table);
+@@ -162,7 +176,7 @@ static int tcsr_cc_sm8550_probe(struct platform_device *pdev)
+ {
+ 	struct regmap *regmap;
+ 
+-	regmap = qcom_cc_map(pdev, &tcsr_cc_sm8550_desc);
++	regmap = qcom_cc_map(pdev, of_device_get_match_data(&pdev->dev));
+ 	if (IS_ERR(regmap))
+ 		return PTR_ERR(regmap);
+ 
 -- 
 2.43.0
 
