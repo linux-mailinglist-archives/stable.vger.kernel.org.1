@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-102361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 952829EF2CB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C319EEDC9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73D5F1718DF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A0AB169A07
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7041223E84;
-	Thu, 12 Dec 2024 16:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708F4218594;
+	Thu, 12 Dec 2024 15:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRd4BIQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j49oioOv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F65C223E83;
-	Thu, 12 Dec 2024 16:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F148213E6B;
+	Thu, 12 Dec 2024 15:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020945; cv=none; b=nUvBvv8/XIcNES7W0CNWiNrEMkJwepR07czRYxht5k6IMSkmerfiwXX3sj6Bx3KnN38c20Eg+gF55aTKSJMBUaK5pVliwkxyKr/5kCan0S2MG0Jf1qvxA5WlXZtpcKL8dO/mMZ0hdSdV5c/czukfgWan9NODRh9UQoerdGzXBNA=
+	t=1734018322; cv=none; b=gis3YrifWiDnn5N1LGWSjTQ8jj9H0ZeZi8ut3e0RUqOL53TxxeNq0z1ySLSk/xr+NMNhDwb1C4Ovg0dYnA+Xf2m0LQxteoFa6++6+Gdg+v4x1DC3ZHQZKr565MhlkHQboMDB3tMmY3U7djfXe63djDLK0irTDQrL8gXjuwgcw70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020945; c=relaxed/simple;
-	bh=1s+mLff3jAtAyiMH75DTzdtnWR0V+dKLP3LlpxoGPr0=;
+	s=arc-20240116; t=1734018322; c=relaxed/simple;
+	bh=HRwdxwZ5uvDZSejCasHED5k3Bj0RYG+C4Xg6yb2KNeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkG0yKklEoePtBqmvy9Cdr5JBnQ6HE3pNDBrWaI0ZsdTCT6SNe+31nC7KPi+NvBz8TIAK4nxSTLth1FGZFv31In3xwCwbj/xTRd0QTtBF25VfJ28qyIgILb5jOMRGXMBaD+zuqsKTxqqp7z5dDeTNzA+rD9LlgXU57hBzStMVug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRd4BIQU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DF3C4CED0;
-	Thu, 12 Dec 2024 16:29:04 +0000 (UTC)
+	 MIME-Version; b=uJ4Z2a4d23PdFIfeTeFd3/+yiyF0OKcmctgKlGFyWMlwGW8WfugvrknVnY/D7l6LSvrDtvR3Ss0w9uo+3qSkw4cRdZXaenqOEpH5pcdzZgZjFAjl3x2QqCZWQDAGCcc5NyrSQvAz0uV7+zUekLDFcR3NYCh4Z4xioVYj6grntJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j49oioOv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D13C4CECE;
+	Thu, 12 Dec 2024 15:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020945;
-	bh=1s+mLff3jAtAyiMH75DTzdtnWR0V+dKLP3LlpxoGPr0=;
+	s=korg; t=1734018322;
+	bh=HRwdxwZ5uvDZSejCasHED5k3Bj0RYG+C4Xg6yb2KNeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRd4BIQUDlhLEC0nH6ZPx4zvzZpGR9LeHlb+pn5jNVxZKNVS437ppJYpTs/K0/ddV
-	 UZWFkeYq1Mikrzme8F49eUg43jX5vuSyX3k54vCJB1s/J3X3kxD4ccUNFjOkvsHIOa
-	 G7PSVywO0hiT8Km97wKBKMEdiA0clESmKhG2cHkA=
+	b=j49oioOvidaGR0TuBNHvGQe9B5WpIQOJDFGIvp0YyI3Q419t81UwVf6FJOK/Q9H7o
+	 YLk9oVVlXDPZHkTEGwcjeQoEc9I5psI6aB1afqK4tDA9/XkV5YOLwl3EEF/urcDYkB
+	 ihvjGeYD5z7SGoB50W7OQXDryx5jBjZBXc2oVBCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 604/772] LoongArch: Add architecture specific huge_pte_clear()
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 230/356] net: inet6: do not leave a dangling sk pointer in inet6_create()
 Date: Thu, 12 Dec 2024 15:59:09 +0100
-Message-ID: <20241212144414.879938224@linuxfoundation.org>
+Message-ID: <20241212144253.707647006@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-commit 7cd1f5f77925ae905a57296932f0f9ef0dc364f8 upstream.
+[ Upstream commit 9df99c395d0f55fb444ef39f4d6f194ca437d884 ]
 
-When executing mm selftests run_vmtests.sh, there is such an error:
+sock_init_data() attaches the allocated sk pointer to the provided sock
+object. If inet6_create() fails later, the sk object is released, but the
+sock object retains the dangling sk pointer, which may cause use-after-free
+later.
 
- BUG: Bad page state in process uffd-unit-tests  pfn:00000
- page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x0
- flags: 0xffff0000002000(reserved|node=0|zone=0|lastcpupid=0xffff)
- raw: 00ffff0000002000 ffffbf0000000008 ffffbf0000000008 0000000000000000
- raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
- page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
- Modules linked in: snd_seq_dummy snd_seq snd_seq_device rfkill vfat fat
-    virtio_balloon efi_pstore virtio_net pstore net_failover failover fuse
-    nfnetlink virtio_scsi virtio_gpu virtio_dma_buf dm_multipath efivarfs
- CPU: 2 UID: 0 PID: 1913 Comm: uffd-unit-tests Not tainted 6.12.0 #184
- Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 2/2/2022
- Stack : 900000047c8ac000 0000000000000000 9000000000223a7c 900000047c8ac000
-         900000047c8af690 900000047c8af698 0000000000000000 900000047c8af7d8
-         900000047c8af7d0 900000047c8af7d0 900000047c8af5b0 0000000000000001
-         0000000000000001 900000047c8af698 10b3c7d53da40d26 0000010000000000
-         0000000000000022 0000000fffffffff fffffffffe000000 ffff800000000000
-         000000000000002f 0000800000000000 000000017a6d4000 90000000028f8940
-         0000000000000000 0000000000000000 90000000025aa5e0 9000000002905000
-         0000000000000000 90000000028f8940 ffff800000000000 0000000000000000
-         0000000000000000 0000000000000000 9000000000223a94 000000012001839c
-         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1d
-         ...
- Call Trace:
- [<9000000000223a94>] show_stack+0x5c/0x180
- [<9000000001c3fd64>] dump_stack_lvl+0x6c/0xa0
- [<900000000056aa08>] bad_page+0x1a0/0x1f0
- [<9000000000574978>] free_unref_folios+0xbf0/0xd20
- [<90000000004e65cc>] folios_put_refs+0x1a4/0x2b8
- [<9000000000599a0c>] free_pages_and_swap_cache+0x164/0x260
- [<9000000000547698>] tlb_batch_pages_flush+0xa8/0x1c0
- [<9000000000547f30>] tlb_finish_mmu+0xa8/0x218
- [<9000000000543cb8>] exit_mmap+0x1a0/0x360
- [<9000000000247658>] __mmput+0x78/0x200
- [<900000000025583c>] do_exit+0x43c/0xde8
- [<9000000000256490>] do_group_exit+0x68/0x110
- [<9000000000256554>] sys_exit_group+0x1c/0x20
- [<9000000001c413b4>] do_syscall+0x94/0x130
- [<90000000002216d8>] handle_syscall+0xb8/0x158
- Disabling lock debugging due to kernel taint
- BUG: non-zero pgtables_bytes on freeing mm: -16384
+Clear the sock sk pointer on error.
 
-On LoongArch system, invalid huge pte entry should be invalid_pte_table
-or a single _PAGE_HUGE bit rather than a zero value. And it should be
-the same with invalid pmd entry, since pmd_none() is called by function
-free_pgd_range() and pmd_none() return 0 by huge_pte_clear(). So single
-_PAGE_HUGE bit is also treated as a valid pte table and free_pte_range()
-will be called in free_pmd_range().
-
-  free_pmd_range()
-        pmd = pmd_offset(pud, addr);
-        do {
-                next = pmd_addr_end(addr, end);
-                if (pmd_none_or_clear_bad(pmd))
-                        continue;
-                free_pte_range(tlb, pmd, addr);
-        } while (pmd++, addr = next, addr != end);
-
-Here invalid_pte_table is used for both invalid huge pte entry and
-pmd entry.
-
-Cc: stable@vger.kernel.org
-Fixes: 09cfefb7fa70 ("LoongArch: Add memory management")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-8-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/hugetlb.h |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/ipv6/af_inet6.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
---- a/arch/loongarch/include/asm/hugetlb.h
-+++ b/arch/loongarch/include/asm/hugetlb.h
-@@ -29,6 +29,16 @@ static inline int prepare_hugepage_range
- 	return 0;
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index 99843eb4d49b9..102ce1748b599 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -250,31 +250,29 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 		 */
+ 		inet->inet_sport = htons(inet->inet_num);
+ 		err = sk->sk_prot->hash(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
+ 	if (sk->sk_prot->init) {
+ 		err = sk->sk_prot->init(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
+ 
+ 	if (!kern) {
+ 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
+ out:
+ 	return err;
+ out_rcu_unlock:
+ 	rcu_read_unlock();
+ 	goto out;
++out_sk_release:
++	sk_common_release(sk);
++	sock->sk = NULL;
++	goto out;
  }
  
-+#define __HAVE_ARCH_HUGE_PTE_CLEAR
-+static inline void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
-+				  pte_t *ptep, unsigned long sz)
-+{
-+	pte_t clear;
-+
-+	pte_val(clear) = (unsigned long)invalid_pte_table;
-+	set_pte_at(mm, addr, ptep, clear);
-+}
-+
- #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
- static inline pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
- 					    unsigned long addr, pte_t *ptep)
+ static int __inet6_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len,
+-- 
+2.43.0
+
 
 
 
