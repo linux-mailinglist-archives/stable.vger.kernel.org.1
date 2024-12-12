@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-103090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7261D9EF6B6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 142A19EF869
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE5E817DD0C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40043189D0F0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B53222D7C;
-	Thu, 12 Dec 2024 17:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDE9223E94;
+	Thu, 12 Dec 2024 17:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjxWG4aZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMKjLSS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AF922330D;
-	Thu, 12 Dec 2024 17:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995BB223E89;
+	Thu, 12 Dec 2024 17:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023514; cv=none; b=buRwI5N5WNtupboPPvlxGVvFko83lXkzqrHzGgw8M9fsThTtCi/Ra7Vm6YXyTFzu49RdmnE725mrEoYU5G33kEO4uxVOv05s3M1RUEdOzQON3xYTgy78dhpZhYZGvgxQsw80fSPo1QBueSkEuN4rk0V9IJ22lDseY5wJRxUp2II=
+	t=1734024891; cv=none; b=CQl0VdvZ4ZNz+BZaitPwWUfR5hkJi7YhpZUadMX2NBdG7/Xv+8wE+ivBKA8CtytUMKRNaJckpr8SzJH2F/YGq9Zm67TWOzEnVNLvhFN5CP7wTHRY80eOhEUuPaV53CKwn2EFKbBYYhUvZo5QPtIdeknG0ekiFgtTP7aCrAbaYzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023514; c=relaxed/simple;
-	bh=F5m0XiJAnE8vcmA7gHA3uNV6hy7hxC2W/Y+w1Yv+s5E=;
+	s=arc-20240116; t=1734024891; c=relaxed/simple;
+	bh=5/ljwEZLZhQStnG52WNMYk/v34WztArtowvzl2YOrbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YJGb5AJGtAwQ/xOwHodeLWpGjMZPjG/gEfKFEkGyFcx9XmxHuUSpwOvd9TBiueQkd4mZxZDOAZmMSex7Yoc7ygNxPrdYHIVEwzTTYvsc1GghVLb1qMvOMYzIwAQGzmXaP+WIRGnrtg6NWoymVl9RR7h2rMxn+nlolo/Aes/+p9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjxWG4aZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF137C4CED0;
-	Thu, 12 Dec 2024 17:11:53 +0000 (UTC)
+	 MIME-Version; b=ZfEa1o0wzTur3szou1lY2bMXLNgN9ZcH1tQ81hni5zztWwQpAGFFUSAClt+xYeombzvzi/r/0jQi1DNuet/4maEgTJ5HjwzO6i/+NqyEibV/s7ASsx36f6erueYMRrYo7pGrGugf90sj3YF6QAAswrtVOI8yjwLi48Qz/O+d8qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMKjLSS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF7F1C4CED0;
+	Thu, 12 Dec 2024 17:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023514;
-	bh=F5m0XiJAnE8vcmA7gHA3uNV6hy7hxC2W/Y+w1Yv+s5E=;
+	s=korg; t=1734024891;
+	bh=5/ljwEZLZhQStnG52WNMYk/v34WztArtowvzl2YOrbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JjxWG4aZydXC8M8Hsb04hoFnOLFXi1c0X8/j//ybuAc0Ew8m58RxM1WpkunkHLfvd
-	 dXxfX3I6JA/PvAmWY2NOS+jtfKq3PFIP+sYZBi4RTHjabbCd9wBejaN5iShahZVlBD
-	 BCSF62MC28Z/eM+GvLHQCyG+b9LNfhJCYW4xsN3k=
+	b=RMKjLSS1UFX1MMYdI837/E6iBdUYXvOEvDOEvZZk4SRAlPrsgD+DaWSr5hls+xoeb
+	 pM9K34YpQLbM15SsQwXN5PSQM5dSb/zeKURa0vgFt+xc0t3D34fi1dfB/Qf8LdxbU0
+	 f7yGe4LSewmI4TOBOf8ytNYxMXBHbSsbk1Q965Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristram Ha <Tristram.Ha@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	=?UTF-8?q?J=C3=B6rg=20Sommer?= <joerg@jo-so.de>
-Subject: [PATCH 5.15 559/565] net: dsa: microchip: correct KSZ8795 static MAC table access
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 416/459] netpoll: Use rcu_access_pointer() in __netpoll_setup
 Date: Thu, 12 Dec 2024 16:02:34 +0100
-Message-ID: <20241212144333.960086042@linuxfoundation.org>
+Message-ID: <20241212144310.195783950@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <Tristram.Ha@microchip.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 4bdf79d686b49ac49373b36466acfb93972c7d7c upstream.
+[ Upstream commit c69c5e10adb903ae2438d4f9c16eccf43d1fcbc1 ]
 
-The KSZ8795 driver code was modified to use on KSZ8863/73, which has
-different register definitions.  Some of the new KSZ8795 register
-information are wrong compared to previous code.
+The ndev->npinfo pointer in __netpoll_setup() is RCU-protected but is being
+accessed directly for a NULL check. While no RCU read lock is held in this
+context, we should still use proper RCU primitives for consistency and
+correctness.
 
-KSZ8795 also behaves differently in that the STATIC_MAC_TABLE_USE_FID
-and STATIC_MAC_TABLE_FID bits are off by 1 when doing MAC table reading
-than writing.  To compensate that a special code was added to shift the
-register value by 1 before applying those bits.  This is wrong when the
-code is running on KSZ8863, so this special code is only executed when
-KSZ8795 is detected.
+Replace the direct NULL check with rcu_access_pointer(), which is the
+appropriate primitive when only checking for NULL without dereferencing
+the pointer. This function provides the necessary ordering guarantees
+without requiring RCU read-side protection.
 
-Fixes: 4b20a07e103f ("net: dsa: microchip: ksz8795: add support for ksz88xx chips")
-Signed-off-by: Tristram Ha <Tristram.Ha@microchip.com>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Jörg Sommer <joerg@jo-so.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20241118-netpoll_rcu-v1-1-a1888dcb4a02@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz8795.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ net/core/netpoll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/dsa/microchip/ksz8795.c
-+++ b/drivers/net/dsa/microchip/ksz8795.c
-@@ -25,6 +25,8 @@
- #include "ksz8795_reg.h"
- #include "ksz8.h"
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index f76afab9fd8bd..4475b2174bcc4 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -635,7 +635,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ 		goto out;
+ 	}
  
-+#define KSZ8795_CHIP_ID         0x09
-+
- static const u8 ksz8795_regs[] = {
- 	[REG_IND_CTRL_0]		= 0x6E,
- 	[REG_IND_DATA_8]		= 0x70,
-@@ -52,13 +54,13 @@ static const u32 ksz8795_masks[] = {
- 	[STATIC_MAC_TABLE_VALID]	= BIT(21),
- 	[STATIC_MAC_TABLE_USE_FID]	= BIT(23),
- 	[STATIC_MAC_TABLE_FID]		= GENMASK(30, 24),
--	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(26),
--	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(24, 20),
-+	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(22),
-+	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(20, 16),
- 	[DYNAMIC_MAC_TABLE_ENTRIES_H]	= GENMASK(6, 0),
--	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(8),
-+	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(7),
- 	[DYNAMIC_MAC_TABLE_NOT_READY]	= BIT(7),
- 	[DYNAMIC_MAC_TABLE_ENTRIES]	= GENMASK(31, 29),
--	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(26, 20),
-+	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(22, 16),
- 	[DYNAMIC_MAC_TABLE_SRC_PORT]	= GENMASK(26, 24),
- 	[DYNAMIC_MAC_TABLE_TIMESTAMP]	= GENMASK(28, 27),
- };
-@@ -601,7 +603,13 @@ static int ksz8_r_sta_mac_table(struct k
- 				shifts[STATIC_MAC_FWD_PORTS];
- 		alu->is_override =
- 			(data_hi & masks[STATIC_MAC_TABLE_OVERRIDE]) ? 1 : 0;
--		data_hi >>= 1;
-+
-+		/* KSZ8795 family switches have STATIC_MAC_TABLE_USE_FID and
-+		 * STATIC_MAC_TABLE_FID definitions off by 1 when doing read on the
-+		 * static MAC table compared to doing write.
-+		 */
-+		if (dev->chip_id == KSZ8795_CHIP_ID)
-+			data_hi >>= 1;
- 		alu->is_static = true;
- 		alu->is_use_fid =
- 			(data_hi & masks[STATIC_MAC_TABLE_USE_FID]) ? 1 : 0;
+-	if (!ndev->npinfo) {
++	if (!rcu_access_pointer(ndev->npinfo)) {
+ 		npinfo = kmalloc(sizeof(*npinfo), GFP_KERNEL);
+ 		if (!npinfo) {
+ 			err = -ENOMEM;
+-- 
+2.43.0
+
 
 
 
