@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C399EF5FE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9439EF4E9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 357F3289252
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B15617FBF0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E233021660B;
-	Thu, 12 Dec 2024 17:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700982253E7;
+	Thu, 12 Dec 2024 16:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oqmu+z8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lord/dbP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB0321766D;
-	Thu, 12 Dec 2024 17:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9AB223E93;
+	Thu, 12 Dec 2024 16:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024060; cv=none; b=rrue+TJfTPp9T4cs+rC2WKJXYUxH/MFdGvY7Fvr+9u3zvMfdMEgzCHLdl7M6+7UClR0kuV6BB2H3QU7YWUvjNquxI9iPgA/OXhmB7bjfuogaXbXrK2OjEM0OIPzR4ZI4EBiZqQviH3+bSrrdRLSVz7GgzUxHsvcHUGmhp8G+1cw=
+	t=1734022715; cv=none; b=gjKFjuhMNAWvcUJzOI6Xl8/uxbuNw7HKZVmCSdg4z1vkGRvyR0VVljWOzHdferppOUndgZ2fW1H4/Hxeb+rWJf+6SmWbz+11OcSs3XR1n87TwVrKxInu05NeCo8MSz2OPDUBWxH3QXMS+9J2DjJZm4lNAB+XZfWCE+9aDu3wQBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024060; c=relaxed/simple;
-	bh=ur+M9Mgkh0lmXeDGh0m8LRFgFMFqe+tLNGdtwwoK5Uw=;
+	s=arc-20240116; t=1734022715; c=relaxed/simple;
+	bh=ZCnhgm5oERN8gTLDZCcQk1/mewhibCIxn5a/6S9OnH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAYgio7l7ETPn2DKpO6Qqpm3mu/N76e/wBW2vv/Ij+7IfinPWws/8d3qb9OqiNq5AvPSPQuuZJ1Zo8Z+HfkUA/dw9frKU5b83VGLaNCthHdXrLo0T0IGSHa4l6r7ERgobfoyXcMTYvAxXk7+QwxA177aRy2YXhCxUg2p0cFc4n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oqmu+z8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEE2C4CECE;
-	Thu, 12 Dec 2024 17:20:59 +0000 (UTC)
+	 MIME-Version; b=ct9BKVf3xQkJ9Mkp1YKUj5kDgzQxQrZbtrc4OJw5I2pWrKu4EEwGxttCXOC9GLjiw4+L3oHkRLbqr3VG5C+b56SzAhszRyMFYuy+rXSrIHAtp8+ZWMkN9Eb0d+PgokVQthogcVidtvFt+DiUDPekFzChkzCPh8RpP7LB3tZlTNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lord/dbP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC42C4CED3;
+	Thu, 12 Dec 2024 16:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024060;
-	bh=ur+M9Mgkh0lmXeDGh0m8LRFgFMFqe+tLNGdtwwoK5Uw=;
+	s=korg; t=1734022713;
+	bh=ZCnhgm5oERN8gTLDZCcQk1/mewhibCIxn5a/6S9OnH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oqmu+z8A465AESNHMm0B5RYXmMAcJ0T4UCvcC4X1dlBQOmxl61lcvVSG89bLsKpyy
-	 S9xnsHhfuQDpyyU6HPREIGUWSWDnEiIEkR/i7NFQXo1Jkm6qUAvnqtZmaoyunKoJs2
-	 Flc/pzytyG2bmVStvOZr/ApbQW/GwHyfmhQ0Pkro=
+	b=Lord/dbPhsfXV+tMWGqyo4yXDIWK1AkrdjTz1K0b0iaeQw//j4ZrzU0qGxtU0G++4
+	 8uJKzx+T78uNFqcR6fApmy+J28ooskLBEiUKNABhN+UXFMdeMV/2gfIAlh/7em67z6
+	 GTrg2AOPiZs1q3SEd567TxNb19GvyMkL3yPYEIVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 172/459] mtd: rawnand: atmel: Fix possible memory leak
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 5.15 315/565] apparmor: test: Fix memory leak for aa_unpack_strdup()
 Date: Thu, 12 Dec 2024 15:58:30 +0100
-Message-ID: <20241212144300.306438489@linuxfoundation.org>
+Message-ID: <20241212144324.057462208@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 6d734f1bfc336aaea91313a5632f2f197608fadd ]
+commit 7290f59231910ccba427d441a6e8b8c6f6112448 upstream.
 
-The pmecc "user" structure is allocated in atmel_pmecc_create_user() and
-was supposed to be freed with atmel_pmecc_destroy_user(), but this other
-helper is never called. One solution would be to find the proper
-location to call the destructor, but the trend today is to switch to
-device managed allocations, which in this case fits pretty well.
+The string allocated by kmemdup() in aa_unpack_strdup() is not
+freed and cause following memory leaks, free them to fix it.
 
-Replace kzalloc() by devm_kzalloc() and drop the destructor entirely.
+	unreferenced object 0xffffff80c6af8a50 (size 8):
+	  comm "kunit_try_catch", pid 225, jiffies 4294894407
+	  hex dump (first 8 bytes):
+	    74 65 73 74 69 6e 67 00                          testing.
+	  backtrace (crc 5eab668b):
+	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
+	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
+	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
+	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
+	    [<000000008ecde918>] policy_unpack_test_unpack_strdup_with_null_name+0xf8/0x3ec
+	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000adf936cf>] kthread+0x2e8/0x374
+	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
+	unreferenced object 0xffffff80c2a29090 (size 8):
+	  comm "kunit_try_catch", pid 227, jiffies 4294894409
+	  hex dump (first 8 bytes):
+	    74 65 73 74 69 6e 67 00                          testing.
+	  backtrace (crc 5eab668b):
+	    [<0000000001e3714d>] kmemleak_alloc+0x34/0x40
+	    [<000000006e6c7776>] __kmalloc_node_track_caller_noprof+0x300/0x3e0
+	    [<000000006870467c>] kmemdup_noprof+0x34/0x60
+	    [<000000001176bb03>] aa_unpack_strdup+0xd0/0x18c
+	    [<0000000046a45c1a>] policy_unpack_test_unpack_strdup_with_name+0xd0/0x3c4
+	    [<0000000032ef8f77>] kunit_try_run_case+0x13c/0x3ac
+	    [<00000000f3edea23>] kunit_generic_run_threadfn_adapter+0x80/0xec
+	    [<00000000adf936cf>] kthread+0x2e8/0x374
+	    [<0000000041bb1628>] ret_from_fork+0x10/0x20
 
-Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
-Closes: https://lore.kernel.org/all/ZvmIvRJCf6VhHvpo@gallifrey/
-Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20241001203149.387655-1-miquel.raynal@bootlin.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/atmel/pmecc.c | 8 +-------
- drivers/mtd/nand/raw/atmel/pmecc.h | 2 --
- 2 files changed, 1 insertion(+), 9 deletions(-)
+ security/apparmor/policy_unpack_test.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
-index cbb023bf00f72..09848d13802d8 100644
---- a/drivers/mtd/nand/raw/atmel/pmecc.c
-+++ b/drivers/mtd/nand/raw/atmel/pmecc.c
-@@ -362,7 +362,7 @@ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
- 	size = ALIGN(size, sizeof(s32));
- 	size += (req->ecc.strength + 1) * sizeof(s32) * 3;
- 
--	user = kzalloc(size, GFP_KERNEL);
-+	user = devm_kzalloc(pmecc->dev, size, GFP_KERNEL);
- 	if (!user)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -408,12 +408,6 @@ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
+--- a/security/apparmor/policy_unpack_test.c
++++ b/security/apparmor/policy_unpack_test.c
+@@ -283,6 +283,8 @@ static void policy_unpack_test_unpack_st
+ 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
+ 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
+ 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
++
++	kfree(string);
  }
- EXPORT_SYMBOL_GPL(atmel_pmecc_create_user);
  
--void atmel_pmecc_destroy_user(struct atmel_pmecc_user *user)
--{
--	kfree(user);
--}
--EXPORT_SYMBOL_GPL(atmel_pmecc_destroy_user);
--
- static int get_strength(struct atmel_pmecc_user *user)
- {
- 	const int *strengths = user->pmecc->caps->strengths;
-diff --git a/drivers/mtd/nand/raw/atmel/pmecc.h b/drivers/mtd/nand/raw/atmel/pmecc.h
-index 7851c05126cf1..cc0c5af1f4f1a 100644
---- a/drivers/mtd/nand/raw/atmel/pmecc.h
-+++ b/drivers/mtd/nand/raw/atmel/pmecc.h
-@@ -55,8 +55,6 @@ struct atmel_pmecc *devm_atmel_pmecc_get(struct device *dev);
- struct atmel_pmecc_user *
- atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
- 			struct atmel_pmecc_user_req *req);
--void atmel_pmecc_destroy_user(struct atmel_pmecc_user *user);
--
- void atmel_pmecc_reset(struct atmel_pmecc *pmecc);
- int atmel_pmecc_enable(struct atmel_pmecc_user *user, int op);
- void atmel_pmecc_disable(struct atmel_pmecc_user *user);
--- 
-2.43.0
-
+ static void policy_unpack_test_unpack_strdup_with_name(struct kunit *test)
+@@ -298,6 +300,8 @@ static void policy_unpack_test_unpack_st
+ 			   ((uintptr_t)puf->e->start <= (uintptr_t)string)
+ 			   && ((uintptr_t)string <= (uintptr_t)puf->e->end));
+ 	KUNIT_EXPECT_STREQ(test, string, TEST_STRING_DATA);
++
++	kfree(string);
+ }
+ 
+ static void policy_unpack_test_unpack_strdup_out_of_bounds(struct kunit *test)
+@@ -315,6 +319,8 @@ static void policy_unpack_test_unpack_st
+ 	KUNIT_EXPECT_EQ(test, size, 0);
+ 	KUNIT_EXPECT_PTR_EQ(test, string, (char *)NULL);
+ 	KUNIT_EXPECT_PTR_EQ(test, puf->e->pos, start);
++
++	kfree(string);
+ }
+ 
+ static void policy_unpack_test_unpack_nameX_with_null_name(struct kunit *test)
 
 
 
