@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-102118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A559EF12D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A20C79EF2F2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29A211898D58
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E12282B83
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E35221DB0;
-	Thu, 12 Dec 2024 16:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61D2238E13;
+	Thu, 12 Dec 2024 16:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHqDuD2S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqvvPqFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055E9222D42;
-	Thu, 12 Dec 2024 16:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F9D238E00;
+	Thu, 12 Dec 2024 16:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020040; cv=none; b=TTrxtXMaIlnD/fb8K6+1PAfJY+kesk6P6vwW4zqAEhG3FhyN1ZAWT3M+emRHgZfJ9q1/l0D6AWp3SogTeEI0zow7CN5VmKx/C8WSKOfNA6Ur2HYG4uYyuw0NR04Ym8GBBw97kHteLwEIKHhBLCsMc1QtGsO/N0yDWtOgoD739O4=
+	t=1734021981; cv=none; b=k/1t44aU2Y+QvqgM1rvHVpaiq+JYlxXU/IJcu9LeFcsE/OOFfwF0HIih5tgXxmXNH5bLIs8STyDVx9TTXS16XkZF6S94lq/++mjuqSZX+IdTaLz05GhEG2L3pQKklcAtFSvBzyG8Gt6FZyP88er4nFswg5HZ+lVPXYNTsbee8dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020040; c=relaxed/simple;
-	bh=S+WYNvdmGrvDmzsSaP12wVt+daCmzW6wa+qretsCVTI=;
+	s=arc-20240116; t=1734021981; c=relaxed/simple;
+	bh=V9FRkc7JoiULywehn9WzemtagfEWPXNtw/e69bc8Q0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=my3UMAYmn2uYEIjtrXVtxFOFKhmOtC9xCjty1SLAl9fcpsebPvqAX90I/QpEHZ4XGJgFlWNkJ6TpttiB0b1B5N5BQ4BuSKFFhjLuo6BzDQoEbj6MIBXoN+lOGGFyggj9UuY2H4NoDv7R4dOg7os6l/+5I7Kx/959i0DOG9FoNr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHqDuD2S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D77C4CECE;
-	Thu, 12 Dec 2024 16:13:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cudnEjCbmwiXQ/aVgY3UzmT8GMQshMcvmztOj98yqfLzfsxn3qgF7w53bAdGJ/K9tT0kelx2+qQxClT6aWTAWSGMVQ9f51PbEULCyW0HGTVc/WHNaF1a0a82zZ5PI9nSJdoSV0elMDdPzUVUKEVBLHYZ4bEmjxoe6K9bUo/AWfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqvvPqFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6530DC4CECE;
+	Thu, 12 Dec 2024 16:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020039;
-	bh=S+WYNvdmGrvDmzsSaP12wVt+daCmzW6wa+qretsCVTI=;
+	s=korg; t=1734021981;
+	bh=V9FRkc7JoiULywehn9WzemtagfEWPXNtw/e69bc8Q0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pHqDuD2SeOFlIKTHBZsa7DogmelwS75IJd19ZE3t3R4phkItZV6wE617yTmslYtKZ
-	 thY50qEwQ5rqaseH7ml9m4sScUq5bCI+QQiWbCv5Pst2xCI2kP9L8RG2hxFLnVDhc7
-	 weC4zijaj0K1+FQMn14NxuWEvU8rQ9t3SwngHthI=
+	b=FqvvPqFyLyBtzQ08DhesNGxIvqBZJis0r/5OEdb4YrxoOAt9KAI7Uwpdm+ONrldiL
+	 0ZjoZmBcyMpUoz+RX3W0QRkfMqXNui1NpZ2+H6zbh6KT1Zc+n3lv1JEbpVDHeMXqtU
+	 DoQT4Po3p3oo8IkqSKWP0ExhW8IKFsAS+ZE5ySIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 363/772] ext4: fix FS_IOC_GETFSMAP handling
-Date: Thu, 12 Dec 2024 15:55:08 +0100
-Message-ID: <20241212144404.917886198@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 114/565] mmc: mmc_spi: drop buggy snprintf()
+Date: Thu, 12 Dec 2024 15:55:09 +0100
+Message-ID: <20241212144315.990106799@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,165 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 4a622e4d477bb12ad5ed4abbc7ad1365de1fa347 upstream.
+[ Upstream commit 328bda09cc91b3d93bc64f4a4dadc44313dd8140 ]
 
-The original implementation ext4's FS_IOC_GETFSMAP handling only
-worked when the range of queried blocks included at least one free
-(unallocated) block range.  This is because how the metadata blocks
-were emitted was as a side effect of ext4_mballoc_query_range()
-calling ext4_getfsmap_datadev_helper(), and that function was only
-called when a free block range was identified.  As a result, this
-caused generic/365 to fail.
+GCC 13 complains about the truncated output of snprintf():
 
-Fix this by creating a new function ext4_getfsmap_meta_helper() which
-gets called so that blocks before the first free block range in a
-block group can get properly reported.
+drivers/mmc/host/mmc_spi.c: In function ‘mmc_spi_response_get’:
+drivers/mmc/host/mmc_spi.c:227:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+      |                                                                ^
+drivers/mmc/host/mmc_spi.c:227:9: note: ‘snprintf’ output between 26 and 43 bytes into a destination of size 32
+  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  228 |                 cmd->opcode, maptype(cmd));
 
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Drop it and fold the string it generates into the only place where it's
+emitted - the dev_dbg() call at the end of the function.
+
+Fixes: 15a0580ced08 ("mmc_spi host driver")
+Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20241008160134.69934-1-brgl@bgdev.pl
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fsmap.c   |   54 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
- fs/ext4/mballoc.c |   18 ++++++++++++++----
- fs/ext4/mballoc.h |    1 +
- 3 files changed, 68 insertions(+), 5 deletions(-)
+ drivers/mmc/host/mmc_spi.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -185,6 +185,56 @@ static inline ext4_fsblk_t ext4_fsmap_ne
- 	return fmr->fmr_physical + fmr->fmr_length;
- }
- 
-+static int ext4_getfsmap_meta_helper(struct super_block *sb,
-+				     ext4_group_t agno, ext4_grpblk_t start,
-+				     ext4_grpblk_t len, void *priv)
-+{
-+	struct ext4_getfsmap_info *info = priv;
-+	struct ext4_fsmap *p;
-+	struct ext4_fsmap *tmp;
-+	struct ext4_sb_info *sbi = EXT4_SB(sb);
-+	ext4_fsblk_t fsb, fs_start, fs_end;
-+	int error;
-+
-+	fs_start = fsb = (EXT4_C2B(sbi, start) +
-+			  ext4_group_first_block_no(sb, agno));
-+	fs_end = fs_start + EXT4_C2B(sbi, len);
-+
-+	/* Return relevant extents from the meta_list */
-+	list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
-+		if (p->fmr_physical < info->gfi_next_fsblk) {
-+			list_del(&p->fmr_list);
-+			kfree(p);
-+			continue;
-+		}
-+		if (p->fmr_physical <= fs_start ||
-+		    p->fmr_physical + p->fmr_length <= fs_end) {
-+			/* Emit the retained free extent record if present */
-+			if (info->gfi_lastfree.fmr_owner) {
-+				error = ext4_getfsmap_helper(sb, info,
-+							&info->gfi_lastfree);
-+				if (error)
-+					return error;
-+				info->gfi_lastfree.fmr_owner = 0;
-+			}
-+			error = ext4_getfsmap_helper(sb, info, p);
-+			if (error)
-+				return error;
-+			fsb = p->fmr_physical + p->fmr_length;
-+			if (info->gfi_next_fsblk < fsb)
-+				info->gfi_next_fsblk = fsb;
-+			list_del(&p->fmr_list);
-+			kfree(p);
-+			continue;
-+		}
-+	}
-+	if (info->gfi_next_fsblk < fsb)
-+		info->gfi_next_fsblk = fsb;
-+
-+	return 0;
-+}
-+
-+
- /* Transform a blockgroup's free record into a fsmap */
- static int ext4_getfsmap_datadev_helper(struct super_block *sb,
- 					ext4_group_t agno, ext4_grpblk_t start,
-@@ -539,6 +589,7 @@ static int ext4_getfsmap_datadev(struct
- 		error = ext4_mballoc_query_range(sb, info->gfi_agno,
- 				EXT4_B2C(sbi, info->gfi_low.fmr_physical),
- 				EXT4_B2C(sbi, info->gfi_high.fmr_physical),
-+				ext4_getfsmap_meta_helper,
- 				ext4_getfsmap_datadev_helper, info);
- 		if (error)
- 			goto err;
-@@ -560,7 +611,8 @@ static int ext4_getfsmap_datadev(struct
- 
- 	/* Report any gaps at the end of the bg */
- 	info->gfi_last = true;
--	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster, 0, info);
-+	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
-+					     0, info);
- 	if (error)
- 		goto err;
- 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -6685,13 +6685,14 @@ int
- ext4_mballoc_query_range(
- 	struct super_block		*sb,
- 	ext4_group_t			group,
--	ext4_grpblk_t			start,
-+	ext4_grpblk_t			first,
- 	ext4_grpblk_t			end,
-+	ext4_mballoc_query_range_fn	meta_formatter,
- 	ext4_mballoc_query_range_fn	formatter,
- 	void				*priv)
- {
- 	void				*bitmap;
--	ext4_grpblk_t			next;
-+	ext4_grpblk_t			start, next;
- 	struct ext4_buddy		e4b;
- 	int				error;
- 
-@@ -6702,10 +6703,19 @@ ext4_mballoc_query_range(
- 
- 	ext4_lock_group(sb, group);
- 
--	start = max(e4b.bd_info->bb_first_free, start);
-+	start = max(e4b.bd_info->bb_first_free, first);
- 	if (end >= EXT4_CLUSTERS_PER_GROUP(sb))
- 		end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
+diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+index 05990cebafaa1..888909b4f9a38 100644
+--- a/drivers/mmc/host/mmc_spi.c
++++ b/drivers/mmc/host/mmc_spi.c
+@@ -223,10 +223,6 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
+ 	u8 	leftover = 0;
+ 	unsigned short rotator;
+ 	int 	i;
+-	char	tag[32];
 -
-+	if (meta_formatter && start != first) {
-+		if (start > end)
-+			start = end;
-+		ext4_unlock_group(sb, group);
-+		error = meta_formatter(sb, group, first, start - first,
-+				       priv);
-+		if (error)
-+			goto out_unload;
-+		ext4_lock_group(sb, group);
-+	}
- 	while (start <= end) {
- 		start = mb_find_next_zero_bit(bitmap, end + 1, start);
- 		if (start > end)
---- a/fs/ext4/mballoc.h
-+++ b/fs/ext4/mballoc.h
-@@ -245,6 +245,7 @@ ext4_mballoc_query_range(
- 	ext4_group_t			agno,
- 	ext4_grpblk_t			start,
- 	ext4_grpblk_t			end,
-+	ext4_mballoc_query_range_fn	meta_formatter,
- 	ext4_mballoc_query_range_fn	formatter,
- 	void				*priv);
+-	snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+-		cmd->opcode, maptype(cmd));
  
+ 	/* Except for data block reads, the whole response will already
+ 	 * be stored in the scratch buffer.  It's somewhere after the
+@@ -379,8 +375,9 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
+ 	}
+ 
+ 	if (value < 0)
+-		dev_dbg(&host->spi->dev, "%s: resp %04x %08x\n",
+-			tag, cmd->resp[0], cmd->resp[1]);
++		dev_dbg(&host->spi->dev,
++			"  ... CMD%d response SPI_%s: resp %04x %08x\n",
++			cmd->opcode, maptype(cmd), cmd->resp[0], cmd->resp[1]);
+ 
+ 	/* disable chipselect on errors and some success cases */
+ 	if (value >= 0 && cs_on)
+-- 
+2.43.0
+
 
 
 
