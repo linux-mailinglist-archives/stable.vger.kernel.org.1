@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-103782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234739EF9D3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8789EF4F4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7586F171671
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31AAC28FC70
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9812253E3;
-	Thu, 12 Dec 2024 17:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E3F20967D;
+	Thu, 12 Dec 2024 17:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4l5CfQ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byhTzXL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187B0223711;
-	Thu, 12 Dec 2024 17:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C561487CD;
+	Thu, 12 Dec 2024 17:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025588; cv=none; b=f4x8BVL9fTI080/klnW0n6jOBRKjboxlpP4KkO1KlJWXxl6MrJrq9YP0/tCZMentDmTvl0jRyGlvRE9D0p1Uph6Zetvp+haLFC1mBp+4OLYS98aKEXjhyjP2YfAeAdrbYnl0c0OQG4INKUubDBje9yBE122sooTgcRgp6T/uuk4=
+	t=1734023471; cv=none; b=i5cAXuP+FvdKuFgULSAAEbXyANxxG8Rx/kgw7NlR8P1wGrruhViuxST164QnAKHjsH4JZ8SfGHp4sowzAfsz1nzM3iQa9JzPotAQLOjey/51jzEppXaKwJKi95A/X8ISjpcD3F6NhDAmgvAjqDqfdZrl5H9jMgW8vdHOPGDUzOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025588; c=relaxed/simple;
-	bh=dkPeQ6onle//LngIqHD+Q3iXxqrqPEr6OTGFfycf69M=;
+	s=arc-20240116; t=1734023471; c=relaxed/simple;
+	bh=Qmn8Z9srcrK9N2gktM3HX0PyVFeZ8vyjhrbQegczij4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjuXYFNE1E+mc+nKXMR38z88n6WW5pk95nAnsLmZ3YLDwshczR2GIjL/Z+qvqCaesad30ROnblGuA+mxBovsQf1J0Q/IG5yA0krG53lZDy/3eH9dsdPOnqEMQNoVe2KznntNzxfWUyaFvq71Iy2pEGhuilqO8W/cUh0upS+4dVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4l5CfQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96237C4CECE;
-	Thu, 12 Dec 2024 17:46:27 +0000 (UTC)
+	 MIME-Version; b=TJVAKqkJO+PRklMxdinc4ggs/oD33GlLYJfWgr6s3K/evdVOGckk3ilctIuoip8vuapN3h80DJk05zp/hqITc1G7oC5lyMc/TZRNP8xaKEvGbDk2cZ5rkcLB16ntzvtZeca7XZivRuagk+7wBRNh0/MdfXKZ2rqV6aeqKamHuxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byhTzXL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33777C4CECE;
+	Thu, 12 Dec 2024 17:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025588;
-	bh=dkPeQ6onle//LngIqHD+Q3iXxqrqPEr6OTGFfycf69M=;
+	s=korg; t=1734023470;
+	bh=Qmn8Z9srcrK9N2gktM3HX0PyVFeZ8vyjhrbQegczij4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4l5CfQ92wIe38ZPtxl2xZbBhgV5tsVAlqy81U+cQjwi3DytN1RqBxSPoyoHhKzn4
-	 WRJ3BpYBzz+p0McyD2DFQ3OSezx1jD5a2rDTNarPuTdmX2Z0oTz99N/OimXuqtSbC4
-	 lmiHePVUn9v68Bda7oKDSlc2Y/u14R7UKzweqoXs=
+	b=byhTzXL3JP9AkACso1V1FtVj1/4Htf0t//KwHoWYdwQJdoTGsT6QrzjVWOIHXTOX9
+	 xo2w8v4yalVnU5vLEl6p5pKnjVx1S3qaap3sQFJUKmsEuoczOBqq9DZdp62JKM2ZXN
+	 zmL7ANfY+qovXALeSibCPflnxWnVg8DQ3IdOGUWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yassine Oudjana <y.oudjana@protonmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 220/321] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
+	Kinsey Moore <kinsey.moore@oarcorp.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.15 543/565] jffs2: Fix rtime decompressor
 Date: Thu, 12 Dec 2024 16:02:18 +0100
-Message-ID: <20241212144238.669124509@linuxfoundation.org>
+Message-ID: <20241212144333.320522082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yassine Oudjana <y.oudjana@protonmail.com>
+From: Richard Weinberger <richard@nod.at>
 
-[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
+commit b29bf7119d6bbfd04aabb8d82b060fe2a33ef890 upstream.
 
-Clear the IRQ enable bit of WDT_MODE before asserting software reset
-in order to make TOPRGU issue a system reset signal instead of an IRQ.
+The fix for a memory corruption contained a off-by-one error and
+caused the compressor to fail in legit cases.
 
-Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
-Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Kinsey Moore <kinsey.moore@oarcorp.com>
+Cc: stable@vger.kernel.org
+Fixes: fe051552f5078 ("jffs2: Prevent rtime decompress memory corruption")
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/mtk_wdt.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/jffs2/compr_rtime.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
-index 9c3d0033260d9..a2845c9ad3a7c 100644
---- a/drivers/watchdog/mtk_wdt.c
-+++ b/drivers/watchdog/mtk_wdt.c
-@@ -60,9 +60,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
- {
- 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
- 	void __iomem *wdt_base;
-+	u32 reg;
+--- a/fs/jffs2/compr_rtime.c
++++ b/fs/jffs2/compr_rtime.c
+@@ -95,7 +95,7 @@ static int jffs2_rtime_decompress(unsign
  
- 	wdt_base = mtk_wdt->wdt_base;
- 
-+	/* Enable reset in order to issue a system reset instead of an IRQ */
-+	reg = readl(wdt_base + WDT_MODE);
-+	reg &= ~WDT_MODE_IRQ_EN;
-+	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
-+
- 	while (1) {
- 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
- 		mdelay(5);
--- 
-2.43.0
-
+ 		positions[value]=outpos;
+ 		if (repeat) {
+-			if ((outpos + repeat) >= destlen) {
++			if ((outpos + repeat) > destlen) {
+ 				return 1;
+ 			}
+ 			if (backoffs + repeat >= outpos) {
 
 
 
