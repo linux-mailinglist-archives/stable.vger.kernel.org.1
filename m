@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-103498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1859EF830
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A94A9EF4F3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DDF51795EE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 153D528B798
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7ECA222D6D;
-	Thu, 12 Dec 2024 17:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF09211A34;
+	Thu, 12 Dec 2024 17:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK0Oa0IG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zst6hAge"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A30217664;
-	Thu, 12 Dec 2024 17:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B50C6F2FE;
+	Thu, 12 Dec 2024 17:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024750; cv=none; b=CRFNKrcXRxoEDLQlTIyEAtsqkwulLypZDZ/XrVBbF2Df6SvOL3N2iY9Yo6d6sLJJRW6U1i/DrJOhQueLWoblsjqtCKlqEk7vwg42dl9mMa40he4xb9SthdKT7p4vsU7TVHQ9dAyBCWlj6lfpmEOnbMvda3LeH8+yKkJYh+T1zyk=
+	t=1734023467; cv=none; b=iR0cLJbjqSPcd8Gw5rDaDDRWvQ6upeNqsRAlg43KAuygGmwhtY2aub8+FaIKot07qrlwYsvpTvYOkt6Mf6KIh6vY2PEa+rSJw5EiYd0LQKmE6/08SdqUeJqhCZAFRGSpuuvGaAc5wSR7oBKQ6VAQ4DLNLV12Bp8Gu+oKC8rIrB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024750; c=relaxed/simple;
-	bh=323SF/+bw7Kbg++oYC2TeysdGcsyIHFJhmO9LazcptY=;
+	s=arc-20240116; t=1734023467; c=relaxed/simple;
+	bh=MmbuJJjEYOmXESSwcQ9fnC6tR9NIrrm0BOXDPiNwtac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKP0Q8cgy6wxh5EzhaK/2HBLcNYgoHxRJLWSF9SHx+65/uqAdn5UXkM8/qjhU83RTYgpil3Mnnl21+wNUM+0TLII/NN4XqWHfr0cZK16hlAfLaF4iOp6uTFiYjEPNVMoNrTEx8PekGTxGPNTX5f4nIPHmWUYWFbRTDNmDifnlHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK0Oa0IG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82E0C4CECE;
-	Thu, 12 Dec 2024 17:32:29 +0000 (UTC)
+	 MIME-Version; b=JkV0r++ll1tFIxHB281qowYZQgJTh/B0im/bMZwLEE4TL0nrg+3tuDa2TYwv+b/xOzxpGQLfQv0U0sj7DcTgrsQ6mYnr9NFUAPKzcytrPJY3TuSpTfwAoVXI2vyXgHGt3fvJEXACxKgZ184sHl+C6JAePoz7rzYjrkN+gjVwDjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zst6hAge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2098BC4CECE;
+	Thu, 12 Dec 2024 17:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024750;
-	bh=323SF/+bw7Kbg++oYC2TeysdGcsyIHFJhmO9LazcptY=;
+	s=korg; t=1734023467;
+	bh=MmbuJJjEYOmXESSwcQ9fnC6tR9NIrrm0BOXDPiNwtac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK0Oa0IGHku8xBzAHaAXgFH2oMqiq7xs7Sywg+pNRlKWV9xxknDDXA3B5GV0AXlSP
-	 +zryswNIcg1NFw4eod9F+Ajli4ptL+5mpB2sSaA0phW/OXR4ldd9PpGlEyzSw9E4dd
-	 AfEL4UaZHySP4lpA10xJjJnC0WoPe+HOiW21+ZGg=
+	b=zst6hAge3XsWtKkIBymBQH4C8XRIaQXbS0gJnYja+KCMmhG9ch1yD68U6R7loX9wf
+	 tyH8dTSDnmJrnVrJ/lx5BQQeUKd4OTqlwsqak7xflDRiEUaxkRkp2EPCKe6upzFtS2
+	 UhQtfPzxjBw1+rgec45gYyXv6Fdzro2YLjuEEGqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 399/459] net: inet6: do not leave a dangling sk pointer in inet6_create()
+	Kinsey Moore <kinsey.moore@oarcorp.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.15 542/565] jffs2: Prevent rtime decompress memory corruption
 Date: Thu, 12 Dec 2024 16:02:17 +0100
-Message-ID: <20241212144309.528346314@linuxfoundation.org>
+Message-ID: <20241212144333.280510664@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ignat Korchagin <ignat@cloudflare.com>
+From: Kinsey Moore <kinsey.moore@oarcorp.com>
 
-[ Upstream commit 9df99c395d0f55fb444ef39f4d6f194ca437d884 ]
+commit fe051552f5078fa02d593847529a3884305a6ffe upstream.
 
-sock_init_data() attaches the allocated sk pointer to the provided sock
-object. If inet6_create() fails later, the sk object is released, but the
-sock object retains the dangling sk pointer, which may cause use-after-free
-later.
+The rtime decompression routine does not fully check bounds during the
+entirety of the decompression pass and can corrupt memory outside the
+decompression buffer if the compressed data is corrupted. This adds the
+required check to prevent this failure mode.
 
-Clear the sock sk pointer on error.
-
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241014153808.51894-8-ignat@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kinsey Moore <kinsey.moore@oarcorp.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/af_inet6.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ fs/jffs2/compr_rtime.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 32da2b66fa2fb..5fd203ddc0757 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -257,31 +257,29 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 		 */
- 		inet->inet_sport = htons(inet->inet_num);
- 		err = sk->sk_prot->hash(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- 	if (sk->sk_prot->init) {
- 		err = sk->sk_prot->init(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
+--- a/fs/jffs2/compr_rtime.c
++++ b/fs/jffs2/compr_rtime.c
+@@ -95,6 +95,9 @@ static int jffs2_rtime_decompress(unsign
  
- 	if (!kern) {
- 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
--		if (err) {
--			sk_common_release(sk);
--			goto out;
--		}
-+		if (err)
-+			goto out_sk_release;
- 	}
- out:
- 	return err;
- out_rcu_unlock:
- 	rcu_read_unlock();
- 	goto out;
-+out_sk_release:
-+	sk_common_release(sk);
-+	sock->sk = NULL;
-+	goto out;
- }
- 
- static int __inet6_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len,
--- 
-2.43.0
-
+ 		positions[value]=outpos;
+ 		if (repeat) {
++			if ((outpos + repeat) >= destlen) {
++				return 1;
++			}
+ 			if (backoffs + repeat >= outpos) {
+ 				while(repeat) {
+ 					cpage_out[outpos++] = cpage_out[backoffs++];
 
 
 
