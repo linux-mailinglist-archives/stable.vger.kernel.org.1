@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-102971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CFF9EF44E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B919EF7BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EE5C28A92D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 181F9189555A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF65D2206A5;
-	Thu, 12 Dec 2024 17:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1773216E2D;
+	Thu, 12 Dec 2024 17:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzUOtaih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JICmnglh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EB22144C4;
-	Thu, 12 Dec 2024 17:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADABC2165F0;
+	Thu, 12 Dec 2024 17:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023149; cv=none; b=ASVAERi60T8O73RZ7rc5zvEUt0YDIe3jzhqR8NiZaVk/fWhRNtO2Tcm8YW8oqPngvB/MXJwvaVargzwI7u1/VQ9heeISZjnpY4w+mNVYGj0cCgP3sqwKCwT6g/SCvmYMz/jWYN3glU7Rl+/RiL97lXk1NdcnNWaaU6UItrjnbbs=
+	t=1734024436; cv=none; b=iCT23oAVnXgXrgb/vb+AwFRcUXFot6HlaZZ+Qyj2CXnHgTz18cd3fzrrS/eAF1x3rA00P1hAGi4Np0EVY5LDLOY5a/6fEbNwgundEVa33V1Rj1T66vHA/7pDQEmj/N9UmkUmIzRcXCKuqxHXqYu3MahkbNAnKw7WwHK1QvSGe6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023149; c=relaxed/simple;
-	bh=HZCkwDR9dvV74Kr5mhlUoUKhZLdcjYb59doHeFLib8s=;
+	s=arc-20240116; t=1734024436; c=relaxed/simple;
+	bh=mwRUBFFd6QZJMrBuuFB2jCNr3wMT4pfvuVL6LkVVmSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R8AbCsflkMKGCGvc7zcFb7iJLew9NCuop3aUakxDeqpRl5PhA+wv55jkOExX2GahUz4h/7llZwM71p4/iefyxETyDW1f2nasH3Sgurhtx6OzRlQLMnY2obIa+9F1g0y9B/Cm5sthhUJtfZukmsjkGASFvE6fRNgPc/Uj2SOOR9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzUOtaih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D94C4CECE;
-	Thu, 12 Dec 2024 17:05:48 +0000 (UTC)
+	 MIME-Version; b=DXzcTWOoL0kbStAr9eYu5kRS+oWDvKpaYTgxHJc/N5dWB7V7rCUIvKeagHe2Uxz9bgZU8Lea4CKQFJAync7yp2Kl/C6M20stTPEweep9+kKMPIFcc52yLJHY3bA30V46XKF5ZDMJakiDGnqIrldAAKcEDwhz6PYccwGTpX4uM34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JICmnglh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C55C4CED0;
+	Thu, 12 Dec 2024 17:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023149;
-	bh=HZCkwDR9dvV74Kr5mhlUoUKhZLdcjYb59doHeFLib8s=;
+	s=korg; t=1734024436;
+	bh=mwRUBFFd6QZJMrBuuFB2jCNr3wMT4pfvuVL6LkVVmSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MzUOtaihrmyqPe7Yktim7PEzLjWHlxDMcpKh4jc2Ck5d0yTUjkENCA9j8fOpmdr8h
-	 1mhS+7gagGIrGgXCJE2dAXrgV8DSzlehHTqXBJPhiXv8iReD2tpud9Aj+JaGT4f8mI
-	 I5MjnGfhts1GWdoByaoCpQiUmVXprULZrXoepRHc=
+	b=JICmnglhzjXNVCr35pXKviJfBp6QSn8xhMXlt5gaqUXAyKRWQQ/NHdOQGr2IlpAqI
+	 gy1zxqFgF5Ng1k5e2/xdPWMkx5VpKEMg+XdyYqpNdT+m8X1mEtvlX/dLqLXy3sIEHv
+	 6VXnzJxr6boERBk2tU3GburRaK4GpVZ99Ch/HyUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Quentin Monnet <qmo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 439/565] tools: Override makefile ARCH variable if defined, but empty
+Subject: [PATCH 5.10 296/459] ubi: fastmap: Fix duplicate slab cache names while attaching
 Date: Thu, 12 Dec 2024 16:00:34 +0100
-Message-ID: <20241212144329.036861769@linuxfoundation.org>
+Message-ID: <20241212144305.332048686@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +60,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 537a2525eaf76ea9b0dca62b994500d8670b39d5 ]
+[ Upstream commit bcddf52b7a17adcebc768d26f4e27cf79adb424c ]
 
-There are a number of tools (bpftool, selftests), that require a
-"bootstrap" build. Here, a bootstrap build is a build host variant of
-a target. E.g., assume that you're performing a bpftool cross-build on
-x86 to riscv, a bootstrap build would then be an x86 variant of
-bpftool. The typical way to perform the host build variant, is to pass
-"ARCH=" in a sub-make. However, if a variable has been set with a
-command argument, then ordinary assignments in the makefile are
-ignored.
+Since commit 4c39529663b9 ("slab: Warn on duplicate cache names when
+DEBUG_VM=y"), the duplicate slab cache names can be detected and a
+kernel WARNING is thrown out.
+In UBI fast attaching process, alloc_ai() could be invoked twice
+with the same slab cache name 'ubi_aeb_slab_cache', which will trigger
+following warning messages:
+ kmem_cache of name 'ubi_aeb_slab_cache' already exists
+ WARNING: CPU: 0 PID: 7519 at mm/slab_common.c:107
+          __kmem_cache_create_args+0x100/0x5f0
+ Modules linked in: ubi(+) nandsim [last unloaded: nandsim]
+ CPU: 0 UID: 0 PID: 7519 Comm: modprobe Tainted: G 6.12.0-rc2
+ RIP: 0010:__kmem_cache_create_args+0x100/0x5f0
+ Call Trace:
+   __kmem_cache_create_args+0x100/0x5f0
+   alloc_ai+0x295/0x3f0 [ubi]
+   ubi_attach+0x3c3/0xcc0 [ubi]
+   ubi_attach_mtd_dev+0x17cf/0x3fa0 [ubi]
+   ubi_init+0x3fb/0x800 [ubi]
+   do_init_module+0x265/0x7d0
+   __x64_sys_finit_module+0x7a/0xc0
 
-This side-effect results in that ARCH, and variables depending on ARCH
-are not set. Workaround by overriding ARCH to the host arch, if ARCH
-is empty.
+The problem could be easily reproduced by loading UBI device by fastmap
+with CONFIG_DEBUG_VM=y.
+Fix it by using different slab names for alloc_ai() callers.
 
-Fixes: 8859b0da5aac ("tools/bpftool: Fix cross-build")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-Link: https://lore.kernel.org/bpf/20241127101748.165693-1-bjorn@kernel.org
+Fixes: d2158f69a7d4 ("UBI: Remove alloc_ai() slab name from parameter list")
+Fixes: fdf10ed710c0 ("ubi: Rework Fastmap attach base code")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/scripts/Makefile.arch | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/ubi/attach.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/scripts/Makefile.arch b/tools/scripts/Makefile.arch
-index b10b7a27c33fd..de3f2806b8a89 100644
---- a/tools/scripts/Makefile.arch
-+++ b/tools/scripts/Makefile.arch
-@@ -6,8 +6,8 @@ HOSTARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
-                                   -e s/ppc.*/powerpc/ -e s/mips.*/mips/ \
-                                   -e s/sh[234].*/sh/ -e s/aarch64.*/arm64/ )
+diff --git a/drivers/mtd/ubi/attach.c b/drivers/mtd/ubi/attach.c
+index ae5abe492b52a..adc47b87b38a5 100644
+--- a/drivers/mtd/ubi/attach.c
++++ b/drivers/mtd/ubi/attach.c
+@@ -1447,7 +1447,7 @@ static int scan_all(struct ubi_device *ubi, struct ubi_attach_info *ai,
+ 	return err;
+ }
  
--ifndef ARCH
--ARCH := $(HOSTARCH)
-+ifeq ($(strip $(ARCH)),)
-+override ARCH := $(HOSTARCH)
- endif
+-static struct ubi_attach_info *alloc_ai(void)
++static struct ubi_attach_info *alloc_ai(const char *slab_name)
+ {
+ 	struct ubi_attach_info *ai;
  
- SRCARCH := $(ARCH)
+@@ -1461,7 +1461,7 @@ static struct ubi_attach_info *alloc_ai(void)
+ 	INIT_LIST_HEAD(&ai->alien);
+ 	INIT_LIST_HEAD(&ai->fastmap);
+ 	ai->volumes = RB_ROOT;
+-	ai->aeb_slab_cache = kmem_cache_create("ubi_aeb_slab_cache",
++	ai->aeb_slab_cache = kmem_cache_create(slab_name,
+ 					       sizeof(struct ubi_ainf_peb),
+ 					       0, 0, NULL);
+ 	if (!ai->aeb_slab_cache) {
+@@ -1491,7 +1491,7 @@ static int scan_fast(struct ubi_device *ubi, struct ubi_attach_info **ai)
+ 
+ 	err = -ENOMEM;
+ 
+-	scan_ai = alloc_ai();
++	scan_ai = alloc_ai("ubi_aeb_slab_cache_fastmap");
+ 	if (!scan_ai)
+ 		goto out;
+ 
+@@ -1557,7 +1557,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
+ 	int err;
+ 	struct ubi_attach_info *ai;
+ 
+-	ai = alloc_ai();
++	ai = alloc_ai("ubi_aeb_slab_cache");
+ 	if (!ai)
+ 		return -ENOMEM;
+ 
+@@ -1575,7 +1575,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
+ 		if (err > 0 || mtd_is_eccerr(err)) {
+ 			if (err != UBI_NO_FASTMAP) {
+ 				destroy_ai(ai);
+-				ai = alloc_ai();
++				ai = alloc_ai("ubi_aeb_slab_cache");
+ 				if (!ai)
+ 					return -ENOMEM;
+ 
+@@ -1614,7 +1614,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
+ 	if (ubi->fm && ubi_dbg_chk_fastmap(ubi)) {
+ 		struct ubi_attach_info *scan_ai;
+ 
+-		scan_ai = alloc_ai();
++		scan_ai = alloc_ai("ubi_aeb_slab_cache_dbg_chk_fastmap");
+ 		if (!scan_ai) {
+ 			err = -ENOMEM;
+ 			goto out_wl;
 -- 
 2.43.0
 
