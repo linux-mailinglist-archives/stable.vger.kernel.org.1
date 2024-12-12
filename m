@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068879EF501
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B429EF6D6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B90CA188C2DD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD90C17F245
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E44722967C;
-	Thu, 12 Dec 2024 16:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0D3223C63;
+	Thu, 12 Dec 2024 17:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Co/1ihXS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/gL2BQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF821223327;
-	Thu, 12 Dec 2024 16:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875EF2144AD;
+	Thu, 12 Dec 2024 17:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022178; cv=none; b=SJTZxcymRoj3jln3vOAGOmBnKeQ9ZuriGY4ckvKWwvp0aU5qFE2Wvnfmu5cFgVtwe0x42OTlm29WzG0AT2DmaH8kUF/cEwFo1nG/iJ0NTPuWq5LcBPCBq9FHzr9kLLkXGomUw8hCNwtRGSWVbLmqnq8IKf/1GV5LRCyLcFbWQZI=
+	t=1734023716; cv=none; b=g4mgWiv4rxuUpDnn31ckMnFrRAFQt3PbEIVoC39LCDvJTUWhAAauTwFqeRT/iyJO+TD4WvUrwcVHeQQShSqUvb+cVt9m4BEsSUI7dHW1tbyes7MPepeU52MRWLBS88bL0v5yr2VEnLFcJgU9fYdocEPujl1zzJpQSvf32SNl/nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022178; c=relaxed/simple;
-	bh=oMVUU25IOmj2W0t9O+lBYwIrERt+DBYknH5yE/wcDIw=;
+	s=arc-20240116; t=1734023716; c=relaxed/simple;
+	bh=cNk/gkZQKFv8bAovE0+HSOUmoOrUVVhx5rOmNXItm0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJnDx5c3yunyo5TYjbOYayMIitDSSPI3qCgys78t9DRAo4aGi0NvKW2p0PhPiStslH55HtEf67zJw9sJBaABKdbPE56Oox6zLw5fYYAEBrp8E+KO0L5q0BrXwrmmywYpumktwI/bR4DsXOsxFzhHBF+z8T4V54bGZ4SCDM+q59I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Co/1ihXS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB05C4CECE;
-	Thu, 12 Dec 2024 16:49:38 +0000 (UTC)
+	 MIME-Version; b=BxseN8WavasSCJlXCSJ47ZJMx7hrKcls/HdqVngqBYXatfbwO4bzS1BR+uS9ALOjNtdZUAOQZcYMIh/rJPW0fUsBe4trZfA7Wd4T1/qgeFjWMs6WP4j8uCLilit37zPhKe3ckw0eV+QPlQ7SZPhifWmLLDjKU+dmCabd/4/GxY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/gL2BQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD54EC4CECE;
+	Thu, 12 Dec 2024 17:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022178;
-	bh=oMVUU25IOmj2W0t9O+lBYwIrERt+DBYknH5yE/wcDIw=;
+	s=korg; t=1734023716;
+	bh=cNk/gkZQKFv8bAovE0+HSOUmoOrUVVhx5rOmNXItm0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Co/1ihXSChjEgn02g+vtv/yU+Rc7Vhb9KMGQdrS0Me8UOkgjBFmaZKk3+NFwKIMbq
-	 44WDV6M3qc77jCvbKT17dofMl+gCs77XKRHWzlMqsj/zLLwaMxwNe46TaLYPzOMchX
-	 yVnvrqyPEWiCPfBZolsTgrf100neEo/5/QDZqjD0=
+	b=x/gL2BQp0sp6+zJ+LfOVpThO5td5LjC1aRa0XqdRcMLSJv+S7VY752hlx9ufSzh/0
+	 pqtksYzUi2NXcJDlR/TY3GLYLkHVOsjCZLq2z3jke6MpK5n40YairDoEWxrpe5eOJ1
+	 na6ONJ1MBWUQTuPAopDF0c0/gpOkZpQGNy5DeeNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 170/565] netdevsim: copy addresses for both in and out paths
-Date: Thu, 12 Dec 2024 15:56:05 +0100
-Message-ID: <20241212144318.193387984@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 028/459] NFSD: Limit the number of concurrent async COPY operations
+Date: Thu, 12 Dec 2024 15:56:06 +0100
+Message-ID: <20241212144254.634388523@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 2cf567f421dbfe7e53b7e5ddee9400da10efb75d ]
+[ Upstream commit aadc3bbea163b6caaaebfdd2b6c4667fbc726752 ]
 
-The current code only copies the address for the in path, leaving the out
-path address set to 0. This patch corrects the issue by copying the addresses
-for both the in and out paths. Before this patch:
+Nothing appears to limit the number of concurrent async COPY
+operations that clients can start. In addition, AFAICT each async
+COPY can copy an unlimited number of 4MB chunks, so can run for a
+long time. Thus IMO async COPY can become a DoS vector.
 
-  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-  SA count=2 tx=20
-  sa[0] tx ipaddr=0.0.0.0
-  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-  sa[1] rx ipaddr=192.168.0.1
-  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+Add a restriction mechanism that bounds the number of concurrent
+background COPY operations. Start simple and try to be fair -- this
+patch implements a per-namespace limit.
 
-After this patch:
+An async COPY request that occurs while this limit is exceeded gets
+NFS4ERR_DELAY. The requesting client can choose to send the request
+again after a delay or fall back to a traditional read/write style
+copy.
 
-  = cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-  SA count=2 tx=20
-  sa[0] tx ipaddr=192.168.0.2
-  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-  sa[1] rx ipaddr=192.168.0.1
-  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+If there is need to make the mechanism more sophisticated, we can
+visit that in future patches.
 
-Fixes: 7699353da875 ("netdevsim: add ipsec offload testing")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20241010040027.21440-3-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Link: https://nvd.nist.gov/vuln/detail/CVE-2024-49974
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/netdevsim/ipsec.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/nfsd/netns.h     |    1 +
+ fs/nfsd/nfs4proc.c  |   11 +++++++++--
+ fs/nfsd/nfs4state.c |    1 +
+ fs/nfsd/xdr4.h      |    1 +
+ 4 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
-index 386336a38f349..feca55eef9938 100644
---- a/drivers/net/netdevsim/ipsec.c
-+++ b/drivers/net/netdevsim/ipsec.c
-@@ -171,14 +171,13 @@ static int nsim_ipsec_add_sa(struct xfrm_state *xs)
- 		return ret;
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -152,6 +152,7 @@ struct nfsd_net {
+ 	u32		s2s_cp_cl_id;
+ 	struct idr	s2s_cp_stateids;
+ 	spinlock_t	s2s_cp_lock;
++	atomic_t	pending_async_copies;
+ 
+ 	/*
+ 	 * Version information
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1244,6 +1244,7 @@ static void nfs4_put_copy(struct nfsd4_c
+ {
+ 	if (!refcount_dec_and_test(&copy->refcount))
+ 		return;
++	atomic_dec(&copy->cp_nn->pending_async_copies);
+ 	kfree(copy->cp_src);
+ 	kfree(copy);
+ }
+@@ -1782,10 +1783,16 @@ nfsd4_copy(struct svc_rqst *rqstp, struc
+ 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
+ 		sizeof(struct knfsd_fh));
+ 	if (nfsd4_copy_is_async(copy)) {
+-		status = nfserrno(-ENOMEM);
+ 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
+ 		if (!async_copy)
+ 			goto out_err;
++		async_copy->cp_nn = nn;
++		/* Arbitrary cap on number of pending async copy operations */
++		if (atomic_inc_return(&nn->pending_async_copies) >
++				(int)rqstp->rq_pool->sp_nrthreads) {
++			atomic_dec(&nn->pending_async_copies);
++			goto out_err;
++		}
+ 		INIT_LIST_HEAD(&async_copy->copies);
+ 		refcount_set(&async_copy->refcount, 1);
+ 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
+@@ -1824,7 +1831,7 @@ out_err:
  	}
+ 	if (async_copy)
+ 		cleanup_async_copy(async_copy);
+-	status = nfserrno(-ENOMEM);
++	status = nfserr_jukebox;
+ 	goto out;
+ }
  
--	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
-+	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN)
- 		sa.rx = true;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -8088,6 +8088,7 @@ static int nfs4_state_create_net(struct
+ 	spin_lock_init(&nn->client_lock);
+ 	spin_lock_init(&nn->s2s_cp_lock);
+ 	idr_init(&nn->s2s_cp_stateids);
++	atomic_set(&nn->pending_async_copies, 0);
  
--		if (xs->props.family == AF_INET6)
--			memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
--		else
--			memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
--	}
-+	if (xs->props.family == AF_INET6)
-+		memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
-+	else
-+		memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
+ 	spin_lock_init(&nn->blocked_locks_lock);
+ 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -574,6 +574,7 @@ struct nfsd4_copy {
+ 	struct nfsd4_ssc_umount_item *ss_nsui;
+ 	struct nfs_fh		c_fh;
+ 	nfs4_stateid		stateid;
++	struct nfsd_net		*cp_nn;
+ };
  
- 	/* the preparations worked, so save the info */
- 	memcpy(&ipsec->sa[sa_idx], &sa, sizeof(sa));
--- 
-2.43.0
-
+ static inline void nfsd4_copy_set_sync(struct nfsd4_copy *copy, bool sync)
 
 
 
