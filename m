@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757649EF265
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 406C19EEB9B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D3D2189BE2B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01CB7282AE9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88BD232378;
-	Thu, 12 Dec 2024 16:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65132153DD;
+	Thu, 12 Dec 2024 15:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6rdScpQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7n7kE05"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A575F223E71;
-	Thu, 12 Dec 2024 16:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65139748A;
+	Thu, 12 Dec 2024 15:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021079; cv=none; b=OuAzZNaeXGkByVWj1+E+CCzd8CJ3EVfntJsaoPW+EPgRUkbiOSijNRHw+GBAA3y1hu6xkfzY73StxC0s/Krgn7kbjUH4AFtdx+NOeqBgg6tGfMRo4050XxI2GWRDh7jkNzt5Bi/XGubkaqb4/c22f8q4qcr6vZCpboQ1aFpwFI8=
+	t=1734017217; cv=none; b=pVf72h/BlCoWixbJsFa1LzAqTyuW93t4rc4CdZhqJ10b0mJ13Gecpk1oi3D4XTLHN+OBdZmgKqCFeC+8Ng68sxLc/bSizzLbxf9dSq/ufVsZ2N2Rd9A0qrWwP85Ly7/WzL7TIRY46L/O5ZJuunNSzoVKHrhR1mGTv8QxinJt9/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021079; c=relaxed/simple;
-	bh=WaaOzXn1lzKTc8HKCkLo7mEbfEM2Gk4xFu2pn1mj2I4=;
+	s=arc-20240116; t=1734017217; c=relaxed/simple;
+	bh=pl/5oVihgVjMzOkojUK/gH5arALrVJnMfNuAGokVZNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tcm2tVhHZIDM+FeVMVijvHWOgOHAtlQfMG2AbqgknYm/8z7j1ahtLtHFg+emejWQzHmz8zVVAOICqOSDmFiFly9jHBxPEQm43Hi6HJbMBqq0Q2RSNrY16lGkhtPAXj14vDl9R84WIa80SiaKbqqiUeVHc+gzjxkemai0qEbZn44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6rdScpQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE808C4CECE;
-	Thu, 12 Dec 2024 16:31:18 +0000 (UTC)
+	 MIME-Version; b=F120WajjZ/K4uH9GcMM+DBqeJHH2gQsmsJA9Sr+mI/6l9glQnya1uzQwUk+PV7Kvb+YP7Wm7morhQPAw3S0HE7VVGtQv6nDVptdQm/Ml9lf1q6irHf5pGi9kcYQH8z3vjritc/O/6Ohv7bWEe6SIZHGrJsLu3oI2p0ZBm0+rCTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7n7kE05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C513FC4CECE;
+	Thu, 12 Dec 2024 15:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021079;
-	bh=WaaOzXn1lzKTc8HKCkLo7mEbfEM2Gk4xFu2pn1mj2I4=;
+	s=korg; t=1734017217;
+	bh=pl/5oVihgVjMzOkojUK/gH5arALrVJnMfNuAGokVZNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C6rdScpQCR/XljNeCYcF3pi1eQRsgE7a9peWd5cwA6xNOHv92WeHbCq817tTCcEJ5
-	 Yk8vYhG9PSqK3qHAop8xLIAxRhWht1RNwiQatdbahT0/pWRek8quOhPAannqB0+3AL
-	 DM2Hkv4yby1S6HQ1VsP1A+0JZfrxjlY+of39lB78=
+	b=H7n7kE05dcQmEfSfgUVXTetBOHb6Maq/muw7/aF/2EAYO8hhXX0tBtOpRhrWrTNtM
+	 LNg39GRME8a/Ss3DBxpQd1XSVXnHNBEf7ZGxfOHCQMa584xMkIAnGWVOrpcm/FV26o
+	 +6owtcgffD4cvf4iGgScogPUP3tfhivE1ybZLUJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 639/772] lib: stackinit: hide never-taken branch from compiler
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 415/466] iio: light: ltr501: Add LTER0303 to the supported devices
 Date: Thu, 12 Dec 2024 15:59:44 +0100
-Message-ID: <20241212144416.336523121@linuxfoundation.org>
+Message-ID: <20241212144323.152714574@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 5c3793604f91123bf49bc792ce697a0bef4c173c upstream.
+[ Upstream commit c26acb09ccbef47d1fddaf0783c1392d0462122c ]
 
-The never-taken branch leads to an invalid bounds condition, which is by
-design. To avoid the unwanted warning from the compiler, hide the
-variable from the optimizer.
+It has been found that the (non-vendor issued) ACPI ID for Lite-On
+LTR303 is present in Microsoft catalog. Add it to the list of the
+supported devices.
 
-../lib/stackinit_kunit.c: In function 'do_nothing_u16_zero':
-../lib/stackinit_kunit.c:51:49: error: array subscript 1 is outside array bounds of 'u16[0]' {aka 'short unsigned int[]'} [-Werror=array-bounds=]
-   51 | #define DO_NOTHING_RETURN_SCALAR(ptr)           *(ptr)
-      |                                                 ^~~~~~
-../lib/stackinit_kunit.c:219:24: note: in expansion of macro 'DO_NOTHING_RETURN_SCALAR'
-  219 |                 return DO_NOTHING_RETURN_ ## which(ptr + 1);    \
-      |                        ^~~~~~~~~~~~~~~~~~
-
-Link: https://lkml.kernel.org/r/20241117113813.work.735-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303
+Closes: https://lore.kernel.org/r/9cdda3e0-d56e-466f-911f-96ffd6f602c8@redhat.com
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20241024191200.229894-24-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/stackinit_kunit.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/light/ltr501.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/lib/stackinit_kunit.c
-+++ b/lib/stackinit_kunit.c
-@@ -199,6 +199,7 @@ static noinline void test_ ## name (stru
- static noinline DO_NOTHING_TYPE_ ## which(var_type)		\
- do_nothing_ ## name(var_type *ptr)				\
- {								\
-+	OPTIMIZER_HIDE_VAR(ptr);				\
- 	/* Will always be true, but compiler doesn't know. */	\
- 	if ((unsigned long)ptr > 0x2)				\
- 		return DO_NOTHING_RETURN_ ## which(ptr);	\
+diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
+index 8c516ede91161..640a5d3aa2c6e 100644
+--- a/drivers/iio/light/ltr501.c
++++ b/drivers/iio/light/ltr501.c
+@@ -1613,6 +1613,8 @@ static const struct acpi_device_id ltr_acpi_match[] = {
+ 	{ "LTER0501", ltr501 },
+ 	{ "LTER0559", ltr559 },
+ 	{ "LTER0301", ltr301 },
++	/* https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303 */
++	{ "LTER0303", ltr303 },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, ltr_acpi_match);
+-- 
+2.43.0
+
 
 
 
