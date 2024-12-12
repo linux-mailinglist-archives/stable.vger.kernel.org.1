@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01489EED99
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69599EF411
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66113188E660
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6525329090D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D647223C7B;
-	Thu, 12 Dec 2024 15:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF28223C6F;
+	Thu, 12 Dec 2024 17:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8ELlNGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rg9f/wYo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438CD223E61;
-	Thu, 12 Dec 2024 15:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3442153DD;
+	Thu, 12 Dec 2024 17:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018221; cv=none; b=rIgEcvU5twtkF0KySuk+j6oAqpj4Fx6SdhR4mvUidB0J0HSWhUAAoybNoekIaA7ohcvJ5J0+mRYU4sXD+YGts0KXfYxE8iE2q3kVx8vKMAD+oetgce5YETM7p+IxcgVZei7CcoKBycwNnscJ50y9mwddoehFZBGIeTEo6cP8afo=
+	t=1734022984; cv=none; b=Ge6mYWnOgGIHZ4IaXNQ0mkfzZhWWnCiVhp2tHJ/oDtSL1w05gbcPzRj3T0WVRm4eRHzSCbYeXTT279/33qyvX0p44mpNHGJ0w/VrIlax3N+4tK31z8zJQxl5PLbR2NlInc9P8dzoVeWIw0sZyzXEHnrNQ4yPpdcRoOLgjh5jgLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018221; c=relaxed/simple;
-	bh=Ra3e57QIRuGnVkRYg1x/d6CKikbhZfPZSCm2T1b3rgE=;
+	s=arc-20240116; t=1734022984; c=relaxed/simple;
+	bh=pPGD3p+vJQihMhus/ebdbn2SjF8vM0lx923pWnVa7EM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cu5CbrWHtIu8JgqDHcAvb26O5bKwRnyCstIHtggKQC/OraV7aNxpnylKXKTGQ306Upa2ONqY6bUYWYtHj7LYqKWdZKhXm8YkDxGIMCJhP25mh5kbpfsT2M84OVbhmu2hQigT4FPcYcZGvdmtSRlMZYoo4NGPw7EujJIaGl+kmCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8ELlNGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5143EC4CED4;
-	Thu, 12 Dec 2024 15:43:40 +0000 (UTC)
+	 MIME-Version; b=q8wv4GjV7Rd2W7ttjIFfp4G2z6bNCR+VXeR9Hn4Nktj+fGAaF0QQgg1mQSZYQNz3Cc44smymbFhwVonWBhj/pNglaTuhhQHJhRDL7Pq+LmX01Vunmiqycu2JDcqYUnqzeAzgB3uOyzqkpz+EWO/Zwv95u0b24rBMIoKbJNnvYOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rg9f/wYo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9BCC4CECE;
+	Thu, 12 Dec 2024 17:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018220;
-	bh=Ra3e57QIRuGnVkRYg1x/d6CKikbhZfPZSCm2T1b3rgE=;
+	s=korg; t=1734022984;
+	bh=pPGD3p+vJQihMhus/ebdbn2SjF8vM0lx923pWnVa7EM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8ELlNGsgPML3bec+CaAFI403De2/E7tfnW/h9Om/N/z958Pp5UMJ5O5fS8sJE8lr
-	 En8tDlfPkIU1HiF8n5kZT+VNN72iR3bEMPEiJahwqtm06U2JsrVezmezhymsgDR97+
-	 ymlaIORLy6fAzEldkyDlGKyJHJ2sax0Njgiv44uY=
+	b=rg9f/wYoBBXm9zkdjiCg4wVE4sAhlARr0KdQIBiJCxSekT3ywfhMd7wshYG3HW9at
+	 br1MNL3fd95J+zbz8/3Op+9mz2RFyeh3K901TE9PUJD0Mivqm4ySTLbEk8Kae5vhTR
+	 CUVef2Ur3wP2rS6u6QetzjCw+CKpcu2Vhmj5xwqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Vivek Vitta <kvitta@microsoft.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 233/356] fanotify: allow reporting errors on failure to open fd
+Subject: [PATCH 5.15 357/565] NFSv4.0: Fix a use-after-free problem in the asynchronous open()
 Date: Thu, 12 Dec 2024 15:59:12 +0100
-Message-ID: <20241212144253.825440420@linuxfoundation.org>
+Message-ID: <20241212144325.717651159@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,233 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 522249f05c5551aec9ec0ba9b6438f1ec19c138d ]
+[ Upstream commit 2fdb05dc0931250574f0cb0ebeb5ed8e20f4a889 ]
 
-When working in "fd mode", fanotify_read() needs to open an fd
-from a dentry to report event->fd to userspace.
+Yang Erkun reports that when two threads are opening files at the same
+time, and are forced to abort before a reply is seen, then the call to
+nfs_release_seqid() in nfs4_opendata_free() can result in a
+use-after-free of the pointer to the defunct rpc task of the other
+thread.
+The fix is to ensure that if the RPC call is aborted before the call to
+nfs_wait_on_sequence() is complete, then we must call nfs_release_seqid()
+in nfs4_open_release() before the rpc_task is freed.
 
-Opening an fd from dentry can fail for several reasons.
-For example, when tasks are gone and we try to open their
-/proc files or we try to open a WRONLY file like in sysfs
-or when trying to open a file that was deleted on the
-remote network server.
-
-Add a new flag FAN_REPORT_FD_ERROR for fanotify_init().
-For a group with FAN_REPORT_FD_ERROR, we will send the
-event with the error instead of the open fd, otherwise
-userspace may not get the error at all.
-
-For an overflow event, we report -EBADF to avoid confusing FAN_NOFD
-with -EPERM.  Similarly for pidfd open errors we report either -ESRCH
-or the open error instead of FAN_NOPIDFD and FAN_EPIDFD.
-
-In any case, userspace will not know which file failed to
-open, so add a debug print for further investigation.
-
-Reported-by: Krishna Vivek Vitta <kvitta@microsoft.com>
-Link: https://lore.kernel.org/linux-fsdevel/SI2P153MB07182F3424619EDDD1F393EED46D2@SI2P153MB0718.APCP153.PROD.OUTLOOK.COM/
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241003142922.111539-1-amir73il@gmail.com
+Reported-by: Yang Erkun <yangerkun@huawei.com>
+Fixes: 24ac23ab88df ("NFSv4: Convert open() into an asynchronous RPC call")
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fanotify/fanotify_user.c | 85 +++++++++++++++++-------------
- include/linux/fanotify.h           |  1 +
- include/uapi/linux/fanotify.h      |  1 +
- 3 files changed, 50 insertions(+), 37 deletions(-)
+ fs/nfs/nfs4proc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 62fe0b679e586..f4798d613dc22 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -267,13 +267,6 @@ static int create_fd(struct fsnotify_group *group, const struct path *path,
- 			       group->fanotify_data.f_flags | __FMODE_NONOTIFY,
- 			       current_cred());
- 	if (IS_ERR(new_file)) {
--		/*
--		 * we still send an event even if we can't open the file.  this
--		 * can happen when say tasks are gone and we try to open their
--		 * /proc files or we try to open a WRONLY file like in sysfs
--		 * we just send the errno to userspace since there isn't much
--		 * else we can do.
--		 */
- 		put_unused_fd(client_fd);
- 		client_fd = PTR_ERR(new_file);
- 	} else {
-@@ -664,7 +657,7 @@ static ssize_t copy_event_to_user(struct fsnotify_group *group,
- 	unsigned int info_mode = FAN_GROUP_FLAG(group, FANOTIFY_INFO_MODES);
- 	unsigned int pidfd_mode = info_mode & FAN_REPORT_PIDFD;
- 	struct file *f = NULL, *pidfd_file = NULL;
--	int ret, pidfd = FAN_NOPIDFD, fd = FAN_NOFD;
-+	int ret, pidfd = -ESRCH, fd = -EBADF;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index f1c351e40c7a5..4a0691aeb7c1d 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -2537,12 +2537,14 @@ static void nfs4_open_release(void *calldata)
+ 	struct nfs4_opendata *data = calldata;
+ 	struct nfs4_state *state = NULL;
  
- 	pr_debug("%s: group=%p event=%p\n", __func__, group, event);
- 
-@@ -692,10 +685,39 @@ static ssize_t copy_event_to_user(struct fsnotify_group *group,
- 	if (!FAN_GROUP_FLAG(group, FANOTIFY_UNPRIV) &&
- 	    path && path->mnt && path->dentry) {
- 		fd = create_fd(group, path, &f);
--		if (fd < 0)
--			return fd;
-+		/*
-+		 * Opening an fd from dentry can fail for several reasons.
-+		 * For example, when tasks are gone and we try to open their
-+		 * /proc files or we try to open a WRONLY file like in sysfs
-+		 * or when trying to open a file that was deleted on the
-+		 * remote network server.
-+		 *
-+		 * For a group with FAN_REPORT_FD_ERROR, we will send the
-+		 * event with the error instead of the open fd, otherwise
-+		 * Userspace may not get the error at all.
-+		 * In any case, userspace will not know which file failed to
-+		 * open, so add a debug print for further investigation.
-+		 */
-+		if (fd < 0) {
-+			pr_debug("fanotify: create_fd(%pd2) failed err=%d\n",
-+				 path->dentry, fd);
-+			if (!FAN_GROUP_FLAG(group, FAN_REPORT_FD_ERROR)) {
-+				/*
-+				 * Historically, we've handled EOPENSTALE in a
-+				 * special way and silently dropped such
-+				 * events. Now we have to keep it to maintain
-+				 * backward compatibility...
-+				 */
-+				if (fd == -EOPENSTALE)
-+					fd = 0;
-+				return fd;
-+			}
-+		}
- 	}
--	metadata.fd = fd;
-+	if (FAN_GROUP_FLAG(group, FAN_REPORT_FD_ERROR))
-+		metadata.fd = fd;
-+	else
-+		metadata.fd = fd >= 0 ? fd : FAN_NOFD;
- 
- 	if (pidfd_mode) {
- 		/*
-@@ -710,18 +732,16 @@ static ssize_t copy_event_to_user(struct fsnotify_group *group,
- 		 * The PIDTYPE_TGID check for an event->pid is performed
- 		 * preemptively in an attempt to catch out cases where the event
- 		 * listener reads events after the event generating process has
--		 * already terminated. Report FAN_NOPIDFD to the event listener
--		 * in those cases, with all other pidfd creation errors being
--		 * reported as FAN_EPIDFD.
-+		 * already terminated.  Depending on flag FAN_REPORT_FD_ERROR,
-+		 * report either -ESRCH or FAN_NOPIDFD to the event listener in
-+		 * those cases with all other pidfd creation errors reported as
-+		 * the error code itself or as FAN_EPIDFD.
- 		 */
--		if (metadata.pid == 0 ||
--		    !pid_has_task(event->pid, PIDTYPE_TGID)) {
--			pidfd = FAN_NOPIDFD;
--		} else {
-+		if (metadata.pid && pid_has_task(event->pid, PIDTYPE_TGID))
- 			pidfd = pidfd_prepare(event->pid, 0, &pidfd_file);
--			if (pidfd < 0)
--				pidfd = FAN_EPIDFD;
--		}
-+
-+		if (!FAN_GROUP_FLAG(group, FAN_REPORT_FD_ERROR) && pidfd < 0)
-+			pidfd = pidfd == -ESRCH ? FAN_NOPIDFD : FAN_EPIDFD;
- 	}
- 
- 	ret = -EFAULT;
-@@ -738,9 +758,6 @@ static ssize_t copy_event_to_user(struct fsnotify_group *group,
- 	buf += FAN_EVENT_METADATA_LEN;
- 	count -= FAN_EVENT_METADATA_LEN;
- 
--	if (fanotify_is_perm_event(event->mask))
--		FANOTIFY_PERM(event)->fd = fd;
--
- 	if (info_mode) {
- 		ret = copy_info_records_to_user(event, info, info_mode, pidfd,
- 						buf, count);
-@@ -754,15 +771,18 @@ static ssize_t copy_event_to_user(struct fsnotify_group *group,
- 	if (pidfd_file)
- 		fd_install(pidfd, pidfd_file);
- 
-+	if (fanotify_is_perm_event(event->mask))
-+		FANOTIFY_PERM(event)->fd = fd;
-+
- 	return metadata.event_len;
- 
- out_close_fd:
--	if (fd != FAN_NOFD) {
-+	if (f) {
- 		put_unused_fd(fd);
- 		fput(f);
- 	}
- 
--	if (pidfd >= 0) {
-+	if (pidfd_file) {
- 		put_unused_fd(pidfd);
- 		fput(pidfd_file);
- 	}
-@@ -829,15 +849,6 @@ static ssize_t fanotify_read(struct file *file, char __user *buf,
- 		}
- 
- 		ret = copy_event_to_user(group, event, buf, count);
--		if (unlikely(ret == -EOPENSTALE)) {
--			/*
--			 * We cannot report events with stale fd so drop it.
--			 * Setting ret to 0 will continue the event loop and
--			 * do the right thing if there are no more events to
--			 * read (i.e. return bytes read, -EAGAIN or wait).
--			 */
--			ret = 0;
--		}
- 
- 		/*
- 		 * Permission events get queued to wait for response.  Other
-@@ -846,7 +857,7 @@ static ssize_t fanotify_read(struct file *file, char __user *buf,
- 		if (!fanotify_is_perm_event(event->mask)) {
- 			fsnotify_destroy_event(group, &event->fse);
- 		} else {
--			if (ret <= 0) {
-+			if (ret <= 0 || FANOTIFY_PERM(event)->fd < 0) {
- 				spin_lock(&group->notification_lock);
- 				finish_permission_event(group,
- 					FANOTIFY_PERM(event), FAN_DENY, NULL);
-@@ -1932,7 +1943,7 @@ static int __init fanotify_user_setup(void)
- 				     FANOTIFY_DEFAULT_MAX_USER_MARKS);
- 
- 	BUILD_BUG_ON(FANOTIFY_INIT_FLAGS & FANOTIFY_INTERNAL_GROUP_FLAGS);
--	BUILD_BUG_ON(HWEIGHT32(FANOTIFY_INIT_FLAGS) != 12);
-+	BUILD_BUG_ON(HWEIGHT32(FANOTIFY_INIT_FLAGS) != 13);
- 	BUILD_BUG_ON(HWEIGHT32(FANOTIFY_MARK_FLAGS) != 11);
- 
- 	fanotify_mark_cache = KMEM_CACHE(fsnotify_mark,
-diff --git a/include/linux/fanotify.h b/include/linux/fanotify.h
-index 4f1c4f6031180..89ff45bd6f01b 100644
---- a/include/linux/fanotify.h
-+++ b/include/linux/fanotify.h
-@@ -36,6 +36,7 @@
- #define FANOTIFY_ADMIN_INIT_FLAGS	(FANOTIFY_PERM_CLASSES | \
- 					 FAN_REPORT_TID | \
- 					 FAN_REPORT_PIDFD | \
-+					 FAN_REPORT_FD_ERROR | \
- 					 FAN_UNLIMITED_QUEUE | \
- 					 FAN_UNLIMITED_MARKS)
- 
-diff --git a/include/uapi/linux/fanotify.h b/include/uapi/linux/fanotify.h
-index cd14c94e9a1e0..2aae6dd706a91 100644
---- a/include/uapi/linux/fanotify.h
-+++ b/include/uapi/linux/fanotify.h
-@@ -60,6 +60,7 @@
- #define FAN_REPORT_DIR_FID	0x00000400	/* Report unique directory id */
- #define FAN_REPORT_NAME		0x00000800	/* Report events with name */
- #define FAN_REPORT_TARGET_FID	0x00001000	/* Report dirent target id  */
-+#define FAN_REPORT_FD_ERROR	0x00002000	/* event->fd can report error */
- 
- /* Convenience macro - FAN_REPORT_NAME requires FAN_REPORT_DIR_FID */
- #define FAN_REPORT_DFID_NAME	(FAN_REPORT_DIR_FID | FAN_REPORT_NAME)
++	/* In case of error, no cleanup! */
++	if (data->rpc_status != 0 || !data->rpc_done) {
++		nfs_release_seqid(data->o_arg.seqid);
++		goto out_free;
++	}
+ 	/* If this request hasn't been cancelled, do nothing */
+ 	if (!data->cancelled)
+ 		goto out_free;
+-	/* In case of error, no cleanup! */
+-	if (data->rpc_status != 0 || !data->rpc_done)
+-		goto out_free;
+ 	/* In case we need an open_confirm, no cleanup! */
+ 	if (data->o_res.rflags & NFS4_OPEN_RESULT_CONFIRM)
+ 		goto out_free;
 -- 
 2.43.0
 
