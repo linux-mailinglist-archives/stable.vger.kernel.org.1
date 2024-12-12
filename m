@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-101035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B9E9EEA39
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6799EF2D3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 613CA16AAE4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAC1B289F78
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7E321578E;
-	Thu, 12 Dec 2024 15:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C98235C22;
+	Thu, 12 Dec 2024 16:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pj1DrslM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIbavGoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8F62080FC;
-	Thu, 12 Dec 2024 15:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5563F22967A;
+	Thu, 12 Dec 2024 16:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016031; cv=none; b=lZtBZU1ETZEQEys2ybRj6FS7Up6PPteYqyXyZP3m/xgAJ07yjo8SwXoZMF3b4hvUDc2SuFKapc3jwr2an8g8mwtecJ/LyTSdez4vkZhRzOzxwnnYn64yNdxkaD7fceVdz4vQlMoBhlYYbwifShc1JI8ArLQb2yLjqKy8zsFF/bQ=
+	t=1734021876; cv=none; b=ZFKk+5qcH+d2VEDFHzNInwYkGO8SQAB/KU9HDQeCOzqAPE5cIHmeQoekvQRWoAzgyCIdqrdto4IwzR6EaFt/9WCSLVMst25sD6icouMlsEkWCD1XloTzRzZqMuQAuEd7f5BJ8mLTNlzw6K7UNm7LY7GiuBNx24vcrwvEyjf2cyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016031; c=relaxed/simple;
-	bh=ZNc2fwIO5rzVsdMc1wj8eHUCYGRcFqapnuMzHBXmPp0=;
+	s=arc-20240116; t=1734021876; c=relaxed/simple;
+	bh=2HhvwuzNWjdhCYKNc5qqSABorBf6kgPUogL61YkOTQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpuoL+v+/+sXEkotBM9e2jDvWpuPZD3CkK8u9Ir3IwX0zQwpGHHIqx/DQFt/CKJnkBfcqVhTtpDsGX/vv/qJ6EK0gEUz/4TjowUHlnefylL9dVqGpAmnJRqOMKMbp+Z3Mmn+/8KzUViiq0ADh5XuU8qF5aRzNHoW8bSYCtzfbNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pj1DrslM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F12BC4CECE;
-	Thu, 12 Dec 2024 15:07:10 +0000 (UTC)
+	 MIME-Version; b=cwTx/+74hzpDJAy7XB39L+mPBi1ow+RYJLNcO1aa6qoLu+NQ/VWcjqdjuvcS/fX7fUFxYEHutEmWnGK4JugOdVFAqm0dwzXj8I9oskRWIsfCapnmb0ileVgOMnIUr3rLaEHSkiWmnuVfM0BHKI0FJZ/cganDMSKaAFEl7K3x/vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIbavGoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71D2C4CECE;
+	Thu, 12 Dec 2024 16:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016031;
-	bh=ZNc2fwIO5rzVsdMc1wj8eHUCYGRcFqapnuMzHBXmPp0=;
+	s=korg; t=1734021876;
+	bh=2HhvwuzNWjdhCYKNc5qqSABorBf6kgPUogL61YkOTQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pj1DrslMA87JJEJOaueEAsGjajoRo93Bnd+UQZy04h9RXxaDgcGFvC0MCzqFqW5NQ
-	 ljSq+ERXJfkha35Ge41F4ZgApMtn0OqUgaaFm9VK5HRA9t+DkMfI5CgfNhy73ZGdDU
-	 yKhvtItc3sokzIRCwKMAKTfvB49ie9DLqfsCV05Y=
+	b=IIbavGoeus3VOZz4nGkkMSQ/bSs/TvhIwfD51iYauyYFygetG0OsAVeDViL4vnFAF
+	 /SfpyFmEni07Cw1Dv8wOa1fT5FX/SzdGALEo7ItYV3KfeGV5NPxyK6ILr2kuOz6qGV
+	 wuYkhKNpi0m8AJ5hSjcEurm6Jkg+NHgIkdZ/tKb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/466] ocfs2: free inode when ocfs2_get_init_inode() fails
+Subject: [PATCH 5.15 086/565] m68k: mvme147: Reinstate early console
 Date: Thu, 12 Dec 2024 15:54:41 +0100
-Message-ID: <20241212144311.243393303@linuxfoundation.org>
+Message-ID: <20241212144314.887527139@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,52 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit 965b5dd1894f4525f38c1b5f99b0106a07dbb5db ]
+[ Upstream commit 077b33b9e2833ff25050d986178a2c4c4036cbac ]
 
-syzbot is reporting busy inodes after unmount, for commit 9c89fe0af826
-("ocfs2: Handle error from dquot_initialize()") forgot to call iput() when
-new_inode() succeeded and dquot_initialize() failed.
+Commit a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused
+functions"), removed the console functionality for the mvme147 instead
+of wiring it up to an early console.  Put the console write function
+back and wire it up like mvme16x does so it's possible to see Linux boot
+on this fine hardware once more.
 
-Link: https://lkml.kernel.org/r/e68c0224-b7c6-4784-b4fa-a9fc8c675525@I-love.SAKURA.ne.jp
-Fixes: 9c89fe0af826 ("ocfs2: Handle error from dquot_initialize()")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reported-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0af00f6a2cba2058b5db
-Tested-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused functions")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Co-developed-by: Finn Thain <fthain@linux-m68k.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/a82e8f0068a8722996a0ccfe666abb5e0a5c120d.1730850684.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/namei.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/m68k/kernel/early_printk.c |  5 ++++-
+ arch/m68k/mvme147/config.c      | 30 ++++++++++++++++++++++++++++++
+ arch/m68k/mvme147/mvme147.h     |  6 ++++++
+ 3 files changed, 40 insertions(+), 1 deletion(-)
+ create mode 100644 arch/m68k/mvme147/mvme147.h
 
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index 59c92353151a8..5550f8afa4380 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -200,8 +200,10 @@ static struct inode *ocfs2_get_init_inode(struct inode *dir, umode_t mode)
- 	mode = mode_strip_sgid(&nop_mnt_idmap, dir, mode);
- 	inode_init_owner(&nop_mnt_idmap, inode, dir, mode);
- 	status = dquot_initialize(inode);
--	if (status)
-+	if (status) {
-+		iput(inode);
- 		return ERR_PTR(status);
-+	}
+diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
+index 3cc944df04f65..f11ef9f1f56fc 100644
+--- a/arch/m68k/kernel/early_printk.c
++++ b/arch/m68k/kernel/early_printk.c
+@@ -13,6 +13,7 @@
+ #include <asm/setup.h>
  
- 	return inode;
+ 
++#include "../mvme147/mvme147.h"
+ #include "../mvme16x/mvme16x.h"
+ 
+ asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
+@@ -22,7 +23,9 @@ static void __ref debug_cons_write(struct console *c,
+ {
+ #if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+       defined(CONFIG_COLDFIRE))
+-	if (MACH_IS_MVME16x)
++	if (MACH_IS_MVME147)
++		mvme147_scc_write(c, s, n);
++	else if (MACH_IS_MVME16x)
+ 		mvme16x_cons_write(c, s, n);
+ 	else
+ 		debug_cons_nputs(s, n);
+diff --git a/arch/m68k/mvme147/config.c b/arch/m68k/mvme147/config.c
+index dfd6202fd403e..e2c8394b8415d 100644
+--- a/arch/m68k/mvme147/config.c
++++ b/arch/m68k/mvme147/config.c
+@@ -35,6 +35,7 @@
+ #include <asm/machdep.h>
+ #include <asm/mvme147hw.h>
+ 
++#include "mvme147.h"
+ 
+ static void mvme147_get_model(char *model);
+ extern void mvme147_sched_init(void);
+@@ -188,3 +189,32 @@ int mvme147_hwclk(int op, struct rtc_time *t)
+ 	}
+ 	return 0;
  }
++
++static void scc_delay(void)
++{
++	__asm__ __volatile__ ("nop; nop;");
++}
++
++static void scc_write(char ch)
++{
++	do {
++		scc_delay();
++	} while (!(in_8(M147_SCC_A_ADDR) & BIT(2)));
++	scc_delay();
++	out_8(M147_SCC_A_ADDR, 8);
++	scc_delay();
++	out_8(M147_SCC_A_ADDR, ch);
++}
++
++void mvme147_scc_write(struct console *co, const char *str, unsigned int count)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	while (count--)	{
++		if (*str == '\n')
++			scc_write('\r');
++		scc_write(*str++);
++	}
++	local_irq_restore(flags);
++}
+diff --git a/arch/m68k/mvme147/mvme147.h b/arch/m68k/mvme147/mvme147.h
+new file mode 100644
+index 0000000000000..140bc98b0102a
+--- /dev/null
++++ b/arch/m68k/mvme147/mvme147.h
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++struct console;
++
++/* config.c */
++void mvme147_scc_write(struct console *co, const char *str, unsigned int count);
 -- 
 2.43.0
 
