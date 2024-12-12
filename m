@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-101484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854C89EEC84
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D0B9EEB31
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C83828430A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECD131658B8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E07216E12;
-	Thu, 12 Dec 2024 15:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C382210C2;
+	Thu, 12 Dec 2024 15:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1YORaaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrBVAs1D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F3A21578E;
-	Thu, 12 Dec 2024 15:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CC0215795;
+	Thu, 12 Dec 2024 15:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017715; cv=none; b=kJqyCAxey6DoZPInTf31qP7+TfoXDSeKwE3oO/frCDxsdXACbC+Jc7w7ty/yZbiamk7V9PVacOBOB/LoDaODSLzw/vtnJIcHaF0t0v1iW6ewgqMPytGBLG2yzI/s7f4dsNiwTMcLMpAEsIPB8RdAzc9LTg8ws7sYDnEP4kvKyvY=
+	t=1734016581; cv=none; b=ctOHQFQYBQlmHwRsBlKn4Q9+JjchuT7uzBzBQgJbvWQVzVTmFBXf21hZ+ZF6ONtwgsf4Vfa3ONf+fZb3X1h8SkX5R3c2wdRnNOJzQGeIM2o24PuaHCNTK7hGMCjpZC6ZUJxpndrDZCRuickw/mxI64nNAJuo9HW86x+j0Sr14GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017715; c=relaxed/simple;
-	bh=9w4q49ul6SpU51qV3NW5u99YuFwHdcOdypTxmSB42j0=;
+	s=arc-20240116; t=1734016581; c=relaxed/simple;
+	bh=GWpMa40uK0zaQvz3VSqnjq3n5SoYxXiYdNkpZlvKsFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxo8anWYE40zmLJ2DiWDqBL2k2f0dfK2rAhS7biHzLn+MFMeRCiS2v+QqsUAmvKZNc8lyZ8ekTMxae4nBaF4BPX89RdAwZSLtbq5b4sDwKzR/i+H+pSD120pLb1h1gcf6gOvr5hlP125bi3abcLr4tnVrOxa3eHtqXX6TK/s6vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1YORaaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC05C4CED4;
-	Thu, 12 Dec 2024 15:35:13 +0000 (UTC)
+	 MIME-Version; b=cJhDs1Ci2URtxfDqN5CIVMTm9qDjLEU+p4MNXQNBaUMQ83v8PTBgQLP1H7KvuQWRJhb53an4Q6hwAahGtUvL/w+GDe012uK39uwbxkc6euP3Jc4C/lwNsxZlj2uJPeqXBLgra68ay1uDtPMmXEJxEAkPmNTxdR4ohF+esAPaKcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrBVAs1D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FD4C4CECE;
+	Thu, 12 Dec 2024 15:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017713;
-	bh=9w4q49ul6SpU51qV3NW5u99YuFwHdcOdypTxmSB42j0=;
+	s=korg; t=1734016580;
+	bh=GWpMa40uK0zaQvz3VSqnjq3n5SoYxXiYdNkpZlvKsFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1YORaaWLod5r1ZbsSYOJEr/ATZKZjGidZwtrUVdq3Z7MiyMmtZQFGp3yVrPeWwTF
-	 zcLd8R56SoSnQ79AgfIopRpFLjknrhFHSX+67tF992X+EdUQFbDwww+xDqlV0h2AGO
-	 N9rt4iiDp6p9jqeZmhLt06ODM0IC5I6Hu200ItMY=
+	b=yrBVAs1Dtj56JLviiGwAZkAcNrqyS7QnlC4daGJhZifaedTFBUw41hdGR3SyziVx4
+	 r146qQr0j1bC1hQXbwpLXytcGO32CA2hg7fIYyVI7OfclDfuF/9CtWNoJFVEaEJBs5
+	 TTYFU9bfZhk/B61zN4LnBUz0HeqQHtfRN1d7ZH4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Shin Kawamura <kawasin@google.com>,
-	Brian Geffon <bgeffon@google.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Maya Matuszczyk <maccraft123mc@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/356] zram: clear IDLE flag in mark_idle()
+Subject: [PATCH 6.12 239/466] firmware: qcom: scm: Allow QSEECOM on Lenovo Yoga Slim 7x
 Date: Thu, 12 Dec 2024 15:56:48 +0100
-Message-ID: <20241212144248.134124194@linuxfoundation.org>
+Message-ID: <20241212144316.224510846@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Maya Matuszczyk <maccraft123mc@gmail.com>
 
-[ Upstream commit d37da422edb0664a2037e6d7d42fe6d339aae78a ]
+[ Upstream commit c6fa2834afc6a6fe210415ec253a61e6eafdf651 ]
 
-If entry does not fulfill current mark_idle() parameters, e.g.  cutoff
-time, then we should clear its ZRAM_IDLE from previous mark_idle()
-invocations.
+Allow QSEECOM on Lenovo Yoga Slim 7x, to enable accessing EFI variables.
 
-Consider the following case:
-- mark_idle() cutoff time 8h
-- mark_idle() cutoff time 4h
-- writeback() idle - will writeback entries with cutoff time 8h,
-  while it should only pick entries with cutoff time 4h
-
-The bug was reported by Shin Kawamura.
-
-Link: https://lkml.kernel.org/r/20241028153629.1479791-3-senozhatsky@chromium.org
-Fixes: 755804d16965 ("zram: introduce an aged idle interface")
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reported-by: Shin Kawamura <kawasin@google.com>
-Acked-by: Brian Geffon <bgeffon@google.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: <stable@vger.kernel.org>
+Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240919134421.112643-2-maccraft123mc@gmail.com
+[bjorn: Rewrote commit message]
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/zram/zram_drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/firmware/qcom/qcom_scm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index e05eace18cc47..27f9ae16a7282 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -319,6 +319,8 @@ static void mark_idle(struct zram *zram, ktime_t cutoff)
- #endif
- 		if (is_idle)
- 			zram_set_flag(zram, index, ZRAM_IDLE);
-+		else
-+			zram_clear_flag(zram, index, ZRAM_IDLE);
- 		zram_slot_unlock(zram, index);
- 	}
- }
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index 2e4260ba5f793..f019e0b787cb7 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -1745,6 +1745,7 @@ static const struct of_device_id qcom_scm_qseecom_allowlist[] __maybe_unused = {
+ 	{ .compatible = "lenovo,flex-5g" },
+ 	{ .compatible = "lenovo,thinkpad-t14s" },
+ 	{ .compatible = "lenovo,thinkpad-x13s", },
++	{ .compatible = "lenovo,yoga-slim7x" },
+ 	{ .compatible = "microsoft,romulus13", },
+ 	{ .compatible = "microsoft,romulus15", },
+ 	{ .compatible = "qcom,sc8180x-primus" },
 -- 
 2.43.0
 
