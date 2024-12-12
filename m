@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375D09EF7A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4019EF9EB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC969282086
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B586176F1A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BB4223C6F;
-	Thu, 12 Dec 2024 17:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91016223E8C;
+	Thu, 12 Dec 2024 17:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACP8pA6M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAhz717M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0256223C68;
-	Thu, 12 Dec 2024 17:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E038223711;
+	Thu, 12 Dec 2024 17:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024930; cv=none; b=G+/km3266E3kqX5tXBa2m/jZeXmEi4GQSaugQMLwyoYzqwx5aYDa3ln4X2Juw7WDLXPDARVSrnEY6vnO8w7P/GIICMo3oH9KRyazBUx1HUw7JHwtT+DamKNaMWw+Sc8bQRKjws0gWHUw8jpe7ZtPZiGGNT88jE80aU4n5hbSkag=
+	t=1734025719; cv=none; b=CNv7SYQj4p7ptDwqVIy9Ymvfpt871qsdabLBnuI4BmyGn9gb0Fgy8jIKwj+Xr4suJBuS3Gkmv4+23KQ0vFFTO2tcSx173vyJnR0PBTHnyj5Z7mAZjAXcMjpAPoMU9k9jBCIOxXT5v2CtVDbMOOXBhqwcniq37GW46dJX4yU8gGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024930; c=relaxed/simple;
-	bh=QFmjWs5POCujcu0skGjcMrwqcvoKSwHs8zt5/29raZ4=;
+	s=arc-20240116; t=1734025719; c=relaxed/simple;
+	bh=ccpCDN3QgRnBR4bm+fgXRaXtRBPz5UDE/t0StJl8vfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hckJAcq5MpJ8gCrFO7tfugE/uqBpL2WgYDNTSjq13S8yICjI3xTgIfnVU9p+t18B00ZsDjP6WXHMGKbqks4zhEEptRNb4t8TMxAbSUGj3YkvXsBCUiFAL59w7lUUrwKTAQLAwIthS9+2P081cGYIHI9Nr0c6q85mz2iI99j+iSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACP8pA6M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22448C4CED0;
-	Thu, 12 Dec 2024 17:35:29 +0000 (UTC)
+	 MIME-Version; b=CiWUvObzxxTROWw6tA+ZFXTt/TWptTPTu1dg0zWai9mmcn/8qXSxWkWbtYamwvJye03VfH+lFdVq0R+qrTthZ3j9B+i0YP05qGGcVJAZD0QCsxAOkllNGZbzhK64NOJjLQKlZpa7Hd9fFRxsw8yo2ovwCWHop2zaHHKX1A7gizc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAhz717M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C704AC4CECE;
+	Thu, 12 Dec 2024 17:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024930;
-	bh=QFmjWs5POCujcu0skGjcMrwqcvoKSwHs8zt5/29raZ4=;
+	s=korg; t=1734025719;
+	bh=ccpCDN3QgRnBR4bm+fgXRaXtRBPz5UDE/t0StJl8vfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACP8pA6M7MZM96Nm3y0+969k0LrZ1p6nqRNPOqrpJubJbzQFyvWKf3P4WQkFBFQlz
-	 lNTjlmdvgns/KLdFGox7fzRw0bO5ixE6PojvFzHykOzA4tM/w7H8wiqPiJN7qZJQc+
-	 Yk0Gj1TU7Hzgfhcd/Ds2yHHRR2wsH4OyYstfZslk=
+	b=lAhz717MGSdBbotcC12Lv4kKPkHOhtq0RZY1Z/zcMgKQ+9d0eHD5kOyal6EViUwh5
+	 WdRRc8xJq6q9gHjr5H2DIDl2QFT3wKosibE/psauQri5Aj6ZECFaJlfUwugWa+mmlv
+	 rKAvAd0a2m+xFUNRyLLBCdgO5ok7h82AbxIK2OSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shusen Li <lishusen2@huawei.com>,
-	Kunkun Jiang <jiangkunkun@huawei.com>,
-	Jing Zhang <jingzhangos@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 5.10 444/459] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 264/321] s390/cpum_sf: Handle CPU hotplug remove during sampling
 Date: Thu, 12 Dec 2024 16:03:02 +0100
-Message-ID: <20241212144311.309587367@linuxfoundation.org>
+Message-ID: <20241212144240.412214457@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunkun Jiang <jiangkunkun@huawei.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit e9649129d33dca561305fc590a7c4ba8c3e5675a upstream.
+[ Upstream commit a0bd7dacbd51c632b8e2c0500b479af564afadf3 ]
 
-vgic_its_save_device_tables will traverse its->device_list to
-save DTE for each device. vgic_its_restore_device_tables will
-traverse each entry of device table and check if it is valid.
-Restore if valid.
+CPU hotplug remove handling triggers the following function
+call sequence:
 
-But when MAPD unmaps a device, it does not invalidate the
-corresponding DTE. In the scenario of continuous saves
-and restores, there may be a situation where a device's DTE
-is not saved but is restored. This is unreasonable and may
-cause restore to fail. This patch clears the corresponding
-DTE when MAPD unmaps a device.
+   CPUHP_AP_PERF_S390_SF_ONLINE  --> s390_pmu_sf_offline_cpu()
+   ...
+   CPUHP_AP_PERF_ONLINE          --> perf_event_exit_cpu()
 
-Cc: stable@vger.kernel.org
-Fixes: 57a9a117154c ("KVM: arm64: vgic-its: Device table save/restore")
-Co-developed-by: Shusen Li <lishusen2@huawei.com>
-Signed-off-by: Shusen Li <lishusen2@huawei.com>
-Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
-[Jing: Update with entry write helper]
-Signed-off-by: Jing Zhang <jingzhangos@google.com>
-Link: https://lore.kernel.org/r/20241107214137.428439-5-jingzhangos@google.com
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The s390 CPUMF sampling CPU hotplug handler invokes:
+
+ s390_pmu_sf_offline_cpu()
+ +-->  cpusf_pmu_setup()
+       +--> setup_pmc_cpu()
+            +--> deallocate_buffers()
+
+This function de-allocates all sampling data buffers (SDBs) allocated
+for that CPU at event initialization. It also clears the
+PMU_F_RESERVED bit. The CPU is gone and can not be sampled.
+
+With the event still being active on the removed CPU, the CPU event
+hotplug support in kernel performance subsystem triggers the
+following function calls on the removed CPU:
+
+  perf_event_exit_cpu()
+  +--> perf_event_exit_cpu_context()
+       +--> __perf_event_exit_context()
+	    +--> __perf_remove_from_context()
+	         +--> event_sched_out()
+	              +--> cpumsf_pmu_del()
+	                   +--> cpumsf_pmu_stop()
+                                +--> hw_perf_event_update()
+
+to stop and remove the event. During removal of the event, the
+sampling device driver tries to read out the remaining samples from
+the sample data buffers (SDBs). But they have already been freed
+(and may have been re-assigned). This may lead to a use after free
+situation in which case the samples are most likely invalid. In the
+best case the memory has not been reassigned and still contains
+valid data.
+
+Remedy this situation and check if the CPU is still in reserved
+state (bit PMU_F_RESERVED set). In this case the SDBs have not been
+released an contain valid data. This is always the case when
+the event is removed (and no CPU hotplug off occured).
+If the PMU_F_RESERVED bit is not set, the SDB buffers are gone.
+
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/s390/kernel/perf_cpum_sf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -1182,9 +1182,11 @@ static int vgic_its_cmd_handle_mapd(stru
- 	bool valid = its_cmd_get_validbit(its_cmd);
- 	u8 num_eventid_bits = its_cmd_get_size(its_cmd);
- 	gpa_t itt_addr = its_cmd_get_ittaddr(its_cmd);
-+	int dte_esz = vgic_its_get_abi(its)->dte_esz;
- 	struct its_device *device;
-+	gpa_t gpa;
+diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
+index 4f251cd624d7e..6047ccb6f8e26 100644
+--- a/arch/s390/kernel/perf_cpum_sf.c
++++ b/arch/s390/kernel/perf_cpum_sf.c
+@@ -1862,7 +1862,9 @@ static void cpumsf_pmu_stop(struct perf_event *event, int flags)
+ 	event->hw.state |= PERF_HES_STOPPED;
  
--	if (!vgic_its_check_id(its, its->baser_device_table, device_id, NULL))
-+	if (!vgic_its_check_id(its, its->baser_device_table, device_id, &gpa))
- 		return E_ITS_MAPD_DEVICE_OOR;
- 
- 	if (valid && num_eventid_bits > VITS_TYPER_IDBITS)
-@@ -1205,7 +1207,7 @@ static int vgic_its_cmd_handle_mapd(stru
- 	 * is an error, so we are done in any case.
- 	 */
- 	if (!valid)
--		return 0;
-+		return vgic_its_write_entry_lock(its, gpa, 0, dte_esz);
- 
- 	device = vgic_its_alloc_device(its, device_id, itt_addr,
- 				       num_eventid_bits);
+ 	if ((flags & PERF_EF_UPDATE) && !(event->hw.state & PERF_HES_UPTODATE)) {
+-		hw_perf_event_update(event, 1);
++		/* CPU hotplug off removes SDBs. No samples to extract. */
++		if (cpuhw->flags & PMU_F_RESERVED)
++			hw_perf_event_update(event, 1);
+ 		event->hw.state |= PERF_HES_UPTODATE;
+ 	}
+ 	perf_pmu_enable(event->pmu);
+-- 
+2.43.0
+
 
 
 
