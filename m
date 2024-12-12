@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC879EEBB2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B409EED77
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE6F31882966
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBB0116A5DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C936A2153F4;
-	Thu, 12 Dec 2024 15:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49339217F34;
+	Thu, 12 Dec 2024 15:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0W92gGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2c4oYbr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DF62080FC;
-	Thu, 12 Dec 2024 15:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D8A13792B;
+	Thu, 12 Dec 2024 15:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017042; cv=none; b=tOxKZHaQNPlV9jn2qmFprcdA89v+paNbeM5gbCKcA33K8UrF7FX9FzBsaGvqPGPzrzoMwTK118g6ru8zg4iKUU4aRZxDO/hnMJWVCI684xq/AdzWVaU+hR6NM+yibwNb+9+3GvmfnAAvd7UPmnSJNRSmKx3eQzHkXf2zNtKJhmM=
+	t=1734018167; cv=none; b=OOP184tzIUj7BAyPTof/2R78EE9vyla+mcCnwCUD8Z+xuSK3h8VzMUG+sRniet70ZUcCl+4r/ypCqnV/L+hBT0/0P/sB5vXx/TMkEkGK1oFYASdd506wa1qUfpMla8AKzp3NfCAoPpGvfhWnmgTAeH0iBCuexJI3pMHXsN3eyIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017042; c=relaxed/simple;
-	bh=iGoN12MLWWHpGBrnP6UmWIMeJKC5IftWuosEudDSjz0=;
+	s=arc-20240116; t=1734018167; c=relaxed/simple;
+	bh=juCf3V5jNKH2i65w1BOO16JWtlj5wZtNA0weqIht9ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iqcethZXX0BDVU0PLJ9x6G5H9gQzOCNgT1UV+VWLy/+42iur5sZut88/Fa0R/M9v3FWTCzXoGTcqK1LQ74cxNf0+0paPLtZnc0/0tTfAFSaHJXSjeUUDYfVRHQCDZ866I1r1UPspr3kSHTd5UDhln1rChY4ZfYxTlOWFjEIykho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0W92gGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91502C4CECE;
-	Thu, 12 Dec 2024 15:24:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=epdTD+znZnuzm9yDpHDCIBHQxXGRwOUZ6EwKVz6wiYRrsfjQD2rXmyZQfeWJ4iUkayD+96n+GPndLWlkdD2ft7SrI0RYChEip7ufRGo+whGPrqS4T1cLnJtS5PBVlxizUgY0FGLrDz7US0CVqPWjieMf5NqOnnGKhrVFwKStD1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2c4oYbr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D2EC4CECE;
+	Thu, 12 Dec 2024 15:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017042;
-	bh=iGoN12MLWWHpGBrnP6UmWIMeJKC5IftWuosEudDSjz0=;
+	s=korg; t=1734018166;
+	bh=juCf3V5jNKH2i65w1BOO16JWtlj5wZtNA0weqIht9ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0W92gGHJ8cVKbCVRWVQwNsd4SqQjd8EmwJvMzMcMahil8yDK9/qR8sX9bZrcIZVc
-	 pN+OTtMRh0FBUXrc4qM4p7gwf6z+N7oGFgaBEXRRJxoZbtlvUJrIRSj0kXA57JH7I/
-	 OQZVzjxAzpfGqjFMn87vVnTPxQvVHxH/BVg7WGCw=
+	b=e2c4oYbrW20UQ+ixJkf6gbpOO8S8d9vb8vnP060QtEyvblD9bipH2QOTaj5rsHygv
+	 57SVZXuWYKozXaxwI2uepWBLP+Rz8bQN8PZ0lMBhzBBNOC9BQISC9OrOE7fTaUbP3C
+	 yTc/5pds4kP0ts+f4QxLdfWHy6VKwMvBhUkR7bwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 366/466] iommu/amd: Fix corruption when mapping large pages from 0
+Subject: [PATCH 6.6 216/356] drm/display: Fix building with GCC 15
 Date: Thu, 12 Dec 2024 15:58:55 +0100
-Message-ID: <20241212144321.237726470@linuxfoundation.org>
+Message-ID: <20241212144253.153982963@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
 
-[ Upstream commit e3a682eaf2af51a83f5313145ef592ce50fa787f ]
+[ Upstream commit a500f3751d3c861be7e4463c933cf467240cca5d ]
 
-If a page is mapped starting at 0 that is equal to or larger than can fit
-in the current mode (number of table levels) it results in corrupting the
-mapping as the following logic assumes the mode is correct for the page
-size being requested.
+GCC 15 enables -Werror=unterminated-string-initialization by default.
+This results in the following build error
 
-There are two issues here, the check if the address fits within the table
-uses the start address, it should use the last address to ensure that last
-byte of the mapping fits within the current table mode.
+drivers/gpu/drm/display/drm_dp_dual_mode_helper.c: In function ‘is_hdmi_adaptor’:
+drivers/gpu/drm/display/drm_dp_dual_mode_helper.c:164:17: error: initializer-string for array of
+ ‘char’ is too long [-Werror=unterminated-string-initialization]
+  164 |                 "DP-HDMI ADAPTOR\x04";
+      |                 ^~~~~~~~~~~~~~~~~~~~~
 
-The second is if the mapping is exactly the size of the full page table it
-has to add another level to instead hold a single IOPTE for the large
-size.
+After discussion with Ville, the fix was to increase the size of
+dp_dual_mode_hdmi_id array by one, so that it can accommodate the NULL
+line character. This should let us build the kernel with GCC 15.
 
-Since both corner cases require a 0 IOVA to be hit and doesn't start until
-a page size of 2^48 it is unlikely to ever hit in a real system.
-
-Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/0-v1-27ab08d646a1+29-amd_0map_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241002092311.942822-1-brahmajit.xyz@gmail.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/io_pgtable.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/display/drm_dp_dual_mode_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/amd/io_pgtable.c b/drivers/iommu/amd/io_pgtable.c
-index 804b788f3f167..f3399087859fd 100644
---- a/drivers/iommu/amd/io_pgtable.c
-+++ b/drivers/iommu/amd/io_pgtable.c
-@@ -118,6 +118,7 @@ static void free_sub_pt(u64 *root, int mode, struct list_head *freelist)
-  */
- static bool increase_address_space(struct amd_io_pgtable *pgtable,
- 				   unsigned long address,
-+				   unsigned int page_size_level,
- 				   gfp_t gfp)
+diff --git a/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c b/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
+index bd61e20770a5b..719da3610310f 100644
+--- a/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_dual_mode_helper.c
+@@ -160,11 +160,11 @@ EXPORT_SYMBOL(drm_dp_dual_mode_write);
+ 
+ static bool is_hdmi_adaptor(const char hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN])
  {
- 	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
-@@ -133,7 +134,8 @@ static bool increase_address_space(struct amd_io_pgtable *pgtable,
+-	static const char dp_dual_mode_hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN] =
++	static const char dp_dual_mode_hdmi_id[DP_DUAL_MODE_HDMI_ID_LEN + 1] =
+ 		"DP-HDMI ADAPTOR\x04";
  
- 	spin_lock_irqsave(&domain->lock, flags);
+ 	return memcmp(hdmi_id, dp_dual_mode_hdmi_id,
+-		      sizeof(dp_dual_mode_hdmi_id)) == 0;
++		      DP_DUAL_MODE_HDMI_ID_LEN) == 0;
+ }
  
--	if (address <= PM_LEVEL_SIZE(pgtable->mode))
-+	if (address <= PM_LEVEL_SIZE(pgtable->mode) &&
-+	    pgtable->mode - 1 >= page_size_level)
- 		goto out;
- 
- 	ret = false;
-@@ -163,18 +165,21 @@ static u64 *alloc_pte(struct amd_io_pgtable *pgtable,
- 		      gfp_t gfp,
- 		      bool *updated)
- {
-+	unsigned long last_addr = address + (page_size - 1);
- 	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
- 	int level, end_lvl;
- 	u64 *pte, *page;
- 
- 	BUG_ON(!is_power_of_2(page_size));
- 
--	while (address > PM_LEVEL_SIZE(pgtable->mode)) {
-+	while (last_addr > PM_LEVEL_SIZE(pgtable->mode) ||
-+	       pgtable->mode - 1 < PAGE_SIZE_LEVEL(page_size)) {
- 		/*
- 		 * Return an error if there is no memory to update the
- 		 * page-table.
- 		 */
--		if (!increase_address_space(pgtable, address, gfp))
-+		if (!increase_address_space(pgtable, last_addr,
-+					    PAGE_SIZE_LEVEL(page_size), gfp))
- 			return NULL;
- 	}
- 
+ static bool is_type1_adaptor(uint8_t adaptor_id)
 -- 
 2.43.0
 
