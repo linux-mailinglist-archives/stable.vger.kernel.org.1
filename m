@@ -1,142 +1,202 @@
-Return-Path: <stable+bounces-103917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7362B9EFB6A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:48:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1030F9EFB6F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80F4816D220
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81676188E92E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5D3188A0E;
-	Thu, 12 Dec 2024 18:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429AC17E016;
+	Thu, 12 Dec 2024 18:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fLhmAXEZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PZL7wUKv"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8809518C937
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 18:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBA517AE1C;
+	Thu, 12 Dec 2024 18:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734029282; cv=none; b=k7kAqTFf2u8+VSgEBa0UNf8bDCm5UNsc/XCZHwXdkP4/1GbW0xVRN5QrkFfLTPqvkF1Ea2XEYVGc0uyVdz36lL5/jN0acgmXVVPAtsyw57LLkp9caovzEjAbhD4SfGipuUjEc2C6tEUoB6bbyX0puzHtALxUHD7fLjZ5IQS2glA=
+	t=1734029302; cv=none; b=TSqDobX9OQq5tsSeckfiIPgMgzh53uy/LzmKyGeDm6SVPRp4HUzA2tqhvEO+6hruQ08O6991ZQOME/PBJy7rB990dFH4QkJL7cthQh9FRsvtFfqqJ+rnqfS4HHOw0YcG2rMT8e4uO5V5zwHvWRT2BQaosBE6PY5PPczrLr9JIH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734029282; c=relaxed/simple;
-	bh=KlkSWLS0Qd/mfciP5UkDT25gBWSNSTSCByPeDrKJSD4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t+AYK3CIpQ61YP+sVuhhLDLmEdN5LlQnAvs1untaQUybrGQ2RK5UJ6tyCR2V8nBbYmdjlh7+JRfGCMzvy9esvhZ6xeQ1rLRFr3LrRQYtx5bEU02CHLONhUBYRBsXppHopYj8bOyE1MtJ9l3AiECa9TDEi/fTP3nU6Z5L40RFrDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fLhmAXEZ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BCGPfZe002087
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 18:47:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ALq+X0uDXx9y3Xid0ehyViPpa6r2R/TSZzWUGNi/JQ8=; b=fLhmAXEZeVEMBALq
-	TkeSvcA1HtPZiNwJ/SSYzvg0kA4Bmf6IxjR7Ex7bhmZAV5CKwPB9BYjr+3KRy9tl
-	xImOFLRLH2drf2fMMkbKhkfMD0cKHldEtLRDKeRc17Gq5uEhbiRUoJ+Dn6l+0tDF
-	INEOPWvPXTipikKsHoT7oQtYYheCAI4zBYSwm82RlbZaWtqEwbIXDhmRzEJ7wMWG
-	yJEhTQ1FTFC4Yfz2O/FXuwJ6GiOEV+BLxAaPMJtL5Uapr4nQZrCWNrfIZhkK56XK
-	pQgUjE2KKmzVLsN5qcyOra5t8MUcPrBzLxD0sHRzAFznd/cdoUGHdTFtdoiFBMmJ
-	fwlW9A==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43f0r9xcva-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 18:47:59 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6d880eea0a1so2485436d6.3
-        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 10:47:59 -0800 (PST)
+	s=arc-20240116; t=1734029302; c=relaxed/simple;
+	bh=y66TGhyZiI/xinMoA3+ax5j9EcsCL7iZ6TSGDRE7gfk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=VRjWu5VcUvoE5JS+Gcmn0xQBEOEq4wM5hiXL6hbjr/Rwfq3juiG7bLZ+2WT+cv0NT3X37wQAtzmxT7i9xIRvk3BxShPbQjBQgaKtjLGhZNxcHIbd5+7wiFAwEgnlR0IuWOw835xVURtJOs3FZnXCzywkDKYqcKdPs8b3WRC938I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PZL7wUKv; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-434ab114753so6940255e9.0;
+        Thu, 12 Dec 2024 10:48:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734029298; x=1734634098; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lz4mZSKGSv4NGXMgMua0s9XSOiQMez0e8RgXR62d89Y=;
+        b=PZL7wUKv+zzpSmAsK3E9/IKOooCTz1oxzPvdauMxSDYx2tu80Ti2HTUBReb7/6NdSB
+         hCL1L9wzi870xDwok4e75aKPkpaijuHzP8DrrAEun/M8sFF5A2o2dvym0D0ylnwbD9x4
+         cT+JyEBC+my2iNkQQoJNxtRePtvNplg0dC8IGgzLLSHWYQBjwruksSX8JGb58bZ9v49G
+         LkG2jKzct236RxGoAa9vnAV9oVXpxyEu0SNZhGRc3KeZYjjmhtfJ6gRS/Udhqu4LwPNd
+         dEZzyd1CSjw1MhHNqM2c+GECLKw20m04qEhV4THvgi4v9AG4PebM6OoYJ5vRcMIYg81S
+         EoDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734029278; x=1734634078;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ALq+X0uDXx9y3Xid0ehyViPpa6r2R/TSZzWUGNi/JQ8=;
-        b=fOjh6tnXzvSMhVY4KA7sq2lZSx9BRRVci39Yl4x/xkTIYgWQx2fX6krHcHbZzNuhjl
-         4LVOPedfYR/SJvO/4G+kWERueOLt4Ri16tJPVLOhBW7xS//4Ke2FXofKhFJuHCE/FlVy
-         oE95pyZ9yVEc8e0IjPaFWsy0dAXWgoUdenHfee6yaSZBjPquerMDZ2I2hw9+vS2RO0ia
-         I4nPbxyBi3izMmk2tPZoX0Kg9xQA+N+2VBNVOQTyBIFw5WFC+hz/mX9p71O1/5YhaoT1
-         6Z6CUeUF4oyI82qzIdHrD2+fYXSaggixZ/8cDaUxrP+04A8zElxuQPzxdCcliO9M5lX3
-         sI5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVY7gNWo+aPQz579ep8EBWWUw5+wDgi+Nas3bjbKDCOAPE1qhQff+/9W3TtNyCR5xpWzROTtIc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjKlIrG0oaKfzG8YFtMLloXG0E6ZrSCsHFrFePwkuUI9U0wWFN
-	os8UvDsJ1iXRBuzjQEkQy/Vqgp7dPrgN6o3mb9TEfZVwnQ1ucbo8w1cnI4ia+nvaglfOxibo3Ke
-	H5s6M+c0rzFXq3ZyXIkZu4UpFbuBpgPld0qY29N0D8cPhXYIeH/MQUVo=
-X-Gm-Gg: ASbGncsY4TvQQNzCFC1DMkvhZkHkzL1HrrgFPplt4mURzqrmrzWOmQ1jxVmlWbB+mIc
-	GOjj3ROWZraZOpBYjriAfCvbJfhkYMfVQSxktns/8qfs8tsK4te4QKH0y75u1qc6gvNtbEj5TiL
-	56Kus22OTsSVCueqPDyKGDXn6+lMz7PhNRsOCD1LyJHEaXGoureGnWK6fUsCgciHMAXCbnUYymD
-	b2oO3OVhCGoVmI1nbgwOMKfdjA6QMXY/TXfXNycxpLZPKDn+sItc8Rp9IXQFMNWcERRmnjXoeOc
-	ZykcO6fSYMTUUbn7cf+eIaTspkzhwoHQr3VNmg==
-X-Received: by 2002:a05:6214:21ec:b0:6d4:216a:2768 with SMTP id 6a1803df08f44-6db0f82f0ccmr8310626d6.12.1734029278612;
-        Thu, 12 Dec 2024 10:47:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEh+G1C5zbhHrm5ABg6kM6JkUvZ5KKIo29bktjk85BGikSGESW+ovgWonPs025EJAUyydbJTA==
-X-Received: by 2002:a05:6214:21ec:b0:6d4:216a:2768 with SMTP id 6a1803df08f44-6db0f82f0ccmr8310446d6.12.1734029278313;
-        Thu, 12 Dec 2024 10:47:58 -0800 (PST)
-Received: from [192.168.212.120] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa68e800a9csm569897166b.34.2024.12.12.10.47.56
+        d=1e100.net; s=20230601; t=1734029298; x=1734634098;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lz4mZSKGSv4NGXMgMua0s9XSOiQMez0e8RgXR62d89Y=;
+        b=T4RzXaSrpxfmAvXScGtdW2iUB+4lent4uc7EhwBQufNQsGnlb6IRCeJyA5PPgGL9hV
+         c2HZkqH4xhC7pe7sGOXn7yomIVPVojB7a1+pfDH14kPDD12Ig86CHwGQipVQ3+VBYxvl
+         UMthpDzt+3y9uIqZdRqiVrL1EOxYOsUF/M56H6VnOZu/zc1QmCMVvbrbkVvO0wpeNg00
+         3zN0SGqEx/AsX+tPCrdw+9NicQ3370psdcKlAHmh3L2Ue2FrKt/t15Yz2n9Gf9VASrKi
+         KdE28FRP9Iyj89yYa6QsGEwfFIoy+BRHaQ0DqqnNPpebLYQ3iOASg9aJej+GN/Gmq+j7
+         bdeA==
+X-Forwarded-Encrypted: i=1; AJvYcCUiyIVypuitXvfAaKKVSUoN7JV3c60h7nHb491cAus2ctTSE6RQtSF4kfhu2yq09dvYIIAY5ZgVwqI=@vger.kernel.org, AJvYcCV904O2H1aNvQ4AUankuynA3dm+xIqSbeswKnps0s+gYpPl6ozmbSQdFpHk/QhRpa74X63ToEIc@vger.kernel.org, AJvYcCXRuihCX58rpyOnzDODFzIkSiAnXbHa0wDiAHGWZ/Lg1uTaWuy9xVXgpGrWAf+k8ANOS5/Wew47EJjoefyx@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgTJogNLmSn1MBH7ixw2KUmd2RbAwihrhPFfCef+BCilPb+vi2
+	k4ei6gFCDn9HjsJB8NfpiR6+Z+50vqTd3v6k797KtMPlVaIIYD9C
+X-Gm-Gg: ASbGnctWIhGPgYeK2xOto7C3YaAe/5CuK5BtBFbRrt3SYeFNqNPNYjMhkREPLjs4Yl6
+	ZmFSsubkefJv2TrBSPrERbFqX08zBfn7jMZ7aqTGT7DgtJYFqaXVjp4HR58c+aP7TBjf+09sfnb
+	CihyEA1J+z9xUG8qSGbyHVyVjrEm560sz4FtUbhVpqKhnb8vl0/Qn4qexzChlFQYJOQgRZGwiCa
+	X9v7+f9LLVkWM0vheQY+kgTOljXSH1HwAb2j8sN9VFJ8zDoXQswzl9hZPzPdJKeCcjLyZQCg4A7
+	BUO4Ugl10Kvr2jZso8IxYnvUMZaA6n9bnMcXLdgpQbjWqhJeqeIf99LWF1cDgRjZLXfCuN8oi48
+	=
+X-Google-Smtp-Source: AGHT+IGLQfw3PglHjn4c1aX0F+hS2e5+eUY7Ebf3WsYFfXXZO6+bX5uqUhARMqBrHL+VaVAKR5++dw==
+X-Received: by 2002:a05:6000:21c8:b0:386:366d:5d0b with SMTP id ffacd0b85a97d-3864cea0510mr4866505f8f.55.1734029298380;
+        Thu, 12 Dec 2024 10:48:18 -0800 (PST)
+Received: from localhost (2a02-8389-41cf-e200-2ad7-4f83-0683-35cd.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:2ad7:4f83:683:35cd])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3878251dd5bsm4734433f8f.99.2024.12.12.10.48.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Dec 2024 10:47:57 -0800 (PST)
-Message-ID: <27eb49c6-c81e-4792-b49a-904cce95cdc8@oss.qualcomm.com>
-Date: Thu, 12 Dec 2024 19:47:55 +0100
+        Thu, 12 Dec 2024 10:48:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/19] arm64: dts: qcom: sm8350: Fix MPSS memory length
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Abel Vesa
- <abel.vesa@linaro.org>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241209-dts-qcom-cdsp-mpss-base-address-v2-0-d85a3bd5cced@linaro.org>
- <20241209-dts-qcom-cdsp-mpss-base-address-v2-3-d85a3bd5cced@linaro.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20241209-dts-qcom-cdsp-mpss-base-address-v2-3-d85a3bd5cced@linaro.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: 16ulw_Sr-M4D3Cb6bkdJlDUiJ-gPNgHL
-X-Proofpoint-GUID: 16ulw_Sr-M4D3Cb6bkdJlDUiJ-gPNgHL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 phishscore=0 spamscore=0 clxscore=1015 mlxlogscore=780
- malwarescore=0 lowpriorityscore=0 mlxscore=0 bulkscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412120136
+Date: Thu, 12 Dec 2024 19:48:16 +0100
+Message-Id: <D69Y31IERSV2.1R9057MJA27NS@gmail.com>
+From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
+To: "Christophe JAILLET" <christophe.jaillet@wanadoo.fr>, "Jonathan Cameron"
+ <jic23@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>, "Christian
+ Eggers" <ceggers@arri.de>
+Cc: "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+ <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH v3] iio: light: as73211: fix channel handling in
+ only-color triggered buffer
+X-Mailer: aerc 0.18.2
+References: <20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com>
+ <e8564c63-0c2b-4327-8e39-767530b29b11@wanadoo.fr>
+In-Reply-To: <e8564c63-0c2b-4327-8e39-767530b29b11@wanadoo.fr>
 
-On 9.12.2024 12:02 PM, Krzysztof Kozlowski wrote:
-> The address space in MPSS/Modem PAS (Peripheral Authentication Service)
-> remoteproc node should point to the QDSP PUB address space
-> (QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
-> copied from older DTS, but it grew since then.
-> 
-> This should have no functional impact on Linux users, because PAS loader
-> does not use this address space at all.
-> 
-> Fixes: 177fcf0aeda2 ("arm64: dts: qcom: sm8350: Add remoteprocs")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
+Hi Christophe, thank you for your prompt feedback.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+On Thu Dec 12, 2024 at 7:15 PM CET, Christophe JAILLET wrote:
+> Le 12/12/2024 =C3=A0 18:56, Javier Carrasco a =C3=A9crit=C2=A0:
+> > The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
+> > set (optimized path for color channel readings), and it must be shifted
+> > instead of leaving an empty channel for the temperature when it is off.
+> >
+> > Once the channel index is fixed, the uninitialized channel must be set
+> > to zero to avoid pushing uninitialized data.
+> >
+> > Add available_scan_masks for all channels and only-color channels to le=
+t
+> > the IIO core demux and repack the enabled channels.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+> > Tested-by: Christian Eggers <ceggers@arri.de>
+> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>
+> ...
+>
+> > diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+> > index be0068081ebb..4be2e349a068 100644
+> > --- a/drivers/iio/light/as73211.c
+> > +++ b/drivers/iio/light/as73211.c
+> > @@ -177,6 +177,12 @@ struct as73211_data {
+> >   	BIT(AS73211_SCAN_INDEX_TEMP) | \
+> >   	AS73211_SCAN_MASK_COLOR)
+> >
+> > +static const unsigned long as73211_scan_masks[] =3D {
+> > +	AS73211_SCAN_MASK_ALL,
+> > +	AS73211_SCAN_MASK_COLOR,
+> > +	0,
+> > +};
+> > +
+> >   static const struct iio_chan_spec as73211_channels[] =3D {
+> >   	{
+> >   		.type =3D IIO_TEMP,
+> > @@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handler(int irq=
+ __always_unused, void *p)
+> >
+> >   		/* AS73211 starts reading at address 2 */
+>
+> Should this comment be updated?
+>
+> Or maybe moved close to "if (*indio_dev->active_scan_mask =3D=3D
+> AS73211_SCAN_MASK_ALL)" below?
+>
 
-Konrad
+The comment is still true, as address =3D 1 stores the temperature, and
+the first color value can be found at address =3D 2. I think it used to
+be more relevant (even if it was not the correct approach) when the
+first received element was stored in chan[1]. Nevertheless, as it might
+not be obvious without knowing the address map, it could stay where it
+is.
+
+> >   		ret =3D i2c_master_recv(data->client,
+> > -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
+> > +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
+> >   		if (ret < 0)
+> >   			goto done;
+> > +
+> > +		/* Avoid pushing uninitialized data */
+> > +		scan.chan[3] =3D 0;
+> >   	}
+> >
+> >   	if (data_result) {
+> > @@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handler(int irq=
+ __always_unused, void *p)
+> >   		 * Saturate all channels (in case of overflows). Temperature channe=
+l
+> >   		 * is not affected by overflows.
+> >   		 */
+> > -		scan.chan[1] =3D cpu_to_le16(U16_MAX);
+> > -		scan.chan[2] =3D cpu_to_le16(U16_MAX);
+> > -		scan.chan[3] =3D cpu_to_le16(U16_MAX);
+> > +		if (*indio_dev->active_scan_mask =3D=3D AS73211_SCAN_MASK_ALL) {
+>
+> Should [0]...
+>
+> > +			scan.chan[1] =3D cpu_to_le16(U16_MAX);
+> > +			scan.chan[2] =3D cpu_to_le16(U16_MAX);
+> > +			scan.chan[3] =3D cpu_to_le16(U16_MAX);
+> > +		} else {
+> > +			scan.chan[0] =3D cpu_to_le16(U16_MAX);
+> > +			scan.chan[1] =3D cpu_to_le16(U16_MAX);
+> > +			scan.chan[2] =3D cpu_to_le16(U16_MAX);
+>
+> ... and [3] be forced as-well?
+> (just a blind guess)
+>
+> CJ
+>
+
+in the first case (all channels are read), the temperature (scan[0])
+only has 12 bits, and there are no overflows. In the second case,
+scan.chan[3] is set to zero as it is not used, and there is no need to
+force the U16_MAX value.
+
+Best regards,
+Javier Carrasco
 
