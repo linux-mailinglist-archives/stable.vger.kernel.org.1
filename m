@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6CA9EF574
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D099EF540
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DB80286EB3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:17:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E51D1893877
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5FD211493;
-	Thu, 12 Dec 2024 17:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C2E22655B;
+	Thu, 12 Dec 2024 16:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MN3VUPvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="af1wR1g8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F384F218;
-	Thu, 12 Dec 2024 17:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A8D218592;
+	Thu, 12 Dec 2024 16:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023821; cv=none; b=JU+dBxrJdMj/xBIODi2j57AysNEotBMwbhQmA3UXv/tiUuepuU3f8sg1c+hd5pYql9y/6VTNokFRrBTZLTKPwIQ1zJHfiTJcJUpFJO36TMNqeAvRM21WNeptk/ua8XjuQ0VtvkY9Tx6sqovxyN3/Uu/uCycne0MzL5UoVmNsPhU=
+	t=1734022394; cv=none; b=Ty6bz/j2q9nmqJvt+MCMTY+8klDE8ZHd87JSTgKW1UGbmzeIj0C2zEsONiqd0qfHT+6mU01QYbzP/tDXK9utTVwwYA/I6Zu66ltfVEAzadeh95a5qjsdqNUxog2IdUCmLtQR5oMX40EvJpBOfBG7x4G5NxyyFZ0XdAjwhNIyXW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023821; c=relaxed/simple;
-	bh=lDWz8YHm2rnzezLNnylK/rS9sQ39mjf3yLseVhNHnI0=;
+	s=arc-20240116; t=1734022394; c=relaxed/simple;
+	bh=pD5QA/nf8c42LP0SEjnvv7ZUZDLeWrzxWmTf4Cvm4Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cg22uTfSjA7efJM+en/EecimPJCqIQ4rOv9z4LaxIu+jDnfeNyzJoEOzC8/leG6PJcmwd02VpJMe+x86bz9lCB0jqIi59f2KihtRfNvGvThneZS97bpzB1CRz9O671pUvW4de55EfQINa40kJZVG392uG9SWlx344DXXZZWLN7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MN3VUPvY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20185C4CECE;
-	Thu, 12 Dec 2024 17:17:00 +0000 (UTC)
+	 MIME-Version; b=NUSuDNxstN0Roejtfjayksh/ydyYbquZbZKc4vJKJm2NfGboyR0Lk/fMxkInQOKNf5wZ15JJtoq1qkP0GPDM7gjsiQ8+tDVPAUQxU7kS0fbyq08gEzFB+6QBQehA9+NEwskivEhFgjR/+e0gSNulQtxcfWMtJGqv5DXkKisQ8jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=af1wR1g8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AE7C4CECE;
+	Thu, 12 Dec 2024 16:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023821;
-	bh=lDWz8YHm2rnzezLNnylK/rS9sQ39mjf3yLseVhNHnI0=;
+	s=korg; t=1734022394;
+	bh=pD5QA/nf8c42LP0SEjnvv7ZUZDLeWrzxWmTf4Cvm4Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MN3VUPvYhZUjZvglkIpbJ+faHlxwCaG/VPIxoJcdPXoDG1vLYF/C94wTnBTqbINLH
-	 cvsL8hadLH4rlT2dZqaHcfm1quKn6632n12ahiBIY049do6iArnug8JHtO6O0GKlb+
-	 ajlRUTW7nyQl1HmA9py5snAfh2Bdkf1bd1SJxCCk=
+	b=af1wR1g8KsKh4LAgrm8XvbalNZ+HTIRb3Vky8ErHr4UU46BF2/nCwmcUj5MCr3c78
+	 U3zBgghMo0ju+p2dk0EsSWhWW4wr0cOIkc3YcbwY68xL3zEuyRS4K/bADSUPrtJ83M
+	 DaZI7kXhP4oenjTwitXR2apjtYqcyZjHcTmeQkeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 086/459] arm64: dts: mt8183: krane: Fix the address of eeprom at i2c4
-Date: Thu, 12 Dec 2024 15:57:04 +0100
-Message-ID: <20241212144256.915699889@linuxfoundation.org>
+Subject: [PATCH 5.15 230/565] RDMA/hns: Fix out-of-order issue of requester when setting FENCE
+Date: Thu, 12 Dec 2024 15:57:05 +0100
+Message-ID: <20241212144320.578586780@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit e9c60c34948662b5d47573490ee538439b29e462 ]
+[ Upstream commit 5dbcb1c1900f45182b5651c89257c272f1f3ead7 ]
 
-The address of eeprom should be 50.
+The FENCE indicator in hns WQE doesn't ensure that response data from
+a previous Read/Atomic operation has been written to the requester's
+memory before the subsequent Send/Write operation is processed. This
+may result in the subsequent Send/Write operation accessing the original
+data in memory instead of the expected response data.
 
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/r/20240909-eeprom-v1-1-1ed2bc5064f4@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Unlike FENCE, the SO (Strong Order) indicator blocks the subsequent
+operation until the previous response data is written to memory and a
+bresp is returned. Set the SO indicator instead of FENCE to maintain
+strict order.
+
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241108075743.2652258-2-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
-index fbc471ccf805f..e61ec0229992e 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
-@@ -85,9 +85,9 @@ &i2c4 {
- 	status = "okay";
- 	clock-frequency = <400000>;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 64d458fd39ba9..c013e96f956e2 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -566,7 +566,7 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
+ 	if (WARN_ON(ret))
+ 		return ret;
  
--	eeprom@54 {
-+	eeprom@50 {
- 		compatible = "atmel,24c32";
--		reg = <0x54>;
-+		reg = <0x50>;
- 		pagesize = <32>;
- 	};
- };
+-	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_FENCE,
++	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SO,
+ 		     (wr->send_flags & IB_SEND_FENCE) ? 1 : 0);
+ 
+ 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SE,
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index 0c120a4b48c0b..a03dfde796ca4 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -948,6 +948,7 @@ struct hns_roce_v2_rc_send_wqe {
+ #define RC_SEND_WQE_OWNER RC_SEND_WQE_FIELD_LOC(7, 7)
+ #define RC_SEND_WQE_CQE RC_SEND_WQE_FIELD_LOC(8, 8)
+ #define RC_SEND_WQE_FENCE RC_SEND_WQE_FIELD_LOC(9, 9)
++#define RC_SEND_WQE_SO RC_SEND_WQE_FIELD_LOC(10, 10)
+ #define RC_SEND_WQE_SE RC_SEND_WQE_FIELD_LOC(11, 11)
+ #define RC_SEND_WQE_INLINE RC_SEND_WQE_FIELD_LOC(12, 12)
+ #define RC_SEND_WQE_WQE_INDEX RC_SEND_WQE_FIELD_LOC(30, 15)
 -- 
 2.43.0
 
