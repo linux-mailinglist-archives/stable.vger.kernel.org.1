@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9735C9EEBDC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 806669EF2D7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CF14161270
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:26:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 990A2189E085
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72AD2153D9;
-	Thu, 12 Dec 2024 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1828231A20;
+	Thu, 12 Dec 2024 16:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzqduAlJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rActXZGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78110209693;
-	Thu, 12 Dec 2024 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BC72144C0;
+	Thu, 12 Dec 2024 16:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017182; cv=none; b=u6ihlkoz8I6QSMnbKDGLhvupHl86kwOo/qhdfd85ZeKgQD8ZpNRHxMHuc2JrqoLGMsx26K+1VGyw0erEevYVLuQF1oygzfOHyE2k0ScF0wfMdJgniKxNhG9OHGov90CEHd7occdAPejvv1EQJE3xc3+E2bwAiQzIVktgY3IydvM=
+	t=1734021042; cv=none; b=WrwAWUI3Lob1AHHxXM6wMf34E+e9ujQ4k5sX4ZYbr5rHL28acjr5ssgIWcIkU8pGCK7gdYdC3rpz6/UmW3vy4aw2KWc9Lq3eEnRgbTOyugrKzihZYlKcQOopTLkNb8eWgN5kzhYDPwxHCnmq9co7P2F6oG39xDjU2df0f2YGzBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017182; c=relaxed/simple;
-	bh=QUCS3cypOuSKTKGO85qikVsYpReKTwkcxznwsBnyGss=;
+	s=arc-20240116; t=1734021042; c=relaxed/simple;
+	bh=qj6cETsPNdTMzqJ8Gj/6zCjLLQ1vjNbV9v3EZgjHebM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iw7Sdh+u5/rpR8rySWlKUsCwgXy6YQAD73jxWI2fcfhSm+LmpB8+Akff9n/etaefz36tXPaJsdybhczG9aDfo34Bu8xRiC11d2BhNe3P/IETbKa0RxZenR0jMZ6G6yRoO6gwtnALkV/9+8FwCz9cOoIpPvmKPM4y8/6BJDXphNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzqduAlJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D701EC4CECE;
-	Thu, 12 Dec 2024 15:26:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QB006UjVeIIVo0ZJ9uESz5khXxiFHoP7S6ocE+PNhiOXVP89sGAakkA6dPstEqEmseS98lREohW76OS02OXPJiI5QfJfEKl1Hpty800m45HxogtwktEkextYc9OGQ8a58aZKqRY6AXOcGjmn0BE3dEVszwxNjD/nQVKkLjjjmug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rActXZGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4BBC4CECE;
+	Thu, 12 Dec 2024 16:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017182;
-	bh=QUCS3cypOuSKTKGO85qikVsYpReKTwkcxznwsBnyGss=;
+	s=korg; t=1734021042;
+	bh=qj6cETsPNdTMzqJ8Gj/6zCjLLQ1vjNbV9v3EZgjHebM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzqduAlJK7Niu2P5dE8N6LLNWsHHkSzIlDxTo69eFvsXK5gJpN8Av3DTeAlZhwYpa
-	 Ljxeg+lJEkUt/aqybBL3j9/gAFjBmYzQu2xdqGvcAmmFFR1NEHAVD7TQ9EnO674aiq
-	 1DaVzwb43l1mP3MFgjyctnrVUzNZRx8bJeagBMIA=
+	b=rActXZGhktc4lxXuLHmOXEdt4mQYqIwLWIM2L/watxX3QDm+5filCSuYxDcZxYpfG
+	 Vm5NRLtZh2d1qPiXVdPHr0Ihwvy/0lU+x45MGV8sDyJeHbNEZz9b2aX+LjJz/m/ooI
+	 nva4Ty+1sVbW0hGt6KbmpwBmKPAMDxR9IMpCYSKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1c25748a40fe79b8a119@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 406/466] fs/ntfs3: Fix warning in ni_fiemap
+	Jordy Zomer <jordyzomer@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.1 630/772] bpf: fix OOB devmap writes when deleting elements
 Date: Thu, 12 Dec 2024 15:59:35 +0100
-Message-ID: <20241212144322.793248540@linuxfoundation.org>
+Message-ID: <20241212144415.966100068@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,300 +62,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit e2705dd3d16d1000f1fd8193d82447065de8c899 ]
+commit ab244dd7cf4c291f82faacdc50b45cc0f55b674d upstream.
 
-Use local runs_tree instead of cached. This way excludes rw_semaphore lock.
+Jordy reported issue against XSKMAP which also applies to DEVMAP - the
+index used for accessing map entry, due to being a signed integer,
+causes the OOB writes. Fix is simple as changing the type from int to
+u32, however, when compared to XSKMAP case, one more thing needs to be
+addressed.
 
-Reported-by: syzbot+1c25748a40fe79b8a119@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When map is released from system via dev_map_free(), we iterate through
+all of the entries and an iterator variable is also an int, which
+implies OOB accesses. Again, change it to be u32.
+
+Example splat below:
+
+[  160.724676] BUG: unable to handle page fault for address: ffffc8fc2c001000
+[  160.731662] #PF: supervisor read access in kernel mode
+[  160.736876] #PF: error_code(0x0000) - not-present page
+[  160.742095] PGD 0 P4D 0
+[  160.744678] Oops: Oops: 0000 [#1] PREEMPT SMP
+[  160.749106] CPU: 1 UID: 0 PID: 520 Comm: kworker/u145:12 Not tainted 6.12.0-rc1+ #487
+[  160.757050] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
+[  160.767642] Workqueue: events_unbound bpf_map_free_deferred
+[  160.773308] RIP: 0010:dev_map_free+0x77/0x170
+[  160.777735] Code: 00 e8 fd 91 ed ff e8 b8 73 ed ff 41 83 7d 18 19 74 6e 41 8b 45 24 49 8b bd f8 00 00 00 31 db 85 c0 74 48 48 63 c3 48 8d 04 c7 <48> 8b 28 48 85 ed 74 30 48 8b 7d 18 48 85 ff 74 05 e8 b3 52 fa ff
+[  160.796777] RSP: 0018:ffffc9000ee1fe38 EFLAGS: 00010202
+[  160.802086] RAX: ffffc8fc2c001000 RBX: 0000000080000000 RCX: 0000000000000024
+[  160.809331] RDX: 0000000000000000 RSI: 0000000000000024 RDI: ffffc9002c001000
+[  160.816576] RBP: 0000000000000000 R08: 0000000000000023 R09: 0000000000000001
+[  160.823823] R10: 0000000000000001 R11: 00000000000ee6b2 R12: dead000000000122
+[  160.831066] R13: ffff88810c928e00 R14: ffff8881002df405 R15: 0000000000000000
+[  160.838310] FS:  0000000000000000(0000) GS:ffff8897e0c40000(0000) knlGS:0000000000000000
+[  160.846528] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  160.852357] CR2: ffffc8fc2c001000 CR3: 0000000005c32006 CR4: 00000000007726f0
+[  160.859604] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  160.866847] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  160.874092] PKRU: 55555554
+[  160.876847] Call Trace:
+[  160.879338]  <TASK>
+[  160.881477]  ? __die+0x20/0x60
+[  160.884586]  ? page_fault_oops+0x15a/0x450
+[  160.888746]  ? search_extable+0x22/0x30
+[  160.892647]  ? search_bpf_extables+0x5f/0x80
+[  160.896988]  ? exc_page_fault+0xa9/0x140
+[  160.900973]  ? asm_exc_page_fault+0x22/0x30
+[  160.905232]  ? dev_map_free+0x77/0x170
+[  160.909043]  ? dev_map_free+0x58/0x170
+[  160.912857]  bpf_map_free_deferred+0x51/0x90
+[  160.917196]  process_one_work+0x142/0x370
+[  160.921272]  worker_thread+0x29e/0x3b0
+[  160.925082]  ? rescuer_thread+0x4b0/0x4b0
+[  160.929157]  kthread+0xd4/0x110
+[  160.932355]  ? kthread_park+0x80/0x80
+[  160.936079]  ret_from_fork+0x2d/0x50
+[  160.943396]  ? kthread_park+0x80/0x80
+[  160.950803]  ret_from_fork_asm+0x11/0x20
+[  160.958482]  </TASK>
+
+Fixes: 546ac1ffb70d ("bpf: add devmap, a map for storing net device references")
+CC: stable@vger.kernel.org
+Reported-by: Jordy Zomer <jordyzomer@google.com>
+Suggested-by: Jordy Zomer <jordyzomer@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20241122121030.716788-3-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/attrib.c  |   9 ++--
- fs/ntfs3/frecord.c | 103 +++++++--------------------------------------
- fs/ntfs3/ntfs_fs.h |   3 +-
- 3 files changed, 21 insertions(+), 94 deletions(-)
+ kernel/bpf/devmap.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 0763202d00c99..8d789b017fa9b 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -977,7 +977,7 @@ int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST clen, CLST *lcn,
- 
- 	/* Check for compressed frame. */
- 	err = attr_is_frame_compressed(ni, attr_b, vcn >> NTFS_LZNT_CUNIT,
--				       &hint);
-+				       &hint, run);
- 	if (err)
- 		goto out;
- 
-@@ -1521,16 +1521,16 @@ int attr_wof_frame_info(struct ntfs_inode *ni, struct ATTRIB *attr,
-  * attr_is_frame_compressed - Used to detect compressed frame.
-  *
-  * attr - base (primary) attribute segment.
-+ * run  - run to use, usually == &ni->file.run.
-  * Only base segments contains valid 'attr->nres.c_unit'
-  */
- int attr_is_frame_compressed(struct ntfs_inode *ni, struct ATTRIB *attr,
--			     CLST frame, CLST *clst_data)
-+			     CLST frame, CLST *clst_data, struct runs_tree *run)
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -184,7 +184,7 @@ static struct bpf_map *dev_map_alloc(uni
+ static void dev_map_free(struct bpf_map *map)
  {
- 	int err;
- 	u32 clst_frame;
- 	CLST clen, lcn, vcn, alen, slen, vcn_next;
- 	size_t idx;
--	struct runs_tree *run;
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+-	int i;
++	u32 i;
  
- 	*clst_data = 0;
- 
-@@ -1542,7 +1542,6 @@ int attr_is_frame_compressed(struct ntfs_inode *ni, struct ATTRIB *attr,
- 
- 	clst_frame = 1u << attr->nres.c_unit;
- 	vcn = frame * clst_frame;
--	run = &ni->file.run;
- 
- 	if (!run_lookup_entry(run, vcn, &lcn, &clen, &idx)) {
- 		err = attr_load_runs_vcn(ni, attr->type, attr_name(attr),
-@@ -1678,7 +1677,7 @@ int attr_allocate_frame(struct ntfs_inode *ni, CLST frame, size_t compr_size,
- 	if (err)
- 		goto out;
- 
--	err = attr_is_frame_compressed(ni, attr_b, frame, &clst_data);
-+	err = attr_is_frame_compressed(ni, attr_b, frame, &clst_data, run);
- 	if (err)
- 		goto out;
- 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index 41c7ffad27901..c33e818b3164c 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -1900,46 +1900,6 @@ enum REPARSE_SIGN ni_parse_reparse(struct ntfs_inode *ni, struct ATTRIB *attr,
- 	return REPARSE_LINK;
- }
- 
--/*
-- * fiemap_fill_next_extent_k - a copy of fiemap_fill_next_extent
-- * but it uses 'fe_k' instead of fieinfo->fi_extents_start
-- */
--static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
--				     struct fiemap_extent *fe_k, u64 logical,
--				     u64 phys, u64 len, u32 flags)
--{
--	struct fiemap_extent extent;
--
--	/* only count the extents */
--	if (fieinfo->fi_extents_max == 0) {
--		fieinfo->fi_extents_mapped++;
--		return (flags & FIEMAP_EXTENT_LAST) ? 1 : 0;
--	}
--
--	if (fieinfo->fi_extents_mapped >= fieinfo->fi_extents_max)
--		return 1;
--
--	if (flags & FIEMAP_EXTENT_DELALLOC)
--		flags |= FIEMAP_EXTENT_UNKNOWN;
--	if (flags & FIEMAP_EXTENT_DATA_ENCRYPTED)
--		flags |= FIEMAP_EXTENT_ENCODED;
--	if (flags & (FIEMAP_EXTENT_DATA_TAIL | FIEMAP_EXTENT_DATA_INLINE))
--		flags |= FIEMAP_EXTENT_NOT_ALIGNED;
--
--	memset(&extent, 0, sizeof(extent));
--	extent.fe_logical = logical;
--	extent.fe_physical = phys;
--	extent.fe_length = len;
--	extent.fe_flags = flags;
--
--	memcpy(fe_k + fieinfo->fi_extents_mapped, &extent, sizeof(extent));
--
--	fieinfo->fi_extents_mapped++;
--	if (fieinfo->fi_extents_mapped == fieinfo->fi_extents_max)
--		return 1;
--	return (flags & FIEMAP_EXTENT_LAST) ? 1 : 0;
--}
--
- /*
-  * ni_fiemap - Helper for file_fiemap().
-  *
-@@ -1950,11 +1910,9 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 	      __u64 vbo, __u64 len)
+ 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
+ 	 * so the programs (can be more than one that used this map) were
+@@ -807,7 +807,7 @@ static int dev_map_delete_elem(struct bp
  {
- 	int err = 0;
--	struct fiemap_extent *fe_k = NULL;
- 	struct ntfs_sb_info *sbi = ni->mi.sbi;
- 	u8 cluster_bits = sbi->cluster_bits;
--	struct runs_tree *run;
--	struct rw_semaphore *run_lock;
-+	struct runs_tree run;
- 	struct ATTRIB *attr;
- 	CLST vcn = vbo >> cluster_bits;
- 	CLST lcn, clen;
-@@ -1965,13 +1923,11 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 	u32 flags;
- 	bool ok;
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+ 	struct bpf_dtab_netdev *old_dev;
+-	int k = *(u32 *)key;
++	u32 k = *(u32 *)key;
  
-+	run_init(&run);
- 	if (S_ISDIR(ni->vfs_inode.i_mode)) {
--		run = &ni->dir.alloc_run;
- 		attr = ni_find_attr(ni, NULL, NULL, ATTR_ALLOC, I30_NAME,
- 				    ARRAY_SIZE(I30_NAME), NULL, NULL);
--		run_lock = &ni->dir.run_lock;
- 	} else {
--		run = &ni->file.run;
- 		attr = ni_find_attr(ni, NULL, NULL, ATTR_DATA, NULL, 0, NULL,
- 				    NULL);
- 		if (!attr) {
-@@ -1986,7 +1942,6 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 				"fiemap is not supported for compressed file (cp -r)");
- 			goto out;
- 		}
--		run_lock = &ni->file.run_lock;
- 	}
+ 	if (k >= map->max_entries)
+ 		return -EINVAL;
+@@ -822,7 +822,7 @@ static int dev_map_hash_delete_elem(stru
+ {
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+ 	struct bpf_dtab_netdev *old_dev;
+-	int k = *(u32 *)key;
++	u32 k = *(u32 *)key;
+ 	unsigned long flags;
+ 	int ret = -ENOENT;
  
- 	if (!attr || !attr->non_res) {
-@@ -1998,51 +1953,33 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 		goto out;
- 	}
- 
--	/*
--	 * To avoid lock problems replace pointer to user memory by pointer to kernel memory.
--	 */
--	fe_k = kmalloc_array(fieinfo->fi_extents_max,
--			     sizeof(struct fiemap_extent),
--			     GFP_NOFS | __GFP_ZERO);
--	if (!fe_k) {
--		err = -ENOMEM;
--		goto out;
--	}
--
- 	end = vbo + len;
- 	alloc_size = le64_to_cpu(attr->nres.alloc_size);
- 	if (end > alloc_size)
- 		end = alloc_size;
- 
--	down_read(run_lock);
- 
- 	while (vbo < end) {
- 		if (idx == -1) {
--			ok = run_lookup_entry(run, vcn, &lcn, &clen, &idx);
-+			ok = run_lookup_entry(&run, vcn, &lcn, &clen, &idx);
- 		} else {
- 			CLST vcn_next = vcn;
- 
--			ok = run_get_entry(run, ++idx, &vcn, &lcn, &clen) &&
-+			ok = run_get_entry(&run, ++idx, &vcn, &lcn, &clen) &&
- 			     vcn == vcn_next;
- 			if (!ok)
- 				vcn = vcn_next;
- 		}
- 
- 		if (!ok) {
--			up_read(run_lock);
--			down_write(run_lock);
--
- 			err = attr_load_runs_vcn(ni, attr->type,
- 						 attr_name(attr),
--						 attr->name_len, run, vcn);
--
--			up_write(run_lock);
--			down_read(run_lock);
-+						 attr->name_len, &run, vcn);
- 
- 			if (err)
- 				break;
- 
--			ok = run_lookup_entry(run, vcn, &lcn, &clen, &idx);
-+			ok = run_lookup_entry(&run, vcn, &lcn, &clen, &idx);
- 
- 			if (!ok) {
- 				err = -EINVAL;
-@@ -2067,8 +2004,9 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 		} else if (is_attr_compressed(attr)) {
- 			CLST clst_data;
- 
--			err = attr_is_frame_compressed(
--				ni, attr, vcn >> attr->nres.c_unit, &clst_data);
-+			err = attr_is_frame_compressed(ni, attr,
-+						       vcn >> attr->nres.c_unit,
-+						       &clst_data, &run);
- 			if (err)
- 				break;
- 			if (clst_data < NTFS_LZNT_CLUSTERS)
-@@ -2097,8 +2035,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 			if (vbo + dlen >= end)
- 				flags |= FIEMAP_EXTENT_LAST;
- 
--			err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo,
--							dlen, flags);
-+			err = fiemap_fill_next_extent(fieinfo, vbo, lbo, dlen,
-+						      flags);
- 
- 			if (err < 0)
- 				break;
-@@ -2119,8 +2057,7 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 		if (vbo + bytes >= end)
- 			flags |= FIEMAP_EXTENT_LAST;
- 
--		err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo, bytes,
--						flags);
-+		err = fiemap_fill_next_extent(fieinfo, vbo, lbo, bytes, flags);
- 		if (err < 0)
- 			break;
- 		if (err == 1) {
-@@ -2131,19 +2068,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 		vbo += bytes;
- 	}
- 
--	up_read(run_lock);
--
--	/*
--	 * Copy to user memory out of lock
--	 */
--	if (copy_to_user(fieinfo->fi_extents_start, fe_k,
--			 fieinfo->fi_extents_max *
--				 sizeof(struct fiemap_extent))) {
--		err = -EFAULT;
--	}
--
- out:
--	kfree(fe_k);
-+	run_close(&run);
- 	return err;
- }
- 
-@@ -2672,7 +2598,8 @@ int ni_read_frame(struct ntfs_inode *ni, u64 frame_vbo, struct page **pages,
- 		down_write(&ni->file.run_lock);
- 		run_truncate_around(run, le64_to_cpu(attr->nres.svcn));
- 		frame = frame_vbo >> (cluster_bits + NTFS_LZNT_CUNIT);
--		err = attr_is_frame_compressed(ni, attr, frame, &clst_data);
-+		err = attr_is_frame_compressed(ni, attr, frame, &clst_data,
-+					       run);
- 		up_write(&ni->file.run_lock);
- 		if (err)
- 			goto out1;
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index 26e1e1379c04e..cd8e8374bb5a0 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -446,7 +446,8 @@ int attr_wof_frame_info(struct ntfs_inode *ni, struct ATTRIB *attr,
- 			struct runs_tree *run, u64 frame, u64 frames,
- 			u8 frame_bits, u32 *ondisk_size, u64 *vbo_data);
- int attr_is_frame_compressed(struct ntfs_inode *ni, struct ATTRIB *attr,
--			     CLST frame, CLST *clst_data);
-+			     CLST frame, CLST *clst_data,
-+			     struct runs_tree *run);
- int attr_allocate_frame(struct ntfs_inode *ni, CLST frame, size_t compr_size,
- 			u64 new_valid);
- int attr_collapse_range(struct ntfs_inode *ni, u64 vbo, u64 bytes);
--- 
-2.43.0
-
 
 
 
