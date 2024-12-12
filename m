@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0096B9EF858
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 887979EFA00
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C1919405B8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EA9C17C032
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98C4222D45;
-	Thu, 12 Dec 2024 17:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA54225A22;
+	Thu, 12 Dec 2024 17:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHvdRBqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZQfjOsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AE1222D6A;
-	Thu, 12 Dec 2024 17:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC0E223E8D;
+	Thu, 12 Dec 2024 17:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024945; cv=none; b=EPQNWXYH2EtR9/8JyKX69J0JM00vt7/LK2gXdIm+UI3fgnT+K/ijEVFkDzt2MxOhhV8wuTIabB06fVcENcAfMebk2TVtpIuJNqQZ0JLBah/DygJQbyCSZfw8xY1bAHwRNP5Uc+ChH59L9dOYtOwJd91cK1Z0pCRoVNaTFmk23d8=
+	t=1734025736; cv=none; b=CKh5bZqIataNQRZCNuWRO4p0VvaMyomZqtnTcENWADi08T2xZY4Admg6k1qj39g0pfJWpvmbbDwO5UjwqqeRwNPbzHoRzsNfEcmpU9iO1GQsIRenc6HHCzWzf9z2fpoNiNEt7UEPN6AovmNfWtIAb0qATUW/fL1GXFOafPgdzks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024945; c=relaxed/simple;
-	bh=bM8uPQ1V0OcwCGwJ0mILnus46oC6m6gWZpDlkyTR4NI=;
+	s=arc-20240116; t=1734025736; c=relaxed/simple;
+	bh=s2PWYsitFNWblFaNOHIE3plgtqvzcDrmCZNWl6/4Qyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqzUNM+OcjRg/sohFXx6hmwLnWZyFoxwptgcgu5u9849/AB/Ka6Brs9w2/VjCP75AXXNLcGn5EshhtUtcFlbfF7DAlgJTegMqfJ5fjABVyzEtzzsqZQ5sU3jz/DUV42IrsyFd14oO250ZolGRtaj348ETi79AIL9LNdWmZGpCzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHvdRBqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBEEFC4CED3;
-	Thu, 12 Dec 2024 17:35:44 +0000 (UTC)
+	 MIME-Version; b=YIFC3UAXTusBxq3M++rLsXVrVNlE3a1OlNxH3f/+ThN34owfxOUFGgG3LNzqy1bcczVLfvONu751rWUu5wKoa0ZLfM6IvscfSDcQ8+GsP83Qgj3+pjVz71PT6I70Ar8mhj+jghMLMAhdze/DOen4e2unuoH8hO50AnIUbLCfIbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZQfjOsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8BCC4CECE;
+	Thu, 12 Dec 2024 17:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024945;
-	bh=bM8uPQ1V0OcwCGwJ0mILnus46oC6m6gWZpDlkyTR4NI=;
+	s=korg; t=1734025736;
+	bh=s2PWYsitFNWblFaNOHIE3plgtqvzcDrmCZNWl6/4Qyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHvdRBqQW/bdCuDO0oYySKetFuqEyMo8xRA3YW47V3csP97SAzVhnRac7LAHZgjfW
-	 CGCA/nhcN6OCJiDNArtpE2Os3hmHHbUop0TsPQv4e0Y1KVEz6IE5/q/9H+erCYQpTi
-	 0pLUMfTvGDxLHI1XBoihFbcxcxZyL0cmmJ0ChZpE=
+	b=1ZQfjOsAq0g/Nim95w2qrNankvtPLfoA5BgsStIMIExyq3nzHfOCpgbcGIB5FU9cv
+	 BB0NLqx6G7/FDfUIiplvRNlDuqU7IRx5dKMpKgJfHDYhlINN8IRGXtAo8JGTi0s+QF
+	 6itGOa6zmZcA9tpF9q7fwsZ4laU8SPhc9IdoCZ3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 5.10 449/459] drm/amd/display: Check BIOS images before it is used
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 269/321] drm/radeon/r600_cs: Fix possible int overflow in r600_packet3_check()
 Date: Thu, 12 Dec 2024 16:03:07 +0100
-Message-ID: <20241212144311.508836994@linuxfoundation.org>
+Message-ID: <20241212144240.607629599@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 
-commit 8b0ddf19cca2a352b2a7e01d99d3ba949a99c84c upstream.
+[ Upstream commit a1e2da6a5072f8abe5b0feaa91a5bcd9dc544a04 ]
 
-BIOS images may fail to load and null checks are added before they are
-used.
+It is possible, although unlikely, that an integer overflow will occur
+when the result of radeon_get_ib_value() is shifted to the left.
 
-This fixes 6 NULL_RETURNS issues reported by Coverity.
+Avoid it by casting one of the operands to larger data type (u64).
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/radeon/r600_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -664,6 +664,9 @@ static enum bp_result get_ss_info_v3_1(
+diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
+index 19c9e86b2aafe..a85470213b27f 100644
+--- a/drivers/gpu/drm/radeon/r600_cs.c
++++ b/drivers/gpu/drm/radeon/r600_cs.c
+@@ -2104,7 +2104,7 @@ static int r600_packet3_check(struct radeon_cs_parser *p,
+ 				return -EINVAL;
+ 			}
  
- 	ss_table_header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V3,
- 		DATA_TABLES(ASIC_InternalSS_Info));
-+	if (!ss_table_header_include)
-+		return BP_RESULT_UNSUPPORTED;
-+
- 	table_size =
- 		(le16_to_cpu(ss_table_header_include->sHeader.usStructureSize)
- 				- sizeof(ATOM_COMMON_TABLE_HEADER))
-@@ -1030,6 +1033,8 @@ static enum bp_result get_ss_info_from_i
- 
- 	header = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V2,
- 		DATA_TABLES(ASIC_InternalSS_Info));
-+	if (!header)
-+		return result;
- 
- 	memset(info, 0, sizeof(struct spread_spectrum_info));
- 
-@@ -1102,6 +1107,8 @@ static enum bp_result get_ss_info_from_s
- 	get_atom_data_table_revision(header, &revision);
- 
- 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO, DATA_TABLES(SS_Info));
-+	if (!tbl)
-+		return result;
- 
- 	if (1 != revision.major || 2 > revision.minor)
- 		return result;
-@@ -1634,6 +1641,8 @@ static uint32_t get_ss_entry_number_from
- 
- 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO,
- 			DATA_TABLES(SS_Info));
-+	if (!tbl)
-+		return number;
- 
- 	if (1 != revision.major || 2 > revision.minor)
- 		return number;
-@@ -1712,6 +1721,8 @@ static uint32_t get_ss_entry_number_from
- 
- 	header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V2,
- 			DATA_TABLES(ASIC_InternalSS_Info));
-+	if (!header_include)
-+		return 0;
- 
- 	size = (le16_to_cpu(header_include->sHeader.usStructureSize)
- 			- sizeof(ATOM_COMMON_TABLE_HEADER))
-@@ -1748,6 +1759,9 @@ static uint32_t get_ss_entry_number_from
- 
- 	header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V3,
- 			DATA_TABLES(ASIC_InternalSS_Info));
-+	if (!header_include)
-+		return number;
-+
- 	size = (le16_to_cpu(header_include->sHeader.usStructureSize) -
- 			sizeof(ATOM_COMMON_TABLE_HEADER)) /
- 					sizeof(ATOM_ASIC_SS_ASSIGNMENT_V3);
+-			offset = radeon_get_ib_value(p, idx+1) << 8;
++			offset = (u64)radeon_get_ib_value(p, idx+1) << 8;
+ 			if (offset != track->vgt_strmout_bo_offset[idx_value]) {
+ 				DRM_ERROR("bad STRMOUT_BASE_UPDATE, bo offset does not match: 0x%llx, 0x%x\n",
+ 					  offset, track->vgt_strmout_bo_offset[idx_value]);
+-- 
+2.43.0
+
 
 
 
