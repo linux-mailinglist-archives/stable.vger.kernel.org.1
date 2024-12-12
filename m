@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-102630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7659EF3EC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE799EF0C7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB85C1941027
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB05516F19C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC64235C5E;
-	Thu, 12 Dec 2024 16:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA8021CFF0;
+	Thu, 12 Dec 2024 16:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sf27YGla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtLgvBsb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A17A216E14;
-	Thu, 12 Dec 2024 16:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC67213E99;
+	Thu, 12 Dec 2024 16:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021921; cv=none; b=IuX6Sz4m/WUMmU0drbDmLqGWjrQkWpPJJdzL/EpGbRTTqmixKlZb1aHCDwo5sMQ3B+77ejs62pAPOJpAd6lEKTFHxYYW3IZfvo66Z/+hS8+6VxOdP/CC60sRox3EXnyUHIfy+fS4c0d+R76sEPDnJxroap+6bm3UQdM5DO9P3sU=
+	t=1734019987; cv=none; b=E+Ehic0e1g33l/piGAa/45/XqIGEYk6UM7QA3tiKhKg6tXJFoc2mRK+1bYmw21yykiubB2qiwVWTIMVP7Tiq0kMMaihAGM4k6jgHBCoA5TNzuPXfD4oU/4EcP9kx3svYixmheJgN41SHA9kfRxOL0cYoOA3C+ef2aaMbdJt2G/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021921; c=relaxed/simple;
-	bh=88XXtHU8jCzuBEtR2JDWVIsIfqmHNef9EQDY/qRAKu8=;
+	s=arc-20240116; t=1734019987; c=relaxed/simple;
+	bh=uacbkvJRfX2YmgIq5DAi6hIBEGFD2UofJAiSbAiZj3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z23gbnJsFJFt1cXDemz9otibTp4Z0tjEQ4KtJWnebxIaMQSQjWQRgRKgqPGyfIYD7m+TgP4oipqCIDB8q5pHB7ZTjtqyoddjP+oMUJmwKhWzHAyWjCqQffEVOK83SEf4PASTQ5YS86d5VQDhl5UmbUykuwLA7VNTyvy94GHRp3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sf27YGla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D3CC4CECE;
-	Thu, 12 Dec 2024 16:45:20 +0000 (UTC)
+	 MIME-Version; b=Arg/8vv1EJUpBK3UFqy0FLbOzqAWW/4jzx210sefARWtFjudnuOXq5XYZKmO696XDG1RPN+SR8jwIfOGztdMyTGmADAdvmzFHsn68hB0+NVAXsSKdPqccMuPDwNIgfIt+eF+1GaRE6B/4Ax4GKthv7kH/h0Q6Nqe+5MyJp2JI0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtLgvBsb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A748C4CECE;
+	Thu, 12 Dec 2024 16:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021921;
-	bh=88XXtHU8jCzuBEtR2JDWVIsIfqmHNef9EQDY/qRAKu8=;
+	s=korg; t=1734019986;
+	bh=uacbkvJRfX2YmgIq5DAi6hIBEGFD2UofJAiSbAiZj3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sf27YGlaXLNtjXQMHIyiPZUj9fzB/IeZNSIjDkG5gVJkXElyBbph+iLk87FRlPwGL
-	 Ujk1SR7F9u6sF1umfeYrZlOkVvlW8/WgYOcN7hAdDgyrHo2eGeBuVxhAETuxMpR6fh
-	 lEkCcAywmhChZW6wixWf0LB0Hql7qx36kfvQN9BU=
+	b=LtLgvBsbGmfCjUXqzdEGewoIFNe6KXls5MRB3mHlUkHZog3b5VvXxY7mFdAA6AxA5
+	 stZaY5hs9+sIIODi4FoQ7gS757uLogcwbfmI1PlgPnoSCd7Yih0ElhXepLjKCRl6dr
+	 DAcebhTVPA0S4RT5ahmC0iUZ/cReueilphWPnv4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Orange Kao <orange@aiven.io>,
-	Tony Luck <tony.luck@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 099/565] EDAC/igen6: Avoid segmentation fault on module unload
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Xiangyu Chen <xiangyu.chen@windriver.com>
+Subject: [PATCH 6.1 349/772] drm/amd/display: Add NULL check for function pointer in dcn20_set_output_transfer_func
 Date: Thu, 12 Dec 2024 15:54:54 +0100
-Message-ID: <20241212144315.400866519@linuxfoundation.org>
+Message-ID: <20241212144404.332470550@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +70,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Orange Kao <orange@aiven.io>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit fefaae90398d38a1100ccd73b46ab55ff4610fba ]
+commit 62ed6f0f198da04e884062264df308277628004f upstream.
 
-The segmentation fault happens because:
+This commit adds a null check for the set_output_gamma function pointer
+in the dcn20_set_output_transfer_func function. Previously,
+set_output_gamma was being checked for null at line 1030, but then it
+was being dereferenced without any null check at line 1048. This could
+potentially lead to a null pointer dereference error if set_output_gamma
+is null.
 
-During modprobe:
-1. In igen6_probe(), igen6_pvt will be allocated with kzalloc()
-2. In igen6_register_mci(), mci->pvt_info will point to
-   &igen6_pvt->imc[mc]
+To fix this, we now ensure that set_output_gamma is not null before
+dereferencing it. We do this by adding a null check for set_output_gamma
+before the call to set_output_gamma at line 1048.
 
-During rmmod:
-1. In mci_release() in edac_mc.c, it will kfree(mci->pvt_info)
-2. In igen6_remove(), it will kfree(igen6_pvt);
-
-Fix this issue by setting mci->pvt_info to NULL to avoid the double
-kfree.
-
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219360
-Signed-off-by: Orange Kao <orange@aiven.io>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20241104124237.124109-2-orange@aiven.io
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/igen6_edac.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index 74c5aad1f6081..0ab8642c4e55a 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -1075,6 +1075,7 @@ static int igen6_register_mci(int mc, u64 mchbar, struct pci_dev *pdev)
- 	imc->mci = mci;
- 	return 0;
- fail3:
-+	mci->pvt_info = NULL;
- 	kfree(mci->ctl_name);
- fail2:
- 	edac_mc_free(mci);
-@@ -1099,6 +1100,7 @@ static void igen6_unregister_mcis(void)
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+@@ -856,7 +856,8 @@ bool dcn20_set_output_transfer_func(stru
+ 	/*
+ 	 * if above if is not executed then 'params' equal to 0 and set in bypass
+ 	 */
+-	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
++	if (mpc->funcs->set_output_gamma)
++		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
  
- 		edac_mc_del_mc(mci->pdev);
- 		kfree(mci->ctl_name);
-+		mci->pvt_info = NULL;
- 		edac_mc_free(mci);
- 		iounmap(imc->window);
- 	}
--- 
-2.43.0
-
+ 	return true;
+ }
 
 
 
