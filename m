@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6434E9EEDF6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772A89EF240
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25D5B286721
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 961AF2905D2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94D42185A0;
-	Thu, 12 Dec 2024 15:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1458223D43F;
+	Thu, 12 Dec 2024 16:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEiGc6R6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+sfDSYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A776E217679;
-	Thu, 12 Dec 2024 15:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42FD22A7EC;
+	Thu, 12 Dec 2024 16:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018700; cv=none; b=kTfp9ehKU/GIcyjWYZgM/lIDoOR+FC3GKUJ2RQNVrI+o1ggOOPnZIAAr/GBor9EhtQvvWBqPOAVKsPTwQninyTDjiOJl+xdUtuICMpMCLkGqAq2FO6QnrkPkmV5ANFNJiTlbPyc3tfvTVlxYK3x1GWKghlSc2t067iIITHYVJzE=
+	t=1734021400; cv=none; b=GAOi6OTGxfGpU08W3L0ffbduv5cqkNf2QuHVNda0aAzyFq2qHwXALRWSWpHuwtD+yuhEW49pMhhQSPetgTbGLEqZ7VmXYKntufWfT+32TEnTuyrkWm3rjxoNMq7MMNXM+5kfIaurtgnj4DcqiPId+PJtQl0jZWPnXv64aBaPHqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018700; c=relaxed/simple;
-	bh=zQnpIrlBQJ3GvJ5mT0hwt5pTW47hdbqEh7MvrGmPg4o=;
+	s=arc-20240116; t=1734021400; c=relaxed/simple;
+	bh=PqdKa6tQRWXt/ZuKtmK0goSI3YIAIuJrG/4S70No520=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8qYIYqBB6Vl979tvDsTdwtjdPfMZQGma1FL/EWMypM+Ohp0xbJ3lboA2Z2rlUPvjMqGTljVyJ/Y8j+gXkkuMtz+1SDxM7BRXZJaW/TeW3xu1mMPIM2xUgHts1/wpTgLAhIy7SK7aWBJ2wrFQHwuxSklE3CcKNr47zj8ybynZ0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEiGc6R6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2707FC4CECE;
-	Thu, 12 Dec 2024 15:51:39 +0000 (UTC)
+	 MIME-Version; b=Q8hOtDDrSoALSCMhuuhFCCewDv6S/Qj1kw8fSzed5n9/kGMbzmi7g4xKAE994AEj9mi7Tn86xdLV3yvWYU/rnEdnpljhZceVJwEF+xuBa+SFb+rpMq7LF9sfwe26e3kXVzI36RKjwvmgBXHmnsMw4a9mx+Fs+WaRICkogDmC2p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+sfDSYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A82AC4CECE;
+	Thu, 12 Dec 2024 16:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018700;
-	bh=zQnpIrlBQJ3GvJ5mT0hwt5pTW47hdbqEh7MvrGmPg4o=;
+	s=korg; t=1734021400;
+	bh=PqdKa6tQRWXt/ZuKtmK0goSI3YIAIuJrG/4S70No520=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEiGc6R6w4M8+Nt8+K9E8+KDEMoKUuDWIAU8zSoAUZkhsEuxXAe9ehpW0FjFtOfAD
-	 TALSfqRjPyRlhmjFQhNxy+yUq+jmceRm8QU9VfXhrOhZTYwxPzk/e84SAR3rYv9iJN
-	 vL3wve01UfaxK4y4/i9k1ONncgjbMTv5Tnqt+6PM=
+	b=c+sfDSYQkpwdpmRWAdkdTsvSxq6aet54+VIIyP0jRCAkF8HjwMx1Lc7EJkKgoamcx
+	 qkTeSQbb4mkB0X1KinRnoqt7MB0abdv3wK/j2Gz2ne7irHGdzc9Fj0+L6m1dSkBR1f
+	 pFJlfihi1mI2RcktqEbLuupuDPUmipZYYlbxH/8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.6 354/356] serial: amba-pl011: fix build regression
+	syzbot+cc36d44ec9f368e443d3@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 728/772] io_uring/tctx: work around xa_store() allocation error issue
 Date: Thu, 12 Dec 2024 16:01:13 +0100
-Message-ID: <20241212144258.555828848@linuxfoundation.org>
+Message-ID: <20241212144419.974130831@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit b5a23a60e8ab5711f4952912424347bf3864ce8d upstream.
+[ Upstream commit 7eb75ce7527129d7f1fee6951566af409a37a1c4 ]
 
-When CONFIG_DMA_ENGINE is disabled, the driver now fails to build:
+syzbot triggered the following WARN_ON:
 
-drivers/tty/serial/amba-pl011.c: In function 'pl011_unthrottle_rx':
-drivers/tty/serial/amba-pl011.c:1822:16: error: 'struct uart_amba_port' has no member named 'using_rx_dma'
- 1822 |         if (uap->using_rx_dma) {
-      |                ^~
-drivers/tty/serial/amba-pl011.c:1823:20: error: 'struct uart_amba_port' has no member named 'dmacr'
- 1823 |                 uap->dmacr |= UART011_RXDMAE;
-      |                    ^~
-drivers/tty/serial/amba-pl011.c:1824:32: error: 'struct uart_amba_port' has no member named 'dmacr'
- 1824 |                 pl011_write(uap->dmacr, uap, REG_DMACR);
-      |                                ^~
+WARNING: CPU: 0 PID: 16 at io_uring/tctx.c:51 __io_uring_free+0xfa/0x140 io_uring/tctx.c:51
 
-Add the missing #ifdef check around these field accesses, matching
-what other parts of this driver do.
+which is the
 
-Fixes: 2bcacc1c87ac ("serial: amba-pl011: Fix RX stall when DMA is used")
-Cc: stable <stable@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411140617.nkjeHhsK-lkp@intel.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20241115110021.744332-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+WARN_ON_ONCE(!xa_empty(&tctx->xa));
+
+sanity check in __io_uring_free() when a io_uring_task is going through
+its final put. The syzbot test case includes injecting memory allocation
+failures, and it very much looks like xa_store() can fail one of its
+memory allocations and end up with ->head being non-NULL even though no
+entries exist in the xarray.
+
+Until this issue gets sorted out, work around it by attempting to
+iterate entries in our xarray, and WARN_ON_ONCE() if one is found.
+
+Reported-by: syzbot+cc36d44ec9f368e443d3@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/io-uring/673c1643.050a0220.87769.0066.GAE@google.com/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c |    2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/tctx.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -1837,10 +1837,12 @@ static void pl011_unthrottle_rx(struct u
+diff --git a/io_uring/tctx.c b/io_uring/tctx.c
+index 4324b1cf1f6af..51b05fda8e455 100644
+--- a/io_uring/tctx.c
++++ b/io_uring/tctx.c
+@@ -47,8 +47,19 @@ static struct io_wq *io_init_wq_offload(struct io_ring_ctx *ctx,
+ void __io_uring_free(struct task_struct *tsk)
+ {
+ 	struct io_uring_task *tctx = tsk->io_uring;
++	struct io_tctx_node *node;
++	unsigned long index;
  
- 	pl011_write(uap->im, uap, REG_IMSC);
+-	WARN_ON_ONCE(!xa_empty(&tctx->xa));
++	/*
++	 * Fault injection forcing allocation errors in the xa_store() path
++	 * can lead to xa_empty() returning false, even though no actual
++	 * node is stored in the xarray. Until that gets sorted out, attempt
++	 * an iteration here and warn if any entries are found.
++	 */
++	xa_for_each(&tctx->xa, index, node) {
++		WARN_ON_ONCE(1);
++		break;
++	}
+ 	WARN_ON_ONCE(tctx->io_wq);
+ 	WARN_ON_ONCE(tctx->cached_refs);
  
-+#ifdef CONFIG_DMA_ENGINE
- 	if (uap->using_rx_dma) {
- 		uap->dmacr |= UART011_RXDMAE;
- 		pl011_write(uap->dmacr, uap, REG_DMACR);
- 	}
-+#endif
- 
- 	uart_port_unlock_irqrestore(&uap->port, flags);
- }
+-- 
+2.43.0
+
 
 
 
