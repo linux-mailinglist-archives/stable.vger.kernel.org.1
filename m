@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-101440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8AC9EEC5F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89F29EEAA3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F54E1882E5A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:32:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78931282062
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F6E215774;
-	Thu, 12 Dec 2024 15:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4381217F26;
+	Thu, 12 Dec 2024 15:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAkzxm6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMdvbcR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00022135C1;
-	Thu, 12 Dec 2024 15:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8B7209693;
+	Thu, 12 Dec 2024 15:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017558; cv=none; b=oJsa76urR/ElmBLBD7h7ePeEG/JakEJdhcLPMjOW4hixFb8RpoD3438F7U/R4/8PVQb7ZwHZDN7YAr7OdM+in7egZRddWnqdklEAnNRxfm+8ddy6atp8re/dwvnU/lhJupM0SBdGb7hY4gPRc9kyg/eVYjTJV4Dt0ZTmUZ+GIQs=
+	t=1734016541; cv=none; b=a2JjFCA9aEaOYdV8GpXpf1AHu1sGJfiSB5DOoKwI3W4C/1FitU9lSf7NHpyOBSs5dyA4IdhlVWB+gWnYSg8CZ2jIRFREuW9LUhBl7hPOp/Rfa0gnC1DWCnlsKm6ZTsnPKps2O1kKJllVzBoVbCe09WHt4/feWgTrCjE5bIyu81s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017558; c=relaxed/simple;
-	bh=9g1hZoZrmX3uHssOLvxDGaw1W0x+kcY2xEwGkRrKXfk=;
+	s=arc-20240116; t=1734016541; c=relaxed/simple;
+	bh=xjTA1wxwZnrpVsGUyL/egYn7JZazkPO6B0Dkpxzduik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9pDB5BSzPxiZ/ilvP4ouIkhDIs9pDw9YwMr5CnFnd2OQK3YLBjic9MZKq57q2zI3gSKjNlNPwG+uKRHpm7M3AdwKCCDPTmcbiqDYHUduoIknKlwpEd4c0CO6d0whkvMYZE7cDVPEUsFWbA0i48FxE2GQQvUocCGf6hGitteZLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAkzxm6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B812C4CECE;
-	Thu, 12 Dec 2024 15:32:37 +0000 (UTC)
+	 MIME-Version; b=FLpYu1LPDMycyqGq5tdi4ZhM40+kYgjRRlxdjW4+32S///Hi2f/vThhJBGhXzidkOhDnhn4Llz6Ol5RTBEKZdHPLGLZauijreCXkY8zT3rzE8qYxvqcYoR0WQpwjJNlJUh7vHYxGTPuq81M/NEU4gvwkIAjhurm7mKYboiX4v50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMdvbcR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DFDC4CECE;
+	Thu, 12 Dec 2024 15:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017558;
-	bh=9g1hZoZrmX3uHssOLvxDGaw1W0x+kcY2xEwGkRrKXfk=;
+	s=korg; t=1734016541;
+	bh=xjTA1wxwZnrpVsGUyL/egYn7JZazkPO6B0Dkpxzduik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAkzxm6VOydv5KnArKlMJOK8RPg5Q+KGXvkNmR2C5GWyuIkiN8XajRbC9FU5Z9X2f
-	 CurH7A8hJeg0ycwSH/RTuORcOXRQBUFDsM30EMm3N8F25sNb13bWQcf6ol7I2xqZ5D
-	 /0y1dD+CBRMuWjUh/Ckcac+RxqHvoe3/XbVHIodQ=
+	b=kMdvbcR/J1OWzla7tSxEoErhG2mljMiKYFByU6G8DpvVDlrOLke3ENfeeHxDT9QJX
+	 5JRpqU7NIatHrXRvhUSLhqpybGVmynJc/asYa+gtzsrJEuwa51RC80sE/o+MZAkZva
+	 iomMzPGv5D3taIvDfPwnnu/rTw6MeOdsyaA6YjmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifei Liu <yifei.l.liu@oracle.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/356] ixgbe: downgrade logging of unsupported VF API version to debug
+	Adrian Huang <ahuang12@lenovo.com>,
+	Jiwei Sun <sunjw10@lenovo.com>,
+	Raghavendra K T <raghavendra.kt@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Ben Segall <bsegall@google.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 197/466] sched/numa: fix memory leak due to the overwritten vma->numab_state
 Date: Thu, 12 Dec 2024 15:56:06 +0100
-Message-ID: <20241212144246.492003531@linuxfoundation.org>
+Message-ID: <20241212144314.577551609@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +73,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Adrian Huang <ahuang12@lenovo.com>
 
-[ Upstream commit 15915b43a7fb938934bb7fc4290127218859d795 ]
+commit 5f1b64e9a9b7ee9cfd32c6b2fab796e29bfed075 upstream.
 
-The ixgbe PF driver logs an info message when a VF attempts to negotiate an
-API version which it does not support:
+[Problem Description]
+When running the hackbench program of LTP, the following memory leak is
+reported by kmemleak.
 
-  VF 0 requested invalid api version 6
+  # /opt/ltp/testcases/bin/hackbench 20 thread 1000
+  Running with 20*40 (== 800) tasks.
 
-The ixgbevf driver attempts to load with mailbox API v1.5, which is
-required for best compatibility with other hosts such as the ESX VMWare PF.
+  # dmesg | grep kmemleak
+  ...
+  kmemleak: 480 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+  kmemleak: 665 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
 
-The Linux PF only supports API v1.4, and does not currently have support
-for the v1.5 API.
+  # cat /sys/kernel/debug/kmemleak
+  unreferenced object 0xffff888cd8ca2c40 (size 64):
+    comm "hackbench", pid 17142, jiffies 4299780315
+    hex dump (first 32 bytes):
+      ac 74 49 00 01 00 00 00 4c 84 49 00 01 00 00 00  .tI.....L.I.....
+      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    backtrace (crc bff18fd4):
+      [<ffffffff81419a89>] __kmalloc_cache_noprof+0x2f9/0x3f0
+      [<ffffffff8113f715>] task_numa_work+0x725/0xa00
+      [<ffffffff8110f878>] task_work_run+0x58/0x90
+      [<ffffffff81ddd9f8>] syscall_exit_to_user_mode+0x1c8/0x1e0
+      [<ffffffff81dd78d5>] do_syscall_64+0x85/0x150
+      [<ffffffff81e0012b>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ...
 
-The logged message can confuse users, as the v1.5 API is valid, but just
-happens to not currently be supported by the Linux PF.
+This issue can be consistently reproduced on three different servers:
+  * a 448-core server
+  * a 256-core server
+  * a 192-core server
 
-Downgrade the info message to a debug message, and fix the language to
-use 'unsupported' instead of 'invalid' to improve message clarity.
+[Root Cause]
+Since multiple threads are created by the hackbench program (along with
+the command argument 'thread'), a shared vma might be accessed by two or
+more cores simultaneously. When two or more cores observe that
+vma->numab_state is NULL at the same time, vma->numab_state will be
+overwritten.
 
-Long term, we should investigate whether the improvements in the v1.5 API
-make sense for the Linux PF, and if so implement them properly. This may
-require yet another API version to resolve issues with negotiating IPSEC
-offload support.
+Although current code ensures that only one thread scans the VMAs in a
+single 'numa_scan_period', there might be a chance for another thread
+to enter in the next 'numa_scan_period' while we have not gotten till
+numab_state allocation [1].
 
-Fixes: 339f28964147 ("ixgbevf: Add support for new mailbox communication between PF and VF")
-Reported-by: Yifei Liu <yifei.l.liu@oracle.com>
-Link: https://lore.kernel.org/intel-wired-lan/20240301235837.3741422-1-yifei.l.liu@oracle.com/
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that the command `/opt/ltp/testcases/bin/hackbench 50 process 1000`
+cannot the reproduce the issue. It is verified with 200+ test runs.
+
+[Solution]
+Use the cmpxchg atomic operation to ensure that only one thread executes
+the vma->numab_state assignment.
+
+[1] https://lore.kernel.org/lkml/1794be3c-358c-4cdc-a43d-a1f841d91ef7@amd.com/
+
+Link: https://lkml.kernel.org/r/20241113102146.2384-1-ahuang12@lenovo.com
+Fixes: ef6a22b70f6d ("sched/numa: apply the scan delay to every new vma")
+Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
+Reported-by: Jiwei Sun <sunjw10@lenovo.com>
+Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_common.h | 2 ++
- drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c  | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
-index 34761e691d52d..efdc222e183d1 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
-@@ -194,6 +194,8 @@ u32 ixgbe_read_reg(struct ixgbe_hw *hw, u32 reg);
- 	dev_err(&adapter->pdev->dev, format, ## arg)
- #define e_dev_notice(format, arg...) \
- 	dev_notice(&adapter->pdev->dev, format, ## arg)
-+#define e_dbg(msglvl, format, arg...) \
-+	netif_dbg(adapter, msglvl, adapter->netdev, format, ## arg)
- #define e_info(msglvl, format, arg...) \
- 	netif_info(adapter, msglvl, adapter->netdev, format, ## arg)
- #define e_err(msglvl, format, arg...) \
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-index d0a6c220a12ac..9c89a87e35e01 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-@@ -1049,7 +1049,7 @@ static int ixgbe_negotiate_vf_api(struct ixgbe_adapter *adapter,
- 		break;
- 	}
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3399,10 +3399,16 @@ retry_pids:
  
--	e_info(drv, "VF %d requested invalid api version %u\n", vf, api);
-+	e_dbg(drv, "VF %d requested unsupported api version %u\n", vf, api);
+ 		/* Initialise new per-VMA NUMAB state. */
+ 		if (!vma->numab_state) {
+-			vma->numab_state = kzalloc(sizeof(struct vma_numab_state),
+-				GFP_KERNEL);
+-			if (!vma->numab_state)
++			struct vma_numab_state *ptr;
++
++			ptr = kzalloc(sizeof(*ptr), GFP_KERNEL);
++			if (!ptr)
++				continue;
++
++			if (cmpxchg(&vma->numab_state, NULL, ptr)) {
++				kfree(ptr);
+ 				continue;
++			}
  
- 	return -1;
- }
--- 
-2.43.0
-
+ 			vma->numab_state->start_scan_seq = mm->numa_scan_seq;
+ 
 
 
 
