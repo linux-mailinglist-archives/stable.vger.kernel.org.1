@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A70E9EF8C0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D0B9EF760
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7EA4189214F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52A9D17873B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909A4222D59;
-	Thu, 12 Dec 2024 17:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4262217F34;
+	Thu, 12 Dec 2024 17:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSa7IkkT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8mCYd+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D71315696E;
-	Thu, 12 Dec 2024 17:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80602215764;
+	Thu, 12 Dec 2024 17:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025229; cv=none; b=XtjPmsmiRo465pvv3EJhIsw9E5TTFyG7pUzvUer3STi0zbR0OmVveVqFBad2gZbgPmPySnqdRnzYIZTogP6mqvlyZHmvzNjHbIq1/Ew5Aro7LVWcYJ3/FuKRZKU5m9Q8I0ETX/OxWibC9yY7vsm1zE+esD7l8svG1qhW4d6qjpo=
+	t=1734024508; cv=none; b=eMM9/0bX8wqUynm0EHV1tAyPWRD49/d38OSoVv0FFrFeWB/YnEs9DTvSiYbt3jeV/6lYTMAXAM0N/nOROz5k7aaf7MUdDyc3nDhKEh0+wpR5C1LOQ6q99grFYTunbuYlCUlke9KNT0cv8+iwHoCWLdIAhIiCv7PGZdRnOHEBD/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025229; c=relaxed/simple;
-	bh=K0KwaE526AbI12U5upnTf+zgHcxhqKGc2kRUomM6uuU=;
+	s=arc-20240116; t=1734024508; c=relaxed/simple;
+	bh=BesJ8ZbA2EZlLxV+vAhzuzoaGtp8QrRaiTcxbPWDwLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNNVAu30oOOUYA+EXl8UaY872qw9o9tUJZlV5EUMddA3yVAHpapao+9BzXxa7xD3L3oDWBMOQ6soNX2U0uqpy+wYdZVz4So2Ikm8VdwrG/iiZZfSbgki91X5587KjH2FE0fcTpGmIs+ffZChL2owiWN5UnmOxmrrXeZQdbSvT/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSa7IkkT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49B1C4CECE;
-	Thu, 12 Dec 2024 17:40:28 +0000 (UTC)
+	 MIME-Version; b=CFTngVLbtavwJDQT5uxgsrxQDekfC3Vk+//valY9j5XATnoUx/ftGq5IsQ7WdL/eOafaWrH02x/Piuddz2StMRag4L1yNoYVvvcYuZCgw/5BPzfe2HWqFHDNfvYFVDXjSwB8nypKTeRbVuBxrZcEyCmvXEuRPpnSRXIZS/pzupM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8mCYd+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071AEC4CED0;
+	Thu, 12 Dec 2024 17:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025229;
-	bh=K0KwaE526AbI12U5upnTf+zgHcxhqKGc2kRUomM6uuU=;
+	s=korg; t=1734024508;
+	bh=BesJ8ZbA2EZlLxV+vAhzuzoaGtp8QrRaiTcxbPWDwLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSa7IkkTXHsdp0SRzKBi/GCyXPwOGtyuueWEXFu/3FYYiHKgZ/Py+D3+P8PNjogkG
-	 O+Nyz/6YZJBni5owr72wWdiX+DNyQ3uLb0JbHk9HqXgNAd0JrPcBlOOjh5g4lpunJ+
-	 XldG4wLNeKVXotN5tj5cEu645NbwkG3e8QuYvNhM=
+	b=Q8mCYd+lC6mUYu4Wm5xWNDNg73hCX6O6zC+aCrWCSMsOUnkmh1zsxutVcNfND7/4J
+	 R9zZ0ZQ+N3HzjSRVmrVCafz2c3J+yDO4r0zyM2mQ/D+aUfSsd+LrPLiK2mU8YevCiC
+	 +LP+Os6TNCLswH5f84J1n9Wjof1dj5hRjCYp5xcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeng Heng <zengheng4@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 099/321] scsi: fusion: Remove unused variable rc
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 279/459] ALSA: hda/realtek: Set PCBeep to default value for ALC274
 Date: Thu, 12 Dec 2024 16:00:17 +0100
-Message-ID: <20241212144233.902233211@linuxfoundation.org>
+Message-ID: <20241212144304.648642646@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit bd65694223f7ad11c790ab63ad1af87a771192ee ]
+commit 155699ccab7c78cbba69798242b68bc8ac66d5d2 upstream.
 
-The return value of scsi_device_reprobe() is currently ignored in
-_scsih_reprobe_lun(). Fixing the calling code to deal with the potential
-error is non-trivial, so for now just WARN_ON().
+BIOS Enable PC beep path cause pop noise via speaker during boot time.
+Set to default value from driver will solve the issue.
 
-The handling of scsi_device_reprobe()'s return value refers to
-_scsih_reprobe_lun() and the following link:
-
-https://lore.kernel.org/all/094fdbf57487af4f395238c0525b2a560c8f68f0.1469766027.git.calvinowens@fb.com/
-
-Fixes: f99be43b3024 ("[SCSI] fusion: power pc and miscellaneous bug fixs")
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-Link: https://lore.kernel.org/r/20241024084417.154655-1-zengheng4@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/2721bb57e20a44c3826c473e933f9105@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/message/fusion/mptsas.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/message/fusion/mptsas.c b/drivers/message/fusion/mptsas.c
-index 6a79cd0ebe2b0..633c8ef3cfe20 100644
---- a/drivers/message/fusion/mptsas.c
-+++ b/drivers/message/fusion/mptsas.c
-@@ -4205,10 +4205,8 @@ mptsas_find_phyinfo_by_phys_disk_num(MPT_ADAPTER *ioc, u8 phys_disk_num,
- static void
- mptsas_reprobe_lun(struct scsi_device *sdev, void *data)
- {
--	int rc;
--
- 	sdev->no_uld_attach = data ? 1 : 0;
--	rc = scsi_device_reprobe(sdev);
-+	WARN_ON(scsi_device_reprobe(sdev));
- }
- 
- static void
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -464,6 +464,8 @@ static void alc_fill_eapd_coef(struct hd
+ 		break;
+ 	case 0x10ec0234:
+ 	case 0x10ec0274:
++		alc_write_coef_idx(codec, 0x6e, 0x0c25);
++		fallthrough;
+ 	case 0x10ec0294:
+ 	case 0x10ec0700:
+ 	case 0x10ec0701:
 
 
 
