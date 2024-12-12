@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-101362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71769EEBB6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756339EEDC5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A248A2820A4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3616D28B66A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E712153DD;
-	Thu, 12 Dec 2024 15:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAA421E086;
+	Thu, 12 Dec 2024 15:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0wzFWk1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bR4uX0th"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1F5205ACF;
-	Thu, 12 Dec 2024 15:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1014F218;
+	Thu, 12 Dec 2024 15:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017292; cv=none; b=rCwvuHkEo36bt0VW+espw/cxFGeiyCVpdjvJ0IQKcaBdHcE+gs+cSJ50uav+T3G16iFVkq69DzCPZJdKuRr/b8hAxF56dGv6pOcrF3AFXT8oOXz5Ro9A1Xx96mQP7LTsM9Xr27uL95uePqI/SHnRx3BRSHG2Jtvdt16R3TXCOMA=
+	t=1734018573; cv=none; b=iMJ65SUchCTB5aMctJ24B8THCdxZwg8/pdLeKyd28+KQhldBpk7x0J+1zk/AD1KQcQo88w4MzXcplisPpdrRdnk1QZfYvsIOgNMOsSwPrKpp1jPXy0S7BEO7I5pE9SYK1fLS5fhLGeSvh1ZqI2i4NWXJ9/76FGTJbn0DkZBdFJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017292; c=relaxed/simple;
-	bh=ITFNZX5uvruFZnyXUocPZ8nKPGKwyYnbOphKnSN3660=;
+	s=arc-20240116; t=1734018573; c=relaxed/simple;
+	bh=glfjdQ2DKpSnLZn85NI2P0QPQiyW/TYM5XeSg42p3X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RX1dt9v4r8rskibpYO3iDZ/ESeak/uUQDh+lWyYu1sgXMqrsI4Cc/LYmxxSq4Lno2ab0G1Pjk15641A7cvNsAipVrpwS5IhoIlJ41NcPIblSXSoKyIGV9oWW54nPOW7pI9ErC6bSUweF4zVqZuyu+YKopFO/YSjoqPF2Hs2rI2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0wzFWk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8818CC4CECE;
-	Thu, 12 Dec 2024 15:28:11 +0000 (UTC)
+	 MIME-Version; b=lTcZLqOZcIxZKpD63iraMtHFLT5uTLdCjdnk+tsnVzx42BhtcWTJqGg+KAPQSk9rtfPA5bykB2r1Mj7h7uZUMFgb9F2YDjCpUf7sZzzhKStodX/bA3bGvKN5jeyb6t+ZAbcajca/Z1UCvrsQHVRj7zqKQ00RvV1w1HNfI1sy5jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bR4uX0th; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B23C4CECE;
+	Thu, 12 Dec 2024 15:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017291;
-	bh=ITFNZX5uvruFZnyXUocPZ8nKPGKwyYnbOphKnSN3660=;
+	s=korg; t=1734018573;
+	bh=glfjdQ2DKpSnLZn85NI2P0QPQiyW/TYM5XeSg42p3X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0wzFWk1c6kxNZ4TAbtOZYV8M2M6JcHXEdb5kJWqF5VlyyWM2MTWB7WvTdGjjg/9p
-	 pWdekV949284bQxKO55Cke/gqQHiTECu41bUijoGHptplPILnAxQjNShbvEfECe2yV
-	 YjNljrGSeFVDZAwLA5nnnP5N6yj/F7CV4ir4cYBU=
+	b=bR4uX0thf/OcgSpGywy1OyKZ+LLdECx/RrQrp1IC5aWYdhbweS2dHnMDQiFRRrNOC
+	 foxmpqMyD9DQXL+BzKfAk8HsG/wr72mJgW4GUu/212HGu+m4HdcjXXCVz3No3l/G2A
+	 qETbslsROui1jB3Owr1mK4FveZIbK5UeYhu5eClI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aric Cyr <aric.cyr@amd.com>,
-	Sung Lee <Sung.Lee@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 438/466] drm/amd/display: Add option to retrieve detile buffer size
-Date: Thu, 12 Dec 2024 16:00:07 +0100
-Message-ID: <20241212144324.166621609@linuxfoundation.org>
+Subject: [PATCH 6.6 289/356] i3c: mipi-i3c-hci: Mask ring interrupts before ring stop request
+Date: Thu, 12 Dec 2024 16:00:08 +0100
+Message-ID: <20241212144255.992360880@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,195 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sung Lee <Sung.Lee@amd.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit 6a7fd76b949efe40fb6d6677f480e624e0cb6e40 ]
+[ Upstream commit 6ca2738174e4ee44edb2ab2d86ce74f015a0cc32 ]
 
-[WHY]
-For better power profiling knowing the detile
-buffer size at a given point in time
-would be useful.
+Bus cleanup path in DMA mode may trigger a RING_OP_STAT interrupt when
+the ring is being stopped. Depending on timing between ring stop request
+completion, interrupt handler removal and code execution this may lead
+to a NULL pointer dereference in hci_dma_irq_handler() if it gets to run
+after the io_data pointer is set to NULL in hci_dma_cleanup().
 
-[HOW]
-Add interface to retrieve detile buffer from
-dc state.
+Prevent this my masking the ring interrupts before ring stop request.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Sung Lee <Sung.Lee@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20240920144432.62370-2-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c       | 18 ++++++++++++++++++
- drivers/gpu/drm/amd/display/dc/dc.h            |  2 ++
- .../gpu/drm/amd/display/dc/inc/core_types.h    |  1 +
- .../display/dc/resource/dcn31/dcn31_resource.c |  7 +++++++
- .../display/dc/resource/dcn31/dcn31_resource.h |  3 +++
- .../dc/resource/dcn314/dcn314_resource.c       |  1 +
- .../dc/resource/dcn315/dcn315_resource.c       |  1 +
- .../dc/resource/dcn316/dcn316_resource.c       |  1 +
- .../display/dc/resource/dcn35/dcn35_resource.c |  1 +
- .../dc/resource/dcn351/dcn351_resource.c       |  1 +
- 10 files changed, 36 insertions(+)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 1d99ab233765f..dbf6724c34777 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -6013,3 +6013,21 @@ struct dc_power_profile dc_get_power_profile_for_dc_state(const struct dc_state
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index edc3a69bfe31f..bcc0c7d4131f2 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -174,10 +174,10 @@ static void hci_dma_cleanup(struct i3c_hci *hci)
+ 	for (i = 0; i < rings->total; i++) {
+ 		rh = &rings->headers[i];
  
- 	return profile;
- }
-+
-+/*
-+ **********************************************************************************
-+ * dc_get_det_buffer_size_from_state() - extracts detile buffer size from dc state
-+ *
-+ * Called when DM wants to log detile buffer size from dc_state
-+ *
-+ **********************************************************************************
-+ */
-+unsigned int dc_get_det_buffer_size_from_state(const struct dc_state *context)
-+{
-+	struct dc *dc = context->clk_mgr->ctx->dc;
-+
-+	if (dc->res_pool->funcs->get_det_buffer_size)
-+		return dc->res_pool->funcs->get_det_buffer_size(context);
-+	else
-+		return 0;
-+}
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index 25385aa09ed5d..7c163aa7e8bd2 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -2544,6 +2544,8 @@ struct dc_power_profile {
++		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
+ 		rh_reg_write(RING_CONTROL, 0);
+ 		rh_reg_write(CR_SETUP, 0);
+ 		rh_reg_write(IBI_SETUP, 0);
+-		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
  
- struct dc_power_profile dc_get_power_profile_for_dc_state(const struct dc_state *context);
- 
-+unsigned int dc_get_det_buffer_size_from_state(const struct dc_state *context);
-+
- /* DSC Interfaces */
- #include "dc_dsc.h"
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-index 8597e866bfe6b..3061dca47dd2f 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-@@ -219,6 +219,7 @@ struct resource_funcs {
- 	 * Get indicator of power from a context that went through full validation
- 	 */
- 	int (*get_power_profile)(const struct dc_state *context);
-+	unsigned int (*get_det_buffer_size)(const struct dc_state *context);
- };
- 
- struct audio_support{
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
-index ac8cb20e2e3b6..80386f698ae4d 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
-@@ -1721,6 +1721,12 @@ int dcn31_populate_dml_pipes_from_context(
- 	return pipe_cnt;
- }
- 
-+unsigned int dcn31_get_det_buffer_size(
-+	const struct dc_state *context)
-+{
-+	return context->bw_ctx.dml.ip.det_buffer_size_kbytes;
-+}
-+
- void dcn31_calculate_wm_and_dlg(
- 		struct dc *dc, struct dc_state *context,
- 		display_e2e_pipe_params_st *pipes,
-@@ -1843,6 +1849,7 @@ static struct resource_funcs dcn31_res_pool_funcs = {
- 	.update_bw_bounding_box = dcn31_update_bw_bounding_box,
- 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
- 	.get_panel_config_defaults = dcn31_get_panel_config_defaults,
-+	.get_det_buffer_size = dcn31_get_det_buffer_size,
- };
- 
- static struct clock_source *dcn30_clock_source_create(
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.h b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.h
-index 901436591ed45..551ad912f7bea 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.h
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.h
-@@ -63,6 +63,9 @@ struct resource_pool *dcn31_create_resource_pool(
- 		const struct dc_init_data *init_data,
- 		struct dc *dc);
- 
-+unsigned int dcn31_get_det_buffer_size(
-+	const struct dc_state *context);
-+
- /*temp: B0 specific before switch to dcn313 headers*/
- #ifndef regPHYPLLF_PIXCLK_RESYNC_CNTL
- #define regPHYPLLF_PIXCLK_RESYNC_CNTL 0x007e
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-index 169924d0a8393..01d95108ce662 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-@@ -1778,6 +1778,7 @@ static struct resource_funcs dcn314_res_pool_funcs = {
- 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
- 	.get_panel_config_defaults = dcn314_get_panel_config_defaults,
- 	.get_preferred_eng_id_dpia = dcn314_get_preferred_eng_id_dpia,
-+	.get_det_buffer_size = dcn31_get_det_buffer_size,
- };
- 
- static struct clock_source *dcn30_clock_source_create(
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-index f6b840f046a5d..d85356b7fe419 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
-@@ -1846,6 +1846,7 @@ static struct resource_funcs dcn315_res_pool_funcs = {
- 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
- 	.get_panel_config_defaults = dcn315_get_panel_config_defaults,
- 	.get_power_profile = dcn315_get_power_profile,
-+	.get_det_buffer_size = dcn31_get_det_buffer_size,
- };
- 
- static bool dcn315_resource_construct(
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
-index 5fd52c5fcee45..af82e13029c9e 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
-@@ -1720,6 +1720,7 @@ static struct resource_funcs dcn316_res_pool_funcs = {
- 	.update_bw_bounding_box = dcn316_update_bw_bounding_box,
- 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
- 	.get_panel_config_defaults = dcn316_get_panel_config_defaults,
-+	.get_det_buffer_size = dcn31_get_det_buffer_size,
- };
- 
- static bool dcn316_resource_construct(
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-index ed3238edaf791..d0c4693c12241 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-@@ -1779,6 +1779,7 @@ static struct resource_funcs dcn35_res_pool_funcs = {
- 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
- 	.get_panel_config_defaults = dcn35_get_panel_config_defaults,
- 	.get_preferred_eng_id_dpia = dcn35_get_preferred_eng_id_dpia,
-+	.get_det_buffer_size = dcn31_get_det_buffer_size,
- };
- 
- static bool dcn35_resource_construct(
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-index c274861e83c73..575c0aa12229c 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-@@ -1758,6 +1758,7 @@ static struct resource_funcs dcn351_res_pool_funcs = {
- 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
- 	.get_panel_config_defaults = dcn35_get_panel_config_defaults,
- 	.get_preferred_eng_id_dpia = dcn351_get_preferred_eng_id_dpia,
-+	.get_det_buffer_size = dcn31_get_det_buffer_size,
- };
- 
- static bool dcn351_resource_construct(
+ 		if (rh->xfer)
+ 			dma_free_coherent(&hci->master.dev,
 -- 
 2.43.0
 
