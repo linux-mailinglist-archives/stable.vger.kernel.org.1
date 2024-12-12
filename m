@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22EC69EF8D2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 040959EF4CF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D71E528AD51
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3DA289929
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A008B22331C;
-	Thu, 12 Dec 2024 17:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A13223301;
+	Thu, 12 Dec 2024 17:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR55Bk9M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lliG5Yga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAA9222D59;
-	Thu, 12 Dec 2024 17:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215ED222D7E;
+	Thu, 12 Dec 2024 17:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025401; cv=none; b=R5kQNb4EXEXfmGRqGqaBdwEFBIu/zTnFtzePz5MHbYCunMqiKlIV7SX3r+5yAN9Xu+Bk70yzeuY3Y91bV34i6uqvdgtx2Spu/3e+5p9oWVP8yWBcOqdFu1AOVY7b5R9P/VC1KQvHSQ56J12tq9v7OBK2UHnCtI58a6vwDyHPJgs=
+	t=1734023329; cv=none; b=URpk8tM2+dS5v2QZsJbDuOyR3pCsSHdFpiDxwMvLpVTUwafTQsFgW/REhEh+YbIuTaiv/1dlDsgbS89Z4hRseTbeJNk11t4gJUCO+mhISJPl7v+5XnjIZg/iGwGrh3PdbI42m3hJLpEpdgrLB9R1gCMe6tlkphOgzf4JpuBoftU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025401; c=relaxed/simple;
-	bh=uw/qVCadR1wE0ynQ95bWfxXiq0u45sBq+uq/spTO0Is=;
+	s=arc-20240116; t=1734023329; c=relaxed/simple;
+	bh=T3RfZG+3+kIWF3dct0C0cl9anpUDu3O5GCP8kJFO1BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFUt6cGWLliycsb7mwUTATTSE6atlmMmK0PpkrUBatApo2Y3tQRfTj38CXBTCyVKHhnXEmM3bFdfubWRqckvzome18Fzi33TrFVPwSNTAVfyeXlxVn2aAY5UvVwsv67a0JG3nxXuuG60xJMBZ56bRJouJN8MH6BDP2KiqalT3qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR55Bk9M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841FBC4CED0;
-	Thu, 12 Dec 2024 17:43:18 +0000 (UTC)
+	 MIME-Version; b=c0op8DyfpzX1LzuIIRZL5KH/320pwGfgJf9CZzjzC8TxsWQ0e2HCawruKPzK4mijbwVkJUYPpGp844d5pFUYywhIn676UNnEfa9NegCKJgQt2H+9V5Njxh7+nSAZy8uj7TweRtOUFEYRLw7hIGBK92p4fSEKFyR3kM/QBFbJ/Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lliG5Yga; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B42C4CECE;
+	Thu, 12 Dec 2024 17:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025398;
-	bh=uw/qVCadR1wE0ynQ95bWfxXiq0u45sBq+uq/spTO0Is=;
+	s=korg; t=1734023329;
+	bh=T3RfZG+3+kIWF3dct0C0cl9anpUDu3O5GCP8kJFO1BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SR55Bk9MbP0OjMtg9LO28gFgSwrzv654SN6lekU6vlhjzfuSOCrO8Tb6jeh2ZyNYg
-	 suHx3Gv/6yf0yeLLOegaEp7PMTq9Vzr1EJk0FeOkaT9EkTSB+lI7PV2d0veX906QsY
-	 5zcaLUgJSemrEsUhVPMvTbuanGQgaeRgxNPViWT0=
+	b=lliG5YgaStDlyYCN7RWJ/gaSxfOP4BTqq14f8nDxSieEjIRZGQMCJ+lgwuR+ZiLrP
+	 /xv+1PXjOnIttMt52xsWbZFfDnciglNJCRlwcwuKlo0jHkkKxUb4w3LSPP/lfUHZYk
+	 v2iyBlsBVfi+QOSZUBnndTa7ZjokZOhvY9PBXTOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 157/321] netfilter: ipset: add missing range check in bitmap_ip_uadt
-Date: Thu, 12 Dec 2024 16:01:15 +0100
-Message-ID: <20241212144236.179129451@linuxfoundation.org>
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 481/565] r8169: dont apply UDP padding quirk on RTL8126A
+Date: Thu, 12 Dec 2024 16:01:16 +0100
+Message-ID: <20241212144330.773274999@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 35f56c554eb1b56b77b3cf197a6b00922d49033d upstream.
+[ Upstream commit 87e26448dbda4523b73a894d96f0f788506d3795 ]
 
-When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
-the values of ip and ip_to are slightly swapped. Therefore, the range check
-for ip should be done later, but this part is missing and it seems that the
-vulnerability occurs.
+Vendor drivers r8125/r8126 indicate that this quirk isn't needed
+any longer for RTL8126A. Mimic this in r8169.
 
-So we should add missing range checks and remove unnecessary range checks.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
-Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Acked-by: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/d1317187-aa81-4a69-b831-678436e4de62@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_bitmap_ip.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/net/netfilter/ipset/ip_set_bitmap_ip.c
-+++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
-@@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struc
- 		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
- 		if (ret)
- 			return ret;
--		if (ip > ip_to) {
-+		if (ip > ip_to)
- 			swap(ip, ip_to);
--			if (ip < map->first_ip)
--				return -IPSET_ERR_BITMAP_RANGE;
--		}
- 	} else if (tb[IPSET_ATTR_CIDR]) {
- 		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 8e910f3349b2a..d9d19ea77d20b 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4148,8 +4148,8 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
+ {
+ 	unsigned int padto = 0, len = skb->len;
  
-@@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struc
- 		ip_to = ip;
- 	}
+-	if (rtl_is_8125(tp) && len < 128 + RTL_MIN_PATCH_LEN &&
+-	    rtl_skb_is_udp(skb) && skb_transport_header_was_set(skb)) {
++	if (len < 128 + RTL_MIN_PATCH_LEN && rtl_skb_is_udp(skb) &&
++	    skb_transport_header_was_set(skb)) {
+ 		unsigned int trans_data_len = skb_tail_pointer(skb) -
+ 					      skb_transport_header(skb);
  
--	if (ip_to > map->last_ip)
-+	if (ip < map->first_ip || ip_to > map->last_ip)
- 		return -IPSET_ERR_BITMAP_RANGE;
+@@ -4173,9 +4173,15 @@ static unsigned int rtl8125_quirk_udp_padto(struct rtl8169_private *tp,
+ static unsigned int rtl_quirk_packet_padto(struct rtl8169_private *tp,
+ 					   struct sk_buff *skb)
+ {
+-	unsigned int padto;
++	unsigned int padto = 0;
  
- 	for (; !before(ip_to, ip); ip += map->hosts) {
+-	padto = rtl8125_quirk_udp_padto(tp, skb);
++	switch (tp->mac_version) {
++	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
++		padto = rtl8125_quirk_udp_padto(tp, skb);
++		break;
++	default:
++		break;
++	}
+ 
+ 	switch (tp->mac_version) {
+ 	case RTL_GIGA_MAC_VER_34:
+-- 
+2.43.0
+
 
 
 
