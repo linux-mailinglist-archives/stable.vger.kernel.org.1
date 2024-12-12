@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-101386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D630C9EEC1D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B96D9EF21C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 532C31882DFD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3BB228D792
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D1A21578E;
-	Thu, 12 Dec 2024 15:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1313B23FA09;
+	Thu, 12 Dec 2024 16:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5mT5ZLY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wH1UHwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0018E2153DF;
-	Thu, 12 Dec 2024 15:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C085323FA04;
+	Thu, 12 Dec 2024 16:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017376; cv=none; b=dhWaPGw19PY3wnvYYEtRoSgHM0EJQX0vm6uz6dpjbui37DciQEpaW2EjernQuLXoJxbXDHvtrho9waJbA4zT7y6IPmQ5fM5Rr6XfVour0cKH5GibcQGizrvHBPf3LBJg8xq2nHg56ehaSoLqhi5jn82xLLjvhsuAslQoVjzVfqk=
+	t=1734021371; cv=none; b=tbANtItjT6fsx0Cs+B8d92lV93tAbEIiVjeCztar/opK/DkVWws+wvIKG/A6Y1YtTVqJcZikrr8qDYZ0OZIPKofvabqfL5E5Mty6GFm1XNXerk2GKtrhZXWwFRH6kSP76YGkTcwfSz1sLBlcmE3mE8PKMF5kpBNIbtUg3pJBsUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017376; c=relaxed/simple;
-	bh=paG7idZL37d3pRzaiGjlOwCuKmmfFJv5Dht1yvCRU1w=;
+	s=arc-20240116; t=1734021371; c=relaxed/simple;
+	bh=Bh5G17TawMsHYBs0b58RT/Kag+cVPj7XrD5AR2IGwrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRwrkDg/YKHTF0n7oZ1aAAqPL6LaxuBOUqHS0/r+Rp6c14zsmQuQ73/wWgR4VzuNToST1V8sHIoMF3zX+0m4BEDFZ6BEL8iHEgnVzHk7sFgZdMJQKvzT2DM1ENA28P8viF78bCXY+AOqC1ars+GUz/p0JmiDxbVi1DDtRtl4jB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5mT5ZLY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFBBC4CECE;
-	Thu, 12 Dec 2024 15:29:34 +0000 (UTC)
+	 MIME-Version; b=dt7Am0h2+nvXjWlnBZBQ6cWMuoKTJR43KzWZgmMOCdOy1dbWKklvmUYLAf6F07c+3NQPe6ltmkm/hfBdeZ6WAcPjqZNytPkQrcAzEYCuvJHai7Kop1b3lwJnumFeigeyjRz5fzALOFphlHuu3+ijf1u6xI/I1kkwup6cUSC3Vwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wH1UHwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF780C4CED0;
+	Thu, 12 Dec 2024 16:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017375;
-	bh=paG7idZL37d3pRzaiGjlOwCuKmmfFJv5Dht1yvCRU1w=;
+	s=korg; t=1734021371;
+	bh=Bh5G17TawMsHYBs0b58RT/Kag+cVPj7XrD5AR2IGwrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L5mT5ZLY62bxj2LY767SJx0TXqoUmAoZ6XZHlxuLlNBw9FowUSrgCfWOUShMJSWzI
-	 pg0N/BrEqxV9NO3HK2DQESEAUGV3OqK6fT/lsv9C3yfZxbwnQttjPASyjIkqxIfMEe
-	 lYFA+4vr1Vx6biEHOhuDHSW4p96n2utGrRLragc4=
+	b=0wH1UHwlyRxA3yftT1dcowY2pIxEgGznX2suq/h/Zkm8bm6wfpvrOpUSMg6iysYuy
+	 DIeGMZCruWsL7jvDRU77w0vi6QhLFs6U37ldqCRQPOykAIiVnFYk12ddajCSZPUlIL
+	 Q8J+Av+dJTj24irqDiEtohWsNgcZaFen9NAu/B9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>
-Subject: [PATCH 6.12 454/466] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
-Date: Thu, 12 Dec 2024 16:00:23 +0100
-Message-ID: <20241212144324.807059904@linuxfoundation.org>
+	Victor Lu <victorchengchi.lu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 679/772] drm/amdgpu: clear RB_OVERFLOW bit when enabling interrupts for vega20_ih
+Date: Thu, 12 Dec 2024 16:00:24 +0100
+Message-ID: <20241212144417.977479065@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,138 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Victor Lu <victorchengchi.lu@amd.com>
 
-Since 5.16 and prior to 6.13 KVM can't be used with FSDAX
-guest memory (PMD pages). To reproduce the issue you need to reserve
-guest memory with `memmap=` cmdline, create and mount FS in DAX mode
-(tested both XFS and ext4), see doc link below. ndctl command for test:
-ndctl create-namespace -v -e namespace1.0 --map=dev --mode=fsdax -a 2M
-Then pass memory object to qemu like:
--m 8G -object memory-backend-file,id=ram0,size=8G,\
-mem-path=/mnt/pmem/guestmem,share=on,prealloc=on,dump=off,align=2097152 \
--numa node,memdev=ram0,cpus=0-1
-QEMU fails to run guest with error: kvm run failed Bad address
-and there are two warnings in dmesg:
-WARN_ON_ONCE(!page_count(page)) in kvm_is_zone_device_page() and
-WARN_ON_ONCE(folio_ref_count(folio) <= 0) in try_grab_folio() (v6.6.63)
+[ Upstream commit 8b22f048331dfd45fdfbf0efdfb1d43deff7518d ]
 
-It looks like in the past assumption was made that pfn won't change from
-faultin_pfn() to release_pfn_clean(), e.g. see
-commit 4cd071d13c5c ("KVM: x86/mmu: Move calls to thp_adjust() down a level")
-But kvm_page_fault structure made pfn part of mutable state, so
-now release_pfn_clean() can take hugepage-adjusted pfn.
-And it works for all cases (/dev/shm, hugetlb, devdax) except fsdax.
-Apparently in fsdax mode faultin-pfn and adjusted-pfn may refer to
-different folios, so we're getting get_page/put_page imbalance.
+Port this change to vega20_ih.c:
+commit afbf7955ff01 ("drm/amdgpu: clear RB_OVERFLOW bit when enabling interrupts")
 
-To solve this preserve faultin pfn in separate local variable
-and pass it in kvm_release_pfn_clean().
+Original commit message:
+"Why:
+Setting IH_RB_WPTR register to 0 will not clear the RB_OVERFLOW bit
+if RB_ENABLE is not set.
 
-Patch tested for all mentioned guest memory backends with tdp_mmu={0,1}.
+How to fix:
+Set WPTR_OVERFLOW_CLEAR bit after RB_ENABLE bit is set.
+The RB_ENABLE bit is required to be set, together with
+WPTR_OVERFLOW_ENABLE bit so that setting WPTR_OVERFLOW_CLEAR bit
+would clear the RB_OVERFLOW."
 
-No bug in upstream as it was solved fundamentally by
-commit 8dd861cc07e2 ("KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns")
-and related patch series.
-
-Link: https://nvdimm.docs.kernel.org/2mib_fs_dax.html
-Fixes: 2f6305dd5676 ("KVM: MMU: change kvm_tdp_mmu_map() arguments to kvm_page_fault")
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/mmu/mmu.c         |   10 ++++++++--
- arch/x86/kvm/mmu/paging_tmpl.h |    5 ++++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vega20_ih.c | 27 ++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4580,6 +4580,7 @@ static bool is_page_fault_stale(struct k
+diff --git a/drivers/gpu/drm/amd/amdgpu/vega20_ih.c b/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
+index f1ba76c35cd6e..e85a0fb227d4e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
++++ b/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
+@@ -109,6 +109,33 @@ static int vega20_ih_toggle_ring_interrupts(struct amdgpu_device *adev,
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, RB_ENABLE, (enable ? 1 : 0));
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, RB_GPU_TS_ENABLE, 1);
  
- static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
- {
-+	kvm_pfn_t orig_pfn;
- 	int r;
- 
- 	/* Dummy roots are used only for shadowing bad guest roots. */
-@@ -4601,6 +4602,8 @@ static int direct_page_fault(struct kvm_
- 	if (r != RET_PF_CONTINUE)
- 		return r;
- 
-+	orig_pfn = fault->pfn;
++	if (enable) {
++		/* Unset the CLEAR_OVERFLOW bit to make sure the next step
++		 * is switching the bit from 0 to 1
++		 */
++		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
++			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
++				return -ETIMEDOUT;
++		} else {
++			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++		}
 +
- 	r = RET_PF_RETRY;
- 	write_lock(&vcpu->kvm->mmu_lock);
- 
-@@ -4615,7 +4618,7 @@ static int direct_page_fault(struct kvm_
- 
- out_unlock:
- 	write_unlock(&vcpu->kvm->mmu_lock);
--	kvm_release_pfn_clean(fault->pfn);
-+	kvm_release_pfn_clean(orig_pfn);
- 	return r;
- }
- 
-@@ -4675,6 +4678,7 @@ EXPORT_SYMBOL_GPL(kvm_handle_page_fault)
- static int kvm_tdp_mmu_page_fault(struct kvm_vcpu *vcpu,
- 				  struct kvm_page_fault *fault)
- {
-+	kvm_pfn_t orig_pfn;
- 	int r;
- 
- 	if (page_fault_handle_page_track(vcpu, fault))
-@@ -4692,6 +4696,8 @@ static int kvm_tdp_mmu_page_fault(struct
- 	if (r != RET_PF_CONTINUE)
- 		return r;
- 
-+	orig_pfn = fault->pfn;
++		/* Clear RB_OVERFLOW bit */
++		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
++		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
++			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
++				return -ETIMEDOUT;
++		} else {
++			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++		}
 +
- 	r = RET_PF_RETRY;
- 	read_lock(&vcpu->kvm->mmu_lock);
- 
-@@ -4702,7 +4708,7 @@ static int kvm_tdp_mmu_page_fault(struct
- 
- out_unlock:
- 	read_unlock(&vcpu->kvm->mmu_lock);
--	kvm_release_pfn_clean(fault->pfn);
-+	kvm_release_pfn_clean(orig_pfn);
- 	return r;
- }
- #endif
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -778,6 +778,7 @@ static int FNAME(fetch)(struct kvm_vcpu
- static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
- {
- 	struct guest_walker walker;
-+	kvm_pfn_t orig_pfn;
- 	int r;
- 
- 	WARN_ON_ONCE(fault->is_tdp);
-@@ -836,6 +837,8 @@ static int FNAME(page_fault)(struct kvm_
- 			walker.pte_access &= ~ACC_EXEC_MASK;
- 	}
- 
-+	orig_pfn = fault->pfn;
++		/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++		 * can be detected.
++		 */
++		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	}
 +
- 	r = RET_PF_RETRY;
- 	write_lock(&vcpu->kvm->mmu_lock);
- 
-@@ -849,7 +852,7 @@ static int FNAME(page_fault)(struct kvm_
- 
- out_unlock:
- 	write_unlock(&vcpu->kvm->mmu_lock);
--	kvm_release_pfn_clean(fault->pfn);
-+	kvm_release_pfn_clean(orig_pfn);
- 	return r;
- }
- 
+ 	/* enable_intr field is only valid in ring0 */
+ 	if (ih == &adev->irq.ih)
+ 		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, ENABLE_INTR, (enable ? 1 : 0));
+-- 
+2.43.0
+
 
 
 
