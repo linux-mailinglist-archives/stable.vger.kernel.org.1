@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8679EF8E2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42CBF9EF791
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4FE016C4AB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C446A189E413
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE792210F1;
-	Thu, 12 Dec 2024 17:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CAF216E14;
+	Thu, 12 Dec 2024 17:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sX5iZDuE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLCkQhFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEA516C854;
-	Thu, 12 Dec 2024 17:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046F1176AA1;
+	Thu, 12 Dec 2024 17:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025060; cv=none; b=TvUa3Fxl0kMzzRLEkYDyJkrDJ2iKyiZKnG2m6SLmMnGF0cvMddjKBZONEVncOpqM3qc1Ztdx4F1FMeUOMeiSEB/mq9ebjvN3aLHpBKvJVw1E12+4vdA6WGn/arL3Ax2SBCr8Kid2JPFN0icYWd+1VfjvayyeO5cfOuqRsNzxl9k=
+	t=1734024121; cv=none; b=FdhClYyjc0F+FwEVEcvO1INXs773rDF3/SA8fHokdC1gX2mtieHCMX11laWO2Vw8MJrdbVaG+sQOno6OvDRzn8RsxksSBEz5eYrFIH1fAhcWldAmgly6oSC+GZXk0ES4Dhe/Xnc6641ltB1EMflW3VTRQXJl5W1k1w/rk+C/pr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025060; c=relaxed/simple;
-	bh=Pu6VwJU0mYTMrMBPsVisIOt/TDfLI7YhX/YTA+a+0Lc=;
+	s=arc-20240116; t=1734024121; c=relaxed/simple;
+	bh=VzOns1C5QKy6L/czwlKvPgByiUdER0yJW7S+Oz/DErU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLN1g3twFTB3/7ZlOCZFpIl5QQAYVz4+Ifr6E6OHacrBrpkW5PyMr0NudLQPKNFBTi9vypwaDcmmCq9V3G2l1mUIptjHHitTEdZH8PKJG26rzWgTSOiGp6O2MwPWssYNt0m+dCatVKGAHsDuaRXfrA7md0qXEnoC1a2fVlW9GKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sX5iZDuE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776F7C4CECE;
-	Thu, 12 Dec 2024 17:37:39 +0000 (UTC)
+	 MIME-Version; b=S2qIM+vSSLI7TyMG0FYDBdLvlz34//i7LXA5ItFgMlSkQywjyhoJbASXs1qKhz78FcfP6HiE7wu3bTI+wxVgQD/4ltEvMTpP8HJUJq6ajaLWUsjF5fDNjwqaJC9iSRZO/0PiT0nmVkzHsycW9uEE/pk0YemjA4IGCZaB/NN65jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLCkQhFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D856C4CECE;
+	Thu, 12 Dec 2024 17:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025059;
-	bh=Pu6VwJU0mYTMrMBPsVisIOt/TDfLI7YhX/YTA+a+0Lc=;
+	s=korg; t=1734024120;
+	bh=VzOns1C5QKy6L/czwlKvPgByiUdER0yJW7S+Oz/DErU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sX5iZDuENs0t4WYn0wdcXXEteHkd/jn6Yqsjeh3nGgIkctbI1wiqUwo6xUBSXC9aC
-	 U3BUCu8Ulj+yGrg95mdMMD7wSLj04FcltoaVAgeNAc6OR9nidIOYa+1Q/Z1Hlj0Ous
-	 NzDBt59gdJpPiKd9VFNJq7ITS7PSmKGkKQEd/cPU=
+	b=jLCkQhFGhF7jODNE7FU6mWXmd7I2A5bc7TneFRBMqfcKHwr39S5lMKAt6TveHsRgH
+	 i3NYjudTGMZ3skCPPn3dT8QTgYop2P9MI1ibIxoVSeba9EkS3I/ZgUbGhtb5LsskSs
+	 58PRj3kHg1bUgCvR8+UHnAgaT4cd3yFm+bOTY8eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeongjun Park <aha310510@gmail.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 012/321] mm: revert "mm: shmem: fix data-race in shmem_getattr()"
-Date: Thu, 12 Dec 2024 15:58:50 +0100
-Message-ID: <20241212144230.133065632@linuxfoundation.org>
+	Naveen Naidu <naveennaidu479@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 193/459] PCI: cpqphp: Use PCI_POSSIBLE_ERROR() to check config reads
+Date: Thu, 12 Dec 2024 15:58:51 +0100
+Message-ID: <20241212144301.192563854@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: weiyufeng <weiyufeng@kylinos.cn>
 
-commit d1aa0c04294e29883d65eac6c2f72fe95cc7c049 upstream.
+[ Upstream commit a18a025c2fb5fbf2d1d0606ea0d7441ac90e9c39 ]
 
-Revert d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()") as
-suggested by Chuck [1].  It is causing deadlocks when accessing tmpfs over
-NFS.
+When config pci_ops.read() can detect failed PCI transactions, the data
+returned to the CPU is PCI_ERROR_RESPONSE (~0 or 0xffffffff).
 
-As Hugh commented, "added just to silence a syzbot sanitizer splat: added
-where there has never been any practical problem".
+Obviously a successful PCI config read may *also* return that data if a
+config register happens to contain ~0, so it doesn't definitively indicate
+an error unless we know the register cannot contain ~0.
 
-Link: https://lkml.kernel.org/r/ZzdxKF39VEmXSSyN@tissot.1015granger.net [1]
-Fixes: d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()")
-Acked-by: Hugh Dickins <hughd@google.com>
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use PCI_POSSIBLE_ERROR() to check the response we get when we read data
+from hardware.  This unifies PCI error response checking and makes error
+checks consistent and easier to find.
+
+Link: https://lore.kernel.org/r/b12005c0d57bb9d4c8b486724d078b7bd92f8321.1637243717.git.naveennaidu479@gmail.com
+Signed-off-by: Naveen Naidu <naveennaidu479@gmail.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: e2226dbc4a49 ("PCI: cpqphp: Fix PCIBIOS_* return value confusion")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/pci/hotplug/cpqphp_pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1011,9 +1011,7 @@ static int shmem_getattr(const struct pa
- 		shmem_recalc_inode(inode);
- 		spin_unlock_irq(&info->lock);
- 	}
--	inode_lock_shared(inode);
- 	generic_fillattr(inode, stat);
--	inode_unlock_shared(inode);
+diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
+index 1b2b3f3b648bc..a20875da4ec70 100644
+--- a/drivers/pci/hotplug/cpqphp_pci.c
++++ b/drivers/pci/hotplug/cpqphp_pci.c
+@@ -138,7 +138,7 @@ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 o
  
- 	if (is_huge_enabled(sb_info))
- 		stat->blksize = HPAGE_PMD_SIZE;
+ 	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
+ 		return -1;
+-	if (vendID == 0xffffffff)
++	if (PCI_POSSIBLE_ERROR(vendID))
+ 		return -1;
+ 	return pci_bus_read_config_dword(bus, devfn, offset, value);
+ }
+@@ -251,7 +251,7 @@ static int PCI_GetBusDevHelper(struct controller *ctrl, u8 *bus_num, u8 *dev_num
+ 			*dev_num = tdevice;
+ 			ctrl->pci_bus->number = tbus;
+ 			pci_bus_read_config_dword(ctrl->pci_bus, *dev_num, PCI_VENDOR_ID, &work);
+-			if (!nobridge || (work == 0xffffffff))
++			if (!nobridge || PCI_POSSIBLE_ERROR(work))
+ 				return 0;
+ 
+ 			dbg("bus_num %d devfn %d\n", *bus_num, *dev_num);
+-- 
+2.43.0
+
 
 
 
