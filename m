@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C6479EF76F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8817F9EF9C7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C00828CF60
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B1BC1899926
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC733222D45;
-	Thu, 12 Dec 2024 17:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC2E223C46;
+	Thu, 12 Dec 2024 17:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kukfiWnM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvOTvLGa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7999F2236EB;
-	Thu, 12 Dec 2024 17:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485DA215783;
+	Thu, 12 Dec 2024 17:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024840; cv=none; b=Om4pTz2hXgsNCmWNQcmBnbRkQoFGe8QZp43b4wUwi4AYY5o353ugtpB92PLaeLBts72TqDUjd6O8dJCwdSfQX40U742azA0w3t86eXqQjxu9WJdFao3oKcW6J5yyO4mq+Z+wEYjmU9DVHvAZyOgxBYK8G5K2zQkvg3wrfCUETrQ=
+	t=1734025672; cv=none; b=faROJGp9adfZ5dnJ1H5EE1sx1hBkStdworCR2MsHm38WDfhzkce+XvBjuTeUzdtEEruU9AXNcTHoUz8cgo1sIKzVuKqQL9Fl5UZ4vAUIxtXRMuO0cRYDpde7LhfWlo/4mZ2XimF5uVPPpnTSBfYBM74AOWivuGYtZSH/y7O0otg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024840; c=relaxed/simple;
-	bh=SuPF9fIulFCsjuqAxKI248MRMR+ZlZGK8QMIqFO4I60=;
+	s=arc-20240116; t=1734025672; c=relaxed/simple;
+	bh=5TBlL76OoxBLQTXwNHcKa69sKQxV18CzOcSjzG4paaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHBHNkOxD+6WRbcmcz5fkmqVK6BTrAPLUJi4jmwocAxEFSQ4g8+y62Tx0Y5JmoheSsPO+OrPr6SldAmec3FAOI6J3Sw5rQoroBustCYbUqPXjrM7Uv5QQRCsnwSBjY5yZfXgLtwiyT6A/zrNuzSoAiVRSuOo30vgS2kM+F6vrZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kukfiWnM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00745C4CECE;
-	Thu, 12 Dec 2024 17:33:59 +0000 (UTC)
+	 MIME-Version; b=BItdxu7Euy7GvAq1ofo6nk5a0UX/jGYFxhswmOnBVvIkTSK7mffNcGF6F6/EOsCL49PA1/5zWcOBu6IDDg1xbgdy5AwoODdiHkLowCV0heSJTfrRWZxTavTT5kDlU82MaxQ6aD9pHkt01Hw7Cp4u431pv9G932bFwV0z+SlPRDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvOTvLGa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C537CC4CECE;
+	Thu, 12 Dec 2024 17:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024840;
-	bh=SuPF9fIulFCsjuqAxKI248MRMR+ZlZGK8QMIqFO4I60=;
+	s=korg; t=1734025672;
+	bh=5TBlL76OoxBLQTXwNHcKa69sKQxV18CzOcSjzG4paaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kukfiWnMq14q/LQjj0hjwvL/a9VTlIfxY9dQi0GtrMO9F0wnLdwGlRFBff4a7Kn8M
-	 cjByS/xmlMvxClMQ5tXPU3pgt5CXRjAIqCHHTNsKMSccoR51F9nQR7aaEbL1Lx5T1P
-	 DUCBZZ7OYhp/nB/6OJRc3+UGksjqIiAsSh6oUYAk=
+	b=OvOTvLGa9T4JcZlHNFyg50LABtQ2vKJoRii0jCgw2oaWe73oeNse900pzSnYx62qz
+	 feTYXDWGwKo46vOGa96OpTQcnVc39VfGqPdFFcepfqzx1DgJDV+49AnZISpo/Y/LM2
+	 LQiY+GSN7QN3Wo9XZfv27iM1hM1z6Doe48YkIP0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 429/459] usb: chipidea: udc: handle USB Error Interrupt if IOC not set
+Subject: [PATCH 5.4 249/321] spi: mpc52xx: Add cancel_work_sync before module remove
 Date: Thu, 12 Dec 2024 16:02:47 +0100
-Message-ID: <20241212144310.708839172@linuxfoundation.org>
+Message-ID: <20241212144239.809448918@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 548f48b66c0c5d4b9795a55f304b7298cde2a025 ]
+[ Upstream commit 984836621aad98802d92c4a3047114cf518074c8 ]
 
-As per USBSTS register description about UEI:
+If we remove the module which will call mpc52xx_spi_remove
+it will free 'ms' through spi_unregister_controller.
+while the work ms->work will be used. The sequence of operations
+that may lead to a UAF bug.
 
-  When completion of a USB transaction results in an error condition, this
-  bit is set by the Host/Device Controller. This bit is set along with the
-  USBINT bit, if the TD on which the error interrupt occurred also had its
-  interrupt on complete (IOC) bit set.
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in mpc52xx_spi_remove.
 
-UI is set only when IOC set. Add checking UEI to fix miss call
-isr_tr_complete_handler() when IOC have not set and transfer error happen.
-
-Acked-by: Peter Chen <peter.chen@kernel.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20240926022906.473319-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ca632f556697 ("spi: reorganize drivers")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/1f16f8ae0e50ca9adb1dc849bf2ac65a40c9ceb9.1732783000.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/udc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-mpc52xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index 5cdf03534c0c7..1c7af91bf03af 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -2024,7 +2024,7 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
- 			}
- 		}
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index ef2f24420460d..be99efafabbce 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -519,6 +519,7 @@ static int mpc52xx_spi_remove(struct platform_device *op)
+ 	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
+ 	int i;
  
--		if (USBi_UI  & intr)
-+		if ((USBi_UI | USBi_UEI) & intr)
- 			isr_tr_complete_handler(ci);
++	cancel_work_sync(&ms->work);
+ 	free_irq(ms->irq0, ms);
+ 	free_irq(ms->irq1, ms);
  
- 		if ((USBi_SLI & intr) && !(ci->suspended)) {
 -- 
 2.43.0
 
