@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CDA99EF191
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9323A9EEBC3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE9429028C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94AA816280C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B7C223E83;
-	Thu, 12 Dec 2024 16:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A733A2153DF;
+	Thu, 12 Dec 2024 15:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgBoMy4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j56ejRWD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DABE221D9F;
-	Thu, 12 Dec 2024 16:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FDA209693;
+	Thu, 12 Dec 2024 15:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020953; cv=none; b=t8d+QUbmzpFa+KrbK/n2/yfXxe+XZm3u6uWD95+mMcCIzGGVHN2Zu70xGv310M6UgrYHyiitJEQ2TBo6n9/KkT77CQuhjhMzqY5yaIA1Bw/4QBp3RvgALvmbXKJ22F9WHBF9fvPHAyen4u2ggQi9AdjOvxQUVyGb+6Da/anKDYM=
+	t=1734017100; cv=none; b=Kpa6mKHG9Op4pM1JcnGLmFPwyw0hGckMrLGBjQwpbmgcXUe1sJ51dDwk7l1NPSAV34aiFaCTyLqSxJF0nFca4hg98XHOydJrbOk3tmM2PZDLMaDjerwDJ2RvwP679uYPiLeFoHWJT/gk/4NEhwhDI7c+p2xIZFUesq7E7AOzMb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020953; c=relaxed/simple;
-	bh=qVSz92ax17o9SlyeESPfkAVPrLLBLN0/5N6/9OMg7p8=;
+	s=arc-20240116; t=1734017100; c=relaxed/simple;
+	bh=JVtlSF+APY28tgrap3sJmUxfBWPrhB/O8fX77el2GzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2QPl2WP+YqYvmxyRMne5BnF1grRjBtJoSLoW61aYFRG3WhkyZ5u0/R9GfMaeO92R1cjpOWgez5eDYR9Zbx7ZO66b8ixzVaiULp76Gnl2lg2SqpSq61JqIa/cQ2T6NISSBo473FvDMXPzSVJoqLzWDeajfXEf0soeOMGOp1mLhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgBoMy4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8DBC4CED0;
-	Thu, 12 Dec 2024 16:29:12 +0000 (UTC)
+	 MIME-Version; b=K0CPAHoX5NxktjxLVJ2vAyOYsJBOlIFQO9AZcdMUHDVNr0q5eGHsSn1seIxIMXYMkFs+ZZiHnGWc+FoBPIHA78OX+37WHg07D9G2lYhtGkJzf6MWOFuxiFFKiILh4gWg/tRabxT2Ps+psXYqeR62c8j2aQc/3AZ79GfL6P7IMmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j56ejRWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F287C4CECE;
+	Thu, 12 Dec 2024 15:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020953;
-	bh=qVSz92ax17o9SlyeESPfkAVPrLLBLN0/5N6/9OMg7p8=;
+	s=korg; t=1734017099;
+	bh=JVtlSF+APY28tgrap3sJmUxfBWPrhB/O8fX77el2GzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgBoMy4+irH9mJGTn8t6sv3lRLePvKJoPT5gkJr6xCMPXITW51SEY8RuSAjjdHk8g
-	 4EVM0BNKIoSkRrfHqQoX7J7og+O7IcQGPM4dyncdMDwUNOYmeRJRBJCbB0e0STCzLi
-	 1NqdmrnRKdrKC7PEf762hiaq2og1BNMrq27JyiF0=
+	b=j56ejRWDaMVS7CW0SBoAcf2tE73Rs8IiQcmiILROJvQyHigws8dsC1Zhhk5CatGGQ
+	 WIdOkAXuoXfUliloOnpGqBl8KzEq42QfOfcEaR1Q2u+8nLY6+xWM//GLMda1QNCnGs
+	 u5Ug9egTVDWvLd7x1TowDRI0NWbRs0Oh/5wEWLvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordy Zomer <jordyzomer@google.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 606/772] ksmbd: fix Out-of-Bounds Write in ksmbd_vfs_stream_write
+	Yi Yang <yiyang13@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 382/466] nvdimm: rectify the illogical code within nd_dax_probe()
 Date: Thu, 12 Dec 2024 15:59:11 +0100
-Message-ID: <20241212144414.963155186@linuxfoundation.org>
+Message-ID: <20241212144321.866875299@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordy Zomer <jordyzomer@google.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-commit 313dab082289e460391c82d855430ec8a28ddf81 upstream.
+[ Upstream commit b61352101470f8b68c98af674e187cfaa7c43504 ]
 
-An offset from client could be a negative value, It could allows
-to write data outside the bounds of the allocated buffer.
-Note that this issue is coming when setting
-'vfs objects = streams_xattr parameter' in ksmbd.conf.
+When nd_dax is NULL, nd_pfn is consequently NULL as well. Nevertheless,
+it is inadvisable to perform pointer arithmetic or address-taking on a
+NULL pointer.
+Introduce the nd_dax_devinit() function to enhance the code's logic and
+improve its readability.
 
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Signed-off-by: Jordy Zomer <jordyzomer@google.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20241108085526.527957-1-yiyang13@huawei.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvdimm/dax_devs.c | 4 ++--
+ drivers/nvdimm/nd.h       | 7 +++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6587,6 +6587,8 @@ int smb2_write(struct ksmbd_work *work)
- 	}
+diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
+index 6b4922de30477..37b743acbb7ba 100644
+--- a/drivers/nvdimm/dax_devs.c
++++ b/drivers/nvdimm/dax_devs.c
+@@ -106,12 +106,12 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
  
- 	offset = le64_to_cpu(req->Offset);
-+	if (offset < 0)
-+		return -EINVAL;
- 	length = le32_to_cpu(req->Length);
- 
- 	if (req->Channel == SMB2_CHANNEL_RDMA_V1 ||
+ 	nvdimm_bus_lock(&ndns->dev);
+ 	nd_dax = nd_dax_alloc(nd_region);
+-	nd_pfn = &nd_dax->nd_pfn;
+-	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
++	dax_dev = nd_dax_devinit(nd_dax, ndns);
+ 	nvdimm_bus_unlock(&ndns->dev);
+ 	if (!dax_dev)
+ 		return -ENOMEM;
+ 	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
++	nd_pfn = &nd_dax->nd_pfn;
+ 	nd_pfn->pfn_sb = pfn_sb;
+ 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
+ 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
+diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+index 2dbb1dca17b53..5ca06e9a2d292 100644
+--- a/drivers/nvdimm/nd.h
++++ b/drivers/nvdimm/nd.h
+@@ -600,6 +600,13 @@ struct nd_dax *to_nd_dax(struct device *dev);
+ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns);
+ bool is_nd_dax(const struct device *dev);
+ struct device *nd_dax_create(struct nd_region *nd_region);
++static inline struct device *nd_dax_devinit(struct nd_dax *nd_dax,
++					    struct nd_namespace_common *ndns)
++{
++	if (!nd_dax)
++		return NULL;
++	return nd_pfn_devinit(&nd_dax->nd_pfn, ndns);
++}
+ #else
+ static inline int nd_dax_probe(struct device *dev,
+ 		struct nd_namespace_common *ndns)
+-- 
+2.43.0
+
 
 
 
