@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9F49EED1F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292A39EEB9C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFA3728527C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10FB1658BB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608172210E4;
-	Thu, 12 Dec 2024 15:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485F3212B0F;
+	Thu, 12 Dec 2024 15:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7cbNatX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uoMeWEWq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECDA217F34;
-	Thu, 12 Dec 2024 15:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00441487CD;
+	Thu, 12 Dec 2024 15:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018065; cv=none; b=Bio0xvUmo7d5Hrz0GXm89+2qpJ/pEW/068CdMGD0BqmFBfr96rcjzMc+kadN+araMpJt0CU0fStELJKL788NyIPg+0Smja6/IpLtIT5xy602TNlrdkVX63KuT7ixnqkmqrnPLEtb1whk7PAIWI/FJfBg+PJhV8veH1BvdB4e6Yk=
+	t=1734016930; cv=none; b=tEjJoV7SB+mXZ6FGCkVgY9S+Lyiazkh9fytJXjglIpulmiGG2H9yBglr4oIo110iaV162/k8Zsr4tar1HD/SmqBY+uZo+b6l725ZMovRg5MpMoBtHGv7LRXiePRL7VxLNKWITYwNuc0P3QaWW5UCphj5/YkFFNJwf+LA3x6yeog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018065; c=relaxed/simple;
-	bh=RyLEYrzUz5F9391whPm/ntv/dHGH2THEqESZMNSwBDQ=;
+	s=arc-20240116; t=1734016930; c=relaxed/simple;
+	bh=4Wk7MNDw/UVotvqrlPyvVji7jVQuvQyphsAyoEkoDvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=krxwkESQpBnR64edFmlmIzO9CP1Bv/maymyrD4ZwCw1pKFY4wvZlGzA9+OZWW0JlQUFS75ugmTouiuCdcZcFflMgBRto0VLtzf/JlZntiSjF543SASMdC6CEObRnnfI66TD57TocYuW7j2g0R/5BjdskEmgwTCBS5AMkpbv32nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7cbNatX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A48DC4CECE;
-	Thu, 12 Dec 2024 15:41:03 +0000 (UTC)
+	 MIME-Version; b=WpK39KaGby8IyrhK9NbrNuVTn+5keImd6Pl+mqX5YpA0M2/N+o96XYPdMH6YlT6Amb/hrcC1g6Qh2jd2IHWMeoMDyO4tj4FAGwh8U89OuZXRNOMO/IqyOlEVgOhBEww8V9sEikSZmsjVB9EPlQj8gWVFqomw67PU4pHrJqbbC4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uoMeWEWq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56549C4CEDD;
+	Thu, 12 Dec 2024 15:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018064;
-	bh=RyLEYrzUz5F9391whPm/ntv/dHGH2THEqESZMNSwBDQ=;
+	s=korg; t=1734016929;
+	bh=4Wk7MNDw/UVotvqrlPyvVji7jVQuvQyphsAyoEkoDvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7cbNatXRMFbdMccDBRbIUVeulrlst+gVQG6WnJjJ+H54mZa/ZeTvq2QkGg3831oJ
-	 iLSzt+8BNLwT3+Bwaa7v8pnuTCEDprjWg/y3fxtDsgDJxMSgjDPAwQQ0YcsDKdYFHL
-	 fE7uDNy7xN7rgFSu31dghj9GBfOSePn5A7Kphkj0=
+	b=uoMeWEWqOmRZvP0whNQ8o6dJS1oVd+jy8iUZM8DioiHripflxN8cilvqKOdGTa/MF
+	 GD+U0Tg2dL4JNkeuQ+YpWJfg4QpE0OQvF7qlMsKrvJvuCcf24YbbyDGyHdGvpA+5xT
+	 6H4TeF4YaGsczZN1BPqOLf6aQYMYimY2whs+mMNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Dmitry Kandybka <d.kandybka@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/356] s390/cpum_sf: Handle CPU hotplug remove during sampling
+Subject: [PATCH 6.12 336/466] mptcp: fix possible integer overflow in mptcp_reset_tout_timer
 Date: Thu, 12 Dec 2024 15:58:25 +0100
-Message-ID: <20241212144251.976038860@linuxfoundation.org>
+Message-ID: <20241212144320.061468285@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Dmitry Kandybka <d.kandybka@gmail.com>
 
-[ Upstream commit a0bd7dacbd51c632b8e2c0500b479af564afadf3 ]
+[ Upstream commit b169e76ebad22cbd055101ee5aa1a7bed0e66606 ]
 
-CPU hotplug remove handling triggers the following function
-call sequence:
+In 'mptcp_reset_tout_timer', promote 'probe_timestamp' to unsigned long
+to avoid possible integer overflow. Compile tested only.
 
-   CPUHP_AP_PERF_S390_SF_ONLINE  --> s390_pmu_sf_offline_cpu()
-   ...
-   CPUHP_AP_PERF_ONLINE          --> perf_event_exit_cpu()
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-The s390 CPUMF sampling CPU hotplug handler invokes:
-
- s390_pmu_sf_offline_cpu()
- +-->  cpusf_pmu_setup()
-       +--> setup_pmc_cpu()
-            +--> deallocate_buffers()
-
-This function de-allocates all sampling data buffers (SDBs) allocated
-for that CPU at event initialization. It also clears the
-PMU_F_RESERVED bit. The CPU is gone and can not be sampled.
-
-With the event still being active on the removed CPU, the CPU event
-hotplug support in kernel performance subsystem triggers the
-following function calls on the removed CPU:
-
-  perf_event_exit_cpu()
-  +--> perf_event_exit_cpu_context()
-       +--> __perf_event_exit_context()
-	    +--> __perf_remove_from_context()
-	         +--> event_sched_out()
-	              +--> cpumsf_pmu_del()
-	                   +--> cpumsf_pmu_stop()
-                                +--> hw_perf_event_update()
-
-to stop and remove the event. During removal of the event, the
-sampling device driver tries to read out the remaining samples from
-the sample data buffers (SDBs). But they have already been freed
-(and may have been re-assigned). This may lead to a use after free
-situation in which case the samples are most likely invalid. In the
-best case the memory has not been reassigned and still contains
-valid data.
-
-Remedy this situation and check if the CPU is still in reserved
-state (bit PMU_F_RESERVED set). In this case the SDBs have not been
-released an contain valid data. This is always the case when
-the event is removed (and no CPU hotplug off occured).
-If the PMU_F_RESERVED bit is not set, the SDB buffers are gone.
-
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Link: https://patch.msgid.link/20241107103657.1560536-1-d.kandybka@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/perf_cpum_sf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/perf_cpum_sf.c b/arch/s390/kernel/perf_cpum_sf.c
-index a3169193775f7..e52c89739bc9a 100644
---- a/arch/s390/kernel/perf_cpum_sf.c
-+++ b/arch/s390/kernel/perf_cpum_sf.c
-@@ -1922,7 +1922,9 @@ static void cpumsf_pmu_stop(struct perf_event *event, int flags)
- 	event->hw.state |= PERF_HES_STOPPED;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 47ee616f69c2d..8a8e8fee337f5 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2728,8 +2728,8 @@ void mptcp_reset_tout_timer(struct mptcp_sock *msk, unsigned long fail_tout)
+ 	if (!fail_tout && !inet_csk(sk)->icsk_mtup.probe_timestamp)
+ 		return;
  
- 	if ((flags & PERF_EF_UPDATE) && !(event->hw.state & PERF_HES_UPTODATE)) {
--		hw_perf_event_update(event, 1);
-+		/* CPU hotplug off removes SDBs. No samples to extract. */
-+		if (cpuhw->flags & PMU_F_RESERVED)
-+			hw_perf_event_update(event, 1);
- 		event->hw.state |= PERF_HES_UPTODATE;
- 	}
- 	perf_pmu_enable(event->pmu);
+-	close_timeout = inet_csk(sk)->icsk_mtup.probe_timestamp - tcp_jiffies32 + jiffies +
+-			mptcp_close_timeout(sk);
++	close_timeout = (unsigned long)inet_csk(sk)->icsk_mtup.probe_timestamp -
++			tcp_jiffies32 + jiffies + mptcp_close_timeout(sk);
+ 
+ 	/* the close timeout takes precedence on the fail one, and here at least one of
+ 	 * them is active
 -- 
 2.43.0
 
