@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E0E9EF8A4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:44:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9109EF60B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:22:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EA0516261C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:36:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14B00287FEC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E837223C4D;
-	Thu, 12 Dec 2024 17:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472BA2165F0;
+	Thu, 12 Dec 2024 17:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHiQcdsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KELj014y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA36222D67;
-	Thu, 12 Dec 2024 17:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0350313CA93;
+	Thu, 12 Dec 2024 17:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024964; cv=none; b=qBR/+klH4E9OBcs1agyBGyswbD/j1XcNIaVT6gxcdlwkJ9xKG4cey+eVvdDjPJsBTz2WmzOwGOmnJeH0UE/V5Lwj9NfO2QDv673RexbKGjOYiodcDq/2ppf2jM7KtSSUkvzdQMHISqLkQp7ulEpEQqTvNLiJ0FXrnfay82eFVtM=
+	t=1734024115; cv=none; b=E5DWncZi95F1SDuGFyINqzTVwgIyvcICzanv6p1kxUCqwmngU1ZCWfYAQC6jSr6lOm11Ff6xmk4vQXKrJaV4HlsW9UAAifn4gsbk3Q98KNROD5FwvJX7JWgCzBj/YifhkXcIiJkSplRtLPPJtRw1Q0jbnKc3BMglId7PLGhqZIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024964; c=relaxed/simple;
-	bh=nHK+rx5yTAvWB8HSiFE8AU2qSbhCq0f32HZ7ZdSqnXE=;
+	s=arc-20240116; t=1734024115; c=relaxed/simple;
+	bh=i3lN6kFz+RVaTInW9tG6PfliiPEjnen5juS0/O0M2Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J32xOAQJ/AWOam7thKftNpAwDN6ETDF7v4tK9oynSpwyJMdJmjpIVECXUJKGEvYT6/TCZeTiOy4XsEC+GqhICrVDgJYZNhifykH5dYskFGU4e6j5iqew7cl/vzaX0Jdm7uWoEtC3JGefHiozfpNngAV9J+blWV5x9eL4reX0euc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHiQcdsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E9AC4CECE;
-	Thu, 12 Dec 2024 17:36:03 +0000 (UTC)
+	 MIME-Version; b=XnwNKoKjG9dB/LfLVEbXYk+1Xmd+T92qI9DYZny5DaO/OXMTMp6jjrjZQAuxh5qthMA3C5uaUvLHI5QK3f4L3tte7DnsTALNc38EK7oj18HkF86PAyrc3XC3ed41Sn8YaOauCt2vQuM3NRFIOWPPkBOqigbfSHeaWy/yt5Ja5nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KELj014y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F17C4CED0;
+	Thu, 12 Dec 2024 17:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024963;
-	bh=nHK+rx5yTAvWB8HSiFE8AU2qSbhCq0f32HZ7ZdSqnXE=;
+	s=korg; t=1734024114;
+	bh=i3lN6kFz+RVaTInW9tG6PfliiPEjnen5juS0/O0M2Qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHiQcdsXKL9rlSWm/hXy5z0FsWdbtJUoLvMdjSHerolMXOQAOo55MroErDQgwIchj
-	 e1Ot5fahXquCEiNbw59sbLCxcq4IWqQQ1VuUPKXbrSSqX14HxzxogSwagW2GpE+/u4
-	 PvHLy3931ESfCppwfxo4BnHz8DVHlt+jjjvyGY9I=
+	b=KELj014ywCwyNAGZCqRVxg6cNi66ZzkZ3Y1W9lhqKsGRigNWgWINT7PZB+DmWoWDg
+	 OJ8BxiwBdKXmmnhxjJjlLwvVdU2L1S3DY60+nQtmhRvGeGXm/Zv41VCh615l1+Olwl
+	 DSHmpAaZc3y3xHPSVKDFYZ0hZGRjxC/meqwkvbeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhang Zekun <zhangzekun11@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 003/321] net/mlx5e: kTLS, Fix incorrect page refcounting
+Subject: [PATCH 5.10 183/459] powerpc/kexec: Fix return of uninitialized variable
 Date: Thu, 12 Dec 2024 15:58:41 +0100
-Message-ID: <20241212144229.447918115@linuxfoundation.org>
+Message-ID: <20241212144300.786427349@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Zhang Zekun <zhangzekun11@huawei.com>
 
-[ Upstream commit dd6e972cc5890d91d6749bb48e3912721c4e4b25 ]
+[ Upstream commit 83b5a407fbb73e6965adfb4bd0a803724bf87f96 ]
 
-The kTLS tx handling code is using a mix of get_page() and
-page_ref_inc() APIs to increment the page reference. But on the release
-path (mlx5e_ktls_tx_handle_resync_dump_comp()), only put_page() is used.
+of_property_read_u64() can fail and leave the variable uninitialized,
+which will then be used. Return error if reading the property failed.
 
-This is an issue when using pages from large folios: the get_page()
-references are stored on the folio page while the page_ref_inc()
-references are stored directly in the given page. On release the folio
-page will be dereferenced too many times.
-
-This was found while doing kTLS testing with sendfile() + ZC when the
-served file was read from NFS on a kernel with NFS large folios support
-(commit 49b29a573da8 ("nfs: add support for large folios")).
-
-Fixes: 84d1bb2b139e ("net/mlx5e: kTLS, Limit DUMP wqe size")
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20241107183527.676877-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2e6bd221d96f ("powerpc/kexec_file: Enable early kernel OPAL calls")
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20240930075628.125138-1-zhangzekun11@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/kexec/file_load_64.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ktls_tx.c
-@@ -233,7 +233,7 @@ tx_sync_info_get(struct mlx5e_ktls_offlo
- 	while (remaining > 0) {
- 		skb_frag_t *frag = &record->frags[i];
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index a8a7cb71086b3..cb3fc0042cc25 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -909,13 +909,18 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
+ 	if (dn) {
+ 		u64 val;
  
--		get_page(skb_frag_page(frag));
-+		page_ref_inc(skb_frag_page(frag));
- 		remaining -= skb_frag_size(frag);
- 		info->frags[i++] = *frag;
+-		of_property_read_u64(dn, "opal-base-address", &val);
++		ret = of_property_read_u64(dn, "opal-base-address", &val);
++		if (ret)
++			goto out;
++
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_base", &val,
+ 						     sizeof(val), false);
+ 		if (ret)
+ 			goto out;
+ 
+-		of_property_read_u64(dn, "opal-entry-address", &val);
++		ret = of_property_read_u64(dn, "opal-entry-address", &val);
++		if (ret)
++			goto out;
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_entry", &val,
+ 						     sizeof(val), false);
  	}
-@@ -321,7 +321,7 @@ void mlx5e_ktls_tx_handle_resync_dump_co
- 	stats = sq->stats;
- 
- 	mlx5e_tx_dma_unmap(sq->pdev, dma);
--	put_page(wi->resync_dump_frag_page);
-+	page_ref_dec(wi->resync_dump_frag_page);
- 	stats->tls_dump_packets++;
- 	stats->tls_dump_bytes += wi->num_bytes;
- }
-@@ -412,12 +412,12 @@ mlx5e_ktls_tx_handle_ooo(struct mlx5e_kt
- 
- err_out:
- 	for (; i < info.nr_frags; i++)
--		/* The put_page() here undoes the page ref obtained in tx_sync_info_get().
-+		/* The page_ref_dec() here undoes the page ref obtained in tx_sync_info_get().
- 		 * Page refs obtained for the DUMP WQEs above (by page_ref_add) will be
- 		 * released only upon their completions (or in mlx5e_free_txqsq_descs,
- 		 * if channel closes).
- 		 */
--		put_page(skb_frag_page(&info.frags[i]));
-+		page_ref_dec(skb_frag_page(&info.frags[i]));
- 
- 	return MLX5E_KTLS_SYNC_FAIL;
- }
+-- 
+2.43.0
+
 
 
 
