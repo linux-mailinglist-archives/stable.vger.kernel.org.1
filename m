@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27229EF895
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 545819EF9CF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 534DF189A4BA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48DE61894E14
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8C5222D4A;
-	Thu, 12 Dec 2024 17:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E24225A33;
+	Thu, 12 Dec 2024 17:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYbNO+ya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTXcVacy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA29222D67;
-	Thu, 12 Dec 2024 17:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB882236F0;
+	Thu, 12 Dec 2024 17:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024894; cv=none; b=C8wGKmTO+flXryIvZWbHDyrtlx4QyCSn3iyithGECcoi/rsaAUlAPpKfD7MfpJgNTjUkTkcbfw4uQlcWgHngxv6qpJbDdZ4HtUaiMVEaWloB7Ql1a6DL08KU8Vgh3KGH4s8DCtKxFCXffLgOmpPyOGB8LNTk/z7l15LsAYRKAic=
+	t=1734025647; cv=none; b=kZxZzC0HeeOG/eENjqvZtSBeib7SoGp5qPOrcjwcjvEts7DBQRPChmTKGV/nYhFrSrvO4IDT2nJGRebay93PZtK38Js9W+0a6LAnXPdtnrn9HzshuVb9d3ACX9R2iUuVtPTktjMEXmv90P5Q1f9uBcTAPrLzD/JCASRKJESB/n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024894; c=relaxed/simple;
-	bh=FwrqNOK9hoYAPa4aUMYY/44Q5pXd726NCOIkVDJ7RvM=;
+	s=arc-20240116; t=1734025647; c=relaxed/simple;
+	bh=5BB5KvQVw6gNjfUHBfnipCU7dg02NLEyqHNSk9EBVl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrcCYr6dm7ddZJnglLBIsiVB77YXNwufRU1QcndYioPXp/KMB2b09J19MQcrfgExOw+xVwZAiZJdNj/8jD1M1UT8URBsgLT0BjRaF1eYNHAdAkRPWyTywVjsrYtzXXV4iWvjhO9+tokrdlJvKtk7emvuxewFiufoi+OQzIQVsEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYbNO+ya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A6DC4CECE;
-	Thu, 12 Dec 2024 17:34:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K0q8RqHYwBbz8HEeaY5RzfFE88irhyK4BuplECS7tc9Tq7wQlF9CyaxjvfJvd5kIWzOe64UA2IktaCdlbwdyvyRAqMjQywNhT+0G3HqSGNjkClwVSQ651VFh4c1/8sfRI4RUysTqNdpIO2cRkhTPWQIYzvcI8iNMnzeFzyZxQIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTXcVacy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DC4C4CECE;
+	Thu, 12 Dec 2024 17:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024894;
-	bh=FwrqNOK9hoYAPa4aUMYY/44Q5pXd726NCOIkVDJ7RvM=;
+	s=korg; t=1734025645;
+	bh=5BB5KvQVw6gNjfUHBfnipCU7dg02NLEyqHNSk9EBVl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PYbNO+yaPwiKhQl0aayELE2PlecicMVOqWz3x63Gdf6cXegx7ilF99/qBFxINXQfI
-	 cgMhuGfJQoNBlkXkYK/iz3hO4/Qzum1HrurOHw0lO3ZS6gEyKH2Om04UfysPZNybKw
-	 me2cdGIYTpaoEBLvKSsaA43vwBPA6yxitpSg8evE=
+	b=bTXcVacyHBcAFT7vkRg9evYydmdZwRDcnegqc4NZVStOMMb8EaTdf8AaRtPYeUFL7
+	 DNrdHtRyDdYC1zWtF9puQpMMpRREU3uq84Rp4CimStGOruPolmWbmNHAnezCVFGziB
+	 RvLVqxMU/pBvFV+a1ux1ut4N1aS9pQvYyvseXXxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Esben Haabendal <esben@geanix.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Juergen Gross <jgross@suse.com>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	SeongJae Park <sjpark@amazon.de>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 417/459] pinctrl: freescale: fix COMPILE_TEST error with PINCTRL_IMX_SCU
-Date: Thu, 12 Dec 2024 16:02:35 +0100
-Message-ID: <20241212144310.236125235@linuxfoundation.org>
+Subject: [PATCH 5.4 238/321] xenbus/backend: Add memory pressure handler callback
+Date: Thu, 12 Dec 2024 16:02:36 +0100
+Message-ID: <20241212144239.378838454@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: SeongJae Park <sjpark@amazon.de>
 
-[ Upstream commit 58414a31c5713afb5449fd74a26a843d34cc62e8 ]
+[ Upstream commit 8a105678fb3ec4763352db84745968bf2cb4aa65 ]
 
-When PINCTRL_IMX_SCU was selected by PINCTRL_IMX8DXL or PINCTRL_IMX8QM
-combined with COMPILE_TEST on a non-arm platforms, the IMX_SCU
-dependency could not be enabled.
+Granting pages consumes backend system memory.  In systems configured
+with insufficient spare memory for those pages, it can cause a memory
+pressure situation.  However, finding the optimal amount of the spare
+memory is challenging for large systems having dynamic resource
+utilization patterns.  Also, such a static configuration might lack
+flexibility.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410031439.GyTSa0kX-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202410030852.q0Hukplf-lkp@intel.com/
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/20241003-imx-pinctrl-compile-test-fix-v1-1-145ca1948cc3@geanix.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+To mitigate such problems, this commit adds a memory reclaim callback to
+'xenbus_driver'.  If a memory pressure is detected, 'xenbus' requests
+every backend driver to volunarily release its memory.
+
+Note that it would be able to improve the callback facility for more
+sophisticated handlings of general pressures.  For example, it would be
+possible to monitor the memory consumption of each device and issue the
+release requests to only devices which causing the pressure.  Also, the
+callback could be extended to handle not only memory, but general
+resources.  Nevertheless, this version of the implementation defers such
+sophisticated goals as a future work.
+
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Roger Pau Monné <roger.pau@citrix.com>
+Signed-off-by: SeongJae Park <sjpark@amazon.de>
+Signed-off-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Stable-dep-of: afc545da381b ("xen: Fix the issue of resource not being properly released in xenbus_dev_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/freescale/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/xenbus/xenbus_probe_backend.c | 32 +++++++++++++++++++++++
+ include/xen/xenbus.h                      |  1 +
+ 2 files changed, 33 insertions(+)
 
-diff --git a/drivers/pinctrl/freescale/Kconfig b/drivers/pinctrl/freescale/Kconfig
-index a1fbb3b9ae346..eefc786d08b45 100644
---- a/drivers/pinctrl/freescale/Kconfig
-+++ b/drivers/pinctrl/freescale/Kconfig
-@@ -9,7 +9,7 @@ config PINCTRL_IMX
+diff --git a/drivers/xen/xenbus/xenbus_probe_backend.c b/drivers/xen/xenbus/xenbus_probe_backend.c
+index 4bb603051d5b6..386a1348694a7 100644
+--- a/drivers/xen/xenbus/xenbus_probe_backend.c
++++ b/drivers/xen/xenbus/xenbus_probe_backend.c
+@@ -255,6 +255,35 @@ static int backend_probe_and_watch(struct notifier_block *notifier,
+ 	return NOTIFY_DONE;
+ }
  
- config PINCTRL_IMX_SCU
- 	tristate
--	depends on IMX_SCU
-+	depends on IMX_SCU || COMPILE_TEST
- 	select PINCTRL_IMX
++static int backend_reclaim_memory(struct device *dev, void *data)
++{
++	const struct xenbus_driver *drv;
++
++	if (!dev->driver)
++		return 0;
++	drv = to_xenbus_driver(dev->driver);
++	if (drv && drv->reclaim_memory)
++		drv->reclaim_memory(to_xenbus_device(dev));
++	return 0;
++}
++
++/*
++ * Returns 0 always because we are using shrinker to only detect memory
++ * pressure.
++ */
++static unsigned long backend_shrink_memory_count(struct shrinker *shrinker,
++				struct shrink_control *sc)
++{
++	bus_for_each_dev(&xenbus_backend.bus, NULL, NULL,
++			backend_reclaim_memory);
++	return 0;
++}
++
++static struct shrinker backend_memory_shrinker = {
++	.count_objects = backend_shrink_memory_count,
++	.seeks = DEFAULT_SEEKS,
++};
++
+ static int __init xenbus_probe_backend_init(void)
+ {
+ 	static struct notifier_block xenstore_notifier = {
+@@ -271,6 +300,9 @@ static int __init xenbus_probe_backend_init(void)
  
- config PINCTRL_IMX1_CORE
+ 	register_xenstore_notifier(&xenstore_notifier);
+ 
++	if (register_shrinker(&backend_memory_shrinker))
++		pr_warn("shrinker registration failed\n");
++
+ 	return 0;
+ }
+ subsys_initcall(xenbus_probe_backend_init);
+diff --git a/include/xen/xenbus.h b/include/xen/xenbus.h
+index 14d47ed4114fd..cf37b2d93560f 100644
+--- a/include/xen/xenbus.h
++++ b/include/xen/xenbus.h
+@@ -113,6 +113,7 @@ struct xenbus_driver {
+ 	struct device_driver driver;
+ 	int (*read_otherend_details)(struct xenbus_device *dev);
+ 	int (*is_ready)(struct xenbus_device *dev);
++	void (*reclaim_memory)(struct xenbus_device *dev);
+ };
+ 
+ static inline struct xenbus_driver *to_xenbus_driver(struct device_driver *drv)
 -- 
 2.43.0
 
