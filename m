@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3806C9EEC7D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E659EF33E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3362F188559D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:33:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15770291CE2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0A5215774;
-	Thu, 12 Dec 2024 15:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B429223E98;
+	Thu, 12 Dec 2024 16:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlKXoR2Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vqokpd6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34C66F2FE;
-	Thu, 12 Dec 2024 15:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB79B213E99;
+	Thu, 12 Dec 2024 16:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017608; cv=none; b=ZE0Kywx2nwqxfLb/vMHZ+lwK1aiE04SMg3GwHoK+xqeQ5DVRfRtN+tOtXv///XYyZjzD/Bm9nDZullDrz7rfOscG9WW2jV4dQmU9YN+Rj/SxT574gyYX1lPpPsGQ+oYN3Ch/4oGYcJPuMfqSkvCeb5RIJgTAagQORqEE65+oo5M=
+	t=1734022242; cv=none; b=eYIwEoVttPPSSr80m8l71JkEj9pG4B3a/hzdiwL/3F4eyE7q+CqBOk/3oEgTLqPNiW1PB1aFJVLO3eK3gkt8x9v9l+V6N+NFqRjWe3d1qHbQIU64C+6edu4pOav0Nyl2JhIvK3g3YEkyXCYOqbt7mh+9CVJvlWbzLWx+jxdSIpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017608; c=relaxed/simple;
-	bh=iPAvPRZpAsXK5tWJlqtTe/Y0m4SQoLJuKIs0GQc4URk=;
+	s=arc-20240116; t=1734022242; c=relaxed/simple;
+	bh=3lMzk6nRlFrS1uC7rUq4MzFwIbodf8uJSwFzlgUnQ8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UI1vA8drRtT76UirY7aMCsEGfSf1kJHoSuC1OtPR8lW5PoLd4QaIU3C+yNgFU9slGpqcOHKKL9UhrvjieF6ct6auvQkdRh01P0tjHs27BwemQi/gWLwpejSwd/LON8xajqqUSwonKOh09163bjV3bQrl31SBsJ01+q29QRFmG5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlKXoR2Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DFEC4CECE;
-	Thu, 12 Dec 2024 15:33:28 +0000 (UTC)
+	 MIME-Version; b=TW2uwUKr0B7jB/VmwYtx2hZQWboYcU8kRbKFkokYL8jRdmTBblLLQiNDi7/22Vfr+Utr3YRQZfgtFkie6ktZGR9vvCksTtgs83CHqSb6d9gNjPOWvVXAPMOYs8ZVVi5i8npGyG4a2MKli549HiQwisyL+ggW75GV4e6BHlo8Bcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vqokpd6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F9EC4CECE;
+	Thu, 12 Dec 2024 16:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017608;
-	bh=iPAvPRZpAsXK5tWJlqtTe/Y0m4SQoLJuKIs0GQc4URk=;
+	s=korg; t=1734022241;
+	bh=3lMzk6nRlFrS1uC7rUq4MzFwIbodf8uJSwFzlgUnQ8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlKXoR2QPEZbDWYq8AYkb7XAKyFzoOMVgw5FGohOFaCgthwRKSi3qB1PJiYWKJ/jS
-	 aHA1O+lSZ/BcsWgF2brySFVeSto+4MilprrQOhwh5nQMJDDFAW3cvOw0xcpI29JdOf
-	 RGwUw+FsS8YFIqiZhGuIh2kQhdWBdjv1fgg1+9yA=
+	b=Vqokpd6zvJ+tsW4YItL1vy4DMu/+c4X3d8rcRvslzcgtojvboLSGfVPH9b67e3VkE
+	 +KkMNADwVALP2s7j8xYnYUViCsNuADi6sPSqOzoxHyAMMoRzf+eEGbcgGmCm842G6n
+	 nWUfkGwEnEXswaQEvGaVWy3xbFBwELn8XwKcVZ3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Wiesner <jwiesner@suse.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/356] net/ipv6: release expired exception dst cached in socket
-Date: Thu, 12 Dec 2024 15:55:50 +0100
-Message-ID: <20241212144245.856525646@linuxfoundation.org>
+Subject: [PATCH 5.15 156/565] wifi: ath10k: fix invalid VHT parameters in supported_vht_mcs_rate_nss2
+Date: Thu, 12 Dec 2024 15:55:51 +0100
+Message-ID: <20241212144317.645869778@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Wiesner <jwiesner@suse.de>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 3301ab7d5aeb0fe270f73a3d4810c9d1b6a9f045 ]
+[ Upstream commit 52db16ec5bae7bd027804265b968259d1a6c3970 ]
 
-Dst objects get leaked in ip6_negative_advice() when this function is
-executed for an expired IPv6 route located in the exception table. There
-are several conditions that must be fulfilled for the leak to occur:
-* an ICMPv6 packet indicating a change of the MTU for the path is received,
-  resulting in an exception dst being created
-* a TCP connection that uses the exception dst for routing packets must
-  start timing out so that TCP begins retransmissions
-* after the exception dst expires, the FIB6 garbage collector must not run
-  before TCP executes ip6_negative_advice() for the expired exception dst
+In supported_vht_mcs_rate_nss2, the rate for MCS9 & VHT20 is defined as
+{1560, 1733}, this does not align with firmware's definition and therefore
+fails the verification in ath10k_mac_get_rate_flags_vht():
 
-When TCP executes ip6_negative_advice() for an exception dst that has
-expired and if no other socket holds a reference to the exception dst, the
-refcount of the exception dst is 2, which corresponds to the increment
-made by dst_init() and the increment made by the TCP socket for which the
-connection is timing out. The refcount made by the socket is never
-released. The refcount of the dst is decremented in sk_dst_reset() but
-that decrement is counteracted by a dst_hold() intentionally placed just
-before the sk_dst_reset() in ip6_negative_advice(). After
-ip6_negative_advice() has finished, there is no other object tied to the
-dst. The socket lost its reference stored in sk_dst_cache and the dst is
-no longer in the exception table. The exception dst becomes a leaked
-object.
+	invalid vht params rate 1730 100kbps nss 2 mcs 9
 
-As a result of this dst leak, an unbalanced refcount is reported for the
-loopback device of a net namespace being destroyed under kernels that do
-not contain e5f80fcf869a ("ipv6: give an IPv6 dev to blackhole_netdev"):
-unregister_netdevice: waiting for lo to become free. Usage count = 2
+and:
 
-Fix the dst leak by removing the dst_hold() in ip6_negative_advice(). The
-patch that introduced the dst_hold() in ip6_negative_advice() was
-92f1655aa2b22 ("net: fix __dst_negative_advice() race"). But 92f1655aa2b22
-merely refactored the code with regards to the dst refcount so the issue
-was present even before 92f1655aa2b22. The bug was introduced in
-54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually
-expired.") where the expired cached route is deleted and the sk_dst_cache
-member of the socket is set to NULL by calling dst_negative_advice() but
-the refcount belonging to the socket is left unbalanced.
+	invalid vht params rate 1920 100kbps nss 2 mcs 9
 
-The IPv4 version - ipv4_negative_advice() - is not affected by this bug.
-When the TCP connection times out ipv4_negative_advice() merely resets the
-sk_dst_cache of the socket while decrementing the refcount of the
-exception dst.
+Change it to {1730,  1920} to align with firmware to fix the issue.
 
-Fixes: 92f1655aa2b22 ("net: fix __dst_negative_advice() race")
-Fixes: 54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually expired.")
-Link: https://lore.kernel.org/netdev/20241113105611.GA6723@incl/T/#u
-Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241128085950.GA4505@incl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Since ath10k_hw_params::supports_peer_stats_info is enabled only for
+QCA6174, this change does not affect other chips.
+
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
+
+Fixes: 3344b99d69ab ("ath10k: add bitrate parse for peer stats info")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/lkml/fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13 9360
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240711020344.98040-3-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 0fdd062d4b05b..fc5c534620253 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -2772,10 +2772,10 @@ static void ip6_negative_advice(struct sock *sk,
- 	if (rt->rt6i_flags & RTF_CACHE) {
- 		rcu_read_lock();
- 		if (rt6_check_expired(rt)) {
--			/* counteract the dst_release() in sk_dst_reset() */
--			dst_hold(dst);
-+			/* rt/dst can not be destroyed yet,
-+			 * because of rcu_read_lock()
-+			 */
- 			sk_dst_reset(sk);
--
- 			rt6_remove_exception_rt(rt);
- 		}
- 		rcu_read_unlock();
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index f91251770250f..2b4c694b0fbbe 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -9081,7 +9081,7 @@ static const struct ath10k_index_vht_data_rate_type supported_vht_mcs_rate_nss2[
+ 	{6,  {5265, 5850}, {2430, 2700}, {1170, 1300} },
+ 	{7,  {5850, 6500}, {2700, 3000}, {1300, 1444} },
+ 	{8,  {7020, 7800}, {3240, 3600}, {1560, 1733} },
+-	{9,  {7800, 8667}, {3600, 4000}, {1560, 1733} }
++	{9,  {7800, 8667}, {3600, 4000}, {1730, 1920} }
+ };
+ 
+ static void ath10k_mac_get_rate_flags_ht(struct ath10k *ar, u32 rate, u8 nss, u8 mcs,
 -- 
 2.43.0
 
