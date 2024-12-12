@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9D79EF040
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8F59EEC23
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB9EE28FC72
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DFE128455C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D4422A7F3;
-	Thu, 12 Dec 2024 16:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6DC217670;
+	Thu, 12 Dec 2024 15:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TymaDDWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I70Y9hjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55424229691;
-	Thu, 12 Dec 2024 16:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FADE2153DF;
+	Thu, 12 Dec 2024 15:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020100; cv=none; b=uwU1p7wcJEJOQMX8+tRpQxhdV8JOl8ASuybYKCl5TmUSuNIGyFlc1P4PAm2MV7JG7bYFztXMQFo78MUrL+/lDTrly5+/USiLWVC9mKt9nlXgqJIRfiykD1tpPJSN3+MFKDdm/BBIDpXMVntvJrYZHzIYKEZZvccp3n7RMKBdyJw=
+	t=1734017489; cv=none; b=KcQz9ERqVwZprLt/lFyfjcBjAdInCLxtgnJGwQpn8C1vfIGx4n632gD1DBICrMUAyKMmHsNQmam1xvN0cQtJI0IHiwe1neImSAGnnZ9iTyJAbCUuqKbpNBruqhmOYYl282PdUXP9nWh+iH2T3Au7FhFvX5FXwQIk0Zoe2q/lyB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020100; c=relaxed/simple;
-	bh=e//9K9SJaTbb8Ej8NrvTmDQJri8Lwv0SoLoFm34wCQc=;
+	s=arc-20240116; t=1734017489; c=relaxed/simple;
+	bh=QnMfSGPOP8JWL9c4vxV8x+F1CqHtyctGbTPFXlV7TAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stSFFEGeWTZLGY8IxLbmkVcJd4MYVoowrOH+tj17kIApGAsgwwWMfNABeWTXSm9ZEqwIUZO683hiViTi2enQCq6fPWXmP1Oytc/XE456fv6BjF/y1xafLaNPYI1jniazEn7QWU7WgUmN57Goc3a1geNGr0F2Eh7fj1IVUDbj18g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TymaDDWQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62534C4CECE;
-	Thu, 12 Dec 2024 16:14:59 +0000 (UTC)
+	 MIME-Version; b=gNJdSicAnTrug2UpSH0ZXlsyhLZhObe2ROPRrYxnM+qX5Uaca15Rlg0TlOzVIHBMeVyEm6msKjetZJ/Oz0UtJdJyI0f7lZcIzDqQ3MOGJ/Fc3doxCG1QSv9dvObo4X8jy4Us+NYxN4ZXpBtfMnHPG+7hsatHrdQbyTbdver/SzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I70Y9hjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF476C4CECE;
+	Thu, 12 Dec 2024 15:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020100;
-	bh=e//9K9SJaTbb8Ej8NrvTmDQJri8Lwv0SoLoFm34wCQc=;
+	s=korg; t=1734017489;
+	bh=QnMfSGPOP8JWL9c4vxV8x+F1CqHtyctGbTPFXlV7TAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TymaDDWQJTNJczIT++bFkiUgrsLWu/KodAO0zTbgsC4pSdPVThQJbqMmpoqCncYcq
-	 0mtkd9EdNn9FIOxq9YkvVO2tMcxGAYgtCqDPmDNZCQ0HINvY7YbkP+WTGp99i2rDnG
-	 bsaBaRYohmf8y9xihqfhVOElsu/mMpJhJZGfVKY8=
+	b=I70Y9hjNhnoBgEZiRs9ihJWZhvBncfJhWgIeXqS4m+mcShHiQ9gSczq0AwT3Zvsb6
+	 cljf+nTs40eHcPEp3o9S9Pr31H7Vs54rZIadYyxF0CkjZbnSAK+Gpedz1AVhfoEyvZ
+	 AuVOSYodQUWqZIgsTpZQROWoYoopaMkikWsFrhv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
-	Lin Feng <linf@wangsu.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.1 377/772] tty: ldsic: fix tty_ldisc_autoload sysctls proc_handler
-Date: Thu, 12 Dec 2024 15:55:22 +0100
-Message-ID: <20241212144405.480334567@linuxfoundation.org>
+	Yassine Oudjana <y.oudjana@protonmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 004/356] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
+Date: Thu, 12 Dec 2024 15:55:23 +0100
+Message-ID: <20241212144244.789393515@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+From: Yassine Oudjana <y.oudjana@protonmail.com>
 
-commit 635a9fca54f4f4148be1ae1c7c6bd37af80f5773 upstream.
+[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
 
-Commit 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of
-ldiscs") introduces the tty_ldisc_autoload sysctl with the wrong
-proc_handler. .extra1 and .extra2 parameters are set to avoid other values
-thant SYSCTL_ZERO or SYSCTL_ONE to be set but proc_dointvec do not uses
-them.
+Clear the IRQ enable bit of WDT_MODE before asserting software reset
+in order to make TOPRGU issue a system reset signal instead of an IRQ.
 
-This commit fixes this by using proc_dointvec_minmax instead of
-proc_dointvec.
-
-Fixes: 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of ldiscs")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
-Reviewed-by: Lin Feng <linf@wangsu.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20241112131357.49582-4-nicolas.bouchinet@clip-os.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
+Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_ldisc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/mtk_wdt.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/tty/tty_ldisc.c
-+++ b/drivers/tty/tty_ldisc.c
-@@ -830,7 +830,7 @@ static struct ctl_table tty_table[] = {
- 		.data		= &tty_ldisc_autoload,
- 		.maxlen		= sizeof(tty_ldisc_autoload),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
- 		.extra1		= SYSCTL_ZERO,
- 		.extra2		= SYSCTL_ONE,
- 	},
+diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
+index b2330b16b497a..0559d9f2d97b3 100644
+--- a/drivers/watchdog/mtk_wdt.c
++++ b/drivers/watchdog/mtk_wdt.c
+@@ -186,9 +186,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
+ {
+ 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
+ 	void __iomem *wdt_base;
++	u32 reg;
+ 
+ 	wdt_base = mtk_wdt->wdt_base;
+ 
++	/* Enable reset in order to issue a system reset instead of an IRQ */
++	reg = readl(wdt_base + WDT_MODE);
++	reg &= ~WDT_MODE_IRQ_EN;
++	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
++
+ 	while (1) {
+ 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
+ 		mdelay(5);
+-- 
+2.43.0
+
 
 
 
