@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98BD59EF67A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F32EE9EF93B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:49:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D553188107F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB3CE28E713
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820D5215762;
-	Thu, 12 Dec 2024 17:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305C821660B;
+	Thu, 12 Dec 2024 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfuyC3YI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RG/zhyJP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9032139D2;
-	Thu, 12 Dec 2024 17:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E071F2236F0;
+	Thu, 12 Dec 2024 17:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023439; cv=none; b=GJZP+UiT165csSqOZWCoDKVexenjStTls1OWH6uBatmU/NG4GgSagJ82rcMUMEJsKRuH53zsEyrzIkFnqf6rBCbFmphQG2iFkMiUjfWVtejGq8tJwp0Rqy5IcLVJ6RaL1Uxlaka12htmyhLd9K3z1hgRZyjzpfKAe3UB9IMrvLU=
+	t=1734025652; cv=none; b=Vg2L7UF+Db38WDp8XYvxzEPGe/NW/SAMPjE0oANbz65ll3CRfB7CPe/7RMDZ65Ta1ZZvuacoraakvCc8j4BYnFlrwLo2rOCW1tBh/kYd/4+fT5bbxzIstdId/ykRW85mwfMeypE9ujAf7+Q6a1u7ol3TJIgVQ6FBq+T8p+b7l6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023439; c=relaxed/simple;
-	bh=vyFG99sW/SpILjuvu5cqYFQemk/Sq3TuQW8OASVkptk=;
+	s=arc-20240116; t=1734025652; c=relaxed/simple;
+	bh=4SWuT9gypCf+T/t7QOWEfrdKJu6qjOq0tCz3ZLUd1Ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTNAIgktsL3f5vLaLcv9MKN/0bxwYVnhJj3A/KvskMlqg4+5rQLWOZsQwykkPBFyLbQbHZ6bhufknHgodZRGUN02ToYMC8ELA5rZ8392gwupeh11aIlG1kN0lXoZ3L1/lqlDtt6miY8jjgAhFbSvMszx0stbj5oF6Dvp/3/OBoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfuyC3YI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92DDC4CECE;
-	Thu, 12 Dec 2024 17:10:38 +0000 (UTC)
+	 MIME-Version; b=ezpvVsTsx8oDRGq/0wMHRVhm4cOXGzksC+T2eHTvudw65LR3Wm3BqvfAlH9YSgljS+QcBH2I7TYkTUF4dIuj5kuslySdFx8ayYJaJi/vQrm1pwfPgfmRoNDCZ95Wm5q/q7FncwhGBE3+sYV9fWvxJ4eVl+SAMS842yjvlICzEwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RG/zhyJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E7CC4CECE;
+	Thu, 12 Dec 2024 17:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023439;
-	bh=vyFG99sW/SpILjuvu5cqYFQemk/Sq3TuQW8OASVkptk=;
+	s=korg; t=1734025651;
+	bh=4SWuT9gypCf+T/t7QOWEfrdKJu6qjOq0tCz3ZLUd1Ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfuyC3YI+m9kkduDFXV71F9WJcSxl1iOf979T7Ikp8K57m+23fz8SJgibLOrF5zei
-	 oKhYf4BU9grrS2GBuNxCD0LA3YP3CQiotbtR4VZhiG8oS85fZWoXrSl1DZF4OSWbis
-	 R1rf8oG8DaYkfITJIY7TfAQKyOSQCgblGDILsMX0=
+	b=RG/zhyJPmXSxYuSqf8kzG4Dpa7T0kPcNwafYnrsoNiDOvEYKQttHsiW5R/1dSpczn
+	 b3mEvTd2x4hkk3+VLaDXsN1jMuEzu/YWLb2VJTN1BL5NfoGzFaO80vl9+ugBy9J7pE
+	 uzSAal+kkMh7+VFYBWzD/Ob7jnek33QErGAXbHVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 534/565] sched/fair: Check idle_cpu() before need_resched() to detect ilb CPU turning busy
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.4 211/321] clk: qcom: gcc-qcs404: fix initial rate of GPLL3
 Date: Thu, 12 Dec 2024 16:02:09 +0100
-Message-ID: <20241212144332.933674218@linuxfoundation.org>
+Message-ID: <20241212144238.315250230@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit ff47a0acfcce309cf9e175149c75614491953c8f ]
+commit 36d202241d234fa4ac50743510d098ad52bd193a upstream.
 
-Commit b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
-optimizes IPIs to idle CPUs in TIF_POLLING_NRFLAG mode by setting the
-TIF_NEED_RESCHED flag in idle task's thread info and relying on
-flush_smp_call_function_queue() in idle exit path to run the
-call-function. A softirq raised by the call-function is handled shortly
-after in do_softirq_post_smp_call_flush() but the TIF_NEED_RESCHED flag
-remains set and is only cleared later when schedule_idle() calls
-__schedule().
+The comment before the config of the GPLL3 PLL says that the
+PLL should run at 930 MHz. In contrary to this, calculating
+the frequency from the current configuration values by using
+19.2 MHz as input frequency defined in 'qcs404.dtsi', it gives
+921.6 MHz:
 
-need_resched() check in _nohz_idle_balance() exists to bail out of load
-balancing if another task has woken up on the CPU currently in-charge of
-idle load balancing which is being processed in SCHED_SOFTIRQ context.
-Since the optimization mentioned above overloads the interpretation of
-TIF_NEED_RESCHED, check for idle_cpu() before going with the existing
-need_resched() check which can catch a genuine task wakeup on an idle
-CPU processing SCHED_SOFTIRQ from do_softirq_post_smp_call_flush(), as
-well as the case where ksoftirqd needs to be preempted as a result of
-new task wakeup or slice expiry.
+  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x0
+  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
+  921600000.00000000000000000000
 
-In case of PREEMPT_RT or threadirqs, although the idle load balancing
-may be inhibited in some cases on the ilb CPU, the fact that ksoftirqd
-is the only fair task going back to sleep will trigger a newidle balance
-on the CPU which will alleviate some imbalance if it exists if idle
-balance fails to do so.
+Set 'alpha_hi' in the configuration to a value used in downstream
+kernels [1][2] in order to get the correct output rate:
 
-Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241119054432.6405-4-kprateek.nayak@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  $ xo=19200000; l=48; alpha=0x0; alpha_hi=0x70
+  $ echo "$xo * ($((l)) + $(((alpha_hi << 32 | alpha) >> 8)) / 2^32)" | bc -l
+  930000000.00000000000000000000
+
+The change is based on static code analysis, compile tested only.
+
+[1] https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/kernel.lnx.5.4.r56-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L335
+[2} https://git.codelinaro.org/clo/la/kernel/msm-5.15/-/blob/kernel.lnx.5.15.r49-rel/drivers/clk/qcom/gcc-qcs404.c?ref_type=heads#L127
+
+Cc: stable@vger.kernel.org
+Fixes: 652f1813c113 ("clk: qcom: gcc: Add global clock controller driver for QCS404")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/r/20241022-fix-gcc-qcs404-gpll3-v1-1-c4d30d634d19@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-qcs404.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 6e1a6d6285d12..4056330d38887 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -11016,7 +11016,7 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
- 		 * work being done for other CPUs. Next load
- 		 * balancing owner will pick it up.
- 		 */
--		if (need_resched()) {
-+		if (!idle_cpu(this_cpu) && need_resched()) {
- 			if (flags & NOHZ_STATS_KICK)
- 				has_blocked_load = true;
- 			goto abort;
--- 
-2.43.0
-
+--- a/drivers/clk/qcom/gcc-qcs404.c
++++ b/drivers/clk/qcom/gcc-qcs404.c
+@@ -337,6 +337,7 @@ static struct clk_alpha_pll gpll1_out_ma
+ /* 930MHz configuration */
+ static const struct alpha_pll_config gpll3_config = {
+ 	.l = 48,
++	.alpha_hi = 0x70,
+ 	.alpha = 0x0,
+ 	.alpha_en_mask = BIT(24),
+ 	.post_div_mask = 0xf << 8,
 
 
 
