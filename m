@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-104003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B83A9F0A93
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:14:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8142C9F0A95
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:14:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C68A2813DF
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:14:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB2841882312
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD011DB34B;
-	Fri, 13 Dec 2024 11:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD2D1D88D0;
+	Fri, 13 Dec 2024 11:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmaRwMMW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7M5kUlu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931AA1CEAD6;
-	Fri, 13 Dec 2024 11:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399BB1CEAD6
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 11:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734088453; cv=none; b=CvChmeLu919Ewb8jaL3N+FcgGTpuLZWbk49yy8uSlldC3npjW0aY3xCwvbYqvNRKslaIduuGz2OcED16VibAEUAmjHpn/Ly/tHfb+JHbMc8bolyqwGePv5IkTdi6pkql3SDJEG744HR9RSl1ragCrEWbVwrml7v7Cfdaj0hQOjQ=
+	t=1734088476; cv=none; b=UCkiDUKS4b+MBsz3dhrfPBG8MFsK7Nyy2OfFOwa4neEDNFW89CRBYe6mlyhcR6oPQCrFzSuNM5snrx4+vsLtDX07UAPUEf2xIHj+vmDj9Z40V0YKsR8WbnUqTtrgPQH8knQ02h1Ci7vNdIEmrcwP2IKTLQBGO5HFdrjKJBZ4xS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734088453; c=relaxed/simple;
-	bh=6646rlh+vU0geIq1jRDLfASPiHXhYsJuMUx/KA8ipK8=;
+	s=arc-20240116; t=1734088476; c=relaxed/simple;
+	bh=K15J6u69x4YivTrtdFSNgp7oYY1XJ1tXJiK8YA56sWc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Db22dDSxrTg54B9GUncW5Fhv1fWIuhyZgHWgQrDbEkSONXPv6yPsPn1QRtLiQY79Rr1PlZ0gZzeApR9VStDnqVo7LmVaA9lfABgn9VEAMF3ETEmjIBnqvsM82NIn3PAzSs5CXZzRF993TOzwp/93Gf+7GkuNAPrY8qhEFmEDOPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmaRwMMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85744C4CED0;
-	Fri, 13 Dec 2024 11:14:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=D6DbEMU8SWavlfVbr2v7DQDNSrNTctQ1rF6LWTZScx6kLqa/bomoz/APYe3FMDay/jnSeWJ0FuWsG+sl5A1nfYESuNhdwpeDJ9p41ByTGpkLKdcRG2Vri1H0+PULen20vBNLsANK0SkFuthF6fftB/e7J5qA9OPVJ7S2DLH455E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7M5kUlu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29925C4CED4;
+	Fri, 13 Dec 2024 11:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734088452;
-	bh=6646rlh+vU0geIq1jRDLfASPiHXhYsJuMUx/KA8ipK8=;
+	s=korg; t=1734088474;
+	bh=K15J6u69x4YivTrtdFSNgp7oYY1XJ1tXJiK8YA56sWc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kmaRwMMWuDBJ02xjNv1OVGvUGGZmgNvUxL8+/iSi0uzmdFX2Cj85wPkCApS/2Zh94
-	 f8+d60af/ohbFE2gH97H+Y02Gt5dH4I0WX9maAh+tSefEIrxEcKZ1RhXr3fSmmbx5V
-	 3Ljz3NGfWuQFOgnIYNnVDyRcsf1e7l9RVbWkSLE8=
-Date: Fri, 13 Dec 2024 12:14:08 +0100
+	b=L7M5kUluiuWNrlDD2QNsbXpW9pXQ/y13vsFEQgxtZgBIzFfcZhoYky6U92ZPVFFiO
+	 qHGOx/cGLdRYnhcPzjxIrqObBCegYCKl1gDJcMNd3Rlrv6v2I2JKWmLQ+Vm2NovTAX
+	 jAnh4OeuTm1XJHnGq+AfHdbN4qbUGX/c7xrqvRNc=
+Date: Fri, 13 Dec 2024 12:14:31 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: haixiao.yan.cn@eng.windriver.com
-Cc: nathanl@linux.ibm.com, mpe@ellerman.id.au, benh@kernel.crashing.org,
-	paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	haixiao.yan.cn@windriver.com
-Subject: Re: [PATCH] powerpc/rtas: Prevent Spectre v1 gadget construction in
- sys_rtas()
-Message-ID: <2024121332-earplugs-monkhood-745d@gregkh>
-References: <20241213034422.2916981-1-haixiao.yan.cn@eng.windriver.com>
+To: guocai.he.cn@windriver.com
+Cc: stable@vger.kernel.org, mschmidt@redhat.com, selvin.xavier@broadcom.com,
+	leon@kernel.org
+Subject: Re: [PATCH V3][5.15.y] bnxt_re: avoid shift undefined behavior in
+ bnxt_qplib_alloc_init_hwq
+Message-ID: <2024121325-gossip-subsystem-1014@gregkh>
+References: <20241213034620.2897953-1-guocai.he.cn@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,37 +55,17 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241213034422.2916981-1-haixiao.yan.cn@eng.windriver.com>
+In-Reply-To: <20241213034620.2897953-1-guocai.he.cn@windriver.com>
 
-On Fri, Dec 13, 2024 at 11:44:22AM +0800, haixiao.yan.cn@eng.windriver.com wrote:
-> From: Nathan Lynch <nathanl@linux.ibm.com>
+On Fri, Dec 13, 2024 at 11:46:20AM +0800, guocai.he.cn@windriver.com wrote:
+> From: Michal Schmidt <mschmidt@redhat.com>
 > 
-> [ Upstream commit 0974d03eb479384466d828d65637814bee6b26d7 ]
+> commit 78cfd17142ef70599d6409cbd709d94b3da58659 upstream.
 > 
-> Smatch warns:
-> 
->   arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
->   spectre issue 'args.args' [r] (local cap)
-> 
-> The 'nargs' and 'nret' locals come directly from a user-supplied
-> buffer and are used as indexes into a small stack-based array and as
-> inputs to copy_to_user() after they are subject to bounds checks.
-> 
-> Use array_index_nospec() after the bounds checks to clamp these values
-> for speculative execution.
-> 
-> Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-> Reported-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Breno Leitao <leitao@debian.org>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
-> Signed-off-by: Haixiao Yan <haixiao.yan.cn@windriver.com>
-> ---
-> This commit is backporting 0974d03eb479 to the branch linux-5.15.y to
-> solve the CVE-2024-46774.
+
 
 Now deleted, please see:
-	https://lore.kernel.org/r/2024121322-conjuror-gap-b542@gregkh
+        https://lore.kernel.org/r/2024121322-conjuror-gap-b542@gregkh
 for what you all need to do, TOGETHER, to get this fixed and so that I
 can accept patches from your company in the future.
 
