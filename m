@@ -1,100 +1,97 @@
-Return-Path: <stable+bounces-104041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16F09F0C92
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:40:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B759F0CB0
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA13287D6D
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:40:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D82E28490F
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B1F18E023;
-	Fri, 13 Dec 2024 12:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A431DF254;
+	Fri, 13 Dec 2024 12:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RUn/rxEK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XM2xnrMF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBB21DF256
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 12:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9781C3C0F;
+	Fri, 13 Dec 2024 12:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734093641; cv=none; b=tsgeZj2Luljiy7CzYwU56pV62mF2a55jEoypwHerQYtX1Tvs5xqaHPhoKndQlwRyX6n39LOmqU8Lg7xNhk6aKwrp4ajTXOVctxl0a3CYkXAej4+kfhe+IgzVGa8jf+y+mN9PJ0BRkkWRQQmTbUU+G551z93Jf6g2iGVCgenEqFs=
+	t=1734094138; cv=none; b=GJBOA9iFZHl+IU+LzuFc7HvXp8x/YyCvxwTAU+txU4Lj9LfDEjrhwyl96VZX2/I/uqBN1ML9JPtnCOkXsCrzXvam8+qtCBzB3/VYegJoQ0Mz+s2NUtojuYBwpqsXuZo0AbuhZr6JI1GmPHgaDraMXEOiolt9HB6W2wfyh7u4EMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734093641; c=relaxed/simple;
-	bh=rrIjNbL+EuiI32F+cFB0afFC4Znuwcif6Cj3AcWFxXU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Coo2qMJrZ7gCduz527GDq22H2DJDmA0SFLlloYUHK9ECcGrUMBq573mL1BmULzP7hmASauxYjc2gcJwIu+iApaVt5lTkD6fwxs/GIuj4gDFOK5lTfxBZ9WK8As8decnJ/OAUbZ3QRlq7voiEVf04msAO8gbLOxgW0OyWdrZ0t9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RUn/rxEK; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734093639; x=1765629639;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=rrIjNbL+EuiI32F+cFB0afFC4Znuwcif6Cj3AcWFxXU=;
-  b=RUn/rxEKSOoTqDPZtitA1sSR+bp3KVg1Rjln0znPN81432kpAWVUlls1
-   NWfEh8l5Ix6Z0AUBJWLfCpRX7S6Wehfp66b5T68IQ+zluYht8xBuMwSar
-   Ue2+Z2PyTv5koFlxWRusYEkPmelyYJDKDuZ6fIf0CkA0/Hj9y5337nOzC
-   2famRVuL15YZ2BfXJBtWEUIFJ7bj/DN6Hj3KaH4xtrWsIipg35/JxT3+x
-   emAEqfYBShGl4yLnVasf5qk48AjLnUuZRTzEHNhDmnVhkqD1PPUNWxjiK
-   oUtFDVGRj7vd59GJp8jPMXJFVF+ZGM31R0iTn5SzdtzQbbmrRYrqwVQrP
-   w==;
-X-CSE-ConnectionGUID: ztwHcQUQTF6vEWptil9C9w==
-X-CSE-MsgGUID: Ydyje8tcTFOftVFv8CKUmQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="34683064"
-X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
-   d="scan'208";a="34683064"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 04:40:38 -0800
-X-CSE-ConnectionGUID: 3xEzPjrLRs6tEVJdjLj+Iw==
-X-CSE-MsgGUID: 8MKbkX/6Tkicqauw1zktDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="96386633"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 13 Dec 2024 04:40:38 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tM4yA-000C1Z-2b;
-	Fri, 13 Dec 2024 12:40:34 +0000
-Date: Fri, 13 Dec 2024 20:40:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v6 2/6] phy: core: Fix that API
- devm_of_phy_provider_unregister() fails to unregister the phy provider
-Message-ID: <Z1wrMQXh70Yg8AOl@39f568f0a533>
+	s=arc-20240116; t=1734094138; c=relaxed/simple;
+	bh=fDypQjr5cmXNfkql+DYJwukKGeEAkHzfw1jXtUjFtNg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LwILE4fizd7EzoHH4uvu+q90XsJBHw2hRuxU5kxDS7CsxauvsH+2aJv4p38wLE4hHYLrr1QGjBctLZm8dqhVev9y9XtZWY7AwvoUhQDVAHqpYwRSO+gT2TWqKwSEWWYfv/nhydANE7m/rzBZsaQjUnr7lRZ56TTg/TDMHOzJwV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XM2xnrMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34154C4CED2;
+	Fri, 13 Dec 2024 12:48:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734094137;
+	bh=fDypQjr5cmXNfkql+DYJwukKGeEAkHzfw1jXtUjFtNg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XM2xnrMFPm+dsQNOoQ9++hKt2nNQJRVMQZZRZFAQXimzRL5Vn4zMtT/i3zb4VrSmt
+	 rLzC1C7lWmNnsKmPq9i80hCDfpTs+55clAzkXtxruG4I+HXmeSVJk/HbagDXQS2pkF
+	 HCHERDYsF6QTCKv79BBgDPnm1d7BwThSdXGXSLYwLvRu0bzjGg+WbsKpYOrA3qQOO/
+	 J1RK51LOl34j/E7xXLFp4+PliOs9a6cpzarHMg3wzjjinmRL0ysUf7MAV7YuFLpClW
+	 AfUqiIRhuJJJeoSEsIaQqMenWR3ssGSUM43kvKQy90yfTyZm/KNBUwQj6IxS3ErTke
+	 mMP1Nx7/aYR5w==
+From: Christian Brauner <brauner@kernel.org>
+To: Christian Brauner <brauner@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Cc: linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] fs: fix is_mnt_ns_file()
+Date: Fri, 13 Dec 2024 13:48:50 +0100
+Message-ID: <20241213-parolen-kursleiter-663d1f459cfa@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241211121118.85268-1-mszeredi@redhat.com>
+References: <20241211121118.85268-1-mszeredi@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241213-phy_core_fix-v6-2-40ae28f5015a@quicinc.com>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1065; i=brauner@kernel.org; h=from:subject:message-id; bh=fDypQjr5cmXNfkql+DYJwukKGeEAkHzfw1jXtUjFtNg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTH6Bq3T9wY9V0wzUj8pJE9/+EjKmvOz7U9tuuuepVgV UbDp2frOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYiwcfwvyrymFzyJyYZm8rz z2S4epUNan4vOzvbLzJ2jufyFW7LdzAyzBTgS9mcWSayd9LWjb+iJXVK92Qt3BG/o19HQoDjyAR BDgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Hi,
+On Wed, 11 Dec 2024 13:11:17 +0100, Miklos Szeredi wrote:
+> Commit 1fa08aece425 ("nsfs: convert to path_from_stashed() helper") reused
+> nsfs dentry's d_fsdata, which no longer contains a pointer to
+> proc_ns_operations.
+> 
+> Fix the remaining use in is_mnt_ns_file().
+> 
+> 
+> [...]
 
-Thanks for your patch.
+Thanks for fixing that!
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+---
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v6 2/6] phy: core: Fix that API devm_of_phy_provider_unregister() fails to unregister the phy provider
-Link: https://lore.kernel.org/stable/20241213-phy_core_fix-v6-2-40ae28f5015a%40quicinc.com
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
+[1/1] fs: fix is_mnt_ns_file()
+      https://git.kernel.org/vfs/vfs/c/aa21f333c86c
 
