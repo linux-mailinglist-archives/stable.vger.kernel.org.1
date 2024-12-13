@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-104070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46BE9F0F31
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:33:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 695EF9F0F3B
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC58B1645AE
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:33:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87ABF1645AE
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EBB1E22FC;
-	Fri, 13 Dec 2024 14:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4367D1E04BF;
+	Fri, 13 Dec 2024 14:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOt/nXPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuaAGz83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E651E04BF;
-	Fri, 13 Dec 2024 14:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39EA1AAC9;
+	Fri, 13 Dec 2024 14:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734100415; cv=none; b=Gq0JklIqPs46PCLnGfbvLXqChgO21wPR0GxFy9s8BWCBiO7t/2NhFJiYscVKhrZxOFw2nfxkI6s8S986hOI3oeQNzWe0PFwU1Ihxa/0kRF9xEoCIqtm9Jr0SqFjJ7ZCjA/CHskoOYABCis1dAhggbbCzUv9pmocSRHrunrNXhik=
+	t=1734100463; cv=none; b=M34qcp+2oGEowEjIwQcqELXnSt+0X+AZfflQ4bnY+hjK4TnZFy2sqlutLnjFAOYDEnXou1eF0xugULLUb9JV50fbG5GkLG3QsfEPCGG3EKxI7OVn9QDtwfZmIppxiY4+gMd12som+CHqgnqmB2ybtPFcsavsOion8wMUc6Zd1MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734100415; c=relaxed/simple;
-	bh=PxRIzyngJAldqq4VCoyyeFAPVgtSl6U/ZhJk5pQ33xA=;
+	s=arc-20240116; t=1734100463; c=relaxed/simple;
+	bh=wHBHWbN8T1dB7vyMnQIgEIpw4tUeOJJZ+ixlT+uAaX4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JjsIW+GwP+dcsPZZDwHz86z+WjZT9ehMlwEqhFVTq1CZBrKsJS+HsDqTk8HYpSO4SFakoaOht5aF/n6LwggsJSW6bzWHB+BTOjeliUMmVY41bwUX7xUyGFSB2nLT62S3IklqKQrujtLyy8bjonanIumKnWB3ReG2cA6FOU/s2sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOt/nXPx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D478C4CED2;
-	Fri, 13 Dec 2024 14:33:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=RxxMRfksDySwZ/YJi4ezWzbUM87tFxr1vxE8b30QEoxiM3cILn3p2Tf2BCdJk9zrg7lbyTBj/rbgEnTZhhybawOZMIyjNKHeIQEPk0MjRCjzhs91vgQqf0f9fFylFgak0FVt73PPFSaalgxIkbN98wnH4nTK8ay9v0sjZz9LiFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuaAGz83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3457C4CED2;
+	Fri, 13 Dec 2024 14:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734100414;
-	bh=PxRIzyngJAldqq4VCoyyeFAPVgtSl6U/ZhJk5pQ33xA=;
+	s=korg; t=1734100462;
+	bh=wHBHWbN8T1dB7vyMnQIgEIpw4tUeOJJZ+ixlT+uAaX4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YOt/nXPxQgz3yWLmPb1Mu4UWkbSo9EgR71TMdP1Dt9VeiEPbUDOyGFDvt5Dhv7duq
-	 6lahiweo04d9zs30z/TNlZNyTal8nLEznFhyFcQG65q1/H3W5yz7oK79m3dn6smqzL
-	 0BRKH6AT8GjeHRhMkrBLbJ7c/Ab1KRKXLNSG2Yko=
-Date: Fri, 13 Dec 2024 15:33:31 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Michael Krause <mk@galax.is>
-Cc: Salvatore Bonaccorso <carnil@debian.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Michael Krause <mk-debian@galax.is>,
-	Steve French <stfrench@microsoft.com>, stable@vger.kernel.org,
-	regressions@lists.linux.dev, linux-cifs@vger.kernel.org
-Subject: Re: backporting 24a9799aa8ef ("smb: client: fix UAF in
- smb2_reconnect_server()") to older stable series
-Message-ID: <2024121316-refresh-skintight-c338@gregkh>
-References: <2024040834-magazine-audience-8aa4@gregkh>
- <Z0rZFrZ0Cz3LJEbI@eldamar.lan>
- <2e1ad828-24b3-488d-881e-69232c8c6062@galax.is>
- <1037557ef401a66691a4b1e765eec2e2@manguebit.com>
- <Z08ZdhIQeqHDHvqu@eldamar.lan>
- <3441d88b-92e6-4f89-83a4-9230c8701d73@galax.is>
- <2024121243-perennial-coveting-b863@gregkh>
- <e9f36681-2d7e-4153-9cdf-cf556e290a53@galax.is>
+	b=XuaAGz83aBmtU6jNbgdz7rRtuy/2IWP5vzD+SKjot+6aZL9bKyiJ033UzCHfqUs6q
+	 dKLPPanAoPMiIfUBpikU/F3BeDuU9Okp7r946E0tyc8XM/CPJ2PwB/Ma/d4myK2CKz
+	 3x7bhuKZcyl2PjCmCOkpuhEoZqp0N6rO8NLXPOBQ=
+Date: Fri, 13 Dec 2024 15:34:19 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Aric Cyr <aric.cyr@amd.com>, Austin Zheng <Austin.Zheng@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 437/466] drm/amd/display: Update Interface to Check
+ UCLK DPM
+Message-ID: <2024121304-reversing-suing-3c51@gregkh>
+References: <20241212144306.641051666@linuxfoundation.org>
+ <20241212144324.128679509@linuxfoundation.org>
+ <6e25f099-1ba2-4bef-9477-888288270f5d@kernel.org>
+ <2024121349-tacky-obstacle-a41b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,63 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e9f36681-2d7e-4153-9cdf-cf556e290a53@galax.is>
+In-Reply-To: <2024121349-tacky-obstacle-a41b@gregkh>
 
-On Thu, Dec 12, 2024 at 10:48:55PM +0100, Michael Krause wrote:
-> On 12/12/24 1:26 PM, Greg KH wrote:
-> > On Tue, Dec 10, 2024 at 12:05:00AM +0100, Michael Krause wrote:
-> > > On 12/3/24 3:45 PM, Salvatore Bonaccorso wrote:
-> > > > Paulo,
-> > > > 
-> > > > On Tue, Dec 03, 2024 at 10:18:25AM -0300, Paulo Alcantara wrote:
-> > > > > Michael Krause <mk-debian@galax.is> writes:
-> > > > > 
-> > > > > > On 11/30/24 10:21 AM, Salvatore Bonaccorso wrote:
-> > > > > > > Michael, did a manual backport of 24a9799aa8ef ("smb: client: fix UAF
-> > > > > > > in smb2_reconnect_server()") which seems in fact to solve the issue.
-> > > > > > > 
-> > > > > > > Michael, can you please post your backport here for review from Paulo
-> > > > > > > and Steve?
-> > > > > > 
-> > > > > > Of course, attached.
-> > > > > > 
-> > > > > > Now I really hope I didn't screw it up :)
-> > > > > 
-> > > > > LGTM.  Thanks Michael for the backport.
-> > > > 
-> > > > Thanks a lot for the review. So to get it accepted it needs to be
-> > > > brough into the form which Greg can pick up. Michael can you do that
-> > > > and add your Signed-off line accordingly?
-> > > Happy to. Hope this is in the proper format:
+On Fri, Dec 13, 2024 at 03:28:20PM +0100, Greg Kroah-Hartman wrote:
+> On Thu, Dec 12, 2024 at 06:45:07PM +0100, Jiri Slaby wrote:
+> > On 12. 12. 24, 16:00, Greg Kroah-Hartman wrote:
+> > > 6.12-stable review patch.  If anyone has any objections, please let me know.
+> > > 
+> > > ------------------
+> > > 
+> > > From: Austin Zheng <Austin.Zheng@amd.com>
+> > > 
+> > > [ Upstream commit b8d046985c2dc41a0e264a391da4606099f8d44f ]
+> > > 
+> > > [Why]
+> > > Videos using YUV420 format may result in high power being used.
+> > > Disabling MPO may result in lower power usage.
+> > > Update interface that can be used to check power profile of a dc_state.
+> > > 
+> > > [How]
+> > > Allow pstate switching in VBlank as last entry in strategy candidates.
+> > > Add helper functions that can be used to determine power level:
+> > > -get power profile after a dc_state has undergone full validation
 > > 
-> > It's corrupted somehow:
+> > FWIW this was reverted in the Linus' tree:
 > > 
-> > patching file fs/smb/client/connect.c
-> > patch: **** malformed patch at line 202:  		if (rc)
+> > commit 0e93b76cf92f229409e8da85c2a143868835fec3
+> > Author: Austin Zheng <Austin.Zheng@amd.com>
+> > Date:   Mon Sep 23 10:07:32 2024 -0400
+> > 
+> >     drm/amd/display: Revert commit Update Interface to Check UCLK DPM
+> > 
+> >     This reverts commit b8d046985c2dc41a0e264a391da4606099f8d44f.
+> > 
+> >     Reverting as regression discovered on certain systems and golden values
+> >     need to updated.
 > > 
 > > 
-> > Can you resend it or attach it?
 > > 
-> > thanks,
-> > 
-> > greg k-h
+> > Possibly, there are other fixes queued for 6.12, so the revert is not needed
+> > anymore?
 > 
-> Ugh, how embarrassing. I'm sorry, I "fixed" some minor whitespace issue directly in the patch and apparently did something wrong.
-> 
-> I redid the white space fix before diffing again and attach and inline the new version. The chunks are a bit alternated to the earlier version now unfortunately. This one applies..
+> No, you are right, I need this one.  For some reason I thought I had
+> applied it but it failed to apply cleanly and so it was dropped.  I'll
+> go fix it up by hand now...
 
-Doesn't apply for me:
+Nevermind, I just dropped this commit entirely, that was easier overall.
 
-checking file fs/smb/client/connect.c
-Hunk #1 FAILED at 259.
-Hunk #2 FAILED at 1977.
-Hunk #3 FAILED at 2035.
-3 out of 3 hunks FAILED
-checking file fs/smb/client/connect.c
-
-Any ideas?
-
-thanks,
+thanks for the review!
 
 greg k-h
 
