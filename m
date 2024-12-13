@@ -1,286 +1,414 @@
-Return-Path: <stable+bounces-103998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965339F09F1
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:45:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D47016A393
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 10:45:32 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89DD81C07C1;
-	Fri, 13 Dec 2024 10:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="UAbtrRCs";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="hU6n/mPZ"
-X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C516A9F0A02
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:47:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825051B4F21
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 10:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734086731; cv=fail; b=QtPtEL0BbWlpkRBhKhCJeA2eRU/c3cs9unE3QRMhoM3KCkItpcJ/bzn9ISBNilseAezJiIY8+rjIPSS6O6j27kF5Rk3yQJEHv+DovsMTo3ai/HTTugGtc0GQO8SsJv3ImVdNP+vRb4PBU+tUsNIF0EZBYEMUxJ8m/dEhSQk6zE4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734086731; c=relaxed/simple;
-	bh=A5caEDvvMFScTwkQ4kUIrc7EB/3P06vqlltg/18/+k4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Q2GvCv33gxzL0gazYkdfbo7kNq2u8xYSrY1atfk4Sw/nXHP4fVBw1oR6nD8um1YAbk1gDeb1505jcBVPmw4YN7nsp56Ax1qSSKn+Vw+/c7v62FRqG2tZ3IL0gtBBENEpmiYH/SCNysp7oDtXjhnS6u1oDlTQe+q7vYs73JZqUa8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=UAbtrRCs; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=hU6n/mPZ; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BDAQm0Q022655;
-	Fri, 13 Dec 2024 10:45:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=tOWMS+2nmht3o3I/4h6erygb/qYi7vsODInvROkFF4U=; b=
-	UAbtrRCsQc2yPmHXcuNytAoVbkgDqrnzJhwQ4LRzw/UefKoFGKO2vADGOpAuUIKJ
-	S2HTmYQz9JXGs0EwG5QAkP1Ado1Vyv4lgXkhsq+Hmtw3eQZDGF/1Xns+yissYSuI
-	gE+UuqybhLWe1nG9ZVhzBpPbf/AWcs6JSthsizT2GibSz3i1dkyB+RGjOjMqZLqf
-	VQ58xGOFtLzGcrW5lN6a0+xy0D89VbwgkK1ihrAtvLKlZyXh3p+CAAHnS+3ca55F
-	vCNCl+gh/xrW6d9aVkOOTwNeMuk75/4hW3BcSS9T9KRweBDnnhQfGcVJ15y3retP
-	jNPxEE8VJn/mvuRjw8ITfQ==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43cd9aw8tc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Dec 2024 10:45:21 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4BD9UGIC020507;
-	Fri, 13 Dec 2024 10:45:20 GMT
-Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04lp2049.outbound.protection.outlook.com [104.47.74.49])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 43cctccq80-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Dec 2024 10:45:20 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=acuzGljjGcj/jBO88HmCqcYny/Ul2L5jILZllcUt1Y0PiKo7TKbYn0chX/3pTpTD+262dCQ9IgCml2/fjVXbgxpOLZH1MtqO0z9f9gzZ/yyuPln4fXXzYDEsudSE31nC7QJEPOzPY/LjZi1cD3i9fCzyhy4itZ4tVps6EwsvbSzJscmqMjIMU2wATZ2DEg3aSWNrpC9D0B8X9bRkCFXCrlj8+BpqdLaZ5Sv6SH95gTFW4Rcb/KnMRRephuf0es+4MUzw8ZExlSD1dDOhde9Pg0bn42NRs0NvKIksOiyv5q5LS3EuNSy4wVj2aCc9f7YwEW1lXwFhrlNJSYHW4hXlJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tOWMS+2nmht3o3I/4h6erygb/qYi7vsODInvROkFF4U=;
- b=fttJs9+6E4JQ2KmCD9WHRyDRb34TaBkpIoNGeyIi2l9iAVRDHFHSorFeQuaj39fCi++feyDPFvXI2I8jaV0w74j48s//QYzEG4hB6uU/3WVK4I5NzPliAH222JwVcw/MvWsmdB+UmAdkHPzAnUJxNAEuMQM80xJnHCxPlUHn7o9H+0FEEjUFUoYUXANfxegvn7ezfG78CvaPZXAA+dL88l1VjJC1suijfhlCc5Zze/5J0MmtWNdKY7zbIMcR0O68yXSm8reV4yIRShlKxvn/U7j751pa+KMJwRdJecIH3E01I7mfOHkhRaRu2hfOkSkJYtvxvlKuE7kQG+YPp0nLeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F09BC2863A4
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 10:47:53 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6921C1AA9;
+	Fri, 13 Dec 2024 10:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZhg6Z5U"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098CE1AE01B;
+	Fri, 13 Dec 2024 10:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734086869; cv=none; b=JavQ+SMlVC/dZB9J+8/U9lv9T0e0FNL6tXhExWnf6BkUaBjcXtrvPe8nxLUAGVi29pq6guNrA9f+myqOOlNzUYfCHYjejTRlRxzByp+xRpdzvysDckLPWsyBMXsy5bisqJyLTLvoF9QX1rkUylN5draATLa+kan8lccUrF8Bf6w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734086869; c=relaxed/simple;
+	bh=zjU4KhDeGcKIwJPpvk0LLwPiFVFltkicNVkF4cZIADk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=PCZ7gs1Aqt6psMXjLuRgMAwFW6b3TbEtoYx1ueQwvcfjBxnXyuebOFhKTa/G3UOml854qHMUEaHid9mDKRMqaSVsfAmMn/Xnukn9HBtm40Gd6e18p63lF1BLHCQn0ThPLClZ/dDhMOacAaHOzT76rJSPG+2dpHQfhAWqc788Gvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZhg6Z5U; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30229d5b21cso13246941fa.1;
+        Fri, 13 Dec 2024 02:47:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tOWMS+2nmht3o3I/4h6erygb/qYi7vsODInvROkFF4U=;
- b=hU6n/mPZzzKcpFRGilRdCo63Xth7Ex4/mfk81Vmjhi3T0BljcDUq/1pqVu6JTj3suxALZhNUT+NmSUfyqlnPiV1RGmXRCj1L+YIyZjwVY6mm7jGlsg6ZqsKee0ETaSdswOmNU8W+rf3j9KW0FwK+xRg2IOViGl7KzTZ6xfZ3Lhk=
-Received: from DM4PR10MB6886.namprd10.prod.outlook.com (2603:10b6:8:102::10)
- by DS0PR10MB7953.namprd10.prod.outlook.com (2603:10b6:8:1a1::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.18; Fri, 13 Dec
- 2024 10:45:18 +0000
-Received: from DM4PR10MB6886.namprd10.prod.outlook.com
- ([fe80::bdcc:98f5:ebd5:cd38]) by DM4PR10MB6886.namprd10.prod.outlook.com
- ([fe80::bdcc:98f5:ebd5:cd38%6]) with mapi id 15.20.8251.015; Fri, 13 Dec 2024
- 10:45:18 +0000
-Message-ID: <cead071a-f60c-42ac-80dd-f3fb1d937e48@oracle.com>
-Date: Fri, 13 Dec 2024 16:15:09 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][5.15.y] gpio: pca953x: fix pca953x_irq_bus_sync_unlock
- race
-To: guocai.he.cn@windriver.com, stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, ian.ray@gehealthcare.com,
-        bartosz.golaszewski@linaro.org
-References: <20241213103122.3593674-1-guocai.he.cn@windriver.com>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20241213103122.3593674-1-guocai.he.cn@windriver.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2P153CA0020.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::19) To DM4PR10MB6886.namprd10.prod.outlook.com
- (2603:10b6:8:102::10)
+        d=gmail.com; s=20230601; t=1734086865; x=1734691665; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zM7dxvS0mBxnXFVLmEA6pLfwH2H9xBqQJQJBud7GDRM=;
+        b=eZhg6Z5UbD5Ip6rBVg4EoW/ONt5K+jtc6ey3e7FvBVeGtH2kFh4oZYJwP8OfxuOO+j
+         eR39wh3tM9HWdQ5fzx5ZOYwn8fWl1D9zthS7+ZlHamFM7mAG/D95ZZRaXzAS0T4HbNXG
+         bOYHfTf/gIzjDW1icHjLGs3mVk2DBqG8tj+hJu7NadP+5oauHapp/whltccZfZYmamrW
+         DuVdx/mOlMDgNjg7IZpFR6Ty8YTy1YmKhdyO09RxcHYMudcsnMtxvovqZSbCoYM6Zjt4
+         w6nHhb7mhKLaSTy9q9Qf/61sUHE3Vvy6JwSfnBi3fURCc1dpbx0yDY83kwl0OierIdF1
+         gM8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734086865; x=1734691665;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zM7dxvS0mBxnXFVLmEA6pLfwH2H9xBqQJQJBud7GDRM=;
+        b=dJAVF9pZ1vWUTlqg9E854ZKSuyUEECk1DI8NrzE3kyObHjiAd+GNhC9EQ+B5xnOrAb
+         Qq8ISwYOilZ/QMA6TAWedktz8KFDfgxOjCAyszNGieAYUbNJ+eZnDg6HlZyeVOdzAJvL
+         g/uN0iVnXx0IjX0m+IEp0bG/b/BNFhD6yFcbddjQw5v+rJJsj28ojtWB4wwQuj55c9pw
+         u3KRSEsxr4OKr3ipQKWBrhkDTbGDVO/nenjvBQkhAdiUfI0TS9MuCfsn7fdd5lGJt3tw
+         5cWr9a9yyiwj0Y+WPASwSalaSZEcH0VqZTvZFjvPuv/3OwgCVYhOVT9kMVzFZwseLnwA
+         c+ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1gtIGlm/6gjjEggx98wSo2ycACynzV2VHLje9grN96jQfz5RVSypWZ06eGVrLdBGnsw4gTOJhtBY32/Q=@vger.kernel.org, AJvYcCXkvQWA6RGaO7UWpG1SYWM6GNItGG6fwyndihB13KHU9Gt916hS/Uiix/Cz/1uuRwg/u4Brtrqo@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdXcxc/+SiW6762LbqGBnzbmtmG+3PI9cChCyeAjZfaq5FPkO3
+	rZR525tZLREWKnkIAy+y5HKKWspIfBDmqrxXoYFWWgjr9A9j7PNh
+X-Gm-Gg: ASbGnctygHH8uTbXJgYkKT/1McE43MwqzA7dX/384xsqeCq3G7mQ/IveBswx3OYqi3H
+	TaDpgEUYCshgaX34XIpq0nR2DteqYAeMOTN2DmeLw/gmP1ulgIirmWwzVXFaE4PsQMXBGCcS9jP
+	4QkPSEluSOi/SrTpPnfDz0iS15lD5mExj78VLaUXk2AR8ePccJqrR0woBD7dLtR2V6YskYTKtil
+	l0Qz+Tw5828YVU4FdA/Qab/IRVPsq1nTo00m3tg8NzrDwwED1RLmuBJTCM=
+X-Google-Smtp-Source: AGHT+IH486K7s98DFhHG4bd/ZMEsDVoN25MYgvwtS6bqPFiQP4zeJ4ANR78Kv3kiGC1IFNJGZjfgvA==
+X-Received: by 2002:a2e:b8c4:0:b0:300:1699:6e9e with SMTP id 38308e7fff4ca-302544cf517mr6532121fa.38.1734086864657;
+        Fri, 13 Dec 2024 02:47:44 -0800 (PST)
+Received: from [192.168.0.91] ([188.242.176.155])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3015fbfc813sm18233221fa.77.2024.12.13.02.47.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Dec 2024 02:47:42 -0800 (PST)
+Message-ID: <79af4b93-63a1-da4c-2793-8843c60068f5@gmail.com>
+Date: Fri, 13 Dec 2024 13:49:59 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB6886:EE_|DS0PR10MB7953:EE_
-X-MS-Office365-Filtering-Correlation-Id: 93717790-a881-4b69-6543-08dd1b633c23
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RXYvVW5hS25FSDRSa0VtcVorUWlPTWRnajF4UmJrVjMrNXo0NmtlMjh0dzZp?=
- =?utf-8?B?cDFZdm5XdTRxNHQzZEt1ek5qbU4reGVrOStLc05wZlUrRjVBK2VDL0UzRFEw?=
- =?utf-8?B?TmFRdi93Sjl4aWhTTU1rNERaVWxUU3p3Q2VTT1hQQTFZUXRoVHFDTE9CZENv?=
- =?utf-8?B?b3ZSQVlWYzFUWDJ3amgyNjNkYVpVMzROYnNIZjNzd2p5bGQxVFBVOVVKc2pO?=
- =?utf-8?B?S2puR1hlbDJYWDhGUnJHaXhFWjNXLzR4SlQxS21Ubk8vbUR6K3NVbmNmUzdV?=
- =?utf-8?B?RGp2L2JGNjkzajFMbDBRUG5RR3VqNElwL3ZxbUVCWTlIOGhQQzRGcEVUUFdG?=
- =?utf-8?B?V0FibEo5OXMrRXJJbklnd1c1bHZsNi9PcEU2ZU5vMXhsN0c0eHFpT0N4SGM0?=
- =?utf-8?B?UXorSnhmWmxxUnhpREpIZXZ2VyswM3lma1FXZUl1d3hxTHFJeU5uMVN5SG5M?=
- =?utf-8?B?eW5yUHJPbG4wVzVqeW1nYUhaR1hzQXdBRHNzSTN4a1BFRHptZjV4SGZxV0g3?=
- =?utf-8?B?Z3hzY3g1WUs5dTQ2UGRJSkFrYUFETDVaMXJCQmRiby9aSDVvUEtCUVdvZzNK?=
- =?utf-8?B?cUJIaEpmb0xSb2JqbUExM1phajN6bHpiNnF2M3JYN0JkUmppa01DUjY2NGRB?=
- =?utf-8?B?TnZRRUJqcitGdkZSOGpKQXpxQ1VlNlNnRG5MZ3pEK1pEM0hJWkxHcVhGVkEz?=
- =?utf-8?B?eEh5bXFFcWI4Z2dPbHRuOU1qSFdPZTlxZVBEUkI4cWFubmdLNitKRGVCSU43?=
- =?utf-8?B?djJvT1VEanRvaG5PbmhuZnZyL3NlSk9nVVhYYURSTkZxTFJBUkFBZEFHWVFs?=
- =?utf-8?B?RmplNnEzQmhlWXNvMnA1OFZYbktjdm1YdytTVk9xNEFtS3k0SGVNeTY0ak9W?=
- =?utf-8?B?N3RVcUZJa1hUaE9DS0ZBYjNsSlhjM05HcU1ONWtpVEFSaGxNWGhOOFBUVW5a?=
- =?utf-8?B?L0hkeURjRUszT0RObE92NndnNFJuK1JIamY5cCtiWUJ5VmJubllGeFRVVm9E?=
- =?utf-8?B?TWFDSkNlekdBZjdZT0xsUnJEZDhKbHFzNTJtRDM3di8za0tZTHp3MzVmVzJt?=
- =?utf-8?B?RURYeGJNNG9pcGp2T1l5R2tDUzNyOFFwb0xwMHNPajA4R0UvaG12YXhqUEll?=
- =?utf-8?B?bGhHajdaUlRzbzBKc2hKR3BxRHpBUGlwRmwzUkFDZDY0bVlZUVUydlV4NXFp?=
- =?utf-8?B?Mk84dS9DdjNVSWZKSkFMakxLR3pPUXVOQStzNXJQRWUwSDdRdFMxNWxCM1ZY?=
- =?utf-8?B?d2p2cU9DUWtqN3poL3pGeEtWQTJtZFZBSWg2U0dodUhUQmJCUDVSSHFPSVlP?=
- =?utf-8?B?enVOdVBWMmczK25Vb3FjZTZnMDNnaFh6bHlyUG0zZU45Zm50YUQ4bUlrQVdY?=
- =?utf-8?B?TnVRRkxNRmVkY3RoY3RxR2J2dkpqdTJTUkovVnd3QkVjcFo3RFVXQmJHQ3Jo?=
- =?utf-8?B?SHN0Y2ZNbzZROFdGNWdPNTdEb0I0R29PR0dhclpyZFBKVGlZV2dxUVdaeHgy?=
- =?utf-8?B?bmVxZ2lSZGJYaGVrUHJJY0ZkbHVDWmZ0OTFhQW9ma2dyN0dPL1B4ZXhIYnhr?=
- =?utf-8?B?Vm4wNXkxMk02ZFl5UndXb3hnRmkzcW1TeHhtT1hBdXVWMGxWNWpEZ3FkUkxo?=
- =?utf-8?B?VWF4UktZcUFqbXVrY0p0OHVJMjlySnJGcnJ4cHBnOXF5UzM0TkdCazN3cEhW?=
- =?utf-8?B?aHpiYVpJWmx6SGYzdjB3dEVlazlnd2pXbGZ3cDIrZjBUNW40a3BMYTE2cXlK?=
- =?utf-8?B?VUJFUk41VmVVRkxKbVViM3RQKzEzM3MxOWNraWN3T3Z2WjhLWkhCdy9OVDNv?=
- =?utf-8?Q?OiooX54LdhzATrMp1ofVhq5MYs/CKjyegUNYk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB6886.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OFhWNitIMy8rY0UzTlJIVzdrOHU2bmtKdGVsSldFQ0dpaXJsWSt6MzhZTFRP?=
- =?utf-8?B?VzVJRTdERDRpQjJjc24zV0NreDFtb3laOW4wWjdRUU92ZzZmRVFFYi9YYlp5?=
- =?utf-8?B?UUF6Q1ZBNEx5ZG9TL1BKUWN5ZU5vUk1GaWcrb1VZdVBSdEpZU0lia0FtN2tD?=
- =?utf-8?B?TDBDdzFQUzU0aHRhK015SXVwbm14bk1samJOMFZlUCszMDBVK0dZcXBOSFBV?=
- =?utf-8?B?VzhVM3ZGR055U0tVL2wyL1FjUTByYkhaTHhpSW9FWGJiUVYyV3dVWlFSK1l1?=
- =?utf-8?B?NkdLYzZIRmxYOEd3WE5qelEvRDAyNHBPcjhlcUZyTEhCWFk4UmoxL2V6cGxm?=
- =?utf-8?B?YXcxYjdGVm91clpQRzNRbkRFZVhCM2kxMzFXd1kwU2dWNE5sMWUwaWpNM0RL?=
- =?utf-8?B?dGlzMnZDck9QMnVnTmJhbmJNUGxqVFc5d1Bya2lGaGFnUUlHSXhTemNjdG1p?=
- =?utf-8?B?eCtybHAzR2lMK0VGVXU0eWZjMSsvV2J0VEFiWFZobjVwRWNubXQ0NHlINFJH?=
- =?utf-8?B?UWY3cVdWcWNwT0Y4bnZxZ0dmRXJMRFFiWXNYa2ViZ1lZd2FnYm1KV0p6NlFl?=
- =?utf-8?B?dDNqRWVhSC9DT0p4dFJITWhCaHphVVprUmtIanQ1aXQ2ZHJPTk5IbGpVYi9w?=
- =?utf-8?B?SGxzZmlYaGYrUjMxY2QwZnVEL0VtR3lZR1BzTEJkeml6SkNhSkU1TUtGY2Rw?=
- =?utf-8?B?NE4zK2Jhc0JOYXUyTEVYS2lIc1lORFRDWWFXTWhWYlFYRk1kSTJIQi84OVgw?=
- =?utf-8?B?d0xxaHJwTEVmRi9CcTV4eTVxUEdaNTI5STRzQkw4QTA1ZXpHRk9pMC9zOTln?=
- =?utf-8?B?eTF2L2xPWTVORS8xT0JncWlLcXNYN0tHWURmVGJxSWpTWXd4WklydkoyMWlJ?=
- =?utf-8?B?MlMycEx3NDVrSW9YNGQxVnpKOW13OXAzU2EwZ1BCYTJlOEYxSk05bVNyRHpF?=
- =?utf-8?B?a1FrWHJYWHR5Y0p0L3Y1YnQ2WmllNmR4VlU2ZGZ1NnB6L2hPMkI0RzFjZmpw?=
- =?utf-8?B?bkh2azFOaHZ5YXNVY2RBa3g2cHU3MFAvdXhab01rQmFsM1NDUlJtSkZkMFk1?=
- =?utf-8?B?Z2VSN0htNXY2bDdiTEJMTXI0M3NvSnQ4YjljYnhnOG9LYWkwSkU2UTVlMzBS?=
- =?utf-8?B?ZkVuSzhpd0tUMDhQZTJmbXFIcE5WVlhUOHJ0cVY2N01KZytXbU83REFnSEt1?=
- =?utf-8?B?NHkycjVZMlZUTU5QL0w3QVRwVEJRNXZkbG9lWDlERjBISENsUTVMTHlQKzdi?=
- =?utf-8?B?K1JKNzgrakJVeG1zWE8ybjhtL2JCTDZjcGRtWjI5aUFoKyswRTRZTFlSR2Ew?=
- =?utf-8?B?NVlMTHFPRDJBK3BuakNaUnl3V3dlejB2ZmpHUTlOMElrRGpqeURLWWRRdllX?=
- =?utf-8?B?WGwyU1pEYzMzMnlSRTFFNjlQYUlyWS9Rck1mMG5kNnVsWEtLdWZZMWEzM2VS?=
- =?utf-8?B?aC9YWVVVTjV1UVFhS1QzVnp4dlFad01HOFNadWhCVGhoaTFxcUlnd0lMNGQ4?=
- =?utf-8?B?Uit2emI3SHpteVhXVFNZWG9NMDQ0akFmcXYwam1Cd1cvUHZVREk4THFFUVEw?=
- =?utf-8?B?S2Q4ajBMc3F0eE9XNVRVQjZyVnA2NjhwdjRlUjc4dE1SaEVIRWkrZ0RDVTE3?=
- =?utf-8?B?NG9GUmZqWDRXYUpqTTJTM2g2ZEYySjFkS3JUYm55ZlpjaHRGNDgxM2g3SU5J?=
- =?utf-8?B?ZEJ0TFA1S0YzQTUyUElaczE2VnZiNVhXZXdHNUlyT3hEOG8zZWt4V1A5Y3JY?=
- =?utf-8?B?Z1A1NTBSVndQOGU2WDNJWVhuR0hsY1k0Mno0a0tIZGxSV2kzckdxanNwc3dy?=
- =?utf-8?B?ZUFLckJnSXkrWUdpdUNzQi9Bbng2d1pMTDJYdWJ1Ty84MVA5UnM2eTRyb09w?=
- =?utf-8?B?azRnVjZsYmtJZE9yMUp0RUExYkpTRzlpNjgwWGRBcEo0anp3K2FLWWpNWUtu?=
- =?utf-8?B?Zm5vWnV2VmhsWDBDUTlFejk0NnNMY290ZWFwUFhXSkEvTjA3NVdIQThNOXI4?=
- =?utf-8?B?Z0ViQnF5WG1TaDZ0aGJVNk5CbS9rUWNiSlBvbzNlU3ZPeitoTnJ6elFqYzhZ?=
- =?utf-8?B?ZXVXQmo4YjJ0Z01VRDE0c2xDL0w1cU9tNW5CcFh4UnFLZ0xqZ3hDUXZCVmhs?=
- =?utf-8?B?b2xXTlREQnFVd2Y5VURaNEF1ZGY1Z0RCblBsTE05QXNNMldPMGgzamkwZ29G?=
- =?utf-8?B?VUE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	otJPDfnmsRp1aR+cfqT0AQStplpatIfohpWotKdhTBO4gtWMVtPbafZqZl3WctAwEDo3E0deCU3VTMJzdKMXAycZUMADGihWYGDOf6LaNlIJDNpauxF7eaNeyc0Eb0p1yFDNvwUF+WOIv+0izneaIx/EuNfWtz3WOMPMyJhXuc9zLe4TA0H+bjcfkSFDXcYUfIy1Npe018sjv4PVokIGJr3LfzJ6pqXspeO0EUZYhJX10zAGpi2AcXRJxaqWYvBlAUfFtFIUT88/k86m/A/25zfNMvTxKsQFF0vvFNcKjViaO9L50vUi1XhvcafGdc+8wAVpMFF68h7Pwt0K0BfuymiVJBvgiatKGoFyIpA7YAqRdSXITgfHFRIcKYfYpD47uV4f3gSx8es3DpHYmR8LIOfjOTsb9VGgPKbBNknnYdnBecw0M0RjsaOeTCy/liBO/13U5mr050+d4MayjQ1tEZUJWxR0U3aVRrgUHjc/5Tm43oIMgqB76qDAocrOwHv4FO5cwv9FVU/w25LJAwZR/mlcgFV8kDUkiekU33V1wiE10sIuDMGCoxTQ2MOrnudNRQ+FXcEpLveCliwyQzuxRKxgOPZaAw1rGfgnaiF5bbE=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93717790-a881-4b69-6543-08dd1b633c23
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB6886.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 10:45:18.4696
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u6pWs3LDvYStFRptf+NuuEKNhAp8K2HTLnzQ3B4SQQuLYQNbLhpHq9Hj6iR1jHehG4kUpGj/DQQqhvx/dU1LK+b3c7SyOGAgwVT47wnmFR95UCvw5Fw3il4bOfGFImm8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7953
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-13_04,2024-12-12_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
- definitions=main-2412130074
-X-Proofpoint-GUID: ezSV0wU1LnfLxMNwt0vjZ8uDMzA3DGQd
-X-Proofpoint-ORIG-GUID: ezSV0wU1LnfLxMNwt0vjZ8uDMzA3DGQd
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+From: Nikolai Zhubr <zhubr.2@gmail.com>
+Subject: Re: ext4 damage suspected in between 5.15.167 - 5.15.170
+To: Theodore Ts'o <tytso@mit.edu>
+Cc: linux-ext4@vger.kernel.org, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jack@suse.cz
+References: <CALQo8TpjoV8JtuYDH_nBU5i4e-iuCQ1-NORAE8uobpDD_yYBTA@mail.gmail.com>
+ <20241212191603.GA2158320@mit.edu>
+Content-Language: en-US
+In-Reply-To: <20241212191603.GA2158320@mit.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Guocai,
+Hi Ted,
 
-On 13/12/24 16:01, guocai.he.cn@windriver.com wrote:
-> From: Ian Ray <ian.ray@gehealthcare.com>
+> On Thu, Dec 12, 2024 at 09:31:05PM +0300, Nikolai Zhubr wrote:
+>> This is to report that after jumping from generic kernel 5.15.167 to
+>> 5.15.170 I apparently observe ext4 damage.
 > 
-> [ Upstream commit bfc6444b57dc7186b6acc964705d7516cbaf3904 ]
+> Hi Nick,
 > 
-> Ensure that `i2c_lock' is held when setting interrupt latch and mask in
-> pca953x_irq_bus_sync_unlock() in order to avoid races.
-> 
-> The other (non-probe) call site pca953x_gpio_set_multiple() ensures the
-> lock is held before calling pca953x_write_regs().
-> 
-> The problem occurred when a request raced against irq_bus_sync_unlock()
-> approximately once per thousand reboots on an i.MX8MP based system.
-> 
->   * Normal case
-> 
->     0-0022: write register AI|3a {03,02,00,00,01} Input latch P0
->     0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
->     0-0022: write register AI|08 {ff,00,00,00,00} Output P3
->     0-0022: write register AI|12 {fc,00,00,00,00} Config P3
-> 
->   * Race case
-> 
->     0-0022: write register AI|08 {ff,00,00,00,00} Output P3
->     0-0022: write register AI|08 {03,02,00,00,01} *** Wrong register ***
->     0-0022: write register AI|12 {fc,00,00,00,00} Config P3
->     0-0022: write register AI|49 {fc,fd,ff,ff,fe} Interrupt mask P0
-> 
-> Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-> Link: https://lore.kernel.org/r/20240620042915.2173-1-ian.ray@gehealthcare.com
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Signed-off-by: Guocai He <guocai.he.cn@windriver.com>
-> ---
-> This commit is to solve the CVE-2024-42253. Please merge this commit to linux-5.15.y.
-> 
->   drivers/gpio/gpio-pca953x.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-> index 4860bf3b7e00..4e97b6ae4f72 100644
-> --- a/drivers/gpio/gpio-pca953x.c
-> +++ b/drivers/gpio/gpio-pca953x.c
-> @@ -672,6 +672,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
->   	int level;
->   
->   	if (chip->driver_data & PCA_PCAL) {
-> +		guard(mutex)(&chip->i2c_lock);
+> In general this is not something that upstream kernel developers will
+> pay a lot of attention to try to root cause.  If you can come up with
 
-This wouldn't compile on 5.15.y
+Thanks for a quick and detailed reply. That's really appreciated. I need 
+to clarify. I'm not a hardcore kernel developer at all, I just touch it 
+a little bit occasionally, for random reasons. Debugging the situation 
+thoroughly so as to find and prove the cause is far beyond my capability 
+and also not exactly my personal or professional interest. I also don't 
+need any sort of support (i.e. as a client) - I've already repaired and 
+validated/restored from backups almost everything now, and I can just 
+stick at 5.15.167 for basically as long as I like.
 
-We don't have scope based locking backported to 5.15.y.
+On the other hand, having buggy kernels (to the point of ext4 fs 
+corruption) published as suitable for wide general use is not a good 
+thing in my book, therefore I believe in the case of reasonable suspects 
+I must at least raise a warning about it, and if I can somehow 
+contribute to tracking the problem I'll do what I'm able to.
+
+Not going to argue, but it'd seem if 5.15 is totally out of interest 
+already, why keep patching it? And as long as it keeps receiving 
+patches, supposedly they are backported and applied to stabilize, not 
+damage it? Ok, nevermind :-)
+
+> People will also pay more attention if you give more detail in your
+> message.  Not just some vague "ext4 damage" (where 99% of time, these
+> sorts of things happen due to hardware-induced corruption), but the
+> exact message when mount failed.
+
+Yes. That is why I spent 2 days for solely testing hardware, booting 
+from separate media, stressing everything, and making plenty of copies. 
+As I mentioned in my initial post, this had revealed no hardware issues. 
+And I'm enjoying md raid-1 since around 2003 already (Not on this device 
+though). I can post all my "smart" values as is, but I can assure they 
+are perfectly fine for both raid-1 members. I encounter faulty hdds 
+elsewhere routinely so its not something unseen too.
+
+#smartctl -a /dev/nvme0n1 | grep Spare
+Available Spare:                    100%
+Available Spare Threshold:          10%
+
+#smartctl -a /dev/sda | grep Sector
+Sector Sizes:     512 bytes logical, 4096 bytes physical
+   5 Reallocated_Sector_Ct   0x0033   100   100   050    Pre-fail Always 
+       -       0
+197 Current_Pending_Sector  0x0032   100   100   000    Old_age   Always 
+       -       0
+
+I have a copy of the entire ext4 partition taken immediately as mount 
+first failed, it is ~800Gb and may contain some sensitive data so I 
+cannot just hand it to someone else or publish for examination. But I 
+can now easily do a replay of mount failure and fsck processing as many 
+times as needed. For now, it seems file/dir bodies had not been damaged, 
+just some system areas had. I've not encountered any file which would 
+give wrong checksum or otherwise appeared definitely damaged, with 
+overall like 95% verified and definitely fine, 5% hard to reliably 
+verify but those are less important files.
+
+> Also helpful when reporting ext4 issues, it's helpful to include
+> information about the file system configuration using "dumpe2fs -h
+
+This is a dump run on a standalone copy taken before repair (after 
+successful raid re-check):
+
+#dumpe2fs -h /dev/sdb1
+Filesystem volume name:   DATA
+Last mounted on:          /opt
+Filesystem UUID:          ea823c6c-500f-4bf0-a4a7-a872ed740af3
+Filesystem magic number:  0xEF53
+Filesystem revision #:    1 (dynamic)
+Filesystem features:      has_journal ext_attr resize_inode dir_index 
+filetype extent 64bit flex_bg sparse_super large_file huge_file 
+dir_nlink extra_isize
+Filesystem flags:         signed_directory_hash
+Default mount options:    user_xattr acl
+Filesystem state:         clean with errors
+Errors behavior:          Continue
+Filesystem OS type:       Linux
+Inode count:              51634176
+Block count:              206513920
+Reserved block count:     10325696
+Overhead clusters:        3292742
+Free blocks:              48135978
+Free inodes:              50216050
+First block:              0
+Block size:               4096
+Fragment size:            4096
+Group descriptor size:    64
+Reserved GDT blocks:      1024
+Blocks per group:         32768
+Fragments per group:      32768
+Inodes per group:         8192
+Inode blocks per group:   512
+Flex block group size:    16
+Filesystem created:       Tue Jul  9 01:51:16 2024
+Last mount time:          Mon Dec  9 10:08:27 2024
+Last write time:          Tue Dec 10 04:08:17 2024
+Mount count:              273
+Maximum mount count:      -1
+Last checked:             Tue Jul  9 01:51:16 2024
+Check interval:           0 (<none>)
+Lifetime writes:          913 GB
+Reserved blocks uid:      0 (user root)
+Reserved blocks gid:      0 (group root)
+First inode:              11
+Inode size:	          256
+Required extra isize:     32
+Desired extra isize:      32
+Journal inode:            8
+Default directory hash:   half_md4
+Directory Hash Seed:      60bfa28b-cdd2-4ba6-8261-87961db4ecea
+Journal backup:           inode blocks
+FS Error count:           293
+First error time:         Tue Dec 10 06:17:23 2024
+First error function:     ext4_lookup
+First error line #:       1437
+First error inode #:      20709377
+Last error time:          Tue Dec 10 21:12:30 2024
+Last error function:      ext4_lookup
+Last error line #:        1437
+Last error inode #:       20709377
+Journal features:         journal_incompat_revoke journal_64bit
+Total journal size:       128M
+Total journal blocks:     32768
+Max transaction length:   32768
+Fast commit length:       0
+Journal sequence:         0x00064c6e
+Journal start:            0
+
+> /dev/XXX".  Extracting kernel log messages that include the string
+> "EXT4-fs", via commands like "sudo dmesg | grep EXT4-fs", or "sudo
+> journalctl | grep EXT4-fs", or "grep EXT4-fs /var/log/messages" are
+> also helpful, as is getting a report from fsck via a command like
+
+#grep EXT4-fs messages-20241212 | grep md126
+2024-12-06T11:53:09.471317+03:00 lenovo-zh kernel: [    7.649474][ 
+T1124] EXT4-fs (md126): Mount option "noacl" will be removed by 3.5
+2024-12-06T11:53:09.471351+03:00 lenovo-zh kernel: [    7.899321][ 
+T1124] EXT4-fs (md126): mounted filesystem with ordered data mode. Opts: 
+noacl. Quota mode: none.
+2024-12-07T12:03:18.518047+03:00 lenovo-zh kernel: [    7.633150][ 
+T1106] EXT4-fs (md126): Mount option "noacl" will be removed by 3.5
+2024-12-07T12:03:18.518054+03:00 lenovo-zh kernel: [    7.951716][ 
+T1106] EXT4-fs (md126): mounted filesystem with ordered data mode. Opts: 
+noacl. Quota mode: none.
+2024-12-08T12:41:33.686145+03:00 lenovo-zh kernel: [    7.588405][ 
+T1118] EXT4-fs (md126): Mount option "noacl" will be removed by 3.5
+2024-12-08T12:41:33.686148+03:00 lenovo-zh kernel: [    7.679963][ 
+T1118] EXT4-fs (md126): mounted filesystem with ordered data mode. Opts: 
+noacl. Quota mode: none.
+(* normal boot failed and subsequently fsck was run on real data here *)
+2024-12-10T18:21:40.356656+03:00 lenovo-zh kernel: [  483.522025][ 
+T1740] EXT4-fs (md126): failed to initialize system zone (-117)
+2024-12-10T18:21:40.356685+03:00 lenovo-zh kernel: [  483.522050][ 
+T1740] EXT4-fs (md126): mount failed
+2024-12-11T02:00:18.382301+03:00 lenovo-zh kernel: [  490.551080][ 
+T1809] EXT4-fs (md126): mounted filesystem with ordered data mode. Opts: 
+(null). Quota mode: none.
+2024-12-11T12:00:53.249626+03:00 lenovo-zh kernel: [    7.550823][ 
+T1056] EXT4-fs (md126): Mount option "noacl" will be removed by 3.5
+2024-12-11T12:00:53.249629+03:00 lenovo-zh kernel: [    7.662317][ 
+T1056] EXT4-fs (md126): mounted filesystem with ordered data mode. Opts: 
+noacl. Quota mode: none.
+
+#grep md126 messages-20241212
+2024-12-07T12:03:18.518038+03:00 lenovo-zh kernel: [    7.154448][ T992] 
+md126: detected capacity change from 0 to 1652111360
+2024-12-07T12:03:18.518047+03:00 lenovo-zh kernel: [    7.633150][ 
+T1106] EXT4-fs (md126): Mount option "noacl" will be removed by 3.5
+2024-12-07T12:03:18.518054+03:00 lenovo-zh kernel: [    7.951716][ 
+T1106] EXT4-fs (md126): mounted filesystem with ordered data mode. Opts: 
+noacl. Quota mode: none.
+2024-12-08T12:41:33.685280+03:00 lenovo-zh systemd[1]: Started Timer to 
+wait for more drives before activating degraded array md126..
+2024-12-08T12:41:33.685325+03:00 lenovo-zh systemd[1]: 
+mdadm-last-resort@md126.timer: Deactivated successfully.
+2024-12-08T12:41:33.685327+03:00 lenovo-zh systemd[1]: Stopped Timer to 
+wait for more drives before activating degraded array md126..
+2024-12-08T12:41:33.686136+03:00 lenovo-zh kernel: [    7.346744][ 
+T1107] md/raid1:md126: active with 2 out of 2 mirrors
+2024-12-08T12:41:33.686137+03:00 lenovo-zh kernel: [    7.357218][ 
+T1107] md126: detected capacity change from 0 to 1652111360
+2024-12-08T12:41:33.686145+03:00 lenovo-zh kernel: [    7.588405][ 
+T1118] EXT4-fs (md126): Mount option "noacl" will be removed by 3.5
+2024-12-08T12:41:33.686148+03:00 lenovo-zh kernel: [    7.679963][ 
+T1118] EXT4-fs (md126): mounted filesystem with ordered data mode. Opts: 
+noacl. Quota mode: none.
+(* on 2024-12-09 system refused to boot and no normal log was written *)
+2024-12-10T18:13:44.862091+03:00 lenovo-zh systemd[1]: Started Timer to 
+wait for more drives before activating degraded array md126..
+2024-12-10T18:13:45.164589+03:00 lenovo-zh kernel: [    8.332616][ 
+T1248] md/raid1:md126: active with 2 out of 2 mirrors
+2024-12-10T18:13:45.196580+03:00 lenovo-zh kernel: [    8.363066][ 
+T1248] md126: detected capacity change from 0 to 1652111360
+2024-12-10T18:13:45.469396+03:00 lenovo-zh systemd[1]: 
+mdadm-last-resort@md126.timer: Deactivated successfully.
+2024-12-10T18:13:45.469584+03:00 lenovo-zh systemd[1]: Stopped Timer to 
+wait for more drives before activating degraded array md126..
+2024-12-10T18:18:51.652575+03:00 lenovo-zh kernel: [  314.821429][ 
+T1657] md: data-check of RAID array md126
+2024-12-10T18:21:40.356656+03:00 lenovo-zh kernel: [  483.522025][ 
+T1740] EXT4-fs (md126): failed to initialize system zone (-117)
+2024-12-10T18:21:40.356685+03:00 lenovo-zh kernel: [  483.522050][ 
+T1740] EXT4-fs (md126): mount failed
+2024-12-10T20:07:29.116652+03:00 lenovo-zh kernel: [ 6832.284366][ 
+T1657] md: md126: data-check done.
+(fsck was run on real data here)
+2024-12-11T01:52:15.839052+03:00 lenovo-zh systemd[1]: Started Timer to 
+wait for more drives before activating degraded array md126..
+2024-12-11T01:52:15.840396+03:00 lenovo-zh kernel: [    7.832271][ 
+T1170] md/raid1:md126: active with 2 out of 2 mirrors
+2024-12-11T01:52:15.840397+03:00 lenovo-zh kernel: [    7.845385][ 
+T1170] md126: detected capacity change from 0 to 1652111360
+2024-12-11T01:52:16.255454+03:00 lenovo-zh systemd[1]: 
+mdadm-last-resort@md126.timer: Deactivated successfully.
+2024-12-11T01:52:16.255573+03:00 lenovo-zh systemd[1]: Stopped Timer to 
+wait for more drives before activating degraded array md126..
+2024-12-11T02:00:18.382301+03:00 lenovo-zh kernel: [  490.551080][ 
+T1809] EXT4-fs (md126): mounted filesystem with ordered data mode. Opts: 
+(null). Quota mode: none.
+
+> "fsck.ext4 -fn /dev/XXX >& /tmp/fsck.out"
+
+This is a fsck run on a standalone copy taken before repair (after 
+successful raid re-check):
+
+#fsck.ext4 -fn /dev/sdb1
+ext2fs_check_desc: Corrupt group descriptor: bad block for block bitmap
+fsck.ext4: Group descriptors look bad... trying backup blocks...
+Pass 1: Checking inodes, blocks, and sizes
+Inode 9185447 extent tree (at level 1) could be narrower.  Optimize? no
+Inode 9189969 extent tree (at level 1) could be narrower.  Optimize? no
+Inode 22054610 extent tree (at level 1) could be shorter.  Optimize? no
+Inode 22959998 extent tree (at level 1) could be shorter.  Optimize? no
+Inode 23351116 extent tree (at level 1) could be shorter.  Optimize? no
+Inode 23354700 extent tree (at level 1) could be shorter.  Optimize? no
+Inode 23363083 extent tree (at level 1) could be shorter.  Optimize? no
+Inode 25197205 extent tree (at level 1) could be narrower.  Optimize? no
+Inode 25197271 extent tree (at level 1) could be narrower.  Optimize? no
+Inode 47710225 extent tree (at level 1) could be narrower.  Optimize? no
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+Free blocks count wrong for group #0 (23414, counted=22437).
+Fix? no
+Free blocks count wrong for group #1 (31644, counted=7).
+Fix? no
+Free blocks count wrong for group #2 (32768, counted=0).
+Fix? no
+Free blocks count wrong for group #3 (31644, counted=4).
+Fix? no
+
+[repeated tons of times]
+
+Free inodes count wrong for group #4895 (8192, counted=8044).
+Fix? no
+Directories count wrong for group #4895 (0, counted=148).
+Fix? no
+Free inodes count wrong for group #4896 (8192, counted=8114).
+Fix? no
+Directories count wrong for group #4896 (0, counted=13).
+Fix? no
+Free inodes count wrong for group #5824 (8192, counted=8008).
+Fix? no
+Directories count wrong for group #5824 (0, counted=31).
+Fix? no
+Free inodes count wrong (51634165, counted=50157635).
+Fix? no
+DATA: ********** WARNING: Filesystem still has errors **********
+DATA: 11/51634176 files (73845.5% non-contiguous), 3292748/206513920 blocks
+
+>> And because there are apparently 0 commits to ext4 in 5.15 since
+>> 5.15.168 at the moment, I thought I'd report.
+> 
+> Did you check for any changes to the md/dm code, or the block layer?
+
+No. Generally, it could be just anything, therefore I see no point even 
+starting without good background knowledge. That is why I'm trying to 
+draw attention of those who are more aware instead. :-)
+
+> Also, if you checked for I/O errors in the system logs, or run
+> "smartctl" on the block devices, please say so.  (And if there are
+> indications of I/O errors or storage device issues, please do
+> immediate backups and make plans to replace your hardware before you
+
+I have not found any indication of hardware errors at this point.
+
+#grep -i err messages-20241212 | grep sda
+(nothing)
+#grep -i err messages-20241212 | grep nvme
+(nothing)
+
+Some "smart" values are posted above. Nothing suspicious whatsoever.
 
 
-drivers/gpio/gpio-pca953x.c: In function ‘pca953x_irq_bus_sync_unlock’:
-drivers/gpio/gpio-pca953x.c:675:17: error: implicit declaration of 
-function ‘guard’ [-Werror=implicit-function-declaration]
-   675 |                 guard(mutex)(&chip->i2c_lock);
-       |                 ^~~~~
-drivers/gpio/gpio-pca953x.c:675:23: error: ‘mutex’ undeclared (first use 
-in this function)
-   675 |                 guard(mutex)(&chip->i2c_lock);
-       |                       ^~~~~
-drivers/gpio/gpio-pca953x.c:675:23: note: each undeclared identifier is 
-reported only once for each function it appears in
-cc1: all warnings being treated as errors
+Thank you!
 
+Regards,
 
+Nick
 
-Thanks,
-Harshit
-> +
->   		/* Enable latch on interrupt-enabled inputs */
->   		pca953x_write_regs(chip, PCAL953X_IN_LATCH, chip->irq_mask);
->   
-
+> suffer more serious data loss.)
+> 
+> Finally, if you want more support than what volunteers in the upstream
+> linux kernel community can provide, this is what paid support from
+> companies like SuSE, or Red Hat, can provide.
+> 
+> Cheers,
+> 
+> 							- Ted
 
