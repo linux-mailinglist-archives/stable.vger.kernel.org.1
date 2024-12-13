@@ -1,140 +1,137 @@
-Return-Path: <stable+bounces-103961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486F29F036D
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 05:13:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F589F0380
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 05:20:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6214E165F57
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 04:13:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90175284B7C
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 04:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA2017ADE1;
-	Fri, 13 Dec 2024 04:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A80185B78;
+	Fri, 13 Dec 2024 04:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Mp7E8GSJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eR7CdVY1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B3A1459EA;
-	Fri, 13 Dec 2024 04:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D89A183CC2;
+	Fri, 13 Dec 2024 04:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734063191; cv=none; b=IxxzphEy4iLSsMvsC901aD8AQ8KZRePRHalPAVMEak01+xdtub9EHKySlBh//cwPHdvHAq2NbQ5KyWKR/FiOwIa6Avq+WBIgu/md1W7GDsfwaLF/t1hcgtWxSUwtRjnedkuEL7kgoYslHANM6PpuD9oNmydAktQ3JieMLW0RiZ0=
+	t=1734063622; cv=none; b=DVwsL4oIMNJniOpjYO4o1hrNquHZXiiLqVvhLGAh3yfXDCa77QQ8nC+OkOpqzuWEX8yixwNvs3dvinKghcXbUOo84yYP+RA1qUsjP3HzjcNTLxh2c588/6ifpemfge8pWesvyUHCg7Dt7l9fyxWKCtylrfFwh76uQiY7BqyBPbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734063191; c=relaxed/simple;
-	bh=FVOSKvHjdMqdpUwOdhEquny2EJt+xZan/P8d4+oyGHY=;
-	h=Date:To:From:Subject:Message-Id; b=jXN+YXvPupoUFqP5yiJxXTRpvDtl8rbuLY5kOWNfxTC7l5P5MR/GUaml8AzWx1q/MiScHHYtdl3V8XjmE4QpX79WeTpBOUcTnKYJn5d5vkarUTC4KNa1r6AaSXJiRnpa4+6zHwsVVx7tRB6+Y1UnoKN/yaIUYJCwOElYfUpPtnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Mp7E8GSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A6FC4CED2;
-	Fri, 13 Dec 2024 04:13:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1734063190;
-	bh=FVOSKvHjdMqdpUwOdhEquny2EJt+xZan/P8d4+oyGHY=;
-	h=Date:To:From:Subject:From;
-	b=Mp7E8GSJuAjGnzhp/+gstZ1XABsYBoFxyPQwmbzZxhkdshnQ062746xRzuVB6gdd8
-	 7QcOb9ZwFbR2+Hjb9vf6j6kpZkv73o8MdXsP2w8L1IF0rVPT9QJ+AMJ7CS89UBzDcP
-	 wlbcQ8zUI+JGDUvlAj85VcXvSAluwMUtsVIFx81o=
-Date: Thu, 12 Dec 2024 20:13:10 -0800
-To: mm-commits@vger.kernel.org,yuzhao@google.com,surenb@google.com,stable@vger.kernel.org,oliver.sang@intel.com,kent.overstreet@linux.dev,00107082@163.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-codetag-clear-tags-before-swap.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241213041310.A8A6FC4CED2@smtp.kernel.org>
+	s=arc-20240116; t=1734063622; c=relaxed/simple;
+	bh=AaC+1vxEA/0Ps6XkTxxgdz9OUQfUnIhVy82NSH4smXY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MsMLEfpysJ48SXyJuIpjQ1q086YL03DI6oswTUHuwDO5PKIytnt8ccILrPSyPEFDAp8KVbFOpEoBAqSGD4dGnCFGDwx2OTlCe14girKKVAXfOBijGofDJl2yldv14PUuxzmSjRJxCV9N/owGA5Sfl3IkdKB3ZMzBXx57hhhe+/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eR7CdVY1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDD7C4CEDE;
+	Fri, 13 Dec 2024 04:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734063621;
+	bh=AaC+1vxEA/0Ps6XkTxxgdz9OUQfUnIhVy82NSH4smXY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eR7CdVY14cqeqeRCQeWuyQ8ya0c67uDNCdXjoAIF+23TplyE1PaCmc0r8eJry6vZ6
+	 NV2CJZMsPao0GVt4hPy5tKpdyqtupd/ol9yfbHekwmrCCp3v1X04SfgCBBLB+v+9WV
+	 ImMTVTWtJa2gZhF9JJ5uAEcQWsUD59c+KTnsqF9H9MPhic0mKpYtwi8Trd/Esgi9GB
+	 MVc1stra3gUv6uXidl8PWQcp4S+ZXA+04AYLq3Y/j45GLW57gHScQZ/y5nOZOqY0dR
+	 5US36MNaLIzLlNAfz3cOzizq/Im5e3cG9tiTGz3s5qu4KGnthWmgmbXrG0sf1cU+jW
+	 lf70MaKDcTDeQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-block@vger.kernel.org,
+	linux-fscrypt@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Gaurav Kashyap <quic_gaurkash@quicinc.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	stable@vger.kernel.org,
+	Abel Vesa <abel.vesa@linaro.org>
+Subject: [PATCH v10 01/15] ufs: qcom: fix crypto key eviction
+Date: Thu, 12 Dec 2024 20:19:44 -0800
+Message-ID: <20241213041958.202565-2-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241213041958.202565-1-ebiggers@kernel.org>
+References: <20241213041958.202565-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Eric Biggers <ebiggers@google.com>
 
-The patch titled
-     Subject: mm/codetag: clear tags before swap
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-codetag-clear-tags-before-swap.patch
+Commit 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
+introduced an incorrect check of the algorithm ID into the key eviction
+path, and thus qcom_ice_evict_key() is no longer ever called.  Fix it.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-codetag-clear-tags-before-swap.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: David Wang <00107082@163.com>
-Subject: mm/codetag: clear tags before swap
-Date: Fri, 13 Dec 2024 09:33:32 +0800
-
-When CONFIG_MEM_ALLOC_PROFILING_DEBUG is set, kernel WARN would be
-triggered when calling __alloc_tag_ref_set() during swap:
-
-	alloc_tag was not cleared (got tag for mm/filemap.c:1951)
-	WARNING: CPU: 0 PID: 816 at ./include/linux/alloc_tag.h...
-
-Clear code tags before swap can fix the warning. And this patch also fix
-a potential invalid address dereference in alloc_tag_add_check() when
-CONFIG_MEM_ALLOC_PROFILING_DEBUG is set and ref->ct is CODETAG_EMPTY,
-which is defined as ((void *)1).
-
-Link: https://lkml.kernel.org/r/20241213013332.89910-1-00107082@163.com
-Fixes: 51f43d5d82ed ("mm/codetag: swap tags when migrate pages")
-Signed-off-by: David Wang <00107082@163.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202412112227.df61ebb-lkp@intel.com
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
+Cc: stable@vger.kernel.org
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
+ drivers/ufs/host/ufs-qcom.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
- include/linux/alloc_tag.h |    2 +-
- lib/alloc_tag.c           |    7 +++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
-
---- a/include/linux/alloc_tag.h~mm-codetag-clear-tags-before-swap
-+++ a/include/linux/alloc_tag.h
-@@ -140,7 +140,7 @@ static inline struct alloc_tag_counters
- #ifdef CONFIG_MEM_ALLOC_PROFILING_DEBUG
- static inline void alloc_tag_add_check(union codetag_ref *ref, struct alloc_tag *tag)
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 68040b2ab5f8..e33ae71245dd 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -153,27 +153,25 @@ static int ufs_qcom_ice_program_key(struct ufs_hba *hba,
+ 				    const union ufs_crypto_cfg_entry *cfg,
+ 				    int slot)
  {
--	WARN_ONCE(ref && ref->ct,
-+	WARN_ONCE(ref && ref->ct && !is_codetag_empty(ref),
- 		  "alloc_tag was not cleared (got tag for %s:%u)\n",
- 		  ref->ct->filename, ref->ct->lineno);
- 
---- a/lib/alloc_tag.c~mm-codetag-clear-tags-before-swap
-+++ a/lib/alloc_tag.c
-@@ -209,6 +209,13 @@ void pgalloc_tag_swap(struct folio *new,
- 		return;
- 	}
- 
-+	/*
-+	 * Clear tag references to avoid debug warning when using
-+	 * __alloc_tag_ref_set() with non-empty reference.
-+	 */
-+	set_codetag_empty(&ref_old);
-+	set_codetag_empty(&ref_new);
+ 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+ 	union ufs_crypto_cap_entry cap;
+-	bool config_enable =
+-		cfg->config_enable & UFS_CRYPTO_CONFIGURATION_ENABLE;
 +
- 	/* swap tags */
- 	__alloc_tag_ref_set(&ref_old, tag_new);
- 	update_page_tag_ref(handle_old, &ref_old);
-_
-
-Patches currently in -mm which might be from 00107082@163.com are
-
-mm-codetag-clear-tags-before-swap.patch
++	if (!(cfg->config_enable & UFS_CRYPTO_CONFIGURATION_ENABLE))
++		return qcom_ice_evict_key(host->ice, slot);
+ 
+ 	/* Only AES-256-XTS has been tested so far. */
+ 	cap = hba->crypto_cap_array[cfg->crypto_cap_idx];
+ 	if (cap.algorithm_id != UFS_CRYPTO_ALG_AES_XTS ||
+ 	    cap.key_size != UFS_CRYPTO_KEY_SIZE_256)
+ 		return -EOPNOTSUPP;
+ 
+-	if (config_enable)
+-		return qcom_ice_program_key(host->ice,
+-					    QCOM_ICE_CRYPTO_ALG_AES_XTS,
+-					    QCOM_ICE_CRYPTO_KEY_SIZE_256,
+-					    cfg->crypto_key,
+-					    cfg->data_unit_size, slot);
+-	else
+-		return qcom_ice_evict_key(host->ice, slot);
++	return qcom_ice_program_key(host->ice,
++				    QCOM_ICE_CRYPTO_ALG_AES_XTS,
++				    QCOM_ICE_CRYPTO_KEY_SIZE_256,
++				    cfg->crypto_key,
++				    cfg->data_unit_size, slot);
+ }
+ 
+ #else
+ 
+ #define ufs_qcom_ice_program_key NULL
+-- 
+2.47.1
 
 
