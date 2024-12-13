@@ -1,180 +1,164 @@
-Return-Path: <stable+bounces-104058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F259F0E1E
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:58:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DA79F0E49
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:03:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18DAD188709B
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:57:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F43E1882017
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FB11E0B66;
-	Fri, 13 Dec 2024 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E9D1E04BE;
+	Fri, 13 Dec 2024 14:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dbOMxGJ5";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Vqgdzmdo";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ma+jVbtT";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mzMg5Kgy"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="f5kOHp7U"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF041E0DAF
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 13:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00F31CDFDC;
+	Fri, 13 Dec 2024 14:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734098107; cv=none; b=mcLAhiNrzye91d/CyXhAjDp80pK0NTWFzRQVZLTtRGgdSp79MiSFgUz6a6N1p7ndKs+eTyLJBVjj95AKy2q7qK4bUlrrELkzv8I5nw41IsPvR5CK4454QEjf1YkUutrt+Wehd9OX9uHVt5pe/iJXQ3/Q9n2xQI41oSGUe+B/HyA=
+	t=1734098601; cv=none; b=JEfxJCjlrUZcPUgMBTgajDZa7ths6cye1+kCyJHERviAeavd4SvCjrCM81bnxT0dQwwMhfqyh9XSCPc295WrVH5+7QwwsoyTp0lK/HxSdAc4biG57wzx7BZdPdAq0Zv+rMX7eObj4YzTPiyWU2pcl9yOG7MUhwPBh5ciLKQw7LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734098107; c=relaxed/simple;
-	bh=26Bafj+z7PhHgr5lw9zvsTI6tdl3kohtMbqisDomtCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ESGYRtlCyAphGOG8QWHlRyAc7SNIXu4K0etwymYUPv4uB5XdXqiNVJyxduAVqoL2ndSDt+R1RETOc04c0pHoSE6JhP90spNm4wMVaSlFI55IIh6m9OpMKWNwzqw2GGDgww9SaPjl2cDxtgVZhPPqepwSwRSDV8j00PnYi8ER+Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dbOMxGJ5; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Vqgdzmdo; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ma+jVbtT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mzMg5Kgy; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A0C7C1F785;
-	Fri, 13 Dec 2024 13:55:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1734098104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fNqUB8mbGb3Mza9CFQRmuUePzkHL5AhzBAkZGi3fxYI=;
-	b=dbOMxGJ565lChGNcncbAloDiU0hkRnx3XKHb2QKcjMEem4UsWlA8mtPDKfEwMpfRTAXjB3
-	T0YCafO6V4zTcbRI2usxKzZWXiP7LusgtOeoPztpVH23QDOAezuv3H4SJZqfi2Q4kSYq7q
-	NNnmP+CrKLY3ueT3i/VQGmacD7CysDw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1734098104;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fNqUB8mbGb3Mza9CFQRmuUePzkHL5AhzBAkZGi3fxYI=;
-	b=VqgdzmdoMdjjF0lEwEQrACY5kM4gQxZQn3s4PbKDauEch3Ymxmf/26rF2w2dk7QgoXUJUw
-	cSnw/k9qlZcfFIBg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ma+jVbtT;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mzMg5Kgy
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1734098103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fNqUB8mbGb3Mza9CFQRmuUePzkHL5AhzBAkZGi3fxYI=;
-	b=ma+jVbtT7a8AFMq7gCSvCrDjRAaxHLzcPcGN+/MQGiph0bfdHAm7BFU2OZViLi8KXuHrW2
-	pFcc4+F5vGztd3QJHAfZ7kBX3TykJYXamFW1llvv3QQZhMban+cWpaewm45WKDQkwR0N+6
-	Ej+YOtrxX5w8f8HUwckO4p2P05Ho0eI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1734098103;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fNqUB8mbGb3Mza9CFQRmuUePzkHL5AhzBAkZGi3fxYI=;
-	b=mzMg5KgyGJPHGBqlrDn7MU50HbYZYBuo0noY/YQ701rPqr6WwyQYWxzJwqXf355udg9mgk
-	VoICQXcOdqeFuTDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E5DF137CF;
-	Fri, 13 Dec 2024 13:55:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wD35Ibc8XGfzEgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 13 Dec 2024 13:55:03 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id ECF43A0B0E; Fri, 13 Dec 2024 14:55:02 +0100 (CET)
-Date: Fri, 13 Dec 2024 14:55:02 +0100
-From: Jan Kara <jack@suse.cz>
-To: Philippe Troin <phil@fifi.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	Anders Blomdell <anders.blomdell@gmail.com>,
-	Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.12 162/466] Revert "readahead: properly shorten
- readahead when falling back to do_page_cache_ra()"
-Message-ID: <20241213135502.bgtghwphkezyfvob@quack3>
-References: <20241212144306.641051666@linuxfoundation.org>
- <20241212144313.202242815@linuxfoundation.org>
- <4ab51fdc37c39bd077b4bcea281d301af4c3ef1a.camel@fifi.org>
+	s=arc-20240116; t=1734098601; c=relaxed/simple;
+	bh=j/k77OUtY9dmOvMhi5OhiMJXLSCWp2c3W/lcveUxkXY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KBGwPDnZGxtJg718bsGq3uGIJJAwdbqsi69r6Erh4PxuuVNcoqTUAi2HW4PmFd+7mUNqIvOHtNEPeOHbWXVAgTW0YDwW9BUG6qusvTNv7cW396qvd7DksB+7XpYXw5jCHoHFm4N9XaYD5neT+nVp0CddZor28qSdnVICGRv+owg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=f5kOHp7U; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [127.0.1.1] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 3930D752;
+	Fri, 13 Dec 2024 15:02:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1734098561;
+	bh=j/k77OUtY9dmOvMhi5OhiMJXLSCWp2c3W/lcveUxkXY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=f5kOHp7U4Ht4foUvtVdet4HfC50rWf0sdmjvNt68ffQdI51MkdS1qR2uZKKzdQ7zm
+	 fRqsokYD+qUFbjTPhLMq5ZSeIBbqPEmZfie2byD7WNQU8IvgYW+/BhuaWTxs1Cr0qm
+	 FvmfLn6iCfOy+Prf89z3FH0A6eIXyWHIAqKHxkMc=
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH v4 0/7] drm: Add DSI/DP support for Renesas r8a779h0 V4M
+ and grey-hawk board
+Date: Fri, 13 Dec 2024 16:02:56 +0200
+Message-Id: <20241213-rcar-gh-dsi-v4-0-f8e41425207b@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4ab51fdc37c39bd077b4bcea281d301af4c3ef1a.camel@fifi.org>
-X-Rspamd-Queue-Id: A0C7C1F785
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,gmail.com,suse.cz,infradead.org,linux-foundation.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim,suse.cz:email]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -2.51
-X-Spam-Flag: NO
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJE+XGcC/3XMQQ6CMBCF4auQrq3plBaKK+9hXIztAF1ITWuIh
+ nB3C24g0eX/kvdNLFH0lNipmFik0ScfhhzqUDDb49AR9y43k0IqEMLwaDHyrucued5YAa12RGg
+ Ny49HpNa/Vu1yzd379AzxveIjLOvXkaLcOSNwwevSIAE22kk8e0eYwnALGN3RhjtbuFFuCb0nZ
+ CaUVDUYDa411R+i3BLVnigz4WplJVRVi6B/EPM8fwAN2KtWMwEAAA==
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, LUU HOAI <hoai.luu.ub@renesas.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Biju Das <biju.das.jz@bp.renesas.com>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ dri-devel@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ linux-clk@vger.kernel.org, 
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+ stable@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2562;
+ i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
+ bh=j/k77OUtY9dmOvMhi5OhiMJXLSCWp2c3W/lcveUxkXY=;
+ b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnXD6ck8SEP/xxyX2AvNoR/xyT6pkJqOS+vcc+w
+ 6BiWaD57F+JAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZ1w+nAAKCRD6PaqMvJYe
+ 9RMFEACan9Y3fKvr+iPAgDvmXPF75P7RZoPR8NlLbEmat89KC+kbbqM5IEURvfrqKUZjwvK/NPG
+ ANlqRNuDEK0uMEi1mz4ajWVjxEYb2o21hdfezjxmpVMCbYPokpfR6hojsb7thuW8c1oUJuaVXwY
+ 1OvJr3y42hznHuss8MvrwuF6dieocnRLMhvJaAqs5Zl12Pe14C+/AcIQwApUTfjtnl8f0GISjbc
+ KgcXP3WXzxT9Xj1DeSqSnQ7A62+rQa/URmJOmAxOSHoUgg0+wyXHnwx5BbHnjM/Y9RBIM0zdmFq
+ G85m97TV4/aw3Cw01Jrcgh/kupgCJ/sEjGJ/GEYc+p9+nk8y73o9pUm5j8Q4ANqV2k77Gc/ninf
+ y4w5tlGZ6dVklABJMR2rwmG6aWSWnT/lgPUVxX0QtZ8Ht9dmuEfE/nJAhM9afihrdnCNsICEPU2
+ b1hQ5v3dydJsMgHJNm+V+Cj4hql28tszKi9w0q8vsrI4hdC3unuf2gDFb5F1wGTiYlHUTO6jf9N
+ CmIaoyDqyzjB62iKrwvxLTuX63tVufqEJwYzh45qyqKLi7ZJTQd6gxHM3GPh8Ts03OOaj5S5eE1
+ anBpezACSm9+F1QO+LU7vNeD77xsVxh1G0hcuA0WXjXjViQ1AdEgj5iil2vwC4GdTDZQxZ7DmMw
+ NwRyhJEQvgzPyGg==
+X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
+ fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
 
-On Thu 12-12-24 10:12:54, Philippe Troin wrote:
-> On Thu, 2024-12-12 at 15:55 +0100, Greg Kroah-Hartman wrote:
-> > 6.12-stable review patch.  If anyone has any objections, please let
-> > me know.
-> > 
-> > ------------------
-> > 
-> > From: Jan Kara <jack@suse.cz>
-> > 
-> > commit a220d6b95b1ae12c7626283d7609f0a1438e6437 upstream.
-> > 
-> > This reverts commit 7c877586da3178974a8a94577b6045a48377ff25.
-> 
-> Isn't that moot now with 0938b1614648d5fbd832449a5a8a1b51d985323d that
-> in Linus's tree? It's not in 6.12 (yet?).
-> It may be worth backporting 0938b1614 to the stable tree, but it's
-> beyond my pay grade.
+Add everything needed to support the DSI output on Renesas r8a779h0
+(V4M) SoC, and the DP output (via sn65dsi86 DSI to DP bridge) on the
+Renesas grey-hawk board.
 
-Hum, I don't think it is moot. Due to the change this commit reverts, we
-could have been calling page_cache_ra_unbounded() with huge nr_to_read
-value. I don't see how upstream commit 0938b1614648d5fb helps dealing with
-that...
+Overall the DSI and the board design is almost identical to Renesas
+r8a779g0 and white-hawk board.
 
-								Honza
+Note: the v4 no longer has the dts and the clk patches, as those have
+been merged to renesas-devel.
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+---
+Changes in v4:
+- Dropped patches merged to renesas-devel
+- Added new patch "dt-bindings: display: renesas,du: Add missing
+  maxItems" to fix the bindings
+- Add the missing maxItems to "dt-bindings: display: renesas,du: Add
+  r8a779h0"
+- Link to v3: https://lore.kernel.org/r/20241206-rcar-gh-dsi-v3-0-d74c2166fa15@ideasonboard.com
+
+Changes in v3:
+- Update "Write DPTSR only if there are more than one crtc" patch to
+  "Write DPTSR only if the second source exists"
+- Add Laurent's Rb
+- Link to v2: https://lore.kernel.org/r/20241205-rcar-gh-dsi-v2-0-42471851df86@ideasonboard.com
+
+Changes in v2:
+- Add the DT binding with a new conditional block, so that we can set
+  only the port@0 as required
+- Drop port@1 from r8a779h0.dtsi (there's no port@1)
+- Add a new patch to write DPTSR only if num_crtcs > 1
+- Drop RCAR_DU_FEATURE_NO_DPTSR (not needed anymore)
+- Add Cc: stable to the fix, and move it as first patch
+- Added the tags from reviews
+- Link to v1: https://lore.kernel.org/r/20241203-rcar-gh-dsi-v1-0-738ae1a95d2a@ideasonboard.com
+
+---
+Tomi Valkeinen (7):
+      drm/rcar-du: dsi: Fix PHY lock bit check
+      drm/rcar-du: Write DPTSR only if the second source exists
+      dt-bindings: display: renesas,du: Add missing maxItems
+      dt-bindings: display: renesas,du: Add r8a779h0
+      dt-bindings: display: bridge: renesas,dsi-csi2-tx: Add r8a779h0
+      drm/rcar-du: dsi: Add r8a779h0 support
+      drm/rcar-du: Add support for r8a779h0
+
+ .../display/bridge/renesas,dsi-csi2-tx.yaml        |  1 +
+ .../devicetree/bindings/display/renesas,du.yaml    | 63 ++++++++++++++++++++--
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_drv.c      | 18 +++++++
+ drivers/gpu/drm/renesas/rcar-du/rcar_du_group.c    | 24 ++++++---
+ drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c    |  4 +-
+ .../gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h   |  1 -
+ 6 files changed, 99 insertions(+), 12 deletions(-)
+---
+base-commit: adc218676eef25575469234709c2d87185ca223a
+change-id: 20241008-rcar-gh-dsi-9c01f5deeac8
+
+Best regards,
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+
 
