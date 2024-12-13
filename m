@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-104071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695EF9F0F3B
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:34:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1148F9F0F60
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:39:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87ABF1645AE
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:34:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B00F1885E91
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4367D1E04BF;
-	Fri, 13 Dec 2024 14:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745381E25E1;
+	Fri, 13 Dec 2024 14:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuaAGz83"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvWfF3Zj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39EA1AAC9;
-	Fri, 13 Dec 2024 14:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D71F1E25FC;
+	Fri, 13 Dec 2024 14:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734100463; cv=none; b=M34qcp+2oGEowEjIwQcqELXnSt+0X+AZfflQ4bnY+hjK4TnZFy2sqlutLnjFAOYDEnXou1eF0xugULLUb9JV50fbG5GkLG3QsfEPCGG3EKxI7OVn9QDtwfZmIppxiY4+gMd12som+CHqgnqmB2ybtPFcsavsOion8wMUc6Zd1MI=
+	t=1734100742; cv=none; b=hW1xLkfIMtI15NDmQQUwdJcuGlzdxFQaDOk7uHAA0A6IYIfYLFQAjNiNw1DWSZtQUxlkE4BkRJ3mohMU9X9myoaFodEgQAR2STN4JHHMHcAaH42oIu0tN1Tp3pisE8rB2I0BDg+Kva2gTvKuPZEwHlnHgLUUBzit+BoGkrCHdOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734100463; c=relaxed/simple;
-	bh=wHBHWbN8T1dB7vyMnQIgEIpw4tUeOJJZ+ixlT+uAaX4=;
+	s=arc-20240116; t=1734100742; c=relaxed/simple;
+	bh=ZppmVRpWe2yG+cY2drkddKHwv3IDtev7H6+KRmZH7j8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RxxMRfksDySwZ/YJi4ezWzbUM87tFxr1vxE8b30QEoxiM3cILn3p2Tf2BCdJk9zrg7lbyTBj/rbgEnTZhhybawOZMIyjNKHeIQEPk0MjRCjzhs91vgQqf0f9fFylFgak0FVt73PPFSaalgxIkbN98wnH4nTK8ay9v0sjZz9LiFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuaAGz83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3457C4CED2;
-	Fri, 13 Dec 2024 14:34:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734100462;
-	bh=wHBHWbN8T1dB7vyMnQIgEIpw4tUeOJJZ+ixlT+uAaX4=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lya5/gQY9vkxv1+k6U5lXXoF4nNf+4mkGGtTUkQu3zDSFiuEEpJSrhVE6wSuxnbCd6+jsBSWlPj2NZ3YThbvq3oVrpxm2cgyqpwMgZS0rmRehZ1tLVwnI46NdtAd/hlEHk7IUbf09YGnIrr/PeeiJlB7KODmCvz780pL2AE6cjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvWfF3Zj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5203C4CED0;
+	Fri, 13 Dec 2024 14:38:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734100741;
+	bh=ZppmVRpWe2yG+cY2drkddKHwv3IDtev7H6+KRmZH7j8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XuaAGz83aBmtU6jNbgdz7rRtuy/2IWP5vzD+SKjot+6aZL9bKyiJ033UzCHfqUs6q
-	 dKLPPanAoPMiIfUBpikU/F3BeDuU9Okp7r946E0tyc8XM/CPJ2PwB/Ma/d4myK2CKz
-	 3x7bhuKZcyl2PjCmCOkpuhEoZqp0N6rO8NLXPOBQ=
-Date: Fri, 13 Dec 2024 15:34:19 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>, Austin Zheng <Austin.Zheng@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 437/466] drm/amd/display: Update Interface to Check
- UCLK DPM
-Message-ID: <2024121304-reversing-suing-3c51@gregkh>
-References: <20241212144306.641051666@linuxfoundation.org>
- <20241212144324.128679509@linuxfoundation.org>
- <6e25f099-1ba2-4bef-9477-888288270f5d@kernel.org>
- <2024121349-tacky-obstacle-a41b@gregkh>
+	b=TvWfF3ZjT0DTeg22F6ilYKR5s6ww7PdvJ+bBo4WbVV/9d+s/SwrYaicT4w9l7FpN1
+	 cyLcDZtiPEFrtXehvMsq2xhdufTRPukSzAVPNjbgGc/boFPGeDlTZEyWgifg2x62lg
+	 BapaluwLDu61aYBbAaqiVTtRqyaeH7ouxxMLx6MasPNULcEZqKO5deZzaWjyla5EHH
+	 BLQ/l+nOTdiLGmK9ZyuN1CF5aqYXhxhmWuvIPsE4MUyZdtQM0EeKc3pM6EU4qmB5FF
+	 y27ytALx5lmwtLx8yv2haNVwKCqicY5+6rVxK7itUyW7ToKGanqI+bLIjFUcQlalAx
+	 v3LKfJUZXikxw==
+Date: Fri, 13 Dec 2024 15:38:56 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>, stable@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v5 1/6] PCI: dwc: ep: iATU registers must be written
+ after the BAR_MASK
+Message-ID: <Z1xHAOSiNssDBz3N@ryzen>
+References: <20241127103016.3481128-9-cassel@kernel.org>
+ <20241204173352.GA3006363@bhelgaas>
+ <Z1w364da43KCOIGY@ryzen>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,54 +67,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2024121349-tacky-obstacle-a41b@gregkh>
+In-Reply-To: <Z1w364da43KCOIGY@ryzen>
 
-On Fri, Dec 13, 2024 at 03:28:20PM +0100, Greg Kroah-Hartman wrote:
-> On Thu, Dec 12, 2024 at 06:45:07PM +0100, Jiri Slaby wrote:
-> > On 12. 12. 24, 16:00, Greg Kroah-Hartman wrote:
-> > > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Austin Zheng <Austin.Zheng@amd.com>
-> > > 
-> > > [ Upstream commit b8d046985c2dc41a0e264a391da4606099f8d44f ]
-> > > 
-> > > [Why]
-> > > Videos using YUV420 format may result in high power being used.
-> > > Disabling MPO may result in lower power usage.
-> > > Update interface that can be used to check power profile of a dc_state.
-> > > 
-> > > [How]
-> > > Allow pstate switching in VBlank as last entry in strategy candidates.
-> > > Add helper functions that can be used to determine power level:
-> > > -get power profile after a dc_state has undergone full validation
+Hello Bjorn,
+
+On Fri, Dec 13, 2024 at 02:34:35PM +0100, Niklas Cassel wrote:
 > > 
-> > FWIW this was reverted in the Linus' tree:
+> > And I guess the problem is that the previous code does:
 > > 
-> > commit 0e93b76cf92f229409e8da85c2a143868835fec3
-> > Author: Austin Zheng <Austin.Zheng@amd.com>
-> > Date:   Mon Sep 23 10:07:32 2024 -0400
+> >   dw_pcie_ep_inbound_atu        # iATU
+> >   dw_pcie_ep_writel_dbi2        # BAR_MASK (?)
+> >   dw_pcie_ep_writel_dbi
 > > 
-> >     drm/amd/display: Revert commit Update Interface to Check UCLK DPM
+> > and the new code basically does this:
 > > 
-> >     This reverts commit b8d046985c2dc41a0e264a391da4606099f8d44f.
+> >   if (ep->epf_bar[bar]) {
+> >     dw_pcie_ep_writel_dbi2      # BAR_MASK (?)
+> >     dw_pcie_ep_writel_dbi
+> >   }
+> >   dw_pcie_ep_inbound_atu        # iATU
+> >   ep->epf_bar[bar] = epf_bar
 > > 
-> >     Reverting as regression discovered on certain systems and golden values
-> >     need to updated.
-> > 
-> > 
-> > 
-> > Possibly, there are other fixes queued for 6.12, so the revert is not needed
-> > anymore?
+> > so the first time we call dw_pcie_ep_set_bar(), we write BAR_MASK
+> > before iATU, and if we call dw_pcie_ep_set_bar() again, we skip the 
+> > BAR_MASK update?
 > 
-> No, you are right, I need this one.  For some reason I thought I had
-> applied it but it failed to apply cleanly and so it was dropped.  I'll
-> go fix it up by hand now...
+> The problem is as described in the commit message:
+> "If we do not write the BAR_MASK before writing the iATU registers, we are
+> relying the reset value of the BAR_MASK being larger than the requested
+> size of the first set_bar() call. The reset value of the BAR_MASK is SoC
+> dependent."
 
-Nevermind, I just dropped this commit entirely, that was easier overall.
+Re-reading this commit message, I can see that it is a bit confusing.
 
-thanks for the review!
+I re-wrote the commit messages for patch 1/2 and patch 2/6 in this series,
+based on your feedback. (I also updated the code comment in patch 2/6.)
 
-greg k-h
+I hope that it slightly clearer now :)
+
+Please review:
+https://lore.kernel.org/linux-pci/20241213143301.4158431-8-cassel@kernel.org/T/#u
+
+
+Kind regards,
+Niklas
 
