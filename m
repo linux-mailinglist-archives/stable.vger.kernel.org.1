@@ -1,111 +1,104 @@
-Return-Path: <stable+bounces-104022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04B89F0B6E
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:41:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE5C9F0B7B
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:43:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4C71887D86
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:41:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CBF3163EC2
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3A21DE4FF;
-	Fri, 13 Dec 2024 11:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UN6S053N"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EFE1DF256;
+	Fri, 13 Dec 2024 11:43:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF88F175AB
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 11:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B33A1DEFF7
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 11:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734090075; cv=none; b=uuDlo3XbDB1ov/HU2lVajXoqHr0piKibMi3wcb9LgjIxs0mX9ZJg/r1+qWQt8LcDnT+98UMp3NbMWHolTpFLYNaOAfpcy91GzEOWJQvdrs7Cvg8OLRNt+XPCmXK//ccdnUw/4bcvsToqhCxioSmfVhG7McGFPc5tr0NqCnxHXPY=
+	t=1734090185; cv=none; b=p2eAdmtfKYSvbchYjU/KbcSj0IlE8Vg9rEvQ/kkT+BaOjwOz/lPFhIaLuiQ/qFAcRBMkhD5fQKOc7r4pFFLgZiQM8gmAMpidsyGOvA/yE5zjrGsEq+M5/ct0ddsJXzTeYFKQBJaIfJXxF/bt7qDkHZWM56NxbnU10yv691vJxUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734090075; c=relaxed/simple;
-	bh=7GZBX68j2IfcqOpZUYGFeFoRISUMcfclRmdMk75E8ps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JrUHQz1y9e1V5x+Hi30I7u+JxE+UyNe6/tm4rpWyPr5f9wujAS4/5rmziv+iaFMhGLWC4meuqHf1pUYa+vCOZD005qvfhQ4Kn3OT1/CGuwn3zuyeEw1+J5p70WjPszatyBj32Vx3IfHIdOaoN+BGvC8Kd//hnJAC371we1hyBfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UN6S053N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB476C4CED0;
-	Fri, 13 Dec 2024 11:41:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734090075;
-	bh=7GZBX68j2IfcqOpZUYGFeFoRISUMcfclRmdMk75E8ps=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UN6S053NceIHgmxSQ5e4lP8jHN92MjDGGevA9iJtZNCcn6wL6P5bBLyRduDqy9nu6
-	 Ls+X+dEz/gf+r6rH68xJQ3tpMktD496mWtsHmqSb5IpDJThNLI7VfQ4xP5hDkOYHpi
-	 FpWgJ3ZXzx3ahes0DbCi+Lz/9GOjEEgAm4Vq0whg=
-Date: Fri, 13 Dec 2024 12:41:12 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?B?Q3Pza+FzLA==?= Bence <csokas.bence@prolan.hu>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH 6.6 resubmit 0/3] Fix PPS channel routing
-Message-ID: <2024121346-omission-regulate-89c3@gregkh>
-References: <20241213112926.44468-1-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1734090185; c=relaxed/simple;
+	bh=estDcRIo9Ps/V70akpJUOEghJnsuWqhCaWrCUbyCJD8=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=BH2TtFEiqLPK4AbXw59CjJBK47E1Qd0oaiPAkTTbBhLxJfw8vnCmvSukkTsv7j05GFxOGAZCFEBjwxH6OyCPQJzT6iqXAJ3lao4qCb7kv7jsDrLghKD+RTOkG8j5LGuSxHTfRlYSbRxNprDyI+NgLhaK/808febIjnmcQ+MhAxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a814bfb77bso26875845ab.0
+        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 03:43:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734090182; x=1734694982;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6njtYwuuhlt+oJFig9mpzBM61IwvHlJyPr4iUNckOYs=;
+        b=GiYaszE1i+aVS2HMeQascr7mPu756aDLuNfl+Oz2kWRZa7UZZ4rAG2UupqyhigUJjl
+         Wuu3bXtZqc+NskKalkBJpozkPEAVRL1R9b+j/IUpu9KrZut653Y2Kc/ZlWuNy0n6ZX+K
+         Jgrjs0V2KP9ajL5aOPmMEBAx+Si0itiu2/g8xSu81dnstwyE5JuGK1MeG2b65T0+fASD
+         Xz33O5f7zPRKywF6vkSdTHRhWsjSoPlAsvRbedC+Gnq2AfanqWqPSPt9CjeS+m/z8CKr
+         JCBDVK44oqXUDfhTHG+WObIMMUHI6dS2DrDne9rF+CyUeoHkg6qigvoRbBX2eXv9JV9F
+         qS9g==
+X-Forwarded-Encrypted: i=1; AJvYcCXyvFmlaeLPWxeznJppugcCkUKY0cm/SaXogaYWoEqnaLzL+9JKDYiguXQtHIVq36UohRccz6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBc7qNrFxdhA6baPllvMmkxkc7fWclQRBXeihWgHYwpBsbURfh
+	QMMVwEvVVL/c6xLurCoTIjZCm1FelsBMKCdRBRqzo+IPhvS69V8UsSXlCksqN+cAhuPrbogQ8WH
+	4IMlpANHVj8rI8R5UNu3Yf0SP19+3HfX4j61u/Hcd5cDIsVm4H+cPj2s=
+X-Google-Smtp-Source: AGHT+IHDAFY/TJurokeAD58Ic6k8Gv/vDg0siFvYAkQ1NFVck19SuU1w02dmhAQMhWSSadJDht8QTW+J8baOcxgzM5T4zE7FxWYz
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241213112926.44468-1-csokas.bence@prolan.hu>
+X-Received: by 2002:a05:6e02:1c47:b0:3a7:c81e:825f with SMTP id
+ e9e14a558f8ab-3b02d78812bmr23955515ab.9.1734090182295; Fri, 13 Dec 2024
+ 03:43:02 -0800 (PST)
+Date: Fri, 13 Dec 2024 03:43:02 -0800
+In-Reply-To: <675b61aa.050a0220.599f4.00bb.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <675c1dc6.050a0220.17d782.000c.GAE@google.com>
+Subject: Re: [syzbot] [tipc?] kernel BUG in __pskb_pull_tail
+From: syzbot <syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com>
+To: alsa-devel@alsa-project.org, asml.silence@gmail.com, axboe@kernel.dk, 
+	clm@fb.com, davem@davemloft.net, dennis.dalessandro@cornelisnetworks.com, 
+	dsterba@suse.com, edumazet@google.com, eric.dumazet@gmail.com, 
+	horms@kernel.org, io-uring@vger.kernel.org, jasowang@redhat.com, 
+	jdamato@fastly.com, jgg@ziepe.ca, jmaloy@redhat.com, josef@toxicpanda.com, 
+	kuba@kernel.org, kvm@vger.kernel.org, leon@kernel.org, 
+	linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, miklos@szeredi.hu, mst@redhat.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, pbonzini@redhat.com, 
+	perex@perex.cz, stable@vger.kernel.org, stefanha@redhat.com, 
+	syzkaller-bugs@googlegroups.com, tipc-discussion@lists.sourceforge.net, 
+	tiwai@suse.com, viro@zeniv.linux.org.uk, 
+	virtualization@lists.linux-foundation.org, ying.xue@windriver.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Dec 13, 2024 at 12:29:18PM +0100, Csókás, Bence wrote:
-> On certain i.MX8 series parts [1], the PPS channel 0
-> is routed internally to eDMA, and the external PPS
-> pin is available on channel 1. In addition, on
-> certain boards, the PPS may be wired on the PCB to
-> an EVENTOUTn pin other than 0. On these systems
-> it is necessary that the PPS channel be able
-> to be configured from the Device Tree.
-> 
-> [1] https://lore.kernel.org/all/ZrPYOWA3FESx197L@lizhi-Precision-Tower-5810/
-> 
-> Francesco Dolcini (3):
->   dt-bindings: net: fec: add pps channel property
->   net: fec: refactor PPS channel configuration
->   net: fec: make PPS channel configurable
-> 
->  Documentation/devicetree/bindings/net/fsl,fec.yaml |  7 +++++++
->  drivers/net/ethernet/freescale/fec_ptp.c           | 11 ++++++-----
->  2 files changed, 13 insertions(+), 5 deletions(-)
+syzbot has bisected this issue to:
 
-This series is really totally confusing.  Here's what it looks like in
-my mbox:
+commit de4f5fed3f231a8ff4790bf52975f847b95b85ea
+Author: Jens Axboe <axboe@kernel.dk>
+Date:   Wed Mar 29 14:52:15 2023 +0000
 
-   1   C Dec 13 Csókás, Bence   (0.8K) [PATCH 6.6 resubmit 0/3] Fix PPS channel routing
-   2   C Dec 13 Csókás, Bence   (1.9K) ├─>[PATCH 6.11 v4 2/3] net: fec: refactor PPS channel configuration
-   3   C Dec 13 Csókás, Bence   (1.8K) ├─>[PATCH 6.11 v4 3/3] net: fec: make PPS channel configurable
-   4   C Dec 13 Csókás, Bence   (1.4K) ├─>[PATCH 6.11 v4 1/3] dt-bindings: net: fec: add pps channel property
-   5   C Dec 13 Csókás, Bence   (1.9K) ├─>[PATCH 6.6 resubmit 2/3] net: fec: refactor PPS channel configuration
-   6   C Dec 13 Csókás, Bence   (1.8K) ├─>[PATCH 6.6 resubmit 3/3] net: fec: make PPS channel configurable
-   7   C Dec 13 Csókás, Bence   (0.9K) ├─>[PATCH 6.11 v4 0/3] Fix PPS channel routing
-   8   C Dec 13 Csókás, Bence   (1.4K) └─>[PATCH 6.6 resubmit 1/3] dt-bindings: net: fec: add pps channel property
+    iov_iter: add iter_iovec() helper
 
-I see some 6.11 patches (which make no sense as 6.11 is long
-end-of-life), and a "resubmit?" for 6.6, but no explaination as to _why_
-this is being resubmitted here, or in the patches themselves.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=17424730580000
+start commit:   96b6fcc0ee41 Merge branch 'net-dsa-cleanup-eee-part-1'
+git tree:       net-next
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=14c24730580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=10c24730580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1362a5aee630ff34
+dashboard link: https://syzkaller.appspot.com/bug?extid=4f66250f6663c0c1d67e
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=166944f8580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1287ecdf980000
 
-Two different branches in the same series is also really really hard for
-any type of tooling to tease apart, making this a manual effort on our
-side if we want to deal with them.
+Reported-by: syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com
+Fixes: de4f5fed3f23 ("iov_iter: add iter_iovec() helper")
 
-What would you do if you got a series that looked like this and had to
-handle it?  Would you do what I'm doing now and ask, "What in the world
-is going on?"   :)
-
-Please be kind to those on the other side of your emails, make it
-blindingly obvious, as to what they need to do with them, AND make it
-simple for them to handle the patches.
-
-Series is now deleted from my review queue, sorry.
-
-greg k-h
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
