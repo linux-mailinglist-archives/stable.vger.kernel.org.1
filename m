@@ -1,106 +1,96 @@
-Return-Path: <stable+bounces-104131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B65D9F116C
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 16:54:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69FCB9F11AB
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 17:01:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59F3D16494B
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:54:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F5221886E9C
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571111E1A18;
-	Fri, 13 Dec 2024 15:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE571E3DD1;
+	Fri, 13 Dec 2024 15:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Clo9Ugdw"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="EhEAHSVx"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94E484039
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 15:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC3D1DE4FF;
+	Fri, 13 Dec 2024 15:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734105264; cv=none; b=JrmVNyGNa7G7MDrjhM9AmK1KZzitOY8Ev2Lke0cGPJn5LUlV2UX2dFDgULuu1xU5akGuNPgNsEciuB0gVoKwg7VLoTtWPbzRdwhyjIfhceEKEQtFPqh1cdrk10Wv+kMpirowq8wTWJp5sioAcR6SfpORCFmHtuWJQg5BzoFebpY=
+	t=1734105536; cv=none; b=Y6rsc9vesJYBA07ygotXU7EmWcVXPLWaQyuE4dEzFJ9LbHsk+GxmVsOlSgmpfBIhET7zn5kDxHY0jpvyhGaYaNwcEc4FF9xPoWRHmN+hTko141dxwikVqtVYv5OtydRoiCSpkfQLPoeMtYeu0epDK/LDxbUiamDh/CuatlTzTDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734105264; c=relaxed/simple;
-	bh=YDOX0t7rA7DzcrhO8lKzG3JVXQEUwie1oBzTyjejceo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=W7fBjWksJpFQmUyXyMaHxfwJzcxvztxVSl51oqwnrgw5Vny41EfpUdhO9vonaGIdnMnjnLb3efPkY7mmSKiMRseg5BsYGsd2J//FcghP7zSFyqnexZLMn8rWW5Y5iwXkaDh97mO1FvDDSo0JdmO0FYS1qFE5GYGkbrTZ7YUuvqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Clo9Ugdw; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BDBhkUJ017829;
-	Fri, 13 Dec 2024 15:54:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	YDOX0t7rA7DzcrhO8lKzG3JVXQEUwie1oBzTyjejceo=; b=Clo9UgdwYQ1NJc3G
-	qVkecjhd40x/TiwVPoctU0DvCUVhpzIC4zZcOki+qZ7Wf2MOeorgiHY4/cq3qrHo
-	OwsiBJqbtJoNhU4ZodAb/QlzXMPT8P4jsYmuovbMXoc782IBGX01a6DXDgP5cH34
-	wCQ4R7MrcaROJc1G/GbKh6TmGJqs4sIwqG1e6bylg06dKPZ3taXPEt603vGd3uoN
-	BxaZ2eJR2sL6TRA609oP7bDNKi0TMPQTP8U1SAJvUvlx4uypb0e4K/S6SUOhce1u
-	pSD446FDa6oSuDbXQ8IbeBRtWn8sNHTh+YccehonME8tsQl8eKZMbzhq0ZsSoHqy
-	+cB2uw==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43gmac0nqx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Dec 2024 15:54:17 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BDFsG9I013686
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Dec 2024 15:54:17 GMT
-Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 13 Dec
- 2024 07:54:16 -0800
-Message-ID: <7997da94-1cc9-27a6-e918-96af461efe05@quicinc.com>
-Date: Fri, 13 Dec 2024 08:54:15 -0700
+	s=arc-20240116; t=1734105536; c=relaxed/simple;
+	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=rsZE5GYSMJBzZ2fG5EKFDFmIaASEpV1JozGXoIW7yb7NSHKqkHLeNJhaVnCr8usigOQ55pW0WyKN70B6ge9NKuksiNZ+5e7r8a9XVRQ2lfY9T5a/zVPLUCz2I5jD26Tc48RDa9lAieLXGs4mLkW5q4j4bXwOTrGe5ExotDUfMCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=EhEAHSVx; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1734105531; x=1734710331; i=rwarsow@gmx.de;
+	bh=dmMdDLN3YgL1qMEqV22WwccWKGPvTDnUyQtKaq9KA84=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=EhEAHSVxe1ZFqTRSqUZq7UniWy6Fwfv2X99eGAXRBkkUt8+PwG73x+BoCRtxmysT
+	 kte7xfJwWjvPK+2o0fxPUA8YUZ4fsTu3ZlDqjg8H1/sVU8JUIfvNEErEDAayvgRvC
+	 9XctsggLhIlyv8HyPXhZxQdBSrKT3MXOeAlLTB4j2KFjGkX4zbAK+HhwxgS8qWbEj
+	 YBtbfz7WNZke6VDV+hfI69FiWEF2ERUN30/P4qtT/qFf5qbO5islBnVjOZeDQSxYP
+	 CrQe3uHgwiLswqNA11+/fmrVzbQUBTm77pYMVHusOygeHPLPH9SuoOKVGT80rsZAs
+	 tIr/PPHmA7fn0ufEqQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.232]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MEm2D-1tPABd3q6F-002fy2; Fri, 13
+ Dec 2024 16:58:50 +0100
+Message-ID: <4965a11d-fa56-4802-904d-4df4d92db056@gmx.de>
+Date: Fri, 13 Dec 2024 16:58:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH 3/3] accel/ivpu: Fix WARN in
- ivpu_ipc_send_receive_internal()
-Content-Language: en-US
-To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-        <dri-devel@lists.freedesktop.org>
-CC: <oded.gabbay@gmail.com>, <stable@vger.kernel.org>,
-        Karol Wachowski
-	<karol.wachowski@intel.com>
-References: <20241210130939.1575610-1-jacek.lawrynowicz@linux.intel.com>
- <20241210130939.1575610-4-jacek.lawrynowicz@linux.intel.com>
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
-In-Reply-To: <20241210130939.1575610-4-jacek.lawrynowicz@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.12 000/467] 6.12.5-rc2 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: nc-1T3VsRyBnHfcg1yww6khCfnsCIZ36
-X-Proofpoint-GUID: nc-1T3VsRyBnHfcg1yww6khCfnsCIZ36
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- phishscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- suspectscore=0 spamscore=0 adultscore=0 mlxlogscore=902 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412130113
+X-Provags-ID: V03:K1:iv1sbX93flrN6W4k3WdTwgQ7K6s3Y/KgvowIAUJ1x+FrOD0oQAI
+ t+zh9+1j9opTFNfx3ZcNVc0WQG1BiP8E4NLtDvTPE/0r3c50T7ohGOlc0y8EXsIwNwqAiH+
+ 13Xsb4mWv94p+Pcreg4SN3ceW4yklH7KJYJbyIbRfMk6DmP+NCx3qZXH5u8LC67ua9cAOXt
+ WTOLaoTIz6v2MBEg0DJUg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:7ULh0vShYuc=;QuTtwYJpK50Jj0RYu9uahl/xr8i
+ TUL+4ihhbFW8QYkMJJiWV2SiZl4kfMwUjf+6FrrLHz1yMHVmRrki5c7k7IY2wQ4e/Gjz47KZ3
+ RYaCwjcf+NErObKgC0NEuqzaE+0HseVaZRkCdZ9UvrQ5CvoSM08LD1WwAyX23yVt42Tg2KTTp
+ 2fwvc9fSgilGBOSaqMccyVKlCcfpyyNnTyHXVwMCmbXP8CzHnOszW8E17wERbTleHki9/pO2/
+ IhmGqkWYifv8mg4GS2T41Vtey8qQPR1l2f9oQLp5rmWOqSlj0GMeO8kIuOYFQ0KayBkBUfyGx
+ M4VsgdECM0hGc3BeFgtJ0bx3+F9/DFjYTlMhIqm4iOCyRGLt1ZVi6NVpDZLxBcfWDrhwaiHgP
+ K13zzx1Tua/d3Q3lAClKooIb9EGUBPQ9FBbNb9I0G6t/zRQfxut+WFF02IhooiItwOm3lOXrC
+ FAfabHMeXpUEk7NIsAoys8nKDtDx1+5KqVmma2dOuRaZGbgRLodA3GCOi7qxyI7FPSpWjGIhp
+ dfwMqOLMrEAdotcvnkC8KrcAH8VtBc2l5Gh1qo0ZGdybhrZMxrJej3bgPHkfdbR5mZJlnUGBG
+ rmtpXSvwccyqEJCpeW4oPA+Q2N40t34+up4bhhlbjB80zPZVMDRnRlWZH/la/QMHxVeF6BjtI
+ VH1jEcA9M6FZ7fV01HBfhiYVNeWKulz7wpBx2uEdaXqyV1ilWoMPqw/jIXmd2VIQORNADFmii
+ BeuFQglTqD7E4CUbL6k5OdzW7Ey02BxOPo8NI2a1ZueV9PrBk+haOgXGHuUia2iw+94hcKt40
+ h/wNqD6C9378VfDkGSdzse0TCIaYZ62OhnaUdD0PqiPg2SMz60qixxJPExNBXNWGzZnU0lpWs
+ z91FMzs8qM0qjf91lYenaq/N0NZYLGniDOHGettbDNmBKY9l7EprjWTfAhz+Jck4xG2u15UBs
+ RN/+n+utnth+rlV6+Ah5iafNAa2sUoCkAbY/d+ahYM+Mov0kmwLzmm8oV9LvLbFcGyDTnStoU
+ BGiWOTL8eIK/ULwqKrbl7FyG50SRJaypMs1xhjXlPOd+ay7Sw903FUORnV0zyNjRsjhtEiqJr
+ YHM1jEyQBWyDRSujJWPh3poqdCyjlW
 
-On 12/10/2024 6:09 AM, Jacek Lawrynowicz wrote:
-> Move pm_runtime_set_active() to ivpu_pm_inti() so when
+Hi Greg
 
-ivpu_pm_init()
+*no* regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-With that
+Thanks
 
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
