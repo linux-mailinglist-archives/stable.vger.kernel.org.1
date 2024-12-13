@@ -1,48 +1,53 @@
-Return-Path: <stable+bounces-104052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13839F0D39
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:23:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FCB9F0D40
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:26:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83692282B94
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:23:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A4CA162C91
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E361E008B;
-	Fri, 13 Dec 2024 13:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EB81E00AC;
+	Fri, 13 Dec 2024 13:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVWAvOsf"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="JZ8v4Iel"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699061A8F85;
-	Fri, 13 Dec 2024 13:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067411DE899;
+	Fri, 13 Dec 2024 13:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734096210; cv=none; b=lADCWUqb29xh4pBfSE8ElJUg8To6/Z0C+7l/31nOrnbA5PBQCVjGsK9ICaYxLJJ4sBLyeEREx5N8ImgODjMHejQ7fCJlJBWiwpPgn+If24fuEGe/08TtDp0ZxPAJNtOuQNl6cRT+/bix9u/XR/I/j+W6dD7E0fg1xsxne+ry0IY=
+	t=1734096385; cv=none; b=IpgSn7R/e7rdc6TJW77RKFgcvMN2vDS8lyXShgNZzr17FGNDrMI9VB9mTarrtv4Jk5qZlC7NbU9h+Jw6frtFYpliS+3CsCGMaF79+VrCzSSkWYU8ww/zol0JQggAMCa8fSAdu5Ms37ZtFgApbnD5Jeo1Gk191PbI5HG8RkUJImk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734096210; c=relaxed/simple;
-	bh=F2JHZ3ZqREJM7UXkBh6hU0VBtuNOKKvDI50ITAB9R1I=;
+	s=arc-20240116; t=1734096385; c=relaxed/simple;
+	bh=pq5E2dClTb3b+TgYz6BmlZ0VaMkh6Yol45ssZt5Flt0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oqi9GoHQ/QMs1AHmWFThwFcwIw+DscCAO0o5zkfmIywErzjunJx3WHjZGI+12lTWvRIQNES4r7z+YpQMS12okw5FIM/zW16MhIe9GUtSKW5ddqI181av8hNzv8v0RZPc+FTV3ymQTjQIs5SGiagsNl+soEKHu1FZMlDsbB5+TWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVWAvOsf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FAAC4CED0;
-	Fri, 13 Dec 2024 13:23:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734096209;
-	bh=F2JHZ3ZqREJM7UXkBh6hU0VBtuNOKKvDI50ITAB9R1I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YVWAvOsfrn+z5H+to4WP9x9cFnYLmbokzusYjkzOMe/w4ztkBy5yWwMhSSRAK7VoL
-	 R12dTOc80iw7z8YVnq3grv69rHtDx06XxAzGxyq+bfQtaymF/CVqeUdsgxuLdsf2xr
-	 1ByZEN3uyZXTVjOP+w5vcRSy64QbG7QD0UvJF7inpFsVjVp1G66Fxt1QMCthEgxmB0
-	 LTGtRN3IjOaJO44PBV+k99x4ujwkSi6UWg6zmLLk8o2FblQ03zGHxHXX+VQesQIBOC
-	 FOSFW9oRoFnsW0sF3k2P3NLkwFoZoKX+aDW7ZlK8mDGmMyQq61q4xP5RL1rgx+ZVy1
-	 kV3u6kiY7oA5w==
-Date: Fri, 13 Dec 2024 13:23:23 +0000
-From: Mark Brown <broonie@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LXp6zq3VELdmsbKizQaAswCtfP9lPQSE6YgF8AlJXiQQ5z2NWg3meKgCxtcuhGCVU5HLPliXQRCAGX9yx1bQ6phr5SdmPt6GJAXZwb7anoGSV6ffLaFn6EEzhzYieyuGWMleu7RdhIlEXywMG0e450EbWQZUIIEuVzsy1JXOIYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=JZ8v4Iel; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id D128D14C1E1;
+	Fri, 13 Dec 2024 14:26:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1734096373;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NSxcARGH8lpnoYOuXPDZNEAu2lX0pFm+l+w1f6zH2n4=;
+	b=JZ8v4IelH/Ih0MvPgds5TamtYsW4tuOjGVUKqjzNX0NvFryQnnvYnPqNXgqXkz8Ls+peaC
+	xq4kQ1ANqkpD971fgwU2HW5G/Yj2PzFNcJmkrTAIuLZIQsBqhwis9ooow+/MlYUpY8X0ZR
+	ZutvF0q/oJ+fiHSPb54b/n8O0ys1rFhAyr6gTJN+oZLKVgNGyfmR46mTYUi2YH8tIX5LXg
+	tsbgJsVE2lgVbfHRMZMnquejLAKEz7hqerHVqsZ8fdmCT8vricNMv5Ka31fvilq0dQN87G
+	kRHy9AUpJdm7xNxgudZDqm4Yse8OjXeXjD2Aenhjs9yC8itpMrbVVqjFMAb/5A==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id a0c62334;
+	Fri, 13 Dec 2024 13:26:07 +0000 (UTC)
+Date: Fri, 13 Dec 2024 22:25:52 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
@@ -50,69 +55,75 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 5.4 000/321] 5.4.287-rc1 review
-Message-ID: <975004ea-7eb0-4412-a9af-d10486df4bb7@sirena.org.uk>
-References: <20241212144229.291682835@linuxfoundation.org>
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/459] 5.10.231-rc1 review
+Message-ID: <Z1w14PaRR2d7lyHZ@codewreck.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oDESnGT8e7eMbJCA"
-Content-Disposition: inline
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-X-Cookie: Not for human consumption.
-
-
---oDESnGT8e7eMbJCA
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
 
-On Thu, Dec 12, 2024 at 03:58:38PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.287 release.
-> There are 321 patches in this series, all will be posted as a response
+Greg Kroah-Hartman wrote on Thu, Dec 12, 2024 at 03:55:38PM +0100:
+> This is the start of the stable review cycle for the 5.10.231 release.
+> There are 459 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
+> 
+> Responses should be made by Sat, 14 Dec 2024 14:41:35 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.231-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-arm64 defconfig is failing to build with GCC 13 for me:
+Tested 2146a7485c27 ("Linux 5.10.231-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-/build/stage/linux/arch/arm64/include/asm/memory.h: In function =E2=80=98__=
-tag_set=E2=80=99:
-/build/stage/linux/arch/arm64/include/asm/memory.h:238:22: warning: cast fr=
-om po
-inter to integer of different size [-Wpointer-to-int-cast]
-  238 |         u64 __addr =3D (u64)addr & ~__tag_shifted(0xff);
-      |                      ^
-/tmp/ccGiqYDV.s: Assembler messages:
-/tmp/ccGiqYDV.s:129: Error: invalid barrier type -- `dmb ishld'
-/tmp/ccGiqYDV.s:234: Error: invalid barrier type -- `dmb ishld'
-/tmp/ccGiqYDV.s:510: Error: invalid barrier type -- `dmb ishld'
-/tmp/ccGiqYDV.s:537: Error: invalid barrier type -- `dmb ishld'
-/tmp/ccGiqYDV.s:1132: Error: invalid barrier type -- `dmb ishld'
-/tmp/ccGiqYDV.s:1216: Error: invalid barrier type -- `dmb ishld'
-make[2]: *** [/build/stage/linux/arch/arm64/kernel/vdso32/Makefile:166: arc=
-h/arm64/kernel/vdso32/vgettimeofday.o] Error 1
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-I'm also seeing the 32 bit arm build errors Naresh reported.
 
---oDESnGT8e7eMbJCA
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+> Shengjiu Wang <shengjiu.wang@nxp.com>
+>     ASoC: fsl_micfil: fix the naming style for mask definition
+>
+> Shengjiu Wang <shengjiu.wang@nxp.com>
+>     ASoC: fsl_micfil: fix regmap_write_bits usage
+> 
+> Sascha Hauer <s.hauer@pengutronix.de>
+>     ASoC: fsl_micfil: use GENMASK to define register bit fields
+> 
+> Sascha Hauer <s.hauer@pengutronix.de>
+>     ASoC: fsl_micfil: do not define SHIFT/MASK for single bits
+> 
+> Sascha Hauer <s.hauer@pengutronix.de>
+>     ASoC: fsl_micfil: Drop unnecessary register read
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdcNUsACgkQJNaLcl1U
-h9AOsgf/YS8f5nY+l2SezJL+QnB5q1p4weA59U3RTuK0voyyziv1T4Lz7TEzR34B
-XXYVs3sneahX70nGRUJKqo/wgAoqA1tv8T7etcGfRSLDLMlCaT6W+CL1ZrzmemIN
-hBS6tYgnpECLd1xxf6WxNIAdpwoouTZwRQ5J0Rm79KvG4q37HtJGqQ3Jlu0wtXjU
-YMIYvnZBwm2atoEJxOExQw0THqNWT0NMqoW2lMCkq1wkeqDj5PQIayWluSN3JphJ
-oo7CUClZrXOiGudD4HHADPmXrQaMBSeqip2j9fSUH7xXy2IEdmFWF1mbipLM3Adb
-nEQXi0MKiYrnjAVgekMRVZlRt8i30w==
-=9361
------END PGP SIGNATURE-----
+Just a note on these, our version (from nxp) of this was full of
+conflicts and too much effort to merge for something I cannot test
+easily, so I squashed out this part and re-cherry-picked just commits
+c808e277bcdf ("ASoC: fsl_micfil: Drop unnecessary register read")
+and 06df673d2023 ("ASoC: fsl_micfil: fix regmap_write_bits usage")
 
---oDESnGT8e7eMbJCA--
+The other three commits are marked as a stable dep of 06df673d2023 but
+it really is trivial to backport and not worth the risk to me; if you'd
+like me to send the minimal backport I used I'll be happy to.
+
+(but, as far as I'm concerned I'm fine as is as well and consider this
+closed; just reporting I didn't test this 100% as is. Not that my
+automated test actually exercises the micfil code anyway...)
+
+
+Thanks,
+-- 
+Dominique Martinet
 
