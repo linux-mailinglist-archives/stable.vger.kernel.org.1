@@ -1,236 +1,192 @@
-Return-Path: <stable+bounces-104074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA75E9F0F7E
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:49:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D30A9F0FB5
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E549D18820F4
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:49:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C4BE18804E3
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22B81E25F1;
-	Fri, 13 Dec 2024 14:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F2C1E22E8;
+	Fri, 13 Dec 2024 14:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OLPKboXF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j93QFN7I"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2C11E1C3F
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 14:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5192F1DF759
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 14:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734101370; cv=none; b=c9B3z5hAPb6kQAgHZql0OVxEiV0Gg+UY/4N+MAu/yiO5Q21t5J/2OTEOe8D4e3kG61yzyovvYMz/yfHbEIy6pSoyf4f6lK/MLdNGGCNfmLt/0r+ILoRJl5bCy+X7I5Ojl0Tnp9bf8HZQCI/kmIarucJfYcLukqjDdvpbSNFMKSI=
+	t=1734101666; cv=none; b=P05GZJeRF4ag5Jd08cHjMVkMnXWTK91BRExN949/WM6EZAVyltQ0YRyO9v2PSsyv1p9Hw8l92xWaIjZd7qL/6Bz6NvRKq6TPKjWUTAzksDxA4wPSmI076vwe4zcirT/H4V+4/JBej6YqMimHR87uFsvaYuQQbwYzkKvkOGIdi3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734101370; c=relaxed/simple;
-	bh=hByqeNYL+TZV1cYmgGYkHNhMiCkV4v9idGQn3nu0lpU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o/lWTVYV4k0Ra9nzR+Am55Zrgbcpm3lHu/FVQU3e2DOZghEsSVedWrULLVKmuYj90JW0QFD2Ym3hPzlyy2YVOb8UrXKrhCzuLgnpMJaYe9b7a6L2F9vmdRsJyfrk3030PDgZrlkrPvRd/OL6L3mpfVdHF8bj/VTMq18MNdafLdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OLPKboXF; arc=none smtp.client-ip=209.85.222.47
+	s=arc-20240116; t=1734101666; c=relaxed/simple;
+	bh=ol9EoljmJly7dAFajmboRG0xeJPOxqAKNyPayhuKeFk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ctt2mEWDFT6vizEhhejrDjw03PzS0qyYpD+2qrK2U9SZk4D5vSRB/93MQY14k3EfCQRQtH9W/tHsqfDhw+KoxSRtnuDqVn/iHyfDhdKfBmZSLHDiy5h3EiA3gJ/fRTZgyjdmvN0Ih3Q/bX7trMqKNDyXQj0UQxuvAXhhojmIweg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j93QFN7I; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-85bc5d0509bso385548241.1
-        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 06:49:28 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-434f398a171so1476495e9.2
+        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 06:54:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734101368; x=1734706168; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7bKxIAldnf2WV3uWw0aRPXep5q1Q5wgQLNkyd2UuYH8=;
-        b=OLPKboXFnIxAPo7/SqBWrCNO6t1B0u3paoH5tdDeh4JwNXuaz999zt6bHh2UpiWKME
-         zSlLi3rV7VB/GJTdp+ANXYM06iDrxFNF1Y6tJFiusphSEVF+a6KWsb1kCs/GmQJ27WVN
-         fo4YifI2Ug9uP+wKypwDpHh+HlAgsH89EbcVNuwzsedHRSHM3UZdplvQnuNECuxI+bFv
-         QG7HL7UeJe9fC3wI7efjjdgqnt2O9Z6J7+A4Fz8KGNY/va/mhd/v5WFTZg0kcDvZhwhC
-         1dfRBbOhUeHEPwHDA+FbyiO1zKGTwkARZavp5t1enN3cyAW1gu4Q/xyQyvH82igPJHIb
-         Sk5w==
+        d=linaro.org; s=google; t=1734101663; x=1734706463; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CVdvYvDpLs71QHH7bZcej5Vn26F9QrVKVYq7HujK4wM=;
+        b=j93QFN7Iw7sWV6NpklUp4b6H4iA8EVo9UWtA8MDtmEXKpusW6fJdSNRBbq0BpS/4Nj
+         MVUsIFREeiWYbII2esRv+oFMOlZVfdaKT/vTPUTX/QnCUHKjHlMbyDuKWc6/uC5jOQ0v
+         Y9KkdNs53CbYVK3m3WGsYXbtwU82dnDwe6lGLMq+e8KVOqRfoMsgij/Wx7ubmgL+FSf7
+         EZ+4Wv9Y6aBDkwEBbUwBaB1A9kVxtaIk0BowVXFSowpklZRza3ceJVnUESk2UZWYZYGu
+         ppm3yypylorCaDSpPjiWuxruCRKqze0Srv7o0ptoTTBBCzujltsDKzZe1gfdhn0VdCse
+         Apfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734101368; x=1734706168;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7bKxIAldnf2WV3uWw0aRPXep5q1Q5wgQLNkyd2UuYH8=;
-        b=mVHjJ8A7yOGwLX7C7PknegfZZGHutc/z1ZoOtbZYtx65EkQuSuQ2SEj3QF7u9orHsO
-         9T3LFfxyjv+5icN/aPBhlOF7dLruFTBy/eer6ZRUXljl5uP+etFTM+9L335l3HX7WVrs
-         2g6s4Y6HE9jgeDMf57YHjxBztYFG3caibAjFKLhtZWrNhaS3Q/ZHteQQOw7IuXArRpp7
-         5GmYK32uo/fQHYAX9t3fpnzBHXGyw+cTgooWwwgl+MWxWyLVg/r+7CyHEIt/Tr7HgE62
-         GNfdBH8ihsgqk1ADfsKHZMKxxbbhXHlDsPRTAGO7Ph3zXzNhuFyUOjKLopLmZ2kxxd94
-         C2Nw==
-X-Gm-Message-State: AOJu0YxNtqIfnUCL1Ize61rlcpO8USLRYWuuL4i3u72aWCMEvVjtMnqc
-	AsJuA9kVyPq+4VnuPp59cp7roTwwsCfpcdWPlw2EX7Y3r5MV9/iWTax15L5ut0kaSVcIVsNoZiE
-	23O4ypTNiRbmTUO9kSgwcL5ghlDP5S4FmsWlZ4g==
-X-Gm-Gg: ASbGncvwmPiF87vIBf/qTSg0JefUZhm0ABUH1zsIgjFlWaDVR+3f0G7iSSlcTWC9Yyi
-	66D+bUv0ekXBNafRF5uFM/0nNWAfyo7DuGLhin+M=
-X-Google-Smtp-Source: AGHT+IFvRz6amg0/LCv795PFdcXSwZFAuHmhc08GDUubo7a8UJkjnqdzDOeeViMLb5gcFryVLpGHBJmY4rTH42n0lRA=
-X-Received: by 2002:a05:6122:8c12:b0:515:c769:9d32 with SMTP id
- 71dfb90a1353d-518ca399ec3mr3099699e0c.4.1734101367579; Fri, 13 Dec 2024
- 06:49:27 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734101663; x=1734706463;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CVdvYvDpLs71QHH7bZcej5Vn26F9QrVKVYq7HujK4wM=;
+        b=rUrQKtSIGWlFttsDLYHqLG6NBymr5Im+A+YTRx9z5R9kLVP8g9qb89Zd6xvfkTXD1E
+         t0uRfrW+GEXVcn+eXyGUfJvUTnW4TGXLQzl5GoJB5U/AOOYRUpTzqDj/tT0EUJ9EP1Fe
+         mZkw1f8I/OYHoldVkPJIbk1YjLL2GiiLbSdWbJE0p2RMPbNQJ1NquFPP5ffdCPHUozap
+         fosufBtX1wEERk6ZEhdYzj6qcjl1BQR1MyC0AipJf6k+7Cjs4EXGqCYA2+dvtiJhAW9S
+         l38zMPCJN/J8YkbfH7QCgu8/gc82y1+U5UbH8bOAEC6LBEydCM6xxB+lWAuiR8bs8BKA
+         YoGA==
+X-Forwarded-Encrypted: i=1; AJvYcCXalI4GOeVqey2MwZkrKYYFqmQJN66p1lworBBsjCZ8qUQJ7h/pAJL4LM1e9KBuu3bnkFDn8zg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwC4lVqNWX9dzgTIKVK460Jtk1DiS/PoIu6xOtI0jV6zLMwHc6A
+	bWKPdJFI/4GmguAIsVIpxMT3gwz5sRsdLZdJijJ9WdvSnORnz/TJGA6viuezMhPFJ9CUfnG8Sr2
+	S
+X-Gm-Gg: ASbGncuhvsU3gIjAnab7NnMUCYOgPDVB0uKEpEzeiLXki4/Gn6dixxW7kdgJRqWUAsH
+	wkwevTEytNdLDhSDzA9cKppf3701xc+Kf1V5lVBotP4Uq7D5tMoxrhoBxMqH4KWrtLbo/622+ef
+	QpBgV1ZHweALhWp7uvpd8Unbw28xmTtV7nk84wsc5n7UcHg5O76NtAJa9gi5COCzoM8rLL+Hl55
+	Mi8Q02tM83iez7pkS0y/Nu5vaBgMt6/c8sCllEM7rBPLusc7lNZ6p6jIxcz9hhDs9btmvom
+X-Google-Smtp-Source: AGHT+IEFAxcRq/PEXqUWHJslMmJj6lZEnIJUSq+7/uopt2OPEhKjrLyAWh/zLrx5IdfcXIjCY5/22Q==
+X-Received: by 2002:a05:600c:4f86:b0:432:dc5a:b301 with SMTP id 5b1f17b1804b1-4362aaa980emr9636385e9.8.1734101662133;
+        Fri, 13 Dec 2024 06:54:22 -0800 (PST)
+Received: from [127.0.1.1] ([178.197.223.165])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436256b42c8sm51547305e9.29.2024.12.13.06.54.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Dec 2024 06:54:21 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 00/23] arm64: dts: qcom: Fix remoteproc memory base and
+ length
+Date: Fri, 13 Dec 2024 15:53:49 +0100
+Message-Id: <20241213-dts-qcom-cdsp-mpss-base-address-v3-0-2e0036fccd8d@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241212144244.601729511@linuxfoundation.org>
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 13 Dec 2024 20:19:16 +0530
-Message-ID: <CA+G9fYv-qg_TbgP9o_VyBcBAYfecxFvRPjq0w3SFX_PvJWDbkw@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/356] 6.6.66-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAH1KXGcC/43NQQ6CMBCF4auQrh0DpaC48h7GxdAZoIlS7BCiI
+ dzdwkpXuvzf4nuzEg6ORZ2SWQWenDjfx8h3ibId9i2Do9hKp9pkOi2BRoGH9XewJAPcBxGoURi
+ QKHAM5IM1aYm2QquiMgRu3HN7uFxjd05GH17b4ZSt6//2lEEKuslNxYYKLPPzzfUY/N6HVq34p
+ D/B6jeoI0jHAvOaCmuZvsBlWd5oCE2sIAEAAA==
+X-Change-ID: 20241206-dts-qcom-cdsp-mpss-base-address-ae7c406ac9ac
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Abel Vesa <abel.vesa@linaro.org>, Sibi Sankar <quic_sibis@quicinc.com>, 
+ Luca Weiss <luca.weiss@fairphone.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3216;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=ol9EoljmJly7dAFajmboRG0xeJPOxqAKNyPayhuKeFk=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBnXEqDAqUsEc1k/XCZtSsb9mCpefodNbwBnkXvA
+ 5ISbAJzXNaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ1xKgwAKCRDBN2bmhouD
+ 16MGEACPjl1EU91CefBEZ0GwgPgTbkmcbLUSZFl2TBmeVwoITf2Ryt3fswc+FdXBTFippkfUSRY
+ +XxJxSCfRDByMU07QOZfcrDYmFmhVmmVmwmheopPUgmaGrHVfsUzUCYVswpCiXHYgBSuW588XOO
+ 1NK6iN3osNhHYzzKPdV+OVepLT1skBKg5nsHEwTtpzp9vkXMl8vtrrqnXg/rfUBOHFRLD7N4s0c
+ 54qUw05S2ibQNA7qxNr+ck45YMLk/yw0x44IzE3EEZ+cU0ZlMK0cCWZEoluF5xxCXQyxygOD0SE
+ vaAiDkFla2jjHKaawaSpOonaPV/ehdPnTxKmMt7Bb8MvGsdTh0pmUdycvLP+7FQmZG+Eiz46IM/
+ vsFrvy2+yxvGTkqtl0ViE7ZDgR6Wr4HCwy6um7dZHPpktvg9d+SzJuMmaOMbzQOWvA07S/T/8Iw
+ /iNg4jpv7zYvZqces/5k4uqOrmZ36B4df1UErT7BdpsLalYPMqY/MmO0eYvJw65lNMnEI7Vbhk/
+ H1Hp60vvzNuqi2sc0Qxd/rakeSU2GZXtVyzrjR85tEa16IHucsGV/oz6stAQIQnWlpPkOFnv2MJ
+ AHVVgpzG3xZKtF2M7dtCOysaZDEWRo7jvuN6Zl2aDZeRx/dXdSAkYjWjjkR0c3jXv3easTRnhVZ
+ ovcXRhNmoXL+yJg==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-On Thu, 12 Dec 2024 at 21:01, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.66 release.
-> There are 356 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 14 Dec 2024 14:41:35 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.66-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Changes in v3:
+- Add Rb tags
+- Add four new patches (at the end) for sdx75 and sm6115
+- Link to v2: https://lore.kernel.org/r/20241209-dts-qcom-cdsp-mpss-base-address-v2-0-d85a3bd5cced@linaro.org
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Changes in v2:
+- arm64: dts: qcom: x1e80100: Fix ADSP...:
+  Commit msg corrections, second paragraph (Johan)
+- Add tags
+- Link to v1: https://lore.kernel.org/r/20241206-dts-qcom-cdsp-mpss-base-address-v1-0-2f349e4d5a63@linaro.org
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Konrad pointed out during SM8750 review, that numbers are odd, so I
+looked at datasheets and downstream DTS for all previous platforms.
 
-## Build
-* kernel: 6.6.66-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: ae86bb742fa81e7826a49817e016bf288015f456
-* git describe: v6.6.65-357-gae86bb742fa8
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.6=
-5-357-gae86bb742fa8
+Most numbers are odd.
 
-## Test Regressions (compared to v6.6.63-677-g1415e716e528)
+Older platforms like SM8150, SM8250, SC7280, SC8180X seem fine. I could
+not check few like SDX75 or SM6115, due to lack of access to datasheets.
 
-## Metric Regressions (compared to v6.6.63-677-g1415e716e528)
+SM8350, SM8450, SM8550 tested on hardware. Others not, but I don't
+expect any failures because PAS drivers do not use the address space.
+Which also explains why odd numbers did not result in any failures.
 
-## Test Fixes (compared to v6.6.63-677-g1415e716e528)
+Best regards,
+Krzysztof
 
-## Metric Fixes (compared to v6.6.63-677-g1415e716e528)
+---
+Krzysztof Kozlowski (23):
+      arm64: dts: qcom: sm8350: Fix ADSP memory base and length
+      arm64: dts: qcom: sm8350: Fix CDSP memory base and length
+      arm64: dts: qcom: sm8350: Fix MPSS memory length
+      arm64: dts: qcom: sm8450: Fix ADSP memory base and length
+      arm64: dts: qcom: sm8450: Fix CDSP memory length
+      arm64: dts: qcom: sm8450: Fix MPSS memory length
+      arm64: dts: qcom: sm8550: Fix ADSP memory base and length
+      arm64: dts: qcom: sm8550: Fix CDSP memory length
+      arm64: dts: qcom: sm8550: Fix MPSS memory length
+      arm64: dts: qcom: sm8650: Fix ADSP memory base and length
+      arm64: dts: qcom: sm8650: Fix CDSP memory length
+      arm64: dts: qcom: sm8650: Fix MPSS memory length
+      arm64: dts: qcom: x1e80100: Fix ADSP memory base and length
+      arm64: dts: qcom: x1e80100: Fix CDSP memory length
+      arm64: dts: qcom: sm6350: Fix ADSP memory length
+      arm64: dts: qcom: sm6350: Fix MPSS memory length
+      [RFT] arm64: dts: qcom: sm6375: Fix ADSP memory length
+      [RFT] arm64: dts: qcom: sm6375: Fix CDSP memory base and length
+      [RFT] arm64: dts: qcom: sm6375: Fix MPSS memory base and length
+      arm64: dts: qcom: sdx75: Fix MPSS memory length
+      arm64: dts: qcom: sm6115: Fix MPSS memory length
+      arm64: dts: qcom: sm6115: Fix CDSP memory length
+      arm64: dts: qcom: sm6115: Fix ADSP memory base and length
 
-## Test result summary
-total: 130339, pass: 106681, fail: 3098, skip: 20494, xfail: 66
+ arch/arm64/boot/dts/qcom/sdx75.dtsi    |   2 +-
+ arch/arm64/boot/dts/qcom/sm6115.dtsi   |   8 +-
+ arch/arm64/boot/dts/qcom/sm6350.dtsi   |   4 +-
+ arch/arm64/boot/dts/qcom/sm6375.dtsi   |  10 +-
+ arch/arm64/boot/dts/qcom/sm8350.dtsi   | 492 ++++++++++++++++-----------------
+ arch/arm64/boot/dts/qcom/sm8450.dtsi   | 216 +++++++--------
+ arch/arm64/boot/dts/qcom/sm8550.dtsi   | 266 +++++++++---------
+ arch/arm64/boot/dts/qcom/sm8650.dtsi   | 300 ++++++++++----------
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 276 +++++++++---------
+ 9 files changed, 787 insertions(+), 787 deletions(-)
+---
+base-commit: c245a7a79602ccbee780c004c1e4abcda66aec32
+change-id: 20241206-dts-qcom-cdsp-mpss-base-address-ae7c406ac9ac
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 128 total, 128 passed, 0 failed
-* arm64: 40 total, 40 passed, 0 failed
-* i386: 27 total, 25 passed, 2 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 32 total, 31 passed, 1 failed
-* riscv: 19 total, 19 passed, 0 failed
-* s390: 14 total, 13 passed, 1 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 32 total, 32 passed, 0 failed
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
