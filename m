@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-103962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F589F0380
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 05:20:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A3459F0394
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 05:21:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90175284B7C
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 04:20:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8461B16A314
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 04:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A80185B78;
-	Fri, 13 Dec 2024 04:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F92318B482;
+	Fri, 13 Dec 2024 04:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eR7CdVY1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ol59l+I+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D89A183CC2;
-	Fri, 13 Dec 2024 04:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC6F18A931;
+	Fri, 13 Dec 2024 04:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734063622; cv=none; b=DVwsL4oIMNJniOpjYO4o1hrNquHZXiiLqVvhLGAh3yfXDCa77QQ8nC+OkOpqzuWEX8yixwNvs3dvinKghcXbUOo84yYP+RA1qUsjP3HzjcNTLxh2c588/6ifpemfge8pWesvyUHCg7Dt7l9fyxWKCtylrfFwh76uQiY7BqyBPbQ=
+	t=1734063625; cv=none; b=JHwg1AIiU6L0ND4i/7COAejR61A9nFaUL5gIFiA03XFGzT7F0bBjTjcuD60WQsgWOvv1b7aE7EmAMjJvrGkguM4BZDAeYVmTBdD/MJXDfr+1ltMC1yjMrLs62/K7BV6sgQfuBA1NH+hgShI2LArmZI7w9hiIZF7QOkbZ3g0rUb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734063622; c=relaxed/simple;
-	bh=AaC+1vxEA/0Ps6XkTxxgdz9OUQfUnIhVy82NSH4smXY=;
+	s=arc-20240116; t=1734063625; c=relaxed/simple;
+	bh=uuDhiSijNMYjt2UeBFhL1ivhimZY+9X82SMTtUIe7vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsMLEfpysJ48SXyJuIpjQ1q086YL03DI6oswTUHuwDO5PKIytnt8ccILrPSyPEFDAp8KVbFOpEoBAqSGD4dGnCFGDwx2OTlCe14girKKVAXfOBijGofDJl2yldv14PUuxzmSjRJxCV9N/owGA5Sfl3IkdKB3ZMzBXx57hhhe+/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eR7CdVY1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDD7C4CEDE;
-	Fri, 13 Dec 2024 04:20:21 +0000 (UTC)
+	 MIME-Version; b=hI3RwyLTFhQC2Bj85kysJMQzXc9gQqL1wXTuAAjTfHlEJq5BEsD6eXCkr6frLi1/G03hv6+JzDUrQs0P1JipPVDerHwrsC8SqvNdr7GxsqbYx7quBy1LRtYj5FAuNJOkZlrPTjv4KJ02iLrz6+dCZsqXyw2g8wwGdBmQez/EuTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ol59l+I+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF11C4CEDD;
+	Fri, 13 Dec 2024 04:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734063621;
-	bh=AaC+1vxEA/0Ps6XkTxxgdz9OUQfUnIhVy82NSH4smXY=;
+	s=k20201202; t=1734063624;
+	bh=uuDhiSijNMYjt2UeBFhL1ivhimZY+9X82SMTtUIe7vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eR7CdVY14cqeqeRCQeWuyQ8ya0c67uDNCdXjoAIF+23TplyE1PaCmc0r8eJry6vZ6
-	 NV2CJZMsPao0GVt4hPy5tKpdyqtupd/ol9yfbHekwmrCCp3v1X04SfgCBBLB+v+9WV
-	 ImMTVTWtJa2gZhF9JJ5uAEcQWsUD59c+KTnsqF9H9MPhic0mKpYtwi8Trd/Esgi9GB
-	 MVc1stra3gUv6uXidl8PWQcp4S+ZXA+04AYLq3Y/j45GLW57gHScQZ/y5nOZOqY0dR
-	 5US36MNaLIzLlNAfz3cOzizq/Im5e3cG9tiTGz3s5qu4KGnthWmgmbXrG0sf1cU+jW
-	 lf70MaKDcTDeQ==
+	b=Ol59l+I+2MPBFrtlhC2cEf0ZBFeZoYLWNSOtYgQFCDrb/LHiSpGbngpBurZTd3IdJ
+	 /f0V4O/8ZsOjc8x5NQOhUKQYFfyfe9Bs3vjFNs8ZyR7r8frBaYZ/gyFKPCtwSsHI0P
+	 WJNNCP/3m/SbDmhXxkrQair46bFZWZV0D9loin1gq6BRpAtWeXKMG7TSCX3aimtufO
+	 Tsn56dP6MSBX2abSmxBJ1yykopAhc16N1KSLF9f9WyQl10foO76NgC65X6rFo6EZFW
+	 6m2mUmFS8CVQf9nA/3f37YxC2cRQ8QXMSFiVqix8Uzj2tQgylD/yLT8YgCaVHpnkVP
+	 HhKX0dd2EIrMw==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-block@vger.kernel.org,
 	linux-fscrypt@vger.kernel.org,
@@ -63,9 +63,9 @@ Cc: Adrian Hunter <adrian.hunter@intel.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	stable@vger.kernel.org,
 	Abel Vesa <abel.vesa@linaro.org>
-Subject: [PATCH v10 01/15] ufs: qcom: fix crypto key eviction
-Date: Thu, 12 Dec 2024 20:19:44 -0800
-Message-ID: <20241213041958.202565-2-ebiggers@kernel.org>
+Subject: [PATCH v10 05/15] mmc: sdhci-msm: fix crypto key eviction
+Date: Thu, 12 Dec 2024 20:19:48 -0800
+Message-ID: <20241213041958.202565-6-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241213041958.202565-1-ebiggers@kernel.org>
 References: <20241213041958.202565-1-ebiggers@kernel.org>
@@ -79,58 +79,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric Biggers <ebiggers@google.com>
 
-Commit 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
+Commit c7eed31e235c ("mmc: sdhci-msm: Switch to the new ICE API")
 introduced an incorrect check of the algorithm ID into the key eviction
 path, and thus qcom_ice_evict_key() is no longer ever called.  Fix it.
 
-Fixes: 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
+Fixes: c7eed31e235c ("mmc: sdhci-msm: Switch to the new ICE API")
 Cc: stable@vger.kernel.org
 Cc: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- drivers/ufs/host/ufs-qcom.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/mmc/host/sdhci-msm.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 68040b2ab5f8..e33ae71245dd 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -153,27 +153,25 @@ static int ufs_qcom_ice_program_key(struct ufs_hba *hba,
- 				    const union ufs_crypto_cfg_entry *cfg,
- 				    int slot)
- {
- 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
- 	union ufs_crypto_cap_entry cap;
--	bool config_enable =
--		cfg->config_enable & UFS_CRYPTO_CONFIGURATION_ENABLE;
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index e00208535bd1..319f0ebbe652 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -1865,24 +1865,24 @@ static int sdhci_msm_program_key(struct cqhci_host *cq_host,
+ 	struct sdhci_host *host = mmc_priv(cq_host->mmc);
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
+ 	union cqhci_crypto_cap_entry cap;
+ 
++	if (!(cfg->config_enable & CQHCI_CRYPTO_CONFIGURATION_ENABLE))
++		return qcom_ice_evict_key(msm_host->ice, slot);
 +
-+	if (!(cfg->config_enable & UFS_CRYPTO_CONFIGURATION_ENABLE))
-+		return qcom_ice_evict_key(host->ice, slot);
- 
  	/* Only AES-256-XTS has been tested so far. */
- 	cap = hba->crypto_cap_array[cfg->crypto_cap_idx];
- 	if (cap.algorithm_id != UFS_CRYPTO_ALG_AES_XTS ||
- 	    cap.key_size != UFS_CRYPTO_KEY_SIZE_256)
- 		return -EOPNOTSUPP;
+ 	cap = cq_host->crypto_cap_array[cfg->crypto_cap_idx];
+ 	if (cap.algorithm_id != CQHCI_CRYPTO_ALG_AES_XTS ||
+ 		cap.key_size != CQHCI_CRYPTO_KEY_SIZE_256)
+ 		return -EINVAL;
  
--	if (config_enable)
--		return qcom_ice_program_key(host->ice,
+-	if (cfg->config_enable & CQHCI_CRYPTO_CONFIGURATION_ENABLE)
+-		return qcom_ice_program_key(msm_host->ice,
 -					    QCOM_ICE_CRYPTO_ALG_AES_XTS,
 -					    QCOM_ICE_CRYPTO_KEY_SIZE_256,
 -					    cfg->crypto_key,
 -					    cfg->data_unit_size, slot);
 -	else
--		return qcom_ice_evict_key(host->ice, slot);
-+	return qcom_ice_program_key(host->ice,
+-		return qcom_ice_evict_key(msm_host->ice, slot);
++	return qcom_ice_program_key(msm_host->ice,
 +				    QCOM_ICE_CRYPTO_ALG_AES_XTS,
 +				    QCOM_ICE_CRYPTO_KEY_SIZE_256,
 +				    cfg->crypto_key,
 +				    cfg->data_unit_size, slot);
  }
  
- #else
+ #else /* CONFIG_MMC_CRYPTO */
  
- #define ufs_qcom_ice_program_key NULL
+ static inline int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
 -- 
 2.47.1
 
