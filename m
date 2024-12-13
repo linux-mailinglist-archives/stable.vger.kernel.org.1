@@ -1,152 +1,100 @@
-Return-Path: <stable+bounces-104040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1DA9F0C8D
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:40:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26FD416BD50
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:38:58 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91A61DFE2C;
-	Fri, 13 Dec 2024 12:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="GTPLGRqI"
-X-Original-To: stable@vger.kernel.org
-Received: from mr85p00im-zteg06021501.me.com (mr85p00im-zteg06021501.me.com [17.58.23.183])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C16F09F0C92
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:40:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF051DFE20
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 12:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.183
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA13287D6D
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:40:44 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B1F18E023;
+	Fri, 13 Dec 2024 12:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RUn/rxEK"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBB21DF256
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 12:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734093488; cv=none; b=tBrUR7tHqsFyG/JCjpHcwx/IVhnh9otTcCJOdO24w1Z+YAOKDmYzMgadUKL7EQru9/YwQa6QTLa4MO6RfFjqpi9J9JXqfVU5036kqYhvQTQU99GvQ5A1g2Xcwh2RHuzam+6qA/nTZdDeb6hCmF+uws4wDZxp7zryl118I0S2mao=
+	t=1734093641; cv=none; b=tsgeZj2Luljiy7CzYwU56pV62mF2a55jEoypwHerQYtX1Tvs5xqaHPhoKndQlwRyX6n39LOmqU8Lg7xNhk6aKwrp4ajTXOVctxl0a3CYkXAej4+kfhe+IgzVGa8jf+y+mN9PJ0BRkkWRQQmTbUU+G551z93Jf6g2iGVCgenEqFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734093488; c=relaxed/simple;
-	bh=/W4oRREVfsIlOphdKX84ARTWcwEEFb+L2b7zPiB9Fck=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ey+AOPGX54lgHxhLJxwuVWvgAIZvWGCffVDsDpDIxq6w1iQIRewLzrwt0udMkgesZ+Wi3hqW94tLtD/1vV7+G4vtp6dRaE43Sp4hCK7GTY/W894UuCUxGk2YvlCZzcZN8ElL/g8XlXJeyDkXP2deNyj/t/ZmFoXIvnRt5ko4etM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=GTPLGRqI; arc=none smtp.client-ip=17.58.23.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1734093486;
-	bh=gAZiIBAW97iSqVxa0yzt2S2NKUuhI3+PKJU5sy0ohIM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=GTPLGRqI7p1Ug1WY1aEwDN1yujO59xixCqprE1ZG56aOCN7U68v4cuc4Ch2zXZAkN
-	 sg1zCwuNzK0bo1+vCD/XBDB6DBmyNkcby5lP8BWIwd2ZuWDSJBdh9T/nBh151AQw61
-	 G9ec6MNgTav9ZpzCC7yhOC273s6iEocbnvYEF8ADLbNEjKSK5Cia+9h8C4KbH5NPfY
-	 Jom59IwQG3XT7TUQXZahOaiP8XfmBWbPu89fq3gdCD9zGi3fbbneUL0JQyME7gV9Fv
-	 97nNftPHguBSu6PI6oCin36dAV7X1olD48w8k3waOe8DiFLAL1u47yZlmc4wb9x1Wa
-	 g4/RmMai0Lwwg==
-Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-zteg06021501.me.com (Postfix) with ESMTPSA id E31592793D1D;
-	Fri, 13 Dec 2024 12:37:57 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Fri, 13 Dec 2024 20:36:46 +0800
-Subject: [PATCH v6 6/6] phy: core: Simplify API of_phy_simple_xlate()
- implementation
+	s=arc-20240116; t=1734093641; c=relaxed/simple;
+	bh=rrIjNbL+EuiI32F+cFB0afFC4Znuwcif6Cj3AcWFxXU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Coo2qMJrZ7gCduz527GDq22H2DJDmA0SFLlloYUHK9ECcGrUMBq573mL1BmULzP7hmASauxYjc2gcJwIu+iApaVt5lTkD6fwxs/GIuj4gDFOK5lTfxBZ9WK8As8decnJ/OAUbZ3QRlq7voiEVf04msAO8gbLOxgW0OyWdrZ0t9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RUn/rxEK; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734093639; x=1765629639;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=rrIjNbL+EuiI32F+cFB0afFC4Znuwcif6Cj3AcWFxXU=;
+  b=RUn/rxEKSOoTqDPZtitA1sSR+bp3KVg1Rjln0znPN81432kpAWVUlls1
+   NWfEh8l5Ix6Z0AUBJWLfCpRX7S6Wehfp66b5T68IQ+zluYht8xBuMwSar
+   Ue2+Z2PyTv5koFlxWRusYEkPmelyYJDKDuZ6fIf0CkA0/Hj9y5337nOzC
+   2famRVuL15YZ2BfXJBtWEUIFJ7bj/DN6Hj3KaH4xtrWsIipg35/JxT3+x
+   emAEqfYBShGl4yLnVasf5qk48AjLnUuZRTzEHNhDmnVhkqD1PPUNWxjiK
+   oUtFDVGRj7vd59GJp8jPMXJFVF+ZGM31R0iTn5SzdtzQbbmrRYrqwVQrP
+   w==;
+X-CSE-ConnectionGUID: ztwHcQUQTF6vEWptil9C9w==
+X-CSE-MsgGUID: Ydyje8tcTFOftVFv8CKUmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="34683064"
+X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
+   d="scan'208";a="34683064"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 04:40:38 -0800
+X-CSE-ConnectionGUID: 3xEzPjrLRs6tEVJdjLj+Iw==
+X-CSE-MsgGUID: 8MKbkX/6Tkicqauw1zktDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="96386633"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 13 Dec 2024 04:40:38 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tM4yA-000C1Z-2b;
+	Fri, 13 Dec 2024 12:40:34 +0000
+Date: Fri, 13 Dec 2024 20:40:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v6 2/6] phy: core: Fix that API
+ devm_of_phy_provider_unregister() fails to unregister the phy provider
+Message-ID: <Z1wrMQXh70Yg8AOl@39f568f0a533>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241213-phy_core_fix-v6-6-40ae28f5015a@quicinc.com>
-References: <20241213-phy_core_fix-v6-0-40ae28f5015a@quicinc.com>
-In-Reply-To: <20241213-phy_core_fix-v6-0-40ae28f5015a@quicinc.com>
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Felipe Balbi <balbi@ti.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Lee Jones <lee@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
- Johan Hovold <johan@kernel.org>, Zijun Hu <zijun_hu@icloud.com>, 
- stable@vger.kernel.org, linux-phy@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- Simon Horman <horms@kernel.org>
-X-Mailer: b4 0.14.2
-X-Proofpoint-ORIG-GUID: 2JINNleipOqtTWVGoJDHTzZH0QuUezzf
-X-Proofpoint-GUID: 2JINNleipOqtTWVGoJDHTzZH0QuUezzf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-13_05,2024-12-12_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 bulkscore=0
- clxscore=1015 mlxlogscore=999 adultscore=0 mlxscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412130089
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241213-phy_core_fix-v6-2-40ae28f5015a@quicinc.com>
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+Hi,
 
-Simplify of_phy_simple_xlate() implementation by API
-class_find_device_by_of_node().
+Thanks for your patch.
 
-Also correct comments to mark its parameter @dev as unused instead of
-@args in passing.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Cc: Simon Horman <horms@kernel.org>
----
- drivers/phy/phy-core.c | 23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index 413f76e2d1744dd8ffb63a6c3a093f5c6cbead7b..8dfdce605a905d7f38205727151258af41f807a9 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -749,8 +749,8 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
- 
- /**
-  * of_phy_simple_xlate() - returns the phy instance from phy provider
-- * @dev: the PHY provider device
-- * @args: of_phandle_args (not used here)
-+ * @dev: the PHY provider device (not used here)
-+ * @args: of_phandle_args
-  *
-  * Intended to be used by phy provider for the common case where #phy-cells is
-  * 0. For other cases where #phy-cells is greater than '0', the phy provider
-@@ -760,21 +760,14 @@ EXPORT_SYMBOL_GPL(devm_phy_put);
- struct phy *of_phy_simple_xlate(struct device *dev,
- 				const struct of_phandle_args *args)
- {
--	struct phy *phy;
--	struct class_dev_iter iter;
--
--	class_dev_iter_init(&iter, &phy_class, NULL, NULL);
--	while ((dev = class_dev_iter_next(&iter))) {
--		phy = to_phy(dev);
--		if (args->np != phy->dev.of_node)
--			continue;
-+	struct device *target_dev;
- 
--		class_dev_iter_exit(&iter);
--		return phy;
--	}
-+	target_dev = class_find_device_by_of_node(&phy_class, args->np);
-+	if (!target_dev)
-+		return ERR_PTR(-ENODEV);
- 
--	class_dev_iter_exit(&iter);
--	return ERR_PTR(-ENODEV);
-+	put_device(target_dev);
-+	return to_phy(target_dev);
- }
- EXPORT_SYMBOL_GPL(of_phy_simple_xlate);
- 
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v6 2/6] phy: core: Fix that API devm_of_phy_provider_unregister() fails to unregister the phy provider
+Link: https://lore.kernel.org/stable/20241213-phy_core_fix-v6-2-40ae28f5015a%40quicinc.com
 
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
