@@ -1,122 +1,165 @@
-Return-Path: <stable+bounces-104142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A928C9F132E
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 18:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AF89F1351
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 18:11:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6902F2842E8
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 17:06:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 967D9281C2E
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 17:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567C91E47D4;
-	Fri, 13 Dec 2024 17:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4621E32DD;
+	Fri, 13 Dec 2024 17:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs7XgN7M"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aXl0d3st"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833491E3DE7
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 17:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCEC1E377E
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 17:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734109596; cv=none; b=Q+6+y9reKEOwOS2bBtA56iek1NghVF7Hj0PXwuiUP+z0sD/sarOuKgms43k+P3+0p3f4ZRK/omxtEdrx2a/N0a37BnpAfX4rYlb4JrjC+OB4IeoHit93uLXnUYDd4kA14nvieeqAbtwORisqHqt8txlJfUbKn2HkuEhZM6infWA=
+	t=1734109856; cv=none; b=R5OxDuV7bNlGYP4FbPBhTBwdqAR0Y8DkP4kmIx4AMCVpXO2gi/mBt5feDLJU7l/8rm0Ypk3Uaz/SC9Oe2bnPzV5Bh84nJW5Ke+oOX4lbeZHJonWOzjQ0dvnlZiilTkhVLch4v4DbG+WSu7WUXw0m7tu85WhyJ+6IvH9lXvCTiMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734109596; c=relaxed/simple;
-	bh=AoRSgPzS88JecR+l1uq6Q0y3fbBaioBqex9uux9/veE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j1s5cRkDn+hGlSO4C3lBad+wg4FBl1ytDxAfnMexLnISwwLbRG/0GMTfTLzW58LKAncKZn04whnvEywNP4N+7icniAEGm6NphQvFH6Fg6T12iUk7Owjm4kVm0C/AdttRaaS8IBOWEx5VrQDDBtMj1gtnRpQMHtaByJ6HaHVZz5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fs7XgN7M; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3a8ed4c8647so13021725ab.1
-        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 09:06:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1734109593; x=1734714393; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5b0l10Xxg5NNZ17JwEtHgXQTuzkIvYO2hORgPq2G1Ww=;
-        b=fs7XgN7MisCP6MV1KmlPZoFCAD84I9esYIFp3iiWXyK6PjwQkjeEU1So6690KVH2bd
-         6RKrbIxDWprr9rvlU4zrflr46LCYCAOV7VNnI0j+PkpIdhEQJoi0+kY48wLan4kVibdg
-         ap0fOxrTHRoTXp9AZ/XP1jA2Lu00TdQQ6Cefs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734109593; x=1734714393;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5b0l10Xxg5NNZ17JwEtHgXQTuzkIvYO2hORgPq2G1Ww=;
-        b=kcIgm0N0QqypuTz/aQjGPTY3lvBI1f0QkIZP4tLIot7njCjZABV0gVfzBSmJKLAI6L
-         GRAdwN6NP7QH9q5iqz7c18JLBkyDmKzpgQo+0NpXAe9KsenpTGm0zoar2c8B1zTUI7+P
-         jagHGGFgm+pDt7/kzgGVFyKLBCWWj4CI0U/c2wkZQ1Q09hGQ8UjhpBHWjyOq+DTUPEwn
-         ksdbBTnV/Gsw5Ke7SaZRqSOi8jWkUbwkeTPSLuHOmkLfMpvYNsZ+ND1T378cNoQn7mpo
-         V3XTduXGV3ecuhpD2wl3NQH2F2u+3L3NZ+I5yVIL0vYBJxcwI6ZzKmEHK7vCKfAENxEo
-         lKYw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSMATzBKI/siMirYIyki6i7oc2DysNCklgi+O2KseSfE7ddPda0X638LjJDP7nKp+ldTfGLXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYWQdXdTCKPMin0tLoBLXhH8FJgoatfoUJC6MSaVwBILTWoUj4
-	9LgCtDM+qK1/4A3QnumdzRGMBll7NU1SjBbLzIOZ0WWGbsVniszK7tY1AwJp0ak=
-X-Gm-Gg: ASbGncskf0xUf4RlN/aygNyB50vX+eosT56biHdLNY9tYW1ZNYUU959XoYNDWWr36w+
-	uSeIh3v+yazYSFDpTE6sdKZxIJNsg4k7xOh57072FZnSkXwjPW3FJxER7VDYYu2kly601OxZjUP
-	QIsezFD1WUC6L7Ul26B5O4JzomsSvtTVAoZLKtgkj3xN8oeVwZdg9gaLKoCzjuVWaIK2JBWdbDA
-	zIPFo1GkRx6nX5ZOI5UgtH7Ase0pDYqDSy2KKEt4anYhOBQN2Oqtq/Q4gNmC6ptwO5x
-X-Google-Smtp-Source: AGHT+IHTYnff3TXKfRrpX7mWJMSvmgfa6oVTcS7rebuH2nCEbPNkW26SkILtniouEw0a8sW8t+/LWg==
-X-Received: by 2002:a05:6e02:2169:b0:3a7:7d26:4ce4 with SMTP id e9e14a558f8ab-3afee2d0367mr38502285ab.9.1734109593520;
-        Fri, 13 Dec 2024 09:06:33 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4e2e08d5cb1sm1227854173.6.2024.12.13.09.06.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Dec 2024 09:06:33 -0800 (PST)
-Message-ID: <f52512b4-f50d-496c-a831-cce2d2644615@linuxfoundation.org>
-Date: Fri, 13 Dec 2024 10:06:31 -0700
+	s=arc-20240116; t=1734109856; c=relaxed/simple;
+	bh=xS+/3ufje2t354L+bLHnniZmDzRYBVZqeqOtZDA1b0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QrsYa5n80ztivH+e2pDxKgZzUkcYZEKNvaTYbifoMp8SZcLagQTbNY2eQqDkS+huU4Qs+TPUN8YXZaQax7IufNqoQxIzN5whNIdqY3Kj7ZlFexiJmhubeFTkphHpE9vvJF2v2wTpsioePZ9rsvT4tK4GbvSQuSeU7esvblhUY64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aXl0d3st; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734109855; x=1765645855;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   mime-version:in-reply-to;
+  bh=xS+/3ufje2t354L+bLHnniZmDzRYBVZqeqOtZDA1b0U=;
+  b=aXl0d3stAdWQbU9xOGCf9ouzHrSdxhzGtwTc8NpeGsyGleQCWf1wQZa7
+   O9xWVcVhknmgeB8UlO2uaiSXdMQE2GouOd0rUFBC/zi1RIBCakyxqCvIA
+   L5/ICW1oCDUy5V4mzEIwVQQBXkk6iCktcclLaASvzh7R5GjBqO6YWHORm
+   2wpf0RpLTwrmqp1eoAeXLqYILKuxVOMEVd+ZoarKUFiLWSbIOfXJGnrA4
+   9MT/j6Oa2PhsTc4nqmw3MBtcLo2r8qKE8WTdv6HTQI22Zf/ikiKLlutah
+   cPF+evL+e3Jm83fVLsw+ZL57B+hjfbmLmTLOiaoA2qTWsYa42zy0z+QxO
+   Q==;
+X-CSE-ConnectionGUID: cRK8cJXaRQK7NYdvrRd0PA==
+X-CSE-MsgGUID: 4QWmUjOMRbaFl+JVcKlIqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="34470779"
+X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
+   d="scan'208";a="34470779"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 09:10:54 -0800
+X-CSE-ConnectionGUID: AdH19z3NSg6Y0Ruu/bF3XQ==
+X-CSE-MsgGUID: OUEINtdiQsivfCzoEPJ76g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
+   d="scan'208";a="127390813"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 09:10:52 -0800
+Date: Fri, 13 Dec 2024 19:11:33 +0200
+From: Imre Deak <imre.deak@intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>,
+	intel-gfx@lists.freedesktop.org,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>, Maarten@intel.com,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] drm/display: use ERR_PTR on DP tunnel manager
+ creation fail
+Message-ID: <Z1xqxVZ6pZOFkCA2@ideak-desk.fi.intel.com>
+Reply-To: imre.deak@intel.com
+References: <7q4fpnmmztmchczjewgm6igy55qt6jsm7tfd4fl4ucfq6yg2oy@q4lxtsu6445c>
+ <Z1xg6hOJJiBWixC6@ashyti-mobl2.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/772] 6.1.120-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z1xg6hOJJiBWixC6@ashyti-mobl2.lan>
 
-On 12/12/24 07:49, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.120 release.
-> There are 772 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, Dec 13, 2024 at 05:29:30PM +0100, Andi Shyti wrote:
+> Hi,
 > 
-> Responses should be made by Sat, 14 Dec 2024 14:41:35 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.120-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+> who is going to take this patch? Can I merge it in
+> drm-intel-next?
 
-Compiled and booted on my test system. No dmesg regressions.
+It has only DRM changes and is a fix for stable, so should be
+drm-misc-fixes. I merged it now there, thanks for the patch and the
+review.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
-
-thanks,
--- Shuah
+> Thanks,
+> Andi
+> 
+> On Thu, Dec 12, 2024 at 11:00:41AM +0000, Krzysztof Karas wrote:
+> > Instead of returning a generic NULL on error from
+> > drm_dp_tunnel_mgr_create(), use error pointers with informative codes
+> > to align the function with stub that is executed when
+> > CONFIG_DRM_DISPLAY_DP_TUNNEL is unset. This will also trigger IS_ERR()
+> > in current caller (intel_dp_tunnerl_mgr_init()) instead of bypassing it
+> > via NULL pointer.
+> > 
+> > v2: use error codes inside drm_dp_tunnel_mgr_create() instead of handling
+> >  on caller's side (Michal, Imre)
+> > 
+> > v3: fixup commit message and add "CC"/"Fixes" lines (Andi),
+> >  mention aligning function code with stub
+> >     
+> > Fixes: 91888b5b1ad2 ("drm/i915/dp: Add support for DP tunnel BW allocation")
+> > Cc: Imre Deak <imre.deak@intel.com>
+> > Cc: <stable@vger.kernel.org> # v6.9+
+> > Signed-off-by: Krzysztof Karas <krzysztof.karas@intel.com>
+> > Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+> > ---
+> >  drivers/gpu/drm/display/drm_dp_tunnel.c | 10 +++++-----
+> >  1 file changed, 5 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/display/drm_dp_tunnel.c b/drivers/gpu/drm/display/drm_dp_tunnel.c
+> > index 48b2df120086..90fe07a89260 100644
+> > --- a/drivers/gpu/drm/display/drm_dp_tunnel.c
+> > +++ b/drivers/gpu/drm/display/drm_dp_tunnel.c
+> > @@ -1896,8 +1896,8 @@ static void destroy_mgr(struct drm_dp_tunnel_mgr *mgr)
+> >   *
+> >   * Creates a DP tunnel manager for @dev.
+> >   *
+> > - * Returns a pointer to the tunnel manager if created successfully or NULL in
+> > - * case of an error.
+> > + * Returns a pointer to the tunnel manager if created successfully or error
+> > + * pointer in case of failure.
+> >   */
+> >  struct drm_dp_tunnel_mgr *
+> >  drm_dp_tunnel_mgr_create(struct drm_device *dev, int max_group_count)
+> > @@ -1907,7 +1907,7 @@ drm_dp_tunnel_mgr_create(struct drm_device *dev, int max_group_count)
+> >  
+> >  	mgr = kzalloc(sizeof(*mgr), GFP_KERNEL);
+> >  	if (!mgr)
+> > -		return NULL;
+> > +		return ERR_PTR(-ENOMEM);
+> >  
+> >  	mgr->dev = dev;
+> >  	init_waitqueue_head(&mgr->bw_req_queue);
+> > @@ -1916,7 +1916,7 @@ drm_dp_tunnel_mgr_create(struct drm_device *dev, int max_group_count)
+> >  	if (!mgr->groups) {
+> >  		kfree(mgr);
+> >  
+> > -		return NULL;
+> > +		return ERR_PTR(-ENOMEM);
+> >  	}
+> >  
+> >  #ifdef CONFIG_DRM_DISPLAY_DP_TUNNEL_STATE_DEBUG
+> > @@ -1927,7 +1927,7 @@ drm_dp_tunnel_mgr_create(struct drm_device *dev, int max_group_count)
+> >  		if (!init_group(mgr, &mgr->groups[i])) {
+> >  			destroy_mgr(mgr);
+> >  
+> > -			return NULL;
+> > +			return ERR_PTR(-ENOMEM);
+> >  		}
+> >  
+> >  		mgr->group_count++;
+> > -- 
+> > 2.34.1
 
