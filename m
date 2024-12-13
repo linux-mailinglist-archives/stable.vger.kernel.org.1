@@ -1,129 +1,188 @@
-Return-Path: <stable+bounces-104053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FCB9F0D40
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:26:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CACDF9F0D55
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:34:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A4CA162C91
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:26:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7472843C2
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EB81E00AC;
-	Fri, 13 Dec 2024 13:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1D31DFDB7;
+	Fri, 13 Dec 2024 13:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="JZ8v4Iel"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dww15wq3"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067411DE899;
-	Fri, 13 Dec 2024 13:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2651F38DE1;
+	Fri, 13 Dec 2024 13:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734096385; cv=none; b=IpgSn7R/e7rdc6TJW77RKFgcvMN2vDS8lyXShgNZzr17FGNDrMI9VB9mTarrtv4Jk5qZlC7NbU9h+Jw6frtFYpliS+3CsCGMaF79+VrCzSSkWYU8ww/zol0JQggAMCa8fSAdu5Ms37ZtFgApbnD5Jeo1Gk191PbI5HG8RkUJImk=
+	t=1734096882; cv=none; b=bCjtRFu6aEj4OqnSh8Cr1mqR1ZecKrASEGnbDnrxa9rSj5wFV8eQbFFFIKiqpNFZfTLMBZ584rVeKU7YKh0+N5tq/pUoaKUKzpxBm1WdgsxagbZ7xlx6McuDu5+QJQUJh+huNZk7YXnfF3iTx/jwKCPVqEaOxsrSVnTTLnBDXF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734096385; c=relaxed/simple;
-	bh=pq5E2dClTb3b+TgYz6BmlZ0VaMkh6Yol45ssZt5Flt0=;
+	s=arc-20240116; t=1734096882; c=relaxed/simple;
+	bh=T4o9xKY2MfS7nK0plKbaiDSl8ZQeDCS+/DIfcQpnqzE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LXp6zq3VELdmsbKizQaAswCtfP9lPQSE6YgF8AlJXiQQ5z2NWg3meKgCxtcuhGCVU5HLPliXQRCAGX9yx1bQ6phr5SdmPt6GJAXZwb7anoGSV6ffLaFn6EEzhzYieyuGWMleu7RdhIlEXywMG0e450EbWQZUIIEuVzsy1JXOIYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=JZ8v4Iel; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id D128D14C1E1;
-	Fri, 13 Dec 2024 14:26:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1734096373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NSxcARGH8lpnoYOuXPDZNEAu2lX0pFm+l+w1f6zH2n4=;
-	b=JZ8v4IelH/Ih0MvPgds5TamtYsW4tuOjGVUKqjzNX0NvFryQnnvYnPqNXgqXkz8Ls+peaC
-	xq4kQ1ANqkpD971fgwU2HW5G/Yj2PzFNcJmkrTAIuLZIQsBqhwis9ooow+/MlYUpY8X0ZR
-	ZutvF0q/oJ+fiHSPb54b/n8O0ys1rFhAyr6gTJN+oZLKVgNGyfmR46mTYUi2YH8tIX5LXg
-	tsbgJsVE2lgVbfHRMZMnquejLAKEz7hqerHVqsZ8fdmCT8vricNMv5Ka31fvilq0dQN87G
-	kRHy9AUpJdm7xNxgudZDqm4Yse8OjXeXjD2Aenhjs9yC8itpMrbVVqjFMAb/5A==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id a0c62334;
-	Fri, 13 Dec 2024 13:26:07 +0000 (UTC)
-Date: Fri, 13 Dec 2024 22:25:52 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 5.10 000/459] 5.10.231-rc1 review
-Message-ID: <Z1w14PaRR2d7lyHZ@codewreck.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=sjHB18FzslroMiKTDgxDbZ/YIxEEf3F4f+bEnSTdRQAR5BHZI14QK25OTwyhcHBLDlqntAAMbt8s0HP1i2VeHPFZKXlB+Ufst7/pETIxxbXzDpOyGDtkR/9EnwiokAZQsUqnQqrdJ8XCjdkSpaEiVoyW+UYIAPDhx4tFGZ07hwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dww15wq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6814C4CED0;
+	Fri, 13 Dec 2024 13:34:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734096881;
+	bh=T4o9xKY2MfS7nK0plKbaiDSl8ZQeDCS+/DIfcQpnqzE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Dww15wq3lRzLWmN92dqzg2sBPSqaB4jVFa9QRAU2F3x/F5YgszAnLKUzTW+dYE13b
+	 CS1xi7gQ1+DPHOIXMcmLPSAczENqrYIi1CvBnS5V3EnDLIy66mklPqukbgsnGd7w7x
+	 w/ZKTosm+Qqd/LBokFtO/IqHMYtIO+SabyRYlZ3cnNXkGot3p83SHk+Vy9MPxTuHBC
+	 biWAYEm1NPoRXbRD3GJsD0NcEuSSbTy0lYJxzBF7yyK2zhlyKb4lM6tmLIxLrt6UCs
+	 0j7YmAoHHcYYxtND5d4O/H6JjFB6CEfP4LEXXkiYik36qNgcINsacBr3GWtvQudAIG
+	 6WE4pc1bI6Ncg==
+Date: Fri, 13 Dec 2024 14:34:35 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>, stable@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v5 1/6] PCI: dwc: ep: iATU registers must be written
+ after the BAR_MASK
+Message-ID: <Z1w364da43KCOIGY@ryzen>
+References: <20241127103016.3481128-9-cassel@kernel.org>
+ <20241204173352.GA3006363@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241204173352.GA3006363@bhelgaas>
 
-Greg Kroah-Hartman wrote on Thu, Dec 12, 2024 at 03:55:38PM +0100:
-> This is the start of the stable review cycle for the 5.10.231 release.
-> There are 459 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hello Bjorn,
+
+On Wed, Dec 04, 2024 at 11:33:52AM -0600, Bjorn Helgaas wrote:
+> In subject, maybe "Write BAR_MASK before iATU registers"
+
+Ok. Will fix in v6.
+
+
 > 
-> Responses should be made by Sat, 14 Dec 2024 14:41:35 +0000.
-> Anything received after that time might be too late.
+> I guess writing BAR_MASK is really configuring the *size* of the BAR?
+
+I am quite sure that you know how host software determines the size of
+a BAR :)
+
+But yes, writing the BAR_MASK will directly decide a BARs size:
+https://wiki.osdev.org/PCI#Address_and_size_of_the_BAR
+
+So BAR_MASK is "BAR size - 1".
+
+
+> Maybe the size is the important semantic connection with iATU config?
+
+The connection is:
+"Field size depends on log2(BAR_MASK+1) in BAR match mode."
+
+So I think it makes sense for the subject to include BAR_MASK
+rather than BAR size.
+
+
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.231-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-
-Tested 2146a7485c27 ("Linux 5.10.231-rc1") on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
-
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-
-
-
-> Shengjiu Wang <shengjiu.wang@nxp.com>
->     ASoC: fsl_micfil: fix the naming style for mask definition
->
-> Shengjiu Wang <shengjiu.wang@nxp.com>
->     ASoC: fsl_micfil: fix regmap_write_bits usage
+> On Wed, Nov 27, 2024 at 11:30:17AM +0100, Niklas Cassel wrote:
+> > The DWC Databook description for the LWR_TARGET_RW and LWR_TARGET_HW fields
+> > in the IATU_LWR_TARGET_ADDR_OFF_INBOUND_i registers state that:
+> > "Field size depends on log2(BAR_MASK+1) in BAR match mode."
 > 
-> Sascha Hauer <s.hauer@pengutronix.de>
->     ASoC: fsl_micfil: use GENMASK to define register bit fields
+> Can we include a databook revision and section here to help future
+> maintainers?
+
+Ok. Will fix in v6.
+
+
 > 
-> Sascha Hauer <s.hauer@pengutronix.de>
->     ASoC: fsl_micfil: do not define SHIFT/MASK for single bits
+> > I.e. only the upper bits are writable, and the number of writable bits is
+> > dependent on the configured BAR_MASK.
+> > 
+> > If we do not write the BAR_MASK before writing the iATU registers, we are
+> > relying the reset value of the BAR_MASK being larger than the requested
+> > size of the first set_bar() call. The reset value of the BAR_MASK is SoC
+> > dependent.
+> > 
+> > Thus, if the first set_bar() call requests a size that is larger than the
+> > reset value of the BAR_MASK, the iATU will try to write to read-only bits,
+> > which will cause the iATU to end up redirecting to a physical address that
+> > is different from the address that was intended.
+> > 
+> > Thus, we should always write the iATU registers after writing the BAR_MASK.
 > 
-> Sascha Hauer <s.hauer@pengutronix.de>
->     ASoC: fsl_micfil: Drop unnecessary register read
+> Apparently we write BAR_MASK and the iATU registers in the wrong
+> order?  I assume dw_pcie_ep_inbound_atu() writes the iATU registers.
 
-Just a note on these, our version (from nxp) of this was full of
-conflicts and too much effort to merge for something I cannot test
-easily, so I squashed out this part and re-cherry-picked just commits
-c808e277bcdf ("ASoC: fsl_micfil: Drop unnecessary register read")
-and 06df673d2023 ("ASoC: fsl_micfil: fix regmap_write_bits usage")
-
-The other three commits are marked as a stable dep of 06df673d2023 but
-it really is trivial to backport and not worth the risk to me; if you'd
-like me to send the minimal backport I used I'll be happy to.
-
-(but, as far as I'm concerned I'm fine as is as well and consider this
-closed; just reporting I didn't test this 100% as is. Not that my
-automated test actually exercises the micfil code anyway...)
+Yes.
 
 
-Thanks,
--- 
-Dominique Martinet
+> 
+> I can't quite connect the commit log with the code change.  I assume
+> the dw_pcie_ep_writel_dbi2() and dw_pcie_ep_writel_dbi() writes update
+> BAR_MASK?
+
+dw_pcie_ep_writel_dbi2() writes the BAR_MASK.
+dw_pcie_ep_writel_dbi() writes the BAR type.
+
+
+> 
+> And I guess the problem is that the previous code does:
+> 
+>   dw_pcie_ep_inbound_atu        # iATU
+>   dw_pcie_ep_writel_dbi2        # BAR_MASK (?)
+>   dw_pcie_ep_writel_dbi
+> 
+> and the new code basically does this:
+> 
+>   if (ep->epf_bar[bar]) {
+>     dw_pcie_ep_writel_dbi2      # BAR_MASK (?)
+>     dw_pcie_ep_writel_dbi
+>   }
+>   dw_pcie_ep_inbound_atu        # iATU
+>   ep->epf_bar[bar] = epf_bar
+> 
+> so the first time we call dw_pcie_ep_set_bar(), we write BAR_MASK
+> before iATU, and if we call dw_pcie_ep_set_bar() again, we skip the 
+> BAR_MASK update?
+
+The problem is as described in the commit message:
+"If we do not write the BAR_MASK before writing the iATU registers, we are
+relying the reset value of the BAR_MASK being larger than the requested
+size of the first set_bar() call. The reset value of the BAR_MASK is SoC
+dependent."
+
+
+Before:
+dw_pcie_ep_inbound_atu() # iATU - the writable bits in this write depends on
+                         # BAR_MASK, which has not been written yet, thus the
+			 # write will be at the mercy of the reset value of
+			 # BAR_MASK, which is SoC dependent.
+dw_pcie_ep_writel_dbi2() # BAR_MASK
+dw_pcie_ep_writel_dbi()  # BAR type
+
+After:
+dw_pcie_ep_writel_dbi2() # BAR_MASK
+dw_pcie_ep_writel_dbi()  # BAR type
+dw_pcie_ep_inbound_atu() # iATU - this write is now done after BAR_MASK has
+			 # been written, so we know that all the bits in this
+			 # write is writable.
+
+
+Kind regards,
+Niklas
 
