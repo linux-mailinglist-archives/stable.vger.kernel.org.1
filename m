@@ -1,104 +1,73 @@
-Return-Path: <stable+bounces-104023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE5C9F0B7B
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:43:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 599B39F0BD9
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:05:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CBF3163EC2
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:43:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7395E188AA77
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EFE1DF256;
-	Fri, 13 Dec 2024 11:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BACF1DF968;
+	Fri, 13 Dec 2024 12:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7Hrek00"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B33A1DEFF7
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 11:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245731DF759;
+	Fri, 13 Dec 2024 12:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734090185; cv=none; b=p2eAdmtfKYSvbchYjU/KbcSj0IlE8Vg9rEvQ/kkT+BaOjwOz/lPFhIaLuiQ/qFAcRBMkhD5fQKOc7r4pFFLgZiQM8gmAMpidsyGOvA/yE5zjrGsEq+M5/ct0ddsJXzTeYFKQBJaIfJXxF/bt7qDkHZWM56NxbnU10yv691vJxUI=
+	t=1734091489; cv=none; b=eOnLQULIVwBUv/TszHq4pJF5bXkDRjm4MCczeAc3xHleS5l17qoG/XQaGQTaAHlsXQ9HKjJHhFYWoBfCVabkOYVvnzDK/xCvdbdgY9Rg7OntHqDCuCubmV1mD7CXpxUSULd/dfsOowRoKjJTerndT3GUFk+Ob5E68obBKJCr6ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734090185; c=relaxed/simple;
-	bh=estDcRIo9Ps/V70akpJUOEghJnsuWqhCaWrCUbyCJD8=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=BH2TtFEiqLPK4AbXw59CjJBK47E1Qd0oaiPAkTTbBhLxJfw8vnCmvSukkTsv7j05GFxOGAZCFEBjwxH6OyCPQJzT6iqXAJ3lao4qCb7kv7jsDrLghKD+RTOkG8j5LGuSxHTfRlYSbRxNprDyI+NgLhaK/808febIjnmcQ+MhAxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a814bfb77bso26875845ab.0
-        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 03:43:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734090182; x=1734694982;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6njtYwuuhlt+oJFig9mpzBM61IwvHlJyPr4iUNckOYs=;
-        b=GiYaszE1i+aVS2HMeQascr7mPu756aDLuNfl+Oz2kWRZa7UZZ4rAG2UupqyhigUJjl
-         Wuu3bXtZqc+NskKalkBJpozkPEAVRL1R9b+j/IUpu9KrZut653Y2Kc/ZlWuNy0n6ZX+K
-         Jgrjs0V2KP9ajL5aOPmMEBAx+Si0itiu2/g8xSu81dnstwyE5JuGK1MeG2b65T0+fASD
-         Xz33O5f7zPRKywF6vkSdTHRhWsjSoPlAsvRbedC+Gnq2AfanqWqPSPt9CjeS+m/z8CKr
-         JCBDVK44oqXUDfhTHG+WObIMMUHI6dS2DrDne9rF+CyUeoHkg6qigvoRbBX2eXv9JV9F
-         qS9g==
-X-Forwarded-Encrypted: i=1; AJvYcCXyvFmlaeLPWxeznJppugcCkUKY0cm/SaXogaYWoEqnaLzL+9JKDYiguXQtHIVq36UohRccz6w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBc7qNrFxdhA6baPllvMmkxkc7fWclQRBXeihWgHYwpBsbURfh
-	QMMVwEvVVL/c6xLurCoTIjZCm1FelsBMKCdRBRqzo+IPhvS69V8UsSXlCksqN+cAhuPrbogQ8WH
-	4IMlpANHVj8rI8R5UNu3Yf0SP19+3HfX4j61u/Hcd5cDIsVm4H+cPj2s=
-X-Google-Smtp-Source: AGHT+IHDAFY/TJurokeAD58Ic6k8Gv/vDg0siFvYAkQ1NFVck19SuU1w02dmhAQMhWSSadJDht8QTW+J8baOcxgzM5T4zE7FxWYz
+	s=arc-20240116; t=1734091489; c=relaxed/simple;
+	bh=XRa0NN9ZBGQTVVvZGNqNy2ZYMuXiGE0Xj3UonEHebfo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MF2sW/nZpI0pTeJdEsvFifv2QUfZFFAnN8e8IZVFXAtHV77YUj19O/x0QGYNro8hVhrW01rm6nmKWktK2Pqpqd0rIUnHTMwsayKVJ60Q23VJGlIwQALGZ8T3u36Xk/0DOrb9iYBeTh2zW6ctkX7I7qVNF9Asv9au0psEjcxwgZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7Hrek00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F95C4CED6;
+	Fri, 13 Dec 2024 12:04:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1734091488;
+	bh=XRa0NN9ZBGQTVVvZGNqNy2ZYMuXiGE0Xj3UonEHebfo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z7Hrek00UzzT0IRQQnb4IKAGvpLm8IK/ju3Sds0xiGjarmd0t5oYn9x5UaIBOYMWb
+	 VRw2tIXJsPJ19KjZDZke+HF7mFVoQqDLFachlF+3+sKb629BHiLm1QpMar/4TPxbg5
+	 wyZtnlUgkRj3z6yDUBwjILSfGPKHoecAwCUxvW9k=
+Date: Fri, 13 Dec 2024 13:04:45 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Brian Gerst <brgerst@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 051/459] x86/stackprotector: Work around strict
+ Clang TLS symbol requirements
+Message-ID: <2024121337-mutiny-blazing-4636@gregkh>
+References: <20241212144253.511169641@linuxfoundation.org>
+ <20241212144255.537255677@linuxfoundation.org>
+ <CAMj1kXGBhBj0H=vsn7C3POQwhxxqeELjD0+BDi88mySHF+GgEw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1c47:b0:3a7:c81e:825f with SMTP id
- e9e14a558f8ab-3b02d78812bmr23955515ab.9.1734090182295; Fri, 13 Dec 2024
- 03:43:02 -0800 (PST)
-Date: Fri, 13 Dec 2024 03:43:02 -0800
-In-Reply-To: <675b61aa.050a0220.599f4.00bb.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <675c1dc6.050a0220.17d782.000c.GAE@google.com>
-Subject: Re: [syzbot] [tipc?] kernel BUG in __pskb_pull_tail
-From: syzbot <syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com>
-To: alsa-devel@alsa-project.org, asml.silence@gmail.com, axboe@kernel.dk, 
-	clm@fb.com, davem@davemloft.net, dennis.dalessandro@cornelisnetworks.com, 
-	dsterba@suse.com, edumazet@google.com, eric.dumazet@gmail.com, 
-	horms@kernel.org, io-uring@vger.kernel.org, jasowang@redhat.com, 
-	jdamato@fastly.com, jgg@ziepe.ca, jmaloy@redhat.com, josef@toxicpanda.com, 
-	kuba@kernel.org, kvm@vger.kernel.org, leon@kernel.org, 
-	linux-block@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, miklos@szeredi.hu, mst@redhat.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, pbonzini@redhat.com, 
-	perex@perex.cz, stable@vger.kernel.org, stefanha@redhat.com, 
-	syzkaller-bugs@googlegroups.com, tipc-discussion@lists.sourceforge.net, 
-	tiwai@suse.com, viro@zeniv.linux.org.uk, 
-	virtualization@lists.linux-foundation.org, ying.xue@windriver.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGBhBj0H=vsn7C3POQwhxxqeELjD0+BDi88mySHF+GgEw@mail.gmail.com>
 
-syzbot has bisected this issue to:
+On Fri, Dec 13, 2024 at 08:41:13AM +0100, Ard Biesheuvel wrote:
+> NAK
+> 
+> See other replies re this backport
 
-commit de4f5fed3f231a8ff4790bf52975f847b95b85ea
-Author: Jens Axboe <axboe@kernel.dk>
-Date:   Wed Mar 29 14:52:15 2023 +0000
+Dropped from all queues now, thanks!
 
-    iov_iter: add iter_iovec() helper
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=17424730580000
-start commit:   96b6fcc0ee41 Merge branch 'net-dsa-cleanup-eee-part-1'
-git tree:       net-next
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=14c24730580000
-console output: https://syzkaller.appspot.com/x/log.txt?x=10c24730580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1362a5aee630ff34
-dashboard link: https://syzkaller.appspot.com/bug?extid=4f66250f6663c0c1d67e
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=166944f8580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1287ecdf980000
-
-Reported-by: syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com
-Fixes: de4f5fed3f23 ("iov_iter: add iter_iovec() helper")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+greg k-h
 
