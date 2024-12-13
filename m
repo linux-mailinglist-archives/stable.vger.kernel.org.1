@@ -1,111 +1,154 @@
-Return-Path: <stable+bounces-104067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016E79F0F19
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:28:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66A79F0F2B
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:33:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEA1228209F
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:28:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 167CC16471F
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4664B1E1C3A;
-	Fri, 13 Dec 2024 14:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CF01E1C22;
+	Fri, 13 Dec 2024 14:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKv36EGs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJE3ZyhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73A71E1A33;
-	Fri, 13 Dec 2024 14:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC0E1E1C0F;
+	Fri, 13 Dec 2024 14:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734100105; cv=none; b=Oh5H+Ib0wRPBGYviYmsHQgbYzOv0FPh7sKqHurTrv6bKzjd3gOyFN+SPyI34OWOemltGZfU+02cvMiALPAE919IKlKEILOFE2Lbxd9TNJx7ZyGOaZjlzUPeebid/dRdBokjAqufbGIHy5w8i/DOrDI/YLHYjmA7jlMSSpX9sCFs=
+	t=1734100410; cv=none; b=BlNTFH0osdgr4D7OygfVxC2U2JywZERXc7GP7FYPNEWw77RKIGc9UWF1gubmNKlCL3cry+bNtSDDSlG9rlqMFh2y3sl1NZVeBOgfm5n7fQclBteH+VD2eXjywXmVlZrr93JWqupybjp1SXATrJ0mxw5cTacYlU2+qWvIg6NS6Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734100105; c=relaxed/simple;
-	bh=ZbcKMdctPQCdyQzTtpcvziUCKjV2K9y/jKn3RlluK7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JhlXXKzt3s55b0NOs9lsVkhk3I7x7ZbuH/A09x2hbSAs9n42a2FiHhm+VRx2vFrzVgY8CwTTR0IX33QaJ1J9ykWTYzMjsxzwHAwY5qfY65LBZ/Rp0XzLHGkqhyLXxIZbU0ZqyORhWTHm+TmDzwADtAHrmm2pwJbVcCtvSb7cPzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKv36EGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EB5C4CED0;
-	Fri, 13 Dec 2024 14:28:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734100104;
-	bh=ZbcKMdctPQCdyQzTtpcvziUCKjV2K9y/jKn3RlluK7Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kKv36EGsqrYpRJYKhhZl8mk7wccb8onloMKKJwstbdADawiEWLN7zWt+9F9Nq9qa1
-	 KYokXlrtluKzuU/g14Wue0BGxwlKuA//fuc6a/mYzguxSFCIIopgOpG0H4pgS+BLi0
-	 TyAzsKAjEK1J8uifNGJ6X2ujGG7NRaQOcySMmBZ0=
-Date: Fri, 13 Dec 2024 15:28:20 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>, Austin Zheng <Austin.Zheng@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 437/466] drm/amd/display: Update Interface to Check
- UCLK DPM
-Message-ID: <2024121349-tacky-obstacle-a41b@gregkh>
-References: <20241212144306.641051666@linuxfoundation.org>
- <20241212144324.128679509@linuxfoundation.org>
- <6e25f099-1ba2-4bef-9477-888288270f5d@kernel.org>
+	s=arc-20240116; t=1734100410; c=relaxed/simple;
+	bh=hf3uPTsI8CFcJFUPNdC68/VsTO/Oc1Od5Tl6oCQzNgs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UwJ5oDkfZQ01PFHgcO+McCfrNK3YcZU+RgszfCqIoaWcPedLuPkSbNHaofRNOgxUmVyTlvqOKOJp48XfjwGsXjLeo6oZFuSQ75gXmVdQzpTvSVsZ9szF7MNOBJ8e8RSFBVleNp3ts+z+yD/PchbusflyhAPJBlxskab/WScX19A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJE3ZyhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF6EC4CED0;
+	Fri, 13 Dec 2024 14:33:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734100409;
+	bh=hf3uPTsI8CFcJFUPNdC68/VsTO/Oc1Od5Tl6oCQzNgs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=LJE3ZyhXqbMTrh21qkf7fSIuuCt5O7ZVy8jshQSMR/9B6neJf9pkYw82a+P00jcOH
+	 Xus4Nliq82zT2tKTSj+5kDK0HsZqfvfgWfLQOBWFDWufrYTH1nJYJjjDw65IOhg9kB
+	 upcloYBvfpYixjZZMPGH9/43q2D3dd6YkIb67HYM4lVZA5u972qRD4p6KBbGDMWIc7
+	 BbW0J+5P5LnTRZx/mFssov+bMAu1fpYFkr8o3vVDR3PfxmlDokNZw/sZQKET8vkG/U
+	 t+qWYEob1DQ73uw5xNJ0WaJJSG2L6mz4od3JV6oBvjhdThsgtdTQztN3WYZKA/MtwW
+	 uAaIWP2QDp8/Q==
+From: Niklas Cassel <cassel@kernel.org>
+To: Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	stable@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH v6 1/6] PCI: dwc: ep: Write BAR_MASK before iATU registers in pci_epc_set_bar()
+Date: Fri, 13 Dec 2024 15:33:02 +0100
+Message-ID: <20241213143301.4158431-9-cassel@kernel.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241213143301.4158431-8-cassel@kernel.org>
+References: <20241213143301.4158431-8-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6e25f099-1ba2-4bef-9477-888288270f5d@kernel.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2752; i=cassel@kernel.org; h=from:subject; bh=hf3uPTsI8CFcJFUPNdC68/VsTO/Oc1Od5Tl6oCQzNgs=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNJjXBct6Wbb8SJTfM7maG5177wXy+Ijz1/lea/tmb8s1 urys8rqjlIWBjEuBlkxRRbfHy77i7vdpxxXvGMDM4eVCWQIAxenAExEeiYjw0veA68dfAJV7388 eTt6f4iRvel6rz/XLoqf6WKduCPI3ZzhD5dw2jHmaz9nP/LgdLtu9/LFTwatySv6/otNdV13NXB jBhsA
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 12, 2024 at 06:45:07PM +0100, Jiri Slaby wrote:
-> On 12. 12. 24, 16:00, Greg Kroah-Hartman wrote:
-> > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Austin Zheng <Austin.Zheng@amd.com>
-> > 
-> > [ Upstream commit b8d046985c2dc41a0e264a391da4606099f8d44f ]
-> > 
-> > [Why]
-> > Videos using YUV420 format may result in high power being used.
-> > Disabling MPO may result in lower power usage.
-> > Update interface that can be used to check power profile of a dc_state.
-> > 
-> > [How]
-> > Allow pstate switching in VBlank as last entry in strategy candidates.
-> > Add helper functions that can be used to determine power level:
-> > -get power profile after a dc_state has undergone full validation
-> 
-> FWIW this was reverted in the Linus' tree:
-> 
-> commit 0e93b76cf92f229409e8da85c2a143868835fec3
-> Author: Austin Zheng <Austin.Zheng@amd.com>
-> Date:   Mon Sep 23 10:07:32 2024 -0400
-> 
->     drm/amd/display: Revert commit Update Interface to Check UCLK DPM
-> 
->     This reverts commit b8d046985c2dc41a0e264a391da4606099f8d44f.
-> 
->     Reverting as regression discovered on certain systems and golden values
->     need to updated.
-> 
-> 
-> 
-> Possibly, there are other fixes queued for 6.12, so the revert is not needed
-> anymore?
+The "DesignWare Cores PCI Express Controller Register Descriptions,
+Version 4.60a", section "1.21.70 IATU_LWR_TARGET_ADDR_OFF_INBOUND_i",
+fields LWR_TARGET_RW and LWR_TARGET_HW both state that:
+"Field size depends on log2(BAR_MASK+1) in BAR match mode."
 
-No, you are right, I need this one.  For some reason I thought I had
-applied it but it failed to apply cleanly and so it was dropped.  I'll
-go fix it up by hand now...
+I.e. only the upper bits are writable, and the number of writable bits is
+dependent on the configured BAR_MASK.
 
-thanks,
+If we do not write the BAR_MASK before writing the iATU registers, we are
+relying the reset value of the BAR_MASK being larger than the requested
+BAR size (which is supplied in the struct pci_epf_bar which is passed to
+pci_epc_set_bar()). The reset value of the BAR_MASK is SoC dependent.
 
-greg k-h
+Thus, if the struct pci_epf_bar requests a BAR size that is larger than the
+reset value of the BAR_MASK, the iATU will try to write to read-only bits,
+which will cause the iATU to end up redirecting to a physical address that
+is different from the address that was intended.
+
+Thus, we should always write the iATU registers after writing the BAR_MASK.
+
+Cc: stable@vger.kernel.org
+Fixes: f8aed6ec624f ("PCI: dwc: designware: Add EP mode support")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+---
+ .../pci/controller/dwc/pcie-designware-ep.c   | 28 ++++++++++---------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index f3ac7d46a855..bad588ef69a4 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -222,19 +222,10 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	if ((flags & PCI_BASE_ADDRESS_MEM_TYPE_64) && (bar & 1))
+ 		return -EINVAL;
+ 
+-	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
+-
+-	if (!(flags & PCI_BASE_ADDRESS_SPACE))
+-		type = PCIE_ATU_TYPE_MEM;
+-	else
+-		type = PCIE_ATU_TYPE_IO;
+-
+-	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
+-	if (ret)
+-		return ret;
+-
+ 	if (ep->epf_bar[bar])
+-		return 0;
++		goto config_atu;
++
++	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
+ 
+ 	dw_pcie_dbi_ro_wr_en(pci);
+ 
+@@ -246,9 +237,20 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 		dw_pcie_ep_writel_dbi(ep, func_no, reg + 4, 0);
+ 	}
+ 
+-	ep->epf_bar[bar] = epf_bar;
+ 	dw_pcie_dbi_ro_wr_dis(pci);
+ 
++config_atu:
++	if (!(flags & PCI_BASE_ADDRESS_SPACE))
++		type = PCIE_ATU_TYPE_MEM;
++	else
++		type = PCIE_ATU_TYPE_IO;
++
++	ret = dw_pcie_ep_inbound_atu(ep, func_no, type, epf_bar->phys_addr, bar);
++	if (ret)
++		return ret;
++
++	ep->epf_bar[bar] = epf_bar;
++
+ 	return 0;
+ }
+ 
+-- 
+2.47.1
+
 
