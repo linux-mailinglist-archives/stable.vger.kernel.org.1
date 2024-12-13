@@ -1,99 +1,137 @@
-Return-Path: <stable+bounces-104126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE6C9F111B
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 16:37:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 883E69F1135
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 16:44:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 571A316237E
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:37:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4836B282B2F
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417131E2613;
-	Fri, 13 Dec 2024 15:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614141E32A0;
+	Fri, 13 Dec 2024 15:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pzsSEdO4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIOZk3uO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E451E4A21;
-	Fri, 13 Dec 2024 15:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173301E2306;
+	Fri, 13 Dec 2024 15:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734104222; cv=none; b=PqQzSpaexbMHmlvEZe7sRUPclc8EmES5MuUd/nDUkRcAGRWj7M6WNlBUpC84zxady6o0h73eNLCjetxJhGc7RsK6gLF7WVF8cBRTlENMGbG/1ZJ3so76aStRqj8iV7yXHAVnntXxfhnC9/788srVQdiH9fIZOcBWy6w6dpPO+Uw=
+	t=1734104667; cv=none; b=qE6Wj1kSIZuash+mwJdKO0QPjDTfCc4RyYqq/BwZ7CCIl4LE0J/dNYpuWsmizv9lDbMcWo2OVYg/nD3FH9vVsDu0jIr0k5fL7+zc/GN076IEMcg/9H27JU6lkwFkEBY8XUGprBr1rNyopY/686fgKi+GjhEbBnVuoC7qYMwKzlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734104222; c=relaxed/simple;
-	bh=zuOWWh5qv6t1f/uJZ+YIZcO/cV+0rcYrZVUeoVCfhyI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fr+CyVIv7V+2h5yPU67N2Q4aNkEvFtITHE2gaNMuH97NZPBXT4oUA5f6sLEkq/CurqBsB1OxDK1VvgSPqezBEl8LUVvZlzeDXckFbkD6uO6lF1akNS3vRiS5ruMMwbxtAnLngBD7zRI0vqpbSJE+2alooOKQ7k00Nhx+VAVCQCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pzsSEdO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E681C4CED0;
-	Fri, 13 Dec 2024 15:37:01 +0000 (UTC)
+	s=arc-20240116; t=1734104667; c=relaxed/simple;
+	bh=rExA0chOwwATzfuLE+bY7ckxmYYYIvqmCZordD3tONM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tqm9+4FPB//npVT5An5KNtFwcv2SDmuFDHH+mdJK+1vuSSOPwmgJTcNFI6171E8ij27Xf+NY4U4KsUzCbN/HEfXnqtQUoO2FQS3psVI6CjR6uW22KAVJ55KnecCRCAoM2aXEt0Ej+y7o2qZstKw9wXle59Qvf2RtMR6v8WNvmjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIOZk3uO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861C3C4CED0;
+	Fri, 13 Dec 2024 15:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734104221;
-	bh=zuOWWh5qv6t1f/uJZ+YIZcO/cV+0rcYrZVUeoVCfhyI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pzsSEdO4wr8gJbrNk+lW4Vt/2p5627nR8l2AymZguG/zRIumYDs/Z6u2+7GFWK0JN
-	 gVPMM0Nzb88wNYk3LsGOabn8M1rc7357f2LDuYGYMlhO09Kp4OM23F/VJqFnEE68kL
-	 +j881an1toYoKsB6Nbr1QuGPgUvec1FazwOTp4ynO0QLEFCNg24o/FhyD4/isvEKJA
-	 vgH6hGbf0B+8Y7TzrrpuAz3Ali30iZm6cEJv3HIGeC/kC2xirLXjky4NDUATglGTRT
-	 bTMXIjfX9THhKSUH6c6biUUC2nGoVCByrDfSkdzHNpT5A0yowLC7wSgrYhGcdko51G
-	 DaCdl7WRR3LBA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tM7j0-000000000mm-1NxM;
-	Fri, 13 Dec 2024 16:37:06 +0100
-Date: Fri, 13 Dec 2024 16:37:06 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v3 14/23] arm64: dts: qcom: x1e80100: Fix CDSP memory
- length
-Message-ID: <Z1xUosh7GwOZUAWJ@hovoldconsulting.com>
-References: <20241213-dts-qcom-cdsp-mpss-base-address-v3-0-2e0036fccd8d@linaro.org>
- <20241213-dts-qcom-cdsp-mpss-base-address-v3-14-2e0036fccd8d@linaro.org>
+	s=k20201202; t=1734104666;
+	bh=rExA0chOwwATzfuLE+bY7ckxmYYYIvqmCZordD3tONM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kIOZk3uOZDLxd9HZJ6Tqo6u7L20VGm+WXAraiQ9UrSfpy7D5ZZHwr4cHBNEiG9YSg
+	 8KSGnr6UA5WXmQ7CWEpD4zKbLQOv4YVDk53qCSLR6nl24b5WHBV6UX5jdOmbQralGO
+	 fWbjDoEadvbaadmbgIc5XJ2sXE0DmAGW3JBH1CvUHUjdcUIIU+xloaMMjAmSCnSP6g
+	 mUNoAXothw5mYbJRSO70wuSTaEYnHduPrAQeXl/4XS1sIhUKnV2YuPT/4GCmuFilti
+	 jn4B+O7EwKeR9oo+fGx8cpUlKFLpQRXv2v74PS42DY66th8QRCaScUh1jksmcETe9t
+	 ky584VlkNbGYg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tM7q4-003UN7-3W;
+	Fri, 13 Dec 2024 15:44:24 +0000
+Date: Fri, 13 Dec 2024 15:44:23 +0000
+Message-ID: <86ed2bsi3s.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: wens@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Mark Kettenis <mark.kettenis@xs4all.nl>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] irqchip/gic-v3: Work around insecure GIC integrations
+In-Reply-To: <CAGb2v67vgoZr_1T579SrwG9UvNs0eRfT37Qk_g2k7Z-mRfEXNg@mail.gmail.com>
+References: <20241213141037.3995049-1-maz@kernel.org>
+	<CAGb2v67vgoZr_1T579SrwG9UvNs0eRfT37Qk_g2k7Z-mRfEXNg@mail.gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241213-dts-qcom-cdsp-mpss-base-address-v3-14-2e0036fccd8d@linaro.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: wens@kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, mark.rutland@arm.com, tglx@linutronix.de, mark.kettenis@xs4all.nl, wenst@chromium.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, Dec 13, 2024 at 03:54:03PM +0100, Krzysztof Kozlowski wrote:
-> The address space in CDSP PAS (Peripheral Authentication Service)
-> remoteproc node should point to the QDSP PUB address space
-> (QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x1400000 was
-> copied from older DTS, but it does not look accurate at all.
-> 
-> This should have no functional impact on Linux users, because PAS loader
-> does not use this address space at all.
-> 
-> Fixes: 5f2a9cd4b104 ("arm64: dts: qcom: x1e80100: Add ADSP/CDSP remoteproc nodes")
-> Cc: stable@vger.kernel.org
+On Fri, 13 Dec 2024 15:10:11 +0000,
+Chen-Yu Tsai <wens@kernel.org> wrote:
+>=20
+> On Fri, Dec 13, 2024 at 10:34=E2=80=AFPM Marc Zyngier <maz@kernel.org> wr=
+ote:
+> >
+> > It appears that the relatively popular RK3399 SoC has been put together
+> > using a large amount of illicit substances, as experiments reveal
+> > that its integration of GIC500 exposes the *secure* programming
+> > interface to non-secure.
+> >
+> > This has some pretty bad effects on the way priorities are handled,
+> > and results in a dead machine if booting with pseudo-NMI enabled
+> > (irqchip.gicv3_pseudo_nmi=3D1) if the kernel contains 18fdb6348c480
+> > ("arm64: irqchip/gic-v3: Select priorities at boot time"), which
+> > relies on the priorities being programmed using the NS view.
+> >
+> > Let's restore some sanity by going one step further and disable
+> > security altogether in this case. This is not any worse, and
+> > puts us in a mode where priorities actually make some sense.
+> >
+> > Huge thanks to Mark Kettenis who initially identified this issue
+> > on OpenBSD, and to Chen-Yu Tsai who reported the problem in
+> > Linux.
+> >
+> > Fixes: 18fdb6348c480 ("arm64: irqchip/gic-v3: Select priorities at boot=
+ time")
+> > Reported-by: Mark Kettenis <mark.kettenis@xs4all.nl>
+> > Reported-by: Chen-Yu Tsai <wenst@chromium.org>
+>=20
+> Should be
+>=20
+> Reported-by: Chen-Yu Tsai <wens@csie.org>
+>=20
+> (I know it's confusing, I even mix up inboxes at work.)
 
-I don't think any of these need to be backported.
+Ah, fair enough. Given that the report was on IRC, I had just used the
+first address git log gave me.
 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > Cc: stable@vger.kernel.org
+>=20
+> Tested-by: Chen-Yu Tsai <wens@csie.org>
+>=20
+> My RK3399 boots normally with pseudo NMI enabled with this patch now.
+> Also tried NMI backtraces through sysrq, though I'm not sure that
+> always goes through the pseudo NMI path?
 
-Looks good otherwise:
+Should do, according to arch/arm64/kernel/smp::ipi_setup().
 
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Thanks for having tested it.
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
 
