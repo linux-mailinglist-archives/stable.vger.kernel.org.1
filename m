@@ -1,137 +1,140 @@
-Return-Path: <stable+bounces-104027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10C89F0BFC
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:14:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3539F0C17
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:19:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C854F168833
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:14:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E5181692AF
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA731DF73E;
-	Fri, 13 Dec 2024 12:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77791DFD94;
+	Fri, 13 Dec 2024 12:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqYbLJa4"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZI/cWOQS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D7D1DF263;
-	Fri, 13 Dec 2024 12:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9395E1DF721
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 12:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734092068; cv=none; b=hWNpmoLhbfT8m+WPwLR/PXrQsSsN0c4+aEZ6benbju6mnWFx/AUD1LdTdoXE+JDq5zuv3CG+k1JkujSAUcKTht7U2m9Chx+K4rxlBWEaUotBgikKfbaa6WpcBr/McmWg2NSFQNAOP0yXkhQzcsCKIJs9a8xuDpbvrSyZn3xWGlo=
+	t=1734092356; cv=none; b=sZCVtykmwsYNtDG/iWv8oWGku5A+WUnZyzlSmktuaD9oSszCA0pKn9Kyy9sOuRx3bybwgMBknTk7yjxVxMD/64lvcPWFQyL89pihIbNHUB1oP4g5jbQOPrAtw/U66de0B/bnrzIrdPufrXVr8fDXp4ncKorvDqBg+763KTh6Lzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734092068; c=relaxed/simple;
-	bh=sDiy10/kD9Kt51SgGl3FtSgXlIXSItrKPlATcZNKpG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uZhStXKLPJvnfSqolFQoQslZ0gbf0Ti88OCFzyuOdiWmedbSnlI04GzyqNzlreJLoVtkLIYRTpbz0r6cG9jXTS8IrTH+g/I/hjNyV0w6k59NSlsUnlm7+s0QKutE7lM0pnVevr3Mk8Zh8j7ZAIGq3ZLM8qU7OHdiReVFRBzQWD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqYbLJa4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708F0C4CED0;
-	Fri, 13 Dec 2024 12:14:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734092067;
-	bh=sDiy10/kD9Kt51SgGl3FtSgXlIXSItrKPlATcZNKpG0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EqYbLJa4H7fDN/UxVe8N2CnJOQx/9zyjmrsHGDC+u1Sjsw/EhzMk4/YEKaM2zZy1f
-	 xyvDY/fnp5rsV1U+IS2Uc4I/g60opzE/m32ZM8yHWuLQ9Z1BrmUceaAigPC9z8bK0K
-	 n19Pgf1iP9fbZDZz3M+Llcc+ctBymtB1llaOu2dA=
-Date: Fri, 13 Dec 2024 13:14:23 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Jiri Slaby <jslaby@suse.cz>, Borislav Petkov <bp@suse.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	linux-arch@vger.kernel.org, linux-crypto@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>, x86-ml <x86@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4 243/321] x86/asm/crypto: Annotate local functions
-Message-ID: <2024121300-immerse-gooey-ee4f@gregkh>
-References: <20241212144229.291682835@linuxfoundation.org>
- <20241212144239.574474355@linuxfoundation.org>
- <20241212180023.GA112010@google.com>
- <2024121201-recoup-gumming-92ce@gregkh>
- <20241212180856.GB112010@google.com>
+	s=arc-20240116; t=1734092356; c=relaxed/simple;
+	bh=+agX/hxnK7PsbXVWPwKhiB1V054xuEENK8nIoWK3fi0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I/mNVk2yJexUwx2ST3nPpbUXbcwqef8Q21Q43J1jygyOw4VKncJJXaEQ+CV6PcQGj7fL4juNMpGyy9rfhdqGBp9b+7Ksb4E9dCcg41t8lbiGjzvVuS6wpXnjPVBU9i3R4W3lUlm60j+E4nyg/dnWH3wsanIzLz3CFDDKyuDEaiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZI/cWOQS; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5d34030ebb2so2925540a12.1
+        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 04:19:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734092353; x=1734697153; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rswNLiWFuDKiW42rbnE3/FFvogIGFwro7QX3xwapVa8=;
+        b=ZI/cWOQSTK7j4jTHtoeuwX9Lb+TTFgPctFxAljDqcqJJdejmoMXhJrrdZHRmEGK9x+
+         F4dQZxd3p2sLGblz6ghca40YOLqTyK3h15sJaOQ6ii0zZMQm4c4ShqymyH6RH4ri6eKl
+         kOZNPGAfnRFZEXJjuxUzKr1E90D9Ki0qaMTiDYN1nqfq9Fjjlxd2ddSaUbiyYsU0z10C
+         Ij8a/AvyprryOGojNbPzulITQGxaUUOii5FEoUSsHoHFPsCvH8h6QVHj92tu+TZYS9Yw
+         0epvuWXhOpJIpzQttx/C8mnurNpx2oGBUH2JrpIkYcBaAoHvu3aLbmbtRdL0Le4aQBBo
+         lG9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734092353; x=1734697153;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rswNLiWFuDKiW42rbnE3/FFvogIGFwro7QX3xwapVa8=;
+        b=SvCM2ssJdSFzM3FIqTtpZUJBaEYcg21uJNvonw8KNcMZsXwwiOlPhF04LtFFInJjeJ
+         Ds9zzZYjA+TkJ5W7/QamI3zDoNGqtA+frQ4Kj9Dkae5g3s8UUlNWKxbIXxzzONTZIh4X
+         U/aYbOYoGMVFktuBSOIMd6l3t97Q5CvXSDKOS3/rQqe587xUvjggHseyhhsTZOjI3Oll
+         PuS+SmnGPheUqq3cMX9b/zGdhJb9+tJYnXQrzMXM4DpDkj2pVLn7P0Fu6ktf67yCBS8p
+         Q4wQM29uqEzQfVrKG41otBbuj8dFjsehE02AUOmvdU6AeweS6XXv7OuwxdbYz5zw8y7p
+         5dbA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQuic4wrMxQP8bccGgGOx3+2OKCoujxv1H6MhloRZf1KmlJfItgTD0zeEaNRVpc6q8GtNDtEQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTnIKhzX4r/0M2RsNWRkuCG6dddBQuo5Ro9hCyWAZwrh3Ugy38
+	UnGhNCemQ19dOvFGvdDRQ21nYYiOF3/hqVLBrSL7VFRNz5XdTHrcusiuLdDnGTsidsJvyT2idDp
+	FIi2yqBOb1ACkD7XXavTrbVbfFQSGFdz4Ots9
+X-Gm-Gg: ASbGncu8obH/vshY0FV6yi8hT8xKAYKBFZ5h394aa4O7JYxLbQDdnTP8uLfcBIMsDkQ
+	RfnS7nBNdk3ZZyD07KLq6AVFTQeKc6SIBswfeDA==
+X-Google-Smtp-Source: AGHT+IGRpkdDBASQbA4W9W4t1BgK2dSzLTzvJG9Vc9UhANfCeYe2U4Z/qo2tMOoP0ps7OytKBednRAPV6i81BAZBwaE=
+X-Received: by 2002:a05:6402:2790:b0:5d0:b51c:8478 with SMTP id
+ 4fb4d7f45d1cf-5d63c3158c3mr1721305a12.12.1734092352701; Fri, 13 Dec 2024
+ 04:19:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241212180856.GB112010@google.com>
+References: <675b61aa.050a0220.599f4.00bb.GAE@google.com> <675c1dc6.050a0220.17d782.000c.GAE@google.com>
+In-Reply-To: <675c1dc6.050a0220.17d782.000c.GAE@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 13 Dec 2024 13:19:01 +0100
+Message-ID: <CANn89i+Zm_0a5jqtsL5m-S4=E06mdQXA8RLaFEF75Y6umFWxpQ@mail.gmail.com>
+Subject: Re: [syzbot] [tipc?] kernel BUG in __pskb_pull_tail
+To: syzbot <syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com>
+Cc: alsa-devel@alsa-project.org, asml.silence@gmail.com, axboe@kernel.dk, 
+	clm@fb.com, davem@davemloft.net, dennis.dalessandro@cornelisnetworks.com, 
+	dsterba@suse.com, eric.dumazet@gmail.com, horms@kernel.org, 
+	io-uring@vger.kernel.org, jasowang@redhat.com, jdamato@fastly.com, 
+	jgg@ziepe.ca, jmaloy@redhat.com, josef@toxicpanda.com, kuba@kernel.org, 
+	kvm@vger.kernel.org, leon@kernel.org, linux-block@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, miklos@szeredi.hu, 
+	mst@redhat.com, netdev@vger.kernel.org, pabeni@redhat.com, 
+	pbonzini@redhat.com, perex@perex.cz, stable@vger.kernel.org, 
+	stefanha@redhat.com, syzkaller-bugs@googlegroups.com, 
+	tipc-discussion@lists.sourceforge.net, tiwai@suse.com, 
+	viro@zeniv.linux.org.uk, virtualization@lists.linux-foundation.org, 
+	ying.xue@windriver.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 12, 2024 at 06:08:56PM +0000, Eric Biggers wrote:
-> On Thu, Dec 12, 2024 at 07:05:24PM +0100, Greg Kroah-Hartman wrote:
-> > On Thu, Dec 12, 2024 at 06:00:23PM +0000, Eric Biggers wrote:
-> > > On Thu, Dec 12, 2024 at 04:02:41PM +0100, Greg Kroah-Hartman wrote:
-> > > > 5.4-stable review patch.  If anyone has any objections, please let me know.
-> > > > 
-> > > > ------------------
-> > > > 
-> > > > From: Jiri Slaby <jslaby@suse.cz>
-> > > > 
-> > > > [ Upstream commit 74d8b90a889022e306b543ff2147a6941c99b354 ]
-> > > > 
-> > > > Use the newly added SYM_FUNC_START_LOCAL to annotate beginnings of all
-> > > > functions which do not have ".globl" annotation, but their endings are
-> > > > annotated by ENDPROC. This is needed to balance ENDPROC for tools that
-> > > > generate debuginfo.
-> > > > 
-> > > > These function names are not prepended with ".L" as they might appear in
-> > > > call traces and they wouldn't be visible after such change.
-> > > > 
-> > > > To be symmetric, the functions' ENDPROCs are converted to the new
-> > > > SYM_FUNC_END.
-> > > > 
-> > > > Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-> > > > Signed-off-by: Borislav Petkov <bp@suse.de>
-> > > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > > Cc: Herbert Xu <herbert@gondor.apana.org.au>
-> > > > Cc: "H. Peter Anvin" <hpa@zytor.com>
-> > > > Cc: Ingo Molnar <mingo@redhat.com>
-> > > > Cc: linux-arch@vger.kernel.org
-> > > > Cc: linux-crypto@vger.kernel.org
-> > > > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > > > Cc: x86-ml <x86@kernel.org>
-> > > > Link: https://lkml.kernel.org/r/20191011115108.12392-7-jslaby@suse.cz
-> > > > Stable-dep-of: 3b2f2d22fb42 ("crypto: x86/aegis128 - access 32-bit arguments as 32-bit")
-> > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > ---
-> > > >  arch/x86/crypto/aegis128-aesni-asm.S         |  8 ++--
-> > > >  arch/x86/crypto/aesni-intel_asm.S            | 49 ++++++++------------
-> > > >  arch/x86/crypto/camellia-aesni-avx-asm_64.S  | 20 ++++----
-> > > >  arch/x86/crypto/camellia-aesni-avx2-asm_64.S | 20 ++++----
-> > > >  arch/x86/crypto/cast5-avx-x86_64-asm_64.S    |  8 ++--
-> > > >  arch/x86/crypto/cast6-avx-x86_64-asm_64.S    |  8 ++--
-> > > >  arch/x86/crypto/chacha-ssse3-x86_64.S        |  4 +-
-> > > >  arch/x86/crypto/ghash-clmulni-intel_asm.S    |  4 +-
-> > > >  arch/x86/crypto/serpent-avx-x86_64-asm_64.S  |  8 ++--
-> > > >  arch/x86/crypto/serpent-avx2-asm_64.S        |  8 ++--
-> > > >  arch/x86/crypto/twofish-avx-x86_64-asm_64.S  |  8 ++--
-> > > >  11 files changed, 68 insertions(+), 77 deletions(-)
-> > > 
-> > > Unless the author of this patch acks this I'd rather you skipped this.  It's not
-> > > worth the risk of regressions in the crypto code.
-> > 
-> > It's a dependancy of commit 3b2f2d22fb42 ("crypto: x86/aegis128 - access
-> > 32-bit arguments as 32-bit"), so should we drop that one also?
-> > 
-> 
-> Well it is not a dependency if the conflict is properly resolved, but I would
-> just drop it too.  In theory it fixes a bug, but we haven't seen gcc or clang
-> generating code that makes it matter.  Also I've noticed that some other asm
-> files have the same issue...
+On Fri, Dec 13, 2024 at 12:43=E2=80=AFPM syzbot
+<syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com> wrote:
+>
+> syzbot has bisected this issue to:
+>
+> commit de4f5fed3f231a8ff4790bf52975f847b95b85ea
+> Author: Jens Axboe <axboe@kernel.dk>
+> Date:   Wed Mar 29 14:52:15 2023 +0000
+>
+>     iov_iter: add iter_iovec() helper
+>
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D1742473058=
+0000
+> start commit:   96b6fcc0ee41 Merge branch 'net-dsa-cleanup-eee-part-1'
+> git tree:       net-next
+> final oops:     https://syzkaller.appspot.com/x/report.txt?x=3D14c2473058=
+0000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D10c2473058000=
+0
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D1362a5aee630f=
+f34
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3D4f66250f6663c0c=
+1d67e
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D166944f8580=
+000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D1287ecdf98000=
+0
+>
+> Reported-by: syzbot+4f66250f6663c0c1d67e@syzkaller.appspotmail.com
+> Fixes: de4f5fed3f23 ("iov_iter: add iter_iovec() helper")
+>
+> For information about bisection process see: https://goo.gl/tpsmEJ#bisect=
+ion
 
-Good point, I've fixed up the dependant patch so that it doesn't need
-this one, and dropped this one from the queue.
+Great, thanks syzbot.
 
-thanks for the review!
+Patch is under review :
 
-greg k-h
+https://patchwork.kernel.org/project/netdevbpf/patch/20241212222247.724674-=
+1-edumazet@google.com/
 
