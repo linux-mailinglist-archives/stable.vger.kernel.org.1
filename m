@@ -1,139 +1,127 @@
-Return-Path: <stable+bounces-104069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1889F0F2D
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:33:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B46BE9F0F31
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:33:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A61C1644BC
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:33:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC58B1645AE
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED6D1E22E8;
-	Fri, 13 Dec 2024 14:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EBB1E22FC;
+	Fri, 13 Dec 2024 14:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EytmmJsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOt/nXPx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8821F1E1023;
-	Fri, 13 Dec 2024 14:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E651E04BF;
+	Fri, 13 Dec 2024 14:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734100413; cv=none; b=YfJYFgYfq9YDxxZJoaQ3CLIg7PCYCbrnSQZiBzPopLT66CxN40+4BfnlJuwzkUaKmRIpv+ZchE5esOrvZ1aoGuz7E4BN0cziZX9+8DMMOsGkqWysEiwf4aHSKxuZvQBg/44zYgg/DFNnpLfFVWEpVmwz0dHiqXYHREYwFhM4ZC4=
+	t=1734100415; cv=none; b=Gq0JklIqPs46PCLnGfbvLXqChgO21wPR0GxFy9s8BWCBiO7t/2NhFJiYscVKhrZxOFw2nfxkI6s8S986hOI3oeQNzWe0PFwU1Ihxa/0kRF9xEoCIqtm9Jr0SqFjJ7ZCjA/CHskoOYABCis1dAhggbbCzUv9pmocSRHrunrNXhik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734100413; c=relaxed/simple;
-	bh=hUIuEzkuObWfcaT7ire0dHFb9zefHWiHTHS+omNaE1g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvVOFCYjSw/DRm8AXE7eOPfMN+iwtB2TjKUe6EI6MYnY54e76rud557B+/xYg8sK4JH6CyE3jJcoZWagxtvA9I4Goqbw87f0YjFysCUtIFaVEgN1Wu1yBKVdG0lt21qgo2ZOuk2WHkeHLn+iTJdPKmTKjZxjdtz0dkE7QPrYiTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EytmmJsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DB0C4CED0;
-	Fri, 13 Dec 2024 14:33:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734100413;
-	bh=hUIuEzkuObWfcaT7ire0dHFb9zefHWiHTHS+omNaE1g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EytmmJsXkE4HcNPe3IraDR0GQetCebSuTsl8lfOgp9K7kY9Vkvy8poSYLDwJBMho6
-	 uYOUZBUhkhqbDysSqvbAbUcOjwfIbJ53WXCjKfSJpTitgjkPNW6lu8wFwuGsKunkJf
-	 EQ3+AyNdmFlDPagYawrTH9wEtJvwu3ZF57HmrWbVW2CD9UO3f/KMD51QoVa4g+mFNN
-	 fzoBouiNVImy5tzkRcQJpZ5eMz7NMeKfa1aWCUC6hbcmunYLvEPMQrzAYaoYdEs8aN
-	 ZKqE5FwrSpWVSfZz7AsArR89fUDcY8SsNP3uO+GUMnOx7zZDoCA8vSElnMobBzlAk5
-	 HpMNocudVmd8w==
-From: Niklas Cassel <cassel@kernel.org>
-To: Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jon Mason <jdmason@kudzu.us>
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	stable@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH v6 2/6] PCI: dwc: ep: Prevent changing BAR size/flags in pci_epc_set_bar()
-Date: Fri, 13 Dec 2024 15:33:03 +0100
-Message-ID: <20241213143301.4158431-10-cassel@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241213143301.4158431-8-cassel@kernel.org>
-References: <20241213143301.4158431-8-cassel@kernel.org>
+	s=arc-20240116; t=1734100415; c=relaxed/simple;
+	bh=PxRIzyngJAldqq4VCoyyeFAPVgtSl6U/ZhJk5pQ33xA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JjsIW+GwP+dcsPZZDwHz86z+WjZT9ehMlwEqhFVTq1CZBrKsJS+HsDqTk8HYpSO4SFakoaOht5aF/n6LwggsJSW6bzWHB+BTOjeliUMmVY41bwUX7xUyGFSB2nLT62S3IklqKQrujtLyy8bjonanIumKnWB3ReG2cA6FOU/s2sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOt/nXPx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D478C4CED2;
+	Fri, 13 Dec 2024 14:33:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1734100414;
+	bh=PxRIzyngJAldqq4VCoyyeFAPVgtSl6U/ZhJk5pQ33xA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YOt/nXPxQgz3yWLmPb1Mu4UWkbSo9EgR71TMdP1Dt9VeiEPbUDOyGFDvt5Dhv7duq
+	 6lahiweo04d9zs30z/TNlZNyTal8nLEznFhyFcQG65q1/H3W5yz7oK79m3dn6smqzL
+	 0BRKH6AT8GjeHRhMkrBLbJ7c/Ab1KRKXLNSG2Yko=
+Date: Fri, 13 Dec 2024 15:33:31 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Michael Krause <mk@galax.is>
+Cc: Salvatore Bonaccorso <carnil@debian.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Michael Krause <mk-debian@galax.is>,
+	Steve French <stfrench@microsoft.com>, stable@vger.kernel.org,
+	regressions@lists.linux.dev, linux-cifs@vger.kernel.org
+Subject: Re: backporting 24a9799aa8ef ("smb: client: fix UAF in
+ smb2_reconnect_server()") to older stable series
+Message-ID: <2024121316-refresh-skintight-c338@gregkh>
+References: <2024040834-magazine-audience-8aa4@gregkh>
+ <Z0rZFrZ0Cz3LJEbI@eldamar.lan>
+ <2e1ad828-24b3-488d-881e-69232c8c6062@galax.is>
+ <1037557ef401a66691a4b1e765eec2e2@manguebit.com>
+ <Z08ZdhIQeqHDHvqu@eldamar.lan>
+ <3441d88b-92e6-4f89-83a4-9230c8701d73@galax.is>
+ <2024121243-perennial-coveting-b863@gregkh>
+ <e9f36681-2d7e-4153-9cdf-cf556e290a53@galax.is>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2690; i=cassel@kernel.org; h=from:subject; bh=hUIuEzkuObWfcaT7ire0dHFb9zefHWiHTHS+omNaE1g=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNJjXBdp3btlsFNz323lvfOmG1lzc9fe+LL+7NwpLyvuN EzestPkTkcpC4MYF4OsmCKL7w+X/cXd7lOOK96xgZnDygQyhIGLUwAmYt7E8D/sWktlgbOY1MeD TzT06y7fUyn+2bOQZ41Tt4ZG9LzF7Q0M/3RD1ibNVs7iubpwlmyf+f74CNGlVyRlZ4hvWWWk9yr AhhsA
-X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e9f36681-2d7e-4153-9cdf-cf556e290a53@galax.is>
 
-In commit 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update
-inbound map address") set_bar() was modified to support dynamically
-changing the backing physical address of a BAR that was already configured.
+On Thu, Dec 12, 2024 at 10:48:55PM +0100, Michael Krause wrote:
+> On 12/12/24 1:26 PM, Greg KH wrote:
+> > On Tue, Dec 10, 2024 at 12:05:00AM +0100, Michael Krause wrote:
+> > > On 12/3/24 3:45 PM, Salvatore Bonaccorso wrote:
+> > > > Paulo,
+> > > > 
+> > > > On Tue, Dec 03, 2024 at 10:18:25AM -0300, Paulo Alcantara wrote:
+> > > > > Michael Krause <mk-debian@galax.is> writes:
+> > > > > 
+> > > > > > On 11/30/24 10:21 AM, Salvatore Bonaccorso wrote:
+> > > > > > > Michael, did a manual backport of 24a9799aa8ef ("smb: client: fix UAF
+> > > > > > > in smb2_reconnect_server()") which seems in fact to solve the issue.
+> > > > > > > 
+> > > > > > > Michael, can you please post your backport here for review from Paulo
+> > > > > > > and Steve?
+> > > > > > 
+> > > > > > Of course, attached.
+> > > > > > 
+> > > > > > Now I really hope I didn't screw it up :)
+> > > > > 
+> > > > > LGTM.  Thanks Michael for the backport.
+> > > > 
+> > > > Thanks a lot for the review. So to get it accepted it needs to be
+> > > > brough into the form which Greg can pick up. Michael can you do that
+> > > > and add your Signed-off line accordingly?
+> > > Happy to. Hope this is in the proper format:
+> > 
+> > It's corrupted somehow:
+> > 
+> > patching file fs/smb/client/connect.c
+> > patch: **** malformed patch at line 202:  		if (rc)
+> > 
+> > 
+> > Can you resend it or attach it?
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> Ugh, how embarrassing. I'm sorry, I "fixed" some minor whitespace issue directly in the patch and apparently did something wrong.
+> 
+> I redid the white space fix before diffing again and attach and inline the new version. The chunks are a bit alternated to the earlier version now unfortunately. This one applies..
 
-This means that set_bar() can be called twice, without ever calling
-clear_bar() (as calling clear_bar() would clear the BAR's PCI address
-assigned by the host).
+Doesn't apply for me:
 
-This can only be done if the new BAR size/flags does not differ from the
-existing BAR configuration. Add these missing checks.
+checking file fs/smb/client/connect.c
+Hunk #1 FAILED at 259.
+Hunk #2 FAILED at 1977.
+Hunk #3 FAILED at 2035.
+3 out of 3 hunks FAILED
+checking file fs/smb/client/connect.c
 
-If we allow set_bar() to set e.g. a new BAR size that differs from the
-existing BAR size, the new address translation range will be smaller than
-the BAR size already determined by the host, which would mean that a read
-past the new BAR size would pass the iATU untranslated, which could allow
-the host to read memory not belonging to the new struct pci_epf_bar.
+Any ideas?
 
-While at it, add comments which clarifies the support for dynamically
-changing the physical address of a BAR. (Which was also missing.)
+thanks,
 
-Cc: stable@vger.kernel.org
-Fixes: 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update inbound map address")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
----
- .../pci/controller/dwc/pcie-designware-ep.c   | 22 ++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index bad588ef69a4..44a617d54b15 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -222,8 +222,28 @@ static int dw_pcie_ep_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 	if ((flags & PCI_BASE_ADDRESS_MEM_TYPE_64) && (bar & 1))
- 		return -EINVAL;
- 
--	if (ep->epf_bar[bar])
-+	/*
-+	 * Certain EPF drivers dynamically change the physical address of a BAR
-+	 * (i.e. they call set_bar() twice, without ever calling clear_bar(), as
-+	 * calling clear_bar() would clear the BAR's PCI address assigned by the
-+	 * host).
-+	 */
-+	if (ep->epf_bar[bar]) {
-+		/*
-+		 * We can only dynamically change a BAR if the new BAR size and
-+		 * BAR flags do not differ from the existing configuration.
-+		 */
-+		if (ep->epf_bar[bar]->barno != bar ||
-+		    ep->epf_bar[bar]->size != size ||
-+		    ep->epf_bar[bar]->flags != flags)
-+			return -EINVAL;
-+
-+		/*
-+		 * When dynamically changing a BAR, skip writing the BAR reg, as
-+		 * that would clear the BAR's PCI address assigned by the host.
-+		 */
- 		goto config_atu;
-+	}
- 
- 	reg = PCI_BASE_ADDRESS_0 + (4 * bar);
- 
--- 
-2.47.1
-
+greg k-h
 
