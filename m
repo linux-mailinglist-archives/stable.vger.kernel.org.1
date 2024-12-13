@@ -1,179 +1,116 @@
-Return-Path: <stable+bounces-103979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D589F06AC
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 09:45:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E559F0710
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 10:00:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED9C0188B769
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 09:00:49 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F6819CC2D;
+	Fri, 13 Dec 2024 09:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tu3CVgZ7"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAAAF281D40
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 08:45:21 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F131ABEA0;
-	Fri, 13 Dec 2024 08:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Br7TXAJ6"
-X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD7D502B1;
-	Fri, 13 Dec 2024 08:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498CA185B78;
+	Fri, 13 Dec 2024 09:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734079518; cv=none; b=A6BsYX+0MchTHUxIQghEkoveYhqXRJ91MtsEb7dR2TT4dmcI+kk8QmImEyMNfib8YSFz2xFiZzA3KYM0N9jT1g9EbdyyXcHsT47P59zqQaFtt1wAK5Hm3t7cCJGeJXn5ZW6V9dJv1rNoB6ABnEIJIuJA3v6L/bHqJD+jhoV5ymw=
+	t=1734080442; cv=none; b=LsHZR/MHiQNzDXlaDqtxQyDW5baC6UZVJp/xHXbnpijsPsCFDX8QvldiIZlCjtFLhmHSP4aFHKIA/q0s+BqZ25WpMzKjh1G9qK6Yd9jeni3pcooYSZnLOapy5zZCY1PQRqtCIQV5GpKkRN4Co4tsGuXDSRCCAdnCGgeLtL034iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734079518; c=relaxed/simple;
-	bh=R4lOByC38bcsXyI+lvJteskzBW3zHltZzdR72FWJ0BE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ol7nt2Zwn6fv71Avgc5blBytsxYfwhhDpQSQ+6IzuuQXbVabYOj7uteuQ98uZsVfuNHwQRQtNOSwAIfacoDIS5ha2VlctOV/eV36CLLzbROH0QHwhRPhpjCoB0jpV3OFAHgPty80PR9SI3Nc8hUme6pbSvrVuQDuAB5SJItj38I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Br7TXAJ6; arc=none smtp.client-ip=220.197.31.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
-	Content-Type; bh=21o0XTtNuQcRS+Oc7dde/R2xtmPgrdOT4SD3ZXbhO8o=;
-	b=Br7TXAJ63rL76NDlkqboL0MkTRngkqIr1kxmhNprvIh7mQjhnvFHSB4iqqIpaX
-	nWqqil1Iz8pmX/hEtbaScok5ERRiZXDocHtUaStDQipGIDtUun9QBu35eWlBIetr
-	RS46bUpATIFy+E+K7vwtzFKGz/36diQzdU2qRlXDGPvfk=
-Received: from [172.21.22.210] (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3t2bL81tnFV3LAA--.50419S2;
-	Fri, 13 Dec 2024 16:43:55 +0800 (CST)
-Message-ID: <3651bce1-f84b-4537-bc57-ef6d7460749f@126.com>
-Date: Fri, 13 Dec 2024 16:43:55 +0800
+	s=arc-20240116; t=1734080442; c=relaxed/simple;
+	bh=UZNnvkExZ7zuNWaU7B62b6NVp5W1UDxqMDFQPWrdMNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cZTjuowjZU362wbcoCpMowSnmdZq5FnZTf0cWY9R3ilqHmjyxAXuHrC1RKjCgHcX0J+HyJnASSPzeIk16er0JPkh+KXzyQDGEw+c+hTkToSi11gvIMEiS9LQ+H+SIUgXaC9Ww/Ib71Az0Gw4CAdvHTQ3UPxwwjZbFbRVZM/xnAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tu3CVgZ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1483BC4CED0;
+	Fri, 13 Dec 2024 09:00:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734080442;
+	bh=UZNnvkExZ7zuNWaU7B62b6NVp5W1UDxqMDFQPWrdMNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tu3CVgZ7Evx65zdlJIl6G5/MMh2qarRbd3z04tzbrsCpbGdLQa1u6fA03CqtffY5W
+	 M7DHizrDUsVE+I5SWcKYFXNU8WreOHFHHlhme/EPcRvxgKyXwfc6qJEQi7rUQ6yUg5
+	 qKsU7sxtmvLZwl4ok5Usp55BQjpilrE3ScCVzRJapMqWTBX5nOBW9JV6Wedic77X97
+	 Recwh/XqSqLhnvDKEKHWLCjrrKPyXn/r+wI7Ci3zEv2UUcQ1c+GX1kQKoq5t5K674l
+	 cOvtmFpm3hYZVoO2RE65Z5Q57F39i+K5G9iTTZHqFacYKFOgCJgWsW1XjDT8vhbK+J
+	 cvmFlVsNO8LgQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1tM1XR-000000000mJ-2S3o;
+	Fri, 13 Dec 2024 10:00:46 +0100
+Date: Fri, 13 Dec 2024 10:00:45 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Abel Vesa <abel.vesa@linaro.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, stable@vger.kernel.org,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: Re: [PATCH v2] usb: typec: ucsi: Set orientation as none when
+ connector is unplugged
+Message-ID: <Z1v3ve3M3s8cmGhA@hovoldconsulting.com>
+References: <20241212-usb-typec-ucsi-glink-add-orientation-none-v2-1-db5a50498a77@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm, compaction: don't use ALLOC_CMA in long term GUP flow
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- 21cnbao@gmail.com, david@redhat.com, vbabka@suse.cz, liuzixing@hygon.cn
-References: <1734075432-14131-1-git-send-email-yangge1116@126.com>
- <df357a47-7d76-47b8-b91f-3f4bd4d2176e@linux.alibaba.com>
-From: Ge Yang <yangge1116@126.com>
-In-Reply-To: <df357a47-7d76-47b8-b91f-3f4bd4d2176e@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3t2bL81tnFV3LAA--.50419S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZw13KrWUXF47CFW7JFW5Wrg_yoWrZr45pF
-	1xA3WDAws8XFy5Cr48ta1v9F4Yvw4xKF45GryIqw18Zw1akF9a9F1kKry7AFWUur1Ykw4Y
-	qFWq9asrZFsxZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6KZXUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOh20G2db5cfQGwACsf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241212-usb-typec-ucsi-glink-add-orientation-none-v2-1-db5a50498a77@linaro.org>
 
-
-
-在 2024/12/13 16:23, Baolin Wang 写道:
+On Thu, Dec 12, 2024 at 07:37:43PM +0200, Abel Vesa wrote:
+> The current implementation of the ucsi glink client connector_status()
+> callback is only relying on the state of the gpio. This means that even
+> when the cable is unplugged, the orientation propagated to the switches
+> along the graph is "orientation normal", instead of "orientation none",
+> which would be the correct one in this case.
 > 
+> One of the Qualcomm DP-USB PHY combo drivers, which needs to be aware of
+> the orientation change, is relying on the "orientation none" to skip
+> the reinitialization of the entire PHY. Since the ucsi glink client
+> advertises "orientation normal" even when the cable is unplugged, the
+> mentioned PHY is taken down and reinitialized when in fact it should be
+> left as-is. This triggers a crash within the displayport controller driver
+> in turn, which brings the whole system down on some Qualcomm platforms.
+> Propagating "orientation none" from the ucsi glink client on the
+> connector_status() callback hides the problem of the mentioned PHY driver
+> away for now. But the "orientation none" is nonetheless the correct one
+> to be used in this case.
 > 
-> On 2024/12/13 15:37, yangge1116@126.com wrote:
->> From: yangge <yangge1116@126.com>
->>
->> Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags
->> in __compaction_suitable()") allow compaction to proceed when free
->> pages required for compaction reside in the CMA pageblocks, it's
->> possible that __compaction_suitable() always returns true, and in
->> some cases, it's not acceptable.
->>
->> There are 4 NUMA nodes on my machine, and each NUMA node has 32GB
->> of memory. I have configured 16GB of CMA memory on each NUMA node,
->> and starting a 32GB virtual machine with device passthrough is
->> extremely slow, taking almost an hour.
->>
->> During the start-up of the virtual machine, it will call
->> pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.
->> Long term GUP cannot allocate memory from CMA area, so a maximum
->> of 16 GB of no-CMA memory on a NUMA node can be used as virtual
->> machine memory. Since there is 16G of free CMA memory on the NUMA
->> node, watermark for order-0 always be met for compaction, so
->> __compaction_suitable() always returns true, even if the node is
->> unable to allocate non-CMA memory for the virtual machine.
->>
->> For costly allocations, because __compaction_suitable() always
->> returns true, __alloc_pages_slowpath() can't exit at the appropriate
->> place, resulting in excessively long virtual machine startup times.
->> Call trace:
->> __alloc_pages_slowpath
->>      if (compact_result == COMPACT_SKIPPED ||
->>          compact_result == COMPACT_DEFERRED)
->>          goto nopage; // should exit __alloc_pages_slowpath() from here
->>
->> To sum up, during long term GUP flow, we should remove ALLOC_CMA
->> both in __compaction_suitable() and __isolate_free_page().
->>
->> Fixes: 984fdba6a32e ("mm, compaction: use proper alloc_flags in 
->> __compaction_suitable()")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: yangge <yangge1116@126.com>
->> ---
->>   mm/compaction.c | 8 +++++---
->>   mm/page_alloc.c | 4 +++-
->>   2 files changed, 8 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/compaction.c b/mm/compaction.c
->> index 07bd227..044c2247 100644
->> --- a/mm/compaction.c
->> +++ b/mm/compaction.c
->> @@ -2384,6 +2384,7 @@ static bool __compaction_suitable(struct zone 
->> *zone, int order,
->>                     unsigned long wmark_target)
->>   {
->>       unsigned long watermark;
->> +    bool pin;
->>       /*
->>        * Watermarks for order-0 must be met for compaction to be able to
->>        * isolate free pages for migration targets. This means that the
->> @@ -2395,14 +2396,15 @@ static bool __compaction_suitable(struct zone 
->> *zone, int order,
->>        * even if compaction succeeds.
->>        * For costly orders, we require low watermark instead of min for
->>        * compaction to proceed to increase its chances.
->> -     * ALLOC_CMA is used, as pages in CMA pageblocks are considered
->> -     * suitable migration targets
->> +     * In addition to long term GUP flow, ALLOC_CMA is used, as pages in
->> +     * CMA pageblocks are considered suitable migration targets
->>        */
->>       watermark = (order > PAGE_ALLOC_COSTLY_ORDER) ?
->>                   low_wmark_pages(zone) : min_wmark_pages(zone);
->>       watermark += compact_gap(order);
->> +    pin = !!(current->flags & PF_MEMALLOC_PIN);
->>       return __zone_watermark_ok(zone, 0, watermark, highest_zoneidx,
->> -                   ALLOC_CMA, wmark_target);
->> +                   pin ? 0 : ALLOC_CMA, wmark_target);
->>   }
+> So propagate the "orientation none" instead when the connector status
+> flags says cable is disconnected.
 > 
-> Seems a little hack for me. Using the 'cc->alloc_flags' passed from the 
-> caller to determin if ‘ALLOC_CMA’ is needed looks more reasonable to me.
+> Fixes: 76716fd5bf09 ("usb: typec: ucsi: glink: move GPIO reading into connector_status callback")
+> Cc: stable@vger.kernel.org # 6.10
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> ---
+> Changes in v2:
+> - Re-worded the commit message to explain a bit more what is happening.
+> - Added Fixes tag and CC'ed stable.
+> - Dropped the RFC prefix.
+> - Used the new UCSI_CONSTAT macro which did not exist when v1 was sent.
+> - Link to v1: https://lore.kernel.org/r/20241017-usb-typec-ucsi-glink-add-orientation-none-v1-1-0fdc7e49a7e7@linaro.org
 
-Ok, thanks.
+Thanks for the update.
 
-> 
->>   /*
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index dde19db..9a5dfda 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -2813,6 +2813,7 @@ int __isolate_free_page(struct page *page, 
->> unsigned int order)
->>   {
->>       struct zone *zone = page_zone(page);
->>       int mt = get_pageblock_migratetype(page);
->> +    bool pin;
->>       if (!is_migrate_isolate(mt)) {
->>           unsigned long watermark;
->> @@ -2823,7 +2824,8 @@ int __isolate_free_page(struct page *page, 
->> unsigned int order)
->>            * exists.
->>            */
->>           watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
->> -        if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
->> +        pin = !!(current->flags & PF_MEMALLOC_PIN);
->> +        if (!zone_watermark_ok(zone, 0, watermark, 0, pin ? 0 : 
->> ALLOC_CMA))
->>               return 0;
->>       }
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
 
+Johan
 
