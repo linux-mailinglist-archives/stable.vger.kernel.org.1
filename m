@@ -1,145 +1,223 @@
-Return-Path: <stable+bounces-103986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10C69F08F5
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:01:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257B318823CF
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 10:01:42 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CED21ADFF1;
-	Fri, 13 Dec 2024 10:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bXpJ51Iy"
-X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A21E9F08F9
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:03:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D2B18BBAC;
-	Fri, 13 Dec 2024 10:01:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734084099; cv=none; b=IQ76geFjsceEpweP/Q4j4F/bE69C2GvwBqUByrCv9t5yTSk29queVGzXjTR5V/aCW4+wOjI4RhM/IAJlCAO4y/7sfRmwZy35HX4qglP5PktZ8c/qmQLLCF1G41XicOu/uPuzueM/jQgISMCKVf+os/K34mmRm0XCwUFvupTIN7I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734084099; c=relaxed/simple;
-	bh=qw9oW3iPsnh4OzlwvVyc5+L7+eMkhfq/GjLyGWsqTLc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DstBUssNbheqAc8riBzMhwUZFZfZeYcx5duLwRZPzCKTYvp2tyko65neS/ybMHfJ30Y7rsxvLDjdHSLo0wxxbYlYO7bCu3C/t+gCEncnPanorGR9eEqcgZFFbs4kzE8Wm85ogbbPTtUu+mZVwD6ZmuCvh0bdOCbgx2rC0l/p4c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bXpJ51Iy; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734084097; x=1765620097;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=qw9oW3iPsnh4OzlwvVyc5+L7+eMkhfq/GjLyGWsqTLc=;
-  b=bXpJ51IyUI2IierU8W+vFUCmYHqsKZX4RyCoo52c9WHjoj3bzfaSkPmg
-   5oaOwU2OrEHYCOjq9d9tAYvE+5nnODxZ0AbGTE5QYw2A/wZKQ3fW3N8TD
-   EAlpBbxhR4ogBMTfx8Z0r932kY9ZPazD8A3DPHbvu3CVgVX6KGs244rn6
-   c0RFp38jiHoi3QgIg8CE0vDJ3XfWGY1vz/jp7AsvKcW3Lh7pTZ2z/tVZy
-   ID9vLHsVFgbhtCGQHi7pzdoEJid3DZ4Nuh/QAnF7gEC4DGtVI7lv1c0zg
-   u1UnI8O+ZGxL1F5esj3hEf+WosJC7Wlhhyv6seuQaPWn9clwuY2QJT/S1
-   Q==;
-X-CSE-ConnectionGUID: jLd5O/wmR7COQ3xussGT1A==
-X-CSE-MsgGUID: F+Ady5ypQG6+pVBxoLYI2g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="38209505"
-X-IronPort-AV: E=Sophos;i="6.12,230,1728975600"; 
-   d="scan'208";a="38209505"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 02:01:35 -0800
-X-CSE-ConnectionGUID: abSzvcv5Qze85sJWkxnjHw==
-X-CSE-MsgGUID: hZi4RbQXQuaQc7ryzXgvsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,230,1728975600"; 
-   d="scan'208";a="101346226"
-Received: from bergbenj-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.245.190])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 02:01:32 -0800
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org
-Cc: linux-sound@vger.kernel.org,
-	kai.vehmanen@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
-	stable@vger.kernel.org,
-	liam.r.girdwood@intel.com
-Subject: [PATCH] ASoC: SOF: ipc4-topology: Harden loops for looking up ALH copiers
-Date: Fri, 13 Dec 2024 12:01:46 +0200
-Message-ID: <20241213100146.19224-1-peter.ujfalusi@linux.intel.com>
-X-Mailer: git-send-email 2.47.1
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05EDB28338B
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 10:03:12 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4AD1B4141;
+	Fri, 13 Dec 2024 10:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Kkh7t3sv"
+X-Original-To: stable@vger.kernel.org
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2079.outbound.protection.outlook.com [40.107.237.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC1918BBAC;
+	Fri, 13 Dec 2024 10:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734084188; cv=fail; b=btphhLgvXJgFPqKK33d8S5axioclUxY6HIQ5az0HdkxiuGdWTroRVHeZMpg8hrTyFbNdQWDBT0LXIf7Undm9JsiFJll1C0atSIBGqhRXAN8cbzpcYJEDOy1hm+ZeDmP1g1NGnQ+v9THknGGrCV2yGirxj9LluXI55+5brzhXnQg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734084188; c=relaxed/simple;
+	bh=eQaMdsxAgEogymnecNgPDRux57jhHPSXYlrDskpyei8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=QX5nzYyrAxa2ixtqepbY5RJ6pBNTuSSyhivKmjqZr6SwGuyDXEcy8vE/aN9kK0dWRYOCcIL6fGDJd9AjnFpsXYKZzMkKNszT7u4Du2/PmPUiEar5Yl9hHdOWn1crEIyAzvvmiryLU2poIv5Mmra1av2WjXLtguP6T6gHjzMeb7c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Kkh7t3sv; arc=fail smtp.client-ip=40.107.237.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gxS5RvQ1Bb/nil4gHSpdu+o4giD/qCZhgj2AJYzfsP9fRPxKtVa28CsLEx963IhkkeNVyezoyvvt6tfj4IDOIXR40XAIiai6vbGSd+fGA9AvXzWvc2+Ff1gAYBCdt9Zv/hpsFSa7n7ffFZm02u3vvaYJAk44QB8TJ+H7xXVBfOjI3wRuiImVqXph1XuwNN09ihWRICJOreptkHQG7Iyd1tZ5Vgv2V7MFUiJfw8PefryK6fycgP34vmnMXEhnkE+GzpfG5GXWJz4T9DsFbvVBeEUY0sSluRaghFngZc4m6us/SjGfp2WzIPEonWwJNFVhgKrRcK+K1EjEpgi6dgB2/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Sn3lUvxokipm/YphHeg01BoUc+f7Cj6NzZ+YaXKpK7g=;
+ b=T71evEjF+n5/qt/q0Y1BAUolST8HQQO/YZegOe1FsFbQqf0twe8fXkUgD9IGHjgvXeMmXccn5QkQSbBfHhF8g3R80Pfvr35M5zniy0KLl9JHNibGeoXmcvsb8xJUj02g6fa+q5GUFflNjPI+Z7XykqQa663kTOexf4kgg04rVmfy0wtnyAzApJrhDv6URR6NMQxHAJjlQUofF3gHVhVfudCAVbtmjT+uiPLDvKLU27DjmwKm6lGZxf14dmGyugHX83tNXr0n0QIMfIWAjlw0U+tx/uoJb0V5sD4sWjgQaEWK1f54dvtjQKiv3+BES0KYJz7JHqOlKxTbBOD7OXB9wQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Sn3lUvxokipm/YphHeg01BoUc+f7Cj6NzZ+YaXKpK7g=;
+ b=Kkh7t3svuF2AhqT+l9zn7NRvfPZww1kzr2PnbAia+oudC3BWZTg4DhY1HaSmBImghaUmBpNSWXd2CgXXVgl/iCaVv5SnCMIVZeuF8tkR/2f8tG7zGzP9OdnEH9Gv+NRnuroY4apWC4uSzseBRwCTzf7PXhT/+mlX8GC6B/WspxETMfgVXWcWth2g0gu6pBuqktpXMblm4sOkhp+jzZU6zNJEkufQ5PPpsOAwT+tegW3e1flvYNesjcgcVLcR/gveuILH8ViCURTg+x8u+R7gf4fFD/x1ErSWV2zu+HQLUS0iiVdevWl356VLoSFmNtKgAhYyO6Yy0MXjmzUFSaCphg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SJ2PR12MB8784.namprd12.prod.outlook.com (2603:10b6:a03:4d0::11)
+ by IA0PR12MB8862.namprd12.prod.outlook.com (2603:10b6:208:48e::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.17; Fri, 13 Dec
+ 2024 10:03:02 +0000
+Received: from SJ2PR12MB8784.namprd12.prod.outlook.com
+ ([fe80::1660:3173:eef6:6cd9]) by SJ2PR12MB8784.namprd12.prod.outlook.com
+ ([fe80::1660:3173:eef6:6cd9%2]) with mapi id 15.20.8230.016; Fri, 13 Dec 2024
+ 10:03:02 +0000
+Message-ID: <aea1f173-65f4-4482-9064-751e5eb7591a@nvidia.com>
+Date: Fri, 13 Dec 2024 10:02:55 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 000/321] 5.4.287-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+References: <20241212144229.291682835@linuxfoundation.org>
+From: Jon Hunter <jonathanh@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0216.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a5::23) To SJ2PR12MB8784.namprd12.prod.outlook.com
+ (2603:10b6:a03:4d0::11)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8784:EE_|IA0PR12MB8862:EE_
+X-MS-Office365-Filtering-Correlation-Id: 821fc043-f087-4e3c-9efb-08dd1b5d54c7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OXNsWU5aS3E3clFGc0NOemVGSTZRZmVMSGk2VE4xOGlvemFvTVFqdUFpamts?=
+ =?utf-8?B?bHJQK3k1dENtU3p0Q21CT0w5M3hBODRDeHJObXFlVUtYRjR1akZoN2g0QzU4?=
+ =?utf-8?B?UnlPeHZycFdRd29uT0hEUkxYMjArdVlKKy9hWVVIL2Q4WVQzZDFwQVpTSlZK?=
+ =?utf-8?B?MFRGM3A1RWNjRU5laG5mUngyS1U1aFl6ZHZpUCtXVnY2NGFzUm5Id21rWmMy?=
+ =?utf-8?B?OHNLaVVYdDJoT3JZb2k5NG1qNjB4bE5jOGFDOGQ4bC84ckhrUHJTMkxNSExG?=
+ =?utf-8?B?VDFKemJRZEs5WnlQRmtVOUZDY2xXWmVBM0VoVWJKK2JhY0ZTOGx5K2pMdTRo?=
+ =?utf-8?B?MkU4dXA0YjdKaVhrZGU5S0FHTktIR01YMk43dXN0NHE3S2xiQS9vQW16bU1F?=
+ =?utf-8?B?VjN1T24yTk13V0l0d0dabUE2Z3FWeHM2Yk81Q3FRRndUM3hTdXhIYVk4c013?=
+ =?utf-8?B?dXAwRmJLaHdXWm1RV2htL29UdGZwOU1uWE0ybXIrakhXenZGZEc2bkx3ZG1J?=
+ =?utf-8?B?VUs1amxBQlhMMW5PN2x0ZnR1TEMzWU5zSFdMaFdWRkhqRTE5L1VWc0VWTzFQ?=
+ =?utf-8?B?WWRuM1FjY1hsVmppYU9hb3oyT2pqdzhIVDZ4RXAyTWNJN1ZxcktObWNrUmZp?=
+ =?utf-8?B?TUtkR2hOeWhxdGRwb3VGRUVtWWtsNjlWQ2V3UmErZEthTThkclp1VGFtaUwz?=
+ =?utf-8?B?TURHelZzZWl1dU1uZGdsZUova3lhdlFHcWluSUllc0ZQL09lWGNkWjBicHQ5?=
+ =?utf-8?B?ZVZscUFVdG1rSmpMZTBVZVZBOFRreTEwRTdaQXdjMHJZUzJrZ0N4N1ZxNEVq?=
+ =?utf-8?B?QjEyZngycVp2cyt6NzhRY2p6emFuZmlqK3hocWIyMXRQVSttWHFKQVUvOUM4?=
+ =?utf-8?B?bFh3UkhaUkZDaFFmYXplSVR5MTVxdkhxNGNNNWxmbk91c250RXJkTmcrNTAz?=
+ =?utf-8?B?VmZIODNCZnRQckxkalc2NDRvd1pDWGE3K1c0ME9WUVJMaWExa2tZVTVXcXBh?=
+ =?utf-8?B?RUk0S1A3c0RYN2FCSXVwNkdEY0dnL2EzREpjOGJCWmYybmhCclNTQk41QVpJ?=
+ =?utf-8?B?enBLS3hNVXNWNS9RTVR6TEFoREpxRzZGOTRzOHNCRjZnYkVHaDdDby9CV0FG?=
+ =?utf-8?B?T3hkK0hGN0t2empTY1R2NXdUR21CaW1Za21LNnlxdVEycTFsUDA0VlZDSHZo?=
+ =?utf-8?B?RVhhaXE3MjB6b0NXRjFZcDB4Qno3K3JxT0ZrcXowMUkzcUhlVnZVc3VkVHdm?=
+ =?utf-8?B?c3UyUFhGOVAwTTNRRmJSZmNzaThiSXlxaFVieVJ4a01MbUhBSXJlaUpkcDI0?=
+ =?utf-8?B?dXY4N0hzRkNoTzBGdk5FZ3h4aWRRc1dLTnNEM0hicko3VEs4S3lIVk5VMlNs?=
+ =?utf-8?B?NnVnM0FDSnVMSENaMytrUVRsLy9yajB4aE1hL0RIOTZFZGRZckd5VUM1VVJH?=
+ =?utf-8?B?RHFqZ3hnUmtiVnJkQVdaeWpWcUpKdFRZNEJNWEdKMWlvUXFJdjgxTTllRDJ2?=
+ =?utf-8?B?NWJhS0FmVDNjSEFxQ0lRMlBWa3pGWGRURDFWWGNwVXJ0OU81OWI3d2dhNDR5?=
+ =?utf-8?B?M3dGVTFBVW4wSEg1c3poMjhITFFlZmhucC9zMUU5OGJDbkwvWkhoSEs1LzNt?=
+ =?utf-8?B?WWtObS9NMml0RnFvazlDTmtnWnJ1SmFxWGZ6a1pUWTVjQndWSXVXSFhvbWpX?=
+ =?utf-8?B?aEw1UUlWSm5wdEgwanpHQ09oY21rTTNmQmxqRjRnMCtrRVpvS0NnY2JwMCto?=
+ =?utf-8?B?L3ZabStpNktBNEhKbmlLQzRNenZodW5INkJraG44RUtNR3Y2eDROSXFaeG9u?=
+ =?utf-8?Q?O5/repRLxKeApSy/Gw2/1uHgkKKTxfUSXASfg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8784.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YmRnRTFkZDFIRy9PWVdlMWdvZmVVMkFGQ3ZBQ3ZOdTJSY2VsOW5KcW9XS3U3?=
+ =?utf-8?B?Tk5oSW1iQmxEN2N4bDZwTDRWWGtVY1ZiNFU3K2IzTko5dmVqYU5yUk9DTUUw?=
+ =?utf-8?B?dTVMbGYyNkorWXhXSk55bGUvT0lhSmtzZ0Vaa29NQTRMaWxaTEtHWS8vQ0g0?=
+ =?utf-8?B?cy8wRXNsT3h2enJKVDhONWRsd1hHNDBhVndPWHgxcjJDVUlPbnMzeGMvWWdE?=
+ =?utf-8?B?SWxDU0JINHJHMHQxZk9nSG80S1UyM1BVV0d6QUIzU0U3ZGl2blprRFVXQzly?=
+ =?utf-8?B?Qmo3dThWM3lKc0dqTFdCZjErVDFJa2ttNGc1MDZabmR5WXpLZDNTSWNIVTE4?=
+ =?utf-8?B?MnIrSG90R092TUt6OUlPSkRINUZiOERKVldSdEFWUkRnT2VRV2k1RlgvZ1hx?=
+ =?utf-8?B?bWtVeSsrVEwyQjR2NXVSYmhrTXAyZlgrK1R3endLaVQ2MWh4R01KaEtJWXU3?=
+ =?utf-8?B?OTNwRExXS1BzeW5xc0RPajJPK2hoL1Iva2RCcmpsaTJvOGpMVFdJSWRRQ2xv?=
+ =?utf-8?B?QkJESzEvSWtSaDFIb0p3UUVhNXRKTUg0N3k2OGNRNW9tZGdYNXFJNm5PdW1Z?=
+ =?utf-8?B?b3JQQ2REODMvRWR4dHlaU1pmM1c2VEVIZmlGM0ZwelNQU20xbGRwVk45STRQ?=
+ =?utf-8?B?dnM2U211Ykx6TEFlRUcvYUI5YzBxRnhZbmUxcnhnZ0F4MnFMdjVVdUZSZUR1?=
+ =?utf-8?B?TjJYRlRzTnVCRVp0SUN0ZXI4L1Z4WFk4cE9NcDRYUU02NEJQanhnZVA5T3pH?=
+ =?utf-8?B?Zmw0dTI3dGc2RHpvUFVNL282NmQrc0lhaktxRGdZcTE4djROMlExTlVwYjNC?=
+ =?utf-8?B?OWJTL1d2V21BVjNGSWRpYXRHUkJYQ1RDODcrUFA1K0tjTHF4MEQ0L2pKRkdY?=
+ =?utf-8?B?M2ZYaVkwcS9PZHFRYUNZZU1lR2dXRGJCcy8zeWJTbHg2bXM3ZzFlNDEyY3V5?=
+ =?utf-8?B?cW9oUTNlb01PTjNha0JxeVBESDlLRk5xSUh1YW5FUGxQS09OWWhqa2VvNkJE?=
+ =?utf-8?B?aDRvelB5MXlLVVArZEZvWEppcitHcnkydjhNYWcvcU9XOFFFbGhIakdvRXA0?=
+ =?utf-8?B?UjZaam9yYStzaXhuelRXQkV3SE4xaU03QnhyRU9pbDM1MXNtc2FpTm1aRmpE?=
+ =?utf-8?B?eDJnMUhxUTNyTkVIbUU1SGNGK1ExNEprMENaWFZDNFVCcU1KemdMZWRyOXkz?=
+ =?utf-8?B?V1J0VWlkOE9qWEJEVGFmWk00bFA2MVYvQ1phc2FXWlU3eEtDUkVVcjNidjRw?=
+ =?utf-8?B?SkN0bXJjaUZWWVMrOVdwZWJpbVNvN1JMRFNJdW5RRUFCOW9qSVhJdG5Zbklp?=
+ =?utf-8?B?VG9KYWtVcE9xdjVQQ2hrOWRmdUlRR2U0Mnd6TkZFUjFiV2d5MEZMN1RmdEF6?=
+ =?utf-8?B?ZnpiTHVFWDJnaUd1dUI2dGQweWdYT1lRdjRyVFdkcTR2THZ4czhuVGd5RS9w?=
+ =?utf-8?B?TFNjamZRbDlNY1d1ZXhBclUxT3JVaENVNFdHaG92TFA2cHJodGNxaDZWZTZZ?=
+ =?utf-8?B?OENYUE5jcTIyWnRQZHpUZmJhZkY1bXV5SklDd0hDek5mS3Y5a29vcmtrRHF2?=
+ =?utf-8?B?OFE5S3dmWExUdWJTRGlQejNIbkdaU0hvVlE4RDVZN09yWjRJc0dZbWhrZDY3?=
+ =?utf-8?B?RTJvRmVJNHJPeGVkRFk0ZmtBLzBwYW1GalVxZVBRcXU3MTcweWhvb0JmTGY1?=
+ =?utf-8?B?eGdKUEVNWFYreDZKWHNjY1VaeHB0cjJ1RVFNUGZRTDlBb2xIN05ybWkxZTdF?=
+ =?utf-8?B?UENkK1dSSFJzdlJCdWtoY3F2b21tNHR1VEp2TG1FbldqMW5wRElUVDhWNnAx?=
+ =?utf-8?B?bDFSZUdGSXVjaHRLNmdxdU9pdW9CQmY2MUEvV2JrUTBrbG5QSGVBcnhkTXcv?=
+ =?utf-8?B?V1REelJrWTlCVWRiOFFEZjFKdEpKV1lWTzVlUm1HZmlXVUlQUUFnbDVHV3Jk?=
+ =?utf-8?B?QTF1ak9iL0VhQ3pQRDRXNHFBS0hReUZ6Y2hQZndFODZaWmUxMFVvS1Vha3NK?=
+ =?utf-8?B?eTlscHZlTzh0UndZSkhjdUU1WTJqbm1BUUN6ZXNZb2JXMVltTnJ3RjlwRHJQ?=
+ =?utf-8?B?eTVUK29hZkp4V2tkdkNhTlJBRG5IKzM5WUhCY0tiZnFXWGtCZDFnTWFQTzQ0?=
+ =?utf-8?B?NURPekFtZ0RBYkdheWEzVXFJQWhJeG0vS3FWVXc1eGdUalArMlJkbHV0dE0v?=
+ =?utf-8?Q?0EWKChiH+Zp8O8oTmijX2u45E0cEtD0ZlNWPKLHXde6Q?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 821fc043-f087-4e3c-9efb-08dd1b5d54c7
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8784.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2024 10:03:02.7073
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uZKJhDrB7vAEGTVIawDmUhlWm12v511tkHxkgM4CSdJ588VJ4LRD688fiCS7eeov9eGLVCYAz0+aVJGAmpqC4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8862
 
-Other, non DAI copier widgets could have the same stream name (sname) as
-the ALH copier and in that case the copier->data is NULL, no alh_data is
-attached, which could lead to NULL pointer dereference.
-We could check for this NULL pointer in sof_ipc4_prepare_copier_module()
-and avoid the crash, but a similar loop in sof_ipc4_widget_setup_comp_dai()
-will miscalculate the ALH device count, causing broken audio.
 
-The correct fix is to harden the matching logic by making sure that the
-1. widget is a DAI widget - so dai = w->private is valid
-2. the dai (and thus the copier) is ALH copier
+On 12/12/2024 14:58, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.287 release.
+> There are 321 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 14 Dec 2024 14:41:35 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.287-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Fixes: 0e357b529053 ("ASoC: SOF: ipc4-topology: add SoundWire/ALH aggregation support")
-Cc: stable@vger.kernel.org
-Reported-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
-Link: https://github.com/thesofproject/sof/pull/9652
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
----
- sound/soc/sof/ipc4-topology.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
-index b55eb977e443..70b7bfb080f4 100644
---- a/sound/soc/sof/ipc4-topology.c
-+++ b/sound/soc/sof/ipc4-topology.c
-@@ -765,10 +765,16 @@ static int sof_ipc4_widget_setup_comp_dai(struct snd_sof_widget *swidget)
- 		}
- 
- 		list_for_each_entry(w, &sdev->widget_list, list) {
--			if (w->widget->sname &&
-+			struct snd_sof_dai *alh_dai;
-+
-+			if (!WIDGET_IS_DAI(w->id) || !w->widget->sname ||
- 			    strcmp(w->widget->sname, swidget->widget->sname))
- 				continue;
- 
-+			alh_dai = w->private;
-+			if (alh_dai->type != SOF_DAI_INTEL_ALH)
-+				continue;
-+
- 			blob->alh_cfg.device_count++;
- 		}
- 
-@@ -2061,11 +2067,13 @@ sof_ipc4_prepare_copier_module(struct snd_sof_widget *swidget,
- 			list_for_each_entry(w, &sdev->widget_list, list) {
- 				u32 node_type;
- 
--				if (w->widget->sname &&
-+				if (!WIDGET_IS_DAI(w->id) || !w->widget->sname ||
- 				    strcmp(w->widget->sname, swidget->widget->sname))
- 					continue;
- 
- 				dai = w->private;
-+				if (dai->type != SOF_DAI_INTEL_ALH)
-+					continue;
- 				alh_copier = (struct sof_ipc4_copier *)dai->private;
- 				alh_data = &alh_copier->data;
- 				node_type = SOF_IPC4_GET_NODE_TYPE(alh_data->gtw_cfg.node_id);
+Builds failing for ARM ...
+
+Test results for stable-v5.4:
+     10 builds:	7 pass, 3 fail
+     18 boots:	18 pass, 0 fail
+     39 tests:	39 pass, 0 fail
+
+Linux version:	5.4.287-rc1-g3612365cb6b2
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                 tegra194-p2972-0000, tegra20-ventana,
+                 tegra210-p2371-2180, tegra210-p3450-0000,
+                 tegra30-cardhu-a04
+
+Builds failed:	arm+multi_v7
+
+
+Same build issue already reported by others.
+
+Jon
+
 -- 
-2.47.1
+nvpublic
 
 
