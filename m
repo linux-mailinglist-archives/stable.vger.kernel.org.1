@@ -1,90 +1,111 @@
-Return-Path: <stable+bounces-104021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31FF9F0B68
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:37:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E04B89F0B6E
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A48DF188792A
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:37:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4C71887D86
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DDB31DF744;
-	Fri, 13 Dec 2024 11:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3A21DE4FF;
+	Fri, 13 Dec 2024 11:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/pYFHN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UN6S053N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395A81DF746;
-	Fri, 13 Dec 2024 11:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF88F175AB
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 11:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734089746; cv=none; b=M/3KWHOFYaiHLY9AjjiDKbvDq3Qnp+hRRx6+uhplUBPzTCDDfxrTTnNi02a4KiFdU5WlLo84A5iyq/QRvPI2aZm8+7GM4jdgk+s/bPaM/QUI8giQ36TdVXWWBaJtqyG8yLlcKvQTFgJrBmH/D6Uhf3/ymoswSfulJv8doYZodA8=
+	t=1734090075; cv=none; b=uuDlo3XbDB1ov/HU2lVajXoqHr0piKibMi3wcb9LgjIxs0mX9ZJg/r1+qWQt8LcDnT+98UMp3NbMWHolTpFLYNaOAfpcy91GzEOWJQvdrs7Cvg8OLRNt+XPCmXK//ccdnUw/4bcvsToqhCxioSmfVhG7McGFPc5tr0NqCnxHXPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734089746; c=relaxed/simple;
-	bh=4K0e3AnjZnOzkDtaYF79h8zjx4loy6ySDiA6j7tZYFY=;
+	s=arc-20240116; t=1734090075; c=relaxed/simple;
+	bh=7GZBX68j2IfcqOpZUYGFeFoRISUMcfclRmdMk75E8ps=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xuek9VtQ8rCmnVLjqJwxtv1Yjsno4mfiRXodqj/5Mg7atqa+KfIekqXd6ZwRGITtpaAsx/jGwmnWxfFXdHZNWrI8e7ieUeyfe+7dXbgOmiahtr746k3Sg1usjQq3mugk9IhCQMcfy8HHJUXm3y4MpnNifeT446HrvS++V2VAmh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/pYFHN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45968C4CED0;
-	Fri, 13 Dec 2024 11:35:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JrUHQz1y9e1V5x+Hi30I7u+JxE+UyNe6/tm4rpWyPr5f9wujAS4/5rmziv+iaFMhGLWC4meuqHf1pUYa+vCOZD005qvfhQ4Kn3OT1/CGuwn3zuyeEw1+J5p70WjPszatyBj32Vx3IfHIdOaoN+BGvC8Kd//hnJAC371we1hyBfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UN6S053N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB476C4CED0;
+	Fri, 13 Dec 2024 11:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734089745;
-	bh=4K0e3AnjZnOzkDtaYF79h8zjx4loy6ySDiA6j7tZYFY=;
+	s=korg; t=1734090075;
+	bh=7GZBX68j2IfcqOpZUYGFeFoRISUMcfclRmdMk75E8ps=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t/pYFHN9EqzcuHH370T1DVvo7eEjGksDgm3fx+CM6UXFGlGzO0OVYxJTm7Qnp65It
-	 FwLQ2nV4hKKWNTBNYDse5IiG6uSL27QoctdbDYu+ukIpSYHFKKM2JSjpXQg+PjT6br
-	 9RmhnhwNFc1eeCENQLiRllb2JP5kLTE9mw1UHJVU=
-Date: Fri, 13 Dec 2024 12:35:42 +0100
+	b=UN6S053NceIHgmxSQ5e4lP8jHN92MjDGGevA9iJtZNCcn6wL6P5bBLyRduDqy9nu6
+	 Ls+X+dEz/gf+r6rH68xJQ3tpMktD496mWtsHmqSb5IpDJThNLI7VfQ4xP5hDkOYHpi
+	 FpWgJ3ZXzx3ahes0DbCi+Lz/9GOjEEgAm4Vq0whg=
+Date: Fri, 13 Dec 2024 12:41:12 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Philippe Troin <phil@fifi.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Anders Blomdell <anders.blomdell@gmail.com>,
-	Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.12 162/466] Revert "readahead: properly shorten
- readahead when falling back to do_page_cache_ra()"
-Message-ID: <2024121312-caress-wham-39e1@gregkh>
-References: <20241212144306.641051666@linuxfoundation.org>
- <20241212144313.202242815@linuxfoundation.org>
- <4ab51fdc37c39bd077b4bcea281d301af4c3ef1a.camel@fifi.org>
+To: =?iso-8859-1?B?Q3Pza+FzLA==?= Bence <csokas.bence@prolan.hu>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH 6.6 resubmit 0/3] Fix PPS channel routing
+Message-ID: <2024121346-omission-regulate-89c3@gregkh>
+References: <20241213112926.44468-1-csokas.bence@prolan.hu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4ab51fdc37c39bd077b4bcea281d301af4c3ef1a.camel@fifi.org>
+In-Reply-To: <20241213112926.44468-1-csokas.bence@prolan.hu>
 
-On Thu, Dec 12, 2024 at 10:12:54AM -0800, Philippe Troin wrote:
-> On Thu, 2024-12-12 at 15:55 +0100, Greg Kroah-Hartman wrote:
-> > 6.12-stable review patch.� If anyone has any objections, please let
-> > me know.
-> > 
-> > ------------------
-> > 
-> > From: Jan Kara <jack@suse.cz>
-> > 
-> > commit a220d6b95b1ae12c7626283d7609f0a1438e6437 upstream.
-> > 
-> > This reverts commit 7c877586da3178974a8a94577b6045a48377ff25.
+On Fri, Dec 13, 2024 at 12:29:18PM +0100, Csókás, Bence wrote:
+> On certain i.MX8 series parts [1], the PPS channel 0
+> is routed internally to eDMA, and the external PPS
+> pin is available on channel 1. In addition, on
+> certain boards, the PPS may be wired on the PCB to
+> an EVENTOUTn pin other than 0. On these systems
+> it is necessary that the PPS channel be able
+> to be configured from the Device Tree.
 > 
-> Isn't that moot now with 0938b1614648d5fbd832449a5a8a1b51d985323d that
-> in Linus's tree? It's not in 6.12 (yet?).
-> It may be worth backporting 0938b1614 to the stable tree, but it's
-> beyond my pay grade.
+> [1] https://lore.kernel.org/all/ZrPYOWA3FESx197L@lizhi-Precision-Tower-5810/
+> 
+> Francesco Dolcini (3):
+>   dt-bindings: net: fec: add pps channel property
+>   net: fec: refactor PPS channel configuration
+>   net: fec: make PPS channel configurable
+> 
+>  Documentation/devicetree/bindings/net/fsl,fec.yaml |  7 +++++++
+>  drivers/net/ethernet/freescale/fec_ptp.c           | 11 ++++++-----
+>  2 files changed, 13 insertions(+), 5 deletions(-)
 
-I'll be glad to take it if someone says it is ok to do so (we need an
-ack from mm developers to take anything they don't explicitly tag for
-stable trees.)
+This series is really totally confusing.  Here's what it looks like in
+my mbox:
 
-thanks,
+   1   C Dec 13 Csókás, Bence   (0.8K) [PATCH 6.6 resubmit 0/3] Fix PPS channel routing
+   2   C Dec 13 Csókás, Bence   (1.9K) ├─>[PATCH 6.11 v4 2/3] net: fec: refactor PPS channel configuration
+   3   C Dec 13 Csókás, Bence   (1.8K) ├─>[PATCH 6.11 v4 3/3] net: fec: make PPS channel configurable
+   4   C Dec 13 Csókás, Bence   (1.4K) ├─>[PATCH 6.11 v4 1/3] dt-bindings: net: fec: add pps channel property
+   5   C Dec 13 Csókás, Bence   (1.9K) ├─>[PATCH 6.6 resubmit 2/3] net: fec: refactor PPS channel configuration
+   6   C Dec 13 Csókás, Bence   (1.8K) ├─>[PATCH 6.6 resubmit 3/3] net: fec: make PPS channel configurable
+   7   C Dec 13 Csókás, Bence   (0.9K) ├─>[PATCH 6.11 v4 0/3] Fix PPS channel routing
+   8   C Dec 13 Csókás, Bence   (1.4K) └─>[PATCH 6.6 resubmit 1/3] dt-bindings: net: fec: add pps channel property
+
+I see some 6.11 patches (which make no sense as 6.11 is long
+end-of-life), and a "resubmit?" for 6.6, but no explaination as to _why_
+this is being resubmitted here, or in the patches themselves.
+
+Two different branches in the same series is also really really hard for
+any type of tooling to tease apart, making this a manual effort on our
+side if we want to deal with them.
+
+What would you do if you got a series that looked like this and had to
+handle it?  Would you do what I'm doing now and ask, "What in the world
+is going on?"   :)
+
+Please be kind to those on the other side of your emails, make it
+blindingly obvious, as to what they need to do with them, AND make it
+simple for them to handle the patches.
+
+Series is now deleted from my review queue, sorry.
 
 greg k-h
 
