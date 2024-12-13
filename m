@@ -1,119 +1,145 @@
-Return-Path: <stable+bounces-103985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADDB49F08D8
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 10:58:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10C69F08F5
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 11:01:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257B318823CF
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 10:01:42 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CED21ADFF1;
+	Fri, 13 Dec 2024 10:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bXpJ51Iy"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AAB22835F7
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 09:58:39 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FFD1CF5EA;
-	Fri, 13 Dec 2024 09:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RHrR5Frw"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6731B4145
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 09:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D2B18BBAC;
+	Fri, 13 Dec 2024 10:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734083785; cv=none; b=UsQlpKQqj3c7ZXoVG6EAP+aXMWeTQKNacro1sS9WTl4fgVNfiYVoVly/55x8JwrNTU4Ffw9yCpEPDDYEPRqxS3rnH/cPZdbZNchbxQv7nLeorcSGnwq2BQKb14bOz6xcHN7NeJaukcuW/z8uBcPvk7IyugTiW4ritEiI+huqeeY=
+	t=1734084099; cv=none; b=IQ76geFjsceEpweP/Q4j4F/bE69C2GvwBqUByrCv9t5yTSk29queVGzXjTR5V/aCW4+wOjI4RhM/IAJlCAO4y/7sfRmwZy35HX4qglP5PktZ8c/qmQLLCF1G41XicOu/uPuzueM/jQgISMCKVf+os/K34mmRm0XCwUFvupTIN7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734083785; c=relaxed/simple;
-	bh=wsHLBdhL/YuObC++wXJTgBih1Ze+nqAIErHGGB8oKks=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZZkOFz2oCIOE3OSgcBf2oBBRAek0zwfeG1brBI4mgtHd1mpFljjWCT96CxSZZhYsSInrWXqZeqUhhsfeTyDBCogaEhAE3Jyf9d/TU0uSVxAzIF5u6hwUFm9Jtd4l3a8L7NOszXERPIJTRuWIONb+8bXCE2aMmq/Nrv/jlMUUzzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RHrR5Frw; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43618283dedso14591405e9.3
-        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 01:56:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734083782; x=1734688582; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L9gYBr7le6CudpIb2B0d8mAxQug4zJXIf9a2dPZSils=;
-        b=RHrR5FrwMpFZGZyVavtFEtGVn3WpjXlqh/M5QDnnn4Y3ugOmhNRWnV/ZI5EwIkd5Tp
-         NEGt+w+4FIDlIJuIceah3L0ciE6yerFUqleRkztjVawvrwDSHZ5/iFTfeQ2uk0M8hCJn
-         9lJ+3RFi+NW/iWpszR3kcCuto++SffwPeB7HzU8XBUd12Rrn8XdTIx3WUuAl8zbJHKmT
-         4Kqqt/zWeNgr7MaI0s++DIzdLKtmMJR7m+j32NMvo27ksDruMXnubaoHTd7icNpUCoGz
-         uISugR/uAJUIo3PvMLIkD191OAIMgCT7z2ME9hbj35V2iWr1rid1hrkmpnqqxoutqXnr
-         XSaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734083782; x=1734688582;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L9gYBr7le6CudpIb2B0d8mAxQug4zJXIf9a2dPZSils=;
-        b=aHpCPC9ibVyyAHdXqtxKDk+1pCV/mZJPxowiotpMq8/ah208Jq7Up1j3xicXdVZ2xt
-         2yYgss7+axt8QXlP+JIKb23e970rl1sIaDrv2E7apMbND7aSATyvaLq7xKjHFijwncNn
-         kSm4koNEXTG9cHZsKg6nMZ8kaUQNbNOaaj+xT4C717fQLFRwEXa35JpV5yMqqlZAGP+X
-         h+nWARd/vtys6iuvDTSIqRxtM2qhQqpqaRnMSnDxxvnfRrLMHdy8GuBudPSR5pUdTNi6
-         xycZBFOh6/rL6Ydqg5yeRdDSnwfSUH9opsE/zcDtoSfZFPnDbhwbu0V7UEhrePkiQ3OJ
-         zKnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuQn8LnWTJ96scdH3NQ+JSQbxm1LO7qWoLVSB3qjax808nPKlfXcw/Hj6MNagANoPfpCKHcZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywsf+AurVIftZo4yCUZ237YLYa99q+1QMa2EJo8kgpGA//Uqkrk
-	TIYN/+rdQoqExvdJiv/be9zfQGT1YLxCmhccfhacD5sr7O+noUpR/z4LvO/sejDpEoLN2osVeVf
-	ZNYA=
-X-Gm-Gg: ASbGncsmM6ytQ8j+8WzzFtWtzSnfEZmI4jUEmzlatYvNodwpxQ60wrwevSKWYQZsPnL
-	Txyo9Cu0K96KNIJey6ouROu+pR+BNK+YNVwKr0rDWoOH74LQK2068NpFJyo8JZfa3Moh+e1Uv8W
-	GBd9EAN9DyfCAjdEA8OQip5j8Rxc/mU6Q3Mu2qyXMVHioUJV49uS9wDKmKrShytEk8OyEwrCr9d
-	xxDHZ/WLqajhWUavmYqLuUPvJv4JguULZDMn72Z3T0bG5yewkgkKHm1QbXsf6lm2UarAqQOKSQl
-	+w==
-X-Google-Smtp-Source: AGHT+IGgkNpBc05ccOXtavEiu9PB3goLoKJdoKutPLdyxpIQ28Umt6u9qU6JdmkJwtWwOvchkFmAvw==
-X-Received: by 2002:a05:600c:4ed4:b0:435:d22:9c9e with SMTP id 5b1f17b1804b1-4362aa5313dmr13933525e9.19.1734083782469;
-        Fri, 13 Dec 2024 01:56:22 -0800 (PST)
-Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:8261:5fff:fe11:bdda])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43625706c77sm43616845e9.34.2024.12.13.01.56.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Dec 2024 01:56:22 -0800 (PST)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-To: dri-devel@lists.freedesktop.org, Marek Vasut <marex@denx.de>
-Cc: Chris Morgan <macromorgan@hotmail.com>, 
- David Airlie <airlied@gmail.com>, Hironori KIKUCHI <kikuchan98@gmail.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>, 
- Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
-In-Reply-To: <20241124224812.150263-1-marex@denx.de>
-References: <20241124224812.150263-1-marex@denx.de>
-Subject: Re: [PATCH] drm/panel: st7701: Add prepare_prev_first flag to
- drm_panel
-Message-Id: <173408378171.189325.1503369050092401336.b4-ty@linaro.org>
-Date: Fri, 13 Dec 2024 10:56:21 +0100
+	s=arc-20240116; t=1734084099; c=relaxed/simple;
+	bh=qw9oW3iPsnh4OzlwvVyc5+L7+eMkhfq/GjLyGWsqTLc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DstBUssNbheqAc8riBzMhwUZFZfZeYcx5duLwRZPzCKTYvp2tyko65neS/ybMHfJ30Y7rsxvLDjdHSLo0wxxbYlYO7bCu3C/t+gCEncnPanorGR9eEqcgZFFbs4kzE8Wm85ogbbPTtUu+mZVwD6ZmuCvh0bdOCbgx2rC0l/p4c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bXpJ51Iy; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734084097; x=1765620097;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qw9oW3iPsnh4OzlwvVyc5+L7+eMkhfq/GjLyGWsqTLc=;
+  b=bXpJ51IyUI2IierU8W+vFUCmYHqsKZX4RyCoo52c9WHjoj3bzfaSkPmg
+   5oaOwU2OrEHYCOjq9d9tAYvE+5nnODxZ0AbGTE5QYw2A/wZKQ3fW3N8TD
+   EAlpBbxhR4ogBMTfx8Z0r932kY9ZPazD8A3DPHbvu3CVgVX6KGs244rn6
+   c0RFp38jiHoi3QgIg8CE0vDJ3XfWGY1vz/jp7AsvKcW3Lh7pTZ2z/tVZy
+   ID9vLHsVFgbhtCGQHi7pzdoEJid3DZ4Nuh/QAnF7gEC4DGtVI7lv1c0zg
+   u1UnI8O+ZGxL1F5esj3hEf+WosJC7Wlhhyv6seuQaPWn9clwuY2QJT/S1
+   Q==;
+X-CSE-ConnectionGUID: jLd5O/wmR7COQ3xussGT1A==
+X-CSE-MsgGUID: F+Ady5ypQG6+pVBxoLYI2g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11284"; a="38209505"
+X-IronPort-AV: E=Sophos;i="6.12,230,1728975600"; 
+   d="scan'208";a="38209505"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 02:01:35 -0800
+X-CSE-ConnectionGUID: abSzvcv5Qze85sJWkxnjHw==
+X-CSE-MsgGUID: hZi4RbQXQuaQc7ryzXgvsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,230,1728975600"; 
+   d="scan'208";a="101346226"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.245.190])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 02:01:32 -0800
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org
+Cc: linux-sound@vger.kernel.org,
+	kai.vehmanen@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	pierre-louis.bossart@linux.dev,
+	stable@vger.kernel.org,
+	liam.r.girdwood@intel.com
+Subject: [PATCH] ASoC: SOF: ipc4-topology: Harden loops for looking up ALH copiers
+Date: Fri, 13 Dec 2024 12:01:46 +0200
+Message-ID: <20241213100146.19224-1-peter.ujfalusi@linux.intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Other, non DAI copier widgets could have the same stream name (sname) as
+the ALH copier and in that case the copier->data is NULL, no alh_data is
+attached, which could lead to NULL pointer dereference.
+We could check for this NULL pointer in sof_ipc4_prepare_copier_module()
+and avoid the crash, but a similar loop in sof_ipc4_widget_setup_comp_dai()
+will miscalculate the ALH device count, causing broken audio.
 
-On Sun, 24 Nov 2024 23:48:07 +0100, Marek Vasut wrote:
-> The DSI host must be enabled for the panel to be initialized in
-> prepare(). Set the prepare_prev_first flag to guarantee this.
-> This fixes the panel operation on NXP i.MX8MP SoC / Samsung DSIM
-> DSI host.
-> 
-> 
+The correct fix is to harden the matching logic by making sure that the
+1. widget is a DAI widget - so dai = w->private is valid
+2. the dai (and thus the copier) is ALH copier
 
-Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
+Fixes: 0e357b529053 ("ASoC: SOF: ipc4-topology: add SoundWire/ALH aggregation support")
+Cc: stable@vger.kernel.org
+Reported-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
+Link: https://github.com/thesofproject/sof/pull/9652
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+---
+ sound/soc/sof/ipc4-topology.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-[1/1] drm/panel: st7701: Add prepare_prev_first flag to drm_panel
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/406dd4c7984a457567ca652455d5efad81983f02
-
+diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
+index b55eb977e443..70b7bfb080f4 100644
+--- a/sound/soc/sof/ipc4-topology.c
++++ b/sound/soc/sof/ipc4-topology.c
+@@ -765,10 +765,16 @@ static int sof_ipc4_widget_setup_comp_dai(struct snd_sof_widget *swidget)
+ 		}
+ 
+ 		list_for_each_entry(w, &sdev->widget_list, list) {
+-			if (w->widget->sname &&
++			struct snd_sof_dai *alh_dai;
++
++			if (!WIDGET_IS_DAI(w->id) || !w->widget->sname ||
+ 			    strcmp(w->widget->sname, swidget->widget->sname))
+ 				continue;
+ 
++			alh_dai = w->private;
++			if (alh_dai->type != SOF_DAI_INTEL_ALH)
++				continue;
++
+ 			blob->alh_cfg.device_count++;
+ 		}
+ 
+@@ -2061,11 +2067,13 @@ sof_ipc4_prepare_copier_module(struct snd_sof_widget *swidget,
+ 			list_for_each_entry(w, &sdev->widget_list, list) {
+ 				u32 node_type;
+ 
+-				if (w->widget->sname &&
++				if (!WIDGET_IS_DAI(w->id) || !w->widget->sname ||
+ 				    strcmp(w->widget->sname, swidget->widget->sname))
+ 					continue;
+ 
+ 				dai = w->private;
++				if (dai->type != SOF_DAI_INTEL_ALH)
++					continue;
+ 				alh_copier = (struct sof_ipc4_copier *)dai->private;
+ 				alh_data = &alh_copier->data;
+ 				node_type = SOF_IPC4_GET_NODE_TYPE(alh_data->gtw_cfg.node_id);
 -- 
-Neil
+2.47.1
 
 
