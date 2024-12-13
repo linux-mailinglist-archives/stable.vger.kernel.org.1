@@ -1,116 +1,152 @@
-Return-Path: <stable+bounces-103980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E559F0710
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 10:00:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED9C0188B769
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 09:00:49 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F6819CC2D;
-	Fri, 13 Dec 2024 09:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tu3CVgZ7"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 828349F078F
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 10:19:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498CA185B78;
-	Fri, 13 Dec 2024 09:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 400BF28739D
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 09:19:06 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C1F1AAE28;
+	Fri, 13 Dec 2024 09:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rAwRIFzD"
+X-Original-To: stable@vger.kernel.org
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED9C130A54;
+	Fri, 13 Dec 2024 09:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734080442; cv=none; b=LsHZR/MHiQNzDXlaDqtxQyDW5baC6UZVJp/xHXbnpijsPsCFDX8QvldiIZlCjtFLhmHSP4aFHKIA/q0s+BqZ25WpMzKjh1G9qK6Yd9jeni3pcooYSZnLOapy5zZCY1PQRqtCIQV5GpKkRN4Co4tsGuXDSRCCAdnCGgeLtL034iA=
+	t=1734081537; cv=none; b=rh9Dv0DUZhxTvjfTWCANpd6nwk3yzvAznM1o+b6+vkyucrEEqwMzP8R0SP3RiU4iAMLWzH/ra3Q8v8LeSe9xBwowHKBhp+xtW+zTczqag7uJzhU2cTNtQnCIrz3gpbE8EuuWo0PNs66XuoHfsqWoA6nZB2HcugJawRA/NnBNrBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734080442; c=relaxed/simple;
-	bh=UZNnvkExZ7zuNWaU7B62b6NVp5W1UDxqMDFQPWrdMNE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cZTjuowjZU362wbcoCpMowSnmdZq5FnZTf0cWY9R3ilqHmjyxAXuHrC1RKjCgHcX0J+HyJnASSPzeIk16er0JPkh+KXzyQDGEw+c+hTkToSi11gvIMEiS9LQ+H+SIUgXaC9Ww/Ib71Az0Gw4CAdvHTQ3UPxwwjZbFbRVZM/xnAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tu3CVgZ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1483BC4CED0;
-	Fri, 13 Dec 2024 09:00:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734080442;
-	bh=UZNnvkExZ7zuNWaU7B62b6NVp5W1UDxqMDFQPWrdMNE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tu3CVgZ7Evx65zdlJIl6G5/MMh2qarRbd3z04tzbrsCpbGdLQa1u6fA03CqtffY5W
-	 M7DHizrDUsVE+I5SWcKYFXNU8WreOHFHHlhme/EPcRvxgKyXwfc6qJEQi7rUQ6yUg5
-	 qKsU7sxtmvLZwl4ok5Usp55BQjpilrE3ScCVzRJapMqWTBX5nOBW9JV6Wedic77X97
-	 Recwh/XqSqLhnvDKEKHWLCjrrKPyXn/r+wI7Ci3zEv2UUcQ1c+GX1kQKoq5t5K674l
-	 cOvtmFpm3hYZVoO2RE65Z5Q57F39i+K5G9iTTZHqFacYKFOgCJgWsW1XjDT8vhbK+J
-	 cvmFlVsNO8LgQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tM1XR-000000000mJ-2S3o;
-	Fri, 13 Dec 2024 10:00:46 +0100
-Date: Fri, 13 Dec 2024 10:00:45 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Abel Vesa <abel.vesa@linaro.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, stable@vger.kernel.org,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: Re: [PATCH v2] usb: typec: ucsi: Set orientation as none when
- connector is unplugged
-Message-ID: <Z1v3ve3M3s8cmGhA@hovoldconsulting.com>
-References: <20241212-usb-typec-ucsi-glink-add-orientation-none-v2-1-db5a50498a77@linaro.org>
+	s=arc-20240116; t=1734081537; c=relaxed/simple;
+	bh=MA+nxvCfVzFUjouhmxBgEE/99XIjYcUxr9cOjEtMakM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nJkDudMTfHToskQ0x3+9op2b/UtnRrdsve5VhIQqtU0IfzshFrt9PfhVeMibEMFnLmLh8xQkUbSvChz1HcJtZcctNgUe/+VLmK7yN0lUj9xpLkR7RxAbyGsRHffhQc1d7XrJkviD4fU7djnGv+SLqH+ryGWi9oPVt1fpD0eR9xI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rAwRIFzD; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BD85ktN011241;
+	Fri, 13 Dec 2024 09:18:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=KZFnLO1yLYbr8xUZ6RNwfEwft+lDmowGg2KVmCJtU
+	6c=; b=rAwRIFzDmSqo4SwhYfqBlkcJlFnZYG0s8sviq3iWiO8P90WIRAG3UPVf5
+	ZvpZi700OxmOYpqY9YrUtHLmav4JgKYGTRPVb+NxJxmADw5t0r3fb6fYrU5N4Ekh
+	mgkpciGCxq0asyAjJFYGopc+8rqV2bh0Xobp/ifBFyU+HboiRdgtd90DRX3q0SLJ
+	1cQ3c3mAMxsT6CKJh6CrjfTELtuPCzvfQERQrTtKw1bNd1DwETkjm32ff7oaJorS
+	kXZxNRPweIgTLmZ/BLEchNWJbKF9+wu8f54N2Sv6p1vxBOsazM0Fvbsk8hc9Qrni
+	BgwNlwM+ep++xoZd/PMZgpM2Mbwzg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43gh438a6q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Dec 2024 09:18:33 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BD9Glxj030235;
+	Fri, 13 Dec 2024 09:18:32 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43gh438a6m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Dec 2024 09:18:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BD7ppOX032734;
+	Fri, 13 Dec 2024 09:18:32 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43d0pswb6e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Dec 2024 09:18:31 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BD9ISQo56885568
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Dec 2024 09:18:28 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7FD8120043;
+	Fri, 13 Dec 2024 09:18:28 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A968A20040;
+	Fri, 13 Dec 2024 09:18:26 +0000 (GMT)
+Received: from ltcrain34-lp2.aus.stglabs.ibm.com (unknown [9.3.101.41])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 13 Dec 2024 09:18:26 +0000 (GMT)
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+        linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, mahesh@linux.ibm.com, oohall@gmail.com,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, maddy@linux.ibm.com,
+        naveen@kernel.org, vaibhav@linux.ibm.com, ganeshgr@linux.ibm.com,
+        sbhat@linux.ibm.com
+Subject: [PATCH v3] powerpc/pseries/eeh: Fix get PE state translation
+Date: Fri, 13 Dec 2024 03:18:22 -0600
+Message-ID: <20241213091822.3641-1-nnmlinux@linux.ibm.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241212-usb-typec-ucsi-glink-add-orientation-none-v2-1-db5a50498a77@linaro.org>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OpzvR0uWDg0QENT7sHOQfw863LX8BdL7
+X-Proofpoint-GUID: B_LWP2tO7dDM_c0RPUz1kix-74ODXpSj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 adultscore=0 impostorscore=0 spamscore=0
+ mlxlogscore=999 suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412130061
 
-On Thu, Dec 12, 2024 at 07:37:43PM +0200, Abel Vesa wrote:
-> The current implementation of the ucsi glink client connector_status()
-> callback is only relying on the state of the gpio. This means that even
-> when the cable is unplugged, the orientation propagated to the switches
-> along the graph is "orientation normal", instead of "orientation none",
-> which would be the correct one in this case.
-> 
-> One of the Qualcomm DP-USB PHY combo drivers, which needs to be aware of
-> the orientation change, is relying on the "orientation none" to skip
-> the reinitialization of the entire PHY. Since the ucsi glink client
-> advertises "orientation normal" even when the cable is unplugged, the
-> mentioned PHY is taken down and reinitialized when in fact it should be
-> left as-is. This triggers a crash within the displayport controller driver
-> in turn, which brings the whole system down on some Qualcomm platforms.
-> Propagating "orientation none" from the ucsi glink client on the
-> connector_status() callback hides the problem of the mentioned PHY driver
-> away for now. But the "orientation none" is nonetheless the correct one
-> to be used in this case.
-> 
-> So propagate the "orientation none" instead when the connector status
-> flags says cable is disconnected.
-> 
-> Fixes: 76716fd5bf09 ("usb: typec: ucsi: glink: move GPIO reading into connector_status callback")
-> Cc: stable@vger.kernel.org # 6.10
-> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> ---
-> Changes in v2:
-> - Re-worded the commit message to explain a bit more what is happening.
-> - Added Fixes tag and CC'ed stable.
-> - Dropped the RFC prefix.
-> - Used the new UCSI_CONSTAT macro which did not exist when v1 was sent.
-> - Link to v1: https://lore.kernel.org/r/20241017-usb-typec-ucsi-glink-add-orientation-none-v1-1-0fdc7e49a7e7@linaro.org
+The PE Reset State "0" obtained from RTAS calls
+ibm_read_slot_reset_[state|state2] indicates that
+the Reset is deactivated and the PE is not in the MMIO
+Stopped or DMA Stopped state.
 
-Thanks for the update.
+With PE Reset State "0", the MMIO and DMA is allowed for
+the PE. The function pseries_eeh_get_state() is currently
+not indicating that to the caller because of  which the
+drivers are unable to resume the MMIO and DMA activity.
+The patch fixes that by reflecting what is actually allowed.
 
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Fixes: 00ba05a12b3c ("powerpc/pseries: Cleanup on pseries_eeh_get_state()")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-Johan
+---
+Changelog:
+V1:https://lore.kernel.org/all/20241107042027.338065-1-nnmlinux@linux.ibm.com/
+--added Fixes tag for "powerpc/pseries: Cleanup on
+pseries_eeh_get_state()".
+V2:https://lore.kernel.org/stable/20241212075044.10563-1-nnmlinux%40linux.ibm.com
+--Updated the patch description to include it in the stable kernel tree.
+---
+ arch/powerpc/platforms/pseries/eeh_pseries.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+index 1893f66371fa..b12ef382fec7 100644
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -580,8 +580,10 @@ static int pseries_eeh_get_state(struct eeh_pe *pe, int *delay)
+ 
+ 	switch(rets[0]) {
+ 	case 0:
+-		result = EEH_STATE_MMIO_ACTIVE |
+-			 EEH_STATE_DMA_ACTIVE;
++		result = EEH_STATE_MMIO_ACTIVE	|
++			 EEH_STATE_DMA_ACTIVE	|
++			 EEH_STATE_MMIO_ENABLED	|
++			 EEH_STATE_DMA_ENABLED;
+ 		break;
+ 	case 1:
+ 		result = EEH_STATE_RESET_ACTIVE |
+-- 
+2.47.1
+
 
