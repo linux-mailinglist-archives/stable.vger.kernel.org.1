@@ -1,73 +1,63 @@
-Return-Path: <stable+bounces-104133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF3E9F11AD
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 17:01:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE0F9F11D2
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 17:13:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6BE1281CD4
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 16:01:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FE5416A08E
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 16:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A23B1E3769;
-	Fri, 13 Dec 2024 16:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4AD1E3DE8;
+	Fri, 13 Dec 2024 16:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="drwqEi1K"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="QwYuToV9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEB91E00AC;
-	Fri, 13 Dec 2024 16:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADDE1E378C
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 16:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734105658; cv=none; b=LAg4Pd49crfot/Tp0eySJO8F2K0FW0TEc2AEgL8csqNC7R3Pe0cQ3uKerBwaOBNSm0fyi2NtETLsL5XVVJEOVwPb81FgPEZzZN/Ggr333IiOzwuAQxCrxKGktt+dDNmoaru10BawBmRTCbBQdvvzceceUrshXO3BKvx+luSBAXw=
+	t=1734106371; cv=none; b=a0gI1fpjs1MTcP0mqGsHt51G1xqEd0bvnMWPqstISCw+F11fxY5UGr3De6FyqJRXVG7FhwWux43R4jxvIQncc7Ulk5isNDeSg2zqLgX370TnENlPrREOpOvpeuZLw/YK5eZp+xWUYIFJv96B3MmjqTsMNWUjcBffLoA8AEziIf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734105658; c=relaxed/simple;
-	bh=5XQWrcX5GyYj8LFdIhYGQZjcjue5NcViLdKUXQX6Lxg=;
+	s=arc-20240116; t=1734106371; c=relaxed/simple;
+	bh=IHKLIwvxCSKRMPWKFaJUk7AjboZXq91gsVNwCF5CDZs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ri4zoShkDI1nppMHQtjI9QGtiNzf+8ie8XadT/265vqVl6RXc9ZNhx7p7c0f4YW3aQwEow65tNGqQ/bogqju/uWrqFCA5W7VKgN+8SaysPxhpHgksXrDbbhIFOC6sGuWm12lIXkIANM3/Y7otqa9SNHQpNWkYLh9SCX3k/g4urI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=drwqEi1K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94892C4CED0;
-	Fri, 13 Dec 2024 16:00:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734105657;
-	bh=5XQWrcX5GyYj8LFdIhYGQZjcjue5NcViLdKUXQX6Lxg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=drwqEi1KUb45YUFYPuSo7fSS3CvrrB4cd7pP6+asr3gUVR+0zWLlIoiwSC4Z/YJV0
-	 1vJfqDd7hWfU1BTM58kqEYDnQLK/4RAYzMlt2PH5APM1YOWFBIefrCkgnlTRxJQCEo
-	 IlxUytji6/3dL/IHjXaBUqq5mQvaI9RnTVJ7Vx3O1+0ax8P6QU8cymPxtS17j9Z+AP
-	 Mx2IeWA8LzXbgk3JpLdAJNIVKAykWrNS3STLVp+s4FK7UpTj5PYt5AgEwUOz9tUEUu
-	 2Ln+JafCNPnoQfaRkOm64U4iBQCB7N7x8CMcV0xkbe8WcB42ffxnR5DphgukxBMUkO
-	 ZPuoIXPVEYIDQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tM86A-000000005sw-2DjX;
-	Fri, 13 Dec 2024 17:01:02 +0100
-Date: Fri, 13 Dec 2024 17:01:02 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v3 13/23] arm64: dts: qcom: x1e80100: Fix ADSP memory
- base and length
-Message-ID: <Z1xaPvyBap5Q4vXC@hovoldconsulting.com>
-References: <20241213-dts-qcom-cdsp-mpss-base-address-v3-0-2e0036fccd8d@linaro.org>
- <20241213-dts-qcom-cdsp-mpss-base-address-v3-13-2e0036fccd8d@linaro.org>
- <Z1xUUAnxsCY33umS@hovoldconsulting.com>
- <7edc0cb7-d6fd-4395-b2ca-dfce243f066c@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hr6n0BcXlv+Hj3N7OWvKA+14CCkaEDdyXKTyxQG7KqljAJRiKBFJKU9xW1TgcZAQC+Fja3lj35ZVhjc5DAMnJwaXEYqu/vl4/dMLMu47hRVR4/mvl+6/pn0Cygh3Dfw8sWbCzrD1SrJ+HZjyrEEPIzX/G6WDOLDZZxrSVwCWGT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=QwYuToV9; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-82-226.bstnma.fios.verizon.net [173.48.82.226])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 4BDGCVS9018707
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Dec 2024 11:12:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1734106353; bh=NEm0SCpvUjxoOqFN4Z2pKV8E53Q/3QgqD/lByRVqljs=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=QwYuToV9Zry4EUJjCJeedYQ8xK2r9j9vTNL+W3mHqgjsObrooX6ET0VFALC16B7s5
+	 8nvfXMomy6JYmOnQchFQ/0Kg3IjIxDRCCjiXH7z+ZQD3V4aD3UnEo9stWurUuFxhOp
+	 2mwuTsxzcRsWgP09sZmW2tfrttsHTNB1b93HdPeHBWSAEECClCiZ084847aIB2ICmh
+	 f40pljDaUD/msPetbyNmKXQFNaJxR6GYXlGXbLI5TeoN0A5tpNj4FZ6ixcjU2Fq3tN
+	 Phm78XKLO51vVl2YKOrtZ9jI0uXBdh6cWOBV2v8NIQt1Slc6eke1T99PRGi6lToYso
+	 yiyuzgNzpv3fw==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id D208D15C2045; Fri, 13 Dec 2024 11:12:30 -0500 (EST)
+Date: Fri, 13 Dec 2024 11:12:30 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Nikolai Zhubr <zhubr.2@gmail.com>
+Cc: linux-ext4@vger.kernel.org, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, jack@suse.cz
+Subject: Re: ext4 damage suspected in between 5.15.167 - 5.15.170
+Message-ID: <20241213161230.GF1265540@mit.edu>
+References: <CALQo8TpjoV8JtuYDH_nBU5i4e-iuCQ1-NORAE8uobpDD_yYBTA@mail.gmail.com>
+ <20241212191603.GA2158320@mit.edu>
+ <79af4b93-63a1-da4c-2793-8843c60068f5@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,61 +66,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7edc0cb7-d6fd-4395-b2ca-dfce243f066c@linaro.org>
+In-Reply-To: <79af4b93-63a1-da4c-2793-8843c60068f5@gmail.com>
 
-On Fri, Dec 13, 2024 at 04:45:30PM +0100, Krzysztof Kozlowski wrote:
-> On 13/12/2024 16:35, Johan Hovold wrote:
-> > On Fri, Dec 13, 2024 at 03:54:02PM +0100, Krzysztof Kozlowski wrote:
-> >> The address space in ADSP PAS (Peripheral Authentication Service)
-> >> remoteproc node should point to the QDSP PUB address space
-> >> (QDSP6...SS_PUB): 0x0680_0000 with length of 0x10000.
-> >>
-> >> 0x3000_0000, value used so far, is the main region of CDSP and was
-> >> simply copied from other/older DTS.
-> >>
-> >> Correct the base address and length, which also moves the node to
-> >> different place to keep things sorted by unit address.  The diff looks
-> >> big, but only the unit address and "reg" property were changed.  This
-> >> should have no functional impact on Linux users, because PAS loader does
-> >> not use this address space at all.
-> >>
-> >> Fixes: 5f2a9cd4b104 ("arm64: dts: qcom: x1e80100: Add ADSP/CDSP remoteproc nodes")
-> >> Cc: stable@vger.kernel.org
-> > 
-> > Why bother with backporting any of these when there is no functional
-> > impact?
+On Fri, Dec 13, 2024 at 01:49:59PM +0300, Nikolai Zhubr wrote:
 > 
-> Not sure, I assumed someone might be using kernel DTS from stable
-> branches in other projects. Kernel is the source of DTS and stable
-> kernel has the DTS in both stable and fixed way. If 3rd party project
-> keeps pulling always latest DTS from latest kernel, they will see so
-> many ABI breaks and so many incompatibilities (we discussed it in
-> Vienna) that they will probably curse their approach and say "never
-> again". Using stable branch DTS could be a solution.
+> Not going to argue, but it'd seem if 5.15 is totally out of interest
+> already, why keep patching it? And as long as it keeps receiving patches,
+> supposedly they are backported and applied to stabilize, not damage it? Ok,
+> nevermind :-)
 
-That makes some sense.
+The Long-Term Stable (LTS) kernels are maintained by the LTS team.  A
+description of how it works can be found here[1].
 
-> Such 3rd party project might actually use above device nodes in their
-> drivers. It's just some of Linux kernel drivers which do not use them
-> (other like PIL seems to use addresses).
+[1] https://docs.kernel.org/process/2.Process.html#the-big-picture
 
-But this is more questionable given that the current addresses are
-completely off in this case.
+Subsystems can tag patches sent to the development head by adding "Cc:
+stable@kernel.org" to the commit description.  However, they are not
+obligated to do that, so there is an auxillary system which uses AI to
+intuit which patches might be a bug fix.  There is also automated
+systems that try to automatically figure out which patches might be
+prerequites that are needed.  This system is very automated, and after
+the LTS team uses their automated scripts to generate the LTS kernel,
+it gets published as an release candidate for 48 hours before it gets
+pushed out.
 
-> Plus DTS is used by 3rd party Linux kernels (out of tree), which while
-> we do not care in a way of driving our development, but we do consider
-> them possible users. They also might be relying on stable kernel branch
-> for this.
+Kernel developers are not obligated to support LTS kernels.  The fact
+that they tag commits as "you might want to consider it for
+backporting" might be all they do; and in some cases, not even that.
+Most kernel maintainers don't even bother testing the LTS candidate
+releases.  (I only started adding automated tests earlier this year to
+test the LTS release candidates.)
 
-Same here.
+The primary use for LTS kernels are for companies that really don't
+want to update to newer kernels, and have kernel teams who can provide
+support for the LTS kernels and their customers.  So if Amazon,
+Google, and some Android manufacturers want to keep using 5.15, or
+6.1, or 6.6, it's provided as a starting point to make life easier for
+them, especially in terms of geting security bugs backported.
 
-I realise this is a bit of a grey area, but given the size of the diffs
-and the no functional impact this could be an opportunity to try to
-uphold the stable kernel rules:
+If the kernel teams for thecompanies which use the LTS kernels find
+problems, they can let the LTS team know if there is some regression,
+or they can manually backport some patch that couldn't be handled by
+the automated scripts.  But it's all on a best-efforts basis.
 
-	- It cannot be bigger than 100 lines, with context.
-	- It must either fix a real bug that bothers people or just add
-	  a device ID.
+For hobbists and indeed most kernels, what I generally recommend is
+that they switch to the latest LTS kernel once a year.  So for
+example, the last LTS kernel released in 2023 was 6.6.  It looks very
+much like the last kerel released in 2024 will be 6.12, so that will
+likely be the next LTS kernel.  In general, there is more attention
+paid to the newer LTS kernels, and although *technically* there are
+LTS kernels going back to 5.4, pretty much no one pays attention to
+them other than the companies stubbornly hanging on because they don't
+have the engineering bandwidth to go to a newer kernel, despite the
+fact that many security bug fixes never make it all the way back to
+those ancient kernels.
 
-Johan
+> Yes. That is why I spent 2 days for solely testing hardware, booting from
+> separate media, stressing everything, and making plenty of copies. As I
+> mentioned in my initial post, this had revealed no hardware issues. And I'm
+> enjoying md raid-1 since around 2003 already (Not on this device though). I
+> can post all my "smart" values as is, but I can assure they are perfectly
+> fine for both raid-1 members. I encounter faulty hdds elsewhere routinely so
+> its not something unseen too.
+
+Note that some hardware errors can be caused by one-off errors, such
+as cosmic rays causing a bit-flip in memory DIMM.  If that happens,
+RAID won't save you, since the error was introduced before an updated
+block group descriptor (for example) gets written.  ECC will help;
+unfortunately, most consumer grade systems don't use ECC.  (And by the
+way, the are systems used in hyperscaler cloud companies which look
+for CPU-level failures, which can start with silent bit flips leading
+to crashes or rep-invariant failures, and correlating them with
+specific CPU cores.  For example, see[2].)
+
+[2] https://research.google/pubs/detection-and-prevention-of-silent-data-corruption-in-an-exabyte-scale-database-system/
+
+> This is a fsck run on a standalone copy taken before repair (after
+> successful raid re-check):
+> 
+> #fsck.ext4 -fn /dev/sdb1
+> ext2fs_check_desc: Corrupt group descriptor: bad block for block bitmap
+> fsck.ext4: Group descriptors look bad... trying backup blocks...
+
+What this means is that the block group descriptor has for one of
+ext4's block groups has the location for its block allcation bitmap to
+be a invalid value.  For example, if one of the high bits in the block
+allcation gets flipped, the block number will be wildly out of range,
+and so it's something that can be noticed very quickly at mount time.
+This is a lucky failure, because (a) it can get detected right away,
+and (b) it can be very easily fixed by consulting one of the backup
+copies of the block group descriptors.  This is what happened in this
+case, and rest of fsck transcript is consitent with that.
+
+The location of block allocation bitmaps never gets changed, so this
+sort of thing only happens due to hardware-induced corruption.
+
+Looking at the dumpe2fs output, it looks like it was created
+relatively recently (July 2024) but it doesn't have the metadata
+checksum feature enabled, which has been enabled for quite a long
+time.  I'm going to guess that this means that you're using a fairly
+old version version of e2fsprogs (it was enabled by default in
+e2fsprogs 1.43, released in May 2016[3]).
+
+[3] https://e2fsprogs.sourceforge.net/e2fsprogs-release.html#1.43
+
+You got lucky because it block allocation bitmap location was
+corrupted to an obviously invalid value.  But if it had been a
+low-order bit that had gotten flipped this could have lead to data
+corruption before the data and metadata corruption became obvious
+enough that ext4 would flag it.  Metadata checksums would catch that
+kind of error much more quickly --- and is an example of how RAID
+arrays shouldn't be treated as a magic bullet.
+
+> > Did you check for any changes to the md/dm code, or the block layer?
+> 
+> No. Generally, it could be just anything, therefore I see no point even
+> starting without good background knowledge. That is why I'm trying to draw
+> attention of those who are more aware instead. :-)
+
+The problem is that there are millions and millions of Linux users.
+If everyone were do that, it just wouldn't scale.  For companies who
+don't want to bother with upgrading to newer versions of software,
+that's why they pay the big bucks to companies like Red Hat or SuSE or
+Canonical.  Or if you are a platinum level customer for Amazon or
+Google, you can use Amazon Linux or Google's Container-Optimized OS,
+and the cloud company's tech support teams will help you out.  :-)
+
+Otherwise, I strongly encourage you to learn, and to take
+responsibility for the health of your own system.  And ideally, you
+can also use that knowledge to help other users out, which is the only
+way the free-as-in-beer ecosystem can flurish; by having everybody
+helping each other.  Who knows, maybe you could even get a job doing
+it for a living.  :-) :-) :-)
+
+Cheers,
+
 
