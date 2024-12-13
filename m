@@ -1,119 +1,179 @@
-Return-Path: <stable+bounces-103977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A269F069A
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 09:42:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 091FA188AD93
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 08:42:35 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B391E1AB6CB;
-	Fri, 13 Dec 2024 08:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPAubIv7"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D589F06AC
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 09:45:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACC76EB4C;
-	Fri, 13 Dec 2024 08:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAAAF281D40
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 08:45:21 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F131ABEA0;
+	Fri, 13 Dec 2024 08:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Br7TXAJ6"
+X-Original-To: stable@vger.kernel.org
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD7D502B1;
+	Fri, 13 Dec 2024 08:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734079348; cv=none; b=ESzDWnR8934n6FN5cR2b6y8Na3OYxPdqoiW8W5kPzg4UFucRY73Fmn2vIod9cEEGkA471UT5b0m9+OryJjcEApMuzbZcpigHooYDGZthH85VNu3G7odStDgX0vut7BngvZgF0UboN7JVE7BW8GWOgFyGTeqvjEJ22iN3N8JY7AA=
+	t=1734079518; cv=none; b=A6BsYX+0MchTHUxIQghEkoveYhqXRJ91MtsEb7dR2TT4dmcI+kk8QmImEyMNfib8YSFz2xFiZzA3KYM0N9jT1g9EbdyyXcHsT47P59zqQaFtt1wAK5Hm3t7cCJGeJXn5ZW6V9dJv1rNoB6ABnEIJIuJA3v6L/bHqJD+jhoV5ymw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734079348; c=relaxed/simple;
-	bh=KKIRkAFTUQFvttvDAyK+ZVcs9cr2LFgnAu3nr9wXyuA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=maxednPYoD5FGkE4aBvAo5ISjvuDbqXaIsMpbVpIrnhZ5WLIde9dd4PX1bftkIO1FX1djI+6KDiErZZxJfrBVnbVaV6yFMXBuWpSbqid6ppIV/mDCZ6jn23XP4MSceUaNnRgUE0sVMo32jcR8va6/NL/Dt6KwpP8rSWQyIGqoGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPAubIv7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13A3C4CED0;
-	Fri, 13 Dec 2024 08:42:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734079345;
-	bh=KKIRkAFTUQFvttvDAyK+ZVcs9cr2LFgnAu3nr9wXyuA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oPAubIv7KukII47p+eFH3AwalPkfBfUiZgWZpoohewPfGo12WrZzAmcfU1OCIpcfj
-	 RQtnetf1hGpKwQP1XdVlX63fgpFUjgC5Qs8oBj5ceTzxkaLRH7vY0oU2jWzMmRM3tx
-	 99Q1YKqn5e8DjTymkuEwlUXMe1VSwP+i54lni9qAUSALcHu4Db/0/uhLxA7QEeMCX9
-	 s8n4b7HeBpyFt5YDPSdQB0IFNcNhr1S51COE8p2iIbBgYU6vc4T1v2ESiHxwVtSz8O
-	 0ovearkj1sP998gVkW6z5Z/ronHb5VyBpz/0PZPMG08K+p0v9Fxb1X0xG3T8DFdLdr
-	 W0hyDTL8K1fiQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1tM1Fl-000000000El-2JSq;
-	Fri, 13 Dec 2024 09:42:30 +0100
-Date: Fri, 13 Dec 2024 09:42:29 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] soc: qcom: llcc: Enable LLCC_WRCACHE at boot on X1
-Message-ID: <Z1vzddhyrnwq7Sl_@hovoldconsulting.com>
-References: <20241212-topic-llcc_x1e_wrcache-v2-1-e44d3058d06c@oss.qualcomm.com>
+	s=arc-20240116; t=1734079518; c=relaxed/simple;
+	bh=R4lOByC38bcsXyI+lvJteskzBW3zHltZzdR72FWJ0BE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ol7nt2Zwn6fv71Avgc5blBytsxYfwhhDpQSQ+6IzuuQXbVabYOj7uteuQ98uZsVfuNHwQRQtNOSwAIfacoDIS5ha2VlctOV/eV36CLLzbROH0QHwhRPhpjCoB0jpV3OFAHgPty80PR9SI3Nc8hUme6pbSvrVuQDuAB5SJItj38I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Br7TXAJ6; arc=none smtp.client-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:
+	Content-Type; bh=21o0XTtNuQcRS+Oc7dde/R2xtmPgrdOT4SD3ZXbhO8o=;
+	b=Br7TXAJ63rL76NDlkqboL0MkTRngkqIr1kxmhNprvIh7mQjhnvFHSB4iqqIpaX
+	nWqqil1Iz8pmX/hEtbaScok5ERRiZXDocHtUaStDQipGIDtUun9QBu35eWlBIetr
+	RS46bUpATIFy+E+K7vwtzFKGz/36diQzdU2qRlXDGPvfk=
+Received: from [172.21.22.210] (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3t2bL81tnFV3LAA--.50419S2;
+	Fri, 13 Dec 2024 16:43:55 +0800 (CST)
+Message-ID: <3651bce1-f84b-4537-bc57-ef6d7460749f@126.com>
+Date: Fri, 13 Dec 2024 16:43:55 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241212-topic-llcc_x1e_wrcache-v2-1-e44d3058d06c@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm, compaction: don't use ALLOC_CMA in long term GUP flow
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ 21cnbao@gmail.com, david@redhat.com, vbabka@suse.cz, liuzixing@hygon.cn
+References: <1734075432-14131-1-git-send-email-yangge1116@126.com>
+ <df357a47-7d76-47b8-b91f-3f4bd4d2176e@linux.alibaba.com>
+From: Ge Yang <yangge1116@126.com>
+In-Reply-To: <df357a47-7d76-47b8-b91f-3f4bd4d2176e@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3t2bL81tnFV3LAA--.50419S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZw13KrWUXF47CFW7JFW5Wrg_yoWrZr45pF
+	1xA3WDAws8XFy5Cr48ta1v9F4Yvw4xKF45GryIqw18Zw1akF9a9F1kKry7AFWUur1Ykw4Y
+	qFWq9asrZFsxZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6KZXUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOh20G2db5cfQGwACsf
 
-On Thu, Dec 12, 2024 at 05:32:24PM +0100, Konrad Dybcio wrote:
-> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+
+
+在 2024/12/13 16:23, Baolin Wang 写道:
 > 
-> Do so in accordance with the internal recommendations.
-
-Your commit message is still incomplete as it does not really say
-anything about what this patch does, why this is needed or what the
-implications are if not merging this patch.
-
-How would one determine that this patch is a valid candidate for
-backporting, for example.
-
-> Fixes: b3cf69a43502 ("soc: qcom: llcc: Add configuration data for X1E80100")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Rajendra Nayak <quic_rjendra@quicinc.com>
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> ---
-> Changes in v2:
-> - Cc stable
-> - Add more context lines
-> - Pick up r-b
-> - Link to v1: https://lore.kernel.org/r/20241207-topic-llcc_x1e_wrcache-v1-1-232e6aff49e4@oss.qualcomm.com
-> ---
->  drivers/soc/qcom/llcc-qcom.c | 1 +
->  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-> index 32c3bc887cefb87c296e3ba67a730c87fa2fa346..1560db00a01248197e5c2936e785a5ea77f74ad8 100644
-> --- a/drivers/soc/qcom/llcc-qcom.c
-> +++ b/drivers/soc/qcom/llcc-qcom.c
-> @@ -2997,20 +2997,21 @@ static const struct llcc_slice_config x1e80100_data[] = {
->  		.bonus_ways = 0xfff,
->  		.cache_mode = 0,
->  	}, {
->  		.usecase_id = LLCC_WRCACHE,
->  		.slice_id = 31,
->  		.max_cap = 1024,
->  		.priority = 1,
->  		.fixed_size = true,
->  		.bonus_ways = 0xfff,
->  		.cache_mode = 0,
-> +		.activate_on_init = true,
+> On 2024/12/13 15:37, yangge1116@126.com wrote:
+>> From: yangge <yangge1116@126.com>
+>>
+>> Since commit 984fdba6a32e ("mm, compaction: use proper alloc_flags
+>> in __compaction_suitable()") allow compaction to proceed when free
+>> pages required for compaction reside in the CMA pageblocks, it's
+>> possible that __compaction_suitable() always returns true, and in
+>> some cases, it's not acceptable.
+>>
+>> There are 4 NUMA nodes on my machine, and each NUMA node has 32GB
+>> of memory. I have configured 16GB of CMA memory on each NUMA node,
+>> and starting a 32GB virtual machine with device passthrough is
+>> extremely slow, taking almost an hour.
+>>
+>> During the start-up of the virtual machine, it will call
+>> pin_user_pages_remote(..., FOLL_LONGTERM, ...) to allocate memory.
+>> Long term GUP cannot allocate memory from CMA area, so a maximum
+>> of 16 GB of no-CMA memory on a NUMA node can be used as virtual
+>> machine memory. Since there is 16G of free CMA memory on the NUMA
+>> node, watermark for order-0 always be met for compaction, so
+>> __compaction_suitable() always returns true, even if the node is
+>> unable to allocate non-CMA memory for the virtual machine.
+>>
+>> For costly allocations, because __compaction_suitable() always
+>> returns true, __alloc_pages_slowpath() can't exit at the appropriate
+>> place, resulting in excessively long virtual machine startup times.
+>> Call trace:
+>> __alloc_pages_slowpath
+>>      if (compact_result == COMPACT_SKIPPED ||
+>>          compact_result == COMPACT_DEFERRED)
+>>          goto nopage; // should exit __alloc_pages_slowpath() from here
+>>
+>> To sum up, during long term GUP flow, we should remove ALLOC_CMA
+>> both in __compaction_suitable() and __isolate_free_page().
+>>
+>> Fixes: 984fdba6a32e ("mm, compaction: use proper alloc_flags in 
+>> __compaction_suitable()")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: yangge <yangge1116@126.com>
+>> ---
+>>   mm/compaction.c | 8 +++++---
+>>   mm/page_alloc.c | 4 +++-
+>>   2 files changed, 8 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/compaction.c b/mm/compaction.c
+>> index 07bd227..044c2247 100644
+>> --- a/mm/compaction.c
+>> +++ b/mm/compaction.c
+>> @@ -2384,6 +2384,7 @@ static bool __compaction_suitable(struct zone 
+>> *zone, int order,
+>>                     unsigned long wmark_target)
+>>   {
+>>       unsigned long watermark;
+>> +    bool pin;
+>>       /*
+>>        * Watermarks for order-0 must be met for compaction to be able to
+>>        * isolate free pages for migration targets. This means that the
+>> @@ -2395,14 +2396,15 @@ static bool __compaction_suitable(struct zone 
+>> *zone, int order,
+>>        * even if compaction succeeds.
+>>        * For costly orders, we require low watermark instead of min for
+>>        * compaction to proceed to increase its chances.
+>> -     * ALLOC_CMA is used, as pages in CMA pageblocks are considered
+>> -     * suitable migration targets
+>> +     * In addition to long term GUP flow, ALLOC_CMA is used, as pages in
+>> +     * CMA pageblocks are considered suitable migration targets
+>>        */
+>>       watermark = (order > PAGE_ALLOC_COSTLY_ORDER) ?
+>>                   low_wmark_pages(zone) : min_wmark_pages(zone);
+>>       watermark += compact_gap(order);
+>> +    pin = !!(current->flags & PF_MEMALLOC_PIN);
+>>       return __zone_watermark_ok(zone, 0, watermark, highest_zoneidx,
+>> -                   ALLOC_CMA, wmark_target);
+>> +                   pin ? 0 : ALLOC_CMA, wmark_target);
+>>   }
+> 
+> Seems a little hack for me. Using the 'cc->alloc_flags' passed from the 
+> caller to determin if ‘ALLOC_CMA’ is needed looks more reasonable to me.
 
-If this is so obviously correct, why isn't this flag set for
-LLCC_WRCACHE for all the SoCs?
+Ok, thanks.
 
-Johan
+> 
+>>   /*
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index dde19db..9a5dfda 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -2813,6 +2813,7 @@ int __isolate_free_page(struct page *page, 
+>> unsigned int order)
+>>   {
+>>       struct zone *zone = page_zone(page);
+>>       int mt = get_pageblock_migratetype(page);
+>> +    bool pin;
+>>       if (!is_migrate_isolate(mt)) {
+>>           unsigned long watermark;
+>> @@ -2823,7 +2824,8 @@ int __isolate_free_page(struct page *page, 
+>> unsigned int order)
+>>            * exists.
+>>            */
+>>           watermark = zone->_watermark[WMARK_MIN] + (1UL << order);
+>> -        if (!zone_watermark_ok(zone, 0, watermark, 0, ALLOC_CMA))
+>> +        pin = !!(current->flags & PF_MEMALLOC_PIN);
+>> +        if (!zone_watermark_ok(zone, 0, watermark, 0, pin ? 0 : 
+>> ALLOC_CMA))
+>>               return 0;
+>>       }
+
 
