@@ -1,125 +1,115 @@
-Return-Path: <stable+bounces-104029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253AE9F0C1C
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:19:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0789F0BDD
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:05:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D970B285D4C
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:19:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBD5516938C
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 12:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01A61DF754;
-	Fri, 13 Dec 2024 12:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483741DF263;
+	Fri, 13 Dec 2024 12:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYi1Q7It"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SjXq9x9q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A701DF256;
-	Fri, 13 Dec 2024 12:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A251DE2B2
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 12:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734092360; cv=none; b=jaMuQbMQATnyQAXY8cr/VDMvFda9zpR9KI2gfobkF5iIguuE40YjJK0bFSwVW+CDqoZZaP8hRhEaIlLPc2RjzRs3ovYe0BXws1EEA0qCYhXBmterW7hHGMpVxJUSf+IvdHDVK0t1kBLHPXN0C1tbVBsSBklyyBq1WwNciWs/+tk=
+	t=1734091521; cv=none; b=E6OKrtiyMiJlyHNr2uot6zzJpn0KP3yyWGWM/K0JJ0K7Py6Sk5be9yjAgFbRMezf/5yxTZVdbqjcLJTT2Zk/J8pWY8OCBY6zkkzHctQu3AzKkVIH7rakOdRwAMd9gOzeEpwpzsHez14uNcWEVOZkCrgXbPrhb719xbf1wdEtNMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734092360; c=relaxed/simple;
-	bh=V9ONkfSkt72NTj06dq213k8hVFjsmB8vM3cYQuRVE4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kHgowJBChZgIbQO9EfPb91IR0tEju6FXZbzO0lYgDiOxwpVmQg5SMU1GGXA4PUnYPeef1UV6ShVPJZ/m8NKr/HHBiATbEoCWbg8UMQUdCzmqvc7pLQz1aLSeJBmb+Oa+12YKL0l/65IAQCNCNN9Nu3wmp8tD7wtfvmbngVZI3zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYi1Q7It; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF41C4CED0;
-	Fri, 13 Dec 2024 12:19:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734092358;
-	bh=V9ONkfSkt72NTj06dq213k8hVFjsmB8vM3cYQuRVE4A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nYi1Q7ItdOhMSEQOxann2ot9ltPpUGpeZQRQtlDBnshsotAQxzbZxDJG2rsatPDSg
-	 XKqomGizaEJByq1KsMbuXSGH6PcwsvhoFnJxVkCJ+uqoDr2pIlDFDU7BCmCrCIS05k
-	 v62AbhGDRF4/LtI1WfPAgnJSEfhsES4/Bx5LBt5w=
-Date: Fri, 13 Dec 2024 13:19:15 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	John Stultz <jstultz@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 5.4 000/321] 5.4.287-rc1 review
-Message-ID: <2024121303-polyester-entryway-de18@gregkh>
-References: <20241212144229.291682835@linuxfoundation.org>
- <CA+G9fYv+i=T0KeWvxhiCOFiMSmpUYeUOWwn_YunEaYTi8oA_Ww@mail.gmail.com>
+	s=arc-20240116; t=1734091521; c=relaxed/simple;
+	bh=LCjRVWpcZBGhW0HMGCq+B7gwylhE3p+P9sgcf/dKReE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I4PS8YWK/EmFtf2ARBqVA9YsM79BcQzTmVzLePvRFTEaFnqGj7PZi1RqyOKLLNXyqIHQMsNCDKBWoSG7LEEmehSn2bwb8lufhUYaRRukekOwub9yz0YZbeBW8dLWArBmh3TTHaeOldlYPr9sBLRbTK1cjjC8f0+fxpMjP1kGUTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SjXq9x9q; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734091519; x=1765627519;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LCjRVWpcZBGhW0HMGCq+B7gwylhE3p+P9sgcf/dKReE=;
+  b=SjXq9x9qzaV7+OWoNyZlyfL+c3IZ9zK3y0NyfLo4HlixWd4HfNnZDapU
+   7eyU7Nkz1Q/q6qYTaxUL/siCxtukVQXQRvVw5eW8A6HxNTO+u8H72dTBQ
+   306Ymk+CA3JPN5pjjt6GK7H5Kr42frehTkQ+u1LMoHLFDzob9oe76MfGj
+   o9/Sx81BHtSongT/AZNxNN41TGeR4OmqVZ+tUGKvzw5HfyEKkymgsMpFk
+   1P29QEn7mXVejg9sYOn7R4AMLsSoipkqsMKNgIfe9vSMixbu3/UAOl1ry
+   ObUq/lEe1Yy1w7pAc8dGI0sxhYXPMafRx8eimHbyFN+F/BJZtjkW2i4Uh
+   Q==;
+X-CSE-ConnectionGUID: HTKxajWYT3yZvTt1W/jtCA==
+X-CSE-MsgGUID: INIGo+LaQ2iCYIB+L23aRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45951326"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="45951326"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 04:05:17 -0800
+X-CSE-ConnectionGUID: e9UbHqKpS1qpGcwbRqh8MQ==
+X-CSE-MsgGUID: 6PC0MzlKRjyG7jMKuPReNw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
+   d="scan'208";a="127330960"
+Received: from nirmoyda-desk.igk.intel.com ([10.211.135.230])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 04:05:15 -0800
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	stable@vger.kernel.org,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH v4 1/2] drm/xe: Use non-interruptible wait when moving BO to system
+Date: Fri, 13 Dec 2024 13:24:14 +0100
+Message-ID: <20241213122415.3880017-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYv+i=T0KeWvxhiCOFiMSmpUYeUOWwn_YunEaYTi8oA_Ww@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 13, 2024 at 01:54:42AM +0530, Naresh Kamboju wrote:
-> On Thu, 12 Dec 2024 at 23:08, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 5.4.287 release.
-> > There are 321 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Sat, 14 Dec 2024 14:41:35 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.287-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> As others reported,
-> The arm builds failed on Linux stable-rc linux-5.4.y due to following build
-> warnings / errors.
-> 
-> arm:
->   * build/gcc-12-defconfig
->   * build/clang-19-defconfig
-> 
-> 
-> First seen on Linux stable-rc v5.4.286-322-g3612365cb6b2.
->   Good: v5.4.286
->   Bad:  v5.4.286-322-g3612365cb6b2
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> Build log:
-> -----
-> /builds/linux/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c:173:2: error:
-> use of undeclared identifier 'DRM_GEM_CMA_DRIVER_OPS'
->   173 |         DRM_GEM_CMA_DRIVER_OPS,
->       |         ^
-> 1 error generated.
-> make[5]: *** [/builds/linux/scripts/Makefile.build:262:
-> drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.o] Error 1
-> 
-> The commit pointing to,
->   drm/fsl-dcu: Set GEM CMA functions with DRM_GEM_CMA_DRIVER_OPS
->   [ Upstream commit 6a32e55d18b34a787f7beaacc912b30b58022646 ]
+Ensure a non-interruptible wait is used when moving a bo to
+XE_PL_SYSTEM. This prevents dma_mappings from being removed prematurely
+while a GPU job is still in progress, even if the CPU receives a
+signal during the operation.
 
-Now dropped, I'll push out a -rc2 soon.
+Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system buffer objects to TT")
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: <stable@vger.kernel.org> # v6.11+
+Suggested-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+---
+ drivers/gpu/drm/xe/xe_bo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thanks,
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 283cd0294570..06931df876ab 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -733,7 +733,7 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
+ 	    new_mem->mem_type == XE_PL_SYSTEM) {
+ 		long timeout = dma_resv_wait_timeout(ttm_bo->base.resv,
+ 						     DMA_RESV_USAGE_BOOKKEEP,
+-						     true,
++						     false,
+ 						     MAX_SCHEDULE_TIMEOUT);
+ 		if (timeout < 0) {
+ 			ret = timeout;
+-- 
+2.46.0
 
-greg k-h
 
