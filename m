@@ -1,162 +1,160 @@
-Return-Path: <stable+bounces-104098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C935E9F100B
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:59:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69639F1019
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 16:01:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F89D16A821
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 15:00:51 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271431DF759;
+	Fri, 13 Dec 2024 14:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fusBVjgN"
+X-Original-To: stable@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 848A82837C8
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:59:58 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413D31F4E54;
-	Fri, 13 Dec 2024 14:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bc9a/hKD"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C53A1F4E3D
-	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 14:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5C31E1C1B
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 14:57:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734101704; cv=none; b=beXQasP0cJGCjlyMTAh2cM358Qx2voMbul+yYsSMF1dmVzIRDZeRx24wh/41fVD9jKJgjYoNlTAZ5t/Ogm9R12wbVOIiVyGHJLgaZycf7LkdEZuk1jexLFs2ZTEsMrC5Es24KF6tEE2np9EXSmbQpgm0kykqiYBVSXnLhJyk2pg=
+	t=1734101823; cv=none; b=oaLnwRT4fG4wfhnpfvmvEhBpB2aR9pL/941QzLpqYO2C6X8hYkNd29Kh4/QU/qmo2IWC7U9332AdwaoGcFEiQFIsB160D7pNFO3l4ngWddn/+X77wXAD4TfgVDv8JkFO/A68y39cnb0JQxGH2yAv9E6mhloeFCDpcjqkBj3KX1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734101704; c=relaxed/simple;
-	bh=btFJAKLRpjAbwRO13C2RFWSubPCt1TUEVwik5JGJNfA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Wygjvkofep5O6tWmD8Cmv4wDamfCKfjnQvvy/v8he2ufhxZjdsGa97pBhiVef4TwPDB3BEAUgR32tCaTx4RtsocLxZsGJZvdtEQkYKtybHrqocyYlutsUgGLlEbN5SVipCqYx8YY2zHOOqwNdALz5QCABwT5IzLMEYg2THD7UC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bc9a/hKD; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3862a999594so101936f8f.0
-        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 06:55:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734101701; x=1734706501; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3joqArWq8Xo0bUXq2TH4e58G2D5QNG6LG17sSDpr+L4=;
-        b=bc9a/hKDmzrY+IXueRDTfse1GtoDgm9OIJcp1MsndTzkL+j2nvaQ6v5ZW+S+dzX4gG
-         xUN56/TGVLcfjZh0L2LgXfQ3dmJPbiDS//UCGfZ8rForxSipIClKY1tmsZ5X2GHKQokR
-         /5+mYC7/DM/y7INGNWHtQX9oVvDoAlAuVm+AjjCaRgxCNbIJE8dxBYGwHB5fQiAJNoaH
-         wvFd3gw4AKb4yKhy8VNjlzO3bQ9Q9zIq78kC6Jl0bznWrmhGXpN8w2ES2ZXGpLiiRBL2
-         2sh/CylosFaxZMyo3XG0WrJ5xcW0uA2bb7c25RfVHWCHIGb+G2qS1PmQNJScybfmkqJd
-         vLMw==
+	s=arc-20240116; t=1734101823; c=relaxed/simple;
+	bh=CK3rLLzpiXhXNZv2awCI5dlzwKLn18KynIqrlKfIWS4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N1m9uI+3QOb39n4st0oZlnUCeGh3lbT8BDZJEI9PbDJMROGMmjs7NYQF//M6nZvTTpVGxElx59l/Da5KwgqEcVgoNQeJx9xDGgJ62gNFqoMwUieBEcxjJzVsyYQpnq2sw7w/pwz+cABf+ZcM9w25fml/xSeFVodHL5Fqm/rOW6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fusBVjgN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BD9pMKv018942
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 14:57:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ic4TkTyxhhqanbmclHumG0uyeTN9c7JqFV55yYmF88A=; b=fusBVjgNwhYqW4ig
+	YOl27Kb6kcVo6ckdg9nFu+xV5KOTdlE1CpRDnVYBfn0Ow1NFiufaWZ+p5h/gxDS7
+	DdB5GeqILVAbkbbunHfRD9XzrpH0gSiFUc2ceQLBoiJEPt0m+i8J1l5LBlj5xrKP
+	FEJiwgyjaztvqbCqE84vYI7vRx14/IhIvQ/NnShXu/T6/UskRJ7vXhFN+kcXjxyt
+	QLLBhOW0GvYlDnK0L+tpfR47paPPE+JT6Q52KhS5LISiA1bbpuhbDGYQkUTENAjc
+	idgIcsPOPI7mfpc3LEoPfXgAeFuboZa31XXXFuj9RdsDph6svWkvDYotxu7BJhzk
+	kLuz+w==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43gjnb0ug5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 14:57:01 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7b6e5c3a933so28841985a.3
+        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 06:57:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734101701; x=1734706501;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3joqArWq8Xo0bUXq2TH4e58G2D5QNG6LG17sSDpr+L4=;
-        b=TKNJSuZrJW4/gqPJX51iuOwpRgzkkEa5yw+8u0ywxaINCRoiiyEt3bIOuWfwETs42o
-         RpiDjkNEt7PMaFbgc7sBH4y0bdl8HrQG0whX2Gy/m196+8iBsEGO7U7uuyDx3D7m3l0j
-         eS8+N5SQYJa8ptMDXJhfgapVphlPF2ETbXHtXxs7Qs4wJ6rAFTn96trln7n4YHl8v0yO
-         rh7gZQB1sTDkDcg4AG3RL4aQCERrgPAPJh0bcxpgxBn4IOT7NjyQ54QHqrx5phL5R8uL
-         4X7zYALfYXJvIuEsVzxtgoEn+la5v4+mJ0SGWpylMEcdn+rPJMeJFxZzpRV3HXfDhHIV
-         zQhA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5Q0n97o63ujYtmwo4ZrWk+JuZ0WWyV8nW7hDpj3/3tAiGCoVMbwyKnWZ4mzPcCBm8wPV5fJY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRtMRXYwUjSZ+nVm24WsZU1T34K23NMPLGJR7lBUIs84Q/61Yz
-	Nj+ivoBaXoeJ/q0jBqhXyzyMC+2RLLDSxiGh9z6NfMjOL4MqKMLeLVL8/1BR9gg=
-X-Gm-Gg: ASbGncs5OCpU004m2GnNkfcpIGquWfgvX1luNd69rijvoiBCa0aHG0HWJEQXJ993Fms
-	j4wqEvKyl/qTT45VqxaauJd+LgHV5j9gbl7Niiofj1hYdJluoJCdELqR8XsafLMaEaH9ZD2NIU7
-	3GTDrxR69ThjswKft0rETN9AqiXlSWbb2Wuikq86hEhTl5mQcBaH+JWD7EpU91+Sc/0AlMASAjR
-	cwo35Gk3/Zc0Dmu7kFe7rVWIbWeKLxSLos9HxSIm2vX5my/K9ANv4ulqjKMyAx5l3dT11JP
-X-Google-Smtp-Source: AGHT+IGktHKSCT0/oB7TdaTtItEMuQ9ENjK+o1VpLL3HPmQ+jQAUEgWvpC4FVpOl83eBSFYkFkteUw==
-X-Received: by 2002:a05:600c:190b:b0:434:f1d5:144a with SMTP id 5b1f17b1804b1-4362a996bb0mr9288285e9.0.1734101700656;
-        Fri, 13 Dec 2024 06:55:00 -0800 (PST)
-Received: from [127.0.1.1] ([178.197.223.165])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436256b42c8sm51547305e9.29.2024.12.13.06.54.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Dec 2024 06:55:00 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Fri, 13 Dec 2024 15:54:12 +0100
-Subject: [PATCH v3 23/23] arm64: dts: qcom: sm6115: Fix ADSP memory base
- and length
+        d=1e100.net; s=20230601; t=1734101820; x=1734706620;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ic4TkTyxhhqanbmclHumG0uyeTN9c7JqFV55yYmF88A=;
+        b=tN7egtnBD+9HmCBCdcyUQZK5SohicroCgVeRIHfms6TBZDe+QUORaWWHK7QrEDhq5/
+         7vHegIexklCSLqoAUBW+0KsZibK9k+CgFjNuOiHvn5oPTJE5InHV01/gw7sNnByOzx3p
+         GFtOqWcIvv2zzggI3FsKXC04Iqi+lpkaGHUrrjVlseFrPbvelB4dLDlnScl9mqTUW804
+         eK88tbRmHh5ibwHHCA7Dl05aT906iqGJdw4ZJpd+Vor3lGDom69p/t8B0rydZKY3HJ0H
+         qRA9dYkHLrr3nu+1Ucw3sa0NcNjNLb9iRgrZ1VbUz7Sj1WPiNhHKkLIK8VBHe5dHy/KT
+         cu2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX4URjURYGyLmfjaBICDzueJwUPRWQ65L5Xrmd5zt/y2zRkNYMjnXOiae6p6PFQjGv54tcUh0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdRs+Ag1O1jEWO9T0LN8MqL0/aJohrc8VF3Iv5lEXO9sxoE3hw
+	WQ3jUvdHKBDrCt/+n0YPyNSF1zVFdDivvepwy7/zyIjFeALbijb4qtHvqaVKSvi2nk8s66LFQpz
+	qLv9YMToVx52IDUYHpvV2wqLFZfxEdtURTtaNkApG2HWQ/UxT7sJ2nBU=
+X-Gm-Gg: ASbGncudp1/QxBqLa7IcjwwP1+Wbday//drh01ePLrYKtHDrkqx5/Htri5gtuEDKjXa
+	0eP3zvs8Xulr+M5B8csSdCFlRXGRGmm2vpKlInc12hmgyqA+NK5yPnBguUzFyjkbZ4JdYUWcKgn
+	Z7F937AMhA8kHZKKVQZ7frJHkVYd06v5yC9uiqy7FKZOJSY2F2aB9nUADsVe3+AqrfZ4jzozQ2g
+	4C076K2eNU0G7lGGAK91p0f0n3Uvdm6jRBljo9u44WvFbUdW8VtSwSOrNg8cgW0Cik2p97MGfgE
+	n66DDkoOldO2DmhPPtIBaF1RZtmnQhcEty92
+X-Received: by 2002:ac8:7f8a:0:b0:464:9463:7475 with SMTP id d75a77b69052e-467a571a0f3mr18700571cf.2.1734101820373;
+        Fri, 13 Dec 2024 06:57:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHODc20z7j/rJOwWgwD5YBYqoVh/j9s6j/7ssKsXE/JLg/BfDiEG2ghMhwDfPjVViS3TL+jcA==
+X-Received: by 2002:ac8:7f8a:0:b0:464:9463:7475 with SMTP id d75a77b69052e-467a571a0f3mr18700361cf.2.1734101820032;
+        Fri, 13 Dec 2024 06:57:00 -0800 (PST)
+Received: from [192.168.58.241] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa6a394d380sm501367066b.77.2024.12.13.06.56.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Dec 2024 06:56:59 -0800 (PST)
+Message-ID: <9a7f43fd-a720-481e-b8ca-68150c202b74@oss.qualcomm.com>
+Date: Fri, 13 Dec 2024 15:56:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241213-dts-qcom-cdsp-mpss-base-address-v3-23-2e0036fccd8d@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 20/23] arm64: dts: qcom: sdx75: Fix MPSS memory length
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Abel Vesa
+ <abel.vesa@linaro.org>,
+        Sibi Sankar <quic_sibis@quicinc.com>,
+        Luca Weiss <luca.weiss@fairphone.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20241213-dts-qcom-cdsp-mpss-base-address-v3-0-2e0036fccd8d@linaro.org>
-In-Reply-To: <20241213-dts-qcom-cdsp-mpss-base-address-v3-0-2e0036fccd8d@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Abel Vesa <abel.vesa@linaro.org>, Sibi Sankar <quic_sibis@quicinc.com>, 
- Luca Weiss <luca.weiss@fairphone.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1422;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=btFJAKLRpjAbwRO13C2RFWSubPCt1TUEVwik5JGJNfA=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBnXEqbINGZnMb1v1KDLbjoOCnX+GbVHVNXy5mA4
- WDf6tWsJfOJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ1xKmwAKCRDBN2bmhouD
- 17PFD/4wDPVn9DwgACTp1CKbltZWBU2vDSSj4msZ9x6VJSIuK4O9FcxB/nwzVo2Ds4eej5EibWV
- 6K1tmQh7CCeQfm27kvODPLfQYf2VXv2myyPHOszp/dOcJ4uOEkpJKSdtviHsrBgyFUHnnfNCS8X
- 2tf6WsWhs4hASTsnNmKXwHKRA663W+7V2K6yK/fkKM7d5+qWz8ypLa7fwtH3zLesPu1u9OrmaYn
- n/2tzZqwogBs+ZOEnETbMtXwBC3jKmE1wGrrO1BSn4Ikdz4l1m8o/kOjO4rniLUb+Ait81kHaCJ
- US+LUhgLpTxVo58fL6b4PzvZ1gjwgqkr8NAjssBB4qx8Qhq3s5Z59UrtHLPGVgLK6XklyS0Oq82
- rENzyVOMyFdHh0EhMg2WyzD3vzLWpamOPBCuhK9HhpQ8gDvsV21UMYq4ijttDtsTJXnoTlHvFw8
- JHKRkbeizqDr9NjLhA1CFRCfiX0JmlNLp9f6Or6sgTMd3nIKpdXY8hv8f64NwYsePApXkRacaTD
- tJUMCUPcJ750CgDypxyjyLPa933SYUuU5rLWqNNT3/pk+Uf2ZH/tCXJzlL+ORTl5EzWKjREcMDA
- KgX2AY7YDuKeq1b5O+AOkTSeOelMlWBAfNIE+URqC8K2fomqBL0sNV7zoF4SmFtQxAu/EhtuMmQ
- TTKTRNdQUm8MKiw==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+ <20241213-dts-qcom-cdsp-mpss-base-address-v3-20-2e0036fccd8d@linaro.org>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20241213-dts-qcom-cdsp-mpss-base-address-v3-20-2e0036fccd8d@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: m6trtdvZyW3RY2NdLFkszIUHDvFI8kPA
+X-Proofpoint-GUID: m6trtdvZyW3RY2NdLFkszIUHDvFI8kPA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 phishscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 malwarescore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=912 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2412130106
 
-The address space in ADSP PAS (Peripheral Authentication Service)
-remoteproc node should point to the QDSP PUB address space
-(QDSP6...SS_PUB): 0x0a40_0000 with length of 0x4040.
+On 13.12.2024 3:54 PM, Krzysztof Kozlowski wrote:
+> The address space in MPSS/Modem PAS (Peripheral Authentication Service)
+> remoteproc node should point to the QDSP PUB address space
+> (QDSP6...SS_PUB) which has a length of 0x10000.  Value of 0x4040 was
+> copied from older DTS, but it grew since then.
+> 
+> This should have no functional impact on Linux users, because PAS loader
+> does not use this address space at all.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 41c72f36b286 ("arm64: dts: qcom: sdx75: Add remoteproc node")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> ---
+> 
+> Changes in v3:
+> New patch
+> ---
+>  arch/arm64/boot/dts/qcom/sdx75.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdx75.dtsi b/arch/arm64/boot/dts/qcom/sdx75.dtsi
+> index 5f7e59ecf1ca6298cb252ee0654bc7eaeefbd303..a7cb6bacc4ad5551486d2ded930c1a256d27655e 100644
+> --- a/arch/arm64/boot/dts/qcom/sdx75.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sdx75.dtsi
+> @@ -893,7 +893,7 @@ tcsr: syscon@1fc0000 {
+>  
+>  		remoteproc_mpss: remoteproc@4080000 {
+>  			compatible = "qcom,sdx75-mpss-pas";
+> -			reg = <0 0x04080000 0 0x4040>;
+> +			reg = <0 0x04080000 0 0x10000>;
 
-0x0ab0_0000, value used so far, is the SSC_QUPV3 block, so entierly
-unrelated.
+I think this should be 0x04400000 instead
 
-Correct the base address and length, which should have no functional
-impact on Linux users, because PAS loader does not use this address
-space at all.
-
-Cc: stable@vger.kernel.org
-Fixes: 96ce9227fdbc ("arm64: dts: qcom: sm6115: Add remoteproc nodes")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
----
-
-Changes in v3:
-New patch
----
- arch/arm64/boot/dts/qcom/sm6115.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sm6115.dtsi b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-index 5af2c7a3f6ff67c216f1c817a3d5f54e10b65450..7016843c2ca560e93dcb7e3a6da7025cb001eef0 100644
---- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -2670,9 +2670,9 @@ funnel_apss1_in: endpoint {
- 			};
- 		};
- 
--		remoteproc_adsp: remoteproc@ab00000 {
-+		remoteproc_adsp: remoteproc@a400000 {
- 			compatible = "qcom,sm6115-adsp-pas";
--			reg = <0x0 0x0ab00000 0x0 0x100>;
-+			reg = <0x0 0x0a400000 0x0 0x4040>;
- 
- 			interrupts-extended = <&intc GIC_SPI 282 IRQ_TYPE_EDGE_RISING>,
- 					      <&adsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-
--- 
-2.43.0
-
+Konrad
 
