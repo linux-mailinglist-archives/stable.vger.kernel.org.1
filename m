@@ -1,98 +1,104 @@
-Return-Path: <stable+bounces-104047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714A69F0D17
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:13:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDDB9F0D16
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 399C01668B1
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:13:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B01E11885577
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62941E009B;
-	Fri, 13 Dec 2024 13:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B57A1E048C;
+	Fri, 13 Dec 2024 13:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lreHv4Bg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FDydV70I"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBDF1E0084;
-	Fri, 13 Dec 2024 13:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0F61DFE38;
+	Fri, 13 Dec 2024 13:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734095602; cv=none; b=jzhbZ+H6u7pa67RXfvzNPXPl8UllXcbuyEZRGqZv6j/bXkEdbmypOUg/Dmilae1TWUiRQVIFSSSRJrKjw7IFDCBpks9/xABwW/onFF918UU/C7lLfKEy06B//lG8DwVTdrNnTzrge3mT3+eGE0RPWdod0vIG3uEQ10uTJSPMttU=
+	t=1734095590; cv=none; b=SaWWFM5T/Hdz+Y1XBu8xUEyNqqFphRiTSpgsgo+H4H8ioaFKo3qBzOQu8zNLx/DmnjN+IRQZs8F4Ez7QxDp3D5SlFBXJ2Br3EUG5RXWR8xEA1BvF3qOM3q2lKBAezFxO9GexhunvBuYLqbSDY5OgA1ECtjrsJRKhvqLRhCiwtqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734095602; c=relaxed/simple;
-	bh=DNhLWtHd+rI37iA/grjqQn+TyGl+nRz6iImpeWLn97c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q6cXVCHOAh13d2F/3xbgxqKVc+K2o+mgfJJtNChCbj7hNs0SLuGJMeatEZeVxsyGvy3a9mgY+ypSi5dB5igTyd5bS48YA5vD0boc/9Cewxjnod2A3u9TqKCdU2rY4kceSHfVhM8CImpFfjLutAsi1/HPNRlBhzdhLxhFnTRSIjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lreHv4Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3181C4CED6;
-	Fri, 13 Dec 2024 13:13:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734095602;
-	bh=DNhLWtHd+rI37iA/grjqQn+TyGl+nRz6iImpeWLn97c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lreHv4BgMI2Ish9fWuayuj0nUCPCO5CUzoF3JL6lJVHcii9YCmHS31lMBBOfxX1qk
-	 +u1XCet3HfcP7yM8YQBeTcvdQcbGVoeRL7Aodex1xaL+j2iOdQ/V/11g/CUITxRs8z
-	 UhUA0mKDFKb5aD6kRsCU/KyakM+r/X4HevLxHSGhIBsIxF8kDAJFSTrjduUOgQuK1i
-	 TmjcK0oDC8R3CJuqnDWXFIyOQa34uT06eEbPDQnOSwgUhF2dyz8j2Ak+Dg4QEzOUID
-	 xHUgMD2Lj4E/N9Gi5p/oObL2b3KB0OumpAuJXXo1UNCDEZY4h8Ao8UaTFjrj0fpvxc
-	 UWrZBa9yn1O4w==
-Date: Fri, 13 Dec 2024 13:13:15 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.1 000/772] 6.1.120-rc1 review
-Message-ID: <8c4ebee7-a086-4e1a-ae1a-2da26a9cd911@sirena.org.uk>
-References: <20241212144349.797589255@linuxfoundation.org>
+	s=arc-20240116; t=1734095590; c=relaxed/simple;
+	bh=zepT5xG7KjwD5ahzrLrclLsiNWQp5vHsbH5ekCNy+sw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MMqLlcyklrOIKz3Jv9OY2V4/r0Fdv8TVLc+1EgZhVQgsem2ibgBx3zXOllOL1YiJEfNMfgnMEjy4SxRJ84TrCQGheVrQUHooqKT8q4tOYB65MO66WiFj3YIle2ociq4x5ps3cB4/+6Vfxz/9RRhiCMo45/A0do0yXP3qOOFZgZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FDydV70I; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734095589; x=1765631589;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zepT5xG7KjwD5ahzrLrclLsiNWQp5vHsbH5ekCNy+sw=;
+  b=FDydV70IAg7cllubp0yQCAFx/vNzFKhRBtG9FHhnYYN7CGahlT3fdv3E
+   TO1C1xXj8xV1I/ILa6LdaYa9Zfbb0s/K5AUtfXF0Bb5n47CO/kEZvkZVw
+   4SPN6vxdGBWzLTRnDT45eisA6WfV1uEozlSmSz4IFlr3z3NOmcc8vs3ll
+   G4dp7d80k/LZ8/MWyIe4Z1FM8ie1UMqCEvmesB+FnbaHux9bzfu4jIBvy
+   jGfXxrjN4nZ/3CWpMfH9x1mP4pweOkBv3DhXOW+EeSVvFsTksRSCrASQx
+   fsnkjqHhaCtOsuWJptkYWOgAtAroPO+wF66ZJmDyZ7vHJA3ohvBe3wr9x
+   w==;
+X-CSE-ConnectionGUID: C35YZc3OScCO0zqCH1QOIA==
+X-CSE-MsgGUID: wtkbQhxtT+621pZsuhlX0A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="34782339"
+X-IronPort-AV: E=Sophos;i="6.12,231,1728975600"; 
+   d="scan'208";a="34782339"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 05:13:08 -0800
+X-CSE-ConnectionGUID: DASJJ62BTauxD0qBdcGa9A==
+X-CSE-MsgGUID: T6kRZJIHQJufkwfPBmAufA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="97321052"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.245.190])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 05:13:05 -0800
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org
+Cc: linux-sound@vger.kernel.org,
+	kai.vehmanen@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	pierre-louis.bossart@linux.dev,
+	stable@vger.kernel.org,
+	cujomalainey@chromium.org,
+	daniel.baluta@nxp.com
+Subject: [PATCH 0/2] ASoC: SOF: Correct sps->stream and cstream nullity management
+Date: Fri, 13 Dec 2024 15:13:16 +0200
+Message-ID: <20241213131318.19481-1-peter.ujfalusi@linux.intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KjKo2+ea8FWMSyUr"
-Content-Disposition: inline
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-X-Cookie: Not for human consumption.
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
---KjKo2+ea8FWMSyUr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The Nullity of sps->cstream needs to be checked in sof_ipc_msg_data() and not
+assume that it is not NULL.
+The sps->stream must be cleared to NULL on close since this is used as a check
+to see if we have active PCM stream.
 
-On Thu, Dec 12, 2024 at 03:49:05PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.120 release.
-> There are 772 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Regards,
+Peter
+---
+Peter Ujfalusi (2):
+  ASoC: SOF: stream-ipc: Check for cstream nullity in sof_ipc_msg_data()
+  ASoC: SOF: pcm: Clear the susbstream pointer to NULL on close
 
-Tested-by: Mark Brown <broonie@kernel.org>
+ sound/soc/sof/pcm.c        | 2 ++
+ sound/soc/sof/stream-ipc.c | 6 +++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
---KjKo2+ea8FWMSyUr
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.47.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdcMusACgkQJNaLcl1U
-h9C56gf8CLzXMlmpIZ8/4u2Zk9uSuOhydvxtRgswdKT4Vm7iXOGr5sgxLZRAnM5/
-sTs5DjUd53kGoxNxAIlJrjMuZVTrQi1uQj/o3LgNGhu/GlyqY/boTpJqIQIq2xs0
-52t2MA86jIvxrUX5QaYfK/zvAEHDE85UgutVRqNQIod49AzBjzd68U77IENyCCLq
-L7aOBTyj+HOlhqSnJCCHJq0PJm4AAUwUjLeNzDFk/JdtIFm3unxpbiMw4rWjI1t2
-qjJ/fqNn+0hqEROXGtcdzFHJRMwp+0k8QPyFPQOdjAALVE1AvNbJtFGcf+Vem1i5
-cJlAhsYaPczhG69bvHy0SZnixkbv2w==
-=he6L
------END PGP SIGNATURE-----
-
---KjKo2+ea8FWMSyUr--
 
