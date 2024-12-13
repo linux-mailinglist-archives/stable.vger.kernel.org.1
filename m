@@ -1,173 +1,180 @@
-Return-Path: <stable+bounces-104057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4DE9F0E16
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:57:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F259F0E1E
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 14:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED079169EC5
-	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:55:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18DAD188709B
+	for <lists+stable@lfdr.de>; Fri, 13 Dec 2024 13:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF99A1E2821;
-	Fri, 13 Dec 2024 13:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FB11E0B66;
+	Fri, 13 Dec 2024 13:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXNAEqTQ"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dbOMxGJ5";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Vqgdzmdo";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ma+jVbtT";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mzMg5Kgy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436D91E1021;
-	Fri, 13 Dec 2024 13:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF041E0DAF
+	for <stable@vger.kernel.org>; Fri, 13 Dec 2024 13:55:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734098017; cv=none; b=przH49Ugaq/i/Rahsil4x3uTBGMIumzihSE9A5K+USlGdiK1+2zh+zrrmlY/BDDwSOCreR2Y1OIU5WyKPrk2dB+PwYsgcWJ5kRj/tkXslxe7WDY3ClPn2u4N52HiPWuRLc9Xf2Hj1bDQn9faXKtWSD82YKOigPde85EqNL2zAlo=
+	t=1734098107; cv=none; b=mcLAhiNrzye91d/CyXhAjDp80pK0NTWFzRQVZLTtRGgdSp79MiSFgUz6a6N1p7ndKs+eTyLJBVjj95AKy2q7qK4bUlrrELkzv8I5nw41IsPvR5CK4454QEjf1YkUutrt+Wehd9OX9uHVt5pe/iJXQ3/Q9n2xQI41oSGUe+B/HyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734098017; c=relaxed/simple;
-	bh=RLrPP1UOgG1fZPu3wenA1ItNRecGsfpipjwJK5Rn8So=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZtDCqE1YNaYKVxAMYC5orGnfbot/1YocrE+73e05qOtMjUxl2y4vl74bi1z9MsZcZuUN1lHipEwcHZ0os9xA7AI5dWi/oa7vonBzCzgqXo5sK0NsLF2q4/6RwXcmRbrgJRWZtUCf6nRaQq3WkVZihIpiAphel4PHyGxf+6Z1eNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXNAEqTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B11A3C4AF0B;
-	Fri, 13 Dec 2024 13:53:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734098016;
-	bh=RLrPP1UOgG1fZPu3wenA1ItNRecGsfpipjwJK5Rn8So=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XXNAEqTQ92uJ4veGQ6SqqDIhvdN2aBWbk8/iULZqM5iMgy5XWi7+b5/wBH/WYs8q4
-	 NQlikAdOn22ZzZMVYfOxRnIiuHkvVB+VJrMky65yRv2lLRagDNE/KDSGXsjuH8NdyH
-	 3jndUqkUS/HUA1RJTS1nu8nRUBC9Vhdr5Z8Tmtrc6HyR9S9++kWWAW229pTTbNE3ur
-	 9G6CitFRMEyKTpVI/OwOh+zBgVW44UypXhbrqiIUO1GKqDMD0RL0JkdOlmdzU+Rs0U
-	 VH7ZV1yXVU8TBbdPpIedLc3+qmhiJlLi+i0K2Nq3H1X+GL/aQgmgf6X7mrQrnmJpyf
-	 btHzdqpoLSzMg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 937C8E7717D;
-	Fri, 13 Dec 2024 13:53:36 +0000 (UTC)
-From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>
-Date: Fri, 13 Dec 2024 19:23:31 +0530
-Subject: [PATCH v2 3/3] scsi: ufs: qcom: Power down the controller/device
- during system suspend for SM8550/SM8650 SoCs
+	s=arc-20240116; t=1734098107; c=relaxed/simple;
+	bh=26Bafj+z7PhHgr5lw9zvsTI6tdl3kohtMbqisDomtCE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ESGYRtlCyAphGOG8QWHlRyAc7SNIXu4K0etwymYUPv4uB5XdXqiNVJyxduAVqoL2ndSDt+R1RETOc04c0pHoSE6JhP90spNm4wMVaSlFI55IIh6m9OpMKWNwzqw2GGDgww9SaPjl2cDxtgVZhPPqepwSwRSDV8j00PnYi8ER+Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dbOMxGJ5; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Vqgdzmdo; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ma+jVbtT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mzMg5Kgy; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A0C7C1F785;
+	Fri, 13 Dec 2024 13:55:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1734098104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fNqUB8mbGb3Mza9CFQRmuUePzkHL5AhzBAkZGi3fxYI=;
+	b=dbOMxGJ565lChGNcncbAloDiU0hkRnx3XKHb2QKcjMEem4UsWlA8mtPDKfEwMpfRTAXjB3
+	T0YCafO6V4zTcbRI2usxKzZWXiP7LusgtOeoPztpVH23QDOAezuv3H4SJZqfi2Q4kSYq7q
+	NNnmP+CrKLY3ueT3i/VQGmacD7CysDw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1734098104;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fNqUB8mbGb3Mza9CFQRmuUePzkHL5AhzBAkZGi3fxYI=;
+	b=VqgdzmdoMdjjF0lEwEQrACY5kM4gQxZQn3s4PbKDauEch3Ymxmf/26rF2w2dk7QgoXUJUw
+	cSnw/k9qlZcfFIBg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ma+jVbtT;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mzMg5Kgy
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1734098103; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fNqUB8mbGb3Mza9CFQRmuUePzkHL5AhzBAkZGi3fxYI=;
+	b=ma+jVbtT7a8AFMq7gCSvCrDjRAaxHLzcPcGN+/MQGiph0bfdHAm7BFU2OZViLi8KXuHrW2
+	pFcc4+F5vGztd3QJHAfZ7kBX3TykJYXamFW1llvv3QQZhMban+cWpaewm45WKDQkwR0N+6
+	Ej+YOtrxX5w8f8HUwckO4p2P05Ho0eI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1734098103;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fNqUB8mbGb3Mza9CFQRmuUePzkHL5AhzBAkZGi3fxYI=;
+	b=mzMg5KgyGJPHGBqlrDn7MU50HbYZYBuo0noY/YQ701rPqr6WwyQYWxzJwqXf355udg9mgk
+	VoICQXcOdqeFuTDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E5DF137CF;
+	Fri, 13 Dec 2024 13:55:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wD35Ibc8XGfzEgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 13 Dec 2024 13:55:03 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id ECF43A0B0E; Fri, 13 Dec 2024 14:55:02 +0100 (CET)
+Date: Fri, 13 Dec 2024 14:55:02 +0100
+From: Jan Kara <jack@suse.cz>
+To: Philippe Troin <phil@fifi.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	Anders Blomdell <anders.blomdell@gmail.com>,
+	Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.12 162/466] Revert "readahead: properly shorten
+ readahead when falling back to do_page_cache_ra()"
+Message-ID: <20241213135502.bgtghwphkezyfvob@quack3>
+References: <20241212144306.641051666@linuxfoundation.org>
+ <20241212144313.202242815@linuxfoundation.org>
+ <4ab51fdc37c39bd077b4bcea281d301af4c3ef1a.camel@fifi.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241213-ufs-qcom-suspend-fix-v2-3-1de6cd2d6146@linaro.org>
-References: <20241213-ufs-qcom-suspend-fix-v2-0-1de6cd2d6146@linaro.org>
-In-Reply-To: <20241213-ufs-qcom-suspend-fix-v2-0-1de6cd2d6146@linaro.org>
-To: Alim Akhtar <alim.akhtar@samsung.com>, 
- Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- Abel Vesa <abel.vesa@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>, 
- Nitin Rawat <quic_nitirawa@quicinc.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3153;
- i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=dm+C1IineBDRJt5UyRNTw/yDrjuto+TzGCEuC82e76E=;
- b=owGbwMvMwMUYOl/w2b+J574ynlZLYkiPsYk5XdcQFOSdlJb88sca9c9lF9+/U52kUZDiuavBQ
- jI1S0Ctk9GYhYGRi0FWTJElfamzVqPH6RtLItSnwwxiZQKZwsDFKQATWSPP/s9a+p95776Zt1rF
- kqQX+kyw0jFp1D954eYuWx4+VgHViTseKmY/c3hR9+i3dN3ZNo1eLo6T/3bVBn5mTJRg0v214/E
- 27+0zQrnfG5j5h8+QDy8q7dKqc/TOqV7NKebmLVkvuuID/5ED3NOn/N3W32zgFLHK5V69vNUUCf
- 2VxbV26VJO0kcYZJ7yqGQY6HKWsMTO3pGfujD72vRv9VXdl1udnH6/W6AavC5Z1ox7gckzt9XuM
- plhFiprrGYHWWxNqZl2a/arq1bfdbp+T6t+lmls+rKH1zEppLl0tW/n4Vs/d9aIhK/98nea6O41
- trNsMlz3N4Qr/3z7O4Vtj1iP2aZ37poTr2Q9Fkz14nsIAA==
-X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
-X-Endpoint-Received: by B4 Relay for
- manivannan.sadhasivam@linaro.org/default with auth_id=185
-X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reply-To: manivannan.sadhasivam@linaro.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4ab51fdc37c39bd077b4bcea281d301af4c3ef1a.camel@fifi.org>
+X-Rspamd-Queue-Id: A0C7C1F785
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,gmail.com,suse.cz,infradead.org,linux-foundation.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim,suse.cz:email]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -2.51
+X-Spam-Flag: NO
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+On Thu 12-12-24 10:12:54, Philippe Troin wrote:
+> On Thu, 2024-12-12 at 15:55 +0100, Greg Kroah-Hartman wrote:
+> > 6.12-stable review patch.  If anyone has any objections, please let
+> > me know.
+> > 
+> > ------------------
+> > 
+> > From: Jan Kara <jack@suse.cz>
+> > 
+> > commit a220d6b95b1ae12c7626283d7609f0a1438e6437 upstream.
+> > 
+> > This reverts commit 7c877586da3178974a8a94577b6045a48377ff25.
+> 
+> Isn't that moot now with 0938b1614648d5fbd832449a5a8a1b51d985323d that
+> in Linus's tree? It's not in 6.12 (yet?).
+> It may be worth backporting 0938b1614 to the stable tree, but it's
+> beyond my pay grade.
 
-SM8550 and SM8650 SoCs doesn't support UFS PHY retention. So once these
-SoCs reaches the low power state (CX power collapse) during system suspend,
-all the PHY hardware state gets lost. This leads to the UFS resume failure:
+Hum, I don't think it is moot. Due to the change this commit reverts, we
+could have been calling page_cache_ra_unbounded() with huge nr_to_read
+value. I don't see how upstream commit 0938b1614648d5fb helps dealing with
+that...
 
-ufshcd-qcom 1d84000.ufs: ufshcd_uic_hibern8_exit: hibern8 exit failed. ret = 5
-ufshcd-qcom 1d84000.ufs: __ufshcd_wl_resume: hibern8 exit failed 5
-ufs_device_wlun 0:0:0:49488: ufshcd_wl_resume failed: 5
-ufs_device_wlun 0:0:0:49488: PM: dpm_run_callback(): scsi_bus_resume+0x0/0x84 returns 5
-ufs_device_wlun 0:0:0:49488: PM: failed to resume async: error 5
-
-With the default system suspend level of UFS_PM_LVL_3, the power domain for
-UFS PHY needs to be kept always ON to retain the state. But this would
-prevent these SoCs from reaching the CX power collapse state, leading to
-poor power saving during system suspend.
-
-So to fix this issue without affecting the power saving, set
-'ufs_qcom_drvdata::no_phy_retention' to true which sets 'hba->spm_lvl' to
-UFS_PM_LVL_5 to allow both the controller and device (in turn the PHY) to
-be powered down during system suspend for these SoCs by default.
-
-Cc: stable@vger.kernel.org # 6.3
-Fixes: 35cf1aaab169 ("arm64: dts: qcom: sm8550: Add UFS host controller and phy nodes")
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
-Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Amit Pundir <amit.pundir@linaro.org> # on SM8550-HDK
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/ufs/host/ufs-qcom.c | 5 +++++
- drivers/ufs/host/ufs-qcom.h | 1 +
- 2 files changed, 6 insertions(+)
-
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 35ae8c8fc301..edf62430cabe 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -1069,6 +1069,7 @@ static int ufs_qcom_init(struct ufs_hba *hba)
- 	struct device *dev = hba->dev;
- 	struct ufs_qcom_host *host;
- 	struct ufs_clk_info *clki;
-+	const struct ufs_qcom_drvdata *drvdata = of_device_get_match_data(hba->dev);
- 
- 	host = devm_kzalloc(dev, sizeof(*host), GFP_KERNEL);
- 	if (!host)
-@@ -1148,6 +1149,9 @@ static int ufs_qcom_init(struct ufs_hba *hba)
- 		dev_warn(dev, "%s: failed to configure the testbus %d\n",
- 				__func__, err);
- 
-+	if (drvdata && drvdata->no_phy_retention)
-+		hba->spm_lvl = UFS_PM_LVL_5;
-+
- 	return 0;
- 
- out_variant_clear:
-@@ -1866,6 +1870,7 @@ static void ufs_qcom_remove(struct platform_device *pdev)
- 
- static const struct ufs_qcom_drvdata ufs_qcom_sm8550_drvdata = {
- 	.quirks = UFSHCD_QUIRK_BROKEN_LSDBS_CAP,
-+	.no_phy_retention = true,
- };
- 
- static const struct of_device_id ufs_qcom_of_match[] __maybe_unused = {
-diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
-index 15f6dad8b27f..919f53682beb 100644
---- a/drivers/ufs/host/ufs-qcom.h
-+++ b/drivers/ufs/host/ufs-qcom.h
-@@ -219,6 +219,7 @@ struct ufs_qcom_host {
- 
- struct ufs_qcom_drvdata {
- 	enum ufshcd_quirks quirks;
-+	bool no_phy_retention;
- };
- 
- static inline u32
-
+								Honza
 -- 
-2.25.1
-
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
