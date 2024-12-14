@@ -1,238 +1,172 @@
-Return-Path: <stable+bounces-104182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B8F9F1DDF
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 11:01:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E4A9F1E25
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 11:56:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 485C0188B8D5
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 10:01:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70B62166B45
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 10:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77A6161328;
-	Sat, 14 Dec 2024 10:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B682018B483;
+	Sat, 14 Dec 2024 10:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hXoIvhLC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="th5CW7Ny"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF2213BAE3
-	for <stable@vger.kernel.org>; Sat, 14 Dec 2024 10:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E82415666D;
+	Sat, 14 Dec 2024 10:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734170503; cv=none; b=BZVxYMTWCyRT1/8E/RoSgovNXnnp7ixZpL99tbYDrrtKicyhUCBOdihAEYkC1G93L8NZJIyYbo6CCR/ZpslVIOnT/7tiydFiIRCWubyA4TT6Kykucyhxyco+4OuzB+C28y46BxQhWph0jUR4N3ZiOPMm2+ggGAgD16Is7h0oqwU=
+	t=1734173777; cv=none; b=G/Gswq5XNaqtzz8Tm1yXg4eoarqEBQcfphcNiOJwcpQF1gDipAGIEJ25jhwuWBW+zTakk/jIX1PECTZMYGpsp6DldDf/xmfHKHoDHGGi+IIK1ltemAi13PvWsrKVAAEG9Mw39YZPVVhYNSDDHjW4oGVvuPBEHViIvMvzQuTKslo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734170503; c=relaxed/simple;
-	bh=L3Ts2vR1tGcJOhL+7WA7EXHct8W4/evMCyaznAj/8PY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PVc246+Ay6g/UtywKsUo5hD61+9J/FNn+hFaWki3FXB/PhD7HFvzcBc4tRXimJTXV/h9wAii1oYnOrr6IhNLhUc2X0lQfqQD+xAwuGvmFjBPD/eE/USKUU10zGB+/KymNnsuN3oDH+WWAQwpH3p7b/o4f62WIs4tvzjFp3OgCgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hXoIvhLC; arc=none smtp.client-ip=209.85.221.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-51882748165so745041e0c.3
-        for <stable@vger.kernel.org>; Sat, 14 Dec 2024 02:01:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734170500; x=1734775300; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B6iJmqCbGDdzurGz1nq3IkvqP7Qanek/ZA/cXhzDn70=;
-        b=hXoIvhLC27RZ5BMmf9zDZz/h06EjApbyHlZSOVgioyf3jzrIa/dSXwTBWiQ9vuzH+M
-         +2r0nrHz2aT82PuZoxivlbS2ptTgM+h03GWdyPsOp7eeTmdfS31iEOnugee+RWCDqpvD
-         hF+DT71v3kOf1U6AtVGEGBhnAnpk5Cv9ESy+V2tNGIDsnizaFOFaDCQ7AlEY+QCYuwRJ
-         R2vUPq8W6yl+gLTn5XZ0wHI9D2J9Ju69n8Fnir8w/mUOrZyXB3l/hi810mgn3zTOwHVq
-         bMgJM0Dfo7z8LQf9FnTTaIBGV3b63GJ5yJfiaf84ZIAtSrRgYjUNwDog+Rd2QwXW4y1n
-         3jPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734170500; x=1734775300;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B6iJmqCbGDdzurGz1nq3IkvqP7Qanek/ZA/cXhzDn70=;
-        b=jogOP07H3t3pZtZzs3Of76TazxnSpTvR6KL+C/4jUNAcbGb6LNFhwqaHeZI584QbNS
-         DuXc2nLzscIyYt6Zu6vgo8jSQlvMhNCkLLNfco/YLv7uTc09/tyEr8eNG8CVFF6GOrXc
-         9q/viW5g2rhMJ2msbbcZatOG0dPHmVi3Uf3f5bUPH4/gzmLiDL56QanpsAhX2K4cDlgV
-         /tIsjR0Is32XMWricnWLW0SSQGbjoZuQ8fD2+shb8yc3vF0i8sSzBzMaA/WEPiohGH94
-         xLCCS64IhehSj63Z5Egcf8ziu+RXuA6R129D7c8GWgZAP8cebvxKYUoi6ydWyUR3tAJG
-         7yXQ==
-X-Gm-Message-State: AOJu0YzuKXyyArevTlfqLF/2Y2UGQ5Z0zp20X+EiG4ZZ4c+lgksQQoWt
-	J6NINEhtqgBLx1EFUk44DomKS2ba4rDhyPqoOnnZNC2pfh5MVfZU1Xbi42p8RiYvM2HUtYJkTIn
-	YaS/I4lO72/3YsDr6+bilUy3XNwaL/bDWZaLkpQ==
-X-Gm-Gg: ASbGnctgd0+PFRO6U3v3WjdeZzGMgLmKkVpZAPDeoq8YsxxQTWj7Y3zngv9NeejvGXp
-	QwX5vHNIrWxQv5PlHa4+buMCvfL5ZyF0qMzTd+70I070E0Tr5T90QmijYafysJgCZcy5zv8E=
-X-Google-Smtp-Source: AGHT+IHO7/jmhkLsHDBV3zjlqLwhzO6luE30zeMTItXQRQKMazsXibRYrA6dzCFh5ymyTKClcwpgIAZ6Isq71zlxAg0=
-X-Received: by 2002:a05:6122:2a05:b0:518:6286:87a4 with SMTP id
- 71dfb90a1353d-518ca251874mr5900037e0c.4.1734170500545; Sat, 14 Dec 2024
- 02:01:40 -0800 (PST)
+	s=arc-20240116; t=1734173777; c=relaxed/simple;
+	bh=MMR2ErCeRcdYEu0/gbXMrmxEoyPZCFQNk9/Pe021FjY=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GoAlsMoM49I21LVfGXUjZh4HOV6X20WMmBewVn2gji6RfZrgtjAUtR2qocRukaCJt/GgNi83G4GevbF6Hk8Pinoj9bXzn6423bK1nBxbL0t8LF08QtjSpdYiRUd3eHCOWaSDh9X9MRGiguOo1X1+jPasGSK6lWBYTsXtqEouOFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=th5CW7Ny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3940C4CED1;
+	Sat, 14 Dec 2024 10:56:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734173776;
+	bh=MMR2ErCeRcdYEu0/gbXMrmxEoyPZCFQNk9/Pe021FjY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=th5CW7NyRAO6AsL9GNbhpzvJiKkxS1V55bQYfK0IyALfxQHhYSL09/9hhCK+BGWZ8
+	 i7SuR2nX14gd8AYPjYMKA0yvLgOsdhW+6PjK2qTT41A6qt5wtFqMJzewN//X8hho7T
+	 8rjyRCJ/ehrvGXvUCX/tgGuf2r6sUyqJzZVomH13BJTHwA7XdMRBAjriuQHUC5D450
+	 mWdj5t5xrs0q5RVLgSa7bzuyX0pjaGvwfDwCfp1b3eqf2xkNMXQ0NDHyZOQ6Dip9+K
+	 ML085KJ+qsCFUFtxprICFbA0S4bc9vO5mu/R9Q3mshmHCEbkisIyclqrvsR400VO8V
+	 nzrQm3k7RVCIQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tMPok-003hQI-5a;
+	Sat, 14 Dec 2024 10:56:14 +0000
+Date: Sat, 14 Dec 2024 10:56:13 +0000
+Message-ID: <87a5cysfci.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Collingbourne <pcc@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/sme: Move storage of reg_smidr to __cpuinfo_store_cpu()
+In-Reply-To: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>
+References: <20241214-arm64-fix-boot-cpu-smidr-v1-1-0745c40772dd@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241213145925.077514874@linuxfoundation.org>
-In-Reply-To: <20241213145925.077514874@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Sat, 14 Dec 2024 15:31:29 +0530
-Message-ID: <CA+G9fYtcVtLEWtv3N1e0jtycdSomHEZ8+LV0k-P8weZUnX10dg@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/467] 6.12.5-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: broonie@kernel.org, catalin.marinas@arm.com, will@kernel.org, pcc@google.com, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, 13 Dec 2024 at 20:34, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.5 release.
-> There are 467 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 15 Dec 2024 14:57:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.5-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+[+ Mark]
+On Sat, 14 Dec 2024 00:52:08 +0000,
+Mark Brown <broonie@kernel.org> wrote:
+> 
+> In commit 892f7237b3ff ("arm64: Delay initialisation of
+> cpuinfo_arm64::reg_{zcr,smcr}") we moved access to ZCR, SMCR and SMIDR
+> later in the boot process in order to ensure that we don't attempt to
+> interact with them if SVE or SME is disabled on the command line.
+> Unfortunately when initialising the boot CPU in init_cpu_features() we work
+> on a copy of the struct cpuinfo_arm64 for the boot CPU used only during
+> boot, not the percpu copy used by the sysfs code.
+> 
+> Fix this by moving the handling for SMIDR_EL1 for the boot CPU to
+> cpuinfo_store_boot_cpu() so it can operate on the percpu copy of the data.
+> This reduces the potential for error that could come from having both the
+> percpu and boot CPU copies in init_cpu_features().
+> 
+> This issue wasn't apparent when testing on emulated platforms that do not
+> report values in this ID register.
+> 
+> Fixes: 892f7237b3ff ("arm64: Delay initialisation of cpuinfo_arm64::reg_{zcr,smcr}")
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/arm64/kernel/cpufeature.c |  6 ------
+>  arch/arm64/kernel/cpuinfo.c    | 11 +++++++++++
+>  2 files changed, 11 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index 6ce71f444ed84f9056196bb21bbfac61c9687e30..b88102fd2c20f77e25af6df513fda09a484e882e 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -1167,12 +1167,6 @@ void __init init_cpu_features(struct cpuinfo_arm64 *info)
+>  	    id_aa64pfr1_sme(read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1))) {
+>  		unsigned long cpacr = cpacr_save_enable_kernel_sme();
+>  
+> -		/*
+> -		 * We mask out SMPS since even if the hardware
+> -		 * supports priorities the kernel does not at present
+> -		 * and we block access to them.
+> -		 */
+> -		info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
+>  		vec_init_vq_map(ARM64_VEC_SME);
+>  
+>  		cpacr_restore(cpacr);
+> diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
+> index d79e88fccdfce427507e7a34c5959ce6309cbd12..b7d403da71e5a01ed3943eb37e7a00af238771a2 100644
+> --- a/arch/arm64/kernel/cpuinfo.c
+> +++ b/arch/arm64/kernel/cpuinfo.c
+> @@ -499,4 +499,15 @@ void __init cpuinfo_store_boot_cpu(void)
+>  
+>  	boot_cpu_data = *info;
+>  	init_cpu_features(&boot_cpu_data);
+> +
+> +	/* SMIDR_EL1 needs to be stored in the percpu data for sysfs */
+> +	if (IS_ENABLED(CONFIG_ARM64_SME) &&
+> +	    id_aa64pfr1_sme(read_sanitised_ftr_reg(SYS_ID_AA64PFR1_EL1))) {
+> +		/*
+> +		 * We mask out SMPS since even if the hardware
+> +		 * supports priorities the kernel does not at present
+> +		 * and we block access to them.
+> +		 */
+> +		info->reg_smidr = read_cpuid(SMIDR_EL1) & ~SMIDR_EL1_SMPS;
+> +	}
+>  }
+
+I don't understand the need to single out SMIDR_EL1. It seems to only
+make things even more fragile than they already are by adding more
+synchronisation phases.
+
+Why isn't the following a good enough fix? It makes it plain that
+boot_cpu_data is only a copy of CPU0's initial boot state.
+
+diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
+index d79e88fccdfce..0cbb42fd48850 100644
+--- a/arch/arm64/kernel/cpuinfo.c
++++ b/arch/arm64/kernel/cpuinfo.c
+@@ -497,6 +497,6 @@ void __init cpuinfo_store_boot_cpu(void)
+ 	struct cpuinfo_arm64 *info = &per_cpu(cpu_data, 0);
+ 	__cpuinfo_store_cpu(info);
+ 
++	init_cpu_features(info);
+ 	boot_cpu_data = *info;
+-	init_cpu_features(&boot_cpu_data);
+ }
 
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Thanks,
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+	M.
 
-## Build
-* kernel: 6.12.5-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 602e3159e817475bec9784ba359147d8351e90c2
-* git describe: v6.12.4-468-g602e3159e817
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.4-468-g602e3159e817
-
-## Test Regressions (compared to v6.12.3-147-g91ba615b0f09)
-
-## Metric Regressions (compared to v6.12.3-147-g91ba615b0f09)
-
-## Test Fixes (compared to v6.12.3-147-g91ba615b0f09)
-
-## Metric Fixes (compared to v6.12.3-147-g91ba615b0f09)
-
-## Test result summary
-total: 115288, pass: 93226, fail: 3813, skip: 18249, xfail: 0
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 137 passed, 2 failed
-* arm64: 54 total, 54 passed, 0 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 3 passed, 1 failed
-* powerpc: 40 total, 39 passed, 1 failed
-* riscv: 24 total, 23 passed, 1 failed
-* s390: 22 total, 21 passed, 1 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 46 total, 46 passed, 0 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-rust
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+-- 
+Without deviation from the norm, progress is not possible.
 
