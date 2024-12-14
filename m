@@ -1,73 +1,94 @@
-Return-Path: <stable+bounces-104161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-104162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE269F1B2D
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 01:09:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3AA9F1B87
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 01:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4025F188298B
-	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 00:09:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54BC5162444
+	for <lists+stable@lfdr.de>; Sat, 14 Dec 2024 00:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7AD71F03E2;
-	Fri, 13 Dec 2024 23:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464B613FFC;
+	Sat, 14 Dec 2024 00:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="QpYy9Wi+"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="XZhzuWgi"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13E21DED70;
-	Fri, 13 Dec 2024 23:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66075DDCD
+	for <stable@vger.kernel.org>; Sat, 14 Dec 2024 00:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734134244; cv=none; b=kLFwg7gNFe6cKx6RReubQZhpKOL6vMxhW/qmNQE59rzbs/oDRoFAZL4c6oNfRv12Awb5n7u4FNvg76k52m+hUcA0z1FVgVWjE4d8GdyovtwaQeXrHydWyj3n2ZnMoHXH1St/7YivWWWgt6QAYgi0cKXbPitW8Kg9ORIbh2UKsnQ=
+	t=1734137591; cv=none; b=GBFpi+mG8PTQfM2EkmXmDtIJdKzWfUNiHMS0cjLrba5oh70X5wVGDclthlbaZntYV+8qnp2S+IB9VGiXoe5P25LUbUqiHLpX01ngaALHCXyKbZewvC4qQKhSTl2NzeeNGXvHznGToANW4YmTGRNNEha1CzfHTqK1BJTlb41Ivug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734134244; c=relaxed/simple;
-	bh=1YYTaVqGIazxOCO5qZ8bTy5t+fwoP7FXeMFgkaaU1f0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cmygvxs1hByK0CIa8rf5ySqdF9oGYu2oK0mUJmEzaN7zstdtqy5cDLVg5cksbZsVSoXg18uSbdIrdpF3w+B2jkn9GxdpXyrTMTwKwWmin8jg+Wal+17rGeD481czjSk0MWy21eBlhQhYuwWlf2jRQzb/jmudBJftLqy49LNGC5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=QpYy9Wi+; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BDKBoaT015471;
-	Fri, 13 Dec 2024 23:57:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2023-11-20; bh=yt7M4uZ2L/ft+OJbYnX0YlOwwKxkG
-	uYZ1Cixgs9PFnk=; b=QpYy9Wi+kBgDdyRJ8ItmAq1hefTBOzF/Q4FgC4bAdh4ac
-	TstYrnBI+ypNdQfuOEi7BcydbmoA+LP9aLkUaPbixF4iKdThIiT0etKugWPbzlYD
-	NTqkSsrUrflaJVv7b5XMhQDmBMmhE4ulRiLQW/8aClHaoyn8biud73V0yM2Zbp06
-	vFvoh3abnWOiIOFscw49WvZzSeau5ji3oDCvvhzl2JGvtjUpxOTXM6Nv77Juc/HH
-	nlXW1paFb0hq3lV6YjBIppBFRGIlfxFJvpwCNlmvw9iJXwHCvJ1RXeKojKVKbVrq
-	5NHHdpAsK+Fg2Gbr7vPfoD+COK83jt+EhL0SSyryw==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 43cedcejsv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Dec 2024 23:57:13 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 4BDNlx06020564;
-	Fri, 13 Dec 2024 23:57:12 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 43cctd4nub-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Dec 2024 23:57:12 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4BDNvBFI006513;
-	Fri, 13 Dec 2024 23:57:11 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 43cctd4nrj-1;
-	Fri, 13 Dec 2024 23:57:11 +0000
-From: Sherry Yang <sherry.yang@oracle.com>
-To: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org
-Cc: sherry.yang@oracle.com, linkinjeon@kernel.org, sj1557.seo@samsung.com,
-        wataru.aoyama@sony.com, Andy.Wu@sony.com, Yuezhang.Mo@sony.com,
-        linux-fsdevel@vger.kernel.org
-Subject: [PATCH 5.15.y, 5.10.y] exfat: fix potential deadlock on __exfat_get_dentry_set
-Date: Fri, 13 Dec 2024 15:57:05 -0800
-Message-ID: <20241213235705.2201714-1-sherry.yang@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1734137591; c=relaxed/simple;
+	bh=9VcI1y4DrqTHAqxzGhnqIkcAzN8r48f8mRzXZKwipic=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ocTWnStrzb3frzG1bbQtwAbcFwSubzT++DKH2wQeVGqr+743rxcSXLcCPEMVR0FPDI50aucohLkfKFWRB50iEDBmhD2QtV/j6U4C79rVbK6A3Wu7gx4qV5jKhdinemejkhGMumx2XAz8tPMhjg/ioqRRPiw2G6/dEMI8ABJ/kJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=XZhzuWgi; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ee989553c1so1951699a91.3
+        for <stable@vger.kernel.org>; Fri, 13 Dec 2024 16:53:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1734137589; x=1734742389; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HCYhLJZhR58ewaFrjgMGyGbHfnpNdzHm23IqgQZ/0wM=;
+        b=XZhzuWgiWcMoHTc1oBI2ureLcOzeudbOg7Sl9c9eMJx03AbZgEc9ZyLe08aNBR/CRn
+         gEUDvPZJ19Gx63EvcNB4tMIB5kZHkMfz6CO8+J0Ss3LsRL8cr6oFwiJ2dbXpFTHi7enT
+         tGwu9cOXFQmAHinwhGahaSsENDbxIrwXf1/q4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734137589; x=1734742389;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HCYhLJZhR58ewaFrjgMGyGbHfnpNdzHm23IqgQZ/0wM=;
+        b=tIWB/zflDgGwoDqlx/vFkWAiYbqRQ1hnNWSL52EKPkZvZAdgSyeyAyxDKaWv8YLKUX
+         KZcvEq3KUd59+vLQueBX61nXGvMkONG8yxYF7BeNyYghjGG/WL0j1UTDc//gOppWPupR
+         BD/bFLLvz5RLsw83ne/q8Oz8SgKzEnm1tK9g+SNjPKC9Ctrf7tAnkR5HSBT8LKSrc4D8
+         NWWmX2aTF1JuX3FN6vdg7IqtTh+gIRM3Qm/lk2yc0gWEYCoM9SY3QC2I1ShitidASd4k
+         Ycq9krpkHYiJ6DzW7LS2xaor8mDnwUZOTa4KFavhnMLo2yC1vmsmMJItrwwx0xVO5j3e
+         4VHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHQI+5F58oh01iWrsdW/KvWsekQU7bR2tJks9ccA3+meUGvR3FaK7DveihiyYR2TKM1L+i6fc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX7DGeWop9/2sVpDjQESZ0y+8/JgMegZYRJ4PPQYLHpO/eJ/24
+	Sj2O0cnPuIy01dwTMfBdapMKQoiX+6M1xaaTk8pUqpz2q6raTOlsS1Jz6+C4nQ==
+X-Gm-Gg: ASbGnctOgHug67Zv44zR2YjjHcXDwwzn7IMz94JdPFNlkbaU8kLArNmb78iKzTsN9QS
+	fT75DQKuDvhfOM1bkQ0N+0m+0UMZzWJVEXpAb69lvXK1MGhHntfksguzkEkuAVyV8Vc9SZBofgY
+	K56rUIiLoKWQjwOxYjTRdYO/0YT1ddNOC2848jnh1z/WJAtRLXSsLmZ2lWbi4XBtFRE0dLA7XRR
+	8xGRQ1aJW0uH0s56/jGiXR0kfIyX86e28gY6I+2q3VfKWkH0SlA/pwaZCBjkQih5A7mPqZ/EY2S
+X-Google-Smtp-Source: AGHT+IGyZAYcBNhvS6uotk+yKNrfDXGIRBKVBPzRwnHoQvCbP1TZ1iFVgP8Qo1WHFe4yMk8mfH9X9g==
+X-Received: by 2002:a17:90b:4d08:b0:2ee:ab10:c187 with SMTP id 98e67ed59e1d1-2f28fd6b5f3mr6479214a91.18.1734137588765;
+        Fri, 13 Dec 2024 16:53:08 -0800 (PST)
+Received: from dianders.sjc.corp.google.com ([2620:15c:9d:2:ae86:44a5:253c:f9bf])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f142f9e186sm3788270a91.41.2024.12.13.16.53.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Dec 2024 16:53:08 -0800 (PST)
+From: Douglas Anderson <dianders@chromium.org>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-msm@vger.kernel.org,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Julius Werner <jwerner@chromium.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Roxana Bradescu <roxabee@google.com>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	bjorn.andersson@oss.qualcomm.com,
+	Douglas Anderson <dianders@chromium.org>,
+	stable@vger.kernel.org,
+	James Morse <james.morse@arm.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/6] arm64: errata: Assume that unknown CPUs _are_ vulnerable to Spectre BHB
+Date: Fri, 13 Dec 2024 16:52:02 -0800
+Message-ID: <20241213165201.v2.1.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+In-Reply-To: <20241214005248.198803-1-dianders@chromium.org>
+References: <20241214005248.198803-1-dianders@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,74 +96,141 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-13_11,2024-12-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- phishscore=0 suspectscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2411120000
- definitions=main-2412130170
-X-Proofpoint-ORIG-GUID: AQuBSZG9LllaOzN6H40-WJCWIgZElyXQ
-X-Proofpoint-GUID: AQuBSZG9LllaOzN6H40-WJCWIgZElyXQ
 
-From: Sungjong Seo <sj1557.seo@samsung.com>
+The code for detecting CPUs that are vulnerable to Spectre BHB was
+based on a hardcoded list of CPU IDs that were known to be affected.
+Unfortunately, the list mostly only contained the IDs of standard ARM
+cores. The IDs for many cores that are minor variants of the standard
+ARM cores (like many Qualcomm Kyro CPUs) weren't listed. This led the
+code to assume that those variants were not affected.
 
-commit 89fc548767a2155231128cb98726d6d2ea1256c9 upstream.
+Flip the code on its head and instead list CPU IDs for cores that are
+known to be _not_ affected. Now CPUs will be assumed vulnerable until
+added to the list saying that they're safe.
 
-When accessing a file with more entries than ES_MAX_ENTRY_NUM, the bh-array
-is allocated in __exfat_get_entry_set. The problem is that the bh-array is
-allocated with GFP_KERNEL. It does not make sense. In the following cases,
-a deadlock for sbi->s_lock between the two processes may occur.
+As of right now, the only CPU IDs added to the "unaffected" list are
+ARM Cortex A35, A53, and A55. This list was created by looking at
+older cores listed in cputype.h that weren't listed in the "affected"
+list previously.
 
-       CPU0                CPU1
-       ----                ----
-  kswapd
-   balance_pgdat
-    lock(fs_reclaim)
-                      exfat_iterate
-                       lock(&sbi->s_lock)
-                       exfat_readdir
-                        exfat_get_uniname_from_ext_entry
-                         exfat_get_dentry_set
-                          __exfat_get_dentry_set
-                           kmalloc_array
-                            ...
-                            lock(fs_reclaim)
-    ...
-    evict
-     exfat_evict_inode
-      lock(&sbi->s_lock)
+Unfortunately, while this solution is better than what we had before,
+it's still an imperfect solution. Specifically there are two ways to
+mitigate Spectre BHB and one of those ways is parameterized with a "k"
+value indicating how many loops are needed to mitigate. If we have an
+unknown CPU ID then we've got to guess about how to mitigate it. Since
+more cores seem to be mitigated by looping (and because it's unlikely
+that the needed FW code will be in place for FW mitigation for unknown
+cores), we'll choose looping for unknown CPUs and choose the highest
+"k" value of 32.
 
-To fix this, let's allocate bh-array with GFP_NOFS.
+The downside of our guessing is that some CPUs may now report as
+"mitigated" when in reality they should need a firmware mitigation.
+We'll choose to put a WARN_ON splat in the logs in this case any time
+we had to make a guess since guessing the right mitigation is pretty
+awful. Hopefully this will encourage CPU vendors to add their CPU IDs
+to the list.
 
-Fixes: a3ff29a95fde ("exfat: support dynamic allocate bh for exfat_entry_set_cache")
-Cc: stable@vger.kernel.org # v6.2+
-Reported-by: syzbot+412a392a2cd4a65e71db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/000000000000fef47e0618c0327f@google.com
-Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Sherry: The problematic commit was backported to 5.15.y and 5.10.y,
-thus backport this fix]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
+Cc: stable@vger.kernel.org
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
- fs/exfat/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
-index be7570d01ae1..0a1b1de032ef 100644
---- a/fs/exfat/dir.c
-+++ b/fs/exfat/dir.c
-@@ -878,7 +878,7 @@ struct exfat_entry_set_cache *exfat_get_dentry_set(struct super_block *sb,
+Changes in v2:
+- New
+
+ arch/arm64/kernel/proton-pack.c | 46 +++++++++++++++++++++++++++------
+ 1 file changed, 38 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+index da53722f95d4..39c5573c7527 100644
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -841,13 +841,31 @@ enum bhb_mitigation_bits {
+ };
+ static unsigned long system_bhb_mitigations;
  
- 	num_bh = EXFAT_B_TO_BLK_ROUND_UP(off + num_entries * DENTRY_SIZE, sb);
- 	if (num_bh > ARRAY_SIZE(es->__bh)) {
--		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_KERNEL);
-+		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_NOFS);
- 		if (!es->bh) {
- 			brelse(bh);
- 			kfree(es);
++static const struct midr_range spectre_bhb_firmware_mitigated_list[] = {
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A73),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A75),
++	{},
++};
++
++static const struct midr_range spectre_bhb_safe_list[] = {
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A35),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A53),
++	MIDR_ALL_VERSIONS(MIDR_CORTEX_A55),
++	{},
++};
++
+ /*
+  * This must be called with SCOPE_LOCAL_CPU for each type of CPU, before any
+  * SCOPE_SYSTEM call will give the right answer.
++ *
++ * NOTE: Unknown CPUs are reported as affected. In order to make this work
++ * and still keep the list short, only handle CPUs where:
++ * - supports_csv2p3() returned false
++ * - supports_clearbhb() returned false.
+  */
+ u8 spectre_bhb_loop_affected(int scope)
+ {
+-	u8 k = 0;
++	u8 k;
+ 	static u8 max_bhb_k;
+ 
+ 	if (scope == SCOPE_LOCAL_CPU) {
+@@ -886,6 +904,16 @@ u8 spectre_bhb_loop_affected(int scope)
+ 			k = 11;
+ 		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
+ 			k =  8;
++		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_safe_list) ||
++			 is_midr_in_range_list(read_cpuid_id(), spectre_bhb_firmware_mitigated_list))
++			k =  0;
++		else {
++			WARN_ONCE(true,
++				 "Unrecognized CPU %#010x, assuming Spectre BHB vulnerable\n",
++				 read_cpuid_id());
++			/* Hopefully k = 32 handles the worst case for unknown CPUs */
++			k = 32;
++		}
+ 
+ 		max_bhb_k = max(max_bhb_k, k);
+ 	} else {
+@@ -916,24 +944,26 @@ static enum mitigation_state spectre_bhb_get_cpu_fw_mitigation_state(void)
+ 	}
+ }
+ 
++/*
++ * NOTE: Unknown CPUs are reported as affected. In order to make this work
++ * and still keep the list short, only handle CPUs where:
++ * - supports_csv2p3() returned false
++ * - supports_clearbhb() returned false.
++ * - spectre_bhb_loop_affected() returned 0.
++ */
+ static bool is_spectre_bhb_fw_affected(int scope)
+ {
+ 	static bool system_affected;
+ 	enum mitigation_state fw_state;
+ 	bool has_smccc = arm_smccc_1_1_get_conduit() != SMCCC_CONDUIT_NONE;
+-	static const struct midr_range spectre_bhb_firmware_mitigated_list[] = {
+-		MIDR_ALL_VERSIONS(MIDR_CORTEX_A73),
+-		MIDR_ALL_VERSIONS(MIDR_CORTEX_A75),
+-		{},
+-	};
+ 	bool cpu_in_list = is_midr_in_range_list(read_cpuid_id(),
+-					 spectre_bhb_firmware_mitigated_list);
++						 spectre_bhb_safe_list);
+ 
+ 	if (scope != SCOPE_LOCAL_CPU)
+ 		return system_affected;
+ 
+ 	fw_state = spectre_bhb_get_cpu_fw_mitigation_state();
+-	if (cpu_in_list || (has_smccc && fw_state == SPECTRE_MITIGATED)) {
++	if (!cpu_in_list || (has_smccc && fw_state == SPECTRE_MITIGATED)) {
+ 		system_affected = true;
+ 		return true;
+ 	}
 -- 
-2.46.0
+2.47.1.613.gc27f4b7a9f-goog
 
 
